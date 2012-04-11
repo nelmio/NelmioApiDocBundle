@@ -3,7 +3,7 @@
 namespace Nelmio\ApiBundle\EventListener;
 
 use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiBundle\Formatter\ApiDocFormatter;
+use Nelmio\ApiBundle\Formatter\FormatterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -20,7 +20,7 @@ class RequestListener
 
     protected $formatter;
 
-    public function __construct(Reader $reader, RouterInterface $router, ApiDocFormatter $formatter)
+    public function __construct(Reader $reader, RouterInterface $router, FormatterInterface $formatter)
     {
         $this->reader = $reader;
         $this->router = $router;

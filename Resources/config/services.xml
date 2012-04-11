@@ -5,16 +5,22 @@
 
     <parameters>
         <parameter key="nelmio.api.parser.form_type_parser.class">Nelmio\ApiBundle\Parser\FormTypeParser</parameter>
-        <parameter key="nelmio.api.formatter.api_doc_formatter.class">Nelmio\ApiBundle\Formatter\ApiDocFormatter</parameter>
+        <parameter key="nelmio.api.formatter.abstract_formatter.class">Nelmio\ApiBundle\Formatter\AbstractFormatter</parameter>
+        <parameter key="nelmio.api.formatter.markdown_formatter.class">Nelmio\ApiBundle\Formatter\MarkdownFormatter</parameter>
+        <parameter key="nelmio.api.formatter.simple_formatter.class">Nelmio\ApiBundle\Formatter\SimpleFormatter</parameter>
     </parameters>
 
     <services>
         <service id="nelmio.api.parser.form_type_parser" class="%nelmio.api.parser.form_type_parser.class%">
             <argument type="service" id="form.factory" />
         </service>
-        <service id="nelmio.api.formatter.api_doc_formatter" class="%nelmio.api.formatter.api_doc_formatter.class%">
+        <service id="nelmio.api.formatter.abstract_formatter" class="%nelmio.api.formatter.abstract_formatter.class%">
             <argument type="service" id="nelmio.api.parser.form_type_parser" />
         </service>
+        <service id="nelmio.api.formatter.markdown_formatter" class="%nelmio.api.formatter.markdown_formatter.class%"
+            parent="nelmio.api.formatter.abstract_formatter" />
+        <service id="nelmio.api.formatter.simple_formatter" class="%nelmio.api.formatter.simple_formatter.class%"
+            parent="nelmio.api.formatter.abstract_formatter" />
     </services>
 
 </container>

@@ -6,7 +6,7 @@ use Nelmio\ApiBundle\Annotation\ApiDoc;
 use Nelmio\ApiBundle\Parser\FormTypeParser;
 use Symfony\Component\Routing\Route;
 
-class ApiDocFormatter
+abstract class AbstractFormatter implements FormatterInterface
 {
     /**
      * @var \Nelmio\ApiBundle\Parser\FormTypeParser
@@ -19,6 +19,13 @@ class ApiDocFormatter
     }
 
     public function format(ApiDoc $apiDoc, Route $route)
+    {
+        return $this->render($this->getData($apiDoc, $route));
+    }
+
+    protected abstract function render(array $data);
+
+    private function getData(ApiDoc $apiDoc, Route $route)
     {
         $method = $route->getRequirement('_method');
         $data   = array(
