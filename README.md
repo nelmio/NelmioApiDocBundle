@@ -121,6 +121,10 @@ A command is provided in order to dump the documentation in `json`, `markdown`, 
 
 The `--format` option allows to choose the format (default is: `markdown`).
 
+A use case could be to generate a static version of your documentation:
+
+    php app/console api:doc:dump --format=html > api.html
+
 
 ## Credits ##
 

@@ -6,8 +6,10 @@
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
     <title>API documentation</title>
     <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css" />
-    <link href="/bundles/nelmioapi/css/screen.css" media="screen" rel="stylesheet" type="text/css" />
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+    <style type="text/css">
+      <?php echo file_get_contents(__DIR__ . '/../public/css/screen.css'); ?>
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
   </head>
   <body>
     <div id="header">
