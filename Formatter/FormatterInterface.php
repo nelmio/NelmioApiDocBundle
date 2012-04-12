@@ -7,5 +7,7 @@ use Symfony\Component\Routing\Route;
 
 interface FormatterInterface
 {
-    function format(ApiDoc $apiDoc, Route $route);
+    function format(array $collection);
+
+    function formatOne(ApiDoc $apiDoc, Route $route);
 }

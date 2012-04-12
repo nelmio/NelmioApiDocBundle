@@ -4,7 +4,10 @@ namespace Nelmio\ApiBundle\Formatter;
 
 class MarkdownFormatter extends AbstractFormatter
 {
-    protected function render(array $data)
+    /**
+     * {@inheritdoc}
+     */
+    protected function renderOne(array $data)
     {
         $markdown = sprintf("### `%s` %s ###\n", $data['method'], $data['uri']);
 
@@ -41,12 +44,26 @@ class MarkdownFormatter extends AbstractFormatter
         if (isset($data['parameters'])) {
             $markdown .= "#### Parameters ####\n\n";
 
-            foreach ($data['parameters'] as $parameter) {
-                $markdown .= sprintf("%s:\n\n", $parameter['name']);
+            foreach ($data['parameters'] as $name => $parameter) {
+                $markdown .= sprintf("%s:\n\n", $name);
                 $markdown .= sprintf("  * type: %s\n", $parameter['type']);
                 $markdown .= sprintf("  * is_required: %s\n", $parameter['is_required'] ? 'true' : 'false');
                 $markdown .= "\n";
             }
+        }
+
+        return $markdown;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function render(array $collection)
+    {
+        $markdown = '';
+        foreach ($collection as $data) {
+            $markdown .= $this->renderOne($data);
+            $markdown .= "\n";
         }
 
         return $markdown;

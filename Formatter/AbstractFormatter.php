@@ -18,12 +18,30 @@ abstract class AbstractFormatter implements FormatterInterface
         $this->parser = $parser;
     }
 
-    public function format(ApiDoc $apiDoc, Route $route)
+    /**
+     * {@inheritdoc}
+     */
+    public function formatOne(ApiDoc $apiDoc, Route $route)
     {
-        return $this->render($this->getData($apiDoc, $route));
+        return $this->renderOne($this->getData($apiDoc, $route));
     }
 
-    protected abstract function render(array $data);
+    /**
+     * {@inheritdoc}
+     */
+    public function format(array $collection)
+    {
+        $array = array();
+        foreach ($collection as $coll) {
+            $array[] = $this->getData($coll['annotation'], $coll['route']);
+        }
+
+        return $this->render($array);
+    }
+
+    protected abstract function renderOne(array $data);
+
+    protected abstract function render(array $collection);
 
     private function getData(ApiDoc $apiDoc, Route $route)
     {
