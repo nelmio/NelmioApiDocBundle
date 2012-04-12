@@ -48,7 +48,7 @@ class ApiDoc
             $this->description = $data['description'];
         }
 
-        $this->isResource = isset($data['resource']);
+        $this->isResource = isset($data['resource']) && $data['resource'];
     }
 
     /**

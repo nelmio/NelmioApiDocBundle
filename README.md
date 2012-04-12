@@ -56,7 +56,7 @@ class YourController extends Controller
 {
     /**
      * @ApiDoc(
-     *  resource="true",
+     *  resource=true,
      *  description="This is a description of your API method",
      *  filters={
      *      {"name"="a-filter", "dataType"="integer"},
@@ -82,7 +82,7 @@ class YourController extends Controller
 
 The following parameters are recognized:
 
-* `resource`: whether the method describes a resource or not;
+* `resource`: whether the method describes a resource or not (default: `false`);
 
 * `description`: a description of the API method;
 
