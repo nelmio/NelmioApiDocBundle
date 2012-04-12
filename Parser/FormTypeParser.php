@@ -1,6 +1,6 @@
 <?php
 
-namespace Nelmio\ApiBundle\Parser;
+namespace Nelmio\ApiDocBundle\Parser;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;

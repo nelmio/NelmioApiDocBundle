@@ -1,13 +1,13 @@
 <?php
 
-namespace Nelmio\ApiBundle\Extractor;
+namespace Nelmio\ApiDocBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Routing\RouterInterface;
 
 class ApiDocExtractor
 {
-    const ANNOTATION_CLASS = 'Nelmio\\ApiBundle\\Annotation\\ApiDoc';
+    const ANNOTATION_CLASS = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
 
     /**
      * @var \ymfony\Component\Routing\RouterInterface

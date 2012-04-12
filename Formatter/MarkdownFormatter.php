@@ -1,6 +1,6 @@
 <?php
 
-namespace Nelmio\ApiBundle\Formatter;
+namespace Nelmio\ApiDocBundle\Formatter;
 
 class MarkdownFormatter extends AbstractFormatter
 {

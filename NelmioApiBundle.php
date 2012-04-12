@@ -1,9 +1,9 @@
 <?php
 
-namespace Nelmio\ApiBundle;
+namespace Nelmio\ApiDocBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class NelmioApiBundle extends Bundle
+class NelmioApiDocBundle extends Bundle
 {
 }

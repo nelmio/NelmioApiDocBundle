@@ -1,15 +1,15 @@
 <?php
 
-namespace Nelmio\ApiBundle\Formatter;
+namespace Nelmio\ApiDocBundle\Formatter;
 
-use Nelmio\ApiBundle\Annotation\ApiDoc;
-use Nelmio\ApiBundle\Parser\FormTypeParser;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Parser\FormTypeParser;
 use Symfony\Component\Routing\Route;
 
 abstract class AbstractFormatter implements FormatterInterface
 {
     /**
-     * @var \Nelmio\ApiBundle\Parser\FormTypeParser
+     * @var \Nelmio\ApiDocBundle\Parser\FormTypeParser
      */
     protected $parser;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Nelmio\ApiBundle\Annotation;
+namespace Nelmio\ApiDocBundle\Annotation;
 
 /**
  * @Annotation

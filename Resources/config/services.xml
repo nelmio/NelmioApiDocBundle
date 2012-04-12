@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="nelmio.api.extractor.api_doc_extractor.class">Nelmio\ApiBundle\Extractor\ApiDocExtractor</parameter>
+        <parameter key="nelmio.api.extractor.api_doc_extractor.class">Nelmio\ApiDocBundle\Extractor\ApiDocExtractor</parameter>
     </parameters>
 
     <services>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Nelmio\ApiBundle\Controller;
+namespace Nelmio\ApiDocBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
