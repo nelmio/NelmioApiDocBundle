@@ -33,21 +33,52 @@ abstract class AbstractFormatter implements FormatterInterface
     {
         $array = array();
         foreach ($collection as $coll) {
-            $array[] = $this->getData($coll['annotation'], $coll['route']);
+            $resource = $coll['resource'];
+            if (!isset($array[$resource])) {
+                $array[$resource] = array();
+            }
+
+            $array[$resource][] = $this->getData($coll['annotation'], $coll['route']);
         }
 
         return $this->render($array);
     }
 
+    /**
+     * Format a single array of data
+     *
+     * @param array $data
+     * @return string|array
+     */
     protected abstract function renderOne(array $data);
 
+    /**
+     * Format a set of data for a given resource.
+     *
+     * @param string $resource      A resource name.
+     * @param array $arrayOfData    A set of data.
+     * @return string|array
+     */
+    protected abstract function renderResourceSection($resource, array $arrayOfData);
+
+    /**
+     * Format a set of resource sections.
+     *
+     * @param array $collection
+     * @return string|array
+     */
     protected abstract function render(array $collection);
 
+    /**
+     * @param ApiDoc $apiDoc
+     * @param Route $route
+     * @return array
+     */
     private function getData(ApiDoc $apiDoc, Route $route)
     {
         $method = $route->getRequirement('_method');
         $data   = array(
-            'method'        => $method,
+            'method'        => $method ?: 'ANY',
             'uri'           => $route->compile()->getPattern(),
             'requirements'  => $route->compile()->getRequirements(),
         );
@@ -60,7 +91,7 @@ abstract class AbstractFormatter implements FormatterInterface
             if ('PUT' === $method) {
                 // All parameters are optional with PUT (update)
                 array_walk($data['parameters'], function($val, $key) use (&$data) {
-                    $data['parameters'][$key]['is_required'] = false;
+                    $data['parameters'][$key]['required'] = false;
                 });
             }
         }
@@ -69,8 +100,8 @@ abstract class AbstractFormatter implements FormatterInterface
             $data['filters'] = $filters;
         }
 
-        if ($comment = $apiDoc->getComment()) {
-            $data['comment'] = $comment;
+        if ($description = $apiDoc->getDescription()) {
+            $data['description'] = $description;
         }
 
         return $data;

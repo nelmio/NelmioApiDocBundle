@@ -20,7 +20,12 @@ class ApiDoc
     /**
      * @var string
      */
-    private $comment = null;
+    private $description = null;
+
+    /**
+     * @var Boolean
+     */
+    private $isResource = false;
 
     public function __construct(array $data)
     {
@@ -39,9 +44,11 @@ class ApiDoc
             }
         }
 
-        if (isset($data['comment'])) {
-            $this->comment = $data['comment'];
+        if (isset($data['description'])) {
+            $this->description = $data['description'];
         }
+
+        $this->isResource = isset($data['resource']);
     }
 
     public function getFilters()
@@ -54,8 +61,13 @@ class ApiDoc
         return $this->formType;
     }
 
-    public function getComment()
+    public function getDescription()
     {
-        return $this->comment;
+        return $this->description;
+    }
+
+    public function isResource()
+    {
+        return $this->isResource;
     }
 }

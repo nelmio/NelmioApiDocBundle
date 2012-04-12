@@ -42,8 +42,8 @@ class FormTypeParser
             }
 
             $parameters[$name] = array(
-                'type'          => $bestType,
-                'is_required'   => $b->getRequired()
+                'dataType'  => $bestType,
+                'required'  => $b->getRequired()
             );
         }
 

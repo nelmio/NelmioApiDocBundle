@@ -10,14 +10,20 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
   </head>
   <body>
+    <div id="header">
+      <h1>API documentation</h1>
+    </div>
     <div class="container" id="resources_container">
       <ul id="resources">
         <?php echo $content; ?>
       </ul>
     </div>
+    <p id="colophon">
+      Documentation auto-generated on <?php echo date(DATE_RFC822); ?>
+    </p>
     <script type="text/javascript">
       $('.toggler').click(function() {
-        $(this).next().toggle();
+        $(this).next().slideToggle('slow');
       });
     </script>
   </body>

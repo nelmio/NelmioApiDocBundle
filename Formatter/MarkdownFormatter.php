@@ -11,8 +11,8 @@ class MarkdownFormatter extends AbstractFormatter
     {
         $markdown = sprintf("### `%s` %s ###\n", $data['method'], $data['uri']);
 
-        if (isset($data['comment'])) {
-            $markdown .= sprintf("\n_%s_", $data['comment']);
+        if (isset($data['description'])) {
+            $markdown .= sprintf("\n_%s_", $data['description']);
         }
 
         $markdown .= "\n\n";
@@ -46,10 +46,25 @@ class MarkdownFormatter extends AbstractFormatter
 
             foreach ($data['parameters'] as $name => $parameter) {
                 $markdown .= sprintf("%s:\n\n", $name);
-                $markdown .= sprintf("  * type: %s\n", $parameter['type']);
-                $markdown .= sprintf("  * is_required: %s\n", $parameter['is_required'] ? 'true' : 'false');
+                $markdown .= sprintf("  * type: %s\n", $parameter['dataType']);
+                $markdown .= sprintf("  * is_required: %s\n", $parameter['required'] ? 'true' : 'false');
                 $markdown .= "\n";
             }
+        }
+
+        return $markdown;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function renderResourceSection($resource, array $arrayOfData)
+    {
+        $markdown = sprintf("# %s #\n\n", $resource);
+
+        foreach ($arrayOfData as $data) {
+            $markdown .= $this->renderOne($data);
+            $markdown .= "\n";
         }
 
         return $markdown;
@@ -61,8 +76,8 @@ class MarkdownFormatter extends AbstractFormatter
     protected function render(array $collection)
     {
         $markdown = '';
-        foreach ($collection as $data) {
-            $markdown .= $this->renderOne($data);
+        foreach ($collection as $resource => $arrayOfData) {
+            $markdown .= $this->renderResourceSection($resource, $arrayOfData);
             $markdown .= "\n";
         }
 
