@@ -2,28 +2,22 @@
 
 namespace Nelmio\ApiBundle\EventListener;
 
-use Doctrine\Common\Annotations\Reader;
+use Nelmio\ApiBundle\Extractor\ApiDocExtractor;
 use Nelmio\ApiBundle\Formatter\FormatterInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\Routing\RouterInterface;
 
 class RequestListener
 {
-    protected $annotationClass = 'Nelmio\\ApiBundle\\Annotation\\ApiDoc';
-
-    protected $reader;
-
-    protected $router;
+    protected $extractor;
 
     protected $formatter;
 
-    public function __construct(Reader $reader, RouterInterface $router, FormatterInterface $formatter)
+    public function __construct(ApiDocExtractor $extractor, FormatterInterface $formatter)
     {
-        $this->reader = $reader;
-        $this->router = $router;
+        $this->extractor = $extractor;
         $this->formatter = $formatter;
     }
 
@@ -42,16 +36,15 @@ class RequestListener
             return;
         }
 
-        preg_match('#(.+)::([\w]+)#', $request->get('_controller'), $matches);
-        $method = new \ReflectionMethod($matches[1], $matches[2]);
-        $route  = $request->get('_route');
+        $controller = $request->get('_controller');
+        $route      = $request->get('_route');
 
-        if ($annot = $this->reader->getMethodAnnotation($method, $this->annotationClass)) {
-            if ($route = $this->router->getRouteCollection()->get($route)) {
-                $result = $this->formatter->format($annot, $route);
+        if (null !== $array = $this->extractor->get($controller, $route)) {
+            $result = $this->formatter->formatOne($array['annotation'], $array['route']);
 
-                $event->setResponse(new JsonResponse($result));
-            }
+            $event->setResponse(new Response($result, 200, array(
+                'Content-Type' => 'text/html'
+            )));
         }
     }
 }

@@ -10,11 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DumpCommand extends ContainerAwareCommand
 {
     /**
-     * @var string
-     */
-    protected $annotationClass  = 'Nelmio\\ApiBundle\\Annotation\\ApiDoc';
-
-    /**
      * @var array
      */
     protected $availableFormats = array('markdown', 'json');
@@ -43,22 +38,13 @@ class DumpCommand extends ContainerAwareCommand
             $formatter = $this->getContainer()->get(sprintf('nelmio.api.formatter.%s_formatter', $format));
         }
 
-        $results = array();
-        foreach ($routeCollection->all() as $route) {
-            preg_match('#(.+)::([\w]+)#', $route->getDefault('_controller'), $matches);
-            $method = new \ReflectionMethod($matches[1], $matches[2]);
-
-            if ($annot = $this->getContainer()->get('annotation_reader')->getMethodAnnotation($method, $this->annotationClass)) {
-                $results[] = $formatter->format($annot, $route);
-            }
-        }
+        $extractedDoc = $this->getContainer()->get('nelmio.api.extractor.api_doc_extractor')->all();
+        $result = $formatter->format($extractedDoc);
 
         if ('json' === $format) {
-            $output->writeln(json_encode($results));
+            $output->writeln(json_encode($result));
         } else {
-            foreach ($results as $result) {
-                $output->writeln($result);
-            }
+            $output->writeln($result);
         }
     }
 }

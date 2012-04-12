@@ -1,0 +1,5 @@
+nelmio_api_api_doc_index:
+    pattern:  /api/doc
+    defaults: { _controller: NelmioApiBundle:ApiDoc:index }
+    requirements:
+        _method: GET

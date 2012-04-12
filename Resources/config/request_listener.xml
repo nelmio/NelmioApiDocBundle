@@ -9,9 +9,8 @@
 
     <services>
         <service id="nelmio.api.event_listener.request" class="%nelmio.api.event_listener.request.class%">
-            <argument type="service" id="annotation_reader" />
-            <argument type="service" id="router" />
-            <argument type="service" id="nelmio.api.formatter.simple_formatter" />
+            <argument type="service" id="nelmio.api.extractor.api_doc_extractor" />
+            <argument type="service" id="nelmio.api.formatter.html_formatter" />
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>
     </services>
