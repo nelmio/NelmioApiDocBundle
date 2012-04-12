@@ -8,6 +8,19 @@ use Symfony\Component\Routing\Route;
 class HtmlFormatter extends AbstractFormatter
 {
     /**
+     * @var string
+     */
+    private $apiName;
+
+    /**
+     * @param string $apiName
+     */
+    public function setApiName($apiName)
+    {
+        $this->apiName = $apiName;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function formatOne(ApiDoc $apiDoc, Route $route)
@@ -69,7 +82,7 @@ class HtmlFormatter extends AbstractFormatter
 
     private function renderWithLayout($content)
     {
-        extract(array('content' => $content));
+        extract(array('api_name' => $this->apiName, 'content' => $content));
 
         ob_start();
         include __DIR__ . '/../Resources/views/formatter_layout.html.php';

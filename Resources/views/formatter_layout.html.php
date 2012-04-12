@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <!-- Always force latest IE rendering engine (even in intranet) and Chrome Frame -->
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
-    <title>API documentation</title>
+    <title><?php echo $api_name; ?></title>
     <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css" />
     <style type="text/css">
       <?php echo file_get_contents(__DIR__ . '/../public/css/screen.css'); ?>
@@ -13,7 +13,7 @@
   </head>
   <body>
     <div id="header">
-      <h1>API documentation</h1>
+      <h1><?php echo $api_name; ?></h1>
     </div>
     <div class="container" id="resources_container">
       <ul id="resources">

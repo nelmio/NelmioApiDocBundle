@@ -23,7 +23,11 @@
         <service id="nelmio_api_doc.formatter.simple_formatter" class="%nelmio_api_doc.formatter.simple_formatter.class%"
             parent="nelmio_api_doc.formatter.abstract_formatter" />
         <service id="nelmio_api_doc.formatter.html_formatter" class="%nelmio_api_doc.formatter.html_formatter.class%"
-            parent="nelmio_api_doc.formatter.abstract_formatter" />
+            parent="nelmio_api_doc.formatter.abstract_formatter">
+            <call method="setApiName">
+                <argument>%nelmio_api_doc.api_name%</argument>
+            </call>
+        </service>
     </services>
 
 </container>

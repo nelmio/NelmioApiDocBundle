@@ -126,6 +126,15 @@ A use case could be to generate a static version of your documentation:
     php app/console api:doc:dump --format=html > api.html
 
 
+## Configuration ##
+
+You can specify your own API name:
+
+    # app/config/config.yml
+    nelmio_api_doc:
+        name:   My API
+
+
 ## Credits ##
 
 The design is heavily inspired by the [swagger-ui](https://github.com/wordnik/swagger-ui) project.
