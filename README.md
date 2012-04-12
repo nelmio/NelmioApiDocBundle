@@ -1,6 +1,9 @@
 NelmioApiDocBundle
 ==================
 
+The **NelmioApiDocBundle** bundle allows you to generate a decent documentation for your APIs.
+
+
 ## Installation ##
 
 Register the namespace in `app/autoload.php`:
@@ -37,7 +40,10 @@ Enable the bundle's configuration in `app/config/config.yml`:
 
 ## Usage ##
 
-### ApiDoc() annotation ###
+The main problem with documentation is to keep it up to date. That's why the **NelmioApiDocBundle**
+uses introspection a lot. Thanks to an annotation, it's really easy to document an API method.
+
+### The ApiDoc() annotation ###
 
 The bundle provides an `ApiDoc()` annotation for your controllers:
 
@@ -84,15 +90,18 @@ The following parameters are recognized:
 
 * `formType`: the Form Type associated to the method, useful for POST|PUT methods.
 
-Each _filter_ has to define a `name` parameter, but other parameters are free.
+Each _filter_ has to define a `name` parameter, but other parameters are free. Filters are often optional
+parameters, and you can document them as you want, but keep in mind to be consistent for the whole documentation.
 
 If you set a `formType`, then the bundle automatically extracts parameters based on the given type,
 and determines for each parameter its data type, and if it's required or not.
 
+The bundle will also get information from the routing definition (`requirements`, `pattern`, etc).
+
 
 ### Documentation on-the-fly ###
 
-By adding `_doc=1` to an URL, you will get the corresponding documentation if available.
+By calling an URL with the parameter `_doc=1`, you will get the corresponding documentation if available.
 
 
 ### Web Interface ###
@@ -100,6 +109,8 @@ By adding `_doc=1` to an URL, you will get the corresponding documentation if av
 You can browse the whole documentation at: `http://yourproject/api/doc`.
 
 ![](https://github.com/nelmio/NelmioApiDocBundle/raw/master/Resources/doc/webview.png)
+
+![](https://github.com/nelmio/NelmioApiDocBundle/raw/master/Resources/doc/webview2.png)
 
 
 ### Command ###
