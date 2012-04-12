@@ -99,14 +99,14 @@ By adding `_doc=1` to an URL, you will get the corresponding documentation if av
 
 You can browse the whole documentation at: `http://yourproject/api/doc`.
 
-![](https://github.com/nelmio/NelmioApiDocBundle/tree/master/Resources/doc/webview.png)
+![](https://github.com/nelmio/NelmioApiDocBundle/raw/master/Resources/doc/webview.png)
 
 
 ### Command ###
 
 A command is provided in order to dump the documentation in `json`, `markdown, or `html`.
 
-    api:doc:dump [--format="..."]
+    php app/console api:doc:dump [--format="..."]
 
 The `--format` option allows to choose the format (default is: `markdown`).
 
