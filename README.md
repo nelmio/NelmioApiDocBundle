@@ -115,7 +115,7 @@ You can browse the whole documentation at: `http://yourproject/api/doc`.
 
 ### Command ###
 
-A command is provided in order to dump the documentation in `json`, `markdown, or `html`.
+A command is provided in order to dump the documentation in `json`, `markdown`, or `html`.
 
     php app/console api:doc:dump [--format="..."]
 
