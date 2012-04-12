@@ -74,7 +74,7 @@ abstract class AbstractFormatter implements FormatterInterface
      * @param Route $route
      * @return array
      */
-    private function getData(ApiDoc $apiDoc, Route $route)
+    protected function getData(ApiDoc $apiDoc, Route $route)
     {
         $method = $route->getRequirement('_method');
         $data   = array(

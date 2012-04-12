@@ -12,7 +12,10 @@ class HtmlFormatter extends AbstractFormatter
      */
     public function formatOne(ApiDoc $apiDoc, Route $route)
     {
-        extract(array('content' => parent::formatOne($apiDoc, $route)));
+        $data = $this->getData($apiDoc, $route);
+        $data['display_content'] = true;
+
+        extract(array('content' => $this->renderOne($data)));
 
         ob_start();
         include __DIR__ . '/../Resources/views/formatter_resource_section.html.php';
