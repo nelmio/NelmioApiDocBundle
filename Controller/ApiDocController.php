@@ -9,8 +9,8 @@ class ApiDocController extends Controller
 {
     public function indexAction()
     {
-        $extractedDoc = $this->get('nelmio.api.extractor.api_doc_extractor')->all();
-        $htmlContent  = $this->get('nelmio.api.formatter.html_formatter')->format($extractedDoc);
+        $extractedDoc = $this->get('nelmio_api_doc.extractor.api_doc_extractor')->all();
+        $htmlContent  = $this->get('nelmio_api_doc.formatter.html_formatter')->format($extractedDoc);
 
         return new Response($htmlContent);
     }

@@ -33,16 +33,16 @@ class DumpCommand extends ContainerAwareCommand
         $routeCollection = $this->getContainer()->get('router')->getRouteCollection();
 
         if (!$input->hasOption('format') || in_array($format, array('json'))) {
-            $formatter = $this->getContainer()->get('nelmio.api.formatter.simple_formatter');
+            $formatter = $this->getContainer()->get('nelmio_api_doc.formatter.simple_formatter');
         } else {
             if (!in_array($format, $this->availableFormats)) {
                 throw new \RuntimeException(sprintf('Format "%s" not supported.', $format));
             }
 
-            $formatter = $this->getContainer()->get(sprintf('nelmio.api.formatter.%s_formatter', $format));
+            $formatter = $this->getContainer()->get(sprintf('nelmio_api_doc.formatter.%s_formatter', $format));
         }
 
-        $extractedDoc = $this->getContainer()->get('nelmio.api.extractor.api_doc_extractor')->all();
+        $extractedDoc = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor')->all();
         $formattedDoc = $formatter->format($extractedDoc);
 
         if ('json' === $format) {
