@@ -11,8 +11,14 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class RequestListener
 {
+    /**
+     * @var \Nelmio\ApiBundle\Extractor\ApiDocExtractor
+     */
     protected $extractor;
 
+    /**
+     * @var \Nelmio\ApiBundle\Formatter\FormatterInterface
+     */
     protected $formatter;
 
     public function __construct(ApiDocExtractor $extractor, FormatterInterface $formatter)

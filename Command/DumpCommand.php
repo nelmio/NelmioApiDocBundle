@@ -12,7 +12,7 @@ class DumpCommand extends ContainerAwareCommand
     /**
      * @var array
      */
-    protected $availableFormats = array('markdown', 'json');
+    protected $availableFormats = array('markdown', 'json', 'html');
 
     protected function configure()
     {
@@ -35,16 +35,20 @@ class DumpCommand extends ContainerAwareCommand
         if (!$input->hasOption('format') || in_array($format, array('json'))) {
             $formatter = $this->getContainer()->get('nelmio.api.formatter.simple_formatter');
         } else {
+            if (!in_array($format, $this->availableFormats)) {
+                throw new \RuntimeException(sprintf('Format "%s" not supported.', $format));
+            }
+
             $formatter = $this->getContainer()->get(sprintf('nelmio.api.formatter.%s_formatter', $format));
         }
 
         $extractedDoc = $this->getContainer()->get('nelmio.api.extractor.api_doc_extractor')->all();
-        $result = $formatter->format($extractedDoc);
+        $formattedDoc = $formatter->format($extractedDoc);
 
         if ('json' === $format) {
-            $output->writeln(json_encode($result));
+            $output->writeln(json_encode($formattedDoc));
         } else {
-            $output->writeln($result);
+            $output->writeln($formattedDoc);
         }
     }
 }

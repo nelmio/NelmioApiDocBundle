@@ -8,8 +8,14 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class FormTypeParser
 {
+    /**
+     * @var \Symfony\Component\Form\FormFactoryInterface
+     */
     protected $formFactory;
 
+    /**
+     * @var array
+     */
     protected $mapTypes = array(
         'text'      => 'string',
         'date'      => 'date',
@@ -26,6 +32,14 @@ class FormTypeParser
         $this->formFactory = $formFactory;
     }
 
+    /**
+     * Returns an array of data where each data is an array with the following keys:
+     *  - dataType
+     *  - required
+     *
+     * @param AbstractType $type
+     * @return array
+     */
     public function parse(AbstractType $type)
     {
         $builder = $this->formFactory->createBuilder($type);

@@ -51,21 +51,33 @@ class ApiDoc
         $this->isResource = isset($data['resource']);
     }
 
+    /**
+     * @return array|null
+     */
     public function getFilters()
     {
         return $this->filters;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFormType()
     {
         return $this->formType;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription()
     {
         return $this->description;
     }
 
+    /**
+     * @return Boolean
+     */
     public function isResource()
     {
         return $this->isResource;

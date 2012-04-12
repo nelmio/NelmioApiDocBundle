@@ -10,7 +10,7 @@ class ApiDocExtractor
     const ANNOTATION_CLASS = 'Nelmio\\ApiBundle\\Annotation\\ApiDoc';
 
     /**
-     * @var
+     * @var \ymfony\Component\Routing\RouterInterface
      */
     private $router;
 
@@ -25,6 +25,14 @@ class ApiDocExtractor
         $this->reader = $reader;
     }
 
+    /**
+     * Returns an array of data where each data is an array with the following keys:
+     *  - annotation
+     *  - route
+     *  - resource
+     *
+     * @return array
+     */
     public function all()
     {
         $array = array();
@@ -76,6 +84,15 @@ class ApiDocExtractor
         return $array;
     }
 
+    /**
+     * Returns an array containing two values with the following keys:
+     *  - annotation
+     *  - route
+     *
+     * @param string $controller
+     * @param Route $route
+     * @return array|null
+     */
     public function get($controller, $route)
     {
         preg_match('#(.+)::([\w]+)#', $controller, $matches);
