@@ -14,7 +14,7 @@
         {% endif %}
     </ul>
     </div>
-    <div class="content" style="display: none;">
+    <div class="content" style="display: {% if displayContent  is defined and displayContent == true %}display{% else %}none{% endif %};">
     {% if data.requirements is defined  and data.requirements is not empty %}
         <h4>Requirements</h4>
         <table class="fullwidth">
