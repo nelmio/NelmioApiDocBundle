@@ -61,7 +61,7 @@ class ApiDoc
     }
 
     /**
-     * @return array|null
+     * @return array
      */
     public function getFilters()
     {
