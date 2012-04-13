@@ -1,0 +1,86 @@
+<li class="{{ data.method|lower }} operation">
+    <div class="heading toggler">
+    <h3>
+        <span class="http_method">
+            <a>{{ data.method|upper }}</a>
+        </span>
+        <span class="path">
+            {{ data.uri }}
+        </span>
+    </h3>
+    <ul class="options">
+        {% if data.description is defined %}
+            <li>{{ data.description }}</li>
+        {% endif %}
+    </ul>
+    </div>
+    <div class="content" style="display: none;">
+    {% if data.requirements is defined %}
+        <h4>Requirements</h4>
+        <table class="fullwidth">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in data.requirements %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if data.filters is defined %}
+        <h4>Filters</h4>
+        <table class="fullwidth">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Information</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for name, infos in data.filters %}
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>
+                        <ul>
+                        {% for key, value in infos %}
+                            <li><em>{{ key }}</em> : {{ value }}</li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if data.parameters is defined %}
+        <h4>Parameters</h4>
+        <table class='fullwidth'>
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Required?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for name, infos in data.parameters %}
+                    <tr>
+                        <td>{{ name }}</td>
+                        <td>{{ infos.dataType }}</td>
+                        <td>{{ infos.required ? 'true' : 'false' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    </div>
+</li>

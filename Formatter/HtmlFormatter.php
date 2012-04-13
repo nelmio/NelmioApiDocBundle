@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Formatter;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Templating\EngineInterface;
 
 class HtmlFormatter extends AbstractFormatter
 {
@@ -20,6 +21,11 @@ class HtmlFormatter extends AbstractFormatter
      * @var string
      */
     private $apiName;
+
+    /**
+     * @var \Symfony\Component\Templating\EngineInterface
+     */
+    private $engine;
 
     /**
      * @param string $apiName
@@ -30,19 +36,11 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
-     * {@inheritdoc}
+     * @param EngineInterface $engine
      */
-    public function formatOne(ApiDoc $apiDoc, Route $route)
+    public function setTemplatingEngine(EngineInterface $engine)
     {
-        $data = $this->getData($apiDoc, $route);
-        $data['display_content'] = true;
-
-        extract(array('content' => $this->renderOne($data)));
-
-        ob_start();
-        include __DIR__ . '/../Resources/views/formatter_resource_section.html.php';
-
-        return $this->renderWithLayout(ob_get_clean());
+        $this->engine = $engine;
     }
 
     /**
@@ -50,30 +48,10 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function renderOne(array $data)
     {
-        extract($data);
-
-        ob_start();
-        include __DIR__ . '/../Resources/views/formatter.html.php';
-
-        return ob_get_clean();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function renderResourceSection($resource, array $arrayOfData)
-    {
-        $content = '';
-        foreach ($arrayOfData as $data) {
-            $content .= $this->renderOne($data);
-        }
-
-        extract(array('content' => $content));
-
-        ob_start();
-        include __DIR__ . '/../Resources/views/formatter_resource_section.html.php';
-
-        return ob_get_clean();
+        return $this->engine->render('NelmioApiDocBundle::resource.html.twig', array_merge(
+            array('data' => $data, 'displayContent' => true),
+            $this->getGlobalVars()
+        ));
     }
 
     /**
@@ -81,21 +59,21 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function render(array $collection)
     {
-        $content = '';
-        foreach ($collection as $resource => $arrayOfData) {
-            $content .= $this->renderResourceSection($resource, $arrayOfData);
-        }
-
-        return $this->renderWithLayout($content);
+        return $this->engine->render('NelmioApiDocBundle::resources.html.twig', array_merge(
+            array('resources' => $collection),
+            $this->getGlobalVars()
+        ));
     }
 
-    private function renderWithLayout($content)
+    /**
+     * @return array
+     */
+    private function getGlobalVars()
     {
-        extract(array('api_name' => $this->apiName, 'content' => $content));
-
-        ob_start();
-        include __DIR__ . '/../Resources/views/formatter_layout.html.php';
-
-        return ob_get_clean();
+        return array(
+            'apiName'   => $this->apiName,
+            'date'      => date(DATE_RFC822),
+            'css'       => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
+        );
     }
 }

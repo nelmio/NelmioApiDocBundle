@@ -1,0 +1,20 @@
+{% extends "NelmioApiDocBundle::layout.html.twig" %}
+
+{% block content %}
+    {% for resource, methods in resources %}
+        <li class="resource">
+            <div class="heading">
+                <h2>{{ resource }}</h2>
+            </div>
+            <ul class="endpoints">
+                <li class="endpoint">
+                    <ul class="operations">
+                        {% for data in methods %}
+                            {% include 'NelmioApiDocBundle::method.html.twig' %}
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    {% endfor %}
+{% endblock content %}

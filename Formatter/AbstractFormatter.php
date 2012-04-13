@@ -62,15 +62,6 @@ abstract class AbstractFormatter implements FormatterInterface
     protected abstract function renderOne(array $data);
 
     /**
-     * Format a set of data for a given resource.
-     *
-     * @param string $resource      A resource name.
-     * @param array $arrayOfData    A set of data.
-     * @return string|array
-     */
-    protected abstract function renderResourceSection($resource, array $arrayOfData);
-
-    /**
      * Format a set of resource sections.
      *
      * @param array $collection

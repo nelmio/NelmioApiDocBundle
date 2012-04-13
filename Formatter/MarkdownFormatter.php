@@ -67,26 +67,23 @@ class MarkdownFormatter extends AbstractFormatter
     /**
      * {@inheritdoc}
      */
-    protected function renderResourceSection($resource, array $arrayOfData)
+    protected function render(array $collection)
     {
-        $markdown = sprintf("# %s #\n\n", $resource);
-
-        foreach ($arrayOfData as $data) {
-            $markdown .= $this->renderOne($data);
+        $markdown = '';
+        foreach ($collection as $resource => $arrayOfData) {
+            $markdown .= $this->renderResourceSection($resource, $arrayOfData);
             $markdown .= "\n";
         }
 
         return $markdown;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function render(array $collection)
+    private function renderResourceSection($resource, array $arrayOfData)
     {
-        $markdown = '';
-        foreach ($collection as $resource => $arrayOfData) {
-            $markdown .= $this->renderResourceSection($resource, $arrayOfData);
+        $markdown = sprintf("# %s #\n\n", $resource);
+
+        foreach ($arrayOfData as $data) {
+            $markdown .= $this->renderOne($data);
             $markdown .= "\n";
         }
 
