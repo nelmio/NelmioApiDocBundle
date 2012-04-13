@@ -80,9 +80,9 @@ class YourController extends Controller
 }
 ```
 
-The following parameters are recognized:
+The following properties are available:
 
-* `resource`: whether the method describes a resource or not (default: `false`);
+* `resource`: whether the method describes a main resource or not (default: `false`);
 
 * `description`: a description of the API method;
 
@@ -96,17 +96,18 @@ parameters, and you can document them as you want, but keep in mind to be consis
 If you set a `formType`, then the bundle automatically extracts parameters based on the given type,
 and determines for each parameter its data type, and if it's required or not.
 
-The bundle will also get information from the routing definition (`requirements`, `pattern`, etc).
+The bundle will also get information from the routing definition (`requirements`, `pattern`, etc), so to get the
+best out of it you should define strict _method requirements etc.
 
 
 ### Documentation on-the-fly ###
 
-By calling an URL with the parameter `_doc=1`, you will get the corresponding documentation if available.
+By calling an URL with the parameter `?_doc=1`, you will get the corresponding documentation if available.
 
 
 ### Web Interface ###
 
-You can browse the whole documentation at: `http://yourproject/api/doc`.
+You can browse the whole documentation at: `http://example.org/api/doc`.
 
 ![](https://github.com/nelmio/NelmioApiDocBundle/raw/master/Resources/doc/webview.png)
 
@@ -121,7 +122,7 @@ A command is provided in order to dump the documentation in `json`, `markdown`, 
 
 The `--format` option allows to choose the format (default is: `markdown`).
 
-A use case could be to generate a static version of your documentation:
+For example to generate a static version of your documentation you can use use:
 
     php app/console api:doc:dump --format=html > api.html
 
