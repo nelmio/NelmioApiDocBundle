@@ -69,10 +69,19 @@ class ApiDocExtractor
             }
         }
 
-        usort($array, function($a, $b) {
+        $methodOrder = array('GET', 'POST', 'PUT', 'DELETE');
+
+        usort($array, function($a, $b) use ($methodOrder) {
             if ($a['resource'] === $b['resource']) {
                 if ($a['route']->getPattern() === $b['route']->getPattern()) {
-                    return strcmp($a['route']->getRequirement('_method'), $b['route']->getRequirement('_method'));
+                    $methodA = array_search($a['route']->getRequirement('_method'), $methodOrder);
+                    $methodB = array_search($b['route']->getRequirement('_method'), $methodOrder);
+
+                    if ($methodA === $methodB) {
+                        return strcmp($a['route']->getRequirement('_method'), $b['route']->getRequirement('_method'));
+                    }
+
+                    return $methodA > $methodB ? 1 : -1;
                 }
 
                 return strcmp($a['route']->getPattern(), $b['route']->getPattern());
