@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 
-class NelmioApiExtension extends Extension
+class NelmioApiDocExtension extends Extension
 {
     /**
      * {@inheritdoc}

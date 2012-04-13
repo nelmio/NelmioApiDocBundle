@@ -1,6 +1,6 @@
 <?php
 
-namespace Nelmio\ApiBundle\DependencyInjection;
+namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
