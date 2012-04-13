@@ -1,6 +1,8 @@
 NelmioApiDocBundle
 ==================
 
+[![Build Status](https://secure.travis-ci.org/nelmio/NelmioApiDocBundle.png?branch=master)](http://travis-ci.org/nelmio/NelmioApiDocBundle)
+
 The **NelmioApiDocBundle** bundle allows you to generate a decent documentation for your APIs.
 
 
