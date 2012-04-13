@@ -56,7 +56,12 @@ class MarkdownFormatter extends AbstractFormatter
             foreach ($data['parameters'] as $name => $parameter) {
                 $markdown .= sprintf("%s:\n\n", $name);
                 $markdown .= sprintf("  * type: %s\n", $parameter['dataType']);
-                $markdown .= sprintf("  * is_required: %s\n", $parameter['required'] ? 'true' : 'false');
+                $markdown .= sprintf("  * required: %s\n", $parameter['required'] ? 'true' : 'false');
+
+                if (isset($parameter['description']) && !empty($parameter['description'])) {
+                    $markdown .= sprintf("  * description: %s\n", $parameter['description']);
+                }
+
                 $markdown .= "\n";
             }
         }

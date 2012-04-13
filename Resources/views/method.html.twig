@@ -69,6 +69,7 @@
                     <th>Parameter</th>
                     <th>Type</th>
                     <th>Required?</th>
+                    <th>Description</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,6 +78,7 @@
                         <td>{{ name }}</td>
                         <td>{{ infos.dataType }}</td>
                         <td>{{ infos.required ? 'true' : 'false' }}</td>
+                        <td>{{ infos.description }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

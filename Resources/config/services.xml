@@ -5,12 +5,16 @@
 
     <parameters>
         <parameter key="nelmio_api_doc.extractor.api_doc_extractor.class">Nelmio\ApiDocBundle\Extractor\ApiDocExtractor</parameter>
+        <parameter key="nelmio_api_doc.form.extension.description_field_type_extension.class">Nelmio\ApiDocBundle\Form\Extension\DescriptionFieldTypeExtension</parameter>
     </parameters>
 
     <services>
         <service id="nelmio_api_doc.extractor.api_doc_extractor" class="%nelmio_api_doc.extractor.api_doc_extractor.class%">
             <argument type="service" id="router" />
             <argument type="service" id="annotation_reader" />
+        </service>
+        <service id="nelmio_api_doc.form.extension.description_field_type_extension" class="%nelmio_api_doc.form.extension.description_field_type_extension.class%">
+            <tag name="form.type_extension" alias="field" />
         </service>
     </services>
 

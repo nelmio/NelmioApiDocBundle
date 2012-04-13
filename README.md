@@ -96,6 +96,27 @@ parameters, and you can document them as you want, but keep in mind to be consis
 If you set a `formType`, then the bundle automatically extracts parameters based on the given type,
 and determines for each parameter its data type, and if it's required or not.
 
+You can add an extra option named `description` on each field:
+
+``` php
+<?php
+
+class YourType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilder $builder, array $options)
+    {
+        $builder->add('note', null, array(
+            'description' => 'this is a note',
+        ));
+
+        // ...
+    }
+}
+```
+
 The bundle will also get information from the routing definition (`requirements`, `pattern`, etc), so to get the
 best out of it you should define strict _method requirements etc.
 

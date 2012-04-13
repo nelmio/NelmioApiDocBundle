@@ -45,6 +45,7 @@ class FormTypeParser
      * Returns an array of data where each data is an array with the following keys:
      *  - dataType
      *  - required
+     *  - description
      *
      * @param AbstractType $type
      * @return array
@@ -65,8 +66,9 @@ class FormTypeParser
             }
 
             $parameters[$name] = array(
-                'dataType'  => $bestType,
-                'required'  => $b->getRequired()
+                'dataType'      => $bestType,
+                'required'      => $b->getRequired(),
+                'description'   => $b->getAttribute('description'),
             );
         }
 
