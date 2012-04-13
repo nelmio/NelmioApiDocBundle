@@ -1135,3 +1135,7 @@ body ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operatio
 .toggler {
   cursor: pointer;
 }
+
+#header a {
+  text-decoration: none;
+}
