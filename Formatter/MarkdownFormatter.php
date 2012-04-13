@@ -43,7 +43,7 @@ class MarkdownFormatter extends AbstractFormatter
                 $markdown .= sprintf("%s:\n\n", $name);
 
                 foreach ($filter as $key => $value) {
-                    $markdown .= sprintf("  * %s: %s\n", $key, $value);
+                    $markdown .= sprintf("  * %s: %s\n", $key, trim(json_encode($value), '"'));
                 }
 
                 $markdown .= "\n";

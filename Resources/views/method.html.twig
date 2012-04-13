@@ -51,7 +51,7 @@
                     <td>
                         <ul>
                         {% for key, value in infos %}
-                            <li><em>{{ key }}</em> : {{ value }}</li>
+                            <li><em>{{ key }}</em> : {{ value|json_encode|trim('"') }}</li>
                         {% endfor %}
                         </ul>
                     </td>
