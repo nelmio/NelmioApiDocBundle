@@ -10,6 +10,10 @@ test_route_2:
     requirements:
         _method: POST
 
+test_route_3:
+    pattern:  /another
+    defaults: { _controller: NelmioApiDocTestBundle:Test:another }
+
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /

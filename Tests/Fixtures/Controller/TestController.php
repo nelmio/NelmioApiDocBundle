@@ -38,4 +38,8 @@ class TestController
     public function postTestAction()
     {
     }
+
+    public function anotherAction()
+    {
+    }
 }
