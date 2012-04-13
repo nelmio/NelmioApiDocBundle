@@ -52,6 +52,8 @@ The bundle provides an `ApiDoc()` annotation for your controllers:
 
 namespace Your\Namespace;
 
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
 class YourController extends Controller
 {
     /**
