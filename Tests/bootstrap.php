@@ -12,6 +12,22 @@ if ((!$loader = includeIfExists(__DIR__.'/../../../../../.composer/autoload.php'
         'php composer.phar install'.PHP_EOL);
 }
 
-Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+spl_autoload_register(function($class) {
+    if (0 === strpos($class, 'Nelmio\ApiDocBundle\\')) {
+        $path = __DIR__.'/../'.implode('/', array_slice(explode('\\', $class), 2)).'.php';
+        if (!stream_resolve_include_path($path)) {
+            return false;
+        }
+        require_once $path;
+        return true;
+    }
+});
 
-return $loader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+AnnotationRegistry::registerLoader(function($class) {
+    if (strpos($class, 'Nelmio\ApiDocBundle\Annotation\\') === 0) {
+        $path = __DIR__.'/../'.str_replace('\\', '/', substr($class, strlen('Nelmio\ApiDocBundle\\')))   .'.php';
+        require_once $path;
+    }
+    return class_exists($class, false);
+});
