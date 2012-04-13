@@ -13,10 +13,17 @@ namespace Nelmio\ApiDocBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class ApiDocExtractor
 {
     const ANNOTATION_CLASS = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
+
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    private $container;
 
     /**
      * @var \ymfony\Component\Routing\RouterInterface
@@ -28,8 +35,9 @@ class ApiDocExtractor
      */
     private $reader;
 
-    public function __construct(RouterInterface $router, Reader $reader)
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader)
     {
+        $this->container = $container;
         $this->router = $router;
         $this->reader = $reader;
     }
@@ -46,16 +54,31 @@ class ApiDocExtractor
     {
         $array = array();
         $resources = array();
+
         foreach ($this->router->getRouteCollection()->all() as $route) {
-            preg_match('#(.+)::([\w]+)#', $route->getDefault('_controller'), $matches);
-            $method = new \ReflectionMethod($matches[1], $matches[2]);
-
-            if ($annot = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
-                if ($annot->isResource()) {
-                    $resources[] = $route->getPattern();
+            $method = false;
+            if (preg_match('#(.+)::([\w]+)#', $route->getDefault('_controller'), $matches)) {
+                $method = new \ReflectionMethod($matches[1], $matches[2]);
+            } elseif (preg_match('#(.+):([\w]+)#', $route->getDefault('_controller'), $matches)) {
+                $controller = $matches[1];
+                if ($this->container->has($controller)) {
+                    $this->container->enterScope('request');
+                    $this->container->set('request', new Request);
+                    $class = get_class($this->container->get($controller));
+                    $this->container->leaveScope('request');
+                    $method = new \ReflectionMethod($class, $matches[2]);
                 }
+            }
 
-                $array[] = array('annotation' => $annot, 'route' => $route);
+            if ($method) {
+                $annot = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS);
+                if ($annot) {
+                    if ($annot->isResource()) {
+                        $resources[] = $route->getPattern();
+                    }
+
+                    $array[] = array('annotation' => $annot, 'route' => $route);
+                }
             }
         }
 
