@@ -15,7 +15,7 @@
     </ul>
     </div>
     <div class="content" style="display: none;">
-    {% if data.requirements is defined %}
+    {% if data.requirements is defined  and data.requirements is not empty %}
         <h4>Requirements</h4>
         <table class="fullwidth">
             <thead>
@@ -35,7 +35,7 @@
         </table>
     {% endif %}
 
-    {% if data.filters is defined %}
+    {% if data.filters is defined and data.filters is not empty %}
         <h4>Filters</h4>
         <table class="fullwidth">
             <thead>
@@ -61,7 +61,7 @@
         </table>
     {% endif %}
 
-    {% if data.parameters is defined %}
+    {% if data.parameters is defined and data.parameters is not empty %}
         <h4>Parameters</h4>
         <table class='fullwidth'>
             <thead>
