@@ -47,12 +47,12 @@ class RequestListener
 
         $request = $event->getRequest();
 
-        if (!$request->get('_doc')) {
+        if (!$request->query->get('_doc')) {
             return;
         }
 
-        $controller = $request->get('_controller');
-        $route      = $request->get('_route');
+        $controller = $request->attributes->get('_controller');
+        $route      = $request->attributes->get('_route');
 
         if (null !== $array = $this->extractor->get($controller, $route)) {
             $result = $this->formatter->formatOne($array['annotation'], $array['route']);
