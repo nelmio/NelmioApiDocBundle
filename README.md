@@ -30,7 +30,7 @@ Import the routing definition in `routing.yml`:
     # app/config/routing.yml
     NelmioApiDocBundle:
         resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-        prefix:   /
+        prefix:   /api/doc
 
 Enable the bundle's configuration in `app/config/config.yml`:
 
