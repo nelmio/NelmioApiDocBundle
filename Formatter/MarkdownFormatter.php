@@ -80,7 +80,7 @@ class MarkdownFormatter extends AbstractFormatter
             $markdown .= "\n";
         }
 
-        return $markdown;
+        return trim($markdown);
     }
 
     private function renderResourceSection($resource, array $arrayOfData)
