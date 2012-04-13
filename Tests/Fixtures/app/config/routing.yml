@@ -1,0 +1,15 @@
+test_route_1:
+    pattern:  /tests
+    defaults: { _controller: NelmioApiDocTestBundle:Test:index, _format: json }
+    requirements:
+        _method: GET
+
+test_route_2:
+    pattern:  /tests
+    defaults: { _controller: NelmioApiDocTestBundle:Test:postTest, _format: json }
+    requirements:
+        _method: POST
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /
