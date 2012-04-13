@@ -49,10 +49,12 @@ class SimpleFormatterTest extends WebTestCase
                         'a' => array(
                             'dataType' => 'string',
                             'required' => true,
+                            'description' => 'A nice description',
                         ),
                         'b' => array(
                             'dataType' => 'string',
                             'required' => true,
+                            'description' => '',
                         ),
                     ),
                     'description' => 'create test',

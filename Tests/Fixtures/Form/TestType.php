@@ -21,7 +21,7 @@ class TestType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->add('a');
+        $builder->add('a', null, array('description' => 'A nice description'));
         $builder->add('b');
     }
 
