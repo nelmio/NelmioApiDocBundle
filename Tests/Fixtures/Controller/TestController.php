@@ -42,4 +42,11 @@ class TestController
     public function anotherAction()
     {
     }
+
+    /**
+     * @ApiDoc(description="Action without HTTP verb")
+     */
+    public function anyAction()
+    {
+    }
 }
