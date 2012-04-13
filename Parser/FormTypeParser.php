@@ -56,10 +56,10 @@ class FormTypeParser
 
         $parameters = array();
         foreach ($builder->all() as $name => $child) {
-            $b = $builder->create($name, $child['type'], $child['options']);
+            $childBuilder = $builder->create($name, $child['type'] ?: 'text', $child['options']);
 
             $bestType = '';
-            foreach ($b->getTypes() as $type) {
+            foreach ($childBuilder->getTypes() as $type) {
                 if (isset($this->mapTypes[$type->getName()])) {
                     $bestType = $this->mapTypes[$type->getName()];
                 }
@@ -67,8 +67,8 @@ class FormTypeParser
 
             $parameters[$name] = array(
                 'dataType'      => $bestType,
-                'required'      => $b->getRequired(),
-                'description'   => $b->getAttribute('description'),
+                'required'      => $childBuilder->getRequired(),
+                'description'   => $childBuilder->getAttribute('description'),
             );
         }
 
