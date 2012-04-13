@@ -113,7 +113,10 @@ class ApiDocExtractor
      */
     public function get($controller, $route)
     {
-        preg_match('#(.+)::([\w]+)#', $controller, $matches);
+        if (!preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
+            return;
+        }
+
         $method = new \ReflectionMethod($matches[1], $matches[2]);
 
         if ($annot = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
@@ -121,7 +124,5 @@ class ApiDocExtractor
                 return array('annotation' => $annot, 'route' => $route);
             }
         }
-
-        return null;
     }
 }
