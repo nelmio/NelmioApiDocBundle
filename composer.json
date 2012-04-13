@@ -15,7 +15,11 @@
         }
     ],
     "require": {
-        "symfony/framework-bundle": "2.1.*"
+        "symfony/framework-bundle": "2.1.*",
+        "symfony/twig-bundle": "2.1.*",
+        "symfony/form": "2.1.*",
+        "symfony/validator": "2.1.*",
+        "symfony/yaml": "2.1.*"
     },
     "autoload": {
         "psr-0": { "Nelmio\\ApiDocBundle": "" }
