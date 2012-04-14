@@ -42,6 +42,40 @@ b:
   * arbitrary: ["arg1","arg2"]
 
 
+### `GET` /tests ###
+
+_index action_
+
+#### Filters ####
+
+a:
+
+  * dataType: integer
+
+b:
+
+  * dataType: string
+  * arbitrary: ["arg1","arg2"]
+
+
+### `POST` /tests ###
+
+_create test_
+
+#### Parameters ####
+
+a:
+
+  * type: string
+  * required: true
+  * description: A nice description
+
+b:
+
+  * type: string
+  * required: true
+
+
 ### `POST` /tests ###
 
 _create test_
@@ -62,6 +96,11 @@ b:
 
 
 # others #
+
+### `ANY` /any ###
+
+_Action without HTTP verb_
+
 
 ### `ANY` /any ###
 
