@@ -22,7 +22,7 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->all();
 
         $this->assertTrue(is_array($data));
-        $this->assertCount(3, $data);
+        $this->assertCount(6, $data);
 
         foreach ($data as $d) {
             $this->assertTrue(is_array($d));
@@ -41,7 +41,19 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertTrue(is_array($a1->getFilters()));
         $this->assertNull($a1->getFormType());
 
-        $a2 = $data[1]['annotation'];
+        $a1 = $data[1]['annotation'];
+        $this->assertTrue($a1->isResource());
+        $this->assertEquals('index action', $a1->getDescription());
+        $this->assertTrue(is_array($a1->getFilters()));
+        $this->assertNull($a1->getFormType());
+
+        $a2 = $data[2]['annotation'];
+        $this->assertFalse($a2->isResource());
+        $this->assertEquals('create test', $a2->getDescription());
+        $this->assertTrue(is_array($a2->getFilters()));
+        $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getFormType());
+
+        $a2 = $data[3]['annotation'];
         $this->assertFalse($a2->isResource());
         $this->assertEquals('create test', $a2->getDescription());
         $this->assertTrue(is_array($a2->getFilters()));
@@ -62,6 +74,10 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertEquals('index action', $a->getDescription());
         $this->assertTrue(is_array($a->getFilters()));
         $this->assertNull($a->getFormType());
+
+        $data2 = $extractor->get('nemlio.test.controller:indexAction', 'test_service_route_1');
+        $data2['route']->setDefault('_controller', $data['route']->getDefault('_controller'));
+        $this->assertEquals($data, $data2);
     }
 
     public function testGetWithBadController()
@@ -69,6 +85,10 @@ class ApiDocExtractorTest extends WebTestCase
         $container = $this->getContainer();
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
         $data = $extractor->get('Undefined\Controller::indexAction', 'test_route_1');
+
+        $this->assertNull($data);
+
+        $data = $extractor->get('undefined_service:index', 'test_service_route_1');
 
         $this->assertNull($data);
     }
@@ -80,6 +100,10 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'invalid_route');
 
         $this->assertNull($data);
+
+        $data = $extractor->get('nemlio.test.controller:indexAction', 'invalid_route');
+
+        $this->assertNull($data);
     }
 
     public function testGetWithInvalidPattern()
@@ -89,6 +113,10 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController', 'test_route_1');
 
         $this->assertNull($data);
+
+        $data = $extractor->get('nemlio.test.controller', 'test_service_route_1');
+
+        $this->assertNull($data);
     }
 
     public function testGetWithMethodWithoutApiDocAnnotation()
@@ -96,6 +124,10 @@ class ApiDocExtractorTest extends WebTestCase
         $container = $this->getContainer();
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
         $data = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::anotherAction', 'test_route_3');
+
+        $this->assertNull($data);
+
+        $data = $extractor->get('nemlio.test.controller:anotherAction', 'test_service_route_1');
 
         $this->assertNull($data);
     }
