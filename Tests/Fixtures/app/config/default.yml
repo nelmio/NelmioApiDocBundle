@@ -18,3 +18,7 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+
+services:
+    nemlio.test.controller:
+        class: Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestServiceController

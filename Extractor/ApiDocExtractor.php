@@ -56,19 +56,7 @@ class ApiDocExtractor
         $resources = array();
 
         foreach ($this->router->getRouteCollection()->all() as $route) {
-            $method = false;
-            if (preg_match('#(.+)::([\w]+)#', $route->getDefault('_controller'), $matches)) {
-                $method = new \ReflectionMethod($matches[1], $matches[2]);
-            } elseif (preg_match('#(.+):([\w]+)#', $route->getDefault('_controller'), $matches)) {
-                $controller = $matches[1];
-                if ($this->container->has($controller)) {
-                    $this->container->enterScope('request');
-                    $this->container->set('request', new Request);
-                    $class = get_class($this->container->get($controller));
-                    $this->container->leaveScope('request');
-                    $method = new \ReflectionMethod($class, $matches[2]);
-                }
-            }
+            $method = $this->getReflectionMethod($route->getDefault('_controller'));
 
             if ($method) {
                 $annot = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS);
@@ -126,6 +114,38 @@ class ApiDocExtractor
     }
 
     /**
+     * Returns the ReflectionMethod for the given controller string
+     *
+     * @param string $controller
+     * @return ReflectionMethod|null
+     */
+    public function getReflectionMethod($controller)
+    {
+        if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
+            $class = $matches[1];
+            $method = $matches[2];
+        } elseif (preg_match('#(.+):([\w]+)#', $controller, $matches)) {
+            $controller = $matches[1];
+            $method = $matches[2];
+            if ($this->container->has($controller)) {
+                $this->container->enterScope('request');
+                $this->container->set('request', new Request);
+                $class = get_class($this->container->get($controller));
+                $this->container->leaveScope('request');
+            }
+        }
+
+        if (isset($class) && isset($method)) {
+            try {
+                return new \ReflectionMethod($class, $method);
+            } catch (\ReflectionException $e) {
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns an array containing two values with the following keys:
      *  - annotation
      *  - route
@@ -136,13 +156,8 @@ class ApiDocExtractor
      */
     public function get($controller, $route)
     {
-        if (!preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
-            return null;
-        }
-
-        try {
-            $method = new \ReflectionMethod($matches[1], $matches[2]);
-        } catch (\ReflectionException $e) {
+        $method = $this->getReflectionMethod($controller);
+        if (!$method) {
             return null;
         }
 

@@ -24,50 +24,126 @@ class SimpleFormatterTest extends WebTestCase
         $result    = $container->get('nelmio_api_doc.formatter.simple_formatter')->format($data);
 
         $expected = array(
-            'others' => array(
-                array(
-                    'method' => 'ANY',
-                    'uri' => '/any',
-                    'requirements' => array(),
-                    'description' => 'Action without HTTP verb'
-                )
-            ),
-            '/tests' => array(
+            '/tests' =>
+            array(
+                0 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/tests',
-                    'requirements' => array(),
-                    'filters' => array(
-                        'a' => array(
+                    'requirements' =>
+                    array(
+                    ),
+                    'filters' =>
+                    array(
+                        'a' =>
+                        array(
                             'dataType' => 'integer',
                         ),
-                        'b' => array(
+                        'b' =>
+                        array(
                             'dataType' => 'string',
-                            'arbitrary' => array(
-                                'arg1',
-                                'arg2',
+                            'arbitrary' =>
+                            array(
+                                0 => 'arg1',
+                                1 => 'arg2',
                             ),
                         ),
                     ),
                     'description' => 'index action',
                 ),
+                1 =>
+                array(
+                    'method' => 'GET',
+                    'uri' => '/tests',
+                    'requirements' =>
+                    array(
+                    ),
+                    'filters' =>
+                    array(
+                        'a' =>
+                        array(
+                            'dataType' => 'integer',
+                        ),
+                        'b' =>
+                        array(
+                            'dataType' => 'string',
+                            'arbitrary' =>
+                            array(
+                                0 => 'arg1',
+                                1 => 'arg2',
+                            ),
+                        ),
+                    ),
+                    'description' => 'index action',
+                ),
+                2 =>
                 array(
                     'method' => 'POST',
                     'uri' => '/tests',
-                    'requirements' => array(),
-                    'parameters' => array(
-                        'a' => array(
+                    'requirements' =>
+                    array(
+                    ),
+                    'parameters' =>
+                    array(
+                        'a' =>
+                        array(
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
                         ),
-                        'b' => array(
+                        'b' =>
+                        array(
                             'dataType' => 'string',
                             'required' => true,
                             'description' => '',
                         ),
                     ),
                     'description' => 'create test',
+                ),
+                3 =>
+                array(
+                    'method' => 'POST',
+                    'uri' => '/tests',
+                    'requirements' =>
+                    array(
+                    ),
+                    'parameters' =>
+                    array(
+                        'a' =>
+                        array(
+                            'dataType' => 'string',
+                            'required' => true,
+                            'description' => 'A nice description',
+                        ),
+                        'b' =>
+                        array(
+                            'dataType' => 'string',
+                            'required' => true,
+                            'description' => '',
+                        ),
+                    ),
+                    'description' => 'create test',
+                ),
+            ),
+            'others' =>
+            array(
+                0 =>
+                array(
+                    'method' => 'ANY',
+                    'uri' => '/any',
+                    'requirements' =>
+                    array(
+                    ),
+                    'description' => 'Action without HTTP verb',
+                ),
+                1 =>
+                array(
+                    'method' => 'ANY',
+                    'uri' => '/any',
+                    'requirements' =>
+                    array(
+                    ),
+                    'description' => 'Action without HTTP verb',
                 ),
             ),
         );
