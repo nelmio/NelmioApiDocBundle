@@ -145,6 +145,15 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'description' => 'Action without HTTP verb',
                 ),
+                2 =>
+                array(
+                    'method' => 'ANY',
+                    'uri' => '/my-commented',
+                    'requirements' =>
+                    array(
+                    ),
+                    'description' => 'This method is useful to test if the getDocComment works.',
+                ),
             ),
         );
 

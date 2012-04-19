@@ -180,7 +180,7 @@ class ApiDocExtractor
     protected function getData(ApiDoc $annotation, Route $route, \ReflectionMethod $method)
     {
         if (null === $annotation->getDescription()) {
-            $comments = explode('\n', $this->getDocComment($method));
+            $comments = explode("\n", $this->getDocComment($method));
             // just set the first line
             $annotation->setDescription($comments[0]);
         }
@@ -194,11 +194,10 @@ class ApiDocExtractor
 
         // let's clean the doc block
         $comment = str_replace('/**', '', $comment);
-        $comment = str_replace('*/', '', $comment);
         $comment = str_replace('*', '', $comment);
+        $comment = str_replace('*/', '', $comment);
         $comment = str_replace("\r", '', trim($comment));
-        $comment = preg_replace("#\n[ \t]+#i", "\n", trim($comment));
-        $comment = str_replace("\n", "\\n", trim($comment));
+        $comment = preg_replace("#^\n[ \t]+[*]?#i", "\n", trim($comment));
         $comment = preg_replace("#[\t ]+#i", ' ', trim($comment));
         $comment = str_replace("\"", "\\\"", $comment);
 

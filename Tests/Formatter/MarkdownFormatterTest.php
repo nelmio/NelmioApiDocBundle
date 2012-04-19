@@ -105,6 +105,11 @@ _Action without HTTP verb_
 ### `ANY` /any ###
 
 _Action without HTTP verb_
+
+
+### `ANY` /my-commented ###
+
+_This method is useful to test if the getDocComment works._
 MARKDOWN;
 
         $this->assertEquals($expected, $result);
