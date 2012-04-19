@@ -102,14 +102,36 @@ b:
 _Action without HTTP verb_
 
 
-### `ANY` /any ###
+### `ANY` /any/{foo} ###
 
 _Action without HTTP verb_
 
+#### Requirements ####
 
-### `ANY` /my-commented ###
+**foo**
+
+
+
+### `ANY` /my-commented/{id} ###
 
 _This method is useful to test if the getDocComment works. And, it supports multilines until the first '@' char._
+
+#### Requirements ####
+
+**id**
+
+  - Type: int
+  - Description: A nice comment
+
+
+### `ANY` /yet-another/{id} ###
+
+
+#### Requirements ####
+
+**id**
+
+  - Value: \d+
 MARKDOWN;
 
         $this->assertEquals($expected, $result);

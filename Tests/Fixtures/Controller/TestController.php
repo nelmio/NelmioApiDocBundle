@@ -57,8 +57,17 @@ class TestController
      * And, it supports multilines until the first '@' char.
      *
      * @ApiDoc()
+     *
+     * @param int $id A nice comment
      */
     public function myCommentedAction()
+    {
+    }
+
+    /**
+     * @ApiDoc()
+     */
+    public function yetAnotherAction()
     {
     }
 }

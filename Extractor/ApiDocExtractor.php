@@ -179,15 +179,28 @@ class ApiDocExtractor
      */
     protected function getData(ApiDoc $annotation, Route $route, \ReflectionMethod $method)
     {
+        $docblock = $this->getDocComment($method);
+
         if (null === $annotation->getDescription()) {
-            $comments = explode("\n @", $this->getDocComment($method));
+            $comments = explode("\n @", $docblock);
             // just set the first line
             $comment = trim($comments[0]);
             $comment = preg_replace("#[\n]+#", ' ', $comment);
             $comment = preg_replace('#[ ]+#', ' ', $comment);
 
-            $annotation->setDescription($comment);
+            if ('@' !== substr($comment, 0, 1)) {
+                $annotation->setDescription($comment);
+            }
         }
+
+        $paramDocs = array();
+        foreach (explode("\n", $docblock) as $line) {
+            if (preg_match('{^@param (.+)}', trim($line), $matches)) {
+                $paramDocs[] = $matches[1];
+            }
+        }
+
+        $route->addOptions(array('_paramDocs' => $paramDocs));
 
         return array('annotation' => $annotation, 'route' => $route);
     }

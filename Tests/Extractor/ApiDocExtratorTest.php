@@ -22,7 +22,7 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->all();
 
         $this->assertTrue(is_array($data));
-        $this->assertCount(7, $data);
+        $this->assertCount(8, $data);
 
         foreach ($data as $d) {
             $this->assertTrue(is_array($d));

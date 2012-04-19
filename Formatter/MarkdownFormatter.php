@@ -29,8 +29,19 @@ class MarkdownFormatter extends AbstractFormatter
         if (isset($data['requirements']) && !empty($data['requirements'])) {
             $markdown .= "#### Requirements ####\n\n";
 
-            foreach ($data['requirements'] as $name => $value) {
-                $markdown .= sprintf("* %s: %s\n", $name, $value);
+            foreach ($data['requirements'] as $name => $infos) {
+                $markdown .= sprintf("**%s**\n\n", $name);
+
+                if (!empty($infos['value'])) {
+                    $markdown .= sprintf("  - Value: %s\n", $infos['value']);
+                }
+
+                if (!empty($infos['type'])) {
+                    $markdown .= sprintf("  - Type: %s\n", $infos['type']);
+                }
+                if (!empty($infos['description'])) {
+                    $markdown .= sprintf("  - Description: %s\n", $infos['description']);
+                }
             }
 
             $markdown .= "\n";

@@ -15,12 +15,18 @@ test_route_3:
     defaults: { _controller: NelmioApiDocTestBundle:Test:another }
 
 test_route_4:
-    pattern:  /any
+    pattern:  /any/{foo}
     defaults: { _controller: NelmioApiDocTestBundle:Test:any, _format: json }
 
 test_route_5:
-    pattern:  /my-commented
+    pattern:  /my-commented/{id}
     defaults: { _controller: NelmioApiDocTestBundle:Test:myCommented }
+
+test_route_6:
+    pattern:  /yet-another/{id}
+    defaults: { _controller: NelmioApiDocTestBundle:Test:yetAnother }
+    requirements:
+        id:  \d+
 
 test_service_route_1:
     pattern:  /tests

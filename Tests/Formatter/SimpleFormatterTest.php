@@ -139,20 +139,31 @@ class SimpleFormatterTest extends WebTestCase
                 1 =>
                 array(
                     'method' => 'ANY',
-                    'uri' => '/any',
+                    'uri' => '/any/{foo}',
                     'requirements' =>
                     array(
+                        'foo' => array('type' => '', 'description' => '', 'value' => ''),
                     ),
                     'description' => 'Action without HTTP verb',
                 ),
                 2 =>
                 array(
                     'method' => 'ANY',
-                    'uri' => '/my-commented',
+                    'uri' => '/my-commented/{id}',
                     'requirements' =>
                     array(
+                        'id' => array('type' => 'int', 'description' => 'A nice comment', 'value' => '')
                     ),
                     'description' => 'This method is useful to test if the getDocComment works. And, it supports multilines until the first \'@\' char.',
+                ),
+                3 =>
+                array(
+                    'method' => 'ANY',
+                    'uri' => '/yet-another/{id}',
+                    'requirements' =>
+                    array(
+                        'id' => array('type' => '', 'description' => '', 'value' => '\d+')
+                    ),
                 ),
             ),
         );

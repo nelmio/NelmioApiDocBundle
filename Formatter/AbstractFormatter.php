@@ -78,12 +78,46 @@ abstract class AbstractFormatter implements FormatterInterface
     {
         $method = $route->getRequirement('_method');
         $data   = array(
-            'method'        => $method ?: 'ANY',
-            'uri'           => $route->compile()->getPattern(),
-            'requirements'  => $route->compile()->getRequirements(),
+            'method' => $method ?: 'ANY',
+            'uri'    => $route->compile()->getPattern(),
         );
 
-        unset($data['requirements']['_method']);
+        $requirements = array();
+        foreach ($route->compile()->getRequirements() as $name => $value) {
+            if ('_method' !== $name) {
+                $requirements[$name] = array(
+                    'value'         => $value,
+                    'type'          => '',
+                    'description'   => '',
+                );
+            }
+        }
+
+        if (null !== $paramDocs = $route->getOption('_paramDocs')) {
+            $regexp = '{(\w*) *\$%s +(.*)}i';
+            foreach ($route->compile()->getVariables() as $var) {
+                $found = false;
+                foreach ($paramDocs as $paramDoc) {
+                    if (preg_match(sprintf($regexp, preg_quote($var)), $paramDoc, $matches)) {
+                        $requirements[$var]['type']        = isset($matches[1]) ? $matches[1] : '';
+                        $requirements[$var]['description'] = $matches[2];
+
+                        if (!isset($requirements[$var]['value'])) {
+                            $requirements[$var]['value'] = '';
+                        }
+
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if (!isset($requirements[$var]) && false === $found) {
+                    $requirements[$var] = array('value' => '', 'type' => '', 'description' => '');
+                }
+            }
+        }
+
+        $data['requirements'] = $requirements;
 
         if (null !== $formType = $apiDoc->getFormType()) {
             $data['parameters'] = $this->parser->parse(new $formType());

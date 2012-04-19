@@ -22,13 +22,17 @@
                 <tr>
                     <th>Name</th>
                     <th>Value</th>
+                    <th>Type</th>
+                    <th>Description</th>
                 </tr>
             </thead>
             <tbody>
-                {% for key, value in data.requirements %}
+                {% for name, infos in data.requirements %}
                     <tr>
-                        <td>{{ key }}</td>
-                        <td>{{ value }}</td>
+                        <td>{{ name }}</td>
+                        <td>{{ infos.value }}</td>
+                        <td>{{ infos.type }}</td>
+                        <td>{{ infos.description }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
