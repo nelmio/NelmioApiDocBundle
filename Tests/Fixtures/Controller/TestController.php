@@ -54,6 +54,7 @@ class TestController
 
     /**
      * This method is useful to test if the getDocComment works.
+     * And, it supports multilines until the first '@' char.
      *
      * @ApiDoc()
      */

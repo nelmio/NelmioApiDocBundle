@@ -139,6 +139,9 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::myCommentedAction', 'test_route_5');
 
         $this->assertNotNull($data);
-        $this->assertEquals('This method is useful to test if the getDocComment works.', $data['annotation']->getDescription());
+        $this->assertEquals(
+            "This method is useful to test if the getDocComment works. And, it supports multilines until the first '@' char.",
+            $data['annotation']->getDescription()
+        );
     }
 }

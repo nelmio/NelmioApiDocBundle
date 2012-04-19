@@ -109,7 +109,7 @@ _Action without HTTP verb_
 
 ### `ANY` /my-commented ###
 
-_This method is useful to test if the getDocComment works._
+_This method is useful to test if the getDocComment works. And, it supports multilines until the first '@' char._
 MARKDOWN;
 
         $this->assertEquals($expected, $result);
