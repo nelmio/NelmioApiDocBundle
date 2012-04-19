@@ -17,9 +17,9 @@ use Symfony\Component\HttpKernel\Kernel;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
-    protected function deleteTmpDir($testCase)
+    protected function deleteTmpDir()
     {
-        if (!file_exists($dir = sys_get_temp_dir().'/'.Kernel::VERSION.'/'.$testCase)) {
+        if (!file_exists($dir = sys_get_temp_dir().'/'.Kernel::VERSION)) {
             return;
         }
 
@@ -52,5 +52,11 @@ abstract class WebTestCase extends BaseWebTestCase
             'default',
             isset($options['debug']) ? $options['debug'] : true
         );
+    }
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->deleteTmpDir();
     }
 }
