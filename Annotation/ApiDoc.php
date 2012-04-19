@@ -85,6 +85,14 @@ class ApiDoc
     }
 
     /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
      * @return Boolean
      */
     public function isResource()

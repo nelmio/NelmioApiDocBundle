@@ -18,6 +18,10 @@ test_route_4:
     pattern:  /any
     defaults: { _controller: NelmioApiDocTestBundle:Test:any, _format: json }
 
+test_route_5:
+    pattern:  /my-commented
+    defaults: { _controller: NelmioApiDocTestBundle:Test:myCommented }
+
 test_service_route_1:
     pattern:  /tests
     defaults: { _controller: nemlio.test.controller:indexAction, _format: json }

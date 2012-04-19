@@ -51,4 +51,13 @@ class TestController
     public function anyAction()
     {
     }
+
+    /**
+     * This method is useful to test if the getDocComment works.
+     *
+     * @ApiDoc()
+     */
+    public function myCommentedAction()
+    {
+    }
 }

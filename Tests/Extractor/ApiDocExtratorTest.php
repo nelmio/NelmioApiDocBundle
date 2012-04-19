@@ -22,7 +22,7 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->all();
 
         $this->assertTrue(is_array($data));
-        $this->assertCount(6, $data);
+        $this->assertCount(7, $data);
 
         foreach ($data as $d) {
             $this->assertTrue(is_array($d));
@@ -130,5 +130,15 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->get('nemlio.test.controller:anotherAction', 'test_service_route_1');
 
         $this->assertNull($data);
+    }
+
+    public function testGetWithDocComment()
+    {
+        $container = $this->getContainer();
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $data = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::myCommentedAction', 'test_route_5');
+
+        $this->assertNotNull($data);
+        $this->assertEquals('This method is useful to test if the getDocComment works.', $data['annotation']->getDescription());
     }
 }

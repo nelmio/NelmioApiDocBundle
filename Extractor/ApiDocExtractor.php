@@ -12,6 +12,8 @@
 namespace Nelmio\ApiDocBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,16 +58,13 @@ class ApiDocExtractor
         $resources = array();
 
         foreach ($this->router->getRouteCollection()->all() as $route) {
-            $method = $this->getReflectionMethod($route->getDefault('_controller'));
-
-            if ($method) {
-                $annot = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS);
-                if ($annot) {
+            if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
+                if ($annot = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
                     if ($annot->isResource()) {
                         $resources[] = $route->getPattern();
                     }
 
-                    $array[] = array('annotation' => $annot, 'route' => $route);
+                    $array[] = $this->getData($annot, $route, $method);
                 }
             }
         }
@@ -156,17 +155,53 @@ class ApiDocExtractor
      */
     public function get($controller, $route)
     {
-        $method = $this->getReflectionMethod($controller);
-        if (!$method) {
-            return null;
-        }
-
-        if ($annot = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
-            if ($route = $this->router->getRouteCollection()->get($route)) {
-                return array('annotation' => $annot, 'route' => $route);
+        if ($method = $this->getReflectionMethod($controller)) {
+            if ($annot = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
+                if ($route = $this->router->getRouteCollection()->get($route)) {
+                    return $this->getData($annot, $route, $method);
+                }
             }
         }
 
         return null;
+    }
+
+    /**
+     * Allows to add more data to the ApiDoc object, and
+     * returns an array containing the following keys:
+     *  - annotation
+     *  - route
+     *
+     * @param ApiDoc $annotation
+     * @param Route $route
+     * @param ReflectionMethod $method
+     * @return array
+     */
+    protected function getData(ApiDoc $annotation, Route $route, \ReflectionMethod $method)
+    {
+        if (null === $annotation->getDescription()) {
+            $comments = explode('\n', $this->getDocComment($method));
+            // just set the first line
+            $annotation->setDescription($comments[0]);
+        }
+
+        return array('annotation' => $annotation, 'route' => $route);
+    }
+
+    protected function getDocComment(\Reflector $reflected)
+    {
+        $comment = $reflected->getDocComment();
+
+        // let's clean the doc block
+        $comment = str_replace('/**', '', $comment);
+        $comment = str_replace('*/', '', $comment);
+        $comment = str_replace('*', '', $comment);
+        $comment = str_replace("\r", '', trim($comment));
+        $comment = preg_replace("#\n[ \t]+#i", "\n", trim($comment));
+        $comment = str_replace("\n", "\\n", trim($comment));
+        $comment = preg_replace("#[\t ]+#i", ' ', trim($comment));
+        $comment = str_replace("\"", "\\\"", $comment);
+
+        return $comment;
     }
 }
