@@ -112,7 +112,7 @@ _Action without HTTP verb_
 
 
 
-### `ANY` /my-commented/{id} ###
+### `ANY` /my-commented/{id}/{page} ###
 
 _This method is useful to test if the getDocComment works. And, it supports multilines until the first '@' char._
 
@@ -122,6 +122,9 @@ _This method is useful to test if the getDocComment works. And, it supports mult
 
   - Type: int
   - Description: A nice comment
+**page**
+
+  - Type: int
 
 
 ### `ANY` /yet-another/{id} ###
