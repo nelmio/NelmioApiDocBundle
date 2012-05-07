@@ -94,7 +94,7 @@ abstract class AbstractFormatter implements FormatterInterface
         }
 
         if (null !== $paramDocs = $route->getOption('_paramDocs')) {
-            $regexp = '{(\w*) *\$%s +(.*)}i';
+            $regexp = '{(\w*) *\$%s *(.*)}i';
             foreach ($route->compile()->getVariables() as $var) {
                 $found = false;
                 foreach ($paramDocs as $paramDoc) {

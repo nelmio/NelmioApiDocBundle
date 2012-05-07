@@ -149,10 +149,11 @@ class SimpleFormatterTest extends WebTestCase
                 2 =>
                 array(
                     'method' => 'ANY',
-                    'uri' => '/my-commented/{id}',
+                    'uri' => '/my-commented/{id}/{page}',
                     'requirements' =>
                     array(
-                        'id' => array('type' => 'int', 'description' => 'A nice comment', 'value' => '')
+                        'id' => array('type' => 'int', 'description' => 'A nice comment', 'value' => ''),
+                        'page' => array('type' => 'int', 'description' => '', 'value' => ''),
                     ),
                     'description' => 'This method is useful to test if the getDocComment works. And, it supports multilines until the first \'@\' char.',
                 ),

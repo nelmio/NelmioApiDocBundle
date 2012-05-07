@@ -19,7 +19,7 @@ test_route_4:
     defaults: { _controller: NelmioApiDocTestBundle:Test:any, _format: json }
 
 test_route_5:
-    pattern:  /my-commented/{id}
+    pattern:  /my-commented/{id}/{page}
     defaults: { _controller: NelmioApiDocTestBundle:Test:myCommented }
 
 test_route_6:
