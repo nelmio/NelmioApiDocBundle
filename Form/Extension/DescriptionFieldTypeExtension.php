@@ -37,7 +37,7 @@ class DescriptionFieldTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         return array(
             'description' => '',

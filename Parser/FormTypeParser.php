@@ -54,8 +54,12 @@ class FormTypeParser
     {
         $builder = $this->formFactory->createBuilder($type);
 
+        $refl = new \ReflectionProperty('Symfony\Component\Form\FormBuilder', 'children');
+        $refl->setAccessible(true);
+        $children = $refl->getValue($builder);
+
         $parameters = array();
-        foreach ($builder->all() as $name => $child) {
+        foreach ($children as $name => $child) {
             if ($child instanceof FormBuilder) {
                 $childBuilder = $child;
             } else {
