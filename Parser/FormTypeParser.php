@@ -56,7 +56,11 @@ class FormTypeParser
 
         $parameters = array();
         foreach ($builder->all() as $name => $child) {
-            $childBuilder = $builder->create($name, $child['type'] ?: 'text', $child['options']);
+            if ($child instanceof FormBuilder) {
+                $childBuilder = $child;
+            } else {
+                $childBuilder = $builder->create($name, $child['type'] ?: 'text', $child['options']);
+            }
 
             $bestType = '';
             foreach ($childBuilder->getTypes() as $type) {
