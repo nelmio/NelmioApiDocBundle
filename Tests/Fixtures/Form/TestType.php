@@ -29,7 +29,7 @@ class TestType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         return array(
             'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
@@ -38,6 +38,6 @@ class TestType extends AbstractType
 
     public function getName()
     {
-        return '';
+        return 'foobar';
     }
 }

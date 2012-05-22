@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\Util\Filesystem;
 use Symfony\Component\HttpKernel\Kernel;
 
 abstract class WebTestCase extends BaseWebTestCase
