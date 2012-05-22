@@ -28,7 +28,7 @@ class ApiDocExtractor
     private $container;
 
     /**
-     * @var \ymfony\Component\Routing\RouterInterface
+     * @var \Symfony\Component\Routing\RouterInterface
      */
     private $router;
 
@@ -116,7 +116,7 @@ class ApiDocExtractor
      * Returns the ReflectionMethod for the given controller string
      *
      * @param string $controller
-     * @return ReflectionMethod|null
+     * @return \ReflectionMethod|null
      */
     public function getReflectionMethod($controller)
     {
@@ -150,7 +150,7 @@ class ApiDocExtractor
      *  - route
      *
      * @param string $controller
-     * @param Route $route
+     * @param Route  $route
      * @return array|null
      */
     public function get($controller, $route)
@@ -172,9 +172,9 @@ class ApiDocExtractor
      *  - annotation
      *  - route
      *
-     * @param ApiDoc $annotation
-     * @param Route $route
-     * @param ReflectionMethod $method
+     * @param  ApiDoc            $annotation
+     * @param  Route             $route
+     * @param  \ReflectionMethod $method
      * @return array
      */
     protected function getData(ApiDoc $annotation, Route $route, \ReflectionMethod $method)

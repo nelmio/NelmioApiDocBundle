@@ -24,4 +24,6 @@ class Test
      * @Assert\Type("DateTime");
      */
     public $b;
+
+    public $c;
 }

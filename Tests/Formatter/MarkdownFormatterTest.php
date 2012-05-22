@@ -75,6 +75,11 @@ b:
   * type: string
   * required: true
 
+c:
+
+  * type: boolean
+  * required: true
+
 
 ### `POST` /tests ###
 
@@ -91,6 +96,11 @@ a:
 b:
 
   * type: string
+  * required: true
+
+c:
+
+  * type: boolean
   * required: true
 
 
