@@ -150,7 +150,7 @@ class ApiDocExtractor
      *  - route
      *
      * @param string $controller
-     * @param Route $route
+     * @param Route  $route
      * @return array|null
      */
     public function get($controller, $route)
@@ -172,9 +172,9 @@ class ApiDocExtractor
      *  - annotation
      *  - route
      *
-     * @param ApiDoc $annotation
-     * @param Route $route
-     * @param \ReflectionMethod $method
+     * @param  ApiDoc            $annotation
+     * @param  Route             $route
+     * @param  \ReflectionMethod $method
      * @return array
      */
     protected function getData(ApiDoc $annotation, Route $route, \ReflectionMethod $method)

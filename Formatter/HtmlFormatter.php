@@ -11,8 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Formatter;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Templating\EngineInterface;
 
 class HtmlFormatter extends AbstractFormatter

@@ -37,14 +37,14 @@ abstract class WebTestCase extends BaseWebTestCase
         return static::$kernel->getContainer();
     }
 
-    static protected function getKernelClass()
+    protected static function getKernelClass()
     {
         require_once __DIR__.'/Fixtures/app/AppKernel.php';
 
         return 'Nelmio\ApiDocBundle\Tests\Functional\AppKernel';
     }
 
-    static protected function createKernel(array $options = array())
+    protected static function createKernel(array $options = array())
     {
         $class = self::getKernelClass();
 

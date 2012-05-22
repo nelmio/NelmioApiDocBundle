@@ -11,9 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpFoundation\Response;
-
 class TestServiceController extends TestController
 {
 }

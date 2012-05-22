@@ -58,7 +58,7 @@ class TestController
      *
      * @ApiDoc()
      *
-     * @param int $id A nice comment
+     * @param int $id   A nice comment
      * @param int $page
      */
     public function myCommentedAction()

@@ -40,7 +40,7 @@ class ApiDoc
     {
         if (isset($data['formType'])) {
             $this->formType = $data['formType'];
-        } else if (isset($data['filters'])) {
+        } elseif (isset($data['filters'])) {
             foreach ($data['filters'] as $filter) {
                 if (!isset($filter['name'])) {
                     throw new \InvalidArgumentException('A "filter" element has to contain a "name" attribute');

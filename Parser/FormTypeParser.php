@@ -47,7 +47,7 @@ class FormTypeParser
      *  - required
      *  - description
      *
-     * @param AbstractType $type
+     * @param  AbstractType $type
      * @return array
      */
     public function parse(AbstractType $type)

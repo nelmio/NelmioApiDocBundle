@@ -19,17 +19,17 @@ interface FormatterInterface
     /**
      * Format a collection of documentation data.
      *
-     * @param array $collection
+     * @param  array        $collection
      * @return string|array
      */
-    function format(array $collection);
+    public function format(array $collection);
 
     /**
      * Format documentation data for one route.
      *
      * @param ApiDoc $apiDoc
-     * @param Route $route
+     * @param Route  $route
      * return string|array
      */
-    function formatOne(ApiDoc $apiDoc, Route $route);
+    public function formatOne(ApiDoc $apiDoc, Route $route);
 }
