@@ -5,6 +5,9 @@ NelmioApiDocBundle
 
 The **NelmioApiDocBundle** bundle allows you to generate a decent documentation for your APIs.
 
+**Important:** This bundle is developed in sync with [symfony's repository](https://github.com/symfony/symfony).
+For Symfony 2.0.x, you need to use the 1.* version of the bundle.
+
 
 ## Installation ##
 
