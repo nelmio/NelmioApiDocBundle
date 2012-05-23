@@ -21,6 +21,11 @@ class HtmlFormatter extends AbstractFormatter
     private $apiName;
 
     /**
+     * @var string
+     */
+    private $sandboxTarget;
+
+    /**
      * @var \Symfony\Component\Templating\EngineInterface
      */
     private $engine;
@@ -31,6 +36,14 @@ class HtmlFormatter extends AbstractFormatter
     public function setApiName($apiName)
     {
         $this->apiName = $apiName;
+    }
+
+    /**
+     * @param string $sandboxTarget
+     */
+    public function setSandboxTarget($sandboxTarget)
+    {
+        $this->sandboxTarget = $sandboxTarget;
     }
 
     /**
@@ -69,9 +82,10 @@ class HtmlFormatter extends AbstractFormatter
     private function getGlobalVars()
     {
         return array(
-            'apiName'   => $this->apiName,
-            'date'      => date(DATE_RFC822),
-            'css'       => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
+            'apiName'       => $this->apiName,
+            'sandboxTarget' => $this->sandboxTarget,
+            'date'          => date(DATE_RFC822),
+            'css'           => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
         );
     }
 }
