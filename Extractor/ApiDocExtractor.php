@@ -200,7 +200,7 @@ class ApiDocExtractor
             }
         }
 
-        $route->addOptions(array('_paramDocs' => $paramDocs));
+        $route->setOptions(array_merge($route->getOptions(), array('_paramDocs' => $paramDocs)));
 
         return array('annotation' => $annotation, 'route' => $route);
     }
