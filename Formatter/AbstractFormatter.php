@@ -56,22 +56,22 @@ abstract class AbstractFormatter implements FormatterInterface
     /**
      * Format a single array of data
      *
-     * @param array $data
+     * @param  array        $data
      * @return string|array
      */
-    protected abstract function renderOne(array $data);
+    abstract protected function renderOne(array $data);
 
     /**
      * Format a set of resource sections.
      *
-     * @param array $collection
+     * @param  array        $collection
      * @return string|array
      */
-    protected abstract function render(array $collection);
+    abstract protected function render(array $collection);
 
     /**
-     * @param ApiDoc $apiDoc
-     * @param Route $route
+     * @param  ApiDoc $apiDoc
+     * @param  Route  $route
      * @return array
      */
     protected function getData(ApiDoc $apiDoc, Route $route)

@@ -23,6 +23,7 @@ class TestType extends AbstractType
     {
         $builder->add('a', null, array('description' => 'A nice description'));
         $builder->add('b');
+        $builder->add($builder->create('c', 'checkbox'));
     }
 
     /**

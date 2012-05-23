@@ -97,6 +97,12 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => true,
                             'description' => '',
                         ),
+                        'c' =>
+                        array(
+                            'dataType' => 'boolean',
+                            'required' => true,
+                            'description' => '',
+                        ),
                     ),
                     'description' => 'create test',
                 ),
@@ -118,6 +124,12 @@ class SimpleFormatterTest extends WebTestCase
                         'b' =>
                         array(
                             'dataType' => 'string',
+                            'required' => true,
+                            'description' => '',
+                        ),
+                        'c' =>
+                        array(
+                            'dataType' => 'boolean',
                             'required' => true,
                             'description' => '',
                         ),
