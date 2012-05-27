@@ -52,18 +52,14 @@ class FormTypeParser
      */
     public function parse(AbstractType $type)
     {
-        $builder = $this->formFactory->createBuilder($type);
+        $form = $this->formFactory->create($type);
 
         $parameters = array();
-        foreach ($builder->all() as $name => $child) {
-            if ($child instanceof FormBuilder) {
-                $childBuilder = $child;
-            } else {
-                $childBuilder = $builder->create($name, $child['type'] ?: 'text', $child['options']);
-            }
+        foreach ($form as $name => $child) {
+            $config = $child->getConfig();
 
             $bestType = '';
-            foreach ($childBuilder->getTypes() as $type) {
+            foreach ($config->getTypes() as $type) {
                 if (isset($this->mapTypes[$type->getName()])) {
                     $bestType = $this->mapTypes[$type->getName()];
                 }
@@ -71,8 +67,8 @@ class FormTypeParser
 
             $parameters[$name] = array(
                 'dataType'      => $bestType,
-                'required'      => $childBuilder->getRequired(),
-                'description'   => $childBuilder->getAttribute('description'),
+                'required'      => $config->getRequired(),
+                'description'   => $config->getAttribute('description'),
             );
         }
 
