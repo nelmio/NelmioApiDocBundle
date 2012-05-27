@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TestType extends AbstractType
 {
@@ -21,23 +22,27 @@ class TestType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('a', null, array('description' => 'A nice description'));
-        $builder->add('b');
-        $builder->add($builder->create('c', 'checkbox'));
+        $builder
+            ->add('a', null, array('description' => 'A nice description'))
+            ->add('b')
+            ->add($builder->create('c', 'checkbox'))
+        ;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
-        );
+        $resolver->setDefaults(array(
+                'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
+        ));
+
+        return;
     }
 
     public function getName()
     {
-        return '';
+        return 'test_type';
     }
 }
