@@ -35,7 +35,7 @@ class TestType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
+            'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
         ));
 
         return;
