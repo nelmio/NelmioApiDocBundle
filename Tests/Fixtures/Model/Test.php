@@ -17,6 +17,7 @@ class Test
 {
     /**
      * @Assert\MinLength("foo");
+     * @Assert\NotBlank
      */
     public $a;
 

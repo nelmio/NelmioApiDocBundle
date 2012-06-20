@@ -94,7 +94,7 @@ class SimpleFormatterTest extends WebTestCase
                         'b' =>
                         array(
                             'dataType' => 'string',
-                            'required' => true,
+                            'required' => false,
                             'description' => '',
                         ),
                         'c' =>
@@ -124,7 +124,7 @@ class SimpleFormatterTest extends WebTestCase
                         'b' =>
                         array(
                             'dataType' => 'string',
-                            'required' => true,
+                            'required' => false,
                             'description' => '',
                         ),
                         'c' =>
