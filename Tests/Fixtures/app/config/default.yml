@@ -22,3 +22,9 @@ twig:
 services:
     nemlio.test.controller:
         class: Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestServiceController
+    nelmio.test.type:
+        class: Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType
+        arguments:
+            - [foo, bar]
+        tags:
+            - { name: form.type, alias: dependency_type }
