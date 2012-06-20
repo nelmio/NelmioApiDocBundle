@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -47,11 +46,14 @@ class FormTypeParser
      *  - required
      *  - description
      *
-     * @param  AbstractType $type
+     * @param  string|\Symfony\Component\Form\FormTypeInterface $type
      * @return array
      */
-    public function parse(AbstractType $type)
+    public function parse($type)
     {
+        if (is_string($type) && class_exists($type)) {
+            $type = new $type();
+        }
         $form = $this->formFactory->create($type);
 
         $parameters = array();
