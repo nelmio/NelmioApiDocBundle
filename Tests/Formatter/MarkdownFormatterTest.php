@@ -107,6 +107,19 @@ b:
 
 # others #
 
+### `POST` /another-post ###
+
+_create another test_
+
+#### Parameters ####
+
+a:
+
+  * type: string
+  * required: true
+  * description: A nice description
+
+
 ### `ANY` /any ###
 
 _Action without HTTP verb_

@@ -95,7 +95,8 @@ The following properties are available:
 
 * `filters`: an array of filters;
 
-* `formType`: the Form Type associated to the method, useful for POST|PUT methods.
+* `formType`: the Form Type associated to the method, useful for POST|PUT methods, either as FQCN or
+  as form type (if it is registered in the form factory in the container)
 
 Each _filter_ has to define a `name` parameter, but other parameters are free. Filters are often optional
 parameters, and you can document them as you want, but keep in mind to be consistent for the whole documentation.

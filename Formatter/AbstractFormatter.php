@@ -120,7 +120,7 @@ abstract class AbstractFormatter implements FormatterInterface
         $data['requirements'] = $requirements;
 
         if (null !== $formType = $apiDoc->getFormType()) {
-            $data['parameters'] = $this->parser->parse(new $formType());
+            $data['parameters'] = $this->parser->parse($formType);
 
             if ('PUT' === $method) {
                 // All parameters are optional with PUT (update)

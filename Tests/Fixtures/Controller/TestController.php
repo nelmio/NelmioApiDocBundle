@@ -71,4 +71,14 @@ class TestController
     public function yetAnotherAction()
     {
     }
+
+    /**
+     * @ApiDoc(
+     *  description="create another test",
+     *  formType="dependency_type"
+     * )
+     */
+    public function anotherPostAction()
+    {
+    }
 }
