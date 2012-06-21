@@ -141,6 +141,24 @@ class SimpleFormatterTest extends WebTestCase
             array(
                 0 =>
                 array(
+                    'method' => 'POST',
+                    'uri' => '/another-post',
+                    'requirements' =>
+                    array(
+                    ),
+                    'parameters' =>
+                    array(
+                        'a' =>
+                        array(
+                            'dataType' => 'string',
+                            'required' => true,
+                            'description' => 'A nice description',
+                        ),
+                    ),
+                    'description' => 'create another test',
+                ),
+                1 =>
+                array(
                     'method' => 'ANY',
                     'uri' => '/any',
                     'requirements' =>
@@ -148,7 +166,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'description' => 'Action without HTTP verb',
                 ),
-                1 =>
+                2 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/any/{foo}',
@@ -158,7 +176,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'description' => 'Action without HTTP verb',
                 ),
-                2 =>
+                3 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/my-commented/{id}/{page}',
@@ -169,7 +187,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'description' => 'This method is useful to test if the getDocComment works. And, it supports multilines until the first \'@\' char.',
                 ),
-                3 =>
+                4 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/yet-another/{id}',

@@ -28,6 +28,12 @@ test_route_6:
     requirements:
         id:  \d+
 
+test_route_7:
+    pattern:  /another-post
+    defaults: { _controller: NelmioApiDocTestBundle:Test:anotherPost, _format: json }
+    requirements:
+        _method: POST
+
 test_service_route_1:
     pattern:  /tests
     defaults: { _controller: nemlio.test.controller:indexAction, _format: json }
