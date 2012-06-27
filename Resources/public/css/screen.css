@@ -1302,3 +1302,60 @@ body ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operatio
 #header a {
   text-decoration: none;
 }
+
+
+/** sandbox */
+.pane:not(.selected) {
+  display: none;
+}
+
+.result pre {
+  border: none;
+  padding: 10px;
+  font-size: 0.9em;
+  overflow: auto;
+}
+
+.tabs li {
+  display: inline;
+  float: left;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.tabs li.selected {
+  font-weight: bold;
+}
+
+.panes {
+  clear: both;
+  border-top: 1px solid #C3D9EC;
+}
+
+.pane.sandbox {
+  border: 1px solid #C3D9EC;
+  border-top: none;
+  padding: 10px;
+}
+
+.pane.sandbox legend {
+  margin-bottom: 5px;
+}
+
+.remove {
+  cursor: pointer;
+}
+
+.pane.sandbox .result {
+  display: none;
+}
+
+.parameters {
+  float: left;
+  width: 50%;
+}
+
+.buttons {
+  clear: both;
+  padding-top: 10px;
+}

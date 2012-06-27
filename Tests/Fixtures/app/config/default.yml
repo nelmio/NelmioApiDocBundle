@@ -11,7 +11,7 @@ framework:
     session:
         auto_start:     true
         storage_id:     session.storage.mock_file
-    profiler: { only_exceptions: false }
+    profiler:      { only_exceptions: false }
     templating:    { engines: ['twig'] }
 
 # Twig Configuration
