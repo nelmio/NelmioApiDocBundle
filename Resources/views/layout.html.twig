@@ -30,6 +30,45 @@
                 $(this).next().slideToggle('slow');
             });
 
+            var toggleButtonText = function ($btn) {
+              if ($btn.text() === 'Default') {
+                $btn.text('Raw');
+              } else {
+                $btn.text('Default');
+              }
+            };
+
+            var renderRawBody = function ($container) {
+              var rawData, $btn;
+
+              rawData = $container.data('raw-response');
+              $btn = $container.parents('.pane').find('.to-raw');
+
+              $container.addClass('prettyprinted');
+              $container.html(rawData);
+
+              $btn.removeClass('to-raw');
+              $btn.addClass('to-prettify');
+
+              toggleButtonText($btn);
+            };
+
+            var renderPrettifiedBody = function ($container) {
+              var rawData, $btn;
+
+              rawData = $container.data('raw-response');
+              $btn = $container.parents('.pane').find('.to-prettify');
+
+              $container.removeClass('prettyprinted');
+              $container.html(prettifyResponse(rawData));
+              prettyPrint && prettyPrint();
+
+              $btn.removeClass('to-prettify');
+              $btn.addClass('to-raw');
+
+              toggleButtonText($btn);
+            };
+
             $('.tabs li').click(function() {
                 var contentGroup = $(this).parents('.content');
 
@@ -39,8 +78,6 @@
                 $('li', $(this).parent()).removeClass('selected');
                 $(this).addClass('selected');
             });
-
-
 
             var prettifyResponse = function(text) {
                 try {
@@ -58,10 +95,18 @@
             };
 
             var displayResponseData = function(xhr, container) {
-                container.removeClass('prettyprinted');
+                var data = xhr.responseText;
 
-                container.html(prettifyResponse(xhr.responseText));
-                prettyPrint && prettyPrint();
+                container.data('raw-response', data);
+
+                if ('<' === data[0]) {
+                    renderRawBody(container);
+                } else {
+                    renderPrettifiedBody(container);
+                }
+
+                container.parents('.pane').find('.to-prettify').text('Raw');
+                container.parents('.pane').find('.to-raw').text('Raw');
             };
 
             var displayResponseHeaders = function(xhr, container) {
@@ -139,6 +184,18 @@
                 });
 
                 return false;
+            });
+
+            $('.pane.sandbox').delegate('.to-raw', 'click', function(e) {
+                renderRawBody($(this).parents('.pane').find('.response'));
+
+                e.preventDefault();
+            });
+
+            $('.pane.sandbox').delegate('.to-prettify', 'click', function(e) {
+                renderPrettifiedBody($(this).parents('.pane').find('.response'));
+
+                e.preventDefault();
             });
 
             $('.pane.sandbox').on('click', '.add', function() {
