@@ -102,6 +102,15 @@
             <form method="{{ data.method|upper }}" action="{{ data.uri }}">
                 <fieldset class="parameters">
                     <legend>Parameters</legend>
+                    {% if data.parameters is defined %}
+                        {% for name, infos in data.parameters %}
+                            <p class="tuple">
+                                <input type="text" class="key" value="{{ name }}" placeholder="Key" />
+                                <span>=</span>
+                                <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
+                            </p>
+                        {% endfor %}
+                    {% endif %}
                     {% if data.filters is defined %}
                         {% for name, infos in data.filters %}
                             <p class="tuple">
