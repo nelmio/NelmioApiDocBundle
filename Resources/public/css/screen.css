@@ -1153,6 +1153,16 @@ body ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operatio
   overflow: auto;
 }
 
+.result pre.to-shrink,
+.result pre.to-expand {
+  cursor:pointer;
+}
+
+.result pre.to-expand {
+  height: 1em;
+  overflow:hidden;
+}
+
 .tabs li {
   display: inline;
   float: left;
