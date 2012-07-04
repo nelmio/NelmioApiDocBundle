@@ -136,6 +136,10 @@ table tbody tr:last-child td {
   font-size: 1.2em;
 }
 
+#header a {
+  text-decoration: none;
+}
+
 #colophon {
   margin: 0 15px 40px 15px;
   padding: 10px 0;
@@ -423,10 +427,6 @@ li.operation.patch div.content h4 {
 
 .toggler {
   cursor: pointer;
-}
-
-#header a {
-  text-decoration: none;
 }
 
 
