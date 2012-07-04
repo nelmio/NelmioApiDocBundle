@@ -67,14 +67,6 @@ h2 {
 h2 a {
   color: black;
 }
-h2 span.sub {
-  font-size: 0.7em;
-  color: #999999;
-  font-style: italic;
-}
-h2 span.sub a {
-  color: #777777;
-}
 
 h3 {
   color: black;
@@ -148,11 +140,6 @@ table tbody tr:last-child td {
   font-family: "Droid Sans", sans-serif;
   color: #999999;
   font-style: italic;
-}
-
-#colophon a {
-  text-decoration: none;
-  color: #547f00;
 }
 
 #resources {
@@ -278,15 +265,6 @@ li.operation div.content h4 {
 li.operation div.content form input[type='text'].error {
   outline: 2px solid #cc0000;
 }
-li.operation div.content div.response div.block {
-  background-color: #fcf6db;
-  border: 1px solid #e5e0c6;
-}
-li.operation div.content div.response div.block pre {
-  font-size: 0.9em;
-  max-height: 400px;
-  overflow-y: auto;
-}
 
 /* GET operations */
 li.operation.get div.heading {
@@ -347,10 +325,6 @@ li.operation.any div.content {
 }
 li.operation.any div.content h4 {
   color: #000;
-}
-li.operation.any div.content div.response div.block {
-  background-color: lightgray;
-  border-color: gray;
 }
 
 /* PUT operations */
@@ -429,7 +403,6 @@ li.operation.patch div.content h4 {
 
 .result pre {
   border: none;
-  padding: 10px;
   font-size: 0.9em;
   overflow: auto;
 }
