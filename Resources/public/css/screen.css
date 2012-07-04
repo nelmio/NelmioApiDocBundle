@@ -51,7 +51,6 @@ h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover {
 }
 
 h1 {
-  color: #547f00;
   color: black;
   font-size: 1.5em;
   line-height: 1.3em;
@@ -61,7 +60,6 @@ h1 {
 }
 
 h2 {
-  color: #89bf04;
   color: black;
   font-size: 1.3em;
   padding: 10px 0 10px 0;
@@ -103,8 +101,7 @@ strong {
 pre {
   font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
   background-color: #fcf6db;
-  border: 1px solid black;
-  border-color: #e5e0c6;
+  border: 1px solid #e5e0c6;
   padding: 10px;
   /* white-space: pre-line */
 }
@@ -129,17 +126,17 @@ table tbody tr:last-child td {
   border-bottom: none;
 }
 
-body #header {
+#header {
   background-color: #89BF04;
   padding: 1%;
   margin-bottom: 1%;
 }
 
-body #header h1 {
+#header h1 {
   font-size: 1.2em;
 }
 
-body p#colophon {
+#colophon {
   margin: 0 15px 40px 15px;
   padding: 10px 0;
   font-size: 0.8em;
@@ -149,21 +146,21 @@ body p#colophon {
   font-style: italic;
 }
 
-body p#colophon a {
+#colophon a {
   text-decoration: none;
   color: #547f00;
 }
 
-body ul#resources {
+#resources {
   padding: 0 1%;
   font-family: "Droid Sans", sans-serif;
   font-size: 0.9em;
 }
 
-body ul#resources li.resource {
+li.resource {
   border-bottom: 1px solid #dddddd;
 }
-body ul#resources li.resource:last-child {
+li.resource:last-child {
   border-bottom: none;
 }
 body ul#resources li.resource div.heading {
@@ -175,7 +172,7 @@ body ul#resources li.resource div.heading {
 }
 body ul#resources li.resource div.heading h2 {
   color: #999999;
-  padding-left: 0px;
+  padding-left: 0;
   display: block;
   clear: none;
   float: left;
@@ -192,7 +189,6 @@ body ul#resources li.resource div.heading ul.options {
   float: none;
   clear: both;
   overflow: hidden;
-  margin: 0;
   padding: 0;
   display: block;
   clear: none;
