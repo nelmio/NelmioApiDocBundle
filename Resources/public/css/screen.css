@@ -163,14 +163,16 @@ li.resource {
 li.resource:last-child {
   border-bottom: none;
 }
-body ul#resources li.resource div.heading {
+
+/* heading */
+div.heading {
   border: 1px solid transparent;
   float: none;
   clear: both;
   overflow: hidden;
   display: block;
 }
-body ul#resources li.resource div.heading h2 {
+div.heading h2 {
   color: #999999;
   padding-left: 0;
   display: block;
@@ -179,15 +181,7 @@ body ul#resources li.resource div.heading h2 {
   font-family: "Droid Sans", sans-serif;
   font-weight: bold;
 }
-body ul#resources li.resource div.heading h2 a {
-  color: #999999;
-}
-body ul#resources li.resource div.heading h2 a:hover {
-  color: black;
-}
-body ul#resources li.resource div.heading ul.options {
-  float: none;
-  clear: both;
+div.heading ul.options {
   overflow: hidden;
   padding: 0;
   display: block;
@@ -195,38 +189,25 @@ body ul#resources li.resource div.heading ul.options {
   float: right;
   margin: 14px 10px 0 0;
 }
-body ul#resources li.resource div.heading ul.options li {
+div.heading ul.options li {
   float: left;
   clear: none;
   margin: 0;
   padding: 2px 10px;
   border-right: 1px solid #dddddd;
-}
-body ul#resources li.resource div.heading ul.options li:first-child, body ul#resources li.resource div.heading ul.options li.first {
-  padding-left: 0;
-}
-body ul#resources li.resource div.heading ul.options li:last-child, body ul#resources li.resource div.heading ul.options li.last {
-  padding-right: 0;
-  border-right: none;
-}
-body ul#resources li.resource div.heading ul.options li {
   color: #666666;
   font-size: 0.9em;
 }
-body ul#resources li.resource div.heading ul.options li a {
-  color: #aaaaaa;
-  text-decoration: none;
+div.heading ul.options li:first-child,
+div.heading ul.options li.first {
+  padding-left: 0;
 }
-body ul#resources li.resource div.heading ul.options li a:hover {
-  text-decoration: underline;
-  color: black;
+div.heading ul.options li:last-child,
+div.heading ul.options li.last {
+  padding-right: 0;
+  border-right: none;
 }
-body ul#resources li.resource:hover div.heading h2 a, body ul#resources li.resource.active div.heading h2 a {
-  color: black;
-}
-body ul#resources li.resource:hover div.heading ul.options li a, body ul#resources li.resource.active div.heading ul.options li a {
-  color: #555555;
-}
+
 body ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.get {
   float: none;
   clear: both;
