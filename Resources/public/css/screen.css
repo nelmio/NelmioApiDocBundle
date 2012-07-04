@@ -191,7 +191,7 @@ div.heading ul.options {
   display: block;
   clear: none;
   float: right;
-  margin: 14px 10px 0 0;
+  margin: 6px 10px 0 0;
 }
 div.heading ul.options li {
   float: left;
@@ -256,12 +256,6 @@ li.operation div.heading h3 span.http_method a {
 }
 li.operation div.heading h3 span.path {
   padding-left: 10px;
-}
-li.operation div.heading ul.options {
-  margin: 6px 10px 0 0;
-}
-li.operation div.heading ul.options li {
-  border-right: 1px solid #dddddd;
 }
 
 li.operation div.content {
