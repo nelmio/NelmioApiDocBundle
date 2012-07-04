@@ -219,7 +219,7 @@ li.operation {
   overflow: hidden;
   display: block;
   margin: 0 0 10px 0;
-  padding: 0 0 0 0px;
+  padding: 0 0 0 0;
 }
 li.operation div.heading {
   margin: 0 0 0 0;
@@ -273,7 +273,7 @@ li.operation div.content {
 li.operation div.content h4 {
   font-size: 1.1em;
   margin: 0;
-  padding: 15px 0 5px 0px;
+  padding: 15px 0 5px 0;
 }
 li.operation div.content form input[type='text'].error {
   outline: 2px solid #cc0000;
@@ -283,8 +283,6 @@ li.operation div.content div.response div.block {
   border: 1px solid #e5e0c6;
 }
 li.operation div.content div.response div.block pre {
-  font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
-  padding: 10px;
   font-size: 0.9em;
   max-height: 400px;
   overflow-y: auto;
