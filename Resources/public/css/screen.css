@@ -21,6 +21,7 @@ time, mark, audio, video {
 
 body {
   line-height: 1;
+  font-family: "Droid Sans", sans-serif;
 }
 
 ol, ul {
@@ -38,18 +39,6 @@ caption, th, td {
   vertical-align: middle;
 }
 
-q, blockquote {
-  quotes: none;
-}
-q:before, q:after, blockquote:before, blockquote:after {
-  content: "";
-  content: none;
-}
-
-a img {
-  border: none;
-}
-
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
@@ -59,9 +48,6 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 }
 h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover {
   text-decoration: underline;
-}
-h1 span.divider, h2 span.divider, h3 span.divider, h4 span.divider, h5 span.divider, h6 span.divider {
-  color: #aaaaaa;
 }
 
 h1 {
@@ -98,100 +84,10 @@ h3 {
   padding: 10px 0 10px 0;
 }
 
-div.heading_with_menu {
-  float: none;
-  clear: both;
-  overflow: hidden;
-  display: block;
-}
-div.heading_with_menu h1, div.heading_with_menu h2, div.heading_with_menu h3, div.heading_with_menu h4, div.heading_with_menu h5, div.heading_with_menu h6 {
-  display: block;
-  clear: none;
-  float: left;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 60%;
-}
-div.heading_with_menu ul {
-  display: block;
-  clear: none;
-  float: right;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-  margin-top: 10px;
-}
-
 p {
   line-height: 1.4em;
   padding: 0 0 10px 0;
   color: #333333;
-}
-
-ol {
-  margin: 0px 0 10px 0;
-  padding: 0 0 0 18px;
-  list-style-type: decimal;
-}
-ol li {
-  padding: 5px 0px;
-  font-size: 0.9em;
-  color: #333333;
-}
-
-.markdown h3 {
-  color: #547f00;
-}
-.markdown h4 {
-  color: #666666;
-}
-.markdown pre {
-  font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
-  background-color: #fcf6db;
-  border: 1px solid black;
-  border-color: #e5e0c6;
-  padding: 10px;
-  margin: 0 0 10px 0;
-}
-.markdown pre code {
-  line-height: 1.6em;
-}
-.markdown p code, .markdown li code {
-  font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
-  background-color: #f0f0f0;
-  color: black;
-  padding: 1px 3px;
-}
-.markdown ol, .markdown ul {
-  font-family: "Droid Sans", sans-serif;
-  margin: 5px 0 10px 0;
-  padding: 0 0 0 18px;
-  list-style-type: disc;
-}
-.markdown ol li, .markdown ul li {
-  padding: 3px 0px;
-  line-height: 1.4em;
-  color: #333333;
-}
-
-div.gist {
-  margin: 20px 0 25px 0 !important;
-}
-
-p.big, div.big p {
-  font-size: 1em;
-  margin-bottom: 10px;
-}
-
-span.weak {
-  color: #666666;
-}
-span.blank, span.empty {
-  color: #888888;
-  font-style: italic;
 }
 
 a {
@@ -204,10 +100,6 @@ strong {
   font-weight: bold;
 }
 
-.code {
-  font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
-}
-
 pre {
   font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
   background-color: #fcf6db;
@@ -215,13 +107,6 @@ pre {
   border-color: #e5e0c6;
   padding: 10px;
   /* white-space: pre-line */
-}
-pre code {
-  line-height: 1.6em;
-}
-
-.required {
-  font-weight: bold;
 }
 
 table.fullwidth {
@@ -233,9 +118,6 @@ table thead tr th {
   color: #666666;
   border-bottom: 1px solid #999999;
 }
-table tbody tr.offset {
-  background-color: #f5f5f5;
-}
 table tbody tr td {
   padding: 6px;
   font-size: 0.9em;
@@ -245,107 +127,6 @@ table tbody tr td {
 }
 table tbody tr:last-child td {
   border-bottom: none;
-}
-table tbody tr.offset {
-  background-color: #f0f0f0;
-}
-
-form.form_box {
-  background-color: #ebf3f9;
-  border: 1px solid black;
-  border-color: #c3d9ec;
-  padding: 10px;
-}
-form.form_box label {
-  color: #0f6ab4 !important;
-}
-form.form_box input[type=submit] {
-  display: block;
-  padding: 10px;
-}
-form.form_box p {
-  font-size: 0.9em;
-  padding: 0 0 15px 0;
-  color: #7e7b6d;
-}
-form.form_box p a {
-  color: #646257;
-}
-form.form_box p strong {
-  color: black;
-}
-form.form_box p.weak {
-  font-size: 0.8em;
-}
-form.formtastic fieldset.inputs ol li p.inline-hints {
-  margin-left: 0;
-  font-style: italic;
-  font-size: 0.9em;
-  margin: 0;
-}
-form.formtastic fieldset.inputs ol li label {
-  display: block;
-  clear: both;
-  width: auto;
-  padding: 0 0 3px 0;
-  color: #666666;
-}
-form.formtastic fieldset.inputs ol li label abbr {
-  padding-left: 3px;
-  color: #888888;
-}
-form.formtastic fieldset.inputs ol li.required label {
-  color: black;
-}
-form.formtastic fieldset.inputs ol li.string input, form.formtastic fieldset.inputs ol li.url input, form.formtastic fieldset.inputs ol li.numeric input {
-  display: block;
-  padding: 4px;
-  width: auto;
-  clear: both;
-}
-form.formtastic fieldset.inputs ol li.string input.title, form.formtastic fieldset.inputs ol li.url input.title, form.formtastic fieldset.inputs ol li.numeric input.title {
-  font-size: 1.3em;
-}
-form.formtastic fieldset.inputs ol li.text textarea {
-  font-family: "Droid Sans", sans-serif;
-  height: 250px;
-  padding: 4px;
-  display: block;
-  clear: both;
-}
-form.formtastic fieldset.inputs ol li.select select {
-  display: block;
-  clear: both;
-}
-form.formtastic fieldset.inputs ol li.boolean {
-  float: none;
-  clear: both;
-  overflow: hidden;
-  display: block;
-}
-form.formtastic fieldset.inputs ol li.boolean input {
-  display: block;
-  float: left;
-  clear: none;
-  margin: 0 5px 0 0;
-}
-form.formtastic fieldset.inputs ol li.boolean label {
-  display: block;
-  float: left;
-  clear: none;
-  margin: 0;
-  padding: 0;
-}
-form.formtastic fieldset.buttons {
-  margin: 0;
-  padding: 0;
-}
-form.fullwidth ol li.string input, form.fullwidth ol li.url input, form.fullwidth ol li.text textarea, form.fullwidth ol li.numeric input {
-  width: 500px !important;
-}
-
-body {
-  font-family: "Droid Sans", sans-serif;
 }
 
 body #header {
