@@ -198,6 +198,23 @@
                 e.preventDefault();
             });
 
+            $('.pane.sandbox').delegate('.to-expand, .to-shrink', 'click', function(e) {
+                var $headers = $(this).parents('.result').find('.headers');
+                var $label = $(this).parents('.result').find('a.to-expand');
+
+                if ($headers.hasClass('to-expand')) {
+                  $headers.removeClass('to-expand');
+                  $headers.addClass('to-shrink');
+                  $label.text('Shrink');
+                } else {
+                  $headers.removeClass('to-shrink');
+                  $headers.addClass('to-expand');
+                  $label.text('Expand');
+                }
+
+                e.preventDefault();
+            });
+
             $('.pane.sandbox').on('click', '.add', function() {
                 var html = $(this).parents('.pane').find('.tuple_template').html();
 
