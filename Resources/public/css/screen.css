@@ -1199,7 +1199,7 @@ body ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operatio
 
 form .parameters,
 form .headers,
-form .content {
+form .request-content {
   float: left;
   width: 33%;
 }
@@ -1209,7 +1209,7 @@ form .content {
   padding-top: 10px;
 }
 
-form .content textarea {
+.request-content textarea {
     width:100%;
     min-width:100%;
     max-width:100%;
