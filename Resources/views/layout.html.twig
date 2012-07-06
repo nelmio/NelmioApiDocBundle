@@ -132,6 +132,7 @@
                         _format: 'json' // default format if not overriden in the form
                     },
                     headers = {},
+                    content = $(this).find('textarea.content').val();
                     result_container = $('.result', $(this).parent());
 
                 // retrieve all the parameters to send
@@ -173,13 +174,13 @@
                 $.ajax({
                   url: '{{ sandboxTarget }}' + url,
                   type: method,
-                  data: params,
+                  data: content.length ? content : params,
                   headers: headers,
                   complete: function(xhr) {
                       displayResponse(xhr, method, url, result_container);
 
                       // and enable them back
-                      $('input, button', $(self)).removeAttr('disabled');
+                      $('input:not(.content-type), button', $(self)).removeAttr('disabled');
                   }
                 });
 
@@ -225,6 +226,36 @@
 
             $('.pane.sandbox').on('click', '.remove', function() {
                 $(this).parent().remove();
+            });
+
+            $('.pane.sandbox').on('click', '.set-content-type', function(e) {
+                var html;
+                var $element;
+                var $headers = $(this).parents('form').find('.headers');
+                var content_type = $(this).prev('input.value').val();
+
+                e.preventDefault();
+
+                if (content_type.length === 0) {
+                    return;
+                }
+
+                $headers.find('input.key').each(function() {
+                    if ($.trim($(this).val().toLowerCase()) === 'content-type') {
+                        $element = $(this).parents('p');
+                        return false;
+                    }
+                });
+
+                if (typeof $element === 'undefined') {
+                    html = $(this).parents('.pane').find('.tuple_template').html();
+
+                    $element = $headers.find('legend').after(html).next('p');
+                }
+
+                $element.find('input.key').val('Content-Type');
+                $element.find('input.value').val(content_type);
+
             });
         </script>
     </body>
