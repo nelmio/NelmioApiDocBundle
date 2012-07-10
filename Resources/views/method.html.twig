@@ -136,8 +136,20 @@
                     <button class="add">New header</button>
                 </fieldset>
 
-                <div class="buttons">
+                <fieldset class="request-content">
+                    <legend>Content</legend>
 
+                    <textarea class="content" placeholder="Content set here will override the parameters that do not match the url"></textarea>
+
+                    <p class="tuple">
+                        <input type="text" class="key content-type" value="Content-Type" disabled="disabled" />
+                        <span>=</span>
+                        <input type="text" class="value" placeholder="Value" />
+                        <button class="set-content-type">Set header</button> <small>Replaces header if set</small>
+                    </p>
+                </fieldset>
+
+                <div class="buttons">
                     <input type="submit" value="Try!" />
                 </div>
             </form>
