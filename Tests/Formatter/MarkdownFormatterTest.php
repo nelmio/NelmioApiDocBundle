@@ -64,11 +64,6 @@ _create test_
 
 #### Parameters ####
 
-c:
-
-  * type: boolean
-  * required: true
-
 a:
 
   * type: string
@@ -79,6 +74,11 @@ b:
 
   * type: string
   * required: false
+
+c:
+
+  * type: boolean
+  * required: true
 
 
 ### `POST` /tests ###
@@ -87,11 +87,6 @@ _create test_
 
 #### Parameters ####
 
-c:
-
-  * type: boolean
-  * required: true
-
 a:
 
   * type: string
@@ -102,6 +97,11 @@ b:
 
   * type: string
   * required: false
+
+c:
+
+  * type: boolean
+  * required: true
 
 
 
