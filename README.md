@@ -11,15 +11,20 @@ For Symfony 2.0.x, you need to use the 1.* version of the bundle.
 
 ## Installation ##
 
+
+This bundle uses
+[KnpMarkdownBundle](https://github.com/KnpLabs/KnpMarkdownBundle).
+
 Register the namespace in `app/autoload.php`:
 
     // app/autoload.php
     $loader->registerNamespaces(array(
         // ...
         'Nelmio'          => __DIR__.'/../vendor/bundles',
+        'Knp'             => __DIR__.'/../vendor/bundles',
     ));
 
-Register the bundle in `app/AppKernel.php`:
+Register the bundles in `app/AppKernel.php`:
 
     // app/AppKernel.php
     public function registerBundles()
@@ -27,6 +32,7 @@ Register the bundle in `app/AppKernel.php`:
         return array(
             // ...
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+            new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
         );
     }
 
