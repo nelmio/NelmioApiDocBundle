@@ -15,7 +15,8 @@
         }
     ],
     "require": {
-        "symfony/symfony": "2.0.*"
+        "symfony/symfony": "2.0.*",
+        "knplabs/knp-markdown-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Nelmio\\ApiDocBundle": "" }
