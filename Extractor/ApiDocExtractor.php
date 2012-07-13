@@ -233,7 +233,7 @@ class ApiDocExtractor
         $comment = preg_replace('/^\s*\* ?/m', '', $comment);
 
         // Remove everything (and including) first annotation
-        $comment = preg_replace('/\n?\s*@[^\s]+.+/ms', '', $comment);
+        $comment = preg_replace('/@[\w0-9]+\(.*/msi', '', $comment);
 
         return trim($comment);
     }
