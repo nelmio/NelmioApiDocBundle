@@ -90,12 +90,24 @@ strong {
   font-weight: bold;
 }
 
-pre {
+em {
+  font-style: italic;
+}
+
+code, pre {
   font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
   background-color: #fcf6db;
+}
+
+p code {
+  padding: 1px 4px 1px 4px;
   border: 1px solid #e5e0c6;
+}
+
+pre {
   padding: 10px;
-  /* white-space: pre-line */
+  border: 1px solid #e5e0c6;
+  margin-bottom: 15px;
 }
 
 table.fullwidth {
