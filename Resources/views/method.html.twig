@@ -23,6 +23,11 @@
 
       <div class="panes">
         <div class="pane content selected">
+        {% if data.documentation is defined and data.documentation is not empty %}
+            <h4>Documentation</h4>
+            <pre>{{ data.documentation }}</pre>
+        {% endif %}
+
         {% if data.requirements is defined  and data.requirements is not empty %}
             <h4>Requirements</h4>
             <table class="fullwidth">
