@@ -126,6 +126,11 @@ _Action without HTTP verb_
 
 _This method is useful to test if the getDocComment works. And, it supports multilines until the first '@' char._
 
+#### Documentation ####
+
+    This method is useful to test if the getDocComment works.
+    And, it supports multilines until the first '@' char.
+
 #### Requirements ####
 
 **id**
