@@ -222,6 +222,7 @@ pre {
   padding: 10px;
   border: 1px solid #e5e0c6;
   margin-bottom: 15px;
+  line-height:1.2em;
 }
 pre code {
   line-height: 1.6em;
