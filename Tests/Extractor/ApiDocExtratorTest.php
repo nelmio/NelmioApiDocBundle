@@ -140,7 +140,7 @@ class ApiDocExtractorTest extends WebTestCase
 
         $this->assertNotNull($data);
         $this->assertEquals(
-            "This method is useful to test if the getDocComment works. And, it supports multilines until the first '@' char.",
+            "This method is useful to test if the getDocComment works.",
             $data['annotation']->getDescription()
         );
     }
