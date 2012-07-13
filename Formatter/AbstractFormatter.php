@@ -138,6 +138,10 @@ abstract class AbstractFormatter implements FormatterInterface
             $data['description'] = $description;
         }
 
+        if ($documentation = $apiDoc->getDocumentation()) {
+            $data['documentation'] = $documentation;
+        }
+
         return $data;
     }
 }
