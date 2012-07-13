@@ -215,6 +215,7 @@ pre {
   border-color: #e5e0c6;
   padding: 10px;
   /* white-space: pre-line */
+  line-height:1.2em;
 }
 pre code {
   line-height: 1.6em;
