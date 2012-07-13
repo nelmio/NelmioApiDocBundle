@@ -182,11 +182,12 @@ class ApiDocExtractor
         $docblock = $this->getDocComment($method);
 
         if (null === $annotation->getDescription()) {
-            $comments = explode("\n @", $docblock);
+            $comments = explode("\n", $this->getDocCommentText($method));
             // just set the first line
             $comment = trim($comments[0]);
-            $comment = preg_replace("#[\n]+#", ' ', $comment);
-            $comment = preg_replace('#[ ]+#', ' ', $comment);
+            $comment = preg_replace("#\n+#", ' ', $comment);
+            $comment = preg_replace('#\s+#', ' ', $comment);
+            $comment = preg_replace('#[_`*]+#', '', $comment);
 
             if ('@' !== substr($comment, 0, 1)) {
                 $annotation->setDescription($comment);
