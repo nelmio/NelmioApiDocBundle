@@ -227,13 +227,13 @@ class ApiDocExtractor
     {
         $comment = $reflected->getDocComment();
 
+        // Remove PHPDoc
+        $comment = preg_replace('/^\s+\* @[\w0-9]+.*/msi', '', $comment);
+
         // let's clean the doc block
         $comment = str_replace('/**', '', $comment);
         $comment = str_replace('*/', '', $comment);
         $comment = preg_replace('/^\s*\* ?/m', '', $comment);
-
-        // Remove everything (and including) first annotation
-        $comment = preg_replace('/@[\w0-9]+\(.*/msi', '', $comment);
 
         return trim($comment);
     }
