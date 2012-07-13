@@ -186,6 +186,7 @@ class SimpleFormatterTest extends WebTestCase
                         'page' => array('type' => 'int', 'description' => '', 'value' => ''),
                     ),
                     'description' => 'This method is useful to test if the getDocComment works. And, it supports multilines until the first \'@\' char.',
+                    'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char."
                 ),
                 4 =>
                 array(

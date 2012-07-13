@@ -26,6 +26,13 @@ class MarkdownFormatter extends AbstractFormatter
 
         $markdown .= "\n\n";
 
+        if (isset($data['documentation']) && !empty($data['documentation'])) {
+            if (isset($data['description']) && 0 === strcmp($data['description'], $data['documentation'])) {
+                $markdown .= $data['documentation'];
+                $markdown .= "\n\n";
+            }
+        }
+
         if (isset($data['requirements']) && !empty($data['requirements'])) {
             $markdown .= "#### Requirements ####\n\n";
 
