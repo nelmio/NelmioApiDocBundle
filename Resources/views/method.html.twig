@@ -25,7 +25,7 @@
         <div class="pane content selected">
         {% if data.documentation is defined and data.documentation is not empty %}
             <h4>Documentation</h4>
-            <pre>{{ data.documentation }}</pre>
+            <p>{{ data.documentation|markdown }}</p>
         {% endif %}
 
         {% if data.requirements is defined  and data.requirements is not empty %}

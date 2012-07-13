@@ -27,13 +27,8 @@ class MarkdownFormatter extends AbstractFormatter
         $markdown .= "\n\n";
 
         if (isset($data['documentation']) && !empty($data['documentation'])) {
-            $markdown .= "#### Documentation ####\n\n";
-
-            foreach (explode("\n", $data['documentation']) as $line) {
-                $markdown .= "    " . $line . "\n";
-            }
-
-            $markdown .= "\n";
+            $markdown .= $data['documentation'];
+            $markdown .= "\n\n";
         }
 
         if (isset($data['requirements']) && !empty($data['requirements'])) {
