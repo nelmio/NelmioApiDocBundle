@@ -32,6 +32,11 @@ class ApiDoc
     private $description = null;
 
     /**
+     * @var string
+     */
+    private $documentation = null;
+
+    /**
      * @var Boolean
      */
     private $isResource = false;
@@ -90,6 +95,22 @@ class ApiDoc
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDocumentation()
+    {
+        return $this->documentation;
+    }
+
+    /**
+     * @param string $documentation
+     */
+    public function setDocumentation($documentation)
+    {
+        $this->documentation = $documentation;
     }
 
     /**

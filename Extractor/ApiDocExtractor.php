@@ -193,6 +193,8 @@ class ApiDocExtractor
             }
         }
 
+        $annotation->setDocumentation($this->getDocCommentText($method));
+
         $paramDocs = array();
         foreach (explode("\n", $docblock) as $line) {
             if (preg_match('{^@param (.+)}', trim($line), $matches)) {
@@ -219,5 +221,20 @@ class ApiDocExtractor
         $comment = str_replace("\"", "\\\"", $comment);
 
         return $comment;
+    }
+
+    protected function getDocCommentText(\Reflector $reflected)
+    {
+        $comment = $reflected->getDocComment();
+
+        // let's clean the doc block
+        $comment = str_replace('/**', '', $comment);
+        $comment = str_replace('*/', '', $comment);
+        $comment = preg_replace('/^\s*\* ?/m', '', $comment);
+
+        // Remove everything (and including) first annotation
+        $comment = preg_replace('/\n?\s*@[^\s]+.+/ms', '', $comment);
+
+        return trim($comment);
     }
 }
