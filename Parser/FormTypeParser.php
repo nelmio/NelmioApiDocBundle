@@ -61,7 +61,7 @@ class FormTypeParser
             $config = $child->getConfig();
 
             $bestType = '';
-            foreach ($config->getTypes() as $type) {
+            for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 if (isset($this->mapTypes[$type->getName()])) {
                     $bestType = $this->mapTypes[$type->getName()];
                 }
