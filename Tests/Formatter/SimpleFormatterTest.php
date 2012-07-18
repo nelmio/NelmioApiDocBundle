@@ -172,7 +172,7 @@ class SimpleFormatterTest extends WebTestCase
                     'uri' => '/any/{foo}',
                     'requirements' =>
                     array(
-                        'foo' => array('type' => '', 'description' => '', 'value' => ''),
+                        'foo' => array('type' => '', 'description' => '', 'requirement' => ''),
                     ),
                     'description' => 'Action without HTTP verb',
                 ),
@@ -182,8 +182,8 @@ class SimpleFormatterTest extends WebTestCase
                     'uri' => '/my-commented/{id}/{page}',
                     'requirements' =>
                     array(
-                        'id' => array('type' => 'int', 'description' => 'A nice comment', 'value' => ''),
-                        'page' => array('type' => 'int', 'description' => '', 'value' => ''),
+                        'id' => array('type' => 'int', 'description' => 'A nice comment', 'requirement' => ''),
+                        'page' => array('type' => 'int', 'description' => '', 'requirement' => ''),
                     ),
                     'description' => 'This method is useful to test if the getDocComment works.',
                     'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char."
@@ -194,7 +194,7 @@ class SimpleFormatterTest extends WebTestCase
                     'uri' => '/yet-another/{id}',
                     'requirements' =>
                     array(
-                        'id' => array('type' => '', 'description' => '', 'value' => '\d+')
+                        'id' => array('type' => '', 'description' => '', 'requirement' => '\d+')
                     ),
                 ),
             ),

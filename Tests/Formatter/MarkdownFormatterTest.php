@@ -157,7 +157,7 @@ _This method is useful to test if the getDocComment works._
 
 **id**
 
-  - Value: \d+
+  - Requirement: \d+
 MARKDOWN;
 
         $this->assertEquals($expected, $result);
