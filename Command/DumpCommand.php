@@ -32,6 +32,7 @@ class DumpCommand extends ContainerAwareCommand
                 'Output format like: ' . implode(', ', $this->availableFormats),
                 $this->availableFormats[0]
             )
+            ->addOption('no-sandbox', '', InputOption::VALUE_NONE)
             ->setName('api:doc:dump')
             ;
     }
@@ -49,6 +50,10 @@ class DumpCommand extends ContainerAwareCommand
             }
 
             $formatter = $this->getContainer()->get(sprintf('nelmio_api_doc.formatter.%s_formatter', $format));
+        }
+
+        if ($input->hasOption('no-sandbox') && 'html' === $format) {
+            $formatter->setEnableSandbox(false);
         }
 
         $extractedDoc = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor')->all();
