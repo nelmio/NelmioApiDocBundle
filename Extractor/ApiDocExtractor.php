@@ -20,7 +20,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ApiDocExtractor
 {
-    const ANNOTATION_CLASS = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
+    const ANNOTATION_CLASS      = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
+
+    const FOS_REST_PARAM_CLASS  = 'FOS\\RestBundle\\Controller\\Annotations\\Param';
 
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
@@ -64,7 +66,7 @@ class ApiDocExtractor
                         $resources[] = $route->getPattern();
                     }
 
-                    $array[] = $this->getData($annot, $route, $method);
+                    $array[] = $this->parseAnnotations($annot, $method, $route);
                 }
             }
         }
@@ -158,12 +160,36 @@ class ApiDocExtractor
         if ($method = $this->getReflectionMethod($controller)) {
             if ($annot = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
                 if ($route = $this->router->getRouteCollection()->get($route)) {
-                    return $this->getData($annot, $route, $method);
+                    return $this->parseAnnotations($annot, $method, $route);
                 }
             }
         }
 
         return null;
+    }
+
+    protected function parseAnnotations($annotation, $method, $route)
+    {
+        $data = $this->getData($annotation, $route, $method);
+
+        foreach ($this->reader->getMethodAnnotations($method) as $annot) {
+            if (is_subclass_of($annot, self::FOS_REST_PARAM_CLASS)) {
+                if ($annot->strict) {
+                    $data['requirements'][$annot->name] = array(
+                        'requirement'   => $annot->requirements,
+                        'type'          => '',
+                        'description'   => $annot->description,
+                    );
+                } else {
+                    $data['annotation']->addFilter($annot->name, array(
+                        'requirement'   => $annot->requirements,
+                        'description'   => $annot->description,
+                    ));
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -202,7 +228,7 @@ class ApiDocExtractor
 
         $route->setOptions(array_merge($route->getOptions(), array('_paramDocs' => $paramDocs)));
 
-        return array('annotation' => $annotation, 'route' => $route);
+        return array('annotation' => $annotation, 'route' => $route, 'requirements' => array());
     }
 
     protected function getDocComment(\Reflector $reflected)

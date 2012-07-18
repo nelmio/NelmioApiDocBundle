@@ -47,7 +47,7 @@ abstract class AbstractFormatter implements FormatterInterface
                 $array[$resource] = array();
             }
 
-            $array[$resource][] = $this->getData($coll['annotation'], $coll['route']);
+            $array[$resource][] = $this->getData($coll['annotation'], $coll['route'], $coll['requirements']);
         }
 
         return $this->render($array);
@@ -72,9 +72,10 @@ abstract class AbstractFormatter implements FormatterInterface
     /**
      * @param  ApiDoc $apiDoc
      * @param  Route  $route
+     * @param  array  $requirements
      * @return array
      */
-    protected function getData(ApiDoc $apiDoc, Route $route)
+    protected function getData(ApiDoc $apiDoc, Route $route, array $requirements = array())
     {
         $method = $route->getRequirement('_method');
         $data   = array(
@@ -82,11 +83,10 @@ abstract class AbstractFormatter implements FormatterInterface
             'uri'    => $route->compile()->getPattern(),
         );
 
-        $requirements = array();
         foreach ($route->compile()->getRequirements() as $name => $value) {
             if ('_method' !== $name) {
                 $requirements[$name] = array(
-                    'value'         => $value,
+                    'requirement'   => $value,
                     'type'          => '',
                     'description'   => '',
                 );
@@ -102,8 +102,8 @@ abstract class AbstractFormatter implements FormatterInterface
                         $requirements[$var]['type']        = isset($matches[1]) ? $matches[1] : '';
                         $requirements[$var]['description'] = $matches[2];
 
-                        if (!isset($requirements[$var]['value'])) {
-                            $requirements[$var]['value'] = '';
+                        if (!isset($requirements[$var]['requirement'])) {
+                            $requirements[$var]['requirement'] = '';
                         }
 
                         $found = true;
@@ -112,7 +112,7 @@ abstract class AbstractFormatter implements FormatterInterface
                 }
 
                 if (!isset($requirements[$var]) && false === $found) {
-                    $requirements[$var] = array('value' => '', 'type' => '', 'description' => '');
+                    $requirements[$var] = array('requirement' => '', 'type' => '', 'description' => '');
                 }
             }
         }
