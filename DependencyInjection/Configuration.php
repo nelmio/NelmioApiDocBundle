@@ -23,7 +23,13 @@ class Configuration implements ConfigurationInterface
             ->root('nelmio_api_doc')
             ->children()
                 ->scalarNode('name')->defaultValue('API documentation')->end()
-                ->scalarNode('sandbox_target')->defaultValue('/app_dev.php')->end()
+                ->arrayNode('sandbox')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('enabled')->defaultTrue()->end()
+                        ->scalarNode('endpoint')->defaultValue('/app_dev.php')->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
