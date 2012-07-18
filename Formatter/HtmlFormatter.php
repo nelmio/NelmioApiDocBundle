@@ -86,6 +86,7 @@ class HtmlFormatter extends AbstractFormatter
             'sandboxTarget' => $this->sandboxTarget,
             'date'          => date(DATE_RFC822),
             'css'           => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
+            'js'            => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
         );
     }
 }
