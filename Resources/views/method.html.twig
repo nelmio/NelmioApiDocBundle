@@ -1,186 +1,190 @@
 <li class="{{ data.method|lower }} operation">
     <div class="heading toggler">
-      <h3>
-          <span class="http_method">
-              <a>{{ data.method|upper }}</a>
-          </span>
-          <span class="path">
-              {{ data.uri }}
-          </span>
-      </h3>
-      <ul class="options">
-          {% if data.description is defined %}
-              <li>{{ data.description }}</li>
-          {% endif %}
-      </ul>
+    <h3>
+        <span class="http_method">
+            <a>{{ data.method|upper }}</a>
+        </span>
+        <span class="path">
+            {{ data.uri }}
+        </span>
+    </h3>
+    <ul class="options">
+        {% if data.description is defined %}
+            <li>{{ data.description }}</li>
+        {% endif %}
+    </ul>
     </div>
 
     <div class="content" style="display: {% if displayContent  is defined and displayContent == true %}display{% else %}none{% endif %};">
-      <ul class="tabs">
-          <li class="selected" data-pane="content">Documentation</li>
-          <li data-pane="sandbox">Sandbox</li>
-      </ul>
+        <ul class="tabs">
+            <li class="selected" data-pane="content">Documentation</li>
+            {% if enableSandbox %}
+                <li data-pane="sandbox">Sandbox</li>
+            {% endif %}
+        </ul>
 
-      <div class="panes">
-        <div class="pane content selected">
-        {% if data.documentation is defined and data.documentation is not empty %}
-            <h4>Documentation</h4>
-            <div>{{ data.documentation|markdown }}</div>
-        {% endif %}
+        <div class="panes">
+            <div class="pane content selected">
+            {% if data.documentation is defined and data.documentation is not empty %}
+                <h4>Documentation</h4>
+                <div>{{ data.documentation|markdown }}</div>
+            {% endif %}
 
-        {% if data.requirements is defined  and data.requirements is not empty %}
-            <h4>Requirements</h4>
-            <table class="fullwidth">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Requirement</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for name, infos in data.requirements %}
+            {% if data.requirements is defined  and data.requirements is not empty %}
+                <h4>Requirements</h4>
+                <table class="fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Requirement</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for name, infos in data.requirements %}
+                            <tr>
+                                <td>{{ name }}</td>
+                                <td>{{ infos.requirement }}</td>
+                                <td>{{ infos.type }}</td>
+                                <td>{{ infos.description }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+
+            {% if data.filters is defined and data.filters is not empty %}
+                <h4>Filters</h4>
+                <table class="fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Information</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for name, infos in data.filters %}
                         <tr>
                             <td>{{ name }}</td>
-                            <td>{{ infos.requirement }}</td>
-                            <td>{{ infos.type }}</td>
-                            <td>{{ infos.description }}</td>
+                            <td>
+                                <table>
+                                {% for key, value in infos %}
+                                    <tr>
+                                        <td>{{ key|title }}</td>
+                                        <td>{{ value|json_encode|trim('"') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </table>
+                            </td>
                         </tr>
                     {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
+                    </tbody>
+                </table>
+            {% endif %}
 
-        {% if data.filters is defined and data.filters is not empty %}
-            <h4>Filters</h4>
-            <table class="fullwidth">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Information</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for name, infos in data.filters %}
-                    <tr>
-                        <td>{{ name }}</td>
-                        <td>
-                            <table>
-                            {% for key, value in infos %}
-                                <tr>
-                                    <td>{{ key|title }}</td>
-                                    <td>{{ value|json_encode|trim('"') }}</td>
-                                </tr>
-                            {% endfor %}
-                            </table>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-
-        {% if data.parameters is defined and data.parameters is not empty %}
-            <h4>Parameters</h4>
-            <table class='fullwidth'>
-                <thead>
-                    <tr>
-                        <th>Parameter</th>
-                        <th>Type</th>
-                        <th>Required?</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for name, infos in data.parameters %}
+            {% if data.parameters is defined and data.parameters is not empty %}
+                <h4>Parameters</h4>
+                <table class='fullwidth'>
+                    <thead>
                         <tr>
-                            <td>{{ name }}</td>
-                            <td>{{ infos.dataType }}</td>
-                            <td>{{ infos.required ? 'true' : 'false' }}</td>
-                            <td>{{ infos.description }}</td>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required?</th>
+                            <th>Description</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-        </div>
-
-        <div class="pane sandbox">
-            <form method="{{ data.method|upper }}" action="{{ data.uri }}">
-                <fieldset class="parameters">
-                    <legend>Parameters</legend>
-                    {% if data.parameters is defined %}
+                    </thead>
+                    <tbody>
                         {% for name, infos in data.parameters %}
-                            <p class="tuple">
-                                <input type="text" class="key" value="{{ name }}" placeholder="Key" />
-                                <span>=</span>
-                                <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
-                            </p>
+                            <tr>
+                                <td>{{ name }}</td>
+                                <td>{{ infos.dataType }}</td>
+                                <td>{{ infos.required ? 'true' : 'false' }}</td>
+                                <td>{{ infos.description }}</td>
+                            </tr>
                         {% endfor %}
-                    {% endif %}
-                    {% if data.filters is defined %}
-                        {% for name, infos in data.filters %}
-                            <p class="tuple">
-                                <input type="text" class="key" value="{{ name }}" placeholder="Key" />
-                                <span>=</span>
-                                <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
-                            </p>
-                        {% endfor %}
-                    {% endif %}
-
-                    <button class="add">New parameter</button>
-                </fieldset>
-
-                <fieldset class="headers">
-                    <legend>Headers</legend>
-
-                      <p class="tuple">
-                          <input type="text" class="key" placeholder="Key" />
-                          <span>=</span>
-                          <input type="text" class="value" placeholder="Value" /> <span class="remove">-</span>
-                      </p>
-
-                    <button class="add">New header</button>
-                </fieldset>
-
-                <fieldset class="request-content">
-                    <legend>Content</legend>
-
-                    <textarea class="content" placeholder="Content set here will override the parameters that do not match the url"></textarea>
-
-                    <p class="tuple">
-                        <input type="text" class="key content-type" value="Content-Type" disabled="disabled" />
-                        <span>=</span>
-                        <input type="text" class="value" placeholder="Value" />
-                        <button class="set-content-type">Set header</button> <small>Replaces header if set</small>
-                    </p>
-                </fieldset>
-
-                <div class="buttons">
-                    <input type="submit" value="Try!" />
-                </div>
-            </form>
-
-            <script type="text/x-tmpl" class="tuple_template">
-              <p class="tuple">
-                  <input type="text" class="key" placeholder="Key" />
-                  <span>=</span>
-                  <input type="text" class="value" placeholder="Value" /> <span class="remove">-</span>
-              </p>
-            </script>
-
-            <div class="result">
-                <h4>Request URL</h4>
-                <pre class="url"></pre>
-
-                <h4>Response Headers&nbsp;<small>[<a href="" class="to-expand">Expand</a>]</small></h4>
-                <pre class="headers to-expand"></pre>
-
-                <h4>Response Body&nbsp;<small>[<a href="" class="to-raw">Raw</a>]</small></h4>
-                <pre class="response prettyprint"></pre>
+                    </tbody>
+                </table>
+            {% endif %}
             </div>
+
+            {% if enableSandbox %}
+                <div class="pane sandbox">
+                    <form method="{{ data.method|upper }}" action="{{ data.uri }}">
+                        <fieldset class="parameters">
+                            <legend>Parameters</legend>
+                            {% if data.parameters is defined %}
+                                {% for name, infos in data.parameters %}
+                                    <p class="tuple">
+                                        <input type="text" class="key" value="{{ name }}" placeholder="Key" />
+                                        <span>=</span>
+                                        <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
+                                    </p>
+                                {% endfor %}
+                            {% endif %}
+                            {% if data.filters is defined %}
+                                {% for name, infos in data.filters %}
+                                    <p class="tuple">
+                                        <input type="text" class="key" value="{{ name }}" placeholder="Key" />
+                                        <span>=</span>
+                                        <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
+                                    </p>
+                                {% endfor %}
+                            {% endif %}
+
+                            <button class="add">New parameter</button>
+                        </fieldset>
+
+                        <fieldset class="headers">
+                            <legend>Headers</legend>
+
+                            <p class="tuple">
+                                <input type="text" class="key" placeholder="Key" />
+                                <span>=</span>
+                                <input type="text" class="value" placeholder="Value" /> <span class="remove">-</span>
+                            </p>
+
+                            <button class="add">New header</button>
+                        </fieldset>
+
+                        <fieldset class="request-content">
+                            <legend>Content</legend>
+
+                            <textarea class="content" placeholder="Content set here will override the parameters that do not match the url"></textarea>
+
+                            <p class="tuple">
+                                <input type="text" class="key content-type" value="Content-Type" disabled="disabled" />
+                                <span>=</span>
+                                <input type="text" class="value" placeholder="Value" />
+                                <button class="set-content-type">Set header</button> <small>Replaces header if set</small>
+                            </p>
+                        </fieldset>
+
+                        <div class="buttons">
+                            <input type="submit" value="Try!" />
+                        </div>
+                    </form>
+
+                    <script type="text/x-tmpl" class="tuple_template">
+                    <p class="tuple">
+                        <input type="text" class="key" placeholder="Key" />
+                        <span>=</span>
+                        <input type="text" class="value" placeholder="Value" /> <span class="remove">-</span>
+                    </p>
+                    </script>
+
+                    <div class="result">
+                        <h4>Request URL</h4>
+                        <pre class="url"></pre>
+
+                        <h4>Response Headers&nbsp;<small>[<a href="" class="to-expand">Expand</a>]</small></h4>
+                        <pre class="headers to-expand"></pre>
+
+                        <h4>Response Body&nbsp;<small>[<a href="" class="to-raw">Raw</a>]</small></h4>
+                        <pre class="response prettyprint"></pre>
+                    </div>
+                </div>
+            {% endif %}
         </div>
-      </div>
     </div>
 </li>

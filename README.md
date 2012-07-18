@@ -174,6 +174,15 @@ You can specify your own API name:
     nelmio_api_doc:
         name:   My API
 
+This bundle provides a sandbox mode in order to test API methods. You can
+configure this sandbox using the following parameters:
+
+    # app/config/config.yml
+    nelmio_api_doc:
+        sandbox:
+            enabled:  true # default: true, you can set this parameter to `false` to disable the sandbox
+            endpoint: http://sandbox.example.com/ # default: /app_dev.php, use this parameter to define which URL to call through the sandbox
+
 
 ## Credits ##
 

@@ -29,7 +29,8 @@ class NelmioApiDocExtension extends Extension
         $config = $processor->processConfiguration($configuration, $configs);
 
         $container->setParameter('nelmio_api_doc.api_name', $config['name']);
-        $container->setParameter('nelmio_api_doc.api_sandbox_target', $config['sandbox_target']);
+        $container->setParameter('nelmio_api_doc.sandbox.enabled',  $config['sandbox']['enabled']);
+        $container->setParameter('nelmio_api_doc.sandbox.endpoint', $config['sandbox']['endpoint']);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('formatters.xml');
