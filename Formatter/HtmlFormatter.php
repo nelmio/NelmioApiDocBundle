@@ -23,7 +23,12 @@ class HtmlFormatter extends AbstractFormatter
     /**
      * @var string
      */
-    private $sandboxTarget;
+    private $endpoint;
+
+    /**
+     * @var boolean
+     */
+    private $enableSandbox;
 
     /**
      * @var \Symfony\Component\Templating\EngineInterface
@@ -39,11 +44,19 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
-     * @param string $sandboxTarget
+     * @param string $endpoint
      */
-    public function setSandboxTarget($sandboxTarget)
+    public function setEndpoint($endpoint)
     {
-        $this->sandboxTarget = $sandboxTarget;
+        $this->endpoint = $endpoint;
+    }
+
+    /**
+     * @param boolean $enableSandbox
+     */
+    public function setEnableSandbox($enableSandbox)
+    {
+        $this->enableSandbox = $enableSandbox;
     }
 
     /**
@@ -83,7 +96,8 @@ class HtmlFormatter extends AbstractFormatter
     {
         return array(
             'apiName'       => $this->apiName,
-            'sandboxTarget' => $this->sandboxTarget,
+            'endpoint'      => $this->endpoint,
+            'enableSandbox' => $this->enableSandbox,
             'date'          => date(DATE_RFC822),
             'css'           => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
             'js'            => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),

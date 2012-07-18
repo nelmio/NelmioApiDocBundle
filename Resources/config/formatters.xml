@@ -30,8 +30,11 @@
             <call method="setApiName">
                 <argument>%nelmio_api_doc.api_name%</argument>
             </call>
-            <call method="setSandboxTarget">
-                <argument>%nelmio_api_doc.api_sandbox_target%</argument>
+            <call method="setEnableSandbox">
+                <argument>%nelmio_api_doc.sandbox.enabled%</argument>
+            </call>
+            <call method="setEndpoint">
+                <argument>%nelmio_api_doc.sandbox.endpoint%</argument>
             </call>
         </service>
     </services>
