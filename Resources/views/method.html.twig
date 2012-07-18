@@ -34,7 +34,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Value</th>
+                        <th>Requirement</th>
                         <th>Type</th>
                         <th>Description</th>
                     </tr>
@@ -43,7 +43,7 @@
                     {% for name, infos in data.requirements %}
                         <tr>
                             <td>{{ name }}</td>
-                            <td>{{ infos.value }}</td>
+                            <td>{{ infos.requirement }}</td>
                             <td>{{ infos.type }}</td>
                             <td>{{ infos.description }}</td>
                         </tr>
@@ -66,11 +66,14 @@
                     <tr>
                         <td>{{ name }}</td>
                         <td>
-                            <ul>
+                            <table>
                             {% for key, value in infos %}
-                                <li><em>{{ key }}</em> : {{ value|json_encode|trim('"') }}</li>
+                                <tr>
+                                    <td>{{ key|title }}</td>
+                                    <td>{{ value|json_encode|trim('"') }}</td>
+                                </tr>
                             {% endfor %}
-                            </ul>
+                            </table>
                         </td>
                     </tr>
                 {% endfor %}
