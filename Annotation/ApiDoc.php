@@ -54,7 +54,7 @@ class ApiDoc
                 $name = $filter['name'];
                 unset($filter['name']);
 
-                $this->filters[$name] = $filter;
+                $this->addFilter($name, $filter);
             }
         }
 
@@ -71,6 +71,15 @@ class ApiDoc
     public function getFilters()
     {
         return $this->filters;
+    }
+
+    /**
+     * @param string $name
+     * @param array  $filter
+     */
+    public function addFilter($name, array $filter)
+    {
+        $this->filters[$name] = $filter;
     }
 
     /**
