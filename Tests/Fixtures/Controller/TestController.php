@@ -35,7 +35,7 @@ class TestController
     /**
      * @ApiDoc(
      *  description="create test",
-     *  formType="Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType"
+     *  inputClass="Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType"
      * )
      */
     public function postTestAction()
@@ -76,7 +76,7 @@ class TestController
     /**
      * @ApiDoc(
      *  description="create another test",
-     *  formType="dependency_type"
+     *  inputClass="dependency_type"
      * )
      */
     public function anotherPostAction()

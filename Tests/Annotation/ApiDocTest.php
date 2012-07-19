@@ -27,7 +27,7 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
         $this->assertFalse(isset($array['description']));
-        $this->assertNull($annot->getFormType());
+        $this->assertNull($annot->getInputClass());
     }
 
     public function testConstructWithInvalidData()
@@ -44,7 +44,7 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
         $this->assertFalse(isset($array['description']));
-        $this->assertNull($annot->getFormType());
+        $this->assertNull($annot->getInputClass());
     }
 
     public function testConstruct()
@@ -60,14 +60,14 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
         $this->assertEquals($data['description'], $array['description']);
-        $this->assertNull($annot->getFormType());
+        $this->assertNull($annot->getInputClass());
     }
 
     public function testConstructDefinesAFormType()
     {
         $data = array(
             'description'   => 'Heya',
-            'formType'      => 'My\Form\Type',
+            'inputClass'      => 'My\Form\Type',
         );
 
         $annot = new ApiDoc($data);
@@ -77,7 +77,7 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
         $this->assertEquals($data['description'], $array['description']);
-        $this->assertEquals($data['formType'], $annot->getFormType());
+        $this->assertEquals($data['inputClass'], $annot->getInputClass());
     }
 
     public function testConstructMethodIsResource()
@@ -85,7 +85,7 @@ class ApiDocTest extends TestCase
         $data = array(
             'resource'      => true,
             'description'   => 'Heya',
-            'formType'      => 'My\Form\Type',
+            'inputClass'      => 'My\Form\Type',
         );
 
         $annot = new ApiDoc($data);
@@ -95,7 +95,7 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['filters']));
         $this->assertTrue($annot->isResource());
         $this->assertEquals($data['description'], $array['description']);
-        $this->assertEquals($data['formType'], $annot->getFormType());
+        $this->assertEquals($data['inputClass'], $annot->getInputClass());
     }
 
     public function testConstructMethodResourceIsFalse()
@@ -103,7 +103,7 @@ class ApiDocTest extends TestCase
         $data = array(
             'resource'      => false,
             'description'   => 'Heya',
-            'formType'      => 'My\Form\Type',
+            'inputClass'      => 'My\Form\Type',
         );
 
         $annot = new ApiDoc($data);
@@ -113,7 +113,7 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
         $this->assertEquals($data['description'], $array['description']);
-        $this->assertEquals($data['formType'], $annot->getFormType());
+        $this->assertEquals($data['inputClass'], $annot->getInputClass());
     }
 
     public function testConstructMethodHasFilters()
@@ -135,7 +135,7 @@ class ApiDocTest extends TestCase
         $this->assertEquals(array('a-filter' => array()), $array['filters']);
         $this->assertTrue($annot->isResource());
         $this->assertEquals($data['description'], $array['description']);
-        $this->assertNull($annot->getFormType());
+        $this->assertNull($annot->getInputClass());
     }
 
     /**
@@ -158,7 +158,7 @@ class ApiDocTest extends TestCase
         $data = array(
             'resource'      => true,
             'description'   => 'Heya',
-            'formType'      => 'My\Form\Type',
+            'inputClass'      => 'My\Form\Type',
             'filters'       => array(
                 array('name' => 'a-filter'),
             ),
@@ -171,6 +171,6 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['filters']));
         $this->assertTrue($annot->isResource());
         $this->assertEquals($data['description'], $array['description']);
-        $this->assertEquals($data['formType'], $annot->getFormType());
+        $this->assertEquals($data['inputClass'], $annot->getInputClass());
     }
 }
