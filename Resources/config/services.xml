@@ -13,6 +13,7 @@
             <argument type="service" id="service_container"/>
             <argument type="service" id="router" />
             <argument type="service" id="annotation_reader" />
+            <argument type="service" id="nelmio_api_doc.parser.form_type_parser" />
         </service>
         <service id="nelmio_api_doc.form.extension.description_form_type_extension" class="%nelmio_api_doc.form.extension.description_form_type_extension.class%">
             <tag name="form.type_extension" alias="form" />

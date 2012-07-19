@@ -22,62 +22,67 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->all();
 
         $this->assertTrue(is_array($data));
-        $this->assertCount(9, $data);
+        $this->assertCount(10, $data);
 
         foreach ($data as $d) {
             $this->assertTrue(is_array($d));
             $this->assertArrayHasKey('annotation', $d);
-            $this->assertArrayHasKey('route', $d);
             $this->assertArrayHasKey('resource', $d);
 
             $this->assertInstanceOf('Nelmio\ApiDocBundle\Annotation\ApiDoc', $d['annotation']);
-            $this->assertInstanceOf('Symfony\Component\Routing\Route', $d['route']);
+            $this->assertInstanceOf('Symfony\Component\Routing\Route', $d['annotation']->getRoute());
             $this->assertNotNull($d['resource']);
         }
 
         $a1 = $data[0]['annotation'];
+        $array1 = $a1->toArray();
         $this->assertTrue($a1->isResource());
         $this->assertEquals('index action', $a1->getDescription());
-        $this->assertTrue(is_array($a1->getFilters()));
+        $this->assertTrue(is_array($array1['filters']));
         $this->assertNull($a1->getFormType());
 
         $a1 = $data[1]['annotation'];
+        $array1 = $a1->toArray();
         $this->assertTrue($a1->isResource());
         $this->assertEquals('index action', $a1->getDescription());
-        $this->assertTrue(is_array($a1->getFilters()));
+        $this->assertTrue(is_array($array1['filters']));
         $this->assertNull($a1->getFormType());
 
         $a2 = $data[2]['annotation'];
+        $array2 = $a2->toArray();
         $this->assertFalse($a2->isResource());
         $this->assertEquals('create test', $a2->getDescription());
-        $this->assertTrue(is_array($a2->getFilters()));
+        $this->assertFalse(isset($array2['filters']));
         $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getFormType());
 
         $a2 = $data[3]['annotation'];
+        $array2 = $a2->toArray();
         $this->assertFalse($a2->isResource());
         $this->assertEquals('create test', $a2->getDescription());
-        $this->assertTrue(is_array($a2->getFilters()));
+        $this->assertFalse(isset($array2['filters']));
         $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getFormType());
     }
 
     public function testGet()
     {
-        $container = $this->getContainer();
-        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $data = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
 
-        $this->assertTrue(isset($data['route']));
-        $this->assertTrue(isset($data['annotation']));
+        $this->assertInstanceOf('Nelmio\ApiDocBundle\Annotation\ApiDoc', $annotation);
 
-        $a = $data['annotation'];
-        $this->assertTrue($a->isResource());
-        $this->assertEquals('index action', $a->getDescription());
-        $this->assertTrue(is_array($a->getFilters()));
-        $this->assertNull($a->getFormType());
+        $this->assertTrue($annotation->isResource());
+        $this->assertEquals('index action', $annotation->getDescription());
 
-        $data2 = $extractor->get('nemlio.test.controller:indexAction', 'test_service_route_1');
-        $data2['route']->setDefault('_controller', $data['route']->getDefault('_controller'));
-        $this->assertEquals($data, $data2);
+        $array = $annotation->toArray();
+        $this->assertTrue(is_array($array['filters']));
+        $this->assertNull($annotation->getFormType());
+
+        $annotation2 = $extractor->get('nemlio.test.controller:indexAction', 'test_service_route_1');
+        $annotation2->getRoute()
+            ->setDefault('_controller', $annotation->getRoute()->getDefault('_controller'))
+            ->compile(); // compile as we changed a default value
+        $this->assertEquals($annotation, $annotation2);
     }
 
     public function testGetWithBadController()
@@ -134,14 +139,14 @@ class ApiDocExtractorTest extends WebTestCase
 
     public function testGetWithDocComment()
     {
-        $container = $this->getContainer();
-        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $data = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::myCommentedAction', 'test_route_5');
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::myCommentedAction', 'test_route_5');
 
-        $this->assertNotNull($data);
+        $this->assertNotNull($annotation);
         $this->assertEquals(
             "This method is useful to test if the getDocComment works.",
-            $data['annotation']->getDescription()
+            $annotation->getDescription()
         );
     }
 }
