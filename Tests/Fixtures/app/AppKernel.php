@@ -50,7 +50,6 @@ class AppKernel extends Kernel
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
             new \Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new \Nelmio\ApiDocBundle\Tests\Fixtures\NelmioApiDocTestBundle(),
-            new \Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
         );
     }
 

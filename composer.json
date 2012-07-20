@@ -18,7 +18,7 @@
         "symfony/framework-bundle": "2.1.*",
         "symfony/twig-bundle": "2.1.*",
         "symfony/form": "2.1.*",
-        "knplabs/knp-markdown-bundle": "dev-master"
+        "dflydev/markdown": "1.0.*"
     },
     "require-dev": {
         "symfony/css-selector": "2.1.*",
