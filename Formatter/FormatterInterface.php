@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\Formatter;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\Routing\Route;
 
 interface FormatterInterface
 {
@@ -27,9 +26,8 @@ interface FormatterInterface
     /**
      * Format documentation data for one route.
      *
-     * @param ApiDoc $apiDoc
-     * @param Route  $route
+     * @param ApiDoc       $annotation
      * return string|array
      */
-    public function formatOne(ApiDoc $apiDoc, Route $route);
+    public function formatOne(ApiDoc $annotation);
 }

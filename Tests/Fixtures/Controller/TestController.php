@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Controller;
 
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -79,6 +80,14 @@ class TestController
      * )
      */
     public function anotherPostAction()
+    {
+    }
+
+    /**
+     * @ApiDoc()
+     * @QueryParam(name="page", requirements="\d+", default="1", description="Page of the overview.")
+     */
+    public function zActionWithQueryParamAction()
     {
     }
 }

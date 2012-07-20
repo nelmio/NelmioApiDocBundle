@@ -54,8 +54,8 @@ class RequestListener
         $controller = $request->attributes->get('_controller');
         $route      = $request->attributes->get('_route');
 
-        if (null !== $array = $this->extractor->get($controller, $route)) {
-            $result = $this->formatter->formatOne($array['annotation'], $array['route']);
+        if (null !== $annotation = $this->extractor->get($controller, $route)) {
+            $result = $this->formatter->formatOne($annotation);
 
             $event->setResponse(new Response($result, 200, array(
                 'Content-Type' => 'text/html'

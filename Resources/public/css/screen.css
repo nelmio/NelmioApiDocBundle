@@ -262,7 +262,6 @@ li.operation div.heading h3 span.path {
 
 li.operation div.content {
   border: 1px solid black;
-  border-top: none;
   padding: 10px;
   -moz-border-radius-bottomleft: 6px;
   -webkit-border-bottom-left-radius: 6px;
@@ -445,7 +444,6 @@ li.operation.patch div.content h4 {
 
 .panes {
   clear: both;
-  border-top: 1px solid #C3D9EC;
 }
 
 .pane.sandbox {

@@ -72,7 +72,7 @@
                                 {% for key, value in infos %}
                                     <tr>
                                         <td>{{ key|title }}</td>
-                                        <td>{{ value|json_encode|trim('"') }}</td>
+                                        <td>{{ value|json_encode|replace({'\\\\': '\\'})|trim('"') }}</td>
                                     </tr>
                                 {% endfor %}
                                 </table>

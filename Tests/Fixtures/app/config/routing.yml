@@ -34,6 +34,12 @@ test_route_7:
     requirements:
         _method: POST
 
+test_route_8:
+    pattern:  /z-action-with-query-param
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithQueryParam }
+    requirements:
+        _method: GET
+
 test_service_route_1:
     pattern:  /tests
     defaults: { _controller: nemlio.test.controller:indexAction, _format: json }
