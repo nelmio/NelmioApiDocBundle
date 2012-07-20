@@ -6,7 +6,7 @@
     <parameters>
         <parameter key="nelmio_api_doc.extractor.api_doc_extractor.class">Nelmio\ApiDocBundle\Extractor\ApiDocExtractor</parameter>
         <parameter key="nelmio_api_doc.form.extension.description_form_type_extension.class">Nelmio\ApiDocBundle\Form\Extension\DescriptionFormTypeExtension</parameter>
-        <parameter key="nelmio_api_doc.twig.extension.markdown.class">Nelmio\ApiDocBundle\Twig\Extension\MarkdownExtension</parameter>
+        <parameter key="nelmio_api_doc.twig.extension.extra_markdown.class">Nelmio\ApiDocBundle\Twig\Extension\MarkdownExtension</parameter>
     </parameters>
 
     <services>
@@ -21,7 +21,7 @@
             <tag name="form.type_extension" alias="form" />
         </service>
 
-        <service id="nelmio_api_doc.twig.extension.markdown" class="%nelmio_api_doc.twig.extension.markdown.class%">
+        <service id="nelmio_api_doc.twig.extension.extra_markdown" class="%nelmio_api_doc.twig.extension.extra_markdown.class%">
             <tag name="twig.extension" />
         </service>
     </services>
