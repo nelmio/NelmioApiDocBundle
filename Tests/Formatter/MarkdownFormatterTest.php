@@ -34,12 +34,12 @@ _index action_
 
 a:
 
-  * dataType: integer
+  * DataType: integer
 
 b:
 
-  * dataType: string
-  * arbitrary: ["arg1","arg2"]
+  * DataType: string
+  * Arbitrary: ["arg1","arg2"]
 
 
 ### `GET` /tests ###
@@ -50,12 +50,12 @@ _index action_
 
 a:
 
-  * dataType: integer
+  * DataType: integer
 
 b:
 
-  * dataType: string
-  * arbitrary: ["arg1","arg2"]
+  * DataType: string
+  * Arbitrary: ["arg1","arg2"]
 
 
 ### `POST` /tests ###
@@ -158,6 +158,17 @@ _This method is useful to test if the getDocComment works._
 **id**
 
   - Requirement: \d+
+
+
+### `GET` /z-action-with-query-param ###
+
+
+#### Filters ####
+
+page:
+
+  * Requirement: \d+
+  * Description: Page of the overview.
 MARKDOWN;
 
         $this->assertEquals($expected, $result);
@@ -167,9 +178,9 @@ MARKDOWN;
     {
         $container = $this->getContainer();
 
-        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $data      = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
-        $result    = $container->get('nelmio_api_doc.formatter.markdown_formatter')->formatOne($data['annotation'], $data['route']);
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
+        $result     = $container->get('nelmio_api_doc.formatter.markdown_formatter')->formatOne($annotation);
 
         $expected = <<<MARKDOWN
 ### `GET` /tests ###
@@ -180,12 +191,12 @@ _index action_
 
 a:
 
-  * dataType: integer
+  * DataType: integer
 
 b:
 
-  * dataType: string
-  * arbitrary: ["arg1","arg2"]
+  * DataType: string
+  * Arbitrary: ["arg1","arg2"]
 
 
 MARKDOWN;

@@ -21,11 +21,12 @@ class ApiDocTest extends TestCase
         $data = array();
 
         $annot = new ApiDoc($data);
+        $array = $annot->toArray();
 
-        $this->assertTrue(is_array($annot->getFilters()));
-        $this->assertCount(0, $annot->getFilters());
+        $this->assertTrue(is_array($array));
+        $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
-        $this->assertNull($annot->getDescription());
+        $this->assertFalse(isset($array['description']));
         $this->assertNull($annot->getFormType());
     }
 
@@ -37,11 +38,12 @@ class ApiDocTest extends TestCase
         );
 
         $annot = new ApiDoc($data);
+        $array = $annot->toArray();
 
-        $this->assertTrue(is_array($annot->getFilters()));
-        $this->assertCount(0, $annot->getFilters());
+        $this->assertTrue(is_array($array));
+        $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
-        $this->assertNull($annot->getDescription());
+        $this->assertFalse(isset($array['description']));
         $this->assertNull($annot->getFormType());
     }
 
@@ -52,11 +54,12 @@ class ApiDocTest extends TestCase
         );
 
         $annot = new ApiDoc($data);
+        $array = $annot->toArray();
 
-        $this->assertTrue(is_array($annot->getFilters()));
-        $this->assertCount(0, $annot->getFilters());
+        $this->assertTrue(is_array($array));
+        $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
-        $this->assertEquals($data['description'], $annot->getDescription());
+        $this->assertEquals($data['description'], $array['description']);
         $this->assertNull($annot->getFormType());
     }
 
@@ -68,11 +71,12 @@ class ApiDocTest extends TestCase
         );
 
         $annot = new ApiDoc($data);
+        $array = $annot->toArray();
 
-        $this->assertTrue(is_array($annot->getFilters()));
-        $this->assertCount(0, $annot->getFilters());
+        $this->assertTrue(is_array($array));
+        $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
-        $this->assertEquals($data['description'], $annot->getDescription());
+        $this->assertEquals($data['description'], $array['description']);
         $this->assertEquals($data['formType'], $annot->getFormType());
     }
 
@@ -85,11 +89,12 @@ class ApiDocTest extends TestCase
         );
 
         $annot = new ApiDoc($data);
+        $array = $annot->toArray();
 
-        $this->assertTrue(is_array($annot->getFilters()));
-        $this->assertCount(0, $annot->getFilters());
+        $this->assertTrue(is_array($array));
+        $this->assertFalse(isset($array['filters']));
         $this->assertTrue($annot->isResource());
-        $this->assertEquals($data['description'], $annot->getDescription());
+        $this->assertEquals($data['description'], $array['description']);
         $this->assertEquals($data['formType'], $annot->getFormType());
     }
 
@@ -102,11 +107,12 @@ class ApiDocTest extends TestCase
         );
 
         $annot = new ApiDoc($data);
+        $array = $annot->toArray();
 
-        $this->assertTrue(is_array($annot->getFilters()));
-        $this->assertCount(0, $annot->getFilters());
+        $this->assertTrue(is_array($array));
+        $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
-        $this->assertEquals($data['description'], $annot->getDescription());
+        $this->assertEquals($data['description'], $array['description']);
         $this->assertEquals($data['formType'], $annot->getFormType());
     }
 
@@ -121,12 +127,14 @@ class ApiDocTest extends TestCase
         );
 
         $annot = new ApiDoc($data);
+        $array = $annot->toArray();
 
-        $this->assertTrue(is_array($annot->getFilters()));
-        $this->assertCount(1, $annot->getFilters());
-        $this->assertEquals(array('a-filter' => array()), $annot->getFilters());
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(is_array($array['filters']));
+        $this->assertCount(1, $array['filters']);
+        $this->assertEquals(array('a-filter' => array()), $array['filters']);
         $this->assertTrue($annot->isResource());
-        $this->assertEquals($data['description'], $annot->getDescription());
+        $this->assertEquals($data['description'], $array['description']);
         $this->assertNull($annot->getFormType());
     }
 
@@ -157,12 +165,12 @@ class ApiDocTest extends TestCase
         );
 
         $annot = new ApiDoc($data);
+        $array = $annot->toArray();
 
-        $this->assertTrue(is_array($annot->getFilters()));
-        $this->assertCount(0, $annot->getFilters());
-        $this->assertEquals(array(), $annot->getFilters());
+        $this->assertTrue(is_array($array));
+        $this->assertFalse(isset($array['filters']));
         $this->assertTrue($annot->isResource());
-        $this->assertEquals($data['description'], $annot->getDescription());
+        $this->assertEquals($data['description'], $array['description']);
         $this->assertEquals($data['formType'], $annot->getFormType());
     }
 }

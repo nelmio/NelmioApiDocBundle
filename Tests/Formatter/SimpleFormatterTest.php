@@ -30,9 +30,6 @@ class SimpleFormatterTest extends WebTestCase
                 array(
                     'method' => 'GET',
                     'uri' => '/tests',
-                    'requirements' =>
-                    array(
-                    ),
                     'filters' =>
                     array(
                         'a' =>
@@ -55,9 +52,6 @@ class SimpleFormatterTest extends WebTestCase
                 array(
                     'method' => 'GET',
                     'uri' => '/tests',
-                    'requirements' =>
-                    array(
-                    ),
                     'filters' =>
                     array(
                         'a' =>
@@ -80,9 +74,6 @@ class SimpleFormatterTest extends WebTestCase
                 array(
                     'method' => 'POST',
                     'uri' => '/tests',
-                    'requirements' =>
-                    array(
-                    ),
                     'parameters' =>
                     array(
                         'a' =>
@@ -110,9 +101,6 @@ class SimpleFormatterTest extends WebTestCase
                 array(
                     'method' => 'POST',
                     'uri' => '/tests',
-                    'requirements' =>
-                    array(
-                    ),
                     'parameters' =>
                     array(
                         'a' =>
@@ -143,9 +131,6 @@ class SimpleFormatterTest extends WebTestCase
                 array(
                     'method' => 'POST',
                     'uri' => '/another-post',
-                    'requirements' =>
-                    array(
-                    ),
                     'parameters' =>
                     array(
                         'a' =>
@@ -161,9 +146,6 @@ class SimpleFormatterTest extends WebTestCase
                 array(
                     'method' => 'ANY',
                     'uri' => '/any',
-                    'requirements' =>
-                    array(
-                    ),
                     'description' => 'Action without HTTP verb',
                 ),
                 2 =>
@@ -197,6 +179,15 @@ class SimpleFormatterTest extends WebTestCase
                         'id' => array('type' => '', 'description' => '', 'requirement' => '\d+')
                     ),
                 ),
+                5 =>
+                array(
+                    'method' => 'GET',
+                    'uri' => '/z-action-with-query-param',
+                    'filters' =>
+                    array(
+                        'page' => array('description' => 'Page of the overview.', 'requirement' => '\d+')
+                    ),
+                ),
             ),
         );
 
@@ -207,14 +198,13 @@ class SimpleFormatterTest extends WebTestCase
     {
         $container = $this->getContainer();
 
-        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $data      = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
-        $result    = $container->get('nelmio_api_doc.formatter.simple_formatter')->formatOne($data['annotation'], $data['route']);
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
+        $result     = $container->get('nelmio_api_doc.formatter.simple_formatter')->formatOne($annotation);
 
         $expected = array(
             'method' => 'GET',
             'uri' => '/tests',
-            'requirements' => array(),
             'filters' => array(
                 'a' => array(
                     'dataType' => 'integer',

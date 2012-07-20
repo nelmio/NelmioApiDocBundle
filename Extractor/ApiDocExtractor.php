@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Parser\FormTypeParser;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -39,17 +40,22 @@ class ApiDocExtractor
      */
     private $reader;
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader)
+    /**
+     * @var \Nelmio\ApiDocBundle\Parser\FormTypeParser
+     */
+    private $parser;
+
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, FormTypeParser $parser)
     {
         $this->container = $container;
-        $this->router = $router;
-        $this->reader = $reader;
+        $this->router    = $router;
+        $this->reader    = $reader;
+        $this->parser    = $parser;
     }
 
     /**
      * Returns an array of data where each data is an array with the following keys:
      *  - annotation
-     *  - route
      *  - resource
      *
      * @return array
@@ -61,12 +67,12 @@ class ApiDocExtractor
 
         foreach ($this->router->getRouteCollection()->all() as $route) {
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
-                if ($annot = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
-                    if ($annot->isResource()) {
+                if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
+                    if ($annotation->isResource()) {
                         $resources[] = $route->getPattern();
                     }
 
-                    $array[] = $this->parseAnnotations($annot, $method, $route);
+                    $array[] = array('annotation' => $this->extractData($annotation, $route, $method));
                 }
             }
         }
@@ -74,7 +80,7 @@ class ApiDocExtractor
         rsort($resources);
         foreach ($array as $index => $element) {
             $hasResource = false;
-            $pattern = $element['route']->getPattern();
+            $pattern     = $element['annotation']->getRoute()->getPattern();
 
             foreach ($resources as $resource) {
                 if (0 === strpos($pattern, $resource)) {
@@ -91,31 +97,38 @@ class ApiDocExtractor
         }
 
         $methodOrder = array('GET', 'POST', 'PUT', 'DELETE');
-
         usort($array, function($a, $b) use ($methodOrder) {
             if ($a['resource'] === $b['resource']) {
-                if ($a['route']->getPattern() === $b['route']->getPattern()) {
-                    $methodA = array_search($a['route']->getRequirement('_method'), $methodOrder);
-                    $methodB = array_search($b['route']->getRequirement('_method'), $methodOrder);
+                if ($a['annotation']->getRoute()->getPattern() === $b['annotation']->getRoute()->getPattern()) {
+                    $methodA = array_search($a['annotation']->getRoute()->getRequirement('_method'), $methodOrder);
+                    $methodB = array_search($b['annotation']->getRoute()->getRequirement('_method'), $methodOrder);
 
                     if ($methodA === $methodB) {
-                        return strcmp($a['route']->getRequirement('_method'), $b['route']->getRequirement('_method'));
+                        return strcmp(
+                            $a['annotation']->getRoute()->getRequirement('_method'),
+                            $b['annotation']->getRoute()->getRequirement('_method')
+                        );
                     }
 
                     return $methodA > $methodB ? 1 : -1;
                 }
 
-                return strcmp($a['route']->getPattern(), $b['route']->getPattern());
+                return strcmp(
+                    $a['annotation']->getRoute()->getPattern(),
+                    $b['annotation']->getRoute()->getPattern()
+                );
             }
 
             return strcmp($a['resource'], $b['resource']);
         });
 
+
+
         return $array;
     }
 
     /**
-     * Returns the ReflectionMethod for the given controller string
+     * Returns the ReflectionMethod for the given controller string.
      *
      * @param string $controller
      * @return \ReflectionMethod|null
@@ -130,7 +143,7 @@ class ApiDocExtractor
             $method = $matches[2];
             if ($this->container->has($controller)) {
                 $this->container->enterScope('request');
-                $this->container->set('request', new Request);
+                $this->container->set('request', new Request());
                 $class = get_class($this->container->get($controller));
                 $this->container->leaveScope('request');
             }
@@ -147,20 +160,18 @@ class ApiDocExtractor
     }
 
     /**
-     * Returns an array containing two values with the following keys:
-     *  - annotation
-     *  - route
+     * Returns an ApiDoc annotation.
      *
      * @param string $controller
      * @param Route  $route
-     * @return array|null
+     * @return ApiDoc|null
      */
     public function get($controller, $route)
     {
         if ($method = $this->getReflectionMethod($controller)) {
-            if ($annot = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
+            if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
                 if ($route = $this->router->getRouteCollection()->get($route)) {
-                    return $this->parseAnnotations($annot, $method, $route);
+                    return $this->extractData($annotation, $route, $method);
                 }
             }
         }
@@ -168,45 +179,26 @@ class ApiDocExtractor
         return null;
     }
 
-    protected function parseAnnotations($annotation, $method, $route)
-    {
-        $data = $this->getData($annotation, $route, $method);
-
-        foreach ($this->reader->getMethodAnnotations($method) as $annot) {
-            if (is_subclass_of($annot, self::FOS_REST_PARAM_CLASS)) {
-                if ($annot->strict) {
-                    $data['requirements'][$annot->name] = array(
-                        'requirement'   => $annot->requirements,
-                        'type'          => '',
-                        'description'   => $annot->description,
-                    );
-                } else {
-                    $data['annotation']->addFilter($annot->name, array(
-                        'requirement'   => $annot->requirements,
-                        'description'   => $annot->description,
-                    ));
-                }
-            }
-        }
-
-        return $data;
-    }
-
     /**
-     * Allows to add more data to the ApiDoc object, and
-     * returns an array containing the following keys:
-     *  - annotation
-     *  - route
+     * Returns a new ApiDoc instance with more data.
      *
      * @param  ApiDoc            $annotation
      * @param  Route             $route
      * @param  \ReflectionMethod $method
-     * @return array
+     * @return ApiDoc
      */
-    protected function getData(ApiDoc $annotation, Route $route, \ReflectionMethod $method)
+    protected function extractData(ApiDoc $annotation, Route $route, \ReflectionMethod $method)
     {
-        $docblock = $this->getDocComment($method);
+        // create a new annotation
+        $annotation = clone $annotation;
 
+        // parse annotations
+        $this->parseAnnotations($annotation, $route, $method);
+
+        // route
+        $annotation->setRoute($route);
+
+        // description
         if (null === $annotation->getDescription()) {
             $comments = explode("\n", $this->getDocCommentText($method));
             // just set the first line
@@ -220,20 +212,77 @@ class ApiDocExtractor
             }
         }
 
+        // doc
         $annotation->setDocumentation($this->getDocCommentText($method));
 
+        // formType
+        if (null !== $formType = $annotation->getFormType()) {
+            $parameters = $this->parser->parse($formType);
+
+            if ('PUT' === $method) {
+                // All parameters are optional with PUT (update)
+                array_walk($parameters, function($val, $key) use (&$data) {
+                    $parameters[$key]['required'] = false;
+                });
+            }
+
+            $annotation->setParameters($parameters);
+        }
+
+        // requirements
+        $requirements = array();
+        foreach ($route->compile()->getRequirements() as $name => $value) {
+            if ('_method' !== $name) {
+                $requirements[$name] = array(
+                    'requirement'   => $value,
+                    'type'          => '',
+                    'description'   => '',
+                );
+            }
+        }
+
         $paramDocs = array();
-        foreach (explode("\n", $docblock) as $line) {
+        foreach (explode("\n", $this->getDocComment($method)) as $line) {
             if (preg_match('{^@param (.+)}', trim($line), $matches)) {
                 $paramDocs[] = $matches[1];
             }
         }
 
-        $route->setOptions(array_merge($route->getOptions(), array('_paramDocs' => $paramDocs)));
+        $regexp = '{(\w*) *\$%s *(.*)}i';
+        foreach ($route->compile()->getVariables() as $var) {
+            $found = false;
+            foreach ($paramDocs as $paramDoc) {
+                if (preg_match(sprintf($regexp, preg_quote($var)), $paramDoc, $matches)) {
+                    $requirements[$var]['type']        = isset($matches[1]) ? $matches[1] : '';
+                    $requirements[$var]['description'] = $matches[2];
 
-        return array('annotation' => $annotation, 'route' => $route, 'requirements' => array());
+                    if (!isset($requirements[$var]['requirement'])) {
+                        $requirements[$var]['requirement'] = '';
+                    }
+
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!isset($requirements[$var]) && false === $found) {
+                $requirements[$var] = array('requirement' => '', 'type' => '', 'description' => '');
+            }
+        }
+
+        $annotation->setRequirements($requirements);
+
+        // method/uri
+        $annotation->setMethod($route->getRequirement('_method') ?: 'ANY');
+        $annotation->setUri($route->compile()->getPattern());
+
+        return $annotation;
     }
 
+    /**
+     * @param Reflector $reflected
+     * @return string
+     */
     protected function getDocComment(\Reflector $reflected)
     {
         $comment = $reflected->getDocComment();
@@ -250,6 +299,10 @@ class ApiDocExtractor
         return $comment;
     }
 
+    /**
+     * @param Reflector $reflected
+     * @return string
+     */
     protected function getDocCommentText(\Reflector $reflected)
     {
         $comment = $reflected->getDocComment();
@@ -263,5 +316,33 @@ class ApiDocExtractor
         $comment = preg_replace('/^\s*\* ?/m', '', $comment);
 
         return trim($comment);
+    }
+
+    /**
+     * Parses annotations for a given method, and adds new information to the given ApiDoc
+     * annotation. Useful to extract information from the FOSRestBundle annotations.
+     *
+     * @param ApiDoc           $annotation
+     * @param Route            $route
+     * @param ReflectionMethod $method
+     */
+    protected function parseAnnotations(ApiDoc $annotation, Route $route, \ReflectionMethod $method)
+    {
+        foreach ($this->reader->getMethodAnnotations($method) as $annot) {
+            if (is_subclass_of($annot, self::FOS_REST_PARAM_CLASS)) {
+                if ($annot->strict) {
+                    $annotation->addRequirement($annot->name, array(
+                        'requirement'   => $annot->requirements,
+                        'type'          => '',
+                        'description'   => $annot->description,
+                    ));
+                } else {
+                    $annotation->addFilter($annot->name, array(
+                        'requirement'   => $annot->requirements,
+                        'description'   => $annot->description,
+                    ));
+                }
+            }
+        }
     }
 }

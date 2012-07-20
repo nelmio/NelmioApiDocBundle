@@ -46,6 +46,7 @@ class MarkdownFormatter extends AbstractFormatter
                 if (!empty($infos['type'])) {
                     $markdown .= sprintf("  - Type: %s\n", $infos['type']);
                 }
+
                 if (!empty($infos['description'])) {
                     $markdown .= sprintf("  - Description: %s\n", $infos['description']);
                 }
@@ -61,7 +62,7 @@ class MarkdownFormatter extends AbstractFormatter
                 $markdown .= sprintf("%s:\n\n", $name);
 
                 foreach ($filter as $key => $value) {
-                    $markdown .= sprintf("  * %s: %s\n", $key, trim(json_encode($value), '"'));
+                    $markdown .= sprintf("  * %s: %s\n", ucwords($key), trim(str_replace('\\\\', '\\', json_encode($value)), '"'));
                 }
 
                 $markdown .= "\n";
