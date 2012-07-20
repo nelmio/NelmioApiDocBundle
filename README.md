@@ -11,16 +11,15 @@ For Symfony 2.0.x, you need to use the 1.* version of the bundle.
 
 ## Installation ##
 
+Add this bundle to your `composer.json` file:
 
-Register the namespace in `app/autoload.php`:
+    {
+        "require": {
+            "nelmio/api-doc-bundle": "dev-master"
+        }
+    }
 
-    // app/autoload.php
-    $loader->registerNamespaces(array(
-        // ...
-        'Nelmio'          => __DIR__.'/../vendor/bundles',
-    ));
-
-Register the bundles in `app/AppKernel.php`:
+Register the bundle in `app/AppKernel.php`:
 
     // app/AppKernel.php
     public function registerBundles()
