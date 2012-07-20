@@ -6,6 +6,7 @@ php:
 
 before_script:
   - curl -s http://getcomposer.org/installer | php
+  - php composer.phar require friendsofsymfony/rest-bundle:dev-master --no-update
   - php composer.phar install --dev
 
 script: phpunit
