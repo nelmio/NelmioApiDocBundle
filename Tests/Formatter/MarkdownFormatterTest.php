@@ -34,12 +34,12 @@ _index action_
 
 a:
 
-  * dataType: integer
+  * DataType: integer
 
 b:
 
-  * dataType: string
-  * arbitrary: ["arg1","arg2"]
+  * DataType: string
+  * Arbitrary: ["arg1","arg2"]
 
 
 ### `GET` /tests ###
@@ -50,12 +50,12 @@ _index action_
 
 a:
 
-  * dataType: integer
+  * DataType: integer
 
 b:
 
-  * dataType: string
-  * arbitrary: ["arg1","arg2"]
+  * DataType: string
+  * Arbitrary: ["arg1","arg2"]
 
 
 ### `POST` /tests ###
@@ -167,8 +167,8 @@ _This method is useful to test if the getDocComment works._
 
 page:
 
-  * requirement: \d+
-  * description: Page of the overview.
+  * Requirement: \d+
+  * Description: Page of the overview.
 MARKDOWN;
 
         $this->assertEquals($expected, $result);
@@ -191,12 +191,12 @@ _index action_
 
 a:
 
-  * dataType: integer
+  * DataType: integer
 
 b:
 
-  * dataType: string
-  * arbitrary: ["arg1","arg2"]
+  * DataType: string
+  * Arbitrary: ["arg1","arg2"]
 
 
 MARKDOWN;
