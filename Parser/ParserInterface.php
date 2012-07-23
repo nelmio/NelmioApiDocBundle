@@ -19,11 +19,11 @@ interface ParserInterface
     /**
      * Return true/false whether this class supports parsing the given class.
      *
-     * @param string $item  The string name of the class to parse.
+     * @param  string  $item The string type of input to parse.
      * @return boolean
      */
-	public function supportsClass($className);
-    
+    public function supports($item);
+
     /**
      * Returns an array of class property metadata where each item is a key (the property name) and
      * an array of data with the following keys:
@@ -32,9 +32,9 @@ interface ParserInterface
      *  - description       string
      *  - readonly          boolean
      *
-     * @param  string $class The string name of the class to parse.
+     * @param  string $item The string type of input to parse.
      * @return array
      */
-    public function parse($className);
-    
+    public function parse($item);
+
 }

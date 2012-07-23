@@ -26,7 +26,7 @@ class ApiDoc
     /**
      * @var string
      */
-    private $inputClass = null;
+    private $input = null;
 
     /**
      * @var string
@@ -70,8 +70,8 @@ class ApiDoc
 
     public function __construct(array $data)
     {
-        if (isset($data['inputClass'])) {
-            $this->inputClass = $data['inputClass'];
+        if (isset($data['input'])) {
+            $this->input = $data['input'];
         } elseif (isset($data['filters'])) {
             foreach ($data['filters'] as $filter) {
                 if (!isset($filter['name'])) {
@@ -121,9 +121,9 @@ class ApiDoc
     /**
      * @return string|null
      */
-    public function getInputClass()
+    public function getInput()
     {
-        return $this->inputClass;
+        return $this->input;
     }
 
     /**
@@ -227,9 +227,9 @@ class ApiDoc
         if ($requirements = $this->requirements) {
             $data['requirements'] = $requirements;
         }
-        
-        if ($inputClass = $this->inputClass) {
-            $data['inputClass'] = $inputClass;
+
+        if ($input = $this->input) {
+            $data['input'] = $input;
         }
 
         return $data;

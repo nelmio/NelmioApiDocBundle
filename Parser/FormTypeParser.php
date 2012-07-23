@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\Exception\FormException;
 
 class FormTypeParser implements ParserInterface
 {
@@ -39,18 +39,23 @@ class FormTypeParser implements ParserInterface
     {
         $this->formFactory = $formFactory;
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function supportsClass($class)
+    public function supports($item)
     {
-        if (is_string($class) && class_exists($class)) {
-            $ref = new \ReflectionClass($class);
-            return ($ref->implementsInterface('Symfony\Component\Form\FormTypeInterface'));
+        try {
+            if (is_string($item) && class_exists($item)) {
+                $item = new $item();
+            }
+
+            $form = $this->formFactory->create($item);
+        } catch (FormException $e) {
+            return false;
         }
-        
-        return false;
+
+        return true;
     }
 
     /**

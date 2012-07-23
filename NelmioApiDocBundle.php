@@ -4,7 +4,7 @@ namespace Nelmio\ApiDocBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Nelmio\ApiDocBundle\DependencyInjection\RegisterExtractorClassParsersPass;
+use Nelmio\ApiDocBundle\DependencyInjection\RegisterExtractorParsersPass;
 
 class NelmioApiDocBundle extends Bundle
 {
@@ -12,6 +12,6 @@ class NelmioApiDocBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RegisterExtractorClassParsersPass());
+        $container->addCompilerPass(new RegisterExtractorParsersPass());
     }
 }

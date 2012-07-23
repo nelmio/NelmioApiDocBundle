@@ -121,8 +121,6 @@ class ApiDocExtractor
             return strcmp($a['resource'], $b['resource']);
         });
 
-
-
         return $array;
     }
 
@@ -177,14 +175,13 @@ class ApiDocExtractor
 
         return null;
     }
-    
+
     /**
      * Registers a class parser to use for parsing input class metadata
      *
-     * @param ParserInterface $parser 
-     * @return void
+     * @param ParserInterface $parser
      */
-    public function registerParser(ParserInterface $parser)
+    public function addParser(ParserInterface $parser)
     {
         $this->parsers[] = $parser;
     }
@@ -225,13 +222,13 @@ class ApiDocExtractor
         // doc
         $annotation->setDocumentation($this->getDocCommentText($method));
 
-        // inputClass
-        if (null !== $inputClass = $annotation->getInputClass()) {
+        // input
+        if (null !== $input = $annotation->getInput()) {
             $parameters = array();
 
             foreach ($this->parsers as $parser) {
-                if ($parser->supportsClass($inputClass)) {
-                    $parameters = $parser->parse($inputClass);
+                if ($parser->supports($input)) {
+                    $parameters = $parser->parse($input);
                 }
             }
 
@@ -296,7 +293,7 @@ class ApiDocExtractor
     }
 
     /**
-     * @param Reflector $reflected
+     * @param  Reflector $reflected
      * @return string
      */
     protected function getDocComment(\Reflector $reflected)
@@ -316,7 +313,7 @@ class ApiDocExtractor
     }
 
     /**
-     * @param Reflector $reflected
+     * @param  Reflector $reflected
      * @return string
      */
     protected function getDocCommentText(\Reflector $reflected)
