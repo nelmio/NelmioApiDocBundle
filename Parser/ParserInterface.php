@@ -22,7 +22,7 @@ interface ParserInterface
      * @param string $item  The string name of the class to parse.
      * @return boolean
      */
-	function supportsClass($className);
+	public function supportsClass($className);
     
     /**
      * Returns an array of class property metadata where each item is a key (the property name) and
@@ -35,6 +35,6 @@ interface ParserInterface
      * @param  string $class The string name of the class to parse.
      * @return array
      */
-    function parse($className);
+    public function parse($className);
     
 }

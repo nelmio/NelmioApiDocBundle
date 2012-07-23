@@ -47,7 +47,7 @@ class FormTypeParser implements ParserInterface
     {
         if (is_string($class) && class_exists($class)) {
             $ref = new \ReflectionClass($class);
-            return ($ref->implementsInterface('Nelmio\ApiDocBundle\Parser\ParserInterface'));
+            return ($ref->implementsInterface('Symfony\Component\Form\FormTypeInterface'));
         }
         
         return false;
