@@ -55,16 +55,37 @@ class FormTypeParser
         if (is_string($type) && class_exists($type)) {
             $type = new $type();
         }
+
         $form = $this->formFactory->create($type);
 
+        return $this->parseForm($form);
+    }
+
+    private function parseForm($form, $prefix = null)
+    {
         $parameters = array();
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
+
+            if ($prefix) {
+                $name = sprintf('%s[%s]', $prefix, $name);
+            }
 
             $bestType = '';
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 if (isset($this->mapTypes[$type->getName()])) {
                     $bestType = $this->mapTypes[$type->getName()];
+                }
+            }
+
+            if ('' === $bestType) {
+                if ($type = $config->getType()) {
+                    if ($type = $type->getInnerType()) {
+                        $subForm    = $this->formFactory->create($type);
+                        $parameters = array_merge($parameters, $this->parseForm($subForm, $name));
+
+                        continue;
+                    }
                 }
             }
 
