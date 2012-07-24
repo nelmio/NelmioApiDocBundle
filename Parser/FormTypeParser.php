@@ -33,6 +33,7 @@ class FormTypeParser
         'number'    => 'float',
         'integer'   => 'int',
         'textarea'  => 'string',
+        'country'   => 'string',
     );
 
     public function __construct(FormFactoryInterface $formFactory)
