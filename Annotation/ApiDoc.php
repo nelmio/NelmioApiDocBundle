@@ -228,10 +228,6 @@ class ApiDoc
             $data['requirements'] = $requirements;
         }
 
-        if ($input = $this->input) {
-            $data['input'] = $input;
-        }
-
         return $data;
     }
 }
