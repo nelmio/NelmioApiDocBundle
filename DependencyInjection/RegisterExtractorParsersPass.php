@@ -18,9 +18,11 @@ class RegisterExtractorParsersPass implements CompilerPassInterface
 
         //find registered parsers and sort by priority
         $sortedParsers = array();
-        foreach ($container->findTaggedServiceIds('nelmio_api_doc.extractor.parser') as $id => $attributes) {
-            $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
-            $sortedParsers[$priority][] = $id;
+        foreach ($container->findTaggedServiceIds('nelmio_api_doc.extractor.parser') as $id => $tagAttributes) {
+            foreach ($tagAttributes as $attributes) {
+                $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+                $sortedParsers[$priority][] = $id;
+            }
         }
 
         //add parsers if any

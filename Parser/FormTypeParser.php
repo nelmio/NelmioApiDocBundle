@@ -83,7 +83,7 @@ class FormTypeParser implements ParserInterface
                 'dataType'      => $bestType,
                 'required'      => $config->getRequired(),
                 'description'   => $config->getAttribute('description'),
-                'readonly'      => false,
+                'readonly'      => $config->getDisabled(),
             );
         }
 
