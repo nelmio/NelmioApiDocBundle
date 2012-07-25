@@ -404,6 +404,41 @@ li.operation.patch div.content h4 {
   color: #a41ee2;
 }
 
+/* LINK operations */
+li.operation.link div.heading {
+  background-color: #F7F7D5;
+}
+li.operation.link div.heading h3 span.http_method a {
+  background-color: #C3D448;
+}
+li.operation.link div.heading ul.options li {
+  color: #C3D448;
+}
+
+li.operation.link div.content {
+  background-color: #F7F7D5;
+}
+li.operation.link div.content h4 {
+  color: #C3D448;
+}
+
+/* UNLINK operations */
+li.operation.unlink div.heading {
+  background-color: #FFEBDE;
+}
+li.operation.unlink div.heading h3 span.http_method a {
+  background-color: #FF8438;
+}
+li.operation.unlink div.heading ul.options li {
+  color: #FF8438;
+}
+
+li.operation.unlink div.content {
+  background-color: #FFEBDE;
+}
+li.operation.unlink div.content h4 {
+  color: #FF8438;
+}
 
 .toggler {
   cursor: pointer;
