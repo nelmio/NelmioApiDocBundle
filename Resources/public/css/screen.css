@@ -273,6 +273,9 @@ li.operation div.content {
   margin: 0 0 20px 0;
   background-color: #f0f0f0;
 }
+li.operation > div.content {
+    border-top:0px;
+}
 li.operation div.content h4 {
   font-size: 1.1em;
   margin: 0;
