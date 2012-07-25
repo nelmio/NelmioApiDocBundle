@@ -226,8 +226,8 @@ li.operation {
 li.operation div.heading {
   margin: 0 0 0 0;
   padding: 0;
-  background-color: #e7f0f7;
-  border: 1px solid black;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
 }
 li.operation div.heading h3 {
   display: block;
@@ -255,13 +255,14 @@ li.operation div.heading h3 span.http_method a {
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
+  background-color: #ccc;
 }
 li.operation div.heading h3 span.path {
   padding-left: 10px;
 }
 
 li.operation div.content {
-  border: 1px solid black;
+  border: 1px solid #ddd;
   padding: 10px;
   -moz-border-radius-bottomleft: 6px;
   -webkit-border-bottom-left-radius: 6px;
@@ -270,6 +271,7 @@ li.operation div.content {
   -webkit-border-bottom-right-radius: 6px;
   border-bottom-right-radius: 6px;
   margin: 0 0 20px 0;
+  background-color: #f0f0f0;
 }
 li.operation div.content h4 {
   font-size: 1.1em;
@@ -283,6 +285,7 @@ li.operation div.content form input[type='text'].error {
 /* GET operations */
 li.operation.get div.heading {
   border-color: #c3d9ec;
+  background-color: #e7f0f7;
 }
 li.operation.get div.heading h3 span.http_method a {
   background-color: #0f6ab4;
@@ -303,6 +306,7 @@ li.operation.get div.content h4 {
 /* POST operations */
 li.operation.post div.heading {
   border-color: #c3e8d1;
+  background-color: #e7f0f7;
 }
 li.operation.post div.heading h3 span.http_method a{
   background-color: #10a54a;
