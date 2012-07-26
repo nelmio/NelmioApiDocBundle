@@ -122,6 +122,15 @@
                                     </p>
                                 {% endfor %}
                             {% endif %}
+                            {% if data.requirements is defined %}
+                                {% for name, infos in data.requirements %}
+                                    <p class="tuple">
+                                        <input type="text" class="key" value="{{ name }}" placeholder="Key" />
+                                        <span>=</span>
+                                        <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
+                                    </p>
+                                {% endfor %}
+                            {% endif %}
                             {% if data.filters is defined %}
                                 {% for name, infos in data.filters %}
                                     <p class="tuple">
