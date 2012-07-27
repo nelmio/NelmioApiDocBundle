@@ -525,3 +525,9 @@ form .request-content {
     height:5em;
     margin-bottom:10px;
 }
+
+.pane.content div ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
