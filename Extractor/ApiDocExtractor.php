@@ -13,7 +13,7 @@ namespace Nelmio\ApiDocBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Nelmio\ApiDocBundle\Parser\FormTypeParser;
+use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -41,16 +41,15 @@ class ApiDocExtractor
     private $reader;
 
     /**
-     * @var \Nelmio\ApiDocBundle\Parser\FormTypeParser
+     * @var array \Nelmio\ApiDocBundle\Parser\ParserInterface
      */
-    private $parser;
+    private $parsers = array();
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, FormTypeParser $parser)
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader)
     {
         $this->container = $container;
         $this->router    = $router;
         $this->reader    = $reader;
-        $this->parser    = $parser;
     }
 
     /**
@@ -122,8 +121,6 @@ class ApiDocExtractor
             return strcmp($a['resource'], $b['resource']);
         });
 
-
-
         return $array;
     }
 
@@ -180,6 +177,16 @@ class ApiDocExtractor
     }
 
     /**
+     * Registers a class parser to use for parsing input class metadata
+     *
+     * @param ParserInterface $parser
+     */
+    public function addParser(ParserInterface $parser)
+    {
+        $this->parsers[] = $parser;
+    }
+
+    /**
      * Returns a new ApiDoc instance with more data.
      *
      * @param  ApiDoc            $annotation
@@ -215,9 +222,15 @@ class ApiDocExtractor
         // doc
         $annotation->setDocumentation($this->getDocCommentText($method));
 
-        // formType
-        if (null !== $formType = $annotation->getFormType()) {
-            $parameters = $this->parser->parse($formType);
+        // input
+        if (null !== $input = $annotation->getInput()) {
+            $parameters = array();
+
+            foreach ($this->parsers as $parser) {
+                if ($parser->supports($input)) {
+                    $parameters = $parser->parse($input);
+                }
+            }
 
             if ('PUT' === $method) {
                 // All parameters are optional with PUT (update)
@@ -280,7 +293,7 @@ class ApiDocExtractor
     }
 
     /**
-     * @param Reflector $reflected
+     * @param  Reflector $reflected
      * @return string
      */
     protected function getDocComment(\Reflector $reflected)
@@ -300,7 +313,7 @@ class ApiDocExtractor
     }
 
     /**
-     * @param Reflector $reflected
+     * @param  Reflector $reflected
      * @return string
      */
     protected function getDocCommentText(\Reflector $reflected)

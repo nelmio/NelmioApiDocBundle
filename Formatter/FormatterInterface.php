@@ -26,7 +26,7 @@ interface FormatterInterface
     /**
      * Format documentation data for one route.
      *
-     * @param ApiDoc       $annotation
+     * @param ApiDoc $annotation
      * return string|array
      */
     public function formatOne(ApiDoc $annotation);

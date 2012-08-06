@@ -26,7 +26,7 @@ class ApiDoc
     /**
      * @var string
      */
-    private $formType = null;
+    private $input = null;
 
     /**
      * @var string
@@ -70,8 +70,8 @@ class ApiDoc
 
     public function __construct(array $data)
     {
-        if (isset($data['formType'])) {
-            $this->formType = $data['formType'];
+        if (isset($data['input'])) {
+            $this->input = $data['input'];
         } elseif (isset($data['filters'])) {
             foreach ($data['filters'] as $filter) {
                 if (!isset($filter['name'])) {
@@ -121,9 +121,9 @@ class ApiDoc
     /**
      * @return string|null
      */
-    public function getFormType()
+    public function getInput()
     {
-        return $this->formType;
+        return $this->input;
     }
 
     /**
