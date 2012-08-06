@@ -24,7 +24,8 @@
         "symfony/css-selector": "2.1.*",
         "symfony/browser-kit": "2.1.*",
         "symfony/validator": "2.1.*",
-        "symfony/yaml": "2.1.*"
+        "symfony/yaml": "2.1.*",
+        "friendsofsymfony/rest-bundle": "dev-master"
     },
     "minimum-stability": "dev",
     "autoload": {
