@@ -11,10 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\Exception\FormException;
 
-class FormTypeParser
+class FormTypeParser implements ParserInterface
 {
     /**
      * @var \Symfony\Component\Form\FormFactoryInterface
@@ -42,13 +42,25 @@ class FormTypeParser
     }
 
     /**
-     * Returns an array of data where each data is an array with the following keys:
-     *  - dataType
-     *  - required
-     *  - description
-     *
-     * @param  string|\Symfony\Component\Form\FormTypeInterface $type
-     * @return array
+     * {@inheritdoc}
+     */
+    public function supports($item)
+    {
+        try {
+            if (is_string($item) && class_exists($item)) {
+                $item = new $item();
+            }
+
+            $form = $this->formFactory->create($item);
+        } catch (FormException $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function parse($type)
     {
@@ -93,6 +105,7 @@ class FormTypeParser
                 'dataType'      => $bestType,
                 'required'      => $config->getRequired(),
                 'description'   => $config->getAttribute('description'),
+                'readonly'      => $config->getDisabled(),
             );
         }
 

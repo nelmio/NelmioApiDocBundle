@@ -39,28 +39,28 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertTrue($a1->isResource());
         $this->assertEquals('index action', $a1->getDescription());
         $this->assertTrue(is_array($array1['filters']));
-        $this->assertNull($a1->getFormType());
+        $this->assertNull($a1->getInput());
 
         $a1 = $data[1]['annotation'];
         $array1 = $a1->toArray();
         $this->assertTrue($a1->isResource());
         $this->assertEquals('index action', $a1->getDescription());
         $this->assertTrue(is_array($array1['filters']));
-        $this->assertNull($a1->getFormType());
+        $this->assertNull($a1->getInput());
 
         $a2 = $data[2]['annotation'];
         $array2 = $a2->toArray();
         $this->assertFalse($a2->isResource());
         $this->assertEquals('create test', $a2->getDescription());
         $this->assertFalse(isset($array2['filters']));
-        $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getFormType());
+        $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
 
         $a2 = $data[3]['annotation'];
         $array2 = $a2->toArray();
         $this->assertFalse($a2->isResource());
         $this->assertEquals('create test', $a2->getDescription());
         $this->assertFalse(isset($array2['filters']));
-        $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getFormType());
+        $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
     }
 
     public function testGet()
@@ -76,7 +76,7 @@ class ApiDocExtractorTest extends WebTestCase
 
         $array = $annotation->toArray();
         $this->assertTrue(is_array($array['filters']));
-        $this->assertNull($annotation->getFormType());
+        $this->assertNull($annotation->getInput());
 
         $annotation2 = $extractor->get('nemlio.test.controller:indexAction', 'test_service_route_1');
         $annotation2->getRoute()

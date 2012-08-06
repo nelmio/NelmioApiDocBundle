@@ -81,18 +81,21 @@ class SimpleFormatterTest extends WebTestCase
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
+                            'readonly' => false
                         ),
                         'b' =>
                         array(
                             'dataType' => 'string',
                             'required' => false,
                             'description' => '',
+                            'readonly' => false
                         ),
                         'c' =>
                         array(
                             'dataType' => 'boolean',
                             'required' => true,
                             'description' => '',
+                            'readonly' => false
                         ),
                     ),
                     'description' => 'create test',
@@ -108,18 +111,21 @@ class SimpleFormatterTest extends WebTestCase
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
+                            'readonly' => false
                         ),
                         'b' =>
                         array(
                             'dataType' => 'string',
                             'required' => false,
                             'description' => '',
+                            'readonly' => false
                         ),
                         'c' =>
                         array(
                             'dataType' => 'boolean',
                             'required' => true,
                             'description' => '',
+                            'readonly' => false
                         ),
                     ),
                     'description' => 'create test',
@@ -138,6 +144,7 @@ class SimpleFormatterTest extends WebTestCase
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
+                            'readonly' => false
                         ),
                     ),
                     'description' => 'create another test',

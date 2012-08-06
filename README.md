@@ -82,7 +82,7 @@ class YourController extends Controller
     /**
      * @ApiDoc(
      *  description="Create a new Object",
-     *  formType="Your\Namespace\Form\Type\YourType"
+     *  input="Your\Namespace\Form\Type\YourType"
      * )
      */
     public function postAction()
@@ -99,16 +99,16 @@ The following properties are available:
 
 * `filters`: an array of filters;
 
-* `formType`: the Form Type associated to the method, useful for POST|PUT methods, either as FQCN or
+* `input`: the input type associated to the method, currently this only supports Form Types, useful for POST|PUT methods, either as FQCN or
   as form type (if it is registered in the form factory in the container)
 
 Each _filter_ has to define a `name` parameter, but other parameters are free. Filters are often optional
 parameters, and you can document them as you want, but keep in mind to be consistent for the whole documentation.
 
-If you set a `formType`, then the bundle automatically extracts parameters based on the given type,
+If you set `input`, then the bundle automatically extracts parameters based on the given type,
 and determines for each parameter its data type, and if it's required or not.
 
-You can add an extra option named `description` on each field:
+For Form Types, you can add an extra option named `description` on each field:
 
 ``` php
 <?php
@@ -180,6 +180,16 @@ configure this sandbox using the following parameters:
             enabled:  true # default: true, you can set this parameter to `false` to disable the sandbox
             endpoint: http://sandbox.example.com/ # default: /app_dev.php, use this parameter to define which URL to call through the sandbox
 
+
+The bundle provides a way to register multiple `input` parsers.  The first parser that can handle the specified
+input is used, so you can configure their priorities via container tags.  Here's an example parser service registration:
+    
+    #app/config/config.yml
+    services:
+        mybundle.api_doc.extractor.custom_parser:
+            class: MyBundle\Parser\CustomDocParser;
+            tags:
+                - {name: nelmio_api_doc.extractor.parser, priority: 2}
 
 ## Credits ##
 
