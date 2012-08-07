@@ -135,6 +135,11 @@ _Action without HTTP verb_
 
 
 
+### `POST` /jms-input-test ###
+
+_Testing JMS_
+
+
 ### `ANY` /my-commented/{id}/{page} ###
 
 _This method is useful to test if the getDocComment works._
