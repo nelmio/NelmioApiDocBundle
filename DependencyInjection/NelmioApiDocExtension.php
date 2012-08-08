@@ -35,16 +35,6 @@ class NelmioApiDocExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('formatters.xml');
         $loader->load('request_listener.xml');
-        $loader->load('services.xml');
-        
-        //JMS may or may not be installed, if it is, load that config as well
-        try {
-            if ($serializer = $container->findDefinition('serializer')) {
-                die(__METHOD__);
-                $loader->load('services.jms.xml');
-            }
-        } catch (\Exception $e) {
-            
-        }
+        $loader->load('services.xml');            
     }
 }

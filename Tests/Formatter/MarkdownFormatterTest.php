@@ -139,6 +139,32 @@ _Action without HTTP verb_
 
 _Testing JMS_
 
+#### Parameters ####
+
+foo:
+
+  * type: string
+  * required: false
+  * description: No description.
+
+bar:
+
+  * type: DateTime
+  * required: false
+  * description: No description.
+
+number:
+
+  * type: double
+  * required: false
+  * description: No description.
+
+arr:
+
+  * type: array
+  * required: false
+  * description: No description.
+
 
 ### `ANY` /my-commented/{id}/{page} ###
 

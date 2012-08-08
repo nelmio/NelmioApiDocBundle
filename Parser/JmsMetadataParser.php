@@ -44,8 +44,6 @@ class JmsMetadataParser implements ParserInterface
      */
     public function parse($input)
     {
-        die(__METHOD__);
-        
         $meta = $this->factory->getMetadataForClass($input);
 
         if(is_null($meta)) {
@@ -53,41 +51,35 @@ class JmsMetadataParser implements ParserInterface
         }
         
         $params = array();
-        $refClass = new \ReflectionClass($input);
         
         //iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
-            $name = isset($item->serializedName) ? $item->serializedName : $item->name;
             
-            $type = $this->getType($item->type);
-            
-            if (true) {
+            if (!is_null($item->type)) {
+                $name = isset($item->serializedName) ? $item->serializedName : $item->name;
+                        
                 //TODO: check for nested type
-            }
             
-            $params[$name] = array(
-                'dataType' => $item->type,
-                'required'      => false,   //can't think of a good way to specify this one, JMS doesn't have a setting for this
-                'description'   => $this->getDescription($refClass, $item->name),
-                'readonly' => $item->readonly
-            );
+                $params[$name] = array(
+                    'dataType' => $item->type,
+                    'required'      => false,   //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
+                    'description'   => $this->getDescription($input, $item->name),
+                    'readonly' => $item->readOnly
+                );
+            }
         }
         
         return $params;
     }
     
-    protected function getDescription($ref, $nativePropertyName)
+    protected function getDescription($className, $propertyName)
     {
         $description = "No description.";
 
-        if (!$doc = $ref->getProperty($nativePropertyName)->getDocComment()) {
-            return $description;
-        }
-        
         //TODO: regex comment to get description - or move doc comment parsing functionality from `ApiDocExtractor` to a new location
         //in order to reuse it here
                 
         return $description;
     }
-    
+
 }
