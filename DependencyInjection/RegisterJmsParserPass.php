@@ -14,12 +14,8 @@ class RegisterJmsParserPass implements CompilerPassInterface
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         //JMS may or may not be installed, if it is, load that config as well
-        try {
-            if ($serializer = $container->findDefinition('serializer')) {
-                $loader->load('services.jms.xml');
-            }
-        } catch (\Exception $e) {
+        if ($container->hasDefinition('jms_serializer.serializer')) {
+            $loader->load('services.jms.xml');
         }
-
     }
 }

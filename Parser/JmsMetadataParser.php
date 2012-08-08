@@ -46,7 +46,7 @@ class JmsMetadataParser implements ParserInterface
     {
         $meta = $this->factory->getMetadataForClass($input);
 
-        if (is_null($meta)) {
+        if (null === $meta) {
             throw new \InvalidArgumentException(sprintf("No metadata found for class %s", $input));
         }
 
@@ -78,6 +78,7 @@ class JmsMetadataParser implements ParserInterface
 
         //TODO: regex comment to get description - or move doc comment parsing functionality from `ApiDocExtractor` to a new location
         //in order to reuse it here
+        
         return $description;
     }
 
