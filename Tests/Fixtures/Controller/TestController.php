@@ -90,7 +90,7 @@ class TestController
     public function zActionWithQueryParamAction()
     {
     }
-    
+
     /**
      * @ApiDoc(
      *  description="Testing JMS",

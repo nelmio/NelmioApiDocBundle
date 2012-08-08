@@ -18,7 +18,7 @@ use Metadata\MetadataFactoryInterface;
  */
 class JmsMetadataParser implements ParserInterface
 {
-    
+
     /**
      * Constructor, requires JMS Metadata factory
      */
@@ -26,19 +26,19 @@ class JmsMetadataParser implements ParserInterface
     {
         $this->factory = $factory;
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function supports($input)
     {
-        if($meta = $this->factory->getMetadataForClass($input)) {
+        if ($meta = $this->factory->getMetadataForClass($input)) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -46,20 +46,20 @@ class JmsMetadataParser implements ParserInterface
     {
         $meta = $this->factory->getMetadataForClass($input);
 
-        if(is_null($meta)) {
+        if (is_null($meta)) {
             throw new \InvalidArgumentException(sprintf("No metadata found for class %s", $input));
         }
-        
+
         $params = array();
-        
+
         //iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
-            
+
             if (!is_null($item->type)) {
                 $name = isset($item->serializedName) ? $item->serializedName : $item->name;
-                        
+
                 //TODO: check for nested type
-            
+
                 $params[$name] = array(
                     'dataType' => $item->type,
                     'required'      => false,   //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
@@ -68,17 +68,16 @@ class JmsMetadataParser implements ParserInterface
                 );
             }
         }
-        
+
         return $params;
     }
-    
+
     protected function getDescription($className, $propertyName)
     {
         $description = "No description.";
 
         //TODO: regex comment to get description - or move doc comment parsing functionality from `ApiDocExtractor` to a new location
         //in order to reuse it here
-                
         return $description;
     }
 

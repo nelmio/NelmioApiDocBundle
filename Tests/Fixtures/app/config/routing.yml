@@ -69,4 +69,3 @@ test_service_route_4:
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /
-    
