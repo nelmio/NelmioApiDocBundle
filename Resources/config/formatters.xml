@@ -9,6 +9,7 @@
         <parameter key="nelmio_api_doc.formatter.markdown_formatter.class">Nelmio\ApiDocBundle\Formatter\MarkdownFormatter</parameter>
         <parameter key="nelmio_api_doc.formatter.simple_formatter.class">Nelmio\ApiDocBundle\Formatter\SimpleFormatter</parameter>
         <parameter key="nelmio_api_doc.formatter.html_formatter.class">Nelmio\ApiDocBundle\Formatter\HtmlFormatter</parameter>
+        <parameter key="nelmio_api_doc.sandbox.authentication">null</parameter>
     </parameters>
 
     <services>
@@ -34,6 +35,9 @@
             </call>
             <call method="setEndpoint">
                 <argument>%nelmio_api_doc.sandbox.endpoint%</argument>
+            </call>
+            <call method="setAuthentication">
+                <argument>%nelmio_api_doc.sandbox.authentication%</argument>
             </call>
         </service>
     </services>
