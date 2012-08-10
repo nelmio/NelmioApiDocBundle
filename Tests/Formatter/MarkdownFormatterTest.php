@@ -26,9 +26,14 @@ class MarkdownFormatterTest extends WebTestCase
         $expected = <<<MARKDOWN
 # /tests #
 
-### `GET` /tests ###
+### `GET` /tests.{_format} ###
 
 _index action_
+
+#### Requirements ####
+
+**_format**
+
 
 #### Filters ####
 
@@ -42,9 +47,14 @@ b:
   * Arbitrary: ["arg1","arg2"]
 
 
-### `GET` /tests ###
+### `GET` /tests.{_format} ###
 
 _index action_
+
+#### Requirements ####
+
+**_format**
+
 
 #### Filters ####
 
@@ -58,9 +68,14 @@ b:
   * Arbitrary: ["arg1","arg2"]
 
 
-### `POST` /tests ###
+### `POST` /tests.{_format} ###
 
 _create test_
+
+#### Requirements ####
+
+**_format**
+
 
 #### Parameters ####
 
@@ -81,9 +96,14 @@ c:
   * required: true
 
 
-### `POST` /tests ###
+### `POST` /tests.{_format} ###
 
 _create test_
+
+#### Requirements ####
+
+**_format**
+
 
 #### Parameters ####
 
@@ -183,9 +203,14 @@ MARKDOWN;
         $result     = $container->get('nelmio_api_doc.formatter.markdown_formatter')->formatOne($annotation);
 
         $expected = <<<MARKDOWN
-### `GET` /tests ###
+### `GET` /tests.{_format} ###
 
 _index action_
+
+#### Requirements ####
+
+**_format**
+
 
 #### Filters ####
 
