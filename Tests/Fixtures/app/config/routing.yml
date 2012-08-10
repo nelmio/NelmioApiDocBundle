@@ -1,11 +1,11 @@
 test_route_1:
-    pattern:  /tests
+    pattern:  /tests.{_format}
     defaults: { _controller: NelmioApiDocTestBundle:Test:index, _format: json }
     requirements:
         _method: GET
 
 test_route_2:
-    pattern:  /tests
+    pattern:  /tests.{_format}
     defaults: { _controller: NelmioApiDocTestBundle:Test:postTest, _format: json }
     requirements:
         _method: POST
@@ -41,13 +41,13 @@ test_route_8:
         _method: GET
 
 test_service_route_1:
-    pattern:  /tests
+    pattern:  /tests.{_format}
     defaults: { _controller: nemlio.test.controller:indexAction, _format: json }
     requirements:
         _method: GET
 
 test_service_route_2:
-    pattern:  /tests
+    pattern:  /tests.{_format}
     defaults: { _controller: nemlio.test.controller:postTestAction, _format: json }
     requirements:
         _method: POST
