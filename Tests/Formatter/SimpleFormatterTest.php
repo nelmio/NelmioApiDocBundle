@@ -29,7 +29,7 @@ class SimpleFormatterTest extends WebTestCase
                 0 =>
                 array(
                     'method' => 'GET',
-                    'uri' => '/tests',
+                    'uri' => '/tests.{_format}',
                     'filters' =>
                     array(
                         'a' =>
@@ -47,11 +47,14 @@ class SimpleFormatterTest extends WebTestCase
                         ),
                     ),
                     'description' => 'index action',
+                    'requirements' => array(
+                        '_format' => array('type' => '', 'description' => '', 'requirement' => ''),
+                    ),
                 ),
                 1 =>
                 array(
                     'method' => 'GET',
-                    'uri' => '/tests',
+                    'uri' => '/tests.{_format}',
                     'filters' =>
                     array(
                         'a' =>
@@ -69,11 +72,14 @@ class SimpleFormatterTest extends WebTestCase
                         ),
                     ),
                     'description' => 'index action',
+                    'requirements' => array(
+                        '_format' => array('type' => '', 'description' => '', 'requirement' => ''),
+                    ),
                 ),
                 2 =>
                 array(
                     'method' => 'POST',
-                    'uri' => '/tests',
+                    'uri' => '/tests.{_format}',
                     'parameters' =>
                     array(
                         'a' =>
@@ -99,11 +105,14 @@ class SimpleFormatterTest extends WebTestCase
                         ),
                     ),
                     'description' => 'create test',
+                    'requirements' => array(
+                        '_format' => array('type' => '', 'description' => '', 'requirement' => ''),
+                    ),
                 ),
                 3 =>
                 array(
                     'method' => 'POST',
-                    'uri' => '/tests',
+                    'uri' => '/tests.{_format}',
                     'parameters' =>
                     array(
                         'a' =>
@@ -129,6 +138,9 @@ class SimpleFormatterTest extends WebTestCase
                         ),
                     ),
                     'description' => 'create test',
+                    'requirements' => array(
+                        '_format' => array('type' => '', 'description' => '', 'requirement' => ''),
+                    ),
                 ),
             ),
             'others' =>
@@ -211,7 +223,7 @@ class SimpleFormatterTest extends WebTestCase
 
         $expected = array(
             'method' => 'GET',
-            'uri' => '/tests',
+            'uri' => '/tests.{_format}',
             'filters' => array(
                 'a' => array(
                     'dataType' => 'integer',
@@ -224,7 +236,10 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                 ),
             ),
-            'description' => 'index action'
+            'description' => 'index action',
+            'requirements' => array(
+                '_format' => array('type' => '', 'description' => '', 'requirement' => ''),
+            ),
         );
 
         $this->assertEquals($expected, $result);
