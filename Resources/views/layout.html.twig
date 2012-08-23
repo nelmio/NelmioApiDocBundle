@@ -15,6 +15,12 @@
     <body>
         <div id="header">
             <a href=""><h1>{{ apiName }}</h1></a>
+            {% if authentication %}
+            <div id="api_key_wrapper">
+                api key: <input type="text" id="api_key"/>
+            </div>
+            {% endif %}
+            <br style="clear: both;" />
         </div>
         <div class="container" id="resources_container">
             <ul id="resources">
@@ -170,6 +176,12 @@
                     // disable all the fiels and buttons
                     $('input, button', $(this)).attr('disabled', 'disabled');
 
+                    // append the api key
+                    if (api_key_parameter) {
+                        url += url.indexOf('?') > 0 ? '&' : '?';
+                        url += api_key_parameter + '=' + $('#api_key').val();
+                    }
+
                     // and trigger the API call
                     $.ajax({
                     url: '{{ endpoint }}' + url,
@@ -257,6 +269,25 @@
                     $element.find('input.value').val(content_type);
 
                 });
+
+                {% if authentication %}
+                var api_key_parameter = '{{ authentication.name }}';
+                var search = window.location.search;
+
+                var api_key_start = search.indexOf(api_key_parameter) + api_key_parameter.length + 1;
+
+                if (api_key_start > 0 ) {
+                    var api_key_end = search.indexOf('&', api_key_start);
+
+                    var api_key = -1 == api_key_end
+                        ? search.substr(api_key_start)
+                        : search.substring(api_key_start, api_key_end);
+
+                    $('#api_key').val(api_key);
+                }
+                {% else %}
+                var api_key_parameter = false;
+                {% endif %}
             {% endif %}
         </script>
     </body>
