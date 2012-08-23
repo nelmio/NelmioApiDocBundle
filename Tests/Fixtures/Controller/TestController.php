@@ -90,4 +90,14 @@ class TestController
     public function zActionWithQueryParamAction()
     {
     }
+
+    /**
+     * @ApiDoc(
+     *  description="Testing JMS",
+     *  input="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
+     * )
+     */
+    public function jmsInputTestAction()
+    {
+    }
 }

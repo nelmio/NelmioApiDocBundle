@@ -99,8 +99,8 @@ The following properties are available:
 
 * `filters`: an array of filters;
 
-* `input`: the input type associated to the method, currently this only supports Form Types, useful for POST|PUT methods, either as FQCN or
-  as form type (if it is registered in the form factory in the container)
+* `input`: the input type associated to the method, currently this supports Form Types, and classes with JMS Serializer
+ metadata, useful for POST|PUT methods, either as FQCN or as form type (if it is registered in the form factory in the container)
 
 Each _filter_ has to define a `name` parameter, but other parameters are free. Filters are often optional
 parameters, and you can document them as you want, but keep in mind to be consistent for the whole documentation.
@@ -109,6 +109,8 @@ If you set `input`, then the bundle automatically extracts parameters based on t
 and determines for each parameter its data type, and if it's required or not.
 
 For Form Types, you can add an extra option named `description` on each field:
+
+For classes parsed with JMS metadata, description will be taken from the properties doc comment, if available.
 
 ``` php
 <?php

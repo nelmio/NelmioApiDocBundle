@@ -230,6 +230,7 @@ class ApiDocExtractor
             foreach ($this->parsers as $parser) {
                 if ($parser->supports($input)) {
                     $parameters = $parser->parse($input);
+                    break;
                 }
             }
 
