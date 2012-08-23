@@ -179,6 +179,43 @@ class SimpleFormatterTest extends WebTestCase
                 ),
                 3 =>
                 array(
+                    'method' => 'POST',
+                    'uri' => '/jms-input-test',
+                    'parameters' =>
+                    array(
+                        'foo' =>
+                        array(
+                            'dataType' => 'string',
+                            'required' => false,
+                            'description' => 'No description.',
+                            'readonly' => false
+                        ),
+                        'bar' =>
+                        array(
+                            'dataType' => 'DateTime',
+                            'required' => false,
+                            'description' => 'No description.',
+                            'readonly' => true
+                        ),
+                        'number' =>
+                        array(
+                            'dataType' => 'double',
+                            'required' => false,
+                            'description' => 'No description.',
+                            'readonly' => false
+                        ),
+                        'arr' =>
+                        array(
+                            'dataType' => 'array',
+                            'required' => false,
+                            'description' => 'No description.',
+                            'readonly' => false
+                        )
+                    ),
+                    'description' => 'Testing JMS'
+                ),
+                4 =>
+                array(
                     'method' => 'ANY',
                     'uri' => '/my-commented/{id}/{page}',
                     'requirements' =>
@@ -189,7 +226,7 @@ class SimpleFormatterTest extends WebTestCase
                     'description' => 'This method is useful to test if the getDocComment works.',
                     'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char."
                 ),
-                4 =>
+                5 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/yet-another/{id}',
@@ -198,7 +235,7 @@ class SimpleFormatterTest extends WebTestCase
                         'id' => array('type' => '', 'description' => '', 'requirement' => '\d+')
                     ),
                 ),
-                5 =>
+                6 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param',

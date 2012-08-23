@@ -48,6 +48,7 @@ class AppKernel extends Kernel
         return array(
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
+            new \JMS\SerializerBundle\JMSSerializerBundle($this),
             new \Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new \Nelmio\ApiDocBundle\Tests\Fixtures\NelmioApiDocTestBundle(),
         );

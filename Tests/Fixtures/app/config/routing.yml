@@ -40,6 +40,12 @@ test_route_8:
     requirements:
         _method: GET
 
+test_route_9:
+    pattern: /jms-input-test
+    defaults: { _controller: NelmioApiDocTestBundle:Test:jmsInputTest }
+    requirements:
+        _method: POST
+
 test_service_route_1:
     pattern:  /tests.{_format}
     defaults: { _controller: nemlio.test.controller:indexAction, _format: json }
