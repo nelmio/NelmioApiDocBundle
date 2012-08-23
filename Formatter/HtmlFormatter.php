@@ -16,6 +16,11 @@ use Symfony\Component\Templating\EngineInterface;
 class HtmlFormatter extends AbstractFormatter
 {
     /**
+     * @var array
+     */
+    private $authentication;
+
+    /**
      * @var string
      */
     private $apiName;
@@ -34,6 +39,14 @@ class HtmlFormatter extends AbstractFormatter
      * @var \Symfony\Component\Templating\EngineInterface
      */
     private $engine;
+
+    /**
+     * @param array $authentication
+     */
+    public function setAuthentication(array $authentication = null)
+    {
+        $this->authentication = $authentication;
+    }
 
     /**
      * @param string $apiName
@@ -95,12 +108,13 @@ class HtmlFormatter extends AbstractFormatter
     private function getGlobalVars()
     {
         return array(
-            'apiName'       => $this->apiName,
-            'endpoint'      => $this->endpoint,
-            'enableSandbox' => $this->enableSandbox,
-            'date'          => date(DATE_RFC822),
-            'css'           => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
-            'js'            => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
+            'apiName'        => $this->apiName,
+            'authentication' => $this->authentication,
+            'endpoint'       => $this->endpoint,
+            'enableSandbox'  => $this->enableSandbox,
+            'date'           => date(DATE_RFC822),
+            'css'            => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
+            'js'             => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
         );
     }
 }

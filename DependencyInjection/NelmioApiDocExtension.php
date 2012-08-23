@@ -36,5 +36,9 @@ class NelmioApiDocExtension extends Extension
         $loader->load('formatters.xml');
         $loader->load('request_listener.xml');
         $loader->load('services.xml');
+
+        if (isset($config['sandbox']['authentication'])) {
+            $container->setParameter('nelmio_api_doc.sandbox.authentication', $config['sandbox']['authentication']);
+        }
     }
 }
