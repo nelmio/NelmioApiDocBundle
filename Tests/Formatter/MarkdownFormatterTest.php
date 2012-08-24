@@ -185,6 +185,18 @@ arr:
   * required: false
   * description: No description.
 
+nested:
+
+  * type: object (JmsNested)
+  * required: false
+  * description: No description.
+
+nestedArray:
+
+  * type: array of objects (JmsNested)
+  * required: false
+  * description: No description.
+
 
 ### `ANY` /my-commented/{id}/{page} ###
 

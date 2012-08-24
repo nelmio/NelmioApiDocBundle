@@ -210,7 +210,47 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false
-                        )
+                        ),
+                        'nested' => array(
+                            'dataType' => 'object (JmsNested)',
+                            'required' => false,
+                            'description' => 'No description.',
+                            'readonly' => false,
+                            'children' => array(
+                                'foo' => array(
+                                    'dataType' => 'DateTime',
+                                    'required' => false,
+                                    'description' => 'No description.',
+                                    'readonly' => true,
+                                ),
+                                'bar' => array(
+                                    'dataType' => 'string',
+                                    'required' => false,
+                                    'description' => 'No description.',
+                                    'readonly' => false,
+                                )
+                            )
+                        ),
+                        'nestedArray' => array(
+                            'dataType' => 'array of objects (JmsNested)',
+                            'required' => false,
+                            'description' => 'No description.',
+                            'readonly' => false,
+                            'children' => array(
+                                'foo' => array(
+                                    'dataType' => 'DateTime',
+                                    'required' => false,
+                                    'description' => 'No description.',
+                                    'readonly' => true,
+                                ),
+                                'bar' => array(
+                                    'dataType' => 'string',
+                                    'required' => false,
+                                    'description' => 'No description.',
+                                    'readonly' => false,
+                                )
+                            )
+                        ),
                     ),
                     'description' => 'Testing JMS'
                 ),
