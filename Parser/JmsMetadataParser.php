@@ -67,7 +67,7 @@ class JmsMetadataParser implements ParserInterface
                     'description'   => $this->getDescription($input, $item->name),
                     'readonly' => $item->readOnly
                 );
-                
+
                 //check for nested classes w/ JMS metadata
                 if ($nestedInputClass = $this->getNestedClass($item->type)) {
                     $params[$name]['children'] = $this->parse($nestedInputClass);
@@ -77,12 +77,12 @@ class JmsMetadataParser implements ParserInterface
 
         return $params;
     }
-    
+
     /**
      * There are various ways via JMS to declare arrays of objects, but that's an internal
      * implementation detail.
      *
-     * @param string $type 
+     * @param  string $type
      * @return string
      */
     protected function getNormalizedType($type)
@@ -90,25 +90,27 @@ class JmsMetadataParser implements ParserInterface
         if (in_array($type, array('boolean', 'integer', 'string', 'double', 'array', 'DateTime'))) {
             return $type;
         }
-        
-        if(false !== strpos($type, "array") || false !== strpos($type, "ArrayCollection")) {
+
+        if (false !== strpos($type, "array") || false !== strpos($type, "ArrayCollection")) {
             if ($nested = $this->getNestedClassInArray($type)) {
                 $exp = explode("\\", $nested);
+
                 return sprintf("array of objects (%s)", end($exp));
             } else {
                 return "array";
             }
         }
-        
+
         $exp = explode("\\", $type);
+
         return sprintf("object (%s)", end($exp));
     }
-    
+
     /**
      * Check the various ways JMS describes custom classes in arrays, and
      * get the name of the class in the array, if available.
      *
-     * @param string $type 
+     * @param  string       $type
      * @return string|false
      */
     protected function getNestedClassInArray($type)
@@ -118,18 +120,19 @@ class JmsMetadataParser implements ParserInterface
         $regEx = "/\<([A-Za-z0-9\\\]*)(\,?\s?(.*))?\>/";
         if (preg_match($regEx, $type, $matches)) {
             $matched = (!empty($matches[3])) ? $matches[3] : $matches[1];
+
             return in_array($matched, array('boolean', 'integer', 'string', 'double', 'array', 'DateTime')) ? false : $matched;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Scan the JMS Serializer types for reference to a class.
      *
      * http://jmsyst.com/bundles/JMSSerializerBundle/master/reference/annotations#type
      *
-     * @param string $type 
+     * @param  string       $type
      * @return string|false
      */
     protected function getNestedClass($type)
@@ -137,12 +140,12 @@ class JmsMetadataParser implements ParserInterface
         if (in_array($type, array('boolean', 'integer', 'string', 'double', 'array', 'DateTime'))) {
             return false;
         }
-        
+
         //could be a nested object of some sort
         if ($nested = $this->getNestedClassInArray($type)) {
             return $nested;
         }
-        
+
         //or could just be a class name (potentially)
         return (null === $this->factory->getMetadataForClass($type)) ? false : $type;
     }
@@ -152,7 +155,6 @@ class JmsMetadataParser implements ParserInterface
         $description = "No description.";
 
         //TODO: abstract docblock parsing utility and implement here
-        
         return $description;
     }
 

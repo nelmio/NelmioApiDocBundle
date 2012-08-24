@@ -16,5 +16,5 @@ class JmsNested
      * @JMS\Type("string");
      */
     public $bar;
-    
+
 }
