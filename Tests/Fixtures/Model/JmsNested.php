@@ -17,4 +17,11 @@ class JmsNested
      */
     public $bar;
 
+    /**
+     * Epic description.
+     *
+     * @JMS\Type("array<integer>")
+     */
+    public $baz;
+
 }

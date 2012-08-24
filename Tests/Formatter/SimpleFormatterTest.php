@@ -228,6 +228,12 @@ class SimpleFormatterTest extends WebTestCase
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => false,
+                                ),
+                                'baz' => array(
+                                    'dataType' => 'array of integers',
+                                    'required' => false,
+                                    'description' => 'No description.',
+                                    'readonly' => false,
                                 )
                             )
                         ),
@@ -245,6 +251,12 @@ class SimpleFormatterTest extends WebTestCase
                                 ),
                                 'bar' => array(
                                     'dataType' => 'string',
+                                    'required' => false,
+                                    'description' => 'No description.',
+                                    'readonly' => false,
+                                ),
+                                'baz' => array(
+                                    'dataType' => 'array of integers',
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => false,

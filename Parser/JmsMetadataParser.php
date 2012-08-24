@@ -61,16 +61,18 @@ class JmsMetadataParser implements ParserInterface
             if (!is_null($item->type)) {
                 $name = isset($item->serializedName) ? $item->serializedName : $item->name;
 
+                $dataType = $this->processDataType($item->type);
+
                 $params[$name] = array(
-                    'dataType' => $this->getNormalizedType($item->type),
+                    'dataType' => $dataType['normalized'],
                     'required'      => false,   //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
                     'description'   => $this->getDescription($input, $item->name),
                     'readonly' => $item->readOnly
                 );
 
                 //check for nested classes w/ JMS metadata
-                if ($nestedInputClass = $this->getNestedClass($item->type)) {
-                    $params[$name]['children'] = $this->parse($nestedInputClass);
+                if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
+                    $params[$name]['children'] = $this->parse($dataType['class']);
                 }
             }
         }
@@ -79,74 +81,70 @@ class JmsMetadataParser implements ParserInterface
     }
 
     /**
-     * There are various ways via JMS to declare arrays of objects, but that's an internal
-     * implementation detail.
+     * Figure out a normalized data type (for documentation), and get a
+     * nested class name, if available.
      *
      * @param  string $type
-     * @return string
+     * @return array
      */
-    protected function getNormalizedType($type)
+    protected function processDataType($type)
     {
-        if (in_array($type, array('boolean', 'integer', 'string', 'double', 'array', 'DateTime'))) {
-            return $type;
+
+        //could be basic type
+        if ($this->isPrimitive($type)) {
+            return array(
+                'normalized' => $type,
+                'class' => null
+            );
         }
 
-        if (false !== strpos($type, "array") || false !== strpos($type, "ArrayCollection")) {
-            if ($nested = $this->getNestedClassInArray($type)) {
-                $exp = explode("\\", $nested);
-
-                return sprintf("array of objects (%s)", end($exp));
+        //check for a type inside something that could be treated as an array
+        if ($nestedType = $this->getNestedTypeInArray($type)) {
+            if ($this->isPrimitive($nestedType)) {
+                return array(
+                    'normalized' => sprintf("array of %ss", $nestedType),
+                    'class' => null
+                );
             }
-            
-            return "array";
+
+            $exp = explode("\\", $nestedType);
+
+            return array(
+                'normalized' => sprintf("array of objects (%s)", end($exp)),
+                'class' => $nestedType
+            );
         }
 
+        //if we got this far, it's a general class name
         $exp = explode("\\", $type);
 
-        return sprintf("object (%s)", end($exp));
+        return array(
+            'normalized' => sprintf("object (%s)", end($exp)),
+            'class' => $type
+        );
+    }
+
+    protected function isPrimitive($type)
+    {
+        return in_array($type, array('boolean', 'integer', 'string', 'double', 'array', 'DateTime'));
     }
 
     /**
-     * Check the various ways JMS describes custom classes in arrays, and
-     * get the name of the class in the array, if available.
+     * Check the various ways JMS describes values in arrays, and
+     * get the value type in the array
      *
-     * @param  string       $type
+     * @param  string      $type
      * @return string|null
      */
-    protected function getNestedClassInArray($type)
+    protected function getNestedTypeInArray($type)
     {
         //could be some type of array with <V>, or <K,V>
         $regEx = "/\<([A-Za-z0-9\\\]*)(\,?\s?(.*))?\>/";
         if (preg_match($regEx, $type, $matches)) {
-            $matched = (!empty($matches[3])) ? $matches[3] : $matches[1];
-
-            return in_array($matched, array('boolean', 'integer', 'string', 'double', 'array', 'DateTime')) ? false : $matched;
+            return (!empty($matches[3])) ? $matches[3] : $matches[1];
         }
 
         return null;
-    }
-
-    /**
-     * Scan the JMS Serializer types for reference to a class.
-     *
-     * http://jmsyst.com/bundles/JMSSerializerBundle/master/reference/annotations#type
-     *
-     * @param  string       $type
-     * @return string|null
-     */
-    protected function getNestedClass($type)
-    {
-        if (in_array($type, array('boolean', 'integer', 'string', 'double', 'array', 'DateTime'))) {
-            return false;
-        }
-
-        //could be a nested object of some sort
-        if ($nested = $this->getNestedClassInArray($type)) {
-            return $nested;
-        }
-
-        //or could just be a class name (potentially)
-        return (null === $this->factory->getMetadataForClass($type)) ? null : $type;
     }
 
     protected function getDescription($className, $propertyName)
