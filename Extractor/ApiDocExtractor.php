@@ -246,7 +246,7 @@ class ApiDocExtractor
 
         // requirements
         $requirements = array();
-        foreach ($route->compile()->getRequirements() as $name => $value) {
+        foreach ($route->getRequirements() as $name => $value) {
             if ('_method' !== $name) {
                 $requirements[$name] = array(
                     'requirement'   => $value,
@@ -289,13 +289,13 @@ class ApiDocExtractor
 
         // method/uri
         $annotation->setMethod($route->getRequirement('_method') ?: 'ANY');
-        $annotation->setUri($route->compile()->getPattern());
+        $annotation->setUri($route->getPattern());
 
         return $annotation;
     }
 
     /**
-     * @param  Reflector $reflected
+     * @param  \Reflector $reflected
      * @return string
      */
     protected function getDocComment(\Reflector $reflected)
@@ -315,7 +315,7 @@ class ApiDocExtractor
     }
 
     /**
-     * @param  Reflector $reflected
+     * @param  \Reflector $reflected
      * @return string
      */
     protected function getDocCommentText(\Reflector $reflected)
