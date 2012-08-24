@@ -96,9 +96,9 @@ class JmsMetadataParser implements ParserInterface
                 $exp = explode("\\", $nested);
 
                 return sprintf("array of objects (%s)", end($exp));
-            } else {
-                return "array";
             }
+            
+            return "array";
         }
 
         $exp = explode("\\", $type);
@@ -111,11 +111,10 @@ class JmsMetadataParser implements ParserInterface
      * get the name of the class in the array, if available.
      *
      * @param  string       $type
-     * @return string|false
+     * @return string|null
      */
     protected function getNestedClassInArray($type)
     {
-
         //could be some type of array with <V>, or <K,V>
         $regEx = "/\<([A-Za-z0-9\\\]*)(\,?\s?(.*))?\>/";
         if (preg_match($regEx, $type, $matches)) {
@@ -124,7 +123,7 @@ class JmsMetadataParser implements ParserInterface
             return in_array($matched, array('boolean', 'integer', 'string', 'double', 'array', 'DateTime')) ? false : $matched;
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -133,7 +132,7 @@ class JmsMetadataParser implements ParserInterface
      * http://jmsyst.com/bundles/JMSSerializerBundle/master/reference/annotations#type
      *
      * @param  string       $type
-     * @return string|false
+     * @return string|null
      */
     protected function getNestedClass($type)
     {
@@ -147,7 +146,7 @@ class JmsMetadataParser implements ParserInterface
         }
 
         //or could just be a class name (potentially)
-        return (null === $this->factory->getMetadataForClass($type)) ? false : $type;
+        return (null === $this->factory->getMetadataForClass($type)) ? null : $type;
     }
 
     protected function getDescription($className, $propertyName)
