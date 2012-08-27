@@ -220,7 +220,12 @@ class SimpleFormatterTest extends WebTestCase
                     'uri' => '/jms-return-test',
                     'description' => 'Testing return',
                     'response' => array(
-                        
+                        'a' => array(
+                            'dataType' => 'string',
+                            'required' => true,
+                            'description' => 'A nice description',
+                            'readonly' => false
+                        )
                     )
                 ),
                 5 =>

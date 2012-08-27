@@ -247,14 +247,14 @@ class ApiDocExtractor
         // return (populates 'response' for the formatters)
         if (null !== $return = $annotation->getReturn()) {
             $response = array();
-            
+
             foreach ($this->parsers as $parser) {
                 if ($parser->supports($return)) {
                     $response = $parser->parse($return);
                     break;
                 }
             }
-            
+
             $annotation->setResponse($response);
         }
 

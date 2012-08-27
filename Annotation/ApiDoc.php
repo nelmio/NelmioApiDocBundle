@@ -27,7 +27,7 @@ class ApiDoc
      * @var string
      */
     private $input = null;
-    
+
     /**
      * @var string
      */
@@ -67,7 +67,7 @@ class ApiDoc
      * @var array
      */
     private $parameters = array();
-    
+
     /**
      * @var array
      */
@@ -98,7 +98,7 @@ class ApiDoc
         if (isset($data['description'])) {
             $this->description = $data['description'];
         }
-        
+
         if (isset($data['return'])) {
             $this->return = $data['return'];
         }
@@ -203,7 +203,7 @@ class ApiDoc
     {
         $this->parameters = $parameters;
     }
-    
+
     /**
      * Sets the responsed data as processed by the parsers - same format as parameters
      *
@@ -213,7 +213,7 @@ class ApiDoc
     {
         $this->response = $response;
     }
-    
+
     /**
      * @return array
      */
@@ -267,7 +267,7 @@ class ApiDoc
         if ($requirements = $this->requirements) {
             $data['requirements'] = $requirements;
         }
-        
+
         if ($response = $this->response) {
             $data['response'] = $response;
         }
