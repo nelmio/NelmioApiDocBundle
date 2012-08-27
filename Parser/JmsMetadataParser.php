@@ -70,7 +70,7 @@ class JmsMetadataParser implements ParserInterface
                     'readonly' => $item->readOnly
                 );
 
-                //check for nested classes w/ JMS metadata
+                //check for nested classes with JMS metadata
                 if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
                     $params[$name]['children'] = $this->parse($dataType['class']);
                 }
@@ -89,7 +89,6 @@ class JmsMetadataParser implements ParserInterface
      */
     protected function processDataType($type)
     {
-
         //could be basic type
         if ($this->isPrimitive($type)) {
             return array(
