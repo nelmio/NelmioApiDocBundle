@@ -305,6 +305,11 @@ class ApiDocExtractor
         $annotation->setMethod($route->getRequirement('_method') ?: 'ANY');
         $annotation->setUri($route->getPattern());
 
+        // Include File
+        if ("" != ($fileToInclude = $annotation->getFileToInclude())) {
+            $annotation->setFileToInclude($this->container->getParameter('nelmio_api_doc.include.location') . $fileToInclude);
+        }
+
         return $annotation;
     }
 

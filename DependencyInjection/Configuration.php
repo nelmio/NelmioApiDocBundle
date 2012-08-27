@@ -43,6 +43,12 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('include')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('location')->defaultValue('%kernel.root_dir%')->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
