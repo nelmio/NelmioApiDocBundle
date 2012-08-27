@@ -31,6 +31,11 @@ class ApiDoc
     /**
      * @var string
      */
+    private $return = null;
+
+    /**
+     * @var string
+     */
     private $description = null;
 
     /**
@@ -64,6 +69,11 @@ class ApiDoc
     private $parameters = array();
 
     /**
+     * @var array
+     */
+    private $response = array();
+
+    /**
      * @var Route
      */
     private $route;
@@ -87,6 +97,10 @@ class ApiDoc
 
         if (isset($data['description'])) {
             $this->description = $data['description'];
+        }
+
+        if (isset($data['return'])) {
+            $this->return = $data['return'];
         }
 
         $this->isResource = isset($data['resource']) && $data['resource'];
@@ -124,6 +138,14 @@ class ApiDoc
     public function getInput()
     {
         return $this->input;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReturn()
+    {
+        return $this->return;
     }
 
     /**
@@ -183,6 +205,24 @@ class ApiDoc
     }
 
     /**
+     * Sets the responsed data as processed by the parsers - same format as parameters
+     *
+     * @param array $response
+     */
+    public function setResponse(array $response)
+    {
+        $this->response = $response;
+    }
+
+    /**
+     * @return array
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
      * @param Route $route
      */
     public function setRoute(Route $route)
@@ -226,6 +266,10 @@ class ApiDoc
 
         if ($requirements = $this->requirements) {
             $data['requirements'] = $requirements;
+        }
+
+        if ($response = $this->response) {
+            $data['response'] = $response;
         }
 
         return $data;

@@ -186,6 +186,19 @@ arr:
   * description: No description.
 
 
+### `GET` /jms-return-test ###
+
+_Testing return_
+
+#### Response ####
+
+a:
+
+  * type: string
+  * required: true
+  * description: A nice description
+
+
 ### `ANY` /my-commented/{id}/{page} ###
 
 _This method is useful to test if the getDocComment works._
