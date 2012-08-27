@@ -46,6 +46,12 @@ test_route_9:
     requirements:
         _method: POST
 
+test_route_10:
+    pattern: /jms-return-test
+    defaults: { _controller: NelmioApiDocTestBundle:Test:jmsReturnTest }
+    requirements:
+        _method: GET
+
 test_service_route_1:
     pattern:  /tests.{_format}
     defaults: { _controller: nemlio.test.controller:indexAction, _format: json }

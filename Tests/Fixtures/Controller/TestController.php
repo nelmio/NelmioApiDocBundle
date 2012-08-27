@@ -100,4 +100,15 @@ class TestController
     public function jmsInputTestAction()
     {
     }
+
+    /**
+     * @ApiDoc(
+     *  description="Testing return",
+     *  return="test_type"
+     * )
+     */
+    public function jmsReturnTestAction()
+    {
+    }
+
 }

@@ -216,6 +216,15 @@ class SimpleFormatterTest extends WebTestCase
                 ),
                 4 =>
                 array(
+                    'method' => 'GET',
+                    'uri' => '/jms-return-test',
+                    'description' => 'Testing return',
+                    'response' => array(
+                        
+                    )
+                ),
+                5 =>
+                array(
                     'method' => 'ANY',
                     'uri' => '/my-commented/{id}/{page}',
                     'requirements' =>
@@ -226,7 +235,7 @@ class SimpleFormatterTest extends WebTestCase
                     'description' => 'This method is useful to test if the getDocComment works.',
                     'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char."
                 ),
-                5 =>
+                6 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/yet-another/{id}',
@@ -235,7 +244,7 @@ class SimpleFormatterTest extends WebTestCase
                         'id' => array('type' => '', 'description' => '', 'requirement' => '\d+')
                     ),
                 ),
-                6 =>
+                7 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param',

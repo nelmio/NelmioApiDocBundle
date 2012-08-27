@@ -223,7 +223,7 @@ class ApiDocExtractor
         // doc
         $annotation->setDocumentation($this->getDocCommentText($method));
 
-        // input
+        // input (populates 'parameters' for the formatters)
         if (null !== $input = $annotation->getInput()) {
             $parameters = array();
 
@@ -242,6 +242,20 @@ class ApiDocExtractor
             }
 
             $annotation->setParameters($parameters);
+        }
+
+        // return (populates 'response' for the formatters)
+        if (null !== $return = $annotation->getReturn()) {
+            $response = array();
+            
+            foreach ($this->parsers as $parser) {
+                if ($parser->supports($return)) {
+                    $response = $parser->parse($return);
+                    break;
+                }
+            }
+            
+            $annotation->setResponse($response);
         }
 
         // requirements
