@@ -32,10 +32,13 @@ class JmsMetadataParser implements ParserInterface
      */
     public function supports($input)
     {
-        if ($meta = $this->factory->getMetadataForClass($input)) {
-            return true;
+        try {
+            if ($meta = $this->factory->getMetadataForClass($input)) {
+                return true;
+            }            
+        } catch (\ReflectionException $e) {
         }
-
+        
         return false;
     }
 
