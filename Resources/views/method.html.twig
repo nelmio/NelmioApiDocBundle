@@ -29,7 +29,7 @@
                 <h4>Documentation</h4>
                 <div>{{ data.documentation|extra_markdown }}</div>
                 {% if data.fileToInclude is defined and data.fileToInclude is not empty %}
-                <div>{{ data.fileToInclude|markdown }}</div>
+                <div>{{ data.fileToInclude|extra_markdown }}</div>
                 {% endif %}
             {% endif %}
 
