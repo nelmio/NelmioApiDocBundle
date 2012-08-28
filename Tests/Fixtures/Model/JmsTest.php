@@ -30,4 +30,14 @@ class JmsTest
      */
     public $arr;
 
+    /**
+     * @JMS\Type("Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested");
+     */
+    public $nested;
+
+    /**
+     * @JMS\Type("array<Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested>");
+     */
+    public $nestedArray;
+
 }
