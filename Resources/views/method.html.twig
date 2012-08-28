@@ -94,9 +94,8 @@
                                 <table>
                                 {% for key, value in infos %}
                                     <tr>
-                                        <td><strong>{{ key|title }}</strong></td>
-                                        <td>{{ value|replace({'*': ''})|extra_markdown }}</td>
-                                        {# <td>{{ value|json_encode|replace({'\\\\': '\\'})|trim('"') }}</td>#}
+                                        <td>{{ key|title }}</td>
+                                        <td>{{ value|json_encode|replace({'\\\\': '\\'})|trim('"') }}</td>
                                     </tr>
                                 {% endfor %}
                                 </table>
