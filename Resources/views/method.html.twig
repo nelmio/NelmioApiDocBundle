@@ -91,6 +91,7 @@
                             <th>Parameter</th>
                             <th>Type</th>
                             <th>Required?</th>
+                            <th>Read Only?</th>
                             <th>Description</th>
                         </tr>
                     </thead>
@@ -100,6 +101,33 @@
                                 <td>{{ name }}</td>
                                 <td>{{ infos.dataType }}</td>
                                 <td>{{ infos.required ? 'true' : 'false' }}</td>
+                                <td>{{ infos.readonly }} ? 'true' : 'false'</td>
+                                <td>{{ infos.description }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+
+            {% if data.response is defined and data.response is not empty %}
+                <h4>Return</h4>
+                <table class='fullwidth'>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required?</th>
+                            <th>Read Only?</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for name, infos in data.response %}
+                            <tr>
+                                <td>{{ name }}</td>
+                                <td>{{ infos.dataType }}</td>
+                                <td>{{ infos.required ? 'true' : 'false' }}</td>
+                                <td>{{ infos.readonly }} ? 'true' : 'false'</td>
                                 <td>{{ infos.description }}</td>
                             </tr>
                         {% endfor %}
