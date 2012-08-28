@@ -35,10 +35,10 @@ class JmsMetadataParser implements ParserInterface
         try {
             if ($meta = $this->factory->getMetadataForClass($input)) {
                 return true;
-            }            
+            }
         } catch (\ReflectionException $e) {
         }
-        
+
         return false;
     }
 
@@ -81,7 +81,6 @@ class JmsMetadataParser implements ParserInterface
 
         //TODO: regex comment to get description - or move doc comment parsing functionality from `ApiDocExtractor` to a new location
         //in order to reuse it here
-        
         return $description;
     }
 
