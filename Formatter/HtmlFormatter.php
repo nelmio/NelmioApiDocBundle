@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\Formatter;
 
 use Symfony\Component\Templating\EngineInterface;
-use dflydev\markdown\MarkdownParser;
 
 class HtmlFormatter extends AbstractFormatter
 {
@@ -91,11 +90,7 @@ class HtmlFormatter extends AbstractFormatter
             if (!is_readable($data['fileToInclude'])) {
                     throw new \InvalidArgumentException("Could not open: {$fileToInclude}");
             }
- 
-            $mdParser = new MarkdownParser();
-            $fileContents = file_get_contents($data['fileToInclude']);
-            $data['fileToInclude'] = $mdParser->transform($fileContents);
-    
+            $data['fileToInclude'] = file_get_contents($data['fileToInclude']);
         }
         
         return $this->engine->render('NelmioApiDocBundle::resource.html.twig', array_merge(

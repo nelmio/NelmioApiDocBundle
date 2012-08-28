@@ -28,7 +28,9 @@
             {% if data.documentation is defined and data.documentation is not empty %}
                 <h4>Documentation</h4>
                 <div>{{ data.documentation|extra_markdown }}</div>
-                <div>{{ data.fileToInclude|raw }}</div>
+                {% if data.fileToInclude is defined and data.fileToInclude is not empty %}
+                <div>{{ data.fileToInclude|markdown }}</div>
+                {% endif %}
             {% endif %}
 
             {% if data.responseCodes is defined and data.responseCodes is not empty %}
