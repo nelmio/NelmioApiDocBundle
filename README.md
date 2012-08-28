@@ -112,8 +112,8 @@ class YourController
     /**
      * @ApiDoc(
      *     responseCodes={
-     *          200="Returned when successful",
-     *          403="Returned when the user is not authorized to say hello"},
+     *         200="Returned when successful",
+     *         403="Returned when the user is not authorized to say hello"},
      * ) 
      */
     public function myFunction()
@@ -123,7 +123,7 @@ class YourController
 }
 ```
 
-* `include`: filename of a markdown formatted file to be included for longer documentation; This is relative to the path defined in the configuration section (nelmio_api_doc.include.location), i.e.
+* `include`: filename of a markdown formatted file to be included for longer documentation; This is relative to the location of the controller, i.e.
 
 ``` php
 <?php 
@@ -132,7 +132,7 @@ class YourController
 {
     /**
      * @ApiDoc(
-     *     include="Acme/HelloBundle/Resources/doc/myFunction.md"
+     *     include="../Resources/doc/myFunction.md"
      * ) 
      */
     public function myFunction()
@@ -141,7 +141,6 @@ class YourController
     }
 }
 ```
-This would try to include the file located at (nelmio_api_doc.include.location)/Acme/HelloBundle/Resources/doc/myFunction.md for a long description.
 
 Each _filter_ has to define a `name` parameter, but other parameters are free. Filters are often optional
 parameters, and you can document them as you want, but keep in mind to be consistent for the whole documentation.
@@ -236,14 +235,6 @@ input is used, so you can configure their priorities via container tags.  Here's
             class: MyBundle\Parser\CustomDocParser;
             tags:
                 - {name: nelmio_api_doc.extractor.parser, priority: 2}
-
-If you want to include a markdown file with long descriptions, you have to set the include `basepath`:
-
-    # app/config/config.yml
-    nelmio_api_doc:
-            include:
-                location: %kernel.root_dir%/../src/
-
 
 ## Credits ##
 

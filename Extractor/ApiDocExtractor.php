@@ -307,7 +307,8 @@ class ApiDocExtractor
 
         // Include File
         if ("" != ($fileToInclude = $annotation->getFileToInclude())) {
-            $annotation->setFileToInclude($this->container->getParameter('nelmio_api_doc.include.location') . $fileToInclude);
+            $refl = new \ReflectionClass($method->class);
+            $annotation->setFileToInclude(dirname($refl->getFileName()) . DIRECTORY_SEPARATOR . $fileToInclude);
         }
 
         return $annotation;
