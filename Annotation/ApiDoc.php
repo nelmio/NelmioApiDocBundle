@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\Annotation;
 
 use Symfony\Component\Routing\Route;
-use dflydev\markdown\MarkdownParser;
 
 /**
  * @Annotation
@@ -331,13 +330,7 @@ class ApiDoc
         }
 
         if ($fileToInclude = $this->fileToInclude) {
-            if (!is_readable($fileToInclude)) {
-                throw new \InvalidArgumentException("Could not open: {$fileToInclude}");
-            }
-
-            $mdParser = new MarkdownParser();
-            $fileContents = file_get_contents($fileToInclude);
-            $data['fileToInclude'] = $mdParser->transform($fileContents);
+            $data['fileToInclude'] = $fileToInclude;
         }
 
         return $data;
