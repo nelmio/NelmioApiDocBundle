@@ -116,8 +116,6 @@
                         <tr>
                             <th>Parameter</th>
                             <th>Type</th>
-                            <th>Required?</th>
-                            <th>Read Only?</th>
                             <th>Description</th>
                         </tr>
                     </thead>
@@ -126,8 +124,6 @@
                             <tr>
                                 <td>{{ name }}</td>
                                 <td>{{ infos.dataType }}</td>
-                                <td>{{ infos.required ? 'true' : 'false' }}</td>
-                                <td>{{ infos.readonly ? 'true' : 'false' }}</td>
                                 <td>{{ infos.description }}</td>
                             </tr>
                         {% endfor %}
