@@ -97,13 +97,14 @@
                     </thead>
                     <tbody>
                         {% for name, infos in data.parameters %}
-                            <tr>
-                                <td>{{ name }}</td>
-                                <td>{{ infos.dataType }}</td>
-                                <td>{{ infos.required ? 'true' : 'false' }}</td>
-                                <td>{{ infos.readonly ? 'true' : 'false' }}</td>
-                                <td>{{ infos.description }}</td>
-                            </tr>
+                            {% if not infos.readonly %}
+                                <tr>
+                                    <td>{{ name }}</td>
+                                    <td>{{ infos.dataType }}</td>
+                                    <td>{{ infos.required ? 'true' : 'false' }}</td>
+                                    <td>{{ infos.description }}</td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
