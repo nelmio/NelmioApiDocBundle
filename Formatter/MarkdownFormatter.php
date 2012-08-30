@@ -76,6 +76,7 @@ class MarkdownFormatter extends AbstractFormatter
                 $markdown .= sprintf("%s:\n\n", $name);
                 $markdown .= sprintf("  * type: %s\n", $parameter['dataType']);
                 $markdown .= sprintf("  * required: %s\n", $parameter['required'] ? 'true' : 'false');
+                $markdown .= sprintf("  * readonly: %s\n", $parameter['readonly'] ? 'true' : 'false');
 
                 if (isset($parameter['description']) && !empty($parameter['description'])) {
                     $markdown .= sprintf("  * description: %s\n", $parameter['description']);
@@ -92,6 +93,7 @@ class MarkdownFormatter extends AbstractFormatter
                 $markdown .= sprintf("%s:\n\n", $name);
                 $markdown .= sprintf("  * type: %s\n", $parameter['dataType']);
                 $markdown .= sprintf("  * required: %s\n", $parameter['required'] ? 'true' : 'false');
+                $markdown .= sprintf("  * readonly: %s\n", $parameter['readonly'] ? 'true' : 'false');
 
                 if (isset($parameter['description']) && !empty($parameter['description'])) {
                     $markdown .= sprintf("  * description: %s\n", $parameter['description']);
