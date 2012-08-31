@@ -51,4 +51,58 @@ abstract class AbstractFormatter implements FormatterInterface
      * @return string|array
      */
     abstract protected function render(array $collection);
+
+    /**
+     * Compresses nested parameters into a flat by changing the parameter
+     * names to strings which contain the nested property names, for example:
+     * `user[group][name]`
+     *
+     *
+     * @param  array   $data
+     * @param  string  $parentName
+     * @param  boolean $ignoreNestedReadOnly
+     * @return array
+     */
+    protected function compressNestedParameters(array $data, $parentName = null, $ignoreNestedReadOnly = false)
+    {
+        $newParams = array();
+
+        foreach ($data as $name => $info) {
+            $newName = $this->getNewName($name, $info, $parentName);
+
+            $newParams[$newName] = array(
+                'description' => $info['description'],
+                'dataType' => $info['dataType'],
+                'readonly' => $info['readonly'],
+                'required' => $info['required']
+            );
+
+            if (isset($info['children']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {
+                foreach ($this->compressNestedParameters($info['children'], $newName, $ignoreNestedReadOnly) as $nestedItemName => $nestedItemData) {
+                    $newParams[$nestedItemName] = $nestedItemData;
+                }
+            }
+        }
+
+        return $newParams;
+    }
+
+    /**
+     * Returns a new property name, taking into account whether or not the property
+     * is an array of some other data type.
+     *
+     * @param  string $name
+     * @param  array  $data
+     * @param  string $parentName
+     * @return string
+     */
+    protected function getNewName($name, $data, $parentName = null)
+    {
+        $newName = ($parentName) ? sprintf("%s[%s]", $parentName, $name) : $name;
+
+        $array = (false === strpos($data['dataType'], "array of")) ? "" : "[]";
+
+        return sprintf("%s%s", $newName, $array);
+    }
+
 }
