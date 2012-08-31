@@ -148,7 +148,7 @@ class HtmlFormatter extends AbstractFormatter
         $newParams = array();
 
         foreach ($data as $name => $info) {
-            $newName = ($parentName) ? sprintf("%s[%s]", $parentName, $name) : $name;
+            $newName = $this->getNewName($name, $info, $parentName);
 
             $newParams[$newName] = array(
                 'description' => $info['description'],
@@ -165,5 +165,14 @@ class HtmlFormatter extends AbstractFormatter
         }
 
         return $newParams;
+    }
+
+    protected function getNewName($name, $data, $parentName = null)
+    {
+        $newName = ($parentName) ? sprintf("%s[%s]", $parentName, $name) : $name;
+
+        $array = (false === strpos($data['dataType'], "array of")) ? "" : "[]";
+
+        return sprintf("%s%s", $newName, $array);
     }
 }
