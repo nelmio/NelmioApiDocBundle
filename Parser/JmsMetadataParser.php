@@ -151,7 +151,6 @@ class JmsMetadataParser implements ParserInterface
         $description = "No description.";
 
         //TODO: abstract docblock parsing utility and implement here
-
         return $description;
     }
 

@@ -85,6 +85,14 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function renderOne(array $data)
     {
+        if (isset($data['parameters'])) {
+            $data['parameters'] = $this->compressNestedParameters($data['parameters']);
+        }
+
+        if (isset($data['response'])) {
+            $data['response'] = $this->compressNestedParameters($data['response']);
+        }
+
         return $this->engine->render('NelmioApiDocBundle::resource.html.twig', array_merge(
             array('data' => $data, 'displayContent' => true),
             $this->getGlobalVars()
@@ -96,8 +104,25 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function render(array $collection)
     {
+        $processedCollection = array();
+
+        foreach ($collection as $path => $methods) {
+            $processedCollection[$path] = array();
+            foreach ($methods as $method) {
+                if (isset($method['parameters'])) {
+                    $method['parameters'] = $this->compressNestedParameters($method['parameters']);
+                }
+
+                if (isset($method['response'])) {
+                    $method['response'] = $this->compressNestedParameters($method['response']);
+                }
+
+                $processedCollection[$path][] = $method;
+            }
+        }
+
         return $this->engine->render('NelmioApiDocBundle::resources.html.twig', array_merge(
-            array('resources' => $collection),
+            array('resources' => $processedCollection),
             $this->getGlobalVars()
         ));
     }
@@ -116,5 +141,29 @@ class HtmlFormatter extends AbstractFormatter
             'css'            => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
             'js'             => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
         );
+    }
+
+    protected function compressNestedParameters(array $data, $parentName = null, $isArray = false)
+    {
+        $newParams = array();
+
+        foreach ($data as $name => $info) {
+            $newName = ($parentName) ? sprintf("%s[%s]", $parentName, $name) : $name;
+
+            $newParams[$newName] = array(
+                'description' => $info['description'],
+                'dataType' => $info['dataType'],
+                'readonly' => $info['readonly'],
+                'required' => $info['required']
+            );
+
+            if (isset($info['children'])) {
+                foreach ($this->compressNestedParameters($info['children'], $name) as $nestedItemName => $nestedItemData) {
+                    $newParams[$nestedItemName] = $nestedItemData;
+                }
+            }
+        }
+
+        return $newParams;
     }
 }
