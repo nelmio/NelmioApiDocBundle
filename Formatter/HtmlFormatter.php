@@ -86,7 +86,7 @@ class HtmlFormatter extends AbstractFormatter
     protected function renderOne(array $data)
     {
         if (isset($data['parameters'])) {
-            $data['parameters'] = $this->compressNestedParameters($data['parameters']);
+            $data['parameters'] = $this->compressNestedParameters($data['parameters'], null, true);
         }
 
         if (isset($data['response'])) {
@@ -110,7 +110,7 @@ class HtmlFormatter extends AbstractFormatter
             $processedCollection[$path] = array();
             foreach ($methods as $method) {
                 if (isset($method['parameters'])) {
-                    $method['parameters'] = $this->compressNestedParameters($method['parameters']);
+                    $method['parameters'] = $this->compressNestedParameters($method['parameters'], null, true);
                 }
 
                 if (isset($method['response'])) {
@@ -143,7 +143,7 @@ class HtmlFormatter extends AbstractFormatter
         );
     }
 
-    protected function compressNestedParameters(array $data, $parentName = null, $isArray = false)
+    protected function compressNestedParameters(array $data, $parentName = null, $ignoreNestedReadOnly = false)
     {
         $newParams = array();
 
@@ -157,8 +157,8 @@ class HtmlFormatter extends AbstractFormatter
                 'required' => $info['required']
             );
 
-            if (isset($info['children'])) {
-                foreach ($this->compressNestedParameters($info['children'], $newName) as $nestedItemName => $nestedItemData) {
+            if (isset($info['children']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {
+                foreach ($this->compressNestedParameters($info['children'], $newName, $ignoreNestedReadOnly) as $nestedItemName => $nestedItemData) {
                     $newParams[$nestedItemName] = $nestedItemData;
                 }
             }
