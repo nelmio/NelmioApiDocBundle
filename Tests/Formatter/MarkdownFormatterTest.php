@@ -83,17 +83,20 @@ a:
 
   * type: string
   * required: true
+  * readonly: false
   * description: A nice description
 
 b:
 
   * type: string
   * required: false
+  * readonly: false
 
 c:
 
   * type: boolean
   * required: true
+  * readonly: false
 
 
 ### `POST` /tests.{_format} ###
@@ -111,17 +114,20 @@ a:
 
   * type: string
   * required: true
+  * readonly: false
   * description: A nice description
 
 b:
 
   * type: string
   * required: false
+  * readonly: false
 
 c:
 
   * type: boolean
   * required: true
+  * readonly: false
 
 
 
@@ -137,6 +143,7 @@ a:
 
   * type: string
   * required: true
+  * readonly: false
   * description: A nice description
 
 
@@ -165,36 +172,42 @@ foo:
 
   * type: string
   * required: false
+  * readonly: false
   * description: No description.
 
 bar:
 
   * type: DateTime
   * required: false
+  * readonly: true
   * description: No description.
 
 number:
 
   * type: double
   * required: false
+  * readonly: false
   * description: No description.
 
 arr:
 
   * type: array
   * required: false
+  * readonly: false
   * description: No description.
 
 nested:
 
   * type: object (JmsNested)
   * required: false
+  * readonly: false
   * description: No description.
 
 nestedArray:
 
   * type: array of objects (JmsNested)
   * required: false
+  * readonly: false
   * description: No description.
 
 
@@ -208,6 +221,7 @@ a:
 
   * type: string
   * required: true
+  * readonly: false
   * description: A nice description
 
 
