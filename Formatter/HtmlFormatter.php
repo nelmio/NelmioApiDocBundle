@@ -158,7 +158,7 @@ class HtmlFormatter extends AbstractFormatter
             );
 
             if (isset($info['children'])) {
-                foreach ($this->compressNestedParameters($info['children'], $name) as $nestedItemName => $nestedItemData) {
+                foreach ($this->compressNestedParameters($info['children'], $newName) as $nestedItemName => $nestedItemData) {
                     $newParams[$nestedItemName] = $nestedItemData;
                 }
             }
