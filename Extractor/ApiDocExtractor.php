@@ -28,28 +28,40 @@ class ApiDocExtractor
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    private $container;
+    protected $container;
 
     /**
      * @var \Symfony\Component\Routing\RouterInterface
      */
-    private $router;
+    protected $router;
 
     /**
      * @var \Doctrine\Common\Annotations\Reader
      */
-    private $reader;
+    protected $reader;
 
     /**
      * @var array \Nelmio\ApiDocBundle\Parser\ParserInterface
      */
-    private $parsers = array();
+    protected $parsers = array();
 
     public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader)
     {
         $this->container = $container;
         $this->router    = $router;
         $this->reader    = $reader;
+    }
+
+    /**
+     * Return a list of route to inspect for ApiDoc annotation
+     * You can extend this method if you don't want all the routes
+     * to be included.
+     *
+     * @return array of Route
+     */
+    public function getRoutes()
+    {
+        return $this->router->getRouteCollection()->all();
     }
 
     /**
@@ -64,7 +76,7 @@ class ApiDocExtractor
         $array = array();
         $resources = array();
 
-        foreach ($this->router->getRouteCollection()->all() as $route) {
+        foreach ($this->getRoutes() as $route) {
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
                     if ($annotation->isResource()) {
