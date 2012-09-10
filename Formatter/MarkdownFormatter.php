@@ -15,6 +15,7 @@ class MarkdownFormatter extends AbstractFormatter
 {
     /**
      * {@inheritdoc}
+     * @throws \InvalidArgumentException if the file to be included cannot be loaded.
      */
     protected function renderOne(array $data)
     {
@@ -31,6 +32,15 @@ class MarkdownFormatter extends AbstractFormatter
                 $markdown .= $data['documentation'];
                 $markdown .= "\n\n";
             }
+        }
+
+        if (!empty($data['fileToInclude'])) {
+            if (!is_readable($data['fileToInclude'])) {
+                throw new \InvalidArgumentException("Could not open: {$fileToInclude}");
+            }
+ 
+            $fileContents = file_get_contents($data['fileToInclude']);
+            $markdown .= $fileContents;
         }
 
         if (isset($data['requirements']) && !empty($data['requirements'])) {

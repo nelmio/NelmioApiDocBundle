@@ -82,9 +82,17 @@ class HtmlFormatter extends AbstractFormatter
 
     /**
      * {@inheritdoc}
+     * @throws \InvalidArgumentException if the file to be included cannot be loaded.
      */
     protected function renderOne(array $data)
     {
+        if (!empty($data['fileToInclude'])) {
+            if (!is_readable($data['fileToInclude'])) {
+                    throw new \InvalidArgumentException("Could not open: {$fileToInclude}");
+            }
+            $data['fileToInclude'] = file_get_contents($data['fileToInclude']);
+        }
+        
         return $this->engine->render('NelmioApiDocBundle::resource.html.twig', array_merge(
             array('data' => $data, 'displayContent' => true),
             $this->getGlobalVars()

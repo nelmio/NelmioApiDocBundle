@@ -105,6 +105,46 @@ The following properties are available:
  
 * `return`: the return type associated with the response.  Specified and parsed the same way as `input`.
 
+* `responseCodes`: an array of HTTP response codes and a description of when that response is returned; Example:
+
+``` php
+<?php 
+
+class YourController
+{
+    /**
+     * @ApiDoc(
+     *     responseCodes={
+     *         200="Returned when successful",
+     *         403="Returned when the user is not authorized to say hello"},
+     * ) 
+     */
+    public function myFunction()
+    {
+        // ...
+    }
+}
+```
+
+* `include`: filename of a markdown formatted file to be included for longer documentation; This is relative to the location of the controller, i.e.
+
+``` php
+<?php 
+
+class YourController
+{
+    /**
+     * @ApiDoc(
+     *     include="../Resources/doc/myFunction.md"
+     * ) 
+     */
+    public function myFunction()
+    {
+        // ...
+    }
+}
+```
+
 Each _filter_ has to define a `name` parameter, but other parameters are free. Filters are often optional
 parameters, and you can document them as you want, but keep in mind to be consistent for the whole documentation.
 

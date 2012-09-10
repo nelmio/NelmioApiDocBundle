@@ -78,6 +78,18 @@ class ApiDoc
      */
     private $route;
 
+    /**
+     * Stores HTTP Response Codes and a description
+     * @var array
+     */
+    private $responseCodes;
+
+    /**
+     * An optional Markdown file to include with a long description. 
+     * @var String
+     */
+    private $fileToInclude;
+
     public function __construct(array $data)
     {
         if (isset($data['input'])) {
@@ -101,6 +113,14 @@ class ApiDoc
 
         if (isset($data['return'])) {
             $this->return = $data['return'];
+        }
+
+        if (isset($data['responseCodes'])) {
+            $this->responseCodes = $data['responseCodes'];
+        }
+
+        if (isset($data['include'])) {
+            $this->fileToInclude = $data['include'];
         }
 
         $this->isResource = isset($data['resource']) && $data['resource'];
@@ -241,6 +261,39 @@ class ApiDoc
     /**
      * @return array
      */
+    public function getResponseCodes()
+    {
+        return $this->responseCodes;
+    }
+
+    /**
+     * @param array
+     */
+    public function addResponseCode($c)
+    {
+        $this->responseCodes = array_merge($this->responseCodes, $c);
+    }
+
+    /**
+     * @return String
+     */
+    public function getFileToInclude()
+    {
+        return $this->fileToInclude;
+    }
+    
+    /**
+     * @param String $newFileToInclude
+     */
+    public function setFileToInclude($newFileToInclude)
+    {
+        $this->fileToInclude = $newFileToInclude;
+    }
+
+    /**
+     * @return array
+     * @throws \InvalidArgumentException if the file to be included is not readable 
+     */
     public function toArray()
     {
         $data = array(
@@ -270,6 +323,14 @@ class ApiDoc
 
         if ($response = $this->response) {
             $data['response'] = $response;
+        }
+
+        if ($responseCodes = $this->responseCodes) {
+            $data['responseCodes'] = $responseCodes;
+        }
+
+        if ($fileToInclude = $this->fileToInclude) {
+            $data['fileToInclude'] = $fileToInclude;
         }
 
         return $data;

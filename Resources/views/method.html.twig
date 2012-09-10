@@ -28,6 +28,29 @@
             {% if data.documentation is defined and data.documentation is not empty %}
                 <h4>Documentation</h4>
                 <div>{{ data.documentation|extra_markdown }}</div>
+                {% if data.fileToInclude is defined and data.fileToInclude is not empty %}
+                <div>{{ data.fileToInclude|extra_markdown }}</div>
+                {% endif %}
+            {% endif %}
+
+            {% if data.responseCodes is defined and data.responseCodes is not empty %}
+            <h4>Response Codes</h4>
+            <table class="fullwidth">
+                <thead>
+                    <tr>
+                        <th>Response Code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for response_code, description in data.responseCodes %}
+                    <tr>
+                        <td><a href="http://en.wikipedia.org/wiki/HTTP_{{ response_code }}" target="_blank">{{ response_code }}<a/></td>
+                        <td>{{ description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             {% endif %}
 
             {% if data.requirements is defined  and data.requirements is not empty %}
@@ -161,7 +184,7 @@
                                     <p class="tuple">
                                         <input type="text" class="key" value="{{ name }}" placeholder="Key" />
                                         <span>=</span>
-                                        <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
+                                        <input type="text" class="value" placeholder="{% if infos.default is defined %}{{ infos.default }}{% elseif infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
                                     </p>
                                 {% endfor %}
                             {% endif %}

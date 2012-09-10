@@ -324,6 +324,13 @@ class ApiDocExtractor
         $annotation->setMethod($route->getRequirement('_method') ?: 'ANY');
         $annotation->setUri($route->getPattern());
 
+        // Include File
+        $fileToInclude = $annotation->getFileToInclude();
+        if (!empty($fileToInclude)) {
+            $refl = new \ReflectionClass($method->class);
+            $annotation->setFileToInclude(dirname($refl->getFileName()) . DIRECTORY_SEPARATOR . $fileToInclude);
+        }
+
         return $annotation;
     }
 
