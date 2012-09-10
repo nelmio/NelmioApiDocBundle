@@ -20,6 +20,8 @@ class JmsNested
     /**
      * Epic description.
      *
+     * With multiple lines.
+     *
      * @JMS\Type("array<integer>")
      */
     public $baz;

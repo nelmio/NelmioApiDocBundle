@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Parser;
 
 use Metadata\MetadataFactoryInterface;
+use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 
 /**
  * Uses the JMS metadata factory to extract input/output model information
@@ -20,11 +21,22 @@ class JmsMetadataParser implements ParserInterface
 {
 
     /**
+     * @var \Metadata\MetadataFactoryInterface
+     */
+    private $factory;
+
+    /**
+     * @var \Nelmio\ApiDocBundle\Util\DocCommentExtractor
+     */
+    private $commentExtractor;
+
+    /**
      * Constructor, requires JMS Metadata factory
      */
-    public function __construct(MetadataFactoryInterface $factory)
+    public function __construct(MetadataFactoryInterface $factory, DocCommentExtractor $commentExtractor)
     {
         $this->factory = $factory;
+        $this->commentExtractor = $commentExtractor;
     }
 
     /**
@@ -148,9 +160,9 @@ class JmsMetadataParser implements ParserInterface
 
     protected function getDescription($className, $propertyName)
     {
-        $description = "No description.";
-
-        //TODO: abstract docblock parsing utility and implement here
+        $ref = new \ReflectionClass($className);
+        $extracted = $this->commentExtractor->getDocCommentText($ref->getProperty($propertyName));
+        $description = !empty($extracted) ? $extracted : "No description.";
 
         return $description;
     }
