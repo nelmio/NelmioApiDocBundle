@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 
 class ApiDocExtractor
 {
@@ -41,15 +42,21 @@ class ApiDocExtractor
     protected $reader;
 
     /**
+     * @var \Nelmio\ApiDocBundle\Util\DocCommentExtractor
+     */
+    private $commentExtractor;
+
+    /**
      * @var array \Nelmio\ApiDocBundle\Parser\ParserInterface
      */
     protected $parsers = array();
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader)
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor)
     {
         $this->container = $container;
         $this->router    = $router;
         $this->reader    = $reader;
+        $this->commentExtractor = $commentExtractor;
     }
 
     /**
@@ -220,7 +227,7 @@ class ApiDocExtractor
 
         // description
         if (null === $annotation->getDescription()) {
-            $comments = explode("\n", $this->getDocCommentText($method));
+            $comments = explode("\n", $this->commentExtractor->getDocCommentText($method));
             // just set the first line
             $comment = trim($comments[0]);
             $comment = preg_replace("#\n+#", ' ', $comment);
@@ -233,7 +240,7 @@ class ApiDocExtractor
         }
 
         // doc
-        $annotation->setDocumentation($this->getDocCommentText($method));
+        $annotation->setDocumentation($this->commentExtractor->getDocCommentText($method));
 
         // input (populates 'parameters' for the formatters)
         if (null !== $input = $annotation->getInput()) {
@@ -283,7 +290,7 @@ class ApiDocExtractor
         }
 
         $paramDocs = array();
-        foreach (explode("\n", $this->getDocComment($method)) as $line) {
+        foreach (explode("\n", $this->commentExtractor->getDocComment($method)) as $line) {
             if (preg_match('{^@param (.+)}', trim($line), $matches)) {
                 $paramDocs[] = $matches[1];
             }
@@ -318,45 +325,6 @@ class ApiDocExtractor
         $annotation->setUri($route->getPattern());
 
         return $annotation;
-    }
-
-    /**
-     * @param  \Reflector $reflected
-     * @return string
-     */
-    protected function getDocComment(\Reflector $reflected)
-    {
-        $comment = $reflected->getDocComment();
-
-        // let's clean the doc block
-        $comment = str_replace('/**', '', $comment);
-        $comment = str_replace('*', '', $comment);
-        $comment = str_replace('*/', '', $comment);
-        $comment = str_replace("\r", '', trim($comment));
-        $comment = preg_replace("#^\n[ \t]+[*]?#i", "\n", trim($comment));
-        $comment = preg_replace("#[\t ]+#i", ' ', trim($comment));
-        $comment = str_replace("\"", "\\\"", $comment);
-
-        return $comment;
-    }
-
-    /**
-     * @param  \Reflector $reflected
-     * @return string
-     */
-    protected function getDocCommentText(\Reflector $reflected)
-    {
-        $comment = $reflected->getDocComment();
-
-        // Remove PHPDoc
-        $comment = preg_replace('/^\s+\* @[\w0-9]+.*/msi', '', $comment);
-
-        // let's clean the doc block
-        $comment = str_replace('/**', '', $comment);
-        $comment = str_replace('*/', '', $comment);
-        $comment = preg_replace('/^\s*\* ?/m', '', $comment);
-
-        return trim($comment);
     }
 
     /**

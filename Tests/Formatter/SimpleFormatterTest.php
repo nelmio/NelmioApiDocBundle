@@ -232,7 +232,9 @@ class SimpleFormatterTest extends WebTestCase
                                 'baz' => array(
                                     'dataType' => 'array of integers',
                                     'required' => false,
-                                    'description' => 'No description.',
+                                    'description' => 'Epic description.
+
+With multiple lines.',
                                     'readonly' => false,
                                 )
                             )
@@ -258,7 +260,9 @@ class SimpleFormatterTest extends WebTestCase
                                 'baz' => array(
                                     'dataType' => 'array of integers',
                                     'required' => false,
-                                    'description' => 'No description.',
+                                    'description' => 'Epic description.
+
+With multiple lines.',
                                     'readonly' => false,
                                 )
                             )
