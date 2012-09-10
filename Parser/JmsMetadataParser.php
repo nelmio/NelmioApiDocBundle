@@ -162,6 +162,7 @@ class JmsMetadataParser implements ParserInterface
     {
         $ref = new \ReflectionClass($className);
         $extracted = $this->commentExtractor->getDocCommentText($ref->getProperty($propertyName));
+
         return !empty($extracted) ? $extracted : "No description.";
     }
 
