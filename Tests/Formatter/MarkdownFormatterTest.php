@@ -83,20 +83,17 @@ a:
 
   * type: string
   * required: true
-  * readonly: false
   * description: A nice description
 
 b:
 
   * type: string
   * required: false
-  * readonly: false
 
 c:
 
   * type: boolean
   * required: true
-  * readonly: false
 
 
 ### `POST` /tests.{_format} ###
@@ -114,20 +111,17 @@ a:
 
   * type: string
   * required: true
-  * readonly: false
   * description: A nice description
 
 b:
 
   * type: string
   * required: false
-  * readonly: false
 
 c:
 
   * type: boolean
   * required: true
-  * readonly: false
 
 
 
@@ -143,7 +137,6 @@ a:
 
   * type: string
   * required: true
-  * readonly: false
   * description: A nice description
 
 
@@ -172,43 +165,59 @@ foo:
 
   * type: string
   * required: false
-  * readonly: false
-  * description: No description.
-
-bar:
-
-  * type: DateTime
-  * required: false
-  * readonly: true
   * description: No description.
 
 number:
 
   * type: double
   * required: false
-  * readonly: false
   * description: No description.
 
 arr:
 
   * type: array
   * required: false
-  * readonly: false
   * description: No description.
 
 nested:
 
   * type: object (JmsNested)
   * required: false
-  * readonly: false
   * description: No description.
 
-nestedArray:
+nested[bar]:
+
+  * type: string
+  * required: false
+  * description: No description.
+
+nested[baz][]:
+
+  * type: array of integers
+  * required: false
+  * description: Epic description.
+
+With multiple lines.
+
+nestedArray[]:
 
   * type: array of objects (JmsNested)
   * required: false
-  * readonly: false
   * description: No description.
+
+nestedArray[][bar]:
+
+  * type: string
+  * required: false
+  * description: No description.
+
+nestedArray[][baz][]:
+
+  * type: array of integers
+  * required: false
+  * description: Epic description.
+
+With multiple lines.
 
 
 ### `GET` /jms-return-test ###
@@ -220,8 +229,6 @@ _Testing return_
 a:
 
   * type: string
-  * required: true
-  * readonly: false
   * description: A nice description
 
 
