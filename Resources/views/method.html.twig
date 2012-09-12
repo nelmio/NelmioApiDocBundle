@@ -136,17 +136,9 @@
                 <div class="pane sandbox">
                     <form method="{{ data.method|upper }}" action="{{ data.uri }}">
                         <fieldset class="parameters">
-                            <legend>Parameters</legend>
-                            {% if data.parameters is defined %}
-                                {% for name, infos in data.parameters %}
-                                    <p class="tuple">
-                                        <input type="text" class="key" value="{{ name }}" placeholder="Key" />
-                                        <span>=</span>
-                                        <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
-                                    </p>
-                                {% endfor %}
-                            {% endif %}
+                            <legend>Input</legend>
                             {% if data.requirements is defined %}
+                                <h4>Requirements</h4>
                                 {% for name, infos in data.requirements %}
                                     <p class="tuple">
                                         <input type="text" class="key" value="{{ name }}" placeholder="Key" />
@@ -156,6 +148,7 @@
                                 {% endfor %}
                             {% endif %}
                             {% if data.filters is defined %}
+                                <h4>Filters</h4>
                                 {% for name, infos in data.filters %}
                                     <p class="tuple">
                                         <input type="text" class="key" value="{{ name }}" placeholder="Key" />
@@ -164,8 +157,20 @@
                                     </p>
                                 {% endfor %}
                             {% endif %}
+                            {% if data.parameters is defined %}
+                                <h4>Parameters</h4>
+                                {% for name, infos in data.parameters %}
+                                {% if not infos.readonly %}
+                                    <p class="tuple">
+                                        <input type="text" class="key" value="{{ name }}" placeholder="Key" />
+                                        <span>=</span>
+                                        <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
+                                    </p>
+                                {% endif %}
+                                {% endfor %}
+                                <button class="add">New parameter</button>
+                            {% endif %}
 
-                            <button class="add">New parameter</button>
                         </fieldset>
 
                         <fieldset class="headers">
