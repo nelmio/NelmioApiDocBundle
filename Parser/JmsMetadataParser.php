@@ -15,6 +15,7 @@ use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use JMS\SerializerBundle\Metadata\PropertyMetadata;
 use JMS\SerializerBundle\Metadata\VirtualPropertyMetadata;
+use Nelmio\ApiDocBundle\Util\DataTypeParser;
 
 /**
  * Uses the JMS metadata factory to extract input/output model information
@@ -31,16 +32,22 @@ class JmsMetadataParser implements ParserInterface
      * @var \Nelmio\ApiDocBundle\Util\DocCommentExtractor
      */
     private $commentExtractor;
+    
+    /**
+     * @var \Nelmio\ApiDocBundle\Util\DataTypeParser
+     */
+    private $dataTypeParser;
 
     private $parsedClasses = array();
 
     /**
      * Constructor, requires JMS Metadata factory
      */
-    public function __construct(MetadataFactoryInterface $factory, DocCommentExtractor $commentExtractor)
+    public function __construct(MetadataFactoryInterface $factory, DocCommentExtractor $commentExtractor, DataTypeParser $dataTypeParser)
     {
         $this->factory = $factory;
         $this->commentExtractor = $commentExtractor;
+        $this->dataTypeParser = $dataTypeParser;
     }
 
     /**
@@ -113,7 +120,7 @@ class JmsMetadataParser implements ParserInterface
     protected function processDataType($type)
     {
         //could be basic type
-        if ($this->isPrimitive($type)) {
+        if ($this->dataTypeParser->isPrimitive($type)) {
             return array(
                 'normalized' => $type,
                 'class' => null
@@ -121,19 +128,19 @@ class JmsMetadataParser implements ParserInterface
         }
 
         //check for a type inside something that could be treated as an array
-        if ($nestedType = $this->getNestedTypeInArray($type)) {
-            if ($this->isPrimitive($nestedType)) {
+        if ($nestedType = $this->dataTypeParser->getNestedTypeInArray($type)) {
+            if ($this->dataTypeParser->isPrimitive($nestedType['value'])) {
                 return array(
-                    'normalized' => sprintf("array of %ss", $nestedType),
+                    'normalized' => sprintf("array<%s>", $nestedType['value']),
                     'class' => null
                 );
             }
 
-            $exp = explode("\\", $nestedType);
+            $exp = explode("\\", $nestedType['value']);
 
             return array(
-                'normalized' => sprintf("array of objects (%s)", end($exp)),
-                'class' => $nestedType
+                'normalized' => sprintf("array<%s>", end($exp)),
+                'class' => $nestedType['value']
             );
         }
 
@@ -141,33 +148,12 @@ class JmsMetadataParser implements ParserInterface
         $exp = explode("\\", $type);
 
         return array(
-            'normalized' => sprintf("object (%s)", end($exp)),
+            'normalized' => sprintf("%s", end($exp)),
             'class' => $type
         );
     }
 
-    protected function isPrimitive($type)
-    {
-        return in_array($type, array('boolean', 'integer', 'string', 'double', 'array', 'DateTime'));
-    }
 
-    /**
-     * Check the various ways JMS describes values in arrays, and
-     * get the value type in the array
-     *
-     * @param  string      $type
-     * @return string|null
-     */
-    protected function getNestedTypeInArray($type)
-    {
-        //could be some type of array with <V>, or <K,V>
-        $regEx = "/\<([A-Za-z0-9\\\]*)(\,?\s?(.*))?\>/";
-        if (preg_match($regEx, $type, $matches)) {
-            return (!empty($matches[3])) ? $matches[3] : $matches[1];
-        }
-
-        return null;
-    }
 
     protected function getDescription($className, PropertyMetadata $item)
     {

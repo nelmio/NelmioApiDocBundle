@@ -212,7 +212,7 @@ class SimpleFormatterTest extends WebTestCase
                             'readonly' => false
                         ),
                         'nested' => array(
-                            'dataType' => 'object (JmsNested)',
+                            'dataType' => 'JmsNested',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
@@ -230,7 +230,7 @@ class SimpleFormatterTest extends WebTestCase
                                     'readonly' => false,
                                 ),
                                 'baz' => array(
-                                    'dataType' => 'array of integers',
+                                    'dataType' => 'array<integer>',
                                     'required' => false,
                                     'description' => 'Epic description.
 
@@ -240,7 +240,7 @@ With multiple lines.',
                             )
                         ),
                         'nestedArray' => array(
-                            'dataType' => 'array of objects (JmsNested)',
+                            'dataType' => 'array<JmsNested>',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
@@ -258,7 +258,7 @@ With multiple lines.',
                                     'readonly' => false,
                                 ),
                                 'baz' => array(
-                                    'dataType' => 'array of integers',
+                                    'dataType' => 'array<integer>',
                                     'required' => false,
                                     'description' => 'Epic description.
 

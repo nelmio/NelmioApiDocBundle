@@ -28,12 +28,12 @@ class FormTypeParser implements ParserInterface
      */
     protected $mapTypes = array(
         'text'      => 'string',
-        'date'      => 'date',
-        'datetime'  => 'datetime',
+        'date'      => 'DateTime',
+        'datetime'  => 'DateTime',
         'checkbox'  => 'boolean',
-        'time'      => 'time',
-        'number'    => 'float',
-        'integer'   => 'int',
+        'time'      => 'DateTime',
+        'number'    => 'double',
+        'integer'   => 'integer',
         'textarea'  => 'string',
         'country'   => 'string',
     );
@@ -76,15 +76,12 @@ class FormTypeParser implements ParserInterface
         return $this->parseForm($form);
     }
 
-    private function parseForm($form, $prefix = null)
+    private function parseForm($form)
     {
         $parameters = array();
+        $children = array();
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
-
-            if ($prefix) {
-                $name = sprintf('%s[%s]', $prefix, $name);
-            }
 
             $bestType = '';
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
@@ -95,7 +92,14 @@ class FormTypeParser implements ParserInterface
 
             if ('' === $bestType) {
                 if ($type = $config->getType()) {
+                    
+                    //TODO: collection?
+                    if ('collection' === $config->getType()->getName()) {
+                        $bestType = "array";
+                    }
+                    
                     if ($type = $type->getInnerType()) {
+
                         /**
                          * TODO: Implement a better handling of unsupported types
                          * This is just a temporary workaround for don't breaking docs page in case of unsupported types
@@ -124,6 +128,10 @@ class FormTypeParser implements ParserInterface
                 'description'   => $config->getAttribute('description'),
                 'readonly'      => $config->getDisabled(),
             );
+            
+            if (!empty($children)) {
+                $parameters[$name]['children'] = $children;
+            }
         }
 
         return $parameters;

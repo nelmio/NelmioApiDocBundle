@@ -97,7 +97,7 @@ abstract class AbstractFormatter implements FormatterInterface
     protected function getNewName($name, $data, $parentName = null)
     {
         $newName = ($parentName) ? sprintf("%s[%s]", $parentName, $name) : $name;
-        $array   = (false === strpos($data['dataType'], "array of")) ? "" : "[]";
+        $array = (false === strpos($data['dataType'], "array<")) ? "" : "[]";
 
         return sprintf("%s%s", $newName, $array);
     }

@@ -181,7 +181,7 @@ arr:
 
 nested:
 
-  * type: object (JmsNested)
+  * type: JmsNested
   * required: false
   * description: No description.
 
@@ -193,7 +193,7 @@ nested[bar]:
 
 nested[baz][]:
 
-  * type: array of integers
+  * type: array<integer>
   * required: false
   * description: Epic description.
 
@@ -201,7 +201,7 @@ With multiple lines.
 
 nestedArray[]:
 
-  * type: array of objects (JmsNested)
+  * type: array<JmsNested>
   * required: false
   * description: No description.
 
@@ -213,7 +213,7 @@ nestedArray[][bar]:
 
 nestedArray[][baz][]:
 
-  * type: array of integers
+  * type: array<integer>
   * required: false
   * description: Epic description.
 
