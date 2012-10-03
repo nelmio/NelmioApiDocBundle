@@ -48,7 +48,7 @@ class FormTypeParser implements ParserInterface
     {
         try {
             if (is_string($item) && class_exists($item)) {
-                $item = new $item();
+                $item = unserialize(sprintf('O:%d:"%s":0:{}', strlen($item), $item));
             }
 
             $form = $this->formFactory->create($item);
