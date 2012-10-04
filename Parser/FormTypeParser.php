@@ -11,6 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+
+use Symfony\Component\Form\FormRegistry;
+
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Exception\FormException;
 
@@ -36,9 +40,10 @@ class FormTypeParser implements ParserInterface
         'country'   => 'string',
     );
 
-    public function __construct(FormFactoryInterface $formFactory)
+    public function __construct(FormFactoryInterface $formFactory, FormRegistry $formRegistry)
     {
-        $this->formFactory = $formFactory;
+        $this->formFactory  = $formFactory;
+        $this->formRegistry = $formRegistry;
     }
 
     /**
@@ -47,16 +52,18 @@ class FormTypeParser implements ParserInterface
     public function supports($item)
     {
         try {
-            if (is_string($item) && class_exists($item)) {
-                $item = unserialize(sprintf('O:%d:"%s":0:{}', strlen($item), $item));
+            if ($this->createForm($item)) {
+                return true;
             }
-
-            $form = $this->formFactory->create($item);
-        } catch (FormException $e) {
+        }
+        catch (FormException $e) {
+            return false;
+        }
+        catch (MissingOptionsException $e) {
             return false;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -64,8 +71,8 @@ class FormTypeParser implements ParserInterface
      */
     public function parse($type)
     {
-        if (is_string($type) && class_exists($type)) {
-            $type = unserialize(sprintf('O:%d:"%s":0:{}', strlen($type), $type));
+        if ($this->implementsType($type)) {
+            $type = $this->getTypeInstance($type);
         }
 
         $form = $this->formFactory->create($type);
@@ -110,5 +117,32 @@ class FormTypeParser implements ParserInterface
         }
 
         return $parameters;
+    }
+
+    private function implementsType($item)
+    {
+        if (!class_exists($item)) {
+            return false;
+        }
+        $refl = new \ReflectionClass($item);
+
+        return $refl->implementsInterface('Symfony\Component\Form\FormTypeInterface');
+    }
+
+    private function getTypeInstance($type)
+    {
+        return unserialize(sprintf('O:%d:"%s":0:{}', strlen($type), $type));
+    }
+
+    private function createForm($item)
+    {
+        if ($this->implementsType($item)) {
+            $type = $this->getTypeInstance($item);
+
+            return $this->formFactory->create($type);
+        }
+        if ($this->formRegistry->hasType($item)) {
+            return $this->formFactory->create($item);
+        }
     }
 }
