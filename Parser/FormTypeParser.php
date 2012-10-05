@@ -12,9 +12,7 @@
 namespace Nelmio\ApiDocBundle\Parser;
 
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
-
 use Symfony\Component\Form\FormRegistry;
-
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Exception\FormException;
 
@@ -55,11 +53,9 @@ class FormTypeParser implements ParserInterface
             if ($this->createForm($item)) {
                 return true;
             }
-        }
-        catch (FormException $e) {
+        } catch (FormException $e) {
             return false;
-        }
-        catch (MissingOptionsException $e) {
+        } catch (MissingOptionsException $e) {
             return false;
         }
 
