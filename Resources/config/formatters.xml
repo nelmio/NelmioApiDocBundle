@@ -37,6 +37,9 @@
             <call method="setEndpoint">
                 <argument>%nelmio_api_doc.sandbox.endpoint%</argument>
             </call>
+            <call method="setJsonDeclarationMethod">
+                <argument>%nelmio_api_doc.sandbox.json_declaration_method%</argument>
+            </call>
             <call method="setAuthentication">
                 <argument>%nelmio_api_doc.sandbox.authentication%</argument>
             </call>

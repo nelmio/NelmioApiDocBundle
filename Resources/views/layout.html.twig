@@ -134,12 +134,17 @@
                     var url = $(this).attr('action'),
                         method = $(this).attr('method'),
                         self = this,
-                        params = {
-                            _format: 'json' // default format if not overriden in the form
-                        },
+                        params = {},
                         headers = {},
                         content = $(this).find('textarea.content').val();
                         result_container = $('.result', $(this).parent());
+
+                    var jsonDeclarationMethod = '{{ jsonDeclarationMethod }}';
+                    if (jsonDeclarationMethod == 'format_param') {
+                        params['_format'] = 'json';
+                    } else if (jsonDeclarationMethod == 'accept_header') {
+                        headers['Accept'] = 'application/json';
+                    }
 
                     // retrieve all the parameters to send
                     $('.parameters .tuple', $(this)).each(function() {

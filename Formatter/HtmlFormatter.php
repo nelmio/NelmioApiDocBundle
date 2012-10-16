@@ -41,6 +41,11 @@ class HtmlFormatter extends AbstractFormatter
     private $engine;
 
     /**
+     * @var string
+     */
+    private $jsonDeclarationMethod;
+
+    /**
      * @param array $authentication
      */
     public function setAuthentication(array $authentication = null)
@@ -78,6 +83,14 @@ class HtmlFormatter extends AbstractFormatter
     public function setTemplatingEngine(EngineInterface $engine)
     {
         $this->engine = $engine;
+    }
+
+    /**
+     * @param string $method
+     */
+    public function setJsonDeclarationMethod($method)
+    {
+        $this->jsonDeclarationMethod = $method;
     }
 
     /**
@@ -133,13 +146,14 @@ class HtmlFormatter extends AbstractFormatter
     private function getGlobalVars()
     {
         return array(
-            'apiName'        => $this->apiName,
-            'authentication' => $this->authentication,
-            'endpoint'       => $this->endpoint,
-            'enableSandbox'  => $this->enableSandbox,
-            'date'           => date(DATE_RFC822),
-            'css'            => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
-            'js'             => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
+            'apiName'               => $this->apiName,
+            'authentication'        => $this->authentication,
+            'endpoint'              => $this->endpoint,
+            'enableSandbox'         => $this->enableSandbox,
+            'jsonDeclarationMethod' => $this->jsonDeclarationMethod,
+            'date'                  => date(DATE_RFC822),
+            'css'                   => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
+            'js'                    => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
         );
     }
 
