@@ -31,7 +31,7 @@ class NelmioApiDocExtension extends Extension
         $container->setParameter('nelmio_api_doc.api_name', $config['name']);
         $container->setParameter('nelmio_api_doc.sandbox.enabled',  $config['sandbox']['enabled']);
         $container->setParameter('nelmio_api_doc.sandbox.endpoint', $config['sandbox']['endpoint']);
-        $container->setParameter('nelmio_api_doc.sandbox.json_declaration_method', $config['sandbox']['json_declaration_method']);
+        $container->setParameter('nelmio_api_doc.sandbox.request_format_method', $config['sandbox']['request_format_method']);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('formatters.xml');

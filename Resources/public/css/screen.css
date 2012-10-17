@@ -148,9 +148,9 @@ table tbody tr:last-child td {
   text-decoration: none;
 }
 
-#api_key_wrapper {
-  float: right;
-  padding: 10px 0 10px 0;
+#sandbox_configuration {
+    float: right;
+    padding: 10px 0 10px 0;
 }
 
 #colophon {

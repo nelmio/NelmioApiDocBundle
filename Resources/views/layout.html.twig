@@ -15,11 +15,16 @@
     <body>
         <div id="header">
             <a href=""><h1>{{ apiName }}</h1></a>
-            {% if authentication %}
-            <div id="api_key_wrapper">
-                api key: <input type="text" id="api_key"/>
+            <div id="sandbox_configuration">
+                request format:
+                <select id="request_format">
+                    <option value="json">JSON</option>
+                    <option value="xml">XML</option>
+                </select>
+                {% if authentication %}
+                    api key: <input type="text" id="api_key"/>
+                {% endif %}
             </div>
-            {% endif %}
             <br style="clear: both;" />
         </div>
         <div class="container" id="resources_container">
@@ -37,42 +42,42 @@
 
             {% if enableSandbox %}
                 var toggleButtonText = function ($btn) {
-                if ($btn.text() === 'Default') {
-                    $btn.text('Raw');
-                } else {
-                    $btn.text('Default');
-                }
+                    if ($btn.text() === 'Default') {
+                        $btn.text('Raw');
+                    } else {
+                        $btn.text('Default');
+                    }
                 };
 
                 var renderRawBody = function ($container) {
-                var rawData, $btn;
+                    var rawData, $btn;
 
-                rawData = $container.data('raw-response');
-                $btn = $container.parents('.pane').find('.to-raw');
+                    rawData = $container.data('raw-response');
+                    $btn = $container.parents('.pane').find('.to-raw');
 
-                $container.addClass('prettyprinted');
-                $container.html(rawData);
+                    $container.addClass('prettyprinted');
+                    $container.html($('<div/>').text(rawData).html());
 
-                $btn.removeClass('to-raw');
-                $btn.addClass('to-prettify');
+                    $btn.removeClass('to-raw');
+                    $btn.addClass('to-prettify');
 
-                toggleButtonText($btn);
+                    toggleButtonText($btn);
                 };
 
                 var renderPrettifiedBody = function ($container) {
-                var rawData, $btn;
+                    var rawData, $btn;
 
-                rawData = $container.data('raw-response');
-                $btn = $container.parents('.pane').find('.to-prettify');
+                    rawData = $container.data('raw-response');
+                    $btn = $container.parents('.pane').find('.to-prettify');
 
-                $container.removeClass('prettyprinted');
-                $container.html(prettifyResponse(rawData));
-                prettyPrint && prettyPrint();
+                    $container.removeClass('prettyprinted');
+                    $container.html(prettifyResponse(rawData));
+                    prettyPrint && prettyPrint();
 
-                $btn.removeClass('to-prettify');
-                $btn.addClass('to-raw');
+                    $btn.removeClass('to-prettify');
+                    $btn.addClass('to-raw');
 
-                toggleButtonText($btn);
+                    toggleButtonText($btn);
                 };
 
                 $('.tabs li').click(function() {
@@ -88,7 +93,7 @@
                 var prettifyResponse = function(text) {
                     try {
                         var data = typeof text === 'string' ? JSON.parse(text) : text;
-                        text = JSON.stringify(data, undefined, ' ');
+                        text = JSON.stringify(data, undefined, '  ');
                     } catch (err) {
                     }
 
@@ -105,11 +110,7 @@
 
                     container.data('raw-response', data);
 
-                    if ('<' === data[0]) {
-                        renderRawBody(container);
-                    } else {
-                        renderPrettifiedBody(container);
-                    }
+                    renderPrettifiedBody(container);
 
                     container.parents('.pane').find('.to-prettify').text('Raw');
                     container.parents('.pane').find('.to-raw').text('Raw');
@@ -136,45 +137,46 @@
                         self = this,
                         params = {},
                         headers = {},
-                        content = $(this).find('textarea.content').val();
+                        content = $(this).find('textarea.content').val(),
                         result_container = $('.result', $(this).parent());
 
-                    var jsonDeclarationMethod = '{{ jsonDeclarationMethod }}';
-                    if (jsonDeclarationMethod == 'format_param') {
-                        params['_format'] = 'json';
-                    } else if (jsonDeclarationMethod == 'accept_header') {
-                        headers['Accept'] = 'application/json';
+                    var requestFormat = $('#request_format').val();
+                    var requestFormatMethod = '{{ requestFormatMethod }}';
+                    if (requestFormatMethod == 'format_param') {
+                        params['_format'] = requestFormat;
+                    } else if (requestFormatMethod == 'accept_header') {
+                        headers['Accept'] = 'application/' + requestFormat;
                     }
 
                     // retrieve all the parameters to send
                     $('.parameters .tuple', $(this)).each(function() {
-                    var key, value;
+                        var key, value;
 
-                    key = $('.key', $(this)).val();
-                    value = $('.value', $(this)).val();
+                        key = $('.key', $(this)).val();
+                        value = $('.value', $(this)).val();
 
-                    if (value) {
-                        params[key] = value;
-                    }
+                        if (value) {
+                            params[key] = value;
+                        }
                     });
 
                     // retrieve the additional headers to send
                     $('.headers .tuple', $(this)).each(function() {
-                    var key, value;
+                        var key, value;
 
-                    key = $('.key', $(this)).val();
-                    value = $('.value', $(this)).val();
+                        key = $('.key', $(this)).val();
+                        value = $('.value', $(this)).val();
 
-                    if (value) {
-                        headers[key] = value;
-                    }
+                        if (value) {
+                            headers[key] = value;
+                        }
                     });
 
                     // fix parameters in URL
                     for (var key in $.extend({}, params)) {
                         if (url.indexOf('{' + key + '}') !== -1) {
-                        url = url.replace('{' + key + '}', params[key]);
-                        delete params[key];
+                            url = url.replace('{' + key + '}', params[key]);
+                            delete params[key];
                         }
                     };
 
@@ -189,16 +191,16 @@
 
                     // and trigger the API call
                     $.ajax({
-                    url: '{{ endpoint }}' + url,
-                    type: method,
-                    data: content.length ? content : params,
-                    headers: headers,
-                    complete: function(xhr) {
-                        displayResponse(xhr, method, url, result_container);
+                        url: '{{ endpoint }}' + url,
+                        type: method,
+                        data: content.length ? content : params,
+                        headers: headers,
+                        complete: function(xhr) {
+                            displayResponse(xhr, method, url, result_container);
 
-                        // and enable them back
-                        $('input:not(.content-type), button', $(self)).removeAttr('disabled');
-                    }
+                            // and enable them back
+                            $('input:not(.content-type), button', $(self)).removeAttr('disabled');
+                        }
                     });
 
                     return false;
