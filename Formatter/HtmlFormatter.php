@@ -46,6 +46,11 @@ class HtmlFormatter extends AbstractFormatter
     private $requestFormatMethod;
 
     /**
+     * @var string
+     */
+    private $defaultRequestFormat;
+
+    /**
      * @param array $authentication
      */
     public function setAuthentication(array $authentication = null)
@@ -91,6 +96,11 @@ class HtmlFormatter extends AbstractFormatter
     public function setRequestFormatMethod($method)
     {
         $this->requestFormatMethod = $method;
+    }
+
+    public function setDefaultRequestFormat($format)
+    {
+        $this->defaultRequestFormat = $format;
     }
 
     /**
@@ -146,14 +156,15 @@ class HtmlFormatter extends AbstractFormatter
     private function getGlobalVars()
     {
         return array(
-            'apiName'             => $this->apiName,
-            'authentication'      => $this->authentication,
-            'endpoint'            => $this->endpoint,
-            'enableSandbox'       => $this->enableSandbox,
-            'requestFormatMethod' => $this->requestFormatMethod,
-            'date'                => date(DATE_RFC822),
-            'css'                 => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
-            'js'                  => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
+            'apiName'              => $this->apiName,
+            'authentication'       => $this->authentication,
+            'endpoint'             => $this->endpoint,
+            'enableSandbox'        => $this->enableSandbox,
+            'requestFormatMethod'  => $this->requestFormatMethod,
+            'defaultRequestFormat' => $this->defaultRequestFormat,
+            'date'                 => date(DATE_RFC822),
+            'css'                  => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
+            'js'                   => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
         );
     }
 

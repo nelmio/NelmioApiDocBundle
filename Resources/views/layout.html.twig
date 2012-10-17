@@ -18,8 +18,8 @@
             <div id="sandbox_configuration">
                 request format:
                 <select id="request_format">
-                    <option value="json">JSON</option>
-                    <option value="xml">XML</option>
+                    <option value="json"{{ defaultRequestFormat == 'json' ? ' selected' : '' }}>JSON</option>
+                    <option value="xml"{{ defaultRequestFormat == 'xml' ? ' selected' : '' }}>XML</option>
                 </select>
                 {% if authentication %}
                     api key: <input type="text" id="api_key"/>
