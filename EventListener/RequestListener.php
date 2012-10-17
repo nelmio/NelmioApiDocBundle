@@ -30,10 +30,16 @@ class RequestListener
      */
     protected $formatter;
 
-    public function __construct(ApiDocExtractor $extractor, FormatterInterface $formatter)
+    /**
+     * @var string
+     */
+    protected $parameter;
+
+    public function __construct(ApiDocExtractor $extractor, FormatterInterface $formatter, $parameter)
     {
         $this->extractor = $extractor;
         $this->formatter = $formatter;
+        $this->parameter = $parameter;
     }
 
     /**
@@ -47,7 +53,7 @@ class RequestListener
 
         $request = $event->getRequest();
 
-        if (!$request->query->get('_doc')) {
+        if (!$request->query->has($this->parameter)) {
             return;
         }
 

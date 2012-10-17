@@ -36,7 +36,8 @@ class NelmioApiDocExtension extends Extension
         $loader->load('formatters.xml');
         $loader->load('services.xml');
 
-        if ($config['on_demand']) {
+        if ($config['request_listener']['enabled']) {
+            $container->setParameter('nelmio_api_doc.request_listener.parameter', $config['request_listener']['parameter']);
             $loader->load('request_listener.xml');
         }
 
