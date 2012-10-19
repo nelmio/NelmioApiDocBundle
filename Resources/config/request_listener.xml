@@ -11,6 +11,7 @@
         <service id="nelmio_api_doc.event_listener.request" class="%nelmio_api_doc.event_listener.request.class%">
             <argument type="service" id="nelmio_api_doc.extractor.api_doc_extractor" />
             <argument type="service" id="nelmio_api_doc.formatter.html_formatter" />
+            <argument>%nelmio_api_doc.request_listener.parameter%</argument>
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>
     </services>
