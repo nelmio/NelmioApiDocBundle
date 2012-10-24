@@ -13,6 +13,8 @@ namespace Nelmio\ApiDocBundle\Parser;
 
 use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
+use JMS\SerializerBundle\Metadata\PropertyMetadata;
+use JMS\SerializerBundle\Metadata\VirtualPropertyMetadata;
 
 /**
  * Uses the JMS metadata factory to extract input/output model information
@@ -78,7 +80,7 @@ class JmsMetadataParser implements ParserInterface
                 $params[$name] = array(
                     'dataType' => $dataType['normalized'],
                     'required'      => false,   //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
-                    'description'   => $this->getDescription($input, $item->name),
+                    'description'   => $this->getDescription($input, $item),
                     'readonly' => $item->readOnly
                 );
 
@@ -158,10 +160,15 @@ class JmsMetadataParser implements ParserInterface
         return null;
     }
 
-    protected function getDescription($className, $propertyName)
+    protected function getDescription($className, PropertyMetadata $item)
     {
         $ref = new \ReflectionClass($className);
-        $extracted = $this->commentExtractor->getDocCommentText($ref->getProperty($propertyName));
+        if ($item instanceof VirtualPropertyMetadata) {
+            $extracted = $this->commentExtractor->getDocCommentText($ref->getMethod($item->getter));
+        }
+        else {
+            $extracted = $this->commentExtractor->getDocCommentText($ref->getProperty($item->name));
+        }
 
         return !empty($extracted) ? $extracted : "No description.";
     }
