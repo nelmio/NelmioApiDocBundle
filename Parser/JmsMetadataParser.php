@@ -165,8 +165,7 @@ class JmsMetadataParser implements ParserInterface
         $ref = new \ReflectionClass($className);
         if ($item instanceof VirtualPropertyMetadata) {
             $extracted = $this->commentExtractor->getDocCommentText($ref->getMethod($item->getter));
-        }
-        else {
+        } else {
             $extracted = $this->commentExtractor->getDocCommentText($ref->getProperty($item->name));
         }
 
