@@ -82,8 +82,8 @@ class YourController extends Controller
     /**
      * @ApiDoc(
      *  description="Create a new Object",
-     *  input="Your\Namespace\Form\Type\YourType"
-     *  return='Your\Namespace\Class'
+     *  input="Your\Namespace\Form\Type\YourType",
+     *  return="Your\Namespace\Class"
      * )
      */
     public function postAction()
