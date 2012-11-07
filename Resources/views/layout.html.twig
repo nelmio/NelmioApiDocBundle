@@ -140,6 +140,12 @@
                         content = $(this).find('textarea.content').val(),
                         result_container = $('.result', $(this).parent());
 
+                    if (method === 'ANY') {
+                        method = 'POST';
+                    } else if (method.indexOf('|') !== -1) {
+                        method = method.split('|').sort().pop();
+                    }
+
                     var requestFormat = $('#request_format').val();
                     var requestFormatMethod = '{{ requestFormatMethod }}';
                     if (requestFormatMethod == 'format_param') {
