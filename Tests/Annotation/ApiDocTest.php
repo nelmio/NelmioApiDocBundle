@@ -173,4 +173,24 @@ class ApiDocTest extends TestCase
         $this->assertEquals($data['description'], $array['description']);
         $this->assertEquals($data['input'], $annot->getInput());
     }
+
+    public function testConstructWithHTTPResponseCodes()
+    {
+        $data = array(
+            'description' => 'Heya',
+            'statusCodes' => array(
+                200 => "Returned when successful",
+                403 => "Returned when the user is not authorized"
+            )
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(is_array($array['statusCodes']));
+        foreach ($data['statusCodes'] as $code => $message) {
+            $this->assertEquals($array['statusCodes'][$code], $message);
+        }
+    }
 }
