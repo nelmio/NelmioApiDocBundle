@@ -256,14 +256,6 @@ class ApiDoc
     }
 
     /**
-     * @param array $codes
-     */
-    public function addStatusCodes($codes)
-    {
-        $this->statusCodes = array_merge($this->statusCodes, $codes);
-    }
-
-    /**
      * @return array
      */
     public function toArray()
