@@ -78,6 +78,11 @@ class ApiDoc
      */
     private $route;
 
+    /**
+     * @var array
+     */
+    private $statusCodes = array();
+
     public function __construct(array $data)
     {
         if (isset($data['input'])) {
@@ -101,6 +106,10 @@ class ApiDoc
 
         if (isset($data['return'])) {
             $this->return = $data['return'];
+        }
+
+        if (isset($data['statusCodes'])) {
+            $this->statusCodes = $data['statusCodes'];
         }
 
         $this->isResource = isset($data['resource']) && $data['resource'];
@@ -241,6 +250,14 @@ class ApiDoc
     /**
      * @return array
      */
+    public function getStatusCodes()
+    {
+        return $this->statusCodes;
+    }
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
         $data = array(
@@ -270,6 +287,10 @@ class ApiDoc
 
         if ($response = $this->response) {
             $data['response'] = $response;
+        }
+
+        if ($statusCodes = $this->statusCodes) {
+            $data['statusCodes'] = $statusCodes;
         }
 
         return $data;

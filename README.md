@@ -102,8 +102,29 @@ The following properties are available:
 
 * `input`: the input type associated to the method, currently this supports Form Types, and classes with JMS Serializer
  metadata, useful for POST|PUT methods, either as FQCN or as form type (if it is registered in the form factory in the container)
- 
+
 * `return`: the return type associated with the response.  Specified and parsed the same way as `input`.
+
+* `statusCodes`: an array of HTTP status codes and a description of when that status is returned; Example:
+
+``` php
+<?php
+
+class YourController
+{
+    /**
+     * @ApiDoc(
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         403="Returned when the user is not authorized to say hello"},
+     * )
+     */
+    public function myFunction()
+    {
+        // ...
+    }
+}
+```
 
 Each _filter_ has to define a `name` parameter, but other parameters are free. Filters are often optional
 parameters, and you can document them as you want, but keep in mind to be consistent for the whole documentation.
@@ -191,7 +212,7 @@ configure this sandbox using the following parameters:
 
 The bundle provides a way to register multiple `input` parsers.  The first parser that can handle the specified
 input is used, so you can configure their priorities via container tags.  Here's an example parser service registration:
-    
+
     #app/config/config.yml
     services:
         mybundle.api_doc.extractor.custom_parser:
