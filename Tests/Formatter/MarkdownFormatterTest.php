@@ -266,6 +266,18 @@ page:
 
   * Requirement: \d+
   * Description: Page of the overview.
+
+
+### `POST` /z-action-with-request-param ###
+
+
+#### Parameters ####
+
+param1:
+
+  * type: string
+  * required: true
+  * description: Param1 description.
 MARKDOWN;
 
         $this->assertEquals($expected, $result);

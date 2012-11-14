@@ -24,7 +24,9 @@ class ApiDocExtractor
 {
     const ANNOTATION_CLASS      = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
 
-    const FOS_REST_PARAM_CLASS  = 'FOS\\RestBundle\\Controller\\Annotations\\Param';
+    const FOS_REST_QUERY_PARAM_CLASS  = 'FOS\\RestBundle\\Controller\\Annotations\\QueryParam';
+
+    const FOS_REST_REQUEST_PARAM_CLASS  = 'FOS\\RestBundle\\Controller\\Annotations\\RequestParam';
 
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
@@ -338,7 +340,7 @@ class ApiDocExtractor
     protected function parseAnnotations(ApiDoc $annotation, Route $route, \ReflectionMethod $method)
     {
         foreach ($this->reader->getMethodAnnotations($method) as $annot) {
-            if (is_subclass_of($annot, self::FOS_REST_PARAM_CLASS)) {
+            if (is_a($annot, self::FOS_REST_QUERY_PARAM_CLASS)) {
                 if ($annot->strict) {
                     $annotation->addRequirement($annot->name, array(
                         'requirement'   => $annot->requirements,
@@ -351,6 +353,14 @@ class ApiDocExtractor
                         'description'   => $annot->description,
                     ));
                 }
+            }
+            else if (is_a($annot, self::FOS_REST_REQUEST_PARAM_CLASS)) {
+                $annotation->addParameter($annot->name, array(
+                    'required'    => !$annot->nullable,
+                    'dataType'    => $annot->requirements,
+                    'description' => $annot->description,
+                    'readonly'    => false
+                ));
             }
         }
     }
