@@ -193,4 +193,33 @@ class ApiDocTest extends TestCase
             $this->assertEquals($array['statusCodes'][$code], $message);
         }
     }
+
+    public function testConstructMethodHasParameters()
+    {
+        $data = array(
+            'description'   => 'Heya',
+            'parameters'       => array(
+                array('name' => 'param1'),
+            ),
+        );
+
+        $expectedParametersData = array(
+            'param1' => array(
+                'dataType'    => '',
+                'description' => '',
+                'required'    => true,
+                'readonly'    => false
+            )
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(is_array($array['parameters']));
+        $this->assertCount(1, $array['parameters']);
+        $this->assertEquals($expectedParametersData, $array['parameters']);
+        $this->assertEquals($data['description'], $array['description']);
+        $this->assertNull($annot->getInput());
+    }
 }

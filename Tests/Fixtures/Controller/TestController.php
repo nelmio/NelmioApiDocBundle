@@ -111,4 +111,17 @@ class TestController
     {
     }
 
+    /**
+     * @ApiDoc(
+     *  description="Testing parameters override with JMS input",
+     *  input="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested",
+     *  parameters= {
+     *      {"name"="a", "dataType"="string", "description"="Pony description"},
+     *      {"name"="foo", "dataType"="integer", "description"="Overrided baby !"}
+     *  }
+     * )
+     */
+    public function parametersOverrideAction()
+    {
+    }
 }

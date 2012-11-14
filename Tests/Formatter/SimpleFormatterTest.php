@@ -314,6 +314,41 @@ With multiple lines.',
                         'page' => array('description' => 'Page of the overview.', 'requirement' => '\d+')
                     ),
                 ),
+                8 =>
+                array(
+                    'method' => 'POST',
+                    'uri' => '/z-parameters-overriding',
+                    'description' => 'Testing parameters override with JMS input',
+                    'parameters' =>
+                    array(
+                        'a'   => array(
+                            'dataType' => 'string',
+                            'required' => true,
+                            'description' => 'Pony description',
+                            'readonly' => false,
+                        ),
+                        'foo' => array(
+                            'dataType' => 'integer',
+                            'required' => true,
+                            'description' => 'Overrided baby !',
+                            'readonly' => false,
+                        ),
+                        'bar' => array(
+                            'dataType' => 'string',
+                            'required' => false,
+                            'description' => 'No description.',
+                            'readonly' => false,
+                        ),
+                        'baz' => array(
+                            'dataType' => 'array of integers',
+                            'required' => false,
+                            'description' => 'Epic description.
+
+With multiple lines.',
+                        'readonly' => false
+                        )
+                    ),
+                ),
             ),
         );
 

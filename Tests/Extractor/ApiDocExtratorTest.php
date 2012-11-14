@@ -22,7 +22,7 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->all();
 
         $this->assertTrue(is_array($data));
-        $this->assertCount(12, $data);
+        $this->assertCount(13, $data);
 
         foreach ($data as $d) {
             $this->assertTrue(is_array($d));
@@ -148,5 +148,21 @@ class ApiDocExtractorTest extends WebTestCase
             "This method is useful to test if the getDocComment works.",
             $annotation->getDescription()
         );
+    }
+
+    public function testGetParametersOverride()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::parametersOverrideAction', 'test_route_11');
+
+        $array = $annotation->toArray();
+        $this->assertNotNull($annotation);
+        $this->assertArrayHasKey('parameters', $array);
+        $this->assertCount(4, $array['parameters']);
+        $this->assertArrayHasKey('a', $array['parameters']);
+        $this->assertArrayHasKey('foo', $array['parameters']);
+        $this->assertArrayHasKey('a', $array['parameters']);
+        $this->assertEquals('Overrided baby !', $array['parameters']['foo']['description']);
     }
 }
