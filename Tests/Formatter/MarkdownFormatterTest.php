@@ -266,6 +266,39 @@ page:
 
   * Requirement: \d+
   * Description: Page of the overview.
+
+
+### `POST` /z-parameters-overriding ###
+
+_Testing parameters override with JMS input_
+
+#### Parameters ####
+
+foo:
+
+  * type: integer
+  * required: true
+  * description: Overrided baby !
+
+bar:
+
+  * type: string
+  * required: false
+  * description: No description.
+
+baz[]:
+
+  * type: array of integers
+  * required: false
+  * description: Epic description.
+
+With multiple lines.
+
+a:
+
+  * type: string
+  * required: true
+  * description: Pony description
 MARKDOWN;
 
         $this->assertEquals($expected, $result);

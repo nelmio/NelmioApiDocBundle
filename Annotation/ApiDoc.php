@@ -113,6 +113,26 @@ class ApiDoc
         }
 
         $this->isResource = isset($data['resource']) && $data['resource'];
+
+        if (isset($data['parameters'])) {
+            foreach ($data['parameters'] as $parameter) {
+                if (!isset($parameter['name'])) {
+                    throw new \InvalidArgumentException('A "parameter" element has to contain a "name" attribute');
+                }
+
+                $name = $parameter['name'];
+                unset($parameter['name']);
+
+                $defaultParameter = array(
+                    'dataType'    => '',
+                    'description' => '',
+                    'required'    => true,
+                    'readonly'   => false
+                );
+
+                $this->addParameter($name, array_merge($defaultParameter, $parameter));
+            }
+        }
     }
 
     /**
@@ -206,11 +226,21 @@ class ApiDoc
     }
 
     /**
-     * @param array $parameters
+     * @param string $name
+     * @param array  $parameter
      */
-    public function setParameters(array $parameters)
+    public function addParameter($name, array $parameter)
     {
-        $this->parameters = $parameters;
+        $this->parameters[$name] = $parameter;
+    }
+
+    /**
+     * @param string $name
+     * @param array  $parameter
+     */
+    public function addParameters(array $parameters)
+    {
+        $this->parameters = array_merge($parameters, $this->parameters);
     }
 
     /**

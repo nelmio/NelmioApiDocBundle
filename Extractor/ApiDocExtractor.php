@@ -260,7 +260,7 @@ class ApiDocExtractor
                 });
             }
 
-            $annotation->setParameters($parameters);
+            $annotation->addParameters($parameters);
         }
 
         // return (populates 'response' for the formatters)
