@@ -20,7 +20,9 @@ abstract class AbstractFormatter implements FormatterInterface
      */
     public function formatOne(ApiDoc $annotation)
     {
-        return $this->renderOne($annotation->toArray());
+        return $this->renderOne(
+            $this->processAnnotation($annotation->toArray())
+        );
     }
 
     /**
@@ -28,12 +30,9 @@ abstract class AbstractFormatter implements FormatterInterface
      */
     public function format(array $collection)
     {
-        $array = array();
-        foreach ($collection as $coll) {
-            $array[$coll['resource']][] = $coll['annotation']->toArray();
-        }
-
-        return $this->render($array);
+        return $this->render(
+            $this->processCollection($collection)
+        );
     }
 
     /**
@@ -66,15 +65,14 @@ abstract class AbstractFormatter implements FormatterInterface
     protected function compressNestedParameters(array $data, $parentName = null, $ignoreNestedReadOnly = false)
     {
         $newParams = array();
-
         foreach ($data as $name => $info) {
             $newName = $this->getNewName($name, $info, $parentName);
 
             $newParams[$newName] = array(
-                'description' => $info['description'],
-                'dataType' => $info['dataType'],
-                'readonly' => $info['readonly'],
-                'required' => $info['required']
+                'description'   => $info['description'],
+                'dataType'      => $info['dataType'],
+                'readonly'      => $info['readonly'],
+                'required'      => $info['required'],
             );
 
             if (isset($info['children']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {
@@ -99,10 +97,46 @@ abstract class AbstractFormatter implements FormatterInterface
     protected function getNewName($name, $data, $parentName = null)
     {
         $newName = ($parentName) ? sprintf("%s[%s]", $parentName, $name) : $name;
-
-        $array = (false === strpos($data['dataType'], "array of")) ? "" : "[]";
+        $array   = (false === strpos($data['dataType'], "array of")) ? "" : "[]";
 
         return sprintf("%s%s", $newName, $array);
     }
 
+    /**
+     * @param  array $annotation
+     * @return array
+     */
+    protected function processAnnotation($annotation)
+    {
+        if (isset($annotation['parameters'])) {
+            $annotation['parameters'] = $this->compressNestedParameters($annotation['parameters'], null, true);
+        }
+
+        if (isset($annotation['response'])) {
+            $annotation['response'] = $this->compressNestedParameters($annotation['response']);
+        }
+
+        return $annotation;
+    }
+
+    /**
+     * @param  array[ApiDoc] $collection
+     * @return array
+     */
+    protected function processCollection(array $collection)
+    {
+        $array = array();
+        foreach ($collection as $coll) {
+            $array[$coll['resource']][] = $coll['annotation']->toArray();
+        }
+
+        $processedCollection = array();
+        foreach ($array as $path => $annotations) {
+            foreach ($annotations as $annotation) {
+                $processedCollection[$path][] = $this->processAnnotation($annotation);
+            }
+        }
+
+        return $processedCollection;
+    }
 }

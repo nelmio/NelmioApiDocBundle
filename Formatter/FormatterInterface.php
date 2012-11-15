@@ -18,7 +18,7 @@ interface FormatterInterface
     /**
      * Format a collection of documentation data.
      *
-     * @param  array        $collection
+     * @param  array[ApiDoc] $collection
      * @return string|array
      */
     public function format(array $collection);
