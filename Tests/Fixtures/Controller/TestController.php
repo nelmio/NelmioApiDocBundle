@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Controller;
 
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -108,6 +109,14 @@ class TestController
      * )
      */
     public function jmsReturnTestAction()
+    {
+    }
+
+    /**
+     * @ApiDoc()
+     * @RequestParam(name="param1", requirements="string", nullable=false, description="Param1 description.")
+     */
+    public function zActionWithRequestParamAction()
     {
     }
 

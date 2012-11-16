@@ -206,6 +206,15 @@ class ApiDoc
     }
 
     /**
+     * @param string $name
+     * @param array  $parameter
+     */
+    public function addParameter($name, array $parameter)
+    {
+        $this->parameters[$name] = $parameter;
+    }
+
+    /**
      * @param array $parameters
      */
     public function setParameters(array $parameters)
