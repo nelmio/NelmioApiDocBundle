@@ -353,8 +353,7 @@ class ApiDocExtractor
                         'description'   => $annot->description,
                     ));
                 }
-            }
-            else if (is_a($annot, self::FOS_REST_REQUEST_PARAM_CLASS)) {
+            } else if (is_a($annot, self::FOS_REST_REQUEST_PARAM_CLASS)) {
                 $annotation->addParameter($annot->name, array(
                     'required'    => !$annot->nullable,
                     'dataType'    => $annot->requirements,
