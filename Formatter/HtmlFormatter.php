@@ -16,19 +16,24 @@ use Symfony\Component\Templating\EngineInterface;
 class HtmlFormatter extends AbstractFormatter
 {
     /**
-     * @var array
+     * @var string
      */
-    private $authentication;
+    protected $apiName;
 
     /**
      * @var string
      */
-    private $apiName;
+    protected $endpoint;
 
     /**
      * @var string
      */
-    private $endpoint;
+    protected $defaultRequestFormat;
+
+    /**
+     * @var EngineInterface
+     */
+    protected $engine;
 
     /**
      * @var boolean
@@ -36,19 +41,14 @@ class HtmlFormatter extends AbstractFormatter
     private $enableSandbox;
 
     /**
-     * @var EngineInterface
-     */
-    private $engine;
-
-    /**
      * @var string
      */
     private $requestFormatMethod;
 
     /**
-     * @var string
+     * @var array
      */
-    private $defaultRequestFormat;
+    private $authentication;
 
     /**
      * @param array $authentication
