@@ -43,8 +43,8 @@ class MarkdownFormatter extends AbstractFormatter
                     $markdown .= sprintf("  - Requirement: %s\n", $infos['requirement']);
                 }
 
-                if (!empty($infos['type'])) {
-                    $markdown .= sprintf("  - Type: %s\n", $infos['type']);
+                if (!empty($infos['dataType'])) {
+                    $markdown .= sprintf("  - Type: %s\n", $infos['dataType']);
                 }
 
                 if (!empty($infos['description'])) {
