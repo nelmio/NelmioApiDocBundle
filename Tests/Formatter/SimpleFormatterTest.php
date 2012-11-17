@@ -314,6 +314,15 @@ With multiple lines.',
                         'page' => array('description' => 'Page of the overview.', 'requirement' => '\d+')
                     ),
                 ),
+                8 =>
+                array(
+                    'method' => 'POST',
+                    'uri' => '/z-action-with-request-param',
+                    'parameters' =>
+                    array(
+                        'param1' => array('description' => 'Param1 description.', 'required' => true, 'dataType' => 'string', 'readonly' => false)
+                    ),
+                ),
             ),
         );
 
