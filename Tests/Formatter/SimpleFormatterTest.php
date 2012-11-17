@@ -48,7 +48,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'description' => 'index action',
                     'requirements' => array(
-                        '_format' => array('type' => '', 'description' => '', 'requirement' => ''),
+                        '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
                 ),
                 1 =>
@@ -73,7 +73,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'description' => 'index action',
                     'requirements' => array(
-                        '_format' => array('type' => '', 'description' => '', 'requirement' => ''),
+                        '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
                 ),
                 2 =>
@@ -106,7 +106,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'description' => 'create test',
                     'requirements' => array(
-                        '_format' => array('type' => '', 'description' => '', 'requirement' => ''),
+                        '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
                 ),
                 3 =>
@@ -139,7 +139,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'description' => 'create test',
                     'requirements' => array(
-                        '_format' => array('type' => '', 'description' => '', 'requirement' => ''),
+                        '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
                 ),
             ),
@@ -173,7 +173,7 @@ class SimpleFormatterTest extends WebTestCase
                     'uri' => '/any/{foo}',
                     'requirements' =>
                     array(
-                        'foo' => array('type' => '', 'description' => '', 'requirement' => ''),
+                        'foo' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
                     'description' => 'Action without HTTP verb',
                 ),
@@ -290,8 +290,8 @@ With multiple lines.',
                     'uri' => '/my-commented/{id}/{page}',
                     'requirements' =>
                     array(
-                        'id' => array('type' => 'int', 'description' => 'A nice comment', 'requirement' => ''),
-                        'page' => array('type' => 'int', 'description' => '', 'requirement' => ''),
+                        'id' => array('dataType' => 'int', 'description' => 'A nice comment', 'requirement' => ''),
+                        'page' => array('dataType' => 'int', 'description' => '', 'requirement' => ''),
                     ),
                     'description' => 'This method is useful to test if the getDocComment works.',
                     'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char."
@@ -302,7 +302,7 @@ With multiple lines.',
                     'uri' => '/yet-another/{id}',
                     'requirements' =>
                     array(
-                        'id' => array('type' => '', 'description' => '', 'requirement' => '\d+')
+                        'id' => array('dataType' => '', 'description' => '', 'requirement' => '\d+')
                     ),
                 ),
                 7 =>
@@ -354,7 +354,7 @@ With multiple lines.',
             ),
             'description' => 'index action',
             'requirements' => array(
-                '_format' => array('type' => '', 'description' => '', 'requirement' => ''),
+                '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
             ),
         );
 
