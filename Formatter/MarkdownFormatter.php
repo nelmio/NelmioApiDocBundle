@@ -18,14 +18,6 @@ class MarkdownFormatter extends AbstractFormatter
      */
     protected function renderOne(array $data)
     {
-        if (isset($data['parameters'])) {
-            $data['parameters'] = $this->compressNestedParameters($data['parameters'], null, true);
-        }
-
-        if (isset($data['response'])) {
-            $data['response'] = $this->compressNestedParameters($data['response']);
-        }
-
         $markdown = sprintf("### `%s` %s ###\n", $data['method'], $data['uri']);
 
         if (isset($data['description'])) {
@@ -51,8 +43,8 @@ class MarkdownFormatter extends AbstractFormatter
                     $markdown .= sprintf("  - Requirement: %s\n", $infos['requirement']);
                 }
 
-                if (!empty($infos['type'])) {
-                    $markdown .= sprintf("  - Type: %s\n", $infos['type']);
+                if (!empty($infos['dataType'])) {
+                    $markdown .= sprintf("  - Type: %s\n", $infos['dataType']);
                 }
 
                 if (!empty($infos['description'])) {

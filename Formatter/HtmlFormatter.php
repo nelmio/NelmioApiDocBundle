@@ -16,19 +16,24 @@ use Symfony\Component\Templating\EngineInterface;
 class HtmlFormatter extends AbstractFormatter
 {
     /**
-     * @var array
+     * @var string
      */
-    private $authentication;
+    protected $apiName;
 
     /**
      * @var string
      */
-    private $apiName;
+    protected $endpoint;
 
     /**
      * @var string
      */
-    private $endpoint;
+    protected $defaultRequestFormat;
+
+    /**
+     * @var EngineInterface
+     */
+    protected $engine;
 
     /**
      * @var boolean
@@ -36,19 +41,14 @@ class HtmlFormatter extends AbstractFormatter
     private $enableSandbox;
 
     /**
-     * @var \Symfony\Component\Templating\EngineInterface
-     */
-    private $engine;
-
-    /**
      * @var string
      */
     private $requestFormatMethod;
 
     /**
-     * @var string
+     * @var array
      */
-    private $defaultRequestFormat;
+    private $authentication;
 
     /**
      * @param array $authentication
@@ -98,6 +98,9 @@ class HtmlFormatter extends AbstractFormatter
         $this->requestFormatMethod = $method;
     }
 
+    /**
+     * @param string $format
+     */
     public function setDefaultRequestFormat($format)
     {
         $this->defaultRequestFormat = $format;
@@ -108,16 +111,11 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function renderOne(array $data)
     {
-        if (isset($data['parameters'])) {
-            $data['parameters'] = $this->compressNestedParameters($data['parameters'], null, true);
-        }
-
-        if (isset($data['response'])) {
-            $data['response'] = $this->compressNestedParameters($data['response']);
-        }
-
         return $this->engine->render('NelmioApiDocBundle::resource.html.twig', array_merge(
-            array('data' => $data, 'displayContent' => true),
+            array(
+                'data'           => $data,
+                'displayContent' => true,
+            ),
             $this->getGlobalVars()
         ));
     }
@@ -127,25 +125,10 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function render(array $collection)
     {
-        $processedCollection = array();
-
-        foreach ($collection as $path => $methods) {
-            $processedCollection[$path] = array();
-            foreach ($methods as $method) {
-                if (isset($method['parameters'])) {
-                    $method['parameters'] = $this->compressNestedParameters($method['parameters'], null, true);
-                }
-
-                if (isset($method['response'])) {
-                    $method['response'] = $this->compressNestedParameters($method['response']);
-                }
-
-                $processedCollection[$path][] = $method;
-            }
-        }
-
         return $this->engine->render('NelmioApiDocBundle::resources.html.twig', array_merge(
-            array('resources' => $processedCollection),
+            array(
+                'resources' => $collection,
+            ),
             $this->getGlobalVars()
         ));
     }
@@ -167,5 +150,4 @@ class HtmlFormatter extends AbstractFormatter
             'js'                   => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
         );
     }
-
 }
