@@ -285,7 +285,7 @@ class ApiDocExtractor
             if ('_method' !== $name) {
                 $requirements[$name] = array(
                     'requirement'   => $value,
-                    'type'          => '',
+                    'dataType'      => '',
                     'description'   => '',
                 );
             }
@@ -303,7 +303,7 @@ class ApiDocExtractor
             $found = false;
             foreach ($paramDocs as $paramDoc) {
                 if (preg_match(sprintf($regexp, preg_quote($var)), $paramDoc, $matches)) {
-                    $requirements[$var]['type']        = isset($matches[1]) ? $matches[1] : '';
+                    $requirements[$var]['dataType']    = isset($matches[1]) ? $matches[1] : '';
                     $requirements[$var]['description'] = $matches[2];
 
                     if (!isset($requirements[$var]['requirement'])) {
@@ -316,7 +316,7 @@ class ApiDocExtractor
             }
 
             if (!isset($requirements[$var]) && false === $found) {
-                $requirements[$var] = array('requirement' => '', 'type' => '', 'description' => '');
+                $requirements[$var] = array('requirement' => '', 'dataType' => '', 'description' => '');
             }
         }
 
@@ -344,7 +344,7 @@ class ApiDocExtractor
                 if ($annot->strict) {
                     $annotation->addRequirement($annot->name, array(
                         'requirement'   => $annot->requirements,
-                        'type'          => '',
+                        'dataType'      => '',
                         'description'   => $annot->description,
                     ));
                 } else {
