@@ -21,19 +21,19 @@ class HtmlFormatter extends AbstractFormatter
     protected $apiName;
 
     /**
-     * @var string
-     */
-    protected $endpoint;
-
-    /**
-     * @var string
-     */
-    protected $defaultRequestFormat;
-
-    /**
      * @var EngineInterface
      */
     protected $engine;
+
+    /**
+     * @var string
+     */
+    private $endpoint;
+
+    /**
+     * @var string
+     */
+    private $defaultRequestFormat;
 
     /**
      * @var boolean

@@ -1,0 +1,29 @@
+<method name="{{ data.method|upper }}">
+{% if data.description is defined %}
+    <doc xml:lang="en" title="{{ data.description }}" />
+{% endif %}
+{% if (data.filters is defined and data.filters is not empty) -%}
+    <request>
+    {% for name, infos in data.filters %}
+        <param name="{{ name }}" style="query" required="false"
+            {%- if infos.dataType is defined %} type="xsd:{{ infos.dataType }}" {% endif -%}
+            {%- if infos.default is defined %} default="{{ infos.default }}" {% endif -%}
+            {%- if infos.description is defined -%}>
+            <doc xml:lang="en" title="{{ infos.description }}" />
+        </param>
+            {%- else -%}
+        />
+            {%- endif -%}
+    {% endfor %}
+    </request>
+{%- endif -%}
+{% if data.statusCodes is defined and data.statusCodes is not empty -%}
+    {% for statusCode, description in data.statusCodes %}
+    <response status="{{ statusCode }}">
+    {% if description is not empty %}
+        <doc xml:lang="en" title="{{ description }}" />
+    {% endif %}
+    </response>
+    {% endfor %}
+{%- endif -%}
+</method>

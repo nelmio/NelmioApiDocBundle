@@ -21,7 +21,7 @@ class DumpCommand extends ContainerAwareCommand
     /**
      * @var array
      */
-    protected $availableFormats = array('markdown', 'json', 'html');
+    protected $availableFormats = array('markdown', 'json', 'html', 'wadl');
 
     protected function configure()
     {

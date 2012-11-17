@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
             ->root('nelmio_api_doc')
             ->children()
                 ->scalarNode('name')->defaultValue('API documentation')->end()
+                ->scalarNode('base_url')->defaultValue('http://example.com/')->end()
                 ->arrayNode('request_listener')
                     ->beforeNormalization()
                         ->ifTrue(function ($a) { return is_bool($a); })

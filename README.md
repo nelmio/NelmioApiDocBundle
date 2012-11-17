@@ -220,6 +220,26 @@ input is used, so you can configure their priorities via container tags.  Here's
             tags:
                 - {name: nelmio_api_doc.extractor.parser, priority: 2}
 
+
+## Configuration Reference ##
+
+    nelmio_api_doc:
+        name:                 API documentation
+        base_url:             http://example.com/
+        request_listener:
+            enabled:              true
+            parameter:            _doc
+        sandbox:
+            enabled:              true
+            endpoint:             /app_dev.php
+            request_format:
+                method:               format_param
+                default_format:       json
+            authentication:
+                name:                 ~ # Required
+                delivery:             ~ # Required
+
+
 ## Credits ##
 
 The design is heavily inspired by the [swagger-ui](https://github.com/wordnik/swagger-ui) project.
