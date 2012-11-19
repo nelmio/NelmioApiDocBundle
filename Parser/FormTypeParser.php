@@ -96,6 +96,11 @@ class FormTypeParser implements ParserInterface
             if ('' === $bestType) {
                 if ($type = $config->getType()) {
                     if ($type = $type->getInnerType()) {
+                        /**
+                         * TODO: Implement a better handling of unsupported types
+                         * This is just a temporary workaround for don't breaking docs page in case of unsupported types
+                         * like the entity type https://github.com/nelmio/NelmioApiDocBundle/issues/94
+                         */
                         try {
                             $subForm    = $this->formFactory->create($type);
                             $parameters = array_merge($parameters, $this->parseForm($subForm, $name));
