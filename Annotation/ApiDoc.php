@@ -19,9 +19,25 @@ use Symfony\Component\Routing\Route;
 class ApiDoc
 {
     /**
+     * Requirements are mandatory parameters in a route.
+     *
+     * @var array
+     */
+    private $requirements = array();
+
+    /**
+     * Filters are optional parameters in the query string.
+     *
      * @var array
      */
     private $filters  = array();
+
+    /**
+     * Parameters are data a client can send.
+     *
+     * @var array
+     */
+    private $parameters = array();
 
     /**
      * @var string
@@ -31,14 +47,18 @@ class ApiDoc
     /**
      * @var string
      */
-    private $return = null;
+    private $output = null;
 
     /**
+     * Most of the time, a single line of text describing the action.
+     *
      * @var string
      */
     private $description = null;
 
     /**
+     * Extended documentation.
+     *
      * @var string
      */
     private $documentation = null;
@@ -49,11 +69,6 @@ class ApiDoc
     private $isResource = false;
 
     /**
-     * @var array
-     */
-    private $requirements = array();
-
-    /**
      * @var string
      */
     private $method;
@@ -62,11 +77,6 @@ class ApiDoc
      * @var string
      */
     private $uri;
-
-    /**
-     * @var array
-     */
-    private $parameters = array();
 
     /**
      * @var array
@@ -85,6 +95,12 @@ class ApiDoc
 
     public function __construct(array $data)
     {
+        $this->isResource = isset($data['resource']) && $data['resource'];
+
+        if (isset($data['description'])) {
+            $this->description = $data['description'];
+        }
+
         if (isset($data['input'])) {
             $this->input = $data['input'];
         } elseif (isset($data['filters'])) {
@@ -100,19 +116,13 @@ class ApiDoc
             }
         }
 
-        if (isset($data['description'])) {
-            $this->description = $data['description'];
-        }
-
-        if (isset($data['return'])) {
-            $this->return = $data['return'];
+        if (isset($data['output'])) {
+            $this->output = $data['output'];
         }
 
         if (isset($data['statusCodes'])) {
             $this->statusCodes = $data['statusCodes'];
         }
-
-        $this->isResource = isset($data['resource']) && $data['resource'];
     }
 
     /**
@@ -152,9 +162,9 @@ class ApiDoc
     /**
      * @return string|null
      */
-    public function getReturn()
+    public function getOutput()
     {
-        return $this->return;
+        return $this->output;
     }
 
     /**
@@ -190,22 +200,6 @@ class ApiDoc
     }
 
     /**
-     * @var string $method
-     */
-    public function setMethod($method)
-    {
-        $this->method = $method;
-    }
-
-    /**
-     * @var string $uri
-     */
-    public function setUri($uri)
-    {
-        $this->uri = $uri;
-    }
-
-    /**
      * @param string $name
      * @param array  $parameter
      */
@@ -233,19 +227,13 @@ class ApiDoc
     }
 
     /**
-     * @return array
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
      * @param Route $route
      */
     public function setRoute(Route $route)
     {
-        $this->route = $route;
+        $this->route  = $route;
+        $this->uri    = $route->getPattern();
+        $this->method = $route->getRequirement('_method') ?: 'ANY';
     }
 
     /**
@@ -259,19 +247,11 @@ class ApiDoc
     /**
      * @return array
      */
-    public function getStatusCodes()
-    {
-        return $this->statusCodes;
-    }
-
-    /**
-     * @return array
-     */
     public function toArray()
     {
         $data = array(
-            'method'        => $this->method,
-            'uri'           => $this->uri,
+            'method' => $this->method,
+            'uri'    => $this->uri,
         );
 
         if ($description = $this->description) {
