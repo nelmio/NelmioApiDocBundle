@@ -96,8 +96,17 @@ class FormTypeParser implements ParserInterface
             if ('' === $bestType) {
                 if ($type = $config->getType()) {
                     if ($type = $type->getInnerType()) {
-                        $subForm    = $this->formFactory->create($type);
-                        $parameters = array_merge($parameters, $this->parseForm($subForm, $name));
+                        try {
+                            $subForm    = $this->formFactory->create($type);
+                            $parameters = array_merge($parameters, $this->parseForm($subForm, $name));
+                        } catch (\Exception $e) {
+                            $parameters[$name] = array(
+                                'dataType'      => 'string',
+                                'required'      => $config->getRequired(),
+                                'description'   => $config->getAttribute('description'),
+                                'readonly'      => $config->getDisabled(),
+                            );
+                        }
 
                         continue;
                     }
