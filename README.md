@@ -83,7 +83,7 @@ class YourController extends Controller
      * @ApiDoc(
      *  description="Create a new Object",
      *  input="Your\Namespace\Form\Type\YourType",
-     *  return="Your\Namespace\Class"
+     *  output="Your\Namespace\Class"
      * )
      */
     public function postAction()
@@ -103,7 +103,7 @@ The following properties are available:
 * `input`: the input type associated to the method, currently this supports Form Types, and classes with JMS Serializer
  metadata, useful for POST|PUT methods, either as FQCN or as form type (if it is registered in the form factory in the container)
 
-* `return`: the return type associated with the response.  Specified and parsed the same way as `input`.
+* `output`: the output type associated with the response.  Specified and parsed the same way as `input`.
 
 * `statusCodes`: an array of HTTP status codes and a description of when that status is returned; Example:
 

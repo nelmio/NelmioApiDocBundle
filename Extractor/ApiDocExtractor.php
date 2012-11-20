@@ -22,34 +22,34 @@ use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 
 class ApiDocExtractor
 {
-    const ANNOTATION_CLASS      = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
+    const ANNOTATION_CLASS              = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
 
-    const FOS_REST_QUERY_PARAM_CLASS  = 'FOS\\RestBundle\\Controller\\Annotations\\QueryParam';
+    const FOS_REST_QUERY_PARAM_CLASS    = 'FOS\\RestBundle\\Controller\\Annotations\\QueryParam';
 
     const FOS_REST_REQUEST_PARAM_CLASS  = 'FOS\\RestBundle\\Controller\\Annotations\\RequestParam';
 
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
-     * @var \Symfony\Component\Routing\RouterInterface
+     * @var RouterInterface
      */
     protected $router;
 
     /**
-     * @var \Doctrine\Common\Annotations\Reader
+     * @var Reader
      */
     protected $reader;
 
     /**
-     * @var \Nelmio\ApiDocBundle\Util\DocCommentExtractor
+     * @var DocCommentExtractor
      */
     private $commentExtractor;
 
     /**
-     * @var array \Nelmio\ApiDocBundle\Parser\ParserInterface
+     * @var array ParserInterface
      */
     protected $parsers = array();
 
@@ -265,13 +265,13 @@ class ApiDocExtractor
             $annotation->setParameters($parameters);
         }
 
-        // return (populates 'response' for the formatters)
-        if (null !== $return = $annotation->getReturn()) {
+        // output (populates 'response' for the formatters)
+        if (null !== $output = $annotation->getOutput()) {
             $response = array();
 
             foreach ($this->parsers as $parser) {
-                if ($parser->supports($return)) {
-                    $response = $parser->parse($return);
+                if ($parser->supports($output)) {
+                    $response = $parser->parse($output);
                     break;
                 }
             }
@@ -321,10 +321,6 @@ class ApiDocExtractor
         }
 
         $annotation->setRequirements($requirements);
-
-        // method/uri
-        $annotation->setMethod($route->getRequirement('_method') ?: 'ANY');
-        $annotation->setUri($route->getPattern());
 
         return $annotation;
     }

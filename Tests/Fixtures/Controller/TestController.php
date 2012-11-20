@@ -105,7 +105,7 @@ class TestController
     /**
      * @ApiDoc(
      *  description="Testing return",
-     *  return="dependency_type"
+     *  output="dependency_type"
      * )
      */
     public function jmsReturnTestAction()
