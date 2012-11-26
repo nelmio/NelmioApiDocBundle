@@ -4,25 +4,25 @@ namespace Nelmio\ApiDocBundle\Util;
 
 /**
  * A utility class for parsing data type declarations required by the Parsers.
- * 
+ *
  * See the docs for `ParserInterface::parse` for more on accepted data types.
  */
 class DataTypeParser
 {
-	/**
-	 * Return true if a given type is considered a "primitive", meaning it's not a
+    /**
+     * Return true if a given type is considered a "primitive", meaning it's not a
      * container of other types.
-	 *
-	 * @param string $type 
-	 * @return boolean
-	 */
+     *
+     * @param  string  $type
+     * @return boolean
+     */
     public function isPrimitive($type)
     {
         return in_array($type, array('boolean', 'integer', 'string', 'double', 'array', 'DateTime'));
     }
 
     /**
-     * Parses data type declarations in the format of "array<V>" or "array<K, V>", 
+     * Parses data type declarations in the format of "array<V>" or "array<K, V>",
      * in order to return information about the data types included in an array.
      *
      * Data (if found) is returned in the following format:
@@ -32,7 +32,7 @@ class DataTypeParser
      *          'value' => string,
      *      );
      *
-     * @param  string      $type
+     * @param  string     $type
      * @return array|null
      */
     public function getNestedTypeInArray($type)
@@ -55,14 +55,14 @@ class DataTypeParser
 
         return null;
     }
-    
+
     public function getNestedObjectInArray($type)
     {
         if ($nested = $this->getNestedTypeInArray() && !$this->isPrimitive($nested['value'])) {
             return $nested;
         }
-        
+
         return null;
     }
-	
+
 }

@@ -32,7 +32,7 @@ class JmsMetadataParser implements ParserInterface
      * @var \Nelmio\ApiDocBundle\Util\DocCommentExtractor
      */
     private $commentExtractor;
-    
+
     /**
      * @var \Nelmio\ApiDocBundle\Util\DataTypeParser
      */
@@ -152,8 +152,6 @@ class JmsMetadataParser implements ParserInterface
             'class' => $type
         );
     }
-
-
 
     protected function getDescription($className, PropertyMetadata $item)
     {

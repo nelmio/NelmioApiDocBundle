@@ -92,12 +92,12 @@ class FormTypeParser implements ParserInterface
 
             if ('' === $bestType) {
                 if ($type = $config->getType()) {
-                    
+
                     //TODO: collection?
                     if ('collection' === $config->getType()->getName()) {
                         $bestType = "array";
                     }
-                    
+
                     if ($type = $type->getInnerType()) {
 
                         /**
@@ -128,7 +128,7 @@ class FormTypeParser implements ParserInterface
                 'description'   => $config->getAttribute('description'),
                 'readonly'      => $config->getDisabled(),
             );
-            
+
             if (!empty($children)) {
                 $parameters[$name]['children'] = $children;
             }
