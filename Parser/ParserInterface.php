@@ -37,7 +37,7 @@ interface ParserInterface
      *                          - T             - A fully qualified class name, such as "My\Namespaced\Object"
      *                          - array         - A loosely defined key/val hash
      *                          - array<T>      - An array of objects with a fully qualified class name
-     *                          - array<K, T>   - An array with keys of a specific type (string|integer) and values of a specific type
+     *                          - array<K,T>    - An array with keys of a specific type (string|integer) and values of a specific type
      *  - required          boolean
      *  - description       string
      *  - readonly          boolean

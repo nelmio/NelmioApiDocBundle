@@ -9,11 +9,6 @@ namespace Nelmio\ApiDocBundle\Util;
  */
 class DataTypeParser
 {
-    public function isValid($type)
-    {
-        
-    }
-    
 	/**
 	 * Return true if a given type is considered a "primitive", meaning it's not a
      * container of other types.
@@ -60,7 +55,6 @@ class DataTypeParser
 
         return null;
     }
-	
     
     public function getNestedObjectInArray($type)
     {
