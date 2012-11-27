@@ -77,7 +77,7 @@ class JmsMetadataParser implements ParserInterface
             if (!is_null($item->type)) {
                 $name = isset($item->serializedName) ? $item->serializedName : $item->name;
 
-                $dataType = $this->processDataType($item->type);
+                $dataType = $this->processDataType(is_string($item->type) ? $item->type : $item->type['name']);
 
                 $params[$name] = array(
                     'dataType' => $dataType['normalized'],
