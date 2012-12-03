@@ -19,17 +19,44 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
+use FSC\HateoasBundle\Metadata\MetadataFactory;
+// use Metadata\MetadataFactoryInterface;
+use FSC\HateoasBundle\Factory\LinkFactory;
+use Nelmio\ApiDocBundle\Formatter\TabularSection;
 
+/**
+ * @author Baldur Rensch <brensch@gmail.com>
+ */
 class LinkProvider
 {
-    public function __construct()
+	private $metadataFactory;
+	private $linkFactory;
+	private $router;
+
+    public function __construct(MetadataFactory $metadataFactory, LinkFactory $linkFactory, RouterInterface $router)
     {
+    	$this->metadataFactory = $metadataFactory;
+    	$this->linkFactory = $linkFactory;
+    	$this->router = $router;
     }
 
     public function get($annotation)
     {
         $class = $annotation->getOutput();
-        echo "Output: $class";
 
+        $classMetadata = $this->metadataFactory->getMetadataForClass($class);
+        $relations = $classMetadata->getRelations();
+
+        $tabularSection = new TabularSection(array('Relation', 'Link'));
+        $tabularSection->setTitle('Links');
+
+        foreach ($relations as $relation) {
+        	$routeName = $relation->getRoute();
+        	$route = $this->router->getRouteCollection()->get($routeName);
+
+        	$tabularSection->addRow(array($relation->getRel(), $route->getPattern()));
+        }
+
+        return $tabularSection;
     }
 }

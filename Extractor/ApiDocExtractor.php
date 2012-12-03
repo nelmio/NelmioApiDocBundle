@@ -325,7 +325,8 @@ class ApiDocExtractor
         $annotation->setRequirements($requirements);
 
         // Get additional documentation
-        $this->documentationCollector->get($annotation);
+        $collectedSections = $this->documentationCollector->get($annotation);
+        $annotation->setCollectedSections($collectedSections);
 
         return $annotation;
     }

@@ -30,6 +30,32 @@
                 <div>{{ data.documentation|extra_markdown }}</div>
             {% endif %}
 
+            {% if data.sections is defined and data.sections is not empty %}
+                {% for section in data.sections %}
+                    {% if section.type == 'tabular' %}
+                        <h4>{{ section.title }}</h4>
+                        <table class="fullwidth">
+                            <thead>
+                                <tr>
+                                    {% for header in section.headers %}
+                                    <th>{{ header }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in section.rows %}
+                                <tr>
+                                    {% for field in row %}
+                                    <td>{{ field }}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
             {% if data.requirements is defined  and data.requirements is not empty %}
                 <h4>Requirements</h4>
                 <table class="fullwidth">
