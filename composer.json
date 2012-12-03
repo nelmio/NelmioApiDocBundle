@@ -25,8 +25,8 @@
         "symfony/browser-kit": ">=2.1,<2.3-dev",
         "symfony/validator": ">=2.1,<2.3-dev",
         "symfony/yaml": ">=2.1,<2.3-dev",
-        "friendsofsymfony/rest-bundle": "dev-master",
-        "jms/serializer-bundle": "0.9.*"
+        "friendsofsymfony/rest-bundle": "dev-jms_serlializer_1_0",
+        "jms/serializer-bundle": "1.0.*"
     },
     "minimum-stability": "dev",
     "autoload": {

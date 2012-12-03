@@ -2,7 +2,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Model;
 
-use JMS\SerializerBundle\Annotation as JMS;
+use JMS\Serializer\Annotation as JMS;
 
 class JmsTest
 {
