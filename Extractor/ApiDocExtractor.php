@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Extractor;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
+use Nelmio\ApiDocBundle\Extractor\ApiDocCollector;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -53,12 +54,13 @@ class ApiDocExtractor
      */
     protected $parsers = array();
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor)
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ApiDocCollector $docCollector)
     {
         $this->container = $container;
         $this->router    = $router;
         $this->reader    = $reader;
         $this->commentExtractor = $commentExtractor;
+        $this->documentationCollector = $docCollector;
     }
 
     /**
@@ -321,6 +323,9 @@ class ApiDocExtractor
         }
 
         $annotation->setRequirements($requirements);
+
+        // Get additional documentation
+        $this->documentationCollector->get($annotation);
 
         return $annotation;
     }
