@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\Formatter;
 /**
  * @author Baldur Rensch <brensch@gmail.com>
  */
-class TabularSection
+class TabularSection implements ApiDocSectionInterface
 {
 	private $headers;
 	private $data;
@@ -29,7 +29,7 @@ class TabularSection
 	public function addRow(array $data)
 	{
 		if (count($data) != count($this->headers)) {
-			throw new \IllegalArgumentException("Wrong number of rows");
+			throw new \IllegalArgumentException("Wrong number of columns");
 		}
 
 		$this->data []= $data;

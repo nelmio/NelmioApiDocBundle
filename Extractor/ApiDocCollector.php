@@ -11,11 +11,13 @@
 
 namespace Nelmio\ApiDocBundle\Extractor;
 
+use Nelmio\ApiDocBundle\Extractor\ApiDocProviderInterface;
+
 class ApiDocCollector
 {
     private $providers;
 
-    public function addProvider($provider)
+    public function addProvider(ApiDocProviderInterface $provider)
     {
         $this->providers []= $provider;
     }

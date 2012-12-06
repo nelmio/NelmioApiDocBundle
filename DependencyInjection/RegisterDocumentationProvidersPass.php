@@ -16,13 +16,9 @@ class RegisterDocumentationProvidersPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('nelmio_api_doc.extractor.collector');
 
-        //find registered parsers and sort by priority
-        $sortedParsers = array();
         foreach ($container->findTaggedServiceIds('nelmio_api_doc.provider') as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
                 // $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
-                echo "Attribute: ";
-                print_r($attributes);
             }
 
             $definition->addMethodCall('addProvider', array(new Reference($id)));

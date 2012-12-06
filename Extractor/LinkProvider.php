@@ -26,6 +26,12 @@ use Nelmio\ApiDocBundle\Formatter\TabularSection;
 
 /**
  * @author Baldur Rensch <brensch@gmail.com>
+ * <service id="nelmio_api_doc.provider.link" class="Nelmio\ApiDocBundle\Extractor\LinkProvider">
+ *           <argument type="service" id="fsc_hateoas.metadata.factory" />
+ *           <argument type="service" id="fsc_hateoas.factory.link" />
+ *           <argument type="service" id="router" />
+ *           <tag name="nelmio_api_doc.provider" />
+ *       </service>
  */
 class LinkProvider
 {

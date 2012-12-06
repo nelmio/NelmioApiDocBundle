@@ -26,6 +26,10 @@ services:
             - [foo, bar]
         tags:
             - { name: form.type, alias: dependency_type }
+    nelmio.provider.tabular:
+        class: Nelmio\ApiDocBundle\Tests\Fixtures\Services\ServiceReturningTabular
+        tags:
+            - { name: nelmio_api_doc.provider }
 
 #JMS Serializer config for testing JmsMetadataParser
 jms_serializer:
