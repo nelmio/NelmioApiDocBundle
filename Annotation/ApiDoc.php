@@ -88,6 +88,8 @@ class ApiDoc
      */
     private $route;
 
+    private $collectedSections;
+
     /**
      * @var array
      */
@@ -236,6 +238,27 @@ class ApiDoc
         $this->method = $route->getRequirement('_method') ?: 'ANY';
     }
 
+
+    /**
+     * [description here]
+     *
+     * @return [type] [description]
+     */
+    public function getCollectedSections()
+    {
+        return $this->collectedSections;
+    }
+
+    /**
+     * [Description]
+     *
+     * @param [type] $newcollectedSections [description]
+     */
+    public function setCollectedSections($collectedSections)
+    {
+        $this->collectedSections = $collectedSections;
+    }
+
     /**
      * @return Route
      */
@@ -280,6 +303,10 @@ class ApiDoc
 
         if ($statusCodes = $this->statusCodes) {
             $data['statusCodes'] = $statusCodes;
+        }
+
+        if ($collectedSections = $this->getCollectedSections()) {
+            $data['sections'] = $collectedSections;
         }
 
         return $data;
