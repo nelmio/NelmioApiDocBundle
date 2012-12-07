@@ -216,56 +216,12 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
-                            'children' => array(
-                                'foo' => array(
-                                    'dataType' => 'DateTime',
-                                    'required' => false,
-                                    'description' => 'No description.',
-                                    'readonly' => true,
-                                ),
-                                'bar' => array(
-                                    'dataType' => 'string',
-                                    'required' => false,
-                                    'description' => 'No description.',
-                                    'readonly' => false,
-                                ),
-                                'baz' => array(
-                                    'dataType' => 'array of integers',
-                                    'required' => false,
-                                    'description' => 'Epic description.
-
-With multiple lines.',
-                                    'readonly' => false,
-                                )
-                            )
                         ),
                         'nestedArray' => array(
                             'dataType' => 'array of objects (JmsNested)',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
-                            'children' => array(
-                                'foo' => array(
-                                    'dataType' => 'DateTime',
-                                    'required' => false,
-                                    'description' => 'No description.',
-                                    'readonly' => true,
-                                ),
-                                'bar' => array(
-                                    'dataType' => 'string',
-                                    'required' => false,
-                                    'description' => 'No description.',
-                                    'readonly' => false,
-                                ),
-                                'baz' => array(
-                                    'dataType' => 'array of integers',
-                                    'required' => false,
-                                    'description' => 'Epic description.
-
-With multiple lines.',
-                                    'readonly' => false,
-                                )
-                            )
                         ),
                     ),
                     'description' => 'Testing JMS'
@@ -325,7 +281,6 @@ With multiple lines.',
                 ),
             ),
         );
-
         $this->assertEquals($expected, $result);
     }
 

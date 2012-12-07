@@ -185,39 +185,11 @@ nested:
   * required: false
   * description: No description.
 
-nested[bar]:
-
-  * type: string
-  * required: false
-  * description: No description.
-
-nested[baz][]:
-
-  * type: array of integers
-  * required: false
-  * description: Epic description.
-
-With multiple lines.
-
 nestedArray[]:
 
   * type: array of objects (JmsNested)
   * required: false
   * description: No description.
-
-nestedArray[][bar]:
-
-  * type: string
-  * required: false
-  * description: No description.
-
-nestedArray[][baz][]:
-
-  * type: array of integers
-  * required: false
-  * description: Epic description.
-
-With multiple lines.
 
 
 ### `GET` /jms-return-test ###
