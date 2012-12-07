@@ -188,8 +188,11 @@ class SimpleFormatterTest extends WebTestCase
                             'readonly' => false,
                         ),
                     ),
+<<<<<<< HEAD
                     'description' => 'create another test',
                     'https' => false,
+=======
+>>>>>>> Or we can just do proper topsort off course...
                 ),
                 1 =>
                 array (
@@ -212,8 +215,11 @@ class SimpleFormatterTest extends WebTestCase
                             'description' => '',
                         ),
                     ),
+<<<<<<< HEAD
                     'description' => 'Action without HTTP verb',
                     'https' => false,
+=======
+>>>>>>> Or we can just do proper topsort off course...
                 ),
                 3 =>
                 array (
@@ -350,8 +356,11 @@ With multiple lines.',
                             'readonly' => false,
                         ),
                     ),
+<<<<<<< HEAD
                     'description' => 'Testing JMS',
                     'https' => false,
+=======
+>>>>>>> Or we can just do proper topsort off course...
                 ),
                 4 =>
                 array (
@@ -365,10 +374,16 @@ With multiple lines.',
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
+<<<<<<< HEAD
                             'readonly' => false
                         )
                     ),
                     'https' => false,
+=======
+                            'readonly' => false,
+                        ),
+                    ),
+>>>>>>> Or we can just do proper topsort off course...
                 ),
                 5 =>
                 array (
@@ -392,9 +407,12 @@ And, it supports multilines until the first \'@\' char.',
                             'requirement' => '',
                         ),
                     ),
+<<<<<<< HEAD
                     'https' => false,
                     'description' => 'This method is useful to test if the getDocComment works.',
                     'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char."
+=======
+>>>>>>> Or we can just do proper topsort off course...
                 ),
                 6 =>
                 array (
@@ -426,8 +444,13 @@ And, it supports multilines until the first \'@\' char.',
                     ),
                     'https' => false,
                 ),
+<<<<<<< HEAD
                 8 =>
                 array(
+=======
+                7 =>
+                array (
+>>>>>>> Or we can just do proper topsort off course...
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param',
                     'filters' =>
@@ -440,8 +463,13 @@ And, it supports multilines until the first \'@\' char.',
                     ),
                     'https' => false,
                 ),
+<<<<<<< HEAD
                 9 =>
                 array(
+=======
+                8 =>
+                array (
+>>>>>>> Or we can just do proper topsort off course...
                     'method' => 'POST',
                     'uri' => '/z-action-with-request-param',
                     'parameters' =>
