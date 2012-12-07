@@ -63,7 +63,7 @@ class JmsMetadataParser implements ParserInterface
      */
     public function parse($input)
     {
-        $params = $this->_parse($input);
+        $params = $this->doParse($input);
 
         $this->parsedClasses = array();
 
@@ -103,7 +103,7 @@ class JmsMetadataParser implements ParserInterface
                 //check for nested classes with JMS metadata
                 if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
                     $this->parsedClasses[] = $dataType['class'];
-                    $params[$name]['children'] = $this->_parse($dataType['class']);
+                    $params[$name]['children'] = $this->doParse($dataType['class']);
                 }
             }
         }
