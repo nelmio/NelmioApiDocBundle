@@ -23,264 +23,409 @@ class SimpleFormatterTest extends WebTestCase
         $data      = $extractor->all();
         $result    = $container->get('nelmio_api_doc.formatter.simple_formatter')->format($data);
 
-        $expected = array(
+        $expected = array (
             '/tests' =>
-            array(
+            array (
                 0 =>
-                array(
+                array (
                     'method' => 'GET',
                     'uri' => '/tests.{_format}',
+                    'description' => 'index action',
                     'filters' =>
-                    array(
+                    array (
                         'a' =>
-                        array(
+                        array (
                             'dataType' => 'integer',
                         ),
                         'b' =>
-                        array(
+                        array (
                             'dataType' => 'string',
                             'arbitrary' =>
-                            array(
+                            array (
                                 0 => 'arg1',
                                 1 => 'arg2',
                             ),
                         ),
                     ),
-                    'description' => 'index action',
-                    'requirements' => array(
-                        '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
+                    'requirements' =>
+                    array (
+                        '_format' =>
+                        array (
+                            'requirement' => '',
+                            'dataType' => '',
+                            'description' => '',
+                        ),
                     ),
                 ),
                 1 =>
-                array(
+                array (
                     'method' => 'GET',
                     'uri' => '/tests.{_format}',
+                    'description' => 'index action',
                     'filters' =>
-                    array(
+                    array (
                         'a' =>
-                        array(
+                        array (
                             'dataType' => 'integer',
                         ),
                         'b' =>
-                        array(
+                        array (
                             'dataType' => 'string',
                             'arbitrary' =>
-                            array(
+                            array (
                                 0 => 'arg1',
                                 1 => 'arg2',
                             ),
                         ),
                     ),
-                    'description' => 'index action',
-                    'requirements' => array(
-                        '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
+                    'requirements' =>
+                    array (
+                        '_format' =>
+                        array (
+                            'requirement' => '',
+                            'dataType' => '',
+                            'description' => '',
+                        ),
                     ),
                 ),
                 2 =>
-                array(
+                array (
                     'method' => 'POST',
                     'uri' => '/tests.{_format}',
+                    'description' => 'create test',
                     'parameters' =>
-                    array(
+                    array (
                         'a' =>
-                        array(
+                        array (
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
-                            'readonly' => false
+                            'readonly' => false,
                         ),
                         'b' =>
-                        array(
+                        array (
                             'dataType' => 'string',
                             'required' => false,
                             'description' => '',
-                            'readonly' => false
+                            'readonly' => false,
                         ),
                         'c' =>
-                        array(
+                        array (
                             'dataType' => 'boolean',
                             'required' => true,
                             'description' => '',
-                            'readonly' => false
+                            'readonly' => false,
                         ),
                     ),
-                    'description' => 'create test',
-                    'requirements' => array(
-                        '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
+                    'requirements' =>
+                    array (
+                        '_format' =>
+                        array (
+                            'requirement' => '',
+                            'dataType' => '',
+                            'description' => '',
+                        ),
                     ),
                 ),
                 3 =>
-                array(
+                array (
                     'method' => 'POST',
                     'uri' => '/tests.{_format}',
+                    'description' => 'create test',
                     'parameters' =>
-                    array(
+                    array (
                         'a' =>
-                        array(
+                        array (
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
-                            'readonly' => false
+                            'readonly' => false,
                         ),
                         'b' =>
-                        array(
+                        array (
                             'dataType' => 'string',
                             'required' => false,
                             'description' => '',
-                            'readonly' => false
+                            'readonly' => false,
                         ),
                         'c' =>
-                        array(
+                        array (
                             'dataType' => 'boolean',
                             'required' => true,
                             'description' => '',
-                            'readonly' => false
+                            'readonly' => false,
                         ),
                     ),
-                    'description' => 'create test',
-                    'requirements' => array(
-                        '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
+                    'requirements' =>
+                    array (
+                        '_format' =>
+                        array (
+                            'requirement' => '',
+                            'dataType' => '',
+                            'description' => '',
+                        ),
                     ),
                 ),
             ),
             'others' =>
-            array(
+            array (
                 0 =>
-                array(
+                array (
                     'method' => 'POST',
                     'uri' => '/another-post',
+                    'description' => 'create another test',
                     'parameters' =>
-                    array(
+                    array (
                         'a' =>
-                        array(
+                        array (
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
-                            'readonly' => false
+                            'readonly' => false,
                         ),
                     ),
-                    'description' => 'create another test',
                 ),
                 1 =>
-                array(
+                array (
                     'method' => 'ANY',
                     'uri' => '/any',
                     'description' => 'Action without HTTP verb',
                 ),
                 2 =>
-                array(
+                array (
                     'method' => 'ANY',
                     'uri' => '/any/{foo}',
-                    'requirements' =>
-                    array(
-                        'foo' => array('dataType' => '', 'description' => '', 'requirement' => ''),
-                    ),
                     'description' => 'Action without HTTP verb',
+                    'requirements' =>
+                    array (
+                        'foo' =>
+                        array (
+                            'requirement' => '',
+                            'dataType' => '',
+                            'description' => '',
+                        ),
+                    ),
                 ),
                 3 =>
-                array(
+                array (
                     'method' => 'POST',
                     'uri' => '/jms-input-test',
+                    'description' => 'Testing JMS',
                     'parameters' =>
-                    array(
+                    array (
                         'foo' =>
-                        array(
+                        array (
                             'dataType' => 'string',
-                            'required' => false,
-                            'description' => 'No description.',
-                            'readonly' => false
-                        ),
-                        'bar' =>
-                        array(
-                            'dataType' => 'DateTime',
-                            'required' => false,
-                            'description' => 'No description.',
-                            'readonly' => true
-                        ),
-                        'number' =>
-                        array(
-                            'dataType' => 'double',
-                            'required' => false,
-                            'description' => 'No description.',
-                            'readonly' => false
-                        ),
-                        'arr' =>
-                        array(
-                            'dataType' => 'array',
-                            'required' => false,
-                            'description' => 'No description.',
-                            'readonly' => false
-                        ),
-                        'nested' => array(
-                            'dataType' => 'object (JmsNested)',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
                         ),
-                        'nestedArray' => array(
+                        'bar' =>
+                        array (
+                            'dataType' => 'DateTime',
+                            'required' => false,
+                            'description' => 'No description.',
+                            'readonly' => true,
+                        ),
+                        'number' =>
+                        array (
+                            'dataType' => 'double',
+                            'required' => false,
+                            'description' => 'No description.',
+                            'readonly' => false,
+                        ),
+                        'arr' =>
+                        array (
+                            'dataType' => 'array',
+                            'required' => false,
+                            'description' => 'No description.',
+                            'readonly' => false,
+                        ),
+                        'nested' =>
+                        array (
+                            'dataType' => 'object (JmsNested)',
+                            'required' => false,
+                            'description' => 'No description.',
+                            'readonly' => false,
+                            'children' =>
+                            array (
+                                'foo' =>
+                                array (
+                                    'dataType' => 'DateTime',
+                                    'required' => false,
+                                    'description' => 'No description.',
+                                    'readonly' => true,
+                                ),
+                                'bar' =>
+                                array (
+                                    'dataType' => 'string',
+                                    'required' => false,
+                                    'description' => 'No description.',
+                                    'readonly' => false,
+                                ),
+                                'baz' =>
+                                array (
+                                    'dataType' => 'array of integers',
+                                    'required' => false,
+                                    'description' => 'Epic description.
+
+With multiple lines.',
+                                    'readonly' => false,
+                                ),
+                                'circular' =>
+                                array (
+                                    'dataType' => 'object (JmsNested)',
+                                    'required' => false,
+                                    'description' => 'No description.',
+                                    'readonly' => false,
+                                ),
+                                'parent' =>
+                                array (
+                                    'dataType' => 'object (JmsTest)',
+                                    'required' => false,
+                                    'description' => 'No description.',
+                                    'readonly' => false,
+                                    'children' =>
+                                    array (
+                                        'foo' =>
+                                        array (
+                                            'dataType' => 'string',
+                                            'required' => false,
+                                            'description' => 'No description.',
+                                            'readonly' => false,
+                                        ),
+                                        'bar' =>
+                                        array (
+                                            'dataType' => 'DateTime',
+                                            'required' => false,
+                                            'description' => 'No description.',
+                                            'readonly' => true,
+                                        ),
+                                        'number' =>
+                                        array (
+                                            'dataType' => 'double',
+                                            'required' => false,
+                                            'description' => 'No description.',
+                                            'readonly' => false,
+                                        ),
+                                        'arr' =>
+                                        array (
+                                            'dataType' => 'array',
+                                            'required' => false,
+                                            'description' => 'No description.',
+                                            'readonly' => false,
+                                        ),
+                                        'nested' =>
+                                        array (
+                                            'dataType' => 'object (JmsNested)',
+                                            'required' => false,
+                                            'description' => 'No description.',
+                                            'readonly' => false,
+                                        ),
+                                        'nestedArray' =>
+                                        array (
+                                            'dataType' => 'array of objects (JmsNested)',
+                                            'required' => false,
+                                            'description' => 'No description.',
+                                            'readonly' => false,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                        'nestedArray' =>
+                        array (
                             'dataType' => 'array of objects (JmsNested)',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
                         ),
                     ),
-                    'description' => 'Testing JMS'
                 ),
                 4 =>
-                array(
+                array (
                     'method' => 'GET',
                     'uri' => '/jms-return-test',
                     'description' => 'Testing return',
-                    'response' => array(
-                        'a' => array(
+                    'response' =>
+                    array (
+                        'a' =>
+                        array (
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
-                            'readonly' => false
-                        )
-                    )
+                            'readonly' => false,
+                        ),
+                    ),
                 ),
                 5 =>
-                array(
+                array (
                     'method' => 'ANY',
                     'uri' => '/my-commented/{id}/{page}',
-                    'requirements' =>
-                    array(
-                        'id' => array('dataType' => 'int', 'description' => 'A nice comment', 'requirement' => ''),
-                        'page' => array('dataType' => 'int', 'description' => '', 'requirement' => ''),
-                    ),
                     'description' => 'This method is useful to test if the getDocComment works.',
-                    'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char."
+                    'documentation' => 'This method is useful to test if the getDocComment works.
+And, it supports multilines until the first \'@\' char.',
+                    'requirements' =>
+                    array (
+                        'id' =>
+                        array (
+                            'dataType' => 'int',
+                            'description' => 'A nice comment',
+                            'requirement' => '',
+                        ),
+                        'page' =>
+                        array (
+                            'dataType' => 'int',
+                            'description' => '',
+                            'requirement' => '',
+                        ),
+                    ),
                 ),
                 6 =>
-                array(
+                array (
                     'method' => 'ANY',
                     'uri' => '/yet-another/{id}',
                     'requirements' =>
-                    array(
-                        'id' => array('dataType' => '', 'description' => '', 'requirement' => '\d+')
+                    array (
+                        'id' =>
+                        array (
+                            'requirement' => '\\d+',
+                            'dataType' => '',
+                            'description' => '',
+                        ),
                     ),
                 ),
                 7 =>
-                array(
+                array (
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param',
                     'filters' =>
-                    array(
-                        'page' => array('description' => 'Page of the overview.', 'requirement' => '\d+')
+                    array (
+                        'page' =>
+                        array (
+                            'requirement' => '\\d+',
+                            'description' => 'Page of the overview.',
+                        ),
                     ),
                 ),
                 8 =>
-                array(
+                array (
                     'method' => 'POST',
                     'uri' => '/z-action-with-request-param',
                     'parameters' =>
-                    array(
-                        'param1' => array('description' => 'Param1 description.', 'required' => true, 'dataType' => 'string', 'readonly' => false)
+                    array (
+                        'param1' =>
+                        array (
+                            'required' => true,
+                            'dataType' => 'string',
+                            'description' => 'Param1 description.',
+                            'readonly' => false,
+                        ),
                     ),
                 ),
             ),
         );
+
         $this->assertEquals($expected, $result);
     }
 

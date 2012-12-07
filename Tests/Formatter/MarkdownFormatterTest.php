@@ -185,6 +185,62 @@ nested:
   * required: false
   * description: No description.
 
+nested[bar]:
+
+  * type: string
+  * required: false
+  * description: No description.
+
+nested[baz][]:
+
+  * type: array of integers
+  * required: false
+  * description: Epic description.
+
+With multiple lines.
+
+nested[circular]:
+
+  * type: object (JmsNested)
+  * required: false
+  * description: No description.
+
+nested[parent]:
+
+  * type: object (JmsTest)
+  * required: false
+  * description: No description.
+
+nested[parent][foo]:
+
+  * type: string
+  * required: false
+  * description: No description.
+
+nested[parent][number]:
+
+  * type: double
+  * required: false
+  * description: No description.
+
+nested[parent][arr]:
+
+  * type: array
+  * required: false
+  * description: No description.
+
+nested[parent][nested]:
+
+  * type: object (JmsNested)
+  * required: false
+  * description: No description.
+
+nested[parent][nestedArray][]:
+
+  * type: array of objects (JmsNested)
+  * required: false
+  * description: No description.
+
 nestedArray[]:
 
   * type: array of objects (JmsNested)
