@@ -32,8 +32,6 @@ class JmsMetadataParser implements ParserInterface
      */
     private $commentExtractor;
 
-    private $parsedClasses = array();
-
     /**
      * Constructor, requires JMS Metadata factory
      */
@@ -63,15 +61,6 @@ class JmsMetadataParser implements ParserInterface
      */
     public function parse($input)
     {
-        $params = $this->doParse($input);
-
-        $this->parsedClasses = array();
-
-        return $params;
-    }
-
-    protected function doParse($input)
-    {
         $meta = $this->factory->getMetadataForClass($input);
 
         if (null === $meta) {
@@ -94,17 +83,6 @@ class JmsMetadataParser implements ParserInterface
                     'description'   => $this->getDescription($input, $item),
                     'readonly' => $item->readOnly
                 );
-
-                // if class already parsed, continue, to avoid infinite recursion
-                if (in_array($dataType['class'], $this->parsedClasses)) {
-                    continue;
-                }
-
-                //check for nested classes with JMS metadata
-                if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
-                    $this->parsedClasses[] = $dataType['class'];
-                    $params[$name]['children'] = $this->doParse($dataType['class']);
-                }
             }
         }
         return $params;
