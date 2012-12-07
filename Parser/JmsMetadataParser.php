@@ -70,7 +70,7 @@ class JmsMetadataParser implements ParserInterface
         return $params;
     }
 
-    protected function _parse($input)
+    protected function doParse($input)
     {
         $meta = $this->factory->getMetadataForClass($input);
 
