@@ -58,6 +58,12 @@ test_route_11:
     requirements:
         _method: POST
 
+test_route_12:
+    pattern: /secure-route
+    defaults: { _controller: NelmioApiDocTestBundle:Test:secureRoute }
+    requirements:
+        _scheme: https
+
 test_service_route_1:
     pattern:  /tests.{_format}
     defaults: { _controller: nemlio.test.controller:indexAction, _format: json }

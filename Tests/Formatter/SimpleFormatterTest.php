@@ -50,6 +50,7 @@ class SimpleFormatterTest extends WebTestCase
                     'requirements' => array(
                         '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
+                    'https' => false,
                 ),
                 1 =>
                 array(
@@ -75,6 +76,7 @@ class SimpleFormatterTest extends WebTestCase
                     'requirements' => array(
                         '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
+                    'https' => false,
                 ),
                 2 =>
                 array(
@@ -108,6 +110,7 @@ class SimpleFormatterTest extends WebTestCase
                     'requirements' => array(
                         '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
+                    'https' => false,
                 ),
                 3 =>
                 array(
@@ -141,6 +144,7 @@ class SimpleFormatterTest extends WebTestCase
                     'requirements' => array(
                         '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
+                    'https' => false,
                 ),
             ),
             'others' =>
@@ -160,12 +164,14 @@ class SimpleFormatterTest extends WebTestCase
                         ),
                     ),
                     'description' => 'create another test',
+                    'https' => false,
                 ),
                 1 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/any',
                     'description' => 'Action without HTTP verb',
+                    'https' => false,
                 ),
                 2 =>
                 array(
@@ -176,6 +182,7 @@ class SimpleFormatterTest extends WebTestCase
                         'foo' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
                     'description' => 'Action without HTTP verb',
+                    'https' => false,
                 ),
                 3 =>
                 array(
@@ -268,7 +275,8 @@ With multiple lines.',
                             )
                         ),
                     ),
-                    'description' => 'Testing JMS'
+                    'description' => 'Testing JMS',
+                    'https' => false,
                 ),
                 4 =>
                 array(
@@ -282,7 +290,8 @@ With multiple lines.',
                             'description' => 'A nice description',
                             'readonly' => false
                         )
-                    )
+                    ),
+                    'https' => false,
                 ),
                 5 =>
                 array(
@@ -293,10 +302,26 @@ With multiple lines.',
                         'id' => array('dataType' => 'int', 'description' => 'A nice comment', 'requirement' => ''),
                         'page' => array('dataType' => 'int', 'description' => '', 'requirement' => ''),
                     ),
+                    'https' => false,
                     'description' => 'This method is useful to test if the getDocComment works.',
                     'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char."
                 ),
                 6 =>
+                array(
+                    'method' => 'ANY',
+                    'uri' => '/secure-route',
+                    // 'description' => '[secureRouteAction description]',
+                    // 'documentation' => '[secureRouteAction description]',
+                    'requirements' => array(
+                        '_scheme' => array(
+                            'requirement' => 'https',
+                            'dataType' => null,
+                            'description' => null,
+                        ),
+                    ),
+                    'https' => true,
+                ),
+                7 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/yet-another/{id}',
@@ -304,8 +329,9 @@ With multiple lines.',
                     array(
                         'id' => array('dataType' => '', 'description' => '', 'requirement' => '\d+')
                     ),
+                    'https' => false,
                 ),
-                7 =>
+                8 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param',
@@ -313,8 +339,9 @@ With multiple lines.',
                     array(
                         'page' => array('description' => 'Page of the overview.', 'requirement' => '\d+')
                     ),
+                    'https' => false,
                 ),
-                8 =>
+                9 =>
                 array(
                     'method' => 'POST',
                     'uri' => '/z-action-with-request-param',
@@ -322,6 +349,7 @@ With multiple lines.',
                     array(
                         'param1' => array('description' => 'Param1 description.', 'required' => true, 'dataType' => 'string', 'readonly' => false)
                     ),
+                    'https' => false,
                 ),
             ),
         );
@@ -356,6 +384,7 @@ With multiple lines.',
             'requirements' => array(
                 '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
             ),
+            'https' => false,
         );
 
         $this->assertEquals($expected, $result);

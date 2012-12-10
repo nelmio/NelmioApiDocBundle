@@ -120,4 +120,11 @@ class TestController
     {
     }
 
+    /**
+     * @ApiDoc()
+     */
+    public function secureRouteAction()
+    {
+    }
+
 }
