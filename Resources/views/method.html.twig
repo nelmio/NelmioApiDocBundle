@@ -4,6 +4,11 @@
         <span class="http_method">
             <a>{{ data.method|upper }}</a>
         </span>
+
+        {% if data.https %}
+            <img src="{{ asset('bundles/nelmioapidoc/image/lock.png') }}" class="padlock" />
+        {% endif %}
+
         <span class="path">
             {{ data.uri }}
         </span>

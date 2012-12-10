@@ -289,6 +289,10 @@ class ApiDocExtractor
                     'description'   => '',
                 );
             }
+            if ('_scheme' == $name) {
+                $https = ('https' == $value);
+                $annotation->setHttps($https);
+            }
         }
 
         $paramDocs = array();

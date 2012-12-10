@@ -537,3 +537,8 @@ form .request-content {
     margin-left: 20px;
     margin-bottom: 10px;
 }
+
+.padlock {
+  height: 12px;
+  margin-left: 3px;
+}

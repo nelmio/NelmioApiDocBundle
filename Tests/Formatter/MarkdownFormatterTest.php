@@ -247,6 +247,16 @@ _This method is useful to test if the getDocComment works._
   - Type: int
 
 
+### `ANY` /secure-route ###
+
+
+#### Requirements ####
+
+**_scheme**
+
+  - Requirement: https
+
+
 ### `ANY` /yet-another/{id} ###
 
 
