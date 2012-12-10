@@ -89,6 +89,11 @@ class ApiDoc
     private $route;
 
     /**
+     * @var boolean
+     */
+    private $https = false;
+
+    /**
      * @var array
      */
     private $statusCodes = array();
@@ -245,6 +250,22 @@ class ApiDoc
     }
 
     /**
+     * @return boolean
+     */
+    public function getHttps()
+    {
+        return $this->https;
+    }
+
+    /**
+     * @param boolean $https
+     */
+    public function setHttps($https)
+    {
+        $this->https = $https;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -281,6 +302,8 @@ class ApiDoc
         if ($statusCodes = $this->statusCodes) {
             $data['statusCodes'] = $statusCodes;
         }
+
+        $data['https'] = $this->https;
 
         return $data;
     }
