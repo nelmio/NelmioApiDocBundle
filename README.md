@@ -223,3 +223,4 @@ input is used, so you can configure their priorities via container tags.  Here's
 ## Credits ##
 
 The design is heavily inspired by the [swagger-ui](https://github.com/wordnik/swagger-ui) project.
+Some icons from the [Glyphicons](http://glyphicons.com/) library are used to render the documentation.
