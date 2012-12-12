@@ -202,6 +202,14 @@
                         <fieldset class="headers">
                             <legend>Headers</legend>
 
+                            {% if acceptType %}
+	                            <p class="tuple">
+		                        	<input type="text" class="key" value="Accept" />
+	                                <span>=</span>
+		                            <input type="text" class="value" value="{{ acceptType }}" /> <span class="remove">-</span>
+	                            </p>
+                            {% endif %}
+
                             <p class="tuple">
                                 <input type="text" class="key" placeholder="Key" />
                                 <span>=</span>

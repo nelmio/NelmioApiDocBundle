@@ -46,6 +46,11 @@ class HtmlFormatter extends AbstractFormatter
     private $requestFormatMethod;
 
     /**
+     * @var string
+     */
+    private $acceptType;
+
+    /**
      * @var array
      */
     private $authentication;
@@ -88,6 +93,14 @@ class HtmlFormatter extends AbstractFormatter
     public function setTemplatingEngine(EngineInterface $engine)
     {
         $this->engine = $engine;
+    }
+
+    /**
+     * @param string $acceptType
+     */
+    public function setAcceptType($acceptType)
+    {
+        $this->acceptType = $acceptType;
     }
 
     /**
@@ -144,6 +157,7 @@ class HtmlFormatter extends AbstractFormatter
             'endpoint'             => $this->endpoint,
             'enableSandbox'        => $this->enableSandbox,
             'requestFormatMethod'  => $this->requestFormatMethod,
+            'acceptType'  		   => $this->acceptType,
             'defaultRequestFormat' => $this->defaultRequestFormat,
             'date'                 => date(DATE_RFC822),
             'css'                  => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
