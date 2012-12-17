@@ -199,25 +199,53 @@ nested[baz][]:
 
 With multiple lines.
 
-nestedArray[]:
+nested[circular]:
 
-  * type: array of objects (JmsNested)
+  * type: object (JmsNested)
   * required: false
   * description: No description.
 
-nestedArray[][bar]:
+nested[parent]:
+
+  * type: object (JmsTest)
+  * required: false
+  * description: No description.
+
+nested[parent][foo]:
 
   * type: string
   * required: false
   * description: No description.
 
-nestedArray[][baz][]:
+nested[parent][number]:
 
-  * type: array of integers
+  * type: double
   * required: false
-  * description: Epic description.
+  * description: No description.
 
-With multiple lines.
+nested[parent][arr]:
+
+  * type: array
+  * required: false
+  * description: No description.
+
+nested[parent][nested]:
+
+  * type: object (JmsNested)
+  * required: false
+  * description: No description.
+
+nested[parent][nestedArray][]:
+
+  * type: array of objects (JmsNested)
+  * required: false
+  * description: No description.
+
+nestedArray[]:
+
+  * type: array of objects (JmsNested)
+  * required: false
+  * description: No description.
 
 
 ### `GET` /jms-return-test ###
