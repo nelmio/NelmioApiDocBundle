@@ -26,4 +26,14 @@ class JmsNested
      */
     public $baz;
 
+    /**
+     * @JMS\Type("Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested");
+     */
+    public $circular;
+
+    /**
+     * @JMS\Type("Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest");
+     */
+    public $parent;
+
 }
