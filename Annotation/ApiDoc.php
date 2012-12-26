@@ -94,6 +94,11 @@ class ApiDoc
     private $https = false;
 
     /**
+     * @var boolean
+     */
+    private $authentication = false;
+
+    /**
      * @var array
      */
     private $statusCodes = array();
@@ -127,6 +132,10 @@ class ApiDoc
 
         if (isset($data['statusCodes'])) {
             $this->statusCodes = $data['statusCodes'];
+        }
+
+        if (isset($data['authentication'])) {
+            $this->setAuthentication((bool) $data['authentication']);
         }
     }
 
@@ -266,6 +275,22 @@ class ApiDoc
     }
 
     /**
+     * @return boolean
+     */
+    public function getAuthentication()
+    {
+        return $this->authentication;
+    }
+
+    /**
+     * @param boolean $secured
+     */
+    public function setAuthentication($authentication)
+    {
+        $this->authentication = $authentication;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -304,6 +329,7 @@ class ApiDoc
         }
 
         $data['https'] = $this->https;
+        $data['authentication'] = $this->authentication;
 
         return $data;
     }

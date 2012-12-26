@@ -385,6 +385,7 @@ With multiple lines.',
                 '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
             ),
             'https' => false,
+            'authentication' => false,
         );
 
         $this->assertEquals($expected, $result);
