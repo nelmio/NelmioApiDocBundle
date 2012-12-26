@@ -101,10 +101,20 @@ class FormTypeParser implements ParserInterface
                          * This is just a temporary workaround for don't breaking docs page in case of unsupported types
                          * like the entity type https://github.com/nelmio/NelmioApiDocBundle/issues/94
                          */
+                        $addDefault = false;
                         try {
                             $subForm    = $this->formFactory->create($type);
-                            $parameters = array_merge($parameters, $this->parseForm($subForm, $name));
+                            $subParameters = $this->parseForm($subForm, $name);
+                            if (!empty($subParameters)) {
+                                $parameters = array_merge($parameters, $subParameters);
+                            } else {
+                                $addDefault = true;
+                            }
                         } catch (\Exception $e) {
+                            $addDefault = true;
+                        }
+
+                        if ($addDefault) {
                             $parameters[$name] = array(
                                 'dataType'      => 'string',
                                 'required'      => $config->getRequired(),
