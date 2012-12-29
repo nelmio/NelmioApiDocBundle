@@ -8,10 +8,13 @@
         <parameter key="nelmio_api_doc.form.extension.description_form_type_extension.class">Nelmio\ApiDocBundle\Form\Extension\DescriptionFormTypeExtension</parameter>
         <parameter key="nelmio_api_doc.twig.extension.extra_markdown.class">Nelmio\ApiDocBundle\Twig\Extension\MarkdownExtension</parameter>
         <parameter key="nelmio_api_doc.doc_comment_extractor.class">Nelmio\ApiDocBundle\Util\DocCommentExtractor</parameter>
+        <parameter key="nelmio_api_doc.data_type_parser.class">Nelmio\ApiDocBundle\Util\DataTypeParser</parameter>
     </parameters>
 
     <services>
         <service id='nelmio_api_doc.doc_comment_extractor' class='%nelmio_api_doc.doc_comment_extractor.class%' />
+
+        <service id='nelmio_api_doc.data_type_parser' class='%nelmio_api_doc.data_type_parser.class%' />
 
         <service id="nelmio_api_doc.extractor.api_doc_extractor" class="%nelmio_api_doc.extractor.api_doc_extractor.class%">
             <argument type="service" id="service_container"/>
