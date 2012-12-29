@@ -12,15 +12,40 @@
 namespace Nelmio\ApiDocBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiDocController extends Controller
 {
-    public function indexAction()
+    const FORMATTER_ID = 'nelmio_api_doc.formatter.%s_formatter';
+
+    public function indexAction(Request $request, $_format)
     {
         $extractedDoc = $this->get('nelmio_api_doc.extractor.api_doc_extractor')->all();
-        $htmlContent  = $this->get('nelmio_api_doc.formatter.html_formatter')->format($extractedDoc);
 
-        return new Response($htmlContent, 200, array('Content-Type' => 'text/html'));
+        if (!$this->has($serviceId = sprintf(self::FORMATTER_ID, $_format))) {
+            $serviceId = sprintf(self::FORMATTER_ID, 'html');
+            $_format   = 'html';
+        }
+
+        $content = $this->get($serviceId)->format($extractedDoc);
+
+        return new Response($content, 200, array(
+            'Content-Type' => $this->getMimeType($request, $_format),
+        ));
+    }
+
+    private function getMimeType(Request $request, $_format)
+    {
+        switch ($_format) {
+            case 'wadl':
+                return 'application/vnd.sun.wadl+xml';
+
+            case 'markdown':
+                $_format = 'txt';
+                break;
+        }
+
+        return $request->getMimeType($_format);
     }
 }

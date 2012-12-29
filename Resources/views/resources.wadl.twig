@@ -1,0 +1,43 @@
+{% extends "NelmioApiDocBundle::layout.wadl.twig" %}
+
+{% block content %}
+    <resources base="{{ baseUrl }}">
+    {% for resource, methods in resources %}
+        {%- set resourcePath = resource -%}
+        {%- set nested       = 0 -%}
+        <resource path="{{ resource }}">
+        {% for data in methods %}
+            {% if resourcePath != data.uri %}
+                {% if nested > 0 %}
+            </resource>
+                    {% set nested = nested - 1 %}
+                {% endif %}
+            <resource path="{{ data.uri }}">
+                {% if data.requirements is defined and data.requirements is not empty %}
+                    {% for name, infos in data.requirements %}
+                    <param name="{{ name }}" style="template"{% if infos.dataType %} type="xsd:{{ infos.dataType }}"{% endif %} />
+                    {% endfor %}
+                {% endif %}
+
+                {%- set resourcePath = data.uri -%}
+                {%- set nested       = nested + 1 -%}
+            {% endif %}
+
+            {%- include 'NelmioApiDocBundle::method.wadl.twig' -%}
+
+            {% if resourcePath != data.uri %}
+                {% for i in 0..nested %}
+        </resource>
+                    {% set nested = nested - 1 %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        {% if resourcePath != resource %}
+            {% for i in 0..nested %}
+        </resource>
+                {% set nested = nested - 1 %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    </resources>
+{% endblock content %}
