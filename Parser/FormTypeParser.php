@@ -29,6 +29,7 @@ class FormTypeParser implements ParserInterface
     protected $mapTypes = array(
         'text'      => 'string',
         'date'      => 'date',
+        'datepicker'=> 'date',
         'datetime'  => 'datetime',
         'checkbox'  => 'boolean',
         'time'      => 'time',
