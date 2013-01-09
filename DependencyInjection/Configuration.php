@@ -39,6 +39,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('enabled')->defaultTrue()->end()
                         ->scalarNode('endpoint')->defaultValue('/app_dev.php')->end()
+                        ->scalarNode('accept_type')->defaultValue('')->end()
                         ->arrayNode('request_format')
                             ->addDefaultsIfNotSet()
                             ->children()
