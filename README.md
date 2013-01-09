@@ -208,7 +208,7 @@ configure this sandbox using the following parameters:
                 delivery: query # only query delivery is supported for now
             enabled:  true # default: true, you can set this parameter to `false` to disable the sandbox
             endpoint: http://sandbox.example.com/ # default: /app_dev.php, use this parameter to define which URL to call through the sandbox
-
+            accept_type: application/json # default null, if set, the value is automatically populated as the Accept header
 
 The bundle provides a way to register multiple `input` parsers.  The first parser that can handle the specified
 input is used, so you can configure their priorities via container tags.  Here's an example parser service registration:
