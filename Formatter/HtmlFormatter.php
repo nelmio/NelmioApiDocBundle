@@ -157,7 +157,7 @@ class HtmlFormatter extends AbstractFormatter
             'endpoint'             => $this->endpoint,
             'enableSandbox'        => $this->enableSandbox,
             'requestFormatMethod'  => $this->requestFormatMethod,
-            'acceptType'  		   => $this->acceptType,
+            'acceptType'           => $this->acceptType,
             'defaultRequestFormat' => $this->defaultRequestFormat,
             'date'                 => date(DATE_RFC822),
             'css'                  => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
