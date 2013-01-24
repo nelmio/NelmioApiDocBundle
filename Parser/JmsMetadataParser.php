@@ -13,8 +13,8 @@ namespace Nelmio\ApiDocBundle\Parser;
 
 use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
-use JMS\SerializerBundle\Metadata\PropertyMetadata;
-use JMS\SerializerBundle\Metadata\VirtualPropertyMetadata;
+use JMS\Serializer\Metadata\PropertyMetadata;
+use JMS\Serializer\Metadata\VirtualPropertyMetadata;
 
 /**
  * Uses the JMS metadata factory to extract input/output model information
