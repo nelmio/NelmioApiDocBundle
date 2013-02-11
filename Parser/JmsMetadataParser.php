@@ -73,11 +73,10 @@ class JmsMetadataParser implements ParserInterface
 
         //iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
-
             if (!is_null($item->type)) {
                 $name = isset($item->serializedName) ? $item->serializedName : $item->name;
 
-                $dataType = $this->processDataType(is_string($item->type) ? $item->type : $item->type['name']);
+                $dataType = $this->processDataType($item);
 
                 $params[$name] = array(
                     'dataType' => $dataType['normalized'],
@@ -107,21 +106,15 @@ class JmsMetadataParser implements ParserInterface
      * Figure out a normalized data type (for documentation), and get a
      * nested class name, if available.
      *
-     * @param  string $type
+     * @param  array|string $type
      * @return array
      */
-    protected function processDataType($type)
+    protected function processDataType(PropertyMetadata $item)
     {
-        //could be basic type
-        if ($this->isPrimitive($type)) {
-            return array(
-                'normalized' => $type,
-                'class' => null
-            );
-        }
+        $type = is_string($item->type) ? $item->type : $item->type['name'];
 
         //check for a type inside something that could be treated as an array
-        if ($nestedType = $this->getNestedTypeInArray($type)) {
+        if ($nestedType = $this->getNestedTypeInArray($item)) {
             if ($this->isPrimitive($nestedType)) {
                 return array(
                     'normalized' => sprintf("array of %ss", $nestedType),
@@ -134,6 +127,14 @@ class JmsMetadataParser implements ParserInterface
             return array(
                 'normalized' => sprintf("array of objects (%s)", end($exp)),
                 'class' => $nestedType
+            );
+        }
+
+        //could be basic type
+        if ($this->isPrimitive($type)) {
+            return array(
+                'normalized' => $type,
+                'class' => null
             );
         }
 
@@ -155,15 +156,17 @@ class JmsMetadataParser implements ParserInterface
      * Check the various ways JMS describes values in arrays, and
      * get the value type in the array
      *
-     * @param  string      $type
+     * @param  array|string $item
      * @return string|null
      */
-    protected function getNestedTypeInArray($type)
+    protected function getNestedTypeInArray($item)
     {
-        //could be some type of array with <V>, or <K,V>
-        $regEx = "/\<([A-Za-z0-9\\\]*)(\,?\s?(.*))?\>/";
-        if (preg_match($regEx, $type, $matches)) {
-            return (!empty($matches[3])) ? $matches[3] : $matches[1];
+        if (is_array($item->type)
+            && in_array($item->type['name'], array('array'))
+            && isset($item->type['params'])
+            && 1 === count($item->type['params'])
+            && isset($item->type['params'][0]['name'])) {
+            return $item->type['params'][0]['name'];
         }
 
         return null;

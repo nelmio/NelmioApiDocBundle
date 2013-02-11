@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Extractor;
 
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
+use Symfony\Component\Form\Test\DeprecationErrorHandler;
 
 class ApiDocExtractorTest extends WebTestCase
 {
@@ -19,7 +20,9 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container = $this->getContainer();
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        set_error_handler(array('Symfony\Component\Form\Test\DeprecationErrorHandler', 'handle'));
         $data = $extractor->all();
+        restore_error_handler();
 
         $this->assertTrue(is_array($data));
         $this->assertCount(13, $data);

@@ -20,7 +20,9 @@ class SimpleFormatterTest extends WebTestCase
         $container = $this->getContainer();
 
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        set_error_handler(array('Symfony\Component\Form\Test\DeprecationErrorHandler', 'handle'));
         $data      = $extractor->all();
+        restore_error_handler();
         $result    = $container->get('nelmio_api_doc.formatter.simple_formatter')->format($data);
 
         $expected = array(
