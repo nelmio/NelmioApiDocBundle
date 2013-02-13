@@ -57,6 +57,13 @@ class ApiDoc
     private $description = null;
 
     /**
+     * Section to group actions together.
+     *
+     * @var string
+     */
+    private $section = 'none';
+
+    /**
      * Extended documentation.
      *
      * @var string
@@ -128,6 +135,10 @@ class ApiDoc
         if (isset($data['statusCodes'])) {
             $this->statusCodes = $data['statusCodes'];
         }
+
+        if (isset($data['section'])) {
+            $this->section = $data['section'];
+        }
     }
 
     /**
@@ -186,6 +197,22 @@ class ApiDoc
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @param string $section
+     */
+    public function setSection($section)
+    {
+        $this->section = $section;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSection()
+    {
+        return $this->section;
     }
 
     /**
@@ -301,6 +328,10 @@ class ApiDoc
 
         if ($statusCodes = $this->statusCodes) {
             $data['statusCodes'] = $statusCodes;
+        }
+
+        if ($section = $this->section) {
+            $data['section'] = $section;
         }
 
         $data['https'] = $this->https;
