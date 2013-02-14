@@ -330,10 +330,7 @@ class ApiDoc
             $data['statusCodes'] = $statusCodes;
         }
 
-        if ($section = $this->section) {
-            $data['section'] = $section;
-        }
-
+        $data['section'] = $this->section;
         $data['https'] = $this->https;
 
         return $data;
