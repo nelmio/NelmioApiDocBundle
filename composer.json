@@ -26,7 +26,7 @@
         "symfony/validator": ">=2.1,<2.3-dev",
         "symfony/yaml": ">=2.1,<2.3-dev",
         "friendsofsymfony/rest-bundle": "dev-master",
-        "jms/serializer-bundle": "0.9.*"
+        "jms/serializer-bundle": "1.0.x"
     },
     "minimum-stability": "dev",
     "autoload": {
