@@ -18,7 +18,7 @@
         "symfony/framework-bundle": ">=2.1,<2.3-dev",
         "symfony/twig-bundle": ">=2.1,<2.3-dev",
         "symfony/form": ">=2.1,<2.3-dev",
-        "dflydev/markdown": "1.0.*"
+        "dflydev/markdown": "0.9.x"
     },
     "require-dev": {
         "symfony/css-selector": ">=2.1,<2.3-dev",
