@@ -61,7 +61,7 @@ class ApiDoc
      *
      * @var string
      */
-    private $section = 'none';
+    private $section = null;
 
     /**
      * Extended documentation.
@@ -330,7 +330,10 @@ class ApiDoc
             $data['statusCodes'] = $statusCodes;
         }
 
-        $data['section'] = $this->section;
+        if($section = $this->section) {
+            $data['section'] = $section;
+        }
+
         $data['https'] = $this->https;
 
         return $data;
