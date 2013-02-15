@@ -16,7 +16,9 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $propertyMetadataFoo = new PropertyMetadata('Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested', 'foo');
-        $propertyMetadataFoo->type = 'DateTime';
+        $propertyMetadataFoo->type = array(
+            'name' => 'DateTime'
+        );
 
         $propertyMetadataBar = new PropertyMetadata('Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested', 'bar');
         $propertyMetadataBar->type = array(

@@ -111,8 +111,6 @@ class JmsMetadataParser implements ParserInterface
      */
     protected function processDataType(PropertyMetadata $item)
     {
-        $type = is_string($item->type) ? $item->type : $item->type['name'];
-
         //check for a type inside something that could be treated as an array
         if ($nestedType = $this->getNestedTypeInArray($item)) {
             if ($this->isPrimitive($nestedType)) {
@@ -129,6 +127,8 @@ class JmsMetadataParser implements ParserInterface
                 'class' => $nestedType
             );
         }
+
+        $type = $item->type['name'];
 
         //could be basic type
         if ($this->isPrimitive($type)) {
