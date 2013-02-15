@@ -27,6 +27,15 @@ abstract class WebTestCase extends BaseWebTestCase
         $fs->remove($dir);
     }
 
+    public static function handleDeprecation($errorNumber, $message, $file, $line, $context)
+    {
+        if ($errorNumber & E_USER_DEPRECATED) {
+            return true;
+        }
+
+        return \PHPUnit_Util_ErrorHandler::handleError($errorNumber, $message, $file, $line);
+    }
+
     protected function getContainer(array $options = array())
     {
         if (!static::$kernel) {
