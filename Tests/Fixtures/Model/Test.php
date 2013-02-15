@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Test
 {
     /**
-     * @Assert\MinLength("foo");
+     * @Assert\Length(min="foo");
      * @Assert\NotBlank
      */
     public $a;
