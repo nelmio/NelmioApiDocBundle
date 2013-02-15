@@ -15,10 +15,13 @@
         }
     ],
     "require": {
-        "symfony/framework-bundle": ">=2.1,<2.3-dev",
-        "symfony/twig-bundle": ">=2.1,<2.3-dev",
-        "symfony/form": ">=2.1,<2.3-dev",
+        "symfony/framework-bundle": "~2.1",
+        "symfony/twig-bundle": "~2.1",
+        "symfony/form": "~2.1",
         "dflydev/markdown": "1.0.*"
+    },
+    "conflict": {
+        "jms/serializer-bundle": "<0.11"
     },
     "require-dev": {
         "symfony/css-selector": ">=2.1,<2.3-dev",
@@ -26,7 +29,7 @@
         "symfony/validator": ">=2.1,<2.3-dev",
         "symfony/yaml": ">=2.1,<2.3-dev",
         "friendsofsymfony/rest-bundle": "dev-master",
-        "jms/serializer-bundle": "1.0.*"
+        "jms/serializer-bundle": ">=0.11"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -35,7 +38,7 @@
     "target-dir": "Nelmio/ApiDocBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "2.1.x-dev"
         }
     }
 }
