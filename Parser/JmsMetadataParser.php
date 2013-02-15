@@ -106,7 +106,7 @@ class JmsMetadataParser implements ParserInterface
      * Figure out a normalized data type (for documentation), and get a
      * nested class name, if available.
      *
-     * @param  array|string $type
+     * @param  PropertyMetadata $type
      * @return array
      */
     protected function processDataType(PropertyMetadata $item)
@@ -156,13 +156,13 @@ class JmsMetadataParser implements ParserInterface
      * Check the various ways JMS describes values in arrays, and
      * get the value type in the array
      *
-     * @param  array|string $item
+     * @param  PropertyMetadata $item
      * @return string|null
      */
-    protected function getNestedTypeInArray($item)
+    protected function getNestedTypeInArray(PropertyMetadata $item)
     {
         if (is_array($item->type)
-            && in_array($item->type['name'], array('array'))
+            && in_array($item->type['name'], array('array')) // We have to support ArrayCollection as well
             && isset($item->type['params'])
             && 1 === count($item->type['params'])
             && isset($item->type['params'][0]['name'])) {
