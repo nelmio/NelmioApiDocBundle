@@ -71,7 +71,7 @@ class JmsMetadataParser implements ParserInterface
 
         $params = array();
 
-        //iterate over property metadata
+        // iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
             if (!is_null($item->type)) {
                 $name = isset($item->serializedName) ? $item->serializedName : $item->name;
@@ -90,7 +90,7 @@ class JmsMetadataParser implements ParserInterface
                     continue;
                 }
 
-                //check for nested classes with JMS metadata
+                // check for nested classes with JMS metadata
                 if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
                     $this->parsedClasses[] = $dataType['class'];
                     $params[$name]['children'] = $this->parse($dataType['class']);
@@ -111,7 +111,7 @@ class JmsMetadataParser implements ParserInterface
      */
     protected function processDataType(PropertyMetadata $item)
     {
-        //check for a type inside something that could be treated as an array
+        // check for a type inside something that could be treated as an array
         if ($nestedType = $this->getNestedTypeInArray($item)) {
             if ($this->isPrimitive($nestedType)) {
                 return array(
@@ -130,7 +130,7 @@ class JmsMetadataParser implements ParserInterface
 
         $type = $item->type['name'];
 
-        //could be basic type
+        // could be basic type
         if ($this->isPrimitive($type)) {
             return array(
                 'normalized' => $type,
@@ -138,7 +138,7 @@ class JmsMetadataParser implements ParserInterface
             );
         }
 
-        //if we got this far, it's a general class name
+        // if we got this far, it's a general class name
         $exp = explode("\\", $type);
 
         return array(
