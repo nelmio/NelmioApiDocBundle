@@ -114,7 +114,7 @@ class TestController
 
     /**
      * @ApiDoc()
-     * @RequestParam(name="param1", requirements="string", nullable=false, description="Param1 description.")
+     * @RequestParam(name="param1", requirements="string", description="Param1 description.")
      */
     public function zActionWithRequestParamAction()
     {

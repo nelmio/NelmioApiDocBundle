@@ -341,7 +341,7 @@ class ApiDocExtractor
     {
         foreach ($this->reader->getMethodAnnotations($method) as $annot) {
             if (is_a($annot, self::FOS_REST_QUERY_PARAM_CLASS)) {
-                if ($annot->strict) {
+                if ($annot->strict && $annot->default === null) {
                     $annotation->addRequirement($annot->name, array(
                         'requirement'   => $annot->requirements,
                         'dataType'      => '',
@@ -355,7 +355,7 @@ class ApiDocExtractor
                 }
             } elseif (is_a($annot, self::FOS_REST_REQUEST_PARAM_CLASS)) {
                 $annotation->addParameter($annot->name, array(
-                    'required'    => !$annot->nullable,
+                    'required'    => $annot->strict && $annot->default === null,
                     'dataType'    => $annot->requirements,
                     'description' => $annot->description,
                     'readonly'    => false
