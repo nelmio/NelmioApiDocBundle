@@ -174,13 +174,17 @@ class ApiDocTest extends TestCase
         $this->assertEquals($data['input'], $annot->getInput());
     }
 
-    public function testConstructWithHTTPResponseCodes()
+    public function testConstructWithStatusCodes()
     {
         $data = array(
             'description' => 'Heya',
             'statusCodes' => array(
                 200 => "Returned when successful",
-                403 => "Returned when the user is not authorized"
+                403 => "Returned when the user is not authorized",
+                404 => array(
+                    "Returned when the user is not found",
+                    "Returned when when something else is not found"
+                )
             )
         );
 
@@ -190,7 +194,7 @@ class ApiDocTest extends TestCase
         $this->assertTrue(is_array($array));
         $this->assertTrue(is_array($array['statusCodes']));
         foreach ($data['statusCodes'] as $code => $message) {
-            $this->assertEquals($array['statusCodes'][$code], $message);
+            $this->assertEquals($array['statusCodes'][$code], !is_array($message) ? array($message) : $message);
         }
     }
 }
