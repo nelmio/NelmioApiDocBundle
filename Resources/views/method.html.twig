@@ -136,24 +136,30 @@
                 </table>
             {% endif %}
 
-             {% if data.statusCodes is defined and data.statusCodes is not empty %}
-            <h4>Status Codes</h4>
-            <table class="fullwidth">
-                <thead>
+            {% if data.statusCodes is defined and data.statusCodes is not empty %}
+                <h4>Status Codes</h4>
+                <table class="fullwidth">
+                    <thead>
                     <tr>
                         <th>Status Code</th>
                         <th>Description</th>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for status_code, description in data.statusCodes %}
-                    <tr>
-                        <td><a href="http://en.wikipedia.org/wiki/HTTP_{{ status_code }}" target="_blank">{{ status_code }}<a/></td>
-                        <td>{{ description }}</td>
-                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for status_code, descriptions in data.statusCodes %}
+                        <tr>
+                            <td><a href="http://en.wikipedia.org/wiki/HTTP_{{ status_code }}" target="_blank">{{ status_code }}<a/></td>
+                            <td>
+                                <ul>
+                                    {% for description in descriptions %}
+                                        <li>{{ description }}</li>
+                                    {%  endfor %}
+                                </ul>
+                            </td>
+                        </tr>
                     {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
             {% endif %}
 
             </div>
