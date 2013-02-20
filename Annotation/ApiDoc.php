@@ -126,7 +126,9 @@ class ApiDoc
         }
 
         if (isset($data['statusCodes'])) {
-            $this->statusCodes = $data['statusCodes'];
+            foreach ($data['statusCodes'] as $statusCode => $description) {
+                $this->addStatusCode($statusCode, $description);
+            }
         }
     }
 
@@ -137,6 +139,15 @@ class ApiDoc
     public function addFilter($name, array $filter)
     {
         $this->filters[$name] = $filter;
+    }
+
+    /**
+     * @param string $statusCode
+     * @param mixed  $description
+     */
+    public function addStatusCode($statusCode, $description)
+    {
+        $this->statusCodes[$statusCode] = !is_array($description) ? array($description) : $description;
     }
 
     /**
