@@ -1,20 +1,30 @@
 {% extends "NelmioApiDocBundle::layout.html.twig" %}
 
 {% block content %}
-    {% for resource, methods in resources %}
-        <li class="resource">
-            <div class="heading">
-                <h2>{{ resource }}</h2>
-            </div>
-            <ul class="endpoints">
-                <li class="endpoint">
-                    <ul class="operations">
-                        {% for data in methods %}
-                            {% include 'NelmioApiDocBundle::method.html.twig' %}
-                        {% endfor %}
-                    </ul>
-                </li>
-            </ul>
-        </li>
+    {% for section, sections in resources  %}
+        {% for resource, methods in sections %}
+            <li class="resource">
+                <div class="heading">
+                    {% if section == 'others' and resource == 'others' %}
+                        <h2>{{ resource }}</h2>
+                    {% endif %}
+                    {% if section != 'others' %}
+                        <h1>{{ section }}</h1>
+                    {% endif %}
+                    {% if resource != 'others' %}
+                        <h2>{{ resource }}</h2>
+                    {% endif %}
+                </div>
+                <ul class="endpoints">
+                    <li class="endpoint">
+                        <ul class="operations">
+                            {% for data in methods %}
+                                {% include 'NelmioApiDocBundle::method.html.twig' %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        {% endfor %}
     {% endfor %}
 {% endblock content %}
