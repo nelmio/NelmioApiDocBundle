@@ -2,14 +2,14 @@
 
 {% block content %}
     {% for section, sections in resources  %}
+        {% if section != 'others' %}
+            <h1>{{ section }}</h1>
+        {% endif %}
         {% for resource, methods in sections %}
             <li class="resource">
                 <div class="heading">
                     {% if section == 'others' and resource == 'others' %}
                         <h2>{{ resource }}</h2>
-                    {% endif %}
-                    {% if section != 'others' %}
-                        <h1>{{ section }}</h1>
                     {% endif %}
                     {% if resource != 'others' %}
                         <h2>{{ resource }}</h2>
