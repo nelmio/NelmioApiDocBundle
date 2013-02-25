@@ -137,12 +137,13 @@ abstract class AbstractFormatter implements FormatterInterface
                     if($section) {
                         $processedCollection[$section][$path][] = $this->processAnnotation($annotation);
                     } else {
-                        $processedCollection['others'][$path][] = $this->processAnnotation($annotation);
+                        $processedCollection['_others'][$path][] = $this->processAnnotation($annotation);
                     }
                 }
             }
         }
 
+            ksort($processedCollection);
         return $processedCollection;
     }
 }

@@ -2,13 +2,14 @@
 
 {% block content %}
     {% for section, sections in resources  %}
-        {% if section != 'others' %}
+        {% if section != '_others' %}
+            <div id="section">
             <h1>{{ section }}</h1>
         {% endif %}
         {% for resource, methods in sections %}
             <li class="resource">
                 <div class="heading">
-                    {% if section == 'others' and resource == 'others' %}
+                    {% if section == '_others' and resource != 'others' %}
                         <h2>{{ resource }}</h2>
                     {% endif %}
                     {% if resource != 'others' %}
@@ -26,5 +27,8 @@
                 </ul>
             </li>
         {% endfor %}
+        {% if section != '_others' %}
+            </div>
+            {% endif %}
     {% endfor %}
 {% endblock content %}
