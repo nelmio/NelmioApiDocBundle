@@ -162,7 +162,7 @@ class JmsMetadataParser implements ParserInterface
     protected function getNestedTypeInArray(PropertyMetadata $item)
     {
         if (is_array($item->type)
-            && in_array($item->type['name'], array('array')) // We have to support ArrayCollection as well
+            && in_array($item->type['name'], array('array', 'ArrayCollection'))
             && isset($item->type['params'])
             && 1 === count($item->type['params'])
             && isset($item->type['params'][0]['name'])) {

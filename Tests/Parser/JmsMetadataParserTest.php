@@ -8,7 +8,10 @@ use JMS\Serializer\Metadata\PropertyMetadata;
 
 class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
 {
-    public function testParserWithNestedType()
+    /**
+     * @dataProvider dataTestParserWithNestedType
+     */
+    public function testParserWithNestedType($type)
     {
         $metadataFactory = $this->getMock('Metadata\MetadataFactoryInterface');
         $docCommentExtractor = $this->getMockBuilder('Nelmio\ApiDocBundle\Util\DocCommentExtractor')
@@ -27,7 +30,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
 
         $propertyMetadataBaz = new PropertyMetadata('Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested', 'baz');
         $propertyMetadataBaz->type = array(
-            'name' => 'array',
+            'name' => $type,
             'params' =>  array(
                 array(
                     'name' => 'integer',
@@ -72,5 +75,13 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 'readonly' => false
             )
         ), $output);
+    }
+
+    public function dataTestParserWithNestedType()
+    {
+        return array(
+            array('array'),
+            array('ArrayCollection')
+        );
     }
 }
