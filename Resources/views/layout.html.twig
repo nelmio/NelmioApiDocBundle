@@ -195,6 +195,10 @@
                         url += api_key_parameter + '=' + $('#api_key').val();
                     }
 
+                    {% if endpoint == '' and app.request is defined and app.request.host -%}
+                        {% set endpoint = app.request.getBaseUrl() -%}
+                    {% endif -%}
+
                     // and trigger the API call
                     $.ajax({
                         url: '{{ endpoint }}' + url,
