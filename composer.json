@@ -18,7 +18,7 @@
         "symfony/framework-bundle": ">=2.1,<2.3-dev",
         "symfony/twig-bundle": ">=2.1,<2.3-dev",
         "symfony/form": ">=2.1,<2.3-dev",
-        "dflydev/markdown": "0.9.x"
+        "dflydev/markdown": "1.0.*"
     },
     "require-dev": {
         "symfony/css-selector": ">=2.1,<2.3-dev",
@@ -26,7 +26,7 @@
         "symfony/validator": ">=2.1,<2.3-dev",
         "symfony/yaml": ">=2.1,<2.3-dev",
         "friendsofsymfony/rest-bundle": "dev-master",
-        "jms/serializer-bundle": "1.0.x"
+        "jms/serializer-bundle": "0.9.*"
     },
     "minimum-stability": "dev",
     "autoload": {
