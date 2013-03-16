@@ -25,7 +25,7 @@ class ApiDocExtractorTest extends WebTestCase
         restore_error_handler();
 
         $this->assertTrue(is_array($data));
-        $this->assertCount(14, $data);
+        $this->assertCount(15, $data);
 
         foreach ($data as $d) {
             $this->assertTrue(is_array($d));
@@ -65,7 +65,7 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertFalse(isset($array2['filters']));
         $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
 
-        $a3 = $data['10']['annotation'];
+        $a3 = $data['11']['annotation'];
         $this->assertTrue($a3->getHttps());
     }
 

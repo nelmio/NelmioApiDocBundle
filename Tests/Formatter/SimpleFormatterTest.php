@@ -53,6 +53,7 @@ class SimpleFormatterTest extends WebTestCase
                         '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
                     'https' => false,
+                    'authentication' => false,
                 ),
                 1 =>
                 array(
@@ -79,6 +80,7 @@ class SimpleFormatterTest extends WebTestCase
                         '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
                     'https' => false,
+                    'authentication' => false,
                 ),
                 2 =>
                 array(
@@ -113,6 +115,7 @@ class SimpleFormatterTest extends WebTestCase
                         '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
                     'https' => false,
+                    'authentication' => false,
                 ),
                 3 =>
                 array(
@@ -147,6 +150,7 @@ class SimpleFormatterTest extends WebTestCase
                         '_format' => array('dataType' => '', 'description' => '', 'requirement' => ''),
                     ),
                     'https' => false,
+                    'authentication' => false,
                 ),
             ),
             'others' =>
@@ -167,6 +171,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'description' => 'create another test',
                     'https' => false,
+                    'authentication' => false,
                 ),
                 1 =>
                 array(
@@ -174,6 +179,7 @@ class SimpleFormatterTest extends WebTestCase
                     'uri' => '/any',
                     'description' => 'Action without HTTP verb',
                     'https' => false,
+                    'authentication' => false,
                 ),
                 2 =>
                 array(
@@ -185,8 +191,16 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'description' => 'Action without HTTP verb',
                     'https' => false,
+                    'authentication' => false,
                 ),
                 3 =>
+                array (
+                    'method' => 'ANY',
+                    'uri' => '/authenticated',
+                    'https' => false,
+                    'authentication' => true,
+                ),
+                4 =>
                 array(
                     'method' => 'POST',
                     'uri' => '/jms-input-test',
@@ -279,8 +293,9 @@ With multiple lines.',
                     ),
                     'description' => 'Testing JMS',
                     'https' => false,
+                    'authentication' => false,
                 ),
-                4 =>
+                5 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/jms-return-test',
@@ -294,8 +309,9 @@ With multiple lines.',
                         )
                     ),
                     'https' => false,
+                    'authentication' => false,
                 ),
-                5 =>
+                6 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/my-commented/{id}/{page}',
@@ -306,9 +322,10 @@ With multiple lines.',
                     ),
                     'https' => false,
                     'description' => 'This method is useful to test if the getDocComment works.',
-                    'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char."
+                    'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char.",
+                    'authentication' => false,
                 ),
-                6 =>
+                7 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/secure-route',
@@ -322,8 +339,9 @@ With multiple lines.',
                         ),
                     ),
                     'https' => true,
+                    'authentication' => false,
                 ),
-                7 =>
+                8 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/yet-another/{id}',
@@ -332,8 +350,9 @@ With multiple lines.',
                         'id' => array('dataType' => '', 'description' => '', 'requirement' => '\d+')
                     ),
                     'https' => false,
+                    'authentication' => false,
                 ),
-                8 =>
+                9 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param',
@@ -342,8 +361,9 @@ With multiple lines.',
                         'page' => array('description' => 'Page of the overview.', 'requirement' => '\d+')
                     ),
                     'https' => false,
+                    'authentication' => false,
                 ),
-                9 =>
+                10 =>
                 array(
                     'method' => 'POST',
                     'uri' => '/z-action-with-request-param',
@@ -352,6 +372,7 @@ With multiple lines.',
                         'param1' => array('description' => 'Param1 description.', 'required' => true, 'dataType' => 'string', 'readonly' => false)
                     ),
                     'https' => false,
+                    'authentication' => false,
                 ),
             ),
         );

@@ -157,6 +157,10 @@ _Action without HTTP verb_
 
 
 
+### `ANY` /authenticated ###
+
+
+
 ### `POST` /jms-input-test ###
 
 _Testing JMS_
