@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\Tests\Extractor;
 
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
-use Symfony\Component\Form\Test\DeprecationErrorHandler;
 
 class ApiDocExtractorTest extends WebTestCase
 {
