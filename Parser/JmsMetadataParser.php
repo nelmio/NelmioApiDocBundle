@@ -32,8 +32,6 @@ class JmsMetadataParser implements ParserInterface
      */
     private $commentExtractor;
 
-    private $parsedClasses = array();
-
     /**
      * Constructor, requires JMS Metadata factory
      */
@@ -63,10 +61,23 @@ class JmsMetadataParser implements ParserInterface
      */
     public function parse($input)
     {
-        $meta = $this->factory->getMetadataForClass($input);
+        return $this->doParse($input);
+    }
+
+    /**
+     * Recursively parse all metadata for a class
+     *
+     * @param  string                    $className Class to get all metadata for
+     * @param  array                     $visited   Classes we've already visited to prevent infinite recursion.
+     * @return array                     metadata for given class
+     * @throws \InvalidArgumentException
+     */
+    protected function doParse($className, $visited = array())
+    {
+        $meta = $this->factory->getMetadataForClass($className);
 
         if (null === $meta) {
-            throw new \InvalidArgumentException(sprintf("No metadata found for class %s", $input));
+            throw new \InvalidArgumentException(sprintf("No metadata found for class %s", $className));
         }
 
         $params = array();
@@ -81,23 +92,22 @@ class JmsMetadataParser implements ParserInterface
                 $params[$name] = array(
                     'dataType' => $dataType['normalized'],
                     'required'      => false,   //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
-                    'description'   => $this->getDescription($input, $item),
+                    'description'   => $this->getDescription($className, $item),
                     'readonly' => $item->readOnly
                 );
 
                 // if class already parsed, continue, to avoid infinite recursion
-                if (in_array($dataType['class'], $this->parsedClasses)) {
+                if (in_array($dataType['class'], $visited)) {
                     continue;
                 }
 
                 // check for nested classes with JMS metadata
                 if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
-                    $this->parsedClasses[] = $dataType['class'];
-                    $params[$name]['children'] = $this->parse($dataType['class']);
+                    $visited[] = $dataType['class'];
+                    $params[$name]['children'] = $this->doParse($dataType['class'], $visited);
                 }
             }
         }
-        $this->parsedClasses = array();
 
         return $params;
     }
