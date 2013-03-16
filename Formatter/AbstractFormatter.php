@@ -127,16 +127,23 @@ abstract class AbstractFormatter implements FormatterInterface
     {
         $array = array();
         foreach ($collection as $coll) {
-            $array[$coll['resource']][] = $coll['annotation']->toArray();
+            $array[$coll['annotation']->getSection()][$coll['resource']][] = $coll['annotation']->toArray();
         }
 
         $processedCollection = array();
-        foreach ($array as $path => $annotations) {
-            foreach ($annotations as $annotation) {
-                $processedCollection[$path][] = $this->processAnnotation($annotation);
+        foreach ($array as $section => $resources) {
+            foreach ($resources as $path => $annotations) {
+                foreach ($annotations as $annotation) {
+                    if($section) {
+                        $processedCollection[$section][$path][] = $this->processAnnotation($annotation);
+                    } else {
+                        $processedCollection['_others'][$path][] = $this->processAnnotation($annotation);
+                    }
+                }
             }
         }
 
+            ksort($processedCollection);
         return $processedCollection;
     }
 }
