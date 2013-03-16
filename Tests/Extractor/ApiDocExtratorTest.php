@@ -155,4 +155,16 @@ class ApiDocExtractorTest extends WebTestCase
             $annotation->getDescription()
         );
     }
+
+    public function testGetWithAuthentication()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::AuthenticatedAction', 'test_route_13');
+
+        $this->assertNotNull($annotation);
+        $this->assertTrue(
+            $annotation->getAuthentication()
+        );
+    }
 }

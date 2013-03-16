@@ -28,6 +28,7 @@ class ApiDocTest extends TestCase
         $this->assertFalse($annot->isResource());
         $this->assertFalse(isset($array['description']));
         $this->assertNull($annot->getInput());
+        $this->assertFalse($array['authentication']);
     }
 
     public function testConstructWithInvalidData()
@@ -196,5 +197,17 @@ class ApiDocTest extends TestCase
         foreach ($data['statusCodes'] as $code => $message) {
             $this->assertEquals($array['statusCodes'][$code], !is_array($message) ? array($message) : $message);
         }
+    }
+
+    public function testConstructWithAuthentication()
+    {
+        $data = array(
+            'authentication' => true
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue($array['authentication']);
     }
 }
