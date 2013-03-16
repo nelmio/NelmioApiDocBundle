@@ -64,6 +64,10 @@ test_route_12:
     requirements:
         _scheme: https
 
+test_route_13:
+    pattern: /authenticated
+    defaults: { _controller: NelmioApiDocTestBundle:Test:authenticated }
+
 test_service_route_1:
     pattern:  /tests.{_format}
     defaults: { _controller: nemlio.test.controller:indexAction, _format: json }

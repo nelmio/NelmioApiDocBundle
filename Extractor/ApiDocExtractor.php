@@ -28,6 +28,8 @@ class ApiDocExtractor
 
     const FOS_REST_REQUEST_PARAM_CLASS  = 'FOS\\RestBundle\\Controller\\Annotations\\RequestParam';
 
+    const JMS_SECURITY_EXTRA_SECURE_CLASS = 'JMS\\SecurityExtraBundle\\Annotation\\Secure';
+
     /**
      * @var ContainerInterface
      */
@@ -360,6 +362,8 @@ class ApiDocExtractor
                     'description' => $annot->description,
                     'readonly'    => false
                 ));
+            } elseif (is_a($annot, self::JMS_SECURITY_EXTRA_SECURE_CLASS)) {
+                $annotation->setAuthentication(true);
             }
         }
     }

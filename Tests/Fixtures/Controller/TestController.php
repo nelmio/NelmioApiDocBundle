@@ -127,4 +127,12 @@ class TestController
     {
     }
 
+    /**
+     * @ApiDoc(
+     *  authentication=true
+     * )
+     */
+    public function authenticatedAction()
+    {
+    }
 }
