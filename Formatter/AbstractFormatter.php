@@ -134,7 +134,7 @@ abstract class AbstractFormatter implements FormatterInterface
         foreach ($array as $section => $resources) {
             foreach ($resources as $path => $annotations) {
                 foreach ($annotations as $annotation) {
-                    if($section) {
+                    if ($section) {
                         $processedCollection[$section][$path][] = $this->processAnnotation($annotation);
                     } else {
                         $processedCollection['_others'][$path][] = $this->processAnnotation($annotation);
@@ -143,7 +143,8 @@ abstract class AbstractFormatter implements FormatterInterface
             }
         }
 
-            ksort($processedCollection);
+        ksort($processedCollection);
+
         return $processedCollection;
     }
 }

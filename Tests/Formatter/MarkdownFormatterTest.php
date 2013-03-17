@@ -26,7 +26,7 @@ class MarkdownFormatterTest extends WebTestCase
         $result = $container->get('nelmio_api_doc.formatter.markdown_formatter')->format($data);
 
         $expected = <<<MARKDOWN
-# /tests #
+## /tests ##
 
 ### `GET` /tests.{_format} ###
 
@@ -125,9 +125,6 @@ c:
   * type: boolean
   * required: true
 
-
-
-# others #
 
 ### `POST` /another-post ###
 

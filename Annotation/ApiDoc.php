@@ -366,7 +366,7 @@ class ApiDoc
             $data['statusCodes'] = $statusCodes;
         }
 
-        if($section = $this->section) {
+        if ($section = $this->section) {
             $data['section'] = $section;
         }
 
