@@ -169,7 +169,16 @@ table tbody tr:last-child td {
   font-size: 0.9em;
 }
 
+#section {
+  border: 1px solid #ddd;
+  background: #f8f8f8;
+  padding: 5px 20px;
+  margin-bottom: 15px;
+}
+
 li.resource {
+  width: 100%;
+  margin-bottom: 10px;
   border-bottom: 1px solid #dddddd;
 }
 li.resource:last-child {
@@ -226,7 +235,7 @@ li.operation {
   clear: both;
   overflow: hidden;
   display: block;
-  margin: 0 0 10px 0;
+  margin: 0 0 10px;
   padding: 0 0 0 0;
 }
 li.operation div.heading {
