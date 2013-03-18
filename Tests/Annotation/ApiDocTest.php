@@ -29,6 +29,7 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['description']));
         $this->assertNull($annot->getInput());
         $this->assertFalse($array['authentication']);
+        $this->assertFalse($array['deprecated']);
     }
 
     public function testConstructWithInvalidData()
@@ -46,6 +47,7 @@ class ApiDocTest extends TestCase
         $this->assertFalse($annot->isResource());
         $this->assertFalse(isset($array['description']));
         $this->assertNull($annot->getInput());
+        $this->assertFalse($array['deprecated']);
     }
 
     public function testConstruct()

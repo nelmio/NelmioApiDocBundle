@@ -1,9 +1,15 @@
 <li class="{{ data.method|lower }} operation">
-    <div class="heading toggler">
+    <div class="heading toggler{% if data.deprecated %} deprecated{% endif %}">
     <h3>
         <span class="http_method">
             <a>{{ data.method|upper }}</a>
         </span>
+
+        {% if data.deprecated %}
+        <span class="deprecated">
+            <a>DEPRECATED</a>
+        </span>
+        {% endif %}
 
         {% if data.https %}
             <img src="{{ asset('bundles/nelmioapidoc/image/lock.png') }}" class="icon" alt="HTTPS" />
