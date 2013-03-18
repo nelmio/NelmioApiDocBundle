@@ -389,7 +389,7 @@ class ApiDoc
 
         $data['https'] = $this->https;
         $data['authentication'] = $this->authentication;
-        $data['deprecated'] = $this->deprecated;
+        $data['deprecated'] = $this->isDeprecated;
 
         return $data;
     }
