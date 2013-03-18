@@ -98,6 +98,8 @@ The following properties are available:
 
 * `description`: a description of the API method;
 
+* `deprecated`: allow to set method as deprecated (default: `false`);
+
 * `filters`: an array of filters;
 
 * `input`: the input type associated to the method, currently this supports Form Types, and classes with JMS Serializer
@@ -125,24 +127,6 @@ class YourController
      * )
      */
     public function myFunction()
-    {
-        // ...
-    }
-
-    /**
-     * @ApiDoc(
-     *     deprecated=true,
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         403="Returned when the user is not authorized to say hello",
-     *         404={
-     *           "Returned when the user is not found",
-     *           "Returned when somehting else is not found"
-     *         }
-     *     }
-     * )
-     */
-    public function myDeprecatedFunction()
     {
         // ...
     }
