@@ -60,6 +60,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 1 =>
                 array (
@@ -93,6 +94,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 2 =>
                 array (
@@ -134,6 +136,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 3 =>
                 array (
@@ -175,6 +178,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
             ),
             'others' =>
@@ -196,6 +200,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 1 =>
                 array (
@@ -204,6 +209,7 @@ class SimpleFormatterTest extends WebTestCase
                     'description' => 'Action without HTTP verb',
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 2 =>
                 array (
@@ -221,6 +227,7 @@ class SimpleFormatterTest extends WebTestCase
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 3 =>
                 array (
@@ -228,6 +235,7 @@ class SimpleFormatterTest extends WebTestCase
                     'uri' => '/authenticated',
                     'https' => false,
                     'authentication' => true,
+                    'deprecated' => false,
                 ),
                 4 =>
                 array(
@@ -366,6 +374,7 @@ With multiple lines.',
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 5 =>
                 array(
@@ -384,6 +393,7 @@ With multiple lines.',
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 6 =>
                 array(
@@ -411,6 +421,7 @@ And, it supports multilines until the first \'@\' char.',
                     'description' => 'This method is useful to test if the getDocComment works.',
                     'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char.",
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 7 =>
                 array(
@@ -427,6 +438,7 @@ And, it supports multilines until the first \'@\' char.',
                     ),
                     'https' => true,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 8 =>
                 array(
@@ -443,6 +455,7 @@ And, it supports multilines until the first \'@\' char.',
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 9 =>
                 array(
@@ -458,6 +471,7 @@ And, it supports multilines until the first \'@\' char.',
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
                 10 =>
                 array(
@@ -475,6 +489,7 @@ And, it supports multilines until the first \'@\' char.',
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
             ),
             '/tests2' =>
@@ -495,6 +510,28 @@ And, it supports multilines until the first \'@\' char.',
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
+                ),
+            ),
+            '/tests2' =>
+            array (
+                0 =>
+                array (
+                    'method' => 'POST',
+                    'uri' => '/tests2.{_format}',
+                    'description' => 'post test 2',
+                    'requirements' =>
+                    array (
+                        '_format' =>
+                        array (
+                            'requirement' => '',
+                            'dataType' => '',
+                            'description' => '',
+                        ),
+                    ),
+                    'https' => false,
+                    'authentication' => false,
+                    'deprecated' => false,
                 ),
             ),
         );
@@ -531,6 +568,7 @@ And, it supports multilines until the first \'@\' char.',
             ),
             'https' => false,
             'authentication' => false,
+                    'deprecated' => false,
         );
 
         $this->assertEquals($expected, $result);

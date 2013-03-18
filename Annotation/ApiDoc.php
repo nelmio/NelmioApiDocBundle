@@ -111,6 +111,11 @@ class ApiDoc
     private $cache;
 
     /**
+     * @var boolean
+     */
+    private $deprecated = false;
+
+    /**
      * @var array
      */
     private $statusCodes = array();
@@ -158,6 +163,10 @@ class ApiDoc
 
         if (isset($data['section'])) {
             $this->section = $data['section'];
+        }
+
+        if (isset($data['deprecated'])) {
+            $this->deprecated = $data['deprecated'];
         }
     }
 
@@ -330,7 +339,7 @@ class ApiDoc
     }
 
     /**
-     * @param boolean $secured
+     * @param boolean $authentication
      */
     public function setAuthentication($authentication)
     {
@@ -351,6 +360,23 @@ class ApiDoc
     public function setCache($cache)
     {
         $this->cache = (int) $cache;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDeprecated()
+    {
+        return $this->deprecated;
+    }
+
+    /**
+     * @param boolean $deprecated
+     */
+    public function setDeprecated($deprecated)
+    {
+        $this->deprecated = (bool) $deprecated;
+        return $this;
     }
 
     /**
@@ -401,6 +427,7 @@ class ApiDoc
 
         $data['https'] = $this->https;
         $data['authentication'] = $this->authentication;
+        $data['deprecated'] = $this->deprecated;
 
         return $data;
     }

@@ -20,6 +20,11 @@ class MarkdownFormatter extends AbstractFormatter
     {
         $markdown = sprintf("### `%s` %s ###\n", $data['method'], $data['uri']);
 
+        if(isset($data['deprecated'])) {
+            $markdown .= "### This method is deprecated ###";
+            $markdown .= "\n\n";
+        }
+
         if (isset($data['description'])) {
             $markdown .= sprintf("\n_%s_", $data['description']);
         }

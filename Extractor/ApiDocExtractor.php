@@ -70,7 +70,7 @@ class ApiDocExtractor
      * You can extend this method if you don't want all the routes
      * to be included.
      *
-     * @return \Traversable Iterator for a RouteCollection
+     * @return Route[] An array of routes
      */
     public function getRoutes()
     {
@@ -94,13 +94,11 @@ class ApiDocExtractor
      *
      * @param array $routes array of Route-objects for which the annotations should be extracted
      *
-     * @throws \InvalidArgumentException if one element of the input isnt an instance of Route
-     *
      * @return array
      */
     public function extractAnnotations(array $routes)
     {
-        $array = array();
+        $array     = array();
         $resources = array();
 
         foreach ($routes as $route) {
@@ -384,7 +382,7 @@ class ApiDocExtractor
                 ));
             } elseif (is_a($annot, self::JMS_SECURITY_EXTRA_SECURE_CLASS)) {
                 $annotation->setAuthentication(true);
-            }  elseif (is_a($annot, self::CACHE_ANNOTATION_CLASS)) {
+            } elseif (is_a($annot, self::CACHE_ANNOTATION_CLASS)) {
                 $annotation->setCache($annot->getMaxAge());
             }
         }
