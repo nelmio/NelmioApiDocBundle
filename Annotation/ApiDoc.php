@@ -106,6 +106,11 @@ class ApiDoc
     private $authentication = false;
 
     /**
+     * @var boolean
+     */
+    private $isDeprecated = false;
+
+    /**
      * @var array
      */
     private $statusCodes = array();
@@ -149,6 +154,10 @@ class ApiDoc
 
         if (isset($data['section'])) {
             $this->section = $data['section'];
+        }
+
+        if (isset($data['deprecated'])) {
+            $this->isDeprecated = (bool) $data['deprecated'];
         }
     }
 
@@ -329,6 +338,14 @@ class ApiDoc
     }
 
     /**
+     * @return Boolean
+     */
+    public function isDeprecated()
+    {
+        return $this->isDeprecated;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -372,6 +389,7 @@ class ApiDoc
 
         $data['https'] = $this->https;
         $data['authentication'] = $this->authentication;
+        $data['deprecated'] = $this->deprecated;
 
         return $data;
     }

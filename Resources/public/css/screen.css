@@ -258,7 +258,7 @@ li.operation div.heading h3 span {
   margin: 0;
   padding: 0;
 }
-li.operation div.heading h3 span.http_method a {
+li.operation div.heading h3 span.http_method a, li.operation div.heading h3 span.deprecated a {
   text-transform: uppercase;
   text-decoration: none;
   color: white;
@@ -271,6 +271,10 @@ li.operation div.heading h3 span.http_method a {
   -webkit-border-radius: 2px;
   border-radius: 2px;
   background-color: #ccc;
+}
+li.operation div.heading h3 span.deprecated a {
+  width: 75px;
+  background-color: #F00;
 }
 li.operation div.heading h3 span.path {
   padding-left: 10px;
