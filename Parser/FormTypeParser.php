@@ -90,8 +90,10 @@ class FormTypeParser implements ParserInterface
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 if (isset($this->mapTypes[$type->getName()])) {
                     $bestType = $this->mapTypes[$type->getName()];
-                } elseif ('collection' === $type->getName() && isset($this->mapTypes[$config->getOption('type')])) {
-                    $bestType = sprintf('array of %ss', $this->mapTypes[$config->getOption('type')]);
+                } elseif ('collection' === $type->getName()) {
+                    if (is_string($config->getOption('type')) && isset($this->mapTypes[$config->getOption('type')])) {
+                        $bestType = sprintf('array of %ss', $this->mapTypes[$config->getOption('type')]);
+                    }
                 }
             }
 
