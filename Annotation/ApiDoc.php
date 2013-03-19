@@ -108,7 +108,7 @@ class ApiDoc
     /**
      * @var boolean
      */
-    private $isDeprecated = false;
+    private $deprecated = false;
 
     /**
      * @var array
@@ -157,7 +157,7 @@ class ApiDoc
         }
 
         if (isset($data['deprecated'])) {
-            $this->isDeprecated = $data['deprecated'];
+            $this->deprecated = $data['deprecated'];
         }
     }
 
@@ -338,21 +338,20 @@ class ApiDoc
     }
 
     /**
+     * @return boolean
+     */
+    public function getDeprecated($deprecated)
+    {
+        return $this->deprecated;
+    }
+
+    /**
      * @param boolean $deprecated
      */
     public function setDeprecated($deprecated)
     {
-        $this->isDeprecated = (bool) $deprecated;
+        $this->deprecated = (bool) $deprecated;
         return $this;
-    }
-
-
-    /**
-     * @return Boolean
-     */
-    public function isDeprecated()
-    {
-        return ($this->isDeprecated === true) ? true : false;
     }
 
     /**
@@ -399,7 +398,7 @@ class ApiDoc
 
         $data['https'] = $this->https;
         $data['authentication'] = $this->authentication;
-        $data['deprecated'] = $this->isDeprecated();
+        $data['deprecated'] = $this->deprecated;
 
         return $data;
     }
