@@ -159,7 +159,7 @@ class JmsMetadataParser implements ParserInterface
 
     protected function isPrimitive($type)
     {
-        return in_array($type, array('boolean', 'integer', 'string', 'double', 'array', 'DateTime'));
+        return in_array($type, array('boolean', 'integer', 'string', 'float', 'double', 'array', 'DateTime'));
     }
 
     /**
