@@ -43,6 +43,16 @@ class TestController
     {
     }
 
+    /**
+     * @ApiDoc(
+     *     description="post test 2",
+     *     resource=true
+     * )
+     */
+    public function postTest2Action()
+    {
+    }
+
     public function anotherAction()
     {
     }
