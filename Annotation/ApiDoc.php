@@ -340,7 +340,7 @@ class ApiDoc
     /**
      * @return boolean
      */
-    public function getDeprecated($deprecated)
+    public function getDeprecated()
     {
         return $this->deprecated;
     }
