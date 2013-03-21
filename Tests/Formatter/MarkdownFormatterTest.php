@@ -31,7 +31,6 @@ class MarkdownFormatterTest extends WebTestCase
 ### `GET` /tests.{_format} ###
 ### This method is deprecated ###
 
-
 _index action_
 
 #### Requirements ####
@@ -54,7 +53,6 @@ b:
 ### `GET` /tests.{_format} ###
 ### This method is deprecated ###
 
-
 _index action_
 
 #### Requirements ####
@@ -76,7 +74,6 @@ b:
 
 ### `POST` /tests.{_format} ###
 ### This method is deprecated ###
-
 
 _create test_
 
@@ -106,7 +103,6 @@ c:
 
 ### `POST` /tests.{_format} ###
 ### This method is deprecated ###
-
 
 _create test_
 
@@ -137,7 +133,6 @@ c:
 ### `POST` /another-post ###
 ### This method is deprecated ###
 
-
 _create another test_
 
 #### Parameters ####
@@ -150,13 +145,13 @@ a:
 
 
 ### `ANY` /any ###
+### This method is deprecated ###
 
 _Action without HTTP verb_
 
 
 ### `ANY` /any/{foo} ###
 ### This method is deprecated ###
-
 
 _Action without HTTP verb_
 
@@ -170,9 +165,9 @@ _Action without HTTP verb_
 ### This method is deprecated ###
 
 
+
 ### `POST` /jms-input-test ###
 ### This method is deprecated ###
-
 
 _Testing JMS_
 
@@ -268,7 +263,6 @@ nestedArray[]:
 ### `GET` /jms-return-test ###
 ### This method is deprecated ###
 
-
 _Testing return_
 
 #### Response ####
@@ -355,7 +349,6 @@ MARKDOWN;
 
         $expected = <<<MARKDOWN
 ### `GET` /tests.{_format} ###
-
 ### This method is deprecated ###
 
 _index action_
