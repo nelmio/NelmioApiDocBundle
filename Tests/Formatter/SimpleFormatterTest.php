@@ -477,6 +477,26 @@ And, it supports multilines until the first \'@\' char.',
                     'authentication' => false,
                 ),
             ),
+            '/tests2' =>
+            array (
+                0 =>
+                array (
+                    'method' => 'POST',
+                    'uri' => '/tests2.{_format}',
+                    'description' => 'post test 2',
+                    'requirements' =>
+                    array (
+                        '_format' =>
+                        array (
+                            'requirement' => '',
+                            'dataType' => '',
+                            'description' => '',
+                        ),
+                    ),
+                    'https' => false,
+                    'authentication' => false,
+                ),
+            ),
         );
 
         $this->assertEquals($expected, $result);
