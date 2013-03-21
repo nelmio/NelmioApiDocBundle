@@ -26,10 +26,10 @@ class ApiDocTest extends TestCase
         $this->assertTrue(is_array($array));
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
+        $this->assertFalse($annot->getDeprecated());
         $this->assertFalse(isset($array['description']));
         $this->assertNull($annot->getInput());
         $this->assertFalse($array['authentication']);
-        $this->assertFalse($array['deprecated']);
     }
 
     public function testConstructWithInvalidData()
@@ -45,9 +45,9 @@ class ApiDocTest extends TestCase
         $this->assertTrue(is_array($array));
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
+        $this->assertFalse($annot->getDeprecated());
         $this->assertFalse(isset($array['description']));
         $this->assertNull($annot->getInput());
-        $this->assertFalse($array['deprecated']);
     }
 
     public function testConstruct()
@@ -62,6 +62,7 @@ class ApiDocTest extends TestCase
         $this->assertTrue(is_array($array));
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
+        $this->assertFalse($annot->getDeprecated());
         $this->assertEquals($data['description'], $array['description']);
         $this->assertNull($annot->getInput());
     }
@@ -79,6 +80,7 @@ class ApiDocTest extends TestCase
         $this->assertTrue(is_array($array));
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
+        $this->assertFalse($annot->getDeprecated());
         $this->assertEquals($data['description'], $array['description']);
         $this->assertEquals($data['input'], $annot->getInput());
     }
@@ -88,6 +90,7 @@ class ApiDocTest extends TestCase
         $data = array(
             'resource'      => true,
             'description'   => 'Heya',
+            'deprecated'    => true,
             'input'         => 'My\Form\Type',
         );
 
@@ -97,6 +100,7 @@ class ApiDocTest extends TestCase
         $this->assertTrue(is_array($array));
         $this->assertFalse(isset($array['filters']));
         $this->assertTrue($annot->isResource());
+        $this->assertTrue($annot->getDeprecated());
         $this->assertEquals($data['description'], $array['description']);
         $this->assertEquals($data['input'], $annot->getInput());
     }
@@ -106,6 +110,7 @@ class ApiDocTest extends TestCase
         $data = array(
             'resource'      => false,
             'description'   => 'Heya',
+            'deprecated'    => false,
             'input'         => 'My\Form\Type',
         );
 
@@ -116,6 +121,7 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
         $this->assertEquals($data['description'], $array['description']);
+        $this->assertEquals($data['deprecated'], $array['deprecated']);
         $this->assertEquals($data['input'], $annot->getInput());
     }
 
@@ -123,6 +129,7 @@ class ApiDocTest extends TestCase
     {
         $data = array(
             'resource'      => true,
+            'deprecated'    => false,
             'description'   => 'Heya',
             'filters'       => array(
                 array('name' => 'a-filter'),
@@ -138,6 +145,7 @@ class ApiDocTest extends TestCase
         $this->assertEquals(array('a-filter' => array()), $array['filters']);
         $this->assertTrue($annot->isResource());
         $this->assertEquals($data['description'], $array['description']);
+        $this->assertEquals($data['deprecated'], $array['deprecated']);
         $this->assertNull($annot->getInput());
     }
 
