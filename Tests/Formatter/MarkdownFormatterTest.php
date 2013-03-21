@@ -176,6 +176,8 @@ _Action without HTTP verb_
 ### `POST` /jms-input-test ###
 ### This method is deprecated ###
 
+
+
 _Testing JMS_
 
 #### Parameters ####
@@ -267,6 +269,7 @@ nestedArray[]:
   * description: No description.
 
 
+
 ### `GET` /jms-return-test ###
 ### This method is deprecated ###
 
@@ -279,6 +282,7 @@ a:
 
   * type: string
   * description: A nice description
+
 
 
 ### `ANY` /my-commented/{id}/{page} ###
@@ -298,6 +302,7 @@ _This method is useful to test if the getDocComment works._
   - Type: int
 
 
+
 ### `ANY` /secure-route ###
 ### This method is deprecated ###
 
@@ -307,6 +312,7 @@ _This method is useful to test if the getDocComment works._
 **_scheme**
 
   - Requirement: https
+
 
 
 ### `ANY` /yet-another/{id} ###
@@ -322,6 +328,7 @@ _This method is useful to test if the getDocComment works._
 
 ### `GET` /z-action-with-query-param ###
 ### This method is deprecated ###
+
 
 
 #### Filters ####
