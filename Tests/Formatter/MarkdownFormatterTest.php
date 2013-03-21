@@ -31,6 +31,7 @@ class MarkdownFormatterTest extends WebTestCase
 ### `GET` /tests.{_format} ###
 ### This method is deprecated ###
 
+
 _index action_
 
 #### Requirements ####
@@ -53,6 +54,7 @@ b:
 ### `GET` /tests.{_format} ###
 ### This method is deprecated ###
 
+
 _index action_
 
 #### Requirements ####
@@ -74,6 +76,7 @@ b:
 
 ### `POST` /tests.{_format} ###
 ### This method is deprecated ###
+
 
 _create test_
 
@@ -103,6 +106,7 @@ c:
 
 ### `POST` /tests.{_format} ###
 ### This method is deprecated ###
+
 
 _create test_
 
@@ -133,6 +137,7 @@ c:
 ### `POST` /another-post ###
 ### This method is deprecated ###
 
+
 _create another test_
 
 #### Parameters ####
@@ -147,11 +152,13 @@ a:
 ### `ANY` /any ###
 ### This method is deprecated ###
 
+
 _Action without HTTP verb_
 
 
 ### `ANY` /any/{foo} ###
 ### This method is deprecated ###
+
 
 _Action without HTTP verb_
 
@@ -263,6 +270,7 @@ nestedArray[]:
 ### `GET` /jms-return-test ###
 ### This method is deprecated ###
 
+
 _Testing return_
 
 #### Response ####
@@ -275,6 +283,7 @@ a:
 
 ### `ANY` /my-commented/{id}/{page} ###
 ### This method is deprecated ###
+
 
 _This method is useful to test if the getDocComment works._
 
@@ -327,6 +336,7 @@ page:
 ### This method is deprecated ###
 
 
+
 #### Parameters ####
 
 param1:
@@ -350,6 +360,7 @@ MARKDOWN;
         $expected = <<<MARKDOWN
 ### `GET` /tests.{_format} ###
 ### This method is deprecated ###
+
 
 _index action_
 
