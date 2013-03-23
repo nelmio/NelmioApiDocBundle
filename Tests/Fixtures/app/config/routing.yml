@@ -91,3 +91,9 @@ test_service_route_4:
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /
+
+test_route_14:
+    pattern:  /tests2.{_format}
+    defaults: { _controller: NelmioApiDocTestBundle:Test:postTest2, _format: json }
+    requirements:
+        _method: POST
