@@ -15,6 +15,7 @@ use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\Metadata\VirtualPropertyMetadata;
+use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 
 /**
  * Uses the JMS metadata factory to extract input/output model information
@@ -28,6 +29,11 @@ class JmsMetadataParser implements ParserInterface
     private $factory;
 
     /**
+     * @var PropertyNamingStrategyInterface
+     */
+    private $namingStrategy;
+
+    /**
      * @var \Nelmio\ApiDocBundle\Util\DocCommentExtractor
      */
     private $commentExtractor;
@@ -35,9 +41,13 @@ class JmsMetadataParser implements ParserInterface
     /**
      * Constructor, requires JMS Metadata factory
      */
-    public function __construct(MetadataFactoryInterface $factory, DocCommentExtractor $commentExtractor)
-    {
+    public function __construct(
+        MetadataFactoryInterface $factory,
+        PropertyNamingStrategyInterface $namingStrategy,
+        DocCommentExtractor $commentExtractor
+    ) {
         $this->factory = $factory;
+        $this->namingStrategy = $namingStrategy;
         $this->commentExtractor = $commentExtractor;
     }
 
@@ -85,7 +95,7 @@ class JmsMetadataParser implements ParserInterface
         // iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
             if (!is_null($item->type)) {
-                $name = isset($item->serializedName) ? $item->serializedName : $item->name;
+                $name = $this->namingStrategy->translateName($item);
 
                 $dataType = $this->processDataType($item);
 
