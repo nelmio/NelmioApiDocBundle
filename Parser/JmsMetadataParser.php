@@ -11,6 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
+use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
+use JMS\Serializer\GraphNavigator;
+use JMS\Serializer\NavigatorContext;
+use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use JMS\Serializer\Metadata\PropertyMetadata;
@@ -22,7 +26,6 @@ use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
  */
 class JmsMetadataParser implements ParserInterface
 {
-
     /**
      * @var \Metadata\MetadataFactoryInterface
      */
@@ -54,10 +57,12 @@ class JmsMetadataParser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($input)
+    public function supports(array $input)
     {
+        $className = $input['class'];
+
         try {
-            if ($meta = $this->factory->getMetadataForClass($input)) {
+            if ($meta = $this->factory->getMetadataForClass($className)) {
                 return true;
             }
         } catch (\ReflectionException $e) {
@@ -69,9 +74,12 @@ class JmsMetadataParser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function parse($input)
+    public function parse(array $input)
     {
-        return $this->doParse($input);
+        $className = $input['class'];
+        $groups    = $input['groups'];
+
+        return $this->doParse($className, array(), $groups, $version);
     }
 
     /**
@@ -79,16 +87,20 @@ class JmsMetadataParser implements ParserInterface
      *
      * @param  string                    $className Class to get all metadata for
      * @param  array                     $visited   Classes we've already visited to prevent infinite recursion.
+     * @param  array                     $groups    Groups to be used in the group exclusion strategy
      * @return array                     metadata for given class
      * @throws \InvalidArgumentException
      */
-    protected function doParse($className, $visited = array())
+    protected function doParse($className, $visited = array(), array $groups = array())
     {
         $meta = $this->factory->getMetadataForClass($className);
 
         if (null === $meta) {
             throw new \InvalidArgumentException(sprintf("No metadata found for class %s", $className));
         }
+
+        $exclusionStrategies   = array();
+        $exclusionStrategies[] = new GroupsExclusionStrategy($groups);
 
         $params = array();
 
@@ -99,11 +111,19 @@ class JmsMetadataParser implements ParserInterface
 
                 $dataType = $this->processDataType($item);
 
+                // apply exclusion strategies
+                foreach ($exclusionStrategies as $strategy) {
+                    if (true === $strategy->shouldSkipProperty($item, SerializationContext::create())) {
+                        continue 2;
+                    }
+                }
+
                 $params[$name] = array(
-                    'dataType' => $dataType['normalized'],
-                    'required'      => false,   //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
-                    'description'   => $this->getDescription($className, $item),
-                    'readonly' => $item->readOnly
+                    'dataType'    => $dataType['normalized'],
+                    'required'    => false,
+                    //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
+                    'description' => $this->getDescription($className, $item),
+                    'readonly'    => $item->readOnly
                 );
 
                 // if class already parsed, continue, to avoid infinite recursion
@@ -113,8 +133,8 @@ class JmsMetadataParser implements ParserInterface
 
                 // check for nested classes with JMS metadata
                 if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
-                    $visited[] = $dataType['class'];
-                    $params[$name]['children'] = $this->doParse($dataType['class'], $visited);
+                    $visited[]                 = $dataType['class'];
+                    $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups);
                 }
             }
         }
@@ -206,5 +226,4 @@ class JmsMetadataParser implements ParserInterface
 
         return $extracted;
     }
-
 }

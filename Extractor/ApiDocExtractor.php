@@ -266,9 +266,11 @@ class ApiDocExtractor
         if (null !== $input = $annotation->getInput()) {
             $parameters = array();
 
+            $normalizedInput = $this->normalizeClassParameter($input);
+
             foreach ($this->parsers as $parser) {
-                if ($parser->supports($input)) {
-                    $parameters = $parser->parse($input);
+                if ($parser->supports($normalizedInput)) {
+                    $parameters = $parser->parse($normalizedInput);
                     break;
                 }
             }
@@ -287,9 +289,11 @@ class ApiDocExtractor
         if (null !== $output = $annotation->getOutput()) {
             $response = array();
 
+            $normalizedOutput = $this->normalizeClassParameter($output);
+
             foreach ($this->parsers as $parser) {
-                if ($parser->supports($output)) {
-                    $response = $parser->parse($output);
+                if ($parser->supports($normalizedOutput)) {
+                    $response = $parser->parse($normalizedOutput);
                     break;
                 }
             }
@@ -348,6 +352,27 @@ class ApiDocExtractor
         $annotation->setRequirements($requirements);
 
         return $annotation;
+    }
+
+    protected function normalizeClassParameter($input)
+    {
+        $defaults = array(
+            'class'   => '',
+            'groups'  => array(),
+            'version' => null,
+        );
+
+        // normalize strings
+        if (is_string($input)) {
+            $input = array('class' => $input);
+        }
+
+        // normalize groups
+        if (isset($input['groups']) && is_string($input['groups'])) {
+            $input['groups'] = array_map('trim', explode(',', $input['groups']));
+        }
+
+        return array_merge($defaults, $input);
     }
 
     /**
