@@ -353,7 +353,7 @@ With multiple lines.',
                                             'description' => 'No description.',
                                             'readonly' => false,
                                         ),
-                                        'nestedArray' =>
+                                        'nested_array' =>
                                         array (
                                             'dataType' => 'array of objects (JmsNested)',
                                             'required' => false,
@@ -364,7 +364,7 @@ With multiple lines.',
                                 ),
                             ),
                         ),
-                        'nestedArray' =>
+                        'nested_array' =>
                         array (
                             'dataType' => 'array of objects (JmsNested)',
                             'required' => false,
@@ -510,6 +510,7 @@ And, it supports multilines until the first \'@\' char.',
                     ),
                     'https' => false,
                     'authentication' => false,
+                    'deprecated' => false,
                 ),
             ),
         );
