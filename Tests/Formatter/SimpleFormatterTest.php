@@ -345,7 +345,7 @@ With multiple lines.',
                                             'description' => 'No description.',
                                             'readonly' => false,
                                         ),
-                                        'nestedArray' =>
+                                        'nested_array' =>
                                         array (
                                             'dataType' => 'array of objects (JmsNested)',
                                             'required' => false,
@@ -356,7 +356,7 @@ With multiple lines.',
                                 ),
                             ),
                         ),
-                        'nestedArray' =>
+                        'nested_array' =>
                         array (
                             'dataType' => 'array of objects (JmsNested)',
                             'required' => false,
