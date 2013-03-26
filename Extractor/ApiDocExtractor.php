@@ -68,11 +68,21 @@ class ApiDocExtractor
      * You can extend this method if you don't want all the routes
      * to be included.
      *
-     * @return array of Route
+     * @return \Traversable Iterator for a RouteCollection
      */
     public function getRoutes()
     {
-        return $this->router->getRouteCollection()->all();
+        return $this->router->getRouteCollection()->getIterator();
+    }
+
+    /**
+     * Extracts annotations from all known routes
+     *
+     * @return array
+     */
+    public function all()
+    {
+        return $this->extractAnnotations($this->getRoutes());
     }
 
     /**
@@ -80,14 +90,16 @@ class ApiDocExtractor
      *  - annotation
      *  - resource
      *
+     * @param \Traversable $routes The routes for which the annotations should be extracted
+     *
      * @return array
      */
-    public function all()
+    public function extractAnnotations(\Traversable $routes)
     {
         $array = array();
         $resources = array();
 
-        foreach ($this->getRoutes() as $route) {
+        foreach ($routes as $route) {
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
                     if ($annotation->isResource()) {
