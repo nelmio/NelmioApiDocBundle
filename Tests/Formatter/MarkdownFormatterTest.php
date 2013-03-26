@@ -173,9 +173,9 @@ _Action without HTTP verb_
 
 
 
+
 ### `POST` /jms-input-test ###
 ### This method is deprecated ###
-
 
 
 _Testing JMS_
@@ -269,7 +269,6 @@ nestedArray[]:
   * description: No description.
 
 
-
 ### `GET` /jms-return-test ###
 ### This method is deprecated ###
 
@@ -282,7 +281,6 @@ a:
 
   * type: string
   * description: A nice description
-
 
 
 ### `ANY` /my-commented/{id}/{page} ###
@@ -302,9 +300,9 @@ _This method is useful to test if the getDocComment works._
   - Type: int
 
 
-
 ### `ANY` /secure-route ###
 ### This method is deprecated ###
+
 
 
 #### Requirements ####
@@ -314,9 +312,9 @@ _This method is useful to test if the getDocComment works._
   - Requirement: https
 
 
-
 ### `ANY` /yet-another/{id} ###
 ### This method is deprecated ###
+
 
 
 #### Requirements ####
