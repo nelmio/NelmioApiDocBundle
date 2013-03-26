@@ -134,6 +134,18 @@ c:
   * required: true
 
 
+## /tests2 ##
+
+### `POST` /tests2.{_format} ###
+
+_post test 2_
+
+#### Requirements ####
+
+**_format**
+
+
+
 ### `POST` /another-post ###
 ### This method is deprecated ###
 

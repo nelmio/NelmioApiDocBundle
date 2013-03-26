@@ -128,13 +128,15 @@ class MarkdownFormatter extends AbstractFormatter
     {
         if ('_others' !== $section) {
             $markdown = sprintf("# %s #\n\n", $section);
+        } else {
+            $markdown = '';
         }
 
         foreach ($resources as $resource => $methods) {
             if ('_others' === $section && 'others' !== $resource) {
-                $markdown = sprintf("## %s ##\n\n", $resource);
+                $markdown .= sprintf("## %s ##\n\n", $resource);
             } elseif ('others' !== $resource) {
-                $markdown = sprintf("## %s ##\n\n", $resource);
+                $markdown .= sprintf("## %s ##\n\n", $resource);
             }
 
             foreach ($methods as $method) {

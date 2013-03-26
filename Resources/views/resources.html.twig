@@ -11,8 +11,7 @@
                 <div class="heading">
                     {% if section == '_others' and resource != 'others' %}
                         <h2>{{ resource }}</h2>
-                    {% endif %}
-                    {% if resource != 'others' %}
+                    {% elseif resource != 'others' %}
                         <h2>{{ resource }}</h2>
                     {% endif %}
                 </div>
