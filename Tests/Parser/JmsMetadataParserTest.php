@@ -44,6 +44,23 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
         $metadata->addPropertyMetadata($propertyMetadataBar);
         $metadata->addPropertyMetadata($propertyMetadataBaz);
 
+        $propertyNamingStrategy = $this->getMock('JMS\Serializer\Naming\PropertyNamingStrategyInterface');
+
+        $propertyNamingStrategy
+            ->expects($this->at(0))
+            ->method('translateName')
+            ->will($this->returnValue('foo'));
+
+        $propertyNamingStrategy
+            ->expects($this->at(1))
+            ->method('translateName')
+            ->will($this->returnValue('bar'));
+
+        $propertyNamingStrategy
+            ->expects($this->at(2))
+            ->method('translateName')
+            ->will($this->returnValue('baz'));
+
         $input = new JmsNested();
 
         $metadataFactory->expects($this->once())
@@ -51,7 +68,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             ->with($input)
             ->will($this->returnValue($metadata));
 
-        $jmsMetadataParser = new JmsMetadataParser($metadataFactory, $docCommentExtractor);
+        $jmsMetadataParser = new JmsMetadataParser($metadataFactory, $propertyNamingStrategy, $docCommentExtractor);
 
         $output = $jmsMetadataParser->parse($input);
 
