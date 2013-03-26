@@ -137,6 +137,8 @@ c:
 ## /tests2 ##
 
 ### `POST` /tests2.{_format} ###
+### This method is deprecated ###
+
 
 _post test 2_
 
@@ -268,13 +270,13 @@ nested[parent][nested]:
   * required: false
   * description: No description.
 
-nested[parent][nestedArray][]:
+nested[parent][nested_array][]:
 
   * type: array of objects (JmsNested)
   * required: false
   * description: No description.
 
-nestedArray[]:
+nested_array[]:
 
   * type: array of objects (JmsNested)
   * required: false
