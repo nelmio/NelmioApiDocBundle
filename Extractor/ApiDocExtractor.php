@@ -68,7 +68,7 @@ class ApiDocExtractor
      * You can extend this method if you don't want all the routes
      * to be included.
      *
-     * @return \Traverseable Iterator for a RouteCollection
+     * @return \Traversable Iterator for a RouteCollection
      */
     public function getRoutes()
     {
