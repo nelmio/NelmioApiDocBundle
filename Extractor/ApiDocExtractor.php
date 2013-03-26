@@ -22,13 +22,15 @@ use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 
 class ApiDocExtractor
 {
-    const ANNOTATION_CLASS              = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
+    const ANNOTATION_CLASS                = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
 
-    const FOS_REST_QUERY_PARAM_CLASS    = 'FOS\\RestBundle\\Controller\\Annotations\\QueryParam';
+    const FOS_REST_QUERY_PARAM_CLASS      = 'FOS\\RestBundle\\Controller\\Annotations\\QueryParam';
 
-    const FOS_REST_REQUEST_PARAM_CLASS  = 'FOS\\RestBundle\\Controller\\Annotations\\RequestParam';
+    const FOS_REST_REQUEST_PARAM_CLASS    = 'FOS\\RestBundle\\Controller\\Annotations\\RequestParam';
 
     const JMS_SECURITY_EXTRA_SECURE_CLASS = 'JMS\\SecurityExtraBundle\\Annotation\\Secure';
+
+    const CACHE_ANNOTATION_CLASS          = 'Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Cache';
 
     /**
      * @var ContainerInterface
@@ -364,6 +366,8 @@ class ApiDocExtractor
                 ));
             } elseif (is_a($annot, self::JMS_SECURITY_EXTRA_SECURE_CLASS)) {
                 $annotation->setAuthentication(true);
+            }  elseif (is_a($annot, self::CACHE_ANNOTATION_CLASS)) {
+                $annotation->setCache($annot->getMaxAge());
             }
         }
     }

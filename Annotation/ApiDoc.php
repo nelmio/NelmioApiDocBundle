@@ -106,6 +106,11 @@ class ApiDoc
     private $authentication = false;
 
     /**
+     * @var int
+     */
+    private $cache;
+
+    /**
      * @var array
      */
     private $statusCodes = array();
@@ -329,6 +334,22 @@ class ApiDoc
     }
 
     /**
+     * @return int
+     */
+    public function getCache()
+    {
+        return $this->cache;
+    }
+
+    /**
+     * @param int $cache
+     */
+    public function setCache($cache)
+    {
+        $this->cache = (int) $cache;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -368,6 +389,10 @@ class ApiDoc
 
         if ($section = $this->section) {
             $data['section'] = $section;
+        }
+
+        if ($cache = $this->cache) {
+            $data['cache'] = $cache;
         }
 
         $data['https'] = $this->https;
