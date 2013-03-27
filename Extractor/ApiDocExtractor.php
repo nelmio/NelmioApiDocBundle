@@ -90,13 +90,13 @@ class ApiDocExtractor
      *  - annotation
      *  - resource
      *
-     * @param \Traversable $routes \Traverseable of Route-objects for which the annotations should be extracted
+     * @param array $routes array of Route-objects for which the annotations should be extracted
      *
-     * @throws \InvalidArgumentException if one element of \Traversable does not implement Route
+     * @throws \InvalidArgumentException if one element of the input isnt an instance of Route
      *
      * @return array
      */
-    public function extractAnnotations(\Traversable $routes)
+    public function extractAnnotations(array $routes)
     {
         $array = array();
         $resources = array();
