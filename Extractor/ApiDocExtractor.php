@@ -92,7 +92,7 @@ class ApiDocExtractor
      *
      * @param \Traversable $routes \Traverseable of Route-objects for which the annotations should be extracted
      *
-     * @throws \InvalidArgumentException if one element of \Traversable does not implement RouteInterface
+     * @throws \InvalidArgumentException if one element of \Traversable does not implement Route
      *
      * @return array
      */
@@ -102,8 +102,8 @@ class ApiDocExtractor
         $resources = array();
 
         foreach ($routes as $route) {
-            if (!($route instanceof RouterInterface)) {
-                throw new \InvalidArgumentException(sprintf('All elements of $routes have to implement RouteInterface. "%s" given', gettype($route)));
+            if (!($route instanceof Route)) {
+                throw new \InvalidArgumentException(sprintf('All elements of $routes must be instances of Route. "%s" given', gettype($route)));
             }
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
