@@ -16,7 +16,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
@@ -73,7 +72,7 @@ class ApiDocExtractor
      */
     public function getRoutes()
     {
-        return $this->router->getRouteCollection()->getIterator();
+        return $this->router->getRouteCollection()->all();
     }
 
     /**
@@ -91,19 +90,23 @@ class ApiDocExtractor
      *  - annotation
      *  - resource
      *
-     * @param \Traversable $routes The routes for which the annotations should be extracted
+     * @param array $routes array of Route-objects for which the annotations should be extracted
+     *
+     * @throws \InvalidArgumentException if one element of the input isnt an instance of Route
      *
      * @return array
      */
-    public function extractAnnotations(\Traversable $routes)
+    public function extractAnnotations(array $routes)
     {
         $array = array();
         $resources = array();
 
         foreach ($routes as $route) {
-            if ($route instanceof RouteCollection) {
-                $array = array_merge($array, $this->extractAnnotations($route->getIterator()));
-            } elseif ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
+            if (!$route instanceof Route) {
+                throw new \InvalidArgumentException(sprintf('All elements of $routes must be instances of Route. "%s" given', gettype($route)));
+            }
+
+            if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
                     if ($annotation->isResource()) {
                         // remove format from routes used for resource grouping
