@@ -16,7 +16,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
@@ -73,7 +72,7 @@ class ApiDocExtractor
      */
     public function getRoutes()
     {
-        return $this->router->getRouteCollection()->getIterator();
+        return $this->router->getRouteCollection()->all();
     }
 
     /**
@@ -91,7 +90,9 @@ class ApiDocExtractor
      *  - annotation
      *  - resource
      *
-     * @param \Traversable $routes The routes for which the annotations should be extracted
+     * @param \Traversable $routes \Traverseable of Route-objects for which the annotations should be extracted
+     *
+     * @throws \InvalidArgumentException if one element of \Traversable does not implement RouteInterface
      *
      * @return array
      */
@@ -101,9 +102,11 @@ class ApiDocExtractor
         $resources = array();
 
         foreach ($routes as $route) {
-            if ($route instanceof RouteCollection) {
-                $array = array_merge($array, $this->extractAnnotations($route->getIterator()));
-            } elseif ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
+            if (!($route instanceof RouterInterface)) {
+                throw new \InvalidArgumentException(sprintf('All elements of $routes have to implement RouteInterface. "%s" given', gettype($route)));
+            }
+
+            if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
                     if ($annotation->isResource()) {
                         // remove format from routes used for resource grouping
