@@ -152,6 +152,10 @@ class ApiDoc
             $this->setAuthentication((bool) $data['authentication']);
         }
 
+        if (isset($data['cache'])) {
+            $this->setCache($data['cache']);
+        }
+
         if (isset($data['section'])) {
             $this->section = $data['section'];
         }

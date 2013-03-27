@@ -15,6 +15,7 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
 class TestController
 {
@@ -143,6 +144,14 @@ class TestController
      * )
      */
     public function authenticatedAction()
+    {
+    }
+
+    /**
+     * @ApiDoc()
+     * @Cache(maxage=60, public=1)
+     */
+    public function cachedAction()
     {
     }
 }
