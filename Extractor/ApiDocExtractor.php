@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
@@ -100,7 +101,9 @@ class ApiDocExtractor
         $resources = array();
 
         foreach ($routes as $route) {
-            if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
+            if ($route instanceof RouteCollection) {
+                $array = array_merge($array, $this->extractAnnotations($route->getIterator()));
+            } elseif ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
                     if ($annotation->isResource()) {
                         // remove format from routes used for resource grouping
