@@ -103,7 +103,8 @@ class JmsMetadataParser implements ParserInterface
                     'dataType' => $dataType['normalized'],
                     'required'      => false,   //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
                     'description'   => $this->getDescription($className, $item),
-                    'readonly' => $item->readOnly
+                    'readonly' => $item->readOnly,
+                    'groups' => $item->groups
                 );
 
                 // if class already parsed, continue, to avoid infinite recursion

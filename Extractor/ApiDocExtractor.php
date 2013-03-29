@@ -28,6 +28,8 @@ class ApiDocExtractor
 
     const FOS_REST_REQUEST_PARAM_CLASS  = 'FOS\\RestBundle\\Controller\\Annotations\\RequestParam';
 
+    const FOS_REST_VIEW_PARAM_CLASS  = 'FOS\\RestBundle\\Controller\\Annotations\\View';
+
     const JMS_SECURITY_EXTRA_SECURE_CLASS = 'JMS\\SecurityExtraBundle\\Annotation\\Secure';
 
     /**
@@ -380,6 +382,13 @@ class ApiDocExtractor
                     'description' => $annot->description,
                     'readonly'    => false
                 ));
+            } elseif (is_a($annot, self::FOS_REST_VIEW_PARAM_CLASS)) {
+                if ($annot->getStatusCode()) {
+                    $annotation->addStatusCode($annot->getStatusCode(), 'Returned when successful');
+                }
+                if ($annot->getSerializerGroups()) {
+                    $annotation->addSerializerGroups($annot->getSerializerGroups());
+                }
             } elseif (is_a($annot, self::JMS_SECURITY_EXTRA_SECURE_CLASS)) {
                 $annotation->setAuthentication(true);
             }

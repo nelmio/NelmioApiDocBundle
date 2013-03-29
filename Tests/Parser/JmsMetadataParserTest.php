@@ -77,19 +77,22 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 'dataType' => 'DateTime',
                 'required' => false,
                 'description' => 'No description.',
-                'readonly' => false
+                'readonly' => false,
+                'groups' => null,
             ),
             'bar' => array(
                 'dataType' => 'string',
                 'required' => false,
                 'description' => 'No description.',
-                'readonly' => false
+                'readonly' => false,
+                'groups' => null,
             ),
             'baz' => array(
                 'dataType' => 'array of integers',
                 'required' => false,
                 'description' => 'No description.',
-                'readonly' => false
+                'readonly' => false,
+                'groups' => null,
             )
         ), $output);
     }
