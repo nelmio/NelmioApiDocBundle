@@ -110,6 +110,11 @@ class ApiDoc
      */
     private $statusCodes = array();
 
+    /**
+     * @var array
+     */
+    private $serializerGroups = array();
+
     public function __construct(array $data)
     {
         $this->isResource = isset($data['resource']) && $data['resource'];
@@ -150,6 +155,16 @@ class ApiDoc
         if (isset($data['section'])) {
             $this->section = $data['section'];
         }
+    }
+
+    /**
+     * Add serializer groups
+     *
+     * @param array $serializerGroups
+     */
+    public function addSerializerGroups($serializerGroups)
+    {
+        $this->serializerGroups = array_merge($this->serializerGroups, $serializerGroups);
     }
 
     /**
@@ -359,6 +374,14 @@ class ApiDoc
         }
 
         if ($response = $this->response) {
+            foreach ($response as $name => $infos) {
+                if ($this->serializerGroups && !empty($infos['groups'])) {
+                    $intersect = array_intersect($infos['groups'], $this->serializerGroups);
+                    if (count($intersect) < 1) {
+                        unset($response[$name]);
+                    }
+                }
+            }
             $data['response'] = $response;
         }
 

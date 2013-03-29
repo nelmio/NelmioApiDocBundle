@@ -242,6 +242,7 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
+                            'groups' => null,
                         ),
                         'bar' =>
                         array (
@@ -249,6 +250,7 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => true,
+                            'groups' => null,
                         ),
                         'number' =>
                         array (
@@ -256,6 +258,7 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
+                            'groups' => null,
                         ),
                         'arr' =>
                         array (
@@ -263,6 +266,7 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
+                            'groups' => null,
                         ),
                         'nested' =>
                         array (
@@ -270,6 +274,7 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
+                            'groups' => null,
                             'children' =>
                             array (
                                 'foo' =>
@@ -278,6 +283,7 @@ class SimpleFormatterTest extends WebTestCase
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => true,
+                                    'groups' => null,
                                 ),
                                 'bar' =>
                                 array (
@@ -285,6 +291,7 @@ class SimpleFormatterTest extends WebTestCase
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => false,
+                                    'groups' => null,
                                 ),
                                 'baz' =>
                                 array (
@@ -294,6 +301,7 @@ class SimpleFormatterTest extends WebTestCase
 
 With multiple lines.',
                                     'readonly' => false,
+                                    'groups' => null,
                                 ),
                                 'circular' =>
                                 array (
@@ -301,6 +309,7 @@ With multiple lines.',
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => false,
+                                    'groups' => null,
                                 ),
                                 'parent' =>
                                 array (
@@ -308,6 +317,7 @@ With multiple lines.',
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => false,
+                                    'groups' => null,
                                     'children' =>
                                     array (
                                         'foo' =>
@@ -316,6 +326,7 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
+                                            'groups' => null,
                                         ),
                                         'bar' =>
                                         array (
@@ -323,6 +334,7 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => true,
+                                            'groups' => null,
                                         ),
                                         'number' =>
                                         array (
@@ -330,6 +342,7 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
+                                            'groups' => null,
                                         ),
                                         'arr' =>
                                         array (
@@ -337,6 +350,7 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
+                                            'groups' => null,
                                         ),
                                         'nested' =>
                                         array (
@@ -344,6 +358,7 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
+                                            'groups' => null,
                                         ),
                                         'nestedArray' =>
                                         array (
@@ -351,6 +366,7 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
+                                            'groups' => null,
                                         ),
                                     ),
                                 ),
@@ -362,6 +378,7 @@ With multiple lines.',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
+                            'groups' => null,
                         ),
                     ),
                     'https' => false,
