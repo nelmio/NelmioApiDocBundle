@@ -29,7 +29,8 @@
         "symfony/validator": "~2.1",
         "symfony/yaml": "~2.1",
         "friendsofsymfony/rest-bundle": "dev-master",
-        "jms/serializer-bundle": ">=0.11"
+        "jms/serializer-bundle": ">=0.11",
+        "sensio/framework-extra-bundle": "dev-master"
     },
     "minimum-stability": "dev",
     "autoload": {

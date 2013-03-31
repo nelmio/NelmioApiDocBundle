@@ -210,4 +210,16 @@ class ApiDocTest extends TestCase
 
         $this->assertTrue($array['authentication']);
     }
+
+    public function testConstructWithCache()
+    {
+        $data = array(
+            'cache' => '60'
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertEquals($data['cache'], $array['cache']);
+    }
 }
