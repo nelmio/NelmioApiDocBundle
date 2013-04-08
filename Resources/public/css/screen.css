@@ -555,3 +555,7 @@ form .request-content {
   height: 12px;
   margin-left: 3px;
 }
+
+.motd {
+  padding:20px;
+}
