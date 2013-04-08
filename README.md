@@ -227,6 +227,12 @@ input is used, so you can configure their priorities via container tags.  Here's
             tags:
                 - {name: nelmio_api_doc.extractor.parser, priority: 2}
 
+You can also define your own motd content (above methods list). All you have to do is add to configuration:
+
+    #app/config/config.yml
+    motd:
+        template: AcmeApiBundle::Components/motd.html.twig
+
 ## Credits ##
 
 The design is heavily inspired by the [swagger-ui](https://github.com/wordnik/swagger-ui) project.

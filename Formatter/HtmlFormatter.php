@@ -56,6 +56,11 @@ class HtmlFormatter extends AbstractFormatter
     private $authentication;
 
     /**
+     * @var string
+     */
+    private $motdTemplate;
+
+    /**
      * @param array $authentication
      */
     public function setAuthentication(array $authentication = null)
@@ -120,6 +125,22 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
+     * @param string $motdTemplate
+     */
+    public function setMotdTemplate($motdTemplate)
+    {
+        $this->motdTemplate = $motdTemplate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMotdTemplate()
+    {
+        return $this->motdTemplate;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function renderOne(array $data)
@@ -162,6 +183,7 @@ class HtmlFormatter extends AbstractFormatter
             'date'                 => date(DATE_RFC822),
             'css'                  => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
             'js'                   => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
+            'motdTemplate'         => $this->motdTemplate
         );
     }
 }
