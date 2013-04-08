@@ -228,6 +228,7 @@ input is used, so you can configure their priorities via container tags.  Here's
                 - {name: nelmio_api_doc.extractor.parser, priority: 2}
 
 You can also define your own motd content (above methods list). All you have to do is add to configuration:
+
     #app/config/config.yml
     motd:
         template: AcmeApiBundle::Components/motd.html.twig
