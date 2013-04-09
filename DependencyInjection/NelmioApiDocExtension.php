@@ -28,6 +28,7 @@ class NelmioApiDocExtension extends Extension
         $configuration = new Configuration();
         $config = $processor->processConfiguration($configuration, $configs);
 
+        $container->setParameter('nelmio_api_doc.motd.template', $config['motd']['template']);
         $container->setParameter('nelmio_api_doc.api_name', $config['name']);
         $container->setParameter('nelmio_api_doc.sandbox.enabled',  $config['sandbox']['enabled']);
         $container->setParameter('nelmio_api_doc.sandbox.endpoint', $config['sandbox']['endpoint']);
