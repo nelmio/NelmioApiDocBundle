@@ -121,7 +121,7 @@
                     var text = xhr.status + ' ' + xhr.statusText + "\n\n";
                     text += xhr.getAllResponseHeaders();
 
-                    container.html(text);
+                    container.text(text);
                 };
 
                 var displayResponse = function(xhr, method, url, result_container) {
