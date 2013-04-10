@@ -94,6 +94,8 @@ class YourController extends Controller
 
 The following properties are available:
 
+* `section`: allow to group resources
+
 * `resource`: whether the method describes a main resource or not (default: `false`);
 
 * `description`: a description of the API method;
