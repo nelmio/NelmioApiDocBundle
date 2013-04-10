@@ -66,10 +66,11 @@ class Configuration implements ConfigurationInterface
                                     ->isRequired()
                                     ->validate()
                                         // header|query|request, but only query is implemented for now
-                                        ->ifNotInArray(array('query'))
+                                        ->ifNotInArray(array('query', 'http_basic'))
                                         ->thenInvalid("Unknown authentication delivery type '%s'.")
                                     ->end()
                                 ->end()
+                                ->scalarNode('custom_endpoint')->defaultFalse()->end()
                             ->end()
                         ->end()
                     ->end()
