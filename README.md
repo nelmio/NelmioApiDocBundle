@@ -214,7 +214,8 @@ configure this sandbox using the following parameters:
         sandbox:
             authentication: # default null, if set, the value of the api key is read from the query string and appended to every sandbox api call
                 name: access_token
-                delivery: query # only query delivery is supported for now
+                delivery: query # query or http_basic are supported
+                custom_endpoint: true # default false, if true, your user will be able to specify its own endpoint
             enabled:  true # default: true, you can set this parameter to `false` to disable the sandbox
             endpoint: http://sandbox.example.com/ # default: /app_dev.php, use this parameter to define which URL to call through the sandbox
             accept_type: application/json # default null, if set, the value is automatically populated as the Accept header
