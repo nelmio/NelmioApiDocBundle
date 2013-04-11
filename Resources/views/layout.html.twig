@@ -21,8 +21,14 @@
                     <option value="json"{{ defaultRequestFormat == 'json' ? ' selected' : '' }}>JSON</option>
                     <option value="xml"{{ defaultRequestFormat == 'xml' ? ' selected' : '' }}>XML</option>
                 </select>
-                {% if authentication %}
-                    api key: <input type="text" id="api_key"/>
+                {% if authentication and authentication.delivery in ['query', 'http_basic'] %}
+                    api key: <input type="text" id="api_key" value=""/>
+                {% endif %}
+                {% if authentication and authentication.delivery in ['http_basic'] %}
+                    api pass: <input type="text" id="api_pass" value=""/>
+                {% endif %}
+                {% if authentication and authentication.custom_endpoint %}
+                    api endpoint: <input type="text" id="api_endpoint" value=""/>
                 {% endif %}
             </div>
             <br style="clear: both;" />
@@ -190,22 +196,34 @@
                     // disable all the fiels and buttons
                     $('input, button', $(this)).attr('disabled', 'disabled');
 
-                    // append the api key
-                    if (api_key_parameter) {
+                    // append the query authentication
+                    if (authentication_delivery == 'query') {
                         url += url.indexOf('?') > 0 ? '&' : '?';
                         url += api_key_parameter + '=' + $('#api_key').val();
                     }
 
+                    // prepare the api enpoint
                     {% if endpoint == '' and app.request is defined and app.request.host -%}
-                        {% set endpoint = app.request.getBaseUrl() -%}
-                    {% endif -%}
+                    var endpoint = '{{ app.request.getBaseUrl() }}';
+                    {% else -%}
+                    var endpoint = '{{ endpoint }}';
+                    {% endif -%} 
+                    if ($('#api_endpoint') && $('#api_endpoint').val() != null) {
+                        endpoint = $('#api_endpoint').val();
+                    }
 
                     // and trigger the API call
                     $.ajax({
-                        url: '{{ endpoint }}' + url,
+                        url: endpoint + url,
                         type: method,
                         data: content.length ? content : params,
                         headers: headers,
+                        crossDomain: true,
+                        beforeSend: function (xhr) { 
+                            if (authentication_delivery == 'http_basic') {
+                                xhr.setRequestHeader('Authorization', 'Basic ' + btoa($('#api_key').val() + ':' + $('#api_pass').val())); 
+                            }
+                        },
                         complete: function(xhr) {
                             displayResponse(xhr, method, url, result_container);
 
@@ -288,12 +306,14 @@
 
                 });
 
-                {% if authentication %}
+                {% if authentication and authentication.delivery == 'http_basic' %}
+                var authentication_delivery = '{{ authentication.delivery }}';
+                {% elseif authentication and authentication.delivery == 'query' %}
+                var authentication_delivery = '{{ authentication.delivery }}';
                 var api_key_parameter = '{{ authentication.name }}';
                 var search = window.location.search;
-
                 var api_key_start = search.indexOf(api_key_parameter) + api_key_parameter.length + 1;
-
+                
                 if (api_key_start > 0 ) {
                     var api_key_end = search.indexOf('&', api_key_start);
 
@@ -304,7 +324,7 @@
                     $('#api_key').val(api_key);
                 }
                 {% else %}
-                var api_key_parameter = false;
+                var authentication_delivery = false;
                 {% endif %}
             {% endif %}
         </script>
