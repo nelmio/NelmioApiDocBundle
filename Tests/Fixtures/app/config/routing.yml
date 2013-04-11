@@ -6,6 +6,7 @@ test_route_1:
 
 test_route_2:
     pattern:  /tests.{_format}
+    host:     api.test.dev
     defaults: { _controller: NelmioApiDocTestBundle:Test:postTest, _format: json }
     requirements:
         _method: POST
@@ -76,6 +77,7 @@ test_service_route_1:
 
 test_service_route_2:
     pattern:  /tests.{_format}
+    host:     api.test.dev
     defaults: { _controller: nemlio.test.controller:postTestAction, _format: json }
     requirements:
         _method: POST
