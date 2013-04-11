@@ -19,6 +19,10 @@
         {% endif %}
 
         <span class="path">
+            {% if data.host is defined -%}
+                {{ data.https ? 'https://' : 'http://' -}}
+                {{ data.host -}}
+            {% endif -%}
             {{ data.uri }}
         </span>
     </h3>
@@ -29,7 +33,7 @@
     </ul>
     </div>
 
-    <div class="content" style="display: {% if displayContent  is defined and displayContent == true %}display{% else %}none{% endif %};">
+    <div class="content" style="display: {% if displayContent is defined and displayContent == true %}display{% else %}none{% endif %};">
         <ul class="tabs">
             <li class="selected" data-pane="content">Documentation</li>
             {% if enableSandbox %}
