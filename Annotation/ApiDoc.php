@@ -83,6 +83,11 @@ class ApiDoc
     /**
      * @var string
      */
+    private $host;
+
+    /**
+     * @var string
+     */
     private $uri;
 
     /**
@@ -302,6 +307,7 @@ class ApiDoc
     public function setRoute(Route $route)
     {
         $this->route  = $route;
+        $this->host   = $route->getHost() ?: null;
         $this->uri    = $route->getPattern();
         $this->method = $route->getRequirement('_method') ?: 'ANY';
     }
@@ -312,6 +318,22 @@ class ApiDoc
     public function getRoute()
     {
         return $this->route;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHost()
+    {
+        return $this->host;
+    }
+
+    /**
+     * @param string $host
+     */
+    public function setHost($host)
+    {
+        $this->host = $host;
     }
 
     /**
@@ -388,6 +410,10 @@ class ApiDoc
             'method' => $this->method,
             'uri'    => $this->uri,
         );
+
+        if ($host = $this->host) {
+            $data['host'] = $host;
+        }
 
         if ($description = $this->description) {
             $data['description'] = $description;

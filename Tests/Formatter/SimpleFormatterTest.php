@@ -100,6 +100,7 @@ class SimpleFormatterTest extends WebTestCase
                 array (
                     'method' => 'POST',
                     'uri' => '/tests.{_format}',
+                    'host' => 'api.test.dev',
                     'description' => 'create test',
                     'parameters' =>
                     array (
@@ -142,6 +143,7 @@ class SimpleFormatterTest extends WebTestCase
                 array (
                     'method' => 'POST',
                     'uri' => '/tests.{_format}',
+                    'host' => 'api.test.dev',
                     'description' => 'create test',
                     'parameters' =>
                     array (
