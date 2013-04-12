@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Reference;
 
 class NelmioApiDocExtension extends Extension
 {
@@ -48,5 +49,18 @@ class NelmioApiDocExtension extends Extension
         if (isset($config['sandbox']['authentication'])) {
             $container->setParameter('nelmio_api_doc.sandbox.authentication', $config['sandbox']['authentication']);
         }
+
+        // Adding handlers from tagged services
+        $definition = $container->getDefinition(
+            'nelmio_api_doc.extractor.api_doc_extractor'
+        );
+        $taggedServices = $container->findTaggedServiceIds(
+            'nelmio_api_doc.extractor.handler'
+        );
+        $handlers = array();
+        foreach ($taggedServices as $id => $attributes) {
+            $handlers[] = new Reference($id);
+        }
+        $definition->replaceArgument(4, $handlers);
     }
 }
