@@ -307,7 +307,13 @@ class ApiDoc
     public function setRoute(Route $route)
     {
         $this->route  = $route;
-        $this->host   = $route->getHost() ?: null;
+
+        if (method_exists($route, 'getHost')) {
+            $this->host = $route->getHost() ? : null;
+        } else {
+            $this->host = null;
+        }
+
         $this->uri    = $route->getPattern();
         $this->method = $route->getRequirement('_method') ?: 'ANY';
     }
