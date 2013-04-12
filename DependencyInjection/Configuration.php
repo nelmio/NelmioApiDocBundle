@@ -70,7 +70,7 @@ class Configuration implements ConfigurationInterface
                                         ->thenInvalid("Unknown authentication delivery type '%s'.")
                                     ->end()
                                 ->end()
-                                ->scalarNode('custom_endpoint')->defaultFalse()->end()
+                                ->booleanNode('custom_endpoint')->defaultFalse()->end()
                             ->end()
                         ->end()
                     ->end()
