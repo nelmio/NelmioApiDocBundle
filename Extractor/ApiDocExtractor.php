@@ -322,7 +322,7 @@ class ApiDocExtractor
             }
         }
 
-        $regexp = '{(\w*) *\$%s *(.*)}i';
+        $regexp = '{(\w*) *\$%s\b *(.*)}i';
         foreach ($route->compile()->getVariables() as $var) {
             $found = false;
             foreach ($paramDocs as $paramDoc) {
