@@ -320,6 +320,9 @@ class ApiDocExtractor
             if (preg_match('{^@param (.+)}', trim($line), $matches)) {
                 $paramDocs[] = $matches[1];
             }
+            if (preg_match('{^@deprecated\b(.*)}', trim($line), $matches)) {
+                $annotation->setDeprecated(true);
+            }
         }
 
         $regexp = '{(\w*) *\$%s\b *(.*)}i';
