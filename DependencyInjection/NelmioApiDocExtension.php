@@ -49,18 +49,5 @@ class NelmioApiDocExtension extends Extension
         if (isset($config['sandbox']['authentication'])) {
             $container->setParameter('nelmio_api_doc.sandbox.authentication', $config['sandbox']['authentication']);
         }
-
-        // Adding handlers from tagged services
-        $definition = $container->getDefinition(
-            'nelmio_api_doc.extractor.api_doc_extractor'
-        );
-        $taggedServices = $container->findTaggedServiceIds(
-            'nelmio_api_doc.extractor.handler'
-        );
-        $handlers = array();
-        foreach ($taggedServices as $id => $attributes) {
-            $handlers[] = new Reference($id);
-        }
-        $definition->replaceArgument(4, $handlers);
     }
 }

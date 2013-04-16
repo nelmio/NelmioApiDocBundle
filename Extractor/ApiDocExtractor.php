@@ -19,7 +19,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
-use Nelmio\ApiDocBundle\Extractor\Handler\HandlerInterface;
 
 class ApiDocExtractor
 {
@@ -55,7 +54,7 @@ class ApiDocExtractor
      */
     protected $handlers;
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, $handlers)
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers)
     {
         $this->container = $container;
         $this->router    = $router;
@@ -360,7 +359,7 @@ class ApiDocExtractor
     {
         $annots = $this->reader->getMethodAnnotations($method);
         foreach ($this->handlers as $handler) {
-            $handler->handle($annotation, $annots);
+            $handler->handle($annotation, $annots, $route, $method);
         }
     }
 }

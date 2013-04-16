@@ -9,10 +9,9 @@
         <parameter key="nelmio_api_doc.twig.extension.extra_markdown.class">Nelmio\ApiDocBundle\Twig\Extension\MarkdownExtension</parameter>
         <parameter key="nelmio_api_doc.doc_comment_extractor.class">Nelmio\ApiDocBundle\Util\DocCommentExtractor</parameter>
 
-        <parameter key="nelmio_api_doc.extractor.handler.fos_rest_query_param.class">Nelmio\ApiDocBundle\Extractor\Handler\FosRestQueryParamHandler</parameter>
-        <parameter key="nelmio_api_doc.extractor.handler.fos_rest_request_param.class">Nelmio\ApiDocBundle\Extractor\Handler\FosRestRequestParamHandler</parameter>
-        <parameter key="nelmio_api_doc.extractor.handler.jms_security_secure.class">Nelmio\ApiDocBundle\Extractor\Handler\JmsSecurityExtraSecureHandler</parameter>
-        <parameter key="nelmio_api_doc.extractor.handler.sensio_cache.class">Nelmio\ApiDocBundle\Extractor\Handler\SensioFrameworkExtraCacheHandler</parameter>
+        <parameter key="nelmio_api_doc.extractor.handler.fos_rest.class">Nelmio\ApiDocBundle\Extractor\Handler\FosRestHandler</parameter>
+        <parameter key="nelmio_api_doc.extractor.handler.jms_security.class">Nelmio\ApiDocBundle\Extractor\Handler\JmsSecurityExtraHandler</parameter>
+        <parameter key="nelmio_api_doc.extractor.handler.sensio_framework_extra.class">Nelmio\ApiDocBundle\Extractor\Handler\SensioFrameworkExtraHandler</parameter>
     </parameters>
 
     <services>
@@ -36,19 +35,15 @@
 
         <!-- Extractor Annotation Handlers -->
 
-        <service id="nelmio_api_doc.extractor.handler.fos_rest_query_param" class="%nelmio_api_doc.extractor.handler.fos_rest_query_param.class%">
+        <service id="nelmio_api_doc.extractor.handler.fos_rest" class="%nelmio_api_doc.extractor.handler.fos_rest.class%" public="false">
             <tag name="nelmio_api_doc.extractor.handler"/>
         </service>
 
-        <service id="nelmio_api_doc.extractor.handler.fos_rest_request_param" class="%nelmio_api_doc.extractor.handler.fos_rest_request_param.class%">
+        <service id="nelmio_api_doc.extractor.handler.jms_security" class="%nelmio_api_doc.extractor.handler.jms_security.class%" public="false">
             <tag name="nelmio_api_doc.extractor.handler"/>
         </service>
 
-        <service id="nelmio_api_doc.extractor.handler.jms_security_secure" class="%nelmio_api_doc.extractor.handler.jms_security_secure.class%">
-            <tag name="nelmio_api_doc.extractor.handler"/>
-        </service>
-
-        <service id="nelmio_api_doc.extractor.handler.sension_cache" class="%nelmio_api_doc.extractor.handler.sensio_cache.class%">
+        <service id="nelmio_api_doc.extractor.handler.sensio_framework_extra" class="%nelmio_api_doc.extractor.handler.sensio_framework_extra.class%" public="false">
             <tag name="nelmio_api_doc.extractor.handler"/>
         </service>
 
