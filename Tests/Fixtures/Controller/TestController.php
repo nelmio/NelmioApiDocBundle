@@ -154,4 +154,12 @@ class TestController
     public function cachedAction()
     {
     }
+	
+    /**
+     * @ApiDoc()
+     * @deprecated
+     */
+    public function deprecatedAction()
+    {
+    }
 }
