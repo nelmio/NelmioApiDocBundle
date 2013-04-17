@@ -238,7 +238,9 @@ You can also define your own motd content (above methods list). All you have to 
 
 ## Using your own annotations ##
 
-If you have developped your own project-related annotations, and you want to parse them to populate the ApiDoc, you can provide custom handlers as services. You juste have to implements the `Nelmio\ApiDocBundle\Extractor\HandlerInterface` and tag it as `nelmio_api_doc.extractor.handler`.
+If you have developped your own project-related annotations, and you want to parse them to populate the ApiDoc,
+you can provide custom handlers as services. You juste have to implements the
+`Nelmio\ApiDocBundle\Extractor\HandlerInterface` and tag it as `nelmio_api_doc.extractor.handler`.
 
     #app/config/config.yml
     services:

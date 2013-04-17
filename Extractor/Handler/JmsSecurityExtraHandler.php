@@ -14,15 +14,14 @@ namespace Nelmio\ApiDocBundle\Extractor\Handler;
 use Nelmio\ApiDocBundle\Extractor\HandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 
 class JmsSecurityExtraHandler implements HandlerInterface
 {
-    const JMS_SECURITY_EXTRA_SECURE_CLASS = 'JMS\\SecurityExtraBundle\\Annotation\\Secure';
-
     public function handle(ApiDoc $annotation, $annotations, Route $route, \ReflectionMethod $method)
     {
         foreach ($annotations as $annot) {
-            if (is_a($annot, self::JMS_SECURITY_EXTRA_SECURE_CLASS)) {
+            if ($annot instanceof Secure) {
                 $annotation->setAuthentication(true);
             }
         }

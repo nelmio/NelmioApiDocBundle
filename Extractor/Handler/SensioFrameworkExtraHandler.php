@@ -14,15 +14,14 @@ namespace Nelmio\ApiDocBundle\Extractor\Handler;
 use Nelmio\ApiDocBundle\Extractor\HandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
 class SensioFrameworkExtraHandler implements HandlerInterface
 {
-    const CACHE_ANNOTATION_CLASS = 'Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Cache';
-
     public function handle(ApiDoc $annotation, $annotations, Route $route, \ReflectionMethod $method)
     {
         foreach ($annotations as $annot) {
-            if (is_a($annot, self::CACHE_ANNOTATION_CLASS)) {
+            if ($annot instanceof Cache) {
                 $annotation->setCache($annot->getMaxAge());
             }
         }
