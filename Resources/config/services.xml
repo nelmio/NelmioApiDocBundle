@@ -8,6 +8,10 @@
         <parameter key="nelmio_api_doc.form.extension.description_form_type_extension.class">Nelmio\ApiDocBundle\Form\Extension\DescriptionFormTypeExtension</parameter>
         <parameter key="nelmio_api_doc.twig.extension.extra_markdown.class">Nelmio\ApiDocBundle\Twig\Extension\MarkdownExtension</parameter>
         <parameter key="nelmio_api_doc.doc_comment_extractor.class">Nelmio\ApiDocBundle\Util\DocCommentExtractor</parameter>
+
+        <parameter key="nelmio_api_doc.extractor.handler.fos_rest.class">Nelmio\ApiDocBundle\Extractor\Handler\FosRestHandler</parameter>
+        <parameter key="nelmio_api_doc.extractor.handler.jms_security.class">Nelmio\ApiDocBundle\Extractor\Handler\JmsSecurityExtraHandler</parameter>
+        <parameter key="nelmio_api_doc.extractor.handler.sensio_framework_extra.class">Nelmio\ApiDocBundle\Extractor\Handler\SensioFrameworkExtraHandler</parameter>
     </parameters>
 
     <services>
@@ -18,6 +22,7 @@
             <argument type="service" id="router" />
             <argument type="service" id="annotation_reader" />
             <argument type="service" id="nelmio_api_doc.doc_comment_extractor" />
+            <argument type="collection"/>
         </service>
 
         <service id="nelmio_api_doc.form.extension.description_form_type_extension" class="%nelmio_api_doc.form.extension.description_form_type_extension.class%">
@@ -27,6 +32,21 @@
         <service id="nelmio_api_doc.twig.extension.extra_markdown" class="%nelmio_api_doc.twig.extension.extra_markdown.class%">
             <tag name="twig.extension" />
         </service>
+
+        <!-- Extractor Annotation Handlers -->
+
+        <service id="nelmio_api_doc.extractor.handler.fos_rest" class="%nelmio_api_doc.extractor.handler.fos_rest.class%" public="false">
+            <tag name="nelmio_api_doc.extractor.handler"/>
+        </service>
+
+        <service id="nelmio_api_doc.extractor.handler.jms_security" class="%nelmio_api_doc.extractor.handler.jms_security.class%" public="false">
+            <tag name="nelmio_api_doc.extractor.handler"/>
+        </service>
+
+        <service id="nelmio_api_doc.extractor.handler.sensio_framework_extra" class="%nelmio_api_doc.extractor.handler.sensio_framework_extra.class%" public="false">
+            <tag name="nelmio_api_doc.extractor.handler"/>
+        </service>
+
     </services>
 
 </container>

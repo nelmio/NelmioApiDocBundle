@@ -236,6 +236,22 @@ You can also define your own motd content (above methods list). All you have to 
     motd:
         template: AcmeApiBundle::Components/motd.html.twig
 
+## Using your own annotations ##
+
+If you have developped your own project-related annotations, and you want to parse them to populate the ApiDoc,
+you can provide custom handlers as services. You juste have to implements the
+`Nelmio\ApiDocBundle\Extractor\HandlerInterface` and tag it as `nelmio_api_doc.extractor.handler`.
+
+    #app/config/config.yml
+    services:
+        mybundle.api_doc.extractor.my_annotation_handler:
+            class: MyBundle\AnnotationHandler\MyAnnotationHandler;
+            tags:
+                - {name: nelmio_api_doc.extractor.handler}
+
+Look at examples in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tree/annotation_handlers/Extractor/Handler)
+
+
 ## Credits ##
 
 The design is heavily inspired by the [swagger-ui](https://github.com/wordnik/swagger-ui) project.
