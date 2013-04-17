@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
 class SensioFrameworkExtraHandler implements HandlerInterface
 {
-    public function handle(ApiDoc $annotation, $annotations, Route $route, \ReflectionMethod $method)
+    public function handle(ApiDoc $annotation, array $annotations, Route $route, \ReflectionMethod $method)
     {
         foreach ($annotations as $annot) {
             if ($annot instanceof Cache) {

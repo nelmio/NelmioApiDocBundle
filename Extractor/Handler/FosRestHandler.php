@@ -19,7 +19,7 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 
 class FosRestHandler implements HandlerInterface
 {
-    public function handle(ApiDoc $annotation, $annotations, Route $route, \ReflectionMethod $method)
+    public function handle(ApiDoc $annotation, array $annotations, Route $route, \ReflectionMethod $method)
     {
         foreach ($annotations as $annot) {
             if ($annot instanceof RequestParam) {

@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\Extractor;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-
 use Symfony\Component\Routing\Route;
 
 interface HandlerInterface
@@ -25,5 +24,5 @@ interface HandlerInterface
      * @param Symfony\Component\Routing\Route       $route
      * @param ReflectionMethod                      $method
      */
-    public function handle(ApiDoc $annotation, $annotations, Route $route, \ReflectionMethod $method);
+    public function handle(ApiDoc $annotation, array $annotations, Route $route, \ReflectionMethod $method);
 }
