@@ -204,7 +204,7 @@ You can specify your own API name:
 
     # app/config/config.yml
     nelmio_api_doc:
-        name:   My API
+        name: My API
 
 This bundle provides a sandbox mode in order to test API methods. You can
 configure this sandbox using the following parameters:
@@ -220,15 +220,15 @@ configure this sandbox using the following parameters:
             endpoint: http://sandbox.example.com/ # default: /app_dev.php, use this parameter to define which URL to call through the sandbox
             accept_type: application/json # default null, if set, the value is automatically populated as the Accept header
 
-The bundle provides a way to register multiple `input` parsers.  The first parser that can handle the specified
-input is used, so you can configure their priorities via container tags.  Here's an example parser service registration:
+The bundle provides a way to register multiple `input` parsers. The first parser that can handle the specified
+input is used, so you can configure their priorities via container tags. Here's an example parser service registration:
 
     #app/config/config.yml
     services:
         mybundle.api_doc.extractor.custom_parser:
-            class: MyBundle\Parser\CustomDocParser;
+            class: MyBundle\Parser\CustomDocParser
             tags:
-                - {name: nelmio_api_doc.extractor.parser, priority: 2}
+                - { name: nelmio_api_doc.extractor.parser, priority: 2 }
 
 You can also define your own motd content (above methods list). All you have to do is add to configuration:
 
@@ -236,20 +236,20 @@ You can also define your own motd content (above methods list). All you have to 
     motd:
         template: AcmeApiBundle::Components/motd.html.twig
 
-## Using your own annotations ##
+## Using Your Own Annotations ##
 
-If you have developped your own project-related annotations, and you want to parse them to populate the ApiDoc,
-you can provide custom handlers as services. You juste have to implements the
-`Nelmio\ApiDocBundle\Extractor\HandlerInterface` and tag it as `nelmio_api_doc.extractor.handler`.
+If you have developed your own project-related annotations, and you want to parse them to populate
+the `ApiDoc`, you can provide custom handlers as services. You juste have to implement the
+`Nelmio\ApiDocBundle\Extractor\HandlerInterface` and tag it as `nelmio_api_doc.extractor.handler`:
 
-    #app/config/config.yml
+    # app/config/config.yml
     services:
         mybundle.api_doc.extractor.my_annotation_handler:
-            class: MyBundle\AnnotationHandler\MyAnnotationHandler;
+            class: MyBundle\AnnotationHandler\MyAnnotationHandler
             tags:
-                - {name: nelmio_api_doc.extractor.handler}
+                - { name: nelmio_api_doc.extractor.handler }
 
-Look at examples in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tree/annotation_handlers/Extractor/Handler)
+Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tree/master/Extractor/Handler).
 
 
 ## Credits ##
