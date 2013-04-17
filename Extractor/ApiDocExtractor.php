@@ -24,14 +24,6 @@ class ApiDocExtractor
 {
     const ANNOTATION_CLASS                = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
 
-    const FOS_REST_QUERY_PARAM_CLASS      = 'FOS\\RestBundle\\Controller\\Annotations\\QueryParam';
-
-    const FOS_REST_REQUEST_PARAM_CLASS    = 'FOS\\RestBundle\\Controller\\Annotations\\RequestParam';
-
-    const JMS_SECURITY_EXTRA_SECURE_CLASS = 'JMS\\SecurityExtraBundle\\Annotation\\Secure';
-
-    const CACHE_ANNOTATION_CLASS          = 'Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Cache';
-
     /**
      * @var ContainerInterface
      */
@@ -57,12 +49,18 @@ class ApiDocExtractor
      */
     protected $parsers = array();
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor)
+    /**
+     * @var array HandlerInterface
+     */
+    protected $handlers;
+
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers)
     {
         $this->container = $container;
         $this->router    = $router;
         $this->reader    = $reader;
         $this->commentExtractor = $commentExtractor;
+        $this->handlers = $handlers;
     }
 
     /**
@@ -362,32 +360,9 @@ class ApiDocExtractor
      */
     protected function parseAnnotations(ApiDoc $annotation, Route $route, \ReflectionMethod $method)
     {
-        foreach ($this->reader->getMethodAnnotations($method) as $annot) {
-            if (is_a($annot, self::FOS_REST_QUERY_PARAM_CLASS)) {
-                if ($annot->strict && $annot->default === null) {
-                    $annotation->addRequirement($annot->name, array(
-                        'requirement'   => $annot->requirements,
-                        'dataType'      => '',
-                        'description'   => $annot->description,
-                    ));
-                } else {
-                    $annotation->addFilter($annot->name, array(
-                        'requirement'   => $annot->requirements,
-                        'description'   => $annot->description,
-                    ));
-                }
-            } elseif (is_a($annot, self::FOS_REST_REQUEST_PARAM_CLASS)) {
-                $annotation->addParameter($annot->name, array(
-                    'required'    => $annot->strict && $annot->default === null,
-                    'dataType'    => $annot->requirements,
-                    'description' => $annot->description,
-                    'readonly'    => false
-                ));
-            } elseif (is_a($annot, self::JMS_SECURITY_EXTRA_SECURE_CLASS)) {
-                $annotation->setAuthentication(true);
-            } elseif (is_a($annot, self::CACHE_ANNOTATION_CLASS)) {
-                $annotation->setCache($annot->getMaxAge());
-            }
+        $annots = $this->reader->getMethodAnnotations($method);
+        foreach ($this->handlers as $handler) {
+            $handler->handle($annotation, $annots, $route, $method);
         }
     }
 }
