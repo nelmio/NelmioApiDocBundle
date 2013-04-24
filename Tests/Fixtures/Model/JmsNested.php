@@ -36,4 +36,22 @@ class JmsNested
      */
     public $parent;
 
+    /**
+     * @Jms\Type("string")
+     * @Jms\Since("0.2")
+     */
+    public $since;
+
+    /**
+     * @Jms\Type("string")
+     * @Jms\Until("0.3")
+     */
+    public $until;
+
+    /**
+     * @Jms\Type("string")
+     * @Jms\Since("0.4")
+     * @Jms\Until("0.5")
+     */
+    public $sinceAndUntil;
 }

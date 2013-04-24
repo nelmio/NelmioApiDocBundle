@@ -359,7 +359,6 @@ class ApiDocExtractor
         $defaults = array(
             'class'   => '',
             'groups'  => array(),
-            'version' => null,
         );
 
         // normalize strings

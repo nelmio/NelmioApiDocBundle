@@ -252,6 +252,8 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => '',
                             'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                         ),
                         'bar' =>
                         array(
@@ -259,6 +261,8 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => '',
                             'readonly' => true,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                         ),
                         'number' =>
                         array(
@@ -266,6 +270,8 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => '',
                             'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                         ),
                         'arr' =>
                         array(
@@ -273,6 +279,8 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => '',
                             'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                         ),
                         'nested' =>
                         array(
@@ -280,6 +288,8 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => '',
                             'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                             'children' =>
                             array(
                                 'foo' =>
@@ -288,6 +298,8 @@ class SimpleFormatterTest extends WebTestCase
                                     'required' => false,
                                     'description' => '',
                                     'readonly' => true,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
                                 ),
                                 'bar' =>
                                 array(
@@ -295,6 +307,8 @@ class SimpleFormatterTest extends WebTestCase
                                     'required' => false,
                                     'description' => '',
                                     'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
                                 ),
                                 'baz' =>
                                 array(
@@ -304,6 +318,8 @@ class SimpleFormatterTest extends WebTestCase
 
 With multiple lines.',
                                     'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
                                 ),
                                 'circular' =>
                                 array(
@@ -311,6 +327,8 @@ With multiple lines.',
                                     'required' => false,
                                     'description' => '',
                                     'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
                                 ),
                                 'parent' =>
                                 array(
@@ -318,6 +336,8 @@ With multiple lines.',
                                     'required' => false,
                                     'description' => '',
                                     'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
                                     'children' =>
                                     array(
                                         'foo' =>
@@ -326,6 +346,8 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => '',
                                             'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                         'bar' =>
                                         array(
@@ -333,6 +355,8 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => '',
                                             'readonly' => true,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                         'number' =>
                                         array(
@@ -340,6 +364,8 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => '',
                                             'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                         'arr' =>
                                         array(
@@ -347,6 +373,8 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => '',
                                             'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                         'nested' =>
                                         array(
@@ -354,6 +382,8 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => '',
                                             'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                         'nested_array' =>
                                         array(
@@ -361,8 +391,37 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => '',
                                             'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                     ),
+                                ),
+                                'since' =>
+                                array (
+                                    'dataType' => 'string',
+                                    'required' => false,
+                                    'description' => '',
+                                    'readonly' => false,
+                                    'sinceVersion' => '0.2',
+                                    'untilVersion' => null,
+                                ),
+                                'until' =>
+                                array (
+                                    'dataType' => 'string',
+                                    'required' => false,
+                                    'description' => '',
+                                    'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => '0.3',
+                                ),
+                                'since_and_until' =>
+                                array (
+                                    'dataType' => 'string',
+                                    'required' => false,
+                                    'description' => '',
+                                    'readonly' => false,
+                                    'sinceVersion' => '0.4',
+                                    'untilVersion' => '0.5',
                                 ),
                             ),
                         ),
@@ -372,6 +431,8 @@ With multiple lines.',
                             'required' => false,
                             'description' => '',
                             'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                         ),
                     ),
                     'https' => false,
@@ -440,6 +501,205 @@ And, it supports multilines until the first \'@\' char.',
                 7 =>
                 array(
                     'method' => 'ANY',
+                    'uri' => '/return-nested-output',
+                    'https' => false,
+                    'authentication' => false,
+                    'deprecated' => false,
+                    'response' =>
+                    array (
+                        'foo' =>
+                        array (
+                            'dataType' => 'string',
+                            'required' => false,
+                            'description' => '',
+                            'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                        ),
+                        'bar' =>
+                        array (
+                            'dataType' => 'DateTime',
+                            'required' => false,
+                            'description' => '',
+                            'readonly' => true,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                        ),
+                        'number' =>
+                        array (
+                            'dataType' => 'double',
+                            'required' => false,
+                            'description' => '',
+                            'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                        ),
+                        'arr' =>
+                        array (
+                            'dataType' => 'array',
+                            'required' => false,
+                            'description' => '',
+                            'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                        ),
+                        'nested' =>
+                        array (
+                            'dataType' => 'object (JmsNested)',
+                            'required' => false,
+                            'description' => '',
+                            'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                            'children' =>
+                            array (
+                                'foo' =>
+                                array (
+                                    'dataType' => 'DateTime',
+                                    'required' => false,
+                                    'description' => '',
+                                    'readonly' => true,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
+                                ),
+                                'bar' =>
+                                array (
+                                    'dataType' => 'string',
+                                    'required' => false,
+                                    'description' => '',
+                                    'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
+                                ),
+                                'baz' =>
+                                array (
+                                    'dataType' => 'array of integers',
+                                    'required' => false,
+                                    'description' => 'Epic description.
+
+With multiple lines.',
+                                    'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
+                                ),
+                                'circular' =>
+                                array (
+                                    'dataType' => 'object (JmsNested)',
+                                    'required' => false,
+                                    'description' => '',
+                                    'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
+                                ),
+                                'parent' =>
+                                array (
+                                    'dataType' => 'object (JmsTest)',
+                                    'required' => false,
+                                    'description' => '',
+                                    'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
+                                    'children' =>
+                                    array (
+                                        'foo' =>
+                                        array (
+                                            'dataType' => 'string',
+                                            'required' => false,
+                                            'description' => '',
+                                            'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
+                                        ),
+                                        'bar' =>
+                                        array (
+                                            'dataType' => 'DateTime',
+                                            'required' => false,
+                                            'description' => '',
+                                            'readonly' => true,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
+                                        ),
+                                        'number' =>
+                                        array (
+                                            'dataType' => 'double',
+                                            'required' => false,
+                                            'description' => '',
+                                            'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
+                                        ),
+                                        'arr' =>
+                                        array (
+                                            'dataType' => 'array',
+                                            'required' => false,
+                                            'description' => '',
+                                            'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
+                                        ),
+                                        'nested' =>
+                                        array (
+                                            'dataType' => 'object (JmsNested)',
+                                            'required' => false,
+                                            'description' => '',
+                                            'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
+                                        ),
+                                        'nested_array' =>
+                                        array (
+                                            'dataType' => 'array of objects (JmsNested)',
+                                            'required' => false,
+                                            'description' => '',
+                                            'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
+                                        ),
+                                    ),
+                                ),
+                                'since' =>
+                                array (
+                                    'dataType' => 'string',
+                                    'required' => false,
+                                    'description' => '',
+                                    'readonly' => false,
+                                    'sinceVersion' => '0.2',
+                                    'untilVersion' => null,
+                                ),
+                                'until' =>
+                                array (
+                                    'dataType' => 'string',
+                                    'required' => false,
+                                    'description' => '',
+                                    'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => '0.3',
+                                ),
+                                'since_and_until' =>
+                                array (
+                                    'dataType' => 'string',
+                                    'required' => false,
+                                    'description' => '',
+                                    'readonly' => false,
+                                    'sinceVersion' => '0.4',
+                                    'untilVersion' => '0.5',
+                                ),
+                            ),
+                        ),
+                        'nested_array' =>
+                        array (
+                            'dataType' => 'array of objects (JmsNested)',
+                            'required' => false,
+                            'description' => '',
+                            'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                        ),
+                    ),
+                ),
+                8 =>
+                array(
+                    'method' => 'ANY',
                     'uri' => '/secure-route',
                     'requirements' =>
                     array(
@@ -454,7 +714,7 @@ And, it supports multilines until the first \'@\' char.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
-                8 =>
+                9 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/yet-another/{id}',
@@ -471,7 +731,7 @@ And, it supports multilines until the first \'@\' char.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
-                9 =>
+                10 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-deprecated-indicator',
@@ -479,7 +739,7 @@ And, it supports multilines until the first \'@\' char.',
                     'authentication' => false,
                     'deprecated' => true,
                 ),
-                10 =>
+                11 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param',
@@ -496,7 +756,7 @@ And, it supports multilines until the first \'@\' char.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
-                11 =>
+                12 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param-no-default',
@@ -512,7 +772,7 @@ And, it supports multilines until the first \'@\' char.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
-                12 =>
+                13 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param-strict',
@@ -529,7 +789,7 @@ And, it supports multilines until the first \'@\' char.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
-                13 =>
+                14 =>
                 array(
                     'method' => 'POST',
                     'uri' => '/z-action-with-request-param',

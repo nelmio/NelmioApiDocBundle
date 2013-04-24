@@ -134,6 +134,7 @@
                         <tr>
                             <th>Parameter</th>
                             <th>Type</th>
+                            <th>Versions</th>
                             <th>Description</th>
                         </tr>
                     </thead>
@@ -142,6 +143,7 @@
                             <tr>
                                 <td>{{ name }}</td>
                                 <td>{{ infos.dataType }}</td>
+                                <td>{% include 'NelmioApiDocBundle:Components:version.html.twig' with {'sinceVersion': infos.sinceVersion, 'untilVersion': infos.untilVersion} only %}</td>
                                 <td>{{ infos.description }}</td>
                             </tr>
                         {% endfor %}

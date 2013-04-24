@@ -12,8 +12,6 @@
 namespace Nelmio\ApiDocBundle\Parser;
 
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
-use JMS\Serializer\GraphNavigator;
-use JMS\Serializer\NavigatorContext;
 use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
@@ -79,7 +77,7 @@ class JmsMetadataParser implements ParserInterface
         $className = $input['class'];
         $groups    = $input['groups'];
 
-        return $this->doParse($className, array(), $groups, $version);
+        return $this->doParse($className, array(), $groups);
     }
 
     /**
@@ -87,7 +85,7 @@ class JmsMetadataParser implements ParserInterface
      *
      * @param  string                    $className Class to get all metadata for
      * @param  array                     $visited   Classes we've already visited to prevent infinite recursion.
-     * @param  array                     $groups    Groups to be used in the group exclusion strategy
+     * @param  array                     $groups    Serialization groups to include.
      * @return array                     metadata for given class
      * @throws \InvalidArgumentException
      */
@@ -119,11 +117,13 @@ class JmsMetadataParser implements ParserInterface
                 }
 
                 $params[$name] = array(
-                    'dataType'    => $dataType['normalized'],
-                    'required'    => false,
+                    'dataType'     => $dataType['normalized'],
+                    'required'     => false,
                     //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
-                    'description' => $this->getDescription($className, $item),
-                    'readonly'    => $item->readOnly
+                    'description'  => $this->getDescription($className, $item),
+                    'readonly'     => $item->readOnly,
+                    'sinceVersion' => $item->sinceVersion,
+                    'untilVersion' => $item->untilVersion,
                 );
 
                 // if class already parsed, continue, to avoid infinite recursion

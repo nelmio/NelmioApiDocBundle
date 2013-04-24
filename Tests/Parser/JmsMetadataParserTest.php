@@ -75,29 +75,34 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             array(
                 'class'   => $input,
                 'groups'  => array(),
-                'version' => null,
             )
         );
 
         $this->assertEquals(
             array(
                 'foo' => array(
-                    'dataType'    => 'DateTime',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'DateTime',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 ),
                 'bar' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 ),
                 'baz' => array(
-                    'dataType'    => 'array of integers',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'array of integers',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 )
             ),
             $output
@@ -143,23 +148,26 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             array(
                 'class'   => $input,
                 'groups'  => array(),
-                'version' => null,
             )
         );
 
         $this->assertEquals(
             array(
                 'foo' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 ),
                 'bar' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 ),
             ),
             $output
@@ -170,23 +178,26 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             array(
                 'class'   => $input,
                 'groups'  => array('Default'),
-                'version' => null,
             )
         );
 
         $this->assertEquals(
             array(
                 'foo' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 ),
                 'bar' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 ),
             ),
             $output
@@ -197,23 +208,26 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             array(
                 'class'   => $input,
                 'groups'  => array('Special'),
-                'version' => null,
             )
         );
 
         $this->assertEquals(
             array(
                 'bar' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 ),
                 'baz' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 ),
             ),
             $output
@@ -224,29 +238,34 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             array(
                 'class'   => $input,
                 'groups'  => array('Default', 'Special'),
-                'version' => null,
             )
         );
 
         $this->assertEquals(
             array(
                 'foo' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 ),
                 'bar' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 ),
                 'baz' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 )
             ),
             $output
@@ -265,14 +284,18 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
 
         $propertyMetadataBar               = new PropertyMetadata('Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested', 'bar');
         $propertyMetadataBar->type         = array('name' => 'string');
-        $propertyMetadataBar->sinceVersion = '0.2';
-        $propertyMetadataBar->untilVersion = '0.3';
+        $propertyMetadataBar->sinceVersion = '2.0';
+
+        $propertyMetadataBaz               = new PropertyMetadata('Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested', 'baz');
+        $propertyMetadataBaz->type         = array('name' => 'string');
+        $propertyMetadataBaz->untilVersion = '3.0';
 
         $input = 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested';
 
         $metadata = new ClassMetadata($input);
         $metadata->addPropertyMetadata($propertyMetadataFoo);
         $metadata->addPropertyMetadata($propertyMetadataBar);
+        $metadata->addPropertyMetadata($propertyMetadataBaz);
 
         $metadataFactory->expects($this->any())
             ->method('getMetadataForClass')
@@ -283,100 +306,40 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
 
         $jmsMetadataParser = new JmsMetadataParser($metadataFactory, $propertyNamingStrategy, $docCommentExtractor);
 
-        // No version specified.
+        // No group specified.
         $output = $jmsMetadataParser->parse(
             array(
                 'class'   => $input,
                 'groups'  => array(),
-                'version' => null,
             )
         );
 
         $this->assertEquals(
             array(
                 'foo' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
                 ),
                 'bar' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => '2.0',
+                    'untilVersion' => null,
                 ),
-            ),
-            $output
-        );
-
-        // 0.1
-        $output = $jmsMetadataParser->parse(
-            array(
-                'class'   => $input,
-                'groups'  => array(),
-                'version' => '0.1',
-            )
-        );
-
-        $this->assertEquals(
-            array(
-                'foo' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
-                ),
-            ),
-            $output
-        );
-
-        // 0.2 & 0.3
-        foreach (array('0.2', '0.3') as $version) {
-            $output = $jmsMetadataParser->parse(
-                array(
-                    'class'   => $input,
-                    'groups'  => array(),
-                    'version' => $version,
+                'baz' => array(
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => '3.0',
                 )
-            );
-
-            $this->assertEquals(
-                array(
-                    'foo' => array(
-                        'dataType'    => 'string',
-                        'required'    => false,
-                        'description' => 'No description.',
-                        'readonly'    => false
-                    ),
-                    'bar' => array(
-                        'dataType'    => 'string',
-                        'required'    => false,
-                        'description' => 'No description.',
-                        'readonly'    => false
-                    ),
-                ),
-                $output
-            );
-        }
-
-        // 0.4
-        $output = $jmsMetadataParser->parse(
-            array(
-                'class'   => $input,
-                'groups'  => array(),
-                'version' => '0.4',
-            )
-        );
-
-        $this->assertEquals(
-            array(
-                'foo' => array(
-                    'dataType'    => 'string',
-                    'required'    => false,
-                    'description' => 'No description.',
-                    'readonly'    => false
-                ),
             ),
             $output
         );

@@ -106,27 +106,6 @@ The following properties are available:
 
 * `input`: the input type associated to the method, currently this supports Form Types, and classes with JMS Serializer
  metadata, useful for POST|PUT methods, either as FQCN or as form type (if it is registered in the form factory in the container).
- When using a class with JMS Serializer metadata, you can
- [use specific groups](http://jmsyst.com/libs/serializer/master/cookbook/exclusion_strategies#creating-different-views-of-your-objects)
- by using this syntax:
-
- ```
- input={
-     "class"="Acme\Bundle\Entity\User",
-     "groups"={"update", "public"}
- }
- ```
-
- In this case the groups 'update' and 'public' are used.
-
- Also supported are versions:
-
- ```
-  input={
-      "class"="Acme\Bundle\Entity\User",
-      "version"="2.3"
-  }
-  ```
 
 * `output`: the output type associated with the response.  Specified and parsed the same way as `input`.
 
@@ -203,6 +182,31 @@ Also bundle will get information from the other annotations:
 ### PHPDoc ###
 
 Route functions marked as @deprecated will be set method as deprecation in documentation.
+
+#### JMS Serializer features ####
+
+The bundle has support for some of the JMS Serializer features and use these extra information in the generated documentation.
+
+##### Group Exclusion Strategy #####
+
+If your classes use [JMS Group Exclusion Strategy](http://jmsyst.com/libs/serializer/master/cookbook/exclusion_strategies#creating-different-views-of-your-objects),
+you can specify which groups to use when generating the documentation by using this syntax :
+
+ ```
+ input={
+     "class"="Acme\Bundle\Entity\User",
+     "groups"={"update", "public"}
+ }
+ ```
+
+ In this case the groups 'update' and 'public' are used.
+
+ This feature also works for the `output` property.
+
+##### Versioning Objects #####
+
+If your `output` classes use [versioning capabilities of JMS Serializer](http://jmsyst.com/libs/serializer/master/cookbook/exclusion_strategies#versioning-objects),
+the versioning information will be automatically used when generating the documentation.
 
 ### Documentation on-the-fly ###
 

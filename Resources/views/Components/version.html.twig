@@ -1,0 +1,8 @@
+{% if sinceVersion is empty and untilVersion is empty %}
+*
+{% else %}
+    {% if sinceVersion is not empty %}&gt;={{ sinceVersion }}{% endif %}
+    {% if untilVersion is not empty %}
+        {% if sinceVersion is not empty %},{% endif %}&lt;={{ untilVersion }}
+    {% endif %}
+{% endif %}

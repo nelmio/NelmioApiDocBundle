@@ -103,6 +103,20 @@ class MarkdownFormatter extends AbstractFormatter
                     $markdown .= sprintf("  * description: %s\n", $parameter['description']);
                 }
 
+                if (null !== $parameter['sinceVersion'] || null !== $parameter['untilVersion']) {
+                    $markdown .= "  * versions: ";
+                    if ($parameter['sinceVersion']) {
+                        $markdown .= '>='.$parameter['sinceVersion'];
+                    }
+                    if ($parameter['untilVersion']) {
+                        if ($parameter['sinceVersion']) {
+                            $markdown .= ',';
+                        }
+                        $markdown .= '<='.$parameter['untilVersion'];
+                    }
+                    $markdown .= "\n";
+                }
+
                 $markdown .= "\n";
             }
         }
