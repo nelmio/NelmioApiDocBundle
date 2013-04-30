@@ -349,6 +349,33 @@ page:
 
   * Requirement: \\d+
   * Description: Page of the overview.
+  * Default: 1
+
+
+### `GET` /z-action-with-query-param-no-default ###
+### This method is deprecated ###
+
+
+
+#### Filters ####
+
+page:
+
+  * Requirement: \d+
+  * Description: Page of the overview.
+
+
+### `GET` /z-action-with-query-param-strict ###
+### This method is deprecated ###
+
+
+
+#### Requirements ####
+
+**page**
+
+  - Requirement: \d+
+  - Description: Page of the overview.
 
 
 ### `POST` /z-action-with-request-param ###

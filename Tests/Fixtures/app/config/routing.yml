@@ -99,3 +99,15 @@ test_route_14:
     defaults: { _controller: NelmioApiDocTestBundle:Test:postTest2, _format: json }
     requirements:
         _method: POST
+
+test_route_15:
+    pattern:  /z-action-with-query-param-strict
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithQueryParamStrict }
+    requirements:
+        _method: GET
+
+test_route_16:
+    pattern:  /z-action-with-query-param-no-default
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithQueryParamNoDefault }
+    requirements:
+        _method: GET
