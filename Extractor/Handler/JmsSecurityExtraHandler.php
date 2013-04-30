@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Extractor\Handler;
 
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use Nelmio\ApiDocBundle\Extractor\HandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
@@ -21,7 +22,7 @@ class JmsSecurityExtraHandler implements HandlerInterface
     public function handle(ApiDoc $annotation, array $annotations, Route $route, \ReflectionMethod $method)
     {
         foreach ($annotations as $annot) {
-            if ($annot instanceof Secure) {
+            if ($annot instanceof Secure || $annot instanceof PreAuthorize) {
                 $annotation->setAuthentication(true);
             }
         }
