@@ -25,34 +25,34 @@ class SimpleFormatterTest extends WebTestCase
         restore_error_handler();
         $result    = $container->get('nelmio_api_doc.formatter.simple_formatter')->format($data);
 
-        $expected = array (
+        $expected = array(
             '/tests' =>
-            array (
+            array(
                 0 =>
-                array (
+                array(
                     'method' => 'GET',
                     'uri' => '/tests.{_format}',
                     'description' => 'index action',
                     'filters' =>
-                    array (
+                    array(
                         'a' =>
-                        array (
+                        array(
                             'dataType' => 'integer',
                         ),
                         'b' =>
-                        array (
+                        array(
                             'dataType' => 'string',
                             'arbitrary' =>
-                            array (
+                            array(
                                 0 => 'arg1',
                                 1 => 'arg2',
                             ),
                         ),
                     ),
                     'requirements' =>
-                    array (
+                    array(
                         '_format' =>
-                        array (
+                        array(
                             'requirement' => '',
                             'dataType' => '',
                             'description' => '',
@@ -63,30 +63,30 @@ class SimpleFormatterTest extends WebTestCase
                     'deprecated' => false,
                 ),
                 1 =>
-                array (
+                array(
                     'method' => 'GET',
                     'uri' => '/tests.{_format}',
                     'description' => 'index action',
                     'filters' =>
-                    array (
+                    array(
                         'a' =>
-                        array (
+                        array(
                             'dataType' => 'integer',
                         ),
                         'b' =>
-                        array (
+                        array(
                             'dataType' => 'string',
                             'arbitrary' =>
-                            array (
+                            array(
                                 0 => 'arg1',
                                 1 => 'arg2',
                             ),
                         ),
                     ),
                     'requirements' =>
-                    array (
+                    array(
                         '_format' =>
-                        array (
+                        array(
                             'requirement' => '',
                             'dataType' => '',
                             'description' => '',
@@ -97,29 +97,29 @@ class SimpleFormatterTest extends WebTestCase
                     'deprecated' => false,
                 ),
                 2 =>
-                array (
+                array(
                     'method' => 'POST',
                     'uri' => '/tests.{_format}',
                     'host' => 'api.test.dev',
                     'description' => 'create test',
                     'parameters' =>
-                    array (
-                        'a' =>
-                        array (
+                    array(
+                        'test_type[a]' =>
+                        array(
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
                             'readonly' => false,
                         ),
-                        'b' =>
-                        array (
+                        'test_type[b]' =>
+                        array(
                             'dataType' => 'string',
                             'required' => false,
                             'description' => '',
                             'readonly' => false,
                         ),
-                        'c' =>
-                        array (
+                        'test_type[c]' =>
+                        array(
                             'dataType' => 'boolean',
                             'required' => true,
                             'description' => '',
@@ -127,9 +127,9 @@ class SimpleFormatterTest extends WebTestCase
                         ),
                     ),
                     'requirements' =>
-                    array (
+                    array(
                         '_format' =>
-                        array (
+                        array(
                             'requirement' => '',
                             'dataType' => '',
                             'description' => '',
@@ -140,29 +140,29 @@ class SimpleFormatterTest extends WebTestCase
                     'deprecated' => false,
                 ),
                 3 =>
-                array (
+                array(
                     'method' => 'POST',
                     'uri' => '/tests.{_format}',
                     'host' => 'api.test.dev',
                     'description' => 'create test',
                     'parameters' =>
-                    array (
-                        'a' =>
-                        array (
+                    array(
+                        'test_type[a]' =>
+                        array(
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
                             'readonly' => false,
                         ),
-                        'b' =>
-                        array (
+                        'test_type[b]' =>
+                        array(
                             'dataType' => 'string',
                             'required' => false,
                             'description' => '',
                             'readonly' => false,
                         ),
-                        'c' =>
-                        array (
+                        'test_type[c]' =>
+                        array(
                             'dataType' => 'boolean',
                             'required' => true,
                             'description' => '',
@@ -170,9 +170,9 @@ class SimpleFormatterTest extends WebTestCase
                         ),
                     ),
                     'requirements' =>
-                    array (
+                    array(
                         '_format' =>
-                        array (
+                        array(
                             'requirement' => '',
                             'dataType' => '',
                             'description' => '',
@@ -184,16 +184,16 @@ class SimpleFormatterTest extends WebTestCase
                 ),
             ),
             'others' =>
-            array (
+            array(
                 0 =>
-                array (
+                array(
                     'method' => 'POST',
                     'uri' => '/another-post',
                     'description' => 'create another test',
                     'parameters' =>
-                    array (
-                        'a' =>
-                        array (
+                    array(
+                        'dependency_type[a]' =>
+                        array(
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
@@ -205,7 +205,7 @@ class SimpleFormatterTest extends WebTestCase
                     'deprecated' => false,
                 ),
                 1 =>
-                array (
+                array(
                     'method' => 'ANY',
                     'uri' => '/any',
                     'description' => 'Action without HTTP verb',
@@ -214,14 +214,14 @@ class SimpleFormatterTest extends WebTestCase
                     'deprecated' => false,
                 ),
                 2 =>
-                array (
+                array(
                     'method' => 'ANY',
                     'uri' => '/any/{foo}',
                     'description' => 'Action without HTTP verb',
                     'requirements' =>
-                    array (
+                    array(
                         'foo' =>
-                        array (
+                        array(
                             'requirement' => '',
                             'dataType' => '',
                             'description' => '',
@@ -232,7 +232,7 @@ class SimpleFormatterTest extends WebTestCase
                     'deprecated' => false,
                 ),
                 3 =>
-                array (
+                array(
                     'method' => 'ANY',
                     'uri' => '/authenticated',
                     'https' => false,
@@ -245,59 +245,59 @@ class SimpleFormatterTest extends WebTestCase
                     'uri' => '/jms-input-test',
                     'description' => 'Testing JMS',
                     'parameters' =>
-                    array (
+                    array(
                         'foo' =>
-                        array (
+                        array(
                             'dataType' => 'string',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
                         ),
                         'bar' =>
-                        array (
+                        array(
                             'dataType' => 'DateTime',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => true,
                         ),
                         'number' =>
-                        array (
+                        array(
                             'dataType' => 'double',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
                         ),
                         'arr' =>
-                        array (
+                        array(
                             'dataType' => 'array',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
                         ),
                         'nested' =>
-                        array (
+                        array(
                             'dataType' => 'object (JmsNested)',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
                             'children' =>
-                            array (
+                            array(
                                 'foo' =>
-                                array (
+                                array(
                                     'dataType' => 'DateTime',
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => true,
                                 ),
                                 'bar' =>
-                                array (
+                                array(
                                     'dataType' => 'string',
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => false,
                                 ),
                                 'baz' =>
-                                array (
+                                array(
                                     'dataType' => 'array of integers',
                                     'required' => false,
                                     'description' => 'Epic description.
@@ -306,57 +306,57 @@ With multiple lines.',
                                     'readonly' => false,
                                 ),
                                 'circular' =>
-                                array (
+                                array(
                                     'dataType' => 'object (JmsNested)',
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => false,
                                 ),
                                 'parent' =>
-                                array (
+                                array(
                                     'dataType' => 'object (JmsTest)',
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => false,
                                     'children' =>
-                                    array (
+                                    array(
                                         'foo' =>
-                                        array (
+                                        array(
                                             'dataType' => 'string',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
                                         ),
                                         'bar' =>
-                                        array (
+                                        array(
                                             'dataType' => 'DateTime',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => true,
                                         ),
                                         'number' =>
-                                        array (
+                                        array(
                                             'dataType' => 'double',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
                                         ),
                                         'arr' =>
-                                        array (
+                                        array(
                                             'dataType' => 'array',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
                                         ),
                                         'nested' =>
-                                        array (
+                                        array(
                                             'dataType' => 'object (JmsNested)',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
                                         ),
                                         'nested_array' =>
-                                        array (
+                                        array(
                                             'dataType' => 'array of objects (JmsNested)',
                                             'required' => false,
                                             'description' => 'No description.',
@@ -367,7 +367,7 @@ With multiple lines.',
                             ),
                         ),
                         'nested_array' =>
-                        array (
+                        array(
                             'dataType' => 'array of objects (JmsNested)',
                             'required' => false,
                             'description' => 'No description.',
@@ -384,9 +384,9 @@ With multiple lines.',
                     'uri' => '/jms-return-test',
                     'description' => 'Testing return',
                     'response' =>
-                    array (
-                        'a' =>
-                        array (
+                    array(
+                        'dependency_type[a]' =>
+                        array(
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
@@ -405,15 +405,15 @@ With multiple lines.',
                     'documentation' => 'This method is useful to test if the getDocComment works.
 And, it supports multilines until the first \'@\' char.',
                     'requirements' =>
-                    array (
+                    array(
                         'id' =>
-                        array (
+                        array(
                             'dataType' => 'int',
                             'description' => 'A nice comment',
                             'requirement' => '',
                         ),
                         'page' =>
-                        array (
+                        array(
                             'dataType' => 'int',
                             'description' => '',
                             'requirement' => '',
@@ -430,9 +430,9 @@ And, it supports multilines until the first \'@\' char.',
                     'method' => 'ANY',
                     'uri' => '/secure-route',
                     'requirements' =>
-                    array (
+                    array(
                         '_scheme' =>
-                        array (
+                        array(
                             'requirement' => 'https',
                             'dataType' => '',
                             'description' => '',
@@ -447,9 +447,9 @@ And, it supports multilines until the first \'@\' char.',
                     'method' => 'ANY',
                     'uri' => '/yet-another/{id}',
                     'requirements' =>
-                    array (
+                    array(
                         'id' =>
-                        array (
+                        array(
                             'requirement' => '\\d+',
                             'dataType' => '',
                             'description' => '',
@@ -464,9 +464,9 @@ And, it supports multilines until the first \'@\' char.',
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param',
                     'filters' =>
-                    array (
+                    array(
                         'page' =>
-                        array (
+                        array(
                             'requirement' => '\\d+',
                             'description' => 'Page of the overview.',
                         ),
@@ -480,9 +480,9 @@ And, it supports multilines until the first \'@\' char.',
                     'method' => 'POST',
                     'uri' => '/z-action-with-request-param',
                     'parameters' =>
-                    array (
+                    array(
                         'param1' =>
-                        array (
+                        array(
                             'required' => true,
                             'dataType' => 'string',
                             'description' => 'Param1 description.',
@@ -495,16 +495,16 @@ And, it supports multilines until the first \'@\' char.',
                 ),
             ),
             '/tests2' =>
-            array (
+            array(
                 0 =>
-                array (
+                array(
                     'method' => 'POST',
                     'uri' => '/tests2.{_format}',
                     'description' => 'post test 2',
                     'requirements' =>
-                    array (
+                    array(
                         '_format' =>
-                        array (
+                        array(
                             'requirement' => '',
                             'dataType' => '',
                             'description' => '',
@@ -516,16 +516,16 @@ And, it supports multilines until the first \'@\' char.',
                 ),
             ),
             '/tests2' =>
-            array (
+            array(
                 0 =>
-                array (
+                array(
                     'method' => 'POST',
                     'uri' => '/tests2.{_format}',
                     'description' => 'post test 2',
                     'requirements' =>
-                    array (
+                    array(
                         '_format' =>
-                        array (
+                        array(
                             'requirement' => '',
                             'dataType' => '',
                             'description' => '',
