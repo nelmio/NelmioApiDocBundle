@@ -15,6 +15,8 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
+    const ROUTES_QUANTITY = 18;
+
     public function testAll()
     {
         $container = $this->getContainer();
@@ -24,7 +26,7 @@ class ApiDocExtractorTest extends WebTestCase
         restore_error_handler();
 
         $this->assertTrue(is_array($data));
-        $this->assertCount(16, $data);
+        $this->assertCount(self::ROUTES_QUANTITY, $data);
 
         foreach ($data as $d) {
             $this->assertTrue(is_array($d));
@@ -193,7 +195,7 @@ class ApiDocExtractorTest extends WebTestCase
             $annotation->getCache()
         );
     }
-	
+
     public function testGetWithDeprecated()
     {
         $container  = $this->getContainer();
