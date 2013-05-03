@@ -97,9 +97,25 @@ class TestController
 
     /**
      * @ApiDoc()
+     * @QueryParam(strict=true, name="page", requirements="\d+", description="Page of the overview.")
+     */
+    public function zActionWithQueryParamStrictAction()
+    {
+    }
+
+    /**
+     * @ApiDoc()
      * @QueryParam(name="page", requirements="\d+", default="1", description="Page of the overview.")
      */
     public function zActionWithQueryParamAction()
+    {
+    }
+
+    /**
+     * @ApiDoc()
+     * @QueryParam(name="page", requirements="\d+", description="Page of the overview.")
+     */
+    public function zActionWithQueryParamNoDefaultAction()
     {
     }
 

@@ -469,6 +469,7 @@ And, it supports multilines until the first \'@\' char.',
                         array (
                             'requirement' => '\\d+',
                             'description' => 'Page of the overview.',
+                            'default' => '1',
                         ),
                     ),
                     'https' => false,
@@ -476,6 +477,39 @@ And, it supports multilines until the first \'@\' char.',
                     'deprecated' => false,
                 ),
                 10 =>
+                array(
+                    'method' => 'GET',
+                    'uri' => '/z-action-with-query-param-no-default',
+                    'filters' =>
+                    array (
+                        'page' =>
+                        array (
+                            'requirement' => '\\d+',
+                            'description' => 'Page of the overview.',
+                        ),
+                    ),
+                    'https' => false,
+                    'authentication' => false,
+                    'deprecated' => false,
+                ),
+                11 =>
+                array(
+                    'method' => 'GET',
+                    'uri' => '/z-action-with-query-param-strict',
+                    'requirements' =>
+                    array (
+                        'page' =>
+                        array (
+                            'requirement' => '\\d+',
+                            'dataType' => '',
+                            'description' => 'Page of the overview.',
+                        ),
+                    ),
+                    'https' => false,
+                    'authentication' => false,
+                    'deprecated' => false,
+                ),
+                12 =>
                 array(
                     'method' => 'POST',
                     'uri' => '/z-action-with-request-param',
