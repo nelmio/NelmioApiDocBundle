@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\DependencyInjection\Scope;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
@@ -43,7 +44,14 @@ abstract class WebTestCase extends BaseWebTestCase
         }
         static::$kernel->boot();
 
-        return static::$kernel->getContainer();
+        $container = static::$kernel->getContainer();
+
+        // add request scope if not created (for forward compat with sf2.3)
+        if (!$container->hasScope('request')) {
+            $container->addScope(new Scope('request'));
+        }
+
+        return $container;
     }
 
     protected static function getKernelClass()

@@ -180,7 +180,7 @@ class ApiDocExtractor
             $method = $matches[2];
             if ($this->container->has($controller)) {
                 $this->container->enterScope('request');
-                $this->container->set('request', new Request());
+                $this->container->set('request', new Request(), 'request');
                 $class = get_class($this->container->get($controller));
                 $this->container->leaveScope('request');
             }
