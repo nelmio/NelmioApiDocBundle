@@ -87,18 +87,18 @@ _create test_
 
 #### Parameters ####
 
-a:
+test_type[a]:
 
   * type: string
   * required: true
   * description: A nice description
 
-b:
+test_type[b]:
 
   * type: string
   * required: false
 
-c:
+test_type[c]:
 
   * type: boolean
   * required: true
@@ -117,18 +117,18 @@ _create test_
 
 #### Parameters ####
 
-a:
+test_type[a]:
 
   * type: string
   * required: true
   * description: A nice description
 
-b:
+test_type[b]:
 
   * type: string
   * required: false
 
-c:
+test_type[c]:
 
   * type: boolean
   * required: true
@@ -156,7 +156,7 @@ _create another test_
 
 #### Parameters ####
 
-a:
+dependency_type[a]:
 
   * type: string
   * required: true
@@ -291,7 +291,7 @@ _Testing return_
 
 #### Response ####
 
-a:
+dependency_type[a]:
 
   * type: string
   * description: A nice description
