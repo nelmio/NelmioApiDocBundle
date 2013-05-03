@@ -153,6 +153,20 @@ class ApiDocExtractorTest extends WebTestCase
             "This method is useful to test if the getDocComment works.",
             $annotation->getDescription()
         );
+		
+        $data = $annotation->toArray();
+        $this->assertEquals(
+            4,
+            count($data['requirements'])
+        );
+        $this->assertEquals(
+            'The param type',
+            $data['requirements']['paramType']['description']
+        );
+        $this->assertEquals(
+            'The param id',
+            $data['requirements']['param']['description']
+        );
     }
 
     public function testGetWithAuthentication()
