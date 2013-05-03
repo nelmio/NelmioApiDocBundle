@@ -297,7 +297,7 @@ a:
   * description: A nice description
 
 
-### `ANY` /my-commented/{id}/{page} ###
+### `ANY` /my-commented/{id}/{page}/{paramType}/{param} ###
 ### This method is deprecated ###
 
 
@@ -312,6 +312,14 @@ _This method is useful to test if the getDocComment works._
 **page**
 
   - Type: int
+**paramType**
+
+  - Type: int
+  - Description: The param type
+**param**
+
+  - Type: int
+  - Description: The param id
 
 
 ### `ANY` /secure-route ###
