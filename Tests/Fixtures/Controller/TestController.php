@@ -73,6 +73,8 @@ class TestController
      *
      * @param int $id   A nice comment
      * @param int $page
+     * @param int $paramType The param type
+     * @param int $param The param id
      */
     public function myCommentedAction()
     {
