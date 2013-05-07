@@ -12,10 +12,10 @@
         {% endif %}
 
         {% if data.https %}
-            <img src="{{ asset('bundles/nelmioapidoc/image/lock.png') }}" class="icon" alt="HTTPS" />
+            <span class="icon lock" title="HTTPS"></span>
         {% endif %}
         {% if data.authentication %}
-            <img src="{{ asset('bundles/nelmioapidoc/image/keys.png') }}" class="icon" alt="Needs authentication" />
+            <span class="icon keys" title="Needs authentication"></span>
         {% endif %}
 
         <span class="path">
