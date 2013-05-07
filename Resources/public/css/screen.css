@@ -327,8 +327,8 @@ li.operation.get div.content h4 {
 
 /* POST operations */
 li.operation.post div.heading {
-  border-color: #c3e8d1;
-  background-color: #def1e5;
+  border-color: #a7e1a1;
+  background-color: #d4f7cd;
 }
 li.operation.post div.heading h3 span.http_method a{
   background-color: #10a54a;
