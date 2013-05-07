@@ -200,31 +200,26 @@ foo:
 
   * type: string
   * required: false
-  * description: No description.
 
 number:
 
   * type: double
   * required: false
-  * description: No description.
 
 arr:
 
   * type: array
   * required: false
-  * description: No description.
 
 nested:
 
   * type: object (JmsNested)
   * required: false
-  * description: No description.
 
 nested[bar]:
 
   * type: string
   * required: false
-  * description: No description.
 
 nested[baz][]:
 
@@ -238,49 +233,41 @@ nested[circular]:
 
   * type: object (JmsNested)
   * required: false
-  * description: No description.
 
 nested[parent]:
 
   * type: object (JmsTest)
   * required: false
-  * description: No description.
 
 nested[parent][foo]:
 
   * type: string
   * required: false
-  * description: No description.
 
 nested[parent][number]:
 
   * type: double
   * required: false
-  * description: No description.
 
 nested[parent][arr]:
 
   * type: array
   * required: false
-  * description: No description.
 
 nested[parent][nested]:
 
   * type: object (JmsNested)
   * required: false
-  * description: No description.
 
 nested[parent][nested_array][]:
 
   * type: array of objects (JmsNested)
   * required: false
-  * description: No description.
 
 nested_array[]:
 
   * type: array of objects (JmsNested)
   * required: false
-  * description: No description.
 
 
 ### `GET` /jms-return-test ###
