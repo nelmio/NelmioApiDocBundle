@@ -141,9 +141,9 @@ parameters, and you can document them as you want, but keep in mind to be consis
 If you set `input`, then the bundle automatically extracts parameters based on the given type,
 and determines for each parameter its data type, and if it's required or not.
 
-For Form Types, you can add an extra option named `description` on each field:
-
 For classes parsed with JMS metadata, description will be taken from the properties doc comment, if available.
+
+For Form Types, you can add an extra option named `description` on each field:
 
 ``` php
 <?php
@@ -167,6 +167,21 @@ class YourType extends AbstractType
 The bundle will also get information from the routing definition (`requirements`, `pattern`, etc), so to get the
 best out of it you should define strict _method requirements etc.
 
+### Other bundle annotations ###
+
+Also bundle will get information from the other annotations:
+
+* @FOS\RestBundle\Controller\Annotations\RequestParam - use as `parameters`
+
+* @FOS\RestBundle\Controller\Annotations\QueryParam - use as `requirements` (when strict parameter is true), `filters` (when strict is false)
+
+* @JMS\SecurityExtraBundle\Annotation\Secure - set `authentification` to true
+
+* @Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache - set `cache`
+
+### PHPDoc ###
+
+Route functions marked as @deprecated will be set method as deprecation in documentation.
 
 ### Documentation on-the-fly ###
 
@@ -239,7 +254,7 @@ You can also define your own motd content (above methods list). All you have to 
 ## Using Your Own Annotations ##
 
 If you have developed your own project-related annotations, and you want to parse them to populate
-the `ApiDoc`, you can provide custom handlers as services. You juste have to implement the
+the `ApiDoc`, you can provide custom handlers as services. You just have to implement the
 `Nelmio\ApiDocBundle\Extractor\HandlerInterface` and tag it as `nelmio_api_doc.extractor.handler`:
 
     # app/config/config.yml
