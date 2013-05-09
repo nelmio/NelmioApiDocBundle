@@ -250,35 +250,35 @@ class SimpleFormatterTest extends WebTestCase
                         array(
                             'dataType' => 'string',
                             'required' => false,
-                            'description' => 'No description.',
+                            'description' => '',
                             'readonly' => false,
                         ),
                         'bar' =>
                         array(
                             'dataType' => 'DateTime',
                             'required' => false,
-                            'description' => 'No description.',
+                            'description' => '',
                             'readonly' => true,
                         ),
                         'number' =>
                         array(
                             'dataType' => 'double',
                             'required' => false,
-                            'description' => 'No description.',
+                            'description' => '',
                             'readonly' => false,
                         ),
                         'arr' =>
                         array(
                             'dataType' => 'array',
                             'required' => false,
-                            'description' => 'No description.',
+                            'description' => '',
                             'readonly' => false,
                         ),
                         'nested' =>
                         array(
                             'dataType' => 'object (JmsNested)',
                             'required' => false,
-                            'description' => 'No description.',
+                            'description' => '',
                             'readonly' => false,
                             'children' =>
                             array(
@@ -286,14 +286,14 @@ class SimpleFormatterTest extends WebTestCase
                                 array(
                                     'dataType' => 'DateTime',
                                     'required' => false,
-                                    'description' => 'No description.',
+                                    'description' => '',
                                     'readonly' => true,
                                 ),
                                 'bar' =>
                                 array(
                                     'dataType' => 'string',
                                     'required' => false,
-                                    'description' => 'No description.',
+                                    'description' => '',
                                     'readonly' => false,
                                 ),
                                 'baz' =>
@@ -309,14 +309,14 @@ With multiple lines.',
                                 array(
                                     'dataType' => 'object (JmsNested)',
                                     'required' => false,
-                                    'description' => 'No description.',
+                                    'description' => '',
                                     'readonly' => false,
                                 ),
                                 'parent' =>
                                 array(
                                     'dataType' => 'object (JmsTest)',
                                     'required' => false,
-                                    'description' => 'No description.',
+                                    'description' => '',
                                     'readonly' => false,
                                     'children' =>
                                     array(
@@ -324,42 +324,42 @@ With multiple lines.',
                                         array(
                                             'dataType' => 'string',
                                             'required' => false,
-                                            'description' => 'No description.',
+                                            'description' => '',
                                             'readonly' => false,
                                         ),
                                         'bar' =>
                                         array(
                                             'dataType' => 'DateTime',
                                             'required' => false,
-                                            'description' => 'No description.',
+                                            'description' => '',
                                             'readonly' => true,
                                         ),
                                         'number' =>
                                         array(
                                             'dataType' => 'double',
                                             'required' => false,
-                                            'description' => 'No description.',
+                                            'description' => '',
                                             'readonly' => false,
                                         ),
                                         'arr' =>
                                         array(
                                             'dataType' => 'array',
                                             'required' => false,
-                                            'description' => 'No description.',
+                                            'description' => '',
                                             'readonly' => false,
                                         ),
                                         'nested' =>
                                         array(
                                             'dataType' => 'object (JmsNested)',
                                             'required' => false,
-                                            'description' => 'No description.',
+                                            'description' => '',
                                             'readonly' => false,
                                         ),
                                         'nested_array' =>
                                         array(
                                             'dataType' => 'array of objects (JmsNested)',
                                             'required' => false,
-                                            'description' => 'No description.',
+                                            'description' => '',
                                             'readonly' => false,
                                         ),
                                     ),
@@ -370,7 +370,7 @@ With multiple lines.',
                         array(
                             'dataType' => 'array of objects (JmsNested)',
                             'required' => false,
-                            'description' => 'No description.',
+                            'description' => '',
                             'readonly' => false,
                         ),
                     ),
