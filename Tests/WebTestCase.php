@@ -44,14 +44,7 @@ abstract class WebTestCase extends BaseWebTestCase
         }
         static::$kernel->boot();
 
-        $container = static::$kernel->getContainer();
-
-        // add request scope if not created (for forward compat with sf2.3)
-        if (!$container->hasScope('request')) {
-            $container->addScope(new Scope('request'));
-        }
-
-        return $container;
+        return static::$kernel->getContainer();
     }
 
     protected static function getKernelClass()
