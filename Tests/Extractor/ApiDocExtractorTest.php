@@ -15,7 +15,7 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
-    const ROUTES_QUANTITY = 18;
+    const ROUTES_QUANTITY = 19;
 
     public function testAll()
     {
