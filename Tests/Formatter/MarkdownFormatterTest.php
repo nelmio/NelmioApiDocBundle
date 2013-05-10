@@ -29,8 +29,6 @@ class MarkdownFormatterTest extends WebTestCase
 ## /tests ##
 
 ### `GET` /tests.{_format} ###
-### This method is deprecated ###
-
 
 _index action_
 
@@ -52,8 +50,6 @@ b:
 
 
 ### `GET` /tests.{_format} ###
-### This method is deprecated ###
-
 
 _index action_
 
@@ -75,8 +71,6 @@ b:
 
 
 ### `POST` /tests.{_format} ###
-### This method is deprecated ###
-
 
 _create test_
 
@@ -105,8 +99,6 @@ test_type[c]:
 
 
 ### `POST` /tests.{_format} ###
-### This method is deprecated ###
-
 
 _create test_
 
@@ -137,8 +129,6 @@ test_type[c]:
 ## /tests2 ##
 
 ### `POST` /tests2.{_format} ###
-### This method is deprecated ###
-
 
 _post test 2_
 
@@ -149,8 +139,6 @@ _post test 2_
 
 
 ### `POST` /another-post ###
-### This method is deprecated ###
-
 
 _create another test_
 
@@ -164,15 +152,11 @@ dependency_type[a]:
 
 
 ### `ANY` /any ###
-### This method is deprecated ###
-
 
 _Action without HTTP verb_
 
 
 ### `ANY` /any/{foo} ###
-### This method is deprecated ###
-
 
 _Action without HTTP verb_
 
@@ -183,14 +167,10 @@ _Action without HTTP verb_
 
 
 ### `ANY` /authenticated ###
-### This method is deprecated ###
-
 
 
 
 ### `POST` /jms-input-test ###
-### This method is deprecated ###
-
 
 _Testing JMS_
 
@@ -284,8 +264,6 @@ nested_array[]:
 
 
 ### `GET` /jms-return-test ###
-### This method is deprecated ###
-
 
 _Testing return_
 
@@ -298,8 +276,6 @@ dependency_type[a]:
 
 
 ### `ANY` /my-commented/{id}/{page}/{paramType}/{param} ###
-### This method is deprecated ###
-
 
 _This method is useful to test if the getDocComment works._
 
@@ -323,8 +299,6 @@ _This method is useful to test if the getDocComment works._
 
 
 ### `ANY` /secure-route ###
-### This method is deprecated ###
-
 
 
 #### Requirements ####
@@ -335,8 +309,6 @@ _This method is useful to test if the getDocComment works._
 
 
 ### `ANY` /yet-another/{id} ###
-### This method is deprecated ###
-
 
 
 #### Requirements ####
@@ -346,9 +318,13 @@ _This method is useful to test if the getDocComment works._
   - Requirement: \\d+
 
 
-### `GET` /z-action-with-query-param ###
+### `GET` /z-action-with-deprecated-indicator ###
 ### This method is deprecated ###
 
+
+
+
+### `GET` /z-action-with-query-param ###
 
 
 #### Filters ####
@@ -361,8 +337,6 @@ page:
 
 
 ### `GET` /z-action-with-query-param-no-default ###
-### This method is deprecated ###
-
 
 
 #### Filters ####
@@ -374,8 +348,6 @@ page:
 
 
 ### `GET` /z-action-with-query-param-strict ###
-### This method is deprecated ###
-
 
 
 #### Requirements ####
@@ -387,8 +359,6 @@ page:
 
 
 ### `POST` /z-action-with-request-param ###
-### This method is deprecated ###
-
 
 
 #### Parameters ####
@@ -413,8 +383,6 @@ MARKDOWN;
 
         $expected = <<<MARKDOWN
 ### `GET` /tests.{_format} ###
-### This method is deprecated ###
-
 
 _index action_
 

@@ -111,3 +111,9 @@ test_route_16:
     defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithQueryParamNoDefault }
     requirements:
         _method: GET
+
+test_route_17:
+    pattern:  /z-action-with-deprecated-indicator
+    defaults: { _controller: NelmioApiDocTestBundle:Test:deprecated }
+    requirements:
+        _method: GET
