@@ -474,6 +474,14 @@ And, it supports multilines until the first \'@\' char.',
                 9 =>
                 array(
                     'method' => 'GET',
+                    'uri' => '/z-action-with-deprecated-indicator',
+                    'https' => false,
+                    'authentication' => false,
+                    'deprecated' => true,
+                ),
+                10 =>
+                array(
+                    'method' => 'GET',
                     'uri' => '/z-action-with-query-param',
                     'filters' =>
                     array(
@@ -488,7 +496,7 @@ And, it supports multilines until the first \'@\' char.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
-                10 =>
+                11 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param-no-default',
@@ -504,7 +512,7 @@ And, it supports multilines until the first \'@\' char.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
-                11 =>
+                12 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param-strict',
@@ -521,7 +529,7 @@ And, it supports multilines until the first \'@\' char.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
-                12 =>
+                13 =>
                 array(
                     'method' => 'POST',
                     'uri' => '/z-action-with-request-param',
