@@ -47,10 +47,12 @@ class FormTypeParser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($item)
+    public function supports(array $item)
     {
+        $className = $item['class'];
+
         try {
-            if ($this->createForm($item)) {
+            if ($this->createForm($className)) {
                 return true;
             }
         } catch (FormException $e) {
@@ -65,8 +67,10 @@ class FormTypeParser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function parse($type)
+    public function parse(array $item)
     {
+        $type = $item['class'];
+
         if ($this->implementsType($type)) {
             $type = $this->getTypeInstance($type);
         }

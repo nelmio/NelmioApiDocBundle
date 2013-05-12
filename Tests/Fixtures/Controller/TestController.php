@@ -172,12 +172,21 @@ class TestController
     public function cachedAction()
     {
     }
-	
+
     /**
      * @ApiDoc()
      * @deprecated
      */
     public function deprecatedAction()
+    {
+    }
+
+    /**
+     * @ApiDoc(
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
+     * )
+     */
+    public function jmsReturnNestedOutputAction()
     {
     }
 }

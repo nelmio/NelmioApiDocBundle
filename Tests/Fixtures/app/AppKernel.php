@@ -12,23 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 // get the autoload file
-$dir = __DIR__;
-$lastDir = null;
-while ($dir !== $lastDir) {
-    $lastDir = $dir;
-
-    if (is_file($dir.'/autoload.php')) {
-        require_once $dir.'/autoload.php';
-        break;
-    }
-
-    if (is_file($dir.'/autoload.php.dist')) {
-        require_once $dir.'/autoload.php.dist';
-        break;
-    }
-
-    $dir = dirname($dir);
-}
+require_once __DIR__.'/../../../vendor/autoload.php';
 
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
