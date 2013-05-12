@@ -73,6 +73,8 @@ abstract class AbstractFormatter implements FormatterInterface
                 'dataType'      => $info['dataType'],
                 'readonly'      => $info['readonly'],
                 'required'      => $info['required'],
+                'sinceVersion'  => array_key_exists('sinceVersion', $info) ? $info['sinceVersion'] : null,
+                'untilVersion'  => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
             );
 
             if (isset($info['children']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {

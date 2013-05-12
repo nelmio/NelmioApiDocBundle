@@ -117,3 +117,7 @@ test_route_17:
     defaults: { _controller: NelmioApiDocTestBundle:Test:deprecated }
     requirements:
         _method: GET
+
+test_return_nested_output:
+    pattern: /return-nested-output
+    defaults: { _controller: NelmioApiDocTestBundle:Test:jmsReturnNestedOutput, _format: json }

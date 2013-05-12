@@ -244,6 +244,21 @@ nested[parent][nested_array][]:
   * type: array of objects (JmsNested)
   * required: false
 
+nested[since]:
+
+  * type: string
+  * required: false
+
+nested[until]:
+
+  * type: string
+  * required: false
+
+nested[since_and_until]:
+
+  * type: string
+  * required: false
+
 nested_array[]:
 
   * type: array of objects (JmsNested)
@@ -283,6 +298,98 @@ _This method is useful to test if the getDocComment works._
 
   - Type: int
   - Description: The param id
+
+
+### `ANY` /return-nested-output ###
+
+
+#### Response ####
+
+foo:
+
+  * type: string
+
+bar:
+
+  * type: DateTime
+
+number:
+
+  * type: double
+
+arr:
+
+  * type: array
+
+nested:
+
+  * type: object (JmsNested)
+
+nested[foo]:
+
+  * type: DateTime
+
+nested[bar]:
+
+  * type: string
+
+nested[baz][]:
+
+  * type: array of integers
+  * description: Epic description.
+
+With multiple lines.
+
+nested[circular]:
+
+  * type: object (JmsNested)
+
+nested[parent]:
+
+  * type: object (JmsTest)
+
+nested[parent][foo]:
+
+  * type: string
+
+nested[parent][bar]:
+
+  * type: DateTime
+
+nested[parent][number]:
+
+  * type: double
+
+nested[parent][arr]:
+
+  * type: array
+
+nested[parent][nested]:
+
+  * type: object (JmsNested)
+
+nested[parent][nested_array][]:
+
+  * type: array of objects (JmsNested)
+
+nested[since]:
+
+  * type: string
+  * versions: >=0.2
+
+nested[until]:
+
+  * type: string
+  * versions: <=0.3
+
+nested[since_and_until]:
+
+  * type: string
+  * versions: >=0.4,<=0.5
+
+nested_array[]:
+
+  * type: array of objects (JmsNested)
 
 
 ### `ANY` /secure-route ###
