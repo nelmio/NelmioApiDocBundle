@@ -16,6 +16,11 @@
         <div id="header">
             <a href=""><h1>{{ apiName }}</h1></a>
             <div id="sandbox_configuration">
+                content format:
+                <select id="content_format">
+                    <option value="x-www-form-urlencoded">Form Data</option>
+                    <option value="json">JSON</option>
+                </select>
                 request format:
                 <select id="request_format">
                     <option value="json"{{ defaultRequestFormat == 'json' ? ' selected' : '' }}>JSON</option>
@@ -161,6 +166,9 @@
                         headers['Accept'] = 'application/' + requestFormat;
                     }
 
+                    // set content format
+                    var contentFormat = $('#content_format').val();
+
                     // retrieve all the parameters to send
                     $('.parameters .tuple', $(this)).each(function() {
                         var key, value;
@@ -182,6 +190,10 @@
 
                         if (value) {
                             headers[key] = value;
+                        }
+
+                        if(!('Content-type' in headers)) {
+                            headers['Content-type'] = 'application/'+contentFormat;
                         }
                     });
 
@@ -207,21 +219,30 @@
                     var endpoint = '{{ app.request.getBaseUrl() }}';
                     {% else -%}
                     var endpoint = '{{ endpoint }}';
-                    {% endif -%} 
+                    {% endif -%}
                     if ($('#api_endpoint') && $('#api_endpoint').val() != null) {
                         endpoint = $('#api_endpoint').val();
                     }
+
+                    // prepare final parameters
+                    var body = params;
+                    if(contentFormat == 'json') {
+                        body = JSON.stringify(body);
+                    }
+                    var data = content.length ? content : body;
+
+                    console.log(contentFormat); console.log(data);
 
                     // and trigger the API call
                     $.ajax({
                         url: endpoint + url,
                         type: method,
-                        data: content.length ? content : params,
+                        data: data,
                         headers: headers,
                         crossDomain: true,
-                        beforeSend: function (xhr) { 
+                        beforeSend: function (xhr) {
                             if (authentication_delivery == 'http_basic') {
-                                xhr.setRequestHeader('Authorization', 'Basic ' + btoa($('#api_key').val() + ':' + $('#api_pass').val())); 
+                                xhr.setRequestHeader('Authorization', 'Basic ' + btoa($('#api_key').val() + ':' + $('#api_pass').val()));
                             }
                         },
                         complete: function(xhr) {
@@ -313,7 +334,7 @@
                 var api_key_parameter = '{{ authentication.name }}';
                 var search = window.location.search;
                 var api_key_start = search.indexOf(api_key_parameter) + api_key_parameter.length + 1;
-                
+
                 if (api_key_start > 0 ) {
                     var api_key_end = search.indexOf('&', api_key_start);
 
