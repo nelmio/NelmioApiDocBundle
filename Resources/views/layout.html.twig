@@ -92,6 +92,31 @@
                     toggleButtonText($btn);
                 };
 
+                var unflattenDict = function (body) {
+                    var found = true;
+                    while(found) {
+                        found = false;
+
+                        for (var key in body) {
+                            var okey;
+                            var value = body[key];
+                            var dictMatch = key.match(/^(.+)\[([^\]]+)\]$/);
+
+                            if(dictMatch) {
+                                found = true;
+                                okey = dictMatch[1];
+                                var subkey = dictMatch[2];
+                                body[okey] = body[okey] || {};
+                                body[okey][subkey] = value;
+                                delete body[key];
+                            } else {
+                                body[key] = value;
+                            }
+                        }
+                    }
+                    return body;
+                }
+
                 $('.tabs li').click(function() {
                     var contentGroup = $(this).parents('.content');
 
@@ -227,9 +252,12 @@
                     }
 
                     // prepare final parameters
-                    var body = params;
+                    var body = {};
                     if(bodyFormat == 'json') {
-                        body = JSON.stringify(body);
+                        body = unflattenDict(params);
+                        body = JSON.stringify(body); console.log(body);
+                    } else {
+                        body = params;
                     }
                     var data = content.length ? content : body;
 
