@@ -46,6 +46,50 @@ class SymfonyValidationHandler implements HandlerInterface
             case 'NotNull':
                 $vparams['required'] = true;
                 break;
+            case 'Type':
+                $vparams['dataType'] = $constraint->type;
+                break;
+            case 'Email':
+                $vparams['format'] = '{email address}';
+                break;
+            case 'Url':
+                $vparams['format'] = '{url}';
+                break;
+            case 'Ip':
+                $vparams['format'] = '{ip address}';
+                break;
+            case 'Length':
+                $messages = array();
+                if(isset($constraint->min)) {
+                    $messages[] = "min: {$constraint->min}";
+                }
+                if(isset($constraint->max)) {
+                    $messages[] = "max: {$constraint->max}";
+                }
+                $vparams['format'] = '{length: ' . join(', ', $messages) . '}';
+                break;
+            case 'Choice':
+                $format = '[' . join('|', $constraint->choices) . ']';
+                if($constraint->multiple) {
+                    $messages = array();
+                    if(isset($constraint->min)) {
+                        $messages[] = "min: {$constraint->min} ";
+                    }
+                    if(isset($constraint->max)) {
+                        $messages[] = "max: {$constraint->max} ";
+                    }
+                    $vparams['format'] = '{' . join (', ', $messages) . 'choice of ' . $format . '}';
+                } else {
+                    $vparams['format'] = $format;
+                }
+                break;
+            case 'Regex':
+               if($constraint->match) {
+                   $vparams['format'] = '{match: ' . $constraint->pattern . '}';
+               } else {
+                   $vparams['format'] = '{not match: ' . $constraint->pattern . '}';
+               }
+                break;
         }
 
         return $vparams;

@@ -158,6 +158,8 @@ class FormTypeParser implements ParserInterface
                 'description'   => $config->getAttribute('description'),
                 'readonly'      => $config->getDisabled(),
             );
+
+            $parameters[$name] = $this->handle($className, $name, $parameters[$name]);
         }
 
         return $parameters;
@@ -188,5 +190,28 @@ class FormTypeParser implements ParserInterface
         if ($this->formRegistry->hasType($item)) {
             return $this->formFactory->create($item);
         }
+    }
+
+    private function handle($className, $name, $params)
+    {
+        foreach ($this->handlers as $handler) {
+            $handlerparams = $handler->handle($className, $name, $params);
+
+            foreach($handlerparams as $paramname => $param) {
+                if($paramname == 'required') {
+                    $params[$paramname] = $param[$paramname] || $handlerparams[$paramname];
+                } elseif($paramname == 'requirement') {
+                    if(isset($params[$paramname])) {
+                        $params[$paramname] .= ', ' . $handlerparams[$paramname];
+                    } else {
+                        $params[$paramname] = $handlerparams[$paramname];
+                    }
+                } else {
+                    $params[$paramname] = $handlerparams[$paramname];
+                }
+            }
+        }
+
+        return $params;
     }
 }
