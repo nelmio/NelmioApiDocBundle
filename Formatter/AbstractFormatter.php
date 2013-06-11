@@ -73,6 +73,7 @@ abstract class AbstractFormatter implements FormatterInterface
                 'dataType'      => $info['dataType'],
                 'readonly'      => $info['readonly'],
                 'required'      => $info['required'],
+                'format'        => array_key_exists('format', $info) ? $info['format'] : null,
                 'sinceVersion'  => array_key_exists('sinceVersion', $info) ? $info['sinceVersion'] : null,
                 'untilVersion'  => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
             );

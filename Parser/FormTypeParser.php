@@ -24,6 +24,11 @@ class FormTypeParser implements ParserInterface
     protected $formFactory;
 
     /**
+     * @var \Symfony\Component\Form\FormRegistry
+     */
+    protected $formRegistry;
+
+    /**
      * @var array
      */
     protected $mapTypes = array(
@@ -82,6 +87,7 @@ class FormTypeParser implements ParserInterface
 
     private function parseForm($form, $prefix = null)
     {
+        $className = get_class($form);
         $parameters = array();
         foreach ($form as $name => $child) {
             $config = $child->getConfig();

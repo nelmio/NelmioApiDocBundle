@@ -15,7 +15,7 @@
     </parameters>
 
     <services>
-        <service id='nelmio_api_doc.doc_comment_extractor' class='%nelmio_api_doc.doc_comment_extractor.class%' />
+        <service id='nelmio_api_doc.doc_comment_extractor' class="%nelmio_api_doc.doc_comment_extractor.class%" />
 
         <service id="nelmio_api_doc.extractor.api_doc_extractor" class="%nelmio_api_doc.extractor.api_doc_extractor.class%">
             <argument type="service" id="service_container"/>
@@ -46,7 +46,6 @@
         <service id="nelmio_api_doc.extractor.handler.sensio_framework_extra" class="%nelmio_api_doc.extractor.handler.sensio_framework_extra.class%" public="false">
             <tag name="nelmio_api_doc.extractor.handler"/>
         </service>
-
     </services>
 
 </container>
