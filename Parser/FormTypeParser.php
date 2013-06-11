@@ -48,10 +48,18 @@ class FormTypeParser implements ParserInterface
         'country'   => 'string',
     );
 
-    public function __construct(FormFactoryInterface $formFactory, FormRegistry $formRegistry, $handlers = array())
+    public function __construct(FormFactoryInterface $formFactory, FormRegistry $formRegistry)
     {
         $this->formFactory  = $formFactory;
         $this->formRegistry = $formRegistry;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHandlers(array $handlers)
+    {
+        $this->handlers = $handlers;
     }
 
     /**

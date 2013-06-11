@@ -52,6 +52,7 @@
         <!-- Parser Metadata Handlers -->
 
         <service id="nelmio_api_doc.parser.handler.symfony_validation" class="%nelmio_api_doc.parser.handler.symfony_validation.class%" public="false">
+            <argument type="service" id="validator.mapping.class_metadata_factory"/>
             <tag name="nelmio_api_doc.parser.handler"/>
         </service>
 
