@@ -24,6 +24,16 @@ class FormTypeParser implements ParserInterface
     protected $formFactory;
 
     /**
+     * @var \Symfony\Component\Form\FormRegistry
+     */
+    protected $formRegistry;
+
+    /**
+     * @var array
+     */
+    protected $handlers;
+
+    /**
      * @var array
      */
     protected $mapTypes = array(
@@ -38,7 +48,7 @@ class FormTypeParser implements ParserInterface
         'country'   => 'string',
     );
 
-    public function __construct(FormFactoryInterface $formFactory, FormRegistry $formRegistry)
+    public function __construct(FormFactoryInterface $formFactory, FormRegistry $formRegistry, $handlers = array())
     {
         $this->formFactory  = $formFactory;
         $this->formRegistry = $formRegistry;
