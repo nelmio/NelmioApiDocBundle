@@ -32,6 +32,10 @@ class SymfonyValidationHandler implements HandlerInterface
             foreach($constraints as $constraint) {
                 $vparams = $this->parseConstraint($constraint, $vparams);
             }
+
+            if(isset($vparams['format'])) {
+                $vparams['format'] = join(', ', $vparams['format']);
+            }
         }
 
         return $vparams;
@@ -50,13 +54,13 @@ class SymfonyValidationHandler implements HandlerInterface
                 $vparams['dataType'] = $constraint->type;
                 break;
             case 'Email':
-                $vparams['format'] = '{email address}';
+                $vparams['format'][] = '{email address}';
                 break;
             case 'Url':
-                $vparams['format'] = '{url}';
+                $vparams['format'][] = '{url}';
                 break;
             case 'Ip':
-                $vparams['format'] = '{ip address}';
+                $vparams['format'][] = '{ip address}';
                 break;
             case 'Length':
                 $messages = array();
@@ -66,7 +70,7 @@ class SymfonyValidationHandler implements HandlerInterface
                 if(isset($constraint->max)) {
                     $messages[] = "max: {$constraint->max}";
                 }
-                $vparams['format'] = '{length: ' . join(', ', $messages) . '}';
+                $vparams['format'][] = '{length: ' . join(', ', $messages) . '}';
                 break;
             case 'Choice':
                 $format = '[' . join('|', $constraint->choices) . ']';
@@ -78,16 +82,16 @@ class SymfonyValidationHandler implements HandlerInterface
                     if(isset($constraint->max)) {
                         $messages[] = "max: {$constraint->max} ";
                     }
-                    $vparams['format'] = '{' . join (', ', $messages) . 'choice of ' . $format . '}';
+                    $vparams['format'][] = '{' . join ('', $messages) . 'choice of ' . $format . '}';
                 } else {
-                    $vparams['format'] = $format;
+                    $vparams['format'][] = $format;
                 }
                 break;
             case 'Regex':
                if($constraint->match) {
-                   $vparams['format'] = '{match: ' . $constraint->pattern . '}';
+                   $vparams['format'][] = '{match: ' . $constraint->pattern . '}';
                } else {
-                   $vparams['format'] = '{not match: ' . $constraint->pattern . '}';
+                   $vparams['format'][] = '{not match: ' . $constraint->pattern . '}';
                }
                 break;
         }
