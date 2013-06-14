@@ -253,7 +253,7 @@
 
                     // prepare final parameters
                     var body = {};
-                    if(bodyFormat == 'json') {
+                    if(bodyFormat == 'json' && method != 'GET') {
                         body = unflattenDict(params);
                         body = JSON.stringify(body);
                     } else {
