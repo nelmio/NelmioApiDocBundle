@@ -18,6 +18,9 @@ class SymfonyValidationHandler implements HandlerInterface
         $this->factory = $factory;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function handle($className, $name, $params)
     {
         $vparams = array();
