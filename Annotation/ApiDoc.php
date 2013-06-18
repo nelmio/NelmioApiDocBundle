@@ -132,6 +132,14 @@ class ApiDoc
         if (isset($data['description'])) {
             $this->description = $data['description'];
         }
+		
+        if (isset($data['method'])) {
+		    if (!is_array($data['method'])) {
+			    throw new \InvalidArgumentException('The "method" element must be an array of HTTP verbs');
+			}
+			
+            $this->method = implode('|', $data['method']);
+        }
 
         if (isset($data['input'])) {
             $this->input = $data['input'];
@@ -315,7 +323,9 @@ class ApiDoc
         }
 
         $this->uri    = $route->getPattern();
-        $this->method = $route->getRequirement('_method') ?: 'ANY';
+        if ($this->method === null) {
+            $this->method = $route->getRequirement('_method') ?: 'ANY';
+        }
     }
 
     /**
