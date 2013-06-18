@@ -259,6 +259,10 @@ configure this sandbox using the following parameters:
             enabled:  true # default: true, you can set this parameter to `false` to disable the sandbox
             endpoint: http://sandbox.example.com/ # default: /app_dev.php, use this parameter to define which URL to call through the sandbox
             accept_type: application/json # default null, if set, the value is automatically populated as the Accept header
+            body_format: form # default form, determines whether to send x-www-form-urlencoded data or json-encoded data in sandbox requests
+            request_format:
+                method: format_param # default format_param, alternately accept_header, decides how to request the response format
+                default_format: json # default json, alternately xml, determines which content format to request back by default
 
 The bundle provides a way to register multiple `input` parsers. The first parser that can handle the specified
 input is used, so you can configure their priorities via container tags. Here's an example parser service registration:

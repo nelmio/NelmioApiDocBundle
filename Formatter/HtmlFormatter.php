@@ -51,6 +51,11 @@ class HtmlFormatter extends AbstractFormatter
     private $acceptType;
 
     /**
+     * @var string
+     */
+    private $bodyFormat;
+
+    /**
      * @var array
      */
     private $authentication;
@@ -106,6 +111,14 @@ class HtmlFormatter extends AbstractFormatter
     public function setAcceptType($acceptType)
     {
         $this->acceptType = $acceptType;
+    }
+
+    /**
+     * @param string $bodyFormat
+     */
+    public function setBodyFormat($bodyFormat)
+    {
+        $this->bodyFormat = $bodyFormat;
     }
 
     /**
@@ -179,6 +192,7 @@ class HtmlFormatter extends AbstractFormatter
             'enableSandbox'        => $this->enableSandbox,
             'requestFormatMethod'  => $this->requestFormatMethod,
             'acceptType'           => $this->acceptType,
+            'bodyFormat'           => $this->bodyFormat,
             'defaultRequestFormat' => $this->defaultRequestFormat,
             'date'                 => date(DATE_RFC822),
             'css'                  => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
