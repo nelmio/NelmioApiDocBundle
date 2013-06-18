@@ -16,6 +16,11 @@
         <div id="header">
             <a href="{{ path('nelmio_api_doc_index') }}"><h1>{{ apiName }}</h1></a>
             <div id="sandbox_configuration">
+                body format:
+                <select id="body_format">
+                    <option value="x-www-form-urlencoded"{{ bodyFormat == 'form' ? ' selected' : '' }}>Form Data</option>
+                    <option value="json"{{ bodyFormat == 'json' ? ' selected' : '' }}>JSON</option>
+                </select>
                 request format:
                 <select id="request_format">
                     <option value="json"{{ defaultRequestFormat == 'json' ? ' selected' : '' }}>JSON</option>
@@ -87,6 +92,31 @@
                     toggleButtonText($btn);
                 };
 
+                var unflattenDict = function (body) {
+                    var found = true;
+                    while(found) {
+                        found = false;
+
+                        for (var key in body) {
+                            var okey;
+                            var value = body[key];
+                            var dictMatch = key.match(/^(.+)\[([^\]]+)\]$/);
+
+                            if(dictMatch) {
+                                found = true;
+                                okey = dictMatch[1];
+                                var subkey = dictMatch[2];
+                                body[okey] = body[okey] || {};
+                                body[okey][subkey] = value;
+                                delete body[key];
+                            } else {
+                                body[key] = value;
+                            }
+                        }
+                    }
+                    return body;
+                }
+
                 $('.tabs li').click(function() {
                     var contentGroup = $(this).parents('.content');
 
@@ -153,12 +183,20 @@
                         method = method.split('|').sort().pop();
                     }
 
+                    // set default requestFormat
                     var requestFormat = $('#request_format').val();
                     var requestFormatMethod = '{{ requestFormatMethod }}';
                     if (requestFormatMethod == 'format_param') {
                         params['_format'] = requestFormat;
                     } else if (requestFormatMethod == 'accept_header') {
                         headers['Accept'] = 'application/' + requestFormat;
+                    }
+
+                    // set default bodyFormat
+                    var bodyFormat = $('#body_format').val();
+
+                    if(!('Content-type' in headers)) {
+                        headers['Content-type'] = 'application/'+bodyFormat;
                     }
 
                     // retrieve all the parameters to send
@@ -183,6 +221,7 @@
                         if (value) {
                             headers[key] = value;
                         }
+
                     });
 
                     // fix parameters in URL
@@ -207,21 +246,31 @@
                     var endpoint = '{{ app.request.getBaseUrl() }}';
                     {% else -%}
                     var endpoint = '{{ endpoint }}';
-                    {% endif -%} 
+                    {% endif -%}
                     if ($('#api_endpoint') && $('#api_endpoint').val() != null) {
                         endpoint = $('#api_endpoint').val();
                     }
+
+                    // prepare final parameters
+                    var body = {};
+                    if(bodyFormat == 'json' && method != 'GET') {
+                        body = unflattenDict(params);
+                        body = JSON.stringify(body);
+                    } else {
+                        body = params;
+                    }
+                    var data = content.length ? content : body;
 
                     // and trigger the API call
                     $.ajax({
                         url: endpoint + url,
                         type: method,
-                        data: content.length ? content : params,
+                        data: data,
                         headers: headers,
                         crossDomain: true,
-                        beforeSend: function (xhr) { 
+                        beforeSend: function (xhr) {
                             if (authentication_delivery == 'http_basic') {
-                                xhr.setRequestHeader('Authorization', 'Basic ' + btoa($('#api_key').val() + ':' + $('#api_pass').val())); 
+                                xhr.setRequestHeader('Authorization', 'Basic ' + btoa($('#api_key').val() + ':' + $('#api_pass').val()));
                             }
                         },
                         complete: function(xhr) {
@@ -313,7 +362,7 @@
                 var api_key_parameter = '{{ authentication.name }}';
                 var search = window.location.search;
                 var api_key_start = search.indexOf(api_key_parameter) + api_key_parameter.length + 1;
-                
+
                 if (api_key_start > 0 ) {
                     var api_key_end = search.indexOf('&', api_key_start);
 
