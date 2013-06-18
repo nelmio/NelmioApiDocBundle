@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
-use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Exception\FormException;
 
@@ -38,10 +38,9 @@ class FormTypeParser implements ParserInterface
         'country'   => 'string',
     );
 
-    public function __construct(FormFactoryInterface $formFactory, FormRegistry $formRegistry)
+    public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory  = $formFactory;
-        $this->formRegistry = $formRegistry;
     }
 
     /**
@@ -94,8 +93,10 @@ class FormTypeParser implements ParserInterface
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 if (isset($this->mapTypes[$type->getName()])) {
                     $bestType = $this->mapTypes[$type->getName()];
-                } elseif ('collection' === $type->getName() && isset($this->mapTypes[$config->getOption('type')])) {
-                    $bestType = sprintf('array of %ss', $this->mapTypes[$config->getOption('type')]);
+                } elseif ('collection' === $type->getName()) {
+                    if (is_string($config->getOption('type')) && isset($this->mapTypes[$config->getOption('type')])) {
+                        $bestType = sprintf('array of %ss', $this->mapTypes[$config->getOption('type')]);
+                    }
                 }
             }
 
@@ -167,8 +168,10 @@ class FormTypeParser implements ParserInterface
 
             return $this->formFactory->create($type);
         }
-        if ($this->formRegistry->hasType($item)) {
+        try {
             return $this->formFactory->create($item);
+        } catch (UnexpectedTypeException $e) {
+            // nothing
         }
     }
 }
