@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Parser;
 
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Exception\FormException;
@@ -171,6 +172,8 @@ class FormTypeParser implements ParserInterface
         try {
             return $this->formFactory->create($item);
         } catch (UnexpectedTypeException $e) {
+            // nothing
+        } catch (InvalidArgumentException $e) {
             // nothing
         }
     }
