@@ -139,7 +139,7 @@
                 };
 
                 var displayFinalUrl = function(xhr, method, url, container) {
-                    container.html(method + ' ' + $('<div>').text(url).html());
+                    container.text(method + ' ' + url);
                 };
 
                 var displayResponseData = function(xhr, container) {
