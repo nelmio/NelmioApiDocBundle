@@ -181,9 +181,9 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertTrue(
             $annotation->getAuthentication()
         );
-        $this->assertTrue(in_array('ROLE_USER', $annotation->getAuthenticationRoles()));
-        $this->assertTrue(in_array('ROLE_FOOBAR', $annotation->getAuthenticationRoles()));
-        $this->assertEquals(2, count($annotation->getAuthenticationRoles()));
+        $this->assertContains('ROLE_USER', $annotation->getAuthenticationRoles());
+        $this->assertContains('ROLE_FOOBAR', $annotation->getAuthenticationRoles());
+        $this->assertCount(2, $annotation->getAuthenticationRoles());
     }
 
     public function testGetWithCache()
