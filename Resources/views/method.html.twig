@@ -15,7 +15,7 @@
             <span class="icon lock" title="HTTPS"></span>
         {% endif %}
         {% if data.authentication %}
-            <span class="icon keys" title="Needs authentication"></span>
+            <span class="icon keys" title="Needs {{ data.authenticationRoles|length > 0 ? data.authenticationRoles|join(', ') : 'authentication' }}"></span>
         {% endif %}
 
         <span class="path">

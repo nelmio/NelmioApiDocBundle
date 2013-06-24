@@ -22,8 +22,11 @@ class JmsSecurityExtraHandler implements HandlerInterface
     public function handle(ApiDoc $annotation, array $annotations, Route $route, \ReflectionMethod $method)
     {
         foreach ($annotations as $annot) {
-            if ($annot instanceof Secure || $annot instanceof PreAuthorize) {
+            if ($annot instanceof PreAuthorize) {
                 $annotation->setAuthentication(true);
+            } else if ($annot instanceof Secure) {
+                $annotation->setAuthentication(true);
+                $annotation->setAuthenticationRoles(is_array($annot->roles) ? $annot->roles : explode(',', $annot->roles));
             }
         }
     }
