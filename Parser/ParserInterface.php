@@ -38,4 +38,12 @@ interface ParserInterface
      * @return array
      */
     public function parse(array $item);
+
+    /**
+     * Adds a set of handlers that inspect request objects for API information.
+     *
+     * @param array $handlers
+     * @return null
+     */
+    public function setHandlers(array $handlers);
 }

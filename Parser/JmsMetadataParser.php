@@ -40,6 +40,11 @@ class JmsMetadataParser implements ParserInterface
     private $commentExtractor;
 
     /**
+     * @var array
+     */
+    protected $handlers = array();
+
+    /**
      * Constructor, requires JMS Metadata factory
      */
     public function __construct(
@@ -50,6 +55,14 @@ class JmsMetadataParser implements ParserInterface
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->commentExtractor = $commentExtractor;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHandlers(array $handlers)
+    {
+        $this->handlers = $handlers;
     }
 
     /**
@@ -125,6 +138,8 @@ class JmsMetadataParser implements ParserInterface
                     'sinceVersion' => $item->sinceVersion,
                     'untilVersion' => $item->untilVersion,
                 );
+
+                $params[$name] = $this->handle($className, $name, $params[$name]);
 
                 // if class already parsed, continue, to avoid infinite recursion
                 if (in_array($dataType['class'], $visited)) {
@@ -225,5 +240,28 @@ class JmsMetadataParser implements ParserInterface
         }
 
         return $extracted;
+    }
+
+    protected function handle($className, $name, $params)
+    {
+        foreach ($this->handlers as $handler) {
+            $handlerparams = $handler->handle($className, $name, $params);
+
+            foreach($handlerparams as $paramname => $param) {
+                if($paramname == 'required') {
+                    $params[$paramname] = $param[$paramname] || $handlerparams[$paramname];
+                } elseif($paramname == 'requirement') {
+                    if(isset($params[$paramname])) {
+                        $params[$paramname] .= ', ' . $handlerparams[$paramname];
+                    } else {
+                        $params[$paramname] = $handlerparams[$paramname];
+                    }
+                } else {
+                    $params[$paramname] = $handlerparams[$paramname];
+                }
+            }
+        }
+
+        return $params;
     }
 }
