@@ -268,10 +268,17 @@ class ApiDocExtractor
 
             $normalizedInput = $this->normalizeClassParameter($input);
 
+            $parameters = array();
             foreach ($this->parsers as $parser) {
                 if ($parser->supports($normalizedInput)) {
-                    $parameters = $parser->parse($normalizedInput);
-                    break;
+                    $parameters = $this->mergeParameters($parameters, $parser->parse($normalizedInput));
+                }
+            }
+
+            foreach($this->parsers as $parser) {
+                if($parser->supports($normalizedInput) && method_exists($parser, 'postParse')) {
+                    $mp = $parser->postParse($normalizedInput, $parameters);
+                    $parameters = $this->mergeParameters($parameters, $mp);
                 }
             }
 
@@ -294,7 +301,6 @@ class ApiDocExtractor
             foreach ($this->parsers as $parser) {
                 if ($parser->supports($normalizedOutput)) {
                     $response = $parser->parse($normalizedOutput);
-                    break;
                 }
             }
 
@@ -372,6 +378,45 @@ class ApiDocExtractor
         }
 
         return array_merge($defaults, $input);
+    }
+
+    protected function mergeParameters($p1, $p2)
+    {
+        $params = array();
+
+        foreach($p2 as $propname => $propvalue) {
+            if(!isset($p1[$propname])) {
+                $params[$propname] = $propvalue;
+            } else {
+                $v1 = $p1[$propname];
+
+                foreach($propvalue as $name => $value) {
+                    if(is_array($value)) {
+                        if(isset($v1[$name]) && is_array($v1[$name])) {
+                            $v1[$name] = $this->mergeParameters($v1[$name], $value);
+                        } else {
+                            $v1[$name] = $value;
+                        }
+                    } elseif(!is_null($value)) {
+                        if(in_array($name, array('required', 'readonly'))) {
+                            $v1[$name] = $v1[$name] || $value;
+                        } elseif($name == 'requirement') {
+                            if(isset($v1[$name])) {
+                                $v1[$name] .= ', ' . $value;
+                            } else {
+                                $v1[$name] = $value;
+                            }
+                        } else {
+                            $v1[$name] = $value;
+                        }
+                    }
+                }
+
+                $params[$propname] = $v1;
+            }
+        }
+
+        return $params;
     }
 
     /**

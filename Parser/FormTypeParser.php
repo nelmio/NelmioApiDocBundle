@@ -87,7 +87,6 @@ class FormTypeParser implements ParserInterface
 
     private function parseForm($form, $prefix = null)
     {
-        $className = get_class($form);
         $parameters = array();
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
@@ -133,6 +132,8 @@ class FormTypeParser implements ParserInterface
                                 'description'   => $config->getAttribute('description'),
                                 'readonly'      => $config->getDisabled(),
                             );
+                        } else {
+                            $parameters[$name]['class'] = $type;
                         }
 
                         continue;
