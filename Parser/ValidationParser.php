@@ -71,7 +71,12 @@ class ValidationParser implements ParserInterface
         foreach($parameters as $param => $data) {
             if(isset($data['class']) && isset($data['children'])) {
                 $input = array('class' => $data['class']);
-                $parameters[$param]['children'] = $this->parse($input, $parameters[$param]['children']);
+                $parameters[$param]['children'] = array_merge(
+                    $parameters[$param]['children'], $this->postParse($input, $parameters[$param]['children'])
+                );
+                $parameters[$param]['children'] = array_merge(
+                    $parameters[$param]['children'], $this->parse($input, $parameters[$param]['children'])
+                );
             }
         }
 

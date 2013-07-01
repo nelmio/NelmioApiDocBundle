@@ -2,10 +2,10 @@
 namespace NelmioApiDocBundle\Tests\Parser;
 
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
-use Nelmio\ApiDocBundle\Parser\Handler\SymfonyValidationHandler;
+use Nelmio\ApiDocBundle\Parser\ValidationParser;
 
 
-class SymfonyValidationHandlerTest extends WebTestCase
+class ValidationParserTest extends WebTestCase
 {
     protected $handler;
 
@@ -14,21 +14,23 @@ class SymfonyValidationHandlerTest extends WebTestCase
         $container  = $this->getContainer();
         $factory = $container->get('validator.mapping.class_metadata_factory');
 
-        $this->handler = new SymfonyValidationHandler($factory);
+        $this->parser = new ValidationParser($factory);
     }
 
     /**
-     * @dataProvider dataTestHandler
+     * @dataProvider dataTestParser
      */
-    public function testHandler($property, $expected)
+    public function testParser($property, $expected)
     {
-        $result = $this->handler->handle('Nelmio\ApiDocBundle\Tests\Fixtures\Model\ValidatorTest', $property, array());
+        $result = $this->parser->parse(array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\ValidatorTest'));
 
-        $this->assertEquals($expected, $result);
+        foreach($expected as $name => $value) {
+            $this->assertEquals($value, $expected[$name]);
+        }
     }
 
 
-    public function dataTestHandler()
+    public function dataTestParser()
     {
         return array(
             array(
