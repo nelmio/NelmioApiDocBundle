@@ -1,18 +1,34 @@
 <?php
 
+/*
+ * This file is part of the NelmioApiDocBundle.
+ *
+ * (c) Nelmio <hello@nelm.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Nelmio\ApiDocBundle\Parser;
 
-use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 
-class ValidationParser implements ParserInterface
+/**
+ * Uses the Symfony Validation component to extract information about API objects.
+ */
+class ValidationParser implements ParserInterface, PostParserInterface
 {
     /**
      * @var \Symfony\Component\Validator\MetadataFactoryInterface
      */
     protected $factory;
 
+    /**
+     * Requires a validation MetadataFactory.
+     *
+     * @param MetadataFactoryInterface $factory
+     */
     public function __construct(MetadataFactoryInterface $factory)
     {
         $this->factory = $factory;
@@ -66,7 +82,10 @@ class ValidationParser implements ParserInterface
         return $params;
     }
 
-    public function postParse(array $input, $parameters)
+    /**
+     * {@inheritDoc}
+     */
+    public function postParse(array $input, array $parameters)
     {
         foreach($parameters as $param => $data) {
             if(isset($data['class']) && isset($data['children'])) {
@@ -83,6 +102,22 @@ class ValidationParser implements ParserInterface
         return $parameters;
     }
 
+    /**
+     * Create a valid documentation parameter based on an individual validation Constraint.
+     * Currently supports:
+     *  - NotBlank/NotNull
+     *  - Type
+     *  - Email
+     *  - Url
+     *  - Ip
+     *  - Length (min and max)
+     *  - Choice (single and multiple, min and max)
+     *  - Regex (match and non-match)
+     *
+     * @param Constraint $constraint The constraint metadata object.
+     * @param array $vparams         The existing validation parameters.
+     * @return mixed                 The parsed list of validation parameters.
+     */
     protected function parseConstraint(Constraint $constraint, $vparams)
     {
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
@@ -130,11 +165,11 @@ class ValidationParser implements ParserInterface
                 }
                 break;
             case 'Regex':
-               if($constraint->match) {
-                   $vparams['format'][] = '{match: ' . $constraint->pattern . '}';
-               } else {
-                   $vparams['format'][] = '{not match: ' . $constraint->pattern . '}';
-               }
+                if($constraint->match) {
+                    $vparams['format'][] = '{match: ' . $constraint->pattern . '}';
+                } else {
+                    $vparams['format'][] = '{not match: ' . $constraint->pattern . '}';
+                }
                 break;
         }
 

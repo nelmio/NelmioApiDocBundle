@@ -12,19 +12,15 @@
 namespace Nelmio\ApiDocBundle\Parser;
 
 /**
- * This is the interface parsers must implement in order to be registered in the ApiDocExtractor.
+ * This is the interface parsers must implement in order to register a second parsing pass after the initial structure
+ * is populated..
  */
-interface ParserInterface
+interface PostParserInterface
 {
     /**
-     * Return true/false whether this class supports parsing the given class.
+     * Reparses an object for additional documentation details after it has already been parsed once, to allow
+     * parsers to extend information initially documented by other parsers.
      *
-     * @param  array  $item containing the following fields: class, groups. Of which groups is optional
-     * @return boolean
-     */
-    public function supports(array $item);
-
-    /**
      * Returns an array of class property metadata where each item is a key (the property name) and
      * an array of data with the following keys:
      *  - dataType          string
@@ -33,11 +29,10 @@ interface ParserInterface
      *  - readonly          boolean
      *  - children          (optional) array of nested property names mapped to arrays
      *                      in the format described here
-     *  - class             (optional) the fully-qualified class name of the item, if
-     *                      it is represented by an object
      *
-     * @param  string $item The string type of input to parse.
+     * @param  string $item       The string type of input to parse.
+     * @param  array  $parameters The previously-parsed parameters array.
      * @return array
      */
-    public function parse(array $item);
+    public function postParse(array $item, array $parameters);
 }
