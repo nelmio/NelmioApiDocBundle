@@ -40,7 +40,7 @@
     "target-dir": "Nelmio/ApiDocBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.2.x-dev"
+            "dev-master": "2.3.x-dev"
         }
     }
 }
