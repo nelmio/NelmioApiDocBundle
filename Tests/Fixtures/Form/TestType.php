@@ -43,6 +43,6 @@ class TestType extends AbstractType
 
     public function getName()
     {
-        return 'test_type';
+        return '';
     }
 }

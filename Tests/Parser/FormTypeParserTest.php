@@ -32,38 +32,45 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
     public function dataTestParse()
     {
         return array(
-            array('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', array(
-                'a' => array(
-                    'dataType' => 'string',
-                    'required' => true,
-                    'description' => 'A nice description',
-                    'readonly' => false
-                ),
-                'b' => array(
-                    'dataType' => 'string',
-                    'required' => true,
-                    'description' => '',
-                    'readonly' => false
-                ),
-                'c' => array(
-                    'dataType' => 'boolean',
-                    'required' => true,
-                    'description' => '',
-                    'readonly' => false
-                ))
+            array(
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType'),
+                array(
+                    'a' => array(
+                        'dataType' => 'string',
+                        'required' => true,
+                        'description' => 'A nice description',
+                        'readonly' => false
+                    ),
+                    'b' => array(
+                        'dataType' => 'string',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false
+                    ),
+                    'c' => array(
+                        'dataType' => 'boolean',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false
+                    )
+                )
             ),
-            array('Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType', array(
-                'a' => array(
-                    'dataType' => 'array of strings',
-                    'required' => true,
-                    'description' => '',
-                    'readonly' => false
-                ), 'b' => array(
-                    'dataType' => 'string',
-                    'required' => true,
-                    'description' => '',
-                    'readonly' => false
-                ))
+            array(
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType'),
+                array(
+                    'collection_type[a]' => array(
+                        'dataType' => 'array of strings',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false
+                    ),
+                    'collection_type[b]' => array(
+                        'dataType' => 'string',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false
+                    )
+                )
             ),
         );
     }

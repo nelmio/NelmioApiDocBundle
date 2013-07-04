@@ -81,18 +81,18 @@ _create test_
 
 #### Parameters ####
 
-test_type[a]:
+a:
 
   * type: string
   * required: true
   * description: A nice description
 
-test_type[b]:
+b:
 
   * type: string
   * required: false
 
-test_type[c]:
+c:
 
   * type: boolean
   * required: true
@@ -109,18 +109,18 @@ _create test_
 
 #### Parameters ####
 
-test_type[a]:
+a:
 
   * type: string
   * required: true
   * description: A nice description
 
-test_type[b]:
+b:
 
   * type: string
   * required: false
 
-test_type[c]:
+c:
 
   * type: boolean
   * required: true

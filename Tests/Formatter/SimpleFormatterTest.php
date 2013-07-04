@@ -104,22 +104,19 @@ class SimpleFormatterTest extends WebTestCase
                     'description' => 'create test',
                     'parameters' =>
                     array(
-                        'test_type[a]' =>
-                        array(
+                        'a' => array(
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
                             'readonly' => false,
                         ),
-                        'test_type[b]' =>
-                        array(
+                        'b' => array(
                             'dataType' => 'string',
                             'required' => false,
                             'description' => '',
                             'readonly' => false,
                         ),
-                        'test_type[c]' =>
-                        array(
+                        'c' => array(
                             'dataType' => 'boolean',
                             'required' => true,
                             'description' => '',
@@ -147,22 +144,19 @@ class SimpleFormatterTest extends WebTestCase
                     'description' => 'create test',
                     'parameters' =>
                     array(
-                        'test_type[a]' =>
-                        array(
+                        'a' => array(
                             'dataType' => 'string',
                             'required' => true,
                             'description' => 'A nice description',
                             'readonly' => false,
                         ),
-                        'test_type[b]' =>
-                        array(
+                        'b' => array(
                             'dataType' => 'string',
                             'required' => false,
                             'description' => '',
                             'readonly' => false,
                         ),
-                        'test_type[c]' =>
-                        array(
+                        'c' => array(
                             'dataType' => 'boolean',
                             'required' => true,
                             'description' => '',
