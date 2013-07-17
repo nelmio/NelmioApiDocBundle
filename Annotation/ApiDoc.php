@@ -153,6 +153,39 @@ class ApiDoc
             }
         }
 
+        if (isset($data['requirements'])) {
+            foreach ($data['requirements'] as $requirement) {
+                if (!isset($requirement['name'])) {
+                    throw new \InvalidArgumentException('A "requirement" element has to contain a "name" attribute');
+                }
+
+                $name = $requirement['name'];
+                unset($requirement['name']);
+
+                $this->addRequirement($name, $requirement);
+            }
+        }
+
+        if (isset($data['parameters'])) {
+            foreach ($data['parameters'] as $parameter) {
+                if (!isset($parameter['name'])) {
+                    throw new \InvalidArgumentException('A "parameter" element has to contain a "name" attribute');
+                }
+
+                if (!isset($parameter['dataType'])) {
+                    throw new \InvalidArgumentException(sprintf(
+                        '"%s" parameter element has to contain a "dataType" attribute',
+                        $parameter['name']
+                    ));
+                }
+
+                $name = $parameter['name'];
+                unset($parameter['name']);
+
+                $this->addParameter($name, $parameter);
+            }
+        }
+
         if (isset($data['output'])) {
             $this->output = $data['output'];
         }

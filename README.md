@@ -89,6 +89,26 @@ class YourController extends Controller
     public function postAction()
     {
     }
+
+    /**
+     * @ApiDoc(
+     *  description="Returns a collection of Object",
+     *  requirements={
+     *      {
+     *          "name"="limit",
+     *          "dataType"="integer",
+     *          "requirement"="\d+",
+     *          "description"="how many objects to return"
+     *      }
+     *  },
+     *  parameters={
+     *      {"name"="categoryId", "dataType"="integer", "required"=true, "description"="category id"}
+     *  }
+     * )
+     */
+    public function cgetAction($id)
+    {
+    }
 }
 ```
 
@@ -103,6 +123,10 @@ The following properties are available:
 * `deprecated`: allow to set method as deprecated (default: `false`);
 
 * `filters`: an array of filters;
+
+* `requirements`: an array of requirements;
+
+* `parameters`: an array of parameters;
 
 * `input`: the input type associated to the method (currently this supports Form Types, classes with JMS Serializer
  metadata, and classes with Validation component metadata) useful for POST|PUT methods, either as FQCN or as form type

@@ -198,4 +198,19 @@ class TestController
     public function jmsReturnNestedOutputAction()
     {
     }
+
+    /**
+     * @ApiDoc(
+     *  description="Returns a collection of Object",
+     *  requirements={
+     *      {"name"="limit", "dataType"="integer", "requirement"="\d+", "description"="how many objects to return"}
+     *  },
+     *  parameters={
+     *      {"name"="categoryId", "dataType"="integer", "required"=true, "description"="category id"}
+     *  }
+     * )
+     */
+    public function cgetAction($id)
+    {
+    }
 }
