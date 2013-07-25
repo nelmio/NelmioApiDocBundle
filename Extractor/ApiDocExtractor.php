@@ -239,6 +239,9 @@ class ApiDocExtractor
         // create a new annotation
         $annotation = clone $annotation;
 
+        // doc
+        $annotation->setDocumentation($this->commentExtractor->getDocCommentText($method));
+
         // parse annotations
         $this->parseAnnotations($annotation, $route, $method);
 
@@ -247,7 +250,7 @@ class ApiDocExtractor
 
         // description
         if (null === $annotation->getDescription()) {
-            $comments = explode("\n", $this->commentExtractor->getDocCommentText($method));
+            $comments = explode("\n", $annotation->getDocumentation());
             // just set the first line
             $comment = trim($comments[0]);
             $comment = preg_replace("#\n+#", ' ', $comment);
@@ -258,9 +261,6 @@ class ApiDocExtractor
                 $annotation->setDescription($comment);
             }
         }
-
-        // doc
-        $annotation->setDocumentation($this->commentExtractor->getDocCommentText($method));
 
         // input (populates 'parameters' for the formatters)
         if (null !== $input = $annotation->getInput()) {
