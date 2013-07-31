@@ -538,11 +538,19 @@ li.operation.unlink div.content h4 {
   display: none;
 }
 
-form .parameters,
+form .parameters {
+  float: left;
+  width: 50%;
+}
+
+form .parameters .tuple input {
+	width: 40%;
+}
+
 form .headers,
 form .request-content {
   float: left;
-  width: 33%;
+  width: 25%;
 }
 
 .buttons {
