@@ -54,14 +54,13 @@ class ApiDocExtractor
      */
     protected $handlers;
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers, $request)
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers)
     {
         $this->container = $container;
         $this->router    = $router;
         $this->reader    = $reader;
         $this->commentExtractor = $commentExtractor;
         $this->handlers = $handlers;
-        $this->request = $request;
     }
 
     /**
@@ -181,7 +180,9 @@ class ApiDocExtractor
             $method = $matches[2];
             if ($this->container->has($controller)) {
                 $this->container->enterScope('request');
-                $this->container->set('request', $this->request, 'request');
+                $tmp_request=new Request();
+                $tmp_request->setTrustedHosts(array());
+                $this->container->set('request', $tmp_request, 'request');
                 $class = get_class($this->container->get($controller));
                 $this->container->leaveScope('request');
             }
