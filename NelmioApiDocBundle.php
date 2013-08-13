@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Nelmio\ApiDocBundle\DependencyInjection\RegisterJmsParserPass;
 use Nelmio\ApiDocBundle\DependencyInjection\RegisterExtractorParsersPass;
 use Nelmio\ApiDocBundle\DependencyInjection\ExtractorHandlerCompilerPass;
+use Nelmio\ApiDocBundle\DependencyInjection\ParserHandlerCompilerPass;
 
 class NelmioApiDocBundle extends Bundle
 {
