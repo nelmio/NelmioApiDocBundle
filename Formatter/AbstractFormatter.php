@@ -69,10 +69,11 @@ abstract class AbstractFormatter implements FormatterInterface
             $newName = $this->getNewName($name, $info, $parentName);
 
             $newParams[$newName] = array(
-                'description'   => $info['description'],
                 'dataType'      => $info['dataType'],
                 'readonly'      => $info['readonly'],
                 'required'      => $info['required'],
+                'description'   => array_key_exists('description', $info) ? $info['description'] : null,
+                'format'        => array_key_exists('format', $info) ? $info['format'] : null,
                 'sinceVersion'  => array_key_exists('sinceVersion', $info) ? $info['sinceVersion'] : null,
                 'untilVersion'  => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
             );

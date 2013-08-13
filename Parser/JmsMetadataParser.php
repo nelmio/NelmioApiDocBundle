@@ -126,6 +126,10 @@ class JmsMetadataParser implements ParserInterface
                     'untilVersion' => $item->untilVersion,
                 );
 
+                if(!is_null($dataType['class'])) {
+                    $params[$name]['class'] = $dataType['class'];
+                }
+
                 // if class already parsed, continue, to avoid infinite recursion
                 if (in_array($dataType['class'], $visited)) {
                     continue;

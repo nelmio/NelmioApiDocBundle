@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Extractor;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
+use Nelmio\ApiDocBundle\Parser\PostParserInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -268,12 +269,23 @@ class ApiDocExtractor
 
             $normalizedInput = $this->normalizeClassParameter($input);
 
+            $supportedParsers = array();
+            $parameters = array();
             foreach ($this->parsers as $parser) {
                 if ($parser->supports($normalizedInput)) {
-                    $parameters = $parser->parse($normalizedInput);
-                    break;
+                    $supportedParsers[] = $parser;
+                    $parameters = $this->mergeParameters($parameters, $parser->parse($normalizedInput));
                 }
             }
+
+            foreach($supportedParsers as $parser) {
+                if($parser instanceof PostParserInterface) {
+                    $mp = $parser->postParse($normalizedInput, $parameters);
+                    $parameters = $this->mergeParameters($parameters, $mp);
+                }
+            }
+
+            $parameters = $this->clearClasses($parameters);
 
             if ('PUT' === $method) {
                 // All parameters are optional with PUT (update)
@@ -294,9 +306,9 @@ class ApiDocExtractor
             foreach ($this->parsers as $parser) {
                 if ($parser->supports($normalizedOutput)) {
                     $response = $parser->parse($normalizedOutput);
-                    break;
                 }
             }
+            $response = $this->clearClasses($response);
 
             $annotation->setResponse($response);
         }
@@ -375,6 +387,57 @@ class ApiDocExtractor
     }
 
     /**
+     * Merges two parameter arrays together. This logic allows documentation to be built
+     * from multiple parser passes, with later passes extending previous passes:
+     *  - Boolean values are true if any parser returns true.
+     *  - Requirement parameters are concatenated.
+     *  - Other string values are overridden by later parsers when present.
+     *  - Array parameters are recursively merged.
+     *
+     * @param array $p1 The pre-existing parameters array.
+     * @param array $p2 The newly-returned parameters array.
+     * @return array    The resulting, merged array.
+     */
+    protected function mergeParameters($p1, $p2)
+    {
+        $params = $p1;
+
+        foreach($p2 as $propname => $propvalue) {
+            if(!isset($p1[$propname])) {
+                $params[$propname] = $propvalue;
+            } else {
+                $v1 = $p1[$propname];
+
+                foreach($propvalue as $name => $value) {
+                    if(is_array($value)) {
+                        if(isset($v1[$name]) && is_array($v1[$name])) {
+                            $v1[$name] = $this->mergeParameters($v1[$name], $value);
+                        } else {
+                            $v1[$name] = $value;
+                        }
+                    } elseif(!is_null($value)) {
+                        if(in_array($name, array('required', 'readonly'))) {
+                            $v1[$name] = $v1[$name] || $value;
+                        } elseif(in_array($name, array('requirement'))) {
+                            if(isset($v1[$name])) {
+                                $v1[$name] .= ', ' . $value;
+                            } else {
+                                $v1[$name] = $value;
+                            }
+                        } else {
+                            $v1[$name] = $value;
+                        }
+                    }
+                }
+
+                $params[$propname] = $v1;
+            }
+        }
+
+        return $params;
+    }
+
+    /**
      * Parses annotations for a given method, and adds new information to the given ApiDoc
      * annotation. Useful to extract information from the FOSRestBundle annotations.
      *
@@ -388,5 +451,22 @@ class ApiDocExtractor
         foreach ($this->handlers as $handler) {
             $handler->handle($annotation, $annots, $route, $method);
         }
+    }
+
+    /**
+     * Clears the temporary 'class' parameter from the parameters array before it is returned.
+     *
+     * @param array $array The source array.
+     * @return array       The cleared array.
+     */
+    protected function clearClasses($array)
+    {
+        if(is_array($array)) {
+            unset($array['class']);
+            foreach($array as $name => $item) {
+                $array[$name] = $this->clearClasses($item);
+            }
+        }
+        return $array;
     }
 }

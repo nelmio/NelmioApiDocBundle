@@ -5,6 +5,7 @@
 
     <parameters>
         <parameter key="nelmio_api_doc.parser.form_type_parser.class">Nelmio\ApiDocBundle\Parser\FormTypeParser</parameter>
+        <parameter key="nelmio_api_doc.parser.validation_parser.class">Nelmio\ApiDocBundle\Parser\ValidationParser</parameter>
         <parameter key="nelmio_api_doc.formatter.abstract_formatter.class">Nelmio\ApiDocBundle\Formatter\AbstractFormatter</parameter>
         <parameter key="nelmio_api_doc.formatter.markdown_formatter.class">Nelmio\ApiDocBundle\Formatter\MarkdownFormatter</parameter>
         <parameter key="nelmio_api_doc.formatter.simple_formatter.class">Nelmio\ApiDocBundle\Formatter\SimpleFormatter</parameter>
@@ -15,6 +16,10 @@
     <services>
         <service id="nelmio_api_doc.parser.form_type_parser" class="%nelmio_api_doc.parser.form_type_parser.class%">
             <argument type="service" id="form.factory" />
+            <tag name="nelmio_api_doc.extractor.parser" />
+        </service>
+        <service id="nelmio_api_doc.parser.validation_parser" class="%nelmio_api_doc.parser.validation_parser.class%">
+            <argument type="service" id="validator.mapping.class_metadata_factory"/>
             <tag name="nelmio_api_doc.extractor.parser" />
         </service>
         <service id="nelmio_api_doc.formatter.abstract_formatter" class="%nelmio_api_doc.formatter.abstract_formatter.class%" />
