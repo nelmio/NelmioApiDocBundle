@@ -134,8 +134,6 @@ class FormTypeParser implements ParserInterface
                                 'description'   => $config->getAttribute('description'),
                                 'readonly'      => $config->getDisabled(),
                             );
-                        } else {
-                            $parameters[$name]['class'] = $type;
                         }
 
                         continue;

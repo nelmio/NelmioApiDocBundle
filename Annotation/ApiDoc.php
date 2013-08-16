@@ -50,6 +50,11 @@ class ApiDoc
     private $output = null;
 
     /**
+     * @var string
+     */
+    private $link = null;
+
+    /**
      * Most of the time, a single line of text describing the action.
      *
      * @var string
@@ -240,6 +245,14 @@ class ApiDoc
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @param string $link
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
     }
 
     /**
@@ -439,6 +452,10 @@ class ApiDoc
 
         if ($description = $this->description) {
             $data['description'] = $description;
+        }
+
+        if ($link = $this->link) {
+            $data['link'] = $link;
         }
 
         if ($documentation = $this->documentation) {
