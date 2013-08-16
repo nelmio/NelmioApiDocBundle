@@ -48,6 +48,11 @@
                 <div>{{ data.documentation|extra_markdown }}</div>
             {% endif %}
 
+            {% if data.link is defined and data.link is not empty %}
+                <h4>Link</h4>
+                <div><a href="{{ data.link }}" target="_blank">{{ data.link }}</a></div>
+            {% endif %}
+
             {% if data.requirements is defined  and data.requirements is not empty %}
                 <h4>Requirements</h4>
                 <table class="fullwidth">
