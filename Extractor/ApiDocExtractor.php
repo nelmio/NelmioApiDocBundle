@@ -337,6 +337,9 @@ class ApiDocExtractor
             if (preg_match('{^@deprecated\b(.*)}', trim($line), $matches)) {
                 $annotation->setDeprecated(true);
             }
+            if (preg_match('{^@link\b(.*)}', trim($line), $matches)) {
+                $annotation->setLink($matches[1]);
+            }
         }
 
         $regexp = '{(\w*) *\$%s\b *(.*)}i';
