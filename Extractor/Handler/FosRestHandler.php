@@ -30,7 +30,7 @@ class FosRestHandler implements HandlerInterface
                     'readonly'    => false
                 ));
             } elseif ($annot instanceof QueryParam) {
-                if ($annot->strict && $annot->default === null) {
+                if ($annot->strict && $annot->nullable === false && $annot->default === null) {
                     $annotation->addRequirement($annot->name, array(
                         'requirement'   => $annot->requirements,
                         'dataType'      => '',
