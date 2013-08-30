@@ -66,6 +66,24 @@ class ValidationParserTest extends WebTestCase
                 )
             ),
             array(
+                'property' => 'date',
+                'expected' => array(
+                    'format' => '{Date YYYY-MM-DD}'
+                )
+            ),
+            array(
+                'property' => 'dateTime',
+                'expected' => array(
+                    'format' => '{DateTime YYYY-MM-DD HH:MM:SS}'
+                )
+            ),
+            array(
+                'property' => 'time',
+                'expected' => array(
+                    'format' => '{Time HH:MM:SS}'
+                )
+            ),
+            array(
                 'property' => 'email',
                 'expected' => array(
                     'format' => '{email address}'
