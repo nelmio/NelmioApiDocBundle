@@ -53,7 +53,7 @@ class ValidatorTest
     /**
      * @Assert\Time();
      */
-    public $Time;
+    public $time;
 
     /**
      * @Assert\Email()
