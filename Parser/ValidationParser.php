@@ -29,7 +29,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
      *
      * @param MetadataFactoryInterface $factory
      */
-    public function __construct(MetadataFactoryInterface $factory)
+    public function __construct($factory)
     {
         $this->factory = $factory;
     }
