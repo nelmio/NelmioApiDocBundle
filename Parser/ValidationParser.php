@@ -40,8 +40,12 @@ class ValidationParser implements ParserInterface, PostParserInterface
     public function supports(array $input)
     {
         $className = $input['class'];
-
-        return $this->factory->hasMetadataFor($className);
+        if (method_exists($this->factory, 'hasMetadataFor')) {
+            return $this->factory->hasMetadataFor($className);
+        } else {
+            // compatibility for Symfony 2.1  https://github.com/nelmio/NelmioApiDocBundle/issues/231
+            return empty($this->factory->getClassMetadata($className)) ? false : true;
+        }
     }
 
     /**
@@ -52,12 +56,23 @@ class ValidationParser implements ParserInterface, PostParserInterface
         $params = array();
         $className = $input['class'];
 
-        $classdata = $this->factory->getMetadataFor($className);
+        if (method_exists($this->factory, 'getMetadataFor')) {
+            $classdata = $this->factory->getMetadataFor($className);
+        } else {
+            // compatibility for Symfony 2.1  https://github.com/nelmio/NelmioApiDocBundle/issues/231
+            $classdata = $this->factory->getClassMetadata($className);
+        }
         $properties = $classdata->getConstrainedProperties();
 
         foreach($properties as $property) {
             $vparams = array();
-            $pds = $classdata->getPropertyMetadata($property);
+            if (method_exists($this->factory, 'getPropertyMetadata')) {
+                $pds = $classdata->getPropertyMetadata($property);
+            } else {
+                // compatibility for Symfony 2.1  https://github.com/nelmio/NelmioApiDocBundle/issues/231
+                $pds = $classdata->getMemberMetadatas($property);
+            }
+
             foreach($pds as $propdata) {
                 $constraints = $propdata->getConstraints();
 
