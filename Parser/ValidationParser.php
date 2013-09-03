@@ -44,7 +44,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
             return $this->factory->hasMetadataFor($className);
         } else {
             // compatibility for Symfony 2.1  https://github.com/nelmio/NelmioApiDocBundle/issues/231
-            return empty($this->factory->getClassMetadata($className)) ? false : true;
+            $metadata = $this->factory->getClassMetadata($className);
+            return empty($metadata) ? false : true;
         }
     }
 
