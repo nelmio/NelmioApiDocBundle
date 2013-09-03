@@ -42,7 +42,6 @@ class ValidationParserLegacy implements ParserInterface, PostParserInterface
         $className = $input['class'];       
         $metadata = $this->factory->getClassMetadata($className);
         return empty($metadata) ? false : true;
-
     }
 
     /**
