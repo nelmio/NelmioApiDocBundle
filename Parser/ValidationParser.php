@@ -15,7 +15,7 @@ use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Uses the Symfony Validation component to extract information about API objects. That is a backwards-compatible Validation component for Symfony2.1
+ * Uses the Symfony Validation component to extract information about API objects.
  */
 class ValidationParser implements ParserInterface, PostParserInterface
 {
