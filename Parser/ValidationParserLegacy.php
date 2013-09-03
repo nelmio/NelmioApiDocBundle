@@ -11,13 +11,13 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
-use Symfony\Component\Validator\MetadataFactoryInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Uses the Symfony Validation component to extract information about API objects. That is a backwards-compatible Validation component for Symfony2.1
+ * Uses the Symfony Validation component to extract information about API objects.
  */
-class ValidationParser implements ParserInterface, PostParserInterface
+class ValidationParserLegacy implements ParserInterface, PostParserInterface
 {
     /**
      * @var \Symfony\Component\Validator\MetadataFactoryInterface
@@ -29,7 +29,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
      *
      * @param MetadataFactoryInterface $factory
      */
-    public function __construct(MetadataFactoryInterface $factory)
+    public function __construct(ClassMetadataFactoryInterface $factory)
     {
         $this->factory = $factory;
     }
@@ -39,9 +39,10 @@ class ValidationParser implements ParserInterface, PostParserInterface
      */
     public function supports(array $input)
     {
-        $className = $input['class'];
+        $className = $input['class'];       
+        $metadata = $this->factory->getClassMetadata($className);
+        return empty($metadata) ? false : true;
 
-        return $this->factory->hasMetadataFor($className);
     }
 
     /**
@@ -51,13 +52,16 @@ class ValidationParser implements ParserInterface, PostParserInterface
     {
         $params = array();
         $className = $input['class'];
-
-        $classdata = $this->factory->getMetadataFor($className);
+        
+        $classdata = $this->factory->getClassMetadata($className);
+        
         $properties = $classdata->getConstrainedProperties();
 
         foreach($properties as $property) {
             $vparams = array();
-            $pds = $classdata->getPropertyMetadata($property);
+
+            $pds = $classdata->getMemberMetadatas($property);            
+
             foreach($pds as $propdata) {
                 $constraints = $propdata->getConstraints();
 
