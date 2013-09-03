@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraint;
 class ValidationParserLegacy implements ParserInterface, PostParserInterface
 {
     /**
-     * @var \Symfony\Component\Validator\MetadataFactoryInterface
+     * @var \Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface
      */
     protected $factory;
 
@@ -39,9 +39,8 @@ class ValidationParserLegacy implements ParserInterface, PostParserInterface
      */
     public function supports(array $input)
     {
-        $className = $input['class'];       
-        $metadata = $this->factory->getClassMetadata($className);
-        return empty($metadata) ? false : true;
+        $className = $input['class'];
+        return null !== $this->factory->getClassMetadata($className);
     }
 
     /**
