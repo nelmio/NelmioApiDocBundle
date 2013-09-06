@@ -1,37 +1,37 @@
-<li class="{{ data.method|lower }} operation">
-    <div class="heading toggler{% if data.deprecated %} deprecated{% endif %}">
-    <h3>
-        <span class="http_method">
-            <a>{{ data.method|upper }}</a>
-        </span>
+<li class="{{ data.method|lower }} operation" id="{{ data.id }}">
+    <a class="heading toggler{% if data.deprecated %} deprecated{% endif %}" href="#{{ data.id }}">
+        <h3>
+            <span class="http_method">
+                <i>{{ data.method|upper }}</i>
+            </span>
 
-        {% if data.deprecated %}
-        <span class="deprecated">
-            <a>DEPRECATED</a>
-        </span>
-        {% endif %}
+            {% if data.deprecated %}
+            <span class="deprecated">
+                <i>DEPRECATED</i>
+            </span>
+            {% endif %}
 
-        {% if data.https %}
-            <span class="icon lock" title="HTTPS"></span>
-        {% endif %}
-        {% if data.authentication %}
-            <span class="icon keys" title="Needs authentication"></span>
-        {% endif %}
+            {% if data.https %}
+                <span class="icon lock" title="HTTPS"></span>
+            {% endif %}
+            {% if data.authentication %}
+                <span class="icon keys" title="Needs authentication"></span>
+            {% endif %}
 
-        <span class="path">
-            {% if data.host is defined -%}
-                {{ data.https ? 'https://' : 'http://' -}}
-                {{ data.host -}}
-            {% endif -%}
-            {{ data.uri }}
-        </span>
-    </h3>
-    <ul class="options">
-        {% if data.description is defined %}
-            <li>{{ data.description }}</li>
-        {% endif %}
-    </ul>
-    </div>
+            <span class="path">
+                {% if data.host is defined -%}
+                    {{ data.https ? 'https://' : 'http://' -}}
+                    {{ data.host -}}
+                {% endif -%}
+                {{ data.uri }}
+            </span>
+        </h3>
+        <ul class="options">
+            {% if data.description is defined %}
+                <li>{{ data.description }}</li>
+            {% endif %}
+        </ul>
+    </a>
 
     <div class="content" style="display: {% if displayContent is defined and displayContent == true %}display{% else %}none{% endif %};">
         <ul class="tabs">

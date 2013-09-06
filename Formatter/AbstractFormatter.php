@@ -119,6 +119,8 @@ abstract class AbstractFormatter implements FormatterInterface
             $annotation['response'] = $this->compressNestedParameters($annotation['response']);
         }
 
+        $annotation['id'] = strtolower($annotation['method']).'-'.str_replace('/', '-', $annotation['uri']);
+
         return $annotation;
     }
 

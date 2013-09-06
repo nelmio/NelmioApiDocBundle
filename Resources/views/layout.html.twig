@@ -48,6 +48,15 @@
             Documentation auto-generated on {{ date }}
         </p>
         <script type="text/javascript">
+
+            $(document).ready(function() {
+                var elem = $(window.location.hash);
+                if(elem) {
+                    $('body').scrollTop(elem.top);
+                    elem.find('a.toggler').click();
+                }
+            });
+
             $('.toggler').click(function() {
                 $(this).next().slideToggle('fast');
             });
