@@ -280,6 +280,14 @@ class ApiDoc
     }
 
     /**
+     * @return string
+     */
+    public function getDocumentation()
+    {
+        return $this->documentation;
+    }
+
+    /**
      * @return Boolean
      */
     public function isResource()
