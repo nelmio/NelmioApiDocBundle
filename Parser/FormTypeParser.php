@@ -116,12 +116,26 @@ class FormTypeParser implements ParserInterface
                          */
                         $addDefault = false;
                         try {
-                            $subForm    = $this->formFactory->create($type);
-                            $subParameters = $this->parseForm($subForm, $name);
-                            if (!empty($subParameters)) {
-                                $parameters = array_merge($parameters, $subParameters);
+                            if ('collection' === $type->getName()) {
+                                $subForm    = $this->formFactory->create($config->getOption('type'));
+                                $subParameters = $this->parseForm($subForm, '');
+                                
+                                $parameters[$name] = array(
+                                    'dataType'      => $config->getOption('type')->getName(),
+                                    'required'      => $config->getRequired(),
+                                    'description'   => $config->getAttribute('description'),
+                                    'readonly'      => $config->getDisabled(),
+                                    'subParameters' => $subParameters
+                                );
+                                
                             } else {
-                                $addDefault = true;
+                                $subForm    = $this->formFactory->create($type);
+                                $subParameters = $this->parseForm($subForm, $name);
+                                if (!empty($subParameters)) {
+                                    $parameters = array_merge($parameters, $subParameters);
+                                } else {
+                                    $addDefault = true;
+                                }
                             }
                         } catch (\Exception $e) {
                             $addDefault = true;
