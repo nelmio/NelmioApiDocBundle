@@ -200,4 +200,47 @@ class HtmlFormatter extends AbstractFormatter
             'motdTemplate'         => $this->motdTemplate
         );
     }
+    
+    /**
+     * Compresses nested parameters into a flat by changing the parameter
+     * names to strings which contain the nested property names, for example:
+     * `user[group][name]`
+     *
+     *
+     * @param  array   $data
+     * @param  string  $parentName
+     * @param  boolean $ignoreNestedReadOnly
+     * @return array
+     */
+    protected function compressNestedParameters(array $data, $parentName = null, $ignoreNestedReadOnly = false)
+    {
+        $newParams = array();
+        foreach ($data as $name => $info) {
+            $newName = $this->getNewName($name, $info, $parentName);
+
+            $newParams[$newName] = array(
+                'dataType'      => $info['dataType'],
+                'readonly'      => $info['readonly'],
+                'required'      => $info['required'],
+                'description'   => array_key_exists('description', $info) ? $info['description'] : null,
+                'format'        => array_key_exists('format', $info) ? $info['format'] : null,
+                'sinceVersion'  => array_key_exists('sinceVersion', $info) ? $info['sinceVersion'] : null,
+                'untilVersion'  => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
+            );
+
+            if (isset($info['children']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {
+                foreach ($this->compressNestedParameters($info['children'], $newName, $ignoreNestedReadOnly) as $nestedItemName => $nestedItemData) {
+                    $newParams[$nestedItemName] = $nestedItemData;
+                }
+            }
+
+            if (isset($info['subParameters']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {
+                foreach ($this->compressNestedParameters($info['subParameters'], '', $ignoreNestedReadOnly) as $nestedItemName => $nestedItemData) {
+                    $newParams[$newName]['subParameters'][$nestedItemName] = $nestedItemData;
+                }
+            }
+        }
+
+        return $newParams;
+    }
 }
