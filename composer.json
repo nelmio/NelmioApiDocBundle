@@ -1,5 +1,5 @@
 {
-    "name": "bdm-benzor/api-doc-bundle",
+    "name": "nelmio/api-doc-bundle",
     "description": "Generates documentation for your REST API from annotations",
     "keywords": ["api", "documentation", "doc", "rest"],
     "type": "symfony-bundle",
@@ -11,7 +11,7 @@
         },
         {
             "name": "Symfony Community",
-            "homepage": "https://github.com/bdm-benzor/NelmioApiDocBundle/contributors"
+            "homepage": "https://github.com/nelmio/NelmioApiDocBundle/contributors"
         }
     ],
     "require": {
