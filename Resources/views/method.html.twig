@@ -246,7 +246,6 @@
                                 {% for name, infos in data.parameters if not infos.readonly %}
                                     {{ _self.editParameter(name, infos ) }}
                                 {% endfor %}
-                                {% endfor %}
                                 <button class="add">New parameter</button>
                             {% endif %}
 
