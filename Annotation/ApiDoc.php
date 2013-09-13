@@ -204,7 +204,15 @@ class ApiDoc
      */
     public function addRequirement($name, array $requirement)
     {
-        $this->requirements[$name] = $requirement;
+        if (isset($this->requirements[$name])) {
+            foreach ($requirement as $key => $value) {
+                if ($value!=="" && $value!==null) {
+                    $this->requirements[$name][$key] = $value;
+                }
+            }
+        } else {
+            $this->requirements[$name] = $requirement;
+        }
     }
 
     /**
@@ -212,7 +220,9 @@ class ApiDoc
      */
     public function setRequirements(array $requirements)
     {
-        $this->requirements = array_merge($this->requirements, $requirements);
+        foreach ($requirements as $name => $requirement) {
+             $this->addRequirement($name, $requirement);
+         }
     }
 
     /**
