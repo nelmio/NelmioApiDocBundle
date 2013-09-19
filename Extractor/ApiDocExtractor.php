@@ -112,7 +112,7 @@ class ApiDocExtractor
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
-                    if ($annotation->isResource() || $this->appendFormat) {
+                    if ($annotation->isResource() || !$this->appendFormat) {
                         // remove format from routes used for resource grouping
                         $resources[] = str_replace('.{_format}', '', $route->getPattern());
                     }
