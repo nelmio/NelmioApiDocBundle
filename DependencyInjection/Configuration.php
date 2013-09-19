@@ -79,6 +79,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->scalarNode('append_format')->defaultTrue()->end()
             ->end();
 
         return $treeBuilder;

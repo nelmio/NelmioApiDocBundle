@@ -23,6 +23,9 @@
             <argument type="service" id="annotation_reader" />
             <argument type="service" id="nelmio_api_doc.doc_comment_extractor" />
             <argument type="collection"/>
+            <call method="setAppendFormat">
+                <argument>%nelmio_api_doc.append_format%</argument>
+            </call>
         </service>
 
         <service id="nelmio_api_doc.form.extension.description_form_type_extension" class="%nelmio_api_doc.form.extension.description_form_type_extension.class%">
