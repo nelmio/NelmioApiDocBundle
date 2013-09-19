@@ -55,6 +55,11 @@ class ApiDocExtractor
      */
     protected $handlers;
 
+    /**
+     * @var Boolean
+     */
+    protected $appendFormat;
+
     public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers)
     {
         $this->container = $container;
@@ -107,7 +112,7 @@ class ApiDocExtractor
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
-                    if ($annotation->isResource()) {
+                    if ($annotation->isResource() || $this->appendFormat) {
                         // remove format from routes used for resource grouping
                         $resources[] = str_replace('.{_format}', '', $route->getPattern());
                     }
@@ -225,6 +230,16 @@ class ApiDocExtractor
     public function addParser(ParserInterface $parser)
     {
         $this->parsers[] = $parser;
+    }
+
+    /**
+     * Wether or not the format should be appended
+     *
+     * @param Boolean $appendFormat
+     */
+    public function setAppendFormat($appendFormat)
+    {
+        $this->appendFormat = $appendFormat;
     }
 
     /**
