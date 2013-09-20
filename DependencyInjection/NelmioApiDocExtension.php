@@ -49,5 +49,7 @@ class NelmioApiDocExtension extends Extension
         if (isset($config['sandbox']['authentication'])) {
             $container->setParameter('nelmio_api_doc.sandbox.authentication', $config['sandbox']['authentication']);
         }
+
+        $container->setParameter('nelmio_api_doc.append_format', $config['append_format']);
     }
 }

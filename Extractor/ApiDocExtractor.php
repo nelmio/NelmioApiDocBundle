@@ -23,7 +23,7 @@ use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 
 class ApiDocExtractor
 {
-    const ANNOTATION_CLASS                = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
+    const ANNOTATION_CLASS = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
 
     /**
      * @var ContainerInterface
@@ -54,6 +54,11 @@ class ApiDocExtractor
      * @var array HandlerInterface
      */
     protected $handlers;
+
+    /**
+     * @var Boolean
+     */
+    protected $appendFormat = true;
 
     public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers)
     {
@@ -93,6 +98,8 @@ class ApiDocExtractor
      *
      * @param array $routes array of Route-objects for which the annotations should be extracted
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     public function extractAnnotations(array $routes)
@@ -107,10 +114,13 @@ class ApiDocExtractor
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
-                    if ($annotation->isResource()) {
+                    if ($annotation->isResource() || !$this->appendFormat) {
                         // remove format from routes used for resource grouping
                         $resources[] = str_replace('.{_format}', '', $route->getPattern());
                     }
+
+                    $annotation->setAppendFormat($this->appendFormat);
+                    $this->handleFormatAppending($route);
 
                     $array[] = array('annotation' => $this->extractData($annotation, $route, $method));
                 }
@@ -121,6 +131,10 @@ class ApiDocExtractor
         foreach ($array as $index => $element) {
             $hasResource = false;
             $pattern     = $element['annotation']->getRoute()->getPattern();
+
+            if (!$this->appendFormat) {
+                $pattern = str_replace('.{_format}', '', $pattern);
+            }
 
             foreach ($resources as $resource) {
                 if (0 === strpos($pattern, $resource)) {
@@ -228,6 +242,16 @@ class ApiDocExtractor
     }
 
     /**
+     * Wether or not the format should be appended
+     *
+     * @param Boolean $appendFormat
+     */
+    public function setAppendFormat($appendFormat)
+    {
+        $this->appendFormat = $appendFormat;
+    }
+
+    /**
      * Returns a new ApiDoc instance with more data.
      *
      * @param  ApiDoc            $annotation
@@ -328,6 +352,8 @@ class ApiDocExtractor
                 $annotation->setHttps($https);
             }
         }
+
+        $this->handleFormatAppending($route);
 
         $paramDocs = array();
         foreach (explode("\n", $this->commentExtractor->getDocComment($method)) as $line) {
@@ -471,5 +497,14 @@ class ApiDocExtractor
             }
         }
         return $array;
+    }
+
+    protected function handleFormatAppending(Route $route)
+    {
+        if (!$this->appendFormat) {
+            $path = str_replace('.{_format}', '', $route->getPath());
+
+            $route->setPath($path);
+        }
     }
 }

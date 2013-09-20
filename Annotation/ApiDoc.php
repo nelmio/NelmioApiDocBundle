@@ -130,6 +130,11 @@ class ApiDoc
      */
     private $statusCodes = array();
 
+    /**
+     * @var Boolean
+     */
+    private $appendFormat = true;
+
     public function __construct(array $data)
     {
         $this->isResource = isset($data['resource']) && $data['resource'];
@@ -327,7 +332,13 @@ class ApiDoc
      */
     public function setRoute(Route $route)
     {
-        $this->route  = $route;
+        if (!$this->appendFormat) {
+            $path = str_replace('.{_format}', '', $route->getPath());
+
+            $route->setPath($path);
+        }
+
+        $this->route = $route;
 
         if (method_exists($route, 'getHost')) {
             $this->host = $route->getHost() ? : null;
@@ -503,5 +514,15 @@ class ApiDoc
         $data['deprecated'] = $this->deprecated;
 
         return $data;
+    }
+
+    /**
+     * Set the configuration setting if the format should be appended
+     *
+     * @param Boolean $appendFormat
+     */
+    public function setAppendFormat($appendFormat)
+    {
+        $this->appendFormat = $appendFormat;
     }
 }
