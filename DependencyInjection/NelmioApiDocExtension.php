@@ -50,4 +50,20 @@ class NelmioApiDocExtension extends Extension
             $container->setParameter('nelmio_api_doc.sandbox.authentication', $config['sandbox']['authentication']);
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getNamespace()
+    {
+        return 'http://nelmio.github.io/schema/dic/nelmio_api_doc';
+    }
+
+    /**
+     * @return string
+     */
+    public function getXsdValidationBasePath()
+    {
+        return __DIR__ . '/../Resources/config/schema';
+    }
 }
