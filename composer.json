@@ -4,7 +4,7 @@
     "keywords": ["api", "documentation", "doc", "rest"],
     "type": "symfony-bundle",
     "license": "MIT",
-    "authors": [
+    "authors": [ 
         {
             "name": "Nelmio",
             "homepage": "http://nelm.io"
