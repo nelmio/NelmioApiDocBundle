@@ -91,7 +91,7 @@ class FormTypeParser implements ParserInterface
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
 
-            if ($prefix != null) {
+            if ($prefix !== null) {
                 $name = sprintf('%s[%s]', $prefix, $name);
             }
 
