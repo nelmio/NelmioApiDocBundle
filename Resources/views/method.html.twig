@@ -202,7 +202,7 @@
                                     <p class="tuple">
                                         <input type="text" class="key" value="{{ name }}" placeholder="Key" />
                                         <span>=</span>
-                                        <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
+                                        <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
                                     </p>
                                 {% endfor %}
                             {% endif %}
@@ -212,7 +212,7 @@
                                     <p class="tuple">
                                         <input type="text" class="key" value="{{ name }}" placeholder="Key" />
                                         <span>=</span>
-                                        <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
+                                        <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
                                     </p>
                                 {% endfor %}
                             {% endif %}
@@ -223,7 +223,7 @@
                                     <p class="tuple">
                                         <input type="text" class="key" value="{{ name }}" placeholder="Key" />
                                         <span>=</span>
-                                        <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.format %}{{ infos.format }}{% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" /> <span class="remove">-</span>
+                                        <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.format %}{{ infos.format }}{% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
                                     </p>
                                 {% endif %}
                                 {% endfor %}
