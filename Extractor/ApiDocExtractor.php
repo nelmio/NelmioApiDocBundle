@@ -109,7 +109,10 @@ class ApiDocExtractor
                 if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
                     if ($annotation->isResource()) {
                         // remove format from routes used for resource grouping
-                        $resources[] = str_replace('.{_format}', '', $route->getPattern());
+                        $resource = str_replace('.{_format}', '', $route->getPattern());
+
+                        // remove the last routes parameter used for resource grouping
+                        $resources[] = preg_replace("/\/{[a-zA-A]*}$/", '', $resource);
                     }
 
                     $array[] = array('annotation' => $this->extractData($annotation, $route, $method));
