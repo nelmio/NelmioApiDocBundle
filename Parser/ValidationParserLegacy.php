@@ -40,6 +40,7 @@ class ValidationParserLegacy extends ValidationParser
     public function supports(array $input)
     {
         $className = $input['class'];
+
         return null !== $this->factory->getClassMetadata($className);
     }
 
@@ -50,30 +51,30 @@ class ValidationParserLegacy extends ValidationParser
     {
         $params = array();
         $className = $input['class'];
-        
+
         $classdata = $this->factory->getClassMetadata($className);
-        
+
         $properties = $classdata->getConstrainedProperties();
 
-        foreach($properties as $property) {
+        foreach ($properties as $property) {
             $vparams = array();
 
-            $pds = $classdata->getMemberMetadatas($property);            
+            $pds = $classdata->getMemberMetadatas($property);
 
-            foreach($pds as $propdata) {
+            foreach ($pds as $propdata) {
                 $constraints = $propdata->getConstraints();
 
-                foreach($constraints as $constraint) {
+                foreach ($constraints as $constraint) {
                     $vparams = $this->parseConstraint($constraint, $vparams);
                 }
             }
 
-            if(isset($vparams['format'])) {
+            if (isset($vparams['format'])) {
                 $vparams['format'] = join(', ', $vparams['format']);
             }
 
-            foreach(array('dataType', 'readonly', 'required') as $reqprop) {
-                if(!isset($vparams[$reqprop])) {
+            foreach (array('dataType', 'readonly', 'required') as $reqprop) {
+                if (!isset($vparams[$reqprop])) {
                     $vparams[$reqprop] = null;
                 }
             }
@@ -83,6 +84,5 @@ class ValidationParserLegacy extends ValidationParser
 
         return $params;
     }
-
 
 }
