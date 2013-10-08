@@ -209,6 +209,20 @@ you can specify which groups to use when generating the documentation by using t
 If your `output` classes use [versioning capabilities of JMS Serializer](http://jmsyst.com/libs/serializer/master/cookbook/exclusion_strategies#versioning-objects),
 the versioning information will be automatically used when generating the documentation.
 
+#### Form Types features ####
+
+If you use `FormFactoryInterface::createdNamed('', 'your_form_type'`, then by default the documentation will use
+the form type name as the prefix (`your_form_type[param]` ... instead of just `param`).
+
+You can specify which prefix to use with the `name` key:
+
+```
+input = {
+ "class" = "your_form_type",
+ "name" = ""
+}
+```
+
 ### Documentation on-the-fly ###
 
 By calling an URL with the parameter `?_doc=1`, you will get the corresponding documentation if available.
