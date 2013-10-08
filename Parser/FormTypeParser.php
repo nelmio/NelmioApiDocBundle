@@ -82,7 +82,7 @@ class FormTypeParser implements ParserInterface
 
         $form = $this->formFactory->create($type);
 
-        return $this->parseForm($form, $form->getName());
+        return $this->parseForm($form, array_key_exists('name', $item) ? $item['name'] : $form->getName());
     }
 
     private function parseForm($form, $prefix = null)
