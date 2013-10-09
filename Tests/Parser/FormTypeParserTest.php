@@ -72,6 +72,46 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     )
                 )
             ),
+            array(
+                array(
+                    'class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType',
+                    'name' => '',
+                ),
+                array(
+                    'a' => array(
+                        'dataType' => 'array of strings',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false
+                    ),
+                    'b' => array(
+                        'dataType' => 'string',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false
+                    )
+                )
+            ),
+            array(
+                array(
+                    'class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType',
+                    'name' => null,
+                ),
+                array(
+                    'a' => array(
+                        'dataType' => 'array of strings',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false
+                    ),
+                    'b' => array(
+                        'dataType' => 'string',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false
+                    )
+                )
+            ),
         );
     }
 }
