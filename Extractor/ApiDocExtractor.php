@@ -109,7 +109,11 @@ class ApiDocExtractor
                 if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
                     if ($annotation->isResource()) {
                         // remove format from routes used for resource grouping
-                        $resources[] = str_replace('.{_format}', '', $route->getPattern());
+                        $resource = str_replace('.{_format}', '', $route->getPattern());
+                        // strip the last param (cause it's not representative of a resource)
+                        $resource = preg_replace("/\/{\w+}$/", '', $resource);
+                        // get the resource name (assuming that is the last one in the url)
+                        $resources[] = current(array_slice(explode('/', $resource), -1));
                     }
 
                     $array[] = array('annotation' => $this->extractData($annotation, $route, $method));
@@ -121,6 +125,10 @@ class ApiDocExtractor
         foreach ($array as $index => $element) {
             $hasResource = false;
             $pattern     = $element['annotation']->getRoute()->getPattern();
+            // strip the last param (cause it's not representative of a resource)
+            $pattern     = preg_replace("/\/{\w+}$/", '', $pattern);
+            // get the resource name (assuming that is the last one in the url)
+            $pattern     = current(array_slice(explode('/', $pattern), -1));
 
             foreach ($resources as $resource) {
                 if (0 === strpos($pattern, $resource)) {
