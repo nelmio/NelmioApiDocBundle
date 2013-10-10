@@ -3,7 +3,7 @@
 {% block content %}
     {% for section, sections in resources  %}
         {% if section != '_others' %}
-            <div id="section">
+            <div class="section">
             <h1>{{ section }}</h1>
         {% endif %}
         {% for resource, methods in sections %}
@@ -19,7 +19,17 @@
                     <li class="endpoint">
                         <ul class="operations">
                             {% for data in methods %}
-                                {% include 'NelmioApiDocBundle::method.html.twig' %}
+                                {% set access = false %}
+                                {% for role in data.authentication %}
+                                    {% if is_granted(role) %}
+                                        {% set access = true %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if (access == true) %}
+                                    {% include 'NelmioApiDocBundle::method.html.twig' %}
+                                {% endif %}
+
                             {% endfor %}
                         </ul>
                     </li>
