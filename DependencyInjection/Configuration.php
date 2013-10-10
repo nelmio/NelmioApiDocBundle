@@ -65,6 +65,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->arrayNode('authentication')
                             ->children()
+                                ->scalarNode('show_methods')->defaultFalse()->end()
                                 ->scalarNode('name')->isRequired()->end()
                                 ->scalarNode('delivery')
                                     ->isRequired()

@@ -2,8 +2,9 @@
 
 {% block content %}
     {% for section, sections in resources  %}
+        {% set oneAccessSection = false %}
         {% if section != '_others' %}
-            <div class="section">
+            <div class="section" id="sectionDoc{{loop.index0}}">
             <h1>{{ section }}</h1>
         {% endif %}
         {% for resource, methods in sections %}
@@ -19,17 +20,27 @@
                     <li class="endpoint">
                         <ul class="operations">
                             {% for data in methods %}
-                                {% set access = false %}
-                                {% for role in data.authentication %}
-                                    {% if is_granted(role) %}
-                                        {% set access = true %}
-                                    {% endif %}
-                                {% endfor %}
+                                {% if not authentication.show_methods %}
+                                    {% set access = false %}
 
-                                {% if (access == true) %}
+                                    {% if not data.authentication or not app.security.getToken() %}
+                                        {% set access = true %}
+                                        {% set oneAccessSection = true %}
+                                    {% else %}
+                                        {% for role in data.authentication %}
+                                            {% if is_granted(role) %}
+                                                {% set access = true %}
+                                                {% set oneAccessSection = true %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    {% if (access == true) %}
+                                        {% include 'NelmioApiDocBundle::method.html.twig' %}
+                                    {% endif %}
+                                {% else %}
                                     {% include 'NelmioApiDocBundle::method.html.twig' %}
                                 {% endif %}
-
                             {% endfor %}
                         </ul>
                     </li>
@@ -38,6 +49,12 @@
         {% endfor %}
         {% if section != '_others' %}
             </div>
+        {% endif %}
+
+        {% if not oneAccessSection and not authentication.show_methods %}
+            <script type="text/javascript">
+                $("#sectionDoc{{loop.index0}}").remove();
+            </script>
         {% endif %}
     {% endfor %}
 {% endblock content %}
