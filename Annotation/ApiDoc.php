@@ -78,7 +78,7 @@ class ApiDoc
     /**
      * @var Boolean
      */
-    private $isResource = false;
+    private $resource = false;
 
     /**
      * @var string
@@ -132,7 +132,7 @@ class ApiDoc
 
     public function __construct(array $data)
     {
-        $this->isResource = isset($data['resource']) && $data['resource'];
+        $this->resource = !empty($data['resource']) ? $data['resource'] : false;
 
         if (isset($data['description'])) {
             $this->description = $data['description'];
@@ -292,7 +292,15 @@ class ApiDoc
      */
     public function isResource()
     {
-        return $this->isResource;
+        return (bool) $this->resource;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResource()
+    {
+        return $this->resource && is_string($this->resource) ? $this->resource : false;
     }
 
     /**

@@ -15,7 +15,7 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
-    const ROUTES_QUANTITY = 20;
+    const ROUTES_QUANTITY = 21;
 
     public function testAll()
     {
@@ -66,8 +66,13 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertFalse(isset($array2['filters']));
         $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
 
-        $a3 = $data['13']['annotation'];
+        $a4 = $data[5]['annotation'];
+        $this->assertTrue($a4->isResource());
+        $this->assertEquals('TestResource', $a4->getResource());
+
+        $a3 = $data['14']['annotation'];
         $this->assertTrue($a3->getHttps());
+
     }
 
     public function testGet()

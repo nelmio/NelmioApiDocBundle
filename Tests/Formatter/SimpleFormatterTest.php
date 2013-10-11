@@ -844,6 +844,17 @@ With multiple lines.',
                     'deprecated' => false,
                 ),
             ),
+            'TestResource' =>
+            array(
+                0 =>
+                array(
+                    'method' => 'ANY',
+                    'uri' => '/named-resource',
+                    'https' => false,
+                    'authentication' => false,
+                    'deprecated' => false,
+                ),
+            ),
         );
 
         $this->assertEquals($expected, $result);
