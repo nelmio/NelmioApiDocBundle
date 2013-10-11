@@ -138,6 +138,12 @@ _post test 2_
 
 
 
+## TestResource ##
+
+### `ANY` /named-resource ###
+
+
+
 ### `POST` /another-post ###
 
 _create another test_
