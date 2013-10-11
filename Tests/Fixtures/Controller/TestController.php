@@ -21,6 +21,15 @@ class TestController
 {
     /**
      * @ApiDoc(
+     *     resource="TestResource"
+     * )
+     */
+    public function namedResourceAction()
+    {
+    }
+
+    /**
+     * @ApiDoc(
      *  resource=true,
      *  description="index action",
      *  filters={
