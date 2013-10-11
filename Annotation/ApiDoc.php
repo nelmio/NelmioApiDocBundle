@@ -116,6 +116,11 @@ class ApiDoc
     private $authentication = false;
 
     /**
+     * @var array
+     */
+    private $roles = array();
+
+    /**
      * @var int
      */
     private $cache;
@@ -396,6 +401,22 @@ class ApiDoc
     }
 
     /**
+     * @return array
+     */
+    public function getRoles() 
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+    }
+
+    /**
      * @return int
      */
     public function getCache()
@@ -501,6 +522,7 @@ class ApiDoc
         $data['https'] = $this->https;
         $data['authentication'] = $this->authentication;
         $data['deprecated'] = $this->deprecated;
+        $data['roles'] = $this->roles;
 
         return $data;
     }

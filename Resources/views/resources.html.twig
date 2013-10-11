@@ -23,11 +23,11 @@
                                 {% if not authentication.show_methods %}
                                     {% set access = false %}
 
-                                    {% if not data.authentication or not app.security.getToken() %}
+                                    {% if not data.authentication or not app.security.getToken() or data.roles is empty %}
                                         {% set access = true %}
                                         {% set oneAccessSection = true %}
                                     {% else %}
-                                        {% for role in data.authentication %}
+                                        {% for role in data.roles %}
                                             {% if is_granted(role) %}
                                                 {% set access = true %}
                                                 {% set oneAccessSection = true %}
