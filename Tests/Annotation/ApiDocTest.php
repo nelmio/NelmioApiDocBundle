@@ -28,6 +28,8 @@ class ApiDocTest extends TestCase
         $this->assertFalse($annot->isResource());
         $this->assertFalse($annot->getDeprecated());
         $this->assertFalse(isset($array['description']));
+        $this->assertFalse(isset($array['requirements']));
+        $this->assertFalse(isset($array['parameters']));
         $this->assertNull($annot->getInput());
         $this->assertFalse($array['authentication']);
     }
@@ -47,6 +49,8 @@ class ApiDocTest extends TestCase
         $this->assertFalse($annot->isResource());
         $this->assertFalse($annot->getDeprecated());
         $this->assertFalse(isset($array['description']));
+        $this->assertFalse(isset($array['requirements']));
+        $this->assertFalse(isset($array['parameters']));
         $this->assertNull($annot->getInput());
     }
 
@@ -64,6 +68,8 @@ class ApiDocTest extends TestCase
         $this->assertFalse($annot->isResource());
         $this->assertFalse($annot->getDeprecated());
         $this->assertEquals($data['description'], $array['description']);
+        $this->assertFalse(isset($array['requirements']));
+        $this->assertFalse(isset($array['parameters']));
         $this->assertNull($annot->getInput());
     }
 
@@ -82,6 +88,8 @@ class ApiDocTest extends TestCase
         $this->assertFalse($annot->isResource());
         $this->assertFalse($annot->getDeprecated());
         $this->assertEquals($data['description'], $array['description']);
+        $this->assertFalse(isset($array['requirements']));
+        $this->assertFalse(isset($array['parameters']));
         $this->assertEquals($data['input'], $annot->getInput());
     }
 
@@ -102,6 +110,8 @@ class ApiDocTest extends TestCase
         $this->assertTrue($annot->isResource());
         $this->assertTrue($annot->getDeprecated());
         $this->assertEquals($data['description'], $array['description']);
+        $this->assertFalse(isset($array['requirements']));
+        $this->assertFalse(isset($array['parameters']));
         $this->assertEquals($data['input'], $annot->getInput());
     }
 
@@ -121,6 +131,8 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
         $this->assertEquals($data['description'], $array['description']);
+        $this->assertFalse(isset($array['requirements']));
+        $this->assertFalse(isset($array['parameters']));
         $this->assertEquals($data['deprecated'], $array['deprecated']);
         $this->assertEquals($data['input'], $annot->getInput());
     }
@@ -145,6 +157,8 @@ class ApiDocTest extends TestCase
         $this->assertEquals(array('a-filter' => array()), $array['filters']);
         $this->assertTrue($annot->isResource());
         $this->assertEquals($data['description'], $array['description']);
+        $this->assertFalse(isset($array['requirements']));
+        $this->assertFalse(isset($array['parameters']));
         $this->assertEquals($data['deprecated'], $array['deprecated']);
         $this->assertNull($annot->getInput());
     }
@@ -231,5 +245,46 @@ class ApiDocTest extends TestCase
         $array = $annot->toArray();
 
         $this->assertEquals($data['cache'], $array['cache']);
+    }
+
+    public function testConstructWithRequirements()
+    {
+        $data = array(
+            'requirements' => array(
+                array(
+                    'name' => 'fooId',
+                    'requirement' => '\d+',
+                    'dataType' => 'integer',
+                    'description' => 'This requirement might be used withing action method directly from Request object'
+                )
+            )
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(isset($array['requirements']['fooId']));
+        $this->assertTrue(isset($array['requirements']['fooId']['dataType']));
+    }
+
+    public function testConstructWithParameters()
+    {
+        $data = array(
+            'parameters' => array(
+                array(
+                    'name' => 'fooId',
+                    'dataType' => 'integer',
+                    'description' => 'Some description'
+                )
+            )
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(isset($array['parameters']['fooId']));
+        $this->assertTrue(isset($array['parameters']['fooId']['dataType']));
     }
 }
