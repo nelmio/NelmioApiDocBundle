@@ -49,5 +49,10 @@ class NelmioApiDocExtension extends Extension
         if (isset($config['sandbox']['authentication'])) {
             $container->setParameter('nelmio_api_doc.sandbox.authentication', $config['sandbox']['authentication']);
         }
+
+        // backwards compatibility for Symfony2.1 https://github.com/nelmio/NelmioApiDocBundle/issues/231
+        if (!interface_exists('\Symfony\Component\Validator\MetadataFactoryInterface')) {
+            $container->setParameter('nelmio_api_doc.parser.validation_parser.class', 'Nelmio\ApiDocBundle\Parser\ValidationParserLegacy');
+        }
     }
 }
