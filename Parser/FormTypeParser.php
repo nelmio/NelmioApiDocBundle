@@ -102,6 +102,12 @@ class FormTypeParser implements ParserInterface
                 } elseif ('collection' === $type->getName()) {
                     if (is_string($config->getOption('type')) && isset($this->mapTypes[$config->getOption('type')])) {
                         $bestType = sprintf('array of %ss', $this->mapTypes[$config->getOption('type')]);
+                    } else {
+                        // Embedded form collection
+                        $subParameters = $this->parseForm($this->formFactory->create($config->getOption('type')), $name . '[]');
+                        $parameters = array_merge($parameters, $subParameters);
+
+                        continue 2;
                     }
                 }
             }

@@ -64,8 +64,20 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'description' => '',
                         'readonly' => false
                     ),
-                    'collection_type[b]' => array(
+                    'collection_type[b][][a]' => array(
                         'dataType' => 'string',
+                        'required' => true,
+                        'description' => 'A nice description',
+                        'readonly' => false
+                    ),
+                    'collection_type[b][][b]' => array(
+                        'dataType' => 'string',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false
+                    ),
+                    'collection_type[b][][c]' => array(
+                        'dataType' => 'boolean',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
@@ -84,8 +96,20 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'description' => '',
                         'readonly' => false
                     ),
-                    'b' => array(
+                    'b[][a]' => array(
                         'dataType' => 'string',
+                        'required' => true,
+                        'description' => 'A nice description',
+                        'readonly' => false
+                    ),
+                    'b[][b]' => array(
+                        'dataType' => 'string',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false
+                    ),
+                    'b[][c]' => array(
+                        'dataType' => 'boolean',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
@@ -104,8 +128,20 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'description' => '',
                         'readonly' => false
                     ),
-                    'b' => array(
+                    'b[][a]' => array(
                         'dataType' => 'string',
+                        'required' => true,
+                        'description' => 'A nice description',
+                        'readonly' => false
+                    ),
+                    'b[][b]' => array(
+                        'dataType' => 'string',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false
+                    ),
+                    'b[][c]' => array(
+                        'dataType' => 'boolean',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
