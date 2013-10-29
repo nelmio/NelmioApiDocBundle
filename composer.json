@@ -17,6 +17,7 @@
     "require": {
         "symfony/framework-bundle": "~2.1",
         "symfony/twig-bundle": "~2.1",
+        "symfony/console": "~2.1",
         "dflydev/markdown": "1.0.*"
     },
     "conflict": {
@@ -28,6 +29,7 @@
         "symfony/browser-kit": "~2.1",
         "symfony/validator": "~2.1",
         "symfony/yaml": "~2.1",
+        "symfony/form": "~2.1",
         "friendsofsymfony/rest-bundle": "0.12.*@dev",
         "jms/serializer-bundle": ">=0.11",
         "sensio/framework-extra-bundle": "~2.1"
@@ -36,7 +38,7 @@
         "symfony/form": "For using form definitions as input.",
         "symfony/validator": "For making use of validator information in the doc.",
         "friendsofsymfony/rest-bundle": "For making use of REST information in the doc.",
-        "jms/serializer": "For making use of serializer informamtion in the doc."
+        "jms/serializer": "For making use of serializer information in the doc."
     },
     "minimum-stability": "dev",
     "autoload": {
