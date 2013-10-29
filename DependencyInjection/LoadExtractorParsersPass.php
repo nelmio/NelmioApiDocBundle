@@ -18,11 +18,6 @@ class LoadExtractorParsersPass implements CompilerPassInterface
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        // JMS may or may not be installed, if it is, load that config as well
-        if ($container->hasDefinition('jms_serializer.serializer')) {
-            $loader->load('services.jms.xml');
-        }
-
         // forms may not be installed/enabled, if it is, load that config as well
         if ($container->hasDefinition('form.factory')) {
             $loader->load('services.form.xml');
@@ -31,6 +26,11 @@ class LoadExtractorParsersPass implements CompilerPassInterface
         // validation may not be installed/enabled, if it is, load that config as well
         if ($container->hasDefinition('validator.mapping.class_metadata_factory')) {
             $loader->load('services.validation.xml');
+        }
+
+        // JMS may or may not be installed, if it is, load that config as well
+        if ($container->hasDefinition('jms_serializer.serializer')) {
+            $loader->load('services.jms.xml');
         }
     }
 }
