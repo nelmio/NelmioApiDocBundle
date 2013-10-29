@@ -66,7 +66,13 @@ abstract class WebTestCase extends BaseWebTestCase
 
     public function setUp()
     {
+        $this->deleteTmpDir();
         parent::setUp();
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
         $this->deleteTmpDir();
     }
 }

@@ -16,3 +16,6 @@ if ((!$loader = includeIfExists(__DIR__.'/../vendor/autoload.php')) && (!$loader
 if (class_exists('Doctrine\Common\Annotations\AnnotationRegistry')) {
     \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 }
+
+// force loading the ApiDoc annotation since the composer target-dir autoloader does not run through $loader::loadClass
+class_exists('Nelmio\ApiDocBundle\Annotation\ApiDoc');

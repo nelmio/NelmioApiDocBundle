@@ -11,9 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-// get the autoload file
-require_once __DIR__.'/../../../vendor/autoload.php';
-
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
