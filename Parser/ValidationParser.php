@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 
@@ -62,7 +63,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $constraints = $propdata->getConstraints();
 
                 foreach($constraints as $constraint) {
-                    $vparams = $this->parseConstraint($constraint, $vparams);
+                    $vparams = $this->parseConstraint($constraint, $vparams, $className);
                 }
             }
 
@@ -118,7 +119,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
      * @param array $vparams         The existing validation parameters.
      * @return mixed                 The parsed list of validation parameters.
      */
-    protected function parseConstraint(Constraint $constraint, $vparams)
+    protected function parseConstraint(Constraint $constraint, $vparams, $className)
     {
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
 
@@ -150,7 +151,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $vparams['format'][] = '{length: ' . join(', ', $messages) . '}';
                 break;
             case 'Choice':
-                $format = '[' . join('|', $constraint->choices) . ']';
+                $choices = $this->getChoices($constraint, $className);
+                $format = '[' . join('|', $choices) . ']';
                 if($constraint->multiple) {
                     $messages = array();
                     if(isset($constraint->min)) {
@@ -174,5 +176,30 @@ class ValidationParser implements ParserInterface, PostParserInterface
         }
 
         return $vparams;
+    }
+
+    /**
+     * Return Choice constraint choices.
+     *
+     * @param Constraint $constraint
+     * @param $className
+     * @return array
+     * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
+     */
+    protected function getChoices (Constraint $constraint, $className)
+    {
+        if ($constraint->callback) {
+            if (is_callable(array($className, $constraint->callback))) {
+                $choices = call_user_func(array($className, $constraint->callback));
+            } elseif (is_callable($constraint->callback)) {
+                $choices = call_user_func($constraint->callback);
+            } else {
+                throw new ConstraintDefinitionException('The Choice constraint expects a valid callback');
+            }
+        } else {
+            $choices = $constraint->choices;
+        }
+
+        return $choices;
     }
 }
