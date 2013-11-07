@@ -22,7 +22,7 @@ use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 /**
  * Uses the JMS metadata factory to extract input/output model information
  */
-class JmsMetadataParser implements ParserInterface
+class JmsMetadataParser implements ParserInterface, PostParserInterface
 {
     /**
      * @var \Metadata\MetadataFactoryInterface
@@ -194,6 +194,26 @@ class JmsMetadataParser implements ParserInterface
     protected function isPrimitive($type)
     {
         return in_array($type, array('boolean', 'integer', 'string', 'float', 'double', 'array', 'DateTime'));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function postParse(array $input, array $parameters)
+    {
+        foreach($parameters as $param => $data) {
+            if(isset($data['class']) && isset($data['children'])) {
+                $input = array('class' => $data['class'], 'groups' => isset($data['groups']) ? $data['groups'] : array());
+                $parameters[$param]['children'] = array_merge(
+                    $parameters[$param]['children'], $this->postParse($input, $parameters[$param]['children'])
+                );
+                $parameters[$param]['children'] = array_merge(
+                    $parameters[$param]['children'], $this->parse($input, $parameters[$param]['children'])
+                );
+            }
+        }
+
+        return $parameters;
     }
 
     /**
