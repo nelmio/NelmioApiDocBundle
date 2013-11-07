@@ -21,6 +21,11 @@ class MultipleTest
     public $baz;
 
     /**
+     * @JMS\Type("Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test")
+     */
+    public $related;
+
+    /**
      * @Assert\Type(type="array")
      * @Assert\All({
      *     @Assert\Type(type="Test")
