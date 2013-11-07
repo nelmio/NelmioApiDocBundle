@@ -3,6 +3,7 @@ namespace Nelmio\ApiDocBundle\Parser\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType as FormCollectionType;
 use Nelmio\ApiDocBundle\Parser\FormTypeParser;
+use Symfony\Component\Form\FormTypeInterface;
 /**
  *
  * @author Asmir Mustafic <goetas@gmail.com>
@@ -22,7 +23,7 @@ class CollectionType implements FormTypeMapInterface
     {
 
         $type = $formBuilder->getOption('type');
-        if (!($type instanceof FormBuilderInterface) && $this->implementsType($type)) {
+        if (!($type instanceof FormTypeInterface) && $this->implementsType($type)) {
             $type = $this->getTypeInstance($type);
         }
 
@@ -37,6 +38,8 @@ class CollectionType implements FormTypeMapInterface
 
     private function implementsType($item)
     {
+        if(is_object($item))
+        echo get_class($item);
         if (!class_exists($item)) {
             return false;
         }
