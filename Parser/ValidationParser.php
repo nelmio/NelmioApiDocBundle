@@ -50,9 +50,20 @@ class ValidationParser implements ParserInterface, PostParserInterface
      */
     public function parse(array $input)
     {
-        $params = array();
         $className = $input['class'];
+        return $this->doParse($className, array());
+    }
 
+    /**
+     * Recursively parse constraints.
+     *
+     * @param  $className
+     * @param  array $visited
+     * @return array
+     */
+    protected function doParse ($className, array $visited)
+    {
+        $params = array();
         $classdata = $this->factory->getMetadataFor($className);
         $properties = $classdata->getConstrainedProperties();
 
@@ -75,6 +86,12 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 if(!isset($vparams[$reqprop])) {
                     $vparams[$reqprop] = null;
                 }
+            }
+
+            // check for nested classes with All constraint
+            if (isset($vparams['class']) && !in_array($vparams['class'], $visited) && null !== $this->factory->getMetadataFor($vparams['class'])) {
+                $visited[] = $vparams['class'];
+                $vparams['children'] = $this->doParse($vparams['class'], $visited);
             }
 
             $params[$property] = $vparams;
@@ -171,6 +188,17 @@ class ValidationParser implements ParserInterface, PostParserInterface
                     $vparams['format'][] = '{match: ' . $constraint->pattern . '}';
                 } else {
                     $vparams['format'][] = '{not match: ' . $constraint->pattern . '}';
+                }
+                break;
+            case 'All':
+                foreach ($constraint->constraints as $childConstraint) {
+                    if ($childConstraint instanceof Type) {
+                        $nestedType = $childConstraint->type;
+                        $exp = explode("\\", $nestedType);
+
+                        $vparams['dataType'] = sprintf("array of objects (%s)", end($exp));
+                        $vparams['class'] = $nestedType;
+                    }
                 }
                 break;
         }
