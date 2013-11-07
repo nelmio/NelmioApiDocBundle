@@ -202,6 +202,15 @@ class TestController
 
     /**
      * @ApiDoc(
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\MultipleTest"
+     * )
+     */
+    public function zReturnJmsAndValidationOutputAction()
+    {
+    }
+
+    /**
+     * @ApiDoc(
      *  description="Returns a collection of Object",
      *  requirements={
      *      {"name"="limit", "dataType"="integer", "requirement"="\d+", "description"="how many objects to return"}
