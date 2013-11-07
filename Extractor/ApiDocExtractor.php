@@ -309,7 +309,7 @@ class ApiDocExtractor
 
             foreach ($this->parsers as $parser) {
                 if ($parser->supports($normalizedOutput)) {
-                    $response = $parser->parse($normalizedOutput);
+                    $response = $this->mergeParameters($response, $parser->parse($normalizedOutput));
                 }
             }
             $response = $this->clearClasses($response);

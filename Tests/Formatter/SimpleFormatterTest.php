@@ -801,6 +801,30 @@ With multiple lines.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
+                15 =>
+                array(
+                    'method' => 'ANY',
+                    'uri' => '/z-return-jms-and-validator-output',
+                    'https' => false,
+                    'authentication' => false,
+                    'deprecated' => false,
+                    'response' => array (
+                        'bar' => array(
+                            'dataType' => 'DateTime',
+                            'required' => null,
+                            'readonly' => null
+                        ),
+                        'number' => array(
+                            'dataType' => 'DateTime',
+                            'required' => false,
+                            'description' => '',
+                            'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null
+                        )
+                    ),
+                    'authenticationRoles' => array(),
+                )
             ),
             '/tests2' =>
             array(
