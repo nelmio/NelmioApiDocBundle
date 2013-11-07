@@ -46,9 +46,9 @@
     },
     "minimum-stability": "dev",
     "autoload": {
-        "psr-0": { "Nelmio\\ApiDocBundle": "" }
+        "psr-0": { "Afrihost\\ApiDocBundle": "" }
     },
-    "target-dir": "Nelmio/ApiDocBundle",
+    "target-dir": "Afrihost/ApiDocBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "2.3.x-dev"
