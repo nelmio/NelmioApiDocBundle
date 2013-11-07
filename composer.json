@@ -1,6 +1,6 @@
 {
-    "name": "nelmio/api-doc-bundle",
-    "description": "Generates documentation for your REST API from annotations",
+    "name": "afrihost/nelmio-api-doc-bundle",
+    "description": "Generates documentation for your REST API from annotations based on the Nelmio API Doc Bundle",
     "keywords": ["api", "documentation", "doc", "rest"],
     "type": "symfony-bundle",
     "license": "MIT",
@@ -12,6 +12,10 @@
         {
             "name": "Symfony Community",
             "homepage": "https://github.com/nelmio/NelmioApiDocBundle/contributors"
+        },
+        {
+            "name": "Dale Attree",
+            "homepage": "http://www.afrihost.com"
         }
     ],
     "require": {
