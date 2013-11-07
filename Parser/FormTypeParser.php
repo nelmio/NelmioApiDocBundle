@@ -100,6 +100,7 @@ class FormTypeParser implements ParserInterface
             $innerType = $type->getInnerType();
             foreach ($this->mapTypes as $typeMapper) {
                 if ($typeMapper->supports($config)) {
+
                     $definition = $typeMapper->findType($config);
                     if (is_array($definition)) {
                         $params[$name] = array_merge(array(
@@ -143,7 +144,6 @@ class FormTypeParser implements ParserInterface
             } catch (\Exception $e) {
 
             }
-
         }
 
         return $params;
