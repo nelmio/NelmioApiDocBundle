@@ -34,7 +34,6 @@ class EntityType implements FormTypeMapInterface
         $em = $this->registry->getManagerForClass($class);
         $metadata = $em->getClassMetadata($class);
 
-
         foreach ($metadata->identifier as $idName) {
             if (isset($metadata->associationMappings[$idName]['id'])) {
                 return $this->findPrimaryKeyType($metadata->associationMappings[$idName]['targetEntity']);
