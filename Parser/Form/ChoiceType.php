@@ -1,7 +1,10 @@
 <?php
 namespace Nelmio\ApiDocBundle\Parser\Form;
+
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as ChoiceTypeForm;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
+
 /**
  *
  * @author Asmir Mustafic <goetas@gmail.com>
@@ -20,8 +23,8 @@ class ChoiceType implements FormTypeMapInterface
 
         return array("dataType"=>$type);
     }
-    public function supports(FormBuilderInterface $formBuilder)
+    public function supports(ResolvedFormTypeInterface $resolved)
     {
-        return $formBuilder->getType()->getInnerType() instanceof ChoiceTypeForm;
+        return $resolved->getInnerType() instanceof ChoiceTypeForm;
     }
 }

@@ -97,9 +97,9 @@ class FormTypeParser implements ParserInterface
         );
 
         for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
-            $innerType = $type->getInnerType();
+
             foreach ($this->mapTypes as $typeMapper) {
-                if ($typeMapper->supports($config)) {
+                if ($typeMapper->supports($type)) {
 
                     $definition = $typeMapper->findType($config);
                     if (is_array($definition)) {
@@ -110,9 +110,8 @@ class FormTypeParser implements ParserInterface
                         ), array_filter($definition));
 
                         return $params;
-                    } else { // in a collection
+                    } else { // inside a collection
                         unset($params[$name]);
-
                         $subParams = $this->parseForm($definition, "{$name}[ ]");
 
                         if (!$subParams) {
@@ -120,7 +119,7 @@ class FormTypeParser implements ParserInterface
                             $subsubParams = $this->findType($definition->getConfig(), $config->getName());
 
                             $subParams["{$name}[ ]"]=array(
-                                'dataType'      => $subsubParams[$config->getName()][dataType]?:'unknown',
+                                'dataType'      => $subsubParams[$config->getName()]['dataType'] ?: 'unknown',
                                 'required'      => $config->getRequired(),
                                 'description'   => $config->getAttribute('description'),
                                 'readonly'      => $config->getDisabled(),
@@ -148,7 +147,7 @@ class FormTypeParser implements ParserInterface
 
         return $params;
     }
-    private function parseForm($form, $prefix=null)
+    private function parseForm($form, $prefix = null)
     {
         $parameters = array();
         foreach ($form as $name => $child) {

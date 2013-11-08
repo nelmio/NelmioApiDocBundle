@@ -2,6 +2,8 @@
 namespace Nelmio\ApiDocBundle\Parser\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
+
 /**
  *
  * @author Asmir Mustafic <goetas@gmail.com>
@@ -18,8 +20,8 @@ interface FormTypeMapInterface
     public function findType(FormBuilderInterface $builder);
     /**
      * Check if this mapper supports $builder from type
-     * @param FormBuilderInterface $builder
+     * @param ResolvedFormTypeInterface $resolved
      * @return boolean
      */
-    public function supports(FormBuilderInterface $builder);
+    public function supports(ResolvedFormTypeInterface $resolved);
 }

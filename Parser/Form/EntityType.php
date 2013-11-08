@@ -1,8 +1,11 @@
 <?php
 namespace Nelmio\ApiDocBundle\Parser\Form;
+
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
+
 /**
  *
  * @author Asmir Mustafic <goetas@gmail.com>
@@ -29,8 +32,8 @@ class EntityType implements FormTypeMapInterface
         }
 
     }
-    public function supports(FormBuilderInterface $formBuilder)
+    public function supports(ResolvedFormTypeInterface $resolved)
     {
-        return $formBuilder->getType()->getInnerType() instanceof DoctrineType;
+        return $resolved->getInnerType() instanceof DoctrineType;
     }
 }

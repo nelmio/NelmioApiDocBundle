@@ -1,9 +1,12 @@
 <?php
 namespace Nelmio\ApiDocBundle\Parser\Form;
+
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType as FormCollectionType;
 use Nelmio\ApiDocBundle\Parser\FormTypeParser;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
+
 /**
  *
  * @author Asmir Mustafic <goetas@gmail.com>
@@ -31,9 +34,9 @@ class CollectionType implements FormTypeMapInterface
 
         return $form;
     }
-    public function supports(FormBuilderInterface $formBuilder)
+    public function supports(ResolvedFormTypeInterface $resolved)
     {
-        return $formBuilder->getType()->getInnerType() instanceof FormCollectionType;
+        return $resolved->getInnerType() instanceof FormCollectionType;
     }
 
     private function implementsType($item)

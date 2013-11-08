@@ -1,7 +1,10 @@
 <?php
 namespace Nelmio\ApiDocBundle\Parser\Form;
+
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType as FormDateType;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
+
 /**
  *
  * @author Asmir Mustafic <goetas@gmail.com>
@@ -13,8 +16,8 @@ class DateType implements FormTypeMapInterface
     {
         return array("dataType"=>"date", "format"=>$formBuilder->getOption("format"));
     }
-    public function supports(FormBuilderInterface $formBuilder)
+    public function supports(ResolvedFormTypeInterface $resolved)
     {
-        return $formBuilder->getType()->getInnerType() instanceof FormDateType;
+        return $resolved->getInnerType() instanceof FormDateType;
     }
 }

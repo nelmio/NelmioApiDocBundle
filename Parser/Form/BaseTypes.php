@@ -2,6 +2,8 @@
 namespace Nelmio\ApiDocBundle\Parser\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
+
 /**
  *
  * @author Asmir Mustafic <goetas@gmail.com>
@@ -16,6 +18,10 @@ class BaseTypes implements FormTypeMapInterface
      */
     protected $mapTypes = array(
         'text' => 'string',
+        'url' => 'string',
+        'email' => 'string',
+        'telephone' => 'string',
+        'hidden' => 'string',
         'checkbox' => 'boolean',
         'number' => 'float',
         'integer' => 'int',
@@ -30,8 +36,8 @@ class BaseTypes implements FormTypeMapInterface
         );
     }
 
-    public function supports(FormBuilderInterface $formBuilder)
+    public function supports(ResolvedFormTypeInterface $resolved)
     {
-        return isset($this->mapTypes[$formBuilder->getType()->getInnerType()->getName()]);
+        return isset($this->mapTypes[$resolved->getInnerType()->getName()]);
     }
 }
