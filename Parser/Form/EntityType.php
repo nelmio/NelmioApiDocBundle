@@ -25,13 +25,25 @@ class EntityType implements FormTypeMapInterface
     public function findType(FormBuilderInterface $formBuilder)
     {
         $class = $formBuilder->getOption("class");
+
+        return array("dataType"=>$this->findPrimaryKeyType($class));
+    }
+
+    protected function findPrimaryKeyType($class)
+    {
         $em = $this->registry->getManagerForClass($class);
         $metadata = $em->getClassMetadata($class);
-        foreach ($metadata->identifier as $idName) {
-            return array("dataType"=>$metadata->fieldMappings[$idName]["type"]);
-        }
 
+
+        foreach ($metadata->identifier as $idName) {
+            if (isset($metadata->associationMappings[$idName]['id'])) {
+                return $this->findPrimaryKeyType($metadata->associationMappings[$idName]['targetEntity']);
+            } else {
+                return $metadata->fieldMappings[$idName]["type"];
+            }
+        }
     }
+
     public function supports(ResolvedFormTypeInterface $resolved)
     {
         return $resolved->getInnerType() instanceof DoctrineType;
