@@ -38,8 +38,6 @@ class CollectionType implements FormTypeMapInterface
 
     private function implementsType($item)
     {
-        if(is_object($item))
-        echo get_class($item);
         if (!class_exists($item)) {
             return false;
         }
