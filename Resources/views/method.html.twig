@@ -193,7 +193,7 @@
 
             {% if enableSandbox %}
                 <div class="pane sandbox">
-                    <form method="{{ data.method|upper }}" action="{{ data.uri }}">
+                    <form method="{{ data.method|upper }}" action="{% if data.host is defined %}{{ data.https ? 'https://' : 'http://' }}{{ data.host }}{% endif %}{{ data.uri }}">
                         <fieldset class="parameters">
                             <legend>Input</legend>
                             {% if data.requirements is defined %}
