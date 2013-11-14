@@ -185,7 +185,9 @@ class ApiDocExtractor
             $method = $matches[2];
             if ($this->container->has($controller)) {
                 $this->container->enterScope('request');
-                $this->container->set('request', new Request(), 'request');
+                $tmp_request=new Request();
+                $tmp_request->setTrustedHosts(array());
+                $this->container->set('request', $tmp_request, 'request');
                 $class = get_class($this->container->get($controller));
                 $this->container->leaveScope('request');
             }
