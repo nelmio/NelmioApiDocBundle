@@ -21,6 +21,9 @@ class LoadExtractorParsersPass implements CompilerPassInterface
         // forms may not be installed/enabled, if it is, load that config as well
         if ($container->hasDefinition('form.factory')) {
             $loader->load('services.form.xml');
+            if ($container->hasDefinition('doctrine')) {
+                $loader->load('services.form.doctrine.xml');
+            }
         }
 
         // validation may not be installed/enabled, if it is, load that config as well

@@ -16,6 +16,9 @@ use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\Form\FormBuilderInterface;
+use Nelmio\ApiDocBundle\Parser\Form\FormTypeMapInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 class FormTypeParser implements ParserInterface
 {
@@ -32,23 +35,22 @@ class FormTypeParser implements ParserInterface
     /**
      * @var array
      */
-    protected $mapTypes = array(
-        'text'      => 'string',
-        'date'      => 'date',
-        'datetime'  => 'datetime',
-        'checkbox'  => 'boolean',
-        'time'      => 'time',
-        'number'    => 'float',
-        'integer'   => 'int',
-        'textarea'  => 'string',
-        'country'   => 'string',
-    );
+    protected $mapTypes = array();
 
     public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory  = $formFactory;
     }
-
+    /**
+     *
+     * @param  FormTypeMapInterface $mapper
+     * @return \Nelmio\ApiDocBundle\Parser\FormTypeParser
+     */
+    public function addTypeMapper(FormTypeMapInterface $mapper)
+    {
+        $this->mapTypes[] = $mapper;
+        return $this;
+    }
     /**
      * {@inheritdoc}
      */
@@ -84,69 +86,76 @@ class FormTypeParser implements ParserInterface
 
         return $this->parseForm($form, array_key_exists('name', $item) ? $item['name'] : $form->getName());
     }
-
-    private function parseForm($form, $prefix = null)
+    private function findType(FormBuilderInterface $config, $name)
     {
-        $parameters = array();
-        foreach ($form as $name => $child) {
-            $config = $child->getConfig();
+        $params = array();
+        $params[$name] = array(
+            'dataType'      => 'unknown',
+            'required'      => $config->getRequired(),
+            'description'   => $config->getAttribute('description'),
+            'readonly'      => $config->getDisabled(),
+        );
 
-            if ($prefix) {
-                $name = sprintf('%s[%s]', $prefix, $name);
-            }
+        for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
 
-            $bestType = '';
-            for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
-                if (isset($this->mapTypes[$type->getName()])) {
-                    $bestType = $this->mapTypes[$type->getName()];
-                } elseif ('collection' === $type->getName()) {
-                    if (is_string($config->getOption('type')) && isset($this->mapTypes[$config->getOption('type')])) {
-                        $bestType = sprintf('array of %ss', $this->mapTypes[$config->getOption('type')]);
-                    }
-                }
-            }
+            foreach ($this->mapTypes as $typeMapper) {
+                if ($typeMapper->supports($type)) {
 
-            if ('' === $bestType) {
-                if ($type = $config->getType()) {
-                    if ($type = $type->getInnerType()) {
-                        /**
-                         * TODO: Implement a better handling of unsupported types
-                         * This is just a temporary workaround for don't breaking docs page in case of unsupported types
-                         * like the entity type https://github.com/nelmio/NelmioApiDocBundle/issues/94
-                         */
-                        $addDefault = false;
-                        try {
-                            $subForm    = $this->formFactory->create($type);
-                            $subParameters = $this->parseForm($subForm, $name);
-                            if (!empty($subParameters)) {
-                                $parameters = array_merge($parameters, $subParameters);
-                            } else {
-                                $addDefault = true;
-                            }
-                        } catch (\Exception $e) {
-                            $addDefault = true;
-                        }
+                    $definition = $typeMapper->findType($config);
+                    if (is_array($definition)) {
+                        $params[$name] = array_merge(array(
+                            'required'      => $config->getRequired(),
+                            'description'   => $config->getAttribute('description'),
+                            'readonly'      => $config->getDisabled(),
+                        ), array_filter($definition));
 
-                        if ($addDefault) {
-                            $parameters[$name] = array(
-                                'dataType'      => 'string',
+                        return $params;
+                    } else { // inside a collection
+                        unset($params[$name]);
+                        $subParams = $this->parseForm($definition, "{$name}[ ]");
+
+                        if (!$subParams) {
+
+                            $subsubParams = $this->findType($definition->getConfig(), $config->getName());
+
+                            $subParams["{$name}[ ]"]=array(
+                                'dataType'      => $subsubParams[$config->getName()]['dataType'] ?: 'unknown',
                                 'required'      => $config->getRequired(),
                                 'description'   => $config->getAttribute('description'),
                                 'readonly'      => $config->getDisabled(),
                             );
                         }
-
-                        continue;
+                        $params = array_merge($params, $subParams);
                     }
+
                 }
             }
+        }
 
-            $parameters[$name] = array(
-                'dataType'      => $bestType,
-                'required'      => $config->getRequired(),
-                'description'   => $config->getAttribute('description'),
-                'readonly'      => $config->getDisabled(),
-            );
+        if (($type = $config->getType()) && $type = $type->getInnerType()) {
+            try {
+                $subForm = $this->formFactory->create($type);
+                $subParams = $this->parseForm($subForm, $name);
+                if ($subParams) {
+                    unset($params[$name]);
+                }
+                $params = array_merge($params, $subParams);
+            } catch (\Exception $e) {
+
+            }
+        }
+
+        return $params;
+    }
+    private function parseForm($form, $prefix = null)
+    {
+        $parameters = array();
+        foreach ($form as $name => $child) {
+            $config = $child->getConfig();
+            if ($prefix) {
+                $name = sprintf('%s[%s]', $prefix, $name);
+            }
+            $parameters = array_merge($parameters, $this->findType($config, $name));
         }
 
         return $parameters;
