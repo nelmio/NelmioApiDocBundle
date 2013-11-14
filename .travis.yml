@@ -5,8 +5,19 @@ php:
   - 5.4
   - 5.5
 
-before_script:
-  - composer self-update
-  - composer update
+env:
+    - SYMFONY_VERSION=2.1.*
+    - SYMFONY_VERSION=2.2.*
+    - SYMFONY_VERSION=2.3.*
+    - SYMFONY_VERSION=dev-master
 
-script: phpunit
+matrix:
+    allow_failures:
+        - env: SYMFONY_VERSION=dev-master
+
+before_script:
+    - composer self-update
+    - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
+    - composer update
+
+script: phpunit --coverage-text
