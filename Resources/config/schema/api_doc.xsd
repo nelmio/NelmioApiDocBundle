@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns="http://nelmio.github.io/schema/dic/nelmio_api_doc"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://nelmio.github.io/schema/dic/nelmio_api_doc"
+    elementFormDefault="qualified">
+
+    <xsd:element name="config">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="motd" type="motd" minOccurs="0" maxOccurs="1"/>
+                <xsd:element name="request_listener" type="request_listener" minOccurs="0" maxOccurs="1"/>
+                <xsd:element name="sandbox" type="sandbox" minOccurs="0" maxOccurs="1"/>
+            </xsd:all>
+            <xsd:attribute name="name" type="xsd:string"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="motd">
+        <xsd:attribute name="template" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="request_listener">
+        <xsd:attribute name="enabled" default="true" type="xsd:boolean"/>
+        <xsd:attribute name="parameter" default="_doc" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="sandbox">
+        <xsd:attribute name="enabled" default="true" type="xsd:boolean"/>
+        <xsd:attribute name="endpoint" type="xsd:string"/>
+        <xsd:attribute name="accept_type" type="xsd:string"/>
+        <xsd:attribute name="body_format" type="body_format_enum"/>
+        <xsd:attribute name="request_format" type="request_format"/>
+        <xsd:attribute name="authentication" type="authentication"/>
+    </xsd:complexType>
+
+    <xsd:simpleType name="body_format_enum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="form"/>
+            <xsd:enumeration value="json"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="request_format">
+        <xsd:attribute name="method" type="request_format_method_enum"/>
+        <xsd:attribute name="default_format" type="request_format_default_format_enum"/>
+    </xsd:complexType>
+
+    <xsd:simpleType name="request_format_method_enum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="format_param"/>
+            <xsd:enumeration value="accept_header"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="request_format_default_format_enum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="json"/>
+            <xsd:enumeration value="xml"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:complexType name="authentication">
+        <xsd:attribute name="name" type="xsd:string"/>
+        <xsd:attribute name="delivery" type="authentication_delivery_enum"/>
+        <xsd:attribute name="custom_endpoint" type="xsd:boolean" default="false"/>
+    </xsd:complexType>
+
+    <xsd:simpleType name="authentication_delivery_enum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="query"/>
+            <xsd:enumeration value="http_basic"/>
+            <xsd:enumeration value="header"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>
