@@ -41,6 +41,21 @@ class ValidatorTest
     public $type;
 
     /**
+     * @Assert\Date();
+     */
+    public $date;
+
+    /**
+     * @Assert\DateTime();
+     */
+    public $dateTime;
+
+    /**
+     * @Assert\Time();
+     */
+    public $time;
+
+    /**
      * @Assert\Email()
      */
     public $email;

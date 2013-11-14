@@ -24,7 +24,9 @@ class ValidationParserTest extends WebTestCase
         $result = $this->parser->parse(array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\ValidatorTest'));
 
         foreach ($expected as $name => $value) {
-            $this->assertEquals($value, $expected[$name]);
+            $this->assertArrayHasKey($property, $result);
+            $this->assertArrayHasKey($name, $result[$property]);
+            $this->assertEquals($result[$property][$name], $expected[$name]);
         }
     }
 
@@ -59,6 +61,24 @@ class ValidationParserTest extends WebTestCase
                 'property' => 'type',
                 'expected' => array(
                     'dataType' => 'DateTime'
+                )
+            ),
+            array(
+                'property' => 'date',
+                'expected' => array(
+                    'format' => '{Date YYYY-MM-DD}'
+                )
+            ),
+            array(
+                'property' => 'dateTime',
+                'expected' => array(
+                    'format' => '{DateTime YYYY-MM-DD HH:MM:SS}'
+                )
+            ),
+            array(
+                'property' => 'time',
+                'expected' => array(
+                    'format' => '{Time HH:MM:SS}'
                 )
             ),
             array(
