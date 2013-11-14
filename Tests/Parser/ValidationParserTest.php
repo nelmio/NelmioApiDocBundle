@@ -3,6 +3,8 @@ namespace NelmioApiDocBundle\Tests\Parser;
 
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
 use Nelmio\ApiDocBundle\Parser\ValidationParser;
+use Nelmio\ApiDocBundle\Parser\ValidationParserLegacy;
+use Symfony\Component\HttpKernel\Kernel;
 
 class ValidationParserTest extends WebTestCase
 {
@@ -13,7 +15,11 @@ class ValidationParserTest extends WebTestCase
         $container  = $this->getContainer();
         $factory = $container->get('validator.mapping.class_metadata_factory');
 
-        $this->parser = new ValidationParser($factory);
+        if (version_compare(Kernel::VERSION, '2.2.0', '<')) {
+            $this->parser = new ValidationParserLegacy($factory);
+        } else {
+            $this->parser = new ValidationParser($factory);
+        }
     }
 
     /**

@@ -6,9 +6,9 @@ php:
   - 5.5
 
 env:
-    - SYMFONY_VERSION=~2.1.0
-    - SYMFONY_VERSION=~2.2.0
-    - SYMFONY_VERSION=~2.3.0
+    - SYMFONY_VERSION=2.1.*
+    - SYMFONY_VERSION=2.2.*
+    - SYMFONY_VERSION=2.3.*
     - SYMFONY_VERSION=dev-master
 
 matrix:
@@ -18,6 +18,8 @@ matrix:
 before_script:
     - composer self-update
     - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
+    - composer require symfony/twig-bundle:${SYMFONY_VERSION} --no-update
+    - composer require symfony/validator:${SYMFONY_VERSION} --no-update
     - composer update
 
 script: phpunit --coverage-text

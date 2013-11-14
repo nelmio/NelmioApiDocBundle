@@ -65,7 +65,7 @@ class ValidationParserLegacy extends ValidationParser
                 $constraints = $propdata->getConstraints();
 
                 foreach ($constraints as $constraint) {
-                    $vparams = $this->parseConstraint($constraint, $vparams);
+                    $vparams = $this->parseConstraint($constraint, $vparams, $className);
                 }
             }
 

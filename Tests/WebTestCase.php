@@ -17,6 +17,17 @@ use Symfony\Component\HttpKernel\Kernel;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
+    protected function setUp()
+    {
+        $this->deleteTmpDir();
+
+        parent::setUp();
+
+        if (version_compare(Kernel::VERSION, '2.2.0', '<')) {
+            $this->markTestSkipped('Does not work with Symfony2 2.1 due to a "host" parameter in the `routing.yml` file');
+        }
+    }
+
     protected function deleteTmpDir()
     {
         if (!file_exists($dir = sys_get_temp_dir().'/'.Kernel::VERSION)) {
@@ -61,12 +72,6 @@ abstract class WebTestCase extends BaseWebTestCase
             'default',
             isset($options['debug']) ? $options['debug'] : true
         );
-    }
-
-    public function setUp()
-    {
-        $this->deleteTmpDir();
-        parent::setUp();
     }
 
     public function tearDown()
