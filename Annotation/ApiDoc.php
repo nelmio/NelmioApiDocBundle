@@ -116,6 +116,11 @@ class ApiDoc
     private $authentication = false;
 
     /**
+     * @var array
+     */
+    private $authenticationRoles = array();
+
+    /**
      * @var int
      */
     private $cache;
@@ -198,6 +203,12 @@ class ApiDoc
 
         if (isset($data['authentication'])) {
             $this->setAuthentication((bool) $data['authentication']);
+        }
+
+        if (isset($data['authenticationRoles'])) {
+            foreach ($data['authenticationRoles'] as $key => $role) {
+                $this->authenticationRoles[] = $role;
+            }
         }
 
         if (isset($data['cache'])) {
@@ -437,6 +448,22 @@ class ApiDoc
     }
 
     /**
+     * @return array
+     */
+    public function getAuthenticationRoles()
+    {
+        return $this->authenticationRoles;
+    }
+
+    /**
+     * @param array $authenticationRoles
+     */
+    public function setAuthenticationRoles($authenticationRoles)
+    {
+        $this->authenticationRoles = $authenticationRoles;
+    }
+
+    /**
      * @return int
      */
     public function getCache()
@@ -542,6 +569,7 @@ class ApiDoc
 
         $data['https'] = $this->https;
         $data['authentication'] = $this->authentication;
+        $data['authenticationRoles'] = $this->authenticationRoles;
         $data['deprecated'] = $this->deprecated;
 
         return $data;

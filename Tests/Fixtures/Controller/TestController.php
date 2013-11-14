@@ -167,7 +167,8 @@ class TestController
 
     /**
      * @ApiDoc(
-     *  authentication=true
+     *  authentication=true,
+     *  authenticationRoles={"ROLE_USER","ROLE_FOOBAR"}
      * )
      */
     public function authenticatedAction()
