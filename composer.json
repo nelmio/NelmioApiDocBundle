@@ -30,7 +30,7 @@
         "symfony/validator": "~2.1",
         "symfony/yaml": "~2.1",
         "symfony/form": "~2.1",
-        "friendsofsymfony/rest-bundle": "0.12.*@dev",
+        "friendsofsymfony/rest-bundle": "~1.0",
         "jms/serializer-bundle": ">=0.11",
         "sensio/framework-extra-bundle": "~2.1"
     },
@@ -40,7 +40,6 @@
         "friendsofsymfony/rest-bundle": "For making use of REST information in the doc.",
         "jms/serializer": "For making use of serializer information in the doc."
     },
-    "minimum-stability": "dev",
     "autoload": {
         "psr-0": { "Nelmio\\ApiDocBundle": "" }
     },
