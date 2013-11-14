@@ -68,9 +68,9 @@
                         {% for name, infos in data.requirements %}
                             <tr>
                                 <td>{{ name }}</td>
-                                <td>{{ infos.requirement }}</td>
-                                <td>{{ infos.dataType }}</td>
-                                <td>{{ infos.description }}</td>
+                                <td>{{ infos.requirement is defined ? infos.requirement : ''}}</td>
+                                <td>{{ infos.dataType is defined ? infos.dataType : ''}}</td>
+                                <td>{{ infos.description is defined ? infos.description : ''}}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
