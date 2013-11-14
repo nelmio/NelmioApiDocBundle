@@ -337,7 +337,38 @@ the `ApiDoc`, you can provide custom handlers as services. You just have to impl
 Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tree/master/Extractor/Handler).
 
 
-## Credits ##
+Contributing
+------------
+
+See
+[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/master/CONTRIBUTING.md)
+file.
+
+
+Running the Tests
+-----------------
+
+Install the [Composer](http://getcomposer.org/) `dev` dependencies:
+
+    php composer.phar install --dev
+
+Then, run the test suite using
+[PHPUnit](https://github.com/sebastianbergmann/phpunit/):
+
+    phpunit
+
+
+Credits
+-------
 
 The design is heavily inspired by the [swagger-ui](https://github.com/wordnik/swagger-ui) project.
 Some icons from the [Glyphicons](http://glyphicons.com/) library are used to render the documentation.
+
+
+License
+-------
+
+This bundle is released under the MIT license. See the complete license in the
+bundle:
+
+    Resources/meta/LICENSE
