@@ -4,7 +4,6 @@ namespace NelmioApiDocBundle\Tests\Parser;
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
 use Nelmio\ApiDocBundle\Parser\ValidationParser;
 
-
 class ValidationParserTest extends WebTestCase
 {
     protected $handler;
@@ -24,11 +23,10 @@ class ValidationParserTest extends WebTestCase
     {
         $result = $this->parser->parse(array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\ValidatorTest'));
 
-        foreach($expected as $name => $value) {
+        foreach ($expected as $name => $value) {
             $this->assertEquals($value, $expected[$name]);
         }
     }
-
 
     public function dataTestParser()
     {

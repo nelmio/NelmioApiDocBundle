@@ -56,23 +56,23 @@ class ValidationParser implements ParserInterface, PostParserInterface
         $classdata = $this->factory->getMetadataFor($className);
         $properties = $classdata->getConstrainedProperties();
 
-        foreach($properties as $property) {
+        foreach ($properties as $property) {
             $vparams = array();
             $pds = $classdata->getPropertyMetadata($property);
-            foreach($pds as $propdata) {
+            foreach ($pds as $propdata) {
                 $constraints = $propdata->getConstraints();
 
-                foreach($constraints as $constraint) {
+                foreach ($constraints as $constraint) {
                     $vparams = $this->parseConstraint($constraint, $vparams, $className);
                 }
             }
 
-            if(isset($vparams['format'])) {
+            if (isset($vparams['format'])) {
                 $vparams['format'] = join(', ', $vparams['format']);
             }
 
-            foreach(array('dataType', 'readonly', 'required') as $reqprop) {
-                if(!isset($vparams[$reqprop])) {
+            foreach (array('dataType', 'readonly', 'required') as $reqprop) {
+                if (!isset($vparams[$reqprop])) {
                     $vparams[$reqprop] = null;
                 }
             }
@@ -88,8 +88,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
      */
     public function postParse(array $input, array $parameters)
     {
-        foreach($parameters as $param => $data) {
-            if(isset($data['class']) && isset($data['children'])) {
+        foreach ($parameters as $param => $data) {
+            if (isset($data['class']) && isset($data['children'])) {
                 $input = array('class' => $data['class']);
                 $parameters[$param]['children'] = array_merge(
                     $parameters[$param]['children'], $this->postParse($input, $parameters[$param]['children'])
@@ -115,15 +115,15 @@ class ValidationParser implements ParserInterface, PostParserInterface
      *  - Choice (single and multiple, min and max)
      *  - Regex (match and non-match)
      *
-     * @param Constraint $constraint The constraint metadata object.
-     * @param array $vparams         The existing validation parameters.
-     * @return mixed                 The parsed list of validation parameters.
+     * @param  Constraint $constraint The constraint metadata object.
+     * @param  array      $vparams    The existing validation parameters.
+     * @return mixed      The parsed list of validation parameters.
      */
     protected function parseConstraint(Constraint $constraint, $vparams, $className)
     {
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
 
-        switch($class) {
+        switch ($class) {
             case 'NotBlank':
             case 'NotNull':
                 $vparams['required'] = true;
@@ -142,10 +142,10 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 break;
             case 'Length':
                 $messages = array();
-                if(isset($constraint->min)) {
+                if (isset($constraint->min)) {
                     $messages[] = "min: {$constraint->min}";
                 }
-                if(isset($constraint->max)) {
+                if (isset($constraint->max)) {
                     $messages[] = "max: {$constraint->max}";
                 }
                 $vparams['format'][] = '{length: ' . join(', ', $messages) . '}';
@@ -153,12 +153,12 @@ class ValidationParser implements ParserInterface, PostParserInterface
             case 'Choice':
                 $choices = $this->getChoices($constraint, $className);
                 $format = '[' . join('|', $choices) . ']';
-                if($constraint->multiple) {
+                if ($constraint->multiple) {
                     $messages = array();
-                    if(isset($constraint->min)) {
+                    if (isset($constraint->min)) {
                         $messages[] = "min: {$constraint->min} ";
                     }
-                    if(isset($constraint->max)) {
+                    if (isset($constraint->max)) {
                         $messages[] = "max: {$constraint->max} ";
                     }
                     $vparams['format'][] = '{' . join ('', $messages) . 'choice of ' . $format . '}';
@@ -167,7 +167,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 }
                 break;
             case 'Regex':
-                if($constraint->match) {
+                if ($constraint->match) {
                     $vparams['format'][] = '{match: ' . $constraint->pattern . '}';
                 } else {
                     $vparams['format'][] = '{not match: ' . $constraint->pattern . '}';
@@ -186,7 +186,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
      * @return array
      * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException
      */
-    protected function getChoices (Constraint $constraint, $className)
+    protected function getChoices(Constraint $constraint, $className)
     {
         if ($constraint->callback) {
             if (is_callable(array($className, $constraint->callback))) {

@@ -7,7 +7,6 @@ use Nelmio\ApiDocBundle\Tests\Fixtures;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormFactoryBuilder;
-use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
 
 class FormTypeParserTest extends \PHPUnit_Framework_TestCase

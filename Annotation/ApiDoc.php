@@ -482,6 +482,7 @@ class ApiDoc
     public function setDeprecated($deprecated)
     {
         $this->deprecated = (bool) $deprecated;
+
         return $this;
     }
 

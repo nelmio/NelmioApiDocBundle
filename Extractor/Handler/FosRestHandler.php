@@ -36,7 +36,7 @@ class FosRestHandler implements HandlerInterface
                         'dataType'      => '',
                         'description'   => $annot->description,
                     ));
-                } elseif($annot->default !== null) {
+                } elseif ($annot->default !== null) {
                     $annotation->addFilter($annot->name, array(
                         'requirement'   => $annot->requirements,
                         'description'   => $annot->description,

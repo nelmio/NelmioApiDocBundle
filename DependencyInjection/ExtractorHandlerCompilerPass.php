@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
-
 class ExtractorHandlerCompilerPass implements CompilerPassInterface
 {
     /**
@@ -25,13 +24,11 @@ class ExtractorHandlerCompilerPass implements CompilerPassInterface
     {
         $handlers = array();
         foreach ($container->findTaggedServiceIds('nelmio_api_doc.extractor.handler') as $id => $attributes) {
-
-            // Adding handlers from tagged services
             $handlers[] = new Reference($id);
         }
-        $definition = $container->getDefinition(
-            'nelmio_api_doc.extractor.api_doc_extractor'
-        );
-        $definition->replaceArgument(4, $handlers);
+
+        $container
+            ->getDefinition('nelmio_api_doc.extractor.api_doc_extractor')
+            ->replaceArgument(4, $handlers);
     }
 }

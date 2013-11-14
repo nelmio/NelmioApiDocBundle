@@ -23,7 +23,7 @@ use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 
 class ApiDocExtractor
 {
-    const ANNOTATION_CLASS                = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
+    const ANNOTATION_CLASS = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
 
     /**
      * @var ContainerInterface
@@ -46,22 +46,22 @@ class ApiDocExtractor
     private $commentExtractor;
 
     /**
-     * @var array ParserInterface
+     * @var ParserInterface[]
      */
     protected $parsers = array();
 
     /**
-     * @var array HandlerInterface
+     * @var HandlerInterface[]
      */
     protected $handlers;
 
     public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers)
     {
-        $this->container = $container;
-        $this->router    = $router;
-        $this->reader    = $reader;
+        $this->container        = $container;
+        $this->router           = $router;
+        $this->reader           = $reader;
         $this->commentExtractor = $commentExtractor;
-        $this->handlers = $handlers;
+        $this->handlers         = $handlers;
     }
 
     /**
@@ -141,7 +141,7 @@ class ApiDocExtractor
         }
 
         $methodOrder = array('GET', 'POST', 'PUT', 'DELETE');
-        usort($array, function($a, $b) use ($methodOrder) {
+        usort($array, function ($a, $b) use ($methodOrder) {
             if ($a['resource'] === $b['resource']) {
                 if ($a['annotation']->getRoute()->getPattern() === $b['annotation']->getRoute()->getPattern()) {
                     $methodA = array_search($a['annotation']->getRoute()->getRequirement('_method'), $methodOrder);
@@ -282,8 +282,8 @@ class ApiDocExtractor
                 }
             }
 
-            foreach($supportedParsers as $parser) {
-                if($parser instanceof PostParserInterface) {
+            foreach ($supportedParsers as $parser) {
+                if ($parser instanceof PostParserInterface) {
                     $mp = $parser->postParse($normalizedInput, $parameters);
                     $parameters = $this->mergeParameters($parameters, $mp);
                 }
@@ -293,7 +293,7 @@ class ApiDocExtractor
 
             if ('PUT' === $method) {
                 // All parameters are optional with PUT (update)
-                array_walk($parameters, function($val, $key) use (&$data) {
+                array_walk($parameters, function ($val, $key) use (&$data) {
                     $parameters[$key]['required'] = false;
                 });
             }
@@ -401,32 +401,32 @@ class ApiDocExtractor
      *  - Other string values are overridden by later parsers when present.
      *  - Array parameters are recursively merged.
      *
-     * @param array $p1 The pre-existing parameters array.
-     * @param array $p2 The newly-returned parameters array.
-     * @return array    The resulting, merged array.
+     * @param  array $p1 The pre-existing parameters array.
+     * @param  array $p2 The newly-returned parameters array.
+     * @return array The resulting, merged array.
      */
     protected function mergeParameters($p1, $p2)
     {
         $params = $p1;
 
-        foreach($p2 as $propname => $propvalue) {
-            if(!isset($p1[$propname])) {
+        foreach ($p2 as $propname => $propvalue) {
+            if (!isset($p1[$propname])) {
                 $params[$propname] = $propvalue;
             } else {
                 $v1 = $p1[$propname];
 
-                foreach($propvalue as $name => $value) {
-                    if(is_array($value)) {
-                        if(isset($v1[$name]) && is_array($v1[$name])) {
+                foreach ($propvalue as $name => $value) {
+                    if (is_array($value)) {
+                        if (isset($v1[$name]) && is_array($v1[$name])) {
                             $v1[$name] = $this->mergeParameters($v1[$name], $value);
                         } else {
                             $v1[$name] = $value;
                         }
-                    } elseif(!is_null($value)) {
-                        if(in_array($name, array('required', 'readonly'))) {
+                    } elseif (!is_null($value)) {
+                        if (in_array($name, array('required', 'readonly'))) {
                             $v1[$name] = $v1[$name] || $value;
-                        } elseif(in_array($name, array('requirement'))) {
-                            if(isset($v1[$name])) {
+                        } elseif (in_array($name, array('requirement'))) {
+                            if (isset($v1[$name])) {
                                 $v1[$name] .= ', ' . $value;
                             } else {
                                 $v1[$name] = $value;
@@ -463,17 +463,18 @@ class ApiDocExtractor
     /**
      * Clears the temporary 'class' parameter from the parameters array before it is returned.
      *
-     * @param array $array The source array.
-     * @return array       The cleared array.
+     * @param  array $array The source array.
+     * @return array The cleared array.
      */
     protected function clearClasses($array)
     {
-        if(is_array($array)) {
+        if (is_array($array)) {
             unset($array['class']);
-            foreach($array as $name => $item) {
+            foreach ($array as $name => $item) {
                 $array[$name] = $this->clearClasses($item);
             }
         }
+
         return $array;
     }
 }
