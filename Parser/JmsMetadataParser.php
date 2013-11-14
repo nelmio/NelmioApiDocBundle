@@ -120,7 +120,7 @@ class JmsMetadataParser implements ParserInterface
                     'dataType'     => $dataType['normalized'],
                     'required'     => false,
                     //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
-                    'description'  => $this->getDescription($className, $item),
+                    'description'  => $this->getDescription($item),
                     'readonly'     => $item->readOnly,
                     'sinceVersion' => $item->sinceVersion,
                     'untilVersion' => $item->untilVersion,
@@ -219,9 +219,9 @@ class JmsMetadataParser implements ParserInterface
         return null;
     }
 
-    protected function getDescription($className, PropertyMetadata $item)
+    protected function getDescription(PropertyMetadata $item)
     {
-        $ref = new \ReflectionClass($className);
+        $ref = new \ReflectionClass($item->class);
         if ($item instanceof VirtualPropertyMetadata) {
             $extracted = $this->commentExtractor->getDocCommentText($ref->getMethod($item->getter));
         } else {
