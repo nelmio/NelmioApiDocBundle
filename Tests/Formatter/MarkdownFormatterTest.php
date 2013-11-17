@@ -468,6 +468,20 @@ param1:
   * type: string
   * required: true
   * description: Param1 description.
+
+
+### `ANY` /z-return-jms-and-validator-output ###
+
+
+#### Response ####
+
+bar:
+
+  * type: DateTime
+
+number:
+
+  * type: DateTime
 MARKDOWN;
 
         $this->assertEquals($expected, $result);

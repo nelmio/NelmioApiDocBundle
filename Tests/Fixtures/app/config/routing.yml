@@ -122,6 +122,10 @@ test_return_nested_output:
     pattern: /return-nested-output
     defaults: { _controller: NelmioApiDocTestBundle:Test:jmsReturnNestedOutput, _format: json }
 
+test_route_18:
+    pattern: /z-return-jms-and-validator-output
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zReturnJmsAndValidationOutput }
+
 test_route_named_resource:
     pattern:  /named-resource
     defaults: { _controller: NelmioApiDocTestBundle:Test:namedResource }
