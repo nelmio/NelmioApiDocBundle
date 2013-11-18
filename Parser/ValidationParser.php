@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Parser;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Uses the Symfony Validation component to extract information about API objects.
@@ -50,9 +51,20 @@ class ValidationParser implements ParserInterface, PostParserInterface
      */
     public function parse(array $input)
     {
-        $params = array();
         $className = $input['class'];
+        return $this->doParse($className, array());
+    }
 
+    /**
+     * Recursively parse constraints.
+     *
+     * @param  $className
+     * @param  array $visited
+     * @return array
+     */
+    protected function doParse ($className, array $visited)
+    {
+        $params = array();
         $classdata = $this->factory->getMetadataFor($className);
         $properties = $classdata->getConstrainedProperties();
 
@@ -63,7 +75,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $constraints = $propdata->getConstraints();
 
                 foreach ($constraints as $constraint) {
-                    $vparams = $this->parseConstraint($constraint, $vparams, $className);
+                    $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited);
                 }
             }
 
@@ -75,6 +87,12 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 if (!isset($vparams[$reqprop])) {
                     $vparams[$reqprop] = null;
                 }
+            }
+
+            // check for nested classes with All constraint
+            if (isset($vparams['class']) && !in_array($vparams['class'], $visited) && null !== $this->factory->getMetadataFor($vparams['class'])) {
+                $visited[] = $vparams['class'];
+                $vparams['children'] = $this->doParse($vparams['class'], $visited);
             }
 
             $params[$property] = $vparams;
@@ -119,7 +137,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
      * @param  array      $vparams    The existing validation parameters.
      * @return mixed      The parsed list of validation parameters.
      */
-    protected function parseConstraint(Constraint $constraint, $vparams, $className)
+    protected function parseConstraint(Constraint $constraint, $vparams, $className, &$visited = array())
     {
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
 
@@ -181,6 +199,29 @@ class ValidationParser implements ParserInterface, PostParserInterface
                     $vparams['format'][] = '{match: ' . $constraint->pattern . '}';
                 } else {
                     $vparams['format'][] = '{not match: ' . $constraint->pattern . '}';
+                }
+                break;
+            case 'All':
+                foreach ($constraint->constraints as $childConstraint) {
+                    if ($childConstraint instanceof Type) {
+                        $nestedType = $childConstraint->type;
+                        $exp = explode("\\", $nestedType);
+                        if (!class_exists($nestedType)) {
+                            $nestedType = substr($className, 0, strrpos($className, '\\') + 1).$nestedType;
+
+                            if (!class_exists($nestedType)) {
+                                continue;
+                            }
+                        }
+
+                        $vparams['dataType'] = sprintf("array of objects (%s)", end($exp));
+                        $vparams['class'] = $nestedType;
+
+                        if (!in_array($nestedType, $visited)) {
+                            $visited[] = $nestedType;
+                            $vparams['children'] = $this->doParse($nestedType, $visited);
+                        }
+                    }
                 }
                 break;
         }

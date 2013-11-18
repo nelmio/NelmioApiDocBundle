@@ -840,6 +840,24 @@ With multiple lines.',
                             'readonly' => false,
                             'sinceVersion' => null,
                             'untilVersion' => null
+                        ),
+                        'objects' => array(
+                            'dataType' => 'array of objects (Test)',
+                            'readonly' => null,
+                            'required' => null,
+                            'children' => array(
+                                'a' => array(
+                                    'dataType' => 'string',
+                                    'format' => '{length: min: foo}, {not blank}',
+                                    'required' => true,
+                                    'readonly' => null
+                                ),
+                                'b' => array(
+                                    'dataType' => 'DateTime',
+                                    'required' => null,
+                                    'readonly' => null
+                                )
+                            )
                         )
                     ),
                     'authenticationRoles' => array(),

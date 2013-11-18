@@ -20,4 +20,11 @@ class MultipleTest
      */
     public $baz;
 
+    /**
+     * @Assert\Type(type="array")
+     * @Assert\All({
+     *     @Assert\Type(type="Test")
+     * })
+     */
+    public $objects;
 }
