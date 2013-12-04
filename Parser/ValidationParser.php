@@ -52,6 +52,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
     public function parse(array $input)
     {
         $className = $input['class'];
+
         return $this->doParse($className, array());
     }
 
@@ -62,7 +63,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
      * @param  array $visited
      * @return array
      */
-    protected function doParse ($className, array $visited)
+    protected function doParse($className, array $visited)
     {
         $params = array();
         $classdata = $this->factory->getMetadataFor($className);

@@ -229,7 +229,7 @@ you can specify which groups to use when generating the documentation by using t
 If your `output` classes use [versioning capabilities of JMS Serializer](http://jmsyst.com/libs/serializer/master/cookbook/exclusion_strategies#versioning-objects),
 the versioning information will be automatically used when generating the documentation.
 
-#### Form Types features ####
+#### Form Types Features ####
 
 If you use `FormFactoryInterface::createdNamed('', 'your_form_type'`, then by default the documentation will use
 the form type name as the prefix (`your_form_type[param]` ... instead of just `param`).
@@ -242,6 +242,28 @@ input = {
  "name" = ""
 }
 ```
+
+#### Used Parsers ####
+
+By default, all registered parsers are used, but sometimes you may want to
+define which parsers you want to use. The `parsers` attribute is used to
+configure a list of parsers that will be used:
+
+```
+output={
+    "class"   = "Acme\Bundle\Entity\User",
+    "parsers" = {
+        "Nelmio\ApiDocBundle\Parser\JmsMetadataParser",
+        "Nelmio\ApiDocBundle\Parser\ValidationParser"
+    }
+}
+```
+
+In this case the parsers `JmsMetadataParser` and `ValidationParser` are used to
+generate returned data.
+
+This feature also works for both the `input` and `output` properties.
+
 
 ### Documentation on-the-fly ###
 

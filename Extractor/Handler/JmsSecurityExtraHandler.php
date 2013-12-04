@@ -24,7 +24,7 @@ class JmsSecurityExtraHandler implements HandlerInterface
         foreach ($annotations as $annot) {
             if ($annot instanceof PreAuthorize) {
                 $annotation->setAuthentication(true);
-            } else if ($annot instanceof Secure) {
+            } elseif ($annot instanceof Secure) {
                 $annotation->setAuthentication(true);
                 $annotation->setAuthenticationRoles(is_array($annot->roles) ? $annot->roles : explode(',', $annot->roles));
             }
