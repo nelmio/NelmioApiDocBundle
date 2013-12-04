@@ -273,6 +273,16 @@ class ApiDocExtractor
 
             $normalizedInput = $this->normalizeClassParameter($input);
 
+            if (array_key_exists('parsers', $normalizedInput)) {
+                $this->parsers = array_filter($this->parsers, function($parser) use ($normalizedInput) {
+                    if (true === in_array(get_class($parser), $normalizedInput['parsers'])) {
+                        return true;
+                    }
+
+                    return false;
+                });
+            }
+
             $supportedParsers = array();
             $parameters = array();
             foreach ($this->parsers as $parser) {
@@ -306,6 +316,16 @@ class ApiDocExtractor
             $response = array();
 
             $normalizedOutput = $this->normalizeClassParameter($output);
+
+            if (array_key_exists('parsers', $normalizedOutput)) {
+                $this->parsers = array_filter($this->parsers, function($parser) use ($normalizedOutput) {
+                    if (true === in_array(get_class($parser), $normalizedOutput['parsers'])) {
+                        return true;
+                    }
+
+                    return false;
+                });
+            }
 
             foreach ($this->parsers as $parser) {
                 if ($parser->supports($normalizedOutput)) {
