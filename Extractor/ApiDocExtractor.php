@@ -273,9 +273,20 @@ class ApiDocExtractor
 
             $normalizedInput = $this->normalizeClassParameter($input);
 
+            $parsers = $this->parsers;
+            if (array_key_exists('parsers', $normalizedInput)) {
+            $parsers = array_filter($parsers, function($parser) use ($normalizedInput) {
+                    if (true === in_array(get_class($parser), $normalizedInput['parsers'])) {
+                        return true;
+                    }
+
+                    return false;
+                });
+            }
+
             $supportedParsers = array();
             $parameters = array();
-            foreach ($this->parsers as $parser) {
+            foreach ($parsers as $parser) {
                 if ($parser->supports($normalizedInput)) {
                     $supportedParsers[] = $parser;
                     $parameters = $this->mergeParameters($parameters, $parser->parse($normalizedInput));
@@ -306,8 +317,19 @@ class ApiDocExtractor
             $response = array();
 
             $normalizedOutput = $this->normalizeClassParameter($output);
+            $parsers = $this->parsers;
 
-            foreach ($this->parsers as $parser) {
+            if (array_key_exists('parsers', $normalizedOutput)) {
+                $parsers = array_filter($parsers, function($parser) use ($normalizedOutput) {
+                    if (true === in_array(get_class($parser), $normalizedOutput['parsers'])) {
+                        return true;
+                    }
+
+                    return false;
+                });
+            }
+
+            foreach ($parsers as $parser) {
                 if ($parser->supports($normalizedOutput)) {
                     $response = $this->mergeParameters($response, $parser->parse($normalizedOutput));
                 }

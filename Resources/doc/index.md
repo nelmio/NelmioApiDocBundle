@@ -243,6 +243,21 @@ input = {
 }
 ```
 
+#### Used Parsers ####
+
+If you need select which data parser will be used:
+
+ ```
+ output={
+     "class"="Acme\Bundle\Entity\User",
+     "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser", "Nelmio\ApiDocBundle\Parser\ValidationParser"}
+ }
+ ```
+
+ In this case the parsers 'JmsMetadataParser' and 'ValidationParser' are used to generate returned data.
+
+ This feature also works for the `input` property.
+
 ### Documentation on-the-fly ###
 
 By calling an URL with the parameter `?_doc=1`, you will get the corresponding documentation if available.
