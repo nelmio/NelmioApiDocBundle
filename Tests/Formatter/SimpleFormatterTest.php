@@ -870,6 +870,27 @@ With multiple lines.',
                     'authentication' => false,
                     'deprecated' => false,
                     'authenticationRoles' => array(),
+                    'parameters' =>
+                    array(
+                        'a' => array(
+                            'dataType' => 'string',
+                            'required' => true,
+                            'description' => 'A nice description',
+                            'readonly' => false,
+                        ),
+                        'b' => array(
+                            'dataType' => 'string',
+                            'required' => false,
+                            'description' => '',
+                            'readonly' => false,
+                        ),
+                        'c' => array(
+                            'dataType' => 'boolean',
+                            'required' => true,
+                            'description' => '',
+                            'readonly' => false,
+                        ),
+                    )
                 ),
                 17 =>
                 array(

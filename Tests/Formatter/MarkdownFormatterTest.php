@@ -499,6 +499,24 @@ number:
 ### `ANY` /z-return-selected-parsers-input ###
 
 
+#### Parameters ####
+
+a:
+
+  * type: string
+  * required: true
+  * description: A nice description
+
+b:
+
+  * type: string
+  * required: false
+
+c:
+
+  * type: boolean
+  * required: true
+
 
 ### `ANY` /z-return-selected-parsers-output ###
 
