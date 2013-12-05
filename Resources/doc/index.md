@@ -5,15 +5,21 @@ The **NelmioApiDocBundle** bundle allows you to generate a decent documentation
 for your APIs.
 
 
-## Installation ##
+Installation
+------------
 
 Add this bundle to your `composer.json` file:
 
     {
         "require": {
-            "nelmio/api-doc-bundle": "dev-master"
+            "nelmio/api-doc-bundle": "@stable"
         }
     }
+
+
+**Protip:** you should browse the
+[`nelmio/api-doc-bundle`](https://packagist.org/packages/nelmio/api-doc-bundle)
+page to choose a stable version to use, avoid the `@stable` meta constraint.
 
 Register the bundle in `app/AppKernel.php`:
 
@@ -39,12 +45,13 @@ Enable the bundle's configuration in `app/config/config.yml`:
     nelmio_api_doc: ~
 
 
-## Usage ##
+Usage
+-----
 
 The main problem with documentation is to keep it up to date. That's why the **NelmioApiDocBundle**
 uses introspection a lot. Thanks to an annotation, it's really easy to document an API method.
 
-### The ApiDoc() annotation ###
+### The ApiDoc() Annotation
 
 The bundle provides an `ApiDoc()` annotation for your controllers:
 
@@ -188,7 +195,7 @@ class YourType extends AbstractType
 The bundle will also get information from the routing definition (`requirements`, `pattern`, etc), so to get the
 best out of it you should define strict _method requirements etc.
 
-### Other bundle annotations ###
+### Other Bundle Annotations
 
 Also bundle will get information from the other annotations:
 
@@ -200,18 +207,22 @@ Also bundle will get information from the other annotations:
 
 * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache - set `cache`
 
-### PHPDoc ###
+### PHPDoc
 
-Route functions marked as @deprecated will be set method as deprecation in documentation.
+Route functions marked as @deprecated will be set method as deprecation in
+documentation.
 
-#### JMS Serializer features ####
+#### JMS Serializer Features
 
-The bundle has support for some of the JMS Serializer features and use these extra information in the generated documentation.
+The bundle has support for some of the JMS Serializer features and use these
+extra information in the generated documentation.
 
-##### Group Exclusion Strategy #####
+##### Group Exclusion Strategy
 
-If your classes use [JMS Group Exclusion Strategy](http://jmsyst.com/libs/serializer/master/cookbook/exclusion_strategies#creating-different-views-of-your-objects),
-you can specify which groups to use when generating the documentation by using this syntax :
+If your classes use [JMS Group Exclusion
+Strategy](http://jmsyst.com/libs/serializer/master/cookbook/exclusion_strategies#creating-different-views-of-your-objects),
+you can specify which groups to use when generating the documentation by using
+this syntax :
 
  ```
  input={
@@ -220,19 +231,22 @@ you can specify which groups to use when generating the documentation by using t
  }
  ```
 
- In this case the groups 'update' and 'public' are used.
+In this case the groups 'update' and 'public' are used.
 
- This feature also works for the `output` property.
+This feature also works for the `output` property.
 
-##### Versioning Objects #####
+##### Versioning Objects
 
-If your `output` classes use [versioning capabilities of JMS Serializer](http://jmsyst.com/libs/serializer/master/cookbook/exclusion_strategies#versioning-objects),
-the versioning information will be automatically used when generating the documentation.
+If your `output` classes use [versioning capabilities of JMS
+Serializer](http://jmsyst.com/libs/serializer/master/cookbook/exclusion_strategies#versioning-objects),
+the versioning information will be automatically used when generating the
+documentation.
 
-#### Form Types features ####
+#### Form Types Features
 
-If you use `FormFactoryInterface::createdNamed('', 'your_form_type'`, then by default the documentation will use
-the form type name as the prefix (`your_form_type[param]` ... instead of just `param`).
+If you use `FormFactoryInterface::createdNamed('', 'your_form_type'`, then by
+default the documentation will use the form type name as the prefix
+(`your_form_type[param]` ... instead of just `param`).
 
 You can specify which prefix to use with the `name` key:
 
@@ -243,12 +257,13 @@ input = {
 }
 ```
 
-### Documentation on-the-fly ###
+### On-The-Fly Documentation
 
-By calling an URL with the parameter `?_doc=1`, you will get the corresponding documentation if available.
+By calling an URL with the parameter `?_doc=1`, you will get the corresponding
+documentation if available.
 
 
-### Web Interface ###
+### Web Interface
 
 You can browse the whole documentation at: `http://example.org/api/doc`.
 
@@ -257,7 +272,7 @@ You can browse the whole documentation at: `http://example.org/api/doc`.
 ![](https://github.com/nelmio/NelmioApiDocBundle/raw/master/Resources/doc/webview2.png)
 
 
-### Command ###
+### Command
 
 A command is provided in order to dump the documentation in `json`, `markdown`, or `html`.
 
@@ -272,8 +287,8 @@ For example to generate a static version of your documentation you can use:
 By default, the generated HTML will add the sandbox feature if you didn't disable it in the configuration.
 If you want to generate a static version of your documentation without sandbox, use the `--no-sandbox` option.
 
-
-## Configuration ##
+Configuration In-Depth
+----------------------
 
 You can specify your own API name:
 
@@ -317,7 +332,7 @@ You can also define your own motd content (above methods list). All you have to 
         motd:
             template: AcmeApiBundle::Components/motd.html.twig
 
-## Using Your Own Annotations ##
+### Using Your Own Annotations
 
 If you have developed your own project-related annotations, and you want to parse them to populate
 the `ApiDoc`, you can provide custom handlers as services. You just have to implement the
@@ -331,3 +346,28 @@ the `ApiDoc`, you can provide custom handlers as services. You just have to impl
                 - { name: nelmio_api_doc.extractor.handler }
 
 Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tree/master/Extractor/Handler).
+
+
+### Reference Configuration
+
+``` yaml
+nelmio_api_doc:
+    name:                     API documentation
+    motd:
+        template:             NelmioApiDocBundle::Components/motd.html.twig
+    request_listener:
+        enabled:              true
+        parameter:            _doc
+    sandbox:
+        enabled:              true
+        endpoint:             ~
+        accept_type:
+        body_format:          form
+        request_format:
+            method:               format_param
+            default_format:       json
+        authentication:
+            name:                 ~ # Required
+            delivery:             ~ # Required
+            custom_endpoint:      false
+```
