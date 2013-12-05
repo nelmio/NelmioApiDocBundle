@@ -17,9 +17,13 @@ matrix:
 
 before_script:
     - composer self-update
-    - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
     - composer require symfony/twig-bundle:${SYMFONY_VERSION} --no-update
-    - composer require symfony/validator:${SYMFONY_VERSION} --dev --no-update
+    - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
+    - composer require symfony/console:${SYMFONY_VERSION} --no-update
+    - composer require symfony/css-selector:${SYMFONY_VERSION} --dev --no-update
+    - composer require symfony/browser-kit:${SYMFONY_VERSION} --dev --no-update
+    - composer require symfony/yaml:${SYMFONY_VERSION} --dev --no-update
+    - composer require symfony/form:${SYMFONY_VERSION} --dev --no-update
     - composer update
 
 script: phpunit --coverage-text
