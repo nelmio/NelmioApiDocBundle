@@ -494,6 +494,54 @@ objects[][b]:
 number:
 
   * type: DateTime
+
+
+### `ANY` /z-return-selected-parsers-input ###
+
+
+#### Parameters ####
+
+a:
+
+  * type: string
+  * required: true
+  * description: A nice description
+
+b:
+
+  * type: string
+  * required: false
+
+c:
+
+  * type: boolean
+  * required: true
+
+
+### `ANY` /z-return-selected-parsers-output ###
+
+
+#### Response ####
+
+bar:
+
+  * type: DateTime
+
+objects[]:
+
+  * type: array of objects (Test)
+
+objects[][a]:
+
+  * type: string
+
+objects[][b]:
+
+  * type: DateTime
+
+number:
+
+  * type: DateTime
 MARKDOWN;
 
         $this->assertEquals($expected, $result);
