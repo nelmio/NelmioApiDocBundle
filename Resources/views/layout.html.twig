@@ -49,10 +49,13 @@
         </p>
         <script type="text/javascript">
 
-            $(document).ready(function() {
-                var elem = $(window.location.hash);
-                if(elem) {
-                    $('body').scrollTop(elem.top);
+            $(window).load(function() {
+                var id = (window.location.hash || '').substr(1).replace( /([:\.\[\]\{\}])/g, "\\$1");
+                var elem = $('#' + id);
+                if (elem.length) {
+                    setTimeout(function() {
+                        $('body,html').scrollTop(elem.position().top);
+                    });
                     elem.find('a.toggler').click();
                 }
             });
@@ -295,19 +298,26 @@
                     return false;
                 });
 
-                $('.pane.sandbox').delegate('.to-raw', 'click', function(e) {
+                $('.operations').on('click', '.operation > a', function(e) {
+                    if (history.pushState) {
+                        history.pushState(null, null, $(this).attr('href'));
+                        e.preventDefault();
+                    }
+                });
+
+                $('.pane.sandbox').on('click', '.to-raw', function(e) {
                     renderRawBody($(this).parents('.pane').find('.response'));
 
                     e.preventDefault();
                 });
 
-                $('.pane.sandbox').delegate('.to-prettify', 'click', function(e) {
+                $('.pane.sandbox').on('click', '.to-prettify', function(e) {
                     renderPrettifiedBody($(this).parents('.pane').find('.response'));
 
                     e.preventDefault();
                 });
 
-                $('.pane.sandbox').delegate('.to-expand, .to-shrink', 'click', function(e) {
+                $('.pane.sandbox').on('click', '.to-expand, .to-shrink', function(e) {
                     var $headers = $(this).parents('.result').find('.headers');
                     var $label = $(this).parents('.result').find('a.to-expand');
 
