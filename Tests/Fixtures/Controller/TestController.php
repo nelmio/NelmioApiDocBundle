@@ -202,6 +202,15 @@ class TestController
 
     /**
      * @ApiDoc(
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsChild"
+     * )
+     */
+    public function jmsReturnNestedExtendedOutputAction()
+    {
+    }
+
+    /**
+     * @ApiDoc(
      *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\MultipleTest"
      * )
      */
