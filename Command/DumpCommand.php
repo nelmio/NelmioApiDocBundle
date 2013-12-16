@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class DumpCommand extends ContainerAwareCommand
 {
@@ -52,8 +53,13 @@ class DumpCommand extends ContainerAwareCommand
             $formatter = $this->getContainer()->get(sprintf('nelmio_api_doc.formatter.%s_formatter', $format));
         }
 
-        if ($input->hasOption('no-sandbox') && 'html' === $format) {
+        if ($input->getOption('no-sandbox') && 'html' === $format) {
             $formatter->setEnableSandbox(false);
+        }
+
+        if ('html' === $format) {
+            $this->getContainer()->enterScope('request');
+            $this->getContainer()->set('request', new Request(), 'request');
         }
 
         $extractedDoc = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor')->all();
