@@ -47,7 +47,7 @@ class PhpDocHandler implements HandlerInterface
         // requirements
         $requirements = $annotation->getRequirements();
         foreach ($route->getRequirements() as $name => $value) {
-            if (!isset($requirements[$name]) && '_method' !== $name) {
+            if (!isset($requirements[$name]) && '_method' !== $name && '_scheme' !== $name) {
                 $requirements[$name] = array(
                     'requirement' => $value,
                     'dataType' => '',
