@@ -320,7 +320,7 @@ class ApiDocExtractor
         // requirements
         $requirements = array();
         foreach ($route->getRequirements() as $name => $value) {
-            if ('_method' !== $name) {
+            if ('_method' !== $name && '_scheme' !== $name) {
                 $requirements[$name] = array(
                     'requirement'   => $value,
                     'dataType'      => '',

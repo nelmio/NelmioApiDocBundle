@@ -193,101 +193,105 @@
 
             {% if enableSandbox %}
                 <div class="pane sandbox">
-                    <form method="{{ data.method|upper }}" action="{% if data.host is defined %}{{ data.https ? 'https://' : 'http://' }}{{ data.host }}{% endif %}{{ data.uri }}">
-                        <fieldset class="parameters">
-                            <legend>Input</legend>
-                            {% if data.requirements is defined %}
-                                <h4>Requirements</h4>
-                                {% for name, infos in data.requirements %}
+                    {% if app.request.secure != data.https %}
+                    Please reload the documentation using the scheme {% if data.https %}HTTPS{% else %}HTTP{% endif %} if you want to use the sandbox.
+                    {% else %}
+                        <form method="{{ data.method|upper }}" action="{% if data.host is defined %}{{ data.https ? 'https://' : 'http://' }}{{ data.host }}{% endif %}{{ data.uri }}">
+                            <fieldset class="parameters">
+                                <legend>Input</legend>
+                                {% if data.requirements is defined %}
+                                    <h4>Requirements</h4>
+                                    {% for name, infos in data.requirements %}
+                                        <p class="tuple">
+                                            <input type="text" class="key" value="{{ name }}" placeholder="Key" />
+                                            <span>=</span>
+                                            <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
+                                        </p>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if data.filters is defined %}
+                                    <h4>Filters</h4>
+                                    {% for name, infos in data.filters %}
+                                        <p class="tuple">
+                                            <input type="text" class="key" value="{{ name }}" placeholder="Key" />
+                                            <span>=</span>
+                                            <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
+                                        </p>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if data.parameters is defined %}
+                                    <h4>Parameters</h4>
+                                    {% for name, infos in data.parameters %}
+                                    {% if not infos.readonly %}
+                                        <p class="tuple">
+                                            <input type="text" class="key" value="{{ name }}" placeholder="Key" />
+                                            <span>=</span>
+                                            <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.format %}{{ infos.format }}{% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
+                                        </p>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <button class="add">New parameter</button>
+                                {% endif %}
+
+                            </fieldset>
+
+                            <fieldset class="headers">
+                                <legend>Headers</legend>
+
+                                {% if acceptType %}
                                     <p class="tuple">
-                                        <input type="text" class="key" value="{{ name }}" placeholder="Key" />
+                                        <input type="text" class="key" value="Accept" />
                                         <span>=</span>
-                                        <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
-                                    </p>
-                                {% endfor %}
-                            {% endif %}
-                            {% if data.filters is defined %}
-                                <h4>Filters</h4>
-                                {% for name, infos in data.filters %}
-                                    <p class="tuple">
-                                        <input type="text" class="key" value="{{ name }}" placeholder="Key" />
-                                        <span>=</span>
-                                        <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
-                                    </p>
-                                {% endfor %}
-                            {% endif %}
-                            {% if data.parameters is defined %}
-                                <h4>Parameters</h4>
-                                {% for name, infos in data.parameters %}
-                                {% if not infos.readonly %}
-                                    <p class="tuple">
-                                        <input type="text" class="key" value="{{ name }}" placeholder="Key" />
-                                        <span>=</span>
-                                        <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.format %}{{ infos.format }}{% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
+                                        <input type="text" class="value" value="{{ acceptType }}" /> <span class="remove">-</span>
                                     </p>
                                 {% endif %}
-                                {% endfor %}
-                                <button class="add">New parameter</button>
-                            {% endif %}
 
-                        </fieldset>
-
-                        <fieldset class="headers">
-                            <legend>Headers</legend>
-
-                            {% if acceptType %}
                                 <p class="tuple">
-                                    <input type="text" class="key" value="Accept" />
+                                    <input type="text" class="key" placeholder="Key" />
                                     <span>=</span>
-                                    <input type="text" class="value" value="{{ acceptType }}" /> <span class="remove">-</span>
+                                    <input type="text" class="value" placeholder="Value" /> <span class="remove">-</span>
                                 </p>
-                            {% endif %}
 
-                            <p class="tuple">
-                                <input type="text" class="key" placeholder="Key" />
-                                <span>=</span>
-                                <input type="text" class="value" placeholder="Value" /> <span class="remove">-</span>
-                            </p>
+                                <button class="add">New header</button>
+                            </fieldset>
 
-                            <button class="add">New header</button>
-                        </fieldset>
+                            <fieldset class="request-content">
+                                <legend>Content</legend>
 
-                        <fieldset class="request-content">
-                            <legend>Content</legend>
+                                <textarea class="content" placeholder="Content set here will override the parameters that do not match the url"></textarea>
 
-                            <textarea class="content" placeholder="Content set here will override the parameters that do not match the url"></textarea>
+                                <p class="tuple">
+                                    <input type="text" class="key content-type" value="Content-Type" disabled="disabled" />
+                                    <span>=</span>
+                                    <input type="text" class="value" placeholder="Value" />
+                                    <button class="set-content-type">Set header</button> <small>Replaces header if set</small>
+                                </p>
+                            </fieldset>
 
-                            <p class="tuple">
-                                <input type="text" class="key content-type" value="Content-Type" disabled="disabled" />
-                                <span>=</span>
-                                <input type="text" class="value" placeholder="Value" />
-                                <button class="set-content-type">Set header</button> <small>Replaces header if set</small>
-                            </p>
-                        </fieldset>
+                            <div class="buttons">
+                                <input type="submit" value="Try!" />
+                            </div>
+                        </form>
 
-                        <div class="buttons">
-                            <input type="submit" value="Try!" />
+                        <script type="text/x-tmpl" class="tuple_template">
+                        <p class="tuple">
+                            <input type="text" class="key" placeholder="Key" />
+                            <span>=</span>
+                            <input type="text" class="value" placeholder="Value" /> <span class="remove">-</span>
+                        </p>
+                        </script>
+
+                        <div class="result">
+                            <h4>Request URL</h4>
+                            <pre class="url"></pre>
+
+                            <h4>Response Headers&nbsp;<small>[<a href="" class="to-expand">Expand</a>]</small></h4>
+                            <pre class="headers to-expand"></pre>
+
+                            <h4>Response Body&nbsp;<small>[<a href="" class="to-raw">Raw</a>]</small></h4>
+                            <pre class="response prettyprint"></pre>
                         </div>
-                    </form>
-
-                    <script type="text/x-tmpl" class="tuple_template">
-                    <p class="tuple">
-                        <input type="text" class="key" placeholder="Key" />
-                        <span>=</span>
-                        <input type="text" class="value" placeholder="Value" /> <span class="remove">-</span>
-                    </p>
-                    </script>
-
-                    <div class="result">
-                        <h4>Request URL</h4>
-                        <pre class="url"></pre>
-
-                        <h4>Response Headers&nbsp;<small>[<a href="" class="to-expand">Expand</a>]</small></h4>
-                        <pre class="headers to-expand"></pre>
-
-                        <h4>Response Body&nbsp;<small>[<a href="" class="to-raw">Raw</a>]</small></h4>
-                        <pre class="response prettyprint"></pre>
-                    </div>
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
