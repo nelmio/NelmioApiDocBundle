@@ -6,6 +6,9 @@ use JMS\Serializer\Annotation as JMS;
 
 class JmsTest
 {
+    /**
+     * @JMS\Exclude()
+     */
     public $nothing;
 
     /**

@@ -479,6 +479,10 @@ bar:
 
   * type: DateTime
 
+number:
+
+  * type: DateTime
+
 objects[]:
 
   * type: array of objects (Test)
@@ -488,10 +492,6 @@ objects[][a]:
   * type: string
 
 objects[][b]:
-
-  * type: DateTime
-
-number:
 
   * type: DateTime
 MARKDOWN;

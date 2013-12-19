@@ -7,6 +7,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MultipleTest
 {
+    /**
+     * @JMS\Exclude()
+     */
     public $nothing;
 
     /**
