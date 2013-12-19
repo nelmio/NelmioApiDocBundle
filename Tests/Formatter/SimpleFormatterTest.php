@@ -830,8 +830,9 @@ With multiple lines.',
                     'response' => array (
                         'bar' => array(
                             'dataType' => 'DateTime',
-                            'required' => null,
-                            'readonly' => null
+                            'required' => false,
+                            'readonly' => false,
+                            'description' => ''
                         ),
                         'number' => array(
                             'dataType' => 'DateTime',
@@ -843,8 +844,8 @@ With multiple lines.',
                         ),
                         'objects' => array(
                             'dataType' => 'array of objects (Test)',
-                            'readonly' => null,
-                            'required' => null,
+                            'readonly' => false,
+                            'required' => false,
                             'children' => array(
                                 'a' => array(
                                     'dataType' => 'string',
@@ -857,7 +858,8 @@ With multiple lines.',
                                     'required' => null,
                                     'readonly' => null
                                 )
-                            )
+                            ),
+                            'description' => ''
                         )
                     ),
                     'authenticationRoles' => array(),
