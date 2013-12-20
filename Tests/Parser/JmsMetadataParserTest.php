@@ -169,6 +169,14 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
+                'baz' => array(
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
+                ),
             ),
             $output
         );
