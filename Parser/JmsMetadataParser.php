@@ -98,7 +98,9 @@ class JmsMetadataParser implements ParserInterface
         }
 
         $exclusionStrategies   = array();
-        $exclusionStrategies[] = new GroupsExclusionStrategy($groups);
+        if ($groups) {
+            $exclusionStrategies[] = new GroupsExclusionStrategy($groups);
+        }
 
         $params = array();
 
