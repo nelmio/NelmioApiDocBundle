@@ -106,42 +106,40 @@ class JmsMetadataParser implements ParserInterface
 
         // iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
-            if (!is_null($item->type)) {
-                $name = $this->namingStrategy->translateName($item);
+            $name = $this->namingStrategy->translateName($item);
 
-                $dataType = $this->processDataType($item);
+            $dataType = $this->processDataType($item);
 
-                // apply exclusion strategies
-                foreach ($exclusionStrategies as $strategy) {
-                    if (true === $strategy->shouldSkipProperty($item, SerializationContext::create())) {
-                        continue 2;
-                    }
+            // apply exclusion strategies
+            foreach ($exclusionStrategies as $strategy) {
+                if (true === $strategy->shouldSkipProperty($item, SerializationContext::create())) {
+                    continue 2;
                 }
+            }
 
-                $params[$name] = array(
-                    'dataType'     => $dataType['normalized'],
-                    'required'     => false,
-                    //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
-                    'description'  => $this->getDescription($item),
-                    'readonly'     => $item->readOnly,
-                    'sinceVersion' => $item->sinceVersion,
-                    'untilVersion' => $item->untilVersion,
-                );
+            $params[$name] = array(
+                'dataType'     => $dataType['normalized'],
+                'required'     => false,
+                //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
+                'description'  => $this->getDescription($item),
+                'readonly'     => $item->readOnly,
+                'sinceVersion' => $item->sinceVersion,
+                'untilVersion' => $item->untilVersion,
+            );
 
-                if (!is_null($dataType['class'])) {
-                    $params[$name]['class'] = $dataType['class'];
-                }
+            if (!is_null($dataType['class'])) {
+                $params[$name]['class'] = $dataType['class'];
+            }
 
-                // if class already parsed, continue, to avoid infinite recursion
-                if (in_array($dataType['class'], $visited)) {
-                    continue;
-                }
+            // if class already parsed, continue, to avoid infinite recursion
+            if (in_array($dataType['class'], $visited)) {
+                continue;
+            }
 
-                // check for nested classes with JMS metadata
-                if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
-                    $visited[]                 = $dataType['class'];
-                    $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups);
-                }
+            // check for nested classes with JMS metadata
+            if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
+                $visited[]                 = $dataType['class'];
+                $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups);
             }
         }
 
@@ -184,12 +182,20 @@ class JmsMetadataParser implements ParserInterface
             );
         }
 
-        // if we got this far, it's a general class name
-        $exp = explode("\\", $type);
+        // it's a general class name
+        if (null !== $type) {
+            $exp = explode("\\", $type);
 
+            return array(
+                'normalized' => sprintf("object (%s)", end($exp)),
+                'class' => $type
+            );
+        }
+
+        // if we got this far, there is nothing
         return array(
-            'normalized' => sprintf("object (%s)", end($exp)),
-            'class' => $type
+            'normalized' => null,
+            'class' => null
         );
     }
 
