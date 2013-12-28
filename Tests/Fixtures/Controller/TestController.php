@@ -232,4 +232,33 @@ class TestController
     public function cgetAction($id)
     {
     }
+
+    /**
+     * @ApiDoc(
+     *     input={
+     *          "class"="Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType",
+     *          "parsers"={
+     *              "Nelmio\ApiDocBundle\Parser\FormTypeParser",
+     *          }
+     *     }
+     * )
+     */
+    public function zReturnSelectedParsersInputAction()
+    {
+    }
+
+    /**
+     * @ApiDoc(
+     *     output={
+     *          "class"="Nelmio\ApiDocBundle\Tests\Fixtures\Model\MultipleTest",
+     *          "parsers"={
+     *              "Nelmio\ApiDocBundle\Parser\JmsMetadataParser",
+     *              "Nelmio\ApiDocBundle\Parser\ValidationParser"
+     *          }
+     *     }
+     * )
+     */
+    public function zReturnSelectedParsersOutputAction()
+    {
+    }
 }

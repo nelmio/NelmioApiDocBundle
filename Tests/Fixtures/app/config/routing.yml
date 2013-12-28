@@ -133,3 +133,11 @@ test_route_18:
 test_route_named_resource:
     pattern:  /named-resource
     defaults: { _controller: NelmioApiDocTestBundle:Test:namedResource }
+
+test_route_19:
+    pattern: /z-return-selected-parsers-output
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zReturnSelectedParsersOutput }
+
+test_route_20:
+    pattern: /z-return-selected-parsers-input
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zReturnSelectedParsersInput }

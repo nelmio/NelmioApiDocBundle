@@ -861,6 +861,78 @@ With multiple lines.',
                         )
                     ),
                     'authenticationRoles' => array(),
+                ),
+                16 =>
+                array(
+                    'method' => "ANY",
+                    'uri' => "/z-return-selected-parsers-input",
+                    'https' => false,
+                    'authentication' => false,
+                    'deprecated' => false,
+                    'authenticationRoles' => array(),
+                    'parameters' =>
+                    array(
+                        'a' => array(
+                            'dataType' => 'string',
+                            'required' => true,
+                            'description' => 'A nice description',
+                            'readonly' => false,
+                        ),
+                        'b' => array(
+                            'dataType' => 'string',
+                            'required' => false,
+                            'description' => '',
+                            'readonly' => false,
+                        ),
+                        'c' => array(
+                            'dataType' => 'boolean',
+                            'required' => true,
+                            'description' => '',
+                            'readonly' => false,
+                        ),
+                    )
+                ),
+                17 =>
+                array(
+                    'method' => "ANY",
+                    'uri' => "/z-return-selected-parsers-output",
+                    'https' => false,
+                    'authentication' => false,
+                    'deprecated' => false,
+                    'response' => array (
+                        'bar' => array(
+                            'dataType' => 'DateTime',
+                            'required' => null,
+                            'readonly' => null
+                        ),
+                        'number' => array(
+                            'dataType' => 'DateTime',
+                            'required' => false,
+                            'description' => '',
+                            'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null
+                        ),
+                        'objects' => array(
+                            'dataType' => 'array of objects (Test)',
+                            'readonly' => null,
+                            'required' => null,
+                            'children' => array(
+                                'a' => array(
+                                    'dataType' => 'string',
+                                    'format' => '{length: min: foo}, {not blank}',
+                                    'required' => true,
+                                    'readonly' => null
+                                ),
+                                'b' => array(
+                                    'dataType' => 'DateTime',
+                                    'required' => null,
+                                    'readonly' => null
+                                )
+                            )
+                        )
+                    ),
+                    'authenticationRoles' => array(),
                 )
             ),
             '/tests2' =>

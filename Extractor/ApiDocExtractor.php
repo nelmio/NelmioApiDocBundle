@@ -255,23 +255,23 @@ class ApiDocExtractor
 
         // input (populates 'parameters' for the formatters)
         if (null !== $input = $annotation->getInput()) {
-            $parameters = array();
-
+            $parameters      = array();
             $normalizedInput = $this->normalizeClassParameter($input);
 
             $supportedParsers = array();
-            $parameters = array();
-            foreach ($this->parsers as $parser) {
+            foreach ($this->getParsers($normalizedInput) as $parser) {
                 if ($parser->supports($normalizedInput)) {
                     $supportedParsers[] = $parser;
-                    $parameters = $this->mergeParameters($parameters, $parser->parse($normalizedInput));
+                    $parameters         = $this->mergeParameters($parameters, $parser->parse($normalizedInput));
                 }
             }
 
             foreach ($supportedParsers as $parser) {
                 if ($parser instanceof PostParserInterface) {
-                    $mp = $parser->postParse($normalizedInput, $parameters);
-                    $parameters = $this->mergeParameters($parameters, $mp);
+                    $parameters = $this->mergeParameters(
+                        $parameters,
+                        $parser->postParse($normalizedInput, $parameters)
+                    );
                 }
             }
 
@@ -289,15 +289,15 @@ class ApiDocExtractor
 
         // output (populates 'response' for the formatters)
         if (null !== $output = $annotation->getOutput()) {
-            $response = array();
-
+            $response         = array();
             $normalizedOutput = $this->normalizeClassParameter($output);
 
-            foreach ($this->parsers as $parser) {
+            foreach ($this->getParsers($normalizedOutput) as $parser) {
                 if ($parser->supports($normalizedOutput)) {
                     $response = $this->mergeParameters($response, $parser->parse($normalizedOutput));
                 }
             }
+
             $response = $this->clearClasses($response);
 
             $annotation->setResponse($response);
@@ -409,5 +409,21 @@ class ApiDocExtractor
         }
 
         return $array;
+    }
+
+    private function getParsers(array $parameters)
+    {
+        if (isset($parameters['parsers'])) {
+            $parsers = array();
+            foreach ($this->parsers as $parser) {
+                if (in_array(get_class($parser), $parameters['parsers'])) {
+                    $parsers[] = $parser;
+                }
+            }
+        } else {
+            $parsers = $this->parsers;
+        }
+
+        return $parsers;
     }
 }

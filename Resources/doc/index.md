@@ -257,6 +257,29 @@ input = {
 }
 ```
 
+=======
+#### Used Parsers ####
+
+By default, all registered parsers are used, but sometimes you may want to
+define which parsers you want to use. The `parsers` attribute is used to
+configure a list of parsers that will be used:
+
+```
+output={
+    "class"   = "Acme\Bundle\Entity\User",
+    "parsers" = {
+        "Nelmio\ApiDocBundle\Parser\JmsMetadataParser",
+        "Nelmio\ApiDocBundle\Parser\ValidationParser"
+    }
+}
+```
+
+In this case the parsers `JmsMetadataParser` and `ValidationParser` are used to
+generate returned data.
+
+This feature also works for both the `input` and `output` properties.
+
+
 ### On-The-Fly Documentation
 
 By calling an URL with the parameter `?_doc=1`, you will get the corresponding

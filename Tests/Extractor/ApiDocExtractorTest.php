@@ -15,7 +15,7 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
-    const ROUTES_QUANTITY = 22;
+    const ROUTES_QUANTITY = 24;
 
     public function testAll()
     {
@@ -214,5 +214,41 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertTrue(
             $annotation->getDeprecated()
         );
+    }
+
+    public function testOutputWithSelectedParsers()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zReturnSelectedParsersOutputAction', 'test_route_19');
+
+        $this->assertNotNull($annotation);
+        $output = $annotation->getOutput();
+        $parsers = $output['parsers'];
+        $this->assertEquals(
+            "Nelmio\\ApiDocBundle\\Parser\\JmsMetadataParser",
+            $parsers[0]
+        );
+        $this->assertEquals(
+            "Nelmio\\ApiDocBundle\\Parser\\ValidationParser",
+            $parsers[1]
+        );
+        $this->assertCount(2, $parsers);
+    }
+
+    public function testInputWithSelectedParsers()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zReturnSelectedParsersInputAction', 'test_route_20');
+
+        $this->assertNotNull($annotation);
+        $input = $annotation->getInput();
+        $parsers = $input['parsers'];
+        $this->assertEquals(
+            "Nelmio\\ApiDocBundle\\Parser\\FormTypeParser",
+            $parsers[0]
+        );
+        $this->assertCount(1, $parsers);
     }
 }
