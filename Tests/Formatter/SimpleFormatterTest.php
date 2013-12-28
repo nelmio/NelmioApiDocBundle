@@ -707,15 +707,6 @@ With multiple lines.',
                 array(
                     'method' => 'ANY',
                     'uri' => '/secure-route',
-                    'requirements' =>
-                    array(
-                        '_scheme' =>
-                        array(
-                            'requirement' => 'https',
-                            'dataType' => '',
-                            'description' => '',
-                        ),
-                    ),
                     'https' => true,
                     'authentication' => false,
                     'authenticationRoles' => array(),

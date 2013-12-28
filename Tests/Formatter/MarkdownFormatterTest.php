@@ -401,12 +401,6 @@ nested_array[]:
 ### `ANY` /secure-route ###
 
 
-#### Requirements ####
-
-**_scheme**
-
-  - Requirement: https
-
 
 ### `ANY` /yet-another/{id} ###
 
