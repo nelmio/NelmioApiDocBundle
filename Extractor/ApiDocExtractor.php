@@ -205,7 +205,7 @@ class ApiDocExtractor
      * Returns an ApiDoc annotation.
      *
      * @param string $controller
-     * @param Route  $route
+     * @param string $route
      * @return ApiDoc|null
      */
     public function get($controller, $route)
