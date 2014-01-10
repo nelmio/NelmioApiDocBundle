@@ -299,13 +299,12 @@ configure this sandbox using the following parameters:
     # app/config/config.yml
     nelmio_api_doc:
         sandbox:
-            authentication:             # default is `~` (`null`), if set, the value of the api
-                                        # key is read from the query string and appended to every
-                                        # sandbox api call.
+            authentication:             # default is `~` (`null`), if set, the sandbox automatically
+                                        # send authenticated requests using the configured `delivery`
 
-                name: access_token      # access token name, or query parameter name, or header name
+                name: access_token      # access token name or query parameter name or header name
 
-                delivery: query         # query, http_basic, and header are supported
+                delivery: query         # `query`, `http_basic`, and `header` are supported
 
                 custom_endpoint: true   # default is `false`, if `true`, your user will be able to
                                         # specify its own endpoint
@@ -320,13 +319,15 @@ configure this sandbox using the following parameters:
                                                     # automatically populated as the `Accept` header
 
             body_format: form                       # default is `form`, determines whether to send
-                                                    # `x-www-form-urlencoded` data or json-encoded data
-                                                    # in sandbox requests
+                                                    # `x-www-form-urlencoded` data or json-encoded
+                                                    # data (by setting this parameter to `json`) in
+                                                    # sandbox requests
+
             request_format:
-                method: format_param    # default format_param, alternately accept_header,
+                method: format_param    # default `format_param`, alternately `accept_header`,
                                         # decides how to request the response format
 
-                default_format: json    # default json, alternately xml, determines which
+                default_format: json    # default `json`, alternately `xml`, determines which
                                         # content format to request back by default
 
 ### Command
