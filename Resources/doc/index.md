@@ -257,8 +257,7 @@ input = {
 }
 ```
 
-=======
-#### Used Parsers ####
+#### Used Parsers
 
 By default, all registered parsers are used, but sometimes you may want to
 define which parsers you want to use. The `parsers` attribute is used to
@@ -279,13 +278,6 @@ generate returned data.
 
 This feature also works for both the `input` and `output` properties.
 
-
-### On-The-Fly Documentation
-
-By calling an URL with the parameter `?_doc=1`, you will get the corresponding
-documentation if available.
-
-
 ### Web Interface
 
 You can browse the whole documentation at: `http://example.org/api/doc`.
@@ -294,6 +286,48 @@ You can browse the whole documentation at: `http://example.org/api/doc`.
 
 ![](https://github.com/nelmio/NelmioApiDocBundle/raw/master/Resources/doc/webview2.png)
 
+### On-The-Fly Documentation
+
+By calling an URL with the parameter `?_doc=1`, you will get the corresponding
+documentation if available.
+
+### Sandbox
+
+This bundle provides a sandbox mode in order to test API methods. You can
+configure this sandbox using the following parameters:
+
+    # app/config/config.yml
+    nelmio_api_doc:
+        sandbox:
+            authentication:             # default is `~` (`null`), if set, the value of the api
+                                        # key is read from the query string and appended to every
+                                        # sandbox api call.
+
+                name: access_token      # access token name, or query parameter name, or header name
+
+                delivery: query         # query, http_basic, and header are supported
+
+                custom_endpoint: true   # default is `false`, if `true`, your user will be able to
+                                        # specify its own endpoint
+
+            enabled:  true              # default is `true`, you can set this parameter to `false`
+                                        # to disable the sandbox
+
+            endpoint: http://sandbox.example.com/   # default is `/app_dev.php`, use this parameter
+                                                    # to define which URL to call through the sandbox
+
+            accept_type: application/json           # default is `~` (`null`), if set, the value is
+                                                    # automatically populated as the `Accept` header
+
+            body_format: form                       # default is `form`, determines whether to send
+                                                    # `x-www-form-urlencoded` data or json-encoded data
+                                                    # in sandbox requests
+            request_format:
+                method: format_param    # default format_param, alternately accept_header,
+                                        # decides how to request the response format
+
+                default_format: json    # default json, alternately xml, determines which
+                                        # content format to request back by default
 
 ### Command
 
@@ -310,6 +344,7 @@ For example to generate a static version of your documentation you can use:
 By default, the generated HTML will add the sandbox feature if you didn't disable it in the configuration.
 If you want to generate a static version of your documentation without sandbox, use the `--no-sandbox` option.
 
+
 Configuration In-Depth
 ----------------------
 
@@ -319,26 +354,9 @@ You can specify your own API name:
     nelmio_api_doc:
         name: My API
 
-This bundle provides a sandbox mode in order to test API methods. You can
-configure this sandbox using the following parameters:
-
-    # app/config/config.yml
-    nelmio_api_doc:
-        sandbox:
-            authentication: # default null, if set, the value of the api key is read from the query string and appended to every sandbox api call
-                name: access_token
-                delivery: query # query or http_basic are supported
-                custom_endpoint: true # default false, if true, your user will be able to specify its own endpoint
-            enabled:  true # default: true, you can set this parameter to `false` to disable the sandbox
-            endpoint: http://sandbox.example.com/ # default: /app_dev.php, use this parameter to define which URL to call through the sandbox
-            accept_type: application/json # default null, if set, the value is automatically populated as the Accept header
-            body_format: form # default form, determines whether to send x-www-form-urlencoded data or json-encoded data in sandbox requests
-            request_format:
-                method: format_param # default format_param, alternately accept_header, decides how to request the response format
-                default_format: json # default json, alternately xml, determines which content format to request back by default
-
-The bundle provides a way to register multiple `input` parsers. The first parser that can handle the specified
-input is used, so you can configure their priorities via container tags. Here's an example parser service registration:
+The bundle provides a way to register multiple `input` parsers. The first parser
+that can handle the specified input is used, so you can configure their
+priorities via container tags. Here's an example parser service registration:
 
     #app/config/config.yml
     services:
@@ -347,7 +365,8 @@ input is used, so you can configure their priorities via container tags. Here's 
             tags:
                 - { name: nelmio_api_doc.extractor.parser, priority: 2 }
 
-You can also define your own motd content (above methods list). All you have to do is add to configuration:
+You can also define your own motd content (above methods list). All you have to
+do is add to configuration:
 
     #app/config/config.yml
     nelmio_api_doc:
@@ -384,7 +403,7 @@ nelmio_api_doc:
     sandbox:
         enabled:              true
         endpoint:             ~
-        accept_type:
+        accept_type:          ~
         body_format:          form
         request_format:
             method:               format_param

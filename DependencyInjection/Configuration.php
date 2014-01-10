@@ -45,7 +45,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('enabled')->defaultTrue()->end()
                         ->scalarNode('endpoint')->defaultNull()->end()
-                        ->scalarNode('accept_type')->defaultValue('')->end()
+                        ->scalarNode('accept_type')->defaultNull()->end()
                         ->enumNode('body_format')
                             ->values(array('form', 'json'))
                             ->defaultValue('form')
@@ -69,7 +69,6 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('delivery')
                                     ->isRequired()
                                     ->validate()
-                                        // header|query|request, but only query is implemented for now
                                         ->ifNotInArray(array('query', 'http_basic', 'header'))
                                         ->thenInvalid("Unknown authentication delivery type '%s'.")
                                     ->end()
