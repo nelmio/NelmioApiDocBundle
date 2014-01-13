@@ -203,7 +203,7 @@ Also bundle will get information from the other annotations:
 
 * @FOS\RestBundle\Controller\Annotations\QueryParam - use as `requirements` (when strict parameter is true), `filters` (when strict is false)
 
-* @JMS\SecurityExtraBundle\Annotation\Secure - set `authentification` to true, `authenticationRoles` to the given roles
+* @JMS\SecurityExtraBundle\Annotation\Secure - set `authentication` to true, `authenticationRoles` to the given roles
 
 * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache - set `cache`
 
