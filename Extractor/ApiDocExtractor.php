@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
+use Doctrine\Common\Util\ClassUtils;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Nelmio\ApiDocBundle\Parser\PostParserInterface;
@@ -186,7 +187,7 @@ class ApiDocExtractor
             if ($this->container->has($controller)) {
                 $this->container->enterScope('request');
                 $this->container->set('request', new Request(), 'request');
-                $class = get_class($this->container->get($controller));
+                $class = ClassUtils::getRealClass(get_class($this->container->get($controller)));
                 $this->container->leaveScope('request');
             }
         }
