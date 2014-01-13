@@ -24,6 +24,7 @@ use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 class ApiDocExtractor
 {
     const ANNOTATION_CLASS = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
+    const JMS_CG_SEPARATOR = '__CG__'; //Constant inlined to disable dependency on JMS CG
 
     /**
      * @var ContainerInterface
@@ -192,6 +193,15 @@ class ApiDocExtractor
         }
 
         if (isset($class) && isset($method)) {
+            
+            if (strpos($class, self::JMS_CG_SEPARATOR) !== false) {
+                //We are dealing with dynamically generated JMS CG proxy
+                //Fetching real controller which is a parent class
+                if ($parentClass = get_parent_class($class)) {
+                    $class = $parentClass;
+                }
+            }
+            
             try {
                 return new \ReflectionMethod($class, $method);
             } catch (\ReflectionException $e) {
