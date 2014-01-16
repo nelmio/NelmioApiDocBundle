@@ -261,4 +261,22 @@ class TestController
     public function zReturnSelectedParsersOutputAction()
     {
     }
+
+    /**
+     * @ApiDoc(
+     *     section="private"
+     * )
+     */
+    public function privateAction()
+    {
+    }
+
+    /**
+     * @ApiDoc(
+     *     section="exclusive"
+     * )
+     */
+    public function exclusiveAction()
+    {
+    }
 }

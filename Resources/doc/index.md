@@ -355,6 +355,12 @@ You can specify your own API name:
     nelmio_api_doc:
         name: My API
 
+You can specify which sections to exclude from the documentation generation:
+
+    # app/config/config.yml
+    nelmio_api_doc:
+        exclude_sections: ["privateapi", "testapi"]
+
 The bundle provides a way to register multiple `input` parsers. The first parser
 that can handle the specified input is used, so you can configure their
 priorities via container tags. Here's an example parser service registration:
@@ -396,6 +402,7 @@ Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tre
 ``` yaml
 nelmio_api_doc:
     name:                     API documentation
+    exclude_sections:         []
     motd:
         template:             NelmioApiDocBundle::Components/motd.html.twig
     request_listener:
