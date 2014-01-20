@@ -141,3 +141,11 @@ test_route_19:
 test_route_20:
     pattern: /z-return-selected-parsers-input
     defaults: { _controller: NelmioApiDocTestBundle:Test:zReturnSelectedParsersInput }
+
+test_route_private:
+    pattern: /private
+    defaults: { _controller: NelmioApiDocTestBundle:Test:private }
+
+test_route_exclusive:
+    pattern: /exclusive
+    defaults: { _controller: NelmioApiDocTestBundle:Test:exclusive }

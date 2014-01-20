@@ -100,6 +100,7 @@ class ApiDocExtractor
     {
         $array     = array();
         $resources = array();
+        $excludeSections = $this->container->getParameter('nelmio_api_doc.exclude_sections');
 
         foreach ($routes as $route) {
             if (!$route instanceof Route) {
@@ -107,7 +108,8 @@ class ApiDocExtractor
             }
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
-                if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
+                $annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS);
+                if ($annotation && !in_array($annotation->getSection(), $excludeSections)) {
                     if ($annotation->isResource()) {
                         if ($resource = $annotation->getResource()) {
                             $resources[] = $resource;
