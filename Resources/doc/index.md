@@ -151,7 +151,7 @@ class YourController
      *         403="Returned when the user is not authorized to say hello",
      *         404={
      *           "Returned when the user is not found",
-     *           "Returned when somehting else is not found"
+     *           "Returned when something else is not found"
      *         }
      *     }
      * )
