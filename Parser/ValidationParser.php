@@ -77,6 +77,10 @@ class ValidationParser implements ParserInterface, PostParserInterface
 
                 foreach ($constraints as $constraint) {
                     $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited);
+
+                    if(!$vparams) {
+                        continue 3;
+                    }
                 }
             }
 
@@ -125,6 +129,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
     /**
      * Create a valid documentation parameter based on an individual validation Constraint.
      * Currently supports:
+     *  - Blank
      *  - NotBlank/NotNull
      *  - Type
      *  - Email
@@ -143,6 +148,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
 
         switch ($class) {
+            case 'Blank':
+                return null;
             case 'NotBlank':
                 $vparams['format'][] = '{not blank}';
             case 'NotNull':

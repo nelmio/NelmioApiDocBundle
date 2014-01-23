@@ -34,6 +34,9 @@ class ValidationParserTest extends WebTestCase
             $this->assertArrayHasKey($name, $result[$property]);
             $this->assertEquals($result[$property][$name], $expected[$name]);
         }
+
+        # Test Blank()
+        $this->assertTrue(!isset($result['blank']));
     }
 
     public function dataTestParser()

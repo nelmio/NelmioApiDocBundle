@@ -26,6 +26,11 @@ class ValidatorTest
     public $length1to10;
 
     /**
+     * @Assert\Blank()
+     */
+    public $blank;
+
+    /**
      * @Assert\NotBlank()
      */
     public $notblank;
