@@ -353,6 +353,7 @@ Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tre
 ``` yaml
 nelmio_api_doc:
     name:                     API documentation
+    route_path_prefix_requirement: ~ # if specified than only routes that have this string as a prefix will appear in documentation, you must include the first forward-slash
     motd:
         template:             NelmioApiDocBundle::Components/motd.html.twig
     request_listener:
