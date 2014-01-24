@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
             ->root('nelmio_api_doc')
             ->children()
                 ->scalarNode('name')->defaultValue('API documentation')->end()
+                ->scalarNode('route_path_prefix_requirement')->defaultValue('')->end()
                 ->arrayNode('motd')
                     ->addDefaultsIfNotSet()
                     ->children()

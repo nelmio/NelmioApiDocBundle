@@ -55,13 +55,19 @@ class ApiDocExtractor
      */
     protected $handlers;
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers)
+    /**
+     * @var string
+     */
+    private $pathPrefixRequirement;
+
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers, $pathPrefixRequirement = '')
     {
         $this->container        = $container;
         $this->router           = $router;
         $this->reader           = $reader;
         $this->commentExtractor = $commentExtractor;
         $this->handlers         = $handlers;
+        $this->pathPrefixRequirement = $pathPrefixRequirement;
     }
 
     /**
@@ -103,6 +109,11 @@ class ApiDocExtractor
         foreach ($routes as $route) {
             if (!$route instanceof Route) {
                 throw new \InvalidArgumentException(sprintf('All elements of $routes must be instances of Route. "%s" given', gettype($route)));
+            }
+
+            // ensure the route passes path prefix requirement
+            if ($this->pathPrefixRequirement && 0 !== strpos($route->getPath(), $this->pathPrefixRequirement)) {
+                continue;
             }
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
