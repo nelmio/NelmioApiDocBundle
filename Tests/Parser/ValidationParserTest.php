@@ -22,6 +22,19 @@ class ValidationParserTest extends WebTestCase
         }
     }
 
+    public function testValidationGroups() {
+        if (version_compare(Kernel::VERSION, '2.2.0', '<')) {
+            $this->markTestSkipped('Does not work using ValidationParserLegacy');
+        }
+
+        $result = $this->parser->parse(array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\ValidatorTest', 'validation_groups' => array('testGroup')));
+
+        $this->assertCount(1, $result);
+        $this->assertTrue(isset($result['validationgroups']));
+
+        $this->assertEquals('{length: max: 5}', $result['validationgroups']['format']);
+    }
+
     /**
      * @dataProvider dataTestParser
      */
@@ -147,6 +160,12 @@ class ValidationParserTest extends WebTestCase
                 'property' => 'multipleformats',
                 'expected' => array(
                     'format' => '{url}, {length: min: 10}'
+                )
+            ),
+            array(
+                'property' => 'validationgroups',
+                'expected' => array(
+                    'format' => '{length: max: 5}'
                 )
             )
         );
