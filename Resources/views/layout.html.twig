@@ -15,27 +15,29 @@
     <body>
         <div id="header">
             <a href="{{ path('nelmio_api_doc_index') }}"><h1>{{ apiName }}</h1></a>
-            <div id="sandbox_configuration">
-                body format:
-                <select id="body_format">
-                    <option value="x-www-form-urlencoded"{{ bodyFormat == 'form' ? ' selected' : '' }}>Form Data</option>
-                    <option value="json"{{ bodyFormat == 'json' ? ' selected' : '' }}>JSON</option>
-                </select>
-                request format:
-                <select id="request_format">
-                    <option value="json"{{ defaultRequestFormat == 'json' ? ' selected' : '' }}>JSON</option>
-                    <option value="xml"{{ defaultRequestFormat == 'xml' ? ' selected' : '' }}>XML</option>
-                </select>
-                {% if authentication and authentication.delivery in ['query', 'http_basic', 'header'] %}
-                    api key: <input type="text" id="api_key" value=""/>
-                {% endif %}
-                {% if authentication and authentication.delivery in ['http_basic'] %}
-                    api pass: <input type="text" id="api_pass" value=""/>
-                {% endif %}
-                {% if authentication and authentication.custom_endpoint %}
-                    api endpoint: <input type="text" id="api_endpoint" value=""/>
-                {% endif %}
-            </div>
+            {% if enableSandbox %}
+                <div id="sandbox_configuration">
+                    body format:
+                    <select id="body_format">
+                        <option value="x-www-form-urlencoded"{{ bodyFormat == 'form' ? ' selected' : '' }}>Form Data</option>
+                        <option value="json"{{ bodyFormat == 'json' ? ' selected' : '' }}>JSON</option>
+                    </select>
+                    request format:
+                    <select id="request_format">
+                        <option value="json"{{ defaultRequestFormat == 'json' ? ' selected' : '' }}>JSON</option>
+                        <option value="xml"{{ defaultRequestFormat == 'xml' ? ' selected' : '' }}>XML</option>
+                    </select>
+                    {% if authentication and authentication.delivery in ['query', 'http_basic', 'header'] %}
+                        api key: <input type="text" id="api_key" value=""/>
+                    {% endif %}
+                    {% if authentication and authentication.delivery in ['http_basic'] %}
+                        api pass: <input type="text" id="api_pass" value=""/>
+                    {% endif %}
+                    {% if authentication and authentication.custom_endpoint %}
+                        api endpoint: <input type="text" id="api_endpoint" value=""/>
+                    {% endif %}
+                </div>
+            {% endif %}
             <br style="clear: both;" />
         </div>
         {% include motdTemplate %}
