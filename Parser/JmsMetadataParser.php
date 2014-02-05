@@ -184,6 +184,14 @@ class JmsMetadataParser implements ParserInterface
             );
         }
 
+        // we can use type property also for custom handlers, then we don't have here real class name
+        if (!class_exists($type)) {
+            return array(
+                'normalized' => sprintf("custom handler result for (%s)", $type),
+                'class' => null
+            );
+        }
+
         // if we got this far, it's a general class name
         $exp = explode("\\", $type);
 
