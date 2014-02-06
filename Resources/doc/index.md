@@ -123,6 +123,8 @@ The following properties are available:
 
 * `description`: a description of the API method;
 
+* `https`: whether the method described requires the https protocol (default: `false`);
+
 * `deprecated`: allow to set method as deprecated (default: `false`);
 
 * `filters`: an array of filters;

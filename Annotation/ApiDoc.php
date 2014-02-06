@@ -222,6 +222,10 @@ class ApiDoc
         if (isset($data['deprecated'])) {
             $this->deprecated = $data['deprecated'];
         }
+
+        if (isset($data['https'])) {
+            $this->https = $data['https'];
+        }
     }
 
     /**
