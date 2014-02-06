@@ -254,7 +254,7 @@
                     }
 
                     // prepare the api enpoint
-                    {% if endpoint == '' and app.request is defined and app.request.host -%}
+                    {% if endpoint == '' and app.request is not null and app.request.host -%}
                     var endpoint = '{{ app.request.getBaseUrl() }}';
                     {% else -%}
                     var endpoint = '{{ endpoint }}';
