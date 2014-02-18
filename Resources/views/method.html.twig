@@ -36,6 +36,9 @@
     <div class="content" style="display: {% if displayContent is defined and displayContent == true %}display{% else %}none{% endif %};">
         <ul class="tabs">
             <li class="selected" data-pane="content">Documentation</li>
+            {% if data.requestBodyExample is defined or data.responseBodyExample is defined %}
+                <li data-pane="samples">Body examples</li>
+            {% endif %}
             {% if enableSandbox %}
                 <li data-pane="sandbox">Sandbox</li>
             {% endif %}
@@ -190,6 +193,26 @@
             {% endif %}
 
             </div>
+
+            {% if data.requestBodyExample is defined or data.responseBodyExample is defined %}
+            <div class="pane samples">
+
+            {% if data.requestBodyExample is defined %}
+                <h4>Request body example</h4>
+                <div>
+                    {{ data.requestBodyExample|extra_markdown }}
+                </div>
+            {% endif %}
+
+            {% if data.responseBodyExample is defined %}
+                <h4>Response body example</h4>
+                <div>
+                    {{ data.responseBodyExample|extra_markdown }}
+                </div>
+            {% endif %}
+
+            </div>
+            {% endif %}
 
             {% if enableSandbox %}
                 <div class="pane sandbox">
