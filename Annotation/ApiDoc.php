@@ -212,7 +212,7 @@ class ApiDoc
         }
 
         if (isset($data['authentication'])) {
-            $this->setAuthentication((bool)$data['authentication']);
+            $this->setAuthentication((bool) $data['authentication']);
         }
 
         if (isset($data['authenticationRoles'])) {
@@ -278,7 +278,7 @@ class ApiDoc
 
     /**
      * @param string $name
-     * @param array $filter
+     * @param array  $filter
      */
     public function addFilter($name, array $filter)
     {
@@ -287,7 +287,7 @@ class ApiDoc
 
     /**
      * @param string $statusCode
-     * @param mixed $description
+     * @param mixed  $description
      */
     public function addStatusCode($statusCode, $description)
     {
@@ -296,7 +296,7 @@ class ApiDoc
 
     /**
      * @param string $name
-     * @param array $requirement
+     * @param array  $requirement
      */
     public function addRequirement($name, array $requirement)
     {
@@ -388,7 +388,7 @@ class ApiDoc
      */
     public function isResource()
     {
-        return (bool)$this->resource;
+        return (bool) $this->resource;
     }
 
     /**
@@ -401,7 +401,7 @@ class ApiDoc
 
     /**
      * @param string $name
-     * @param array $parameter
+     * @param array  $parameter
      */
     public function addParameter($name, array $parameter)
     {
@@ -439,7 +439,7 @@ class ApiDoc
             $this->host = null;
         }
 
-        $this->uri = $route->getPattern();
+        $this->uri    = $route->getPattern();
         $this->method = $route->getRequirement('_method') ? : 'ANY';
     }
 
@@ -528,7 +528,7 @@ class ApiDoc
      */
     public function setCache($cache)
     {
-        $this->cache = (int)$cache;
+        $this->cache = (int) $cache;
     }
 
     /**
@@ -592,7 +592,7 @@ class ApiDoc
      */
     public function setDeprecated($deprecated)
     {
-        $this->deprecated = (bool)$deprecated;
+        $this->deprecated = (bool) $deprecated;
 
         return $this;
     }
@@ -604,7 +604,7 @@ class ApiDoc
     {
         $data = array(
             'method' => $this->method,
-            'uri' => $this->uri,
+            'uri'    => $this->uri,
         );
 
         if ($host = $this->host) {
@@ -677,7 +677,7 @@ class ApiDoc
     private function exampleBodyFromArray($body)
     {
         if (!empty($body['file']) && is_readable($body['file'])) {
-            return implode('	', file($body['file']));
+            return file_get_contents($body['file']);
         }
 
         return '';
@@ -690,6 +690,6 @@ class ApiDoc
      */
     private function markdownBlockCodeFormater($code)
     {
-        return !empty($code) ? '	' . $code : '';
+        return !empty($code) ? "```\n" . $code . "\n```" : "";
     }
 }
