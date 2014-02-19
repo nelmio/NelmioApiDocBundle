@@ -18,7 +18,7 @@
         "symfony/twig-bundle": "~2.1",
         "symfony/framework-bundle": "~2.1",
         "symfony/console": "~2.1",
-        "dflydev/markdown": "~1.0"
+        "michelf/php-markdown": "~1.4"
     },
     "conflict": {
         "jms/serializer": "<0.12",

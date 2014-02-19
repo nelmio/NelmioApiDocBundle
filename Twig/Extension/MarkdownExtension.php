@@ -2,7 +2,7 @@
 
 namespace Nelmio\ApiDocBundle\Twig\Extension;
 
-use dflydev\markdown\MarkdownExtraParser;
+use Michelf\MarkdownExtra;
 
 class MarkdownExtension extends \Twig_Extension
 {
@@ -10,7 +10,7 @@ class MarkdownExtension extends \Twig_Extension
 
     public function __construct()
     {
-        $this->markdownParser = new MarkdownExtraParser();
+        $this->markdownParser = new MarkdownExtra();
     }
 
     /**
@@ -33,6 +33,6 @@ class MarkdownExtension extends \Twig_Extension
 
     public function markdown($text)
     {
-        return $this->markdownParser->transformMarkdown($text);
+        return $this->markdownParser->transform($text);
     }
 }
