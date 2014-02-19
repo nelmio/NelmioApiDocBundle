@@ -289,37 +289,37 @@ class ApiDocTest extends TestCase
         $this->assertTrue(isset($array['parameters']['fooId']['dataType']));
     }
 
-	public function testConstructWithRequestAndResponseBodyAsString()
-	{
-		$data = array(
-			'requestBody' => '[{ value: "requestBody" }]',
-			'responseBody' => '[{ value: "responseBody" }]',
-		);
+    public function testConstructWithRequestAndResponseBodyAsString()
+    {
+        $data = array(
+            'requestBody' => '[{ value: "requestBody" }]',
+            'responseBody' => '[{ value: "responseBody" }]',
+        );
 
-		$annot = new ApiDoc($data);
-		$array = $annot->toArray();
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
 
-		$this->assertTrue(is_array($array));
-		$this->assertEquals('	' . $data['requestBody'], $array['requestBodyExample']);
-		$this->assertEquals('	' . $data['responseBody'], $array['responseBodyExample']);
-	}
+        $this->assertTrue(is_array($array));
+        $this->assertEquals('	' . $data['requestBody'], $array['requestBodyExample']);
+        $this->assertEquals('	' . $data['responseBody'], $array['responseBodyExample']);
+    }
 
-	public function testConstructWithRequestAndResponseBodyAsFile()
-	{
-		$data = array(
-			'requestBody' => array(
-				'file' => __DIR__ . '/../Fixtures/Resources/doc/exampleBody.json',
-			),
-			'responseBody' => array(
-				'file' => __DIR__ . '/../Fixtures/Resources/doc/exampleBody.json'
-			),
-		);
+    public function testConstructWithRequestAndResponseBodyAsFile()
+    {
+        $data = array(
+            'requestBody' => array(
+                'file' => __DIR__ . '/../Fixtures/Resources/doc/exampleBody.json',
+            ),
+            'responseBody' => array(
+                'file' => __DIR__ . '/../Fixtures/Resources/doc/exampleBody.json'
+            ),
+        );
 
-		$annot = new ApiDoc($data);
-		$array = $annot->toArray();
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
 
-		$this->assertTrue(is_array($array));
-		$this->assertTrue(!empty($array['requestBodyExample']));
-		$this->assertTrue(!empty($array['responseBodyExample']));
-	}
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(!empty($array['requestBodyExample']));
+        $this->assertTrue(!empty($array['responseBodyExample']));
+    }
 }

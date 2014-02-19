@@ -30,7 +30,7 @@ class ApiDoc
      *
      * @var array
      */
-    private $filters  = array();
+    private $filters = array();
 
     /**
      * Parameters are data a client can send.
@@ -135,15 +135,15 @@ class ApiDoc
      */
     private $statusCodes = array();
 
-	/**
-	 * @var string
-	 */
-	private $requestBodyExample;
+    /**
+     * @var string
+     */
+    private $requestBodyExample;
 
-	/**
-	 * @var string
-	 */
-	private $responseBodyExample;
+    /**
+     * @var string
+     */
+    private $responseBodyExample;
 
     public function __construct(array $data)
     {
@@ -212,7 +212,7 @@ class ApiDoc
         }
 
         if (isset($data['authentication'])) {
-            $this->setAuthentication((bool) $data['authentication']);
+            $this->setAuthentication((bool)$data['authentication']);
         }
 
         if (isset($data['authenticationRoles'])) {
@@ -237,48 +237,48 @@ class ApiDoc
             $this->https = $data['https'];
         }
 
-		if (isset($data['requestBody'])) {
-			$this->requestBodyExample = $this->addRequestBodyExample($data['requestBody']);
-		}
+        if (isset($data['requestBody'])) {
+            $this->requestBodyExample = $this->addRequestBodyExample($data['requestBody']);
+        }
 
-		if (isset($data['responseBody'])) {
-			$this->responseBodyExample = $this->addResponseBodyExample($data['responseBody']);
-		}
+        if (isset($data['responseBody'])) {
+            $this->responseBodyExample = $this->addResponseBodyExample($data['responseBody']);
+        }
     }
 
-	/**
-	 * @param string|array $requestBodyExample
-	 * @return string
-	 */
-	public function addRequestBodyExample($requestBodyExample)
-	{
-		if (is_array($requestBodyExample)) {
-			$content = $this->exampleBodyFromArray($requestBodyExample);
-		} else {
-			$content = $requestBodyExample;
-		}
+    /**
+     * @param string|array $requestBodyExample
+     * @return string
+     */
+    public function addRequestBodyExample($requestBodyExample)
+    {
+        if (is_array($requestBodyExample)) {
+            $content = $this->exampleBodyFromArray($requestBodyExample);
+        } else {
+            $content = $requestBodyExample;
+        }
 
-		return $this->markdownBlockCodeFormater($content);
-	}
+        return $this->markdownBlockCodeFormater($content);
+    }
 
-	/**
-	 * @param string|array $responseBodyExample
-	 * @return string
-	 */
-	public function addResponseBodyExample($responseBodyExample)
-	{
-		if (is_array($responseBodyExample)) {
-			$content = $this->exampleBodyFromArray($responseBodyExample);
-		} else {
-			$content = $responseBodyExample;
-		}
+    /**
+     * @param string|array $responseBodyExample
+     * @return string
+     */
+    public function addResponseBodyExample($responseBodyExample)
+    {
+        if (is_array($responseBodyExample)) {
+            $content = $this->exampleBodyFromArray($responseBodyExample);
+        } else {
+            $content = $responseBodyExample;
+        }
 
-		return $this->markdownBlockCodeFormater($content);
-	}
+        return $this->markdownBlockCodeFormater($content);
+    }
 
     /**
      * @param string $name
-     * @param array  $filter
+     * @param array $filter
      */
     public function addFilter($name, array $filter)
     {
@@ -287,7 +287,7 @@ class ApiDoc
 
     /**
      * @param string $statusCode
-     * @param mixed  $description
+     * @param mixed $description
      */
     public function addStatusCode($statusCode, $description)
     {
@@ -296,7 +296,7 @@ class ApiDoc
 
     /**
      * @param string $name
-     * @param array  $requirement
+     * @param array $requirement
      */
     public function addRequirement($name, array $requirement)
     {
@@ -388,7 +388,7 @@ class ApiDoc
      */
     public function isResource()
     {
-        return (bool) $this->resource;
+        return (bool)$this->resource;
     }
 
     /**
@@ -401,7 +401,7 @@ class ApiDoc
 
     /**
      * @param string $name
-     * @param array  $parameter
+     * @param array $parameter
      */
     public function addParameter($name, array $parameter)
     {
@@ -431,7 +431,7 @@ class ApiDoc
      */
     public function setRoute(Route $route)
     {
-        $this->route  = $route;
+        $this->route = $route;
 
         if (method_exists($route, 'getHost')) {
             $this->host = $route->getHost() ? : null;
@@ -439,8 +439,8 @@ class ApiDoc
             $this->host = null;
         }
 
-        $this->uri    = $route->getPattern();
-        $this->method = $route->getRequirement('_method') ?: 'ANY';
+        $this->uri = $route->getPattern();
+        $this->method = $route->getRequirement('_method') ? : 'ANY';
     }
 
     /**
@@ -528,7 +528,7 @@ class ApiDoc
      */
     public function setCache($cache)
     {
-        $this->cache = (int) $cache;
+        $this->cache = (int)$cache;
     }
 
     /**
@@ -555,44 +555,44 @@ class ApiDoc
         return $this->requirements;
     }
 
-	/**
-	 * @param string $responseBodyExample
-	 */
-	public function setResponseBodyExample($responseBodyExample)
-	{
-		$this->responseBodyExample = $responseBodyExample;
-	}
+    /**
+     * @param string $responseBodyExample
+     */
+    public function setResponseBodyExample($responseBodyExample)
+    {
+        $this->responseBodyExample = $responseBodyExample;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getResponseBodyExample()
-	{
-		return $this->responseBodyExample;
-	}
+    /**
+     * @return string
+     */
+    public function getResponseBodyExample()
+    {
+        return $this->responseBodyExample;
+    }
 
-	/**
-	 * @param string $requestBodyExample
-	 */
-	public function setRequestBodyExample($requestBodyExample)
-	{
-		$this->requestBodyExample = $requestBodyExample;
-	}
+    /**
+     * @param string $requestBodyExample
+     */
+    public function setRequestBodyExample($requestBodyExample)
+    {
+        $this->requestBodyExample = $requestBodyExample;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getRequestBodyExample()
-	{
-		return $this->requestBodyExample;
-	}
+    /**
+     * @return string
+     */
+    public function getRequestBodyExample()
+    {
+        return $this->requestBodyExample;
+    }
 
     /**
      * @param boolean $deprecated
      */
     public function setDeprecated($deprecated)
     {
-        $this->deprecated = (bool) $deprecated;
+        $this->deprecated = (bool)$deprecated;
 
         return $this;
     }
@@ -604,7 +604,7 @@ class ApiDoc
     {
         $data = array(
             'method' => $this->method,
-            'uri'    => $this->uri,
+            'uri' => $this->uri,
         );
 
         if ($host = $this->host) {
@@ -651,13 +651,13 @@ class ApiDoc
             $data['cache'] = $cache;
         }
 
-		if ($requestBodyExample = $this->requestBodyExample) {
-			$data['requestBodyExample'] = $requestBodyExample;
-		}
+        if ($requestBodyExample = $this->requestBodyExample) {
+            $data['requestBodyExample'] = $requestBodyExample;
+        }
 
-		if ($responseBodyExample = $this->responseBodyExample) {
-			$data['responseBodyExample'] = $responseBodyExample;
-		}
+        if ($responseBodyExample = $this->responseBodyExample) {
+            $data['responseBodyExample'] = $responseBodyExample;
+        }
 
         $data['https'] = $this->https;
         $data['authentication'] = $this->authentication;
@@ -667,29 +667,29 @@ class ApiDoc
         return $data;
     }
 
-	/**
-	 * Read example body from file
-	 * Each line of code block should be prefixed by tabulator as required by dflydev/markdown extension
-	 *
-	 * @param array $body
-	 * @return string
-	 */
-	private function exampleBodyFromArray($body)
-	{
-		if (!empty($body['file']) && is_readable($body['file'])) {
-			return implode('	', file($body['file']));
-		}
+    /**
+     * Read example body from file
+     * Each line of code block should be prefixed by tabulator as required by dflydev/markdown extension
+     *
+     * @param array $body
+     * @return string
+     */
+    private function exampleBodyFromArray($body)
+    {
+        if (!empty($body['file']) && is_readable($body['file'])) {
+            return implode('	', file($body['file']));
+        }
 
-		return '';
-	}
+        return '';
+    }
 
-	/**
-	 * dflydev/markdown extension required that code block should be prefixed by tabulator
-	 * @param string $code
-	 * @return string
-	 */
-	private function markdownBlockCodeFormater($code)
-	{
-		return !empty($code)?'	' . $code:'';
-	}
+    /**
+     * dflydev/markdown extension required that code block should be prefixed by tabulator
+     * @param string $code
+     * @return string
+     */
+    private function markdownBlockCodeFormater($code)
+    {
+        return !empty($code) ? '	' . $code : '';
+    }
 }
