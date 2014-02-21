@@ -55,14 +55,10 @@ class OutputArrayParserTest extends WebTestCase
      */
     private function mockService()
     {
-        $serviceName = 'nelmio_api_doc.parser.validation_parser';
 
-        $service = $this->getContainer()->get($serviceName);
-
-        $mockedService = $this->getMockBuilder(get_class($service))
+        $mockedService = $this->getMockBuilder('Nelmio\ApiDocBundle\Parser\ValidationParser')
             ->disableOriginalConstructor()
             ->getMock();
-
 
         $mockMethods = array('supports', 'parse');
 
