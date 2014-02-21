@@ -300,8 +300,8 @@ class ApiDocTest extends TestCase
         $array = $annot->toArray();
 
         $this->assertTrue(is_array($array));
-        $this->assertEquals('	' . $data['requestBody'], $array['requestBodyExample']);
-        $this->assertEquals('	' . $data['responseBody'], $array['responseBodyExample']);
+        $this->assertEquals('```' . "\n" . $data['requestBody'] . "\n" . '```', $array['requestBodyExample']);
+        $this->assertEquals('```' . "\n" . $data['responseBody'] . "\n" . '```' , $array['responseBodyExample']);
     }
 
     public function testConstructWithRequestAndResponseBodyAsFile()
