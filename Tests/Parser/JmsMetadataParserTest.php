@@ -352,7 +352,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             $output
         );
     }
-    
+
     public function testParserWithDiscriminator()
     {
         $metadataFactory     = $this->getMock('Metadata\MetadataFactoryInterface');

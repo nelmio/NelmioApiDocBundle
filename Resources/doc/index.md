@@ -290,10 +290,10 @@ The following example code will display two diffrent data types (User and Admin)
 ```
 /**
  * @ApiDoc(
- *  input="Acme\Bundle\Entity\AbstractUser"
+ *  output="Acme\Bundle\Entity\AbstractUser"
  * )
  */
-public function getUserAction()
+public function getUsersAction()
 {
 }
 ```
