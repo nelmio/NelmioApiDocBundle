@@ -308,8 +308,8 @@ use JMS\Serializer\Annotation\Discriminator;
 
 /**
  * @Discriminator(field = "type", map = {
- *      "user": "Vendor\BundleName\Entity\User",
- *      "admin": "Vendor\BundleName\Entity\Admin",
+ *      "user": "Acme\Bundle\Entity\User",
+ *      "admin": "Acme\Bundle\Entity\Admin",
  *  }
  * })
  */
@@ -325,7 +325,7 @@ abstract class AbstractUser
 ```
 <?php
 
-namespace Vendor\BundleName\Entity;
+namespace Acme\Bundle\Entity;
 
 class User extends AbstractUser
 {
@@ -335,7 +335,7 @@ class User extends AbstractUser
 ```
 <?php
 
-namespace Vendor\BundleName\Entity;
+namespace Acme\Bundle\Entity;
 
 class Admin extends AbstractUser
 {
