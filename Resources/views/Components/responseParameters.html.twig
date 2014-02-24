@@ -1,0 +1,20 @@
+<table class="fullwidth">
+    <thead>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Versions</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for name, infos in parameters %}
+        <tr>
+            <td>{{ name }}</td>
+            <td>{{ infos.dataType }}</td>
+            <td>{% include 'NelmioApiDocBundle:Components:version.html.twig' with {'sinceVersion': infos.sinceVersion, 'untilVersion': infos.untilVersion} only %}</td>
+            <td>{{ infos.description }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

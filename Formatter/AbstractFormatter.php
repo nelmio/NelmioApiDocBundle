@@ -69,13 +69,15 @@ abstract class AbstractFormatter implements FormatterInterface
             $newName = $this->getNewName($name, $info, $parentName);
 
             $newParams[$newName] = array(
-                'dataType'      => $info['dataType'],
-                'readonly'      => array_key_exists('readonly', $info) ? $info['readonly'] : null,
-                'required'      => $info['required'],
-                'description'   => array_key_exists('description', $info) ? $info['description'] : null,
-                'format'        => array_key_exists('format', $info) ? $info['format'] : null,
-                'sinceVersion'  => array_key_exists('sinceVersion', $info) ? $info['sinceVersion'] : null,
-                'untilVersion'  => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
+                'dataType'          => $info['dataType'],
+                'readonly'          => array_key_exists('readonly', $info) ? $info['readonly'] : null,
+                'required'          => $info['required'],
+                'description'       => array_key_exists('description', $info) ? $info['description'] : null,
+                'format'            => array_key_exists('format', $info) ? $info['format'] : null,
+                'sinceVersion'      => array_key_exists('sinceVersion', $info) ? $info['sinceVersion'] : null,
+                'untilVersion'      => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
+                'discriminatorClass'=> array_key_exists('discriminatorClass', $info) ? $info['discriminatorClass'] : null,
+
             );
 
             if (isset($info['children']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {

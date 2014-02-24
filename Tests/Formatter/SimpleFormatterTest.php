@@ -26,6 +26,113 @@ class SimpleFormatterTest extends WebTestCase
         $result    = $container->get('nelmio_api_doc.formatter.simple_formatter')->format($data);
 
         $expected = array(
+            '/discriminators' =>
+            array(
+                0 =>
+                array(
+                    'method' => 'GET',
+                    'uri' => '/discriminators',
+                    'description' => 'Action with discriminator class in response',
+                    'response' =>
+                    array(
+                        'foo' => array(
+                            'dataType' => 'string',
+                            'required' => false,
+                            'description' => null,
+                            'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                        ),
+                    ),
+                    'responseDiscriminatorClasses' =>
+                    array(
+                        'DiscriminatorClass' =>
+                        array(
+                            'foo' => array(
+                                'dataType' => 'string',
+                                'required' => false,
+                                'description' => null,
+                                'readonly' => false,
+                                'sinceVersion' => null,
+                                'untilVersion' => null,
+                            ),
+                            'bar' => array(
+                                'dataType' => 'string',
+                                'required' => false,
+                                'description' => null,
+                                'readonly' => false,
+                                'sinceVersion' => null,
+                                'untilVersion' => null,
+                            ),
+                            'type' => array(
+                                'dataType' => 'string',
+                                'required' => true,
+                                'description' => 'type = type1',
+                                'readonly' => false,
+                                'format' => null,
+                                'sinceVersion' => null,
+                                'untilVersion' => null,
+                            )
+                        )
+                    ),
+                    'https' => false,
+                    'authentication' => false,
+                    'authenticationRoles' => array(),
+                    'deprecated' => false,
+                ),
+                1 =>
+                array(
+                    'method' => 'POST',
+                    'uri' => '/discriminators',
+                    'description' => 'Action with discriminator class in request params',
+                    'parameters' =>
+                    array(
+                        'foo' => array(
+                            'dataType' => 'string',
+                            'required' => false,
+                            'description' => null,
+                            'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                        ),
+                    ),
+                    'requestDiscriminatorClasses' =>
+                    array(
+                        'DiscriminatorClass' =>
+                        array(
+                            'foo' => array(
+                                'dataType' => 'string',
+                                'required' => false,
+                                'description' => null,
+                                'readonly' => false,
+                                'sinceVersion' => null,
+                                'untilVersion' => null,
+                            ),
+                            'bar' => array(
+                                'dataType' => 'string',
+                                'required' => false,
+                                'description' => null,
+                                'readonly' => false,
+                                'sinceVersion' => null,
+                                'untilVersion' => null,
+                            ),
+                            'type' => array(
+                                'dataType' => 'string',
+                                'required' => true,
+                                'description' => 'type = type1',
+                                'readonly' => false,
+                                'format' => null,
+                                'sinceVersion' => null,
+                                'untilVersion' => null,
+                            )
+                        )
+                    ),
+                    'https' => false,
+                    'authentication' => false,
+                    'authenticationRoles' => array(),
+                    'deprecated' => false,
+                )
+            ),
             '/tests' =>
             array(
                 0 =>

@@ -280,6 +280,72 @@ generate returned data.
 
 This feature also works for both the `input` and `output` properties.
 
+#### Discriminators
+
+You can use a JMS\Discriminator to define multiple input/output types. All available types will be displayed in
+documentation.
+
+The following example code will display two diffrent data types (User and Admin) for the GET /user action.
+
+```
+/**
+ * @ApiDoc(
+ *  input="Acme\Bundle\Entity\AbstractUser"
+ * )
+ */
+public function getUserAction()
+{
+}
+```
+
+```
+<?php
+
+namespace Acme\Bundle\Entity;
+
+use JMS\Serializer\Annotation as JMS;
+use JMS\Serializer\Annotation\Discriminator;
+
+/**
+ * @Discriminator(field = "type", map = {
+ *      "user": "Vendor\BundleName\Entity\User",
+ *      "admin": "Vendor\BundleName\Entity\Admin",
+ *  }
+ * })
+ */
+abstract class AbstractUser
+{
+    /**
+     * @JMS\Type("string");
+     */
+    public $userName;
+}
+```
+
+```
+<?php
+
+namespace Vendor\BundleName\Entity;
+
+class User extends AbstractUser
+{
+}
+```
+
+```
+<?php
+
+namespace Vendor\BundleName\Entity;
+
+class Admin extends AbstractUser
+{
+    /**
+     * @JMS\Type("string");
+     */
+    public $extraField;
+}
+```
+
 ### Web Interface
 
 You can browse the whole documentation at: `http://example.org/api/doc`.

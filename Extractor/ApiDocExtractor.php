@@ -278,7 +278,10 @@ class ApiDocExtractor
                 }
             }
 
-            $parameters = $this->clearClasses($parameters);
+            $discriminatorClasses = $this->getDiscriminatorClasses($parameters);
+            $annotation->setRequestDiscriminatorClasses($discriminatorClasses);
+
+            $parameters = $this->clearClassesAndDiscriminatorClasses($parameters);
 
             if ('PUT' === $method) {
                 // All parameters are optional with PUT (update)
@@ -301,12 +304,47 @@ class ApiDocExtractor
                 }
             }
 
-            $response = $this->clearClasses($response);
+            $discriminatorClasses = $this->getDiscriminatorClasses($response);
+            $annotation->setResponseDiscriminatorClasses($discriminatorClasses);
+
+            $response = $this->clearClassesAndDiscriminatorClasses($response);
 
             $annotation->setResponse($response);
         }
 
         return $annotation;
+    }
+
+    /**
+     * @param array $parameters
+     * @return array
+     */
+    private function getDiscriminatorClasses($parameters)
+    {
+        $discriminatorClasses = array();
+
+        foreach ($parameters as $name => $parameter) {
+            if ($this->isDiscriminatorClass($name, $parameter)) {
+                $reflection = new \ReflectionClass($name);
+                $discriminatorClasses[$reflection->getShortName()] = $parameter['discriminatorClass'];
+            }
+        }
+
+        return $discriminatorClasses;
+    }
+
+    /**
+     * @param string $name
+     * @param array $params
+     * @return bool
+     */
+    private function isDiscriminatorClass($name, $params)
+    {
+        if (class_exists($name) && !empty($params['discriminatorClass']) && $params['dataType'] == 'discriminatorClass') {
+            return true;
+        }
+
+        return false;
     }
 
     protected function normalizeClassParameter($input)
@@ -402,12 +440,16 @@ class ApiDocExtractor
      * @param  array $array The source array.
      * @return array The cleared array.
      */
-    protected function clearClasses($array)
+    protected function clearClassesAndDiscriminatorClasses($array)
     {
         if (is_array($array)) {
             unset($array['class']);
             foreach ($array as $name => $item) {
-                $array[$name] = $this->clearClasses($item);
+                $array[$name] = $this->clearClassesAndDiscriminatorClasses($item);
+
+                if ($this->isDiscriminatorClass($name, $item)) {
+                    unset($array[$name]);
+                }
             }
         }
 

@@ -1,0 +1,24 @@
+<table class='fullwidth'>
+    <thead>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required?</th>
+        <th>Format</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for name, infos in parameters %}
+        {% if not infos.readonly %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ infos.dataType is defined ? infos.dataType : '' }}</td>
+                <td>{{ infos.required ? 'true' : 'false' }}</td>
+                <td>{{ infos.format is defined ? infos.format : '' }}</td>
+                <td>{{ infos.description is defined ? infos.description : ''  }}</td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
