@@ -188,7 +188,6 @@ class JmsMetadataParser implements ParserInterface
         );
 
         return $discriminatorClassProperties;
-
     }
 
     /**

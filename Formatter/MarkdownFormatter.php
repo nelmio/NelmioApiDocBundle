@@ -105,7 +105,7 @@ class MarkdownFormatter extends AbstractFormatter
      * @param array $parameters
      * @return string
      */
-    private function renderRequestParameters($parameters)
+    protected function renderRequestParameters($parameters)
     {
         $markdown = '';
 
@@ -130,7 +130,7 @@ class MarkdownFormatter extends AbstractFormatter
      * @param array $parameters
      * @return string
      */
-    private function renderResponseParameters($parameters)
+    protected function renderResponseParameters($parameters)
     {
         $markdown = '';
 
