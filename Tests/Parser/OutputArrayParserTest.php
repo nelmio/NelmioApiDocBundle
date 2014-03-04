@@ -55,7 +55,7 @@ class OutputArrayParserTest extends WebTestCase
      */
     private function mockService()
     {
-        $mockedService = $this->getMockBuilder('Nelmio\ApiDocBundle\Parser\ValidationParser')
+        $mockedService = $this->getMockBuilder('Nelmio\ApiDocBundle\Parser\JmsMetadataParser')
             ->disableOriginalConstructor()
             ->getMock();
 
