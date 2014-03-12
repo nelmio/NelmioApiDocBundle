@@ -193,7 +193,7 @@
 
             {% if enableSandbox %}
                 <div class="pane sandbox">
-                    {% if app.request is not null and app.request.secure != data.https %}
+                    {% if app.request is not null and data.https and app.request.secure != data.https %}
                     Please reload the documentation using the scheme {% if data.https %}HTTPS{% else %}HTTP{% endif %} if you want to use the sandbox.
                     {% else %}
                         <form method="{{ data.method|upper }}" action="{% if data.host is defined %}{{ data.https ? 'https://' : 'http://' }}{{ data.host }}{% endif %}{{ data.uri }}">
