@@ -273,9 +273,12 @@
                     }
                     var data = content.length ? content : body;
 
+
+                    url = ($(this).data('use-endpoint') ? endpoint : '') + url;
+
                     // and trigger the API call
                     $.ajax({
-                        url: endpoint + url,
+                        url: url,
                         type: method,
                         data: data,
                         headers: headers,
