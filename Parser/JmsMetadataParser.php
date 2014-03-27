@@ -152,7 +152,7 @@ class JmsMetadataParser implements ParserInterface
      * Figure out a normalized data type (for documentation), and get a
      * nested class name, if available.
      *
-     * @param  PropertyMetadata $type
+     * @param  PropertyMetadata $item
      * @return array
      */
     protected function processDataType(PropertyMetadata $item)

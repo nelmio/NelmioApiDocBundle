@@ -18,7 +18,7 @@ twig:
     strict_variables: %kernel.debug%
 
 services:
-    nemlio.test.controller:
+    nelmio.test.controller:
         class: Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestServiceController
     nelmio.test.type:
         class: Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType

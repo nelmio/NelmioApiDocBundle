@@ -71,24 +71,24 @@ test_route_13:
 
 test_service_route_1:
     pattern:  /tests.{_format}
-    defaults: { _controller: nemlio.test.controller:indexAction, _format: json }
+    defaults: { _controller: nelmio.test.controller:indexAction, _format: json }
     requirements:
         _method: GET
 
 test_service_route_2:
     pattern:  /tests.{_format}
     host:     api.test.dev
-    defaults: { _controller: nemlio.test.controller:postTestAction, _format: json }
+    defaults: { _controller: nelmio.test.controller:postTestAction, _format: json }
     requirements:
         _method: POST
 
 test_service_route_3:
     pattern:  /another
-    defaults: { _controller: nemlio.test.controller:anotherAction }
+    defaults: { _controller: nelmio.test.controller:anotherAction }
 
 test_service_route_4:
     pattern:  /any
-    defaults: { _controller: nemlio.test.controller:anyAction, _format: json }
+    defaults: { _controller: nelmio.test.controller:anyAction, _format: json }
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
