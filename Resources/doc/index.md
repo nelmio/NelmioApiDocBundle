@@ -65,7 +65,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 class YourController extends Controller
 {
     /**
-     * This the documentation description of your method, it will appear
+     * This is the documentation description of your method, it will appear
      * on a specific pane. It will read all the text until the first
      * annotation.
      *
