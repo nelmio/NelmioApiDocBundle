@@ -33,7 +33,7 @@
         </ul>
     </a>
 
-    <div class="content" style="display: {% if displayContent is defined and displayContent == true %}display{% else %}none{% endif %};">
+    <div class="content tabs-wrapper" style="display: {% if displayContent is defined and displayContent == true %}display{% else %}none{% endif %};">
         <ul class="tabs">
             <li class="selected" data-pane="content">Documentation</li>
             {% if enableSandbox %}
@@ -106,56 +106,48 @@
                 </table>
             {% endif %}
 
-            {% if data.parameters is defined and data.parameters is not empty %}
+            {% if data.requestDiscriminatorClasses is defined and data.requestDiscriminatorClasses is not empty %}
                 <h4>Parameters</h4>
-                <table class='fullwidth'>
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required?</th>
-                            <th>Format</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for name, infos in data.parameters %}
-                            {% if not infos.readonly %}
-                                <tr>
-                                    <td>{{ name }}</td>
-                                    <td>{{ infos.dataType is defined ? infos.dataType : '' }}</td>
-                                    <td>{{ infos.required ? 'true' : 'false' }}</td>
-                                    <td>{{ infos.format }}</td>
-                                    <td>{{ infos.description is defined ? infos.description : ''  }}</td>
-                                </tr>
-                            {% endif %}
+                <div class="discriminator-objects tabs-wrapper">
+                    <ul class="tabs">
+                        {% for className, parameters in data.requestDiscriminatorClasses %}
+                            <li data-pane="{{ className }}" {% if loop.first %}class="selected"{% endif %}>{{ className }}</li>
                         {% endfor %}
-                    </tbody>
-                </table>
+                    </ul>
+
+                    <div class="panes">
+                        {% for className, parameters in data.requestDiscriminatorClasses %}
+                            <div class="pane {{ className }}{% if loop.first %} selected{% endif %}">
+                                {% include 'NelmioApiDocBundle:Components:requestParameters.html.twig' with { 'parameters': parameters } only %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% elseif data.parameters is defined and data.parameters is not empty %}
+                <h4>Parameters</h4>
+                {% include 'NelmioApiDocBundle:Components:requestParameters.html.twig' with { 'parameters': data.parameters } %}
             {% endif %}
 
-            {% if data.response is defined and data.response is not empty %}
+            {% if data.responseDiscriminatorClasses is defined and data.responseDiscriminatorClasses is not empty %}
                 <h4>Return</h4>
-                <table class='fullwidth'>
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Versions</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for name, infos in data.response %}
-                            <tr>
-                                <td>{{ name }}</td>
-                                <td>{{ infos.dataType }}</td>
-                                <td>{% include 'NelmioApiDocBundle:Components:version.html.twig' with {'sinceVersion': infos.sinceVersion, 'untilVersion': infos.untilVersion} only %}</td>
-                                <td>{{ infos.description }}</td>
-                            </tr>
+                <div class="discriminator-objects tabs-wrapper">
+                    <ul class="tabs">
+                        {% for className, parameters in data.responseDiscriminatorClasses %}
+                            <li data-pane="{{ className }}" {% if loop.first %}class="selected"{% endif %}>{{ className }}</li>
                         {% endfor %}
-                    </tbody>
-                </table>
+                    </ul>
+
+                    <div class="panes">
+                        {% for className, parameters in data.responseDiscriminatorClasses %}
+                            <div class="pane {{ className }}{% if loop.first %} selected{% endif %}">
+                                {% include 'NelmioApiDocBundle:Components:responseParameters.html.twig' with { 'parameters': parameters } only %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% elseif data.response is defined and data.response is not empty %}
+                <h4>Return</h4>
+                {% include 'NelmioApiDocBundle:Components:responseParameters.html.twig' with { 'parameters': data.response } %}
             {% endif %}
 
             {% if data.statusCodes is defined and data.statusCodes is not empty %}

@@ -15,7 +15,7 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
-    const ROUTES_QUANTITY = 24;
+    const ROUTES_QUANTITY = 26;
 
     public function testAll()
     {
@@ -41,36 +41,52 @@ class ApiDocExtractorTest extends WebTestCase
         $a1 = $data[0]['annotation'];
         $array1 = $a1->toArray();
         $this->assertTrue($a1->isResource());
-        $this->assertEquals('index action', $a1->getDescription());
-        $this->assertTrue(is_array($array1['filters']));
-        $this->assertNull($a1->getInput());
+        $this->assertEquals('Action with discriminator class in response', $a1->getDescription());
+        $this->assertTrue(is_array($array1['responseDiscriminatorClasses']));
+        $this->assertTrue(is_array($array1['responseDiscriminatorClasses']['DiscriminatorClass']));
+        $this->assertCount(3, $array1['responseDiscriminatorClasses']['DiscriminatorClass']);
 
         $a1 = $data[1]['annotation'];
+        $array1 = $a1->toArray();
+        $this->assertTrue($a1->isResource());
+        $this->assertEquals('Action with discriminator class in request params', $a1->getDescription());
+        $this->assertTrue(is_array($array1['requestDiscriminatorClasses']));
+        $this->assertTrue(is_array($array1['requestDiscriminatorClasses']['DiscriminatorClass']));
+        $this->assertCount(3, $array1['requestDiscriminatorClasses']['DiscriminatorClass']);
+
+        $a1 = $data[2]['annotation'];
         $array1 = $a1->toArray();
         $this->assertTrue($a1->isResource());
         $this->assertEquals('index action', $a1->getDescription());
         $this->assertTrue(is_array($array1['filters']));
         $this->assertNull($a1->getInput());
 
-        $a2 = $data[2]['annotation'];
+        $a1 = $data[3]['annotation'];
+        $array1 = $a1->toArray();
+        $this->assertTrue($a1->isResource());
+        $this->assertEquals('index action', $a1->getDescription());
+        $this->assertTrue(is_array($array1['filters']));
+        $this->assertNull($a1->getInput());
+
+        $a2 = $data[4]['annotation'];
         $array2 = $a2->toArray();
         $this->assertFalse($a2->isResource());
         $this->assertEquals('create test', $a2->getDescription());
         $this->assertFalse(isset($array2['filters']));
         $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
 
-        $a2 = $data[3]['annotation'];
+        $a2 = $data[5]['annotation'];
         $array2 = $a2->toArray();
         $this->assertFalse($a2->isResource());
         $this->assertEquals('create test', $a2->getDescription());
         $this->assertFalse(isset($array2['filters']));
         $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
 
-        $a4 = $data[5]['annotation'];
+        $a4 = $data[7]['annotation'];
         $this->assertTrue($a4->isResource());
         $this->assertEquals('TestResource', $a4->getResource());
 
-        $a3 = $data['14']['annotation'];
+        $a3 = $data['16']['annotation'];
         $this->assertTrue($a3->getHttps());
 
     }

@@ -26,6 +26,55 @@ class MarkdownFormatterTest extends WebTestCase
         $result = $container->get('nelmio_api_doc.formatter.markdown_formatter')->format($data);
 
         $expected = <<<MARKDOWN
+## /discriminators ##
+
+### `GET` /discriminators ###
+
+_Action with discriminator class in response_
+
+#### Response ####
+
+### DiscriminatorClass:
+
+foo:
+
+  * type: string
+
+bar:
+
+  * type: string
+
+type:
+
+  * type: string
+  * description: type = type1
+
+
+### `POST` /discriminators ###
+
+_Action with discriminator class in request params_
+
+#### Parameters ####
+
+### DiscriminatorClass:
+
+foo:
+
+  * type: string
+  * required: false
+
+bar:
+
+  * type: string
+  * required: false
+
+type:
+
+  * type: string
+  * required: true
+  * description: type = type1
+
+
 ## /tests ##
 
 ### `GET` /tests.{_format} ###

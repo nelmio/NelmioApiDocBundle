@@ -353,6 +353,106 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testParserWithDiscriminator()
+    {
+        $metadataFactory     = $this->getMock('Metadata\MetadataFactoryInterface');
+        $docCommentExtractor = $this->getMockBuilder('Nelmio\ApiDocBundle\Util\DocCommentExtractor')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $inputMainClass = 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsWithDiscriminators';
+        $inputDiscriminatorClass = 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\DiscriminatorClass';
+        $discriminatorFieldName = 'type';
+
+        $propertyMetadataFoo       = new PropertyMetadata($inputMainClass, 'foo');
+        $propertyMetadataFoo->type = array(
+            'name' => 'string',
+        );
+
+        $propertyMetadataBar        = new PropertyMetadata($inputDiscriminatorClass, 'bar');
+        $propertyMetadataBar->type  = array(
+            'name' => 'string',
+        );
+
+        $metadataMainClass = new ClassMetadata($inputMainClass);
+        $metadataMainClass->addPropertyMetadata($propertyMetadataFoo);
+        $metadataMainClass->setDiscriminator($discriminatorFieldName,
+            array(
+                'TYPE_1' => $inputDiscriminatorClass,
+            )
+        );
+
+        $metadataDiscriminatorClass = new ClassMetadata($inputDiscriminatorClass);
+        $metadataDiscriminatorClass->addPropertyMetadata($propertyMetadataFoo);
+        $metadataDiscriminatorClass->addPropertyMetadata($propertyMetadataBar);
+
+        $metadataFactory->expects($this->any())
+            ->method('getMetadataForClass')
+            ->will($this->returnValueMap(
+                array(
+                    array($inputMainClass, $metadataMainClass),
+                    array($inputDiscriminatorClass, $metadataDiscriminatorClass)
+                )
+            ));
+
+        $propertyNamingStrategy = new CamelCaseNamingStrategy();
+
+        $jmsMetadataParser = new JmsMetadataParser($metadataFactory, $propertyNamingStrategy, $docCommentExtractor);
+
+        // No group specified.
+        $output = $jmsMetadataParser->parse(
+            array(
+                'class'   => $inputMainClass,
+                'groups'  => array(),
+            )
+        );
+
+        $this->assertEquals(
+            array(
+                'foo' => array(
+                    'dataType'     => 'string',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
+                ),
+                'Nelmio\ApiDocBundle\Tests\Fixtures\Model\DiscriminatorClass' => array(
+                    'dataType'     => 'discriminatorClass',
+                    'required'     => false,
+                    'discriminatorClass'  => array(
+                        'foo' => array(
+                            'dataType'     => 'string',
+                            'required'     => false,
+                            'description'  => null,
+                            'readonly'     => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                        ),
+                        'bar' => array(
+                            'dataType'     => 'string',
+                            'required'     => false,
+                            'description'  => null,
+                            'readonly'     => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                        ),
+                        $discriminatorFieldName => array(
+                            'dataType'     => 'string',
+                            'required'     => true,
+                            'description'  => 'type = TYPE_1',
+                            'format'       => null,
+                            'readonly'     => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                        ),
+                    ),
+                ),
+            ),
+            $output
+        );
+    }
+
     public function dataTestParserWithNestedType()
     {
         return array(

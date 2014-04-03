@@ -279,4 +279,26 @@ class TestController
     public function exclusiveAction()
     {
     }
+
+    /**
+     * @ApiDoc(
+     *  resource = true,
+     *  description="Action with discriminator class in response",
+     *  output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsWithDiscriminators"
+     * )
+     */
+    public function responseWithDiscriminatorClassesAction()
+    {
+    }
+
+    /**
+     * @ApiDoc(
+     *  resource = true,
+     *  description="Action with discriminator class in request params",
+     *  input="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsWithDiscriminators"
+     * )
+     */
+    public function requestWithDiscriminatorClassesAction()
+    {
+    }
 }

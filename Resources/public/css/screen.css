@@ -577,3 +577,26 @@ form .request-content {
 .motd {
   padding:20px;
 }
+
+.pane.content .discriminator-objects .tabs {
+    overflow: hidden;
+    border-bottom: 1px solid #999999;
+    margin: 0px;
+    padding: 0px 10px;
+}
+
+.pane.content .discriminator-objects .tabs li {
+    border-color: #999999;
+    border-style: solid;
+    border-width: 1px 1px 0px 1px;
+    -moz-border-radius: 4px 4px 0px 0px;
+    -webkit-border-radius: 4px 4px 0px 0px;
+    border-radius: 4px 4px 0px 0px;
+    padding: 10px;
+    margin: 10px 1px 0px 0px;
+    color: #000;
+}
+
+li.operation.get .discriminator-objects .tabs li {
+    background-color: #E7F0F7;
+}

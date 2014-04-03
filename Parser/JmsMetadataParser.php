@@ -102,7 +102,7 @@ class JmsMetadataParser implements ParserInterface
             $exclusionStrategies[] = new GroupsExclusionStrategy($groups);
         }
 
-        $params = array();
+        $properties = array();
 
         // iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
@@ -118,7 +118,7 @@ class JmsMetadataParser implements ParserInterface
                     }
                 }
 
-                $params[$name] = array(
+                $properties[$name] = array(
                     'dataType'     => $dataType['normalized'],
                     'required'     => false,
                     //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
@@ -129,7 +129,7 @@ class JmsMetadataParser implements ParserInterface
                 );
 
                 if (!is_null($dataType['class'])) {
-                    $params[$name]['class'] = $dataType['class'];
+                    $properties[$name]['class'] = $dataType['class'];
                 }
 
                 // if class already parsed, continue, to avoid infinite recursion
@@ -140,12 +140,67 @@ class JmsMetadataParser implements ParserInterface
                 // check for nested classes with JMS metadata
                 if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
                     $visited[]                 = $dataType['class'];
-                    $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups);
+                    $properties[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups);
                 }
             }
         }
 
-        return $params;
+        if ($this->shouldReadDiscriminatorClasses($meta)) {
+            $discriminatorFieldName = $meta->discriminatorFieldName;
+
+            foreach ($meta->discriminatorMap as $discriminatorFieldValue => $discriminatorClass) {
+                $visited[] = $discriminatorClass;
+
+                $discriminatorClassProperties = $this->doParse($discriminatorClass, $visited, $groups);
+                $discriminatorClassProperties = $this->addDiscriminatorField(
+                    $discriminatorClassProperties,
+                    $discriminatorFieldName,
+                    $discriminatorFieldValue
+                );
+
+                $properties[$discriminatorClass] = array(
+                    'dataType'           => 'discriminatorClass',
+                    'required'           => false,
+                    'discriminatorClass' => $discriminatorClassProperties,
+                );
+            }
+        }
+
+        return $properties;
+    }
+
+    /**
+     * @param array $discriminatorClassProperties
+     * @param string $discriminatorFieldName
+     * @param string $discriminatorFieldValue
+     * @return array
+     */
+    private function addDiscriminatorField($discriminatorClassProperties, $discriminatorFieldName, $discriminatorFieldValue)
+    {
+        $discriminatorClassProperties[$discriminatorFieldName] = array(
+            'dataType'     => 'string',
+            'required'     => true,
+            'readonly'     => false,
+            'format'       => null,
+            'description'  => $discriminatorFieldName . ' = ' . $discriminatorFieldValue,
+            'sinceVersion' => null,
+            'untilVersion' => null,
+        );
+
+        return $discriminatorClassProperties;
+    }
+
+    /**
+     * @param mixed $meta
+     * @return bool
+     */
+    private function shouldReadDiscriminatorClasses($meta)
+    {
+        if (!empty($meta->discriminatorMap) && $meta->discriminatorBaseClass === $meta->name) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
