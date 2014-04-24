@@ -171,7 +171,7 @@ table tbody tr td {
   font-size: 0.9em;
 }
 
-#section {
+.section {
   border: 1px solid #ddd;
   background: #f8f8f8;
   padding: 5px 20px;
