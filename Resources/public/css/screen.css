@@ -188,14 +188,14 @@ li.resource:last-child {
 }
 
 /* heading */
-a.heading {
+.heading {
   border: 1px solid transparent;
   float: none;
   clear: both;
   overflow: hidden;
   display: block;
 }
-a.heading h2 {
+.heading h2 {
   color: #999999;
   padding-left: 0;
   display: block;
@@ -204,7 +204,7 @@ a.heading h2 {
   font-family: "Droid Sans", sans-serif;
   font-weight: bold;
 }
-a.heading ul.options {
+.heading ul.options {
   overflow: hidden;
   padding: 0;
   display: block;
@@ -212,7 +212,7 @@ a.heading ul.options {
   float: right;
   margin: 6px 10px 0 0;
 }
-a.heading ul.options li {
+.heading ul.options li {
   float: left;
   clear: none;
   margin: 0;
@@ -221,12 +221,12 @@ a.heading ul.options li {
   color: #666666;
   font-size: 0.9em;
 }
-a.heading ul.options li:first-child,
-a.heading ul.options li.first {
+.heading ul.options li:first-child,
+.heading ul.options li.first {
   padding-left: 0;
 }
-a.heading ul.options li:last-child,
-a.heading ul.options li.last {
+.heading ul.options li:last-child,
+.heading ul.options li.last {
   padding-right: 0;
   border-right: none;
 }
@@ -240,13 +240,13 @@ li.operation {
   margin: 0 0 10px;
   padding: 0 0 0 0;
 }
-li.operation a.heading {
+li.operation .heading {
   margin: 0 0 0 0;
   padding: 0;
   background-color: #f0f0f0;
   border: 1px solid #ddd;
 }
-li.operation a.heading h3 {
+li.operation .heading h3 {
   display: block;
   clear: none;
   float: left;
@@ -256,25 +256,25 @@ li.operation a.heading h3 {
   line-height: 1.1em;
   color: black;
 }
-li.operation a.heading h3 span {
+li.operation .heading h3 span {
   margin: 0;
   padding: 0;
 }
-li.operation a.heading h3 span.icon {
+li.operation .heading h3 span.icon {
     display: inline-block;
     height: 12px;
     width: 12px;
     margin-left: 3px;
     background: no-repeat center center;
 }
-li.operation a.heading h3 span.lock {
+li.operation .heading h3 span.lock {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAMCAYAAABbayygAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUHEisepJ6ljAAAAJ5JREFUGNNt0LEOAUEUheEPuwkFtSg0old4Eo/imbQKiULpBZQSCtFoaIjSktXMxpjsSW5xzvnnZmb4aYMymg9WEq1Decc1zCNkyxisoFGUTXDGEZpR8cIp8jccKiaLigwDdMP9hughr8ptALtYoB18C+Pgd5KXlrhgX5P/mSfmmKVgM/mmDP1qQ1rEyjFFkYKNmtMF3uikYFGzOdXnC5FWMZNd2GfvAAAAAElFTkSuQmCC");
 
 }
-li.operation a.heading h3 span.keys {
+li.operation .heading h3 span.keys {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAMCAYAAAC0qUeeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUHEisb1PRRAwAAAN9JREFUKM9lz71KQ0EQhuEnJ7EIKhZWaRULu4htLLwDvYRgZWmTWoI3kAuIlVik0U5Io4USRMFOUGwU7cQ/kAQMajMHDpuBZWd235lvPtjHDT4xxhuu0ZJEhhXU8YAG7rCKBWyn8EnkVSxjOuoPbKTT1/GXnCd0YqWt4uQrk3GLGcxiswgPcRgG4QsDzKMSKtUc/kUbFwEf4BlrUdeCk8WOj3jBO+5xhGOMwmQzh6Ec9zemwtgOLuN9D4tZYqwUSvnuu3jFHLpZASqHUqXQfIZe5PX8Y4RTLKGfqLVwjp9/HR4zOkGnnAoAAAAASUVORK5CYII=");
 }
-li.operation a.heading h3 span.http_method i, li.operation a.heading h3 span.deprecated i {
+li.operation .heading h3 span.http_method i, li.operation .heading h3 span.deprecated i {
   text-transform: uppercase;
   text-decoration: none;
   color: white;
@@ -288,11 +288,11 @@ li.operation a.heading h3 span.http_method i, li.operation a.heading h3 span.dep
   border-radius: 2px;
   background-color: #ccc;
 }
-li.operation a.heading h3 span.deprecated i {
+li.operation .heading h3 span.deprecated i {
   width: 75px;
   background-color: #F00;
 }
-li.operation a.heading h3 span.path {
+li.operation .heading h3 span.path {
   padding-left: 5px;
 }
 
@@ -321,14 +321,14 @@ li.operation div.content form input[type='text'].error {
 }
 
 /* GET operations */
-li.operation.get a.heading {
+li.operation.get .heading {
   border-color: #c3d9ec;
   background-color: #e7f0f7;
 }
-li.operation.get a.heading h3 span.http_method i {
+li.operation.get .heading h3 span.http_method i {
   background-color: #0f6ab4;
 }
-li.operation.get a.heading ul.options li {
+li.operation.get .heading ul.options li {
   border-right-color: #c3d9ec;
   color: #0f6ab4;
 }
@@ -342,14 +342,14 @@ li.operation.get div.content h4 {
 }
 
 /* POST operations */
-li.operation.post a.heading {
+li.operation.post .heading {
   border-color: #a7e1a1;
   background-color: #d4f7cd;
 }
-li.operation.post a.heading h3 span.http_method i{
+li.operation.post .heading h3 span.http_method i{
   background-color: #10a54a;
 }
-li.operation.post a.heading ul.options li {
+li.operation.post .heading ul.options li {
   border-right-color: #c3e8d1;
   color: #10a54a;
 }
@@ -363,14 +363,14 @@ li.operation.post div.content h4 {
 }
 
 /* ANY operations */
-li.operation.any a.heading {
+li.operation.any .heading {
   background-color: lightgray;
   border-color: gray;
 }
-li.operation.any a.heading h3 span.http_method i {
+li.operation.any .heading h3 span.http_method i {
   background-color: #000;
 }
-li.operation.any a.heading ul.options li {
+li.operation.any .heading ul.options li {
   color: #000;
   border-right-color: gray;
 }
@@ -384,14 +384,14 @@ li.operation.any div.content h4 {
 }
 
 /* PUT operations */
-li.operation.put a.heading {
+li.operation.put .heading {
   background-color: #f9f2e9;
   border-color: #f0e0ca;
 }
-li.operation.put a.heading h3 span.http_method i {
+li.operation.put .heading h3 span.http_method i {
   background-color: #c5862b;
 }
-li.operation.put a.heading ul.options li {
+li.operation.put .heading ul.options li {
   border-right-color: #f0e0ca;
   color: #c5862b;
 }
@@ -405,14 +405,14 @@ li.operation.put div.content h4 {
 }
 
 /* DELETE operations */
-li.operation.delete a.heading {
+li.operation.delete .heading {
   background-color: #f5e8e8;
   border-color: #e8c6c7;
 }
-li.operation.delete a.heading h3 span.http_method i {
+li.operation.delete .heading h3 span.http_method i {
   background-color: #a41e22;
 }
-li.operation.delete a.heading ul.options li {
+li.operation.delete .heading ul.options li {
   border-right-color: #e8c6c7;
   color: #a41e22;
 }
@@ -426,14 +426,14 @@ li.operation.delete div.content h4 {
 }
 
 /* PATCH operations */
-li.operation.patch a.heading {
+li.operation.patch .heading {
   background-color: #f5e8e8;
   border-color: #e8c6e7;
 }
-li.operation.patch a.heading h3 span.http_method i {
+li.operation.patch .heading h3 span.http_method i {
   background-color: #a41ee2;
 }
-li.operation.patch a.heading ul.options li {
+li.operation.patch .heading ul.options li {
   border-right-color: #e8c6c7;
   color: #a41ee2;
 }
@@ -447,13 +447,13 @@ li.operation.patch div.content h4 {
 }
 
 /* LINK operations */
-li.operation.link a.heading {
+li.operation.link .heading {
   background-color: #F7F7D5;
 }
-li.operation.link a.heading h3 span.http_method i {
+li.operation.link .heading h3 span.http_method i {
   background-color: #C3D448;
 }
-li.operation.link a.heading ul.options li {
+li.operation.link .heading ul.options li {
   color: #C3D448;
 }
 
@@ -465,13 +465,13 @@ li.operation.link div.content h4 {
 }
 
 /* UNLINK operations */
-li.operation.unlink a.heading {
+li.operation.unlink .heading {
   background-color: #FFEBDE;
 }
-li.operation.unlink a.heading h3 span.http_method i {
+li.operation.unlink .heading h3 span.http_method i {
   background-color: #FF8438;
 }
-li.operation.unlink a.heading ul.options li {
+li.operation.unlink .heading ul.options li {
   color: #FF8438;
 }
 

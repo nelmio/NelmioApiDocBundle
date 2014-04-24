@@ -1,5 +1,5 @@
 <li class="{{ data.method|lower }} operation" id="{{ data.id }}">
-    <a class="heading toggler{% if data.deprecated %} deprecated{% endif %}" href="#{{ data.id }}">
+    <div class="heading toggler{% if data.deprecated %} deprecated{% endif %}" data-href="#{{ data.id }}">
         <h3>
             <span class="http_method">
                 <i>{{ data.method|upper }}</i>
@@ -31,7 +31,7 @@
                 <li>{{ data.description }}</li>
             {% endif %}
         </ul>
-    </a>
+    </div>
 
     <div class="content" style="display: {% if displayContent is defined and displayContent == true %}display{% else %}none{% endif %};">
         <ul class="tabs">
