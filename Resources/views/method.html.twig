@@ -170,7 +170,7 @@
                     <tbody>
                     {% for status_code, descriptions in data.statusCodes %}
                         <tr>
-                            <td><a href="http://en.wikipedia.org/wiki/HTTP_{{ status_code }}" target="_blank">{{ status_code }}<a/></td>
+                            <td><a href="http://en.wikipedia.org/wiki/HTTP_{{ status_code }}" target="_blank">{{ status_code }}</a></td>
                             <td>
                                 <ul>
                                     {% for description in descriptions %}
