@@ -149,3 +149,9 @@ test_route_private:
 test_route_exclusive:
     pattern: /exclusive
     defaults: { _controller: NelmioApiDocTestBundle:Test:exclusive }
+
+test_route_21:
+    pattern:  /z-action-with-constraint-requirements
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithConstraintAsRequirements }
+    requirements:
+        _method: GET
