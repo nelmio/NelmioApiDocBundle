@@ -39,19 +39,29 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'dataType' => 'string',
                         'required' => true,
                         'description' => 'A nice description',
-                        'readonly' => false
+                        'readonly' => false,
+                        'format'   => null
                     ),
                     'b' => array(
                         'dataType' => 'string',
                         'required' => true,
                         'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
+                        'format'   => null
                     ),
                     'c' => array(
                         'dataType' => 'boolean',
                         'required' => true,
                         'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
+                        'format'   => null
+                    ),
+                    'd' => array(
+                        'dataType' => 'date',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false,
+                        'format'   => 'yyyy-MM-dd'
                     )
                 )
             ),
@@ -62,13 +72,15 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'dataType' => 'array of strings',
                         'required' => true,
                         'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
+                        'format'   => null
                     ),
                     'collection_type[b]' => array(
                         'dataType' => 'string',
                         'required' => true,
                         'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
+                        'format'   => null
                     )
                 )
             ),
@@ -82,13 +94,15 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'dataType' => 'array of strings',
                         'required' => true,
                         'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
+                        'format'   => null
                     ),
                     'b' => array(
                         'dataType' => 'string',
                         'required' => true,
                         'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
+                        'format'   => null
                     )
                 )
             ),
@@ -102,13 +116,15 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'dataType' => 'array of strings',
                         'required' => true,
                         'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
+                        'format'   => null
                     ),
                     'b' => array(
                         'dataType' => 'string',
                         'required' => true,
                         'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
+                        'format'   => null
                     )
                 )
             ),
