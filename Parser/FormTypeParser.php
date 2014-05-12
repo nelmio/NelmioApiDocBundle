@@ -13,6 +13,8 @@ namespace Nelmio\ApiDocBundle\Parser;
 
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Exception\FormException;
@@ -42,6 +44,7 @@ class FormTypeParser implements ParserInterface
         'integer'   => 'int',
         'textarea'  => 'string',
         'country'   => 'string',
+        'choice'    => 'choice',
     );
 
     public function __construct(FormFactoryInterface $formFactory)
@@ -153,6 +156,37 @@ class FormTypeParser implements ParserInterface
                 'description'   => $config->getAttribute('description'),
                 'readonly'      => $config->getDisabled(),
             );
+
+            switch ($bestType) {
+                case 'datetime':
+                    if (($format = $config->getOption('date_format')) && is_string($format)) {
+                        $parameters[$name]['format'] = $format;
+                    } elseif ('single_text' == $config->getOption('widget') && $format = $config->getOption('format')) {
+                        $parameters[$name]['format'] = $format;
+                    }
+                    break;
+
+                case 'date':
+                    if (($format = $config->getOption('format')) && is_string($format)) {
+                        $parameters[$name]['format'] = $format;
+                    }
+                    break;
+
+                case 'choice':
+                    if ($config->getOption('multiple')) {
+                        $parameters[$name]['dataType'] = sprintf('array of %ss', $parameters[$name]['dataType']);
+                    }
+
+                    if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
+                        $parameters[$name]['format'] = json_encode($choices);
+                    } elseif (($choiceList = $config->getOption('choice_list')) && $choiceList instanceof ChoiceListInterface) {
+                        $choices = $this->handleChoiceListValues($choiceList);
+                        if (is_array($choices) && count($choices)) {
+                            $parameters[$name]['format'] = json_encode($choices);
+                        }
+                    }
+                    break;
+            }
         }
 
         return $parameters;
@@ -187,5 +221,25 @@ class FormTypeParser implements ParserInterface
         } catch (InvalidArgumentException $e) {
             // nothing
         }
+    }
+
+    private function handleChoiceListValues(ChoiceListInterface $choiceList) {
+        $choices = array();
+        foreach (array($choiceList->getPreferredViews(), $choiceList->getRemainingViews()) as $viewList) {
+            $choices = array_merge($choices, $this->handleChoiceViewsHierarchy($viewList));
+        }
+        return $choices;
+    }
+
+    private function handleChoiceViewsHierarchy(array $choiceViews) {
+        $choices = array();
+        foreach ($choiceViews as $item) {
+            if ($item instanceof ChoiceView) {
+                $choices[$item->value] = $item->label;
+            } elseif (is_array($item)) {
+                $choices = array_merge($choices, $this->handleChoiceViewsHierarchy($item));
+            }
+        }
+        return $choices;
     }
 }
