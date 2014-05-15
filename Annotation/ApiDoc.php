@@ -548,15 +548,15 @@ class ApiDoc
         }
 
         if ($parameters = $this->parameters) {
-            $data['parameters'] = $parameters;
+            $data['parameters'] = $this->applyAliases($parameters);
         }
 
         if ($requirements = $this->requirements) {
-            $data['requirements'] = $requirements;
+            $data['requirements'] = $this->applyAliases($requirements);
         }
 
         if ($response = $this->response) {
-            $data['response'] = $response;
+            $data['response'] = $this->applyAliases($response);
         }
 
         if ($statusCodes = $this->statusCodes) {
@@ -577,5 +577,25 @@ class ApiDoc
         $data['deprecated'] = $this->deprecated;
 
         return $data;
+    }
+
+    private function applyAliases(array $items)
+    {
+        $aliasedItems = array();
+
+        foreach ($items as $name => $data) {
+            if (isset($data['alias'])) {
+                $name = $data['alias'];
+                unset($data['alias']);
+            }
+
+            if (isset($data['children'])) {
+                $data['children'] = $this->applyAliases($data['children']);
+            }
+
+            $aliasedItems[$name] = $data;
+        }
+
+        return $aliasedItems;
     }
 }
