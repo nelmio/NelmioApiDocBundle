@@ -86,5 +86,23 @@ class FosRestHandlerTest extends WebTestCase
 
         $this->assertArrayNotHasKey('default', $filter);
     }
+   
+    public function testGetWithConstraintAsRequirements()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithConstraintAsRequirements', 'test_route_21');
+
+        $this->assertNotNull($annotation);
+
+        $filters = $annotation->getFilters();
+        $this->assertCount(1, $filters);
+        $this->assertArrayHasKey('mail', $filters);
+
+        $filter = $filters['mail'];
+
+        $this->assertArrayHasKey('requirement', $filter);
+        $this->assertEquals($filter['requirement'], 'Email');
+    }
 
 }

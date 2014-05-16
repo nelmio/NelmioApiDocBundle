@@ -15,6 +15,7 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\Email;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
 class TestController
@@ -127,6 +128,14 @@ class TestController
      * @QueryParam(name="page", requirements="\d+", description="Page of the overview.")
      */
     public function zActionWithQueryParamNoDefaultAction()
+    {
+    }
+  
+    /**
+     * @ApiDoc()
+     * @QueryParam(name="mail", requirements=@Email, description="Email of someone.")
+     */
+    public function zActionWithConstraintAsRequirements()
     {
     }
 
