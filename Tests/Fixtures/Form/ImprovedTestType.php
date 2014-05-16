@@ -8,7 +8,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,4 +52,3 @@ class ImprovedTestType extends AbstractType
         return '';
     }
 }
-

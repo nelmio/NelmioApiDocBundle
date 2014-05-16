@@ -223,15 +223,18 @@ class FormTypeParser implements ParserInterface
         }
     }
 
-    private function handleChoiceListValues(ChoiceListInterface $choiceList) {
+    private function handleChoiceListValues(ChoiceListInterface $choiceList)
+    {
         $choices = array();
         foreach (array($choiceList->getPreferredViews(), $choiceList->getRemainingViews()) as $viewList) {
             $choices = array_merge($choices, $this->handleChoiceViewsHierarchy($viewList));
         }
+
         return $choices;
     }
 
-    private function handleChoiceViewsHierarchy(array $choiceViews) {
+    private function handleChoiceViewsHierarchy(array $choiceViews)
+    {
         $choices = array();
         foreach ($choiceViews as $item) {
             if ($item instanceof ChoiceView) {
@@ -240,6 +243,7 @@ class FormTypeParser implements ParserInterface
                 $choices = array_merge($choices, $this->handleChoiceViewsHierarchy($item));
             }
         }
+
         return $choices;
     }
 }
