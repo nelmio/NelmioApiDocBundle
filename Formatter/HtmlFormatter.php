@@ -41,6 +41,11 @@ class HtmlFormatter extends AbstractFormatter
     private $enableSandbox;
 
     /**
+     * @var array
+     */
+    private $requestFormats;
+
+    /**
      * @var string
      */
     private $requestFormatMethod;
@@ -130,6 +135,14 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
+     * @param array $formats
+     */
+    public function setRequestFormats(array $formats)
+    {
+        $this->requestFormats = $formats;
+    }
+
+    /**
      * @param string $format
      */
     public function setDefaultRequestFormat($format)
@@ -193,6 +206,7 @@ class HtmlFormatter extends AbstractFormatter
             'requestFormatMethod'  => $this->requestFormatMethod,
             'acceptType'           => $this->acceptType,
             'bodyFormat'           => $this->bodyFormat,
+            'requestFormats'       => $this->requestFormats,
             'defaultRequestFormat' => $this->defaultRequestFormat,
             'date'                 => date(DATE_RFC822),
             'css'                  => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),

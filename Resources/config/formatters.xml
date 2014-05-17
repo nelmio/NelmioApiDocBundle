@@ -37,6 +37,9 @@
             <call method="setRequestFormatMethod">
                 <argument>%nelmio_api_doc.sandbox.request_format.method%</argument>
             </call>
+            <call method="setRequestFormats">
+                <argument>%nelmio_api_doc.sandbox.request_format.formats%</argument>
+            </call>
             <call method="setDefaultRequestFormat">
                 <argument>%nelmio_api_doc.sandbox.request_format.default_format%</argument>
             </call>
