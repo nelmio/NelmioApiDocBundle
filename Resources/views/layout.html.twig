@@ -52,8 +52,32 @@
         </p>
         <script type="text/javascript">
 
+            var getHash = function() {
+              return window.location.hash || '';
+            };
+
+            var setHash = function(hash) {
+                window.location.hash = hash;
+            };
+
+            var clearHash = function() {
+                var scrollTop, scrollLeft;
+
+                if(typeof history === 'object' && typeof history.pushState === 'function') {
+                    history.replaceState('', document.title, window.location.pathname + window.location.search);
+                } else {
+                    scrollTop = document.body.scrollTop;
+                    scrollLeft = document.body.scrollLeft;
+
+                    setHash('');
+
+                    document.body.scrollTop = scrollTop;
+                    document.body.scrollLeft = scrollLeft;
+                }
+            };
+
             $(window).load(function() {
-                var id = (window.location.hash || '').substr(1).replace( /([:\.\[\]\{\}])/g, "\\$1");
+                var id = getHash().substr(1).replace( /([:\.\[\]\{\}])/g, "\\$1");
                 var elem = $('#' + id);
                 if (elem.length) {
                     setTimeout(function() {
@@ -63,8 +87,17 @@
                 }
             });
 
-            $('.toggler').click(function() {
-                $(this).next().slideToggle('fast');
+            $('.toggler').click(function(event) {
+                var contentContainer = $(this).next();
+
+                if(contentContainer.is(':visible')) {
+                    clearHash();
+                } else {
+                    setHash($(this).attr('href'));
+                }
+
+                contentContainer.slideToggle('fast');
+                return false;
             });
 
             {% if enableSandbox %}
