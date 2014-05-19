@@ -57,14 +57,18 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('request_format')
                             ->addDefaultsIfNotSet()
                             ->children()
+                                ->arrayNode('formats')
+                                    ->defaultValue(array(
+                                        'json' => 'application/json',
+                                        'xml' => 'application/xml'
+                                    ))
+                                    ->prototype('scalar')->end()
+                                ->end()
                                 ->enumNode('method')
                                     ->values(array('format_param', 'accept_header'))
                                     ->defaultValue('format_param')
                                 ->end()
-                                ->enumNode('default_format')
-                                    ->values(array('json', 'xml'))
-                                    ->defaultValue('json')
-                                ->end()
+                                ->scalarNode('default_format')->defaultValue('json')->end()
                             ->end()
                         ->end()
                         ->arrayNode('authentication')

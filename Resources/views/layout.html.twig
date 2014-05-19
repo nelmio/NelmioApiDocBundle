@@ -24,8 +24,9 @@
                     </select>
                     request format:
                     <select id="request_format">
-                        <option value="json"{{ defaultRequestFormat == 'json' ? ' selected' : '' }}>JSON</option>
-                        <option value="xml"{{ defaultRequestFormat == 'xml' ? ' selected' : '' }}>XML</option>
+                    {% for format, header in requestFormats %}
+                        <option value="{{ header }}"{{ defaultRequestFormat == format ? ' selected' : '' }}>{{ format }}</option>
+                    {% endfor %}
                     </select>
                     {% if authentication and authentication.delivery in ['query', 'http_basic', 'header'] %}
                         api key: <input type="text" id="api_key" value=""/>
@@ -197,13 +198,12 @@
                         method = method.split('|').sort().pop();
                     }
 
-                    // set default requestFormat
-                    var requestFormat = $('#request_format').val();
+                    // set requestFormat
                     var requestFormatMethod = '{{ requestFormatMethod }}';
                     if (requestFormatMethod == 'format_param') {
-                        params['_format'] = requestFormat;
+                        params['_format'] = $('#request_format option:selected').text();
                     } else if (requestFormatMethod == 'accept_header') {
-                        headers['Accept'] = 'application/' + requestFormat;
+                        headers['Accept'] = $('#request_format').val();
                     }
 
                     // set default bodyFormat
