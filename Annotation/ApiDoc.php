@@ -30,7 +30,7 @@ class ApiDoc
      *
      * @var array
      */
-    private $filters  = array();
+    private $filters = array();
 
     /**
      * Parameters are data a client can send.
@@ -155,6 +155,16 @@ class ApiDoc
      */
     private $tags = array();
 
+    /**
+     * @var string
+     */
+    private $requestBodyExample;
+
+    /**
+     * @var string
+     */
+    private $responseBodyExample;
+
     public function __construct(array $data)
     {
         $this->resource = !empty($data['resource']) ? $data['resource'] : false;
@@ -271,6 +281,44 @@ class ApiDoc
                 $this->output = $this->responseMap[200];
             }
         }
+
+        if (isset($data['requestBody'])) {
+            $this->requestBodyExample = $this->addRequestBodyExample($data['requestBody']);
+        }
+
+        if (isset($data['responseBody'])) {
+            $this->responseBodyExample = $this->addResponseBodyExample($data['responseBody']);
+        }
+    }
+
+    /**
+     * @param string|array $requestBodyExample
+     * @return string
+     */
+    public function addRequestBodyExample($requestBodyExample)
+    {
+        if (is_array($requestBodyExample)) {
+            $content = $this->exampleBodyFromArray($requestBodyExample);
+        } else {
+            $content = $requestBodyExample;
+        }
+
+        return $this->markdownBlockCodeFormater($content);
+    }
+
+    /**
+     * @param string|array $responseBodyExample
+     * @return string
+     */
+    public function addResponseBodyExample($responseBodyExample)
+    {
+        if (is_array($responseBodyExample)) {
+            $content = $this->exampleBodyFromArray($responseBodyExample);
+        } else {
+            $content = $responseBodyExample;
+        }
+
+        return $this->markdownBlockCodeFormater($content);
     }
 
     /**
@@ -570,6 +618,14 @@ class ApiDoc
     }
 
     /**
+     * @return array
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
      * @param boolean $deprecated
      */
     public function setDeprecated($deprecated)
@@ -649,6 +705,14 @@ class ApiDoc
             $data['resourceDescription'] = $resourceDescription;
         }
 
+        if ($requestBodyExample = $this->requestBodyExample) {
+            $data['requestBodyExample'] = $requestBodyExample;
+        }
+
+        if ($responseBodyExample = $this->responseBodyExample) {
+            $data['responseBodyExample'] = $responseBodyExample;
+        }
+
         $data['https'] = $this->https;
         $data['authentication'] = $this->authentication;
         $data['authenticationRoles'] = $this->authenticationRoles;
@@ -696,5 +760,31 @@ class ApiDoc
         if ($statusCode == 200 && $this->response !== $model) {
             $this->response = $model;
         }
+    }
+
+    /**
+     * Read example body from file
+     * Each line of code block should be prefixed by tabulator as required by dflydev/markdown extension
+     *
+     * @param array $body
+     * @return string
+     */
+    private function exampleBodyFromArray($body)
+    {
+        if (!empty($body['file']) && is_readable($body['file'])) {
+            return file_get_contents($body['file']);
+        }
+
+        return '';
+    }
+
+    /**
+     * dflydev/markdown extension required that code block should be prefixed by tabulator
+     * @param string $code
+     * @return string
+     */
+    private function markdownBlockCodeFormater($code)
+    {
+        return !empty($code) ? "```\n" . $code . "\n```" : "";
     }
 }
