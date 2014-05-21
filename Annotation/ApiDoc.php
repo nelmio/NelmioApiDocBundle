@@ -238,6 +238,14 @@ class ApiDoc
     }
 
     /**
+     * @param array $filters
+     */
+    public function setFilters(array $filters)
+    {
+        $this->filters = array_merge($this->filters, $filters);
+    }
+
+    /**
      * @param string $statusCode
      * @param mixed  $description
      */
@@ -505,6 +513,14 @@ class ApiDoc
     public function getRequirements()
     {
         return $this->requirements;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 
     /**
