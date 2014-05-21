@@ -148,7 +148,27 @@ class ValidationParserTest extends WebTestCase
                 'expected' => array(
                     'format' => '{url}, {length: min: 10}'
                 )
-            )
+            ),
+            array(
+                'property' => 'arrayOfDateTimes',
+                'expected' => array(
+                    'dataType' => 'array of objects (DateTime)',
+                    'class' => 'DateTime',
+                )
+            ),
+            array(
+                'property' => 'arrayOfStrings',
+                'expected' => array(
+                    'dataType' => 'array of type (string)',
+                )
+            ),
+            array(
+                'property' => 'arrayOfIpAddresses',
+                'expected' => array(
+                    'dataType' => 'array',
+                    'format' => '{ip address}'
+                )
+            ),
         );
     }
 }

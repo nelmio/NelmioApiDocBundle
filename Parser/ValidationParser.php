@@ -206,23 +206,45 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 foreach ($constraint->constraints as $childConstraint) {
                     if ($childConstraint instanceof Type) {
                         $nestedType = $childConstraint->type;
-                        $exp = explode("\\", $nestedType);
-                        if (!class_exists($nestedType)) {
-                            $nestedType = substr($className, 0, strrpos($className, '\\') + 1).$nestedType;
 
+                        $type = strtolower($nestedType);
+                        $type = $type == 'boolean' ? 'bool' : $nestedType;
+                        $isFunction = 'is_'.$type;
+                        $ctypeFunction = 'ctype_'.$type;
+
+                        if (function_exists($isFunction) || function_exists($ctypeFunction)) {
+                            $vparams['dataType'] = sprintf('array of type (%s)', $type);
+                        } else {
+                            $exp = explode("\\", $nestedType);
                             if (!class_exists($nestedType)) {
-                                continue;
+                                $nestedType = substr($className, 0, strrpos($className, '\\') + 1).$nestedType;
+
+                                if (!class_exists($nestedType)) {
+                                    continue;
+                                }
+                            }
+
+                            $vparams['dataType'] = sprintf("array of objects (%s)", end($exp));
+                            $vparams['class'] = $nestedType;
+
+                            if (!in_array($nestedType, $visited)) {
+                                $visited[] = $nestedType;
+                                $vparams['children'] = $this->doParse($nestedType, $visited);
                             }
                         }
 
-                        $vparams['dataType'] = sprintf("array of objects (%s)", end($exp));
-                        $vparams['class'] = $nestedType;
-
-                        if (!in_array($nestedType, $visited)) {
-                            $visited[] = $nestedType;
-                            $vparams['children'] = $this->doParse($nestedType, $visited);
-                        }
+                        continue;
                     }
+
+                    $childVParams = $this->parseConstraint($childConstraint, array(), $className, $visited);
+                    $vparams['format'][] = implode($childVParams['format'], '; ');
+                    if (isset($childVParams['required'])) {
+                        $vparams['required'] = $childVParams['required'];
+                    }
+                }
+
+                if (!isset($vparams['dataType'])) {
+                    $vparams['dataType'] = 'array';
                 }
                 break;
         }
