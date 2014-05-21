@@ -279,7 +279,15 @@ class FormTypeParser implements ParserInterface
 
     private function getTypeInstance($type)
     {
-        return unserialize(sprintf('O:%d:"%s":0:{}', strlen($type), $type));
+        $refl = new \ReflectionClass($type);
+        $constructor = $refl->getConstructor();
+
+        // this fallback may lead to runtime exception, but try hard to generate the docs
+        if ($constructor && $constructor->getNumberOfRequiredParameters() > 0) {
+            return $refl->newInstanceWithoutConstructor();
+        }
+
+        return $refl->newInstance();
     }
 
     private function createForm($item)
