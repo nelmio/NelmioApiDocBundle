@@ -288,4 +288,38 @@ class ApiDocTest extends TestCase
         $this->assertTrue(isset($array['parameters']['fooId']));
         $this->assertTrue(isset($array['parameters']['fooId']['dataType']));
     }
+
+    public function testConstructWithRequestAndResponseBodyAsString()
+    {
+        $data = array(
+            'requestBody' => '[{ value: "requestBody" }]',
+            'responseBody' => '[{ value: "responseBody" }]',
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertEquals('```' . "\n" . $data['requestBody'] . "\n" . '```', $array['requestBodyExample']);
+        $this->assertEquals('```' . "\n" . $data['responseBody'] . "\n" . '```' , $array['responseBodyExample']);
+    }
+
+    public function testConstructWithRequestAndResponseBodyAsFile()
+    {
+        $data = array(
+            'requestBody' => array(
+                'file' => __DIR__ . '/../Fixtures/Resources/doc/exampleBody.json',
+            ),
+            'responseBody' => array(
+                'file' => __DIR__ . '/../Fixtures/Resources/doc/exampleBody.json'
+            ),
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(!empty($array['requestBodyExample']));
+        $this->assertTrue(!empty($array['responseBodyExample']));
+    }
 }

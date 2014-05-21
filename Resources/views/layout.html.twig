@@ -100,6 +100,16 @@
                 return false;
             });
 
+            $('.tabs li').click(function() {
+                var contentGroup = $(this).parents('.content');
+
+                $('.pane.selected', contentGroup).removeClass('selected');
+                $('.pane.' + $(this).data('pane'), contentGroup).addClass('selected');
+
+                $('li', $(this).parent()).removeClass('selected');
+                $(this).addClass('selected');
+            });
+
             {% if enableSandbox %}
                 var toggleButtonText = function ($btn) {
                     if ($btn.text() === 'Default') {
@@ -164,16 +174,6 @@
                     }
                     return body;
                 }
-
-                $('.tabs li').click(function() {
-                    var contentGroup = $(this).parents('.content');
-
-                    $('.pane.selected', contentGroup).removeClass('selected');
-                    $('.pane.' + $(this).data('pane'), contentGroup).addClass('selected');
-
-                    $('li', $(this).parent()).removeClass('selected');
-                    $(this).addClass('selected');
-                });
 
                 var prettifyResponse = function(text) {
                     try {
