@@ -212,8 +212,10 @@
                     if (typeof Sfjs !== 'undefined') {
                         var xDebugToken = xhr.getResponseHeader('X-Debug-Token');
                         if (xDebugToken) {
-                            var toolbarElement = $('.sf-toolbar')[0];                            
-                           Sfjs.load(toolbarElement.id, '/_wdt/'+ xDebugToken);                            
+                            var toolbarElement = $('.sf-toolbar');
+                            if (toolbarElement.length) {
+                                Sfjs.load(toolbarElement[0].id, '/_wdt/'+ xDebugToken);                          
+                            }                                                   
                         }
                     }
                 };
