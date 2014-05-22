@@ -208,14 +208,24 @@
                     container.text(text);
                 };
 
+                var updateWebProfilerToolbar = function(xhr) {
+                    if (typeof Sfjs !== 'undefined') {
+                        var xDebugToken = xhr.getResponseHeader('X-Debug-Token');
+                        if (xDebugToken) {
+                            var toolbarElement = $('.sf-toolbar')[0];                            
+                           Sfjs.load(toolbarElement.id, '/_wdt/'+ xDebugToken);                            
+                        }
+                    }
+                };
+
                 var displayResponse = function(xhr, method, url, result_container) {
                     displayFinalUrl(xhr, method, url, $('.url', result_container));
                     displayResponseData(xhr, $('.response', result_container));
                     displayResponseHeaders(xhr, $('.headers', result_container));
-
+                    updateWebProfilerToolbar(xhr);
                     result_container.show();
                 };
-
+                
                 $('.pane.sandbox form').submit(function() {
                     var url = $(this).attr('action'),
                         method = $(this).attr('method'),
