@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class ApiDocController extends Controller
 {
