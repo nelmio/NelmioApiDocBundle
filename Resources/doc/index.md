@@ -127,6 +127,8 @@ The following properties are available:
 
 * `deprecated`: allow to set method as deprecated (default: `false`);
 
+* `tags`: allow to tag a method (e.g. `beta` or `in-development`). Either a single tag or an array of tags. 
+
 * `filters`: an array of filters;
 
 * `requirements`: an array of requirements;
