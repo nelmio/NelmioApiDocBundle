@@ -25,6 +25,11 @@
                 {% endif -%}
                 {{ data.uri }}
             </span>
+           {% if data.tags is defined %}
+                {% for tag in data.tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            {%  endif %}
         </h3>
         <ul class="options">
             {% if data.description is defined %}
