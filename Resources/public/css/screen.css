@@ -296,6 +296,18 @@ li.operation a.heading h3 span.path {
   padding-left: 5px;
 }
 
+li.operation a.heading h3 span.tag {
+  color: #FFFFFF;
+  font-size: 0.7em;
+  vertical-align: baseline;
+  background-color: #d9534f;
+  padding-bottom: 3px;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 2px;
+  border-radius: 4px;
+}
+
 li.operation div.content {
   border: 1px solid #ddd;
   padding: 10px;
