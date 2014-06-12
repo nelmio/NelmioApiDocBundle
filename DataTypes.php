@@ -18,27 +18,27 @@ namespace Nelmio\ApiDocBundle;
  */
 class DataTypes
 {
-    const INTEGER = 'integer';
+    const INTEGER    = 'integer';
 
-    const FLOAT = 'float';
+    const FLOAT      = 'float';
 
-    const STRING = 'string';
+    const STRING     = 'string';
 
-    const BOOLEAN = 'boolean';
+    const BOOLEAN    = 'boolean';
 
-    const FILE = 'file';
+    const FILE       = 'file';
 
-    const ENUM = 'choice';
+    const ENUM       = 'choice';
 
     const COLLECTION = 'collection';
 
-    const MODEL = 'model';
+    const MODEL      = 'model';
 
-    const DATE = 'date';
+    const DATE       = 'date';
 
-    const DATETIME = 'datetime';
+    const DATETIME   = 'datetime';
 
-    const TIME = 'time';
+    const TIME       = 'time';
 
     /**
      * Returns true if the supplied `actualType` value is considered a primitive type. Returns false, otherwise.
