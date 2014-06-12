@@ -45,6 +45,7 @@ class FormTypeParser implements ParserInterface
         'textarea'  => 'string',
         'country'   => 'string',
         'choice'    => 'choice',
+        'file'      => 'file'
     );
 
     public function __construct(FormFactoryInterface $formFactory)
