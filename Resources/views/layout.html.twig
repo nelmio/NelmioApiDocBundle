@@ -101,6 +101,39 @@
             });
 
             {% if enableSandbox %}
+            var setParameterType = function ($context,setType) {
+                // no 2nd argument, use default from parameters
+                if (typeof setType == "undefined") {
+                    setType = $context.parent().attr("data-dataType");
+                    $context.val(setType);
+                }
+
+                $context.parent().find('.value').remove();
+                var placeholder = "";
+                if ($context.parent().attr("data-dataType") != "" && typeof $context.parent().attr("data-dataType") != "undefined") {
+                    placeholder += "[" + $context.parent().attr("data-dataType") + "] ";
+                }
+                if ($context.parent().attr("data-format") != "" && typeof $context.parent().attr("data-format") != "undefined") {
+                    placeholder += $context.parent().attr("data-dataType");
+                }
+                if ($context.parent().attr("data-description") != "" && typeof $context.parent().attr("data-description") != "undefined") {
+                    placeholder += $context.parent().attr("data-description");
+                } else {
+                    placeholder += "Value";
+                }
+
+                switch(setType) {
+                    case "boolean":
+                        $('<select class="value"><option value=""></option><option value="1">True</option><option value="0">False</option></select>').insertAfter($context);
+                        break;
+                    case "file":
+                        $('<input type="file" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+                        break;
+                    default:
+                        $('<input type="text" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+                }
+            };
+
                 var toggleButtonText = function ($btn) {
                     if ($btn.text() === 'Default') {
                         $btn.text('Raw');
@@ -369,8 +402,30 @@
                     e.preventDefault();
                 });
 
-                $('.pane.sandbox').on('click', '.add', function() {
-                    var html = $(this).parents('.pane').find('.tuple_template').html();
+
+                // sets the correct parameter type on load
+                $('.pane.sandbox .tuple_type').each(function() {
+                    setParameterType($(this));
+                });
+
+
+                // handles parameter type change
+                $('.pane.sandbox').on('change', '.tuple_type', function() {
+                    setParameterType($(this),$(this).val());
+                });
+
+
+
+                $('.pane.sandbox').on('click', '.add_parameter', function() {
+                    var html = $(this).parents('.pane').find('.parameters_tuple_template').html();
+
+                    $(this).before(html);
+
+                    return false;
+                });
+
+                $('.pane.sandbox').on('click', '.add_header', function() {
+                    var html = $(this).parents('.pane').find('.headers_tuple_template').html();
 
                     $(this).before(html);
 
