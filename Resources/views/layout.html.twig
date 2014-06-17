@@ -254,6 +254,7 @@
                         method = $(this).attr('method'),
                         self = this,
                         params = {},
+                        formData = new FormData(),
                         headers = {},
                         content = $(this).find('textarea.content').val(),
                         result_container = $('.result', $(this).parent());
@@ -268,6 +269,7 @@
                     var requestFormatMethod = '{{ requestFormatMethod }}';
                     if (requestFormatMethod == 'format_param') {
                         params['_format'] = $('#request_format option:selected').text();
+                        formData.append('_format',$('#request_format option:selected').text());
                     } else if (requestFormatMethod == 'accept_header') {
                         headers['Accept'] = $('#request_format').val();
                     }
@@ -278,6 +280,37 @@
                     if(!('Content-type' in headers)) {
                         headers['Content-type'] = 'application/'+bodyFormat;
                     }
+
+                    var hasFileTypes = false;
+                    $('.parameters .tuple_type', $(this)).each(function() {
+                        if ($(this).val() == 'file') {
+                            hasFileTypes = true;
+                        }
+                    });
+
+                    if (hasFileTypes && method != 'POST') {
+                        alert("Sorry, you can only submit files via POST.");
+                        return false;
+                    }
+
+                    if (hasFileTypes) {
+                        // retrieve all the parameters to send for file upload
+                        $('.parameters .tuple', $(this)).each(function() {
+                            var key, value;
+
+                            key = $('.key', $(this)).val();
+                            if ($('.value', $(this)).attr('type') === 'file' ) {
+                                value = $('.value', $(this)).prop('files')[0];
+                            } else {
+                                value = $('.value', $(this)).val();
+                            }
+
+                            if (value) {
+                                formData.append(key,value);
+                            }
+                        });
+                    }
+
 
                     // retrieve all the parameters to send
                     $('.parameters .tuple', $(this)).each(function() {
@@ -290,6 +323,10 @@
                             params[key] = value;
                         }
                     });
+
+
+
+
 
                     // retrieve the additional headers to send
                     $('.headers .tuple', $(this)).each(function() {
@@ -312,7 +349,7 @@
                         }
                     };
 
-                    // disable all the fiels and buttons
+                    // disable all the fields and buttons
                     $('input, button', $(this)).attr('disabled', 'disabled');
 
                     // append the query authentication
@@ -340,9 +377,7 @@
                         body = params;
                     }
                     var data = content.length ? content : body;
-
-                    // and trigger the API call
-                    $.ajax({
+                    var ajaxOptions = {
                         url: endpoint + url,
                         type: method,
                         data: data,
@@ -361,7 +396,18 @@
                             // and enable them back
                             $('input:not(.content-type), button', $(self)).removeAttr('disabled');
                         }
-                    });
+                    };
+
+                    // overrides body format to send data properly
+                    if (hasFileTypes) {
+                        ajaxOptions.data = formData;
+                        ajaxOptions.processData = false;
+                        ajaxOptions.contentType = false;
+                        delete(ajaxOptions.headers);
+                    }
+
+                    // and trigger the API call
+                    $.ajax(ajaxOptions);
 
                     return false;
                 });
