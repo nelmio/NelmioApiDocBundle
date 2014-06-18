@@ -29,7 +29,7 @@ class FosRestHandler implements HandlerInterface
         foreach ($annotations as $annot) {
             if ($annot instanceof RequestParam) {
                 $annotation->addParameter($annot->name, array(
-                    'required'    => $annot->strict && $annot->default === null,
+                    'required'    => $annot->strict && $annot->nullable === false && $annot->default === null,
                     'dataType'    => $this->handleRequirements($annot->requirements),
                     'description' => $annot->description,
                     'readonly'    => false
