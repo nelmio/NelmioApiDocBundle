@@ -741,6 +741,25 @@ With multiple lines.',
                 ),
                 11 =>
                 array(
+                    'method' => 'POST',
+                    'uri' => '/z-action-with-nullable-request-param',
+                    'parameters' =>
+                    array(
+                        'param1' =>
+                        array(
+                            'required' => false,
+                            'dataType' => 'string',
+                            'description' => 'Param1 description.',
+                            'readonly' => false,
+                        ),
+                    ),
+                    'https' => false,
+                    'authentication' => false,
+                    'authenticationRoles' => array(),
+                    'deprecated' => false,
+                ),
+                12 =>
+                array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param',
                     'filters' =>
@@ -757,7 +776,7 @@ With multiple lines.',
                     'authenticationRoles' => array(),
                     'deprecated' => false,
                 ),
-                12 =>
+                13 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param-no-default',
@@ -774,7 +793,7 @@ With multiple lines.',
                     'authenticationRoles' => array(),
                     'deprecated' => false,
                 ),
-                13 =>
+                14 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param-strict',
@@ -792,7 +811,7 @@ With multiple lines.',
                     'authenticationRoles' => array(),
                     'deprecated' => false,
                 ),
-                14 =>
+                15 =>
                 array(
                     'method' => 'POST',
                     'uri' => '/z-action-with-request-param',
@@ -811,7 +830,7 @@ With multiple lines.',
                     'authenticationRoles' => array(),
                     'deprecated' => false,
                 ),
-                15 =>
+                16 =>
                 array(
                     'method' => 'ANY',
                     'uri' => '/z-return-jms-and-validator-output',
@@ -853,7 +872,7 @@ With multiple lines.',
                     ),
                     'authenticationRoles' => array(),
                 ),
-                16 =>
+                17 =>
                 array(
                     'method' => "ANY",
                     'uri' => "/z-return-selected-parsers-input",
@@ -883,7 +902,7 @@ With multiple lines.',
                         ),
                     )
                 ),
-                17 =>
+                18 =>
                 array(
                     'method' => "ANY",
                     'uri' => "/z-return-selected-parsers-output",
