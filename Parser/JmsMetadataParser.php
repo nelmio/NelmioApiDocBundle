@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Parser;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
+use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\Metadata\VirtualPropertyMetadata;
@@ -39,6 +40,15 @@ class JmsMetadataParser implements ParserInterface
      */
     private $commentExtractor;
 
+    private $typeMap = array(
+        'integer' => DataTypes::INTEGER,
+        'boolean' => DataTypes::BOOLEAN,
+        'string' => DataTypes::STRING,
+        'float' => DataTypes::FLOAT,
+        'double' => DataTypes::FLOAT,
+        'array' => DataTypes::COLLECTION,
+        'DateTime' => DataTypes::DATETIME,
+    );
     /**
      * Constructor, requires JMS Metadata factory
      */
@@ -120,6 +130,8 @@ class JmsMetadataParser implements ParserInterface
 
                 $params[$name] = array(
                     'dataType'     => $dataType['normalized'],
+                    'actualType'   => $dataType['actualType'],
+                    'subType'      => $dataType['subType'],
                     'required'     => false,
                     //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
                     'description'  => $this->getDescription($item),
@@ -162,7 +174,8 @@ class JmsMetadataParser implements ParserInterface
             if ($this->isPrimitive($nestedType)) {
                 return array(
                     'normalized' => sprintf("array of %ss", $nestedType),
-                    'class' => null
+                    'actualType' => $this->typeMap[$nestedType],
+                    'class' => null,
                 );
             }
 
@@ -170,7 +183,8 @@ class JmsMetadataParser implements ParserInterface
 
             return array(
                 'normalized' => sprintf("array of objects (%s)", end($exp)),
-                'class' => $nestedType
+                'actualType' => $nestedType,
+                'class' => $nestedType,
             );
         }
 
@@ -180,6 +194,7 @@ class JmsMetadataParser implements ParserInterface
         if ($this->isPrimitive($type)) {
             return array(
                 'normalized' => $type,
+                'actualType' => $this->typeMap[$type],
                 'class' => null
             );
         }
@@ -188,7 +203,8 @@ class JmsMetadataParser implements ParserInterface
         if (!class_exists($type)) {
             return array(
                 'normalized' => sprintf("custom handler result for (%s)", $type),
-                'class' => null
+                'class' => null,
+                'actualType' => $type,
             );
         }
 
@@ -197,7 +213,8 @@ class JmsMetadataParser implements ParserInterface
 
         return array(
             'normalized' => sprintf("object (%s)", end($exp)),
-            'class' => $type
+            'class' => $type,
+            'actualType' => $type,
         );
     }
 

@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
+use Nelmio\ApiDocBundle\DataTypes;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
@@ -35,16 +36,16 @@ class FormTypeParser implements ParserInterface
      * @var array
      */
     protected $mapTypes = array(
-        'text'      => 'string',
-        'date'      => 'date',
-        'datetime'  => 'datetime',
-        'checkbox'  => 'boolean',
-        'time'      => 'time',
-        'number'    => 'float',
-        'integer'   => 'int',
-        'textarea'  => 'string',
-        'country'   => 'string',
-        'choice'    => 'choice',
+        'text'      => DataTypes::STRING,
+        'date'      => DataTypes::DATE,
+        'datetime'  => DataTypes::DATETIME,
+        'checkbox'  => DataTypes::BOOLEAN,
+        'time'      => DataTypes::TIME,
+        'number'    => DataTypes::FLOAT,
+        'integer'   => DataTypes::INTEGER,
+        'textarea'  => DataTypes::STRING,
+        'country'   => DataTypes::STRING,
+        'choice'    => DataTypes::ENUM,
     );
 
     public function __construct(FormFactoryInterface $formFactory)
@@ -99,12 +100,17 @@ class FormTypeParser implements ParserInterface
             }
 
             $bestType = '';
+            $actualType = null;
+            $subType = null;
+
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 if (isset($this->mapTypes[$type->getName()])) {
                     $bestType = $this->mapTypes[$type->getName()];
+                    $actualType = $bestType;
                 } elseif ('collection' === $type->getName()) {
                     if (is_string($config->getOption('type')) && isset($this->mapTypes[$config->getOption('type')])) {
-                        $bestType = sprintf('array of %ss', $this->mapTypes[$config->getOption('type')]);
+                        $actualType = $this->mapTypes[$config->getOption('type')];
+                        $bestType = sprintf('array of %ss', $actualType);
                     } else {
                         // Embedded form collection
                         $subParameters = $this->parseForm($this->formFactory->create($config->getOption('type'), null, $config->getOption('options', array())), $name . '[]');
@@ -139,6 +145,7 @@ class FormTypeParser implements ParserInterface
                         if ($addDefault) {
                             $parameters[$name] = array(
                                 'dataType'      => 'string',
+                                'actualType'      => 'string',
                                 'required'      => $config->getRequired(),
                                 'description'   => $config->getAttribute('description'),
                                 'readonly'      => $config->getDisabled(),
@@ -152,13 +159,15 @@ class FormTypeParser implements ParserInterface
 
             $parameters[$name] = array(
                 'dataType'      => $bestType,
+                'actualType'    => $actualType,
+                'subType'       => $subType,
                 'required'      => $config->getRequired(),
                 'description'   => $config->getAttribute('description'),
                 'readonly'      => $config->getDisabled(),
             );
 
-            switch ($bestType) {
-                case 'datetime':
+            switch ($actualType) {
+                case DataTypes::DATETIME:
                     if (($format = $config->getOption('date_format')) && is_string($format)) {
                         $parameters[$name]['format'] = $format;
                     } elseif ('single_text' == $config->getOption('widget') && $format = $config->getOption('format')) {
@@ -166,13 +175,13 @@ class FormTypeParser implements ParserInterface
                     }
                     break;
 
-                case 'date':
+                case DataTypes::DATE:
                     if (($format = $config->getOption('format')) && is_string($format)) {
                         $parameters[$name]['format'] = $format;
                     }
                     break;
 
-                case 'choice':
+                case DataTypes::ENUM:
                     if ($config->getOption('multiple')) {
                         $parameters[$name]['dataType'] = sprintf('array of %ss', $parameters[$name]['dataType']);
                     }

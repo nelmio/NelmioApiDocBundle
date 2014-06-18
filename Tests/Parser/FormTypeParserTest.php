@@ -37,18 +37,24 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 array(
                     'a' => array(
                         'dataType' => 'string',
+                        'actualType' => 'string',
+                        'subType' => null,
                         'required' => true,
                         'description' => 'A nice description',
                         'readonly' => false
                     ),
                     'b' => array(
                         'dataType' => 'string',
+                        'actualType' => 'string',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
                     'c' => array(
                         'dataType' => 'boolean',
+                        'actualType' => 'boolean',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false
@@ -60,24 +66,33 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 array(
                     'collection_type[a]' => array(
                         'dataType' => 'array of strings',
+                        'actualType' => 'collection',
+                        
+                        'subType' => 'string',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
                     'collection_type[b][][a]' => array(
                         'dataType' => 'string',
+                        'actualType' => 'string',
+                        'subType' => null,
                         'required' => true,
                         'description' => 'A nice description',
                         'readonly' => false
                     ),
                     'collection_type[b][][b]' => array(
                         'dataType' => 'string',
+                        'actualType' => 'string',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
                     'collection_type[b][][c]' => array(
                         'dataType' => 'boolean',
+                        'actualType' => 'boolean',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false
@@ -92,24 +107,32 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 array(
                     'a' => array(
                         'dataType' => 'array of strings',
+                        'actualType' => 'collection',
+                        'subType' => 'string',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
                     'b[][a]' => array(
                         'dataType' => 'string',
+                        'actualType' => 'string',
+                        'subType' => null,
                         'required' => true,
                         'description' => 'A nice description',
                         'readonly' => false
                     ),
                     'b[][b]' => array(
                         'dataType' => 'string',
+                        'actualType' => 'string',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
                     'b[][c]' => array(
                         'dataType' => 'boolean',
+                        'actualType' => 'boolean',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false
@@ -124,24 +147,32 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 array(
                     'a' => array(
                         'dataType' => 'array of strings',
+                        'actualType' => 'collection',
+                        'subType' => 'string',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
                     'b[][a]' => array(
                         'dataType' => 'string',
+                        'actualType' => 'string',
+                        'subType' => null,
                         'required' => true,
                         'description' => 'A nice description',
                         'readonly' => false
                     ),
                     'b[][b]' => array(
                         'dataType' => 'string',
+                        'actualType' => 'string',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
                     'b[][c]' => array(
                         'dataType' => 'boolean',
+                        'actualType' => 'boolean',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false
@@ -153,6 +184,8 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 array(
                     'dt1' => array(
                         'dataType' => 'datetime',
+                        'actualType' => 'datetime',
+                        'subType' => null,
                         'required' => true,
                         'description' => 'A nice description',
                         'readonly' => false,
@@ -160,6 +193,8 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     ),
                     'dt2' => array(
                         'dataType' => 'datetime',
+                        'actualType' => 'datetime',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
@@ -167,6 +202,8 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     ),
                     'dt3' => array(
                         'dataType' => 'datetime',
+                        'actualType' => 'datetime',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
@@ -174,24 +211,32 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     ),
                     'dt4' => array(
                         'dataType' => 'datetime',
+                        'actualType' => 'datetime',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
                     ),
                     'dt5' => array(
                         'dataType' => 'datetime',
+                        'actualType' => 'datetime',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
                     ),
                     'd1' => array(
                         'dataType' => 'date',
+                        'actualType' => 'date',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
                     ),
                     'd2' => array(
                         'dataType' => 'date',
+                        'actualType' => 'date',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
@@ -199,6 +244,8 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     ),
                     'c1' => array(
                         'dataType' => 'choice',
+                        'actualType' => 'choice',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
@@ -206,6 +253,8 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     ),
                     'c2' => array(
                         'dataType' => 'array of choices',
+                        'actualType' => 'collection',
+                        'subType' => 'choice',
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
@@ -213,12 +262,16 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     ),
                     'c3' => array(
                         'dataType' => 'choice',
+                        'actualType' => 'choice',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
                     ),
                     'c4' => array(
                         'dataType' => 'choice',
+                        'actualType' => 'choice',
+                        'subType' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
