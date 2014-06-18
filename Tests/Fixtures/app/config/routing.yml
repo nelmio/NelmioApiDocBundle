@@ -155,3 +155,9 @@ test_route_21:
     defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithConstraintAsRequirements }
     requirements:
         _method: GET
+
+test_route_22:
+    pattern:  /z-action-with-nullable-request-param
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithNullableRequestParam }
+    requirements:
+        _method: POST

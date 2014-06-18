@@ -32,7 +32,7 @@ class FosRestHandler implements HandlerInterface
 
                 $requirements = $this->handleRequirements($annot->requirements);
                 $annotation->addParameter($annot->name, array(
-                    'required'    => $annot->strict && $annot->default === null,
+                    'required'    => $annot->strict && $annot->nullable === false && $annot->default === null,
                     'dataType'    => $requirements,
                     'actualType'  => $this->inferType($requirements),
                     'subType'     => null,
