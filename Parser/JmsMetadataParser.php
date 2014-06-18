@@ -131,7 +131,7 @@ class JmsMetadataParser implements ParserInterface
                 $params[$name] = array(
                     'dataType'     => $dataType['normalized'],
                     'actualType'   => $dataType['actualType'],
-                    'subType'      => $dataType['subType'],
+                    'subType'      => $dataType['class'],
                     'required'     => false,
                     //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
                     'description'  => $this->getDescription($item),
@@ -174,8 +174,8 @@ class JmsMetadataParser implements ParserInterface
             if ($this->isPrimitive($nestedType)) {
                 return array(
                     'normalized' => sprintf("array of %ss", $nestedType),
-                    'actualType' => $this->typeMap[$nestedType],
-                    'class' => null,
+                    'actualType' => DataTypes::COLLECTION,
+                    'class' => $this->typeMap[$nestedType],
                 );
             }
 

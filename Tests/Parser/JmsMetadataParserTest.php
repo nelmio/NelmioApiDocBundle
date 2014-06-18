@@ -82,6 +82,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             array(
                 'foo' => array(
                     'dataType'     => 'DateTime',
+                    'actualType' => 'datetime',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -90,6 +92,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 ),
                 'bar' => array(
                     'dataType'     => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -98,6 +102,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 ),
                 'baz' => array(
                     'dataType'     => 'array of integers',
+                    'actualType' => 'collection',
+                    'subType' => 'integer',
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -155,6 +161,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             array(
                 'foo' => array(
                     'dataType'     => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -163,6 +171,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 ),
                 'bar' => array(
                     'dataType'     => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -171,6 +181,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 ),
                 'baz' => array(
                     'dataType'     => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -193,6 +205,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             array(
                 'foo' => array(
                     'dataType'     => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -201,6 +215,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 ),
                 'bar' => array(
                     'dataType'     => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -223,6 +239,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             array(
                 'bar' => array(
                     'dataType'     => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -231,6 +249,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 ),
                 'baz' => array(
                     'dataType'     => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -253,6 +273,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
             array(
                 'foo' => array(
                     'dataType'     => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -261,6 +283,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 ),
                 'bar' => array(
                     'dataType'     => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -269,6 +293,8 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 ),
                 'baz' => array(
                     'dataType'     => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
@@ -325,26 +351,32 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'foo' => array(
-                    'dataType'     => 'string',
-                    'required'     => false,
-                    'description'  => null,
-                    'readonly'     => false,
+                    'dataType' => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
+                    'required' => false,
+                    'description' => null,
+                    'readonly' => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
                 'bar' => array(
-                    'dataType'     => 'string',
-                    'required'     => false,
-                    'description'  => null,
-                    'readonly'     => false,
+                    'dataType' => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
+                    'required' => false,
+                    'description' => null,
+                    'readonly' => false,
                     'sinceVersion' => '2.0',
                     'untilVersion' => null,
                 ),
                 'baz' => array(
-                    'dataType'     => 'string',
-                    'required'     => false,
-                    'description'  => null,
-                    'readonly'     => false,
+                    'dataType' => 'string',
+                    'actualType' => 'string',
+                    'subType' => null,
+                    'required' => false,
+                    'description' => null,
+                    'readonly' => false,
                     'sinceVersion' => null,
                     'untilVersion' => '3.0',
                 )
