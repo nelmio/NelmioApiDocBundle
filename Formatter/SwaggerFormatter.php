@@ -14,9 +14,6 @@ namespace Nelmio\ApiDocBundle\Formatter;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\DataTypes;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
@@ -56,11 +53,6 @@ class SwaggerFormatter implements FormatterInterface
         DataTypes::DATE => 'date',
         DataTypes::DATETIME => 'date-time',
     );
-
-    /**
-     * @var Request
-     */
-    protected $request;
 
     /**
      * Format a collection of documentation data.
@@ -139,10 +131,11 @@ class SwaggerFormatter implements FormatterInterface
      *
      * @param ApiDoc $annotation
      * return string|array
+     * @throws \BadMethodCallException
      */
     public function formatOne(ApiDoc $annotation)
     {
-        // TODO: Implement formatOne() method.
+        throw new \BadMethodCallException(sprintf('%s does not support formatting a single ApiDoc only.', __CLASS__));
     }
 
     /**

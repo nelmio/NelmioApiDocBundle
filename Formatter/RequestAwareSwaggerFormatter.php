@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Formatter;
 
 
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -19,31 +20,55 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Bezalel Hermoso <bezalelhermoso@gmail.com>
  */
-class RequestAwareSwaggerFormatter extends SwaggerFormatter
+class RequestAwareSwaggerFormatter implements FormatterInterface
 {
     /**
      * @var \Symfony\Component\HttpFoundation\Request
      */
     protected $request;
 
+    /**
+     * @var SwaggerFormatter
+     */
+    protected $formatter;
 
     /**
      * @param Request $request
+     * @param SwaggerFormatter $formatter
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, SwaggerFormatter $formatter)
     {
         $this->request = $request;
+        $this->formatter = $formatter;
     }
 
     /**
+     * Format a collection of documentation data.
+     *
      * @param array $collection
-     * @param string $resource
-     * @return array
+     * @param null $resource
+     * @internal param $array [ApiDoc] $collection
+     * @return string|array
      */
-    protected function produceApiDeclaration(array $collection, $resource)
+    public function format(array $collection, $resource = null)
     {
-        $data = parent::produceApiDeclaration($collection, $resource);
-        $data['basePath'] = $this->request->getBaseUrl() . $data['basePath'];
-        return $data;
+        $result = $this->formatter->format($collection, $resource);
+
+        if ($resource !== null) {
+            $result['basePath'] = $this->request->getBaseUrl() . $result['basePath'];
+        }
+
+        return $result;
     }
-} 
+
+    /**
+     * Format documentation data for one route.
+     *
+     * @param ApiDoc $annotation
+     *                           return string|array
+     */
+    public function formatOne(ApiDoc $annotation)
+    {
+        return $this->formatter->formatOne($annotation);
+    }
+}

@@ -11,8 +11,14 @@
 
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Parameter;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 
 
 /**
@@ -33,13 +39,6 @@ class SwaggerConfigCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $formatter = $container->getDefinition('nelmio_api_doc.formatter.swagger_formatter');
-
-        $formatter->addMethodCall('setBasePath', array($container->getParameter('nelmio_api_doc.swagger.base_path')));
-        $formatter->addMethodCall('setApiVersion', array($container->getParameter('nelmio_api_doc.swagger.api_version')));
-        $formatter->addMethodCall('setSwaggerVersion', array($container->getParameter('nelmio_api_doc.swagger.swagger_version')));
-        $formatter->addMethodCall('setInfo', array($container->getParameter('nelmio_api_doc.swagger.info')));
-
-        $formatter = $container->getDefinition('nelmio_api_doc.formatter.request_aware_swagger_formatter');
 
         $formatter->addMethodCall('setBasePath', array($container->getParameter('nelmio_api_doc.swagger.base_path')));
         $formatter->addMethodCall('setApiVersion', array($container->getParameter('nelmio_api_doc.swagger.api_version')));
