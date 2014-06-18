@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Parser;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
+use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\Metadata\VirtualPropertyMetadata;
@@ -39,6 +40,15 @@ class JmsMetadataParser implements ParserInterface
      */
     private $commentExtractor;
 
+    private $typeMap = array(
+        'integer' => DataTypes::INTEGER,
+        'boolean' => DataTypes::BOOLEAN,
+        'string' => DataTypes::STRING,
+        'float' => DataTypes::FLOAT,
+        'double' => DataTypes::FLOAT,
+        'array' => DataTypes::COLLECTION,
+        'DateTime' => DataTypes::DATETIME,
+    );
     /**
      * Constructor, requires JMS Metadata factory
      */
@@ -120,6 +130,8 @@ class JmsMetadataParser implements ParserInterface
 
                 $params[$name] = array(
                     'dataType'     => $dataType['normalized'],
+                    'actualType'   => $dataType['actualType'],
+                    'subType'      => $dataType['class'],
                     'required'     => false,
                     //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
                     'description'  => $this->getDescription($item),
@@ -128,7 +140,7 @@ class JmsMetadataParser implements ParserInterface
                     'untilVersion' => $item->untilVersion,
                 );
 
-                if (!is_null($dataType['class'])) {
+                if (!is_null($dataType['class']) && false === $dataType['primitive']) {
                     $params[$name]['class'] = $dataType['class'];
                 }
 
@@ -138,7 +150,7 @@ class JmsMetadataParser implements ParserInterface
                 }
 
                 // check for nested classes with JMS metadata
-                if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
+                if ($dataType['class'] && false === $dataType['primitive'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
                     $visited[]                 = $dataType['class'];
                     $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups);
                 }
@@ -162,7 +174,9 @@ class JmsMetadataParser implements ParserInterface
             if ($this->isPrimitive($nestedType)) {
                 return array(
                     'normalized' => sprintf("array of %ss", $nestedType),
-                    'class' => null
+                    'actualType' => DataTypes::COLLECTION,
+                    'class' => $this->typeMap[$nestedType],
+                    'primitive' => true,
                 );
             }
 
@@ -170,7 +184,9 @@ class JmsMetadataParser implements ParserInterface
 
             return array(
                 'normalized' => sprintf("array of objects (%s)", end($exp)),
-                'class' => $nestedType
+                'actualType' => DataTypes::COLLECTION,
+                'class' => $nestedType,
+                'primitive' => false,
             );
         }
 
@@ -180,7 +196,9 @@ class JmsMetadataParser implements ParserInterface
         if ($this->isPrimitive($type)) {
             return array(
                 'normalized' => $type,
-                'class' => null
+                'actualType' => $this->typeMap[$type],
+                'class' => null,
+                'primitive' => true,
             );
         }
 
@@ -188,7 +206,9 @@ class JmsMetadataParser implements ParserInterface
         if (!class_exists($type)) {
             return array(
                 'normalized' => sprintf("custom handler result for (%s)", $type),
-                'class' => null
+                'class' => $type,
+                'actualType' => DataTypes::MODEL,
+                'primitive' => false,
             );
         }
 
@@ -197,7 +217,9 @@ class JmsMetadataParser implements ParserInterface
 
         return array(
             'normalized' => sprintf("object (%s)", end($exp)),
-            'class' => $type
+            'class' => $type,
+            'actualType' => DataTypes::MODEL,
+            'primitive' => false,
         );
     }
 
