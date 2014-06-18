@@ -13,7 +13,7 @@ class ValidationParserTest extends WebTestCase
     public function setUp()
     {
         $container  = $this->getContainer();
-        $factory = $container->get('validator.mapping.class_metadata_factory');
+        $factory = $container->get('validator')->getMetadataFactory();
 
         if (version_compare(Kernel::VERSION, '2.2.0', '<')) {
             $this->parser = new ValidationParserLegacy($factory);
