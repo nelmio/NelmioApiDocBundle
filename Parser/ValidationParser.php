@@ -160,6 +160,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
 
         $vparams['actualType'] = DataTypes::STRING;
         $vparams['subType'] = null;
+        $vparams['default'] = null;
 
         switch ($class) {
             case 'NotBlank':
