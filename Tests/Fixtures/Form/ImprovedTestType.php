@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Maxim_Romanovsky
- * Date: 4/4/14
- * Time: 11:00 AM
- */
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
 

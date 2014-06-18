@@ -54,7 +54,7 @@ class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function($v) { return array('default_format' => $v); })
+                                ->then(function ($v) { return array('default_format' => $v); })
                             ->end()
                             ->children()
                                 ->arrayNode('formats')

@@ -28,17 +28,17 @@ class ValidationParser implements ParserInterface, PostParserInterface
     protected $factory;
 
     protected $typeMap = array(
-        'integer' => DataTypes::INTEGER,
-        'int' => DataTypes::INTEGER,
-        'scalar' => DataTypes::STRING,
-        'numeric' => DataTypes::INTEGER,
-        'boolean' => DataTypes::BOOLEAN,
-        'string' => DataTypes::STRING,
-        'float' => DataTypes::FLOAT,
-        'double' => DataTypes::FLOAT,
-        'long' => DataTypes::INTEGER,
-        'object' => DataTypes::MODEL,
-        'array' => DataTypes::COLLECTION,
+        'integer'  => DataTypes::INTEGER,
+        'int'      => DataTypes::INTEGER,
+        'scalar'   => DataTypes::STRING,
+        'numeric'  => DataTypes::INTEGER,
+        'boolean'  => DataTypes::BOOLEAN,
+        'string'   => DataTypes::STRING,
+        'float'    => DataTypes::FLOAT,
+        'double'   => DataTypes::FLOAT,
+        'long'     => DataTypes::INTEGER,
+        'object'   => DataTypes::MODEL,
+        'array'    => DataTypes::COLLECTION,
         'DateTime' => DataTypes::DATETIME,
     );
 
@@ -159,7 +159,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
 
         $vparams['actualType'] = DataTypes::STRING;
-        $vparams['subType'] = null;
+        $vparams['subType']    = null;
+        $vparams['default']    = null;
 
         switch ($class) {
             case 'NotBlank':
@@ -243,10 +244,10 @@ class ValidationParser implements ParserInterface, PostParserInterface
                             }
                         }
 
-                        $vparams['dataType'] = sprintf("array of objects (%s)", end($exp));
+                        $vparams['dataType']   = sprintf("array of objects (%s)", end($exp));
                         $vparams['actualType'] = DataTypes::COLLECTION;
-                        $vparams['subType'] = $nestedType;
-                        $vparams['class'] = $nestedType;
+                        $vparams['subType']    = $nestedType;
+                        $vparams['class']      = $nestedType;
 
                         if (!in_array($nestedType, $visited)) {
                             $visited[] = $nestedType;
