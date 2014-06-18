@@ -161,3 +161,45 @@ test_route_22:
     defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithNullableRequestParam }
     requirements:
         _method: POST
+
+test_route_list_resource:
+    pattern: /api/resources.{_format}
+    defaults: { _controller: NelmioApiDocTestBundle:Resource:listResources, _format: json }
+    requirements:
+        _method: GET
+        _format: json|xml|html
+
+test_route_get_resource:
+    pattern: /api/resources/{id}.{_format}
+    defaults: { _controller: NelmioApiDocTestBundle:Resource:getResource, _format: json }
+    requirements:
+        _method: GET
+        _format: json|xml|html
+
+test_route_delete_resource:
+    pattern: /api/resources/{id}.{_format}
+    defaults: { _controller: NelmioApiDocTestBundle:Resource:deleteResource, _format: json }
+    requirements:
+        _method: DELETE
+        _format: json|xml|html
+
+test_route_create_resource:
+    pattern: /api/resources.{_format}
+    defaults: { _controller: NelmioApiDocTestBundle:Resource:createResource, _format: json }
+    requirements:
+        _method: POST
+        _format: json|xml|html
+
+test_route_list_another_resource:
+    pattern: /api/other-resources.{_format}
+    defaults: { _controller: NelmioApiDocTestBundle:Resource:listAnotherResources, _format: json }
+    requirements:
+        _method: GET
+        _format: json|xml|html
+
+test_route_update_another_resource:
+    pattern: /api/other-resources/{id}.{_format}
+    defaults: { _controller: NelmioApiDocTestBundle:Resource:updateAnotherResource, _format: json }
+    requirements:
+        _method: PUT|PATCH
+        _format: json|xml|html

@@ -317,6 +317,36 @@ class ApiDocExtractor
             $response = $this->generateHumanReadableTypes($response);
 
             $annotation->setResponse($response);
+            $annotation->setResponseForStatusCode($response, $normalizedOutput, 200);
+        }
+
+        if (count($annotation->getResponseMap()) > 0) {
+
+            foreach ($annotation->getResponseMap() as $code => $modelName) {
+
+                if ('200' === (string) $code && isset($modelName['type']) && isset($modelName['model'])) {
+                    /*
+                     * Model was already parsed as the default `output` for this ApiDoc.
+                     */
+                    continue;
+                }
+
+                $normalizedModel = $this->normalizeClassParameter($modelName);
+
+                $parameters = array();
+                foreach ($this->getParsers($normalizedModel) as $parser) {
+                    if ($parser->supports($normalizedModel)) {
+                        $parameters = $this->mergeParameters($parameters, $parser->parse($normalizedModel));
+                    }
+                }
+
+                $parameters = $this->clearClasses($parameters);
+                $parameters = $this->generateHumanReadableTypes($parameters);
+
+                $annotation->setResponseForStatusCode($parameters, $normalizedModel, $code);
+
+            }
+
         }
 
         return $annotation;
@@ -455,16 +485,20 @@ class ApiDocExtractor
     /**
      * Creates a human-readable version of the `actualType`. `subType` is taken into account.
      *
-     * @param  string $actualType
-     * @param  string $subType
+     * @param string $actualType
+     * @param string $subType
      * @return string
      */
     protected function generateHumanReadableType($actualType, $subType)
     {
         if ($actualType == DataTypes::MODEL) {
-            $parts = explode('\\', $subType);
 
-            return sprintf('object (%s)', end($parts));
+            if (class_exists($subType)) {
+                $parts = explode('\\', $subType);
+                return sprintf('object (%s)', end($parts));
+            }
+
+            return sprintf('object (%s)', $subType);
         }
 
         if ($actualType == DataTypes::COLLECTION) {
@@ -475,7 +509,6 @@ class ApiDocExtractor
 
             if (class_exists($subType)) {
                 $parts = explode('\\', $subType);
-
                 return sprintf('array of objects (%s)', end($parts));
             }
 

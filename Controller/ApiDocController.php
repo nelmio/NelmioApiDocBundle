@@ -12,6 +12,8 @@
 namespace Nelmio\ApiDocBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiDocController extends Controller
@@ -22,5 +24,13 @@ class ApiDocController extends Controller
         $htmlContent  = $this->get('nelmio_api_doc.formatter.html_formatter')->format($extractedDoc);
 
         return new Response($htmlContent, 200, array('Content-Type' => 'text/html'));
+    }
+
+    public function swaggerAction(Request $request, $resource = null)
+    {
+        $docs = $this->get('nelmio_api_doc.extractor.api_doc_extractor')->all();
+        $formatter = $this->get('nelmio_api_doc.formatter.swagger_formatter');
+        $spec = $formatter->format($docs, $resource ? '/' . $resource : null);
+        return new JsonResponse($spec);
     }
 }

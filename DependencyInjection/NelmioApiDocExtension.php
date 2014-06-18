@@ -57,6 +57,12 @@ class NelmioApiDocExtension extends Extension
         if (!interface_exists('\Symfony\Component\Validator\MetadataFactoryInterface')) {
             $container->setParameter('nelmio_api_doc.parser.validation_parser.class', 'Nelmio\ApiDocBundle\Parser\ValidationParserLegacy');
         }
+
+        $container->setParameter('nelmio_api_doc.swagger.base_path', $config['swagger']['api_base_path']);
+        $container->setParameter('nelmio_api_doc.swagger.swagger_version', $config['swagger']['swagger_version']);
+        $container->setParameter('nelmio_api_doc.swagger.api_version', $config['swagger']['api_version']);
+        $container->setParameter('nelmio_api_doc.swagger.info', $config['swagger']['info']);
+
     }
 
     /**
