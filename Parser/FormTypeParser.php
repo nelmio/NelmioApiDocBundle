@@ -109,8 +109,9 @@ class FormTypeParser implements ParserInterface
                     $actualType = $bestType;
                 } elseif ('collection' === $type->getName()) {
                     if (is_string($config->getOption('type')) && isset($this->mapTypes[$config->getOption('type')])) {
-                        $actualType = $this->mapTypes[$config->getOption('type')];
-                        $bestType = sprintf('array of %ss', $actualType);
+                        $subType = $this->mapTypes[$config->getOption('type')];
+                        $actualType = DataTypes::COLLECTION;
+                        $bestType = sprintf('array of %ss', $subType);
                     } else {
                         // Embedded form collection
                         $subParameters = $this->parseForm($this->formFactory->create($config->getOption('type'), null, $config->getOption('options', array())), $name . '[]');
@@ -184,6 +185,8 @@ class FormTypeParser implements ParserInterface
                 case DataTypes::ENUM:
                     if ($config->getOption('multiple')) {
                         $parameters[$name]['dataType'] = sprintf('array of %ss', $parameters[$name]['dataType']);
+                        $parameters[$name]['actualType'] = DataTypes::COLLECTION;
+                        $parameters[$name]['subType'] = DataTypes::ENUM;
                     }
 
                     if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {

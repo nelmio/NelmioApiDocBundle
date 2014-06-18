@@ -140,7 +140,7 @@ class JmsMetadataParser implements ParserInterface
                     'untilVersion' => $item->untilVersion,
                 );
 
-                if (!is_null($dataType['class'])) {
+                if (!is_null($dataType['class']) && false === $dataType['primitive']) {
                     $params[$name]['class'] = $dataType['class'];
                 }
 
@@ -150,7 +150,7 @@ class JmsMetadataParser implements ParserInterface
                 }
 
                 // check for nested classes with JMS metadata
-                if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
+                if ($dataType['class'] && false === $dataType['primitive'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
                     $visited[]                 = $dataType['class'];
                     $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups);
                 }
@@ -176,6 +176,7 @@ class JmsMetadataParser implements ParserInterface
                     'normalized' => sprintf("array of %ss", $nestedType),
                     'actualType' => DataTypes::COLLECTION,
                     'class' => $this->typeMap[$nestedType],
+                    'primitive' => true,
                 );
             }
 
@@ -183,8 +184,9 @@ class JmsMetadataParser implements ParserInterface
 
             return array(
                 'normalized' => sprintf("array of objects (%s)", end($exp)),
-                'actualType' => $nestedType,
+                'actualType' => DataTypes::COLLECTION,
                 'class' => $nestedType,
+                'primitive' => false,
             );
         }
 
@@ -195,7 +197,8 @@ class JmsMetadataParser implements ParserInterface
             return array(
                 'normalized' => $type,
                 'actualType' => $this->typeMap[$type],
-                'class' => null
+                'class' => null,
+                'primitive' => true,
             );
         }
 
@@ -203,8 +206,9 @@ class JmsMetadataParser implements ParserInterface
         if (!class_exists($type)) {
             return array(
                 'normalized' => sprintf("custom handler result for (%s)", $type),
-                'class' => null,
-                'actualType' => $type,
+                'class' => $type,
+                'actualType' => DataTypes::MODEL,
+                'primitive' => false,
             );
         }
 
@@ -214,7 +218,8 @@ class JmsMetadataParser implements ParserInterface
         return array(
             'normalized' => sprintf("object (%s)", end($exp)),
             'class' => $type,
-            'actualType' => $type,
+            'actualType' => DataTypes::MODEL,
+            'primitive' => false,
         );
     }
 

@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Formatter;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\DataTypes;
 
 abstract class AbstractFormatter implements FormatterInterface
 {
@@ -102,7 +103,7 @@ abstract class AbstractFormatter implements FormatterInterface
     protected function getNewName($name, $data, $parentName = null)
     {
         $newName = ($parentName) ? sprintf("%s[%s]", $parentName, $name) : $name;
-        $array   = (false === strpos($data['dataType'], "array of")) ? "" : "[]";
+        $array = $data['actualType'] == DataTypes::COLLECTION && $data['subType'] !== null ? '[]' : '';
 
         return sprintf("%s%s", $newName, $array);
     }

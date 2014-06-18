@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bezalelhermoso
- * Date: 6/16/14
- * Time: 11:54 AM
- */
 
 namespace Nelmio\ApiDocBundle;
 
@@ -43,7 +37,7 @@ class DataTypes
 
     public static function isPrimitive($type)
     {
-        return in_array($type, array(
+        return in_array(strtolower($type), array(
             static::INTEGER,
             static::FLOAT,
             static::STRING,

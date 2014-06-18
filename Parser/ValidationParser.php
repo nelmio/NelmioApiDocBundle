@@ -39,6 +39,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
         'long' => DataTypes::INTEGER,
         'object' => DataTypes::MODEL,
         'array' => DataTypes::COLLECTION,
+        'DateTime' => DataTypes::DATETIME,
     );
 
     /**
@@ -157,6 +158,9 @@ class ValidationParser implements ParserInterface, PostParserInterface
     {
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
 
+        $vparams['actualType'] = DataTypes::STRING;
+        $vparams['subType'] = null;
+
         switch ($class) {
             case 'NotBlank':
                 $vparams['format'][] = '{not blank}';
@@ -165,8 +169,9 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 break;
             case 'Type':
                 if (isset($this->typeMap[$constraint->type])) {
-                    $vparams['dataType'] = $this->typeMap[$constraint->type];
+                    $vparams['actualType'] = $this->typeMap[$constraint->type];
                 }
+                $vparams['dataType'] = $constraint->type;
                 break;
             case 'Email':
                 $vparams['format'][] = '{email address}';
@@ -179,12 +184,15 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 break;
             case 'Date':
                 $vparams['format'][] = '{Date YYYY-MM-DD}';
+                $vparams['actualType'] = DataTypes::DATE;
                 break;
             case 'DateTime':
                 $vparams['format'][] = '{DateTime YYYY-MM-DD HH:MM:SS}';
+                $vparams['actualType'] = DataTypes::DATETIME;
                 break;
             case 'Time':
                 $vparams['format'][] = '{Time HH:MM:SS}';
+                $vparams['actualType'] = DataTypes::TIME;
                 break;
             case 'Length':
                 $messages = array();
@@ -200,6 +208,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $choices = $this->getChoices($constraint, $className);
                 $format = '[' . join('|', $choices) . ']';
                 if ($constraint->multiple) {
+                    $vparams['actualType'] = DataTypes::COLLECTION;
+                    $vparams['subType'] = DataTypes::ENUM;
                     $messages = array();
                     if (isset($constraint->min)) {
                         $messages[] = "min: {$constraint->min} ";
@@ -209,6 +219,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
                     }
                     $vparams['format'][] = '{' . join ('', $messages) . 'choice of ' . $format . '}';
                 } else {
+                    $vparams['actualType'] = DataTypes::ENUM;
                     $vparams['format'][] = $format;
                 }
                 break;
