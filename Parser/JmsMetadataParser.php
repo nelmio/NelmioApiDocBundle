@@ -107,7 +107,8 @@ class JmsMetadataParser implements ParserInterface
         // iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
             if (!is_null($item->type)) {
-                $name = $this->namingStrategy->translateName($item);
+                $name = $item->name;
+                $serializedName = $this->namingStrategy->translateName($item);
 
                 $dataType = $this->processDataType($item);
 
@@ -127,6 +128,10 @@ class JmsMetadataParser implements ParserInterface
                     'sinceVersion' => $item->sinceVersion,
                     'untilVersion' => $item->untilVersion,
                 );
+
+                if ($name !== $serializedName) {
+                    $params[$name]['alias'] = $serializedName;
+                }
 
                 if (!is_null($dataType['class'])) {
                     $params[$name]['class'] = $dataType['class'];
