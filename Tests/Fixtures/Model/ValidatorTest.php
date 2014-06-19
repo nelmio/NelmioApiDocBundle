@@ -107,4 +107,9 @@ class ValidatorTest
      * @Assert\Length(min=10)
      */
     public $multipleformats;
+
+    /**
+     * @Assert\Length(max=5, groups={"testGroup"})
+     */
+    public $validationgroups;
 }

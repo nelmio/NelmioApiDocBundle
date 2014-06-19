@@ -261,6 +261,20 @@ input = {
 }
 ```
 
+#### Validation groups
+
+If you use [validation groups from Validation component](http://symfony.com/doc/current/book/validation.html#validation-groups), you can specify additional 'validation_groups' attribute.
+Your documentation will only generate parameters matching given validation groups.
+
+````
+input = {
+ "class" = "Acme\Bundle\Entity\User"
+ "validation_groups" = {"register", "update"}
+}
+````
+
+This feature also works for both the `input` and `output` properties.
+
 #### Used Parsers
 
 By default, all registered parsers are used, but sometimes you may want to

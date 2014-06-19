@@ -26,6 +26,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
      */
     protected $factory;
 
+    protected $validationGroups;
+
     /**
      * Requires a validation MetadataFactory.
      *
@@ -53,6 +55,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
     {
         $className = $input['class'];
 
+        $this->validationGroups = isset($input['validation_groups']) ? $input['validation_groups'] : array();
+
         return $this->doParse($className, array());
     }
 
@@ -76,7 +80,17 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $constraints = $propdata->getConstraints();
 
                 foreach ($constraints as $constraint) {
-                    $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited);
+                    if(empty($this->validationGroups)) {
+                        $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited);
+                    }
+                    else {
+                        if(count(array_intersect($constraint->groups, $this->validationGroups))) {
+                            $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited);
+                        }
+                        else {
+                            continue 3;
+                        }
+                    }
                 }
             }
 
