@@ -19,13 +19,11 @@ class DataTypes
 
     const BOOLEAN = 'boolean';
 
-    const BYTE = 'byte';
+    const FILE = 'file';
 
     const ENUM = 'choice';
 
     const COLLECTION = 'collection';
-
-    const NATIVE_ARRAY = 'array';
 
     const MODEL = 'model';
 
@@ -42,8 +40,7 @@ class DataTypes
             static::FLOAT,
             static::STRING,
             static::BOOLEAN,
-            static::BYTE,
-            static::NATIVE_ARRAY,
+            static::FILE,
             static::DATE,
             static::DATETIME,
             static::TIME,
