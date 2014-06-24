@@ -449,20 +449,22 @@ class ApiDocExtractor
     protected function generateHumanReadableType($actualType, $subType)
     {
         if ($actualType == DataTypes::MODEL) {
-
             $parts = explode('\\', $subType);
             return sprintf('object (%s)', end($parts));
+        }
 
-        } elseif ($actualType == DataTypes::COLLECTION) {
+        if ($actualType == DataTypes::COLLECTION) {
 
             if (DataTypes::isPrimitive($subType)) {
                 return sprintf('array of %ss', $subType);
-            } elseif (class_exists($subType)) {
+            }
+
+            if (class_exists($subType)) {
                 $parts = explode('\\', $subType);
                 return sprintf('array of objects (%s)', end($parts));
-            } else {
-                return sprintf('array of objects (%s)', $subType);
             }
+
+            return sprintf('array of objects (%s)', $subType);
         }
 
         return $actualType;
