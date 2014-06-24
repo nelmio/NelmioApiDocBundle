@@ -417,6 +417,12 @@ class ApiDocExtractor
         return $array;
     }
 
+    /**
+     * Populates the `dataType` properties in the parameter array if empty. Recurses through children when necessary.
+     *
+     * @param array $array
+     * @return array
+     */
     protected function generateHumanReadableTypes(array $array)
     {
         foreach ($array as $name => $info) {
@@ -433,6 +439,13 @@ class ApiDocExtractor
         return $array;
     }
 
+    /**
+     * Creates a human-readable version of the `actualType`. `subType` is taken into account.
+     *
+     * @param string $actualType
+     * @param string $subType
+     * @return string
+     */
     protected function generateHumanReadableType($actualType, $subType)
     {
         if ($actualType == DataTypes::MODEL) {
@@ -442,8 +455,8 @@ class ApiDocExtractor
 
         } elseif ($actualType == DataTypes::COLLECTION) {
 
-            if (DataTypes::isPrimitive($actualType)) {
-                return sprintf('array of %ss', $actualType);
+            if (DataTypes::isPrimitive($subType)) {
+                return sprintf('array of %ss', $subType);
             } elseif (class_exists($subType)) {
                 $parts = explode('\\', $subType);
                 return sprintf('array of objects (%s)', end($parts));

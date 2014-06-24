@@ -1,12 +1,19 @@
 <?php
 
+/*
+ * This file is part of the NelmioApiDocBundle.
+ *
+ * (c) Nelmio <hello@nelm.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Nelmio\ApiDocBundle;
 
-
 /**
- * Class DataTypes
+ * All the supported data-types which will be specified in the `actualType` properties in parameters.
  *
- * @package Nelmio\ApiDocBundle
  * @author Bez Hermoso <bez@activelamp.com>
  */
 class DataTypes 
@@ -33,6 +40,12 @@ class DataTypes
 
     const TIME = 'time';
 
+    /**
+     * Returns true if the supplied `actualType` value is considered a primitive type. Returns false, otherwise.
+     *
+     * @param string $type
+     * @return bool
+     */
     public static function isPrimitive($type)
     {
         return in_array(strtolower($type), array(
@@ -44,6 +57,7 @@ class DataTypes
             static::DATE,
             static::DATETIME,
             static::TIME,
+            static::ENUM,
         ));
     }
 }
