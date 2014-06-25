@@ -97,3 +97,20 @@ Dump a specific resource API declaration only:
 php app/console api:swagger:dump --resource=users
 ```
 The above command will dump the `/users` API declaration in an `users.json` file.
+
+##Configuration reference
+
+```yml
+nelmio_api_doc:
+	swagger:
+        api_base_path:        /api
+        swagger_version:      1.2
+        api_version:          0.1
+        info:
+            title:                Symfony2
+            description:          My awesome Symfony2 app!
+            TermsOfServiceUrl:    ~
+            contact:              ~
+            license:              ~
+            licenseUrl:           ~
+```
