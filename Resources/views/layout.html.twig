@@ -221,6 +221,7 @@
                         method = $(this).attr('method'),
                         self = this,
                         params = {},
+                        doubledParams = {},
                         headers = {},
                         content = $(this).find('textarea.content').val(),
                         result_container = $('.result', $(this).parent());
@@ -254,7 +255,12 @@
                         value = $('.value', $(this)).val();
 
                         if (value) {
-                            params[key] = value;
+                            // temporary save all additional/doubled parameters
+                            if (key in params) {
+                                doubledParams[key] = value;
+                            } else {
+                                params[key] = value;
+                            }
                         }
                     });
 
@@ -278,6 +284,11 @@
                             delete params[key];
                         }
                     };
+
+                    // merge additional params back to real params object
+                    if (!$.isEmptyObject(doubledParams)) {
+                        $.extend(params, doubledParams);
+                    }
 
                     // disable all the fiels and buttons
                     $('input, button', $(this)).attr('disabled', 'disabled');
