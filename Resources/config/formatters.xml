@@ -46,8 +46,11 @@
             <call method="setAcceptType">
                 <argument>%nelmio_api_doc.sandbox.accept_type%</argument>
             </call>
-            <call method="setBodyFormat">
-                <argument>%nelmio_api_doc.sandbox.body_format%</argument>
+            <call method="setBodyFormats">
+                <argument>%nelmio_api_doc.sandbox.body_format.formats%</argument>
+            </call>
+            <call method="setDefaultBodyFormat">
+                <argument>%nelmio_api_doc.sandbox.body_format.default_format%</argument>
             </call>
             <call method="setAuthentication">
                 <argument>%nelmio_api_doc.sandbox.authentication%</argument>

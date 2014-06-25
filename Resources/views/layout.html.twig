@@ -17,11 +17,13 @@
             <a href="{{ path('nelmio_api_doc_index') }}"><h1>{{ apiName }}</h1></a>
             {% if enableSandbox %}
                 <div id="sandbox_configuration">
+                    {% if bodyFormats|length > 0 %}
                     body format:
                     <select id="body_format">
-                        <option value="x-www-form-urlencoded"{{ bodyFormat == 'form' ? ' selected' : '' }}>Form Data</option>
-                        <option value="json"{{ bodyFormat == 'json' ? ' selected' : '' }}>JSON</option>
+                        {% if 'form' in bodyFormats %}<option value="form"{{ defaultBodyFormat == 'form' ? ' selected' : '' }}>Form Data</option>{% endif %}
+                        {% if 'json' in bodyFormats %}<option value="json"{{ defaultBodyFormat == 'json' ? ' selected' : '' }}>JSON</option>{% endif %}
                     </select>
+                    {% endif %}
                     request format:
                     <select id="request_format">
                     {% for format, header in requestFormats %}
@@ -275,10 +277,14 @@
                     }
 
                     // set default bodyFormat
-                    var bodyFormat = $('#body_format').val();
+                    var bodyFormat = $('#body_format').val() || '{{ defaultBodyFormat }}';
 
                     if(!('Content-type' in headers)) {
-                        headers['Content-type'] = 'application/'+bodyFormat;
+                        if (bodyFormat == 'form') {
+                            headers['Content-type'] = 'application/x-www-form-urlencoded';
+                        } else {
+                            headers['Content-type'] = 'application/json';
+                        }
                     }
 
                     var hasFileTypes = false;

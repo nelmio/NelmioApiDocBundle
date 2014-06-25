@@ -56,9 +56,14 @@ class HtmlFormatter extends AbstractFormatter
     private $acceptType;
 
     /**
+     * @var array
+     */
+    private $bodyFormats;
+
+    /**
      * @var string
      */
-    private $bodyFormat;
+    private $defaultBodyFormat;
 
     /**
      * @var array
@@ -119,11 +124,19 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
-     * @param string $bodyFormat
+     * @param array $bodyFormats
      */
-    public function setBodyFormat($bodyFormat)
+    public function setBodyFormats(array $bodyFormats)
     {
-        $this->bodyFormat = $bodyFormat;
+        $this->bodyFormats = $bodyFormats;
+    }
+
+    /**
+     * @param string $defaultBodyFormat
+     */
+    public function setDefaultBodyFormat($defaultBodyFormat)
+    {
+        $this->defaultBodyFormat = $defaultBodyFormat;
     }
 
     /**
@@ -205,7 +218,8 @@ class HtmlFormatter extends AbstractFormatter
             'enableSandbox'        => $this->enableSandbox,
             'requestFormatMethod'  => $this->requestFormatMethod,
             'acceptType'           => $this->acceptType,
-            'bodyFormat'           => $this->bodyFormat,
+            'bodyFormats'          => $this->bodyFormats,
+            'defaultBodyFormat'    => $this->defaultBodyFormat,
             'requestFormats'       => $this->requestFormats,
             'defaultRequestFormat' => $this->defaultRequestFormat,
             'date'                 => date(DATE_RFC822),
