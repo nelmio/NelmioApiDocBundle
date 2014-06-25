@@ -342,7 +342,9 @@ class SwaggerFormatter implements FormatterInterface
                 switch ($prop['actualType']) {
                     case DataTypes::ENUM:
                         $type = 'string';
-                        $enum = array_keys(json_decode($prop['format'], true));
+                        if (isset($prop['format'])) {
+                            $enum = array_keys(json_decode($prop['format'], true));
+                        }
                         break;
 
                     case DataTypes::MODEL:
