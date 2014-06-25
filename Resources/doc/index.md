@@ -322,20 +322,23 @@ configure this sandbox using the following parameters:
             accept_type: application/json           # default is `~` (`null`), if set, the value is
                                                     # automatically populated as the `Accept` header
 
-            body_format: form                       # default is `form`, determines whether to send
+            body_format:
+                formats: [ form, json ]             # array of enabled body formats,
+                                                    # remove all elements to disable the selectbox
+                default_format: form                # default is `form`, determines whether to send
                                                     # `x-www-form-urlencoded` data or json-encoded
                                                     # data (by setting this parameter to `json`) in
                                                     # sandbox requests
 
             request_format:
-                formats:                            # default `json` and `xml`,
+                formats:                            # default is `json` and `xml`,
                     json: application/json          # override to add custom formats or disable
-                    xml: application/xml            # default formats
+                    xml: application/xml            # the default formats
 
-                method: format_param    # default `format_param`, alternately `accept_header`,
+                method: format_param    # default is `format_param`, alternately `accept_header`,
                                         # decides how to request the response format
 
-                default_format: json    # default `json`,
+                default_format: json    # default is `json`,
                                         # default content format to request (see formats)
 
 ### Command
