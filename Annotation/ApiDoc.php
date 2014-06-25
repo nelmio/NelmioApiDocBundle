@@ -525,6 +525,14 @@ class ApiDoc
     /**
      * @return array
      */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @return array
+     */
     public function getTags()
     {
         return $this->tags;

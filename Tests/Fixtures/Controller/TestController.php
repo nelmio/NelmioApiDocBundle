@@ -169,6 +169,14 @@ class TestController
 
     /**
      * @ApiDoc()
+     * @RequestParam(name="param1", requirements="string", description="Param1 description.", nullable=true)
+     */
+    public function zActionWithNullableRequestParamAction()
+    {
+    }
+
+    /**
+     * @ApiDoc()
      */
     public function secureRouteAction()
     {
