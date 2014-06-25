@@ -228,15 +228,15 @@ class ApiDoc
             $this->deprecated = $data['deprecated'];
         }
 
-		if (isset($data['tags'])) {
-			$tags = $data['tags'];
+        if (isset($data['tags'])) {
+            $tags = $data['tags'];
 
-			if (!is_array($tags)) {
-				$tags = array($tags);
-		   	}
+            if (!is_array($tags)) {
+                $tags = array($tags);
+            }
 
-		    $this->tags = $tags;
-		}
+            $this->tags = $tags;
+        }
 
         if (isset($data['https'])) {
             $this->https = $data['https'];

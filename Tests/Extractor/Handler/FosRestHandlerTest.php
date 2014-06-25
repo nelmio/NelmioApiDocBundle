@@ -86,7 +86,7 @@ class FosRestHandlerTest extends WebTestCase
 
         $this->assertArrayNotHasKey('default', $filter);
     }
-   
+
     public function testGetWithConstraintAsRequirements()
     {
         $container  = $this->getContainer();

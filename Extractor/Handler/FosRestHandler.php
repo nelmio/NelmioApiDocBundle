@@ -56,11 +56,11 @@ class FosRestHandler implements HandlerInterface
             }
         }
     }
-            
+
     /**
      * Handle FOSRestBundle requirements in order to return a string.
      *
-     * @param mixed $requirements
+     * @param  mixed  $requirements
      * @return string
      */
     private function handleRequirements($requirements)
@@ -70,8 +70,10 @@ class FosRestHandler implements HandlerInterface
                 return $requirements->getHtmlPattern();
             }
             $class = get_class($requirements);
+
             return substr($class, strrpos($class, '\\')+1);
         }
-        return (string)$requirements;
+
+        return (string) $requirements;
     }
 }

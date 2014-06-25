@@ -233,7 +233,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
     /**
      * Return Choice constraint choices.
      *
-     * @param Constraint $constraint
+     * @param  Constraint                                                           $constraint
      * @param $className
      * @return array
      * @throws \Symfony\Component\Validator\Exception\ConstraintDefinitionException

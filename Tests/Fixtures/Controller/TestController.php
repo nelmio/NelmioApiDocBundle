@@ -130,7 +130,7 @@ class TestController
     public function zActionWithQueryParamNoDefaultAction()
     {
     }
-  
+
     /**
      * @ApiDoc()
      * @QueryParam(name="mail", requirements=@Email, description="Email of someone.")
