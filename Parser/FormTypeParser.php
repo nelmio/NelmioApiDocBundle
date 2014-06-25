@@ -46,6 +46,7 @@ class FormTypeParser implements ParserInterface
         'textarea'  => DataTypes::STRING,
         'country'   => DataTypes::STRING,
         'choice'    => DataTypes::ENUM,
+        'file'      => DataTypes::FILE,
     );
 
     public function __construct(FormFactoryInterface $formFactory)
