@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
+use Nelmio\ApiDocBundle\DataTypes;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -25,6 +26,21 @@ class ValidationParser implements ParserInterface, PostParserInterface
      * @var \Symfony\Component\Validator\MetadataFactoryInterface
      */
     protected $factory;
+
+    protected $typeMap = array(
+        'integer' => DataTypes::INTEGER,
+        'int' => DataTypes::INTEGER,
+        'scalar' => DataTypes::STRING,
+        'numeric' => DataTypes::INTEGER,
+        'boolean' => DataTypes::BOOLEAN,
+        'string' => DataTypes::STRING,
+        'float' => DataTypes::FLOAT,
+        'double' => DataTypes::FLOAT,
+        'long' => DataTypes::INTEGER,
+        'object' => DataTypes::MODEL,
+        'array' => DataTypes::COLLECTION,
+        'DateTime' => DataTypes::DATETIME,
+    );
 
     /**
      * Requires a validation MetadataFactory.
@@ -142,6 +158,9 @@ class ValidationParser implements ParserInterface, PostParserInterface
     {
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
 
+        $vparams['actualType'] = DataTypes::STRING;
+        $vparams['subType'] = null;
+
         switch ($class) {
             case 'NotBlank':
                 $vparams['format'][] = '{not blank}';
@@ -149,6 +168,9 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $vparams['required'] = true;
                 break;
             case 'Type':
+                if (isset($this->typeMap[$constraint->type])) {
+                    $vparams['actualType'] = $this->typeMap[$constraint->type];
+                }
                 $vparams['dataType'] = $constraint->type;
                 break;
             case 'Email':
@@ -162,12 +184,15 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 break;
             case 'Date':
                 $vparams['format'][] = '{Date YYYY-MM-DD}';
+                $vparams['actualType'] = DataTypes::DATE;
                 break;
             case 'DateTime':
                 $vparams['format'][] = '{DateTime YYYY-MM-DD HH:MM:SS}';
+                $vparams['actualType'] = DataTypes::DATETIME;
                 break;
             case 'Time':
                 $vparams['format'][] = '{Time HH:MM:SS}';
+                $vparams['actualType'] = DataTypes::TIME;
                 break;
             case 'Length':
                 $messages = array();
@@ -183,6 +208,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $choices = $this->getChoices($constraint, $className);
                 $format = '[' . join('|', $choices) . ']';
                 if ($constraint->multiple) {
+                    $vparams['actualType'] = DataTypes::COLLECTION;
+                    $vparams['subType'] = DataTypes::ENUM;
                     $messages = array();
                     if (isset($constraint->min)) {
                         $messages[] = "min: {$constraint->min} ";
@@ -192,6 +219,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
                     }
                     $vparams['format'][] = '{' . join ('', $messages) . 'choice of ' . $format . '}';
                 } else {
+                    $vparams['actualType'] = DataTypes::ENUM;
                     $vparams['format'][] = $format;
                 }
                 break;
@@ -216,6 +244,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
                         }
 
                         $vparams['dataType'] = sprintf("array of objects (%s)", end($exp));
+                        $vparams['actualType'] = DataTypes::COLLECTION;
+                        $vparams['subType'] = $nestedType;
                         $vparams['class'] = $nestedType;
 
                         if (!in_array($nestedType, $visited)) {

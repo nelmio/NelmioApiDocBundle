@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Extractor;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Util\ClassUtils;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Nelmio\ApiDocBundle\Parser\PostParserInterface;
 use Symfony\Component\Routing\Route;
@@ -279,6 +280,7 @@ class ApiDocExtractor
             }
 
             $parameters = $this->clearClasses($parameters);
+            $parameters = $this->generateHumanReadableTypes($parameters);
 
             if ('PUT' === $method) {
                 // All parameters are optional with PUT (update)
@@ -302,6 +304,7 @@ class ApiDocExtractor
             }
 
             $response = $this->clearClasses($response);
+            $response = $this->generateHumanReadableTypes($response);
 
             $annotation->setResponse($response);
         }
@@ -412,6 +415,61 @@ class ApiDocExtractor
         }
 
         return $array;
+    }
+
+    /**
+     * Populates the `dataType` properties in the parameter array if empty. Recurses through children when necessary.
+     *
+     * @param  array $array
+     * @return array
+     */
+    protected function generateHumanReadableTypes(array $array)
+    {
+        foreach ($array as $name => $info) {
+
+            if (empty($info['dataType'])) {
+                $array[$name]['dataType'] = $this->generateHumanReadableType($info['actualType'], $info['subType']);
+            }
+
+            if (isset($info['children'])) {
+                $array[$name]['children'] = $this->generateHumanReadableTypes($info['children']);
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * Creates a human-readable version of the `actualType`. `subType` is taken into account.
+     *
+     * @param  string $actualType
+     * @param  string $subType
+     * @return string
+     */
+    protected function generateHumanReadableType($actualType, $subType)
+    {
+        if ($actualType == DataTypes::MODEL) {
+            $parts = explode('\\', $subType);
+
+            return sprintf('object (%s)', end($parts));
+        }
+
+        if ($actualType == DataTypes::COLLECTION) {
+
+            if (DataTypes::isPrimitive($subType)) {
+                return sprintf('array of %ss', $subType);
+            }
+
+            if (class_exists($subType)) {
+                $parts = explode('\\', $subType);
+
+                return sprintf('array of objects (%s)', end($parts));
+            }
+
+            return sprintf('array of objects (%s)', $subType);
+        }
+
+        return $actualType;
     }
 
     private function getParsers(array $parameters)
