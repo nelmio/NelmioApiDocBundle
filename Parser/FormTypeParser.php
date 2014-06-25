@@ -96,6 +96,7 @@ class FormTypeParser implements ParserInterface
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
 
+
             if ($prefix) {
                 $name = sprintf('%s[%s]', $prefix, $name);
             }
@@ -147,7 +148,8 @@ class FormTypeParser implements ParserInterface
                         if ($addDefault) {
                             $parameters[$name] = array(
                                 'dataType'      => 'string',
-                                'actualType'      => 'string',
+                                'default'       => $config->getData(),
+                                'actualType'    => 'string',
                                 'required'      => $config->getRequired(),
                                 'description'   => $config->getAttribute('description'),
                                 'readonly'      => $config->getDisabled(),
@@ -161,6 +163,7 @@ class FormTypeParser implements ParserInterface
 
             $parameters[$name] = array(
                 'dataType'      => $bestType,
+                'default'       => $config->getData(),
                 'actualType'    => $actualType,
                 'subType'       => $subType,
                 'required'      => $config->getRequired(),
