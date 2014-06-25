@@ -225,6 +225,17 @@
                     container.text(method + ' ' + url);
                 };
 
+                var displayProfilerUrl = function(xhr, link, container) {
+                    var profilerUrl = xhr.getResponseHeader('X-Debug-Token-Link');
+                    if (profilerUrl) {
+                        link.attr('href', profilerUrl);
+                        container.show();
+                    } else {
+                        link.attr('href', '');
+                        container.hide();
+                    }
+                }
+
                 var displayResponseData = function(xhr, container) {
                     var data = xhr.responseText;
 
@@ -245,6 +256,7 @@
 
                 var displayResponse = function(xhr, method, url, result_container) {
                     displayFinalUrl(xhr, method, url, $('.url', result_container));
+                    displayProfilerUrl(xhr, $('.profiler-link', result_container), $('.profiler', result_container));
                     displayResponseData(xhr, $('.response', result_container));
                     displayResponseHeaders(xhr, $('.headers', result_container));
 
