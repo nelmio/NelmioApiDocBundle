@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Extractor\Handler;
 
+use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Extractor\HandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
@@ -28,9 +29,13 @@ class FosRestHandler implements HandlerInterface
     {
         foreach ($annotations as $annot) {
             if ($annot instanceof RequestParam) {
+
+                $requirements = $this->handleRequirements($annot->requirements);
                 $annotation->addParameter($annot->name, array(
                     'required'    => $annot->strict && $annot->default === null,
-                    'dataType'    => $this->handleRequirements($annot->requirements),
+                    'dataType'    => $requirements,
+                    'actualType'  => $this->inferType($requirements),
+                    'subType'     => null,
                     'description' => $annot->description,
                     'readonly'    => false
                 ));
@@ -56,6 +61,15 @@ class FosRestHandler implements HandlerInterface
             }
         }
     }
+
+    public function inferType($requirement)
+    {
+        if (DataTypes::isPrimitive($requirement)) {
+            return $requirement;
+        }
+
+        return DataTypes::STRING;
+    }
             
     /**
      * Handle FOSRestBundle requirements in order to return a string.
@@ -72,6 +86,6 @@ class FosRestHandler implements HandlerInterface
             $class = get_class($requirements);
             return substr($class, strrpos($class, '\\')+1);
         }
-        return (string)$requirements;
+        return (string) $requirements;
     }
 }
