@@ -17,11 +17,13 @@
             <a href="{{ path('nelmio_api_doc_index') }}"><h1>{{ apiName }}</h1></a>
             {% if enableSandbox %}
                 <div id="sandbox_configuration">
+                    {% if bodyFormats|length > 0 %}
                     body format:
                     <select id="body_format">
-                        <option value="x-www-form-urlencoded"{{ bodyFormat == 'form' ? ' selected' : '' }}>Form Data</option>
-                        <option value="json"{{ bodyFormat == 'json' ? ' selected' : '' }}>JSON</option>
+                        {% if 'form' in bodyFormats %}<option value="form"{{ defaultBodyFormat == 'form' ? ' selected' : '' }}>Form Data</option>{% endif %}
+                        {% if 'json' in bodyFormats %}<option value="json"{{ defaultBodyFormat == 'json' ? ' selected' : '' }}>JSON</option>{% endif %}
                     </select>
+                    {% endif %}
                     request format:
                     <select id="request_format">
                     {% for format, header in requestFormats %}
@@ -101,6 +103,39 @@
             });
 
             {% if enableSandbox %}
+            var setParameterType = function ($context,setType) {
+                // no 2nd argument, use default from parameters
+                if (typeof setType == "undefined") {
+                    setType = $context.parent().attr("data-dataType");
+                    $context.val(setType);
+                }
+
+                $context.parent().find('.value').remove();
+                var placeholder = "";
+                if ($context.parent().attr("data-dataType") != "" && typeof $context.parent().attr("data-dataType") != "undefined") {
+                    placeholder += "[" + $context.parent().attr("data-dataType") + "] ";
+                }
+                if ($context.parent().attr("data-format") != "" && typeof $context.parent().attr("data-format") != "undefined") {
+                    placeholder += $context.parent().attr("data-dataType");
+                }
+                if ($context.parent().attr("data-description") != "" && typeof $context.parent().attr("data-description") != "undefined") {
+                    placeholder += $context.parent().attr("data-description");
+                } else {
+                    placeholder += "Value";
+                }
+
+                switch(setType) {
+                    case "boolean":
+                        $('<select class="value"><option value=""></option><option value="1">True</option><option value="0">False</option></select>').insertAfter($context);
+                        break;
+                    case "file":
+                        $('<input type="file" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+                        break;
+                    default:
+                        $('<input type="text" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+                }
+            };
+
                 var toggleButtonText = function ($btn) {
                     if ($btn.text() === 'Default') {
                         $btn.text('Raw');
@@ -190,6 +225,17 @@
                     container.text(method + ' ' + url);
                 };
 
+                var displayProfilerUrl = function(xhr, link, container) {
+                    var profilerUrl = xhr.getResponseHeader('X-Debug-Token-Link');
+                    if (profilerUrl) {
+                        link.attr('href', profilerUrl);
+                        container.show();
+                    } else {
+                        link.attr('href', '');
+                        container.hide();
+                    }
+                }
+
                 var displayResponseData = function(xhr, container) {
                     var data = xhr.responseText;
 
@@ -210,6 +256,7 @@
 
                 var displayResponse = function(xhr, method, url, result_container) {
                     displayFinalUrl(xhr, method, url, $('.url', result_container));
+                    displayProfilerUrl(xhr, $('.profiler-link', result_container), $('.profiler', result_container));
                     displayResponseData(xhr, $('.response', result_container));
                     displayResponseHeaders(xhr, $('.headers', result_container));
 
@@ -221,6 +268,7 @@
                         method = $(this).attr('method'),
                         self = this,
                         params = {},
+                        formData = new FormData(),
                         headers = {},
                         content = $(this).find('textarea.content').val(),
                         result_container = $('.result', $(this).parent());
@@ -235,16 +283,52 @@
                     var requestFormatMethod = '{{ requestFormatMethod }}';
                     if (requestFormatMethod == 'format_param') {
                         params['_format'] = $('#request_format option:selected').text();
+                        formData.append('_format',$('#request_format option:selected').text());
                     } else if (requestFormatMethod == 'accept_header') {
                         headers['Accept'] = $('#request_format').val();
                     }
 
                     // set default bodyFormat
-                    var bodyFormat = $('#body_format').val();
+                    var bodyFormat = $('#body_format').val() || '{{ defaultBodyFormat }}';
 
                     if(!('Content-type' in headers)) {
-                        headers['Content-type'] = 'application/'+bodyFormat;
+                        if (bodyFormat == 'form') {
+                            headers['Content-type'] = 'application/x-www-form-urlencoded';
+                        } else {
+                            headers['Content-type'] = 'application/json';
+                        }
                     }
+
+                    var hasFileTypes = false;
+                    $('.parameters .tuple_type', $(this)).each(function() {
+                        if ($(this).val() == 'file') {
+                            hasFileTypes = true;
+                        }
+                    });
+
+                    if (hasFileTypes && method != 'POST') {
+                        alert("Sorry, you can only submit files via POST.");
+                        return false;
+                    }
+
+                    if (hasFileTypes) {
+                        // retrieve all the parameters to send for file upload
+                        $('.parameters .tuple', $(this)).each(function() {
+                            var key, value;
+
+                            key = $('.key', $(this)).val();
+                            if ($('.value', $(this)).attr('type') === 'file' ) {
+                                value = $('.value', $(this)).prop('files')[0];
+                            } else {
+                                value = $('.value', $(this)).val();
+                            }
+
+                            if (value) {
+                                formData.append(key,value);
+                            }
+                        });
+                    }
+
 
                     // retrieve all the parameters to send
                     $('.parameters .tuple', $(this)).each(function() {
@@ -257,6 +341,10 @@
                             params[key] = value;
                         }
                     });
+
+
+
+
 
                     // retrieve the additional headers to send
                     $('.headers .tuple', $(this)).each(function() {
@@ -279,7 +367,7 @@
                         }
                     };
 
-                    // disable all the fiels and buttons
+                    // disable all the fields and buttons
                     $('input, button', $(this)).attr('disabled', 'disabled');
 
                     // append the query authentication
@@ -307,9 +395,7 @@
                         body = params;
                     }
                     var data = content.length ? content : body;
-
-                    // and trigger the API call
-                    $.ajax({
+                    var ajaxOptions = {
                         url: endpoint + url,
                         type: method,
                         data: data,
@@ -328,7 +414,18 @@
                             // and enable them back
                             $('input:not(.content-type), button', $(self)).removeAttr('disabled');
                         }
-                    });
+                    };
+
+                    // overrides body format to send data properly
+                    if (hasFileTypes) {
+                        ajaxOptions.data = formData;
+                        ajaxOptions.processData = false;
+                        ajaxOptions.contentType = false;
+                        delete(ajaxOptions.headers);
+                    }
+
+                    // and trigger the API call
+                    $.ajax(ajaxOptions);
 
                     return false;
                 });
@@ -369,8 +466,30 @@
                     e.preventDefault();
                 });
 
-                $('.pane.sandbox').on('click', '.add', function() {
-                    var html = $(this).parents('.pane').find('.tuple_template').html();
+
+                // sets the correct parameter type on load
+                $('.pane.sandbox .tuple_type').each(function() {
+                    setParameterType($(this));
+                });
+
+
+                // handles parameter type change
+                $('.pane.sandbox').on('change', '.tuple_type', function() {
+                    setParameterType($(this),$(this).val());
+                });
+
+
+
+                $('.pane.sandbox').on('click', '.add_parameter', function() {
+                    var html = $(this).parents('.pane').find('.parameters_tuple_template').html();
+
+                    $(this).before(html);
+
+                    return false;
+                });
+
+                $('.pane.sandbox').on('click', '.add_header', function() {
+                    var html = $(this).parents('.pane').find('.headers_tuple_template').html();
 
                     $(this).before(html);
 

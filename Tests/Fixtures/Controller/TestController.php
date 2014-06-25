@@ -130,7 +130,7 @@ class TestController
     public function zActionWithQueryParamNoDefaultAction()
     {
     }
-  
+
     /**
      * @ApiDoc()
      * @QueryParam(name="mail", requirements=@Email, description="Email of someone.")
@@ -164,6 +164,14 @@ class TestController
      * @RequestParam(name="param1", requirements="string", description="Param1 description.")
      */
     public function zActionWithRequestParamAction()
+    {
+    }
+
+    /**
+     * @ApiDoc()
+     * @RequestParam(name="param1", requirements="string", description="Param1 description.", nullable=true)
+     */
+    public function zActionWithNullableRequestParamAction()
     {
     }
 
