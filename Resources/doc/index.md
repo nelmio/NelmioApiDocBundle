@@ -65,7 +65,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 class YourController extends Controller
 {
     /**
-     * This the documentation description of your method, it will appear
+     * This is the documentation description of your method, it will appear
      * on a specific pane. It will read all the text until the first
      * annotation.
      *
@@ -126,6 +126,8 @@ The following properties are available:
 * `https`: whether the method described requires the https protocol (default: `false`);
 
 * `deprecated`: allow to set method as deprecated (default: `false`);
+
+* `tags`: allow to tag a method (e.g. `beta` or `in-development`). Either a single tag or an array of tags. 
 
 * `filters`: an array of filters;
 
@@ -320,17 +322,24 @@ configure this sandbox using the following parameters:
             accept_type: application/json           # default is `~` (`null`), if set, the value is
                                                     # automatically populated as the `Accept` header
 
-            body_format: form                       # default is `form`, determines whether to send
+            body_format:
+                formats: [ form, json ]             # array of enabled body formats,
+                                                    # remove all elements to disable the selectbox
+                default_format: form                # default is `form`, determines whether to send
                                                     # `x-www-form-urlencoded` data or json-encoded
                                                     # data (by setting this parameter to `json`) in
                                                     # sandbox requests
 
             request_format:
-                method: format_param    # default `format_param`, alternately `accept_header`,
+                formats:                            # default is `json` and `xml`,
+                    json: application/json          # override to add custom formats or disable
+                    xml: application/xml            # the default formats
+
+                method: format_param    # default is `format_param`, alternately `accept_header`,
                                         # decides how to request the response format
 
-                default_format: json    # default `json`, alternately `xml`, determines which
-                                        # content format to request back by default
+                default_format: json    # default is `json`,
+                                        # default content format to request (see formats)
 
 ### Command
 
@@ -416,6 +425,9 @@ nelmio_api_doc:
         accept_type:          ~
         body_format:          form
         request_format:
+            formats:
+                json: application/json
+                xml: application/xml
             method:               format_param
             default_format:       json
         authentication:

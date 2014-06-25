@@ -288,4 +288,35 @@ class ApiDocTest extends TestCase
         $this->assertTrue(isset($array['parameters']['fooId']));
         $this->assertTrue(isset($array['parameters']['fooId']['dataType']));
     }
+
+    public function testConstructWithOneTag()
+    {
+        $data = array(
+            'tags' => 'beta'
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(is_array($array['tags']), 'Single tag should be put in array');
+        $this->assertEquals(array('beta'), $array['tags']);
+    }
+
+    public function testConstructWithMultipleTags()
+    {
+        $data = array(
+            'tags' => array(
+                'experimental',
+                'alpha'
+            )
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(is_array($array['tags']), 'Tags should be in array');
+        $this->assertEquals($data['tags'], $array['tags']);
+    }
 }

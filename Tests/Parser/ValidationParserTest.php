@@ -1,6 +1,7 @@
 <?php
 namespace NelmioApiDocBundle\Tests\Parser;
 
+use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
 use Nelmio\ApiDocBundle\Parser\ValidationParser;
 use Nelmio\ApiDocBundle\Parser\ValidationParserLegacy;
@@ -13,7 +14,7 @@ class ValidationParserTest extends WebTestCase
     public function setUp()
     {
         $container  = $this->getContainer();
-        $factory = $container->get('validator.mapping.class_metadata_factory');
+        $factory = $container->get('validator')->getMetadataFactory();
 
         if (version_compare(Kernel::VERSION, '2.2.0', '<')) {
             $this->parser = new ValidationParserLegacy($factory);
@@ -28,7 +29,6 @@ class ValidationParserTest extends WebTestCase
     public function testParser($property, $expected)
     {
         $result = $this->parser->parse(array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\ValidatorTest'));
-
         foreach ($expected as $name => $value) {
             $this->assertArrayHasKey($property, $result);
             $this->assertArrayHasKey($name, $result[$property]);
@@ -66,25 +66,29 @@ class ValidationParserTest extends WebTestCase
             array(
                 'property' => 'type',
                 'expected' => array(
-                    'dataType' => 'DateTime'
+                    'dataType' => 'DateTime',
+                    'actualType' => DataTypes::DATETIME,
                 )
             ),
             array(
                 'property' => 'date',
                 'expected' => array(
-                    'format' => '{Date YYYY-MM-DD}'
+                    'format' => '{Date YYYY-MM-DD}',
+                    'actualType' => DataTypes::DATE,
                 )
             ),
             array(
                 'property' => 'dateTime',
                 'expected' => array(
-                    'format' => '{DateTime YYYY-MM-DD HH:MM:SS}'
+                    'format' => '{DateTime YYYY-MM-DD HH:MM:SS}',
+                    'actualType' => DataTypes::DATETIME,
                 )
             ),
             array(
                 'property' => 'time',
                 'expected' => array(
-                    'format' => '{Time HH:MM:SS}'
+                    'format' => '{Time HH:MM:SS}',
+                    'actualType' => DataTypes::TIME,
                 )
             ),
             array(
@@ -108,19 +112,24 @@ class ValidationParserTest extends WebTestCase
             array(
                 'property' => 'singlechoice',
                 'expected' => array(
-                    'format' => '[a|b]'
+                    'format' => '[a|b]',
+                    'actualType' => DataTypes::ENUM,
                 )
             ),
             array(
                 'property' => 'multiplechoice',
                 'expected' => array(
-                    'format' => '{choice of [x|y|z]}'
+                    'format' => '{choice of [x|y|z]}',
+                    'actualType' => DataTypes::COLLECTION,
+                    'subType' => DataTypes::ENUM,
                 )
             ),
             array(
                 'property' => 'multiplerangechoice',
                 'expected' => array(
-                    'format' => '{min: 2 max: 3 choice of [foo|bar|baz|qux]}'
+                    'format' => '{min: 2 max: 3 choice of [foo|bar|baz|qux]}',
+                    'actualType' => DataTypes::COLLECTION,
+                    'subType' => DataTypes::ENUM,
                 )
             ),
             array(

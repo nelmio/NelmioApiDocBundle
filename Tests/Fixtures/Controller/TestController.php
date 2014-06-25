@@ -15,6 +15,7 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\Email;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
 class TestController
@@ -131,6 +132,14 @@ class TestController
     }
 
     /**
+     * @ApiDoc()
+     * @QueryParam(name="mail", requirements=@Email, description="Email of someone.")
+     */
+    public function zActionWithConstraintAsRequirements()
+    {
+    }
+
+    /**
      * @ApiDoc(
      *  description="Testing JMS",
      *  input="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
@@ -155,6 +164,14 @@ class TestController
      * @RequestParam(name="param1", requirements="string", description="Param1 description.")
      */
     public function zActionWithRequestParamAction()
+    {
+    }
+
+    /**
+     * @ApiDoc()
+     * @RequestParam(name="param1", requirements="string", description="Param1 description.", nullable=true)
+     */
+    public function zActionWithNullableRequestParamAction()
     {
     }
 

@@ -24,7 +24,7 @@ class LoadExtractorParsersPass implements CompilerPassInterface
         }
 
         // validation may not be installed/enabled, if it is, load that config as well
-        if ($container->hasDefinition('validator.mapping.class_metadata_factory')) {
+        if ($container->has('validator.mapping.class_metadata_factory')) {
             $loader->load('services.validation.xml');
         }
 

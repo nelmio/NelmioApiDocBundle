@@ -87,4 +87,73 @@ class FosRestHandlerTest extends WebTestCase
         $this->assertArrayNotHasKey('default', $filter);
     }
 
+    public function testGetWithConstraintAsRequirements()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithConstraintAsRequirements', 'test_route_21');
+
+        $this->assertNotNull($annotation);
+
+        $filters = $annotation->getFilters();
+        $this->assertCount(1, $filters);
+        $this->assertArrayHasKey('mail', $filters);
+
+        $filter = $filters['mail'];
+
+        $this->assertArrayHasKey('requirement', $filter);
+        $this->assertEquals($filter['requirement'], 'Email');
+    }
+
+    public function testGetWithRequestParam()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithRequestParamAction', 'test_route_11');
+
+        $this->assertNotNull($annotation);
+
+        $parameters = $annotation->getParameters();
+        $this->assertCount(1, $parameters);
+        $this->assertArrayHasKey('param1', $parameters);
+
+        $parameter = $parameters['param1'];
+
+        $this->assertArrayHasKey('dataType', $parameter);
+        $this->assertEquals($parameter['dataType'], 'string');
+
+        $this->assertArrayHasKey('description', $parameter);
+        $this->assertEquals($parameter['description'], 'Param1 description.');
+
+        $this->assertArrayHasKey('required', $parameter);
+        $this->assertEquals($parameter['required'], true);
+
+        $this->assertArrayNotHasKey('default', $parameter);
+    }
+
+    public function testGetWithRequestParamNullable()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithNullableRequestParamAction', 'test_route_22');
+
+        $this->assertNotNull($annotation);
+
+        $parameters = $annotation->getParameters();
+        $this->assertCount(1, $parameters);
+        $this->assertArrayHasKey('param1', $parameters);
+
+        $parameter = $parameters['param1'];
+
+        $this->assertArrayHasKey('dataType', $parameter);
+        $this->assertEquals($parameter['dataType'], 'string');
+
+        $this->assertArrayHasKey('description', $parameter);
+        $this->assertEquals($parameter['description'], 'Param1 description.');
+
+        $this->assertArrayHasKey('required', $parameter);
+        $this->assertEquals($parameter['required'], false);
+
+        $this->assertArrayNotHasKey('default', $parameter);
+    }
 }

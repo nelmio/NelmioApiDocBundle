@@ -33,10 +33,12 @@ class NelmioApiDocExtension extends Extension
         $container->setParameter('nelmio_api_doc.api_name', $config['name']);
         $container->setParameter('nelmio_api_doc.sandbox.enabled',  $config['sandbox']['enabled']);
         $container->setParameter('nelmio_api_doc.sandbox.endpoint', $config['sandbox']['endpoint']);
-        $container->setParameter('nelmio_api_doc.sandbox.request_format.method', $config['sandbox']['request_format']['method']);
         $container->setParameter('nelmio_api_doc.sandbox.accept_type', $config['sandbox']['accept_type']);
-        $container->setParameter('nelmio_api_doc.sandbox.body_format', $config['sandbox']['body_format']);
+        $container->setParameter('nelmio_api_doc.sandbox.body_format.formats', $config['sandbox']['body_format']['formats']);
+        $container->setParameter('nelmio_api_doc.sandbox.body_format.default_format', $config['sandbox']['body_format']['default_format']);
+        $container->setParameter('nelmio_api_doc.sandbox.request_format.method', $config['sandbox']['request_format']['method']);
         $container->setParameter('nelmio_api_doc.sandbox.request_format.default_format', $config['sandbox']['request_format']['default_format']);
+        $container->setParameter('nelmio_api_doc.sandbox.request_format.formats', $config['sandbox']['request_format']['formats']);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('formatters.xml');

@@ -11,8 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
+use Nelmio\ApiDocBundle\DataTypes;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Exception\FormException;
@@ -33,15 +36,17 @@ class FormTypeParser implements ParserInterface
      * @var array
      */
     protected $mapTypes = array(
-        'text'      => 'string',
-        'date'      => 'date',
-        'datetime'  => 'datetime',
-        'checkbox'  => 'boolean',
-        'time'      => 'time',
-        'number'    => 'float',
-        'integer'   => 'int',
-        'textarea'  => 'string',
-        'country'   => 'string',
+        'text'      => DataTypes::STRING,
+        'date'      => DataTypes::DATE,
+        'datetime'  => DataTypes::DATETIME,
+        'checkbox'  => DataTypes::BOOLEAN,
+        'time'      => DataTypes::TIME,
+        'number'    => DataTypes::FLOAT,
+        'integer'   => DataTypes::INTEGER,
+        'textarea'  => DataTypes::STRING,
+        'country'   => DataTypes::STRING,
+        'choice'    => DataTypes::ENUM,
+        'file'      => DataTypes::FILE,
     );
 
     public function __construct(FormFactoryInterface $formFactory)
@@ -96,15 +101,21 @@ class FormTypeParser implements ParserInterface
             }
 
             $bestType = '';
+            $actualType = null;
+            $subType = null;
+
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 if (isset($this->mapTypes[$type->getName()])) {
                     $bestType = $this->mapTypes[$type->getName()];
+                    $actualType = $bestType;
                 } elseif ('collection' === $type->getName()) {
                     if (is_string($config->getOption('type')) && isset($this->mapTypes[$config->getOption('type')])) {
-                        $bestType = sprintf('array of %ss', $this->mapTypes[$config->getOption('type')]);
+                        $subType = $this->mapTypes[$config->getOption('type')];
+                        $actualType = DataTypes::COLLECTION;
+                        $bestType = sprintf('array of %ss', $subType);
                     } else {
                         // Embedded form collection
-                        $subParameters = $this->parseForm($this->formFactory->create($config->getOption('type')), $name . '[]');
+                        $subParameters = $this->parseForm($this->formFactory->create($config->getOption('type'), null, $config->getOption('options', array())), $name . '[]');
                         $parameters = array_merge($parameters, $subParameters);
 
                         continue 2;
@@ -136,6 +147,7 @@ class FormTypeParser implements ParserInterface
                         if ($addDefault) {
                             $parameters[$name] = array(
                                 'dataType'      => 'string',
+                                'actualType'      => 'string',
                                 'required'      => $config->getRequired(),
                                 'description'   => $config->getAttribute('description'),
                                 'readonly'      => $config->getDisabled(),
@@ -149,10 +161,45 @@ class FormTypeParser implements ParserInterface
 
             $parameters[$name] = array(
                 'dataType'      => $bestType,
+                'actualType'    => $actualType,
+                'subType'       => $subType,
                 'required'      => $config->getRequired(),
                 'description'   => $config->getAttribute('description'),
                 'readonly'      => $config->getDisabled(),
             );
+
+            switch ($actualType) {
+                case DataTypes::DATETIME:
+                    if (($format = $config->getOption('date_format')) && is_string($format)) {
+                        $parameters[$name]['format'] = $format;
+                    } elseif ('single_text' == $config->getOption('widget') && $format = $config->getOption('format')) {
+                        $parameters[$name]['format'] = $format;
+                    }
+                    break;
+
+                case DataTypes::DATE:
+                    if (($format = $config->getOption('format')) && is_string($format)) {
+                        $parameters[$name]['format'] = $format;
+                    }
+                    break;
+
+                case DataTypes::ENUM:
+                    if ($config->getOption('multiple')) {
+                        $parameters[$name]['dataType'] = sprintf('array of %ss', $parameters[$name]['dataType']);
+                        $parameters[$name]['actualType'] = DataTypes::COLLECTION;
+                        $parameters[$name]['subType'] = DataTypes::ENUM;
+                    }
+
+                    if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
+                        $parameters[$name]['format'] = json_encode($choices);
+                    } elseif (($choiceList = $config->getOption('choice_list')) && $choiceList instanceof ChoiceListInterface) {
+                        $choices = $this->handleChoiceListValues($choiceList);
+                        if (is_array($choices) && count($choices)) {
+                            $parameters[$name]['format'] = json_encode($choices);
+                        }
+                    }
+                    break;
+            }
         }
 
         return $parameters;
@@ -187,5 +234,29 @@ class FormTypeParser implements ParserInterface
         } catch (InvalidArgumentException $e) {
             // nothing
         }
+    }
+
+    private function handleChoiceListValues(ChoiceListInterface $choiceList)
+    {
+        $choices = array();
+        foreach (array($choiceList->getPreferredViews(), $choiceList->getRemainingViews()) as $viewList) {
+            $choices = array_merge($choices, $this->handleChoiceViewsHierarchy($viewList));
+        }
+
+        return $choices;
+    }
+
+    private function handleChoiceViewsHierarchy(array $choiceViews)
+    {
+        $choices = array();
+        foreach ($choiceViews as $item) {
+            if ($item instanceof ChoiceView) {
+                $choices[$item->value] = $item->label;
+            } elseif (is_array($item)) {
+                $choices = array_merge($choices, $this->handleChoiceViewsHierarchy($item));
+            }
+        }
+
+        return $choices;
     }
 }
