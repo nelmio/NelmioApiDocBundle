@@ -83,7 +83,7 @@ The routes registered with the method above will read your `@ApiDoc` annotation 
 php app/console api:swagger:dump --all app/Resources/swagger-docs
 ```
 
-The above command will dump JSON files under the `app/Resources/swagger-docs` directory (relative to your project root, which is the default destination if the argument is not provided), and you can now process or server the files however you want.
+The above command will dump JSON files under the `app/Resources/swagger-docs` directory (relative to your project root), and you can now process or server the files however you want. (If the destination defaults to the project root if not specified.)
 
 ####Selective dumps
 
