@@ -295,11 +295,21 @@ class ApiDocExtractor
         // output (populates 'response' for the formatters)
         if (null !== $output = $annotation->getOutput()) {
             $response         = array();
+            $supportedParsers = array();
+
             $normalizedOutput = $this->normalizeClassParameter($output);
 
             foreach ($this->getParsers($normalizedOutput) as $parser) {
                 if ($parser->supports($normalizedOutput)) {
+                    $supportedParsers[] = $parser;
                     $response = $this->mergeParameters($response, $parser->parse($normalizedOutput));
+                }
+            }
+
+            foreach($supportedParsers as $parser) {
+                if($parser instanceof PostParserInterface) {
+                    $mp = $parser->postParse($normalizedOutput, $response);
+                    $response = $this->mergeParameters($response, $mp);
                 }
             }
 

@@ -979,6 +979,27 @@ With multiple lines.',
                                     'readonly' => null
                                 )
                             )
+                        ),
+                        'related' => array(
+                            'dataType' => 'object (Test)',
+                            'readonly' => false,
+                            'required' => false,
+                            'description' => '',
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                            'children' => array(
+                                'a' => array(
+                                    'dataType' => 'string',
+                                    'format' => '{length: min: foo}, {not blank}',
+                                    'required' => true,
+                                    'readonly' => null
+                                ),
+                                'b' => array(
+                                    'dataType' => 'DateTime',
+                                    'required' => null,
+                                    'readonly' => null
+                                )
+                            )
                         )
                     ),
                     'authenticationRoles' => array(),
@@ -1063,6 +1084,27 @@ With multiple lines.',
                                     'dataType' => 'DateTime',
                                     'actualType' => DataTypes::DATETIME,
                                     'subType' => null,
+                                    'required' => null,
+                                    'readonly' => null
+                                )
+                            )
+                        ),
+                        'related' => array(
+                            'dataType' => 'object (Test)',
+                            'readonly' => false,
+                            'required' => false,
+                            'description' => '',
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
+                            'children' => array(
+                                'a' => array(
+                                    'dataType' => 'string',
+                                    'format' => '{length: min: foo}, {not blank}',
+                                    'required' => true,
+                                    'readonly' => null
+                                ),
+                                'b' => array(
+                                    'dataType' => 'DateTime',
                                     'required' => null,
                                     'readonly' => null
                                 )
