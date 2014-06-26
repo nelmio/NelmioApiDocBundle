@@ -159,8 +159,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
 
         $vparams['actualType'] = DataTypes::STRING;
-        $vparams['subType']    = null;
-        $vparams['default']    = null;
+        $vparams['subType'] = null;
+        $vparams['default'] = null;
 
         switch ($class) {
             case 'NotBlank':
