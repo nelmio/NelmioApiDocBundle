@@ -85,7 +85,7 @@
                     setTimeout(function() {
                         $('body,html').scrollTop(elem.position().top);
                     });
-                    elem.find('a.toggler').click();
+                    elem.find('.toggler').click();
                 }
             });
 
@@ -430,9 +430,9 @@
                     return false;
                 });
 
-                $('.operations').on('click', '.operation > a', function(e) {
+                $('.operations').on('click', '.operation > .heading', function(e) {
                     if (history.pushState) {
-                        history.pushState(null, null, $(this).attr('href'));
+                        history.pushState(null, null, $(this).data('href'));
                         e.preventDefault();
                     }
                 });
