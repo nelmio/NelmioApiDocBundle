@@ -42,6 +42,7 @@ class ImprovedTestType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\ImprovedTest',
+            'csrf_protection' => false,
         ));
 
         return;

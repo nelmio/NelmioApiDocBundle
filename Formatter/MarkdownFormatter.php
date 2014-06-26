@@ -86,6 +86,9 @@ class MarkdownFormatter extends AbstractFormatter
                     if (isset($parameter['description']) && !empty($parameter['description'])) {
                         $markdown .= sprintf("  * description: %s\n", $parameter['description']);
                     }
+                    if (isset($parameter['default']) && !empty($parameter['default'])) {
+                        $markdown .= sprintf("  * default value: %s\n", $parameter['default']);
+                    }
 
                     $markdown .= "\n";
                 }

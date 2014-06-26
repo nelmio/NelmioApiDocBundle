@@ -90,11 +90,12 @@ class FormTypeParser implements ParserInterface
         return $this->parseForm($form, array_key_exists('name', $item) ? $item['name'] : $form->getName());
     }
 
-    private function parseForm($form, $prefix = null)
+    private function parseForm($form, $prefix = null, $recursiveCall = false)
     {
         $parameters = array();
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
+
 
             if ($prefix) {
                 $name = sprintf('%s[%s]', $prefix, $name);
@@ -115,7 +116,7 @@ class FormTypeParser implements ParserInterface
                         $bestType = sprintf('array of %ss', $subType);
                     } else {
                         // Embedded form collection
-                        $subParameters = $this->parseForm($this->formFactory->create($config->getOption('type'), null, $config->getOption('options', array())), $name . '[]');
+                        $subParameters = $this->parseForm($this->formFactory->create($config->getOption('type'), null, $config->getOption('options', array())), $name . '[]',true);
                         $parameters = array_merge($parameters, $subParameters);
 
                         continue 2;
@@ -134,7 +135,7 @@ class FormTypeParser implements ParserInterface
                         $addDefault = false;
                         try {
                             $subForm    = $this->formFactory->create($type);
-                            $subParameters = $this->parseForm($subForm, $name);
+                            $subParameters = $this->parseForm($subForm, $name,true);
                             if (!empty($subParameters)) {
                                 $parameters = array_merge($parameters, $subParameters);
                             } else {
@@ -148,6 +149,7 @@ class FormTypeParser implements ParserInterface
                             $parameters[$name] = array(
                                 'dataType'      => 'string',
                                 'actualType'      => 'string',
+                                'default'       => $config->getData(),
                                 'required'      => $config->getRequired(),
                                 'description'   => $config->getAttribute('description'),
                                 'readonly'      => $config->getDisabled(),
@@ -163,6 +165,7 @@ class FormTypeParser implements ParserInterface
                 'dataType'      => $bestType,
                 'actualType'    => $actualType,
                 'subType'       => $subType,
+                'default'       => $config->getData(),
                 'required'      => $config->getRequired(),
                 'description'   => $config->getAttribute('description'),
                 'readonly'      => $config->getDisabled(),
@@ -201,6 +204,21 @@ class FormTypeParser implements ParserInterface
                     break;
             }
         }
+
+
+        if ($form->getConfig()->getOption('csrf_protection') === true && $recursiveCall === false) {
+            $intention = $form->getConfig()->getOption('intention') ?: ($form->getName() ?: get_class($form->getConfig()->getType()->getInnerType()));
+
+            $csrfName = sprintf('%s[%s]', $prefix, $form->getConfig()->getOption('csrf_field_name'));
+            $parameters[$csrfName] = array(
+                'dataType'      => 'string',
+                'required'      => true,
+                'default'       => $form->getConfig()->getOption('csrf_provider')->generateCsrfToken($intention),
+                'description'   => 'CSRF Token',
+                'readonly'      => false,
+            );
+        }
+
 
         return $parameters;
     }

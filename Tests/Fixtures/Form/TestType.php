@@ -26,6 +26,7 @@ class TestType extends AbstractType
             ->add('a', null, array('description' => 'A nice description'))
             ->add('b')
             ->add($builder->create('c', 'checkbox'))
+            ->add('d','text',array( 'data' => 'DefaultTest'))
         ;
     }
 
@@ -36,10 +37,12 @@ class TestType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
+            'csrf_protection' => false,
         ));
 
         return;
     }
+
 
     public function getName()
     {

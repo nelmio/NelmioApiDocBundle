@@ -38,6 +38,7 @@ class DependencyType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
+            'csrf_protection' => false,
         ));
 
         return;
