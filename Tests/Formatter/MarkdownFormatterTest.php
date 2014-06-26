@@ -97,6 +97,12 @@ c:
   * type: boolean
   * required: true
 
+d:
+
+  * type: string
+  * required: true
+  * default value: DefaultTest
+
 
 ### `POST` /tests.{_format} ###
 
@@ -124,6 +130,12 @@ c:
 
   * type: boolean
   * required: true
+
+d:
+
+  * type: string
+  * required: true
+  * default value: DefaultTest
 
 
 ## /tests2 ##
@@ -522,6 +534,12 @@ c:
 
   * type: boolean
   * required: true
+
+d:
+
+  * type: string
+  * required: true
+  * default value: DefaultTest
 
 
 ### `ANY` /z-return-selected-parsers-output ###
