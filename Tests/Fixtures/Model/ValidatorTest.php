@@ -18,7 +18,7 @@ class ValidatorTest
     /**
      * @Assert\Length(min=10);
      */
-    public $length10;
+    public $length10 = 'validate this';
 
     /**
      * @Assert\Length(min=1, max=10)
@@ -63,7 +63,7 @@ class ValidatorTest
     /**
      * @Assert\Url()
      */
-    public $url;
+    public $url = 'https://github.com';
 
     /**
      * @Assert\Ip()

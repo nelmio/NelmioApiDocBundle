@@ -85,8 +85,14 @@ class ValidationParser implements ParserInterface, PostParserInterface
         $classdata = $this->factory->getMetadataFor($className);
         $properties = $classdata->getConstrainedProperties();
 
+        $refl = $classdata->getReflectionClass();
+        $defaults = $refl->getDefaultProperties();
+
         foreach ($properties as $property) {
             $vparams = array();
+
+            $vparams['default'] = isset($defaults[$property]) ? $defaults[$property] : null;
+
             $pds = $classdata->getPropertyMetadata($property);
             foreach ($pds as $propdata) {
                 $constraints = $propdata->getConstraints();
@@ -159,8 +165,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
 
         $vparams['actualType'] = DataTypes::STRING;
-        $vparams['subType']    = null;
-        $vparams['default']    = null;
+        $vparams['subType'] = null;
 
         switch ($class) {
             case 'NotBlank':

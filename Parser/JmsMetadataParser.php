@@ -114,6 +114,9 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
 
         $params = array();
 
+        $reflection = new \ReflectionClass($className);
+        $defaultProperties = $reflection->getDefaultProperties();
+
         // iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
             if (!is_null($item->type)) {
@@ -133,7 +136,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
                     'actualType'   => $dataType['actualType'],
                     'subType'      => $dataType['class'],
                     'required'     => false,
-                    'default'      => null,
+                    'default'      => isset($defaultProperties[$item->name]) ? $defaultProperties[$item->name] : null,
                     //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
                     'description'  => $this->getDescription($item),
                     'readonly'     => $item->readOnly,

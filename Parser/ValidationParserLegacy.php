@@ -56,8 +56,13 @@ class ValidationParserLegacy extends ValidationParser
 
         $properties = $classdata->getConstrainedProperties();
 
+        $refl = $classdata->getReflectionClass();
+        $defaults = $refl->getDefaultProperties();
+
         foreach ($properties as $property) {
             $vparams = array();
+
+            $vparams['default'] = isset($defaults[$property]) ? $defaults[$property] : null;
 
             $pds = $classdata->getMemberMetadatas($property);
 

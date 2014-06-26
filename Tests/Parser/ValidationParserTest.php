@@ -42,25 +42,29 @@ class ValidationParserTest extends WebTestCase
             array(
                 'property' => 'length10',
                 'expected' => array(
-                    'format' => '{length: min: 10}'
+                    'format' => '{length: min: 10}',
+                    'default' => 'validate this',
                 )
             ),
             array(
                 'property' => 'length1to10',
                 'expected' => array(
-                    'format' => '{length: min: 1, max: 10}'
+                    'format' => '{length: min: 1, max: 10}',
+                    'default' => null,
                 )
             ),
             array(
                 'property' => 'notblank',
                 'expected' => array(
-                    'required' => true
+                    'required' => true,
+                    'default' => null,
                 )
             ),
             array(
                 'property' => 'notnull',
                 'expected' => array(
-                    'required' => true
+                    'required' => true,
+                    'default' => null,
                 )
             ),
             array(
@@ -68,6 +72,7 @@ class ValidationParserTest extends WebTestCase
                 'expected' => array(
                     'dataType' => 'DateTime',
                     'actualType' => DataTypes::DATETIME,
+                    'default' => null,
                 )
             ),
             array(
@@ -75,6 +80,7 @@ class ValidationParserTest extends WebTestCase
                 'expected' => array(
                     'format' => '{Date YYYY-MM-DD}',
                     'actualType' => DataTypes::DATE,
+                    'default' => null,
                 )
             ),
             array(
@@ -82,6 +88,7 @@ class ValidationParserTest extends WebTestCase
                 'expected' => array(
                     'format' => '{DateTime YYYY-MM-DD HH:MM:SS}',
                     'actualType' => DataTypes::DATETIME,
+                    'default' => null,
                 )
             ),
             array(
@@ -89,24 +96,28 @@ class ValidationParserTest extends WebTestCase
                 'expected' => array(
                     'format' => '{Time HH:MM:SS}',
                     'actualType' => DataTypes::TIME,
+                    'default' => null,
                 )
             ),
             array(
                 'property' => 'email',
                 'expected' => array(
-                    'format' => '{email address}'
+                    'format' => '{email address}',
+                    'default' => null,
                 )
             ),
             array(
                 'property' => 'url',
                 'expected' => array(
-                    'format' => '{url}'
+                    'format' => '{url}',
+                    'default' => 'https://github.com',
                 )
             ),
             array(
                 'property' => 'ip',
                 'expected' => array(
-                    'format' => '{ip address}'
+                    'format' => '{ip address}',
+                    'default' => null,
                 )
             ),
             array(
@@ -114,6 +125,7 @@ class ValidationParserTest extends WebTestCase
                 'expected' => array(
                     'format' => '[a|b]',
                     'actualType' => DataTypes::ENUM,
+                    'default' => null,
                 )
             ),
             array(
@@ -122,6 +134,7 @@ class ValidationParserTest extends WebTestCase
                     'format' => '{choice of [x|y|z]}',
                     'actualType' => DataTypes::COLLECTION,
                     'subType' => DataTypes::ENUM,
+                    'default' => null,
                 )
             ),
             array(
@@ -130,18 +143,21 @@ class ValidationParserTest extends WebTestCase
                     'format' => '{min: 2 max: 3 choice of [foo|bar|baz|qux]}',
                     'actualType' => DataTypes::COLLECTION,
                     'subType' => DataTypes::ENUM,
+                    'default' => null,
                 )
             ),
             array(
                 'property' => 'regexmatch',
                 'expected' => array(
-                    'format' => '{match: /^\d{1,4}\w{1,4}$/}'
+                    'format' => '{match: /^\d{1,4}\w{1,4}$/}',
+                    'default' => null,
                 )
             ),
             array(
                 'property' => 'regexnomatch',
                 'expected' => array(
-                    'format' => '{not match: /\d/}'
+                    'format' => '{not match: /\d/}',
+                    'default' => null,
                 )
             ),
             array(
@@ -149,13 +165,15 @@ class ValidationParserTest extends WebTestCase
                 'expected' => array(
                     'required' => true,
                     'dataType' => 'string',
-                    'format' => '{email address}'
+                    'format' => '{email address}',
+                    'default' => null,
                 )
             ),
             array(
                 'property' => 'multipleformats',
                 'expected' => array(
-                    'format' => '{url}, {length: min: 10}'
+                    'format' => '{url}, {length: min: 10}',
+                    'default' => null,
                 )
             )
         );

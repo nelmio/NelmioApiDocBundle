@@ -31,14 +31,18 @@ class FosRestHandler implements HandlerInterface
             if ($annot instanceof RequestParam) {
 
                 $requirements = $this->handleRequirements($annot->requirements);
-                $annotation->addParameter($annot->name, array(
+                $data = array(
                     'required'    => $annot->strict && $annot->nullable === false && $annot->default === null,
                     'dataType'    => $requirements,
                     'actualType'  => $this->inferType($requirements),
                     'subType'     => null,
                     'description' => $annot->description,
                     'readonly'    => false
-                ));
+                );
+                if ($annot->strict === false) {
+                    $data['default'] = $annot->default;
+                }
+                $annotation->addParameter($annot->name, $data);
             } elseif ($annot instanceof QueryParam) {
                 if ($annot->strict && $annot->nullable === false && $annot->default === null) {
                     $annotation->addRequirement($annot->name, array(

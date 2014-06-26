@@ -349,6 +349,7 @@ class ApiDocExtractor
      *  - Requirement parameters are concatenated.
      *  - Other string values are overridden by later parsers when present.
      *  - Array parameters are recursively merged.
+     *  - Non-null default values prevail over null default values. Later values overrides previous defaults.
      *
      * @param  array $p1 The pre-existing parameters array.
      * @param  array $p2 The newly-returned parameters array.
@@ -380,6 +381,8 @@ class ApiDocExtractor
                             } else {
                                 $v1[$name] = $value;
                             }
+                        } elseif ($name == 'default') {
+                            $v1[$name] = $value ?: $v1[$name];
                         } else {
                             $v1[$name] = $value;
                         }
