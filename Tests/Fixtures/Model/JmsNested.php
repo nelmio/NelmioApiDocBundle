@@ -15,7 +15,7 @@ class JmsNested
     /**
      * @JMS\Type("string");
      */
-    public $bar;
+    public $bar = 'baz';
 
     /**
      * Epic description.

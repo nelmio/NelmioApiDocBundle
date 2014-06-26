@@ -20,7 +20,7 @@ class Test
      * @Assert\NotBlank
      * @Assert\Type("string")
      */
-    public $a;
+    public $a = 'nelmio';
 
     /**
      * @Assert\Type("DateTime");

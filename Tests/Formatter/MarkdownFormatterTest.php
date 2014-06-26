@@ -223,6 +223,7 @@ nested[bar]:
 
   * type: string
   * required: false
+  * default value: baz
 
 nested[baz][]:
 
