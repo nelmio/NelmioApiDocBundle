@@ -28,4 +28,6 @@ class Test
     public $b;
 
     public $c;
+
+    public $d;
 }

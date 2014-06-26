@@ -341,6 +341,36 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     ),
                 )
             ),
+            array(
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CSRFEnabledFormType'),
+                array(
+                    'test1' => array(
+                        'dataType' => 'string',
+                        'actualType' => DataTypes::STRING,
+                        'subType' => null,
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false,
+                        'default' => null
+                    ),
+                    'test2' => array(
+                        'dataType' => 'string',
+                        'actualType' => DataTypes::STRING,
+                        'subType' => null,
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false,
+                        'default' => null
+                    ),
+                    '[_token]' => array(
+                        'dataType' => 'string',
+                        'required' => true,
+                        'description' => 'CSRF Token',
+                        'readonly' => false,
+                        'default' => "Test Token"
+                    )
+                )
+            ),
         );
     }
 }
