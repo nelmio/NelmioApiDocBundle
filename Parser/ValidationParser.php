@@ -170,6 +170,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
         switch ($class) {
             case 'NotBlank':
                 $vparams['format'][] = '{not blank}';
+                break;
             case 'NotNull':
                 $vparams['required'] = true;
                 break;
