@@ -524,6 +524,28 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\RequireConstructionType'),
+                array(
+                    'require_construction_type[a]' => array(
+                        'dataType' => 'string',
+                        'required' => true,
+                        'description' => 'A nice description',
+                        'readonly' => false
+                    )
+                )
+            ),
+            array(
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType'),
+                array(
+                    'dependency_type[a]' => array(
+                        'dataType' => 'string',
+                        'required' => true,
+                        'description' => 'A nice description',
+                        'readonly' => false
+                    )
+                )
+            ),
         );
     }
 }
