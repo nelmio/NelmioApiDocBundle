@@ -133,6 +133,7 @@ class JmsMetadataParser implements ParserInterface
                     'actualType'   => $dataType['actualType'],
                     'subType'      => $dataType['class'],
                     'required'     => false,
+                    'default'      => null,
                     //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
                     'description'  => $this->getDescription($item),
                     'readonly'     => $item->readOnly,

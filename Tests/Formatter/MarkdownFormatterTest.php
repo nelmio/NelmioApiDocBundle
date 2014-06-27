@@ -162,6 +162,11 @@ _create another test_
 
 #### Parameters ####
 
+dependency_type:
+
+  * type: object (dependency_type)
+  * required: true
+
 dependency_type[a]:
 
   * type: string
@@ -288,6 +293,10 @@ nested_array[]:
 _Testing return_
 
 #### Response ####
+
+dependency_type:
+
+  * type: object (dependency_type)
 
 dependency_type[a]:
 
