@@ -58,10 +58,10 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'dataType' => 'boolean',
                         'actualType' => DataTypes::BOOLEAN,
                         'subType' => null,
+                        'default' => null,
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
-                        'default' => null
                     ),
                     'd' => array(
                         'dataType' => 'string',
@@ -77,52 +77,74 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
             array(
                 array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType'),
                 array(
-                    'collection_type[a]' => array(
-                        'dataType' => 'array of strings',
-                        'actualType' => DataTypes::COLLECTION,
-                        'subType' => DataTypes::STRING,
-                        'required' => true,
-                        'description' => '',
-                        'default' => null,
-                        'readonly' => false
-                    ),
-                    'collection_type[b][][a]' => array(
-                        'dataType' => 'string',
-                        'actualType' => DataTypes::STRING,
-                        'default' => null,
-                        'subType' => null,
-                        'required' => true,
-                        'description' => 'A nice description',
-                        'readonly' => false
-                    ),
-                    'collection_type[b][][b]' => array(
-                        'dataType' => 'string',
-                        'actualType' => DataTypes::STRING,
-                        'subType' => null,
+                    'collection_type' => array(
+                        'dataType' => 'object (CollectionType)',
+                        'actualType' => DataTypes::MODEL,
+                        'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType',
                         'default' => null,
                         'required' => true,
                         'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
+                        'children' => array(
+                            'a' => array(
+                                'dataType' => 'array of strings',
+                                'actualType' => DataTypes::COLLECTION,
+                                'subType' => DataTypes::STRING,
+                                'default' => null,
+                                'required' => true,
+                                'description' => '',
+                                'readonly' => false,
+                            ),
+                            'b' => array(
+                                'dataType' => 'array of objects (TestType)',
+                                'actualType' => DataTypes::COLLECTION,
+                                'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType',
+                                'default' => null,
+                                'required' => true,
+                                'description' => '',
+                                'readonly' => false,
+                                'children' => array(
+                                    'a' => array(
+                                        'dataType' => 'string',
+                                        'actualType' => DataTypes::STRING,
+                                        'default' => null,
+                                        'subType' => null,
+                                        'required' => true,
+                                        'description' => 'A nice description',
+                                        'readonly' => false,
+                                    ),
+                                    'b' => array(
+                                        'dataType' => 'string',
+                                        'actualType' => DataTypes::STRING,
+                                        'default' => null,
+                                        'subType' => null,
+                                        'required' => true,
+                                        'description' => '',
+                                        'readonly' => false,
+                                    ),
+                                    'c' => array(
+                                        'dataType' => 'boolean',
+                                        'actualType' => DataTypes::BOOLEAN,
+                                        'subType' => null,
+                                        'default' => null,
+                                        'required' => true,
+                                        'description' => '',
+                                        'readonly' => false,
+                                    ),
+                                    'd' => array(
+                                        'dataType' => 'string',
+                                        'actualType' => DataTypes::STRING,
+                                        'subType' => null,
+                                        'required' => true,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'default' => "DefaultTest"
+                                    ),
+                                ),
+                            ),
+                        ),
                     ),
-                    'collection_type[b][][c]' => array(
-                        'dataType' => 'boolean',
-                        'actualType' => DataTypes::BOOLEAN,
-                        'default' => null,
-                        'subType' => null,
-                        'required' => true,
-                        'description' => '',
-                        'readonly' => false
-                    ),
-                    'collection_type[b][][d]' => array(
-                        'dataType' => 'string',
-                        'actualType' => DataTypes::STRING,
-                        'default' => "DefaultTest",
-                        'subType' => null,
-                        'required' => true,
-                        'description' => '',
-                        'readonly' => false
-                    )
-                )
+                ),
             ),
             array(
                 array(
@@ -133,49 +155,60 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     'a' => array(
                         'dataType' => 'array of strings',
                         'actualType' => DataTypes::COLLECTION,
-                        'default' => null,
                         'subType' => DataTypes::STRING,
-                        'required' => true,
-                        'description' => '',
-                        'readonly' => false
-                    ),
-                    'b[][a]' => array(
-                        'dataType' => 'string',
-                        'actualType' => DataTypes::STRING,
                         'default' => null,
-                        'subType' => null,
                         'required' => true,
-                        'description' => 'A nice description',
-                        'readonly' => false
+                        'description' => '',
+                        'readonly' => false,
                     ),
-                    'b[][b]' => array(
-                        'dataType' => 'string',
-                        'actualType' => DataTypes::STRING,
+                    'b' => array(
+                        'dataType' => 'array of objects (TestType)',
+                        'actualType' => DataTypes::COLLECTION,
+                        'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType',
+                        'required' => true,
+                        'description' => '',
                         'default' => null,
-                        'subType' => null,
-                        'required' => true,
-                        'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
+                        'children' => array(
+                            'a' => array(
+                                'dataType' => 'string',
+                                'actualType' => DataTypes::STRING,
+                                'subType' => null,
+                                'default' => null,
+                                'required' => true,
+                                'description' => 'A nice description',
+                                'readonly' => false,
+                            ),
+                            'b' => array(
+                                'dataType' => 'string',
+                                'actualType' => DataTypes::STRING,
+                                'subType' => null,
+                                'default' => null,
+                                'required' => true,
+                                'description' => '',
+                                'readonly' => false,
+                            ),
+                            'c' => array(
+                                'dataType' => 'boolean',
+                                'actualType' => DataTypes::BOOLEAN,
+                                'subType' => null,
+                                'default' => null,
+                                'required' => true,
+                                'description' => '',
+                                'readonly' => false,
+                            ),
+                            'd' => array(
+                                'dataType' => 'string',
+                                'actualType' => DataTypes::STRING,
+                                'subType' => null,
+                                'required' => true,
+                                'description' => '',
+                                'readonly' => false,
+                                'default' => "DefaultTest"
+                            ),
+                        ),
                     ),
-                    'b[][c]' => array(
-                        'dataType' => 'boolean',
-                        'actualType' => DataTypes::BOOLEAN,
-                        'default' => null,
-                        'subType' => null,
-                        'required' => true,
-                        'description' => '',
-                        'readonly' => false
-                    ),
-                    'b[][d]' => array(
-                        'dataType' => 'string',
-                        'actualType' => DataTypes::STRING,
-                        'subType' => null,
-                        'default' => "DefaultTest",
-                        'required' => true,
-                        'description' => '',
-                        'readonly' => false
-                    )
-                )
+                ),
             ),
             array(
                 array(
@@ -190,45 +223,56 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'default' => null,
                         'required' => true,
                         'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
                     ),
-                    'b[][a]' => array(
-                        'dataType' => 'string',
-                        'actualType' => DataTypes::STRING,
-                        'subType' => null,
-                        'default' => null,
-                        'required' => true,
-                        'description' => 'A nice description',
-                        'readonly' => false
-                    ),
-                    'b[][b]' => array(
-                        'dataType' => 'string',
-                        'actualType' => DataTypes::STRING,
-                        'subType' => null,
+                    'b' => array(
+                        'dataType' => 'array of objects (TestType)',
+                        'actualType' => DataTypes::COLLECTION,
+                        'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType',
                         'default' => null,
                         'required' => true,
                         'description' => '',
-                        'readonly' => false
+                        'readonly' => false,
+                        'children' => array(
+                            'a' => array(
+                                'dataType' => 'string',
+                                'actualType' => DataTypes::STRING,
+                                'subType' => null,
+                                'default' => null,
+                                'required' => true,
+                                'description' => 'A nice description',
+                                'readonly' => false,
+                            ),
+                            'b' => array(
+                                'dataType' => 'string',
+                                'actualType' => DataTypes::STRING,
+                                'subType' => null,
+                                'default' => null,
+                                'required' => true,
+                                'description' => '',
+                                'readonly' => false,
+                            ),
+                            'c' => array(
+                                'dataType' => 'boolean',
+                                'actualType' => DataTypes::BOOLEAN,
+                                'subType' => null,
+                                'default' => null,
+                                'required' => true,
+                                'description' => '',
+                                'readonly' => false,
+                            ),
+                            'd' => array(
+                                'dataType' => 'string',
+                                'actualType' => DataTypes::STRING,
+                                'subType' => null,
+                                'default' => "DefaultTest",
+                                'required' => true,
+                                'description' => '',
+                                'readonly' => false
+                            ),
+                        ),
                     ),
-                    'b[][c]' => array(
-                        'dataType' => 'boolean',
-                        'actualType' => DataTypes::BOOLEAN,
-                        'subType' => null,
-                        'default' => null,
-                        'required' => true,
-                        'description' => '',
-                        'readonly' => false
-                    ),
-                    'b[][d]' => array(
-                        'dataType' => 'string',
-                        'actualType' => DataTypes::STRING,
-                        'subType' => null,
-                        'default' => "DefaultTest",
-                        'required' => true,
-                        'description' => '',
-                        'readonly' => false
-                    )
-                )
+                ),
             ),
             array(
                 array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\ImprovedTestType'),
@@ -339,8 +383,97 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'readonly' => false,
                         'format' => json_encode(array('foo' => 'bar', 'baz' => 'Buzz')),
                     ),
-                )
+                ),
             ),
+            array(
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CompoundType'),
+                array (
+                    'sub_form' =>
+                        array (
+                            'dataType' => 'object (SimpleType)',
+                            'actualType' => 'model',
+                            'subType' => 'Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Form\\SimpleType',
+                            'default' => null,
+                            'required' => true,
+                            'description' => '',
+                            'readonly' => false,
+                            'children' =>
+                                array (
+                                    'a' =>
+                                        array (
+                                            'dataType' => 'string',
+                                            'actualType' => 'string',
+                                            'subType' => NULL,
+                                            'default' => null,
+                                            'required' => true,
+                                            'description' => 'Something that describes A.',
+                                            'readonly' => false,
+                                        ),
+                                    'b' =>
+                                        array (
+                                            'dataType' => 'float',
+                                            'actualType' => 'float',
+                                            'subType' => NULL,
+                                            'default' => null,
+                                            'required' => true,
+                                            'description' => '',
+                                            'readonly' => false,
+                                        ),
+                                    'c' =>
+                                        array (
+                                            'dataType' => 'choice',
+                                            'actualType' => 'choice',
+                                            'subType' => NULL,
+                                            'default' => null,
+                                            'required' => true,
+                                            'description' => '',
+                                            'readonly' => false,
+                                            'format' => '{"x":"X","y":"Y","z":"Z"}',
+                                        ),
+                                    'd' =>
+                                        array (
+                                            'dataType' => 'datetime',
+                                            'actualType' => 'datetime',
+                                            'subType' => NULL,
+                                            'default' => null,
+                                            'required' => true,
+                                            'description' => '',
+                                            'readonly' => false,
+                                        ),
+                                    'e' =>
+                                        array (
+                                            'dataType' => 'date',
+                                            'actualType' => 'date',
+                                            'subType' => NULL,
+                                            'default' => null,
+                                            'required' => true,
+                                            'description' => '',
+                                            'readonly' => false,
+                                        ),
+                                    'g' =>
+                                        array (
+                                            'dataType' => 'string',
+                                            'actualType' => 'string',
+                                            'subType' => NULL,
+                                            'default' => null,
+                                            'required' => true,
+                                            'description' => '',
+                                            'readonly' => false,
+                                        ),
+                                ),
+                        ),
+                    'a' =>
+                        array (
+                            'dataType' => 'float',
+                            'actualType' => 'float',
+                            'subType' => NULL,
+                            'default' => null,
+                            'required' => true,
+                            'description' => '',
+                            'readonly' => false,
+                        ),
+                ),
+            )
         );
     }
 }
