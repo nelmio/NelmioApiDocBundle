@@ -384,7 +384,7 @@ class ApiDoc
     }
 
     /**
-     * Sets the responsed data as processed by the parsers - same format as parameters
+     * Sets the response data as processed by the parsers - same format as parameters
      *
      * @param array $response
      */
