@@ -70,16 +70,16 @@ abstract class AbstractFormatter implements FormatterInterface
             $newName = $this->getNewName($name, $info, $parentName);
 
             $newParams[$newName] = array(
-                'dataType'      => $info['dataType'],
-                'readonly'      => array_key_exists('readonly', $info) ? $info['readonly'] : null,
-                'required'      => $info['required'],
-                'default'       => array_key_exists('default', $info) ? $info['default'] : null,
-                'description'   => array_key_exists('description', $info) ? $info['description'] : null,
-                'format'        => array_key_exists('format', $info) ? $info['format'] : null,
-                'sinceVersion'  => array_key_exists('sinceVersion', $info) ? $info['sinceVersion'] : null,
-                'untilVersion'  => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
-                'actualType'    => array_key_exists('actualType', $info) ? $info['actualType'] : null,
-                'subType'    => array_key_exists('subType', $info) ? $info['subType'] : null,
+                'dataType'     => $info['dataType'],
+                'readonly'     => array_key_exists('readonly', $info) ? $info['readonly'] : null,
+                'required'     => $info['required'],
+                'default'      => array_key_exists('default', $info) ? $info['default'] : null,
+                'description'  => array_key_exists('description', $info) ? $info['description'] : null,
+                'format'       => array_key_exists('format', $info) ? $info['format'] : null,
+                'sinceVersion' => array_key_exists('sinceVersion', $info) ? $info['sinceVersion'] : null,
+                'untilVersion' => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
+                'actualType'   => array_key_exists('actualType', $info) ? $info['actualType'] : null,
+                'subType'      => array_key_exists('subType', $info) ? $info['subType'] : null,
             );
 
             if (isset($info['children']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {
@@ -103,8 +103,14 @@ abstract class AbstractFormatter implements FormatterInterface
      */
     protected function getNewName($name, $data, $parentName = null)
     {
+        $array   = '';
         $newName = ($parentName) ? sprintf("%s[%s]", $parentName, $name) : $name;
-        $array = $data['actualType'] == DataTypes::COLLECTION && $data['subType'] !== null ? '[]' : '';
+
+        if (isset($data['actualType']) && $data['actualType'] == DataTypes::COLLECTION
+            && isset($data['subType']) && $data['subType'] !== null
+        ) {
+            $array = '[]';
+        }
 
         return sprintf("%s%s", $newName, $array);
     }
