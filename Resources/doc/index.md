@@ -127,7 +127,7 @@ The following properties are available:
 
 * `deprecated`: allow to set method as deprecated (default: `false`);
 
-* `tags`: allow to tag a method (e.g. `beta` or `in-development`). Either a single tag or an array of tags. 
+* `tags`: allow to tag a method (e.g. `beta` or `in-development`). Either a single tag or an array of tags.
 
 * `filters`: an array of filters;
 
@@ -412,23 +412,31 @@ Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tre
 
 ``` yaml
 nelmio_api_doc:
-    name:                     API documentation
-    exclude_sections:         []
+    name:                 'API documentation'
+    exclude_sections:     []
     motd:
-        template:             NelmioApiDocBundle::Components/motd.html.twig
+        template:             'NelmioApiDocBundle::Components/motd.html.twig'
     request_listener:
         enabled:              true
         parameter:            _doc
     sandbox:
         enabled:              true
-        endpoint:             ~
-        accept_type:          ~
-        body_format:          form
+        endpoint:             null
+        accept_type:          null
+        body_format:
+            formats:
+
+                # Defaults:
+                - form
+                - json
+            default_format:       ~ # One of "form"; "json"
         request_format:
             formats:
-                json: application/json
-                xml: application/xml
-            method:               format_param
+
+                # Defaults:
+                json:                application/json
+                xml:                 application/xml
+            method:               ~ # One of "format_param"; "accept_header"
             default_format:       json
         authentication:
             name:                 ~ # Required
