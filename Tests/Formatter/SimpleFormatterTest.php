@@ -1080,17 +1080,26 @@ With multiple lines.',
                             'description' => '',
                             'sinceVersion' => null,
                             'untilVersion' => null,
+                            'actualType' => DataTypes::MODEL,
+                            'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
+                            'default' => null,
                             'children' => array(
                                 'a' => array(
                                     'dataType' => 'string',
                                     'format' => '{length: min: foo}, {not blank}',
                                     'required' => true,
-                                    'readonly' => null
+                                    'readonly' => null,
+                                    'actualType' => DataTypes::STRING,
+                                    'subType' => null,
+                                    'default' => 'nelmio',
                                 ),
                                 'b' => array(
                                     'dataType' => 'DateTime',
                                     'required' => null,
-                                    'readonly' => null
+                                    'readonly' => null,
+                                    'actualType' => DataTypes::DATETIME,
+                                    'subType' => null,
+                                    'default' => null,
                                 )
                             )
                         )
@@ -1207,17 +1216,26 @@ With multiple lines.',
                             'description' => '',
                             'sinceVersion' => null,
                             'untilVersion' => null,
+                            'actualType' => DataTypes::MODEL,
+                            'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
+                            'default' => null,
                             'children' => array(
                                 'a' => array(
                                     'dataType' => 'string',
                                     'format' => '{length: min: foo}, {not blank}',
                                     'required' => true,
-                                    'readonly' => null
+                                    'readonly' => null,
+                                    'actualType' => DataTypes::STRING,
+                                    'subType' => null,
+                                    'default' => 'nelmio',
                                 ),
                                 'b' => array(
                                     'dataType' => 'DateTime',
                                     'required' => null,
-                                    'readonly' => null
+                                    'readonly' => null,
+                                    'actualType' => DataTypes::DATETIME,
+                                    'subType' => null,
+                                    'default' => null,
                                 )
                             )
                         )

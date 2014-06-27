@@ -473,7 +473,57 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                             'readonly' => false,
                         ),
                 ),
-            )
+            ),
+            array(
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\RequireConstructionType'),
+                array(
+                    'require_construction_type' => array(
+                        'dataType' => 'object (RequireConstructionType)',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false,
+                        'default' => null,
+                        'actualType' => 'model',
+                        'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\RequireConstructionType',
+                        'children' => array(
+                            'a' => array(
+                                'dataType' => 'string',
+                                'actualType' => 'string',
+                                'subType' => null,
+                                'default' => null,
+                                'required' => true,
+                                'description' => 'A nice description',
+                                'readonly' => false,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType'),
+                array(
+                    'dependency_type' => array(
+                        'dataType' => 'object (DependencyType)',
+                        'required' => true,
+                        'description' => '',
+                        'readonly' => false,
+                        'default' => null,
+                        'actualType' => 'model',
+                        'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType',
+                        'children' => array(
+                            'a' => array(
+                                'dataType' => 'string',
+                                'actualType' => 'string',
+                                'subType' => null,
+                                'default' => null,
+                                'required' => true,
+                                'description' => 'A nice description',
+                                'readonly' => false,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         );
     }
 }
