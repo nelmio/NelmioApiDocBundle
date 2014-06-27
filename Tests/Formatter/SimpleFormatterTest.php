@@ -26,9 +26,6 @@ class SimpleFormatterTest extends WebTestCase
         restore_error_handler();
         $result    = $container->get('nelmio_api_doc.formatter.simple_formatter')->format($data);
 
-        //print_r($result);
-        //exit;
-
         $expected = array(
             '/tests' =>
             array(

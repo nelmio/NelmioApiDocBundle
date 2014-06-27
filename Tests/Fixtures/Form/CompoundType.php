@@ -1,9 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bezalelhermoso
- * Date: 6/24/14
- * Time: 1:03 PM
+
+/*
+ * This file is part of the NelmioApiDocBundle.
+ *
+ * (c) Nelmio <hello@nelm.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
@@ -12,9 +15,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 
 /**
- * Class CompoundType
- *
- * @package Nelmio\ApiDocBundle\Tests\Fixtures\Form
  * @author Bez Hermoso <bez@activelamp.com>
  */
 class CompoundType extends AbstractType
