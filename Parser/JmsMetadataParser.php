@@ -23,7 +23,7 @@ use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 /**
  * Uses the JMS metadata factory to extract input/output model information
  */
-class JmsMetadataParser implements ParserInterface
+class JmsMetadataParser implements ParserInterface, PostParserInterface
 {
     /**
      * @var \Metadata\MetadataFactoryInterface
@@ -227,6 +227,40 @@ class JmsMetadataParser implements ParserInterface
     protected function isPrimitive($type)
     {
         return in_array($type, array('boolean', 'integer', 'string', 'float', 'double', 'array', 'DateTime'));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function postParse(array $input, array $parameters)
+    {
+        return $this->doPostParse($parameters);
+    }
+
+    /**
+     * Recursive `doPostParse` to avoid circular post parsing.
+     *
+     * @param array $parameters
+     * @param array $visited
+     * @return array
+     */
+    protected function doPostParse (array $parameters, array $visited = array())
+    {
+        foreach($parameters as $param => $data) {
+            if(isset($data['class']) && isset($data['children']) && !in_array($data['class'], $visited)) {
+                $visited[] = $data['class'];
+
+                $input = array('class' => $data['class'], 'groups' => isset($data['groups']) ? $data['groups'] : array());
+                $parameters[$param]['children'] = array_merge(
+                    $parameters[$param]['children'], $this->doPostParse($parameters[$param]['children'], $visited)
+                );
+                $parameters[$param]['children'] = array_merge(
+                    $parameters[$param]['children'], $this->doParse($input['class'], $visited, $input['groups'])
+                );
+            }
+        }
+
+        return $parameters;
     }
 
     /**

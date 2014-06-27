@@ -522,6 +522,18 @@ number:
 
   * type: DateTime
 
+related:
+
+  * type: object (Test)
+
+related[a]:
+
+  * type: string
+
+related[b]:
+
+  * type: DateTime
+
 
 ### `ANY` /z-return-selected-parsers-input ###
 
@@ -573,6 +585,18 @@ objects[][b]:
   * type: DateTime
 
 number:
+
+  * type: DateTime
+
+related:
+
+  * type: object (Test)
+
+related[a]:
+
+  * type: string
+
+related[b]:
 
   * type: DateTime
 MARKDOWN;
