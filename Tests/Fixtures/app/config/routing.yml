@@ -203,3 +203,7 @@ test_route_update_another_resource:
     requirements:
         _method: PUT|PATCH
         _format: json|xml|html
+
+swagger_doc:
+    resource: @NelmioApiDocBundle/Resources/config/swagger_routing.yml
+    prefix: /api-docs

@@ -9,6 +9,7 @@
         <parameter key="nelmio_api_doc.formatter.simple_formatter.class">Nelmio\ApiDocBundle\Formatter\SimpleFormatter</parameter>
         <parameter key="nelmio_api_doc.formatter.html_formatter.class">Nelmio\ApiDocBundle\Formatter\HtmlFormatter</parameter>
         <parameter key="nelmio_api_doc.formatter.swagger_formatter.class">Nelmio\ApiDocBundle\Formatter\SwaggerFormatter</parameter>
+        <parameter key="nelmio_api_doc.formatter.request_aware_swagger_formatter.class">Nelmio\ApiDocBundle\Formatter\RequestAwareSwaggerFormatter</parameter>
         <parameter key="nelmio_api_doc.sandbox.authentication">null</parameter>
     </parameters>
 
@@ -58,6 +59,9 @@
             </call>
         </service>
         <service id="nelmio_api_doc.formatter.swagger_formatter" class="%nelmio_api_doc.formatter.swagger_formatter.class%" />
+        <service id="nelmio_api_doc.formatter.request_aware_swagger_formatter" class="%nelmio_api_doc.formatter.request_aware_swagger_formatter.class%" scope="request">
+            <argument type="service" id="request" />
+        </service>
     </services>
 
 </container>

@@ -1,21 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bezalelhermoso
- * Date: 6/20/14
- * Time: 3:21 PM
+
+/*
+ * This file is part of the NelmioApiDocBundle.
+ *
+ * (c) Nelmio <hello@nelm.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Controller;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-
-/**
- * Class ResourceController
- *
- * @package Nelmio\ApiDocBundle\Tests\Fixtures\Controller
- * @author Bez Hermoso <bez@activelamp.com>
- */
 class ResourceController 
 {
     /**
