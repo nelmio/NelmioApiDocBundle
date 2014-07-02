@@ -248,11 +248,10 @@ documentation.
 
 #### Form Types Features
 
-If you use `FormFactoryInterface::createdNamed('', 'your_form_type'`, then by
-default the documentation will use the form type name as the prefix
+Even if you use `FormFactoryInterface::createNamed('', 'your_form_type')` the documentation will generate the form type name as the prefix for inputs
 (`your_form_type[param]` ... instead of just `param`).
 
-You can specify which prefix to use with the `name` key:
+You can specify which prefix to use with the `name` key in the `input` section:
 
 ```
 input = {
