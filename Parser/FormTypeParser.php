@@ -187,7 +187,7 @@ class FormTypeParser implements ParserInterface
                                     'default'     => null,
                                     'subType'     => $subType,
                                     'required'    => $config->getRequired(),
-                                    'description' => $config->getAttribute('description'),
+                                    'description' => ($config->getOption('description')) ? $config->getOption('description'):$config->getOption('label'),
                                     'readonly'    => $config->getDisabled(),
                                     'children'    => $children,
                                 );
@@ -205,7 +205,7 @@ class FormTypeParser implements ParserInterface
                                 'actualType'  => 'string',
                                 'default'     => $config->getData(),
                                 'required'    => $config->getRequired(),
-                                'description' => $config->getAttribute('description'),
+                                'description' => ($config->getOption('description')) ? $config->getOption('description'):$config->getOption('label'),
                                 'readonly'    => $config->getDisabled(),
                             );
                         }
@@ -221,7 +221,7 @@ class FormTypeParser implements ParserInterface
                 'subType'     => $subType,
                 'default'     => $config->getData(),
                 'required'    => $config->getRequired(),
-                'description' => $config->getAttribute('description'),
+                'description' => ($config->getOption('description')) ? $config->getOption('description'):$config->getOption('label'),
                 'readonly'    => $config->getDisabled(),
             );
 
