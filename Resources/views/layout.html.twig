@@ -269,6 +269,7 @@
                         self = this,
                         params = {},
                         formData = new FormData(),
+                        doubledParams = {},
                         headers = {},
                         content = $(this).find('textarea.content').val(),
                         result_container = $('.result', $(this).parent());
@@ -338,7 +339,12 @@
                         value = $('.value', $(this)).val();
 
                         if (value) {
-                            params[key] = value;
+                            // temporary save all additional/doubled parameters
+                            if (key in params) {
+                                doubledParams[key] = value;
+                            } else {
+                                params[key] = value;
+                            }
                         }
                     });
 
@@ -367,7 +373,12 @@
                         }
                     };
 
-                    // disable all the fields and buttons
+                    // merge additional params back to real params object
+                    if (!$.isEmptyObject(doubledParams)) {
+                        $.extend(params, doubledParams);
+                    }
+
+                    // disable all the fiels and buttons
                     $('input, button', $(this)).attr('disabled', 'disabled');
 
                     // append the query authentication
