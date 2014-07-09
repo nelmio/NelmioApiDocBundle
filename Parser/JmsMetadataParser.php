@@ -131,21 +131,23 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
                     }
                 }
 
-                $params[$name] = array(
-                    'dataType'     => $dataType['normalized'],
-                    'actualType'   => $dataType['actualType'],
-                    'subType'      => $dataType['class'],
-                    'required'     => false,
-                    'default'      => isset($defaultProperties[$item->name]) ? $defaultProperties[$item->name] : null,
-                    //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
-                    'description'  => $this->getDescription($item),
-                    'readonly'     => $item->readOnly,
-                    'sinceVersion' => $item->sinceVersion,
-                    'untilVersion' => $item->untilVersion,
-                );
+                if (!$dataType['inline']) {
+                    $params[$name] = array(
+                        'dataType'     => $dataType['normalized'],
+                        'actualType'   => $dataType['actualType'],
+                        'subType'      => $dataType['class'],
+                        'required'     => false,
+                        'default'      => isset($defaultProperties[$item->name]) ? $defaultProperties[$item->name] : null,
+                        //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
+                        'description'  => $this->getDescription($item),
+                        'readonly'     => $item->readOnly,
+                        'sinceVersion' => $item->sinceVersion,
+                        'untilVersion' => $item->untilVersion,
+                    );
 
-                if (!is_null($dataType['class']) && false === $dataType['primitive']) {
-                    $params[$name]['class'] = $dataType['class'];
+                    if (!is_null($dataType['class']) && false === $dataType['primitive']) {
+                        $params[$name]['class'] = $dataType['class'];
+                    }
                 }
 
                 // if class already parsed, continue, to avoid infinite recursion
@@ -155,8 +157,14 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
 
                 // check for nested classes with JMS metadata
                 if ($dataType['class'] && false === $dataType['primitive'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
-                    $visited[]                 = $dataType['class'];
-                    $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups);
+                    $visited[] = $dataType['class'];
+                    $children  = $this->doParse($dataType['class'], $visited, $groups);
+
+                    if ($dataType['inline']) {
+                        $params = array_merge($params, $children);
+                    } else {
+                        $params[$name]['children'] = $children;
+                    }
                 }
             }
         }
@@ -181,6 +189,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
                     'actualType' => DataTypes::COLLECTION,
                     'class' => $this->typeMap[$nestedType],
                     'primitive' => true,
+                    'inline' => false,
                 );
             }
 
@@ -191,6 +200,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
                 'actualType' => DataTypes::COLLECTION,
                 'class' => $nestedType,
                 'primitive' => false,
+                'inline' => false,
             );
         }
 
@@ -203,6 +213,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
                 'actualType' => $this->typeMap[$type],
                 'class' => null,
                 'primitive' => true,
+                'inline' => false,
             );
         }
 
@@ -213,6 +224,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
                 'class' => $type,
                 'actualType' => DataTypes::MODEL,
                 'primitive' => false,
+                'inline' => false,
             );
         }
 
@@ -224,6 +236,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
             'class' => $type,
             'actualType' => DataTypes::MODEL,
             'primitive' => false,
+            'inline' => $item->inline,
         );
     }
 

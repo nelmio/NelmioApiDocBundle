@@ -402,6 +402,89 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testParserWithInline()
+    {
+        $metadataFactory     = $this->getMock('Metadata\MetadataFactoryInterface');
+        $docCommentExtractor = $this->getMockBuilder('Nelmio\ApiDocBundle\Util\DocCommentExtractor')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $propertyMetadataFoo = new PropertyMetadata('Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsInline', 'foo');
+        $propertyMetadataFoo->type = array('name' => 'string');
+
+        $propertyMetadataInline = new PropertyMetadata('Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsInline', 'inline');
+        $propertyMetadataInline->type = array('name' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest');
+        $propertyMetadataInline->inline = true;
+
+        $input = 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsInline';
+
+        $metadata = new ClassMetadata($input);
+        $metadata->addPropertyMetadata($propertyMetadataFoo);
+        $metadata->addPropertyMetadata($propertyMetadataInline);
+
+        $propertyMetadataBar = new PropertyMetadata('Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest', 'bar');
+        $propertyMetadataBar->type = array('name' => 'string');
+
+        $subInput = 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest';
+
+        $subMetadata = new ClassMetadata($subInput);
+        $subMetadata->addPropertyMetadata($propertyMetadataBar);
+
+        $metadataFactory->expects($this->at(0))
+            ->method('getMetadataForClass')
+            ->with($input)
+            ->will($this->returnValue($metadata));
+
+        $metadataFactory->expects($this->at(1))
+            ->method('getMetadataForClass')
+            ->with($subInput)
+            ->will($this->returnValue($subMetadata));
+
+        $metadataFactory->expects($this->at(2))
+            ->method('getMetadataForClass')
+            ->with($subInput)
+            ->will($this->returnValue($subMetadata));
+
+        $propertyNamingStrategy = new CamelCaseNamingStrategy();
+
+        $jmsMetadataParser = new JmsMetadataParser($metadataFactory, $propertyNamingStrategy, $docCommentExtractor);
+
+        $output = $jmsMetadataParser->parse(
+            array(
+                'class'   => $input,
+                'groups'  => array(),
+            )
+        );
+
+        $this->assertEquals(
+            array(
+                'foo' => array(
+                    'dataType' => 'string',
+                    'actualType' => DataTypes::STRING,
+                    'subType' => null,
+                    'default' => null,
+                    'required' => false,
+                    'description' => null,
+                    'readonly' => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
+                ),
+                'bar' => array(
+                    'dataType' => 'string',
+                    'actualType' => DataTypes::STRING,
+                    'subType' => null,
+                    'default' => null,
+                    'required' => false,
+                    'description' => null,
+                    'readonly' => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
+                ),
+            ),
+            $output
+        );
+    }
+
     public function dataTestParserWithNestedType()
     {
         return array(
