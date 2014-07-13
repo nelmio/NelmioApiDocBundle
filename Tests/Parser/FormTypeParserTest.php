@@ -6,12 +6,64 @@ use Nelmio\ApiDocBundle\Parser\FormTypeParser;
 use Nelmio\ApiDocBundle\Tests\Fixtures;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormFactoryBuilder;
+use Symfony\Component\Form\Forms;
+use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
+use Symfony\Component\Form\Test\TypeTestCase;
 
-class FormTypeParserTest extends \PHPUnit_Framework_TestCase
+class FormTypeParserTest extends TypeTestCase
 {
+    protected function setUp()
+    {
+        $this->factory = Forms::createFormFactoryBuilder()
+            ->addExtensions($this->getExtensions())
+            ->getFormFactory();
+    }
+
+    protected function getExtensions()
+    {
+        $regMock = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockEntityType = $this->getMockBuilder('Nelmio\ApiDocBundle\Tests\Fixtures\Form\DoctrineEntityType')
+            ->setConstructorArgs(array($regMock))
+            ->setMethods(array())
+            ->getMock();
+
+        $mockEntityType->expects($this->any())->method('getName')
+            ->will($this->returnValue('entity'));
+
+        $mockEntityType->expects($this->any())->method('getName')
+            ->will($this->returnValue('entity'));
+
+        return array(
+            new PreloadedExtension(
+                array(
+                    $mockEntityType->getName() => new Fixtures\Form\DoctrineEntityType($regMock),
+                ),
+                array()
+            )
+        );
+    }
+
+    public function testParseEntityFormType()
+    {
+        $typeName = array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\EntityType');
+        $expected = array(
+            'entity_type[a][]' => array(
+                'dataType' => 'array of choices',
+                'required' => true,
+                'description' => null,
+                'readonly' => false
+            ),
+        );
+
+        $formTypeParser = new FormTypeParser($this->factory);
+        $output = $formTypeParser->parse($typeName);
+        $this->assertEquals($expected, $output);
+    }
+
     /**
      * @dataProvider dataTestParse
      */
@@ -58,25 +110,25 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
             array(
                 array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType'),
                 array(
-                    'collection_type[a]' => array(
+                    'collection_type[a][]' => array(
                         'dataType' => 'array of strings',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
-                    'collection_type[b][][a]' => array(
+                    'collection_type[b][a]' => array(
                         'dataType' => 'string',
                         'required' => true,
                         'description' => 'A nice description',
                         'readonly' => false
                     ),
-                    'collection_type[b][][b]' => array(
+                    'collection_type[b][b]' => array(
                         'dataType' => 'string',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
-                    'collection_type[b][][c]' => array(
+                    'collection_type[b][c]' => array(
                         'dataType' => 'boolean',
                         'required' => true,
                         'description' => '',
@@ -90,25 +142,25 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     'name' => '',
                 ),
                 array(
-                    'a' => array(
+                    'a[]' => array(
                         'dataType' => 'array of strings',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
-                    'b[][a]' => array(
+                    'b[a]' => array(
                         'dataType' => 'string',
                         'required' => true,
                         'description' => 'A nice description',
                         'readonly' => false
                     ),
-                    'b[][b]' => array(
+                    'b[b]' => array(
                         'dataType' => 'string',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
-                    'b[][c]' => array(
+                    'b[c]' => array(
                         'dataType' => 'boolean',
                         'required' => true,
                         'description' => '',
@@ -122,25 +174,25 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     'name' => null,
                 ),
                 array(
-                    'a' => array(
+                    'a[]' => array(
                         'dataType' => 'array of strings',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
-                    'b[][a]' => array(
+                    'b[a]' => array(
                         'dataType' => 'string',
                         'required' => true,
                         'description' => 'A nice description',
                         'readonly' => false
                     ),
-                    'b[][b]' => array(
+                    'b[b]' => array(
                         'dataType' => 'string',
                         'required' => true,
                         'description' => '',
                         'readonly' => false
                     ),
-                    'b[][c]' => array(
+                    'b[c]' => array(
                         'dataType' => 'boolean',
                         'required' => true,
                         'description' => '',
@@ -204,7 +256,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'readonly' => false,
                         'format' => json_encode(array('m' => 'Male', 'f' => 'Female')),
                     ),
-                    'c2' => array(
+                    'c2[]' => array(
                         'dataType' => 'array of choices',
                         'required' => true,
                         'description' => '',

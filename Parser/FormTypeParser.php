@@ -98,16 +98,20 @@ class FormTypeParser implements ParserInterface
                 $name = sprintf('%s[%s]', $prefix, $name);
             }
 
+            if($this->isArrayType($config)) {
+                $name = $name . '[]';
+            }
+
             $bestType = '';
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 if (isset($this->mapTypes[$type->getName()])) {
                     $bestType = $this->mapTypes[$type->getName()];
                 } elseif ('collection' === $type->getName()) {
-                    if (is_string($config->getOption('type')) && isset($this->mapTypes[$config->getOption('type')])) {
+                    if ($this->isArrayType($config)) {
                         $bestType = sprintf('array of %ss', $this->mapTypes[$config->getOption('type')]);
                     } else {
                         // Embedded form collection
-                        $subParameters = $this->parseForm($this->formFactory->create($config->getOption('type'), null, $config->getOption('options', array())), $name . '[]');
+                        $subParameters = $this->parseForm($this->formFactory->create($config->getOption('type'), null, $config->getOption('options', array())), $name);
                         $parameters = array_merge($parameters, $subParameters);
 
                         continue 2;
@@ -245,5 +249,23 @@ class FormTypeParser implements ParserInterface
         }
 
         return $choices;
+    }
+
+    /**
+     * @param $config
+     * @return string
+     */
+    private function isArrayType($config)
+    {
+        if (
+        ($config->getType()->getName() == 'entity' && true == $config->getOption('multiple')) ||
+        ($config->getType()->getName() == 'choice' && true == $config->getOption('multiple')) ||
+            ('collection' === $config->getType()->getName() && (is_string(
+                        $config->getOption('type')
+                    ) && isset($this->mapTypes[$config->getOption('type')])))
+        ) {
+           return true;
+        }
+        return false;
     }
 }
