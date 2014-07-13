@@ -253,7 +253,7 @@ class FormTypeParser implements ParserInterface
 
     /**
      * @param $config
-     * @return string
+     * @return boolean
      */
     private function isArrayType($config)
     {
