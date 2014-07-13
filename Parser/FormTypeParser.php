@@ -258,11 +258,8 @@ class FormTypeParser implements ParserInterface
     private function isArrayType($config)
     {
         if (
-        ($config->getType()->getName() == 'entity' && true == $config->getOption('multiple')) ||
-        ($config->getType()->getName() == 'choice' && true == $config->getOption('multiple')) ||
-            ('collection' === $config->getType()->getName() && (is_string(
-                        $config->getOption('type')
-                    ) && isset($this->mapTypes[$config->getOption('type')])))
+            (true == $config->getOption('multiple') && ($config->getType()->getName() == 'entity' || $config->getType()->getName() == 'choice')) ||
+            ('collection' === $config->getType()->getName() && (is_string($config->getOption('type')) && isset($this->mapTypes[$config->getOption('type')])))
         ) {
            return true;
         }
