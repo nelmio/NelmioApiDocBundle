@@ -26,21 +26,11 @@ class FormTypeParserTest extends TypeTestCase
         $regMock = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
             ->disableOriginalConstructor()
             ->getMock();
-        $mockEntityType = $this->getMockBuilder('Nelmio\ApiDocBundle\Tests\Fixtures\Form\DoctrineEntityType')
-            ->setConstructorArgs(array($regMock))
-            ->setMethods(array())
-            ->getMock();
-
-        $mockEntityType->expects($this->any())->method('getName')
-            ->will($this->returnValue('entity'));
-
-        $mockEntityType->expects($this->any())->method('getName')
-            ->will($this->returnValue('entity'));
 
         return array(
             new PreloadedExtension(
                 array(
-                    $mockEntityType->getName() => new Fixtures\Form\DoctrineEntityType($regMock),
+                    'entity' => new Fixtures\Form\DoctrineEntityType($regMock),
                 ),
                 array()
             )

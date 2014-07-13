@@ -1,9 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: leberknecht
- * Date: 04.07.2014
- * Time: 21:07
+/*
+ * This file is part of the NelmioApiDocBundle.
+ *
+ * (c) Nelmio <hello@nelm.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
@@ -24,12 +26,9 @@ class EntityType extends \Symfony\Bridge\Doctrine\Form\Type\EntityType implement
         $builder->setCompound(true);
     }
 
-
-    public function getName()
-    {
-        return 'entity_type';
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
@@ -40,12 +39,24 @@ class EntityType extends \Symfony\Bridge\Doctrine\Form\Type\EntityType implement
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function mapDataToForms($data, $forms)
     {
 
     }
 
-    public function mapFormsToData($forms, &$data){
+    /**
+     * {@inheritdoc}
+     */
+    public function mapFormsToData($forms, &$data)
+    {
 
+    }
+
+    public function getName()
+    {
+        return 'entity_type';
     }
 }
