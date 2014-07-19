@@ -26,8 +26,8 @@
                 {{ data.uri }}
             </span>
            {% if data.tags is defined %}
-                {% for tag in data.tags %}
-                <span class="tag">{{ tag }}</span>
+                {% for tag, color_code in data.tags %}
+                    <span class="tag" {% if color_code is defined and color_code is not empty %}style="background-color:{{ color_code }};"{% endif %}>{{ tag }}</span>
                 {% endfor %}
             {%  endif %}
         </h3>
@@ -58,7 +58,7 @@
                 <div><a href="{{ data.link }}" target="_blank">{{ data.link }}</a></div>
             {% endif %}
 
-            {% if data.requirements is defined  and data.requirements is not empty %}
+            {% if data.requirements is defined and data.requirements is not empty %}
                 <h4>Requirements</h4>
                 <table class="fullwidth">
                     <thead>

@@ -127,7 +127,27 @@ The following properties are available:
 
 * `deprecated`: allow to set method as deprecated (default: `false`);
 
-* `tags`: allow to tag a method (e.g. `beta` or `in-development`). Either a single tag or an array of tags.
+* `tags`: allow to tag a method (e.g. `beta` or `in-development`). Either a single tag or an array of tags. Each tag can have an optional hex colorcode attached.
+
+``` php
+<?php
+
+class YourController
+{
+    /**
+     * @ApiDoc(
+     *     tags={
+     *         "stable",
+     *         "deprecated" = "#ff0000"
+     *     }
+     * )
+     */
+    public function myFunction()
+    {
+        // ...
+    }
+}
+```
 
 * `filters`: an array of filters;
 
