@@ -229,13 +229,17 @@ class ApiDoc
         }
 
         if (isset($data['tags'])) {
-            $tags = $data['tags'];
-
-            if (!is_array($tags)) {
-                $tags = array($tags);
+            if (is_array($data['tags'])) {
+                foreach ($data['tags'] as $tag => $colorCode) {
+                    if (is_numeric($tag)) {
+                        $this->addTag($colorCode);
+                    } else {
+                        $this->addTag($tag, $colorCode);
+                    }
+                }
+            } else {
+                $this->tags[] = $data['tags'];
             }
-
-            $this->tags = $tags;
         }
 
         if (isset($data['https'])) {
@@ -259,6 +263,15 @@ class ApiDoc
     public function addStatusCode($statusCode, $description)
     {
         $this->statusCodes[$statusCode] = !is_array($description) ? array($description) : $description;
+    }
+
+    /**
+     * @param string $tag
+     * @param string $colorCode
+     */
+    public function addTag($tag, $colorCode = '')
+    {
+        $this->tags[$tag] = $colorCode;
     }
 
     /**
@@ -528,14 +541,6 @@ class ApiDoc
     public function getParameters()
     {
         return $this->parameters;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTags()
-    {
-        return $this->tags;
     }
 
     /**
