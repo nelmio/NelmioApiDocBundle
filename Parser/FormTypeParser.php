@@ -145,11 +145,11 @@ class FormTypeParser implements ParserInterface
                         $bestType   = sprintf('array of %ss', $subType);
                     } else {
                         // Embedded form collection
-                        $type       = $config->getOption('type');
-                        $subForm    = $this->formFactory->create($type, null, $config->getOption('options', array()));
+                        $embbededType       = $config->getOption('type');
+                        $subForm    = $this->formFactory->create($embbededType, null, $config->getOption('options', array()));
                         $children   = $this->parseForm($subForm);
                         $actualType = DataTypes::COLLECTION;
-                        $subType    = is_object($type) ? get_class($type) : $type;
+                        $subType    = is_object($embbededType) ? get_class($embbededType) : $embbededType;
 
                         if (class_exists($subType)) {
                             $parts = explode('\\', $subType);
