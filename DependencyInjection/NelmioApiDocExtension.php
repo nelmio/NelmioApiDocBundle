@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,7 +26,7 @@ class NelmioApiDocExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $processor = new Processor();
-        $configuration = new Configuration();
+        $configuration = new Configuration($container->getParameter('kernel.cache_dir'));
         $config = $processor->processConfiguration($configuration, $configs);
 
         $container->setParameter('nelmio_api_doc.motd.template', $config['motd']['template']);
@@ -56,7 +57,25 @@ class NelmioApiDocExtension extends Extension
         if (!interface_exists('\Symfony\Component\Validator\MetadataFactoryInterface')) {
             $container->setParameter('nelmio_api_doc.parser.validation_parser.class', 'Nelmio\ApiDocBundle\Parser\ValidationParserLegacy');
         }
+
+        $container->setParameter('nelmio_api_doc.cache.enabled', $config['cache']['enabled']);
+        $container->setParameter('nelmio_api_doc.cache.directory', $config['cache']['dir']);
+
+        if ($config['cache']['enabled'] === true) {
+            $arguments = $container->getDefinition('nelmio_api_doc.extractor.api_doc_extractor')->getArguments();
+            $caching = new Definition('Nelmio\ApiDocBundle\Extractor\CachingApiDocExtractor');
+            $arguments[] = $config['cache']['dir'];
+            $arguments[] = $container->getParameter('kernel.debug');
+            $caching->setArguments($arguments);
+            $container->setDefinition('nelmio_api_doc.extractor.api_doc_extractor', $caching);
+        }
     }
+
+    public function getConfiguration(array $config, ContainerBuilder $container)
+    {
+        return new Configuration($container->getParameter('kernel.cache_dir'));
+    }
+
 
     /**
      * @return string
