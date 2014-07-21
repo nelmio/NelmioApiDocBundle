@@ -28,6 +28,10 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertTrue(is_array($data));
         $this->assertCount(self::ROUTES_QUANTITY, $data);
 
+        $cacheFile = $container->getParameter('kernel.cache_dir') . '/api-doc.cache';
+        $this->assertFileExists($cacheFile);
+        $this->assertEquals(file_get_contents($cacheFile), serialize($data));
+
         foreach ($data as $d) {
             $this->assertTrue(is_array($d));
             $this->assertArrayHasKey('annotation', $d);

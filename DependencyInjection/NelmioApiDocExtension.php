@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -63,6 +64,14 @@ class NelmioApiDocExtension extends Extension
         $container->setParameter('nelmio_api_doc.swagger.api_version', $config['swagger']['api_version']);
         $container->setParameter('nelmio_api_doc.swagger.info', $config['swagger']['info']);
 
+        if ($config['cache']['enabled'] === true) {
+            $arguments = $container->getDefinition('nelmio_api_doc.extractor.api_doc_extractor')->getArguments();
+            $caching = new Definition('Nelmio\ApiDocBundle\Extractor\CachingApiDocExtractor');
+            $arguments[] = $container->getParameterBag()->resolveValue($config['cache']['file']);
+            $arguments[] = $container->getParameter('kernel.debug');
+            $caching->setArguments($arguments);
+            $container->setDefinition('nelmio_api_doc.extractor.api_doc_extractor', $caching);
+        }
     }
 
     /**
