@@ -95,7 +95,7 @@
                 if(contentContainer.is(':visible')) {
                     clearHash();
                 } else {
-                    setHash($(this).attr('href'));
+                    setHash($(this).data('href'));
                 }
 
                 contentContainer.slideToggle('fast');
