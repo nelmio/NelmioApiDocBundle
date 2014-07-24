@@ -246,6 +246,8 @@ class SwaggerFormatter implements FormatterInterface
                 );
             }
 
+            $type = isset($responseMessages[200]['responseModel']) ? $responseMessages[200]['responseModel'] : null;
+
             foreach ($apiDoc->getRoute()->getMethods() as $method) {
                 $operation = array(
                     'method' => $method,
@@ -254,6 +256,10 @@ class SwaggerFormatter implements FormatterInterface
                     'parameters' => $parameters,
                     'responseMessages' => array_values($responseMessages),
                 );
+
+                if ($type !== null) {
+                    $operation['type'] = $type;
+                }
 
                 $apiBag[$path][] = $operation;
             }

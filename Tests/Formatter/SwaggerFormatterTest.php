@@ -237,6 +237,7 @@ class SwaggerFormatterTest extends WebTestCase
                                                         'responseModel' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
                                                     ),
                                                 ),
+                                            'type' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
                                         ),
                                     ),
                             ),
