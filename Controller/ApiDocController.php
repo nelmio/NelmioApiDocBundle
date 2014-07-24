@@ -12,12 +12,14 @@
 namespace Nelmio\ApiDocBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiDocController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        $request->setRequestFormat('html'); // Ensures web debug toolbar is able to display
         $extractedDoc = $this->get('nelmio_api_doc.extractor.api_doc_extractor')->all();
         $htmlContent  = $this->get('nelmio_api_doc.formatter.html_formatter')->format($extractedDoc);
 
