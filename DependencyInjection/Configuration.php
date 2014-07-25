@@ -86,15 +86,49 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->arrayNode('authentication')
                             ->children()
-                                ->scalarNode('name')->isRequired()->end()
                                 ->scalarNode('delivery')
                                     ->isRequired()
                                     ->validate()
-                                        ->ifNotInArray(array('query', 'http_basic', 'header'))
+                                        ->ifNotInArray(array('query', 'http', 'header'))
                                         ->thenInvalid("Unknown authentication delivery type '%s'.")
                                     ->end()
                                 ->end()
+                                ->scalarNode('name')->isRequired()->end()
+                                ->enumNode('type')
+                                    ->info('Required if http delivery is selected.')
+                                    ->values(array('basic', 'bearer'))
+                                ->end()
                                 ->booleanNode('custom_endpoint')->defaultFalse()->end()
+                            ->end()
+                            ->validate()
+                                ->ifTrue(function($v) {
+                                    return 'http' === $v['delivery'] && !$v['type'] ;
+                                })
+                                ->thenInvalid('"type" is required when using http delivery.')
+                            ->end()
+                            # http_basic BC
+                            ->beforeNormalization()
+                                ->ifTrue(function ($v) {
+                                    return 'http_basic' === $v['delivery'];
+                                })
+                                ->then(function ($v) {
+                                    $v['delivery'] = 'http';
+                                    $v['type'] = 'basic';
+
+                                    return $v;
+                                })
+                            ->end()
+                            ->beforeNormalization()
+                                ->ifTrue(function ($v) {
+                                    return 'http' === $v['delivery'];
+                                })
+                                ->then(function ($v) {
+                                    if ('http' === $v['delivery'] && !isset($v['name'])) {
+                                        $v['name'] = 'Authorization';
+                                    }
+
+                                    return $v;
+                                })
                             ->end()
                         ->end()
                     ->end()
