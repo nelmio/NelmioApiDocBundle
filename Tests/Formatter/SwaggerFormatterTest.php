@@ -230,7 +230,6 @@ class SwaggerFormatterTest extends WebTestCase
                                                 ),
                                             'responseMessages' =>
                                                 array(
-
                                                     array(
                                                         'code' => 200,
                                                         'message' => 'See standard HTTP status code reason for 200',
@@ -650,12 +649,14 @@ With multiple lines.',
                                                                     'paramType' => 'form',
                                                                     'name' => 'c',
                                                                     'type' => 'boolean',
+                                                                    'defaultValue' => false,
                                                                 ),
 
                                                                 array (
                                                                     'paramType' => 'form',
                                                                     'name' => 'd',
                                                                     'type' => 'string',
+                                                                    'defaultValue' => 'DefaultTest',
                                                                 ),
                                                         ),
                                                     'responseMessages' =>
@@ -693,12 +694,14 @@ With multiple lines.',
                                                                     'paramType' => 'form',
                                                                     'name' => 'c',
                                                                     'type' => 'boolean',
+                                                                    'defaultValue' => false,
                                                                 ),
 
                                                                 array (
                                                                     'paramType' => 'form',
                                                                     'name' => 'd',
                                                                     'type' => 'string',
+                                                                    'defaultValue' => 'DefaultTest',
                                                                 ),
                                                         ),
                                                     'responseMessages' =>

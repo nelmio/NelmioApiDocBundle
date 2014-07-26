@@ -360,7 +360,8 @@ class SwaggerFormatter implements FormatterInterface
                                 $prop['subType'],
                                 isset($prop['children']) ? $prop['children'] : null,
                                 $prop['description'] ?: $prop['dataType'],
-                                $models);
+                                $models
+                            );
                         break;
                 }
             }
@@ -394,6 +395,10 @@ class SwaggerFormatter implements FormatterInterface
 
             if (is_array($enum) && count($enum) > 0) {
                 $parameter['enum'] = $enum;
+            }
+
+            if ($prop['default'] !== null) {
+                $parameter['defaultValue'] = $prop['default'];
             }
 
             $parameters[] = $parameter;
