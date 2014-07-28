@@ -229,10 +229,12 @@ class SwaggerFormatter implements FormatterInterface
                     $message = sprintf('See standard HTTP status code reason for %s', $statusCode);
                 }
 
+                $className = !empty($prop['type']['form_errors']) ? $prop['type']['class'] . '.ErrorResponse' : $prop['type']['class'];
+
                 $responseModel = array(
                     'code' => $statusCode,
                     'message' => $message,
-                    'responseModel' => $this->registerModel($prop['type']['class'], $prop['model'], '', $models),
+                    'responseModel' => $this->registerModel($className, $prop['model'], '', $models),
                 );
                 $responseMessages[$statusCode] = $responseModel;
             }
