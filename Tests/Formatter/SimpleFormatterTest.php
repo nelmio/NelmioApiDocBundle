@@ -1080,7 +1080,25 @@ With multiple lines.',
                             'description' => '',
                             'sinceVersion' => null,
                             'untilVersion' => null,
-                            'children' => array(),
+                            'children' => array(
+                                'a' => array(
+                                    'dataType' => 'string',
+                                    'actualType' => DataTypes::STRING,
+                                    'subType' => null,
+                                    'default' => 'nelmio',
+                                    'format' => '{length: min: foo}, {not blank}',
+                                    'required' => true,
+                                    'readonly' => null
+                                ),
+                                'b' => array(
+                                    'dataType' => 'DateTime',
+                                    'actualType' => DataTypes::DATETIME,
+                                    'subType' => null,
+                                    'default' => null,
+                                    'required' => null,
+                                    'readonly' => null
+                                )
+                            ),
                         )
                     ),
                     'authenticationRoles' => array(),
@@ -1197,7 +1215,25 @@ With multiple lines.',
                             'description' => '',
                             'sinceVersion' => null,
                             'untilVersion' => null,
-                            'children' => array(),
+                            'children' => array(
+                                'a' => array(
+                                    'dataType' => 'string',
+                                    'actualType' => DataTypes::STRING,
+                                    'subType' => null,
+                                    'default' => 'nelmio',
+                                    'format' => '{length: min: foo}, {not blank}',
+                                    'required' => true,
+                                    'readonly' => null
+                                ),
+                                'b' => array(
+                                    'dataType' => 'DateTime',
+                                    'actualType' => DataTypes::DATETIME,
+                                    'subType' => null,
+                                    'default' => null,
+                                    'required' => null,
+                                    'readonly' => null
+                                )
+                            ),
                         )
                     ),
                     'authenticationRoles' => array(),

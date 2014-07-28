@@ -762,6 +762,14 @@ related:
 
   * type: object (Test)
 
+related[a]:
+
+  * type: string
+
+related[b]:
+
+  * type: DateTime
+
 
 ### `ANY` /z-return-selected-parsers-input ###
 
@@ -819,6 +827,14 @@ number:
 related:
 
   * type: object (Test)
+
+related[a]:
+
+  * type: string
+
+related[b]:
+
+  * type: DateTime
 MARKDOWN;
 
         $this->assertEquals($expected, $result);
