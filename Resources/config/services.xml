@@ -15,6 +15,7 @@
         <parameter key="nelmio_api_doc.extractor.handler.phpdoc.class">Nelmio\ApiDocBundle\Extractor\Handler\PhpDocHandler</parameter>
 
         <parameter key="nelmio_api_doc.parser.collection_parser.class">Nelmio\ApiDocBundle\Parser\CollectionParser</parameter>
+        <parameter key="nelmio_api_doc.parser.form_errors_parser.class">Nelmio\ApiDocBundle\Parser\FormErrorsParser</parameter>
     </parameters>
 
     <services>
@@ -56,6 +57,9 @@
         </service>
 
         <service id="nelmio_api_doc.parser.collection_parser" class="%nelmio_api_doc.parser.collection_parser.class%">
+            <tag name="nelmio_api_doc.extractor.parser" />
+        </service>
+        <service id="nelmio_api_doc.parser.form_errors_parser" class="%nelmio_api_doc.parser.form_errors_parser.class%">
             <tag name="nelmio_api_doc.extractor.parser" />
         </service>
     </services>
