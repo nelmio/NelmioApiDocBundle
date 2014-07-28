@@ -13,6 +13,8 @@
         <parameter key="nelmio_api_doc.extractor.handler.jms_security.class">Nelmio\ApiDocBundle\Extractor\Handler\JmsSecurityExtraHandler</parameter>
         <parameter key="nelmio_api_doc.extractor.handler.sensio_framework_extra.class">Nelmio\ApiDocBundle\Extractor\Handler\SensioFrameworkExtraHandler</parameter>
         <parameter key="nelmio_api_doc.extractor.handler.phpdoc.class">Nelmio\ApiDocBundle\Extractor\Handler\PhpDocHandler</parameter>
+
+        <parameter key="nelmio_api_doc.parser.form_errors_parser.class">Nelmio\ApiDocBundle\Parser\FormErrorsParser</parameter>
     </parameters>
 
     <services>
@@ -52,6 +54,11 @@
             <argument type="service" id="nelmio_api_doc.doc_comment_extractor" />
             <tag name="nelmio_api_doc.extractor.handler"/>
         </service>
+
+        <service id="nelmio_api_doc.parser.form_errors_parser" class="%nelmio_api_doc.parser.form_errors_parser.class%">
+            <tag name="nelmio_api_doc.extractor.parser" />
+        </service>
+
     </services>
 
 </container>
