@@ -30,14 +30,17 @@
                         <option value="{{ header }}"{{ defaultRequestFormat == format ? ' selected' : '' }}>{{ format }}</option>
                     {% endfor %}
                     </select>
-                    {% if authentication and authentication.delivery in ['query', 'http_basic', 'header'] %}
-                        api key: <input type="text" id="api_key" value=""/>
-                    {% endif %}
-                    {% if authentication and authentication.delivery in ['http_basic'] %}
-                        api pass: <input type="text" id="api_pass" value=""/>
-                    {% endif %}
-                    {% if authentication and authentication.custom_endpoint %}
-                        api endpoint: <input type="text" id="api_endpoint" value=""/>
+                    {% if authentication %}
+                        {% if authentication.delivery == 'http' and authentication.type == 'basic' %}
+                            api login: <input type="text" id="api_login" value=""/>
+                            api password: <input type="text" id="api_pass" value=""/>
+                        {% elseif authentication.delivery in ['query', 'http', 'header'] %}
+                            api key: <input type="text" id="api_key" value=""/>
+                        {% endif %}
+
+                        {% if authentication.custom_endpoint %}
+                            api endpoint: <input type="text" id="api_endpoint" value=""/>
+                        {% endif %}
                     {% endif %}
                 </div>
             {% endif %}
@@ -419,10 +422,20 @@
                         headers: headers,
                         crossDomain: true,
                         beforeSend: function (xhr) {
-                            if (authentication_delivery == 'http_basic') {
-                                xhr.setRequestHeader('Authorization', 'Basic ' + btoa($('#api_key').val() + ':' + $('#api_pass').val()));
-                            }else if(authentication_delivery == 'header') {
-                                xhr.setRequestHeader(api_key_parameter, $('#api_key').val());
+                            if (authentication_delivery) {
+                                var value;
+
+                                if ('http' == authentication_delivery) {
+                                    if ('basic' == authentication_type) {
+                                        value = 'Basic ' + btoa($('#api_login').val() + ':' + $('#api_pass').val());
+                                    } else if ('bearer' == authentication_type) {
+                                        value = 'Bearer ' + $('#api_key').val();
+                                    }
+                                } else if ('header' == authentication_delivery) {
+                                    value = $('#api_key').val();
+                                }
+
+                                xhr.setRequestHeader(api_key_parameter, value);
                             }
                         },
                         complete: function(xhr) {
@@ -547,8 +560,10 @@
 
                 });
 
-                {% if authentication and authentication.delivery == 'http_basic' %}
+                {% if authentication and authentication.delivery == 'http' %}
                 var authentication_delivery = '{{ authentication.delivery }}';
+                var api_key_parameter = '{{ authentication.name }}';
+                var authentication_type = '{{ authentication.type }}';
                 {% elseif authentication and authentication.delivery == 'query' %}
                 var authentication_delivery = '{{ authentication.delivery }}';
                 var api_key_parameter = '{{ authentication.name }}';
