@@ -16,6 +16,16 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
+    /**
+     * @var string
+     */
+    protected $cacheDir;
+
+    public function __construct($cacheDir)
+    {
+        $this->cacheDir = $cacheDir;
+    }
+
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
@@ -131,6 +141,13 @@ class Configuration implements ConfigurationInterface
                                 })
                             ->end()
                         ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('cache')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultValue(false)->end()
+                        ->booleanNode('dir')->defaultValue($this->cacheDir)->end()
                     ->end()
                 ->end()
             ->end();

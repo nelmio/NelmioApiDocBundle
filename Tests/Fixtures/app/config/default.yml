@@ -53,4 +53,6 @@ jms_serializer:
         auto_detection: true
 
 nelmio_api_doc:
+    cache:
+        enabled: true
     exclude_sections: ["private", "exclusive"]
