@@ -62,6 +62,7 @@
     <xsd:complexType name="authentication">
         <xsd:attribute name="name" type="xsd:string"/>
         <xsd:attribute name="delivery" type="authentication_delivery_enum"/>
+        <xsd:attribute name="type" type="xsd:string"/>
         <xsd:attribute name="custom_endpoint" type="xsd:boolean" default="false"/>
     </xsd:complexType>
 
