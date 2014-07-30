@@ -26,6 +26,241 @@ class MarkdownFormatterTest extends WebTestCase
         $result = $container->get('nelmio_api_doc.formatter.markdown_formatter')->format($data);
 
         $expected = <<<MARKDOWN
+## /api/other-resources ##
+
+### `GET` /api/other-resources.{_format} ###
+
+_List another resource._
+
+#### Requirements ####
+
+**_format**
+
+  - Requirement: json|xml|html
+
+
+### `PUT|PATCH` /api/other-resources/{id}.{_format} ###
+
+_Update a resource bu ID._
+
+#### Requirements ####
+
+**_format**
+
+  - Requirement: json|xml|html
+**id**
+
+
+
+## /api/resources ##
+
+### `GET` /api/resources.{_format} ###
+
+_List resources._
+
+#### Requirements ####
+
+**_format**
+
+  - Requirement: json|xml|html
+
+
+### `POST` /api/resources.{_format} ###
+
+_Create a new resource._
+
+#### Requirements ####
+
+**_format**
+
+  - Requirement: json|xml|html
+
+#### Parameters ####
+
+a:
+
+  * type: string
+  * required: true
+  * description: Something that describes A.
+
+b:
+
+  * type: float
+  * required: true
+
+c:
+
+  * type: choice
+  * required: true
+
+d:
+
+  * type: datetime
+  * required: true
+
+e:
+
+  * type: date
+  * required: true
+
+g:
+
+  * type: string
+  * required: true
+
+#### Response ####
+
+foo:
+
+  * type: DateTime
+
+bar:
+
+  * type: string
+
+baz[]:
+
+  * type: array of integers
+  * description: Epic description.
+
+With multiple lines.
+
+circular:
+
+  * type: object (JmsNested)
+
+circular[foo]:
+
+  * type: DateTime
+
+circular[bar]:
+
+  * type: string
+
+circular[baz][]:
+
+  * type: array of integers
+  * description: Epic description.
+
+With multiple lines.
+
+circular[circular]:
+
+  * type: object (JmsNested)
+
+circular[parent]:
+
+  * type: object (JmsTest)
+
+circular[parent][foo]:
+
+  * type: string
+
+circular[parent][bar]:
+
+  * type: DateTime
+
+circular[parent][number]:
+
+  * type: double
+
+circular[parent][arr]:
+
+  * type: array
+
+circular[parent][nested]:
+
+  * type: object (JmsNested)
+
+circular[parent][nested_array][]:
+
+  * type: array of objects (JmsNested)
+
+circular[since]:
+
+  * type: string
+  * versions: >=0.2
+
+circular[until]:
+
+  * type: string
+  * versions: <=0.3
+
+circular[since_and_until]:
+
+  * type: string
+  * versions: >=0.4,<=0.5
+
+parent:
+
+  * type: object (JmsTest)
+
+parent[foo]:
+
+  * type: string
+
+parent[bar]:
+
+  * type: DateTime
+
+parent[number]:
+
+  * type: double
+
+parent[arr]:
+
+  * type: array
+
+parent[nested]:
+
+  * type: object (JmsNested)
+
+parent[nested_array][]:
+
+  * type: array of objects (JmsNested)
+
+since:
+
+  * type: string
+  * versions: >=0.2
+
+until:
+
+  * type: string
+  * versions: <=0.3
+
+since_and_until:
+
+  * type: string
+  * versions: >=0.4,<=0.5
+
+
+### `GET` /api/resources/{id}.{_format} ###
+
+_Retrieve a resource by ID._
+
+#### Requirements ####
+
+**_format**
+
+  - Requirement: json|xml|html
+**id**
+
+
+
+### `DELETE` /api/resources/{id}.{_format} ###
+
+_Delete a resource by ID._
+
+#### Requirements ####
+
+**_format**
+
+  - Requirement: json|xml|html
+**id**
+
+
+
 ## /tests ##
 
 ### `GET` /tests.{_format} ###
@@ -431,7 +666,7 @@ nested_array[]:
 
 **id**
 
-  - Requirement: \\d+
+  - Requirement: \d+
 
 
 ### `GET` /z-action-with-deprecated-indicator ###
@@ -459,7 +694,7 @@ param1:
 
 page:
 
-  * Requirement: \\d+
+  * Requirement: \d+
   * Description: Page of the overview.
   * Default: 1
 

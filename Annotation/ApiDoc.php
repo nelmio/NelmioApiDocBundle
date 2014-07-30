@@ -136,6 +136,21 @@ class ApiDoc
     private $statusCodes = array();
 
     /**
+     * @var string|null
+     */
+    private $resourceDescription = null;
+
+    /**
+     * @var array
+     */
+    private $responseMap = array();
+
+    /**
+     * @var array
+     */
+    private $parsedResponseMap = array();
+
+    /**
      * @var array
      */
     private $tags = array();
@@ -240,6 +255,17 @@ class ApiDoc
 
         if (isset($data['https'])) {
             $this->https = $data['https'];
+        }
+
+        if (isset($data['resourceDescription'])) {
+            $this->resourceDescription = $data['resourceDescription'];
+        }
+
+        if (isset($data['responseMap'])) {
+            $this->responseMap = $data['responseMap'];
+            if (isset($this->responseMap[200])) {
+                $this->output = $this->responseMap[200];
+            }
         }
     }
 
@@ -606,11 +632,56 @@ class ApiDoc
             $data['tags'] = $tags;
         }
 
+        if ($resourceDescription = $this->resourceDescription) {
+            $data['resourceDescription'] = $resourceDescription;
+        }
+
         $data['https'] = $this->https;
         $data['authentication'] = $this->authentication;
         $data['authenticationRoles'] = $this->authenticationRoles;
         $data['deprecated'] = $this->deprecated;
 
         return $data;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getResourceDescription()
+    {
+        return $this->resourceDescription;
+    }
+
+    /**
+     * @return array
+     */
+    public function getResponseMap()
+    {
+        if (!isset($this->responseMap[200]) && null !== $this->output) {
+            $this->responseMap[200] = $this->output;
+        }
+
+        return $this->responseMap;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParsedResponseMap()
+    {
+        return $this->parsedResponseMap;
+    }
+
+    /**
+     * @param $model
+     * @param $type
+     * @param int $statusCode
+     */
+    public function setResponseForStatusCode($model, $type, $statusCode = 200)
+    {
+        $this->parsedResponseMap[$statusCode] = array('type' => $type, 'model' => $model);
+        if ($statusCode == 200 && $this->response !== $model) {
+            $this->response = $model;
+        }
     }
 }

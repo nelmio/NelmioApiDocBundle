@@ -198,7 +198,6 @@ class SimpleFormatterTest extends WebTestCase
                             'dataType' => 'string',
                             'actualType' => DataTypes::STRING,
                             'subType' => null,
-                            'default' => null,
                             'default' => "DefaultTest",
                             'required' => true,
                             'description' => '',
@@ -622,8 +621,6 @@ And, it supports multilines until the first \'@\' char.',
                         ),
                     ),
                     'https' => false,
-                    'description' => 'This method is useful to test if the getDocComment works.',
-                    'documentation' => "This method is useful to test if the getDocComment works.\nAnd, it supports multilines until the first '@' char.",
                     'authentication' => false,
                     'authenticationRoles' => array(),
                     'deprecated' => false,
@@ -1069,39 +1066,39 @@ With multiple lines.',
                                     'subType' => null,
                                     'default' => null,
                                     'required' => null,
-                                    'readonly' => null
+                                    'readonly' => null,
                                 )
                             )
                         ),
                         'related' => array(
                             'dataType' => 'object (Test)',
+                            'actualType' => DataTypes::MODEL,
+                            'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
+                            'default' => null,
                             'readonly' => false,
                             'required' => false,
                             'description' => '',
                             'sinceVersion' => null,
                             'untilVersion' => null,
-                            'actualType' => DataTypes::MODEL,
-                            'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
-                            'default' => null,
                             'children' => array(
                                 'a' => array(
                                     'dataType' => 'string',
-                                    'format' => '{length: min: foo}, {not blank}',
-                                    'required' => true,
-                                    'readonly' => null,
                                     'actualType' => DataTypes::STRING,
                                     'subType' => null,
                                     'default' => 'nelmio',
+                                    'format' => '{length: min: foo}, {not blank}',
+                                    'required' => true,
+                                    'readonly' => null
                                 ),
                                 'b' => array(
                                     'dataType' => 'DateTime',
-                                    'required' => null,
-                                    'readonly' => null,
                                     'actualType' => DataTypes::DATETIME,
                                     'subType' => null,
                                     'default' => null,
+                                    'required' => null,
+                                    'readonly' => null
                                 )
-                            )
+                            ),
                         )
                     ),
                     'authenticationRoles' => array(),
@@ -1147,7 +1144,6 @@ With multiple lines.',
                             'dataType' => 'string',
                             'actualType' => DataTypes::STRING,
                             'subType' => null,
-                            'default' => null,
                             'default' => "DefaultTest",
                             'required' => true,
                             'description' => '',
@@ -1211,33 +1207,33 @@ With multiple lines.',
                         ),
                         'related' => array(
                             'dataType' => 'object (Test)',
+                            'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
+                            'actualType' => DataTypes::MODEL,
+                            'default' => null,
                             'readonly' => false,
                             'required' => false,
                             'description' => '',
                             'sinceVersion' => null,
                             'untilVersion' => null,
-                            'actualType' => DataTypes::MODEL,
-                            'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
-                            'default' => null,
                             'children' => array(
                                 'a' => array(
                                     'dataType' => 'string',
-                                    'format' => '{length: min: foo}, {not blank}',
-                                    'required' => true,
-                                    'readonly' => null,
                                     'actualType' => DataTypes::STRING,
                                     'subType' => null,
                                     'default' => 'nelmio',
+                                    'format' => '{length: min: foo}, {not blank}',
+                                    'required' => true,
+                                    'readonly' => null
                                 ),
                                 'b' => array(
                                     'dataType' => 'DateTime',
-                                    'required' => null,
-                                    'readonly' => null,
                                     'actualType' => DataTypes::DATETIME,
                                     'subType' => null,
                                     'default' => null,
+                                    'required' => null,
+                                    'readonly' => null
                                 )
-                            )
+                            ),
                         )
                     ),
                     'authenticationRoles' => array(),
@@ -1245,7 +1241,6 @@ With multiple lines.',
             ),
             '/tests2' =>
             array(
-                0 =>
                 array(
                     'method' => 'POST',
                     'uri' => '/tests2.{_format}',
@@ -1267,7 +1262,6 @@ With multiple lines.',
             ),
             '/tests2' =>
             array(
-                0 =>
                 array(
                     'method' => 'POST',
                     'uri' => '/tests2.{_format}',
@@ -1299,6 +1293,573 @@ With multiple lines.',
                     'deprecated' => false,
                 ),
             ),
+            '/api/other-resources' =>
+                array(
+                    array(
+                        'method' => 'GET',
+                        'uri' => '/api/other-resources.{_format}',
+                        'description' => 'List another resource.',
+                        'requirements' =>
+                            array(
+                                '_format' =>
+                                    array(
+                                        'requirement' => 'json|xml|html',
+                                        'dataType' => '',
+                                        'description' => '',
+                                    ),
+                            ),
+                        'resourceDescription' => 'Operations on another resource.',
+                        'https' => false,
+                        'authentication' => false,
+                        'authenticationRoles' =>
+                            array(),
+                        'deprecated' => false,
+                    ),
+                    array(
+                        'method' => 'PUT|PATCH',
+                        'uri' => '/api/other-resources/{id}.{_format}',
+                        'description' => 'Update a resource bu ID.',
+                        'requirements' =>
+                            array(
+                                '_format' =>
+                                    array(
+                                        'requirement' => 'json|xml|html',
+                                        'dataType' => '',
+                                        'description' => '',
+                                    ),
+                                'id' =>
+                                    array(
+                                        'requirement' => '',
+                                        'dataType' => '',
+                                        'description' => '',
+                                    ),
+                            ),
+                        'https' => false,
+                        'authentication' => false,
+                        'authenticationRoles' =>
+                            array(),
+                        'deprecated' => false,
+                    ),
+                ),
+            '/api/resources' =>
+                array(
+                    array(
+                        'method' => 'GET',
+                        'uri' => '/api/resources.{_format}',
+                        'description' => 'List resources.',
+                        'requirements' =>
+                            array(
+                                '_format' =>
+                                    array(
+                                        'requirement' => 'json|xml|html',
+                                        'dataType' => '',
+                                        'description' => '',
+                                    ),
+                            ),
+                        'statusCodes' =>
+                            array(
+                                200 =>
+                                    array(
+                                        'Returned on success.',
+                                    ),
+                                404 =>
+                                    array(
+                                        'Returned if resource cannot be found.',
+                                    ),
+                            ),
+                        'resourceDescription' => 'Operations on resource.',
+                        'https' => false,
+                        'authentication' => false,
+                        'authenticationRoles' =>
+                            array(),
+                        'deprecated' => false,
+                    ),
+                    array(
+                        'method' => 'POST',
+                        'uri' => '/api/resources.{_format}',
+                        'description' => 'Create a new resource.',
+                        'parameters' =>
+                            array(
+                                'a' =>
+                                    array(
+                                        'dataType' => 'string',
+                                        'actualType' => 'string',
+                                        'subType' => NULL,
+                                        'required' => true,
+                                        'description' => 'Something that describes A.',
+                                        'readonly' => false,
+                                        'default' => null,
+                                    ),
+                                'b' =>
+                                    array(
+                                        'dataType' => 'float',
+                                        'actualType' => 'float',
+                                        'subType' => NULL,
+                                        'required' => true,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'default' => null,
+                                    ),
+                                'c' =>
+                                    array(
+                                        'dataType' => 'choice',
+                                        'actualType' => 'choice',
+                                        'subType' => NULL,
+                                        'required' => true,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'format' => '{"x":"X","y":"Y","z":"Z"}',
+                                        'default' => null,
+                                    ),
+                                'd' =>
+                                    array(
+                                        'dataType' => 'datetime',
+                                        'actualType' => 'datetime',
+                                        'subType' => NULL,
+                                        'required' => true,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'default' => null,
+                                    ),
+                                'e' =>
+                                    array(
+                                        'dataType' => 'date',
+                                        'actualType' => 'date',
+                                        'subType' => NULL,
+                                        'required' => true,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'default' => null,
+                                    ),
+                                'g' =>
+                                    array(
+                                        'dataType' => 'string',
+                                        'actualType' => 'string',
+                                        'subType' => NULL,
+                                        'required' => true,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'default' => null,
+                                    ),
+                            ),
+                        'requirements' =>
+                            array(
+                                '_format' =>
+                                    array(
+                                        'requirement' => 'json|xml|html',
+                                        'dataType' => '',
+                                        'description' => '',
+                                    ),
+                            ),
+                        'response' =>
+                            array(
+                                'foo' =>
+                                    array(
+                                        'dataType' => 'DateTime',
+                                        'actualType' => 'datetime',
+                                        'default' => null,
+                                        'subType' => NULL,
+                                        'required' => false,
+                                        'description' => '',
+                                        'readonly' => true,
+                                        'sinceVersion' => NULL,
+                                        'untilVersion' => NULL,
+                                    ),
+                                'bar' =>
+                                    array(
+                                        'dataType' => 'string',
+                                        'actualType' => 'string',
+                                        'default' => 'baz',
+                                        'subType' => NULL,
+                                        'required' => false,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'sinceVersion' => NULL,
+                                        'untilVersion' => NULL,
+                                    ),
+                                'baz' =>
+                                    array(
+                                        'dataType' => 'array of integers',
+                                        'actualType' => 'collection',
+                                        'subType' => 'integer',
+                                        'required' => false,
+                                        'description' => 'Epic description.
+
+With multiple lines.',
+                                        'readonly' => false,
+                                        'sinceVersion' => NULL,
+                                        'default' => null,
+                                        'untilVersion' => NULL,
+                                    ),
+                                'circular' =>
+                                    array(
+                                        'dataType' => 'object (JmsNested)',
+                                        'actualType' => 'model',
+                                        'default' => null,
+                                        'subType' => 'Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\JmsNested',
+                                        'required' => false,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'sinceVersion' => NULL,
+                                        'untilVersion' => NULL,
+                                        'children' =>
+                                            array(
+                                                'foo' =>
+                                                    array(
+                                                        'dataType' => 'DateTime',
+                                                        'actualType' => 'datetime',
+                                                        'default' => null,
+                                                        'subType' => NULL,
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => true,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => NULL,
+                                                    ),
+                                                'bar' =>
+                                                    array(
+                                                        'dataType' => 'string',
+                                                        'actualType' => 'string',
+                                                        'subType' => NULL,
+                                                        'default' => 'baz',
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => NULL,
+                                                    ),
+                                                'baz' =>
+                                                    array(
+                                                        'dataType' => 'array of integers',
+                                                        'actualType' => 'collection',
+                                                        'subType' => 'integer',
+                                                        'required' => false,
+                                                        'description' => 'Epic description.
+
+With multiple lines.',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => NULL,
+                                                        'default' => null,
+                                                    ),
+                                                'circular' =>
+                                                    array(
+                                                        'dataType' => 'object (JmsNested)',
+                                                        'actualType' => 'model',
+                                                        'default' => null,
+                                                        'subType' => 'Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\JmsNested',
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => NULL,
+                                                    ),
+                                                'parent' =>
+                                                    array(
+                                                        'dataType' => 'object (JmsTest)',
+                                                        'actualType' => 'model',
+                                                        'default' => null,
+                                                        'subType' => 'Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\JmsTest',
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => NULL,
+                                                        'children' =>
+                                                            array(
+                                                                'foo' =>
+                                                                    array(
+                                                                        'dataType' => 'string',
+                                                                        'actualType' => 'string',
+                                                                        'subType' => NULL,
+                                                                        'required' => false,
+                                                                        'description' => '',
+                                                                        'readonly' => false,
+                                                                        'sinceVersion' => NULL,
+                                                                        'untilVersion' => NULL,
+                                                                        'default' => null,
+                                                                    ),
+                                                                'bar' =>
+                                                                    array(
+                                                                        'dataType' => 'DateTime',
+                                                                        'actualType' => 'datetime',
+                                                                        'subType' => NULL,
+                                                                        'required' => false,
+                                                                        'description' => '',
+                                                                        'readonly' => true,
+                                                                        'sinceVersion' => NULL,
+                                                                        'untilVersion' => NULL,
+                                                                        'default' => null,
+                                                                    ),
+                                                                'number' =>
+                                                                    array(
+                                                                        'dataType' => 'double',
+                                                                        'actualType' => 'float',
+                                                                        'subType' => NULL,
+                                                                        'required' => false,
+                                                                        'description' => '',
+                                                                        'readonly' => false,
+                                                                        'sinceVersion' => NULL,
+                                                                        'untilVersion' => NULL,
+                                                                        'default' => null,
+                                                                    ),
+                                                                'arr' =>
+                                                                    array(
+                                                                        'dataType' => 'array',
+                                                                        'actualType' => 'collection',
+                                                                        'subType' => NULL,
+                                                                        'required' => false,
+                                                                        'description' => '',
+                                                                        'readonly' => false,
+                                                                        'sinceVersion' => NULL,
+                                                                        'untilVersion' => NULL,
+                                                                        'default' => null,
+                                                                    ),
+                                                                'nested' =>
+                                                                    array(
+                                                                        'dataType' => 'object (JmsNested)',
+                                                                        'actualType' => 'model',
+                                                                        'default' => null,
+                                                                        'subType' => 'Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\JmsNested',
+                                                                        'required' => false,
+                                                                        'description' => '',
+                                                                        'readonly' => false,
+                                                                        'sinceVersion' => NULL,
+                                                                        'untilVersion' => NULL,
+                                                                    ),
+                                                                'nested_array' =>
+                                                                    array(
+                                                                        'dataType' => 'array of objects (JmsNested)',
+                                                                        'actualType' => 'collection',
+                                                                        'subType' => 'Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\JmsNested',
+                                                                        'required' => false,
+                                                                        'description' => '',
+                                                                        'readonly' => false,
+                                                                        'sinceVersion' => NULL,
+                                                                        'untilVersion' => NULL,
+                                                                        'default' => null,
+                                                                    ),
+                                                            ),
+                                                    ),
+                                                'since' =>
+                                                    array(
+                                                        'dataType' => 'string',
+                                                        'actualType' => 'string',
+                                                        'subType' => NULL,
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => '0.2',
+                                                        'untilVersion' => NULL,
+                                                        'default' => null,
+                                                    ),
+                                                'until' =>
+                                                    array(
+                                                        'dataType' => 'string',
+                                                        'actualType' => 'string',
+                                                        'subType' => NULL,
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => '0.3',
+                                                        'default' => null,
+                                                    ),
+                                                'since_and_until' =>
+                                                    array(
+                                                        'dataType' => 'string',
+                                                        'actualType' => 'string',
+                                                        'subType' => NULL,
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => '0.4',
+                                                        'untilVersion' => '0.5',
+                                                        'default' => null,
+                                                    ),
+                                            ),
+                                    ),
+                                'parent' =>
+                                    array(
+                                        'dataType' => 'object (JmsTest)',
+                                        'actualType' => 'model',
+                                        'default' => null,
+                                        'subType' => 'Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\JmsTest',
+                                        'required' => false,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'sinceVersion' => NULL,
+                                        'untilVersion' => NULL,
+                                        'children' =>
+                                            array(
+                                                'foo' =>
+                                                    array(
+                                                        'dataType' => 'string',
+                                                        'actualType' => 'string',
+                                                        'subType' => NULL,
+                                                        'default' => null,
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => NULL,
+                                                    ),
+                                                'bar' =>
+                                                    array(
+                                                        'dataType' => 'DateTime',
+                                                        'actualType' => 'datetime',
+                                                        'subType' => NULL,
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => true,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => NULL,
+                                                        'default' => null,
+                                                    ),
+                                                'number' =>
+                                                    array(
+                                                        'dataType' => 'double',
+                                                        'actualType' => 'float',
+                                                        'subType' => NULL,
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => NULL,
+                                                        'default' => null,
+                                                    ),
+                                                'arr' =>
+                                                    array(
+                                                        'dataType' => 'array',
+                                                        'actualType' => 'collection',
+                                                        'subType' => NULL,
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => NULL,
+                                                        'default' => null,
+                                                    ),
+                                                'nested' =>
+                                                    array(
+                                                        'dataType' => 'object (JmsNested)',
+                                                        'actualType' => 'model',
+                                                        'default' => null,
+                                                        'subType' => 'Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\JmsNested',
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => NULL,
+                                                    ),
+                                                'nested_array' =>
+                                                    array(
+                                                        'dataType' => 'array of objects (JmsNested)',
+                                                        'actualType' => 'collection',
+                                                        'subType' => 'Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\JmsNested',
+                                                        'required' => false,
+                                                        'description' => '',
+                                                        'readonly' => false,
+                                                        'sinceVersion' => NULL,
+                                                        'untilVersion' => NULL,
+                                                        'default' => null,
+                                                    ),
+                                            ),
+                                    ),
+                                'since' =>
+                                    array(
+                                        'dataType' => 'string',
+                                        'actualType' => 'string',
+                                        'subType' => NULL,
+                                        'required' => false,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'sinceVersion' => '0.2',
+                                        'untilVersion' => NULL,
+                                        'default' => null,
+                                    ),
+                                'until' =>
+                                    array(
+                                        'dataType' => 'string',
+                                        'actualType' => 'string',
+                                        'subType' => NULL,
+                                        'required' => false,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'sinceVersion' => NULL,
+                                        'untilVersion' => '0.3',
+                                        'default' => null,
+                                    ),
+                                'since_and_until' =>
+                                    array(
+                                        'dataType' => 'string',
+                                        'actualType' => 'string',
+                                        'subType' => NULL,
+                                        'required' => false,
+                                        'description' => '',
+                                        'readonly' => false,
+                                        'sinceVersion' => '0.4',
+                                        'untilVersion' => '0.5',
+                                        'default' => null,
+                                    ),
+                            ),
+                        'https' => false,
+                        'authentication' => false,
+                        'authenticationRoles' =>
+                            array(),
+                        'deprecated' => false,
+                    ),
+                    array(
+                        'method' => 'GET',
+                        'uri' => '/api/resources/{id}.{_format}',
+                        'description' => 'Retrieve a resource by ID.',
+                        'requirements' =>
+                            array(
+                                '_format' =>
+                                    array(
+                                        'requirement' => 'json|xml|html',
+                                        'dataType' => '',
+                                        'description' => '',
+                                    ),
+                                'id' =>
+                                    array(
+                                        'requirement' => '',
+                                        'dataType' => '',
+                                        'description' => '',
+                                    ),
+                            ),
+                        'https' => false,
+                        'authentication' => false,
+                        'authenticationRoles' =>
+                            array(),
+                        'deprecated' => false,
+                    ),
+                    array(
+                        'method' => 'DELETE',
+                        'uri' => '/api/resources/{id}.{_format}',
+                        'description' => 'Delete a resource by ID.',
+                        'requirements' =>
+                            array(
+                                '_format' =>
+                                    array(
+                                        'requirement' => 'json|xml|html',
+                                        'dataType' => '',
+                                        'description' => '',
+                                    ),
+                                'id' =>
+                                    array(
+                                        'requirement' => '',
+                                        'dataType' => '',
+                                        'description' => '',
+                                    ),
+                            ),
+                        'https' => false,
+                        'authentication' => false,
+                        'authenticationRoles' =>
+                            array(),
+                        'deprecated' => false,
+                    ),
+                ),
         );
 
         $this->assertEquals($expected, $result);
