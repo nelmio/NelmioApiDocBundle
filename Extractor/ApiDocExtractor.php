@@ -306,8 +306,8 @@ class ApiDocExtractor
                 }
             }
 
-            foreach($supportedParsers as $parser) {
-                if($parser instanceof PostParserInterface) {
+            foreach ($supportedParsers as $parser) {
+                if ($parser instanceof PostParserInterface) {
                     $mp = $parser->postParse($normalizedOutput, $response);
                     $response = $this->mergeParameters($response, $mp);
                 }

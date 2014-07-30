@@ -261,14 +261,14 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
     /**
      * Recursive `doPostParse` to avoid circular post parsing.
      *
-     * @param array $parameters
-     * @param array $visited
+     * @param  array $parameters
+     * @param  array $visited
      * @return array
      */
     protected function doPostParse (array $parameters, array $visited = array())
     {
-        foreach($parameters as $param => $data) {
-            if(isset($data['class']) && isset($data['children']) && !in_array($data['class'], $visited)) {
+        foreach ($parameters as $param => $data) {
+            if (isset($data['class']) && isset($data['children']) && !in_array($data['class'], $visited)) {
                 $visited[] = $data['class'];
 
                 $input = array('class' => $data['class'], 'groups' => isset($data['groups']) ? $data['groups'] : array());

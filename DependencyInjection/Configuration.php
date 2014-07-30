@@ -101,7 +101,7 @@ class Configuration implements ConfigurationInterface
                                 ->booleanNode('custom_endpoint')->defaultFalse()->end()
                             ->end()
                             ->validate()
-                                ->ifTrue(function($v) {
+                                ->ifTrue(function ($v) {
                                     return 'http' === $v['delivery'] && !$v['type'] ;
                                 })
                                 ->thenInvalid('"type" is required when using http delivery.')

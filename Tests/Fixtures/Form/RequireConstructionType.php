@@ -49,7 +49,6 @@ class RequireConstructionType extends AbstractType
         return;
     }
 
-
     public function getName()
     {
         return 'require_construction_type';
