@@ -464,8 +464,10 @@ nelmio_api_doc:
             method:               ~ # One of "format_param"; "accept_header"
             default_format:       json
         authentication:
-            name:                 ~ # Required
             delivery:             ~ # Required
-            type:                 ~
+            name:                 ~ # Required
+
+            # Required if http delivery is selected.
+            type:                 ~ # One of "basic"; "bearer"
             custom_endpoint:      false
 ```
