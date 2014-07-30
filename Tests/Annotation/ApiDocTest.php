@@ -319,4 +319,41 @@ class ApiDocTest extends TestCase
         $this->assertTrue(is_array($array['tags']), 'Tags should be in array');
         $this->assertEquals($data['tags'], $array['tags']);
     }
+
+    public function testAlignmentOfOutputAndResponseModels()
+    {
+        $data = array(
+            'output' => 'FooBar',
+            'responseMap' => array(
+                400 => 'Foo\\ValidationErrorCollection',
+            ),
+        );
+
+        $apiDoc = new ApiDoc($data);
+
+        $map = $apiDoc->getResponseMap();
+
+        $this->assertCount(2, $map);
+        $this->assertArrayHasKey(200, $map);
+        $this->assertArrayHasKey(400, $map);
+        $this->assertEquals($data['output'], $map[200]);
+    }
+
+    public function testAlignmentOfOutputAndResponseModels2()
+    {
+        $data = array(
+            'responseMap' => array(
+                200 => 'FooBar',
+                400 => 'Foo\\ValidationErrorCollection',
+            ),
+        );
+
+        $apiDoc = new ApiDoc($data);
+        $map = $apiDoc->getResponseMap();
+
+        $this->assertCount(2, $map);
+        $this->assertArrayHasKey(200, $map);
+        $this->assertArrayHasKey(400, $map);
+        $this->assertEquals($apiDoc->getOutput(), $map[200]);
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
