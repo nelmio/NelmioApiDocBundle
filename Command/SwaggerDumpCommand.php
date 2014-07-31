@@ -11,16 +11,17 @@
 
 namespace Nelmio\ApiDocBundle\Command;
 
+use Nelmio\ApiDocBundle\Formatter\SwaggerFormatter;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
-
 /**
- * Symfony2 command to dump Swagger-compliant JSON files.
+ * Console command to dump Swagger-compliant API definitions.
  *
  * @author Bez Hermoso <bez@activelamp.com>
  */
@@ -31,17 +32,21 @@ class SwaggerDumpCommand extends ContainerAwareCommand
      */
     protected $filesystem;
 
-    protected $destination;
+    /**
+     * @var SwaggerFormatter
+     */
+    protected $formatter;
 
     protected function configure()
     {
         $this->filesystem = new Filesystem();
 
         $this
-            ->setDescription('Dump Swagger-compliant JSON files.')
-            ->addOption('resource', '', InputOption::VALUE_OPTIONAL, 'A specific resource API declaration to dump.')
-            ->addOption('list-only', '', InputOption::VALUE_NONE, 'Dump resource list only.')
-            ->addArgument('destination', InputOption::VALUE_OPTIONAL, 'Directory to dump JSON files in.', null)
+            ->setDescription('Dumps Swagger-compliant API definitions.')
+            ->addOption('resource', 'r', InputOption::VALUE_OPTIONAL, 'A specific resource API declaration to dump.')
+            ->addOption('list-only', 'l', InputOption::VALUE_NONE, 'Dump resource list only.')
+            ->addOption('pretty', 'p', InputOption::VALUE_NONE, 'Dump as prettified JSON.')
+            ->addArgument('destination', InputArgument::OPTIONAL, 'Directory to dump JSON files in.', null)
             ->setName('api:swagger:dump');
     }
 
@@ -50,26 +55,7 @@ class SwaggerDumpCommand extends ContainerAwareCommand
         $container = $this->getContainer();
 
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-
-        $destination = $input->getArgument('destination');
-
-        if (count($destination) > 0) {
-
-            $destination = $destination[0];
-
-            $realpath = realpath($destination);
-
-            if ($realpath == false) {
-                $rootDir = $container->getParameter('kernel.root_dir');
-                $rootDir = realpath($rootDir . '/..');
-                $destination = $rootDir . '/' . $destination;
-            } else {
-                $destination = $realpath;
-            }
-            $this->destination = $destination;
-        } else {
-            $this->destination = null;
-        }
+        $this->formatter = $container->get('nelmio_api_doc.formatter.swagger_formatter');
 
         if ($input->getOption('list-only') && $input->getOption('resource')) {
             throw new \RuntimeException('Cannot selectively dump a resource with the --list-only flag.');
@@ -92,9 +78,12 @@ class SwaggerDumpCommand extends ContainerAwareCommand
             return;
         }
 
+        /*
+         * If --list-only and --resource is not specified, dump everything.
+         */
         $data = $this->getResourceList($apiDocs);
 
-        if ($this->destination == null) {
+        if (!$input->getArguments('destination')) {
             $output->writeln('');
             $output->writeln('<comment>Resource list: </comment>');
         }
@@ -104,7 +93,7 @@ class SwaggerDumpCommand extends ContainerAwareCommand
         foreach ($data['apis'] as $api) {
 
             $resource = substr($api['path'], 1);
-            if ($this->destination == null) {
+            if (!$input->getArgument('destination')) {
                 $output->writeln('');
                 $output->writeln(sprintf('<comment>API declaration for <info>"%s"</info> resource: </comment>', $resource));
             }
@@ -115,61 +104,60 @@ class SwaggerDumpCommand extends ContainerAwareCommand
 
     protected function dump(array $data, $resource, InputInterface $input, OutputInterface $output, $treatAsFile = true)
     {
+        $destination = $input->getArgument('destination');
 
-        $content = json_encode($data, JSON_PRETTY_PRINT);
+        $content = json_encode($data, $input->getOption('pretty') ? JSON_PRETTY_PRINT : 0);
 
-        if ($this->destination == null) {
+        if (!$destination) {
             $output->writeln($content);
             return;
         }
 
-        if ($resource == false) {
-            if ($treatAsFile === false) {
-                $path = sprintf('%s/api-docs.json', $this->destination);
-            } else {
-                $path = $this->destination;
+        if ($treatAsFile === false) {
+            if (!$this->filesystem->exists($destination)) {
+                $this->filesystem->mkdir($destination);
             }
-            $string = sprintf('<comment>Dumping resource list to %s: </comment>', $path);
-            $this->writeToFile($data, $path, $output, $string);
+        }
+
+        if (!$resource) {
+
+            if (!$treatAsFile) {
+                $destination = sprintf('%s/api-docs.json', rtrim($destination, '\\/'));
+            }
+            $message = sprintf('<comment>Dumping resource list to %s: </comment>', $destination);
+            $this->writeToFile($content, $destination, $output, $message);
+
             return;
         }
 
         if ($treatAsFile === false) {
-            $path = sprintf('%s/%s.json', $this->destination, $resource);
-        } else {
-            $path = $this->destination;
+            $destination = sprintf('%s/%s.json', rtrim($destination, '\\/'), $resource);
         }
-        $string = sprintf('<comment>Dump API declaration to %s: </comment>', $path);
-        $this->writeToFile($content, $path, $output, $string);
+
+        $message = sprintf('<comment>Dump API declaration to %s: </comment>', $destination);
+        $this->writeToFile($content, $destination, $output, $message);
 
     }
 
-    protected function writeToFile($content, $file, OutputInterface $output, $string = null)
+    protected function writeToFile($content, $file, OutputInterface $output, $message)
     {
-        $message = array($string);
         try {
             $this->filesystem->dumpFile($file, $content);
-            $message[] = '<info>OK</info>';
-            $output->writeln(implode(' ', array_filter($message)));
+            $message .= ' <info>OK</info>';
         } catch (IOException $e) {
-            $message[] = '<error>NOT OK</error>';
-            $output->writeln(implode(' ', array_filter($message)));
+            $message .= sprintf(' <error>NOT OK - %s</error>', $e->getMessage());
         }
+
+        $output->writeln($message);
     }
 
     protected function getResourceList(array $data)
     {
-        $container = $this->getContainer();
-        $formatter = $container->get('nelmio_api_doc.formatter.swagger_formatter');
-        $list = $formatter->format($data);
-        return $list;
+        return $this->formatter->format($data);
     }
 
     protected function getApiDeclaration(array $data, $resource)
     {
-        $container = $this->getContainer();
-        $formatter = $container->get('nelmio_api_doc.formatter.swagger_formatter');
-        $list = $formatter->format($data, '/' . $resource);
-        return $list;
+        return $this->formatter->format($data, '/' . $resource);
     }
 }
