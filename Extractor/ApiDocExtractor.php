@@ -410,8 +410,7 @@ class ApiDocExtractor
 
             if (!isset($p1[$propname])) {
                 $params[$propname] = $propvalue;
-            } else {
-
+            } elseif (is_array($propvalue)) {
                 $v1 = $p1[$propname];
 
                 foreach ($propvalue as $name => $value) {
