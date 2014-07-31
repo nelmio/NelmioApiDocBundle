@@ -61,9 +61,9 @@ This will tell Swagger that `CommonBundle\Model\ValidationErrors` is returned wh
 
 __Note:__ You can omit the `200` entry in the `responseMap` property and specify the default `output` property instead. That will result on the same thing.
 
-###wordnik/swagger-ui consumption...
+###wordnik/swagger-ui consumption
 
-You could import the routes for Swagger integration:
+You could import the routes for use with [`swagger-ui`](https://github.com/wordnik/swagger-ui):
 
 ```yml
 #app/config/routing.yml
@@ -75,17 +75,17 @@ nelmio_api_swagger:
 
 Et voila!, simply specify http://yourdomain.com/api-docs in your Swagger client and you are good to go.
 
-###Dump Swagger-compliant JSON to file-system...
+### Generating Swagger documentation JSON files
 
-The routes registered with the method above will read your `@ApiDoc` annotation during every request. Naturally, this will be slow because the bundle will parse your annotations every single time. For improved performance, you might be better off dumping the JSON output to the file-system and let your web-server serve them directly. If you want that, execute this command:
+You might need the Swagger documentation as file(s) for a different purpose. You can dump them into the file-system using the `api:swagger:dump` command:
 
 ```
 php app/console api:swagger:dump --all app/Resources/swagger-docs
 ```
 
-The above command will dump JSON files under the `app/Resources/swagger-docs` directory (relative to your project root), and you can now process or server the files however you want. The destination defaults to the project root if not specified.
+The above command will dump JSON files under the `app/Resources/swagger-docs` directory (relative to your project root), and you can now process or serve these files however you want. The destination defaults to the project root if not specified.
 
-####Selective dumps
+#### Selective dumps
 
 Dump the `api-docs.json` resource list file only:
 ```
@@ -96,21 +96,4 @@ Dump a specific resource API declaration only:
 ```
 php app/console api:swagger:dump --resource=users
 ```
-The above command will dump the `/users` API declaration in an `users.json` file.
-
-##Configuration reference
-
-```yml
-nelmio_api_doc:
-	swagger:
-        api_base_path:        /api
-        swagger_version:      1.2
-        api_version:          0.1
-        info:
-            title:                Symfony2
-            description:          My awesome Symfony2 app!
-            TermsOfServiceUrl:    ~
-            contact:              ~
-            license:              ~
-            licenseUrl:           ~
-```
+The above command will dump the `/users` API declaration in a `users.json` file.
