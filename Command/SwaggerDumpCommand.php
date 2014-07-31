@@ -26,107 +26,150 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class SwaggerDumpCommand extends ContainerAwareCommand
 {
+    /**
+     * @var Filesystem
+     */
+    protected $filesystem;
+
+    protected $destination;
+
     protected function configure()
     {
+        $this->filesystem = new Filesystem();
+
         $this
             ->setDescription('Dump Swagger-compliant JSON files.')
             ->addOption('resource', '', InputOption::VALUE_OPTIONAL, 'A specific resource API declaration to dump.')
-            ->addOption('all', '', InputOption::VALUE_NONE, 'Dump resource list and all API declarations.')
             ->addOption('list-only', '', InputOption::VALUE_NONE, 'Dump resource list only.')
-            ->addArgument('destination', InputOption::VALUE_REQUIRED, 'Directory to dump JSON files in.', null)
+            ->addArgument('destination', InputOption::VALUE_OPTIONAL, 'Directory to dump JSON files in.', null)
             ->setName('api:swagger:dump');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
+
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+
         $destination = $input->getArgument('destination');
 
-        $rootDir = $container->get('kernel')->getRootDir();
-        $rootDir = $rootDir . '/..';
+        if (count($destination) > 0) {
 
-        if (null === $destination) {
-            $destination = realpath($rootDir . '/' . $destination);
-        }
+            $destination = $destination[0];
 
-        $fs = new Filesystem();
+            $realpath = realpath($destination);
 
-        if (!$fs->exists($destination)) {
-            $fs->mkdir($destination);
-        }
-
-        $destination = realpath($destination);
-
-        if ($input->getOption('all') && $input->getOption('resource')) {
-            throw new \RuntimeException('Cannot selectively dump a resource with the --all flag.');
+            if ($realpath == false) {
+                $rootDir = $container->getParameter('kernel.root_dir');
+                $rootDir = realpath($rootDir . '/..');
+                $destination = $rootDir . '/' . $destination;
+            } else {
+                $destination = $realpath;
+            }
+            $this->destination = $destination;
+        } else {
+            $this->destination = null;
         }
 
         if ($input->getOption('list-only') && $input->getOption('resource')) {
             throw new \RuntimeException('Cannot selectively dump a resource with the --list-only flag.');
         }
 
-        if ($input->getOption('all') && $input->getOption('list-only')) {
-            throw new \RuntimeException('Cannot selectively dump resource list with the --all flag.');
-        }
-
-        $output->writeln('');
-        $output->writeln('Reading annotations...');
-        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $data = $extractor->all();
+        $apiDocs = $extractor->all();
 
         if ($input->getOption('list-only')) {
-             $this->dumpResourceList($destination, $data, $output);
+            $data = $this->getResourceList($apiDocs, $output);
+            $this->dump($data, null, $input, $output);
+            return;
         }
 
         if (false != ($resource = $input->getOption('resource'))) {
-            $this->dumpApiDeclaration($destination, $data, $resource, $output);
-        }
-
-        if ($input->getOption('all')) {
-            $formatter = $container->get('nelmio_api_doc.formatter.swagger_formatter');
-            $this->dumpResourceList($destination, $data, $output);
-            $list = $formatter->format($data);
-            foreach ($list['apis'] as $api) {
-                $this->dumpApiDeclaration($destination, $data, substr($api['path'], 1), $output);
+            $data = $this->getApiDeclaration($apiDocs, $resource, $output);
+            if (count($data['apis']) === 0) {
+                throw new \InvalidArgumentException(sprintf('Resource "%s" does not exist.', $resource));
             }
+            $this->dump($data, $resource, $input, $output);
+            return;
+        }
+
+        $data = $this->getResourceList($apiDocs);
+
+        if ($this->destination == null) {
+            $output->writeln('');
+            $output->writeln('<comment>Resource list: </comment>');
+        }
+
+        $this->dump($data, null, $input, $output, false);
+
+        foreach ($data['apis'] as $api) {
+
+            $resource = substr($api['path'], 1);
+            if ($this->destination == null) {
+                $output->writeln('');
+                $output->writeln(sprintf('<comment>API declaration for <info>"%s"</info> resource: </comment>', $resource));
+            }
+            $data = $this->getApiDeclaration($apiDocs, $resource, $output);
+            $this->dump($data, $resource, $input, $output, false);
         }
     }
 
-    protected function dumpResourceList($destination, array $data, OutputInterface $output)
+    protected function dump(array $data, $resource, InputInterface $input, OutputInterface $output, $treatAsFile = true)
     {
-        $container = $this->getContainer();
-        $formatter = $container->get('nelmio_api_doc.formatter.swagger_formatter');
 
-        $list = $formatter->format($data);
+        $content = json_encode($data, JSON_PRETTY_PRINT);
 
-        $fs = new Filesystem();
-        $path = $destination . '/api-docs.json';
-
-        $string = sprintf('<comment>Dump resource list to %s: </comment>', $path);
-        try {
-            $fs->dumpFile($path, json_encode($list));
-        } catch (IOException $e) {
-            $output->writeln($string . ' <error>NOT OK</error>');
+        if ($this->destination == null) {
+            $output->writeln($content);
+            return;
         }
-        $output->writeln($string . '<info>OK</info>');
-    }
 
-    protected function dumpApiDeclaration($destination, array $data, $resource, OutputInterface $output)
-    {
-        $container = $this->getContainer();
-        $formatter = $container->get('nelmio_api_doc.formatter.swagger_formatter');
+        if ($resource == false) {
+            if ($treatAsFile === false) {
+                $path = sprintf('%s/api-docs.json', $this->destination);
+            } else {
+                $path = $this->destination;
+            }
+            $string = sprintf('<comment>Dumping resource list to %s: </comment>', $path);
+            $this->writeToFile($data, $path, $output, $string);
+            return;
+        }
 
-        $list = $formatter->format($data, '/' . $resource);
-
-        $fs = new Filesystem();
-        $path = sprintf($destination . '/%s.json', $resource);
-
+        if ($treatAsFile === false) {
+            $path = sprintf('%s/%s.json', $this->destination, $resource);
+        } else {
+            $path = $this->destination;
+        }
         $string = sprintf('<comment>Dump API declaration to %s: </comment>', $path);
+        $this->writeToFile($content, $path, $output, $string);
+
+    }
+
+    protected function writeToFile($content, $file, OutputInterface $output, $string = null)
+    {
+        $message = array($string);
         try {
-            $fs->dumpFile($path, json_encode($list));
+            $this->filesystem->dumpFile($file, $content);
+            $message[] = '<info>OK</info>';
+            $output->writeln(implode(' ', array_filter($message)));
         } catch (IOException $e) {
-            $output->writeln($string . ' <error>NOT OK</error>');
+            $message[] = '<error>NOT OK</error>';
+            $output->writeln(implode(' ', array_filter($message)));
         }
-        $output->writeln($string . '<info>OK</info>');
+    }
+
+    protected function getResourceList(array $data)
+    {
+        $container = $this->getContainer();
+        $formatter = $container->get('nelmio_api_doc.formatter.swagger_formatter');
+        $list = $formatter->format($data);
+        return $list;
+    }
+
+    protected function getApiDeclaration(array $data, $resource)
+    {
+        $container = $this->getContainer();
+        $formatter = $container->get('nelmio_api_doc.formatter.swagger_formatter');
+        $list = $formatter->format($data, '/' . $resource);
+        return $list;
     }
 }
