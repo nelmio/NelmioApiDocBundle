@@ -75,32 +75,41 @@ class FormErrorsParser implements ParserInterface, PostParserInterface
         return $params;
     }
 
-    protected function doPostParse(array $parameters)
+    protected function doPostParse(array $parameters, $attachFieldErrors = true)
     {
         $data = array();
 
         foreach ($parameters as $name => $parameter) {
 
-            if ($parameter['actualType'] !== DataTypes::MODEL) {
-                $data[$name] = array(
-                    'dataType' => 'array of errors',
-                    'actualType' => DataTypes::COLLECTION,
-                    'subType' => 'string',
-                    'required' => false,
-                    'description' => sprintf('Errors on the %s parameter', $name),
-                    'readonly' => true,
-                    'children' => array(),
-                );
+            $data[$name] = array(
+                'dataType' => 'parameter errors',
+                'actualType' => DataTypes::MODEL,
+                'subType' => 'FieldErrors',
+                'required' => false,
+                'description' => sprintf('Errors on the %s parameter', $name),
+                'readonly' => true,
+                'children' => array(
+                    'errors' => array(
+                        'dataType' => 'array of errors',
+                        'actualType' => DataTypes::COLLECTION,
+                        'subType' => 'string',
+                        'required' => false,
+                        'description' => sprintf('Errors', $name),
+                        'readonly' => true,
+                    ),
+                ),
+            );
+
+            if ($parameter['actualType'] === DataTypes::MODEL) {
+                $data[$name]['subType'] = sprintf('%s.FormErrors', $parameter['subType']);
+                $data[$name]['children']['children'] = $this->doPostParse($parameter['children'], $attachFieldErrors);
             } else {
-                $data[$name] = array(
-                    'dataType' => 'array of errors',
-                    'actualType' => DataTypes::MODEL,
-                    'subType' => sprintf('%s.FormErrors', $parameter['subType']),
-                    'required' => false,
-                    'description' => sprintf('Errors on the %s parameter', $name),
-                    'readonly' => true,
-                    'children' => $this->doPostParse($parameter['children']),
-                );
+
+                if ($attachFieldErrors === false) {
+                    unset($data[$name]['children']);
+                }
+
+                $attachFieldErrors = false;
             }
         }
 
