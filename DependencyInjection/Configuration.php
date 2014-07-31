@@ -152,6 +152,13 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('cache')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultValue(false)->end()
+                        ->scalarNode('file')->defaultValue('%kernel.cache_dir%/api-doc.cache')->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
