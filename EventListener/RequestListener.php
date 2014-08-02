@@ -56,7 +56,6 @@ class RequestListener
             return;
         }
 
-        $request->setRequestFormat('html'); // Ensures web debug toolbar is able to display
         $controller = $request->attributes->get('_controller');
         $route      = $request->attributes->get('_route');
 
