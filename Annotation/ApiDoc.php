@@ -269,7 +269,7 @@ class ApiDoc
      * @param string $tag
      * @param string $colorCode
      */
-    public function addTag($tag, $colorCode = '')
+    public function addTag($tag, $colorCode = '#d9534f')
     {
         $this->tags[$tag] = $colorCode;
     }
