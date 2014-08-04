@@ -106,7 +106,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $vparams['format'] = join(', ', $vparams['format']);
             }
 
-            foreach (array('dataType', 'readonly', 'required') as $reqprop) {
+            foreach (array('dataType', 'readonly', 'required', 'subType') as $reqprop) {
                 if (!isset($vparams[$reqprop])) {
                     $vparams[$reqprop] = null;
                 }
@@ -117,6 +117,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $visited[] = $vparams['class'];
                 $vparams['children'] = $this->doParse($vparams['class'], $visited);
             }
+
+            $vparams['actualType'] = isset($vparams['actualType']) ? $vparams['actualType'] : DataTypes::STRING;
 
             $params[$property] = $vparams;
         }
