@@ -55,6 +55,16 @@ class SwaggerFormatter implements FormatterInterface
     );
 
     /**
+     * @var array
+     */
+    protected $authConfig = null;
+
+    public function setAuthenticationConfig(array $config)
+    {
+        $this->authConfig = $config;
+    }
+
+    /**
      * Format a collection of documentation data.
      *
      * If resource is provided, an API declaration for that resource is produced. Otherwise, a resource listing is returned.
@@ -115,7 +125,25 @@ class SwaggerFormatter implements FormatterInterface
 
     protected function getAuthorizations()
     {
-        return array();
+        $auth = array();
+
+        if ($this->authConfig === null) {
+            return $auth;
+        }
+
+        $config = $this->authConfig;
+
+        if ($config['delivery'] === 'http') {
+            return $auth;
+        }
+
+        $auth['apiKey'] = array(
+            'type' => 'apiKey',
+            'passAs' => $config['delivery'],
+            'keyname' => $config['name'],
+        );
+
+        return $auth;
     }
 
     /**
@@ -157,7 +185,7 @@ class SwaggerFormatter implements FormatterInterface
             'models' => array(),
             'produces' => array(),
             'consumes' => array(),
-            'authorizations' => array(),
+            'authorizations' => $this->getAuthorizations(),
         );
 
         $main = null;
