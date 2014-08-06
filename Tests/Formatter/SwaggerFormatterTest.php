@@ -61,7 +61,13 @@ class SwaggerFormatterTest extends WebTestCase
                     'licenseUrl' => 'http://opensource.org/licenses/MIT',
                 ),
             'authorizations' =>
-                array(),
+                array(
+                    'apiKey' => array(
+                        'type' => 'apiKey',
+                        'passAs' => 'header',
+                        'keyname' => 'access_token',
+                    )
+                ),
             'apis' =>
                 array(
                     array(
@@ -419,7 +425,13 @@ With multiple lines.',
                     'consumes' =>
                         array(),
                     'authorizations' =>
-                        array(),
+                        array(
+                            'apiKey' => array(
+                                'type' => 'apiKey',
+                                'passAs' => 'header',
+                                'keyname' => 'access_token',
+                            )
+                        ),
                 ),
             ),
             array(
@@ -539,7 +551,13 @@ With multiple lines.',
                     'consumes' =>
                         array(),
                     'authorizations' =>
-                        array(),
+                        array(
+                            'apiKey' => array(
+                                'type' => 'apiKey',
+                                'passAs' => 'header',
+                                'keyname' => 'access_token',
+                            )
+                        ),
                 ),
             ),
             array(
@@ -721,7 +739,12 @@ With multiple lines.',
                         array (
                         ),
                     'authorizations' =>
-                        array (
+                        array(
+                            'apiKey' => array(
+                                'type' => 'apiKey',
+                                'passAs' => 'header',
+                                'keyname' => 'access_token',
+                            )
                         ),
                 ),
             ),
