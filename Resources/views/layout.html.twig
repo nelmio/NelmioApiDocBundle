@@ -396,7 +396,7 @@
                     {% else -%}
                     var endpoint = '{{ endpoint }}';
                     {% endif -%}
-                    if ($('#api_endpoint') && $('#api_endpoint').val() != '') {
+                    if ($('#api_endpoint') && typeof($('#api_endpoint').val()) != 'undefined') {
                         endpoint = $('#api_endpoint').val();
                     }
 
