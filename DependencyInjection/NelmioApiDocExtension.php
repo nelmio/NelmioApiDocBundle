@@ -63,6 +63,7 @@ class NelmioApiDocExtension extends Extension
         $container->setParameter('nelmio_api_doc.swagger.swagger_version', $config['swagger']['swagger_version']);
         $container->setParameter('nelmio_api_doc.swagger.api_version', $config['swagger']['api_version']);
         $container->setParameter('nelmio_api_doc.swagger.info', $config['swagger']['info']);
+        $container->setParameter('nelmio_api_doc.swagger.model_naming_strategy', $config['swagger']['model_naming_strategy']);
 
         if ($config['cache']['enabled'] === true) {
             $arguments = $container->getDefinition('nelmio_api_doc.extractor.api_doc_extractor')->getArguments();
