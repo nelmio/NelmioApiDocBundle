@@ -34,8 +34,6 @@ class ModelRegistry
 
     protected $classes = array();
 
-    protected $classMap = array();
-
     /**
      * @var callable
      */
@@ -240,5 +238,11 @@ class ModelRegistry
     public function getModels()
     {
         return $this->models;
+    }
+
+    public function clear()
+    {
+        $this->models = array();
+        $this->classes = array();
     }
 }
