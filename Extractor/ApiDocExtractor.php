@@ -374,7 +374,7 @@ class ApiDocExtractor
         }
 
         $collectionData = array();
-        preg_match_all("/array<(.*)>( as (.*))?/", $input['class'], $collectionData);
+        preg_match_all("/array<(.*)>(\\s+as\\s+(.*))?/", $input['class'], $collectionData);
 
         if (count($collectionData[0]) > 0) {
             $input['class'] = $collectionData[1][0];

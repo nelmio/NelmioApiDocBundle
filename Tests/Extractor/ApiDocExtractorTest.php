@@ -256,4 +256,43 @@ class ApiDocExtractorTest extends WebTestCase
         );
         $this->assertCount(1, $parsers);
     }
+
+    public function testCollectionOutputNormalization()
+    {
+        $extractor = new TestExtractor();
+        $normalized = $extractor->getNormalization('array<Vendor\\Namespace\\Test>');
+
+        $this->assertArrayHasKey('class', $normalized);
+        $this->assertArrayHasKey('collection', $normalized);
+        $this->assertArrayHasKey('collectionName', $normalized);
+
+        $this->assertEquals('Vendor\\Namespace\\Test', $normalized['class']);
+        $this->assertEquals('', $normalized['collectionName']);
+        $this->assertTrue($normalized['collection']);
+
+    }
+
+    public function testNamedCollectionOutputNormalization()
+    {
+        $extractor = new TestExtractor();
+        $normalized = $extractor->getNormalization('array<Vendor\\Namespace\\Test> as    tests');
+
+        $this->assertArrayHasKey('class', $normalized);
+        $this->assertArrayHasKey('collection', $normalized);
+        $this->assertArrayHasKey('collectionName', $normalized);
+
+        $this->assertEquals('Vendor\\Namespace\\Test', $normalized['class']);
+        $this->assertEquals('tests', $normalized['collectionName']);
+        $this->assertTrue($normalized['collection']);
+    }
+
+    public function testFailedCollectionOutputNormalization()
+    {
+        $extractor = new TestExtractor();
+        $normalized = $extractor->getNormalization('array<Vendor\\Test');
+
+        $this->assertArrayNotHasKey('collection', $normalized);
+        $this->assertArrayNotHasKey('collectionName', $normalized);
+
+    }
 }
