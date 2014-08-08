@@ -378,7 +378,7 @@ class ApiDocExtractor
         /*
          * Match array<Fully\Qualified\ClassName> as alias; "as alias" optional.
          */
-        if (preg_match_all("/^array<([A-Za-z]+[A-Za-z0-9_]*(?:\\\\[A-Za-z]+[A-Za-z0-9_]*)*)>(?:\\s+as\\s+(.+))?$/", $input['class'], $collectionData)) {
+        if (preg_match_all("/^array<([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(?:\\\\[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)*)>(?:\\s+as\\s+(.+))?$/", $input['class'], $collectionData)) {
             $input['class'] = $collectionData[1][0];
             $input['collection'] = true;
             $input['collectionName'] = $collectionData[2][0];

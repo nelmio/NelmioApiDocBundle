@@ -44,7 +44,7 @@ class CollectionDirectiveTest extends \PHPUnit_Framework_TestCase
                 }
             ),
             'test_simple_notation_with_namespaces' => array(
-                'array<Vendor0_2\\Namespace1\\Namespace_2\\User>',
+                'array<Vendor0_2\\_Namespace1\\Namespace_2\\User>',
                 function ($actual, \PHPUnit_Framework_TestCase $case) {
                     $case->assertArrayHasKey('collection', $actual);
                     $case->assertArrayHasKey('collectionName', $actual);
@@ -52,7 +52,7 @@ class CollectionDirectiveTest extends \PHPUnit_Framework_TestCase
 
                     $case->assertTrue($actual['collection']);
                     $case->assertEquals('', $actual['collectionName']);
-                    $case->assertEquals('Vendor0_2\\Namespace1\\Namespace_2\\User', $actual['class']);
+                    $case->assertEquals('Vendor0_2\\_Namespace1\\Namespace_2\\User', $actual['class']);
                 }
             ),
             'test_simple_named_collections' => array(
@@ -68,7 +68,7 @@ class CollectionDirectiveTest extends \PHPUnit_Framework_TestCase
                 }
             ),
             'test_namespaced_named_collections' => array(
-                'array<Vendor\\Namespace0\\Namespace_2F3\\Group> as groups',
+                'array<_Vendor\\Namespace0\\Namespace_2F3\\Group> as groups',
                 function ($actual, \PHPUnit_Framework_TestCase $case) {
                     $case->assertArrayHasKey('collection', $actual);
                     $case->assertArrayHasKey('collectionName', $actual);
@@ -76,7 +76,7 @@ class CollectionDirectiveTest extends \PHPUnit_Framework_TestCase
 
                     $case->assertTrue($actual['collection']);
                     $case->assertEquals('groups', $actual['collectionName']);
-                    $case->assertEquals('Vendor\\Namespace0\\Namespace_2F3\\Group', $actual['class']);
+                    $case->assertEquals('_Vendor\\Namespace0\\Namespace_2F3\\Group', $actual['class']);
                 }
             ),
 
@@ -99,8 +99,6 @@ class CollectionDirectiveTest extends \PHPUnit_Framework_TestCase
             array('array<>'),
             array('array<Vendor\\>'),
             array('array<2Vendor\\>'),
-            array('array<_Vendor\\>'),
-            array('array<Vendor\\_Class>'),
             array('array<Vendor\\2Class>'),
             array('array<User> as'),
             array('array<User> as '),
