@@ -396,9 +396,11 @@
                     {% else -%}
                     var endpoint = '{{ endpoint }}';
                     {% endif -%}
+                    {% if authentication.custom_endpoint %}
                     if ($('#api_endpoint') && $('#api_endpoint').val() != '') {
                         endpoint = $('#api_endpoint').val();
                     }
+                    {% endif %}
 
                     // Workaround for Firefox bug and a thereby resulting nginx incompatibility
                     if (method == "LINK") {
