@@ -255,7 +255,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
      */
     public function postParse(array $input, array $parameters)
     {
-        return $this->doPostParse($parameters);
+        return $this->doPostParse($parameters, array(), isset($input['groups']) ? $input['groups'] : array());
     }
 
     /**
@@ -265,7 +265,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
      * @param  array $visited
      * @return array
      */
-    protected function doPostParse (array $parameters, array $visited = array())
+    protected function doPostParse (array $parameters, array $visited = array(), array $groups = array())
     {
         foreach ($parameters as $param => $data) {
             if (isset($data['class']) && isset($data['children']) && !in_array($data['class'], $visited)) {
@@ -273,10 +273,10 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
 
                 $input = array('class' => $data['class'], 'groups' => isset($data['groups']) ? $data['groups'] : array());
                 $parameters[$param]['children'] = array_merge(
-                    $parameters[$param]['children'], $this->doPostParse($parameters[$param]['children'], $visited)
+                    $parameters[$param]['children'], $this->doPostParse($parameters[$param]['children'], $visited, $groups)
                 );
                 $parameters[$param]['children'] = array_merge(
-                    $parameters[$param]['children'], $this->doParse($input['class'], $visited, $input['groups'])
+                    $parameters[$param]['children'], $this->doParse($input['class'], $visited, $groups)
                 );
             }
         }
