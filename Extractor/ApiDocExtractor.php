@@ -374,12 +374,21 @@ class ApiDocExtractor
         }
 
         $collectionData = array();
-        preg_match_all("/array<(.*)>(\\s+as\\s+(.*))?/", $input['class'], $collectionData);
 
-        if (count($collectionData[0]) > 0) {
+        /*
+         * Match array<Fully\Qualified\ClassName> as alias; "as alias" optional.
+         */
+        if (preg_match_all("/^array<([A-Za-z]+[A-Za-z0-9_]*(?:\\\\[A-Za-z]+[A-Za-z0-9_]*)*)>(?:\\s+as\\s+(.+))?$/", $input['class'], $collectionData)) {
             $input['class'] = $collectionData[1][0];
             $input['collection'] = true;
-            $input['collectionName'] = $collectionData[3][0];
+            $input['collectionName'] = $collectionData[2][0];
+        } elseif (preg_match('/^array</', $input['class'])) { //See if a collection directive was attempted. Must be malformed.
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Malformed collection directive: %s. Proper format is: array<Fully\\Qualified\\ClassName> or array<Fully\\Qualified\\ClassName> as collectionName',
+                    $input['class']
+                )
+            );
         }
 
         // normalize groups
