@@ -47,7 +47,6 @@ class SwaggerFormatterTest extends WebTestCase
 
         $actual = $this->formatter->format($data, null);
 
-
         $expected = array(
             'swaggerVersion' => '1.2',
             'apiVersion' => '3.14',
@@ -453,6 +452,7 @@ With multiple lines.',
                                             'method' => 'GET',
                                             'summary' => 'List another resource.',
                                             'nickname' => 'get_other-resources',
+                                            'type' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest',
                                             'parameters' =>
                                                 array(
 
@@ -470,7 +470,13 @@ With multiple lines.',
                                                     ),
                                                 ),
                                             'responseMessages' =>
-                                                array(),
+                                                array(
+                                                    array(
+                                                        'code'          => 200,
+                                                        'message'       => 'See standard HTTP status code reason for 200',
+                                                        'responseModel' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest',
+                                                    ),
+                                                ),
                                         ),
                                     ),
                             ),
@@ -545,7 +551,85 @@ With multiple lines.',
                             ),
                         ),
                     'models' =>
-                        array(),
+                        array (
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest' =>
+                                array (
+                                    'id' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest',
+                                    'description' => '',
+                                    'properties' =>
+                                        array (
+                                            '' =>
+                                                array (
+                                                    'type' => 'array',
+                                                    'description' => 'array of objects (JmsTest)',
+                                                    'items' =>
+                                                        array (
+                                                            '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest',
+                                                        ),
+                                                ),
+                                        ),
+                                    'required' =>
+                                        array (
+                                            0 => '',
+                                        ),
+                                ),
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested' =>
+                                array (
+                                    'id' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
+                                    'description' => 'object (JmsNested)',
+                                    'properties' =>
+                                        array (
+                                            'foo' =>
+                                                array (
+                                                    'type' => 'string',
+                                                    'description' => 'DateTime',
+                                                    'format' => 'date-time',
+                                                ),
+                                            'bar' =>
+                                                array (
+                                                    'type' => 'string',
+                                                    'description' => 'string',
+                                                ),
+                                            'baz' =>
+                                                array (
+                                                    'type' => 'array',
+                                                    'description' => 'Epic description.
+
+With multiple lines.',
+                                                    'items' =>
+                                                        array (
+                                                            'type' => 'string',
+                                                        ),
+                                                ),
+                                            'circular' =>
+                                                array (
+                                                    '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
+                                                ),
+                                            'parent' =>
+                                                array (
+                                                    '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest',
+                                                ),
+                                            'since' =>
+                                                array (
+                                                    'type' => 'string',
+                                                    'description' => 'string',
+                                                ),
+                                            'until' =>
+                                                array (
+                                                    'type' => 'string',
+                                                    'description' => 'string',
+                                                ),
+                                            'since_and_until' =>
+                                                array (
+                                                    'type' => 'string',
+                                                    'description' => 'string',
+                                                ),
+                                        ),
+                                    'required' =>
+                                        array (
+                                        ),
+                                ),
+                        ),
                     'produces' =>
                         array(),
                     'consumes' =>

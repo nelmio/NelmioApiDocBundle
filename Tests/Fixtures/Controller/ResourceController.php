@@ -56,7 +56,12 @@ class ResourceController
     }
 
     /**
-     * @ApiDoc(resource=true, description="List another resource.", resourceDescription="Operations on another resource.")
+     * @ApiDoc(
+     *      resource=true,
+     *      description="List another resource.",
+     *      resourceDescription="Operations on another resource.",
+     *      output="array<Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest>"
+     * )
      */
     public function listAnotherResourcesAction()
     {

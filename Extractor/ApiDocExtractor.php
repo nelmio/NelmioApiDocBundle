@@ -373,6 +373,15 @@ class ApiDocExtractor
             $input = array('class' => $input);
         }
 
+        $collectionData = array();
+        preg_match_all("/array<(.*)>( as (.*))?/", $input['class'], $collectionData);
+
+        if (count($collectionData[0]) > 0) {
+            $input['class'] = $collectionData[1][0];
+            $input['collection'] = true;
+            $input['collectionName'] = $collectionData[3][0];
+        }
+
         // normalize groups
         if (isset($input['groups']) && is_string($input['groups'])) {
             $input['groups'] = array_map('trim', explode(',', $input['groups']));
