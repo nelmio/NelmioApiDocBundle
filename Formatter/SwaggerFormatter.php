@@ -252,7 +252,10 @@ class SwaggerFormatter implements FormatterInterface
             $data = $apiDoc->toArray();
 
             if (isset($data['parameters'])) {
-                $parameters = array_merge($parameters, $this->deriveParameters($data['parameters'], $input['paramType'], $models));
+                $parameters = array_merge($parameters, $this->deriveParameters($data['parameters'],
+                        $models,
+                        $input['paramType']
+                    ));
             }
 
             $responseMap = $apiDoc->getParsedResponseMap();
@@ -364,13 +367,14 @@ class SwaggerFormatter implements FormatterInterface
     /**
      * Builds a Swagger-compliant parameter list from the provided parameter array. Models are built when necessary.
      *
-     * @param array  $input
+     * @param array $input
+     * @param array $models
+     *
      * @param string $paramType
-     * @param array  $models
      *
      * @return array
      */
-    protected function deriveParameters(array $input, $paramType, array &$models)
+    protected function deriveParameters(array $input, array &$models, $paramType = 'form')
     {
 
         $parameters = array();
