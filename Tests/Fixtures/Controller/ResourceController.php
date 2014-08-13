@@ -19,6 +19,7 @@ class ResourceController
      *      resource=true,
      *      resourceDescription="Operations on resource.",
      *      description="List resources.",
+     *      output="array<Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test> as tests",
      *      statusCodes={200 = "Returned on success.", 404 = "Returned if resource cannot be found."}
      * )
      */

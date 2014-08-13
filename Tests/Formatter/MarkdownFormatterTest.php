@@ -156,6 +156,20 @@ _List resources._
 
   - Requirement: json|xml|html
 
+#### Response ####
+
+tests[]:
+
+  * type: array of objects (Test)
+
+tests[][a]:
+
+  * type: string
+
+tests[][b]:
+
+  * type: DateTime
+
 
 ### `POST` /api/resources.{_format} ###
 

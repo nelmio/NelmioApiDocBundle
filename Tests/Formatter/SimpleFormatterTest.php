@@ -1655,6 +1655,41 @@ With multiple lines.',
                         'authenticationRoles' =>
                             array(),
                         'deprecated' => false,
+                        'response' =>
+                            array (
+                                'tests' =>
+                                    array (
+                                        'dataType' => 'array of objects (Test)',
+                                        'subType' => 'Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\Test',
+                                        'actualType' => 'collection',
+                                        'readonly' => true,
+                                        'required' => true,
+                                        'default' => true,
+                                        'description' => '',
+                                        'children' =>
+                                            array (
+                                                'a' =>
+                                                    array (
+                                                        'default' => 'nelmio',
+                                                        'actualType' => 'string',
+                                                        'subType' => NULL,
+                                                        'format' => '{length: min: foo}, {not blank}',
+                                                        'required' => true,
+                                                        'dataType' => 'string',
+                                                        'readonly' => NULL,
+                                                    ),
+                                                'b' =>
+                                                    array (
+                                                        'default' => NULL,
+                                                        'actualType' => 'datetime',
+                                                        'subType' => NULL,
+                                                        'dataType' => 'DateTime',
+                                                        'readonly' => NULL,
+                                                        'required' => NULL,
+                                                    ),
+                                            ),
+                                    ),
+                            ),
                     ),
                     array(
                         'method' => 'POST',
