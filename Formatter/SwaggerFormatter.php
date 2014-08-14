@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Formatter;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\Swagger\ModelRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
@@ -53,6 +54,16 @@ class SwaggerFormatter implements FormatterInterface
         DataTypes::DATE => 'date',
         DataTypes::DATETIME => 'date-time',
     );
+
+    /**
+     * @var \Nelmio\ApiDocBundle\Swagger\ModelRegistry
+     */
+    protected $modelRegistry;
+
+    public function __construct($namingStategy)
+    {
+        $this->modelRegistry = new ModelRegistry($namingStategy);
+    }
 
     /**
      * @var array
@@ -192,8 +203,6 @@ class SwaggerFormatter implements FormatterInterface
 
         $apiBag = array();
 
-        $models = array();
-
 
         foreach ($collection as $item) {
 
@@ -242,7 +251,7 @@ class SwaggerFormatter implements FormatterInterface
             $data = $apiDoc->toArray();
 
             if (isset($data['parameters'])) {
-                $parameters = array_merge($parameters, $this->deriveParameters($data['parameters'], $models));
+                $parameters = array_merge($parameters, $this->deriveParameters($data['parameters']));
             }
 
             $responseMap = $apiDoc->getParsedResponseMap();
@@ -260,7 +269,7 @@ class SwaggerFormatter implements FormatterInterface
                 $responseModel = array(
                     'code' => $statusCode,
                     'message' => $message,
-                    'responseModel' => $this->registerModel($prop['type']['class'], $prop['model'], '', $models),
+                    'responseModel' => $this->registerModel($prop['type']['class'], $prop['model'], ''),
                 );
                 $responseMessages[$statusCode] = $responseModel;
             }
@@ -302,7 +311,8 @@ class SwaggerFormatter implements FormatterInterface
             );
         }
 
-        $apiDeclaration['models'] = $models;
+        $apiDeclaration['models'] = $this->modelRegistry->getModels();
+        $this->modelRegistry->clear();
 
         return $apiDeclaration;
     }
@@ -358,7 +368,7 @@ class SwaggerFormatter implements FormatterInterface
      * @param array $models
      * @return array
      */
-    protected function deriveParameters(array $input, array &$models)
+    protected function deriveParameters(array $input)
     {
 
         $parameters = array();
@@ -387,8 +397,7 @@ class SwaggerFormatter implements FormatterInterface
                             $this->registerModel(
                                 $prop['subType'],
                                 isset($prop['children']) ? $prop['children'] : null,
-                                $prop['description'] ?: $prop['dataType'],
-                                $models
+                                $prop['description'] ?: $prop['dataType']
                             );
                         break;
                 }
@@ -438,150 +447,16 @@ class SwaggerFormatter implements FormatterInterface
     /**
      * Registers a model into the model array. Returns a unique identifier for the model to be used in `$ref` properties.
      *
-     * @param $className
-     * @param array $parameters
+     * @param        $className
+     * @param array  $parameters
      * @param string $description
-     * @param $models
+     *
+     * @internal param $models
      * @return mixed
      */
-    public function registerModel($className, array $parameters = null, $description = '', &$models)
+    public function registerModel($className, array $parameters = null, $description = '')
     {
-        if (isset ($models[$className])) {
-            return $models[$className]['id'];
-        }
-
-        /*
-         * Converts \Fully\Qualified\Class\Name to Fully.Qualified.Class.Name
-         */
-        $id = preg_replace('#(\\\|[^A-Za-z0-9])#', '.', $className);
-        //Replace duplicate dots.
-        $id = preg_replace('/\.+/', '.', $id);
-        //Replace trailing dots.
-        $id = preg_replace('/^\./', '', $id);
-
-        $model = array(
-            'id' => $id,
-            'description' => $description,
-        );
-
-        if (is_array($parameters)) {
-
-            $required = array();
-            $properties = array();
-
-            foreach ($parameters as $name => $prop) {
-
-                $subParam = array();
-
-                if ($prop['actualType'] === DataTypes::MODEL) {
-
-                    $subParam['$ref'] = $this->registerModel(
-                        $prop['subType'],
-                        isset($prop['children']) ? $prop['children'] : null,
-                        $prop['description'] ?: $prop['dataType'],
-                        $models
-                    );
-
-                } else {
-
-                    $type = null;
-                    $format = null;
-                    $items = null;
-                    $enum = null;
-                    $ref = null;
-
-                    if (isset($this->typeMap[$prop['actualType']])) {
-                        $type = $this->typeMap[$prop['actualType']];
-                    } else{
-
-                        switch ($prop['actualType']) {
-                            case DataTypes::ENUM:
-                                $type = 'string';
-                                if (isset($prop['format'])) {
-                                    $enum = array_keys(json_decode($prop['format'], true));
-                                }
-                                break;
-
-                            case DataTypes::COLLECTION:
-                                $type = 'array';
-
-                                if ($prop['subType'] === DataTypes::MODEL) {
-
-                                } else {
-
-                                    if ($prop['subType'] === null
-                                    || isset($this->typeMap[$prop['subType']])) {
-                                        $items = array(
-                                            'type' => 'string',
-                                        );
-                                    } elseif (!isset($this->typeMap[$prop['subType']])) {
-                                        $items = array(
-                                            '$ref' =>
-                                                $this->registerModel(
-                                                    $prop['subType'],
-                                                    isset($prop['children']) ? $prop['children'] : null,
-                                                    $prop['description'] ?: $prop['dataType'],
-                                                    $models
-                                                )
-                                        );
-                                    }
-                                }
-                                /* @TODO: Handle recursion if subtype is a model. */
-                                break;
-
-                            case DataTypes::MODEL:
-                                $ref = $this->registerModel(
-                                    $prop['subType'],
-                                    isset($prop['children']) ? $prop['children'] : null,
-                                    $prop['description'] ?: $prop['dataType'],
-                                    $models
-                                );
-                                $type = $ref;
-                                /* @TODO: Handle recursion. */
-                                break;
-                        }
-                    }
-
-                    if (isset($this->formatMap[$prop['actualType']])) {
-                        $format = $this->formatMap[$prop['actualType']];
-                    }
-
-                    $subParam = array(
-                        'type' => $type,
-                        'description' => empty($prop['description']) === false ? (string) $prop['description'] : $prop['dataType'],
-                    );
-
-                    if ($format !== null) {
-                        $subParam['format'] = $format;
-                    }
-
-                    if ($enum !== null) {
-                        $subParam['enum'] = $enum;
-                    }
-
-                    if ($ref !== null) {
-                        $subParam['$ref'] = $ref;
-                    }
-
-                    if ($items !== null) {
-                        $subParam['items'] = $items;
-                    }
-
-                    if ($prop['required']) {
-                        $required[] = $name;
-                    }
-
-                }
-
-                $properties[$name] = $subParam;
-            }
-
-            $model['properties'] = $properties;
-            $model['required'] = $required;
-            $models[$id] = $model;
-        }
-
-        return $id;
+        return $this->modelRegistry->register($className, $parameters, $description);
     }
 
     /**

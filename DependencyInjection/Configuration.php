@@ -136,6 +136,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('swagger')
                     ->addDefaultsIfNotSet()
                     ->children()
+                        ->scalarNode('model_naming_strategy')->defaultValue('dot_notation')->end()
                         ->scalarNode('api_base_path')->defaultValue('/api')->end()
                         ->scalarNode('swagger_version')->defaultValue('1.2')->end()
                         ->scalarNode('api_version')->defaultValue('0.1')->end()
