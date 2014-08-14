@@ -200,7 +200,17 @@ class SwaggerFormatter implements FormatterInterface
             /** @var $apiDoc ApiDoc */
             $apiDoc = $item['annotation'];
             $itemResource = $this->stripBasePath($item['resource']);
+            $input = $apiDoc->getInput();
 
+            if (!is_array($input)) {
+                $input = array(
+                    'class' => $input,
+                    'paramType' => 'form',
+                );
+            } elseif (empty($input['paramType'])) {
+                $input['paramType'] = 'form';
+            }
+            
             $route = $apiDoc->getRoute();
 
             $itemResource = $this->normalizeResourcePath($itemResource);
@@ -242,7 +252,10 @@ class SwaggerFormatter implements FormatterInterface
             $data = $apiDoc->toArray();
 
             if (isset($data['parameters'])) {
-                $parameters = array_merge($parameters, $this->deriveParameters($data['parameters'], $models));
+                $parameters = array_merge($parameters, $this->deriveParameters($data['parameters'],
+                        $models,
+                        $input['paramType']
+                    ));
             }
 
             $responseMap = $apiDoc->getParsedResponseMap();
@@ -356,9 +369,12 @@ class SwaggerFormatter implements FormatterInterface
      *
      * @param array $input
      * @param array $models
+     *
+     * @param string $paramType
+     *
      * @return array
      */
-    protected function deriveParameters(array $input, array &$models)
+    protected function deriveParameters(array $input, array &$models, $paramType = 'form')
     {
 
         $parameters = array();
@@ -404,7 +420,7 @@ class SwaggerFormatter implements FormatterInterface
             }
 
             $parameter = array(
-                'paramType' => 'form',
+                'paramType' => $paramType,
                 'name' => $name,
             );
 

@@ -98,6 +98,25 @@ php app/console api:swagger:dump --resource=users
 ```
 The above command will dump the `/users` API declaration in an `users.json` file.
 
+### Defining a form-type as a GET form
+
+If you use forms to capture GET requests, you will have to specify the `paramType` to `query` in the annotation:
+
+```php
+
+<?php
+
+/**
+ * @ApiDoc(
+ *    input = {"class" = "Foo\ContentBundle\Form\SearchType", "paramType" = "query"},
+ *   ...
+ * )
+ */
+ 
+ public function searchAction(Request $request)
+ {
+```
+
 ##Configuration reference
 
 ```yml
