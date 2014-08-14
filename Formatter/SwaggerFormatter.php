@@ -36,6 +36,8 @@ class SwaggerFormatter implements FormatterInterface
 
     protected $info = array();
 
+    protected $nicknameNamingStrategy;
+
     protected $typeMap = array(
         DataTypes::INTEGER => 'integer',
         DataTypes::FLOAT => 'number',
@@ -333,6 +335,23 @@ class SwaggerFormatter implements FormatterInterface
         $path = preg_replace('/-+/', '-', $path);
         return $path;
     }
+
+    /**
+     * Turn a URL path into uppercase words with no spaces. Trims out path parameters wrapped in curly brackets.
+     *
+     * @param $path
+     * @return string
+     */
+    protected function ucWordsResourcePath($path)
+    {
+        $path = preg_replace('/({.*?})/', '', $path);
+        $path = trim(preg_replace('/[^0-9a-zA-Z]/', ' ', $path));
+        $path = ucwords($path);
+        $path = str_replace(" ", "", $path);
+
+        return $path;
+    }
+
 
     /**
      * @param $path
@@ -641,6 +660,14 @@ class SwaggerFormatter implements FormatterInterface
     }
 
     /**
+     * @param mixed $nicknameNamingStrategy
+     */
+    public function setNicknameNamingStrategy($nicknameNamingStrategy)
+    {
+        $this->nicknameNamingStrategy = $nicknameNamingStrategy;
+    }
+
+    /**
      * Strips the base path from a URL path.
      *
      * @param $path
@@ -663,7 +690,15 @@ class SwaggerFormatter implements FormatterInterface
     protected function generateNickname($method, $resource)
     {
         $resource = preg_replace('#/^#', '', $resource);
-        $resource = $this->normalizeResourcePath($resource);
-        return sprintf('%s_%s', strtolower($method), $resource);
+
+        switch($this->nicknameNamingStrategy) {
+            case "camel_case":
+                $resource = $this->ucWordsResourcePath($resource);
+                return sprintf('%s%s', strtolower($method), $resource);
+            default:
+                $resource = $this->normalizeResourcePath($resource);
+                return sprintf('%s_%s', strtolower($method), $resource);
+        }
     }
+
 }
