@@ -83,10 +83,17 @@ class PhpDocHandler implements HandlerInterface
             $found = false;
             foreach ($paramDocs as $paramDoc) {
                 if (preg_match(sprintf($regexp, preg_quote($var)), $paramDoc, $matches)) {
-                    $requirements[$var]['dataType'] = isset($matches[1]) ? $matches[1] : '';
-                    $requirements[$var]['description'] = $matches[2];
+                    $annotationRequirements = $annotation->getrequirements();
 
-                    if (!isset($requirements[$var]['requirement'])) {
+                    if (!isset($annotationRequirements[$var]['dataType'])) {
+                        $requirements[$var]['dataType'] = isset($matches[1]) ? $matches[1] : '';
+                    }
+
+                    if (!isset($annotationRequirements[$var]['description'])) {
+                        $requirements[$var]['description'] = $matches[2];
+                    }
+
+                    if (!isset($requirements[$var]['requirement']) && !isset($annotationRequirements[$var]['requirement'])) {
                         $requirements[$var]['requirement'] = '';
                     }
 
