@@ -407,6 +407,22 @@ class SwaggerFormatter implements FormatterInterface
                                 $models
                             );
                         break;
+
+                    case DataTypes::COLLECTION:
+                        $type = 'array';
+                        if ($prop['subType'] === DataTypes::MODEL) {
+                            $ref = $this->registerModel(
+                                $prop['subType'],
+                                isset($prop['children']) ? $prop['children'] : null,
+                                $prop['description'] ?: $prop['dataType'],
+                                $models
+                            );
+                        } elseif (isset($this->typeMap[$prop['subType']])) {
+                            $items = $this->typeMap[$prop['subType']];
+                        } else {
+                            $items = 'string';
+                        }
+                        break;
                 }
             }
 
