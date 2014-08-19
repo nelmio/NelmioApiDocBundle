@@ -417,10 +417,13 @@ class SwaggerFormatter implements FormatterInterface
                                 $prop['description'] ?: $prop['dataType'],
                                 $models
                             );
+                            $items = array(
+                                '$ref' => $ref,
+                            );
                         } elseif (isset($this->typeMap[$prop['subType']])) {
-                            $items = $this->typeMap[$prop['subType']];
+                            $items = array('type' => $this->typeMap[$prop['subType']]);
                         } else {
-                            $items = 'string';
+                            $items = array('type' => 'string');
                         }
                         break;
                 }
@@ -459,6 +462,10 @@ class SwaggerFormatter implements FormatterInterface
 
             if ($prop['default'] !== null) {
                 $parameter['defaultValue'] = $prop['default'];
+            }
+
+            if (isset($items)) {
+                $parameter['items'] = $items;
             }
 
             $parameters[] = $parameter;
