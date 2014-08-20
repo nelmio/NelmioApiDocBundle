@@ -67,8 +67,8 @@ class NelmioApiDocExtension extends Extension
         if ($config['cache']['enabled'] === true) {
             $arguments = $container->getDefinition('nelmio_api_doc.extractor.api_doc_extractor')->getArguments();
             $caching = new Definition('Nelmio\ApiDocBundle\Extractor\CachingApiDocExtractor');
-            $arguments[] = $container->getParameterBag()->resolveValue($config['cache']['file']);
-            $arguments[] = $container->getParameter('kernel.debug');
+            $arguments[] = $config['cache']['file'];
+            $arguments[] = '%kernel.debug%';
             $caching->setArguments($arguments);
             $container->setDefinition('nelmio_api_doc.extractor.api_doc_extractor', $caching);
         }
