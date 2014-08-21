@@ -24,11 +24,13 @@
                         {% if 'json' in bodyFormats %}<option value="json"{{ defaultBodyFormat == 'json' ? ' selected' : '' }}>JSON</option>{% endif %}
                     </select>
                     {% endif %}
+                    {% if bodyFormats|length > 0 %}
                     request format:
                     <select id="request_format">
                     {% for format, header in requestFormats %}
                         <option value="{{ header }}"{{ defaultRequestFormat == format ? ' selected' : '' }}>{{ format }}</option>
                     {% endfor %}
+                    {% endif %}
                     </select>
                     {% if authentication %}
                         {% if authentication.delivery == 'http' and authentication.type == 'basic' %}
