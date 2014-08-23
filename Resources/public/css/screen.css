@@ -172,10 +172,37 @@ table tbody tr td {
 }
 
 .section {
-  border: 1px solid #ddd;
-  background: #f8f8f8;
-  padding: 5px 20px;
-  margin-bottom: 15px;
+    padding: 5px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.section h1 {
+    padding: 0;
+}
+
+.section.active {
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+    margin: 15px 0;
+}
+
+.section.active h1 {
+    padding: 10px 0;
+}
+
+.section .actions {
+    text-align: right;
+    float: right;
+    margin-top: 10px;
+}
+
+.section .actions a {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.section .actions a:hover {
+    text-decoration: underline;
 }
 
 li.resource {

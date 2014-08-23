@@ -439,6 +439,7 @@ Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tre
 nelmio_api_doc:
     name:                 'API documentation'
     exclude_sections:     []
+    default_sections_opened:  true
     motd:
         template:             'NelmioApiDocBundle::Components/motd.html.twig'
     request_listener:

@@ -76,6 +76,11 @@ class HtmlFormatter extends AbstractFormatter
     private $motdTemplate;
 
     /**
+     * @var boolean
+     */
+    private $defaultSectionsOpened;
+
+    /**
      * @param array $authentication
      */
     public function setAuthentication(array $authentication = null)
@@ -180,6 +185,14 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
+     * @param boolean $defaultSectionsOpened
+     */
+    public function setDefaultSectionsOpened($defaultSectionsOpened)
+    {
+        $this->defaultSectionsOpened = $defaultSectionsOpened;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function renderOne(array $data)
@@ -212,20 +225,21 @@ class HtmlFormatter extends AbstractFormatter
     private function getGlobalVars()
     {
         return array(
-            'apiName'              => $this->apiName,
-            'authentication'       => $this->authentication,
-            'endpoint'             => $this->endpoint,
-            'enableSandbox'        => $this->enableSandbox,
-            'requestFormatMethod'  => $this->requestFormatMethod,
-            'acceptType'           => $this->acceptType,
-            'bodyFormats'          => $this->bodyFormats,
-            'defaultBodyFormat'    => $this->defaultBodyFormat,
-            'requestFormats'       => $this->requestFormats,
-            'defaultRequestFormat' => $this->defaultRequestFormat,
-            'date'                 => date(DATE_RFC822),
-            'css'                  => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
-            'js'                   => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
-            'motdTemplate'         => $this->motdTemplate
+            'apiName'               => $this->apiName,
+            'authentication'        => $this->authentication,
+            'endpoint'              => $this->endpoint,
+            'enableSandbox'         => $this->enableSandbox,
+            'requestFormatMethod'   => $this->requestFormatMethod,
+            'acceptType'            => $this->acceptType,
+            'bodyFormats'           => $this->bodyFormats,
+            'defaultBodyFormat'     => $this->defaultBodyFormat,
+            'requestFormats'        => $this->requestFormats,
+            'defaultRequestFormat'  => $this->defaultRequestFormat,
+            'date'                  => date(DATE_RFC822),
+            'css'                   => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
+            'js'                    => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
+            'motdTemplate'          => $this->motdTemplate,
+            'defaultSectionsOpened' => $this->defaultSectionsOpened,
         );
     }
 }
