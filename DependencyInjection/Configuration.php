@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')
                     ->end()
                 ->end()
+                ->booleanNode('default_sections_opened')->defaultValue(true)->end()
                 ->arrayNode('motd')
                     ->addDefaultsIfNotSet()
                     ->children()
