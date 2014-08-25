@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\Controller;
 
 use Nelmio\ApiDocBundle\Formatter\RequestAwareSwaggerFormatter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
