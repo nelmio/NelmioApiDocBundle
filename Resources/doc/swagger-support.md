@@ -80,7 +80,7 @@ Et voila!, simply specify http://yourdomain.com/api-docs in your Swagger client 
 The routes registered with the method above will read your `@ApiDoc` annotation during every request. Naturally, this will be slow because the bundle will parse your annotations every single time. For improved performance, you might be better off dumping the JSON output to the file-system and let your web-server serve them directly. If you want that, execute this command:
 
 ```
-php app/console api:swagger:dump --all app/Resources/swagger-docs
+php app/console api:swagger:dump app/Resources/swagger-docs
 ```
 
 The above command will dump JSON files under the `app/Resources/swagger-docs` directory (relative to your project root), and you can now process or server the files however you want. The destination defaults to the project root if not specified.
@@ -89,12 +89,12 @@ The above command will dump JSON files under the `app/Resources/swagger-docs` di
 
 Dump the `api-docs.json` resource list file only:
 ```
-php app/console api:swagger:dump --list-only
+php app/console api:swagger:dump --list-only api-docs.json
 ```
 
 Dump a specific resource API declaration only:
 ```
-php app/console api:swagger:dump --resource=users
+php app/console api:swagger:dump --resource=users users.json
 ```
 The above command will dump the `/users` API declaration in an `users.json` file.
 
