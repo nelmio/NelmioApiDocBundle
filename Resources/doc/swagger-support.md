@@ -94,7 +94,9 @@ nelmio_api_swagger:
     prefix: /api-docs
 ```
 
-Et voila!, simply specify http://yourdomain.com/api-docs in your Swagger client and you are good to go.
+Et voila!, simply specify http://yourdomain.com/api-docs in your `swagger-ui` instance and you are good to go.
+
+__Note__: If your `swagger-ui` instance does not live under the same domain, you will probably encounter some problems related to same-origin policy violations. [NelmioCorsBundle](https://github.com/nelmio/NelmioCorsBundle) can solve this problem for you. Read through how to allow cross-site requests for the `/api-docs/*` pages.
 
 ### Dumping the Swagger-compliant JSON API definitions
 
