@@ -1237,6 +1237,25 @@ With multiple lines.',
                         )
                     ),
                     'authenticationRoles' => array(),
+                ),
+                19 =>
+                array(
+                    'cache' => 60,
+                    'method' => 'POST',
+                    'uri' => '/zcached',
+                    'https' => false,
+                    'authentication' => false,
+                    'authenticationRoles' => array(),
+                    'deprecated' => false
+                ),
+                20 =>
+                array(
+                    'authentication' => true,
+                    'method' => 'POST',
+                    'uri' => '/zsecured',
+                    'https' => false,
+                    'authenticationRoles' => array(),
+                    'deprecated' => false
                 )
             ),
             '/tests2' =>

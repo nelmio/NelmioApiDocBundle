@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Extractor\HandlerInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class SensioFrameworkExtraHandler implements HandlerInterface
 {
@@ -23,6 +24,8 @@ class SensioFrameworkExtraHandler implements HandlerInterface
         foreach ($annotations as $annot) {
             if ($annot instanceof Cache) {
                 $annotation->setCache($annot->getMaxAge());
+            } elseif ($annot instanceof Security) {
+                $annotation->setAuthentication(true);
             }
         }
     }

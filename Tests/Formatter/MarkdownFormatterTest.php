@@ -835,6 +835,13 @@ related[a]:
 related[b]:
 
   * type: DateTime
+
+
+### `POST` /zcached ###
+
+
+
+### `POST` /zsecured ###
 MARKDOWN;
 
         $this->assertEquals($expected, $result);

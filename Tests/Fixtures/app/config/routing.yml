@@ -207,3 +207,15 @@ test_route_update_another_resource:
 swagger_doc:
     resource: @NelmioApiDocBundle/Resources/config/swagger_routing.yml
     prefix: /api-docs
+
+test_route_23:
+    pattern:  /zcached
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zCached }
+    requirements:
+        _method: POST
+
+test_route_24:
+    pattern:  /zsecured
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zSecured }
+    requirements:
+        _method: POST
