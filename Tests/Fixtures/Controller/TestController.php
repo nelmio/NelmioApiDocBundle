@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\Email;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class TestController
 {
@@ -196,7 +197,15 @@ class TestController
      * @ApiDoc()
      * @Cache(maxage=60, public=1)
      */
-    public function cachedAction()
+    public function zCachedAction()
+    {
+    }
+
+    /**
+     * @ApiDoc()
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function zSecuredAction()
     {
     }
 
