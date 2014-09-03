@@ -262,7 +262,7 @@
                 };
 
                 var displayFinalUrl = function(xhr, method, url, data, container) {
-                    if ('GET' == method && jQuery(data).size()) {
+                    if ('GET' == method && !jQuery.isEmptyObject(data)) {
                         var separator = url.indexOf('?') >= 0 ? '&' : '?';
                         url = url + separator + decodeURIComponent(jQuery.param(data));
                     }
