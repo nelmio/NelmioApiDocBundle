@@ -448,19 +448,20 @@ class SwaggerFormatter implements FormatterInterface
 
                     case DataTypes::COLLECTION:
                         $type = 'array';
-                        if ($prop['subType'] === DataTypes::MODEL) {
-                            $ref = $this->registerModel(
-                                $prop['subType'],
-                                isset($prop['children']) ? $prop['children'] : null,
-                                $prop['description'] ?: $prop['dataType']
-                            );
-                            $items = array(
-                                '$ref' => $ref
-                            );
+                        if ($prop['subType'] === null) {
+                            $items = array('type' => 'string');
                         } elseif (isset($this->typeMap[$prop['subType']])) {
                             $items = array('type' => $this->typeMap[$prop['subType']]);
                         } else {
-                            $items = array('type' => 'string');
+                            $ref =
+                                $this->registerModel(
+                                    $prop['subType'],
+                                    isset($prop['children']) ? $prop['children'] : null,
+                                    $prop['description'] ?: $prop['dataType']
+                                );
+                            $items = array(
+                                '$ref' => $ref,
+                            );
                         }
                         break;
                 }
