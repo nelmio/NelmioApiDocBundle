@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Formatter;
 
-
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Swagger\ModelRegistry;
@@ -276,11 +275,44 @@ class SwaggerFormatter implements FormatterInterface
                     $message = sprintf('See standard HTTP status code reason for %s', $statusCode);
                 }
 
-                $responseModel = array(
-                    'code' => $statusCode,
-                    'message' => $message,
-                    'responseModel' => $this->registerModel($prop['type']['class'], $prop['model'], ''),
-                );
+                if (isset($prop['type']['collection']) && $prop['type']['collection'] === true) {
+
+                    /*
+                     * Without alias:       Fully\Qualified\Class\Name[]
+                     * With alias:          Fully\Qualified\Class\Name[alias]
+                     */
+                    $alias = $prop['type']['collectionName'];
+
+                    $newName = sprintf('%s[%s]', $prop['type']['class'], $alias);
+                    $collId =
+                        $this->registerModel(
+                            $newName,
+                            array(
+                                $alias => array(
+                                    'dataType'    => null,
+                                    'subType'     => $prop['type']['class'],
+                                    'actualType'  => DataTypes::COLLECTION,
+                                    'required'    => true,
+                                    'readonly'    => true,
+                                    'description' => null,
+                                    'default'     => null,
+                                    'children'    => $prop['model'][$alias]['children'],
+                                )
+                            ),
+                            ''
+                        );
+                    $responseModel = array(
+                        'code' => $statusCode,
+                        'message' => $message,
+                        'responseModel' => $collId
+                    );
+                } else {
+                    $responseModel = array(
+                        'code' => $statusCode,
+                        'message' => $message,
+                        'responseModel' => $this->registerModel($prop['type']['class'], $prop['model'], ''),
+                    );
+                }
                 $responseMessages[$statusCode] = $responseModel;
             }
 
@@ -416,19 +448,20 @@ class SwaggerFormatter implements FormatterInterface
 
                     case DataTypes::COLLECTION:
                         $type = 'array';
-                        if ($prop['subType'] === DataTypes::MODEL) {
-                            $ref = $this->registerModel(
-                                $prop['subType'],
-                                isset($prop['children']) ? $prop['children'] : null,
-                                $prop['description'] ?: $prop['dataType']
-                            );
-                            $items = array(
-                                '$ref' => $ref,
-                            );
+                        if ($prop['subType'] === null) {
+                            $items = array('type' => 'string');
                         } elseif (isset($this->typeMap[$prop['subType']])) {
                             $items = array('type' => $this->typeMap[$prop['subType']]);
                         } else {
-                            $items = array('type' => 'string');
+                            $ref =
+                                $this->registerModel(
+                                    $prop['subType'],
+                                    isset($prop['children']) ? $prop['children'] : null,
+                                    $prop['description'] ?: $prop['dataType']
+                                );
+                            $items = array(
+                                '$ref' => $ref,
+                            );
                         }
                         break;
                 }

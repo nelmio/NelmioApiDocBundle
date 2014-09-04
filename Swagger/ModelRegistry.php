@@ -130,14 +130,13 @@ class ModelRegistry
                             case DataTypes::COLLECTION:
                                 $type = 'array';
 
-                                if ($prop['subType'] === DataTypes::MODEL) {
-
-                                } else {
-
-                                    if ($prop['subType'] === null
-                                        || isset($this->typeMap[$prop['subType']])) {
+                                    if ($prop['subType'] === null) {
+                                         $items = array(
+                                             'type' => 'string',
+                                         );
+                                     } elseif (isset($this->typeMap[$prop['subType']])) {
                                         $items = array(
-                                            'type' => 'string',
+                                            'type' => $this->typeMap[$prop['subType']]
                                         );
                                     } elseif (!isset($this->typeMap[$prop['subType']])) {
                                         $items = array(
@@ -149,7 +148,6 @@ class ModelRegistry
                                                 )
                                         );
                                     }
-                                }
                                 /* @TODO: Handle recursion if subtype is a model. */
                                 break;
 
@@ -213,8 +211,9 @@ class ModelRegistry
     {
         /*
          * Converts \Fully\Qualified\Class\Name to Fully.Qualified.Class.Name
+         * "[...]" in aliased and non-aliased collections preserved.
          */
-        $id = preg_replace('#(\\\|[^A-Za-z0-9])#', '.', $className);
+        $id = preg_replace('#(\\\|[^A-Za-z0-9\[\]])#', '.', $className);
         //Replace duplicate dots.
         $id = preg_replace('/\.+/', '.', $id);
         //Replace trailing dots.
