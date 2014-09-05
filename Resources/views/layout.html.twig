@@ -130,7 +130,7 @@
                     section.addClass('active');
                 }
                 section.find('.section-list').slideDown('fast');
-                section.find('.content').slideUp('fast');
+                section.find('.operation > .content').slideUp('fast');
             });
 
             $('.action-expand').on('click', function(){
@@ -139,7 +139,7 @@
                     section.addClass('active');
                 }
                 $(section).find('ul').slideDown('fast');
-                $(section).find('.content').slideDown('fast');
+                $(section).find('.operation > .content').slideDown('fast');
             });
 
             {% if enableSandbox %}
