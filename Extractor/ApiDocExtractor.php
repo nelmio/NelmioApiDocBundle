@@ -373,6 +373,24 @@ class ApiDocExtractor
             $input = array('class' => $input);
         }
 
+        $collectionData = array();
+
+        /*
+         * Match array<Fully\Qualified\ClassName> as alias; "as alias" optional.
+         */
+        if (preg_match_all("/^array<([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(?:\\\\[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)*)>(?:\\s+as\\s+(.+))?$/", $input['class'], $collectionData)) {
+            $input['class'] = $collectionData[1][0];
+            $input['collection'] = true;
+            $input['collectionName'] = $collectionData[2][0];
+        } elseif (preg_match('/^array</', $input['class'])) { //See if a collection directive was attempted. Must be malformed.
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Malformed collection directive: %s. Proper format is: array<Fully\\Qualified\\ClassName> or array<Fully\\Qualified\\ClassName> as collectionName',
+                    $input['class']
+                )
+            );
+        }
+
         // normalize groups
         if (isset($input['groups']) && is_string($input['groups'])) {
             $input['groups'] = array_map('trim', explode(',', $input['groups']));
@@ -390,6 +408,9 @@ class ApiDocExtractor
      *  - Array parameters are recursively merged.
      *  - Non-null default values prevail over null default values. Later values overrides previous defaults.
      *
+     * However, if newly-returned parameter array contains a parameter with NULL, the parameter is removed from the merged results.
+     * If the parameter is not present in the newly-returned array, then it is left as-is.
+     *
      * @param  array $p1 The pre-existing parameters array.
      * @param  array $p2 The newly-returned parameters array.
      * @return array The resulting, merged array.
@@ -399,9 +420,15 @@ class ApiDocExtractor
         $params = $p1;
 
         foreach ($p2 as $propname => $propvalue) {
+
+            if ($propvalue === null) {
+                unset($params[$propname]);
+                continue;
+            }
+
             if (!isset($p1[$propname])) {
                 $params[$propname] = $propvalue;
-            } else {
+            } elseif (is_array($propvalue)) {
                 $v1 = $p1[$propname];
 
                 foreach ($propvalue as $name => $value) {
