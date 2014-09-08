@@ -128,7 +128,7 @@ class FosRestHandlerTest extends WebTestCase
         $this->assertArrayHasKey('required', $parameter);
         $this->assertEquals($parameter['required'], true);
 
-        $this->assertArrayNotHasKey('default', $parameter);
+        $this->assertNull($parameter['default']);
     }
 
     public function testGetWithRequestParamNullable()
@@ -154,6 +154,6 @@ class FosRestHandlerTest extends WebTestCase
         $this->assertArrayHasKey('required', $parameter);
         $this->assertEquals($parameter['required'], false);
 
-        $this->assertArrayNotHasKey('default', $parameter);
+        $this->assertNull($parameter['default']);
     }
 }

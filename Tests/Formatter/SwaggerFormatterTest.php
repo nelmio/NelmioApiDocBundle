@@ -267,6 +267,12 @@ class SwaggerFormatterTest extends WebTestCase
                                                                     1 => 'xml',
                                                                     2 => 'html',
                                                                 ),
+                                                            1 =>
+                                                                array (
+                                                                    'paramType' => 'form',
+                                                                    'type' => 'string',
+                                                                    'name' => 'foo',
+                                                                )
                                                         ),
                                                     1 =>
                                                         array(

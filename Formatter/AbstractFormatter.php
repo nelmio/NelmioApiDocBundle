@@ -69,7 +69,10 @@ abstract class AbstractFormatter implements FormatterInterface
         foreach ($data as $name => $info) {
             $newName = $this->getNewName($name, $info, $parentName);
 
-            $newParams[$newName] = array(
+            $keys = array_keys($info);
+
+
+            /*$newParams[$newName] = array(
                 'dataType'     => $info['dataType'],
                 'readonly'     => array_key_exists('readonly', $info) ? $info['readonly'] : null,
                 'required'     => $info['required'],
@@ -80,7 +83,8 @@ abstract class AbstractFormatter implements FormatterInterface
                 'untilVersion' => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
                 'actualType'   => array_key_exists('actualType', $info) ? $info['actualType'] : null,
                 'subType'      => array_key_exists('subType', $info) ? $info['subType'] : null,
-            );
+            );*/
+            $newParams[$newName] = $info;
 
             if (isset($info['children']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {
                 foreach ($this->compressNestedParameters($info['children'], $newName, $ignoreNestedReadOnly) as $nestedItemName => $nestedItemData) {
