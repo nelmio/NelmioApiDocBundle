@@ -367,7 +367,7 @@ nelmio_api_doc:
 
 A command is provided in order to dump the documentation in `json`, `markdown`, or `html`.
 
-    php app/console api:doc:dump [--format="..."]
+    php app/console api:doc:dump [--format="..."] [--exclude-section="..."]
 
 The `--format` option allows to choose the format (default is: `markdown`).
 

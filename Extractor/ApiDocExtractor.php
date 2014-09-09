@@ -81,11 +81,13 @@ class ApiDocExtractor
     /**
      * Extracts annotations from all known routes
      *
+     * @param array $excludedSections
+     *
      * @return array
      */
-    public function all()
+    public function all(array $excludedSections = [])
     {
-        return $this->extractAnnotations($this->getRoutes());
+        return $this->extractAnnotations($this->getRoutes(), $excludedSections);
     }
 
     /**
@@ -94,14 +96,15 @@ class ApiDocExtractor
      *  - resource
      *
      * @param array $routes array of Route-objects for which the annotations should be extracted
+     * @param array $excludedSections
      *
      * @return array
      */
-    public function extractAnnotations(array $routes)
+    public function extractAnnotations(array $routes, array $excludedSections = [])
     {
         $array     = array();
         $resources = array();
-        $excludeSections = $this->container->getParameter('nelmio_api_doc.exclude_sections');
+        $excludeSections = array_merge($this->container->getParameter('nelmio_api_doc.exclude_sections'), $excludedSections);
 
         foreach ($routes as $route) {
             if (!$route instanceof Route) {
