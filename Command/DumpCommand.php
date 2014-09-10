@@ -33,7 +33,7 @@ class DumpCommand extends ContainerAwareCommand
                 'Output format like: ' . implode(', ', $this->availableFormats),
                 $this->availableFormats[0]
             )
-            ->addOption('exclude-section', '', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, '', [])
+            ->addOption('exclude-section', '', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, '', array())
             ->addOption('no-sandbox', '', InputOption::VALUE_NONE)
             ->setName('api:doc:dump')
             ;

@@ -47,7 +47,7 @@ class CachingApiDocExtractor extends ApiDocExtractor
         $this->cache = new ConfigCache($this->cacheFile, $debug);
     }
 
-    public function all(array $excludedSections = [])
+    public function all(array $excludedSections = array())
     {
         if ($this->cache->isFresh() === false) {
 

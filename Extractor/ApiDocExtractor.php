@@ -85,7 +85,7 @@ class ApiDocExtractor
      *
      * @return array
      */
-    public function all(array $excludedSections = [])
+    public function all(array $excludedSections = array())
     {
         return $this->extractAnnotations($this->getRoutes(), $excludedSections);
     }
@@ -100,7 +100,7 @@ class ApiDocExtractor
      *
      * @return array
      */
-    public function extractAnnotations(array $routes, array $excludedSections = [])
+    public function extractAnnotations(array $routes, array $excludedSections = array())
     {
         $array     = array();
         $resources = array();
