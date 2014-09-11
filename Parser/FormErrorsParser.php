@@ -1,10 +1,21 @@
 <?php
 
+/*
+ * This file is part of the NelmioApiDocBundle.
+ *
+ * (c) Nelmio <hello@nelm.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Nelmio\ApiDocBundle\Parser;
 
 use Nelmio\ApiDocBundle\DataTypes;
 
+/**
+ * @author Bez Hermoso <bezalelhermoso@gmail.com>
+ */
 class FormErrorsParser implements ParserInterface, PostParserInterface
 {
     /**
@@ -25,7 +36,7 @@ class FormErrorsParser implements ParserInterface, PostParserInterface
     }
 
     /**
-     * Overrides the root parameters to contain these instead:
+     * Overrides the root parameters to contain these parameters instead:
      *      - status_code: 400
      *      - message: "Validation failed"
      *      - errors: contains the original parameters, but all types are changed to array of strings (array of errors for each field)
@@ -75,7 +86,7 @@ class FormErrorsParser implements ParserInterface, PostParserInterface
         return $params;
     }
 
-    protected function doPostParse(array $parameters, $attachFieldErrors = true)
+    protected function doPostParse(array $parameters, $attachFieldErrors = true, array $propertyPath = array())
     {
         $data = array();
 
@@ -86,7 +97,7 @@ class FormErrorsParser implements ParserInterface, PostParserInterface
                 'actualType' => DataTypes::MODEL,
                 'subType' => 'FieldErrors',
                 'required' => false,
-                'description' => sprintf('Errors on the %s parameter', $name),
+                'description' => 'Errors on the parameter',
                 'readonly' => true,
                 'children' => array(
                     'errors' => array(
@@ -94,21 +105,20 @@ class FormErrorsParser implements ParserInterface, PostParserInterface
                         'actualType' => DataTypes::COLLECTION,
                         'subType' => 'string',
                         'required' => false,
-                        'description' => sprintf('Errors', $name),
+                        'dscription' => '',
                         'readonly' => true,
                     ),
                 ),
             );
 
             if ($parameter['actualType'] === DataTypes::MODEL) {
-                $data[$name]['subType'] = sprintf('%s.FormErrors', $parameter['subType']);
-                $data[$name]['children']['children'] = $this->doPostParse($parameter['children'], $attachFieldErrors);
+                $propertyPath[] = $name;
+                $data[$name]['subType'] = sprintf('%s.FieldErrors[%s]', $parameter['subType'], implode('.', $propertyPath));
+                $data[$name]['children'] = $this->doPostParse($parameter['children'], $attachFieldErrors, $propertyPath);
             } else {
-
                 if ($attachFieldErrors === false) {
                     unset($data[$name]['children']);
                 }
-
                 $attachFieldErrors = false;
             }
         }
