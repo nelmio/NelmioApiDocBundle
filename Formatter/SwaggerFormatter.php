@@ -426,48 +426,50 @@ class SwaggerFormatter implements FormatterInterface
             $enum = null;
             $items = null;
 
-            if (isset ($this->typeMap[$prop['actualType']])) {
-                $type = $this->typeMap[$prop['actualType']];
-            } else {
-                switch ($prop['actualType']) {
-                    case DataTypes::ENUM:
-                        $type = 'string';
-                        if (isset($prop['format'])) {
-                            $enum = array_keys(json_decode($prop['format'], true));
-                        }
-                        break;
+            if (isset($prop['actualType'])) {
+                if (isset ($this->typeMap[$prop['actualType']])) {
+                    $type = $this->typeMap[$prop['actualType']];
+                } else {
+                    switch ($prop['actualType']) {
+                        case DataTypes::ENUM:
+                            $type = 'string';
+                            if (isset($prop['format'])) {
+                                $enum = array_keys(json_decode($prop['format'], true));
+                            }
+                            break;
 
-                    case DataTypes::MODEL:
-                        $ref =
-                            $this->registerModel(
-                                $prop['subType'],
-                                isset($prop['children']) ? $prop['children'] : null,
-                                $prop['description'] ?: $prop['dataType']
-                            );
-                        break;
-
-                    case DataTypes::COLLECTION:
-                        $type = 'array';
-                        if ($prop['subType'] === null) {
-                            $items = array('type' => 'string');
-                        } elseif (isset($this->typeMap[$prop['subType']])) {
-                            $items = array('type' => $this->typeMap[$prop['subType']]);
-                        } else {
+                        case DataTypes::MODEL:
                             $ref =
                                 $this->registerModel(
                                     $prop['subType'],
                                     isset($prop['children']) ? $prop['children'] : null,
                                     $prop['description'] ?: $prop['dataType']
                                 );
-                            $items = array(
-                                '$ref' => $ref,
-                            );
-                        }
-                        break;
+                            break;
+
+                        case DataTypes::COLLECTION:
+                            $type = 'array';
+                            if ($prop['subType'] === null) {
+                                $items = array('type' => 'string');
+                            } elseif (isset($this->typeMap[$prop['subType']])) {
+                                $items = array('type' => $this->typeMap[$prop['subType']]);
+                            } else {
+                                $ref =
+                                    $this->registerModel(
+                                        $prop['subType'],
+                                        isset($prop['children']) ? $prop['children'] : null,
+                                        $prop['description'] ?: $prop['dataType']
+                                    );
+                                $items = array(
+                                    '$ref' => $ref,
+                                );
+                            }
+                            break;
+                    }
                 }
             }
 
-            if (isset($this->formatMap[$prop['actualType']])) {
+            if ((isset($prop['actualType'])) and (isset($this->formatMap[$prop['actualType']]))) {
                 $format = $this->formatMap[$prop['actualType']];
             }
 
