@@ -467,10 +467,10 @@ class SwaggerFormatter implements FormatterInterface
                             break;
                     }
                 }
-            }
 
-            if ((isset($prop['actualType'])) and (isset($this->formatMap[$prop['actualType']]))) {
-                $format = $this->formatMap[$prop['actualType']];
+                if (isset($this->formatMap[$prop['actualType']])) {
+                    $format = $this->formatMap[$prop['actualType']];
+                }
             }
 
             if (null === $type && null === $ref) {
