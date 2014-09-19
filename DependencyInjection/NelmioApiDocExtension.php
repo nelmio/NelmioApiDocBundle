@@ -29,6 +29,7 @@ class NelmioApiDocExtension extends Extension
         $configuration = new Configuration();
         $config = $processor->processConfiguration($configuration, $configs);
 
+        $container->setParameter('nelmio_api_doc.parsers', $config['parsers']);
         $container->setParameter('nelmio_api_doc.motd.template', $config['motd']['template']);
         $container->setParameter('nelmio_api_doc.exclude_sections', $config['exclude_sections']);
         $container->setParameter('nelmio_api_doc.default_sections_opened', $config['default_sections_opened']);
