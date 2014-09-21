@@ -10,12 +10,13 @@ Installation
 
 Add this bundle to your `composer.json` file:
 
-    {
-        "require": {
-            "nelmio/api-doc-bundle": "@stable"
-        }
+``` php
+{
+    "require": {
+        "nelmio/api-doc-bundle": "@stable"
     }
-
+}
+```
 
 **Protip:** you should browse the
 [`nelmio/api-doc-bundle`](https://packagist.org/packages/nelmio/api-doc-bundle)
@@ -23,14 +24,16 @@ page to choose a stable version to use, avoid the `@stable` meta constraint.
 
 Register the bundle in `app/AppKernel.php`:
 
-    // app/AppKernel.php
-    public function registerBundles()
-    {
-        return array(
-            // ...
-            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-        );
-    }
+``` php
+// app/AppKernel.php
+public function registerBundles()
+{
+    return array(
+        // ...
+        new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+    );
+}
+```
 
 Import the routing definition in `routing.yml`:
 ```yaml
