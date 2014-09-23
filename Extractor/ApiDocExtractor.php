@@ -15,6 +15,7 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Util\ClassUtils;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Annotation\ApiModel;
+use Nelmio\ApiDocBundle\Annotation\ApiModelCollection;
 use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Nelmio\ApiDocBundle\Parser\PostParserInterface;
@@ -345,7 +346,19 @@ class ApiDocExtractor
         // input (populates 'parameters' for the formatters)
         if (null !== $input = $annotation->getInput()) {
             if ($input instanceof ApiModel) {
-                $parameters = $input->getParameters();
+
+                if ($input instanceof ApiModelCollection) {
+                    $parameters = array(
+                        $input->getCollectionName() => array(
+                            'actualType' => DataTypes::COLLECTION,
+                            'subType' => $input->getName(),
+                            'children' => $input->getParameters(),
+                        )
+                    );
+                } else {
+                    $parameters = $input->getParameters();
+                }
+
                 $parameters = $this->resolveParameters($parameters);
             } else {
                 $parameters      = array();
@@ -390,9 +403,22 @@ class ApiDocExtractor
 
             if ($output instanceof ApiModel) {
 
-                $response = $output->getParameters();
+                if ($output instanceof ApiModelCollection) {
+                        $response = array(
+                        $output->getCollectionName() => array(
+                            'actualType' => DataTypes::COLLECTION,
+                            'subType' => $output->getName(),
+                            'children' => $output->getParameters(),
+                        )
+                    );
+                    $normalizedOutput = array('class' => $output->getName(), 'collection' => true, 'collectionName' => $output->getCollectionName());
+                    $annotation->setResponseForStatusCode($response, $output->getName(), 200);
+                } else {
+                    $response = $output->getParameters();
+                    $normalizedOutput = array('class' => $output->getName());
+                }
+
                 $response = $this->resolveParameters($response);
-                $normalizedOutput = array('class' => $output->getName());
 
             } else {
 

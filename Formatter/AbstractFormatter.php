@@ -68,22 +68,6 @@ abstract class AbstractFormatter implements FormatterInterface
         $newParams = array();
         foreach ($data as $name => $info) {
             $newName = $this->getNewName($name, $info, $parentName);
-
-            $keys = array_keys($info);
-
-
-            /*$newParams[$newName] = array(
-                'dataType'     => $info['dataType'],
-                'readonly'     => array_key_exists('readonly', $info) ? $info['readonly'] : null,
-                'required'     => $info['required'],
-                'default'      => array_key_exists('default', $info) ? $info['default'] : null,
-                'description'  => array_key_exists('description', $info) ? $info['description'] : null,
-                'format'       => array_key_exists('format', $info) ? $info['format'] : null,
-                'sinceVersion' => array_key_exists('sinceVersion', $info) ? $info['sinceVersion'] : null,
-                'untilVersion' => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
-                'actualType'   => array_key_exists('actualType', $info) ? $info['actualType'] : null,
-                'subType'      => array_key_exists('subType', $info) ? $info['subType'] : null,
-            );*/
             $newParams[$newName] = $info;
 
             if (isset($info['children']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {

@@ -1367,6 +1367,16 @@ _Retrieve a resource by ID._
 **id**
 
 
+#### Response ####
+
+bar[]:
+
+  * type: array of objects (ResourceCollection)
+
+bar[][price]:
+
+  * type: integer
+
 
 ### `DELETE` /api/resources/{id}.{_format} ###
 

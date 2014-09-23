@@ -444,7 +444,8 @@ class ApiDoc
      * @param string $name
      * @param array  $parameter
      */
-    public function addParameter($name, array $parameter)
+    public function
+    addParameter($name, array $parameter)
     {
         $this->parameters[$name] = $parameter;
     }
@@ -709,7 +710,7 @@ class ApiDoc
      */
     public function getResponseMap()
     {
-        if (!isset($this->responseMap[200]) && null !== $this->output) {
+        if (!isset($this->responseMap[200]) && null !== $this->output && !$this->output instanceof ApiModelCollection) {
             $this->responseMap[200] = $this->output;
         }
 

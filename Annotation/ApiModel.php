@@ -23,7 +23,7 @@ class ApiModel
     /**
      * @var array
      */
-    protected $parameters;
+    protected $parameters = array();
 
     /**
      * @var string
@@ -33,19 +33,17 @@ class ApiModel
     protected static $acceptableTypes = null;
 
     /**
-     * @param array $parameters
+     * @param array $values
      */
-    public function __construct(array $parameters)
+    public function __construct(array $values)
     {
-        $name = null;
-        if (count($parameters) === 1 && isset($parameters['value'])) {
-            if (isset($parameters['value'][0]) && is_scalar($parameters['value'][0])) {
-                $name = $parameters['value'][0];
-                $parameters = $parameters['value'][1];
-            }
+        if (!empty($values['parameters'])) {
+            $this->parameters = $this->normalizeParameters($values['parameters']);
         }
-        $this->name = $name;
-        $this->parameters = $this->normalizeParameters($parameters);
+
+        if (!empty($values['name'])) {
+            $this->name = $values['name'];
+        }
     }
 
     /**
