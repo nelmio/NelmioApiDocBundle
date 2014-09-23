@@ -399,6 +399,7 @@ class SwaggerFormatter implements FormatterInterface
                 'paramType' => 'query',
                 'name' => $name,
                 'type' => isset($this->typeMap[$prop['dataType']]) ? $this->typeMap[$prop['dataType']] : 'string',
+                'description' => isset($prop['description']) ? $prop['description'] : null,
             );
         }
 
@@ -511,6 +512,10 @@ class SwaggerFormatter implements FormatterInterface
 
             if (isset($items)) {
                 $parameter['items'] = $items;
+            }
+
+            if (isset($prop['description'])) {
+                $parameter['description'] = $prop['description'];
             }
 
             $parameters[] = $parameter;
