@@ -218,7 +218,7 @@ class SwaggerFormatter implements FormatterInterface
             } elseif (empty($input['paramType'])) {
                 $input['paramType'] = 'form';
             }
-            
+
             $route = $apiDoc->getRoute();
 
             $itemResource = $this->normalizeResourcePath($itemResource);
@@ -253,11 +253,11 @@ class SwaggerFormatter implements FormatterInterface
                 $parameters[] = $parameter;
             }
 
+            $data = $apiDoc->toArray();
+
             if (isset($data['filters'])) {
                 $parameters = array_merge($parameters, $this->deriveQueryParameters($data['filters']));
             }
-
-            $data = $apiDoc->toArray();
 
             if (isset($data['parameters'])) {
                 $parameters = array_merge($parameters, $this->deriveParameters($data['parameters'], $input['paramType']));
@@ -392,10 +392,14 @@ class SwaggerFormatter implements FormatterInterface
         $parameters = array();
 
         foreach ($input as $name => $prop) {
+            if (!isset($prop['dataType'])) {
+                $prop['dataType'] = 'string';
+            }
             $parameters[] = array(
                 'paramType' => 'query',
                 'name' => $name,
                 'type' => isset($this->typeMap[$prop['dataType']]) ? $this->typeMap[$prop['dataType']] : 'string',
+                'description' => isset($prop['description']) ? $prop['description'] : null,
             );
         }
 
@@ -425,6 +429,10 @@ class SwaggerFormatter implements FormatterInterface
             $ref = null;
             $enum = null;
             $items = null;
+
+            if (!isset($prop['actualType'])) {
+                $prop['actualType'] = 'string';
+            }
 
             if (isset ($this->typeMap[$prop['actualType']])) {
                 $type = $this->typeMap[$prop['actualType']];
@@ -498,12 +506,16 @@ class SwaggerFormatter implements FormatterInterface
                 $parameter['enum'] = $enum;
             }
 
-            if ($prop['default'] !== null) {
+            if (isset($prop['default']) && $prop['default'] !== null) {
                 $parameter['defaultValue'] = $prop['default'];
             }
 
             if (isset($items)) {
                 $parameter['items'] = $items;
+            }
+
+            if (isset($prop['description'])) {
+                $parameter['description'] = $prop['description'];
             }
 
             $parameters[] = $parameter;
@@ -559,7 +571,7 @@ class SwaggerFormatter implements FormatterInterface
      */
     protected function stripBasePath($path)
     {
-        $pattern = sprintf('#%s#', preg_quote($this->basePath));
+        $pattern = sprintf('#^%s#', preg_quote($this->basePath));
         $subPath = preg_replace($pattern, '', $path);
         return $subPath;
     }

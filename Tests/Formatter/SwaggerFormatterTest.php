@@ -195,6 +195,7 @@ class SwaggerFormatterTest extends WebTestCase
                                                                     'paramType' => 'form',
                                                                     'name' => 'a',
                                                                     'type' => 'string',
+                                                                    'description' => 'Something that describes A.',
                                                                 ),
                                                             2 =>
                                                                 array (
@@ -786,6 +787,18 @@ With multiple lines.',
                                                                     'type' => 'string',
                                                                     'required' => true,
                                                                 ),
+                                                                array (
+                                                                    'paramType' => 'query',
+                                                                    'name' => 'a',
+                                                                    'type' => 'integer',
+                                                                    'description' => null,
+                                                                ),
+                                                                array (
+                                                                    'paramType' => 'query',
+                                                                    'name' => 'b',
+                                                                    'type' => 'string',
+                                                                    'description' => null,
+                                                                ),
                                                         ),
                                                     'responseMessages' =>
                                                         array (
@@ -810,12 +823,14 @@ With multiple lines.',
                                                                     'paramType' => 'query',
                                                                     'name' => 'a',
                                                                     'type' => 'integer',
+                                                                    'description' => null,
                                                                 ),
 
                                                                 array (
                                                                     'paramType' => 'query',
                                                                     'name' => 'b',
                                                                     'type' => 'string',
+                                                                    'description' => null,
                                                                 ),
                                                         ),
                                                     'responseMessages' =>
@@ -838,21 +853,10 @@ With multiple lines.',
                                                                 ),
 
                                                                 array (
-                                                                    'paramType' => 'query',
-                                                                    'name' => 'a',
-                                                                    'type' => 'integer',
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'query',
-                                                                    'name' => 'b',
-                                                                    'type' => 'string',
-                                                                ),
-
-                                                                array (
                                                                     'paramType' => 'form',
                                                                     'name' => 'a',
                                                                     'type' => 'string',
+                                                                    'description' => 'A nice description',
                                                                 ),
 
                                                                 array (
@@ -898,6 +902,7 @@ With multiple lines.',
                                                                     'paramType' => 'form',
                                                                     'name' => 'a',
                                                                     'type' => 'string',
+                                                                    'description' => 'A nice description',
                                                                 ),
 
                                                                 array (
