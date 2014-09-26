@@ -115,7 +115,13 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
         $params = array();
 
         $reflection = new \ReflectionClass($className);
-        $defaultProperties = $reflection->getDefaultProperties();
+        $defaultProperties = array_map(function ($default) {
+            if (is_array($default) && count($default) === 0) {
+                return null;
+            }
+
+            return $default;
+        }, $reflection->getDefaultProperties());
 
         // iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
