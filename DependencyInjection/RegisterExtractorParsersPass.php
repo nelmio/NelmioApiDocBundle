@@ -15,7 +15,7 @@ class RegisterExtractorParsersPass implements CompilerPassInterface
         }
 
         $definition = $container->getDefinition('nelmio_api_doc.extractor.api_doc_extractor');
-        $parserList = $container->getParameter('nelmio_api_doc.parsers');
+        $parserList = $container->getParameter('nelmio_api_doc.ignore_parsers');
 
         //find registered parsers and sort by priority
         $sortedParsers = array();
@@ -30,7 +30,7 @@ class RegisterExtractorParsersPass implements CompilerPassInterface
             }
 
             // Cause of BC the rule is only available for configured parsers
-            if (in_array($class, $parserList) && !$parserList[$class]) {
+            if (in_array($class, $parserList)) {
                 continue;
             }
 
