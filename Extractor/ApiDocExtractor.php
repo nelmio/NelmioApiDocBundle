@@ -284,7 +284,7 @@ class ApiDocExtractor
 
             if ('PUT' === $annotation->getMethod()) {
                 // All parameters are optional with PUT (update)
-                array_walk($parameters, function ($val, $key) use (&$data) {
+                array_walk($parameters, function ($val, $key) use (&$parameters) {
                     $parameters[$key]['required'] = false;
                 });
             }

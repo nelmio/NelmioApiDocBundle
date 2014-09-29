@@ -65,6 +65,15 @@ class TestController
     {
     }
 
+    /**
+     * @ApiDoc(
+     *  input="Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType"
+     * )
+     */
+    public function requiredParametersAction()
+    {
+    }
+
     public function anotherAction()
     {
     }
