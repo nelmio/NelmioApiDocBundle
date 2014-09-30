@@ -48,7 +48,10 @@ class ResourceController
      * @ApiDoc(
      *      description="Create a new resource.",
      *      input={"class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Form\SimpleType", "name" = ""},
-     *      output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested"
+     *      output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested",
+     *      responseMap={
+     *          400 = {"class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Form\SimpleType", "form_errors" = true}
+     *      }
      * )
      */
     public function createResourceAction()
