@@ -11,6 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Extractor;
 
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Extractor\ApiDocExtractor;
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
@@ -255,5 +257,29 @@ class ApiDocExtractorTest extends WebTestCase
             $parsers[0]
         );
         $this->assertCount(1, $parsers);
+    }
+
+    public function testPostRequestDoesRequireParametersWhenMarkedAsSuch()
+    {
+        $container  = $this->getContainer();
+        /** @var ApiDocExtractor $extractor */
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        /** @var ApiDoc $annotation */
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::requiredParametersAction', 'test_required_parameters');
+
+        $parameters = $annotation->getParameters();
+        $this->assertTrue($parameters['required_field']['required']);
+    }
+
+    public function testPutRequestDoesNeverRequireParameters()
+    {
+        $container  = $this->getContainer();
+        /** @var ApiDocExtractor $extractor */
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        /** @var ApiDoc $annotation */
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::requiredParametersAction', 'test_put_disables_required_parameters');
+
+        $parameters = $annotation->getParameters();
+        $this->assertFalse($parameters['required_field']['required']);
     }
 }
