@@ -413,6 +413,11 @@
                         return false;
                     }
 
+                    if (hasFileTypes && bodyFormat != 'form') {
+                        alert("Body Format must be set to 'Form Data' when utilizing file upload type parameters.\nYour current bodyFormat is '" + bodyFormat + "'. Change your BodyFormat or do not use file type\nparameters.");
+                        return false;
+                    }
+
                     if (hasFileTypes) {
                         // retrieve all the parameters to send for file upload
                         $('.parameters .tuple', $(this)).each(function() {
