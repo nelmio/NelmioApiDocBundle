@@ -580,6 +580,14 @@ class ApiDoc
     }
 
     /**
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
