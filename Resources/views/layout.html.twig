@@ -43,6 +43,8 @@
                         {% if authentication.custom_endpoint %}
                             api endpoint: <input type="text" id="api_endpoint" value=""/>
                         {% endif %}
+                        <button id="save_api_auth" type="button">Save</button>
+                        <button id="clear_api_auth" type="button">Clear</button>
                     {% endif %}
                 </div>
             {% endif %}
@@ -97,6 +99,9 @@
                         section.find('.section-list').slideDown('fast');
                     }
                 }
+                {% if enableSandbox %}
+                    loadStoredAuthParams();
+                {% endif %}
             });
 
             $('.toggler').click(function(event) {
@@ -143,38 +148,70 @@
             });
 
             {% if enableSandbox %}
-            var setParameterType = function ($context,setType) {
-                // no 2nd argument, use default from parameters
-                if (typeof setType == "undefined") {
-                    setType = $context.parent().attr("data-dataType");
-                    $context.val(setType);
-                }
+                var getStoredValue, storeValue, deleteStoredValue;
+                var apiAuthKeys = ['api_key', 'api_login', 'api_pass', 'api_endpoint'];
 
-                $context.parent().find('.value').remove();
-                var placeholder = "";
-                if ($context.parent().attr("data-dataType") != "" && typeof $context.parent().attr("data-dataType") != "undefined") {
-                    placeholder += "[" + $context.parent().attr("data-dataType") + "] ";
-                }
-                if ($context.parent().attr("data-format") != "" && typeof $context.parent().attr("data-format") != "undefined") {
-                    placeholder += $context.parent().attr("data-dataType");
-                }
-                if ($context.parent().attr("data-description") != "" && typeof $context.parent().attr("data-description") != "undefined") {
-                    placeholder += $context.parent().attr("data-description");
+                if ('localStorage' in window) {
+                    var buildKey = function (key) {
+                        return 'nelmio_' + key;
+                    }
+
+                    getStoredValue = function (key) {
+                        return localStorage.getItem(buildKey(key));
+                    }
+
+                    storeValue = function (key, value) {
+                        localStorage.setItem(buildKey(key), value);
+                    }
+
+                    deleteStoredValue = function (key) {
+                        localStorage.removeItem(buildKey(key));
+                    }
                 } else {
-                    placeholder += "Value";
+                    getStoredValue = storeValue = deleteStoredValue = function (){};
                 }
 
-                switch(setType) {
-                    case "boolean":
-                        $('<select class="value"><option value=""></option><option value="1">True</option><option value="0">False</option></select>').insertAfter($context);
-                        break;
-                    case "file":
-                        $('<input type="file" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
-                        break;
-                    default:
-                        $('<input type="text" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+                var loadStoredAuthParams = function() {
+                    $.each(apiAuthKeys, function(_, value) {
+                        var elm = $('#' + value);
+                        if (elm.length) {
+                            elm.val(getStoredValue(value));
+                        }
+                    });
                 }
-            };
+
+                var setParameterType = function ($context,setType) {
+                    // no 2nd argument, use default from parameters
+                    if (typeof setType == "undefined") {
+                        setType = $context.parent().attr("data-dataType");
+                        $context.val(setType);
+                    }
+
+                    $context.parent().find('.value').remove();
+                    var placeholder = "";
+                    if ($context.parent().attr("data-dataType") != "" && typeof $context.parent().attr("data-dataType") != "undefined") {
+                        placeholder += "[" + $context.parent().attr("data-dataType") + "] ";
+                    }
+                    if ($context.parent().attr("data-format") != "" && typeof $context.parent().attr("data-format") != "undefined") {
+                        placeholder += $context.parent().attr("data-dataType");
+                    }
+                    if ($context.parent().attr("data-description") != "" && typeof $context.parent().attr("data-description") != "undefined") {
+                        placeholder += $context.parent().attr("data-description");
+                    } else {
+                        placeholder += "Value";
+                    }
+
+                    switch(setType) {
+                        case "boolean":
+                            $('<select class="value"><option value=""></option><option value="1">True</option><option value="0">False</option></select>').insertAfter($context);
+                            break;
+                        case "file":
+                            $('<input type="file" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+                            break;
+                        default:
+                            $('<input type="text" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+                    }
+                };
 
                 var toggleButtonText = function ($btn) {
                     if ($btn.text() === 'Default') {
@@ -239,6 +276,25 @@
                     }
                     return body;
                 }
+
+                $('#save_api_auth').click(function(event) {
+                    $.each(apiAuthKeys, function(_, value) {
+                        var elm = $('#' + value);
+                        if (elm.length) {
+                            storeValue(value, elm.val());
+                        }
+                    });
+                });
+
+                $('#clear_api_auth').click(function(event) {
+                    $.each(apiAuthKeys, function(_, value) {
+                        deleteStoredValue(value);
+                        var elm = $('#' + value);
+                        if (elm.length) {
+                            elm.val('');
+                        }
+                    });
+                });
 
                 $('.tabs li').click(function() {
                     var contentGroup = $(this).parents('.content');
