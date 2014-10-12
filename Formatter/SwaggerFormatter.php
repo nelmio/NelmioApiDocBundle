@@ -275,6 +275,8 @@ class SwaggerFormatter implements FormatterInterface
                     $message = sprintf('See standard HTTP status code reason for %s', $statusCode);
                 }
 
+                $className = !empty($prop['type']['form_errors']) ? $prop['type']['class'] . '.ErrorResponse' : $prop['type']['class'];
+
                 if (isset($prop['type']['collection']) && $prop['type']['collection'] === true) {
 
                     /*
@@ -283,14 +285,14 @@ class SwaggerFormatter implements FormatterInterface
                      */
                     $alias = $prop['type']['collectionName'];
 
-                    $newName = sprintf('%s[%s]', $prop['type']['class'], $alias);
+                    $newName = sprintf('%s[%s]', $className, $alias);
                     $collId =
                         $this->registerModel(
                             $newName,
                             array(
                                 $alias => array(
                                     'dataType'    => null,
-                                    'subType'     => $prop['type']['class'],
+                                    'subType'     => $className,
                                     'actualType'  => DataTypes::COLLECTION,
                                     'required'    => true,
                                     'readonly'    => true,
@@ -307,10 +309,11 @@ class SwaggerFormatter implements FormatterInterface
                         'responseModel' => $collId
                     );
                 } else {
+
                     $responseModel = array(
                         'code' => $statusCode,
                         'message' => $message,
-                        'responseModel' => $this->registerModel($prop['type']['class'], $prop['model'], ''),
+                        'responseModel' => $this->registerModel($className, $prop['model'], ''),
                     );
                 }
                 $responseMessages[$statusCode] = $responseModel;
