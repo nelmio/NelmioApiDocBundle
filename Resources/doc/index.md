@@ -8,19 +8,9 @@ for your APIs.
 Installation
 ------------
 
-Add this bundle to your `composer.json` file:
+Require the `nelmio/api-doc-bundle` package in your composer.json and update your dependencies.
 
-``` php
-{
-    "require": {
-        "nelmio/api-doc-bundle": "@stable"
-    }
-}
-```
-
-**Protip:** you should browse the
-[`nelmio/api-doc-bundle`](https://packagist.org/packages/nelmio/api-doc-bundle)
-page to choose a stable version to use, avoid the `@stable` meta constraint.
+    $ composer require nelmio/api-doc-bundle
 
 Register the bundle in `app/AppKernel.php`:
 
