@@ -800,9 +800,9 @@ param1:
 
 page:
 
-  * Requirement: \d+
   * Description: Page of the overview.
   * Default: 1
+  * Requirement: \d+
 
 
 ### `GET` /z-action-with-query-param-no-default ###
@@ -812,8 +812,8 @@ page:
 
 page:
 
-  * Requirement: \d+
   * Description: Page of the overview.
+  * Requirement: \d+
 
 
 ### `GET` /z-action-with-query-param-strict ###

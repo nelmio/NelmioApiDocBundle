@@ -37,7 +37,8 @@ class FosRestHandlerTest extends WebTestCase
 
         $this->assertArrayHasKey('dataType', $requirement);
 
-        $this->assertArrayNotHasKey('default', $requirement);
+        $this->assertArrayHasKey('default', $requirement);
+        $this->assertNull($requirement['default']);
     }
 
     public function testGetWithQueryParam()
@@ -84,7 +85,8 @@ class FosRestHandlerTest extends WebTestCase
         $this->assertArrayHasKey('description', $filter);
         $this->assertEquals($filter['description'], 'Page of the overview.');
 
-        $this->assertArrayNotHasKey('default', $filter);
+        $this->assertArrayHasKey('default', $filter);
+        $this->assertNull($filter['default']);
     }
 
     public function testGetWithConstraintAsRequirements()
@@ -128,7 +130,8 @@ class FosRestHandlerTest extends WebTestCase
         $this->assertArrayHasKey('required', $parameter);
         $this->assertEquals($parameter['required'], true);
 
-        $this->assertArrayNotHasKey('default', $parameter);
+        $this->assertArrayHasKey('default', $parameter);
+        $this->assertNull($parameter['default']);
     }
 
     public function testGetWithRequestParamNullable()
@@ -154,6 +157,7 @@ class FosRestHandlerTest extends WebTestCase
         $this->assertArrayHasKey('required', $parameter);
         $this->assertEquals($parameter['required'], false);
 
-        $this->assertArrayNotHasKey('default', $parameter);
+        $this->assertArrayHasKey('default', $parameter);
+        $this->assertNull($parameter['default']);
     }
 }

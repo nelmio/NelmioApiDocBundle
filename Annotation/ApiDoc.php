@@ -279,7 +279,7 @@ class ApiDoc
      */
     public function addFilter($name, array $filter)
     {
-        $this->filters[$name] = $filter;
+        $this->filters[$name] = $this->createParameterInfo($filter);
     }
 
     /**
@@ -306,7 +306,7 @@ class ApiDoc
      */
     public function addRequirement($name, array $requirement)
     {
-        $this->requirements[$name] = $requirement;
+        $this->requirements[$name] = $this->createParameterInfo($requirement);
     }
 
     /**
@@ -411,7 +411,7 @@ class ApiDoc
      */
     public function addParameter($name, array $parameter)
     {
-        $this->parameters[$name] = $parameter;
+        $this->parameters[$name] = $this->createParameterInfo($parameter);
     }
 
     /**
@@ -419,7 +419,10 @@ class ApiDoc
      */
     public function setParameters(array $parameters)
     {
-        $this->parameters = $parameters;
+        $this->parameters = array();
+        foreach ($parameters as $name => $parameter) {
+            $this->addParameter($name, $parameter);
+        }
     }
 
     /**
@@ -429,7 +432,10 @@ class ApiDoc
      */
     public function setResponse(array $response)
     {
-        $this->response = $response;
+        $this->response = array();
+        foreach ($response as $name => $parameter) {
+            $this->response[$name] = $this->createParameterInfo($parameter);
+        }
     }
 
     /**
@@ -694,7 +700,42 @@ class ApiDoc
     {
         $this->parsedResponseMap[$statusCode] = array('type' => $type, 'model' => $model);
         if ($statusCode == 200 && $this->response !== $model) {
-            $this->response = $model;
+            $this->setResponse($model);
         }
+    }
+
+    /**
+     * @param array $info
+     * @return array
+     */
+    private function createParameterInfo(array $info)
+    {
+        $info = array_merge(
+            array(
+                'dataType'     => null,
+                'readonly'     => null,
+                'required'     => null,
+                'description'  => null,
+                'default'      => null,
+                'sinceVersion' => null,
+                'untilVersion' => null,
+                'actualType'   => null,
+                'subType'      => null,
+            ),
+            $info
+        );
+
+        if ($info['description']) {
+            // Fix descriptions over multiple lines
+            $info['description'] = preg_replace('/\\n\s+\*\s+/i', ' ', $info['description']);
+        }
+
+        if (isset($info['children'])) {
+            foreach ($info['children'] as $name => $child) {
+                $info['children'][$name] = $this->createParameterInfo($child);
+            }
+        }
+
+        return $info;
     }
 }
