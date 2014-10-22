@@ -63,7 +63,7 @@ class DumpCommand extends ContainerAwareCommand
             $this->getContainer()->set('request', new Request(), 'request');
         }
 
-        $extractor = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor')
+        $extractor = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor');
         $extractedDoc = $input->hasOption('api-version') ?
             $extractor->allForVersion($input->getOption('api-version')) :
             $extractor->all();
