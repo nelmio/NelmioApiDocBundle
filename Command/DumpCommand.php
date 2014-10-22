@@ -34,6 +34,7 @@ class DumpCommand extends ContainerAwareCommand
                 $this->availableFormats[0]
             )
             ->addOption('no-sandbox', '', InputOption::VALUE_NONE)
+            ->addOption('api-version', null, InputOption::VALUE_REQUIRED, 'The API version')
             ->setName('api:doc:dump')
             ;
     }
@@ -62,7 +63,11 @@ class DumpCommand extends ContainerAwareCommand
             $this->getContainer()->set('request', new Request(), 'request');
         }
 
-        $extractedDoc = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor')->all();
+        $extractor = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor')
+        $extractedDoc = $input->hasOption('api-version') ?
+            $extractor->allForVersion($input->getOption('api-version')) :
+            $extractor->all();
+
         $formattedDoc = $formatter->format($extractedDoc);
 
         if ('json' === $format) {

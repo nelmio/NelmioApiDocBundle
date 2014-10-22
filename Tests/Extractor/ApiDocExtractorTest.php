@@ -17,7 +17,7 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
-    const ROUTES_QUANTITY = 33;
+    const ROUTES_QUANTITY = 34;
 
     public function testAll()
     {
@@ -78,7 +78,21 @@ class ApiDocExtractorTest extends WebTestCase
 
         $a3 = $data[20]['annotation'];
         $this->assertTrue($a3->getHttps());
+    }
 
+    public function testRouteVersionChecking()
+    {
+        $container = $this->getContainer();
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $data = $extractor->allForVersion('1.5');
+
+        $this->assertTrue(is_array($data));
+        $this->assertCount(self::ROUTES_QUANTITY, $data);
+
+        $data = $extractor->allForVersion('1.4');
+
+        $this->assertTrue(is_array($data));
+        $this->assertCount(self::ROUTES_QUANTITY - 1, $data);
     }
 
     public function testGet()

@@ -89,6 +89,30 @@ class ApiDocExtractor
     }
 
     /**
+     * Extracts annotations from routes for specific version
+     *
+     * @param string $apiVersion API version
+     *
+     * @return array
+     */
+    public function allForVersion($apiVersion)
+    {
+        $data = $this->all();
+
+        foreach ($data as $k => $a) {
+            // ignore other api version's routes
+            if (
+                $a['annotation']->getRoute()->getDefault('_version') &&
+                !version_compare($apiVersion, $a['annotation']->getRoute()->getDefault('_version'), '=')
+            ) {
+                unset($data[$k]);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * Returns an array of data where each data is an array with the following keys:
      *  - annotation
      *  - resource

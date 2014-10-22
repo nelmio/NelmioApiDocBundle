@@ -384,6 +384,28 @@ It is a good idea to enable the internal caching mechanism on production:
         cache:
             enabled: true
 
+### Route versions
+
+You can define version for the API routes:
+```yml
+api_v3_products_list:
+    pattern:  /api/v3/products.{_format}
+    defaults: { _controller: NelmioApiDocTestBundle:Test:routeVersion, _format: json, _version: "3.0" }
+    requirements:
+        _method: GET
+
+api_v1_orders:
+    resource: "@AcmeOrderBundle/Resources/config/routing/orders_v1.yml"
+    defaults: { _version: "1.0" }
+    prefix:   /api/v1/orders
+```
+
+And generate documentation for specific version by the command:
+
+    php app/console api:doc:dump --format=html --api-version=3.0 > api.html
+
+Or by adding `?_version={version}` to API documentation page URL.
+
 Configuration In-Depth
 ----------------------
 

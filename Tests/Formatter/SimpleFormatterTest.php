@@ -1256,6 +1256,24 @@ With multiple lines.',
                     'https' => false,
                     'authenticationRoles' => array(),
                     'deprecated' => false
+                ),
+                21 =>
+                array(
+                    'authentication' => false,
+                    'method' => 'GET',
+                    'uri' => '/zz-tests-route-version.{_format}',
+                    'https' => false,
+                    'authenticationRoles' => array(),
+                    'deprecated' => false,
+                    'requirements' =>
+                        array(
+                            '_format' =>
+                            array(
+                                'requirement' => '',
+                                'dataType' => '',
+                                'description' => '',
+                            ),
+                        ),
                 )
             ),
             '/tests2' =>
