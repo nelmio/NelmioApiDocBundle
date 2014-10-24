@@ -24,7 +24,6 @@ class ApiDocController extends Controller
         $extractor = $this->get('nelmio_api_doc.extractor.api_doc_extractor');
         $formatter = $this->get('nelmio_api_doc.formatter.html_formatter');
         $apiVersion = $request->query->get('_version', null);
-        $extractedDoc = $apiVersion ? $extractor->allForVersion($apiVersion) : $extractor->all();
 
         if ($apiVersion) {
             $formatter->setVersion($apiVersion);
@@ -33,7 +32,7 @@ class ApiDocController extends Controller
             $extractedDoc = $extractor->all();
         }
 
-        $htmlContent  = $formatter->format($extractedDoc);
+        $htmlContent = $formatter->format($extractedDoc);
 
         return new Response($htmlContent, 200, array('Content-Type' => 'text/html'));
     }
