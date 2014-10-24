@@ -16,6 +16,13 @@ use Nelmio\ApiDocBundle\DataTypes;
 
 abstract class AbstractFormatter implements FormatterInterface
 {
+    protected $version;
+
+    public function setVersion($version)
+    {
+        $this->version = $version;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -53,6 +60,31 @@ abstract class AbstractFormatter implements FormatterInterface
     abstract protected function render(array $collection);
 
     /**
+     * Check that the versions range includes current version
+     *
+     * @access protected
+     * @param  string $fromVersion (default: null)
+     * @param  string $toVersion (default: null)
+     * @return boolean
+     */
+    protected function rangeIncludesVersion($fromVersion = null, $toVersion = null)
+    {
+        if (!$fromVersion && !$toVersion) {
+            return true;
+        }
+
+        if ($fromVersion && version_compare($fromVersion, $this->version, '>')) {
+            return false;
+        }
+
+        if ($toVersion && version_compare($toVersion, $this->version, '<')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Compresses nested parameters into a flat by changing the parameter
      * names to strings which contain the nested property names, for example:
      * `user[group][name]`
@@ -67,6 +99,13 @@ abstract class AbstractFormatter implements FormatterInterface
     {
         $newParams = array();
         foreach ($data as $name => $info) {
+            if ($this->version && !$this->rangeIncludesVersion(
+                isset($info['sinceVersion']) ? $info['sinceVersion'] : null,
+                isset($info['untilVersion']) ? $info['untilVersion'] : null
+            )) {
+                continue;
+            }
+
             $newName = $this->getNewName($name, $info, $parentName);
 
             $newParams[$newName] = array(

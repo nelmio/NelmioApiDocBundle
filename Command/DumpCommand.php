@@ -54,6 +54,10 @@ class DumpCommand extends ContainerAwareCommand
             $formatter = $this->getContainer()->get(sprintf('nelmio_api_doc.formatter.%s_formatter', $format));
         }
 
+        if ($input->hasOption('api-version')) {
+            $formatter->setVersion($input->getOption('api-version'));
+        }
+
         if ($input->getOption('no-sandbox') && 'html' === $format) {
             $formatter->setEnableSandbox(false);
         }
