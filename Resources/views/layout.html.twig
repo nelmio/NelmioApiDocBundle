@@ -366,7 +366,7 @@
 
                 $('.pane.sandbox form').submit(function() {
                     var url = $(this).attr('action'),
-                        method = $(this).attr('method'),
+                        method = $('[name="header_method"]', this).val(),
                         self = this,
                         params = {},
                         formData = new FormData(),
@@ -377,8 +377,6 @@
 
                     if (method === 'ANY') {
                         method = 'POST';
-                    } else if (method.indexOf('|') !== -1) {
-                        method = method.split('|').sort().pop();
                     }
 
                     // set requestFormat

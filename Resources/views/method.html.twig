@@ -201,7 +201,7 @@
                     {% if app.request is not null and data.https and app.request.secure != data.https %}
                     Please reload the documentation using the scheme {% if data.https %}HTTPS{% else %}HTTP{% endif %} if you want to use the sandbox.
                     {% else %}
-                        <form method="{{ data.method|upper }}" action="{% if data.host is defined %}{{ data.https ? 'https://' : 'http://' }}{{ data.host }}{% endif %}{{ data.uri }}">
+                        <form method="" action="{% if data.host is defined %}{{ data.https ? 'https://' : 'http://' }}{{ data.host }}{% endif %}{{ data.uri }}">
                             <fieldset class="parameters">
                                 <legend>Input</legend>
                                 {% if data.requirements is defined %}
@@ -247,6 +247,18 @@
                             </fieldset>
 
                             <fieldset class="headers">
+                                {% set methods = data.method|upper|split('|') %}
+                                {% if methods|length > 1 %}
+                                    <legend>Method</legend>
+                                    <select name="header_method">
+                                    {% for method in methods %}
+                                        <option value="{{ method }}">{{ method }}</option>
+                                    {% endfor %}
+                                    </select>
+                                {% else %}
+                                    <input type="hidden" name="header_method" value="{{ methods|join }}" />
+                                {% endif %}
+                                
                                 <legend>Headers</legend>
 
                                 {% if acceptType %}
