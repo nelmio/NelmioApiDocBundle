@@ -27,7 +27,6 @@ class ApiDocControllerTest extends WebTestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-type'));
-
     }
 
     public function dataTestApiDeclarations()

@@ -19,10 +19,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiDocController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $extractedDoc = $this->get('nelmio_api_doc.extractor.api_doc_extractor')->all();
-        $htmlContent  = $this->get('nelmio_api_doc.formatter.html_formatter')->format($extractedDoc);
+        $extractor = $this->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $formatter = $this->get('nelmio_api_doc.formatter.html_formatter');
+        $apiVersion = $request->query->get('_version', null);
+
+        if ($apiVersion) {
+            $formatter->setVersion($apiVersion);
+            $extractedDoc = $extractor->allForVersion($apiVersion);
+        } else {
+            $extractedDoc = $extractor->all();
+        }
+
+        $htmlContent = $formatter->format($extractedDoc);
 
         return new Response($htmlContent, 200, array('Content-Type' => 'text/html'));
     }

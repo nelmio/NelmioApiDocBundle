@@ -65,11 +65,11 @@ class CachingApiDocExtractor extends ApiDocExtractor
 
             $data = parent::all();
             $this->cache->write(serialize($data), $resources);
-            
+
             return $data;
         }
 
         return unserialize(file_get_contents($this->cacheFile));
 
     }
-} 
+}
