@@ -69,18 +69,11 @@ abstract class AbstractFormatter implements FormatterInterface
         foreach ($data as $name => $info) {
             $newName = $this->getNewName($name, $info, $parentName);
 
-            $newParams[$newName] = array(
-                'dataType'     => $info['dataType'],
-                'readonly'     => array_key_exists('readonly', $info) ? $info['readonly'] : null,
-                'required'     => $info['required'],
-                'default'      => array_key_exists('default', $info) ? $info['default'] : null,
-                'description'  => array_key_exists('description', $info) ? $info['description'] : null,
-                'format'       => array_key_exists('format', $info) ? $info['format'] : null,
-                'sinceVersion' => array_key_exists('sinceVersion', $info) ? $info['sinceVersion'] : null,
-                'untilVersion' => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
-                'actualType'   => array_key_exists('actualType', $info) ? $info['actualType'] : null,
-                'subType'      => array_key_exists('subType', $info) ? $info['subType'] : null,
-            );
+            $newParams[$newName] = $info;
+
+            if (is_array($newParams[$newName])) {
+                unset($newParams[$newName]['children']);
+            }
 
             if (isset($info['children']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {
                 foreach ($this->compressNestedParameters($info['children'], $newName, $ignoreNestedReadOnly) as $nestedItemName => $nestedItemData) {
@@ -123,6 +116,10 @@ abstract class AbstractFormatter implements FormatterInterface
     {
         if (isset($annotation['parameters'])) {
             $annotation['parameters'] = $this->compressNestedParameters($annotation['parameters'], null, true);
+        }
+
+        if (isset($annotation['filters'])) {
+            $annotation['filters'] = $this->compressNestedParameters($annotation['filters'], null, true);
         }
 
         if (isset($annotation['response'])) {

@@ -152,10 +152,22 @@ class ApiDocTest extends TestCase
         $annot = new ApiDoc($data);
         $array = $annot->toArray();
 
+        $expectedFilterData = array(
+            'dataType' => null,
+            'readonly' => null,
+            'required' => null,
+            'description' => null,
+            'default' => null,
+            'sinceVersion' => null,
+            'untilVersion' => null,
+            'actualType' => null,
+            'subType' => null,
+        );
+
         $this->assertTrue(is_array($array));
         $this->assertTrue(is_array($array['filters']));
         $this->assertCount(1, $array['filters']);
-        $this->assertEquals(array('a-filter' => array()), $array['filters']);
+        $this->assertEquals(array('a-filter' => $expectedFilterData), $array['filters']);
         $this->assertTrue($annot->isResource());
         $this->assertEquals($data['description'], $array['description']);
         $this->assertFalse(isset($array['requirements']));

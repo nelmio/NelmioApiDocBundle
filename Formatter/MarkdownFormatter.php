@@ -67,7 +67,9 @@ class MarkdownFormatter extends AbstractFormatter
                 $markdown .= sprintf("%s:\n\n", $name);
 
                 foreach ($filter as $key => $value) {
-                    $markdown .= sprintf("  * %s: %s\n", ucwords($key), trim(str_replace('\\\\', '\\', json_encode($value)), '"'));
+                    if (null !== $value) {
+                        $markdown .= sprintf("  * %s: %s\n", ucwords($key), trim(str_replace('\\\\', '\\', json_encode($value)), '"'));
+                    }
                 }
 
                 $markdown .= "\n";
