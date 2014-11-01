@@ -38,6 +38,98 @@ _List another resource._
 
   - Requirement: json|xml|html
 
+#### Response ####
+
+[]:
+
+  * type: array of objects (JmsTest)
+
+[][foo]:
+
+  * type: string
+
+[][bar]:
+
+  * type: DateTime
+
+[][number]:
+
+  * type: double
+
+[][arr]:
+
+  * type: array
+
+[][nested]:
+
+  * type: object (JmsNested)
+
+[][nested][foo]:
+
+  * type: DateTime
+
+[][nested][bar]:
+
+  * type: string
+
+[][nested][baz][]:
+
+  * type: array of integers
+  * description: Epic description.
+
+With multiple lines.
+
+[][nested][circular]:
+
+  * type: object (JmsNested)
+
+[][nested][parent]:
+
+  * type: object (JmsTest)
+
+[][nested][parent][foo]:
+
+  * type: string
+
+[][nested][parent][bar]:
+
+  * type: DateTime
+
+[][nested][parent][number]:
+
+  * type: double
+
+[][nested][parent][arr]:
+
+  * type: array
+
+[][nested][parent][nested]:
+
+  * type: object (JmsNested)
+
+[][nested][parent][nested_array][]:
+
+  * type: array of objects (JmsNested)
+
+[][nested][since]:
+
+  * type: string
+  * versions: >=0.2
+
+[][nested][until]:
+
+  * type: string
+  * versions: <=0.3
+
+[][nested][since_and_until]:
+
+  * type: string
+  * versions: >=0.4,<=0.5
+
+[][nested_array][]:
+
+  * type: array of objects (JmsNested)
+
 
 ### `PUT|PATCH` /api/other-resources/{id}.{_format} ###
 
@@ -63,6 +155,20 @@ _List resources._
 **_format**
 
   - Requirement: json|xml|html
+
+#### Response ####
+
+tests[]:
+
+  * type: array of objects (Test)
+
+tests[][a]:
+
+  * type: string
+
+tests[][b]:
+
+  * type: DateTime
 
 
 ### `POST` /api/resources.{_format} ###
@@ -835,6 +941,13 @@ related[a]:
 related[b]:
 
   * type: DateTime
+
+
+### `POST` /zcached ###
+
+
+
+### `POST` /zsecured ###
 MARKDOWN;
 
         $this->assertEquals($expected, $result);

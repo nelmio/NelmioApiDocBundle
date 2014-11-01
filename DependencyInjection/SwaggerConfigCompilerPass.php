@@ -48,6 +48,10 @@ class SwaggerConfigCompilerPass implements CompilerPassInterface
 
         $authentication = $container->getParameter('nelmio_api_doc.sandbox.authentication');
 
+        $formatter->setArguments(array(
+            $container->getParameter('nelmio_api_doc.swagger.model_naming_strategy'),
+        ));
+
         if ($authentication !== null) {
             $formatter->addMethodCall('setAuthenticationConfig', array($authentication));
         }

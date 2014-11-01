@@ -31,6 +31,7 @@ class NelmioApiDocExtension extends Extension
 
         $container->setParameter('nelmio_api_doc.motd.template', $config['motd']['template']);
         $container->setParameter('nelmio_api_doc.exclude_sections', $config['exclude_sections']);
+        $container->setParameter('nelmio_api_doc.default_sections_opened', $config['default_sections_opened']);
         $container->setParameter('nelmio_api_doc.api_name', $config['name']);
         $container->setParameter('nelmio_api_doc.sandbox.enabled',  $config['sandbox']['enabled']);
         $container->setParameter('nelmio_api_doc.sandbox.endpoint', $config['sandbox']['endpoint']);
@@ -64,12 +65,13 @@ class NelmioApiDocExtension extends Extension
         $container->setParameter('nelmio_api_doc.swagger.api_version', $config['swagger']['api_version']);
         $container->setParameter('nelmio_api_doc.swagger.info', $config['swagger']['info']);
         $container->setParameter('nelmio_api_doc.swagger.nickname_naming_strategy', $config['swagger']['nickname_naming_strategy']);
+        $container->setParameter('nelmio_api_doc.swagger.model_naming_strategy', $config['swagger']['model_naming_strategy']);
 
         if ($config['cache']['enabled'] === true) {
             $arguments = $container->getDefinition('nelmio_api_doc.extractor.api_doc_extractor')->getArguments();
             $caching = new Definition('Nelmio\ApiDocBundle\Extractor\CachingApiDocExtractor');
-            $arguments[] = $container->getParameterBag()->resolveValue($config['cache']['file']);
-            $arguments[] = $container->getParameter('kernel.debug');
+            $arguments[] = $config['cache']['file'];
+            $arguments[] = '%kernel.debug%';
             $caching->setArguments($arguments);
             $container->setDefinition('nelmio_api_doc.extractor.api_doc_extractor', $caching);
         }

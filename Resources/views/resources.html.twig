@@ -3,9 +3,14 @@
 {% block content %}
     {% for section, sections in resources  %}
         {% if section != '_others' %}
-            <li class="section">
+            <li class="section{{ defaultSectionsOpened? ' active':'' }}">
+                <div class="actions">
+                    <a class="action-show-hide">Show/hide</a>
+                    <a class="action-list">List Operations</a>
+                    <a class="action-expand">Expand Operations</a>
+                </div>
                 <h1>{{ section }}</h1>
-                <ul>
+                <ul class="section-list" {% if not defaultSectionsOpened %}style="display: none"{% endif %}>
         {% endif %}
         {% for resource, methods in sections %}
             <li class="resource">

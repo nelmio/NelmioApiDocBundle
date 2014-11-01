@@ -24,11 +24,13 @@
                         {% if 'json' in bodyFormats %}<option value="json"{{ defaultBodyFormat == 'json' ? ' selected' : '' }}>JSON</option>{% endif %}
                     </select>
                     {% endif %}
+                    {% if requestFormats|length > 0 %}
                     request format:
                     <select id="request_format">
                     {% for format, header in requestFormats %}
                         <option value="{{ header }}"{{ defaultRequestFormat == format ? ' selected' : '' }}>{{ format }}</option>
                     {% endfor %}
+                    {% endif %}
                     </select>
                     {% if authentication %}
                         {% if authentication.delivery == 'http' and authentication.type == 'basic' %}
@@ -41,6 +43,8 @@
                         {% if authentication.custom_endpoint %}
                             api endpoint: <input type="text" id="api_endpoint" value=""/>
                         {% endif %}
+                        <button id="save_api_auth" type="button">Save</button>
+                        <button id="clear_api_auth" type="button">Clear</button>
                     {% endif %}
                 </div>
             {% endif %}
@@ -89,7 +93,15 @@
                         $('body,html').scrollTop(elem.position().top);
                     });
                     elem.find('.toggler').click();
+                    var section = elem.parents('.section').first();
+                    if (section) {
+                        section.addClass('active');
+                        section.find('.section-list').slideDown('fast');
+                    }
                 }
+                {% if enableSandbox %}
+                    loadStoredAuthParams();
+                {% endif %}
             });
 
             $('.toggler').click(function(event) {
@@ -105,39 +117,101 @@
                 return false;
             });
 
-            {% if enableSandbox %}
-            var setParameterType = function ($context,setType) {
-                // no 2nd argument, use default from parameters
-                if (typeof setType == "undefined") {
-                    setType = $context.parent().attr("data-dataType");
-                    $context.val(setType);
-                }
-
-                $context.parent().find('.value').remove();
-                var placeholder = "";
-                if ($context.parent().attr("data-dataType") != "" && typeof $context.parent().attr("data-dataType") != "undefined") {
-                    placeholder += "[" + $context.parent().attr("data-dataType") + "] ";
-                }
-                if ($context.parent().attr("data-format") != "" && typeof $context.parent().attr("data-format") != "undefined") {
-                    placeholder += $context.parent().attr("data-dataType");
-                }
-                if ($context.parent().attr("data-description") != "" && typeof $context.parent().attr("data-description") != "undefined") {
-                    placeholder += $context.parent().attr("data-description");
+            $('.action-show-hide, .section > h1').on('click', function(){
+                var section = $(this).parents('.section').first();
+                if (section.hasClass('active')) {
+                    section.removeClass('active');
+                    section.find('.section-list').slideUp('fast');
                 } else {
-                    placeholder += "Value";
+                    section.addClass('active');
+                    section.find('.section-list').slideDown('fast');
                 }
 
-                switch(setType) {
-                    case "boolean":
-                        $('<select class="value"><option value=""></option><option value="1">True</option><option value="0">False</option></select>').insertAfter($context);
-                        break;
-                    case "file":
-                        $('<input type="file" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
-                        break;
-                    default:
-                        $('<input type="text" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+            });
+
+            $('.action-list').on('click', function(){
+                var section = $(this).parents('.section').first();
+                if (!section.hasClass('active')) {
+                    section.addClass('active');
                 }
-            };
+                section.find('.section-list').slideDown('fast');
+                section.find('.operation > .content').slideUp('fast');
+            });
+
+            $('.action-expand').on('click', function(){
+                var section = $(this).parents('.section').first();
+                if (!section.hasClass('active')) {
+                    section.addClass('active');
+                }
+                $(section).find('ul').slideDown('fast');
+                $(section).find('.operation > .content').slideDown('fast');
+            });
+
+            {% if enableSandbox %}
+                var getStoredValue, storeValue, deleteStoredValue;
+                var apiAuthKeys = ['api_key', 'api_login', 'api_pass', 'api_endpoint'];
+
+                if ('localStorage' in window) {
+                    var buildKey = function (key) {
+                        return 'nelmio_' + key;
+                    }
+
+                    getStoredValue = function (key) {
+                        return localStorage.getItem(buildKey(key));
+                    }
+
+                    storeValue = function (key, value) {
+                        localStorage.setItem(buildKey(key), value);
+                    }
+
+                    deleteStoredValue = function (key) {
+                        localStorage.removeItem(buildKey(key));
+                    }
+                } else {
+                    getStoredValue = storeValue = deleteStoredValue = function (){};
+                }
+
+                var loadStoredAuthParams = function() {
+                    $.each(apiAuthKeys, function(_, value) {
+                        var elm = $('#' + value);
+                        if (elm.length) {
+                            elm.val(getStoredValue(value));
+                        }
+                    });
+                }
+
+                var setParameterType = function ($context,setType) {
+                    // no 2nd argument, use default from parameters
+                    if (typeof setType == "undefined") {
+                        setType = $context.parent().attr("data-dataType");
+                        $context.val(setType);
+                    }
+
+                    $context.parent().find('.value').remove();
+                    var placeholder = "";
+                    if ($context.parent().attr("data-dataType") != "" && typeof $context.parent().attr("data-dataType") != "undefined") {
+                        placeholder += "[" + $context.parent().attr("data-dataType") + "] ";
+                    }
+                    if ($context.parent().attr("data-format") != "" && typeof $context.parent().attr("data-format") != "undefined") {
+                        placeholder += $context.parent().attr("data-dataType");
+                    }
+                    if ($context.parent().attr("data-description") != "" && typeof $context.parent().attr("data-description") != "undefined") {
+                        placeholder += $context.parent().attr("data-description");
+                    } else {
+                        placeholder += "Value";
+                    }
+
+                    switch(setType) {
+                        case "boolean":
+                            $('<select class="value"><option value=""></option><option value="1">True</option><option value="0">False</option></select>').insertAfter($context);
+                            break;
+                        case "file":
+                            $('<input type="file" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+                            break;
+                        default:
+                            $('<input type="text" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+                    }
+                };
 
                 var toggleButtonText = function ($btn) {
                     if ($btn.text() === 'Default') {
@@ -203,6 +277,25 @@
                     return body;
                 }
 
+                $('#save_api_auth').click(function(event) {
+                    $.each(apiAuthKeys, function(_, value) {
+                        var elm = $('#' + value);
+                        if (elm.length) {
+                            storeValue(value, elm.val());
+                        }
+                    });
+                });
+
+                $('#clear_api_auth').click(function(event) {
+                    $.each(apiAuthKeys, function(_, value) {
+                        deleteStoredValue(value);
+                        var elm = $('#' + value);
+                        if (elm.length) {
+                            elm.val('');
+                        }
+                    });
+                });
+
                 $('.tabs li').click(function() {
                     var contentGroup = $(this).parents('.content');
 
@@ -224,7 +317,12 @@
                     return $('<div>').text(text).html();
                 };
 
-                var displayFinalUrl = function(xhr, method, url, container) {
+                var displayFinalUrl = function(xhr, method, url, data, container) {
+                    if ('GET' == method && !jQuery.isEmptyObject(data)) {
+                        var separator = url.indexOf('?') >= 0 ? '&' : '?';
+                        url = url + separator + decodeURIComponent(jQuery.param(data));
+                    }
+
                     container.text(method + ' ' + url);
                 };
 
@@ -257,8 +355,8 @@
                     container.text(text);
                 };
 
-                var displayResponse = function(xhr, method, url, result_container) {
-                    displayFinalUrl(xhr, method, url, $('.url', result_container));
+                var displayResponse = function(xhr, method, url, data, result_container) {
+                    displayFinalUrl(xhr, method, url, data, $('.url', result_container));
                     displayProfilerUrl(xhr, $('.profiler-link', result_container), $('.profiler', result_container));
                     displayResponseData(xhr, $('.response', result_container));
                     displayResponseHeaders(xhr, $('.headers', result_container));
@@ -268,7 +366,7 @@
 
                 $('.pane.sandbox form').submit(function() {
                     var url = $(this).attr('action'),
-                        method = $(this).attr('method'),
+                        method = $('[name="header_method"]', this).val(),
                         self = this,
                         params = {},
                         formData = new FormData(),
@@ -279,8 +377,6 @@
 
                     if (method === 'ANY') {
                         method = 'POST';
-                    } else if (method.indexOf('|') !== -1) {
-                        method = method.split('|').sort().pop();
                     }
 
                     // set requestFormat
@@ -312,6 +408,11 @@
 
                     if (hasFileTypes && method != 'POST') {
                         alert("Sorry, you can only submit files via POST.");
+                        return false;
+                    }
+
+                    if (hasFileTypes && bodyFormat != 'form') {
+                        alert("Body Format must be set to 'Form Data' when utilizing file upload type parameters.\nYour current bodyFormat is '" + bodyFormat + "'. Change your BodyFormat or do not use file type\nparameters.");
                         return false;
                     }
 
@@ -396,7 +497,7 @@
                     {% else -%}
                     var endpoint = '{{ endpoint }}';
                     {% endif -%}
-                    {% if authentication.custom_endpoint %}
+                    {% if authentication and authentication.custom_endpoint %}
                     if ($('#api_endpoint') && typeof($('#api_endpoint').val()) != 'undefined') {
                         endpoint = $('#api_endpoint').val();
                     }
@@ -441,7 +542,7 @@
                             }
                         },
                         complete: function(xhr) {
-                            displayResponse(xhr, method, url, result_container);
+                            displayResponse(xhr, method, url, data, result_container);
 
                             // and enable them back
                             $('input:not(.content-type), button', $(self)).removeAttr('disabled');

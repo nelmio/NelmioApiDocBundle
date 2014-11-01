@@ -303,12 +303,28 @@ class ApiDocTest extends TestCase
         $this->assertEquals(array('beta'), $array['tags']);
     }
 
+    public function testConstructWithOneTagAndColorCode()
+    {
+        $data = array(
+            'tags' => array(
+                'beta' => '#ff0000'
+            )
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(is_array($array['tags']), 'Single tag should be put in array');
+        $this->assertEquals(array('beta' => '#ff0000'), $array['tags']);
+    }
+
     public function testConstructWithMultipleTags()
     {
         $data = array(
             'tags' => array(
-                'experimental',
-                'alpha'
+                'experimental' => '#0000ff',
+                'beta' => '#0000ff',
             )
         );
 

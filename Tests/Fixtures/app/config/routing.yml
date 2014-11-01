@@ -207,3 +207,30 @@ test_route_update_another_resource:
 swagger_doc:
     resource: @NelmioApiDocBundle/Resources/config/swagger_routing.yml
     prefix: /api-docs
+
+test_route_23:
+    pattern:  /zcached
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zCached }
+    requirements:
+        _method: POST
+
+test_route_24:
+    pattern:  /zsecured
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zSecured }
+    requirements:
+        _method: POST
+
+test_required_parameters:
+    pattern: /api/other-resources/{id}.{_format}
+    defaults: { _controller: NelmioApiDocTestBundle:Resource:requiredParametersAction, _format: json }
+    requirements:
+        _method: POST
+        _format: json|xml|html
+        
+test_put_disables_required_parameters:
+    pattern: /api/other-resources/{id}.{_format}
+    defaults: { _controller: NelmioApiDocTestBundle:Resource:requiredParametersAction, _format: json }
+    requirements:
+        _method: PUT
+        _format: json|xml|html        
+

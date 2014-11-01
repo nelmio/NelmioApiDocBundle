@@ -12,10 +12,11 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
  * Class SwaggerFormatterTest
  *
  * @package Nelmio\ApiDocBundle\Tests\Formatter
- * @author Bez Hermoso <bez@activelamp.com>
+ * @author  Bez Hermoso <bez@activelamp.com>
  */
 class SwaggerFormatterTest extends WebTestCase
 {
+
     /**
      * @var ApiDocExtractor
      */
@@ -30,7 +31,7 @@ class SwaggerFormatterTest extends WebTestCase
     {
         parent::setUp();
 
-        $container = $this->getContainer();
+        $container       = $this->getContainer();
         $this->extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
         $this->formatter = $container->get('nelmio_api_doc.formatter.swagger_formatter');
     }
@@ -47,52 +48,51 @@ class SwaggerFormatterTest extends WebTestCase
 
         $actual = $this->formatter->format($data, null);
 
-
         $expected = array(
             'swaggerVersion' => '1.2',
-            'apiVersion' => '3.14',
-            'info' =>
+            'apiVersion'     => '3.14',
+            'info'           =>
                 array(
-                    'title' => 'Nelmio Swagger',
-                    'description' => 'Testing Swagger integration.',
+                    'title'             => 'Nelmio Swagger',
+                    'description'       => 'Testing Swagger integration.',
                     'TermsOfServiceUrl' => 'https://github.com',
-                    'contact' => 'user@domain.tld',
-                    'license' => 'MIT',
-                    'licenseUrl' => 'http://opensource.org/licenses/MIT',
+                    'contact'           => 'user@domain.tld',
+                    'license'           => 'MIT',
+                    'licenseUrl'        => 'http://opensource.org/licenses/MIT',
                 ),
             'authorizations' =>
                 array(
                     'apiKey' => array(
-                        'type' => 'apiKey',
-                        'passAs' => 'header',
+                        'type'    => 'apiKey',
+                        'passAs'  => 'header',
                         'keyname' => 'access_token',
                     )
                 ),
-            'apis' =>
+            'apis'           =>
                 array(
                     array(
-                        'path' => '/other-resources',
+                        'path'        => '/other-resources',
                         'description' => 'Operations on another resource.',
                     ),
                     array(
-                        'path' => '/resources',
+                        'path'        => '/resources',
                         'description' => 'Operations on resource.',
                     ),
                     array(
-                        'path' => '/tests',
-                        'description' => NULL,
+                        'path'        => '/tests',
+                        'description' => null,
                     ),
                     array(
-                        'path' => '/tests',
-                        'description' => NULL,
+                        'path'        => '/tests',
+                        'description' => null,
                     ),
                     array(
-                        'path' => '/tests2',
-                        'description' => NULL,
+                        'path'        => '/tests2',
+                        'description' => null,
                     ),
                     array(
-                        'path' => '/TestResource',
-                        'description' => NULL,
+                        'path'        => '/TestResource',
+                        'description' => null,
                     ),
                 ),
         );
@@ -124,29 +124,30 @@ class SwaggerFormatterTest extends WebTestCase
                 '/resources',
                 array(
                     'swaggerVersion' => '1.2',
-                    'apiVersion' => '3.14',
-                    'basePath' => '/api',
-                    'resourcePath' => '/resources',
-                    'apis' =>
+                    'apiVersion'     => '3.14',
+                    'basePath'       => '/api',
+                    'resourcePath'   => '/resources',
+                    'apis'           =>
                         array(
 
                             array(
-                                'path' => '/resources.{_format}',
+                                'path'       => '/resources.{_format}',
                                 'operations' =>
                                     array(
+
                                         array(
-                                            'method' => 'GET',
-                                            'summary' => 'List resources.',
-                                            'nickname' => 'get_resources',
-                                            'parameters' =>
+                                            'method'           => 'GET',
+                                            'summary'          => 'List resources.',
+                                            'nickname'         => 'get_resources',
+                                            'parameters'       =>
                                                 array(
 
                                                     array(
                                                         'paramType' => 'path',
-                                                        'name' => '_format',
-                                                        'type' => 'string',
-                                                        'required' => true,
-                                                        'enum' =>
+                                                        'name'      => '_format',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
+                                                        'enum'      =>
                                                             array(
                                                                 'json',
                                                                 'xml',
@@ -158,120 +159,126 @@ class SwaggerFormatterTest extends WebTestCase
                                                 array(
 
                                                     array(
-                                                        'code' => 200,
-                                                        'message' => 'Returned on success.',
+                                                        'code'          => 200,
+                                                        'message'       => 'Returned on success.',
+                                                        'responseModel' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.Test[tests]',
                                                     ),
-
                                                     array(
-                                                        'code' => 404,
+                                                        'code'    => 404,
                                                         'message' => 'Returned if resource cannot be found.',
                                                     ),
                                                 ),
+                                            'type'             => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.Test[tests]',
                                         ),
-
                                         array(
-                                            'method' => 'POST',
-                                            'summary' => 'Create a new resource.',
-                                            'nickname' => 'post_resources',
-                                            'parameters' =>
+                                            'method'           => 'POST',
+                                            'summary'          => 'Create a new resource.',
+                                            'nickname'         => 'post_resources',
+                                            'parameters'       =>
                                                 array(
-
-                                                    array(
-                                                        'paramType' => 'path',
-                                                        'name' => '_format',
-                                                        'type' => 'string',
-                                                        'required' => true,
-                                                        'enum' =>
-                                                            array(
-                                                                'json',
-                                                                'xml',
-                                                                'html',
-                                                            ),
-                                                    ),
-
-                                                    array(
-                                                        'paramType' => 'form',
-                                                        'name' => 'a',
-                                                        'type' => 'string',
-                                                    ),
-
-                                                    array(
-                                                        'paramType' => 'form',
-                                                        'name' => 'b',
-                                                        'type' => 'number',
-                                                        'format' => 'float',
-                                                    ),
-
-                                                    array(
-                                                        'paramType' => 'form',
-                                                        'name' => 'c',
-                                                        'type' => 'string',
-                                                        'enum' =>
-                                                            array(
-                                                                'x',
-                                                                'y',
-                                                                'z',
-                                                            ),
-                                                    ),
-
-                                                    array(
-                                                        'paramType' => 'form',
-                                                        'name' => 'd',
-                                                        'type' => 'string',
-                                                        'format' => 'date-time',
-                                                    ),
-
-                                                    array(
-                                                        'paramType' => 'form',
-                                                        'name' => 'e',
-                                                        'type' => 'string',
-                                                        'format' => 'date',
-                                                    ),
-
-                                                    array(
-                                                        'paramType' => 'form',
-                                                        'name' => 'g',
-                                                        'type' => 'string',
-                                                    ),
+                                                    0 =>
+                                                        array(
+                                                            'paramType' => 'path',
+                                                            'name'      => '_format',
+                                                            'type'      => 'string',
+                                                            'required'  => true,
+                                                            'enum'      =>
+                                                                array(
+                                                                    0 => 'json',
+                                                                    1 => 'xml',
+                                                                    2 => 'html',
+                                                                ),
+                                                        ),
+                                                    1 =>
+                                                        array(
+                                                            'paramType'   => 'form',
+                                                            'name'        => 'a',
+                                                            'type'        => 'string',
+                                                            'description' => 'Something that describes A.',
+                                                        ),
+                                                    2 =>
+                                                        array(
+                                                            'paramType' => 'form',
+                                                            'name'      => 'b',
+                                                            'type'      => 'number',
+                                                            'format'    => 'float',
+                                                        ),
+                                                    3 =>
+                                                        array(
+                                                            'paramType' => 'form',
+                                                            'name'      => 'c',
+                                                            'type'      => 'string',
+                                                            'enum'      =>
+                                                                array(
+                                                                    0 => 'x',
+                                                                    1 => 'y',
+                                                                    2 => 'z',
+                                                                ),
+                                                        ),
+                                                    4 =>
+                                                        array(
+                                                            'paramType' => 'form',
+                                                            'name'      => 'd',
+                                                            'type'      => 'string',
+                                                            'format'    => 'date-time',
+                                                        ),
+                                                    5 =>
+                                                        array(
+                                                            'paramType' => 'form',
+                                                            'name'      => 'e',
+                                                            'type'      => 'string',
+                                                            'format'    => 'date',
+                                                        ),
+                                                    6 =>
+                                                        array(
+                                                            'paramType' => 'form',
+                                                            'name'      => 'g',
+                                                            'type'      => 'string',
+                                                        ),
                                                 ),
                                             'responseMessages' =>
                                                 array(
-                                                    array(
-                                                        'code' => 200,
-                                                        'message' => 'See standard HTTP status code reason for 200',
-                                                        'responseModel' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
-                                                    ),
+                                                    0 =>
+                                                        array(
+                                                            'code'          => 200,
+                                                            'message'       => 'See standard HTTP status code reason for 200',
+                                                            'responseModel' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
+                                                        ),
+                                                    1 =>
+                                                        array(
+                                                            'code'          => 400,
+                                                            'message'       => 'See standard HTTP status code reason for 400',
+                                                            'responseModel' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Form.SimpleType.ErrorResponse'
+                                                        ),
                                                 ),
-                                            'type' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
+                                            'type'             => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
                                         ),
                                     ),
                             ),
-
                             array(
-                                'path' => '/resources/{id}.{_format}',
+                                'path'       => '/resources/{id}.{_format}',
                                 'operations' =>
                                     array(
 
                                         array(
-                                            'method' => 'GET',
-                                            'summary' => 'Retrieve a resource by ID.',
-                                            'nickname' => 'get_resources',
-                                            'parameters' =>
+                                            'method'           => 'GET',
+                                            'summary'          => 'Retrieve a resource by ID.',
+                                            'nickname'         => 'get_resources',
+                                            'parameters'       =>
                                                 array(
 
                                                     array(
                                                         'paramType' => 'path',
-                                                        'name' => 'id',
-                                                        'type' => 'string',
-                                                        'required' => true,
+                                                        'name'      => 'id',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
                                                     ),
-
                                                     array(
                                                         'paramType' => 'path',
-                                                        'name' => '_format',
-                                                        'type' => 'string',
-                                                        'required' => true,
-                                                        'enum' =>
+                                                        'name'      => '_format',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
+                                                        'enum'      =>
                                                             array(
                                                                 'json',
                                                                 'xml',
@@ -282,27 +289,25 @@ class SwaggerFormatterTest extends WebTestCase
                                             'responseMessages' =>
                                                 array(),
                                         ),
-
                                         array(
-                                            'method' => 'DELETE',
-                                            'summary' => 'Delete a resource by ID.',
-                                            'nickname' => 'delete_resources',
-                                            'parameters' =>
+                                            'method'           => 'DELETE',
+                                            'summary'          => 'Delete a resource by ID.',
+                                            'nickname'         => 'delete_resources',
+                                            'parameters'       =>
                                                 array(
 
                                                     array(
                                                         'paramType' => 'path',
-                                                        'name' => 'id',
-                                                        'type' => 'string',
-                                                        'required' => true,
+                                                        'name'      => 'id',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
                                                     ),
-
                                                     array(
                                                         'paramType' => 'path',
-                                                        'name' => '_format',
-                                                        'type' => 'string',
-                                                        'required' => true,
-                                                        'enum' =>
+                                                        'name'      => '_format',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
+                                                        'enum'      =>
                                                             array(
                                                                 'json',
                                                                 'xml',
@@ -316,121 +321,240 @@ class SwaggerFormatterTest extends WebTestCase
                                     ),
                             ),
                         ),
-                    'models' =>
+                    'models'         =>
                         array(
-                            'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest' =>
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Model.Test'                          =>
                                 array(
-                                    'id' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest',
-                                    'description' => 'object (JmsTest)',
-                                    'properties' =>
+                                    'id'          => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.Test',
+                                    'description' => null,
+                                    'properties'  =>
                                         array(
-                                            'foo' =>
+                                            'a' =>
                                                 array(
-                                                    'type' => 'string',
+                                                    'type'        => 'string',
                                                     'description' => 'string',
                                                 ),
-                                            'bar' =>
+                                            'b' =>
                                                 array(
-                                                    'type' => 'string',
+                                                    'type'        => 'string',
                                                     'description' => 'DateTime',
-                                                    'format' => 'date-time',
+                                                    'format'      => 'date-time',
                                                 ),
-                                            'number' =>
+                                        ),
+                                    'required'    =>
+                                        array(
+                                            'a',
+                                        ),
+                                ),
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Model.Test[tests]'                   =>
+                                array(
+                                    'id'          => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.Test[tests]',
+                                    'description' => '',
+                                    'properties'  =>
+                                        array(
+                                            'tests' =>
                                                 array(
-                                                    'type' => 'number',
+                                                    'type'        => 'array',
+                                                    'description' => null,
+                                                    'items'       =>
+                                                        array(
+                                                            '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.Test',
+                                                        ),
+                                                ),
+                                        ),
+                                    'required'    =>
+                                        array(
+                                            'tests',
+                                        ),
+                                ),
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest'                       =>
+                                array(
+                                    'id'          => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest',
+                                    'description' => 'object (JmsTest)',
+                                    'properties'  =>
+                                        array(
+                                            'foo'          =>
+                                                array(
+                                                    'type'        => 'string',
+                                                    'description' => 'string',
+                                                ),
+                                            'bar'          =>
+                                                array(
+                                                    'type'        => 'string',
+                                                    'description' => 'DateTime',
+                                                    'format'      => 'date-time',
+                                                ),
+                                            'number'       =>
+                                                array(
+                                                    'type'        => 'number',
                                                     'description' => 'double',
-                                                    'format' => 'float',
+                                                    'format'      => 'float',
                                                 ),
-                                            'arr' =>
+                                            'arr'          =>
                                                 array(
-                                                    'type' => 'array',
+                                                    'type'        => 'array',
                                                     'description' => 'array',
-                                                    'items' => array(
-                                                        'type' => 'string',
-                                                    )
+                                                    'items'       =>
+                                                        array(
+                                                            'type' => 'string',
+                                                        ),
                                                 ),
-                                            'nested' =>
+                                            'nested'       =>
                                                 array(
                                                     '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
                                                 ),
                                             'nested_array' =>
                                                 array(
-                                                    'type' => 'array',
+                                                    'type'        => 'array',
                                                     'description' => 'array of objects (JmsNested)',
-                                                    'items' => array(
-                                                        '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
-                                                    )
+                                                    'items'       =>
+                                                        array(
+                                                            '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
+                                                        ),
                                                 ),
                                         ),
-                                    'required' =>
+                                    'required'    =>
                                         array(),
                                 ),
-                            'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested' =>
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested'                     =>
                                 array(
-                                    'id' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
+                                    'id'          => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
                                     'description' => '',
-                                    'properties' =>
+                                    'properties'  =>
                                         array(
-                                            'foo' =>
+                                            'foo'             =>
                                                 array(
-                                                    'type' => 'string',
+                                                    'type'        => 'string',
                                                     'description' => 'DateTime',
-                                                    'format' => 'date-time',
+                                                    'format'      => 'date-time',
                                                 ),
-                                            'bar' =>
+                                            'bar'             =>
                                                 array(
-                                                    'type' => 'string',
+                                                    'type'        => 'string',
                                                     'description' => 'string',
                                                 ),
-                                            'baz' =>
+                                            'baz'             =>
                                                 array(
-                                                    'type' => 'array',
+                                                    'type'        => 'array',
                                                     'description' => 'Epic description.
 
 With multiple lines.',
-                                                    'items' => array(
-                                                        'type' => 'string',
-                                                    )
+                                                    'items'       =>
+                                                        array(
+                                                            'type' => 'integer',
+                                                        ),
                                                 ),
-                                            'circular' =>
+                                            'circular'        =>
                                                 array(
                                                     '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
                                                 ),
-                                            'parent' =>
+                                            'parent'          =>
                                                 array(
                                                     '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest',
                                                 ),
-                                            'since' =>
+                                            'since'           =>
                                                 array(
-                                                    'type' => 'string',
+                                                    'type'        => 'string',
                                                     'description' => 'string',
                                                 ),
-                                            'until' =>
+                                            'until'           =>
                                                 array(
-                                                    'type' => 'string',
+                                                    'type'        => 'string',
                                                     'description' => 'string',
                                                 ),
                                             'since_and_until' =>
                                                 array(
-                                                    'type' => 'string',
+                                                    'type'        => 'string',
                                                     'description' => 'string',
                                                 ),
                                         ),
-                                    'required' =>
+                                    'required'    =>
                                         array(),
                                 ),
+                            'FieldErrors'                                                            =>
+                                array(
+                                    'id'          => 'FieldErrors',
+                                    'description' => 'Errors on the parameter',
+                                    'properties'  => array(
+                                        'errors' => array(
+                                            'type'        => 'array',
+                                            'description' => 'array of errors',
+                                            'items'       => array(
+                                                'type' => 'string',
+                                            ),
+                                        ),
+                                    ),
+                                    'required'    => array()
+                                ),
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Form.SimpleType.FormErrors'          =>
+                                array(
+                                    'id'          => 'Nelmio.ApiDocBundle.Tests.Fixtures.Form.SimpleType.FormErrors',
+                                    'description' => 'Errors',
+                                    'properties'  => array(
+                                        'simple' => array(
+                                            '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Form.SimpleType.FieldErrors[simple]',
+                                        )
+                                    ),
+                                    'required'    => array()
+                                ),
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Form.SimpleType.ErrorResponse'       => array(
+                                'id'          => 'Nelmio.ApiDocBundle.Tests.Fixtures.Form.SimpleType.ErrorResponse',
+                                'description' => '',
+                                'properties'  => array(
+                                    'status_code' => array(
+                                        'type'        => 'integer',
+                                        'description' => 'The status code',
+                                        'format'      => 'int32',
+                                    ),
+                                    'message'     => array(
+                                        'type'        => 'string',
+                                        'description' => 'The error message',
+                                    ),
+                                    'errors'      => array(
+                                        '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Form.SimpleType.FormErrors',
+                                    ),
+                                ),
+                                'required'    => array(),
+                            ),
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Form.SimpleType.FieldErrors[simple]' =>
+                                array(
+                                    'id'          => 'Nelmio.ApiDocBundle.Tests.Fixtures.Form.SimpleType.FieldErrors[simple]',
+                                    'description' => 'Errors on the parameter',
+                                    'properties'  => array(
+                                        'a' => array(
+                                            '$ref' => 'FieldErrors',
+                                        ),
+                                        'b' => array(
+                                            '$ref' => 'FieldErrors',
+                                        ),
+                                        'c' => array(
+                                            '$ref' => 'FieldErrors',
+                                        ),
+                                        'd' => array(
+                                            '$ref' => 'FieldErrors',
+                                        ),
+                                        'e' => array(
+                                            '$ref' => 'FieldErrors',
+                                        ),
+                                        'g' => array(
+                                            '$ref' => 'FieldErrors',
+                                        ),
+                                    ),
+                                    'required'    => array(),
+                                ),
                         ),
-                    'produces' =>
+                    'produces'       =>
                         array(),
-                    'consumes' =>
+                    'consumes'       =>
                         array(),
                     'authorizations' =>
                         array(
-                            'apiKey' => array(
-                                'type' => 'apiKey',
-                                'passAs' => 'header',
-                                'keyname' => 'access_token',
-                            )
+                            'apiKey' =>
+                                array(
+                                    'type'    => 'apiKey',
+                                    'passAs'  => 'header',
+                                    'keyname' => 'access_token',
+                                ),
                         ),
                 ),
             ),
@@ -438,30 +562,30 @@ With multiple lines.',
                 '/other-resources',
                 array(
                     'swaggerVersion' => '1.2',
-                    'apiVersion' => '3.14',
-                    'basePath' => '/api',
-                    'resourcePath' => '/other-resources',
-                    'apis' =>
+                    'apiVersion'     => '3.14',
+                    'basePath'       => '/api',
+                    'resourcePath'   => '/other-resources',
+                    'apis'           =>
                         array(
 
                             array(
-                                'path' => '/other-resources.{_format}',
+                                'path'       => '/other-resources.{_format}',
                                 'operations' =>
                                     array(
 
                                         array(
-                                            'method' => 'GET',
-                                            'summary' => 'List another resource.',
-                                            'nickname' => 'get_other-resources',
-                                            'parameters' =>
+                                            'method'           => 'GET',
+                                            'summary'          => 'List another resource.',
+                                            'nickname'         => 'get_other-resources',
+                                            'parameters'       =>
                                                 array(
 
                                                     array(
                                                         'paramType' => 'path',
-                                                        'name' => '_format',
-                                                        'type' => 'string',
-                                                        'required' => true,
-                                                        'enum' =>
+                                                        'name'      => '_format',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
+                                                        'enum'      =>
                                                             array(
                                                                 'json',
                                                                 'xml',
@@ -470,36 +594,42 @@ With multiple lines.',
                                                     ),
                                                 ),
                                             'responseMessages' =>
-                                                array(),
+                                                array(
+
+                                                    array(
+                                                        'code'          => 200,
+                                                        'message'       => 'See standard HTTP status code reason for 200',
+                                                        'responseModel' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest[]',
+                                                    ),
+                                                ),
+                                            'type'             => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest[]',
                                         ),
                                     ),
                             ),
-
                             array(
-                                'path' => '/other-resources/{id}.{_format}',
+                                'path'       => '/other-resources/{id}.{_format}',
                                 'operations' =>
                                     array(
 
                                         array(
-                                            'method' => 'PUT',
-                                            'summary' => 'Update a resource bu ID.',
-                                            'nickname' => 'put_other-resources',
-                                            'parameters' =>
+                                            'method'           => 'PUT',
+                                            'summary'          => 'Update a resource bu ID.',
+                                            'nickname'         => 'put_other-resources',
+                                            'parameters'       =>
                                                 array(
 
                                                     array(
                                                         'paramType' => 'path',
-                                                        'name' => 'id',
-                                                        'type' => 'string',
-                                                        'required' => true,
+                                                        'name'      => 'id',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
                                                     ),
-
                                                     array(
                                                         'paramType' => 'path',
-                                                        'name' => '_format',
-                                                        'type' => 'string',
-                                                        'required' => true,
-                                                        'enum' =>
+                                                        'name'      => '_format',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
+                                                        'enum'      =>
                                                             array(
                                                                 'json',
                                                                 'xml',
@@ -510,27 +640,25 @@ With multiple lines.',
                                             'responseMessages' =>
                                                 array(),
                                         ),
-
                                         array(
-                                            'method' => 'PATCH',
-                                            'summary' => 'Update a resource bu ID.',
-                                            'nickname' => 'patch_other-resources',
-                                            'parameters' =>
+                                            'method'           => 'PATCH',
+                                            'summary'          => 'Update a resource bu ID.',
+                                            'nickname'         => 'patch_other-resources',
+                                            'parameters'       =>
                                                 array(
 
                                                     array(
                                                         'paramType' => 'path',
-                                                        'name' => 'id',
-                                                        'type' => 'string',
-                                                        'required' => true,
+                                                        'name'      => 'id',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
                                                     ),
-
                                                     array(
                                                         'paramType' => 'path',
-                                                        'name' => '_format',
-                                                        'type' => 'string',
-                                                        'required' => true,
-                                                        'enum' =>
+                                                        'name'      => '_format',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
+                                                        'enum'      =>
                                                             array(
                                                                 'json',
                                                                 'xml',
@@ -544,205 +672,315 @@ With multiple lines.',
                                     ),
                             ),
                         ),
-                    'models' =>
+                    'models'         =>
+                        array(
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest'   =>
+                                array(
+                                    'id'          => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest',
+                                    'description' => null,
+                                    'properties'  =>
+                                        array(
+                                            'foo'          =>
+                                                array(
+                                                    'type'        => 'string',
+                                                    'description' => 'string',
+                                                ),
+                                            'bar'          =>
+                                                array(
+                                                    'type'        => 'string',
+                                                    'description' => 'DateTime',
+                                                    'format'      => 'date-time',
+                                                ),
+                                            'number'       =>
+                                                array(
+                                                    'type'        => 'number',
+                                                    'description' => 'double',
+                                                    'format'      => 'float',
+                                                ),
+                                            'arr'          =>
+                                                array(
+                                                    'type'        => 'array',
+                                                    'description' => 'array',
+                                                    'items'       =>
+                                                        array(
+                                                            'type' => 'string',
+                                                        ),
+                                                ),
+                                            'nested'       =>
+                                                array(
+                                                    '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
+                                                ),
+                                            'nested_array' =>
+                                                array(
+                                                    'type'        => 'array',
+                                                    'description' => 'array of objects (JmsNested)',
+                                                    'items'       =>
+                                                        array(
+                                                            '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
+                                                        ),
+                                                ),
+                                        ),
+                                    'required'    =>
+                                        array(),
+                                ),
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested' =>
+                                array(
+                                    'id'          => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
+                                    'description' => 'object (JmsNested)',
+                                    'properties'  =>
+                                        array(
+                                            'foo'             =>
+                                                array(
+                                                    'type'        => 'string',
+                                                    'description' => 'DateTime',
+                                                    'format'      => 'date-time',
+                                                ),
+                                            'bar'             =>
+                                                array(
+                                                    'type'        => 'string',
+                                                    'description' => 'string',
+                                                ),
+                                            'baz'             =>
+                                                array(
+                                                    'type'        => 'array',
+                                                    'description' => 'Epic description.
+
+With multiple lines.',
+                                                    'items'       =>
+                                                        array(
+                                                            'type' => 'integer',
+                                                        ),
+                                                ),
+                                            'circular'        =>
+                                                array(
+                                                    '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsNested',
+                                                ),
+                                            'parent'          =>
+                                                array(
+                                                    '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest',
+                                                ),
+                                            'since'           =>
+                                                array(
+                                                    'type'        => 'string',
+                                                    'description' => 'string',
+                                                ),
+                                            'until'           =>
+                                                array(
+                                                    'type'        => 'string',
+                                                    'description' => 'string',
+                                                ),
+                                            'since_and_until' =>
+                                                array(
+                                                    'type'        => 'string',
+                                                    'description' => 'string',
+                                                ),
+                                        ),
+                                    'required'    =>
+                                        array(),
+                                ),
+                            'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest[]' =>
+                                array(
+                                    'id'          => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest[]',
+                                    'description' => '',
+                                    'properties'  =>
+                                        array(
+                                            '' =>
+                                                array(
+                                                    'type'        => 'array',
+                                                    'description' => null,
+                                                    'items'       =>
+                                                        array(
+                                                            '$ref' => 'Nelmio.ApiDocBundle.Tests.Fixtures.Model.JmsTest',
+                                                        ),
+                                                ),
+                                        ),
+                                    'required'    =>
+                                        array(
+                                            '',
+                                        ),
+                                ),
+                        ),
+                    'produces'       =>
                         array(),
-                    'produces' =>
-                        array(),
-                    'consumes' =>
+                    'consumes'       =>
                         array(),
                     'authorizations' =>
                         array(
-                            'apiKey' => array(
-                                'type' => 'apiKey',
-                                'passAs' => 'header',
-                                'keyname' => 'access_token',
-                            )
+                            'apiKey' =>
+                                array(
+                                    'type'    => 'apiKey',
+                                    'passAs'  => 'header',
+                                    'keyname' => 'access_token',
+                                ),
                         ),
                 ),
             ),
             array(
                 '/tests',
-                array (
+                array(
                     'swaggerVersion' => '1.2',
-                    'apiVersion' => '3.14',
-                    'basePath' => '/api',
-                    'resourcePath' => '/tests',
-                    'apis' =>
-                        array (
+                    'apiVersion'     => '3.14',
+                    'basePath'       => '/api',
+                    'resourcePath'   => '/tests',
+                    'apis'           =>
+                        array(
 
-                                array (
-                                    'path' => '/tests.{_format}',
-                                    'operations' =>
-                                        array (
+                            array(
+                                'path'       => '/tests.{_format}',
+                                'operations' =>
+                                    array(
 
-                                                array (
-                                                    'method' => 'GET',
-                                                    'summary' => 'index action',
-                                                    'nickname' => 'get_tests',
-                                                    'parameters' =>
-                                                        array (
+                                        array(
+                                            'method'           => 'GET',
+                                            'summary'          => 'index action',
+                                            'nickname'         => 'get_tests',
+                                            'parameters'       =>
+                                                array(
 
-                                                                array (
-                                                                    'paramType' => 'path',
-                                                                    'name' => '_format',
-                                                                    'type' => 'string',
-                                                                    'required' => true,
-                                                                ),
-                                                        ),
-                                                    'responseMessages' =>
-                                                        array (
-                                                        ),
+                                                    array(
+                                                        'paramType' => 'path',
+                                                        'name'      => '_format',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
+                                                    ),
+                                                    array(
+                                                        'paramType'   => 'query',
+                                                        'name'        => 'a',
+                                                        'type'        => 'integer',
+                                                        'description' => null,
+                                                    ),
+                                                    array(
+                                                        'paramType'   => 'query',
+                                                        'name'        => 'b',
+                                                        'type'        => 'string',
+                                                        'description' => null,
+                                                    ),
                                                 ),
-
-                                                array (
-                                                    'method' => 'GET',
-                                                    'summary' => 'index action',
-                                                    'nickname' => 'get_tests',
-                                                    'parameters' =>
-                                                        array (
-
-                                                                array (
-                                                                    'paramType' => 'path',
-                                                                    'name' => '_format',
-                                                                    'type' => 'string',
-                                                                    'required' => true,
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'query',
-                                                                    'name' => 'a',
-                                                                    'type' => 'integer',
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'query',
-                                                                    'name' => 'b',
-                                                                    'type' => 'string',
-                                                                ),
-                                                        ),
-                                                    'responseMessages' =>
-                                                        array (
-                                                        ),
-                                                ),
-
-                                                array (
-                                                    'method' => 'POST',
-                                                    'summary' => 'create test',
-                                                    'nickname' => 'post_tests',
-                                                    'parameters' =>
-                                                        array (
-
-                                                                array (
-                                                                    'paramType' => 'path',
-                                                                    'name' => '_format',
-                                                                    'type' => 'string',
-                                                                    'required' => true,
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'query',
-                                                                    'name' => 'a',
-                                                                    'type' => 'integer',
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'query',
-                                                                    'name' => 'b',
-                                                                    'type' => 'string',
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'form',
-                                                                    'name' => 'a',
-                                                                    'type' => 'string',
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'form',
-                                                                    'name' => 'b',
-                                                                    'type' => 'string',
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'form',
-                                                                    'name' => 'c',
-                                                                    'type' => 'boolean',
-                                                                    'defaultValue' => false,
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'form',
-                                                                    'name' => 'd',
-                                                                    'type' => 'string',
-                                                                    'defaultValue' => 'DefaultTest',
-                                                                ),
-                                                        ),
-                                                    'responseMessages' =>
-                                                        array (
-                                                        ),
-                                                ),
-
-                                                array (
-                                                    'method' => 'POST',
-                                                    'summary' => 'create test',
-                                                    'nickname' => 'post_tests',
-                                                    'parameters' =>
-                                                        array (
-
-                                                                array (
-                                                                    'paramType' => 'path',
-                                                                    'name' => '_format',
-                                                                    'type' => 'string',
-                                                                    'required' => true,
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'form',
-                                                                    'name' => 'a',
-                                                                    'type' => 'string',
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'form',
-                                                                    'name' => 'b',
-                                                                    'type' => 'string',
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'form',
-                                                                    'name' => 'c',
-                                                                    'type' => 'boolean',
-                                                                    'defaultValue' => false,
-                                                                ),
-
-                                                                array (
-                                                                    'paramType' => 'form',
-                                                                    'name' => 'd',
-                                                                    'type' => 'string',
-                                                                    'defaultValue' => 'DefaultTest',
-                                                                ),
-                                                        ),
-                                                    'responseMessages' =>
-                                                        array (
-                                                        ),
-                                                ),
+                                            'responseMessages' =>
+                                                array(),
                                         ),
-                                ),
+                                        array(
+                                            'method'           => 'GET',
+                                            'summary'          => 'index action',
+                                            'nickname'         => 'get_tests',
+                                            'parameters'       =>
+                                                array(
+
+                                                    array(
+                                                        'paramType' => 'path',
+                                                        'name'      => '_format',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
+                                                    ),
+                                                    array(
+                                                        'paramType'   => 'query',
+                                                        'name'        => 'a',
+                                                        'type'        => 'integer',
+                                                        'description' => null,
+                                                    ),
+                                                    array(
+                                                        'paramType'   => 'query',
+                                                        'name'        => 'b',
+                                                        'type'        => 'string',
+                                                        'description' => null,
+                                                    ),
+                                                ),
+                                            'responseMessages' =>
+                                                array(),
+                                        ),
+                                        array(
+                                            'method'           => 'POST',
+                                            'summary'          => 'create test',
+                                            'nickname'         => 'post_tests',
+                                            'parameters'       =>
+                                                array(
+
+                                                    array(
+                                                        'paramType' => 'path',
+                                                        'name'      => '_format',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
+                                                    ),
+                                                    array(
+                                                        'paramType'   => 'form',
+                                                        'name'        => 'a',
+                                                        'type'        => 'string',
+                                                        'description' => 'A nice description',
+                                                    ),
+                                                    array(
+                                                        'paramType' => 'form',
+                                                        'name'      => 'b',
+                                                        'type'      => 'string',
+                                                    ),
+                                                    array(
+                                                        'paramType'    => 'form',
+                                                        'name'         => 'c',
+                                                        'type'         => 'boolean',
+                                                        'defaultValue' => false,
+                                                    ),
+                                                    array(
+                                                        'paramType'    => 'form',
+                                                        'name'         => 'd',
+                                                        'type'         => 'string',
+                                                        'defaultValue' => 'DefaultTest',
+                                                    ),
+                                                ),
+                                            'responseMessages' =>
+                                                array(),
+                                        ),
+                                        array(
+                                            'method'           => 'POST',
+                                            'summary'          => 'create test',
+                                            'nickname'         => 'post_tests',
+                                            'parameters'       =>
+                                                array(
+                                                    array(
+                                                        'paramType' => 'path',
+                                                        'name'      => '_format',
+                                                        'type'      => 'string',
+                                                        'required'  => true,
+                                                    ),
+                                                    array(
+                                                        'paramType'   => 'form',
+                                                        'name'        => 'a',
+                                                        'type'        => 'string',
+                                                        'description' => 'A nice description',
+                                                    ),
+                                                    array(
+                                                        'paramType' => 'form',
+                                                        'name'      => 'b',
+                                                        'type'      => 'string',
+                                                    ),
+                                                    array(
+                                                        'paramType'    => 'form',
+                                                        'name'         => 'c',
+                                                        'type'         => 'boolean',
+                                                        'defaultValue' => false,
+                                                    ),
+                                                    array(
+                                                        'paramType'    => 'form',
+                                                        'name'         => 'd',
+                                                        'type'         => 'string',
+                                                        'defaultValue' => 'DefaultTest',
+                                                    ),
+                                                ),
+                                            'responseMessages' =>
+                                                array(),
+                                        ),
+                                    ),
+                            ),
                         ),
-                    'models' =>
-                        array (
-                        ),
-                    'produces' =>
-                        array (
-                        ),
-                    'consumes' =>
-                        array (
-                        ),
+                    'models'         =>
+                        array(),
+                    'produces'       =>
+                        array(),
+                    'consumes'       =>
+                        array(),
                     'authorizations' =>
                         array(
                             'apiKey' => array(
-                                'type' => 'apiKey',
-                                'passAs' => 'header',
+                                'type'    => 'apiKey',
+                                'passAs'  => 'header',
                                 'keyname' => 'access_token',
                             )
                         ),

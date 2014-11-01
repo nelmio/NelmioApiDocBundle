@@ -40,4 +40,8 @@ class JmsTest
      */
     public $nestedArray;
 
+    /**
+     * @JMS\Groups("hidden")
+     */
+    public $hidden;
 }
