@@ -655,6 +655,7 @@ With multiple lines.',
                                         array(
                                             'method'           => 'GET',
                                             'summary'          => 'List another resource.',
+                                            'notes'            => 'More information for listing another resource.',
                                             'nickname'         => 'get_other-resources',
                                             'parameters'       =>
                                                 array(
@@ -671,6 +672,15 @@ With multiple lines.',
                                                                 'html',
                                                             ),
                                                     ),
+                                                    array(
+                                                        'paramType'    => 'query',
+                                                        'name'         => 'search',
+                                                        'type'         => 'integer',
+                                                        'description'  => 'Maximum number of results',
+                                                        'defaultValue' => '10',
+                                                        'minimum'      => '0',
+                                                        'maximum'      => '2000',
+                                                    )
                                                 ),
                                             'responseMessages' =>
                                                 array(
@@ -698,10 +708,11 @@ With multiple lines.',
                                                 array(
 
                                                     array(
-                                                        'paramType' => 'path',
-                                                        'name'      => 'id',
-                                                        'type'      => 'string',
-                                                        'required'  => true,
+                                                        'paramType'   => 'path',
+                                                        'name'        => 'id',
+                                                        'type'        => 'integer',
+                                                        'required'    => true,
+                                                        'description' => 'Resource id',
                                                     ),
                                                     array(
                                                         'paramType' => 'path',
@@ -727,10 +738,11 @@ With multiple lines.',
                                                 array(
 
                                                     array(
-                                                        'paramType' => 'path',
-                                                        'name'      => 'id',
-                                                        'type'      => 'string',
-                                                        'required'  => true,
+                                                        'paramType'   => 'path',
+                                                        'name'        => 'id',
+                                                        'type'        => 'integer',
+                                                        'required'    => true,
+                                                        'description' => 'Resource id',
                                                     ),
                                                     array(
                                                         'paramType' => 'path',
@@ -926,13 +938,11 @@ With multiple lines.',
                                                         'paramType'   => 'query',
                                                         'name'        => 'a',
                                                         'type'        => 'integer',
-                                                        'description' => null,
                                                     ),
                                                     array(
                                                         'paramType'   => 'query',
                                                         'name'        => 'b',
                                                         'type'        => 'string',
-                                                        'description' => null,
                                                     ),
                                                 ),
                                             'responseMessages' =>
@@ -955,13 +965,11 @@ With multiple lines.',
                                                         'paramType'   => 'query',
                                                         'name'        => 'a',
                                                         'type'        => 'integer',
-                                                        'description' => null,
                                                     ),
                                                     array(
                                                         'paramType'   => 'query',
                                                         'name'        => 'b',
                                                         'type'        => 'string',
-                                                        'description' => null,
                                                     ),
                                                 ),
                                             'responseMessages' =>

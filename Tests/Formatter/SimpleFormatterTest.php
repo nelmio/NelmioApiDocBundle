@@ -35,6 +35,7 @@ class SimpleFormatterTest extends WebTestCase
                                 'method' => 'GET',
                                 'uri' => '/api/other-resources.{_format}',
                                 'description' => 'List another resource.',
+                                'documentation' => 'More information for listing another resource.',
                                 'requirements' =>
                                     array (
                                         '_format' =>
@@ -44,6 +45,15 @@ class SimpleFormatterTest extends WebTestCase
                                                 'description' => '',
                                             ),
                                     ),
+                                'filters' => array(
+                                    'search' => array(
+                                        'description' => 'Maximum number of results',
+                                        'dataType'    => 'integer',
+                                        'default'     => '10',
+                                        'min'         => '0',
+                                        'max'         => '2000',
+                                    )
+                                ),
                                 'response' =>
                                     array (
                                         '' =>
@@ -336,8 +346,8 @@ With multiple lines.',
                                         'id' =>
                                             array (
                                                 'requirement' => '',
-                                                'dataType' => '',
-                                                'description' => '',
+                                                'dataType' => 'integer',
+                                                'description' => 'Resource id',
                                             ),
                                     ),
                                 'https' => false,
@@ -3778,6 +3788,7 @@ With multiple lines.',
                             'method' => 'GET',
                             'uri' => '/api/other-resources.{_format}',
                             'description' => 'List another resource.',
+                            'documentation' => 'More information for listing another resource.',
                             'requirements' =>
                                 array(
                                     '_format' =>
@@ -3796,6 +3807,15 @@ With multiple lines.',
                             'views' => array(
                                 'default',
                                 'premium',
+                            ),
+                            'filters' => array(
+                                'search' => array(
+                                    'description' => 'Maximum number of results',
+                                    'dataType'    => 'integer',
+                                    'default'     => '10',
+                                    'min'         => '0',
+                                    'max'         => '2000',
+                                )
                             ),
                             'response' => array(
                                 '' =>
@@ -4076,8 +4096,8 @@ With multiple lines.',
                                     'id' =>
                                         array(
                                             'requirement' => '',
-                                            'dataType' => '',
-                                            'description' => '',
+                                            'dataType' => 'integer',
+                                            'description' => 'Resource id',
                                         ),
                                 ),
                             'https' => false,

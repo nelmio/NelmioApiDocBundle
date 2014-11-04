@@ -183,7 +183,6 @@ class SwaggerFormatter implements FormatterInterface
      */
     protected function produceApiDeclaration(array $collection, $resource)
     {
-
         $apiDeclaration = array(
             'swaggerVersion' => (string) $this->swaggerVersion,
             'apiVersion' => (string) $this->apiVersion,
@@ -195,8 +194,6 @@ class SwaggerFormatter implements FormatterInterface
             'consumes' => array(),
             'authorizations' => $this->getAuthorizations(),
         );
-
-        $main = null;
 
         $apiBag = array();
 
@@ -235,6 +232,8 @@ class SwaggerFormatter implements FormatterInterface
             $parameters = array();
             $responseMessages = array();
 
+            $data = $apiDoc->toArray();
+
             foreach ($compiled->getPathVariables() as $paramValue) {
                 $parameter = array(
                     'paramType' => 'path',
@@ -247,13 +246,21 @@ class SwaggerFormatter implements FormatterInterface
                     $parameter['enum'] = explode('|', $req);
                 }
 
+                if (isset($data['requirements'][$paramValue])) {
+                    $paramData = $data['requirements'][$paramValue];
+                    if (!empty($paramData['description'])) {
+                        $parameter['description'] = $paramData['description'];
+                    }
+                    if (isset($paramData['dataType']) && isset($this->typeMap[$paramData['dataType']])) {
+                        $parameter['type'] = $this->typeMap[$paramData['dataType']];
+                    }
+                }
+
                 $parameters[] = $parameter;
             }
 
-            $data = $apiDoc->toArray();
-
             if (isset($data['filters'])) {
-                $parameters = array_merge($parameters, $this->deriveQueryParameters($data['filters']));
+                $parameters = array_merge($parameters, $this->deriveParameters($data['filters'], 'query'));
             }
 
             if (isset($data['parameters'])) {
@@ -336,6 +343,11 @@ class SwaggerFormatter implements FormatterInterface
                     'responseMessages' => array_values($responseMessages),
                 );
 
+                $notes = $apiDoc->getDocumentation();
+                if ($notes) {
+                    $operation['notes'] = $notes;
+                }
+
                 if ($type !== null) {
                     $operation['type'] = $type;
                 }
@@ -383,32 +395,6 @@ class SwaggerFormatter implements FormatterInterface
     }
 
     /**
-     * Formats query parameters to Swagger-compliant form.
-     *
-     * @param  array $input
-     * @return array
-     */
-    protected function deriveQueryParameters(array $input)
-    {
-        $parameters = array();
-
-        foreach ($input as $name => $prop) {
-            if (!isset($prop['dataType'])) {
-                $prop['dataType'] = 'string';
-            }
-            $parameters[] = array(
-                'paramType' => 'query',
-                'name' => $name,
-                'type' => isset($this->typeMap[$prop['dataType']]) ? $this->typeMap[$prop['dataType']] : 'string',
-                'description' => isset($prop['description']) ? $prop['description'] : null,
-            );
-        }
-
-        return $parameters;
-
-    }
-
-    /**
      * Builds a Swagger-compliant parameter list from the provided parameter array. Models are built when necessary.
      *
      * @param array $input
@@ -420,7 +406,6 @@ class SwaggerFormatter implements FormatterInterface
      */
     protected function deriveParameters(array $input, $paramType = 'form')
     {
-
         $parameters = array();
 
         foreach ($input as $name => $prop) {
@@ -432,10 +417,13 @@ class SwaggerFormatter implements FormatterInterface
             $items = null;
 
             if (!isset($prop['actualType'])) {
-                $prop['actualType'] = 'string';
+                $prop['actualType'] = '';
+            }
+            if (!isset($prop['subType'])) {
+                $prop['subType'] = null;
             }
 
-            if (isset ($this->typeMap[$prop['actualType']])) {
+            if (isset($this->typeMap[$prop['actualType']])) {
                 $type = $this->typeMap[$prop['actualType']];
             } else {
                 switch ($prop['actualType']) {
@@ -476,6 +464,15 @@ class SwaggerFormatter implements FormatterInterface
                 }
             }
 
+            if (null === $type) {
+                if (isset($prop['dataType']) && isset($this->typeMap[$prop['dataType']])) {
+                    $type = $this->typeMap[$prop['dataType']];
+                }
+                if (!isset($prop['dataType'])) {
+                    $type = DataTypes::STRING;
+                }
+            }
+
             if (isset($this->formatMap[$prop['actualType']])) {
                 $format = $this->formatMap[$prop['actualType']];
             }
@@ -486,7 +483,7 @@ class SwaggerFormatter implements FormatterInterface
             }
 
             $parameter = array(
-                'paramType' => $paramType,
+                'paramType' => isset($prop['paramType']) ? $prop['paramType'] : $paramType,
                 'name' => $name,
             );
 
@@ -515,7 +512,14 @@ class SwaggerFormatter implements FormatterInterface
                 $parameter['items'] = $items;
             }
 
-            if (isset($prop['description'])) {
+            if (isset($prop['min'])) {
+                $parameter['minimum'] = $prop['min'];
+            }
+            if (isset($prop['max'])) {
+                $parameter['maximum'] = $prop['max'];
+            }
+
+            if (!empty($prop['description'])) {
                 $parameter['description'] = $prop['description'];
             }
 
