@@ -24,7 +24,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
         $formFactoryBuilder->addExtension(new CoreExtension());
         $formFactoryBuilder->addTypeExtension(new DescriptionFormTypeExtension());
         $formFactory = $formFactoryBuilder->getFormFactory();
-        $formTypeParser = new FormTypeParser($formFactory);
+        $formTypeParser = new FormTypeParser($formFactory, $entityToChoice = true);
         $output = $formTypeParser->parse($typeName);
 
         $this->assertEquals($expected, $output);
