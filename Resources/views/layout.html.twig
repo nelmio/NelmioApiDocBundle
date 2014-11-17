@@ -385,7 +385,9 @@
                         params['_format'] = $('#request_format option:selected').text();
                         formData.append('_format',$('#request_format option:selected').text());
                     } else if (requestFormatMethod == 'accept_header') {
-                        headers['Accept'] = $('#request_format').val();
+                        if (!('Accept' in headers)) {
+                            headers['Accept'] = $('#request_format').val();
+                        }
                     }
 
                     // set default bodyFormat
