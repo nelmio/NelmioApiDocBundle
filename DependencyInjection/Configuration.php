@@ -59,11 +59,13 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->children()
                                 ->arrayNode('formats')
-                                    ->defaultValue(array('form', 'json'))
+                                    ->defaultValue(array(
+                                        'form' => 'application/x-www-form-urlencoded',
+                                        'json' => 'application/json',
+                                    ))
                                     ->prototype('scalar')->end()
                                 ->end()
-                                ->enumNode('default_format')
-                                    ->values(array('form', 'json'))
+                                ->scalarNode('default_format')
                                     ->defaultValue('form')
                                 ->end()
                             ->end()

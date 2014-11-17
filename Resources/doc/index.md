@@ -338,8 +338,9 @@ nelmio_api_doc:
                                                 # automatically populated as the `Accept` header
 
         body_format:
-            formats: [ form, json ]             # array of enabled body formats,
-                                                # remove all elements to disable the selectbox
+            formats:                                    # array of enabled body formats,
+                form: application/x-www-form-urlencoded # remove all elements to disable the selectbox
+                json: application/json
             default_format: form                # default is `form`, determines whether to send
                                                 # `x-www-form-urlencoded` data or json-encoded
                                                 # data (by setting this parameter to `json`) in
