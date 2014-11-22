@@ -17,6 +17,10 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
+    const ROUTES_QUANTITY_DEFAULT = 33;     // Routes in the default api
+    const ROUTES_QUANTITY_PREMIUM = 6;      // Routes tagged with premium api
+    const ROUTES_QUANTITY_TEST = 2;         // Routes tagged with test api
+
     public function testAll()
     {
         $container = $this->getContainer();
@@ -29,7 +33,7 @@ class ApiDocExtractorTest extends WebTestCase
             $routesQuantity = 38;
             $httpsKey = 25;
         } else {
-            $routesQuantity = 33;
+            $routesQuantity = self::ROUTES_QUANTITY_DEFAULT;
             $httpsKey = 20;
         }
 
@@ -287,4 +291,76 @@ class ApiDocExtractorTest extends WebTestCase
         $parameters = $annotation->getParameters();
         $this->assertFalse($parameters['required_field']['required']);
     }
+
+    public function multiDocProvider()
+    {
+        return array(
+            array('default', self::ROUTES_QUANTITY_DEFAULT),
+            array('premium', self::ROUTES_QUANTITY_PREMIUM),
+            array('test', self::ROUTES_QUANTITY_TEST),
+            array('foobar', 0),
+            array("", 0),
+            array(null, 0),
+        );
+    }
+
+    public function testAllMultiDocsForTest()
+    {
+        $container = $this->getContainer();
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        set_error_handler(array($this, 'handleDeprecation'));
+        $data = $extractor->all('test');
+        restore_error_handler();
+
+        $this->assertTrue(is_array($data));
+        $this->assertCount(self::ROUTES_QUANTITY_TEST, $data);
+
+        $a1 = $data[0]['annotation'];
+        $this->assertCount(3, $a1->getApis());
+        $this->assertEquals('List resources.', $a1->getDescription());
+
+        $a2 = $data[1]['annotation'];
+        $this->assertCount(2, $a2->getApis());
+        $this->assertEquals('create another test', $a2->getDescription());
+    }
+
+    public function testAllMultiDocsForPremium()
+    {
+        $container = $this->getContainer();
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        set_error_handler(array($this, 'handleDeprecation'));
+        $data = $extractor->all('premium');
+        restore_error_handler();
+
+        $this->assertTrue(is_array($data));
+        $this->assertCount(self::ROUTES_QUANTITY_PREMIUM, $data);
+
+        $a1 = $data[0]['annotation'];
+        $this->assertCount(2, $a1->getApis());
+        $this->assertEquals('List another resource.', $a1->getDescription());
+
+        $a2 = $data[1]['annotation'];
+        $this->assertCount(3, $a2->getApis());
+        $this->assertEquals('List resources.', $a2->getDescription());
+
+        $a3 = $data[4]['annotation'];
+        $this->assertCount(2, $a3->getApis());
+        $this->assertEquals('create test', $a3->getDescription());
+    }
+
+    /**
+     * @dataProvider multiDocProvider
+     */
+    public function testAllMultiDocs($api, $count)
+    {
+        $container = $this->getContainer();
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        set_error_handler(array($this, 'handleDeprecation'));
+        $data = $extractor->all($api);
+        restore_error_handler();
+
+        $this->assertTrue(is_array($data));
+        $this->assertCount($count, $data);
+    }
+
 }
