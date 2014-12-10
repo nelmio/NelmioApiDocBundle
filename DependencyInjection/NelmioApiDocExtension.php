@@ -31,6 +31,7 @@ class NelmioApiDocExtension extends Extension
 
         $container->setParameter('nelmio_api_doc.motd.template', $config['motd']['template']);
         $container->setParameter('nelmio_api_doc.exclude_sections', $config['exclude_sections']);
+        $container->setParameter('nelmio_api_doc.exclude_patterns', $config['exclude_patterns']);
         $container->setParameter('nelmio_api_doc.default_sections_opened', $config['default_sections_opened']);
         $container->setParameter('nelmio_api_doc.api_name', $config['name']);
         $container->setParameter('nelmio_api_doc.sandbox.enabled',  $config['sandbox']['enabled']);

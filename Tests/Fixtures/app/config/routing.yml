@@ -234,3 +234,10 @@ test_put_disables_required_parameters:
         _method: PUT
         _format: json|xml|html        
 
+test_excuded_path_1:
+    pattern:  /excluded_pattern_1
+    defaults: { _controller: nelmio.test.controller:anotherAction }
+
+test_excuded_path_2:
+    pattern:  /excluded/pattern/2
+    defaults: { _controller: nelmio.test.controller:anyAction }
