@@ -226,13 +226,12 @@ Also bundle will get information from the other annotations:
 
 ### PHPDoc
 
-Route functions marked as @deprecated will be set method as deprecation in
-documentation.
+Actions marked as @deprecated will be marked as such in the interface.
 
 #### JMS Serializer Features
 
-The bundle has support for some of the JMS Serializer features and use these
-extra information in the generated documentation.
+The bundle has support for some of the JMS Serializer features and uses this
+extra piece of information in the generated documentation.
 
 ##### Group Exclusion Strategy
 
@@ -373,7 +372,8 @@ If you want to generate a static version of your documentation without sandbox, 
 
 ### Swagger support
 
-Read the [documentation for Swagger integration](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/swagger-support.md) for the necessary steps to make a Swagger-compliant documentation for your API.
+Read the [documentation for Swagger integration](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/swagger-support.md)
+for the necessary steps to make a Swagger-compliant documentation for your API.
 
 ### Caching
 
@@ -441,7 +441,7 @@ nelmio_api_doc:
     # ...
     motd:
         template: AcmeApiBundle::Components/motd.html.twig
-```         
+```
 You can define an alternate location where the ApiDoc configurations are to be cached:
 ```yaml    
 # app/config/config.yml
@@ -466,7 +466,7 @@ services:
 ```
 Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tree/master/Extractor/Handler).
 
-### Reference Configuration
+### Configuration Reference
 
 ``` yaml
 nelmio_api_doc:
