@@ -226,11 +226,16 @@ test_required_parameters:
     requirements:
         _method: POST
         _format: json|xml|html
-        
+
 test_put_disables_required_parameters:
     pattern: /api/other-resources/{id}.{_format}
     defaults: { _controller: NelmioApiDocTestBundle:Resource:requiredParametersAction, _format: json }
     requirements:
         _method: PUT
-        _format: json|xml|html        
+        _format: json|xml|html
 
+test_route_25:
+    pattern:  /with-link
+    defaults: { _controller: NelmioApiDocTestBundle:Test:withLinkAction }
+    requirements:
+        _method: GET
