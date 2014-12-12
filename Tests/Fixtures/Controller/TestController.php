@@ -314,4 +314,12 @@ class TestController
     public function exclusiveAction()
     {
     }
+
+    /**
+     * @ApiDoc()
+     * @link http://symfony.com
+     */
+    public function withLinkAction()
+    {
+    }
 }

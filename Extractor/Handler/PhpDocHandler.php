@@ -70,10 +70,10 @@ class PhpDocHandler implements HandlerInterface
             if (preg_match('{^@param (.+)}', trim($line), $matches)) {
                 $paramDocs[] = $matches[1];
             }
-            if (preg_match('{^@deprecated\b(.*)}', trim($line), $matches)) {
+            if (preg_match('{^@deprecated}', trim($line))) {
                 $annotation->setDeprecated(true);
             }
-            if (preg_match('{^@link\b(.*)}', trim($line), $matches)) {
+            if (preg_match('{^@link (.+)}', trim($line), $matches)) {
                 $annotation->setLink($matches[1]);
             }
         }
