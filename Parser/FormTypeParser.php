@@ -284,7 +284,10 @@ class FormTypeParser implements ParserInterface
 
         // this fallback may lead to runtime exception, but try hard to generate the docs
         if ($constructor && $constructor->getNumberOfRequiredParameters() > 0) {
-            return $refl->newInstanceWithoutConstructor();
+            if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
+                return $refl->newInstanceWithoutConstructor();
+            }
+            return unserialize(sprintf('O:%d:"%s":0:{}', strlen($type), $type));
         }
 
         return $refl->newInstance();
