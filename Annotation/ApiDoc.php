@@ -40,6 +40,11 @@ class ApiDoc
     private $parameters = array();
 
     /**
+     * @var array
+     */
+    private $patchesDescription = array();
+
+    /**
      * @var string
      */
     private $input = null;
@@ -237,6 +242,14 @@ class ApiDoc
 
         if (isset($data['section'])) {
             $this->section = $data['section'];
+        }
+
+        if (isset($data['patch'])) {
+            if (is_array($data['patch'])) {
+                foreach ($data['patch'] as $patch) {
+                    $this->addPatch($patch);
+                }
+            }
         }
 
         if (isset($data['deprecated'])) {
@@ -649,12 +662,48 @@ class ApiDoc
             $data['resourceDescription'] = $resourceDescription;
         }
 
+        if ($patchesDescription = $this->patchesDescription) {
+            $data['patchesDescription'] = $patchesDescription;
+        }
+
         $data['https'] = $this->https;
         $data['authentication'] = $this->authentication;
         $data['authenticationRoles'] = $this->authenticationRoles;
         $data['deprecated'] = $this->deprecated;
 
         return $data;
+    }
+
+    /**
+     * @param array $patch
+     */
+    public function addPatch(array $patch)
+    {
+        $patchTmp = array(
+            'op' => null,
+            'path' => null,
+            'value' => null,
+            'from' => null,
+            'description' => null,
+        );
+
+        if (array_key_exists('op', $patch)) {
+            $patchTmp['op'] = $patch['op'];
+        }
+        if (array_key_exists('path', $patch)) {
+            $patchTmp['path'] = $patch['path'];
+        }
+        if (array_key_exists('value', $patch)) {
+            $patchTmp['value'] = $patch['value'];
+        }
+        if (array_key_exists('from', $patch)) {
+            $patchTmp['from'] = $patch['from'];
+        }
+        if (array_key_exists('description', $patch)) {
+            $patchTmp['description'] = $patch['description'];
+        }
+
+        $this->patchesDescription[] = $patchTmp;
     }
 
     /**

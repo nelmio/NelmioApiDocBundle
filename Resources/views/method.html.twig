@@ -139,6 +139,40 @@
                 </table>
             {% endif %}
 
+            {% if data.patchesDescription is defined and data.patchesDescription is not empty %}
+                <h4>Patch operations</h4>
+                <table class='fullwidth'>
+                    <thead>
+                        <tr>
+                            <th>op</th>
+                            <th>path</th>
+                            <th>value</th>
+                            <th>from</th>
+                            <th>description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patchDescription in data.patchesDescription %}
+                            <tr>
+                                <td>{{ patchDescription.op }}</td>
+                                <td>{{ patchDescription.path }}</td>
+                                <td>
+                                    {% if patchDescription.value is iterable %}
+                                        {% for key, value in patchDescription.value %}
+                                            {{ key }} = {{ value }}{% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {{ patchDescription.value }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ patchDescription.from }}</td>
+                                <td>{{ patchDescription.description }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+
             {% if data.response is defined and data.response is not empty %}
                 <h4>Return</h4>
                 <table class='fullwidth'>
