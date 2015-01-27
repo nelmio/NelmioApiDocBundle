@@ -24,7 +24,24 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
         $formFactoryBuilder->addExtension(new CoreExtension());
         $formFactoryBuilder->addTypeExtension(new DescriptionFormTypeExtension());
         $formFactory = $formFactoryBuilder->getFormFactory();
-        $formTypeParser = new FormTypeParser($formFactory);
+        $formTypeParser = new FormTypeParser($formFactory, $entityToChoice = true);
+        $output = $formTypeParser->parse($typeName);
+
+        $this->assertEquals($expected, $output);
+    }
+
+    /**
+     * @dataProvider dataTestParseWithoutEntity
+     */
+    public function testParseWithoutEntity($typeName, $expected)
+    {
+        $resolvedTypeFactory = new ResolvedFormTypeFactory();
+        $formFactoryBuilder = new FormFactoryBuilder();
+        $formFactoryBuilder->setResolvedTypeFactory($resolvedTypeFactory);
+        $formFactoryBuilder->addExtension(new CoreExtension());
+        $formFactoryBuilder->addTypeExtension(new DescriptionFormTypeExtension());
+        $formFactory = $formFactoryBuilder->getFormFactory();
+        $formTypeParser = new FormTypeParser($formFactory, $entityToChoice = false);
         $output = $formTypeParser->parse($typeName);
 
         $this->assertEquals($expected, $output);
@@ -32,6 +49,30 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
 
     public function dataTestParse()
     {
+        return $this->expectedData(true);
+    }
+
+    public function dataTestParseWithoutEntity()
+    {
+        return $this->expectedData(false);
+    }
+
+    protected function expectedData($entityToChoice)
+    {
+        $entityData = array(
+            'dataType' => 'choice',
+            'actualType' => DataTypes::ENUM,
+            'subType' => null,
+            'default' => null,
+            'required' => true,
+            'description' => '',
+            'readonly' => false
+        );
+
+        if ($entityToChoice) {
+            $entityData['format'] = json_encode(array('foo' => 'bar', 'baz' => 'Buzz'));
+        }
+
         return array(
             array(
                 array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType'),
@@ -383,6 +424,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'readonly' => false,
                         'format' => json_encode(array('foo' => 'bar', 'baz' => 'Buzz')),
                     ),
+                    'e1' => $entityData
                 ),
             ),
             array(
@@ -525,5 +567,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
         );
+
     }
+
 }
