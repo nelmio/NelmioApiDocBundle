@@ -383,7 +383,10 @@
                     var requestFormatMethod = '{{ requestFormatMethod }}';
                     if (requestFormatMethod == 'format_param') {
                         params['_format'] = $('#request_format option:selected').text();
-                        formData.append('_format',$('#request_format option:selected').text());
+                        if (url.indexOf('{_format}') == -1) {
+                            // _format should only be added to formData when it's not present in URL
+                            formData.append('_format', $('#request_format option:selected').text());
+                        }
                     } else if (requestFormatMethod == 'accept_header') {
                         headers['Accept'] = $('#request_format').val();
                     }
