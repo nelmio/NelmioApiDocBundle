@@ -397,21 +397,24 @@ You can choose between different authentication methods:
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
-    authentication:
-        delivery: header
-        name:     X-Custom
+    sandbox:
+        authentication:
+            delivery: header
+            name:     X-Custom
 
 # app/config/config.yml
 nelmio_api_doc:
-    authentication:
-        delivery: query
-        name:     param
+    sandbox:
+        authentication:
+            delivery: query
+            name:     param
 
 # app/config/config.yml
 nelmio_api_doc:
-    authentication:
-        delivery: http
-        type:     basic # or bearer
+    sandbox:
+        authentication:
+            delivery: http
+            type:     basic # or bearer
 ```
 When choosing an `http` delivery, `name` defaults to `Authorization`,
 and the header value will automatically be prefixed by the corresponding type (ie. `Basic` or `Bearer`).
