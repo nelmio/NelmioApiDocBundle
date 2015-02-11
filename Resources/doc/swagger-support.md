@@ -148,6 +148,7 @@ You can also change the `model_naming_strategy` in the configuration to `last_se
 ```yml
 nelmio_api_doc:
 	swagger:
+        nickname_naming_strategy: normalize #default is normalize -- can be omitted
         api_base_path:        /api
         swagger_version:      1.2
         model_naming_strategy: dot_notation
@@ -160,3 +161,5 @@ nelmio_api_doc:
             license:              ~
             licenseUrl:           ~
 ```
+__nickname_naming_strategy:__  Can be either `normalize` or `camel_case`.  This will be the naming convention of the API methods generated in swagger.
+For instance, with `normalize`, your method could look like `post_pet`.  With `camel_case`, it will be `postPet`.
