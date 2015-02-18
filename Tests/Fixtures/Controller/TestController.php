@@ -11,11 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Controller;
 
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints\Email;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -118,38 +115,6 @@ class TestController
     }
 
     /**
-     * @ApiDoc()
-     * @QueryParam(strict=true, name="page", requirements="\d+", description="Page of the overview.")
-     */
-    public function zActionWithQueryParamStrictAction()
-    {
-    }
-
-    /**
-     * @ApiDoc()
-     * @QueryParam(name="page", requirements="\d+", default="1", description="Page of the overview.")
-     */
-    public function zActionWithQueryParamAction()
-    {
-    }
-
-    /**
-     * @ApiDoc()
-     * @QueryParam(name="page", requirements="\d+", description="Page of the overview.")
-     */
-    public function zActionWithQueryParamNoDefaultAction()
-    {
-    }
-
-    /**
-     * @ApiDoc()
-     * @QueryParam(name="mail", requirements=@Email, description="Email of someone.")
-     */
-    public function zActionWithConstraintAsRequirements()
-    {
-    }
-
-    /**
      * @ApiDoc(
      *  description="Testing JMS",
      *  input="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
@@ -166,22 +131,6 @@ class TestController
      * )
      */
     public function jmsReturnTestAction()
-    {
-    }
-
-    /**
-     * @ApiDoc()
-     * @RequestParam(name="param1", requirements="string", description="Param1 description.")
-     */
-    public function zActionWithRequestParamAction()
-    {
-    }
-
-    /**
-     * @ApiDoc()
-     * @RequestParam(name="param1", requirements="string", description="Param1 description.", nullable=true)
-     */
-    public function zActionWithNullableRequestParamAction()
     {
     }
 

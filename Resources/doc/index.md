@@ -220,6 +220,8 @@ Also bundle will get information from the other annotations:
 
 * @FOS\RestBundle\Controller\Annotations\QueryParam - use as `requirements` (when strict parameter is true), `filters` (when strict is false)
 
+* @FOS\RestBundle\Controller\Annotations\View - set `output`.`groups` to `serializerGroups` if `output`.`class` is defined, but `output`.`groups` is not
+
 * @JMS\SecurityExtraBundle\Annotation\Secure - set `authentication` to true, `authenticationRoles` to the given roles
 
 * @Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache - set `cache`

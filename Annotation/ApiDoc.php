@@ -318,11 +318,19 @@ class ApiDoc
     }
 
     /**
-     * @return string|null
+     * @return string|array|null
      */
     public function getInput()
     {
         return $this->input;
+    }
+
+    /**
+     * @param array|string $input
+     */
+    public function setInput($input)
+    {
+        $this->input = $input;
     }
 
     /**
@@ -331,6 +339,14 @@ class ApiDoc
     public function getOutput()
     {
         return $this->output;
+    }
+
+    /**
+     * @param array|string $output
+     */
+    public function setOutput($output)
+    {
+        $this->output = $output;
     }
 
     /**

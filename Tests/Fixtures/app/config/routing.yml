@@ -37,7 +37,7 @@ test_route_7:
 
 test_route_8:
     pattern:  /z-action-with-query-param
-    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithQueryParam }
+    defaults: { _controller: NelmioApiDocTestBundle:FosRest:zActionWithQueryParam }
     requirements:
         _method: GET
 
@@ -55,7 +55,7 @@ test_route_10:
 
 test_route_11:
     pattern:  /z-action-with-request-param
-    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithRequestParam }
+    defaults: { _controller: NelmioApiDocTestBundle:FosRest:zActionWithRequestParam }
     requirements:
         _method: POST
 
@@ -102,13 +102,13 @@ test_route_14:
 
 test_route_15:
     pattern:  /z-action-with-query-param-strict
-    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithQueryParamStrict }
+    defaults: { _controller: NelmioApiDocTestBundle:FosRest:zActionWithQueryParamStrict }
     requirements:
         _method: GET
 
 test_route_16:
     pattern:  /z-action-with-query-param-no-default
-    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithQueryParamNoDefault }
+    defaults: { _controller: NelmioApiDocTestBundle:FosRest:zActionWithQueryParamNoDefault }
     requirements:
         _method: GET
 
@@ -152,15 +152,31 @@ test_route_exclusive:
 
 test_route_21:
     pattern:  /z-action-with-constraint-requirements
-    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithConstraintAsRequirements }
+    defaults: { _controller: NelmioApiDocTestBundle:FosRest:zActionWithConstraintAsRequirements }
     requirements:
         _method: GET
 
 test_route_22:
     pattern:  /z-action-with-nullable-request-param
-    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithNullableRequestParam }
+    defaults: { _controller: NelmioApiDocTestBundle:FosRest:zActionWithNullableRequestParam }
     requirements:
         _method: POST
+
+test_route_view_no_groups:
+    pattern:  /z-action-view-with-no-serializer-groups
+    defaults: { _controller: NelmioApiDocTestBundle:FosRest:zActionWithViewAndNoSerializerGroups }
+
+test_route_view_with_groups:
+    pattern:  /z-action-view-with-serializer-groups
+    defaults: { _controller: NelmioApiDocTestBundle:FosRest:zActionWithViewAndSerializerGroups }
+
+test_route_view_no_class:
+    pattern:  /z-action-view-but-no-class
+    defaults: { _controller: NelmioApiDocTestBundle:FosRest:zActionWithViewButNoOutputClass }
+
+test_route_view_with_groups_in_output:
+    pattern:  /z-action-view-with-groups-in-output
+    defaults: { _controller: NelmioApiDocTestBundle:FosRest:zActionWithViewAndGroupsInOutput }
 
 test_route_list_resource:
     pattern: /api/resources.{_format}

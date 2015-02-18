@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\View;
 
 class FosRestHandler implements HandlerInterface
 {
@@ -29,41 +30,96 @@ class FosRestHandler implements HandlerInterface
     {
         foreach ($annotations as $annot) {
             if ($annot instanceof RequestParam) {
-
-                $requirements = $this->handleRequirements($annot->requirements);
-                $data = array(
-                    'required'    => $annot->strict && $annot->nullable === false && $annot->default === null,
-                    'dataType'    => $requirements,
-                    'actualType'  => $this->inferType($requirements),
-                    'subType'     => null,
-                    'description' => $annot->description,
-                    'readonly'    => false
-                );
-                if ($annot->strict === false) {
-                    $data['default'] = $annot->default;
-                }
-                $annotation->addParameter($annot->name, $data);
+                $this->handleRequestParam($annotation, $annot);
             } elseif ($annot instanceof QueryParam) {
-                if ($annot->strict && $annot->nullable === false && $annot->default === null) {
-                    $annotation->addRequirement($annot->name, array(
-                        'requirement'   => $this->handleRequirements($annot->requirements),
-                        'dataType'      => '',
-                        'description'   => $annot->description,
-                    ));
-                } elseif ($annot->default !== null) {
-                    $annotation->addFilter($annot->name, array(
-                        'requirement'   => $this->handleRequirements($annot->requirements),
-                        'description'   => $annot->description,
-                        'default'   => $annot->default,
-                    ));
-                } else {
-                    $annotation->addFilter($annot->name, array(
-                        'requirement'   => $this->handleRequirements($annot->requirements),
-                        'description'   => $annot->description,
-                    ));
-                }
+                $this->handleQueryParam($annotation, $annot);
+            } elseif ($annot instanceof View) {
+                $this->handleView($annotation, $annot);
             }
         }
+    }
+
+    /**
+     * Handle RequestParam Annotation
+     *
+     * @param  ApiDoc       $annotation
+     * @param  RequestParam $annot
+     */
+    private function handleRequestParam(ApiDoc $annotation, RequestParam $annot)
+    {
+        $requirements = $this->handleRequirements($annot->requirements);
+        $data = array(
+            'required'    => $annot->strict && $annot->nullable === false && $annot->default === null,
+            'dataType'    => $requirements,
+            'actualType'  => $this->inferType($requirements),
+            'subType'     => null,
+            'description' => $annot->description,
+            'readonly'    => false
+        );
+        if ($annot->strict === false) {
+            $data['default'] = $annot->default;
+        }
+        $annotation->addParameter($annot->name, $data);
+    }
+
+    /**
+     * Handle QueryParam Annotation
+     *
+     * @param  ApiDoc     $annotation
+     * @param  QueryParam $annot
+     */
+    private function handleQueryParam(ApiDoc $annotation, QueryParam $annot)
+    {
+        # requirement
+        if ($annot->strict && $annot->nullable === false && $annot->default === null) {
+            $annotation->addRequirement($annot->name, array(
+                'requirement'   => $this->handleRequirements($annot->requirements),
+                'dataType'      => '',
+                'description'   => $annot->description,
+            ));
+            return;
+        }
+
+        # filter
+        $filter = array(
+            'requirement'   => $this->handleRequirements($annot->requirements),
+            'description'   => $annot->description,
+        );
+        if ($annot->default !== null) {
+            $filter['default'] = $annot->default;
+        }
+        $annotation->addFilter($annot->name, $filter);
+    }
+
+    /**
+     * Handle View Annotation
+     *
+     * @param  ApiDoc $annotation
+     * @param  View   $annot
+     */
+    private function handleView(ApiDoc $annotation, View $annot)
+    {
+        $output = $annotation->getOutput();
+        if (is_string($output)) {
+            $output = array(
+                'class' => $output
+            );
+        }
+
+        # no class or group defined in place
+        if (!isset($output['class']) || isset($output['groups'])) {
+            return;
+        }
+
+        # no groups defined
+        $groups = $annot->getSerializerGroups();
+        if (empty($groups)) {
+            return;
+        }
+
+
+        $output['groups'] = $groups;
+        $annotation->setOutput($output);
     }
 
     /**
