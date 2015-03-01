@@ -195,7 +195,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $vparams['actualType'] = DataTypes::DATE;
                 break;
             case 'DateTime':
-                $vparams['format'][] = '{DateTime YYYY-MM-DD HH:MM:SS}';
+                $vparams['format'][] = '{DateTime YYYY-MM-DDTHH:MM:SS+0000}';
                 $vparams['actualType'] = DataTypes::DATETIME;
                 break;
             case 'Time':
