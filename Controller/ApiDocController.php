@@ -21,6 +21,10 @@ class ApiDocController extends Controller
 {
     public function indexAction()
     {
+        /**
+         * Fix error: Maximum execution time of 30 seconds exceeded
+         */
+        set_time_limit(0);
         $extractedDoc = $this->get('nelmio_api_doc.extractor.api_doc_extractor')->all();
         $htmlContent  = $this->get('nelmio_api_doc.formatter.html_formatter')->format($extractedDoc);
 
