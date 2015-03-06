@@ -1,0 +1,37 @@
+* Added: support for collections
+* Added: allow parsers to remove/replace root parameters
+* Added: support for localstorage
+* Added: support for Security annotation
+* Added: query parameters in sandbox request URL
+* Added: alternate model naming strategy
+* Added: optional color codes for tags annotation
+* Added: show/hide button and list/expand operations buttons on sections
+* Added: nested JMS groups exclusion
+* Added: ability to specify param-type of input class.
+* Added: caching layer with the controllers and routing files as resources
+* Added: Post-parser support for response map models
+* Added: default value handling
+* Added: 'type' to API item if applicable
+
+* Fixed: type annotations
+* Fixed: PhpDoc Handler for `@link` annotation and add tests
+* Fixed: display select to choose http method in sandbox
+* Fixed: form errors parser. Mirrored actual form-errors response by FOSRest. Made sure that FieldErrors is not duplicated.
+* Fixed: parsing of filters, default values, descriptions and base path in SwaggerFormatter
+* Fixed: tests by adding separate form type
+* Fixed: disabling required for HTTP PUT requests
+* Fixed: checking HTTP method type
+* Fixed: side effect introduce with list/expand buttons
+* Fixed: collection handling
+* Fixed: improve directive parsing, and separate test class for parsing directives.
+* Fixed: better regex pattern matching and added tests for parsing array<..> directives.
+* Fixed: replace incorrect `jQuery.size()` method
+* Fixed: honor body format before uploading file type parameters
+* Fixed: #486
+* Fixed: only show request format dropdown when there are multiple formats
+* Fixed: 'items' parameter for collections in parameters
+* Fixed: impossible to access an attribute (\"custom_endpoint\") on a NULL variable
+* Fixed: missing handling for DataTypes::COLLECTION in parameters (input)
+* Fixed: endpoint is undefined in sandbox when custom_endpoint is disabled
+* Fixed: the wrong endpoint value check when no endpoint is set in config
+* Fixed: Swagger commands
