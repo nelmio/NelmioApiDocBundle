@@ -423,6 +423,22 @@ class ApiDoc
     }
 
     /**
+     * @param string $input
+     */
+    public function setInput($input)
+    {
+        $this->input = $input;
+    }
+
+    /**
+     * @param string $output
+     */
+    public function setOutput($output)
+    {
+        $this->output = $output;
+    }
+
+    /**
      * Sets the response data as processed by the parsers - same format as parameters
      *
      * @param array $response
