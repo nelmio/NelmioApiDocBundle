@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Nelmio\ApiDocBundle\Tests\Extractor;
 
 class CollectionDirectiveTest extends \PHPUnit_Framework_TestCase

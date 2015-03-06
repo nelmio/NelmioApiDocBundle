@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Controller;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-class ResourceController 
+class ResourceController
 {
     /**
      * @ApiDoc(

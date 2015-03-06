@@ -2,11 +2,9 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Formatter;
 
-
 use Nelmio\ApiDocBundle\Extractor\ApiDocExtractor;
 use Nelmio\ApiDocBundle\Formatter\SwaggerFormatter;
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
-
 
 /**
  * Class SwaggerFormatterTest
@@ -35,7 +33,6 @@ class SwaggerFormatterTest extends WebTestCase
         $this->extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
         $this->formatter = $container->get('nelmio_api_doc.formatter.swagger_formatter');
     }
-
 
     public function testResourceListing()
     {
@@ -98,7 +95,6 @@ class SwaggerFormatterTest extends WebTestCase
         );
 
         $this->assertEquals($expected, $actual);
-
 
     }
 
