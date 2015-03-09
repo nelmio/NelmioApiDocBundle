@@ -24,7 +24,7 @@ class CollectionParser implements ParserInterface, PostParserInterface
     /**
      * Return true/false whether this class supports parsing the given class.
      *
-     * @param  array $item containing the following fields: class, groups. Of which groups is optional
+     * @param array $item containing the following fields: class, groups. Of which groups is optional
      *
      * @return boolean
      */
@@ -47,7 +47,7 @@ class CollectionParser implements ParserInterface, PostParserInterface
 
     /**
      * @param array|string $item       The string type of input to parse.
-     * @param  array       $parameters The previously-parsed parameters array.
+     * @param array        $parameters The previously-parsed parameters array.
      *
      * @return array
      */

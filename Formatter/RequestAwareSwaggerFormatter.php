@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Formatter;
 
-
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -33,7 +32,7 @@ class RequestAwareSwaggerFormatter implements FormatterInterface
     protected $formatter;
 
     /**
-     * @param Request $request
+     * @param Request          $request
      * @param SwaggerFormatter $formatter
      */
     public function __construct(Request $request, SwaggerFormatter $formatter)
@@ -45,8 +44,8 @@ class RequestAwareSwaggerFormatter implements FormatterInterface
     /**
      * Format a collection of documentation data.
      *
-     * @param array $collection
-     * @param null $resource
+     * @param  array        $collection
+     * @param  null         $resource
      * @internal param $array [ApiDoc] $collection
      * @return string|array
      */

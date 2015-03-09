@@ -43,7 +43,7 @@ class DataTypes
     /**
      * Returns true if the supplied `actualType` value is considered a primitive type. Returns false, otherwise.
      *
-     * @param string $type
+     * @param  string $type
      * @return bool
      */
     public static function isPrimitive($type)

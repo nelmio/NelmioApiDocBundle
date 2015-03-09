@@ -21,7 +21,7 @@ class FormErrorsParser implements ParserInterface, PostParserInterface
     /**
      * Return true/false whether this class supports parsing the given class.
      *
-     * @param  array $item containing the following fields: class, groups. Of which groups is optional
+     * @param array $item containing the following fields: class, groups. Of which groups is optional
      *
      * @return boolean
      */

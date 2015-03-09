@@ -16,7 +16,6 @@ use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -65,11 +64,11 @@ class CachingApiDocExtractor extends ApiDocExtractor
 
             $data = parent::all();
             $this->cache->write(serialize($data), $resources);
-            
+
             return $data;
         }
 
         return unserialize(file_get_contents($this->cacheFile));
 
     }
-} 
+}

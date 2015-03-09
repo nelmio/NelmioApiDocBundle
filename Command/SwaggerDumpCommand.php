@@ -66,6 +66,7 @@ class SwaggerDumpCommand extends ContainerAwareCommand
         if ($input->getOption('list-only')) {
             $data = $this->getResourceList($apiDocs, $output);
             $this->dump($data, null, $input, $output);
+
             return;
         }
 
@@ -75,6 +76,7 @@ class SwaggerDumpCommand extends ContainerAwareCommand
                 throw new \InvalidArgumentException(sprintf('Resource "%s" does not exist.', $resource));
             }
             $this->dump($data, $resource, $input, $output);
+
             return;
         }
 
@@ -110,6 +112,7 @@ class SwaggerDumpCommand extends ContainerAwareCommand
 
         if (!$destination) {
             $output->writeln($content);
+
             return;
         }
 

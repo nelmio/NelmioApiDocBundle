@@ -9,7 +9,6 @@
 namespace NelmioApiDocBundle\Tests\Controller;
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
-
 /**
  * Class ApiDocControllerTest
  *
