@@ -272,6 +272,14 @@ input = {
 }
 ```
 
+You can also add some options to pass to the form. You just have to use the `options` key:
+```
+input = {
+ "class" = "your_form_type",
+ "options" = {"method" => "PUT"},
+}
+```
+
 #### Used Parsers
 
 By default, all registered parsers are used, but sometimes you may want to
