@@ -17,11 +17,11 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Nelmio\ApiDocBundle\Parser\PostParserInterface;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouterInterface;
+use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 class ApiDocExtractor
 {
@@ -366,6 +366,7 @@ class ApiDocExtractor
         $defaults = array(
             'class'   => '',
             'groups'  => array(),
+            'options'  => array(),
         );
 
         // normalize strings

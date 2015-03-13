@@ -34,7 +34,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType'),
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', 'options' => array()),
                 array(
                     'a' => array(
                         'dataType' => 'string',
@@ -75,7 +75,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType'),
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType', 'options' => array()),
                 array(
                     'collection_type' => array(
                         'dataType' => 'object (CollectionType)',
@@ -150,6 +150,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 array(
                     'class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType',
                     'name' => '',
+                    'options' => array(),
                 ),
                 array(
                     'a' => array(
@@ -214,6 +215,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 array(
                     'class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType',
                     'name' => null,
+                    'options' => array(),
                 ),
                 array(
                     'a' => array(
@@ -275,7 +277,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\ImprovedTestType'),
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\ImprovedTestType', 'options' => array()),
                 array(
                     'dt1' => array(
                         'dataType' => 'datetime',
@@ -386,7 +388,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CompoundType'),
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CompoundType', 'options' => array()),
                 array (
                     'sub_form' =>
                         array (
@@ -475,7 +477,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\RequireConstructionType'),
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\RequireConstructionType', 'options' => array()),
                 array(
                     'require_construction_type' => array(
                         'dataType' => 'object (RequireConstructionType)',
@@ -500,7 +502,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType'),
+                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType', 'options' => array()),
                 array(
                     'dependency_type' => array(
                         'dataType' => 'object (DependencyType)',

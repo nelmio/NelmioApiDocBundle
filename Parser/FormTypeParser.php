@@ -12,16 +12,16 @@
 namespace Nelmio\ApiDocBundle\Parser;
 
 use Nelmio\ApiDocBundle\DataTypes;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\Exception\FormException;
 
 class FormTypeParser implements ParserInterface
 {
@@ -63,9 +63,10 @@ class FormTypeParser implements ParserInterface
     public function supports(array $item)
     {
         $className = $item['class'];
+        $options   = $item['options'];
 
         try {
-            if ($this->createForm($className)) {
+            if ($this->createForm($className, null, $options)) {
                 return true;
             }
         } catch (FormException $e) {
@@ -82,17 +83,16 @@ class FormTypeParser implements ParserInterface
      */
     public function parse(array $item)
     {
-        $type = $item['class'];
+        $type    = $item['class'];
+        $options = $item['options'];
 
         if ($this->implementsType($type)) {
             $type = $this->getTypeInstance($type);
         }
 
-        $form = $this->formFactory->create($type);
+        $form = $this->formFactory->create($type, null, $options);
 
         $name = array_key_exists('name', $item) ? $item['name'] : $form->getName();
-
-        $options = null;
 
         if (empty($name)) {
             return $this->parseForm($form);
