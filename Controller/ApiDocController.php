@@ -19,9 +19,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiDocController extends Controller
 {
-    public function indexAction()
+    public function indexAction($api = "default")
     {
-        $extractedDoc = $this->get('nelmio_api_doc.extractor.api_doc_extractor')->all();
+        $extractedDoc = $this->get('nelmio_api_doc.extractor.api_doc_extractor')->all($api);
         $htmlContent  = $this->get('nelmio_api_doc.formatter.html_formatter')->format($extractedDoc);
 
         return new Response($htmlContent, 200, array('Content-Type' => 'text/html'));
