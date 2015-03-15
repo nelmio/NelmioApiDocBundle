@@ -17,8 +17,6 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
-    const ROUTES_QUANTITY = 33;
-
     public function testAll()
     {
         $container = $this->getContainer();
@@ -27,14 +25,22 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->all();
         restore_error_handler();
 
+        if(class_exists('Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle')) {
+            $routesQuantity = 38;
+            $httpsKey = 25;
+        } else {
+            $routesQuantity = 33;
+            $httpsKey = 20;
+        }
+
         $this->assertTrue(is_array($data));
-        $this->assertCount(self::ROUTES_QUANTITY, $data);
+        $this->assertCount($routesQuantity, $data);
 
         $cacheFile = $container->getParameter('kernel.cache_dir') . '/api-doc.cache';
         $this->assertFileExists($cacheFile);
         $this->assertEquals(file_get_contents($cacheFile), serialize($data));
 
-        foreach ($data as $d) {
+        foreach ($data as $key => $d) {
             $this->assertTrue(is_array($d));
             $this->assertArrayHasKey('annotation', $d);
             $this->assertArrayHasKey('resource', $d);
@@ -76,9 +82,8 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertTrue($a4->isResource());
         $this->assertEquals('TestResource', $a4->getResource());
 
-        $a3 = $data[20]['annotation'];
+        $a3 = $data[$httpsKey]['annotation'];
         $this->assertTrue($a3->getHttps());
-
     }
 
     public function testGet()

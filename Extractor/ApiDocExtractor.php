@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Nelmio\ApiDocBundle\Parser\PostParserInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
@@ -48,6 +49,11 @@ class ApiDocExtractor
     private $commentExtractor;
 
     /**
+     * @var ControllerNameParser
+     */
+    protected $controllerNameParser;
+
+    /**
      * @var ParserInterface[]
      */
     protected $parsers = array();
@@ -57,13 +63,20 @@ class ApiDocExtractor
      */
     protected $handlers;
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers)
+    /**
+     * @var AnnotationsProviderInterface[]
+     */
+    protected $annotationsProviders;
+
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ControllerNameParser $controllerNameParser, array $handlers, array $annotationsProviders)
     {
-        $this->container        = $container;
-        $this->router           = $router;
-        $this->reader           = $reader;
-        $this->commentExtractor = $commentExtractor;
-        $this->handlers         = $handlers;
+        $this->container            = $container;
+        $this->router               = $router;
+        $this->reader               = $reader;
+        $this->commentExtractor     = $commentExtractor;
+        $this->controllerNameParser = $controllerNameParser;
+        $this->handlers             = $handlers;
+        $this->annotationsProviders = $annotationsProviders;
     }
 
     /**
@@ -125,6 +138,13 @@ class ApiDocExtractor
             }
         }
 
+        foreach ($this->annotationsProviders as $annotationProvider) {
+            foreach ($annotationProvider->getAnnotations() as $annotation) {
+                $route = $annotation->getRoute();
+                $array[] = array('annotation' => $this->extractData($annotation, $route, $this->getReflectionMethod($route->getDefault('_controller'))));
+            }
+        }
+
         rsort($resources);
         foreach ($array as $index => $element) {
             $hasResource = false;
@@ -181,6 +201,10 @@ class ApiDocExtractor
      */
     public function getReflectionMethod($controller)
     {
+        if (false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
+            $controller = $this->controllerNameParser->parse($controller);
+        }
+
         if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
             $class = $matches[1];
             $method = $matches[2];

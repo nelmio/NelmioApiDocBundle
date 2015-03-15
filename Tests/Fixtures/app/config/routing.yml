@@ -239,3 +239,4 @@ test_route_25:
     defaults: { _controller: NelmioApiDocTestBundle:Test:withLinkAction }
     requirements:
         _method: GET
+

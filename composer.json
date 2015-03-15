@@ -30,14 +30,17 @@
         "symfony/validator": "~2.1",
         "symfony/yaml": "~2.1",
         "symfony/form": "~2.1",
+        "symfony/serializer": "~2.7@dev",
         "friendsofsymfony/rest-bundle": "~1.0",
         "jms/serializer-bundle": ">=0.11",
+        "dunglas/json-ld-api-bundle": "dev-master",
         "sensio/framework-extra-bundle": "~3.0"
     },
     "suggest": {
         "symfony/form": "For using form definitions as input.",
         "symfony/validator": "For making use of validator information in the doc.",
         "friendsofsymfony/rest-bundle": "For making use of REST information in the doc.",
+        "dunglas/json-ld-api-bundle": "For making use of resources definitions of DunglasJsonLdApiBundle.",
         "jms/serializer": "For making use of serializer information in the doc."
     },
     "autoload": {

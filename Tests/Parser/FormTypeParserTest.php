@@ -25,7 +25,11 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
         $formFactoryBuilder->addTypeExtension(new DescriptionFormTypeExtension());
         $formFactory = $formFactoryBuilder->getFormFactory();
         $formTypeParser = new FormTypeParser($formFactory);
+
+        set_error_handler(array('Nelmio\ApiDocBundle\Tests\WebTestCase', 'handleDeprecation'));
+        trigger_error('test', E_USER_DEPRECATED);
         $output = $formTypeParser->parse($typeName);
+        restore_error_handler();
 
         $this->assertEquals($expected, $output);
     }
