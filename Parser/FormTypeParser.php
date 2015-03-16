@@ -126,6 +126,7 @@ class FormTypeParser implements ParserInterface
         $parameters = array();
         foreach ($form as $name => $child) {
             $config     = $child->getConfig();
+            $options    = $config->getOptions();
             $bestType   = '';
             $actualType = null;
             $subType    = null;
@@ -171,7 +172,7 @@ class FormTypeParser implements ParserInterface
                          */
                         $addDefault = false;
                         try {
-                            $subForm       = $this->formFactory->create($type);
+                            $subForm       = $this->formFactory->create($type, null, $options);
                             $subParameters = $this->parseForm($subForm, $name);
 
                             if (!empty($subParameters)) {
