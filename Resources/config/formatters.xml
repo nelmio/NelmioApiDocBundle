@@ -59,6 +59,9 @@
             <call method="setDefaultSectionsOpened">
                 <argument>%nelmio_api_doc.default_sections_opened%</argument>
             </call>
+            <call method="setTemplate">
+                <argument>%nelmio_api_doc.html_template%</argument>
+            </call>
         </service>
         <service id="nelmio_api_doc.formatter.swagger_formatter" class="%nelmio_api_doc.formatter.swagger_formatter.class%"
             parent="nelmio_api_doc.formatter.abstract_formatter" />
