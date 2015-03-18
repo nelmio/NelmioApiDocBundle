@@ -161,7 +161,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('file')->defaultValue('%kernel.cache_dir%/api-doc.cache')->end()
                     ->end()
                 ->end()
-                ->scalarNode('html_template')->defaultValie('NelmioApiDocBundle::resources.html.twig')
+                ->scalarNode('html_template')->defaultValue('NelmioApiDocBundle::resources.html.twig')
             ->end();
 
         return $treeBuilder;
