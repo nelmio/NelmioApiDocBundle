@@ -81,6 +81,11 @@ class HtmlFormatter extends AbstractFormatter
     private $defaultSectionsOpened;
 
     /**
+     * @var string
+     */
+    private $template;
+
+    /**
      * @param array $authentication
      */
     public function setAuthentication(array $authentication = null)
@@ -177,6 +182,14 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
+     * @param $template
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+    }
+
+    /**
      * @return string
      */
     public function getMotdTemplate()
@@ -197,7 +210,7 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function renderOne(array $data)
     {
-        return $this->engine->render('NelmioApiDocBundle::resource.html.twig', array_merge(
+        return $this->engine->render($this->template, array_merge(
             array(
                 'data'           => $data,
                 'displayContent' => true,
@@ -211,7 +224,7 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function render(array $collection)
     {
-        return $this->engine->render('NelmioApiDocBundle::resources.html.twig', array_merge(
+        return $this->engine->render($this->template, array_merge(
             array(
                 'resources' => $collection,
             ),
