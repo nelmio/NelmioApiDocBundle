@@ -19,14 +19,20 @@
     </parameters>
 
     <services>
-        <service id='nelmio_api_doc.doc_comment_extractor' class="%nelmio_api_doc.doc_comment_extractor.class%" />
+        <service id="nelmio_api_doc.doc_comment_extractor" class="%nelmio_api_doc.doc_comment_extractor.class%" />
+
+        <service id="nelmio_api_doc.controller_name_parser" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
+            <argument type="service" id="kernel" />
+        </service>
 
         <service id="nelmio_api_doc.extractor.api_doc_extractor" class="%nelmio_api_doc.extractor.api_doc_extractor.class%">
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="service_container" />
             <argument type="service" id="router" />
             <argument type="service" id="annotation_reader" />
             <argument type="service" id="nelmio_api_doc.doc_comment_extractor" />
-            <argument type="collection"/>
+            <argument type="service" id="nelmio_api_doc.controller_name_parser" />
+            <argument type="collection" />
+            <argument type="collection" />
         </service>
 
         <service id="nelmio_api_doc.form.extension.description_form_type_extension" class="%nelmio_api_doc.form.extension.description_form_type_extension.class%">

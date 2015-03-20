@@ -26,17 +26,20 @@ class AppKernel extends Kernel
 
     public function registerBundles()
     {
-        return array(
+        $bundles = array(
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
             new \JMS\SerializerBundle\JMSSerializerBundle($this),
             new \Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new \Nelmio\ApiDocBundle\Tests\Fixtures\NelmioApiDocTestBundle(),
         );
-    }
 
-    public function init()
-    {
+        if (class_exists('Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle')) {
+            $bundles[] = new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle();
+            $bundles[] = new \Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle();
+        }
+
+        return $bundles;
     }
 
     public function getRootDir()
@@ -57,6 +60,10 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__.'/config/'.$this->environment.'.yml');
+
+        if (class_exists('Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle')) {
+            $loader->load(__DIR__.'/config/dunglas_json_ld_api.yml');
+        }
     }
 
     public function serialize()
