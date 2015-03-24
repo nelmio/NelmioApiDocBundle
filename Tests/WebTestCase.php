@@ -11,6 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests;
 
+use PHPUnit_Framework_Error_Notice;
+use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Kernel;

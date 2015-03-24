@@ -236,6 +236,7 @@ class ApiDoc
 
         if (isset($data['statusCodes'])) {
             foreach ($data['statusCodes'] as $statusCode => $description) {
+
                 $this->addStatusCode($statusCode, $description);
             }
         }

@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
+use Nelmio\ApiDocBundle\Factory\ApiDocFactory;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
@@ -38,15 +39,16 @@ class CachingApiDocExtractor extends ApiDocExtractor
     private $debug;
 
     /**
-     * @param ContainerInterface $container
-     * @param RouterInterface $router
-     * @param Reader $reader
-     * @param DocCommentExtractor $commentExtractor
-     * @param ControllerNameParser $controllerNameParser
-     * @param array $handlers
-     * @param array $annotationsProviders
-     * @param string $cacheFile
-     * @param bool|false $debug
+     * @param ContainerInterface          $container
+     * @param RouterInterface             $router
+     * @param Reader                      $reader
+     * @param DocCommentExtractor         $commentExtractor
+     * @param ControllerNameParser        $controllerNameParser
+     * @param DocumentationFilesExtractor $documentationFilesExtractor
+     * @param array                       $handlers
+     * @param array                       $annotationsProviders
+     * @param string                      $cacheFile
+     * @param bool|false                  $debug
      */
     public function __construct(
         ContainerInterface $container,
@@ -54,12 +56,13 @@ class CachingApiDocExtractor extends ApiDocExtractor
         Reader $reader,
         DocCommentExtractor $commentExtractor,
         ControllerNameParser $controllerNameParser,
+        DocumentationFilesExtractor $documentationFilesExtractor,
         array $handlers,
         array $annotationsProviders,
         $cacheFile,
         $debug = false
     ) {
-        parent::__construct($container, $router, $reader, $commentExtractor, $controllerNameParser, $handlers, $annotationsProviders);
+        parent::__construct($container, $router, $reader, $commentExtractor, $controllerNameParser, $documentationFilesExtractor, $handlers, $annotationsProviders);
 
         $this->cacheFile = $cacheFile;
         $this->debug = $debug;
