@@ -167,6 +167,13 @@ class ApiDocExtractor
             }
         }
 
+        $files                 = $this->container->getParameter('nelmio_api_doc.documentation_files');
+        $documentationFiles    = $this->container->get('nelmio_api_doc.manager.documentation_files')->parse($files);
+
+        if ($documentationFiles  !== false) {
+            $array = array_merge($array, $documentationFiles);
+        };
+
         $methodOrder = array('GET', 'POST', 'PUT', 'DELETE');
         usort($array, function ($a, $b) use ($methodOrder) {
             if ($a['resource'] === $b['resource']) {
