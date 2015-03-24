@@ -42,6 +42,7 @@ class NelmioApiDocExtension extends Extension
         $container->setParameter('nelmio_api_doc.sandbox.request_format.default_format', $config['sandbox']['request_format']['default_format']);
         $container->setParameter('nelmio_api_doc.sandbox.request_format.formats', $config['sandbox']['request_format']['formats']);
         $container->setParameter('nelmio_api_doc.sandbox.entity_to_choice', $config['sandbox']['entity_to_choice']);
+        $container->setParameter('nelmio_api_doc.documentation_files', $config['documentation_files']);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('formatters.xml');
@@ -72,6 +73,7 @@ class NelmioApiDocExtension extends Extension
             $caching = new Definition('Nelmio\ApiDocBundle\Extractor\CachingApiDocExtractor');
             $arguments[] = $config['cache']['file'];
             $arguments[] = '%kernel.debug%';
+
             $caching->setArguments($arguments);
             $container->setDefinition('nelmio_api_doc.extractor.api_doc_extractor', $caching);
         }

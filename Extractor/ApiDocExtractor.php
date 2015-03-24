@@ -15,14 +15,18 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Util\ClassUtils;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\Factory\ApiDocFactory;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Nelmio\ApiDocBundle\Parser\PostParserInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Yaml\Yaml;
 
 class ApiDocExtractor
 {
@@ -59,6 +63,11 @@ class ApiDocExtractor
     protected $parsers = array();
 
     /**
+     * @var DocumentationFilesExtractor
+     */
+    protected $documentationFilesExtractor;
+
+    /**
      * @var HandlerInterface[]
      */
     protected $handlers;
@@ -68,15 +77,16 @@ class ApiDocExtractor
      */
     protected $annotationsProviders;
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ControllerNameParser $controllerNameParser, array $handlers, array $annotationsProviders)
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ControllerNameParser $controllerNameParser, DocumentationFilesExtractor $documentationFilesExtractor, array $handlers, array $annotationsProviders)
     {
-        $this->container            = $container;
-        $this->router               = $router;
-        $this->reader               = $reader;
-        $this->commentExtractor     = $commentExtractor;
-        $this->controllerNameParser = $controllerNameParser;
-        $this->handlers             = $handlers;
-        $this->annotationsProviders = $annotationsProviders;
+        $this->container                   = $container;
+        $this->router                      = $router;
+        $this->reader                      = $reader;
+        $this->commentExtractor            = $commentExtractor;
+        $this->controllerNameParser        = $controllerNameParser;
+        $this->documentationFilesExtractor = $documentationFilesExtractor;
+        $this->handlers                    = $handlers;
+        $this->annotationsProviders        = $annotationsProviders;
     }
 
     /**
@@ -96,9 +106,66 @@ class ApiDocExtractor
      *
      * @return array
      */
-    public function all($view = ApiDoc::DEFAULT_VIEW)
+    public function extractRoutes($view = ApiDoc::DEFAULT_VIEW)
     {
         return $this->extractAnnotations($this->getRoutes(), $view);
+    }
+
+    /**
+     * Extracts api doc from all known files
+     *
+     * @return array
+     */
+    public function extractFiles($view = ApiDoc::DEFAULT_VIEW)
+    {
+        $configuration = $this->container->getParameter('nelmio_api_doc.documentation_files');
+        $basePath      = $configuration['path'];
+        $fileSystem    = new Filesystem();
+        $finder        = new Finder();
+        $apiDocs       = array();
+
+        foreach ($this->container->get('kernel')->getBundles() as $bundle) {
+            $path       = $bundle->getPath() . $basePath;
+
+            if ($fileSystem->exists($path)) {
+                $finder->in($path);
+            }
+        }
+
+        foreach ($finder->files()->name('*.yml') as $file) {
+            $docs = Yaml::parse($file);
+
+            if (is_array($docs)) {
+                foreach ($docs as $doc) {
+                    $apiDoc = $this->apiDocFactory->create($doc, $view);
+
+                    if ($apiDoc !== false) {
+                        $apiDocs[] = $apiDoc;
+                    }
+                }
+            }
+        }
+
+        return $apiDocs;
+    }
+
+    /**
+     * Extracts all api docs from all known routes & all known api doc files
+     *
+     * @param string $view
+     *
+     * @return array
+     */
+    public function all($view = ApiDoc::DEFAULT_VIEW)
+    {
+        $apiDocs = $this->extractRoutes($view);
+
+        if ($this->container->getParameter('nelmio_api_doc.documentation_files')['enabled']) {
+            $files   = $this->documentationFilesExtractor->extractFiles($view);
+            $apiDocs = array_merge($apiDocs, $files);
+        }
+
+        return $apiDocs;
     }
 
     /**
@@ -123,6 +190,7 @@ class ApiDocExtractor
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 $annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS);
+
                 if (
                     $annotation && !in_array($annotation->getSection(), $excludeSections) &&
                     (in_array($view, $annotation->getViews()) || (0 === count($annotation->getViews()) && $view === ApiDoc::DEFAULT_VIEW))

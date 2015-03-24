@@ -1,0 +1,56 @@
+---
+- section: test section
+  description: 'test decription'
+  route: test_route_27
+  statusCodes:
+      201: Returned when successful
+      500: Error
+  parameters:
+      - {name: title, dataType: string, required: true, description: name}
+      - {name: description, dataType: string, required: true, description: description}
+  requirements:
+      - { name: username, dataType: string, required: true, description: 'username' }
+      - { name: password, dataType: string, required: true, description: 'password' }
+  output: Symfony\Component\HttpFoundation\Response
+  views: ["default", "premium"]
+- section: test section
+  description: 'test decription'
+  route: test_route_27
+  statusCodes:
+      201: Returned when successful
+      500: Error
+  parameters:
+      - {name: title, dataType: string, required: true, description: name}
+      - {name: description, dataType: string, required: true, description: description}
+  requirements:
+      - { name: username, dataType: string, required: true, description: 'username' }
+      - { name: password, dataType: string, required: true, description: 'password' }
+  output: Symfony\Component\HttpFoundation\Response
+  views: ["default"]
+- section: test section
+  description: 'test decription'
+  route: test_route_27
+  statusCodes:
+      201: Returned when successful
+      500: Error
+  parameters:
+      - {name: title, dataType: string, required: true, description: name}
+      - {name: description, dataType: string, required: true, description: description}
+  requirements:
+      - { name: username, dataType: string, required: true, description: 'username' }
+      - { name: password, dataType: string, required: true, description: 'password' }
+  output: Symfony\Component\HttpFoundation\Response
+  views: ["premium"]
+- section: test section
+  description: 'test decription'
+  route: test_route_27
+  statusCodes:
+      201: Returned when successful
+      500: Error
+  parameters:
+      - {name: title, dataType: string, required: true, description: name}
+      - {name: description, dataType: string, required: true, description: description}
+  requirements:
+      - { name: username, dataType: string, required: true, description: 'username' }
+      - { name: password, dataType: string, required: true, description: 'password' }
+  output: Symfony\Component\HttpFoundation\Response
