@@ -486,9 +486,10 @@
                     $('input, button', $(this)).attr('disabled', 'disabled');
 
                     // append the query authentication
-                    if (authentication_delivery == 'query') {
+                    var api_key_val = $('#api_key').val();
+                    if (authentication_delivery == 'query' && api_key_val.length>0) {
                         url += url.indexOf('?') > 0 ? '&' : '?';
-                        url += api_key_parameter + '=' + $('#api_key').val();
+                        url += api_key_parameter + '=' + api_key_val;
                     }
 
                     // prepare the api enpoint
