@@ -394,79 +394,66 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
             array(
                 array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CompoundType', 'options' => array()),
                 array (
-                    'sub_form' =>
+                    'sub_form[a]' =>
                         array (
-                            'dataType' => 'object (SimpleType)',
-                            'actualType' => 'model',
-                            'subType' => 'Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Form\\SimpleType',
+                            'dataType' => 'string',
+                            'actualType' => 'string',
+                            'subType' => NULL,
+                            'default' => null,
+                            'required' => true,
+                            'description' => 'Something that describes A.',
+                            'readonly' => false,
+                        ),
+                    'sub_form[b]' =>
+                        array (
+                            'dataType' => 'float',
+                            'actualType' => 'float',
+                            'subType' => NULL,
                             'default' => null,
                             'required' => true,
                             'description' => '',
                             'readonly' => false,
-                            'children' =>
-                                array (
-                                    'a' =>
-                                        array (
-                                            'dataType' => 'string',
-                                            'actualType' => 'string',
-                                            'subType' => NULL,
-                                            'default' => null,
-                                            'required' => true,
-                                            'description' => 'Something that describes A.',
-                                            'readonly' => false,
-                                        ),
-                                    'b' =>
-                                        array (
-                                            'dataType' => 'float',
-                                            'actualType' => 'float',
-                                            'subType' => NULL,
-                                            'default' => null,
-                                            'required' => true,
-                                            'description' => '',
-                                            'readonly' => false,
-                                        ),
-                                    'c' =>
-                                        array (
-                                            'dataType' => 'choice',
-                                            'actualType' => 'choice',
-                                            'subType' => NULL,
-                                            'default' => null,
-                                            'required' => true,
-                                            'description' => '',
-                                            'readonly' => false,
-                                            'format' => '{"x":"X","y":"Y","z":"Z"}',
-                                        ),
-                                    'd' =>
-                                        array (
-                                            'dataType' => 'datetime',
-                                            'actualType' => 'datetime',
-                                            'subType' => NULL,
-                                            'default' => null,
-                                            'required' => true,
-                                            'description' => '',
-                                            'readonly' => false,
-                                        ),
-                                    'e' =>
-                                        array (
-                                            'dataType' => 'date',
-                                            'actualType' => 'date',
-                                            'subType' => NULL,
-                                            'default' => null,
-                                            'required' => true,
-                                            'description' => '',
-                                            'readonly' => false,
-                                        ),
-                                    'g' =>
-                                        array (
-                                            'dataType' => 'string',
-                                            'actualType' => 'string',
-                                            'subType' => NULL,
-                                            'default' => null,
-                                            'required' => true,
-                                            'description' => '',
-                                            'readonly' => false,
-                                        ),
-                                ),
+                        ),
+                    'sub_form[c]' =>
+                        array (
+                            'dataType' => 'choice',
+                            'actualType' => 'choice',
+                            'subType' => NULL,
+                            'default' => null,
+                            'required' => true,
+                            'description' => '',
+                            'readonly' => false,
+                            'format' => '{"x":"X","y":"Y","z":"Z"}',
+                        ),
+                    'sub_form[d]' =>
+                        array (
+                            'dataType' => 'datetime',
+                            'actualType' => 'datetime',
+                            'subType' => NULL,
+                            'default' => null,
+                            'required' => true,
+                            'description' => '',
+                            'readonly' => false,
+                        ),
+                    'sub_form[e]' =>
+                        array (
+                            'dataType' => 'date',
+                            'actualType' => 'date',
+                            'subType' => NULL,
+                            'default' => null,
+                            'required' => true,
+                            'description' => '',
+                            'readonly' => false,
+                        ),
+                    'sub_form[g]' =>
+                        array (
+                            'dataType' => 'string',
+                            'actualType' => 'string',
+                            'subType' => NULL,
+                            'default' => null,
+                            'required' => true,
+                            'description' => '',
+                            'readonly' => false,
                         ),
                     'a' =>
                         array (

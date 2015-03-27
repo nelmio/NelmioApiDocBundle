@@ -175,23 +175,9 @@ class FormTypeParser implements ParserInterface
                             $subParameters = $this->parseForm($subForm, $name);
 
                             if (!empty($subParameters)) {
-                                $children = $subParameters;
-                                $config   = $subForm->getConfig();
-                                $subType  = get_class($type);
-                                $parts    = explode('\\', $subType);
-                                $bestType = sprintf('object (%s)', end($parts));
-
-                                $parameters[$name] = array(
-                                    'dataType'    => $bestType,
-                                    'actualType'  => DataTypes::MODEL,
-                                    'default'     => null,
-                                    'subType'     => $subType,
-                                    'required'    => $config->getRequired(),
-                                    'description' => ($config->getOption('description')) ? $config->getOption('description'):$config->getOption('label'),
-                                    'readonly'    => $config->getDisabled(),
-                                    'children'    => $children,
-                                );
-
+                                foreach ($subParameters as $subName => $subChildren) {
+                                    $parameters[$name.'['.$subName.']'] = $subChildren;
+                                }
                             } else {
                                 $addDefault = true;
                             }
