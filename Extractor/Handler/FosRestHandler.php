@@ -83,6 +83,15 @@ class FosRestHandler implements HandlerInterface
             return substr($class, strrpos($class, '\\')+1);
         }
 
+        if (is_array($requirements)) {
+            $output = array();
+            if (key_exists('_format', $requirements)) {
+                $output[] = 'Format: ' . $requirements['_format'];
+            }
+
+            return implode(', ', $output);
+        }
+
         return (string) $requirements;
     }
 
