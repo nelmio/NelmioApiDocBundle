@@ -586,7 +586,7 @@
                     }
                 });
 
-                $('.json-collapse-section').on('click', function(){
+                $(document).on('click', '.json-collapse-section', function() {
                     var openChar = $(this).data('section-open-character'),
                             closingChar = (openChar == '{' ? '}' : ']');
                     if ($(this).next('.json-collapse-content').is(':visible')) {

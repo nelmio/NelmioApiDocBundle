@@ -617,7 +617,7 @@ form .request-content {
   padding:20px;
 }
 
-.json-toggle-section {
+.json-collapse-section {
     color: #660;
     cursor: pointer;
 }
