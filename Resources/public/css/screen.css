@@ -616,3 +616,8 @@ form .request-content {
 .motd {
   padding:20px;
 }
+
+.json-toggle-section {
+    color: #660;
+    cursor: pointer;
+}
