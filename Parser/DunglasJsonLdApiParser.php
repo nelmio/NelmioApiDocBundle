@@ -11,7 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
-use Dunglas\JsonLdApiBundle\JsonLd\Resources;
+use Dunglas\JsonLdApiBundle\JsonLd\ResourceCollectionInterface;
+use Dunglas\JsonLdApiBundle\JsonLd\ResourceInterface;
 use Dunglas\JsonLdApiBundle\Mapping\ClassMetadataFactory;
 use Nelmio\ApiDocBundle\DataTypes;
 
@@ -23,17 +24,17 @@ use Nelmio\ApiDocBundle\DataTypes;
 class DunglasJsonLdApiParser implements ParserInterface
 {
     /**
-     * @var Resources
+     * @var ResourceCollectionInterface
      */
-    private $resources;
+    private $resourceCollection;
     /**
      * @var ClassMetadataFactory
      */
     private $classMetadataFactory;
 
-    public function __construct(Resources $resources, ClassMetadataFactory $classMetadataFactory)
+    public function __construct(ResourceCollectionInterface $resourceCollection, ClassMetadataFactory $classMetadataFactory)
     {
-        $this->resources = $resources;
+        $this->resourceCollection = $resourceCollection;
         $this->classMetadataFactory = $classMetadataFactory;
     }
 
@@ -42,7 +43,7 @@ class DunglasJsonLdApiParser implements ParserInterface
      */
     public function supports(array $item)
     {
-        return null !== $this->resources->getResourceForEntity($item['class']);
+        return null !== $this->resourceCollection->getResourceForEntity($item['class']);
     }
 
     /**
@@ -51,9 +52,9 @@ class DunglasJsonLdApiParser implements ParserInterface
     public function parse(array $item)
     {
         /**
-         * @var $resource \Dunglas\JsonLdApiBundle\JsonLd\Resource
+         * @var $resource ResourceInterface
          */
-        $resource = $this->resources->getResourceForEntity($item['class']);
+        $resource = $this->resourceCollection->getResourceForEntity($item['class']);
         $classMetadata = $this->classMetadataFactory->getMetadataFor(
             $resource->getEntityClass(),
             $resource->getNormalizationGroups(),
@@ -85,6 +86,8 @@ class DunglasJsonLdApiParser implements ParserInterface
                 }
 
                 $data[$attribute->getName()]['dataType'] = $dataType;
+            } else {
+                $data[$attribute->getName()]['dataType'] = DataTypes::STRING;
             }
         }
 
