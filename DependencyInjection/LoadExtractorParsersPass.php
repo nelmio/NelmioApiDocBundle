@@ -34,7 +34,7 @@ class LoadExtractorParsersPass implements CompilerPassInterface
         }
 
         // DunglasJsonLdApiBundle may or may not be installed, if it is, load that config as well
-        if ($container->hasDefinition('dunglas_json_ld_api.resources')) {
+        if ($container->hasDefinition('dunglas_json_ld_api.resource_collection')) {
             $loader->load('services.dunglas_json_ld_api.xml');
         }
     }

@@ -12,8 +12,8 @@
 namespace Nelmio\ApiDocBundle\Extractor\AnnotationsProvider;
 
 use Doctrine\Common\Annotations\Reader;
-use Dunglas\JsonLdApiBundle\JsonLd\Resource;
-use Dunglas\JsonLdApiBundle\JsonLd\Resources;
+use Dunglas\JsonLdApiBundle\JsonLd\ResourceCollectionInterface;
+use Dunglas\JsonLdApiBundle\JsonLd\ResourceInterface;
 use Dunglas\JsonLdApiBundle\Mapping\ClassMetadataFactory;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Extractor\AnnotationsProviderInterface;
@@ -26,17 +26,17 @@ use Nelmio\ApiDocBundle\Extractor\AnnotationsProviderInterface;
 class DunglasJsonLdApiProvider implements AnnotationsProviderInterface
 {
     /**
-     * @var Resources
+     * @var ResourceCollectionInterface
      */
-    private $resources;
+    private $resourceCollection;
     /**
      * @var ClassMetadataFactory
      */
     private $classMetadataFactory;
 
-    public function __construct(Resources $resources, ClassMetadataFactory $classMetadataFactory)
+    public function __construct(ResourceCollectionInterface $resourceCollection, ClassMetadataFactory $classMetadataFactory)
     {
-        $this->resources = $resources;
+        $this->resourceCollection = $resourceCollection;
         $this->classMetadataFactory = $classMetadataFactory;
     }
 
@@ -46,7 +46,10 @@ class DunglasJsonLdApiProvider implements AnnotationsProviderInterface
     public function getAnnotations()
     {
         $annotations = [];
-        foreach ($this->resources as $resource) {
+        /**
+         * @var ResourceInterface $resource
+         */
+        foreach ($this->resourceCollection as $resource) {
             $resource->getRouteCollection(); // Populate !route
 
             foreach ($resource->getCollectionOperations() as $operation) {
@@ -64,12 +67,12 @@ class DunglasJsonLdApiProvider implements AnnotationsProviderInterface
     /**
      * Builds ApiDoc annotation from DunglasJsonLdApiBundle data.
      *
-     * @param Resource $resource
-     * @param array $operation
+     * @param ResourceInterface $resource
+     * @param array             $operation
      *
      * @return ApiDoc
      */
-    private function getApiDoc(Resource $resource, array $operation)
+    private function getApiDoc(ResourceInterface $resource, array $operation)
     {
         $data = [
             'resource' => $operation['!route_path'],
