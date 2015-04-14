@@ -319,7 +319,7 @@
                     prettifiedJsonString = prettifiedJsonString.replace(/(\{|\[)\n/g, function(match, sectionOpenCharacter) {
                         return getJsonCollapseHtml(sectionOpenCharacter) + '<span class="json-collapse-content">\n';
                     });
-                    return prettifiedJsonString.replace(/([^\[][\}\]]),?\n/g, '$1</span>\n');
+                    return prettifiedJsonString.replace(/([^\[][\}\]])(,)?\n/g, '$1$2</span>\n');
                 };
 
                 var prettifyResponse = function(text) {
