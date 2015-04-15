@@ -362,6 +362,8 @@ nelmio_api_doc:
 
             default_format: json    # default is `json`,
                                     # default content format to request (see formats)
+
+    html_template: NelmioApiDocBundle::resources.html.twig #template that render
 ```
 ### Command
 
