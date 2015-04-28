@@ -14,7 +14,7 @@ Require the `nelmio/api-doc-bundle` package in your composer.json and update you
 
 Register the bundle in `app/AppKernel.php`:
 
-``` php
+```php
 // app/AppKernel.php
 public function registerBundles()
 {
@@ -33,7 +33,7 @@ NelmioApiDocBundle:
     prefix:   /api/doc
 ```
 Enable the bundle's configuration in `app/config/config.yml`:
-``` yaml
+```yaml
 # app/config/config.yml
 nelmio_api_doc: ~
 ```
@@ -48,7 +48,7 @@ uses introspection a lot. Thanks to an annotation, it's really easy to document 
 
 The bundle provides an `ApiDoc()` annotation for your controllers:
 
-``` php
+```php
 <?php
 
 namespace Your\Namespace;
@@ -122,7 +122,7 @@ The following properties are available:
 
 * `tags`: allow to tag a method (e.g. `beta` or `in-development`). Either a single tag or an array of tags. Each tag can have an optional hex colorcode attached.
 
-``` php
+```php
 <?php
 
 class YourController
@@ -156,7 +156,7 @@ class YourController
 
 * `statusCodes`: an array of HTTP status codes and a description of when that status is returned; Example:
 
-``` php
+```php
 <?php
 
 class YourController
@@ -190,7 +190,7 @@ For classes parsed with JMS metadata, description will be taken from the propert
 
 For Form Types, you can add an extra option named `description` on each field:
 
-``` php
+```php
 <?php
 
 class YourType extends AbstractType
@@ -383,14 +383,34 @@ If you want to generate a static version of your documentation without sandbox, 
 Read the [documentation for Swagger integration](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/swagger-support.md)
 for the necessary steps to make a Swagger-compliant documentation for your API.
 
+### DunglasApiBundle support
+
+This bundle recognizes and documents resources exposed with [DunglasApiBundle](https://github.com/dunglas/DunglasApiBundle).
+Just install NelmioApiDoc and the documentation will be automatically available. To enable the sandbox, use the following
+configuration:
+
+```yaml
+# app/config/config.yml
+nelmio_api_doc:
+    sandbox:
+        accept_type:        "application/json"
+        body_format:
+            formats:        [ "json" ]
+            default_format: "json"
+        request_format:
+            formats:
+                json:       "application/json"
+```
+
 ### Caching
 
 It is a good idea to enable the internal caching mechanism on production:
-
-    # app/config/config.yml
-    nelmio_api_doc:
-        cache:
-            enabled: true
+```yaml
+# app/config/config.yml
+nelmio_api_doc:
+    cache:
+        enabled: true
+```
 
 Configuration In-Depth
 ----------------------

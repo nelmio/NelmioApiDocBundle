@@ -9,14 +9,14 @@ doctrine:
         auto_mapping:                true
 
 framework:
-    router:        { resource: "%kernel.root_dir%/config/dunglas_json_ld_api_routing.yml" }
+    router:        { resource: "%kernel.root_dir%/config/dunglas_api_routing.yml" }
 
-dunglas_json_ld_api:
+dunglas_api:
     title:       API
     description: Test API
 
 services:
     dunglas_json_ld_api.popo:
-        class:     "Dunglas\JsonLdApiBundle\JsonLd\Resource"
+        parent:    "api.resource"
         arguments: [ "Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\Popo" ]
-        tags:      [ { name: "json-ld.resource" } ]
+        tags:      [ { name: "api.resource" } ]
