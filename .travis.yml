@@ -33,7 +33,7 @@ matrix:
 
 before_script:
     - composer self-update
-    - sh -c 'if [ "$SYMFONY_VERSION" != "dev-master" ] && [ "$SYMFONY_VERSION" != "2.6.*" ]; then sed -i "/dunglas\/json-ld-api-bundle/d;/symfony\/serializer/d" composer.json; fi;'
+    - sh -c 'if [ "$SYMFONY_VERSION" != "dev-master" ] && [ "$SYMFONY_VERSION" != "2.6.*" ]; then sed -i "/dunglas\/api-bundle/d;/symfony\/serializer/d" composer.json; fi;'
     - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
     - composer install
 

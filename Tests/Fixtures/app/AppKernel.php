@@ -34,9 +34,9 @@ class AppKernel extends Kernel
             new \Nelmio\ApiDocBundle\Tests\Fixtures\NelmioApiDocTestBundle(),
         );
 
-        if (class_exists('Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle')) {
+        if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
             $bundles[] = new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle();
-            $bundles[] = new \Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle();
+            $bundles[] = new \Dunglas\ApiBundle\DunglasApiBundle();
         }
 
         return $bundles;
@@ -61,8 +61,8 @@ class AppKernel extends Kernel
     {
         $loader->load(__DIR__.'/config/'.$this->environment.'.yml');
 
-        if (class_exists('Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle')) {
-            $loader->load(__DIR__.'/config/dunglas_json_ld_api.yml');
+        if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
+            $loader->load(__DIR__.'/config/dunglas_api.yml');
         }
     }
 
