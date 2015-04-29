@@ -36,7 +36,7 @@ interface ParserInterface
      *  - class             (optional) the fully-qualified class name of the item, if
      *                      it is represented by an object
      *
-     * @param  string $item The string type of input to parse.
+     * @param  array $item The string type of input to parse.
      * @return array
      */
     public function parse(array $item);
