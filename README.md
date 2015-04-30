@@ -3,10 +3,9 @@ NelmioApiDocBundle
 
 [![Build
 Status](https://secure.travis-ci.org/nelmio/NelmioApiDocBundle.png?branch=master)](http://travis-ci.org/nelmio/NelmioApiDocBundle)
-[![Total
-Downloads](https://poser.pugx.org/nelmio/api-doc-bundle/downloads.svg)](https://packagist.org/packages/nelmio/api-doc-bundle)
+[![Total Downloads](https://poser.pugx.org/nelmio/api-doc-bundle/downloads)](https://packagist.org/packages/nelmio/api-doc-bundle)
 [![Latest Stable
-Version](https://poser.pugx.org/nelmio/api-doc-bundle/v/stable.svg)](https://packagist.org/packages/nelmio/api-doc-bundle)
+Version](https://poser.pugx.org/nelmio/api-doc-bundle/v/stable)](https://packagist.org/packages/nelmio/api-doc-bundle)
 
 The **NelmioApiDocBundle** bundle allows you to generate a decent documentation
 for your APIs.
