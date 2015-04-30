@@ -338,11 +338,10 @@ class SwaggerFormatterTest extends WebTestCase
                                 'path'       => '/resources/{id}.{_format}',
                                 'operations' =>
                                     array(
-
                                         array(
-                                            'method'           => 'GET',
-                                            'summary'          => 'Retrieve a resource by ID.',
-                                            'nickname'         => 'get_resources',
+                                            'method'           => 'DELETE',
+                                            'summary'          => 'Delete a resource by ID.',
+                                            'nickname'         => 'delete_resources',
                                             'parameters'       =>
                                                 array(
 
@@ -369,9 +368,9 @@ class SwaggerFormatterTest extends WebTestCase
                                                 array(),
                                         ),
                                         array(
-                                            'method'           => 'DELETE',
-                                            'summary'          => 'Delete a resource by ID.',
-                                            'nickname'         => 'delete_resources',
+                                            'method'           => 'GET',
+                                            'summary'          => 'Retrieve a resource by ID.',
+                                            'nickname'         => 'get_resources',
                                             'parameters'       =>
                                                 array(
 

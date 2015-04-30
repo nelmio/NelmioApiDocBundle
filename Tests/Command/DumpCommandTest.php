@@ -88,9 +88,9 @@ class DumpCommandTest extends WebTestCase
                     '/api/resources[0].uri' => '/api/resources.{_format}',
                     '/api/resources[1].method' => 'POST',
                     '/api/resources[1].uri' => '/api/resources.{_format}',
-                    '/api/resources[2].method' => 'GET',
+                    '/api/resources[2].method' => 'DELETE',
                     '/api/resources[2].uri' => '/api/resources/{id}.{_format}',
-                    '/api/resources[3].method' => 'DELETE',
+                    '/api/resources[3].method' => 'GET',
                     '/api/resources[3].uri' => '/api/resources/{id}.{_format}',
                 )
             ),

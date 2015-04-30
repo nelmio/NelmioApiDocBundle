@@ -228,8 +228,8 @@ class YourType extends AbstractType
 ```
 
 The bundle will also get information from the routing definition
-(`requirements`, `pattern`, etc), so to get the best out of it you should
-define strict _method requirements etc.
+(`requirements`, `path`, etc), so to get the best out of it you should
+define strict methods requirements etc.
 
 ### Multiple API Documentation ("Views")
 
