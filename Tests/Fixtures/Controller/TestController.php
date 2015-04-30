@@ -334,4 +334,13 @@ class TestController
     public function withLinkAction()
     {
     }
+
+    /**
+     * @ApiDoc(
+     *     https="true"
+     * )
+     */
+    public function requiredHttpsSchemeAction()
+    {
+    }
 }

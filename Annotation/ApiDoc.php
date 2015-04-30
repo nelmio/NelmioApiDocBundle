@@ -276,8 +276,8 @@ class ApiDoc
             }
         }
 
-        if (isset($data['https'])) {
-            $this->https = $data['https'];
+        if (isset($data['https']) && null !== $https = filter_var($data['https'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)) {
+            $this->https = $https;
         }
 
         if (isset($data['resourceDescription'])) {

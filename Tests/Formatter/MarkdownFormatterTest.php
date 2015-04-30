@@ -1033,6 +1033,18 @@ related[b]:
 
 
 ### `POST` /zsecured ###
+
+
+
+### `ANY` /zz-http-required ###
+
+
+
+### `ANY` /zz-https-not-required ###
+
+
+
+### `ANY` /zz-https-required ###
 MARKDOWN;
         } else {
             $expected = <<<MARKDOWN
@@ -1958,6 +1970,18 @@ related[b]:
 
 
 ### `POST` /zsecured ###
+
+
+
+### `ANY` /zz-http-required ###
+
+
+
+### `ANY` /zz-https-not-required ###
+
+
+
+### `ANY` /zz-https-required ###
 MARKDOWN;
         }
 
