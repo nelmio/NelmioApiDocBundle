@@ -866,9 +866,9 @@ With multiple lines.',
                             ),
                         2 =>
                             array (
-                                'method' => 'GET',
+                                'method' => 'DELETE',
                                 'uri' => '/api/resources/{id}.{_format}',
-                                'description' => 'Retrieve a resource by ID.',
+                                'description' => 'Delete a resource by ID.',
                                 'requirements' =>
                                     array (
                                         '_format' =>
@@ -893,9 +893,9 @@ With multiple lines.',
                             ),
                         3 =>
                             array (
-                                'method' => 'DELETE',
+                                'method' => 'GET',
                                 'uri' => '/api/resources/{id}.{_format}',
-                                'description' => 'Delete a resource by ID.',
+                                'description' => 'Retrieve a resource by ID.',
                                 'requirements' =>
                                     array (
                                         '_format' =>
@@ -1673,6 +1673,30 @@ And, it supports multilines until the first \'@\' char.',
                             ),
                         9 =>
                             array (
+                                'method' => 'DELETE',
+                                'uri' => '/popos/{id}',
+                                'description' => 'Deletes the Popo resource.',
+                                'documentation' => 'Deletes an element of the collection.',
+                                'requirements' =>
+                                    array (
+                                        'id' =>
+                                            array (
+                                                'dataType' => 'string',
+                                                'description' => '',
+                                                'requirement' => '',
+                                            ),
+                                    ),
+                                'https' => false,
+                                'authentication' => false,
+                                'authenticationRoles' =>
+                                    array (
+                                    ),
+                                'deprecated' => false,
+                                'resourceDescription' => 'Popo',
+                                'section' => 'Popo',
+                            ),
+                        10 =>
+                            array (
                                 'method' => 'GET',
                                 'uri' => '/popos/{id}',
                                 'description' => 'Retrieves Popo resource.',
@@ -1705,7 +1729,7 @@ And, it supports multilines until the first \'@\' char.',
                                 'resourceDescription' => 'Popo',
                                 'section' => 'Popo',
                             ),
-                        10 =>
+                        11 =>
                             array (
                                 'method' => 'PUT',
                                 'uri' => '/popos/{id}',
@@ -1738,30 +1762,6 @@ And, it supports multilines until the first \'@\' char.',
                                                 'description' => '',
                                                 'readonly' => false,
                                                 'dataType' => 'string',
-                                            ),
-                                    ),
-                                'https' => false,
-                                'authentication' => false,
-                                'authenticationRoles' =>
-                                    array (
-                                    ),
-                                'deprecated' => false,
-                                'resourceDescription' => 'Popo',
-                                'section' => 'Popo',
-                            ),
-                        11 =>
-                            array (
-                                'method' => 'DELETE',
-                                'uri' => '/popos/{id}',
-                                'description' => 'Deletes the Popo resource.',
-                                'documentation' => 'Deletes an element of the collection.',
-                                'requirements' =>
-                                    array (
-                                        'id' =>
-                                            array (
-                                                'dataType' => 'string',
-                                                'description' => '',
-                                                'requirement' => '',
                                             ),
                                     ),
                                 'https' => false,
