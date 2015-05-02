@@ -407,13 +407,7 @@
                     // set default bodyFormat
                     var bodyFormat = $('#body_format').val() || '{{ defaultBodyFormat }}';
 
-                    if(!('Content-type' in headers)) {
-                        if (bodyFormat == 'form') {
-                            headers['Content-type'] = 'application/x-www-form-urlencoded';
-                        } else {
-                            headers['Content-type'] = 'application/json';
-                        }
-                    }
+                    
 
                     var hasFileTypes = false;
                     $('.parameters .tuple_type', $(this)).each(function() {
@@ -421,6 +415,14 @@
                             hasFileTypes = true;
                         }
                     });
+                    
+                    if(!hasFileTypes && !('Content-type' in headers)) {
+                        if (bodyFormat == 'form') {
+                            headers['Content-type'] = 'application/x-www-form-urlencoded';
+                        } else {
+                            headers['Content-type'] = 'application/json';
+                        }
+                    }
 
                     if (hasFileTypes && method != 'POST') {
                         alert("Sorry, you can only submit files via POST.");
