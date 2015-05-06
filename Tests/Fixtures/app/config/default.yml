@@ -60,6 +60,7 @@ nelmio_api_doc:
     cache:
         enabled: true
     exclude_sections: ["private", "exclusive"]
+    exclude_patterns: ["/excluded_pattern_1", "/excluded/pattern/2"]
     swagger:
         api_base_path: /api
         swagger_version: 1.2
