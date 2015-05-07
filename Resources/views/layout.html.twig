@@ -20,8 +20,9 @@
                     {% if bodyFormats|length > 0 %}
                     body format:
                     <select id="body_format">
-                        {% if 'form' in bodyFormats %}<option value="form"{{ defaultBodyFormat == 'form' ? ' selected' : '' }}>Form Data</option>{% endif %}
-                        {% if 'json' in bodyFormats %}<option value="json"{{ defaultBodyFormat == 'json' ? ' selected' : '' }}>JSON</option>{% endif %}
+                    {% for format, bodyFormat in bodyFormats %}
+                        <option value="{{ format }}"{{ defaultBodyFormat == format ? ' selected' : '' }}>{{ bodyFormat }}</option>
+                    {% endfor %}
                     </select>
                     {% endif %}
                     {% if requestFormats|length > 0 %}
@@ -401,18 +402,24 @@
                         params['_format'] = $('#request_format option:selected').text();
                         formData.append('_format',$('#request_format option:selected').text());
                     } else if (requestFormatMethod == 'accept_header') {
-                        headers['Accept'] = $('#request_format').val();
+                        if (!('Accept' in headers)) {
+                            headers['Accept'] = $('#request_format').val();
+                        }
                     }
 
                     // set default bodyFormat
                     var bodyFormat = $('#body_format').val() || '{{ defaultBodyFormat }}';
 
                     if(!('Content-type' in headers)) {
+                        {% if bodyFormats|length > 0 %}
+                        headers['Content-type'] = $('#body_format option:selected').text();
+                        {% else %}
                         if (bodyFormat == 'form') {
                             headers['Content-type'] = 'application/x-www-form-urlencoded';
                         } else {
                             headers['Content-type'] = 'application/json';
                         }
+                        {% endif %}
                     }
 
                     var hasFileTypes = false;
@@ -528,7 +535,7 @@
 
                     // prepare final parameters
                     var body = {};
-                    if(bodyFormat == 'json' && method != 'GET') {
+                    if(bodyFormat != 'form' && method != 'GET') {
                         body = unflattenDict(params);
                         body = JSON.stringify(body);
                     } else {
