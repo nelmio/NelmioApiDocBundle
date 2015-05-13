@@ -132,6 +132,7 @@ class Configuration implements ConfigurationInterface
                                 })
                             ->end()
                         ->end()
+                        ->booleanNode('entity_to_choice')->defaultValue(true)->end()
                     ->end()
                 ->end()
                 ->arrayNode('swagger')

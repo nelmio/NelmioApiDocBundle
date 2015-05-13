@@ -370,6 +370,9 @@ nelmio_api_doc:
 
             default_format: json    # default is `json`,
                                     # default content format to request (see formats)
+                                    
+        entity_to_choice: false     # default is `true`, if `false`, entity collection 
+                                    # will not be mapped as choice
 ```
 ### Command
 
@@ -543,6 +546,7 @@ nelmio_api_doc:
             # Required if http delivery is selected.
             type:                 ~ # One of "basic"; "bearer"
             custom_endpoint:      false
+        entity_to_choice:         true
     swagger:
         api_base_path:        /api
         swagger_version:      '1.2'
