@@ -38,6 +38,14 @@ Enable the bundle's configuration in `app/config/config.yml`:
 nelmio_api_doc: ~
 ```
 
+The **NelmioApiDocBundle** requires Twig as a template engine so do not forget to enable it:
+```yaml
+# app/config/config.yml
+framework:
+    templating:
+        engines: ['twig']
+```
+
 Usage
 -----
 
