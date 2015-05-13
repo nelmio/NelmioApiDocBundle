@@ -26,6 +26,7 @@ class ImprovedTestType extends AbstractType
             ->add('c2', 'choice', array('choices' => array('m' => 'Male', 'f' => 'Female'), 'multiple' => true))
             ->add('c3', 'choice', array('choices' => array()))
             ->add('c4', 'choice', array('choice_list' => new SimpleChoiceList(array('foo' => 'bar', 'bazgroup' => array('baz' => 'Buzz')))))
+            ->add('e1', new EntityType(), array('choice_list' => new SimpleChoiceList(array('foo' => 'bar', 'bazgroup' => array('baz' => 'Buzz')))))
         ;
     }
 
