@@ -45,7 +45,7 @@ class SwaggerFormatterTest extends WebTestCase
 
         $actual = $this->formatter->format($data, null);
 
-        if (class_exists('Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle')) {
+        if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
             $expected = array (
                 'swaggerVersion' => '1.2',
                 'apis' =>
@@ -83,27 +83,27 @@ class SwaggerFormatterTest extends WebTestCase
                         6 =>
                             array (
                                 'path' => '/others',
-                                'description' => '',
+                                'description' => 'Popo',
                             ),
                         7 =>
                             array (
                                 'path' => '/others',
-                                'description' => '',
+                                'description' => 'Popo',
                             ),
                         8 =>
                             array (
                                 'path' => '/others',
-                                'description' => '',
+                                'description' => 'Popo',
                             ),
                         9 =>
                             array (
                                 'path' => '/others',
-                                'description' => '',
+                                'description' => 'Popo',
                             ),
                         10 =>
                             array (
                                 'path' => '/others',
-                                'description' => '',
+                                'description' => 'Popo',
                             ),
                     ),
                 'apiVersion' => '3.14',

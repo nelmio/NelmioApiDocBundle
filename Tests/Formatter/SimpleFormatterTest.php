@@ -26,7 +26,7 @@ class SimpleFormatterTest extends WebTestCase
         restore_error_handler();
         $result    = $container->get('nelmio_api_doc.formatter.simple_formatter')->format($data);
 
-        if (class_exists('Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle')) {
+        if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
             $expected = array (
                 '/api/other-resources' =>
                     array (
@@ -1581,7 +1581,7 @@ And, it supports multilines until the first \'@\' char.',
                             ),
                         7 =>
                             array (
-                                'method' => 'GET|HEAD',
+                                'method' => 'GET',
                                 'uri' => '/popos',
                                 'description' => 'Retrieves the collection of Popo resources.',
                                 'documentation' => 'Gets the collection.',
@@ -1601,6 +1601,7 @@ And, it supports multilines until the first \'@\' char.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'resourceDescription' => 'Popo',
                             ),
                         8 =>
                             array (
@@ -1634,10 +1635,11 @@ And, it supports multilines until the first \'@\' char.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'resourceDescription' => 'Popo',
                             ),
                         9 =>
                             array (
-                                'method' => 'GET|HEAD',
+                                'method' => 'GET',
                                 'uri' => '/popos/{id}',
                                 'description' => 'Retrieves Popo resource.',
                                 'documentation' => 'Gets an element of the collection.',
@@ -1666,6 +1668,7 @@ And, it supports multilines until the first \'@\' char.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'resourceDescription' => 'Popo',
                             ),
                         10 =>
                             array (
@@ -1708,6 +1711,7 @@ And, it supports multilines until the first \'@\' char.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'resourceDescription' => 'Popo',
                             ),
                         11 =>
                             array (
@@ -1730,6 +1734,7 @@ And, it supports multilines until the first \'@\' char.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'resourceDescription' => 'Popo',
                             ),
                         12 =>
                             array (
