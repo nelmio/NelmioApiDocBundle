@@ -58,9 +58,12 @@ class DunglasApiParser implements ParserInterface
      */
     public function supports(array $item)
     {
-        list(, $class) = explode(':', $item['class'], 2);
+        $data = explode(':', $item['class'], 2);
+        if (isset($data[1])) {
+            return null !== $this->resourceCollection->getResourceForEntity($data[1]);
+        }
 
-        return null !== $this->resourceCollection->getResourceForEntity($class);
+        return false;
     }
 
     /**
