@@ -188,6 +188,9 @@ class YourController
 }
 ```
 
+* `api`: the api under which this resource will be shown. Leave empty to specify the default api. Either a single api, or 
+  an array of apis.
+
 Each _filter_ has to define a `name` parameter, but other parameters are free. Filters are often optional
 parameters, and you can document them as you want, but keep in mind to be consistent for the whole documentation.
 
@@ -219,6 +222,56 @@ class YourType extends AbstractType
 
 The bundle will also get information from the routing definition (`requirements`, `pattern`, etc), so to get the
 best out of it you should define strict _method requirements etc.
+
+### Multiple API documentations ###
+With the `api` tag in the `@apidoc` annotation, it's possible to create different sets of api documentations. Without 
+the tag, all methods are located in the `default` api and can be found under the normal api documentation url. With the 
+`api` tag you can specify one or more api names under which the method will be visible. 
+
+An example:
+```
+    /**
+     * A resource
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="This is a description of your API method",
+     *  api = { "default", "premium" }
+     * )
+     */
+    public function getAction()
+    {
+    }
+
+    /**
+     * Another resource
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="This is a description of another API method",
+     *  api = { "premium" }
+     * )
+     */
+    public function getAnotherAction()
+    {
+    }
+```
+
+In this case, only the first resource will be available under the default api documentation, while both methods will
+be available under the `premium` api documentation.
+
+#### Accessing API documentation ####
+The normal `default` documentation can be found at the normal location. Other sets of documentation can be found at `documentationurl/<tagname>`.
+
+For instance, if your documenation is located at 
+
+        http://example.org/doc/api/v1/
+
+then the `premium` api will be located at:
+
+        http://example.org/doc/api/v1/premium
+
+
 
 ### Other Bundle Annotations
 
@@ -464,6 +517,11 @@ You can specify which sections to exclude from the documentation generation:
 nelmio_api_doc:
     exclude_sections: ["privateapi", "testapi"]
 ```
+
+Note that `exclude_sections` will literally exclude a section from your api documentation. It's possible however to create
+multiple apis by specifying the `api` within the `@apidoc` annotations. This allows you to move private or test methods to a 
+complete different set of api documentation instead.
+
 The bundle provides a way to register multiple `input` parsers. The first parser
 that can handle the specified input is used, so you can configure their
 priorities via container tags. Here's an example parser service registration:
@@ -492,6 +550,7 @@ nelmio_api_doc:
         enabled: true
         file: "/tmp/symfony-app/%kernel.environment%/api-doc.cache"
 ```
+
 ### Using Your Own Annotations
 
 If you have developed your own project-related annotations, and you want to parse them to populate
