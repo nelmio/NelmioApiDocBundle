@@ -16,13 +16,13 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
-class DunglasJsonLdApiProviderTest extends WebTestCase
+class DunglasApiProviderTest extends WebTestCase
 {
     protected function setUp()
     {
-        if (!class_exists('Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle')) {
+        if (!class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
             $this->markTestSkipped(
-                'DunglasJsonLdApiBundle is not available.'
+                'DunglasApiBundle is not available.'
             );
         }
     }
@@ -30,7 +30,7 @@ class DunglasJsonLdApiProviderTest extends WebTestCase
     public function testGetAnnotations()
     {
         $container = $this->getContainer();
-        $provider = $container->get('nelmio_api_doc.annotations_provider.dunglas_json_ld_api_annotation_provider');
+        $provider = $container->get('nelmio_api_doc.annotations_provider.dunglas_api_annotation_provider');
 
         $annotations = $provider->getAnnotations();
         $this->assertCount(5, $annotations);
