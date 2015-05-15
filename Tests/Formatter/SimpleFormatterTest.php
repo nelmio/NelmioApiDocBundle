@@ -2557,6 +2557,11 @@ With multiple lines.',
                                 'authentication' => false,
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
+                                'apis' =>
+                                    array(
+                                        'default',
+                                        'premium',
+                                    ),
                             ),
                         3 =>
                             array(
@@ -2616,6 +2621,11 @@ With multiple lines.',
                                 'authentication' => false,
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
+                                'apis' =>
+                                    array(
+                                        'default',
+                                        'premium',
+                                    ),
                             ),
                     ),
                 'others' =>
@@ -2652,6 +2662,11 @@ With multiple lines.',
                                 'authentication' => false,
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
+                                'apis' =>
+                                    array(
+                                        'default',
+                                        'test',
+                                    ),
                             ),
                         1 =>
                             array(
@@ -3676,6 +3691,11 @@ With multiple lines.',
                             'authentication' => false,
                             'authenticationRoles' => array(),
                             'deprecated' => false,
+                            'apis' =>
+                                array(
+                                    'default',
+                                    'premium',
+                                ),
                         ),
                     ),
                 '/tests2' =>
@@ -3697,6 +3717,11 @@ With multiple lines.',
                             'authentication' => false,
                             'authenticationRoles' => array(),
                             'deprecated' => false,
+                            'apis' =>
+                                array(
+                                    'default',
+                                    'premium',
+                                ),
                         ),
                     ),
                 'TestResource' =>
@@ -3709,6 +3734,10 @@ With multiple lines.',
                                 'authentication' => false,
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
+                                'apis' =>
+                                    array(
+                                        'default',
+                                    ),
                             ),
                     ),
                 '/api/other-resources' =>
@@ -3732,6 +3761,10 @@ With multiple lines.',
                             'authenticationRoles' =>
                                 array(),
                             'deprecated' => false,
+                            'apis' => array(
+                                'default',
+                                'premium',
+                            ),
                             'response' => array(
                                 '' =>
                                     array(
@@ -4054,6 +4087,11 @@ With multiple lines.',
                             'authenticationRoles' =>
                                 array(),
                             'deprecated' => false,
+                            'apis' => array(
+                                'test',
+                                'default',
+                                'premium',
+                            ),
                             'response' =>
                                 array(
                                     'tests' =>
@@ -4166,6 +4204,11 @@ With multiple lines.',
                                             'dataType' => '',
                                             'description' => '',
                                         ),
+                                ),
+                            'apis' =>
+                                array(
+                                    'default',
+                                    'premium',
                                 ),
                             'response' =>
                                 array(

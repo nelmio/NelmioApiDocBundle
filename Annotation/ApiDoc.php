@@ -26,6 +26,13 @@ class ApiDoc
     private $requirements = array();
 
     /**
+     * Which APIs is this route used. Defaults to "default"
+     *
+     * @var array
+     */
+    private $apis = array();
+
+    /**
      * Filters are optional parameters in the query string.
      *
      * @var array
@@ -188,6 +195,15 @@ class ApiDoc
                 unset($requirement['name']);
 
                 $this->addRequirement($name, $requirement);
+            }
+        }
+
+        if (isset($data['api'])) {
+            if (! is_array($data['api'])) {
+                $data['api'] = array($data['api']);
+            }
+            foreach ($data['api'] as $api) {
+                $this->addApi($api);
             }
         }
 
@@ -372,6 +388,23 @@ class ApiDoc
     {
         return $this->section;
     }
+
+    /**
+     * @return array
+     */
+    public function addApi($api)
+    {
+        $this->apis[] = $api;
+    }
+
+    /**
+     * @return array
+     */
+    public function getApis()
+    {
+        return $this->apis;
+    }
+
 
     /**
      * @param string $documentation
@@ -624,6 +657,11 @@ class ApiDoc
         if ($requirements = $this->requirements) {
             $data['requirements'] = $requirements;
         }
+
+        if ($apis = $this->apis) {
+            $data['apis'] = $apis;
+        }
+
 
         if ($response = $this->response) {
             $data['response'] = $response;
