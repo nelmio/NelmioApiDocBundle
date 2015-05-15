@@ -571,6 +571,7 @@
                         ajaxOptions.data = formData;
                         ajaxOptions.processData = false;
                         ajaxOptions.contentType = false;
+                        delete(headers['Content-type']);
                     }
 
                     // and trigger the API call
