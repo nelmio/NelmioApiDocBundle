@@ -19,7 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class EntityType extends AbstractType
 {
 
-
     /**
      * {@inheritdoc}
      */

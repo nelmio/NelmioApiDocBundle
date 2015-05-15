@@ -25,7 +25,7 @@ class MarkdownFormatterTest extends WebTestCase
         restore_error_handler();
         $result = $container->get('nelmio_api_doc.formatter.markdown_formatter')->format($data);
 
-        if(class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
+        if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
 $expected = <<<MARKDOWN
 ## /api/other-resources ##
 

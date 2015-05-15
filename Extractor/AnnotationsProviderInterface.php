@@ -11,8 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Extractor;
 
-use Symfony\Component\Routing\Route;
-
 /**
  * Interface for annotations providers.
  *

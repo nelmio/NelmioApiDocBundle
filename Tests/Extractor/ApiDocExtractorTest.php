@@ -29,7 +29,7 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->all();
         restore_error_handler();
 
-        if(class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
+        if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
             $routesQuantity = 38;
             $httpsKey = 25;
         } else {

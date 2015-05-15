@@ -15,9 +15,9 @@ class ValidationParserTest extends WebTestCase
     {
         $container  = $this->getContainer();
 
-        if($container->has('validator.mapping.class_metadata_factory')){
+        if ($container->has('validator.mapping.class_metadata_factory')) {
             $factory = $container->get('validator.mapping.class_metadata_factory');
-        }else {
+        } else {
             $factory = $container->get('validator');
         }
 

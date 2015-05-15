@@ -405,7 +405,6 @@ class ApiDoc
         return $this->apis;
     }
 
-
     /**
      * @param string $documentation
      */
@@ -661,7 +660,6 @@ class ApiDoc
         if ($apis = $this->apis) {
             $data['apis'] = $apis;
         }
-
 
         if ($response = $this->response) {
             $data['response'] = $response;
