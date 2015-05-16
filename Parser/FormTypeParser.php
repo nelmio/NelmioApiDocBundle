@@ -127,7 +127,7 @@ class FormTypeParser implements ParserInterface
         );
     }
 
-    private function parseForm($form)
+    protected function parseForm($form)
     {
         $parameters = array();
         foreach ($form as $name => $child) {
@@ -259,7 +259,7 @@ class FormTypeParser implements ParserInterface
                     }
 
                     if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
-                        $parameters[$name]['format'] = json_encode($choices);
+                        $parameters[$name]['format'] = json_encode($choices, JSON_UNESCAPED_UNICODE);
                     } elseif (($choiceList = $config->getOption('choice_list')) && $choiceList instanceof ChoiceListInterface) {
                         if (('entity' === $config->getType()->getName() && false === $this->entityToChoice)) {
                             $choices = array();
@@ -267,7 +267,7 @@ class FormTypeParser implements ParserInterface
                             $choices = $this->handleChoiceListValues($choiceList);
                         }
                         if (is_array($choices) && count($choices)) {
-                            $parameters[$name]['format'] = json_encode($choices);
+                            $parameters[$name]['format'] = json_encode($choices, JSON_UNESCAPED_UNICODE);
                         }
                     }
                     break;
@@ -277,7 +277,7 @@ class FormTypeParser implements ParserInterface
         return $parameters;
     }
 
-    private function implementsType($item)
+    protected function implementsType($item)
     {
         if (!class_exists($item)) {
             return false;
@@ -288,7 +288,7 @@ class FormTypeParser implements ParserInterface
         return $refl->implementsInterface('Symfony\Component\Form\FormTypeInterface') || $refl->implementsInterface('Symfony\Component\Form\ResolvedFormTypeInterface');
     }
 
-    private function getTypeInstance($type)
+    protected function getTypeInstance($type)
     {
         $refl = new \ReflectionClass($type);
         $constructor = $refl->getConstructor();
@@ -301,7 +301,7 @@ class FormTypeParser implements ParserInterface
         return $refl->newInstance();
     }
 
-    private function createForm($item)
+    protected function createForm($item)
     {
         if ($this->implementsType($item)) {
             $type = $this->getTypeInstance($item);
@@ -318,7 +318,7 @@ class FormTypeParser implements ParserInterface
         }
     }
 
-    private function handleChoiceListValues(ChoiceListInterface $choiceList)
+    protected function handleChoiceListValues(ChoiceListInterface $choiceList)
     {
         $choices = array();
         foreach (array($choiceList->getPreferredViews(), $choiceList->getRemainingViews()) as $viewList) {
@@ -328,7 +328,7 @@ class FormTypeParser implements ParserInterface
         return $choices;
     }
 
-    private function handleChoiceViewsHierarchy(array $choiceViews)
+    protected function handleChoiceViewsHierarchy(array $choiceViews)
     {
         $choices = array();
         foreach ($choiceViews as $item) {
