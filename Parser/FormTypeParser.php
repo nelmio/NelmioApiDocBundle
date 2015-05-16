@@ -153,12 +153,13 @@ class FormTypeParser implements ParserInterface
                     } else {
                         // Embedded form collection
                         $embbededType       = $config->getOption('type');
-                        $subForm    = $this->formFactory->create($embbededType, null, $config->getOption('options', array()));
-                        $children   = $this->parseForm($subForm);
-                        $actualType = DataTypes::COLLECTION;
-                        $subType    = is_object($embbededType) ? get_class($embbededType) : $embbededType;
-
-                        if (class_exists($subType)) {
+                        if (isset($embeddedType)) {
+                            $subForm    = $this->formFactory->create($embbededType, null, $config->getOption('options', array()));
+                            $children   = $this->parseForm($subForm);
+                            $actualType = DataTypes::COLLECTION;
+                            $subType    = is_object($embbededType) ? get_class($embbededType) : $embbededType;
+                        }
+                        if (isset($embeddedType) && class_exists($subType)) {
                             $parts = explode('\\', $subType);
                             $bestType = sprintf('array of objects (%s)', end($parts));
                         } else {
@@ -295,7 +296,11 @@ class FormTypeParser implements ParserInterface
 
         // this fallback may lead to runtime exception, but try hard to generate the docs
         if ($constructor && $constructor->getNumberOfRequiredParameters() > 0) {
-            return $refl->newInstanceWithoutConstructor();
+            // ..but it only works with PHP 5.4 and higher
+            if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
+                return $refl->newInstanceWithoutConstructor();
+            }
+            return unserialize(sprintf('O:%d:"%s":0:{}', strlen($type), $type));
         }
 
         return $refl->newInstance();
