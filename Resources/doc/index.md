@@ -235,7 +235,7 @@ define strict _method requirements etc.
 
 With the `views` tag in the `@ApiDoc` annotation, it is possible to create
 different views of your API documentation. Without the tag, all methods are
-located in the `Default` view, and can be found under the normal API
+located in the `default` view, and can be found under the normal API
 documentation url.
 
 You can specify one or more _view_ names under which the method will be
@@ -249,7 +249,7 @@ An example:
      * @ApiDoc(
      *  resource=true,
      *  description="This is a description of your API method",
-     *  views = { "Default", "premium" }
+     *  views = { "default", "premium" }
      * )
      */
     public function getAction()
@@ -275,7 +275,7 @@ while both methods will be available under the `premium` view.
 
 #### Accessing Specific API Views
 
-The `Default` view can be found at the normal location. Other views can be
+The `default` view can be found at the normal location. Other views can be
 found at `http://your.documentation/<view name>`.
 
 For instance, if your documentation is located at:
