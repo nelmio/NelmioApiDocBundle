@@ -4121,8 +4121,8 @@ With multiple lines.',
                             'deprecated' => false,
                             'views' => array(
                                 'test',
-                                'default',
                                 'premium',
+                                'default',
                             ),
                             'response' =>
                                 array(
