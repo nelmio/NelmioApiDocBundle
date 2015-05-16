@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
@@ -49,7 +50,7 @@ class CachingApiDocExtractor extends ApiDocExtractor
         $this->cache = new ConfigCache($this->cacheFile, $debug);
     }
 
-    public function all($api = "default")
+    public function all($view = ApiDoc::DEFAULT_VIEW)
     {
         if ($this->cache->isFresh() === false) {
 
@@ -65,7 +66,7 @@ class CachingApiDocExtractor extends ApiDocExtractor
 
             $resources = array_merge($resources, $this->router->getRouteCollection()->getResources());
 
-            $data = parent::all($api);
+            $data = parent::all($view);
             $this->cache->write(serialize($data), $resources);
 
             return $data;

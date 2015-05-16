@@ -8,7 +8,8 @@ for your APIs.
 Installation
 ------------
 
-Require the `nelmio/api-doc-bundle` package in your composer.json and update your dependencies.
+Require the `nelmio/api-doc-bundle` package in your composer.json and update
+your dependencies.
 
     $ composer require nelmio/api-doc-bundle
 
@@ -26,19 +27,24 @@ public function registerBundles()
 ```
 
 Import the routing definition in `routing.yml`:
+
 ```yaml
 # app/config/routing.yml
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
 ```
+
 Enable the bundle's configuration in `app/config/config.yml`:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc: ~
 ```
 
-The **NelmioApiDocBundle** requires Twig as a template engine so do not forget to enable it:
+The **NelmioApiDocBundle** requires Twig as a template engine so do not forget
+to enable it:
+
 ```yaml
 # app/config/config.yml
 framework:
@@ -49,8 +55,9 @@ framework:
 Usage
 -----
 
-The main problem with documentation is to keep it up to date. That's why the **NelmioApiDocBundle**
-uses introspection a lot. Thanks to an annotation, it's really easy to document an API method.
+The main problem with documentation is to keep it up to date. That's why the
+**NelmioApiDocBundle** uses introspection a lot. Thanks to an annotation, it's
+really easy to document an API method.
 
 ### The ApiDoc() Annotation
 
@@ -188,8 +195,8 @@ class YourController
 }
 ```
 
-* `api`: the api under which this resource will be shown. Leave empty to specify the default api. Either a single api, or 
-  an array of apis.
+* `views`: the view(s) under which this resource will be shown. Leave empty to
+  specify the default view. Either a single view, or an array of views.
 
 Each _filter_ has to define a `name` parameter, but other parameters are free. Filters are often optional
 parameters, and you can document them as you want, but keep in mind to be consistent for the whole documentation.
@@ -220,13 +227,19 @@ class YourType extends AbstractType
 }
 ```
 
-The bundle will also get information from the routing definition (`requirements`, `pattern`, etc), so to get the
-best out of it you should define strict _method requirements etc.
+The bundle will also get information from the routing definition
+(`requirements`, `pattern`, etc), so to get the best out of it you should
+define strict _method requirements etc.
 
-### Multiple API documentations ###
-With the `api` tag in the `@apidoc` annotation, it's possible to create different sets of api documentations. Without 
-the tag, all methods are located in the `default` api and can be found under the normal api documentation url. With the 
-`api` tag you can specify one or more api names under which the method will be visible. 
+### Multiple API Documentation ("Views")
+
+With the `views` tag in the `@ApiDoc` annotation, it is possible to create
+different views of your API documentation. Without the tag, all methods are
+located in the `Default` view, and can be found under the normal API
+documentation url.
+
+You can specify one or more _view_ names under which the method will be
+visible.
 
 An example:
 ```
@@ -236,7 +249,7 @@ An example:
      * @ApiDoc(
      *  resource=true,
      *  description="This is a description of your API method",
-     *  api = { "default", "premium" }
+     *  views = { "Default", "premium" }
      * )
      */
     public function getAction()
@@ -249,7 +262,7 @@ An example:
      * @ApiDoc(
      *  resource=true,
      *  description="This is a description of another API method",
-     *  api = { "premium" }
+     *  views = { "premium" }
      * )
      */
     public function getAnotherAction()
@@ -257,20 +270,21 @@ An example:
     }
 ```
 
-In this case, only the first resource will be available under the default api documentation, while both methods will
-be available under the `premium` api documentation.
+In this case, only the first resource will be available under the default view,
+while both methods will be available under the `premium` view.
 
-#### Accessing API documentation ####
-The normal `default` documentation can be found at the normal location. Other sets of documentation can be found at `documentationurl/<tagname>`.
+#### Accessing Specific API Views
 
-For instance, if your documenation is located at 
+The `Default` view can be found at the normal location. Other views can be
+found at `http://your.documentation/<view name>`.
+
+For instance, if your documentation is located at:
 
         http://example.org/doc/api/v1/
 
-then the `premium` api will be located at:
+then the `premium` view will be located at:
 
         http://example.org/doc/api/v1/premium
-
 
 
 ### Other Bundle Annotations
@@ -423,8 +437,8 @@ nelmio_api_doc:
 
             default_format: json    # default is `json`,
                                     # default content format to request (see formats)
-                                    
-        entity_to_choice: false     # default is `true`, if `false`, entity collection 
+
+        entity_to_choice: false     # default is `true`, if `false`, entity collection
                                     # will not be mapped as choice
 ```
 ### Command
@@ -518,9 +532,11 @@ nelmio_api_doc:
     exclude_sections: ["privateapi", "testapi"]
 ```
 
-Note that `exclude_sections` will literally exclude a section from your api documentation. It's possible however to create
-multiple apis by specifying the `api` within the `@apidoc` annotations. This allows you to move private or test methods to a 
-complete different set of api documentation instead.
+Note that `exclude_sections` will literally exclude a section from your api
+documentation. It's possible however to create multiple views by specifying the
+`views` parameter within the `@ApiDoc` annotations. This allows you to move
+private or test methods to a complete different view of your documentation
+instead.
 
 The bundle provides a way to register multiple `input` parsers. The first parser
 that can handle the specified input is used, so you can configure their
@@ -543,7 +559,7 @@ nelmio_api_doc:
         template: AcmeApiBundle::Components/motd.html.twig
 ```
 You can define an alternate location where the ApiDoc configurations are to be cached:
-```yaml    
+```yaml
 # app/config/config.yml
 nelmio_api_doc:
     cache:

@@ -96,9 +96,9 @@ class ApiDocExtractor
      *
      * @return array
      */
-    public function all($api = "default")
+    public function all($view = ApiDoc::DEFAULT_VIEW)
     {
-        return $this->extractAnnotations($this->getRoutes(), $api);
+        return $this->extractAnnotations($this->getRoutes(), $view);
     }
 
     /**
@@ -110,7 +110,7 @@ class ApiDocExtractor
      *
      * @return array
      */
-    public function extractAnnotations(array $routes, $api = "default")
+    public function extractAnnotations(array $routes, $view = ApiDoc::DEFAULT_VIEW)
     {
         $array     = array();
         $resources = array();
@@ -123,10 +123,10 @@ class ApiDocExtractor
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 $annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS);
-                if ($annotation &&
-                    ! in_array($annotation->getSection(), $excludeSections) &&
-                    ( in_array($api, $annotation->getApis()) || (count($annotation->getApis()) == 0 && $api == "default"))
-                   ) {
+                if (
+                    $annotation && !in_array($annotation->getSection(), $excludeSections) &&
+                    (in_array($view, $annotation->getViews()) || (0 === count($annotation->getViews()) && $view === ApiDoc::DEFAULT_VIEW))
+                ) {
                     if ($annotation->isResource()) {
                         if ($resource = $annotation->getResource()) {
                             $resources[] = $resource;

@@ -17,7 +17,7 @@ class ResourceController
     /**
      * @ApiDoc(
      *      resource=true,
-     *      api={ "test", "premium", "default" },
+     *      views={ "test", "premium", "default" },
      *      resourceDescription="Operations on resource.",
      *      description="List resources.",
      *      output="array<Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test> as tests",
@@ -48,7 +48,7 @@ class ResourceController
     /**
      * @ApiDoc(
      *      description="Create a new resource.",
-     *      api={ "default", "premium" },
+     *      views={ "default", "premium" },
      *      input={"class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Form\SimpleType", "name" = ""},
      *      output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested",
      *      responseMap={
@@ -64,7 +64,7 @@ class ResourceController
     /**
      * @ApiDoc(
      *      resource=true,
-     *      api={ "default", "premium" },
+     *      views={ "default", "premium" },
      *      description="List another resource.",
      *      resourceDescription="Operations on another resource.",
      *      output="array<Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest>"

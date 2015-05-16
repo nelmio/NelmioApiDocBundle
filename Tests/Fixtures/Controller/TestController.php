@@ -24,7 +24,7 @@ class TestController
     /**
      * @ApiDoc(
      *     resource="TestResource",
-     *     api="default"
+     *     views="default"
      * )
      */
     public function namedResourceAction()
@@ -49,7 +49,7 @@ class TestController
     /**
      * @ApiDoc(
      *  description="create test",
-     *  api={ "default", "premium" },
+     *  views={ "default", "premium" },
      *  input="Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType"
      * )
      */
@@ -60,7 +60,7 @@ class TestController
     /**
      * @ApiDoc(
      *     description="post test 2",
-     *     api={ "default", "premium" },
+     *     views={ "default", "premium" },
      *     resource=true
      * )
      */
@@ -112,7 +112,7 @@ class TestController
 
     /**
      * @ApiDoc(
-     *  api= { "default", "test" },
+     *  views= { "default", "test" },
      *  description="create another test",
      *  input="dependency_type"
      * )

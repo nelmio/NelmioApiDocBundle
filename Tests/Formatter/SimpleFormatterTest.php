@@ -315,6 +315,10 @@ With multiple lines.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'views' => array(
+                                    'default',
+                                    'premium',
+                                ),
                             ),
                         1 =>
                             array (
@@ -413,6 +417,11 @@ With multiple lines.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'views' => array(
+                                    'test',
+                                    'premium',
+                                    'default',
+                                ),
                             ),
                         1 =>
                             array (
@@ -850,6 +859,10 @@ With multiple lines.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'views' => array(
+                                    'default',
+                                    'premium',
+                                ),
                             ),
                         2 =>
                             array (
@@ -1046,6 +1059,10 @@ With multiple lines.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'views' => array(
+                                    'default',
+                                    'premium',
+                                ),
                             ),
                         3 =>
                             array (
@@ -1111,6 +1128,10 @@ With multiple lines.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'views' => array(
+                                    'default',
+                                    'premium',
+                                ),
                             ),
                     ),
                 '/tests2' =>
@@ -1135,6 +1156,10 @@ With multiple lines.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'views' => array(
+                                    'default',
+                                    'premium',
+                                ),
                             ),
                     ),
                 'TestResource' =>
@@ -1149,6 +1174,9 @@ With multiple lines.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'views' => array(
+                                    'default',
+                                ),
                             ),
                     ),
                 'others' =>
@@ -1190,6 +1218,10 @@ With multiple lines.',
                                     array (
                                     ),
                                 'deprecated' => false,
+                                'views' => array(
+                                    'default',
+                                    'test',
+                                ),
                             ),
                         1 =>
                             array (
@@ -2557,7 +2589,7 @@ With multiple lines.',
                                 'authentication' => false,
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
-                                'apis' =>
+                                'views' =>
                                     array(
                                         'default',
                                         'premium',
@@ -2621,7 +2653,7 @@ With multiple lines.',
                                 'authentication' => false,
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
-                                'apis' =>
+                                'views' =>
                                     array(
                                         'default',
                                         'premium',
@@ -2662,7 +2694,7 @@ With multiple lines.',
                                 'authentication' => false,
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
-                                'apis' =>
+                                'views' =>
                                     array(
                                         'default',
                                         'test',
@@ -3691,7 +3723,7 @@ With multiple lines.',
                             'authentication' => false,
                             'authenticationRoles' => array(),
                             'deprecated' => false,
-                            'apis' =>
+                            'views' =>
                                 array(
                                     'default',
                                     'premium',
@@ -3717,7 +3749,7 @@ With multiple lines.',
                             'authentication' => false,
                             'authenticationRoles' => array(),
                             'deprecated' => false,
-                            'apis' =>
+                            'views' =>
                                 array(
                                     'default',
                                     'premium',
@@ -3734,7 +3766,7 @@ With multiple lines.',
                                 'authentication' => false,
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
-                                'apis' =>
+                                'views' =>
                                     array(
                                         'default',
                                     ),
@@ -3761,7 +3793,7 @@ With multiple lines.',
                             'authenticationRoles' =>
                                 array(),
                             'deprecated' => false,
-                            'apis' => array(
+                            'views' => array(
                                 'default',
                                 'premium',
                             ),
@@ -4087,7 +4119,7 @@ With multiple lines.',
                             'authenticationRoles' =>
                                 array(),
                             'deprecated' => false,
-                            'apis' => array(
+                            'views' => array(
                                 'test',
                                 'default',
                                 'premium',
@@ -4205,7 +4237,7 @@ With multiple lines.',
                                             'description' => '',
                                         ),
                                 ),
-                            'apis' =>
+                            'views' =>
                                 array(
                                     'default',
                                     'premium',

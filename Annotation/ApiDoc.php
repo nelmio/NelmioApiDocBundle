@@ -18,6 +18,8 @@ use Symfony\Component\Routing\Route;
  */
 class ApiDoc
 {
+    const DEFAULT_VIEW = 'default';
+
     /**
      * Requirements are mandatory parameters in a route.
      *
@@ -26,11 +28,11 @@ class ApiDoc
     private $requirements = array();
 
     /**
-     * Which APIs is this route used. Defaults to "default"
+     * Which views is this route used. Defaults to "Default"
      *
      * @var array
      */
-    private $apis = array();
+    private $views = array();
 
     /**
      * Filters are optional parameters in the query string.
@@ -198,12 +200,13 @@ class ApiDoc
             }
         }
 
-        if (isset($data['api'])) {
-            if (! is_array($data['api'])) {
-                $data['api'] = array($data['api']);
+        if (isset($data['views'])) {
+            if (! is_array($data['views'])) {
+                $data['views'] = array($data['views']);
             }
-            foreach ($data['api'] as $api) {
-                $this->addApi($api);
+
+            foreach ($data['views'] as $view) {
+                $this->addView($view);
             }
         }
 
@@ -392,17 +395,17 @@ class ApiDoc
     /**
      * @return array
      */
-    public function addApi($api)
+    public function addView($view)
     {
-        $this->apis[] = $api;
+        $this->views[] = $view;
     }
 
     /**
      * @return array
      */
-    public function getApis()
+    public function getViews()
     {
-        return $this->apis;
+        return $this->views;
     }
 
     /**
@@ -657,8 +660,8 @@ class ApiDoc
             $data['requirements'] = $requirements;
         }
 
-        if ($apis = $this->apis) {
-            $data['apis'] = $apis;
+        if ($views = $this->views) {
+            $data['views'] = $views;
         }
 
         if ($response = $this->response) {
