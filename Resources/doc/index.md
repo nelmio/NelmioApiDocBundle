@@ -104,6 +104,7 @@ class YourController extends Controller
     /**
      * @ApiDoc(
      *  description="Returns a collection of Object",
+     *  output="array<Your\Namespace\Class>"
      *  requirements={
      *      {
      *          "name"="limit",
