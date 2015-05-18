@@ -241,6 +241,17 @@
                                         </p>
                                     {% endif %}
                                     {% endfor %}
+
+                                    <!-- vd_fix: improvement -->
+                                    <button type="button" class="vd_autocomplete" id="vd_autocomplete">
+                                            Autocomplete from Placeholders
+                                    </button>
+
+                                    <button type="button" class="vd_autocomplete_reset" id="vd_autocomplete_reset">
+                                            RESET
+                                    </button>
+                                    <!-- end vd_fix: improvement -->
+
                                     <button type="button" class="add_parameter">New parameter</button>
                                 {% endif %}
 
@@ -292,9 +303,77 @@
                             </fieldset>
 
                             <div class="buttons">
+                                
+                                <!-- vd_fix: improvement -->
+                                <select class="change-the-method">
+                                    <option value="">select  method</option>
+                                </select>
+                                <!-- end vd_fix: improvement -->
+
                                 <input type="submit" value="Try!" />
                             </div>
                         </form>
+
+                         <!-- vd_fix: improvement -->
+                                <script type="text/javascript">
+                                    /**
+                                    * vd_fix: improvement
+                                    * - in all tag script
+                                    * - change method (put, post, get, delete)
+                                    * - autocomplete with placeholers
+                                    **/
+                                    jQuery(document).ready(function(){
+                                        
+                                        //change method
+                                        jQuery('.change-the-method').each(function(){
+                                            if(jQuery(this).hasClass('with-methods')==false){
+                                                var mfs = jQuery(this).closest('form').attr('method');
+                                                mf = mfs.split('|');
+                                                var html = '';
+                                                for (value in mf) {
+                                                    html+= '<option value="'+mf[value]+'">'+mf[value]+'</option>';
+                                                }
+                                                jQuery(this).addClass('with-methods');
+                                                jQuery(this).append(html);
+                                            }
+                                        });
+
+                                        jQuery('.change-the-method').on('change',function(){
+                                           var val = jQuery(this).children('option:selected').val();
+                                           var f = jQuery(this).closest('form');
+                                           var mf = f.attr('method');
+                                           if(typeof f.attr('data-orig') == 'undefined'){
+                                                f.attr('data-orig',mf);
+                                           }
+                                           f.attr('method',val);
+                                           
+                                        })
+
+                                        function transportData(target,val){
+                                            jQuery(target).find('.value').attr('value',val);
+                                            jQuery(target).find('.value inner-editor').text(val);
+                                        }
+
+                                        // autocomplete fields with annotations values
+                                        jQuery('#vd_autocomplete').click(function(){
+                                            jQuery('p.tuple').each(function(){
+                                               var val = jQuery(this).attr('data-description');
+                                               if(typeof val !='undefined' && val != '')
+                                               transportData(this,val);
+                                            })
+
+                                        })
+                                                                               
+                                        //reset params
+                                        jQuery('#vd_autocomplete_reset').click(function(){
+                                            jQuery('p.tuple').each(function(){
+                                              jQuery(this).find('.value').val('');
+                                            })
+                                        })                                        
+
+                                    })// end document ready
+                                </script>
+                                <!-- end vd_fix: improvement -->
 
                         <script type="text/x-tmpl" class="parameters_tuple_template">
                         <p class="tuple">
