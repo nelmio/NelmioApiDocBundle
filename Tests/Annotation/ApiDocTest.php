@@ -95,6 +95,75 @@ class ApiDocTest extends TestCase
         $this->assertEquals($data['input'], $annot->getInput());
     }
 
+    public function testAddPatch()
+    {
+        $data = array();
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertFalse(isset($array['patchesDescription']));
+        $this->assertFalse($annot->isResource());
+        $this->assertFalse($annot->getDeprecated());
+
+        $op = 'add';
+        $path = 'property1';
+        $value = 'value1';
+        $description = 'test description1';
+
+        $data = array(
+            'patch' => array(
+                array(
+                    'op' => $op,
+                    'path' => $path,
+                    'value' => $value,
+                    'description' => $description,
+                )
+            )
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(isset($array['patchesDescription']));
+        $this->assertFalse($annot->isResource());
+        $this->assertFalse($annot->getDeprecated());
+        $this->assertEquals($op, $array['patchesDescription'][0]['op']);
+        $this->assertEquals($path, $array['patchesDescription'][0]['path']);
+        $this->assertEquals($value, $array['patchesDescription'][0]['value']);
+        $this->assertEquals($description, $array['patchesDescription'][0]['description']);
+
+        $op = 'copy';
+        $from = 'property2';
+        $path = 'property3';
+        $description = 'test description2';
+
+        $data = array(
+            'patch' => array(
+                array(
+                    'op' => $op,
+                    'from' => $from,
+                    'path' => $path,
+                    'description' => $description,
+                )
+            )
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertTrue(is_array($array));
+        $this->assertTrue(isset($array['patchesDescription']));
+        $this->assertFalse($annot->isResource());
+        $this->assertFalse($annot->getDeprecated());
+        $this->assertEquals($op, $array['patchesDescription'][0]['op']);
+        $this->assertEquals($from, $array['patchesDescription'][0]['from']);
+        $this->assertEquals($path, $array['patchesDescription'][0]['path']);
+        $this->assertEquals($description, $array['patchesDescription'][0]['description']);
+    }
+
     public function testConstructMethodIsResource()
     {
         $data = array(
