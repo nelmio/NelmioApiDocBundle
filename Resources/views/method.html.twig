@@ -243,11 +243,11 @@
                                     {% endfor %}
 
                                     <!-- vd_fix: improvement -->
-                                    <button type="button" class="vd_autocomplete" id="vd_autocomplete">
+                                    <button type="button" class="vd_autocomplete">
                                             Autocomplete from Placeholders
                                     </button>
 
-                                    <button type="button" class="vd_autocomplete_reset" id="vd_autocomplete_reset">
+                                    <button type="button" class="vd_autocomplete_reset">
                                             RESET
                                     </button>
                                     <!-- end vd_fix: improvement -->
@@ -355,8 +355,8 @@
                                         }
 
                                         // autocomplete fields with annotations values
-                                        jQuery('#vd_autocomplete').click(function(){
-                                            jQuery('p.tuple').each(function(){
+                                        jQuery('.vd_autocomplete').click(function(){
+                                            jQuery(this).parent().find('p.tuple').each(function(){
                                                var val = jQuery(this).attr('data-description');
                                                if(typeof val !='undefined' && val != '')
                                                transportData(this,val);
@@ -365,8 +365,8 @@
                                         })
                                                                                
                                         //reset params
-                                        jQuery('#vd_autocomplete_reset').click(function(){
-                                            jQuery('p.tuple').each(function(){
+                                        jQuery('.vd_autocomplete_reset').click(function(){
+                                            jQuery(this).parent().find('p.tuple').each(function(){
                                               jQuery(this).find('.value').val('');
                                             })
                                         })                                        
