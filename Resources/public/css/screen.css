@@ -99,6 +99,11 @@ em {
 code, pre {
   font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
   background-color: #fcf6db;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
 }
 
 p code {
@@ -615,4 +620,9 @@ form .request-content {
 
 .motd {
   padding:20px;
+}
+
+.json-collapse-section {
+    color: #660;
+    cursor: pointer;
 }

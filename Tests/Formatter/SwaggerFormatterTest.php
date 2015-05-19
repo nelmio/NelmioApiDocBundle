@@ -45,54 +45,137 @@ class SwaggerFormatterTest extends WebTestCase
 
         $actual = $this->formatter->format($data, null);
 
-        $expected = array(
-            'swaggerVersion' => '1.2',
-            'apiVersion'     => '3.14',
-            'info'           =>
-                array(
-                    'title'             => 'Nelmio Swagger',
-                    'description'       => 'Testing Swagger integration.',
-                    'TermsOfServiceUrl' => 'https://github.com',
-                    'contact'           => 'user@domain.tld',
-                    'license'           => 'MIT',
-                    'licenseUrl'        => 'http://opensource.org/licenses/MIT',
-                ),
-            'authorizations' =>
-                array(
-                    'apiKey' => array(
-                        'type'    => 'apiKey',
-                        'passAs'  => 'header',
-                        'keyname' => 'access_token',
-                    )
-                ),
-            'apis'           =>
-                array(
-                    array(
-                        'path'        => '/other-resources',
-                        'description' => 'Operations on another resource.',
+        if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
+            $expected = array (
+                'swaggerVersion' => '1.2',
+                'apis' =>
+                    array (
+                        0 =>
+                            array (
+                                'path' => '/other-resources',
+                                'description' => 'Operations on another resource.',
+                            ),
+                        1 =>
+                            array (
+                                'path' => '/resources',
+                                'description' => 'Operations on resource.',
+                            ),
+                        2 =>
+                            array (
+                                'path' => '/tests',
+                                'description' => NULL,
+                            ),
+                        3 =>
+                            array (
+                                'path' => '/tests',
+                                'description' => NULL,
+                            ),
+                        4 =>
+                            array (
+                                'path' => '/tests2',
+                                'description' => NULL,
+                            ),
+                        5 =>
+                            array (
+                                'path' => '/TestResource',
+                                'description' => NULL,
+                            ),
+                        6 =>
+                            array (
+                                'path' => '/others',
+                                'description' => 'Popo',
+                            ),
+                        7 =>
+                            array (
+                                'path' => '/others',
+                                'description' => 'Popo',
+                            ),
+                        8 =>
+                            array (
+                                'path' => '/others',
+                                'description' => 'Popo',
+                            ),
+                        9 =>
+                            array (
+                                'path' => '/others',
+                                'description' => 'Popo',
+                            ),
+                        10 =>
+                            array (
+                                'path' => '/others',
+                                'description' => 'Popo',
+                            ),
                     ),
-                    array(
-                        'path'        => '/resources',
-                        'description' => 'Operations on resource.',
+                'apiVersion' => '3.14',
+                'info' =>
+                    array (
+                        'title' => 'Nelmio Swagger',
+                        'description' => 'Testing Swagger integration.',
+                        'TermsOfServiceUrl' => 'https://github.com',
+                        'contact' => 'user@domain.tld',
+                        'license' => 'MIT',
+                        'licenseUrl' => 'http://opensource.org/licenses/MIT',
                     ),
-                    array(
-                        'path'        => '/tests',
-                        'description' => null,
+                'authorizations' =>
+                    array (
+                        'apiKey' =>
+                            array (
+                                'type' => 'apiKey',
+                                'passAs' => 'header',
+                                'keyname' => 'access_token',
+                            ),
                     ),
+            );
+        } else {
+            $expected = array(
+                'swaggerVersion' => '1.2',
+                'apiVersion' => '3.14',
+                'info' =>
                     array(
-                        'path'        => '/tests',
-                        'description' => null,
+                        'title' => 'Nelmio Swagger',
+                        'description' => 'Testing Swagger integration.',
+                        'TermsOfServiceUrl' => 'https://github.com',
+                        'contact' => 'user@domain.tld',
+                        'license' => 'MIT',
+                        'licenseUrl' => 'http://opensource.org/licenses/MIT',
                     ),
+                'authorizations' =>
                     array(
-                        'path'        => '/tests2',
-                        'description' => null,
+                        'apiKey' => array(
+                            'type' => 'apiKey',
+                            'passAs' => 'header',
+                            'keyname' => 'access_token',
+                        )
                     ),
+                'apis' =>
                     array(
-                        'path'        => '/TestResource',
-                        'description' => null,
+                        array(
+                            'path' => '/other-resources',
+                            'description' => 'Operations on another resource.',
+                        ),
+                        array(
+                            'path' => '/resources',
+                            'description' => 'Operations on resource.',
+                        ),
+                        array(
+                            'path' => '/tests',
+                            'description' => null,
+                        ),
+                        array(
+                            'path' => '/tests',
+                            'description' => null,
+                        ),
+                        array(
+                            'path' => '/tests2',
+                            'description' => null,
+                        ),
+                        array(
+                            'path' => '/TestResource',
+                            'description' => null,
+                        ),
                     ),
-                ),
-        );
+            );
+        }
 
         $this->assertEquals($expected, $actual);
 

@@ -17,7 +17,19 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
-    const ROUTES_QUANTITY = 33;
+    const NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE = 5;
+
+    private static $ROUTES_QUANTITY_DEFAULT = 33; // Routes in the default view
+    private static $ROUTES_QUANTITY_PREMIUM = 6;  // Routes in the premium view
+    private static $ROUTES_QUANTITY_TEST    = 2;  // Routes in the test view
+
+    public static function setUpBeforeClass() {
+        if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
+            self::$ROUTES_QUANTITY_DEFAULT += self::NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE;
+            self::$ROUTES_QUANTITY_PREMIUM += self::NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE;
+            self::$ROUTES_QUANTITY_TEST    += self::NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE;
+        }
+    }
 
     public function testAll()
     {
@@ -27,14 +39,19 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->all();
         restore_error_handler();
 
+        $httpsKey = 20;
+        if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
+            $httpsKey += self::NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE;
+        }
+
         $this->assertTrue(is_array($data));
-        $this->assertCount(self::ROUTES_QUANTITY, $data);
+        $this->assertCount(self::$ROUTES_QUANTITY_DEFAULT, $data);
 
         $cacheFile = $container->getParameter('kernel.cache_dir') . '/api-doc.cache';
         $this->assertFileExists($cacheFile);
         $this->assertEquals(file_get_contents($cacheFile), serialize($data));
 
-        foreach ($data as $d) {
+        foreach ($data as $key => $d) {
             $this->assertTrue(is_array($d));
             $this->assertArrayHasKey('annotation', $d);
             $this->assertArrayHasKey('resource', $d);
@@ -76,9 +93,8 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertTrue($a4->isResource());
         $this->assertEquals('TestResource', $a4->getResource());
 
-        $a3 = $data[20]['annotation'];
+        $a3 = $data[$httpsKey]['annotation'];
         $this->assertTrue($a3->getHttps());
-
     }
 
     public function testGet()
@@ -281,5 +297,77 @@ class ApiDocExtractorTest extends WebTestCase
 
         $parameters = $annotation->getParameters();
         $this->assertFalse($parameters['required_field']['required']);
+    }
+
+    public static function dataProviderForViews()
+    {
+        $offset = 0;
+        if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
+            $offset = self::NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE;
+        }
+
+        return array(
+            array('default', self::$ROUTES_QUANTITY_DEFAULT + $offset),
+            array('premium', self::$ROUTES_QUANTITY_PREMIUM + $offset),
+            array('test', self::$ROUTES_QUANTITY_TEST + $offset),
+            array('foobar', $offset),
+            array("", $offset),
+            array(null, $offset),
+        );
+    }
+
+    public function testViewNamedTest()
+    {
+        $container = $this->getContainer();
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        set_error_handler(array($this, 'handleDeprecation'));
+        $data = $extractor->all('test');
+        restore_error_handler();
+
+        $this->assertTrue(is_array($data));
+        $this->assertCount(self::$ROUTES_QUANTITY_TEST, $data);
+
+        $a1 = $data[0]['annotation'];
+        $this->assertCount(3, $a1->getViews());
+        $this->assertEquals('List resources.', $a1->getDescription());
+
+        $a2 = $data[1]['annotation'];
+        $this->assertCount(2, $a2->getViews());
+        $this->assertEquals('create another test', $a2->getDescription());
+    }
+
+    public function testViewNamedPremium()
+    {
+        $container = $this->getContainer();
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        set_error_handler(array($this, 'handleDeprecation'));
+        $data = $extractor->all('premium');
+        restore_error_handler();
+
+        $this->assertTrue(is_array($data));
+        $this->assertCount(self::$ROUTES_QUANTITY_PREMIUM, $data);
+
+        $a1 = $data[0]['annotation'];
+        $this->assertCount(2, $a1->getViews());
+        $this->assertEquals('List another resource.', $a1->getDescription());
+
+        $a2 = $data[1]['annotation'];
+        $this->assertCount(3, $a2->getViews());
+        $this->assertEquals('List resources.', $a2->getDescription());
+    }
+
+    /**
+     * @dataProvider dataProviderForViews
+     */
+    public function testForViews($view, $count)
+    {
+        $container = $this->getContainer();
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        set_error_handler(array($this, 'handleDeprecation'));
+        $data = $extractor->all($view);
+        restore_error_handler();
+
+        $this->assertTrue(is_array($data));
+        $this->assertCount($count, $data);
     }
 }

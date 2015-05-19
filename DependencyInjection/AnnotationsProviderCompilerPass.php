@@ -11,24 +11,30 @@
 
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class ExtractorHandlerCompilerPass implements CompilerPassInterface
+/**
+ * AnnotationsProvider compiler pass.
+ *
+ * @author Kévin Dunglas <dunglas@gmail.com>
+ */
+class AnnotationsProviderCompilerPass implements CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $handlers = array();
-        foreach ($container->findTaggedServiceIds('nelmio_api_doc.extractor.handler') as $id => $attributes) {
-            $handlers[] = new Reference($id);
+        $annotationsProviders = array();
+        foreach ($container->findTaggedServiceIds('nelmio_api_doc.extractor.annotations_provider') as $id => $attributes) {
+            $annotationsProviders[] = new Reference($id);
         }
 
         $container
             ->getDefinition('nelmio_api_doc.extractor.api_doc_extractor')
-            ->replaceArgument(5, $handlers);
+            ->replaceArgument(6, $annotationsProviders)
+        ;
     }
 }

@@ -1,24 +1,37 @@
 language: php
 
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 php:
   - 5.4
   - 5.5
   - 5.6
+  - nightly
   - hhvm
 
 matrix:
     include:
-        - php: 5.5
+        - php: 5.6
           env: SYMFONY_VERSION='2.3.*'
-        - php: 5.5
+        - php: 5.6
           env: SYMFONY_VERSION='2.4.*'
-        - php: 5.5
+        - php: 5.6
+          env: SYMFONY_VERSION='2.6.*'
+        - php: 5.6
           env: SYMFONY_VERSION='dev-master'
     allow_failures:
-        - env: SYMFONY_VERSION=dev-master
+        - php: 5.6
+          env: SYMFONY_VERSION='dev-master'
+        - php: nightly
+    fast_finish: true
 
 before_script:
     - composer self-update
+    - sh -c 'if [ "$SYMFONY_VERSION" != "dev-master" ] && [ "$SYMFONY_VERSION" != "2.6.*" ]; then sed -i "/dunglas\/api-bundle/d;/symfony\/serializer/d" composer.json; fi;'
     - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
     - composer install
 
