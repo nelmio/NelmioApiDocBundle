@@ -30,6 +30,7 @@
         "symfony/validator": "~2.1",
         "symfony/yaml": "~2.1",
         "symfony/form": "~2.1",
+        "symfony/finder": "~2.1",
         "symfony/serializer": "~2.7@dev",
         "friendsofsymfony/rest-bundle": "~1.0",
         "jms/serializer-bundle": ">=0.11",
