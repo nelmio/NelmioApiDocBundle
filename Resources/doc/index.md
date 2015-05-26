@@ -291,17 +291,17 @@ then the `premium` view will be located at:
 
 Also bundle will get information from the other annotations:
 
-* @FOS\RestBundle\Controller\Annotations\RequestParam - use as `parameters`
+* `@FOS\RestBundle\Controller\Annotations\RequestParam` - use as `parameters`
 
-* @FOS\RestBundle\Controller\Annotations\QueryParam - use as `requirements` (when strict parameter is true), `filters` (when strict is false)
+* `@FOS\RestBundle\Controller\Annotations\QueryParam` - use as `requirements` (when strict parameter is true), `filters` (when strict is false)
 
-* @JMS\SecurityExtraBundle\Annotation\Secure - set `authentication` to true, `authenticationRoles` to the given roles
+* `@JMS\SecurityExtraBundle\Annotation\Secure` - set `authentication` to true, `authenticationRoles` to the given roles
 
-* @Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache - set `cache`
+* `@Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache` - set `cache`
 
 ### PHPDoc
 
-Actions marked as @deprecated will be marked as such in the interface.
+Actions marked as `@deprecated` will be marked as such in the interface.
 
 #### JMS Serializer Features
 
@@ -494,7 +494,7 @@ Configuration In-Depth
 ----------------------
 
 You can specify your own API name:
-```
+```yaml
 # app/config/config.yml
 nelmio_api_doc:
     name: My API
