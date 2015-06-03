@@ -242,7 +242,8 @@ You can specify one or more _view_ names under which the method will be
 visible.
 
 An example:
-```
+
+```php
     /**
      * A resource
      *
@@ -315,7 +316,7 @@ Strategy](http://jmsyst.com/libs/serializer/master/cookbook/exclusion_strategies
 you can specify which groups to use when generating the documentation by using
 this syntax :
 
- ```
+ ```php
  input={
      "class"="Acme\Bundle\Entity\User",
      "groups"={"update", "public"}
@@ -340,7 +341,7 @@ Even if you use `FormFactoryInterface::createNamed('', 'your_form_type')` the do
 
 You can specify which prefix to use with the `name` key in the `input` section:
 
-```
+```php
 input = {
  "class" = "your_form_type",
  "name" = ""
@@ -348,7 +349,8 @@ input = {
 ```
 
 You can also add some options to pass to the form. You just have to use the `options` key:
-```
+
+```php
 input = {
  "class" = "your_form_type",
  "options" = {"method" => "PUT"},
@@ -361,7 +363,7 @@ By default, all registered parsers are used, but sometimes you may want to
 define which parsers you want to use. The `parsers` attribute is used to
 configure a list of parsers that will be used:
 
-```
+```php
 output={
     "class"   = "Acme\Bundle\Entity\User",
     "parsers" = {
@@ -393,6 +395,7 @@ documentation if available.
 
 This bundle provides a sandbox mode in order to test API methods. You can
 configure this sandbox using the following parameters:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
@@ -483,6 +486,7 @@ nelmio_api_doc:
 ### Caching
 
 It is a good idea to enable the internal caching mechanism on production:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
@@ -494,12 +498,14 @@ Configuration In-Depth
 ----------------------
 
 You can specify your own API name:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
     name: My API
 ```
 You can choose between different authentication methods:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
@@ -526,6 +532,7 @@ When choosing an `http` delivery, `name` defaults to `Authorization`,
 and the header value will automatically be prefixed by the corresponding type (ie. `Basic` or `Bearer`).
 
 You can specify which sections to exclude from the documentation generation:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
@@ -541,6 +548,7 @@ instead.
 The bundle provides a way to register multiple `input` parsers. The first parser
 that can handle the specified input is used, so you can configure their
 priorities via container tags. Here's an example parser service registration:
+
 ```yaml
 # app/config/config.yml
 services:
@@ -551,6 +559,7 @@ services:
 ```
 You can also define your own motd content (above methods list). All you have to
 do is add to configuration:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
@@ -558,7 +567,9 @@ nelmio_api_doc:
     motd:
         template: AcmeApiBundle::Components/motd.html.twig
 ```
+
 You can define an alternate location where the ApiDoc configurations are to be cached:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
@@ -581,6 +592,7 @@ services:
         tags:
             - { name: nelmio_api_doc.extractor.handler }
 ```
+
 Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tree/master/Extractor/Handler).
 
 ### Configuration Reference
