@@ -124,8 +124,10 @@
                         </tr>
                     </thead>
                     <tbody>
+
                         {% for name, infos in data.parameters %}
-                            {% if not infos.readonly %}
+                            
+                            {% if (not infos.readonly) and (not infos.excluded) %}
                                 <tr>
                                     <td>{{ name }}</td>
                                     <td>{{ infos.dataType is defined ? infos.dataType : '' }}</td>
@@ -152,12 +154,15 @@
                     </thead>
                     <tbody>
                         {% for name, infos in data.response %}
+                            
+                            {% if not infos.excluded %}
                             <tr>
                                 <td>{{ name }}</td>
                                 <td>{{ infos.dataType }}</td>
                                 <td>{% include 'NelmioApiDocBundle:Components:version.html.twig' with {'sinceVersion': infos.sinceVersion, 'untilVersion': infos.untilVersion} only %}</td>
                                 <td>{{ infos.description }}</td>
                             </tr>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>

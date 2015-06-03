@@ -89,6 +89,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -100,6 +101,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -111,6 +113,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 )
@@ -159,7 +162,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 'class'   => $input,
                 'groups'  => array(),
             )
-        );
+        );        
 
         $this->assertEquals(
             array(
@@ -171,6 +174,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -182,6 +186,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -193,6 +198,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -207,7 +213,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 'groups'  => array('Default'),
             )
         );
-
+                
         $this->assertEquals(
             array(
                 'foo' => array(
@@ -218,6 +224,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -228,7 +235,20 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'default' => 'baz',
                     'required'     => false,
                     'description'  => null,
+                    'readonly'     => false,                    
+                    'excluded'     => false,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
+                ),
+                'baz' => array(
+                    'dataType'     => 'string',
+                    'actualType' => DataTypes::STRING,
+                    'subType' => null,
+                    'default' => null,
+                    'required'     => false,
+                    'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => true,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -246,6 +266,18 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array(
+                'foo' => array(
+                    'dataType'     => 'string',
+                    'actualType' => DataTypes::STRING,
+                    'subType' => null,
+                    'default' => null,
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'excluded'     => true,                    
+                    'untilVersion' => null,
+                ),
                 'bar' => array(
                     'dataType'     => 'string',
                     'actualType' => DataTypes::STRING,
@@ -254,6 +286,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -265,6 +298,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -290,6 +324,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -301,6 +336,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -312,6 +348,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required'     => false,
                     'description'  => null,
                     'readonly'     => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 )
@@ -374,9 +411,33 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                 'groups'  => array('hidden'),
             )
         );
-
+        
         $this->assertEquals(
             array(
+                'foo' => array(
+                    'dataType'     => 'string',
+                    'actualType' => DataTypes::STRING,
+                    'subType' => null,
+                    'default' => null,
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'sinceVersion' => null,
+                    'excluded'     => true,                    
+                    'untilVersion' => null,
+                ),
+                'bar' => array(
+                    'dataType'     => 'string',
+                    'actualType' => DataTypes::STRING,
+                    'subType' => null,
+                    'default' => 'baz',
+                    'required'     => false,
+                    'description'  => null,
+                    'readonly'     => false,
+                    'excluded'     => true,
+                    'sinceVersion' => null,
+                    'untilVersion' => null,
+                ),
                 'parent' => array(
                     'dataType' => 'object (JmsTest)',
                     'actualType' => DataTypes::MODEL,
@@ -387,6 +448,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'readonly' => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
+                    'excluded' => false,
                     'class' => $nestedInput,
                     'children' => array(
                         'hidden' => array(
@@ -397,9 +459,22 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                             'default' => null,
                             'description' => null,
                             'readonly' => false,
+                            'excluded' => false,
                             'sinceVersion' => null,
                             'untilVersion' => null
-                        )
+                        ),
+                        'foo' => array(
+                            'dataType'     => 'string',
+                            'actualType' => DataTypes::STRING,
+                            'subType' => null,
+                            'default' => null,
+                            'required'     => false,
+                            'description'  => null,
+                            'readonly'     => false,
+                            'sinceVersion' => null,
+                            'excluded'     => true,                    
+                            'untilVersion' => null,
+                        ),
                     )
                 )
             ),
@@ -459,6 +534,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required' => false,
                     'description' => null,
                     'readonly' => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -470,6 +546,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required' => false,
                     'description' => null,
                     'readonly' => false,
+                    'excluded'     => false,
                     'sinceVersion' => '2.0',
                     'untilVersion' => null,
                 ),
@@ -481,6 +558,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required' => false,
                     'description' => null,
                     'readonly' => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => '3.0',
                 )
@@ -553,6 +631,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required' => false,
                     'description' => null,
                     'readonly' => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
@@ -564,6 +643,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
                     'required' => false,
                     'description' => null,
                     'readonly' => false,
+                    'excluded'     => false,
                     'sinceVersion' => null,
                     'untilVersion' => null,
                 ),
