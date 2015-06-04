@@ -46,6 +46,9 @@ class DescriptionFormTypeExtension extends AbstractTypeExtension
         $this->configureOptions($resolver);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(

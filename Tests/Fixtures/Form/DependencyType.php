@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class DependencyType extends AbstractType
@@ -32,9 +33,19 @@ class DependencyType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritdoc}
+     *
+     * @deprecated Remove it when bumping requirements to Symfony 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
