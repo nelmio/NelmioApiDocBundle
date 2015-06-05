@@ -127,8 +127,8 @@ class DunglasApiProvider implements AnnotationsProviderInterface
 
         $data['filters'] = [];
         foreach ($resource->getFilters() as $filter) {
-            foreach ($filter->getDescription($resource) as $name => $data) {
-                $data['filters'][] = ['name' => $name] + $data;
+            foreach ($filter->getDescription($resource) as $name => $definition) {
+                $data['filters'][] = ['name' => $name] + $definition;
             }
         }
 
