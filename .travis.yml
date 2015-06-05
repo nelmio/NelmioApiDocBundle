@@ -13,26 +13,35 @@ php:
   - nightly
   - hhvm
 
+env:
+    global:
+        - SYMFONY_DEPRECATIONS_HELPER=weak
+
 matrix:
     include:
         - php: 5.6
-          env: SYMFONY_VERSION='2.3.*'
+          env: SYMFONY_VERSION=2.3.*
         - php: 5.6
-          env: SYMFONY_VERSION='2.4.*'
+          env: SYMFONY_VERSION=2.4.*
         - php: 5.6
-          env: SYMFONY_VERSION='2.6.*'
+          env: SYMFONY_VERSION=2.6.*
         - php: 5.6
-          env: SYMFONY_VERSION='dev-master'
+          env: SYMFONY_VERSION=2.7.*
+        - php: 5.6
+          env: SYMFONY_VERSION=2.8.*@dev
+        - php: 5.6
+          env: SYMFONY_VERSION="3.0.x-dev as 2.8"
     allow_failures:
-        - php: 5.6
-          env: SYMFONY_VERSION='dev-master'
         - php: nightly
+        - env: SYMFONY_VERSION=2.8.*@dev
+        - env: SYMFONY_VERSION="3.0.x-dev as 2.8"
     fast_finish: true
 
 before_script:
     - composer self-update
-    - sh -c 'if [ "$SYMFONY_VERSION" != "dev-master" ] && [ "$SYMFONY_VERSION" != "2.6.*" ]; then sed -i "/dunglas\/api-bundle/d;/symfony\/serializer/d" composer.json; fi;'
-    - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
+    - if [ "$SYMFONY_VERSION" = "2.8.*@dev" ] || [ "$SYMFONY_VERSION" = "3.0.x-dev as 2.8" ]; then SYMFONY_DEPRECATIONS_HELPER=strict; fi;
+    - if [ "$SYMFONY_VERSION" != "3.0.x-dev as 2.8" ] && [ "$SYMFONY_VERSION" != "2.7.*" ]; then sed -i "/dunglas\/api-bundle/d;/symfony\/serializer/d" composer.json; fi;
+    - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
     - composer install
 
 script: phpunit --coverage-text
