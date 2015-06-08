@@ -19,6 +19,7 @@ use Dunglas\ApiBundle\Mapping\ClassMetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Extractor\AnnotationsProviderInterface;
 use Nelmio\ApiDocBundle\Parser\DunglasApiParser;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Creates ApiDoc annotations for DunglasApiBundle.
@@ -125,10 +126,12 @@ class DunglasApiProvider implements AnnotationsProviderInterface
             $data['output'] = sprintf('%s:%s', DunglasApiParser::OUT_PREFIX, $entityClass);
         }
 
-        $data['filters'] = [];
-        foreach ($resource->getFilters() as $filter) {
-            foreach ($filter->getDescription($resource) as $name => $definition) {
-                $data['filters'][] = ['name' => $name] + $definition;
+        if (Request::METHOD_GET === $method && $collection) {
+            $data['filters'] = [];
+            foreach ($resource->getFilters() as $filter) {
+                foreach ($filter->getDescription($resource) as $name => $definition) {
+                    $data['filters'][] = ['name' => $name] + $definition;
+                }
             }
         }
 
