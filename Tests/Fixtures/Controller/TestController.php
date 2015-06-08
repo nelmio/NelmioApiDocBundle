@@ -191,6 +191,14 @@ class TestController
 
     /**
      * @ApiDoc()
+     * @RequestParam(name="param1", requirements="string", array=true)
+     */
+    public function zActionWithArrayRequestParamAction()
+    {
+    }
+
+    /**
+     * @ApiDoc()
      */
     public function secureRouteAction()
     {
