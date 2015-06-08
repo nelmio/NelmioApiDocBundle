@@ -239,3 +239,9 @@ test_route_25:
     defaults: { _controller: NelmioApiDocTestBundle:Test:withLinkAction }
     requirements:
         _method: GET
+
+test_route_26:
+    pattern:  /z-action-with-array-request-param
+    defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithArrayRequestParamAction }
+    requirements:
+        _method: POST
