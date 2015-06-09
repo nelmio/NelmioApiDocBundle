@@ -27,6 +27,90 @@ class MarkdownFormatterTest extends WebTestCase
 
         if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
 $expected = <<<MARKDOWN
+# Popo #
+
+### `GET` /popos ###
+
+_Retrieves the collection of Popo resources._
+
+#### Response ####
+
+foo:
+
+  * type: string
+
+
+### `POST` /popos ###
+
+_Creates a Popo resource._
+
+#### Parameters ####
+
+foo:
+
+  * type: string
+  * required: false
+
+#### Response ####
+
+foo:
+
+  * type: string
+
+
+### `GET` /popos/{id} ###
+
+_Retrieves Popo resource._
+
+#### Requirements ####
+
+**id**
+
+  - Type: int
+
+#### Response ####
+
+foo:
+
+  * type: string
+
+
+### `PUT` /popos/{id} ###
+
+_Replaces the Popo resource._
+
+#### Requirements ####
+
+**id**
+
+  - Type: string
+
+#### Parameters ####
+
+foo:
+
+  * type: string
+  * required: false
+
+#### Response ####
+
+foo:
+
+  * type: string
+
+
+### `DELETE` /popos/{id} ###
+
+_Deletes the Popo resource._
+
+#### Requirements ####
+
+**id**
+
+  - Type: string
+
+
+
 ## /api/other-resources ##
 
 ### `GET` /api/other-resources.{_format} ###
@@ -668,87 +752,6 @@ _This method is useful to test if the getDocComment works._
 
   - Type: int
   - Description: The param id
-
-
-### `GET` /popos ###
-
-_Retrieves the collection of Popo resources._
-
-#### Response ####
-
-foo:
-
-  * type: string
-
-
-### `POST` /popos ###
-
-_Creates a Popo resource._
-
-#### Parameters ####
-
-foo:
-
-  * type: string
-  * required: false
-
-#### Response ####
-
-foo:
-
-  * type: string
-
-
-### `GET` /popos/{id} ###
-
-_Retrieves Popo resource._
-
-#### Requirements ####
-
-**id**
-
-  - Type: int
-
-#### Response ####
-
-foo:
-
-  * type: string
-
-
-### `PUT` /popos/{id} ###
-
-_Replaces the Popo resource._
-
-#### Requirements ####
-
-**id**
-
-  - Type: string
-
-#### Parameters ####
-
-foo:
-
-  * type: string
-  * required: false
-
-#### Response ####
-
-foo:
-
-  * type: string
-
-
-### `DELETE` /popos/{id} ###
-
-_Deletes the Popo resource._
-
-#### Requirements ####
-
-**id**
-
-  - Type: string
 
 
 ### `ANY` /return-nested-output ###
