@@ -1626,6 +1626,13 @@ And, it supports multilines until the first \'@\' char.',
                                                 'readonly' => false,
                                                 'dataType' => 'string',
                                             ),
+                                        'name_converted' =>
+                                            array (
+                                                'required' => false,
+                                                'description' => '',
+                                                'readonly' => false,
+                                                'dataType' => 'string',
+                                            ),
                                     ),
                                 'https' => false,
                                 'authentication' => false,
@@ -1650,10 +1657,24 @@ And, it supports multilines until the first \'@\' char.',
                                                 'readonly' => false,
                                                 'dataType' => 'string',
                                             ),
+                                        'name_converted' =>
+                                            array (
+                                                'required' => false,
+                                                'description' => '',
+                                                'readonly' => false,
+                                                'dataType' => 'string',
+                                            ),
                                     ),
                                 'response' =>
                                     array (
                                         'foo' =>
+                                            array (
+                                                'required' => false,
+                                                'description' => '',
+                                                'readonly' => false,
+                                                'dataType' => 'string',
+                                            ),
+                                        'name_converted' =>
                                             array (
                                                 'required' => false,
                                                 'description' => '',
@@ -1693,6 +1714,13 @@ And, it supports multilines until the first \'@\' char.',
                                                 'readonly' => false,
                                                 'dataType' => 'string',
                                             ),
+                                        'name_converted' =>
+                                            array (
+                                                'required' => false,
+                                                'description' => '',
+                                                'readonly' => false,
+                                                'dataType' => 'string',
+                                            ),
                                     ),
                                 'https' => false,
                                 'authentication' => false,
@@ -1717,6 +1745,13 @@ And, it supports multilines until the first \'@\' char.',
                                                 'readonly' => false,
                                                 'dataType' => 'string',
                                             ),
+                                        'name_converted' =>
+                                            array (
+                                                'required' => false,
+                                                'description' => '',
+                                                'readonly' => false,
+                                                'dataType' => 'string',
+                                            ),
                                     ),
                                 'requirements' =>
                                     array (
@@ -1730,6 +1765,13 @@ And, it supports multilines until the first \'@\' char.',
                                 'response' =>
                                     array (
                                         'foo' =>
+                                            array (
+                                                'required' => false,
+                                                'description' => '',
+                                                'readonly' => false,
+                                                'dataType' => 'string',
+                                            ),
+                                        'name_converted' =>
                                             array (
                                                 'required' => false,
                                                 'description' => '',

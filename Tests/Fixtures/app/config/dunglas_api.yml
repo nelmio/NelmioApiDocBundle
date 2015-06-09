@@ -16,6 +16,9 @@ dunglas_api:
     description: Test API
 
 services:
+    api.name_converter:
+        class: Dunglas\ApiBundle\Tests\Behat\TestBundle\Serializer\NameConverter\CustomConverter
+
     dunglas_json_ld_api.popo:
         parent:    "api.resource"
         arguments: [ "Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\Popo" ]

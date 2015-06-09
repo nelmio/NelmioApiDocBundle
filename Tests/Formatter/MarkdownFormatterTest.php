@@ -680,6 +680,10 @@ foo:
 
   * type: string
 
+name_converted:
+
+  * type: string
+
 
 ### `POST` /popos ###
 
@@ -692,9 +696,18 @@ foo:
   * type: string
   * required: false
 
+name_converted:
+
+  * type: string
+  * required: false
+
 #### Response ####
 
 foo:
+
+  * type: string
+
+name_converted:
 
   * type: string
 
@@ -712,6 +725,10 @@ _Retrieves Popo resource._
 #### Response ####
 
 foo:
+
+  * type: string
+
+name_converted:
 
   * type: string
 
@@ -733,9 +750,18 @@ foo:
   * type: string
   * required: false
 
+name_converted:
+
+  * type: string
+  * required: false
+
 #### Response ####
 
 foo:
+
+  * type: string
+
+name_converted:
 
   * type: string
 

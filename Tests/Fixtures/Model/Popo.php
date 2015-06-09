@@ -25,4 +25,9 @@ class Popo
      * @var string
      */
     public $foo;
+
+    /**
+     * @var string
+     */
+    public $nameConverted;
 }
