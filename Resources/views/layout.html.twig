@@ -86,7 +86,7 @@
             };
 
             $(window).load(function() {
-                var id = getHash().substr(1).replace( /([:\.\[\]\{\}])/g, "\\$1");
+                var id = getHash().substr(1).replace( /([:\.\[\]\{\}|])/g, "\\$1");
                 var elem = $('#' + id);
                 if (elem.length) {
                     setTimeout(function() {
