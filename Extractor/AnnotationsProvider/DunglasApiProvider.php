@@ -114,6 +114,7 @@ class DunglasApiProvider implements AnnotationsProviderInterface
             'resource' => $route->getPath(),
             'description' => $operationHydraDoc['hydra:title'],
             'resourceDescription' => $resourceHydraDoc['hydra:title'],
+            'section' => $resourceHydraDoc['hydra:title'],
         ];
 
         $entityClass = $resource->getEntityClass();
