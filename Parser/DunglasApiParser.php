@@ -17,6 +17,7 @@ use Dunglas\ApiBundle\Mapping\AttributeMetadataInterface;
 use Dunglas\ApiBundle\Mapping\ClassMetadataFactoryInterface;
 use Nelmio\ApiDocBundle\DataTypes;
 use PropertyInfo\Type;
+use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
 /**
  * Use DunglasApiBundle to extract input and output information.
@@ -47,10 +48,12 @@ class DunglasApiParser implements ParserInterface
 
     public function __construct(
         ResourceCollectionInterface $resourceCollection,
-        ClassMetadataFactoryInterface $classMetadataFactory
+        ClassMetadataFactoryInterface $classMetadataFactory,
+        NameConverterInterface $nameConverter = null
     ) {
         $this->resourceCollection = $resourceCollection;
         $this->classMetadataFactory = $classMetadataFactory;
+        $this->nameConverter = $nameConverter;
     }
 
     /**
@@ -101,7 +104,11 @@ class DunglasApiParser implements ParserInterface
                 ($attributeMetadata->isReadable() && self::OUT_PREFIX === $io) ||
                 ($attributeMetadata->isWritable() && self::IN_PREFIX === $io)
             ) {
-                $data[$attributeMetadata->getName()] = $this->parseAttribute($resource, $attributeMetadata, $io);
+                $attributeName = $attributeMetadata->getName();
+                if ($this->nameConverter) {
+                    $attributeName = $this->nameConverter->normalize($attributeName);
+                }
+                $data[$attributeName] = $this->parseAttribute($resource, $attributeMetadata, $io);
             }
         }
 
