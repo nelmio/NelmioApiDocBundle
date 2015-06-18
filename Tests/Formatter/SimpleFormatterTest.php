@@ -1634,6 +1634,7 @@ And, it supports multilines until the first \'@\' char.',
                                     ),
                                 'deprecated' => false,
                                 'resourceDescription' => 'Popo',
+                                'section' => 'Popo',
                             ),
                         8 =>
                             array (
@@ -1668,6 +1669,7 @@ And, it supports multilines until the first \'@\' char.',
                                     ),
                                 'deprecated' => false,
                                 'resourceDescription' => 'Popo',
+                                'section' => 'Popo',
                             ),
                         9 =>
                             array (
@@ -1701,6 +1703,7 @@ And, it supports multilines until the first \'@\' char.',
                                     ),
                                 'deprecated' => false,
                                 'resourceDescription' => 'Popo',
+                                'section' => 'Popo',
                             ),
                         10 =>
                             array (
@@ -1744,6 +1747,7 @@ And, it supports multilines until the first \'@\' char.',
                                     ),
                                 'deprecated' => false,
                                 'resourceDescription' => 'Popo',
+                                'section' => 'Popo',
                             ),
                         11 =>
                             array (
@@ -1767,6 +1771,7 @@ And, it supports multilines until the first \'@\' char.',
                                     ),
                                 'deprecated' => false,
                                 'resourceDescription' => 'Popo',
+                                'section' => 'Popo',
                             ),
                         12 =>
                             array (
