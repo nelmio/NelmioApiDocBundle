@@ -245,3 +245,12 @@ test_route_26:
     defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithArrayRequestParamAction }
     requirements:
         _method: POST
+
+test_route_inheritance:
+    pattern: /inherticance
+    defaults: { _controller: NelmioApiDocTestBundle:Concrete:index }
+
+
+test_route_inheritance_own_attributes:
+    pattern: /inherticance_own_attributes
+    defaults: { _controller: NelmioApiDocTestBundle:Concrete:ownAttributes }

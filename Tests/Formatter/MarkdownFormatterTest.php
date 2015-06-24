@@ -27,6 +27,22 @@ class MarkdownFormatterTest extends WebTestCase
 
         if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
 $expected = <<<MARKDOWN
+# Blah #
+
+### `ANY` /inherticance_own_attributes ###
+
+_index action_
+
+
+
+# FooSection #
+
+### `ANY` /inherticance ###
+
+_index action_
+
+
+
 # Popo #
 
 ### `GET` /popos ###
