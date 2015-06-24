@@ -1271,6 +1271,32 @@ With multiple lines.',
                             ),
                         4 =>
                             array (
+                                'method' => 'ANY',
+                                'uri' => '/inherticance',
+                                'description' => 'index action',
+                                'https' => false,
+                                'authentication' => false,
+                                'authenticationRoles' =>
+                                    array (
+                                    ),
+                                'deprecated' => false,
+                                'section' => 'FooSection',
+                            ),
+                        5 =>
+                            array (
+                                'method' => 'ANY',
+                                'uri' => '/inherticance_own_attributes',
+                                'description' => 'index action',
+                                'https' => false,
+                                'authentication' => false,
+                                'authenticationRoles' =>
+                                    array (
+                                    ),
+                                'deprecated' => false,
+                                'section' => 'Blah',
+                            ),
+                        6 =>
+                            array (
                                 'method' => 'POST',
                                 'uri' => '/jms-input-test',
                                 'description' => 'Testing JMS',
@@ -1532,7 +1558,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        5 =>
+                        7 =>
                             array (
                                 'method' => 'GET',
                                 'uri' => '/jms-return-test',
@@ -1570,7 +1596,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        6 =>
+                        8 =>
                             array (
                                 'method' => 'ANY',
                                 'uri' => '/my-commented/{id}/{page}/{paramType}/{param}',
@@ -1611,7 +1637,7 @@ And, it supports multilines until the first \'@\' char.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        7 =>
+                        9 =>
                             array (
                                 'method' => 'GET',
                                 'uri' => '/popos',
@@ -1636,7 +1662,7 @@ And, it supports multilines until the first \'@\' char.',
                                 'resourceDescription' => 'Popo',
                                 'section' => 'Popo',
                             ),
-                        8 =>
+                        10 =>
                             array (
                                 'method' => 'POST',
                                 'uri' => '/popos',
@@ -1671,7 +1697,7 @@ And, it supports multilines until the first \'@\' char.',
                                 'resourceDescription' => 'Popo',
                                 'section' => 'Popo',
                             ),
-                        9 =>
+                        11 =>
                             array (
                                 'method' => 'GET',
                                 'uri' => '/popos/{id}',
@@ -1705,7 +1731,7 @@ And, it supports multilines until the first \'@\' char.',
                                 'resourceDescription' => 'Popo',
                                 'section' => 'Popo',
                             ),
-                        10 =>
+                        12 =>
                             array (
                                 'method' => 'PUT',
                                 'uri' => '/popos/{id}',
@@ -1749,7 +1775,7 @@ And, it supports multilines until the first \'@\' char.',
                                 'resourceDescription' => 'Popo',
                                 'section' => 'Popo',
                             ),
-                        11 =>
+                        13 =>
                             array (
                                 'method' => 'DELETE',
                                 'uri' => '/popos/{id}',
@@ -1773,7 +1799,7 @@ And, it supports multilines until the first \'@\' char.',
                                 'resourceDescription' => 'Popo',
                                 'section' => 'Popo',
                             ),
-                        12 =>
+                        14 =>
                             array (
                                 'method' => 'ANY',
                                 'uri' => '/return-nested-output',
@@ -2035,7 +2061,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        13 =>
+                        15 =>
                             array (
                                 'method' => 'ANY',
                                 'uri' => '/secure-route',
@@ -2046,7 +2072,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        14 =>
+                        16 =>
                             array (
                                 'method' => 'ANY',
                                 'uri' => '/yet-another/{id}',
@@ -2066,7 +2092,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        15 =>
+                        17 =>
                             array (
                                 'method' => 'GET',
                                 'uri' => '/z-action-with-deprecated-indicator',
@@ -2077,7 +2103,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => true,
                             ),
-                        16 =>
+                        18 =>
                             array (
                                 'method' => 'POST',
                                 'uri' => '/z-action-with-nullable-request-param',
@@ -2100,7 +2126,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        17 =>
+                        19 =>
                             array (
                                 'method' => 'GET',
                                 'uri' => '/z-action-with-query-param',
@@ -2120,7 +2146,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        18 =>
+                        20 =>
                             array (
                                 'method' => 'GET',
                                 'uri' => '/z-action-with-query-param-no-default',
@@ -2139,7 +2165,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        19 =>
+                        21 =>
                             array (
                                 'method' => 'GET',
                                 'uri' => '/z-action-with-query-param-strict',
@@ -2159,7 +2185,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        20 =>
+                        22 =>
                             array (
                                 'method' => 'POST',
                                 'uri' => '/z-action-with-request-param',
@@ -2182,7 +2208,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        21 =>
+                        23 =>
                             array (
                                 'method' => 'ANY',
                                 'uri' => '/z-return-jms-and-validator-output',
@@ -2282,7 +2308,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        22 =>
+                        24 =>
                             array (
                                 'method' => 'ANY',
                                 'uri' => '/z-return-selected-parsers-input',
@@ -2336,7 +2362,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        23 =>
+                        25 =>
                             array (
                                 'method' => 'ANY',
                                 'uri' => '/z-return-selected-parsers-output',
@@ -2436,7 +2462,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        24 =>
+                        26 =>
                             array (
                                 'method' => 'POST',
                                 'uri' => '/zcached',
@@ -2448,7 +2474,7 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
-                        25 =>
+                        27 =>
                             array (
                                 'method' => 'POST',
                                 'uri' => '/zsecured',
