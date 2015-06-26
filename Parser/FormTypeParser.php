@@ -259,7 +259,7 @@ class FormTypeParser implements ParserInterface
                     }
 
                     if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
-                        $parameters[$name]['format'] = json_encode($choices);
+                        $parameters[$name]['format'] = json_encode($choices, JSON_PRETTY_PRINT);
                     } elseif (($choiceList = $config->getOption('choice_list')) && $choiceList instanceof ChoiceListInterface) {
                         if (('entity' === $config->getType()->getName() && false === $this->entityToChoice)) {
                             $choices = array();
@@ -267,7 +267,7 @@ class FormTypeParser implements ParserInterface
                             $choices = $this->handleChoiceListValues($choiceList);
                         }
                         if (is_array($choices) && count($choices)) {
-                            $parameters[$name]['format'] = json_encode($choices);
+                            $parameters[$name]['format'] = json_encode($choices, JSON_PRETTY_PRINT);
                         }
                     }
                     break;
