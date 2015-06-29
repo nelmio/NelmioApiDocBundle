@@ -353,7 +353,7 @@ You can also add some options to pass to the form. You just have to use the `opt
 ```php
 input = {
  "class" = "your_form_type",
- "options" = {"method" => "PUT"},
+ "options" = {"method" = "PUT"},
 }
 ```
 
