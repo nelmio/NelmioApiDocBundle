@@ -2770,6 +2770,32 @@ With multiple lines.',
                                 'deprecated' => false,
                             ),
                         4 =>
+                            array (
+                                'method' => 'ANY',
+                                'uri' => '/inherticance',
+                                'description' => 'index action',
+                                'https' => false,
+                                'authentication' => false,
+                                'authenticationRoles' =>
+                                    array (
+                                    ),
+                                'deprecated' => false,
+                                'section' => 'FooSection',
+                            ),
+                        5 =>
+                            array (
+                                'method' => 'ANY',
+                                'uri' => '/inherticance_own_attributes',
+                                'description' => 'index action',
+                                'https' => false,
+                                'authentication' => false,
+                                'authenticationRoles' =>
+                                    array (
+                                    ),
+                                'deprecated' => false,
+                                'section' => 'Blah',
+                            ),
+                        6 =>
                             array(
                                 'method' => 'POST',
                                 'uri' => '/jms-input-test',
@@ -3030,7 +3056,7 @@ With multiple lines.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
                             ),
-                        5 =>
+                        7 =>
                             array(
                                 'method' => 'GET',
                                 'uri' => '/jms-return-test',
@@ -3063,7 +3089,7 @@ With multiple lines.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
                             ),
-                        6 =>
+                        8 =>
                             array(
                                 'method' => 'ANY',
                                 'uri' => '/my-commented/{id}/{page}/{paramType}/{param}',
@@ -3102,7 +3128,7 @@ And, it supports multilines until the first \'@\' char.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
                             ),
-                        7 =>
+                        9 =>
                             array(
                                 'method' => 'ANY',
                                 'uri' => '/return-nested-output',
@@ -3362,7 +3388,7 @@ With multiple lines.',
                                             ),
                                     ),
                             ),
-                        8 =>
+                        10 =>
                             array(
                                 'method' => 'ANY',
                                 'uri' => '/secure-route',
@@ -3371,7 +3397,7 @@ With multiple lines.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
                             ),
-                        9 =>
+                        11 =>
                             array(
                                 'method' => 'ANY',
                                 'uri' => '/yet-another/{id}',
@@ -3389,7 +3415,7 @@ With multiple lines.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
                             ),
-                        10 =>
+                        12 =>
                             array(
                                 'method' => 'GET',
                                 'uri' => '/z-action-with-deprecated-indicator',
@@ -3398,7 +3424,7 @@ With multiple lines.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => true,
                             ),
-                        11 =>
+                        13 =>
                             array(
                                 'method' => 'POST',
                                 'uri' => '/z-action-with-nullable-request-param',
@@ -3419,7 +3445,7 @@ With multiple lines.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
                             ),
-                        12 =>
+                        14 =>
                             array(
                                 'method' => 'GET',
                                 'uri' => '/z-action-with-query-param',
@@ -3437,7 +3463,7 @@ With multiple lines.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
                             ),
-                        13 =>
+                        15 =>
                             array(
                                 'method' => 'GET',
                                 'uri' => '/z-action-with-query-param-no-default',
@@ -3454,7 +3480,7 @@ With multiple lines.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
                             ),
-                        14 =>
+                        16 =>
                             array(
                                 'method' => 'GET',
                                 'uri' => '/z-action-with-query-param-strict',
@@ -3472,7 +3498,7 @@ With multiple lines.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
                             ),
-                        15 =>
+                        17 =>
                             array(
                                 'method' => 'POST',
                                 'uri' => '/z-action-with-request-param',
@@ -3493,7 +3519,7 @@ With multiple lines.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => false,
                             ),
-                        16 =>
+                        18 =>
                             array(
                                 'method' => 'ANY',
                                 'uri' => '/z-return-jms-and-validator-output',
@@ -3580,7 +3606,7 @@ With multiple lines.',
                                 ),
                                 'authenticationRoles' => array(),
                             ),
-                        17 =>
+                        19 =>
                             array(
                                 'method' => "ANY",
                                 'uri' => "/z-return-selected-parsers-input",
@@ -3628,7 +3654,7 @@ With multiple lines.',
                                         ),
                                     )
                             ),
-                        18 =>
+                        20 =>
                             array(
                                 'method' => "ANY",
                                 'uri' => "/z-return-selected-parsers-output",
@@ -3715,7 +3741,7 @@ With multiple lines.',
                                 ),
                                 'authenticationRoles' => array(),
                             ),
-                        19 =>
+                        21 =>
                             array(
                                 'cache' => 60,
                                 'method' => 'POST',
@@ -3725,7 +3751,7 @@ With multiple lines.',
                                 'authenticationRoles' => array(),
                                 'deprecated' => false
                             ),
-                        20 =>
+                        22 =>
                             array(
                                 'authentication' => true,
                                 'method' => 'POST',
