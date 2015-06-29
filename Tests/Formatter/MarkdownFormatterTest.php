@@ -1052,7 +1052,7 @@ related[b]:
 MARKDOWN;
         } else {
             $expected = <<<MARKDOWN
-#Blah #
+# Blah #
 
 ### `ANY` /inherticance_own_attributes ###
 
