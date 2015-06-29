@@ -1052,6 +1052,22 @@ related[b]:
 MARKDOWN;
         } else {
             $expected = <<<MARKDOWN
+#Blah #
+
+### `ANY` /inherticance_own_attributes ###
+
+_index action_
+
+
+
+# FooSection #
+
+### `ANY` /inherticance ###
+
+_index action_
+
+
+
 ## /api/other-resources ##
 
 ### `GET` /api/other-resources.{_format} ###
