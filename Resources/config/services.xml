@@ -16,6 +16,7 @@
 
         <parameter key="nelmio_api_doc.parser.collection_parser.class">Nelmio\ApiDocBundle\Parser\CollectionParser</parameter>
         <parameter key="nelmio_api_doc.parser.form_errors_parser.class">Nelmio\ApiDocBundle\Parser\FormErrorsParser</parameter>
+        <parameter key="nelmio_api_doc.parser.json_serializable_parser.class">Nelmio\ApiDocBundle\Parser\JsonSerializableParser</parameter>
     </parameters>
 
     <services>
@@ -66,6 +67,10 @@
             <tag name="nelmio_api_doc.extractor.parser" />
         </service>
         <service id="nelmio_api_doc.parser.form_errors_parser" class="%nelmio_api_doc.parser.form_errors_parser.class%">
+            <tag name="nelmio_api_doc.extractor.parser" />
+        </service>
+
+        <service id="nelmio_api_doc.parser.json_serializable_parser" class="%nelmio_api_doc.parser.json_serializable_parser.class%">
             <tag name="nelmio_api_doc.extractor.parser" />
         </service>
     </services>
