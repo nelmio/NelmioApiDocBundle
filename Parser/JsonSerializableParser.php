@@ -31,15 +31,21 @@ class JsonSerializableParser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function parse(array $item)
+    public function parse(array $input)
     {
         /** @var \JsonSerializable $obj */
-        $obj = new $item['class']();
+        $obj = new $input['class']();
 
         $encoded = $obj->jsonSerialize();
-        $top = $this->getItemMetaData($encoded);
+        $parsed = $this->getItemMetaData($encoded);
 
-        return $top['children'];
+        if (isset($input['name']) && !empty($input['name'])) {
+            $output = array();
+            $output[$input['name']] = $parsed;
+            return $output;
+        }
+
+        return $parsed['children'];
     }
 
     public function getItemMetaData($item)
@@ -47,10 +53,12 @@ class JsonSerializableParser implements ParserInterface
         $type = gettype($item);
 
         $meta = array(
-            'dataType' => $type,
-            'required' => true,
-            'description' => '',
-            'readonly' => false
+            'dataType' => $type == 'NULL' ? null : $type,
+            'actualType' => $type,
+            'subType' => null,
+            'required' => null,
+            'description' => null,
+            'readonly' => null
         );
 
         if ($type == 'object' && $item instanceof \JsonSerializable) {

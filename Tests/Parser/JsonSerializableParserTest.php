@@ -64,9 +64,11 @@ class JsonSerializableParserTest extends \PHPUnit_Framework_TestCase
                     'children' => array(
                         'value' => array(
                             'dataType' => 'array',
-                            'required' => true,
-                            'description' => '',
-                            'readonly' => false
+                            'actualType' => 'array',
+                            'subType' => null,
+                            'required' => null,
+                            'description' => null,
+                            'readonly' => null
                         )
                     )
                 )
