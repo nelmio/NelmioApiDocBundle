@@ -2502,6 +2502,7 @@ With multiple lines.',
             'authentication' => false,
             'authenticationRoles' => array(),
             'deprecated' => false,
+            'id' => 'get--tests.{_format}',
         );
 
         $this->assertEquals($expected, $result);

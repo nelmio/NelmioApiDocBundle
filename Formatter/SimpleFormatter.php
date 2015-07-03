@@ -11,36 +11,14 @@
 
 namespace Nelmio\ApiDocBundle\Formatter;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-
 class SimpleFormatter extends AbstractFormatter
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function formatOne(ApiDoc $annotation)
-    {
-        return $annotation->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function format(array $collection)
-    {
-        $array = array();
-        foreach ($collection as $coll) {
-            $array[$coll['resource']][] = $coll['annotation']->toArray();
-        }
-
-        return $array;
-    }
-
     /**
      * {@inheritdoc}
      */
     protected function renderOne(array $data)
     {
+        return $data;
     }
 
     /**
@@ -48,5 +26,6 @@ class SimpleFormatter extends AbstractFormatter
      */
     protected function render(array $collection)
     {
+        return $collection['_others'];
     }
 }
