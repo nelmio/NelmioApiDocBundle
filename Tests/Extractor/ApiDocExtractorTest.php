@@ -286,6 +286,18 @@ class ApiDocExtractorTest extends WebTestCase
         $parameters = $annotation->getParameters();
         $this->assertTrue($parameters['required_field']['required']);
     }
+    
+    public function testPutRequestDoesRequireParametersWhenMarkedAsSuch()
+    {
+        $container  = $this->getContainer();
+        /** @var ApiDocExtractor $extractor */
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        /** @var ApiDoc $annotation */
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::requiredParametersAction', 'test_put_required_parameters');
+
+        $parameters = $annotation->getParameters();
+        $this->assertTrue($parameters['required_field']['required']);
+    }
 
     public function testPatchRequestDoesNeverRequireParameters()
     {
