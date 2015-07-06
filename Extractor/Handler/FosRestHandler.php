@@ -33,7 +33,7 @@ class FosRestHandler implements HandlerInterface
                 $requirements = $this->handleRequirements($annot->requirements);
                 $data = array(
                     'required'    => $annot->strict && $annot->nullable === false && $annot->default === null,
-                    'dataType'    => $requirements,
+                    'dataType'    => $requirements.($annot->array ? '[]' : ''),
                     'actualType'  => $this->inferType($requirements),
                     'subType'     => null,
                     'description' => $annot->description,
@@ -46,19 +46,19 @@ class FosRestHandler implements HandlerInterface
             } elseif ($annot instanceof QueryParam) {
                 if ($annot->strict && $annot->nullable === false && $annot->default === null) {
                     $annotation->addRequirement($annot->name, array(
-                        'requirement'   => $this->handleRequirements($annot->requirements),
+                        'requirement'   => $this->handleRequirements($annot->requirements).($annot->array ? '[]' : ''),
                         'dataType'      => '',
                         'description'   => $annot->description,
                     ));
                 } elseif ($annot->default !== null) {
                     $annotation->addFilter($annot->name, array(
-                        'requirement'   => $this->handleRequirements($annot->requirements),
+                        'requirement'   => $this->handleRequirements($annot->requirements).($annot->array ? '[]' : ''),
                         'description'   => $annot->description,
                         'default'   => $annot->default,
                     ));
                 } else {
                     $annotation->addFilter($annot->name, array(
-                        'requirement'   => $this->handleRequirements($annot->requirements),
+                        'requirement'   => $this->handleRequirements($annot->requirements).($annot->array ? '[]' : ''),
                         'description'   => $annot->description,
                     ));
                 }

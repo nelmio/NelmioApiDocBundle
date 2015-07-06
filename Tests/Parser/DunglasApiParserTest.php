@@ -11,18 +11,20 @@
 
 namespace NelmioApiDocBundle\Tests\Parser;
 
+use Nelmio\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\Parser\DunglasApiParser;
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
-class DunglasJsonLdApiParserTest extends WebTestCase
+class DunglasApiParserTest extends WebTestCase
 {
     protected function setUp()
     {
-        if (!class_exists('Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle')) {
+        if (!class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
             $this->markTestSkipped(
-                'DunglasJsonLdApiBundle is not available.'
+                'DunglasApiBundle is not available.'
             );
         }
     }
@@ -30,9 +32,9 @@ class DunglasJsonLdApiParserTest extends WebTestCase
     public function testParser()
     {
         $container = $this->getContainer();
-        $parser = $container->get('nelmio_api_doc.parser.dunglas_json_ld_api_parser');
+        $parser = $container->get('nelmio_api_doc.parser.dunglas_api_parser');
 
-        $item = array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Popo');
+        $item = array('class' => DunglasApiParser::OUT_PREFIX.':Nelmio\ApiDocBundle\Tests\Fixtures\Model\Popo');
 
         $expected = array (
             'foo' =>
@@ -40,8 +42,7 @@ class DunglasJsonLdApiParserTest extends WebTestCase
                     'required' => false,
                     'description' => '',
                     'readonly' => false,
-                    'class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Popo',
-                    'dataType' => 'string',
+                    'dataType' => DataTypes::STRING,
                 ),
         );
 

@@ -36,6 +36,11 @@ class FormTypeParser implements ParserInterface
     protected $formRegistry;
 
     /**
+     * @var boolean
+     */
+    protected $entityToChoice;
+
+    /**
      * @var array
      */
     protected $mapTypes = array(
@@ -52,9 +57,10 @@ class FormTypeParser implements ParserInterface
         'file'      => DataTypes::FILE,
     );
 
-    public function __construct(FormFactoryInterface $formFactory)
+    public function __construct(FormFactoryInterface $formFactory, $entityToChoice)
     {
-        $this->formFactory  = $formFactory;
+        $this->formFactory    = $formFactory;
+        $this->entityToChoice = (boolean) $entityToChoice;
     }
 
     /**
@@ -126,6 +132,7 @@ class FormTypeParser implements ParserInterface
         $parameters = array();
         foreach ($form as $name => $child) {
             $config     = $child->getConfig();
+            $options    = $config->getOptions();
             $bestType   = '';
             $actualType = null;
             $subType    = null;
@@ -171,7 +178,7 @@ class FormTypeParser implements ParserInterface
                          */
                         $addDefault = false;
                         try {
-                            $subForm       = $this->formFactory->create($type);
+                            $subForm       = $this->formFactory->create($type, null, $options);
                             $subParameters = $this->parseForm($subForm, $name);
 
                             if (!empty($subParameters)) {
@@ -254,7 +261,11 @@ class FormTypeParser implements ParserInterface
                     if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
                         $parameters[$name]['format'] = json_encode($choices);
                     } elseif (($choiceList = $config->getOption('choice_list')) && $choiceList instanceof ChoiceListInterface) {
-                        $choices = $this->handleChoiceListValues($choiceList);
+                        if (('entity' === $config->getType()->getName() && false === $this->entityToChoice)) {
+                            $choices = array();
+                        } else {
+                            $choices = $this->handleChoiceListValues($choiceList);
+                        }
                         if (is_array($choices) && count($choices)) {
                             $parameters[$name]['format'] = json_encode($choices);
                         }

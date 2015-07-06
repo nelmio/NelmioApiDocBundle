@@ -25,7 +25,7 @@ class MarkdownFormatterTest extends WebTestCase
         restore_error_handler();
         $result = $container->get('nelmio_api_doc.formatter.markdown_formatter')->format($data);
 
-        if(class_exists('Dunglas\JsonLdApiBundle\DunglasJsonLdApiBundle')) {
+        if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
 $expected = <<<MARKDOWN
 ## /api/other-resources ##
 
@@ -670,7 +670,7 @@ _This method is useful to test if the getDocComment works._
   - Description: The param id
 
 
-### `GET|HEAD` /popos ###
+### `GET` /popos ###
 
 _Retrieves the collection of Popo resources._
 
@@ -699,7 +699,7 @@ foo:
   * type: string
 
 
-### `GET|HEAD` /popos/{id} ###
+### `GET` /popos/{id} ###
 
 _Retrieves Popo resource._
 

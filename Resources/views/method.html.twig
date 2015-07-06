@@ -40,8 +40,8 @@
 
     <div class="content" style="display: {% if displayContent is defined and displayContent == true %}display{% else %}none{% endif %};">
         <ul class="tabs">
-            <li class="selected" data-pane="content">Documentation</li>
             {% if enableSandbox %}
+                <li class="selected" data-pane="content">Documentation</li>
                 <li data-pane="sandbox">Sandbox</li>
             {% endif %}
         </ul>

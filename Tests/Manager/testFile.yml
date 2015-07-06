@@ -1,0 +1,11 @@
+---
+- section: Section test
+  resource: false
+  description: 'Description test 2'
+  route: route_test
+  requirements:
+      - { name: foo, dataType: string, requirement: \s+, description: 'foo requirement' }
+  parameters:
+      - { name: foo, dataType: string, required: false, description: 'foo parameter' }
+      - { name: bar, dataType: string, required: true, description: 'bar parameter' }
+  output: Symfony\Component\HttpFoundation\Response

@@ -99,6 +99,11 @@ em {
 code, pre {
   font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
   background-color: #fcf6db;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
 }
 
 p code {
@@ -111,6 +116,11 @@ pre {
   border: 1px solid #e5e0c6;
   margin-bottom: 15px;
   line-height:1.2em;
+}
+
+div.content ul, div.content ol {
+  line-height: 1.4em;
+  color: #333333;
 }
 
 table.fullwidth {
@@ -615,4 +625,9 @@ form .request-content {
 
 .motd {
   padding:20px;
+}
+
+.json-collapse-section {
+    color: #660;
+    cursor: pointer;
 }

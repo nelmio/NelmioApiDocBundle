@@ -96,9 +96,9 @@ class ApiDocExtractor
      *
      * @return array
      */
-    public function all()
+    public function all($view = ApiDoc::DEFAULT_VIEW)
     {
-        return $this->extractAnnotations($this->getRoutes());
+        return $this->extractAnnotations($this->getRoutes(), $view);
     }
 
     /**
@@ -110,7 +110,7 @@ class ApiDocExtractor
      *
      * @return array
      */
-    public function extractAnnotations(array $routes)
+    public function extractAnnotations(array $routes, $view = ApiDoc::DEFAULT_VIEW)
     {
         $array     = array();
         $resources = array();
@@ -123,7 +123,10 @@ class ApiDocExtractor
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 $annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS);
-                if ($annotation && !in_array($annotation->getSection(), $excludeSections)) {
+                if (
+                    $annotation && !in_array($annotation->getSection(), $excludeSections) &&
+                    (in_array($view, $annotation->getViews()) || (0 === count($annotation->getViews()) && $view === ApiDoc::DEFAULT_VIEW))
+                ) {
                     if ($annotation->isResource()) {
                         if ($resource = $annotation->getResource()) {
                             $resources[] = $resource;
@@ -163,6 +166,13 @@ class ApiDocExtractor
                 $array[$index]['resource'] = 'others';
             }
         }
+
+        $files                 = $this->container->getParameter('nelmio_api_doc.documentation_files');
+        $documentationFiles    = $this->container->get('nelmio_api_doc.manager.documentation_files')->parse($files);
+
+        if ($documentationFiles  !== false) {
+            $array = array_merge($array, $documentationFiles);
+        };
 
         $methodOrder = array('GET', 'POST', 'PUT', 'DELETE');
         usort($array, function ($a, $b) use ($methodOrder) {

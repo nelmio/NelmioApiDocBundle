@@ -8,13 +8,14 @@ for your APIs.
 Installation
 ------------
 
-Require the `nelmio/api-doc-bundle` package in your composer.json and update your dependencies.
+Require the `nelmio/api-doc-bundle` package in your composer.json and update
+your dependencies.
 
     $ composer require nelmio/api-doc-bundle
 
 Register the bundle in `app/AppKernel.php`:
 
-``` php
+```php
 // app/AppKernel.php
 public function registerBundles()
 {
@@ -26,29 +27,43 @@ public function registerBundles()
 ```
 
 Import the routing definition in `routing.yml`:
+
 ```yaml
 # app/config/routing.yml
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
 ```
+
 Enable the bundle's configuration in `app/config/config.yml`:
-``` yaml
+
+```yaml
 # app/config/config.yml
 nelmio_api_doc: ~
+```
+
+The **NelmioApiDocBundle** requires Twig as a template engine so do not forget
+to enable it:
+
+```yaml
+# app/config/config.yml
+framework:
+    templating:
+        engines: ['twig']
 ```
 
 Usage
 -----
 
-The main problem with documentation is to keep it up to date. That's why the **NelmioApiDocBundle**
-uses introspection a lot. Thanks to an annotation, it's really easy to document an API method.
+The main problem with documentation is to keep it up to date. That's why the
+**NelmioApiDocBundle** uses introspection a lot. Thanks to an annotation, it's
+really easy to document an API method.
 
 ### The ApiDoc() Annotation
 
 The bundle provides an `ApiDoc()` annotation for your controllers:
 
-``` php
+```php
 <?php
 
 namespace Your\Namespace;
@@ -122,7 +137,7 @@ The following properties are available:
 
 * `tags`: allow to tag a method (e.g. `beta` or `in-development`). Either a single tag or an array of tags. Each tag can have an optional hex colorcode attached.
 
-``` php
+```php
 <?php
 
 class YourController
@@ -156,7 +171,7 @@ class YourController
 
 * `statusCodes`: an array of HTTP status codes and a description of when that status is returned; Example:
 
-``` php
+```php
 <?php
 
 class YourController
@@ -180,6 +195,9 @@ class YourController
 }
 ```
 
+* `views`: the view(s) under which this resource will be shown. Leave empty to
+  specify the default view. Either a single view, or an array of views.
+
 Each _filter_ has to define a `name` parameter, but other parameters are free. Filters are often optional
 parameters, and you can document them as you want, but keep in mind to be consistent for the whole documentation.
 
@@ -190,7 +208,7 @@ For classes parsed with JMS metadata, description will be taken from the propert
 
 For Form Types, you can add an extra option named `description` on each field:
 
-``` php
+```php
 <?php
 
 class YourType extends AbstractType
@@ -209,24 +227,109 @@ class YourType extends AbstractType
 }
 ```
 
-The bundle will also get information from the routing definition (`requirements`, `pattern`, etc), so to get the
-best out of it you should define strict _method requirements etc.
+The bundle will also get information from the routing definition
+(`requirements`, `pattern`, etc), so to get the best out of it you should
+define strict _method requirements etc.
+
+### Multiple API Documentation ("Views")
+
+With the `views` tag in the `@ApiDoc` annotation, it is possible to create
+different views of your API documentation. Without the tag, all methods are
+located in the `default` view, and can be found under the normal API
+documentation url.
+
+You can specify one or more _view_ names under which the method will be
+visible.
+
+An example:
+
+```php
+    /**
+     * A resource
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="This is a description of your API method",
+     *  views = { "default", "premium" }
+     * )
+     */
+    public function getAction()
+    {
+    }
+
+    /**
+     * Another resource
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="This is a description of another API method",
+     *  views = { "premium" }
+     * )
+     */
+    public function getAnotherAction()
+    {
+    }
+```
+
+In this case, only the first resource will be available under the default view,
+while both methods will be available under the `premium` view.
+
+#### Accessing Specific API Views
+
+The `default` view can be found at the normal location. Other views can be
+found at `http://your.documentation/<view name>`.
+
+For instance, if your documentation is located at:
+
+        http://example.org/doc/api/v1/
+
+then the `premium` view will be located at:
+
+        http://example.org/doc/api/v1/premium
+
+
+### Declare your Api doc in file
+
+You can declare your api doc in YAML file if you configured the full path of your api doc file configuration in your config.yml
+ 
+ ```yaml
+ # app/config/config.yml
+ nelmio_api_doc:
+     documentation_files:  []
+```
+
+The structure of your file configuration use the ```ApiDoc``` annotation
+
+```yaml
+# yaml configuration api doc
+---
+- section: Section test
+  resource: false
+  description: 'Description test 2'
+  route: route_test
+  requirements:
+      - { name: foo, dataType: string, requirement: \s+, description: 'foo requirement' }
+  parameters:
+      - { name: foo, dataType: string, required: false, description: 'foo parameter' }
+      - { name: bar, dataType: string, required: true, description: 'bar parameter' }
+  output: Symfony\Component\HttpFoundation\Response
+```
 
 ### Other Bundle Annotations
 
 Also bundle will get information from the other annotations:
 
-* @FOS\RestBundle\Controller\Annotations\RequestParam - use as `parameters`
+* `@FOS\RestBundle\Controller\Annotations\RequestParam` - use as `parameters`
 
-* @FOS\RestBundle\Controller\Annotations\QueryParam - use as `requirements` (when strict parameter is true), `filters` (when strict is false)
+* `@FOS\RestBundle\Controller\Annotations\QueryParam` - use as `requirements` (when strict parameter is true), `filters` (when strict is false)
 
-* @JMS\SecurityExtraBundle\Annotation\Secure - set `authentication` to true, `authenticationRoles` to the given roles
+* `@JMS\SecurityExtraBundle\Annotation\Secure` - set `authentication` to true, `authenticationRoles` to the given roles
 
-* @Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache - set `cache`
+* `@Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache` - set `cache`
 
 ### PHPDoc
 
-Actions marked as @deprecated will be marked as such in the interface.
+Actions marked as `@deprecated` will be marked as such in the interface.
 
 #### JMS Serializer Features
 
@@ -240,7 +343,7 @@ Strategy](http://jmsyst.com/libs/serializer/master/cookbook/exclusion_strategies
 you can specify which groups to use when generating the documentation by using
 this syntax :
 
- ```
+ ```php
  input={
      "class"="Acme\Bundle\Entity\User",
      "groups"={"update", "public"}
@@ -265,7 +368,7 @@ Even if you use `FormFactoryInterface::createNamed('', 'your_form_type')` the do
 
 You can specify which prefix to use with the `name` key in the `input` section:
 
-```
+```php
 input = {
  "class" = "your_form_type",
  "name" = ""
@@ -273,7 +376,8 @@ input = {
 ```
 
 You can also add some options to pass to the form. You just have to use the `options` key:
-```
+
+```php
 input = {
  "class" = "your_form_type",
  "options" = {"method" => "PUT"},
@@ -286,7 +390,7 @@ By default, all registered parsers are used, but sometimes you may want to
 define which parsers you want to use. The `parsers` attribute is used to
 configure a list of parsers that will be used:
 
-```
+```php
 output={
     "class"   = "Acme\Bundle\Entity\User",
     "parsers" = {
@@ -318,6 +422,7 @@ documentation if available.
 
 This bundle provides a sandbox mode in order to test API methods. You can
 configure this sandbox using the following parameters:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
@@ -362,6 +467,28 @@ nelmio_api_doc:
 
             default_format: json    # default is `json`,
                                     # default content format to request (see formats)
+
+        entity_to_choice: false     # default is `true`, if `false`, entity collection
+                                    # will not be mapped as choice
+    swagger:
+        model_naming_strategy:  dot_notation
+        api_base_path:        /api
+        swagger_version:      '1.2'
+        api_version:          '0.1'
+        info:
+            title:                Symfony2
+            description:          'My awesome Symfony2 app!'
+            TermsOfServiceUrl:    null
+            contact:              null
+            license:              null
+            licenseUrl:           null
+    cache:
+        enabled:              false
+        file:                 '%kernel.cache_dir%/api-doc.cache'
+    # Define your ApiDoc file configuration
+    documentation_files:  []
+
+
 ```
 ### Command
 
@@ -383,25 +510,48 @@ If you want to generate a static version of your documentation without sandbox, 
 Read the [documentation for Swagger integration](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/swagger-support.md)
 for the necessary steps to make a Swagger-compliant documentation for your API.
 
+### DunglasApiBundle support
+
+This bundle recognizes and documents resources exposed with [DunglasApiBundle](https://github.com/dunglas/DunglasApiBundle).
+Just install NelmioApiDoc and the documentation will be automatically available. To enable the sandbox, use the following
+configuration:
+
+```yaml
+# app/config/config.yml
+nelmio_api_doc:
+    sandbox:
+        accept_type:        "application/json"
+        body_format:
+            formats:        [ "json" ]
+            default_format: "json"
+        request_format:
+            formats:
+                json:       "application/json"
+```
+
 ### Caching
 
 It is a good idea to enable the internal caching mechanism on production:
 
-    # app/config/config.yml
-    nelmio_api_doc:
-        cache:
-            enabled: true
+```yaml
+# app/config/config.yml
+nelmio_api_doc:
+    cache:
+        enabled: true
+```
 
 Configuration In-Depth
 ----------------------
 
 You can specify your own API name:
-```
+
+```yaml
 # app/config/config.yml
 nelmio_api_doc:
     name: My API
 ```
 You can choose between different authentication methods:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
@@ -428,14 +578,23 @@ When choosing an `http` delivery, `name` defaults to `Authorization`,
 and the header value will automatically be prefixed by the corresponding type (ie. `Basic` or `Bearer`).
 
 You can specify which sections to exclude from the documentation generation:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
     exclude_sections: ["privateapi", "testapi"]
 ```
+
+Note that `exclude_sections` will literally exclude a section from your api
+documentation. It's possible however to create multiple views by specifying the
+`views` parameter within the `@ApiDoc` annotations. This allows you to move
+private or test methods to a complete different view of your documentation
+instead.
+
 The bundle provides a way to register multiple `input` parsers. The first parser
 that can handle the specified input is used, so you can configure their
 priorities via container tags. Here's an example parser service registration:
+
 ```yaml
 # app/config/config.yml
 services:
@@ -446,6 +605,7 @@ services:
 ```
 You can also define your own motd content (above methods list). All you have to
 do is add to configuration:
+
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
@@ -453,14 +613,17 @@ nelmio_api_doc:
     motd:
         template: AcmeApiBundle::Components/motd.html.twig
 ```
+
 You can define an alternate location where the ApiDoc configurations are to be cached:
-```yaml    
+
+```yaml
 # app/config/config.yml
 nelmio_api_doc:
     cache:
         enabled: true
         file: "/tmp/symfony-app/%kernel.environment%/api-doc.cache"
 ```
+
 ### Using Your Own Annotations
 
 If you have developed your own project-related annotations, and you want to parse them to populate
@@ -475,6 +638,7 @@ services:
         tags:
             - { name: nelmio_api_doc.extractor.handler }
 ```
+
 Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tree/master/Extractor/Handler).
 
 ### Configuration Reference
@@ -515,6 +679,7 @@ nelmio_api_doc:
             # Required if http delivery is selected.
             type:                 ~ # One of "basic"; "bearer"
             custom_endpoint:      false
+        entity_to_choice:         true
     swagger:
         api_base_path:        /api
         swagger_version:      '1.2'
@@ -529,4 +694,6 @@ nelmio_api_doc:
     cache:
         enabled:              false
         file:                 '%kernel.cache_dir%/api-doc.cache'
+    # Define your ApiDoc file configuration
+    documentation_files:  []
 ```

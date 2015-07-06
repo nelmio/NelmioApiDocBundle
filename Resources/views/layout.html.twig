@@ -243,7 +243,7 @@
                     $btn = $container.parents('.pane').find('.to-prettify');
 
                     $container.removeClass('prettyprinted');
-                    $container.html(prettifyResponse(rawData));
+                    $container.html(attachCollapseMarker(prettifyResponse(rawData)));
                     prettyPrint && prettyPrint();
 
                     $btn.removeClass('to-prettify');
@@ -275,7 +275,7 @@
                         }
                     }
                     return body;
-                }
+                };
 
                 $('#save_api_auth').click(function(event) {
                     $.each(apiAuthKeys, function(_, value) {
@@ -305,6 +305,22 @@
                     $('li', $(this).parent()).removeClass('selected');
                     $(this).addClass('selected');
                 });
+
+                var getJsonCollapseHtml = function(sectionOpenCharacter) {
+                    var $toggler = $('<span>').addClass('json-collapse-section').
+                            attr('data-section-open-character', sectionOpenCharacter).
+                            append($('<span>').addClass('json-collapse-marker')
+                                    .html('&#9663;')
+                    ).append(sectionOpenCharacter);
+                    return $('<div>').append($toggler).html();
+                };
+
+                var attachCollapseMarker = function (prettifiedJsonString) {
+                    prettifiedJsonString = prettifiedJsonString.replace(/(\{|\[)\n/g, function(match, sectionOpenCharacter) {
+                        return getJsonCollapseHtml(sectionOpenCharacter) + '<span class="json-collapse-content">\n';
+                    });
+                    return prettifiedJsonString.replace(/([^\[][\}\]],?)\n/g, '$1</span>\n');
+                };
 
                 var prettifyResponse = function(text) {
                     try {
@@ -486,9 +502,10 @@
                     $('input, button', $(this)).attr('disabled', 'disabled');
 
                     // append the query authentication
-                    if (authentication_delivery == 'query') {
+                    var api_key_val = $('#api_key').val();
+                    if (authentication_delivery == 'query' && api_key_val.length>0) {
                         url += url.indexOf('?') > 0 ? '&' : '?';
-                        url += api_key_parameter + '=' + $('#api_key').val();
+                        url += api_key_parameter + '=' + api_key_val;
                     }
 
                     // prepare the api enpoint
@@ -519,7 +536,7 @@
                     }
                     var data = content.length ? content : body;
                     var ajaxOptions = {
-                        url: endpoint + url,
+                        url: (url.indexOf('http')!=0?endpoint:'') + url,
                         type: method,
                         data: data,
                         headers: headers,
@@ -567,6 +584,25 @@
                         history.pushState(null, null, $(this).data('href'));
                         e.preventDefault();
                     }
+                });
+
+                $(document).on('click', '.json-collapse-section', function() {
+                    var openChar = $(this).data('section-open-character'),
+                            closingChar = (openChar == '{' ? '}' : ']');
+                    if ($(this).next('.json-collapse-content').is(':visible')) {
+                        $(this).html('&oplus;' +  openChar + '...' + closingChar);
+                    } else {
+                        $(this).html('&#9663;' + $(this).data('section-open-character'));
+                    }
+                    $(this).next('.json-collapse-content').toggle();
+                });
+
+                $(document).on('copy', '.prettyprinted', function () {
+                    var $toggleMarkers = $(this).find('.json-collapse-marker');
+                    $toggleMarkers.hide();
+                    setTimeout(function () {
+                        $toggleMarkers.show();
+                    }, 100);
                 });
 
                 $('.pane.sandbox').on('click', '.to-raw', function(e) {

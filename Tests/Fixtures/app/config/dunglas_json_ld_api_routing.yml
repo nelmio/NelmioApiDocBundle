@@ -1,9 +1,0 @@
-main:
-    resource: "routing.yml"
-
-dunglas_json_ld_api_doc:
-    resource: "@DunglasJsonLdApiBundle/Resources/config/routing.xml"
-
-dunglas_json_ld_api:
-    resource: "."
-    type:     "json-ld"

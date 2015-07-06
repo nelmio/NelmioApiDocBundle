@@ -156,4 +156,22 @@ class FosRestHandlerTest extends WebTestCase
 
         $this->assertArrayNotHasKey('default', $parameter);
     }
+
+    public function testPostWithArrayRequestParam()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithArrayRequestParamAction', 'test_route_26');
+
+        $this->assertNotNull($annotation);
+
+        $parameters = $annotation->getParameters();
+        $this->assertCount(1, $parameters);
+        $this->assertArrayHasKey('param1', $parameters);
+
+        $parameter = $parameters['param1'];
+
+        $this->assertArrayHasKey('dataType', $parameter);
+        $this->assertEquals('string[]', $parameter['dataType']);
+    }
 }

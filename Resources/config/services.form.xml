@@ -10,6 +10,7 @@
     <services>
         <service id="nelmio_api_doc.parser.form_type_parser" class="%nelmio_api_doc.parser.form_type_parser.class%">
             <argument type="service" id="form.factory" />
+            <argument>%nelmio_api_doc.sandbox.entity_to_choice%</argument>
             <tag name="nelmio_api_doc.extractor.parser" />
         </service>
     </services>
