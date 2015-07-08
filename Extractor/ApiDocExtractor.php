@@ -168,7 +168,7 @@ class ApiDocExtractor
         }
 
         $methodOrder = array('GET', 'POST', 'PUT', 'DELETE');
-        usort($array, function ($a, $b) use ($methodOrder) {
+        @usort($array, function ($a, $b) use ($methodOrder) {
             if ($a['resource'] === $b['resource']) {
                 if ($a['annotation']->getRoute()->getPattern() === $b['annotation']->getRoute()->getPattern()) {
                     $methodA = array_search($a['annotation']->getRoute()->getRequirement('_method'), $methodOrder);
