@@ -32,8 +32,27 @@ class CachingApiDocExtractor extends ApiDocExtractor
      */
     protected $cache;
 
+    /**
+     * @var string
+     */
     protected $cacheFile;
 
+    /**
+     * @var bool
+     */
+    protected $debug;
+
+    /**
+     * @param ContainerInterface $container
+     * @param RouterInterface $router
+     * @param Reader $reader
+     * @param DocCommentExtractor $commentExtractor
+     * @param ControllerNameParser $controllerNameParser
+     * @param array $handlers
+     * @param array $annotationsProviders
+     * @param string $cacheFile
+     * @param bool|false $debug
+     */
     public function __construct(
         ContainerInterface $container,
         RouterInterface $router,
@@ -47,12 +66,18 @@ class CachingApiDocExtractor extends ApiDocExtractor
     ) {
         parent::__construct($container, $router, $reader, $commentExtractor, $controllerNameParser, $handlers, $annotationsProviders);
         $this->cacheFile = $cacheFile;
-        $this->cache = new ConfigCache($this->cacheFile, $debug);
+        $this->debug = $debug;
     }
 
+    /**
+     * @param string $view View name
+     * @return array|mixed
+     */
     public function all($view = ApiDoc::DEFAULT_VIEW)
     {
-        if ($this->cache->isFresh() === false) {
+        $cache = $this->getViewCache($view);
+
+        if ($cache->isFresh() === false) {
 
             $resources = array();
 
@@ -67,12 +92,23 @@ class CachingApiDocExtractor extends ApiDocExtractor
             $resources = array_merge($resources, $this->router->getRouteCollection()->getResources());
 
             $data = parent::all($view);
-            $this->cache->write(serialize($data), $resources);
+
+            $cache->write(serialize($data), $resources);
 
             return $data;
         }
 
-        return unserialize(file_get_contents($this->cacheFile));
+        return unserialize(file_get_contents($cache));
 
     }
+
+    /**
+     * @param string $view
+     * @return ConfigCache
+     */
+    protected function getViewCache($view)
+    {
+        return new ConfigCache($this->cacheFile.'.'.$view, $this->debug);
+    }
+
 }
