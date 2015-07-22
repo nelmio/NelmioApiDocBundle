@@ -42,7 +42,7 @@ class MarkdownFormatter extends AbstractFormatter
             $markdown .= "#### Requirements ####\n\n";
 
             foreach ($data['requirements'] as $name => $infos) {
-                $markdown .= sprintf("**%s**\n\n", $name);
+                $markdown .= sprintf("\n**%s**\n", $name);
 
                 if (!empty($infos['requirement'])) {
                     $markdown .= sprintf("  - Requirement: %s\n", $infos['requirement']);
