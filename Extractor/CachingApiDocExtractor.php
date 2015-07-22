@@ -28,19 +28,14 @@ use Symfony\Component\Routing\RouterInterface;
 class CachingApiDocExtractor extends ApiDocExtractor
 {
     /**
-     * @var \Symfony\Component\Config\ConfigCache
-     */
-    protected $cache;
-
-    /**
      * @var string
      */
-    protected $cacheFile;
+    private $cacheFile;
 
     /**
      * @var bool
      */
-    protected $debug;
+    private $debug;
 
     /**
      * @param ContainerInterface $container
@@ -65,6 +60,7 @@ class CachingApiDocExtractor extends ApiDocExtractor
         $debug = false
     ) {
         parent::__construct($container, $router, $reader, $commentExtractor, $controllerNameParser, $handlers, $annotationsProviders);
+
         $this->cacheFile = $cacheFile;
         $this->debug = $debug;
     }
@@ -106,7 +102,7 @@ class CachingApiDocExtractor extends ApiDocExtractor
      * @param string $view
      * @return ConfigCache
      */
-    protected function getViewCache($view)
+    private function getViewCache($view)
     {
         return new ConfigCache($this->cacheFile.'.'.$view, $this->debug);
     }
