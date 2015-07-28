@@ -31,10 +31,10 @@
         "symfony/yaml": "~2.3",
         "symfony/form": "~2.3",
         "symfony/finder": "~2.3",
-        "symfony/serializer": "~2.7@dev",
+        "symfony/serializer": "~2.7",
         "friendsofsymfony/rest-bundle": "~1.0",
         "jms/serializer-bundle": ">=0.11",
-        "dunglas/api-bundle": "dev-master",
+        "dunglas/api-bundle": "~1.0@beta",
         "sensio/framework-extra-bundle": "~3.0",
         "symfony/phpunit-bridge": "~2.7"
     },
