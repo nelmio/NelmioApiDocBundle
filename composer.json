@@ -1,5 +1,5 @@
 {
-    "name": "nelmio/api-doc-bundle",
+    "name": "nzo/api-doc-bundle",
     "description": "Generates documentation for your REST API from annotations",
     "keywords": ["api", "documentation", "doc", "rest"],
     "type": "symfony-bundle",
@@ -18,7 +18,8 @@
         "symfony/twig-bundle": "~2.3",
         "symfony/framework-bundle": "~2.3",
         "symfony/console": "~2.3",
-        "michelf/php-markdown": "~1.4"
+        "michelf/php-markdown": "~1.4",
+        "justinrainbow/json-schema": "~1.4"
     },
     "conflict": {
         "jms/serializer": "<0.12",
