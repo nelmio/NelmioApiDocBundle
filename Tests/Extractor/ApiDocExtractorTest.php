@@ -47,9 +47,9 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertTrue(is_array($data));
         $this->assertCount(self::$ROUTES_QUANTITY_DEFAULT, $data);
 
-        $cacheFile = $container->getParameter('kernel.cache_dir') . '/api-doc.cache';
+        $cacheFile = $container->getParameter('kernel.cache_dir') . '/api-doc.cache.' . ApiDoc::DEFAULT_VIEW;
         $this->assertFileExists($cacheFile);
-        $this->assertEquals(file_get_contents($cacheFile), serialize($data));
+        $this->assertStringEqualsFile($cacheFile, serialize($data));
 
         foreach ($data as $key => $d) {
             $this->assertTrue(is_array($d));
