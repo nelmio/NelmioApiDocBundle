@@ -220,6 +220,12 @@ class ApiDocExtractor
                 $class = ClassUtils::getRealClass(get_class($this->container->get($controller)));
                 $this->container->leaveScope('request');
             }
+        } elseif ($this->container->has($controller)) {
+            $method = '__invoke';
+            $this->container->enterScope('request');
+            $this->container->set('request', new Request(), 'request');
+            $class = ClassUtils::getRealClass(get_class($this->container->get($controller)));
+            $this->container->leaveScope('request');
         }
 
         if (isset($class) && isset($method)) {
