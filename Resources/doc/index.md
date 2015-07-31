@@ -137,6 +137,8 @@ The following properties are available:
 
 * `tags`: allow to tag a method (e.g. `beta` or `in-development`). Either a single tag or an array of tags. Each tag can have an optional hex colorcode attached.
 
+* `schema`: using external json file as parameters input;
+
 ```php
 <?php
 
@@ -594,6 +596,37 @@ services:
 ```
 
 Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tree/master/Extractor/Handler).
+
+### Using You Own Json File Parameters
+
+Your need to specify the name of the json file in the **scheam** annotation.
+
+```php
+/**
+     * @ApiDoc(
+     *  schema="jsonSchemaFile.json",
+     *  requirements={
+     *      {
+     *          "name"="limit",
+     *          "dataType"="integer",
+     *          "requirement"="\d+",
+     *          "description"="how many objects to return"
+     *      }
+     *  }
+     * )
+     */
+    public function cgetAction($id)
+    {
+    }
+```
+
+And configure the path to your file in your config.yml
+
+```yaml
+# app/config/config.yml
+nelmio_api_doc:
+    schema_path: '%kernel.root_dir%/../src/MyBundle/JsonFiles/'
+```
 
 ### Configuration Reference
 
