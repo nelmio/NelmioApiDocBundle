@@ -60,6 +60,7 @@
 
         <service id="nelmio_api_doc.extractor.handler.phpdoc" class="%nelmio_api_doc.extractor.handler.phpdoc.class%" public="false">
             <argument type="service" id="nelmio_api_doc.doc_comment_extractor" />
+            <argument>%nelmio_api_doc.schema_path%</argument>
             <tag name="nelmio_api_doc.extractor.handler"/>
         </service>
 
