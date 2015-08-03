@@ -13,13 +13,14 @@ namespace Nelmio\ApiDocBundle\Tests\Extractor;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Extractor\ApiDocExtractor;
+use Nelmio\ApiDocBundle\Tests\Fixtures\Controller\ConcreteController;
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
     const NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE = 5;
 
-    private static $ROUTES_QUANTITY_DEFAULT = 33; // Routes in the default view
+    private static $ROUTES_QUANTITY_DEFAULT = 35; // Routes in the default view
     private static $ROUTES_QUANTITY_PREMIUM = 6;  // Routes in the premium view
     private static $ROUTES_QUANTITY_TEST    = 2;  // Routes in the test view
 
@@ -39,7 +40,7 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->all();
         restore_error_handler();
 
-        $httpsKey = 20;
+        $httpsKey = 22;
         if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
             $httpsKey += self::NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE;
         }
@@ -369,5 +370,25 @@ class ApiDocExtractorTest extends WebTestCase
 
         $this->assertTrue(is_array($data));
         $this->assertCount($count, $data);
+    }
+
+    public function testInheritedActionGetsApiDocDefaultsAssigned()
+    {
+        $container = $this->getContainer();
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\ConcreteController::indexAction', 'test_route_inheritance');
+
+        $this->assertSame(ConcreteController::SECTION, $annotation->getSection());
+    }
+
+    public function testInheritedActionWithOwnAttributesWillNotBeOverwritten()
+    {
+        $container = $this->getContainer();
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\ConcreteController::ownAttributesAction', 'test_route_inheritance_own_attributes');
+
+        $this->assertSame(ConcreteController::OWN_SECTION, $annotation->getSection());
     }
 }

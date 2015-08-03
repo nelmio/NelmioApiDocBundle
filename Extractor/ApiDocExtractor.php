@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Extractor;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Util\ClassUtils;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\ApiDocDefaults;
 use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Nelmio\ApiDocBundle\Parser\PostParserInterface;
@@ -27,6 +28,7 @@ use Symfony\Component\Routing\RouterInterface;
 class ApiDocExtractor
 {
     const ANNOTATION_CLASS = 'Nelmio\\ApiDocBundle\\Annotation\\ApiDoc';
+    const ANNOTATION_CLASS_DEFAULTS= 'Nelmio\\ApiDocBundle\\Annotation\\ApiDocDefaults';
 
     /**
      * @var ContainerInterface
@@ -204,23 +206,7 @@ class ApiDocExtractor
      */
     public function getReflectionMethod($controller)
     {
-        if (false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
-            $controller = $this->controllerNameParser->parse($controller);
-        }
-
-        if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
-            $class = $matches[1];
-            $method = $matches[2];
-        } elseif (preg_match('#(.+):([\w]+)#', $controller, $matches)) {
-            $controller = $matches[1];
-            $method = $matches[2];
-            if ($this->container->has($controller)) {
-                $this->container->enterScope('request');
-                $this->container->set('request', new Request(), 'request');
-                $class = ClassUtils::getRealClass(get_class($this->container->get($controller)));
-                $this->container->leaveScope('request');
-            }
-        }
+        list($class, $method) = $this->splitControllerDefinition($controller);
 
         if (isset($class) && isset($method)) {
             try {
@@ -230,6 +216,35 @@ class ApiDocExtractor
         }
 
         return null;
+    }
+
+    /**
+     * @param $controller
+     * @return array
+     */
+    private function splitControllerDefinition($controller)
+    {
+        if (false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
+            $controller = $this->controllerNameParser->parse($controller);
+        }
+
+        if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
+            $class  = $matches[1];
+            $method = $matches[2];
+            return array($class, $method);
+        } elseif (preg_match('#(.+):([\w]+)#', $controller, $matches)) {
+            $controller = $matches[1];
+            $method     = $matches[2];
+            if ($this->container->has($controller)) {
+                $this->container->enterScope('request');
+                $this->container->set('request', new Request(), 'request');
+                $class = ClassUtils::getRealClass(get_class($this->container->get($controller)));
+                $this->container->leaveScope('request');
+                return array($class, $method);
+            }
+            return array(null, $method);
+        }
+        return array(null, null);
     }
 
     /**
@@ -384,6 +399,8 @@ class ApiDocExtractor
             }
 
         }
+
+        $this->applyRouteDefaults($annotation, $route);
 
         return $annotation;
     }
@@ -598,5 +615,30 @@ class ApiDocExtractor
         }
 
         return $parsers;
+    }
+
+    /**
+     * @param ApiDoc $annotation
+     * @param Route $route
+     */
+    protected function applyRouteDefaults(ApiDoc $annotation, Route $route)
+    {
+        list($controllerClassName) = $this->splitControllerDefinition($route->getDefault('_controller'));
+        if (!empty($controllerClassName)) {
+
+            /** @var ApiDocDefaults $annotation */
+            $defaultAnnotation = $this->reader->getClassAnnotation(new \ReflectionClass($controllerClassName), self::ANNOTATION_CLASS_DEFAULTS);
+
+            if (!empty($defaultAnnotation)) {
+                $defaults = $defaultAnnotation->toArray();
+
+                foreach ($defaults as $name => $value) {
+                    $currentValue = $annotation->{'get' . ucfirst($name)}();
+                    if (empty($currentValue)) {
+                        $annotation->{'set' . ucfirst($name)}($value);
+                    }
+                }
+            }
+        }
     }
 }
