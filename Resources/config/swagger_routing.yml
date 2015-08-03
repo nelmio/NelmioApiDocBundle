@@ -1,11 +1,9 @@
 nelmio_api_doc_swagger_resource_list:
-    pattern: /
+    path: /
     defaults: { _controller: NelmioApiDocBundle:ApiDoc:swagger }
-    requirements:
-        _method: GET
+    methods: [GET]
 
 nelmio_api_doc_swagger_api_declaration:
-    pattern: /{resource}
+    path: /{resource}
     defaults: { _controller: NelmioApiDocBundle:ApiDoc:swagger }
-    requirements:
-        _method: GET
+    methods: [GET]

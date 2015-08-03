@@ -132,7 +132,7 @@ class ApiDocExtractor
                             $resources[] = $resource;
                         } else {
                             // remove format from routes used for resource grouping
-                            $resources[] = str_replace('.{_format}', '', $route->getPattern());
+                            $resources[] = str_replace('.{_format}', '', $route->getPath());
                         }
                     }
 
@@ -151,7 +151,7 @@ class ApiDocExtractor
         rsort($resources);
         foreach ($array as $index => $element) {
             $hasResource = false;
-            $pattern     = $element['annotation']->getRoute()->getPattern();
+            $pattern     = $element['annotation']->getRoute()->getPath();
 
             foreach ($resources as $resource) {
                 if (0 === strpos($pattern, $resource) || $resource === $element['annotation']->getResource()) {
@@ -170,14 +170,21 @@ class ApiDocExtractor
         $methodOrder = array('GET', 'POST', 'PUT', 'DELETE');
         usort($array, function ($a, $b) use ($methodOrder) {
             if ($a['resource'] === $b['resource']) {
-                if ($a['annotation']->getRoute()->getPattern() === $b['annotation']->getRoute()->getPattern()) {
-                    $methodA = array_search($a['annotation']->getRoute()->getRequirement('_method'), $methodOrder);
-                    $methodB = array_search($b['annotation']->getRoute()->getRequirement('_method'), $methodOrder);
+                if ($a['annotation']->getRoute()->getPath() === $b['annotation']->getRoute()->getPath()) {
+
+                    $methodsA = $a['annotation']->getRoute()->getMethods();
+                    $methodsB = $b['annotation']->getRoute()->getMethods();
+
+                    $singleMethodA = array_shift($methodsA);
+                    $singleMethodB = array_shift($methodsB);
+
+                    $methodA = array_search($singleMethodA, $methodOrder);
+                    $methodB = array_search($singleMethodB, $methodOrder);
 
                     if ($methodA === $methodB) {
                         return strcmp(
-                            $a['annotation']->getRoute()->getRequirement('_method'),
-                            $b['annotation']->getRoute()->getRequirement('_method')
+                            $singleMethodA,
+                            $singleMethodB
                         );
                     }
 
@@ -185,8 +192,8 @@ class ApiDocExtractor
                 }
 
                 return strcmp(
-                    $a['annotation']->getRoute()->getPattern(),
-                    $b['annotation']->getRoute()->getPattern()
+                    $a['annotation']->getRoute()->getPath(),
+                    $b['annotation']->getRoute()->getPath()
                 );
             }
 
