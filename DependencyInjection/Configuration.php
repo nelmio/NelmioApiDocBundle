@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->booleanNode('default_sections_opened')->defaultTrue()->end()
+                ->scalarNode('schema_path')->end()
                 ->arrayNode('motd')
                     ->addDefaultsIfNotSet()
                     ->children()
