@@ -128,7 +128,7 @@ class DunglasApiParser implements ParserInterface
         );
 
         if (null == $type) {
-            if (null !== $attributeMetadata->getType()) {
+            if (null === $attributeMetadata->getType()) {
                 // Default to string
                 $data['dataType'] = DataTypes::STRING;
 
