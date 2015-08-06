@@ -54,6 +54,7 @@ class ApiDocFactory
             return false;
         }
 
+        $route = null;
         if (array_key_exists(self::KEY_ROUTE, $documentation)) {
             if (($route = $this->router->getRouteCollection()->get($documentation[self::KEY_ROUTE])) !== null) {
                 $apiDoc->setRoute($route);
@@ -62,8 +63,8 @@ class ApiDocFactory
             }
         }
 
-        if (array_key_exists(self::KEY_RESOURCE, $documentation)) {
-            $resource = $documentation[self::KEY_RESOURCE];
+        if (array_key_exists(self::KEY_RESOURCE, $documentation) && $documentation[self::KEY_RESOURCE] === true) {
+            $resource = str_replace('.{_format}', '', $route->getPattern());
         }
 
         return array(

@@ -112,44 +112,6 @@ class ApiDocExtractor
     }
 
     /**
-     * Extracts api doc from all known files
-     *
-     * @return array
-     */
-    public function extractFiles($view = ApiDoc::DEFAULT_VIEW)
-    {
-        $configuration = $this->container->getParameter('nelmio_api_doc.documentation_files');
-        $basePath      = $configuration['path'];
-        $fileSystem    = new Filesystem();
-        $finder        = new Finder();
-        $apiDocs       = array();
-
-        foreach ($this->container->get('kernel')->getBundles() as $bundle) {
-            $path       = $bundle->getPath() . $basePath;
-
-            if ($fileSystem->exists($path)) {
-                $finder->in($path);
-            }
-        }
-
-        foreach ($finder->files()->name('*.yml') as $file) {
-            $docs = Yaml::parse($file);
-
-            if (is_array($docs)) {
-                foreach ($docs as $doc) {
-                    $apiDoc = $this->apiDocFactory->create($doc, $view);
-
-                    if ($apiDoc !== false) {
-                        $apiDocs[] = $apiDoc;
-                    }
-                }
-            }
-        }
-
-        return $apiDocs;
-    }
-
-    /**
      * Extracts all api docs from all known routes & all known api doc files
      *
      * @param string $view

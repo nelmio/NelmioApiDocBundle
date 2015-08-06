@@ -288,15 +288,17 @@ then the `premium` view will be located at:
         http://example.org/doc/api/v1/premium
 
 
-### Declare your Api doc in file
+### Declare your Api doc in files
 
-You can declare your api doc in YAML file if you configured the full path of your api doc file configuration in your config.yml
+You can declare your api doc in YAML files if you enable the documentation_files in your config.yml
  
  ```yaml
  # app/config/config.yml
  nelmio_api_doc:
-     documentation_files:  []
+     documentation_files:  ~
 ```
+
+The system loads all yaml files in the **BUNDLE_NAME/Resources/nelmio**
 
 The structure of your file configuration use the ```ApiDoc``` annotation
 
@@ -307,6 +309,7 @@ The structure of your file configuration use the ```ApiDoc``` annotation
   resource: false
   description: 'Description test 2'
   route: route_test
+  views: [default, premium]
   requirements:
       - { name: foo, dataType: string, requirement: \s+, description: 'foo requirement' }
   parameters:
@@ -695,5 +698,7 @@ nelmio_api_doc:
         enabled:              false
         file:                 '%kernel.cache_dir%/api-doc.cache'
     # Define your ApiDoc file configuration
-    documentation_files:  []
+    documentation_files:
+        enabled:              false
+        path:                 /Resources/nelmio
 ```
