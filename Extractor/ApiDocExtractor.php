@@ -211,14 +211,20 @@ class ApiDocExtractor
         if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
             $class = $matches[1];
             $method = $matches[2];
-        } elseif (preg_match('#(.+):([\w]+)#', $controller, $matches)) {
-            $controller = $matches[1];
-            $method = $matches[2];
+        } else {
+            if (preg_match('#(.+):([\w]+)#', $controller, $matches)) {
+                $controller = $matches[1];
+                $method = $matches[2];
+            }
+
             if ($this->container->has($controller)) {
                 $this->container->enterScope('request');
                 $this->container->set('request', new Request(), 'request');
                 $class = ClassUtils::getRealClass(get_class($this->container->get($controller)));
                 $this->container->leaveScope('request');
+                if (!isset($method) && method_exists($class, '__invoke')) {
+                    $method = '__invoke';
+                }
             }
         }
 
