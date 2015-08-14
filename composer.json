@@ -34,7 +34,7 @@
         "symfony/serializer": "~2.7",
         "friendsofsymfony/rest-bundle": "~1.0",
         "jms/serializer-bundle": ">=0.11",
-        "dunglas/api-bundle": "~1.0@beta",
+        "dunglas/api-bundle": "~1.0@dev",
         "sensio/framework-extra-bundle": "~3.0",
         "symfony/phpunit-bridge": "~2.7"
     },

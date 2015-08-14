@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\Parser;
 use Dunglas\ApiBundle\Api\ResourceCollectionInterface;
 use Dunglas\ApiBundle\Api\ResourceInterface;
 use Dunglas\ApiBundle\Mapping\AttributeMetadataInterface;
-use Dunglas\ApiBundle\Mapping\ClassMetadataFactoryInterface;
+use Dunglas\ApiBundle\Mapping\Factory\ClassMetadataFactoryInterface;
 use Nelmio\ApiDocBundle\DataTypes;
 use PropertyInfo\Type;
 
@@ -96,12 +96,12 @@ class DunglasApiParser implements ParserInterface
         );
 
         $data = array();
-        foreach ($classMetadata->getAttributes() as $attributeMetadata) {
+        foreach ($classMetadata->getAttributesMetadata() as $attributeName => $attributeMetadata) {
             if (
                 ($attributeMetadata->isReadable() && self::OUT_PREFIX === $io) ||
                 ($attributeMetadata->isWritable() && self::IN_PREFIX === $io)
             ) {
-                $data[$attributeMetadata->getName()] = $this->parseAttribute($resource, $attributeMetadata, $io);
+                $data[$attributeName] = $this->parseAttribute($resource, $attributeMetadata, $io);
             }
         }
 
@@ -128,15 +128,14 @@ class DunglasApiParser implements ParserInterface
         );
 
         if (null == $type) {
-            if (!isset($attributeMetadata->getTypes()[0])) {
+            if (null === $attributeMetadata->getType()) {
                 // Default to string
                 $data['dataType'] = DataTypes::STRING;
 
                 return $data;
             }
 
-            // Use the first type found as primary
-            $type = $attributeMetadata->getTypes()[0];
+            $type = $attributeMetadata->getType();
         }
 
         if ($type->isCollection()) {
