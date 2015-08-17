@@ -426,9 +426,9 @@ since_and_until:
   * versions: >=0.4,<=0.5
 
 
-### `GET` /api/resources/{id}.{_format} ###
+### `DELETE` /api/resources/{id}.{_format} ###
 
-_Retrieve a resource by ID._
+_Delete a resource by ID._
 
 #### Requirements ####
 
@@ -439,9 +439,9 @@ _Retrieve a resource by ID._
 
 
 
-### `DELETE` /api/resources/{id}.{_format} ###
+### `GET` /api/resources/{id}.{_format} ###
 
-_Delete a resource by ID._
+_Retrieve a resource by ID._
 
 #### Requirements ####
 

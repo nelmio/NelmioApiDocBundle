@@ -145,7 +145,7 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertNull($data);
     }
 
-    public function testGetWithInvalidPattern()
+    public function testGetWithInvalidPath()
     {
         $container = $this->getContainer();
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');

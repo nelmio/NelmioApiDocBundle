@@ -35,3 +35,4 @@
 * Fixed: endpoint is undefined in sandbox when custom_endpoint is disabled
 * Fixed: the wrong endpoint value check when no endpoint is set in config
 * Fixed: Swagger commands
+* Fixed: Deprecated usage of routes configuration since Symfony 2.2
