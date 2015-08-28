@@ -19,7 +19,7 @@ class MarkdownExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'extra_markdown' => new \Twig_Filter_Method($this, 'markdown', array('is_safe' => array('html'))),
+            new \Twig_SimpleFilter('extra_markdown', array($this, 'markdown'), array('is_safe' => array('html'))),
         );
     }
 
