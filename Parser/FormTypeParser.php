@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Parser;
 
 use Nelmio\ApiDocBundle\DataTypes;
+use Symfony\Component\Form\ChoiceList\LegacyChoiceListAdapter;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -127,9 +128,13 @@ class FormTypeParser implements ParserInterface
         );
     }
 
-    private function parseForm($form)
+    private function parseForm(FormInterface $form)
     {
         $parameters = array();
+        /**
+         * @var string $name
+         * @var FormInterface $child
+         */
         foreach ($form as $name => $child) {
             $config     = $child->getConfig();
             $options    = $config->getOptions();
@@ -258,9 +263,18 @@ class FormTypeParser implements ParserInterface
                         $parameters[$name]['subType'] = DataTypes::ENUM;
                     }
 
-                    if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
+                    $choices = $config->getOption('choices');
+                    $choiceList = $config->getOption('choice_list');
+
+                    if ($choices && is_array($choices) && count($choices)) {
                         $parameters[$name]['format'] = json_encode($choices);
-                    } elseif (($choiceList = $config->getOption('choice_list')) && $choiceList instanceof ChoiceListInterface) {
+                    } elseif ($choiceList &&
+                        ($choiceList instanceof ChoiceListInterface || $choiceList instanceof LegacyChoiceListAdapter)
+                    ) {
+                        if ($choiceList instanceof LegacyChoiceListAdapter) { // handling introduced in SF 2.7 BC
+                            $choiceList = $choiceList->getAdaptedList();
+                        }
+
                         if (('entity' === $config->getType()->getName() && false === $this->entityToChoice)) {
                             $choices = array();
                         } else {

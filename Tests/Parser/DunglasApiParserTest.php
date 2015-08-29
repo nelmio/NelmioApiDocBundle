@@ -36,14 +36,19 @@ class DunglasApiParserTest extends WebTestCase
 
         $item = array('class' => DunglasApiParser::OUT_PREFIX.':Nelmio\ApiDocBundle\Tests\Fixtures\Model\Popo');
 
-        $expected = array (
-            'foo' =>
-                array (
-                    'required' => false,
-                    'description' => '',
-                    'readonly' => false,
-                    'dataType' => DataTypes::STRING,
-                ),
+        $expected = array(
+            'id' => array(
+                'dataType' => DataTypes::INTEGER,
+                'required' => false,
+                'description' => '',
+                'readonly' => false,
+            ),
+            'foo' => array(
+                'dataType' => DataTypes::STRING,
+                'required' => false,
+                'description' => '',
+                'readonly' => false,
+            ),
         );
 
         $this->assertTrue($parser->supports($item));
