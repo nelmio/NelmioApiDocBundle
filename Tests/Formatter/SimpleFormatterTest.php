@@ -26,9 +26,9 @@ class SimpleFormatterTest extends WebTestCase
         $result    = $container->get('nelmio_api_doc.formatter.simple_formatter')->format($data);
 
         if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
-            $expected = include __DIR__ . '/expectedResults/dunglas-simple-formatter.php';
+            $expected = include __DIR__.'/expectedResults/dunglas-simple-formatter.php';
         } else {
-            $expected = include __DIR__ . '/expectedResults/simple-formatter.php';
+            $expected = include __DIR__.'/expectedResults/simple-formatter.php';
         }
 
         $this->assertEquals($expected, $result);

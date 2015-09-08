@@ -70,7 +70,7 @@ class CachingApiDocExtractorTest extends WebTestCase
 
         $cacheFile = $container->getParameter('kernel.cache_dir').'/api-doc.cache';
 
-        $expectedViewCacheFile = $cacheFile . '.' . $view;
+        $expectedViewCacheFile = $cacheFile.'.'.$view;
 
         $this->assertFileNotExists($expectedViewCacheFile);
 

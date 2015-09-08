@@ -26,9 +26,9 @@ class MarkdownFormatterTest extends WebTestCase
         $result = $container->get('nelmio_api_doc.formatter.markdown_formatter')->format($data);
 
         if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
-            $expected = file_get_contents(__DIR__ . '/expectedResults/dunglas-resource.md');
+            $expected = file_get_contents(__DIR__.'/expectedResults/dunglas-resource.md');
         } else {
-            $expected = file_get_contents(__DIR__ . '/expectedResults/other-resources.md');
+            $expected = file_get_contents(__DIR__.'/expectedResults/other-resources.md');
         }
 
         $this->assertEquals($expected, $result);
