@@ -3,6 +3,7 @@
 namespace Nelmio\ApiDocBundle;
 
 use Nelmio\ApiDocBundle\DependencyInjection\AnnotationsProviderCompilerPass;
+use Nelmio\ApiDocBundle\DependencyInjection\Swagger2ConfigCompilerPass;
 use Nelmio\ApiDocBundle\DependencyInjection\SwaggerConfigCompilerPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,5 +22,6 @@ class NelmioApiDocBundle extends Bundle
         $container->addCompilerPass(new ExtractorHandlerCompilerPass());
         $container->addCompilerPass(new AnnotationsProviderCompilerPass());
         $container->addCompilerPass(new SwaggerConfigCompilerPass());
+        $container->addCompilerPass(new Swagger2ConfigCompilerPass());
     }
 }
