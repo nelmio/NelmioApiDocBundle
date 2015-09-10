@@ -181,6 +181,20 @@ table tbody tr td {
   font-size: 0.9em;
 }
 
+#expand_collapse_options {
+    margin: 0px 40px 20px 0px;
+    text-align: right;
+}
+
+#expand_collapse_options a {
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+#expand_collapse_options a:hover {
+    text-decoration: underline;
+}
+
 .section {
     padding: 5px 20px;
     border-bottom: 1px solid #ddd;
