@@ -34,10 +34,10 @@ class Swagger2ConfigCompilerPass implements CompilerPassInterface
     {
         $formatter = $container->getDefinition('nelmio_api_doc.formatter.swagger2_formatter');
 
-        $formatter->addMethodCall('setBasePath', array($container->getParameter('nelmio_api_doc.swagger.base_path')));
-        $formatter->addMethodCall('setInfo', array($container->getParameter('nelmio_api_doc.swagger.info')));
-        $formatter->addMethodCall('setConsumes', array($container->getParameter('nelmio_api_doc.swagger.consumes')));
-        $formatter->addMethodCall('setProduces', array($container->getParameter('nelmio_api_doc.swagger.produces')));
-        $formatter->addMethodCall('setSchemes', array($container->getParameter('nelmio_api_doc.swagger.schemes')));
+        $formatter->addMethodCall('setBasePath', array($container->getParameter('nelmio_api_doc.swagger2.base_path')));
+        $formatter->addMethodCall('setInfo', array($container->getParameter('nelmio_api_doc.swagger2.info')));
+        $formatter->addMethodCall('setConsumes', array($container->getParameter('nelmio_api_doc.swagger2.consumes')));
+        $formatter->addMethodCall('setProduces', array($container->getParameter('nelmio_api_doc.swagger2.produces')));
+        $formatter->addMethodCall('setSchemes', array($container->getParameter('nelmio_api_doc.swagger2.schemes')));
     }
 }
