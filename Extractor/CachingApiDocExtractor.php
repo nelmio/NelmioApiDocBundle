@@ -13,10 +13,11 @@ namespace Nelmio\ApiDocBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -27,29 +28,52 @@ use Symfony\Component\Routing\RouterInterface;
 class CachingApiDocExtractor extends ApiDocExtractor
 {
     /**
-     * @var \Symfony\Component\Config\ConfigCache
+     * @var string
      */
-    protected $cache;
+    private $cacheFile;
 
-    protected $cacheFile;
+    /**
+     * @var bool
+     */
+    private $debug;
 
+    /**
+     * @param ContainerInterface $container
+     * @param RouterInterface $router
+     * @param Reader $reader
+     * @param DocCommentExtractor $commentExtractor
+     * @param ControllerNameParser $controllerNameParser
+     * @param array $handlers
+     * @param array $annotationsProviders
+     * @param string $cacheFile
+     * @param bool|false $debug
+     */
     public function __construct(
         ContainerInterface $container,
         RouterInterface $router,
         Reader $reader,
         DocCommentExtractor $commentExtractor,
+        ControllerNameParser $controllerNameParser,
         array $handlers,
+        array $annotationsProviders,
         $cacheFile,
         $debug = false
     ) {
-        parent::__construct($container, $router, $reader, $commentExtractor, $handlers);
+        parent::__construct($container, $router, $reader, $commentExtractor, $controllerNameParser, $handlers, $annotationsProviders);
+
         $this->cacheFile = $cacheFile;
-        $this->cache = new ConfigCache($this->cacheFile, $debug);
+        $this->debug = $debug;
     }
 
-    public function all()
+    /**
+     * @param string $view View name
+     * @return array|mixed
+     */
+    public function all($view = ApiDoc::DEFAULT_VIEW)
     {
-        if ($this->cache->isFresh() === false) {
+        $cache = $this->getViewCache($view);
+
+        if ($cache->isFresh() === false) {
 
             $resources = array();
 
@@ -63,13 +87,24 @@ class CachingApiDocExtractor extends ApiDocExtractor
 
             $resources = array_merge($resources, $this->router->getRouteCollection()->getResources());
 
-            $data = parent::all();
-            $this->cache->write(serialize($data), $resources);
-            
+            $data = parent::all($view);
+
+            $cache->write(serialize($data), $resources);
+
             return $data;
         }
 
-        return unserialize(file_get_contents($this->cacheFile));
+        return unserialize(file_get_contents($cache));
 
     }
-} 
+
+    /**
+     * @param string $view
+     * @return ConfigCache
+     */
+    private function getViewCache($view)
+    {
+        return new ConfigCache($this->cacheFile.'.'.$view, $this->debug);
+    }
+
+}

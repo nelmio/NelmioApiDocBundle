@@ -1,0 +1,22 @@
+doctrine:
+    dbal:
+        driver:                      "pdo_sqlite"
+        path:                        "%kernel.cache_dir%/db.sqlite"
+        charset:                     "UTF8"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping:                true
+
+framework:
+    router:        { resource: "%kernel.root_dir%/config/dunglas_api_routing.yml" }
+
+dunglas_api:
+    title:       API
+    description: Test API
+
+services:
+    dunglas_json_ld_api.popo:
+        parent:    "api.resource"
+        arguments: [ "Nelmio\\ApiDocBundle\\Tests\\Fixtures\\Model\\Popo" ]
+        tags:      [ { name: "api.resource" } ]

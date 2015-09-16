@@ -16,17 +16,24 @@
 
         <parameter key="nelmio_api_doc.parser.collection_parser.class">Nelmio\ApiDocBundle\Parser\CollectionParser</parameter>
         <parameter key="nelmio_api_doc.parser.form_errors_parser.class">Nelmio\ApiDocBundle\Parser\FormErrorsParser</parameter>
+        <parameter key="nelmio_api_doc.parser.json_serializable_parser.class">Nelmio\ApiDocBundle\Parser\JsonSerializableParser</parameter>
     </parameters>
 
     <services>
-        <service id='nelmio_api_doc.doc_comment_extractor' class="%nelmio_api_doc.doc_comment_extractor.class%" />
+        <service id="nelmio_api_doc.doc_comment_extractor" class="%nelmio_api_doc.doc_comment_extractor.class%" />
+
+        <service id="nelmio_api_doc.controller_name_parser" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
+            <argument type="service" id="kernel" />
+        </service>
 
         <service id="nelmio_api_doc.extractor.api_doc_extractor" class="%nelmio_api_doc.extractor.api_doc_extractor.class%">
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="service_container" />
             <argument type="service" id="router" />
             <argument type="service" id="annotation_reader" />
             <argument type="service" id="nelmio_api_doc.doc_comment_extractor" />
-            <argument type="collection"/>
+            <argument type="service" id="nelmio_api_doc.controller_name_parser" />
+            <argument type="collection" />
+            <argument type="collection" />
         </service>
 
         <service id="nelmio_api_doc.form.extension.description_form_type_extension" class="%nelmio_api_doc.form.extension.description_form_type_extension.class%">
@@ -61,6 +68,11 @@
         </service>
         <service id="nelmio_api_doc.parser.form_errors_parser" class="%nelmio_api_doc.parser.form_errors_parser.class%">
             <tag name="nelmio_api_doc.extractor.parser" />
+        </service>
+
+        <!-- priority=1 means it comes before the validation parser, which can often add better type information -->
+        <service id="nelmio_api_doc.parser.json_serializable_parser" class="%nelmio_api_doc.parser.json_serializable_parser.class%">
+            <tag name="nelmio_api_doc.extractor.parser" priority="1" />
         </service>
     </services>
 

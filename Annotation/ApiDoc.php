@@ -18,12 +18,21 @@ use Symfony\Component\Routing\Route;
  */
 class ApiDoc
 {
+    const DEFAULT_VIEW = 'default';
+
     /**
      * Requirements are mandatory parameters in a route.
      *
      * @var array
      */
     private $requirements = array();
+
+    /**
+     * Which views is this route used. Defaults to "Default"
+     *
+     * @var array
+     */
+    private $views = array();
 
     /**
      * Filters are optional parameters in the query string.
@@ -188,6 +197,16 @@ class ApiDoc
                 unset($requirement['name']);
 
                 $this->addRequirement($name, $requirement);
+            }
+        }
+
+        if (isset($data['views'])) {
+            if (! is_array($data['views'])) {
+                $data['views'] = array($data['views']);
+            }
+
+            foreach ($data['views'] as $view) {
+                $this->addView($view);
             }
         }
 
@@ -371,6 +390,22 @@ class ApiDoc
     public function getSection()
     {
         return $this->section;
+    }
+
+    /**
+     * @return array
+     */
+    public function addView($view)
+    {
+        $this->views[] = $view;
+    }
+
+    /**
+     * @return array
+     */
+    public function getViews()
+    {
+        return $this->views;
     }
 
     /**
@@ -623,6 +658,10 @@ class ApiDoc
 
         if ($requirements = $this->requirements) {
             $data['requirements'] = $requirements;
+        }
+
+        if ($views = $this->views) {
+            $data['views'] = $views;
         }
 
         if ($response = $this->response) {

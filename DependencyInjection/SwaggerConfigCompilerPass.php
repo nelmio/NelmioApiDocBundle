@@ -11,15 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
-
 
 /**
  * Compiler pass that configures the SwaggerFormatter instance.

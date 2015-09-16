@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Nelmio\ApiDocBundle\Tests\Extractor;
 
 use Nelmio\ApiDocBundle\Extractor\ApiDocExtractor;

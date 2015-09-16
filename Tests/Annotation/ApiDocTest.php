@@ -26,6 +26,7 @@ class ApiDocTest extends TestCase
         $this->assertTrue(is_array($array));
         $this->assertFalse(isset($array['filters']));
         $this->assertFalse($annot->isResource());
+        $this->assertEmpty($annot->getViews());
         $this->assertFalse($annot->getDeprecated());
         $this->assertFalse(isset($array['description']));
         $this->assertFalse(isset($array['requirements']));

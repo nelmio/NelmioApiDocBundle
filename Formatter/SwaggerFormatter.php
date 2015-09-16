@@ -15,8 +15,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Swagger\ModelRegistry;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Router;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Produces Swagger-compliant resource lists and API declarations as defined here:
@@ -79,8 +77,8 @@ class SwaggerFormatter implements FormatterInterface
      *
      * If resource is provided, an API declaration for that resource is produced. Otherwise, a resource listing is returned.
      *
-     * @param array|ApiDoc[] $collection
-     * @param null|string $resource
+     * @param  array|ApiDoc[] $collection
+     * @param  null|string    $resource
      * @return string|array
      */
     public function format(array $collection, $resource = null)
@@ -95,7 +93,7 @@ class SwaggerFormatter implements FormatterInterface
     /**
      * Formats the collection into Swagger-compliant output.
      *
-     * @param array $collection
+     * @param  array $collection
      * @return array
      */
     public function produceResourceListing(array $collection)
@@ -167,8 +165,8 @@ class SwaggerFormatter implements FormatterInterface
     /**
      * Format documentation data for one route.
      *
-     * @param ApiDoc $annotation
-     * return string|array
+     * @param  ApiDoc                  $annotation
+     *                                             return string|array
      * @throws \BadMethodCallException
      */
     public function formatOne(ApiDoc $annotation)
@@ -179,8 +177,8 @@ class SwaggerFormatter implements FormatterInterface
     /**
      * Formats collection to produce a Swagger-compliant API declaration for the given resource.
      *
-     * @param array $collection
-     * @param string $resource
+     * @param  array  $collection
+     * @param  string $resource
      * @return array
      */
     protected function produceApiDeclaration(array $collection, $resource)
@@ -201,7 +199,6 @@ class SwaggerFormatter implements FormatterInterface
         $main = null;
 
         $apiBag = array();
-
 
         foreach ($collection as $item) {
 
@@ -373,6 +370,7 @@ class SwaggerFormatter implements FormatterInterface
         $path = preg_replace('/({.*?})/', '', $path);
         $path = trim(preg_replace('/[^0-9a-zA-Z]/', '-', $path), '-');
         $path = preg_replace('/-+/', '-', $path);
+
         return $path;
     }
 
@@ -387,7 +385,7 @@ class SwaggerFormatter implements FormatterInterface
     /**
      * Formats query parameters to Swagger-compliant form.
      *
-     * @param array $input
+     * @param  array $input
      * @return array
      */
     protected function deriveQueryParameters(array $input)
@@ -580,6 +578,7 @@ class SwaggerFormatter implements FormatterInterface
 
         $pattern = sprintf('#^%s#', preg_quote($this->basePath));
         $subPath = preg_replace($pattern, '', $path);
+
         return $subPath;
     }
 
@@ -594,6 +593,7 @@ class SwaggerFormatter implements FormatterInterface
     {
         $resource = preg_replace('#/^#', '', $resource);
         $resource = $this->normalizeResourcePath($resource);
+
         return sprintf('%s_%s', strtolower($method), $resource);
     }
 }
