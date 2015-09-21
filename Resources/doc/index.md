@@ -595,9 +595,9 @@ services:
 
 Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tree/master/Extractor/Handler).
 
-### Using You Own Json File Parameters
+### Using Your Own Json File Parameters
 
-You can use an external json schema file as an input that holds on your schema validation parameter.
+You can use an external json schema file as an input that holds in your schema validation parameters.
 You need to specify the name of the json file as an input in the **schema** annotation parameter.
 
 ```php
@@ -619,7 +619,7 @@ You need to specify the name of the json file as an input in the **schema** anno
     }
 ```
 
-And configure the path to your file in your config.yml
+And configure the path to the file in your config.yml
 
 ```yaml
 # app/config/config.yml

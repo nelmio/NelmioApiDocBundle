@@ -754,7 +754,7 @@ class ApiDoc
         }
     }
 
-    public function schemaFormat($properties, $required)
+    public function schemaFormat($properties, $required, $objectName = null)
     {
         $result = [];
         foreach ($properties as $key => $val) {
@@ -768,6 +768,7 @@ class ApiDoc
                 unset($content['pattern']);
             }
             $content['required'] = in_array($key, $required);
+            $key = ($objectName) ? ucfirst($objectName) . ' : ' . $key : $key;
             $result[$key] = $content;
         }
 
