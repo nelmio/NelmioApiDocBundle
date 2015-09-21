@@ -537,6 +537,7 @@
                     var data = content.length ? content : body;
                     var ajaxOptions = {
                         url: (url.indexOf('http')!=0?endpoint:'') + url,
+                        xhrFields: { withCredentials: true },
                         type: method,
                         data: data,
                         headers: headers,
