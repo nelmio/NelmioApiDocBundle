@@ -55,14 +55,17 @@ class PhpDocHandler implements HandlerInterface
             $path = 'file://' . realpath($this->schemaPath . $annotation->getSchema());
             $properties = (array)json_decode(file_get_contents($path))->properties;
 
+            $tab = [];
             foreach ($properties as $objectName => $property) {
                 if (isset($property->properties)) {
-                    $annotation->setParameters($annotation->schemaFormat($property->properties, $property->required, $objectName));
+                    $tab = array_merge($tab, $annotation->schemaFormat($property->properties, $property->required, $objectName));
                 } else {
                     $required = json_decode(file_get_contents($path))->required;
-                    $annotation->setParameters($annotation->schemaFormat($properties, $required));
+                    $tab = array_merge($tab, $annotation->schemaFormat($properties, $required));
                 }
             }
+
+            $annotation->setParameters($tab);
         }
 
         // requirements
