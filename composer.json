@@ -48,10 +48,5 @@
     "autoload": {
         "psr-0": { "Nelmio\\ApiDocBundle": "" }
     },
-    "target-dir": "Nelmio/ApiDocBundle",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.9.x-dev"
-        }
-    }
+    "target-dir": "Nelmio/ApiDocBundle"
 }
