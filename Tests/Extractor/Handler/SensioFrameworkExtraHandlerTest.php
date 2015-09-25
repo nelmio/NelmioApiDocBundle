@@ -34,5 +34,6 @@ class SensioFrameworkExtraHandlerTest extends WebTestCase
         $this->assertNotNull($annotation);
 
         $this->assertTrue($annotation->getAuthentication());
+        $this->assertSame("'ROLE_USER' and permission 'foo' or 'bar' on foobar", $annotation->getAuthenticationExpression());
     }
 }

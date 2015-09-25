@@ -33,6 +33,7 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['parameters']));
         $this->assertNull($annot->getInput());
         $this->assertFalse($array['authentication']);
+        $this->assertFalse(isset($array['authenticationExpression']));
         $this->assertTrue(is_array($array['authenticationRoles']));
     }
 
