@@ -535,7 +535,7 @@
             var bodyArray = {};
             for (var key in params) {
                 if (key != '_format') {
-                    var obj = key.substr(0, key.indexOf(":")).replace(" ", "").toLowerCase();
+                    var obj = key.substr(0, key.indexOf(":")).replace(" ", "");
                     var index = key.substr(key.indexOf(":") + 1, key.length).replace(" ", "");
                     if (bodyArray[obj] == undefined) {
                         bodyArray[obj] = {};
