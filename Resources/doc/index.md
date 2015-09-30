@@ -410,6 +410,8 @@ nelmio_api_doc:
             # Required if http delivery is selected.
             type:     basic         # `basic`, `bearer` are supported
 
+            prefix: ~               # set if header delivery selected only.
+
             custom_endpoint: true   # default is `false`, if `true`, your user will be able to
                                     # specify its own endpoint
 
