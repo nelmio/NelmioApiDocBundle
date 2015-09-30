@@ -552,7 +552,11 @@
                                         value = 'Bearer ' + $('#api_key').val();
                                     }
                                 } else if ('header' == authentication_delivery) {
-                                    value = $('#api_key').val();
+                                    if (authentication_prefix) {
+                                        value = authentication_prefix + ' ' + $('#api_key').val();
+                                    } else {
+                                        value = $('#api_key').val();
+                                    }
                                 }
 
                                 xhr.setRequestHeader(api_key_parameter, value);
@@ -719,6 +723,7 @@
                 }
                 {% elseif authentication and authentication.delivery == 'header' %}
                 var authentication_delivery = '{{ authentication.delivery }}';
+                var authentication_prefix = '{{ authentication.prefix|trim }}';
                 var api_key_parameter = '{{ authentication.name }}';
                 {% else %}
                 var authentication_delivery = false;

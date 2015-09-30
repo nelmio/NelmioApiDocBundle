@@ -100,12 +100,22 @@ class Configuration implements ConfigurationInterface
                                     ->values(array('basic', 'bearer'))
                                 ->end()
                                 ->booleanNode('custom_endpoint')->defaultFalse()->end()
+                                ->scalarNode('prefix')
+                                    ->defaultNull()
+                                    ->info('Can only be set if header delivery is selected.')
+                                ->end()
                             ->end()
                             ->validate()
                                 ->ifTrue(function ($v) {
                                     return 'http' === $v['delivery'] && !$v['type'] ;
                                 })
                                 ->thenInvalid('"type" is required when using http delivery.')
+                            ->end()
+                            ->validate()
+                                ->ifTrue(function ($v) {
+                                    return 'header' !== $v['delivery'] && $v['prefix'] ;
+                                })
+                                ->thenInvalid('"prefix" can only be set when using header delivery.')
                             ->end()
                             # http_basic BC
                             ->beforeNormalization()
