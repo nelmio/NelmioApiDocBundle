@@ -760,6 +760,9 @@ class ApiDoc
         foreach ($properties as $key => $val) {
             $content = (array)$val;
             if (isset($content['type'])) {
+                if (is_array($content['type'])) {
+                    $content['type'] = implode("|", $content['type']);
+                }
                 $content['dataType'] = $content['type'];
                 unset($content['type']);
             }
