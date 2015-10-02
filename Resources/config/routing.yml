@@ -1,5 +1,5 @@
 nelmio_api_doc_index:
     path: /{view}
+    methods: GET
     defaults: { _controller: NelmioApiDocBundle:ApiDoc:index, view: 'default' }
     requirements:
-        methods: GET
