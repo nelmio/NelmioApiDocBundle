@@ -61,8 +61,8 @@ class PhpDocHandler implements HandlerInterface
             }
         }
 
-        if (method_exists($route, 'getSchemes')) {
-            $annotation->setHttps(in_array('https', $route->getSchemes()));
+        if (method_exists($route, 'getSchemes') && $schemes = $route->getSchemes()) {
+            $annotation->setHttps(in_array('https', $schemes));
         }
 
         $paramDocs = array();

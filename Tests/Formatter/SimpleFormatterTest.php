@@ -2459,6 +2459,39 @@ With multiple lines.',
                                     ),
                                 'deprecated' => false,
                             ),
+                        26 =>
+                            array (
+                                'method' => 'ANY',
+                                'uri' => '/zz-http-required',
+                                'https' => false,
+                                'authentication' => false,
+                                'authenticationRoles' =>
+                                    array (
+                                    ),
+                                'deprecated' => false,
+                            ),
+                        27 =>
+                            array (
+                                'method' => 'ANY',
+                                'uri' => '/zz-https-not-required',
+                                'https' => true,
+                                'authentication' => false,
+                                'authenticationRoles' =>
+                                    array (
+                                    ),
+                                'deprecated' => false,
+                            ),
+                        28 =>
+                            array (
+                                'method' => 'ANY',
+                                'uri' => '/zz-https-required',
+                                'https' => true,
+                                'authentication' => false,
+                                'authenticationRoles' =>
+                                    array (
+                                    ),
+                                'deprecated' => false,
+                            ),
                     ),
             );
         } else {
@@ -3707,7 +3740,34 @@ With multiple lines.',
                                 'https' => false,
                                 'authenticationRoles' => array(),
                                 'deprecated' => false
-                            )
+                            ),
+                        21 =>
+                            array (
+                                'method' => 'ANY',
+                                'uri' => '/zz-http-required',
+                                'https' => false,
+                                'authentication' => false,
+                                'authenticationRoles' => array(),
+                                'deprecated' => false,
+                            ),
+                        22 =>
+                            array (
+                                'method' => 'ANY',
+                                'uri' => '/zz-https-not-required',
+                                'https' => true,
+                                'authentication' => false,
+                                'authenticationRoles' => array(),
+                                'deprecated' => false,
+                            ),
+                        23 =>
+                            array (
+                                'method' => 'ANY',
+                                'uri' => '/zz-https-required',
+                                'https' => true,
+                                'authentication' => false,
+                                'authenticationRoles' => array(),
+                                'deprecated' => false,
+                            ),
                     ),
                 '/tests2' =>
                     array(

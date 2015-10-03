@@ -19,7 +19,7 @@ class ApiDocExtractorTest extends WebTestCase
 {
     const NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE = 5;
 
-    private static $ROUTES_QUANTITY_DEFAULT = 33; // Routes in the default view
+    private static $ROUTES_QUANTITY_DEFAULT = 36; // Routes in the default view
     private static $ROUTES_QUANTITY_PREMIUM = 6;  // Routes in the premium view
     private static $ROUTES_QUANTITY_TEST    = 2;  // Routes in the test view
 
