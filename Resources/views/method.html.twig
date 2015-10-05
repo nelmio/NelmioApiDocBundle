@@ -6,7 +6,7 @@
             </span>
 
             {% if data.deprecated %}
-            <span class="deprecated">
+                <span class="deprecated">
                 <i>DEPRECATED</i>
             </span>
             {% endif %}
@@ -25,7 +25,7 @@
                 {% endif -%}
                 {{ data.uri }}
             </span>
-           {% if data.tags is defined %}
+            {% if data.tags is defined %}
                 {% for tag, color_code in data.tags %}
                     <span class="tag" {% if color_code is defined and color_code is not empty %}style="background-color:{{ color_code }};"{% endif %}>{{ tag }}</span>
                 {% endfor %}
@@ -48,28 +48,28 @@
 
         <div class="panes">
             <div class="pane content selected">
-            {% if data.documentation is defined and data.documentation is not empty %}
-                <h4>Documentation</h4>
-                <div>{{ data.documentation|extra_markdown }}</div>
-            {% endif %}
+                {% if data.documentation is defined and data.documentation is not empty %}
+                    <h4>Documentation</h4>
+                    <div>{{ data.documentation|extra_markdown }}</div>
+                {% endif %}
 
-            {% if data.link is defined and data.link is not empty %}
-                <h4>Link</h4>
-                <div><a href="{{ data.link }}" target="_blank">{{ data.link }}</a></div>
-            {% endif %}
+                {% if data.link is defined and data.link is not empty %}
+                    <h4>Link</h4>
+                    <div><a href="{{ data.link }}" target="_blank">{{ data.link }}</a></div>
+                {% endif %}
 
-            {% if data.requirements is defined and data.requirements is not empty %}
-                <h4>Requirements</h4>
-                <table class="fullwidth">
-                    <thead>
+                {% if data.requirements is defined and data.requirements is not empty %}
+                    <h4>Requirements</h4>
+                    <table class="fullwidth">
+                        <thead>
                         <tr>
                             <th>Name</th>
                             <th>Requirement</th>
                             <th>Type</th>
                             <th>Description</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         {% for name, infos in data.requirements %}
                             <tr>
                                 <td>{{ name }}</td>
@@ -78,43 +78,43 @@
                                 <td>{{ infos.description is defined ? infos.description : ''}}</td>
                             </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
+                        </tbody>
+                    </table>
+                {% endif %}
 
-            {% if data.filters is defined and data.filters is not empty %}
-                <h4>Filters</h4>
-                <table class="fullwidth">
-                    <thead>
+                {% if data.filters is defined and data.filters is not empty %}
+                    <h4>Filters</h4>
+                    <table class="fullwidth">
+                        <thead>
                         <tr>
                             <th>Name</th>
                             <th>Information</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                    {% for name, infos in data.filters %}
-                        <tr>
-                            <td>{{ name }}</td>
-                            <td>
-                                <table>
-                                {% for key, value in infos %}
-                                    <tr>
-                                        <td>{{ key|title }}</td>
-                                        <td>{{ value|json_encode|replace({'\\\\': '\\'})|trim('"') }}</td>
-                                    </tr>
-                                {% endfor %}
-                                </table>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
+                        </thead>
+                        <tbody>
+                        {% for name, infos in data.filters %}
+                            <tr>
+                                <td>{{ name }}</td>
+                                <td>
+                                    <table>
+                                        {% for key, value in infos %}
+                                            <tr>
+                                                <td>{{ key|title }}</td>
+                                                <td>{{ value|json_encode|replace({'\\\\': '\\'})|trim('"') }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
 
-            {% if data.parameters is defined and data.parameters is not empty %}
-                <h4>Parameters</h4>
-                <table class='fullwidth'>
-                    <thead>
+                {% if data.parameters is defined and data.parameters is not empty %}
+                    <h4>Parameters</h4>
+                    <table class='fullwidth'>
+                        <thead>
                         <tr>
                             <th>Parameter</th>
                             <th>Type</th>
@@ -122,8 +122,8 @@
                             <th>Format</th>
                             <th>Description</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         {% for name, infos in data.parameters %}
                             {% if not infos.readonly %}
                                 <tr>
@@ -135,71 +135,74 @@
                                 </tr>
                             {% endif %}
                         {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
+                        </tbody>
+                    </table>
+                {% endif %}
 
-            {% if data.response is defined and data.response is not empty %}
-                <h4>Return</h4>
-                <table class='fullwidth'>
-                    <thead>
+                {% if data.response is defined and data.response is not empty %}
+                    <h4>Return</h4>
+                    <table class='fullwidth'>
+                        <thead>
                         <tr>
                             <th>Parameter</th>
                             <th>Type</th>
-                            <th>Versions</th>
+                            <th>Required?</th>
+                            <th>Format</th>
                             <th>Description</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         {% for name, infos in data.response %}
                             <tr>
                                 <td>{{ name }}</td>
                                 <td>{{ infos.dataType }}</td>
-                                <td>{% include 'NelmioApiDocBundle:Components:version.html.twig' with {'sinceVersion': infos.sinceVersion, 'untilVersion': infos.untilVersion} only %}</td>
+                                <td>{% if infos.required == 1 %} true {% else %} false {% endif %}</td>
+                                {#<td>{% include 'NelmioApiDocBundle:Components:version.html.twig' with {'sinceVersion': infos.sinceVersion, 'untilVersion': infos.untilVersion} only %}</td>#}
+                                <td>{{ infos.format }}</td>
                                 <td>{{ infos.description }}</td>
                             </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
+                        </tbody>
+                    </table>
+                {% endif %}
 
-            {% if data.statusCodes is defined and data.statusCodes is not empty %}
-                <h4>Status Codes</h4>
-                <table class="fullwidth">
-                    <thead>
-                    <tr>
-                        <th>Status Code</th>
-                        <th>Description</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for status_code, descriptions in data.statusCodes %}
+                {% if data.statusCodes is defined and data.statusCodes is not empty %}
+                    <h4>Status Codes</h4>
+                    <table class="fullwidth">
+                        <thead>
                         <tr>
-                            <td><a href="http://en.wikipedia.org/wiki/HTTP_{{ status_code }}" target="_blank">{{ status_code }}</a></td>
-                            <td>
-                                <ul>
-                                    {% for description in descriptions %}
-                                        <li>{{ description }}</li>
-                                    {%  endfor %}
-                                </ul>
-                            </td>
+                            <th>Status Code</th>
+                            <th>Description</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
+                        </thead>
+                        <tbody>
+                        {% for status_code, descriptions in data.statusCodes %}
+                            <tr>
+                                <td><a href="http://en.wikipedia.org/wiki/HTTP_{{ status_code }}" target="_blank">{{ status_code }}</a></td>
+                                <td>
+                                    <ul>
+                                        {% for description in descriptions %}
+                                            <li>{{ description }}</li>
+                                        {%  endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
 
-            {% if data.cache is defined and data.cache is not empty %}
-                <h4>Cache</h4>
-                <div>{{ data.cache }}s</div>
-            {% endif %}
+                {% if data.cache is defined and data.cache is not empty %}
+                    <h4>Cache</h4>
+                    <div>{{ data.cache }}s</div>
+                {% endif %}
 
             </div>
 
             {% if enableSandbox %}
                 <div class="pane sandbox">
                     {% if app.request is not null and data.https and app.request.secure != data.https %}
-                    Please reload the documentation using the scheme {% if data.https %}HTTPS{% else %}HTTP{% endif %} if you want to use the sandbox.
+                        Please reload the documentation using the scheme {% if data.https %}HTTPS{% else %}HTTP{% endif %} if you want to use the sandbox.
                     {% else %}
                         <form method="" action="{% if data.host is defined %}{{ data.https ? 'https://' : 'http://' }}{{ data.host }}{% endif %}{{ data.uri }}">
                             <fieldset class="parameters">
@@ -227,19 +230,19 @@
                                 {% if data.parameters is defined %}
                                     <h4>Parameters</h4>
                                     {% for name, infos in data.parameters %}
-                                    {% if not infos.readonly %}
-                                        <p class="tuple" data-dataType="{% if infos.dataType %}{{ infos.dataType }}{% endif %}" data-format="{% if infos.format %}{{ infos.format }}{% endif %}" data-description="{% if infos.description %}{{ infos.description }}{% endif %}">
-                                            <input type="text" class="key" value="{{ name }}" placeholder="Key" />
-                                            <span>=</span>
-                                            <select class="tuple_type">
-                                                <option value="">Type</option>
-                                                <option value="string">String</option>
-                                                <option value="boolean">Boolean</option>
-                                                <option value="file">File</option>
-                                            </select>
-                                            <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.format %}{{ infos.format }}{% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
-                                        </p>
-                                    {% endif %}
+                                        {% if not infos.readonly %}
+                                            <p class="tuple" data-dataType="{% if infos.dataType %}{{ infos.dataType }}{% endif %}" data-format="{% if infos.format %}{{ infos.format }}{% endif %}" data-description="{% if infos.description %}{{ infos.description }}{% endif %}">
+                                                <input type="text" class="key" value="{{ name }}" placeholder="Key" />
+                                                <span>=</span>
+                                                <select class="tuple_type">
+                                                    <option value="">Type</option>
+                                                    <option value="string">String</option>
+                                                    <option value="boolean">Boolean</option>
+                                                    <option value="file">File</option>
+                                                </select>
+                                                <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.format %}{{ infos.format }}{% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
+                                            </p>
+                                        {% endif %}
                                     {% endfor %}
                                     <button type="button" class="add_parameter">New parameter</button>
                                 {% endif %}
@@ -251,9 +254,9 @@
                                 {% if methods|length > 1 %}
                                     <legend>Method</legend>
                                     <select name="header_method">
-                                    {% for method in methods %}
-                                        <option value="{{ method }}">{{ method }}</option>
-                                    {% endfor %}
+                                        {% for method in methods %}
+                                            <option value="{{ method }}">{{ method }}</option>
+                                        {% endfor %}
                                     </select>
                                 {% else %}
                                     <input type="hidden" name="header_method" value="{{ methods|join }}" />
