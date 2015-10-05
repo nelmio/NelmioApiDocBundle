@@ -207,6 +207,7 @@ class TestController
     /**
      * @ApiDoc(
      *  authentication=true,
+     *  authenticationExpression="'ROLE_USER' and permission 'foo' or 'bar' on foobar",
      *  authenticationRoles={"ROLE_USER","ROLE_FOOBAR"}
      * )
      */
@@ -224,7 +225,7 @@ class TestController
 
     /**
      * @ApiDoc()
-     * @Security("has_role('ROLE_USER')")
+     * @Security("has_role('ROLE_USER') and is_granted(['foo','bar'], foobar)")
      */
     public function zSecuredAction()
     {
