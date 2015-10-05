@@ -68,15 +68,21 @@ class ApiDocExtractor
      */
     protected $annotationsProviders;
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ControllerNameParser $controllerNameParser, array $handlers, array $annotationsProviders)
+    /**
+     * @var String $schemaPath
+     */
+    protected $schemaPath;
+
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ControllerNameParser $controllerNameParser, array $handlers, array $annotationsProviders, $schemaPath)
     {
-        $this->container            = $container;
-        $this->router               = $router;
-        $this->reader               = $reader;
-        $this->commentExtractor     = $commentExtractor;
+        $this->container = $container;
+        $this->router = $router;
+        $this->reader = $reader;
+        $this->commentExtractor = $commentExtractor;
         $this->controllerNameParser = $controllerNameParser;
-        $this->handlers             = $handlers;
+        $this->handlers = $handlers;
         $this->annotationsProviders = $annotationsProviders;
+        $this->schemaPath = $schemaPath;
     }
 
     /**
@@ -112,7 +118,7 @@ class ApiDocExtractor
      */
     public function extractAnnotations(array $routes, $view = ApiDoc::DEFAULT_VIEW)
     {
-        $array     = array();
+        $array = array();
         $resources = array();
         $excludeSections = $this->container->getParameter('nelmio_api_doc.exclude_sections');
 
@@ -151,7 +157,7 @@ class ApiDocExtractor
         rsort($resources);
         foreach ($array as $index => $element) {
             $hasResource = false;
-            $pattern     = $element['annotation']->getRoute()->getPattern();
+            $pattern = $element['annotation']->getRoute()->getPattern();
 
             foreach ($resources as $resource) {
                 if (0 === strpos($pattern, $resource) || $resource === $element['annotation']->getResource()) {
@@ -292,14 +298,14 @@ class ApiDocExtractor
 
         // input (populates 'parameters' for the formatters)
         if (null !== $input = $annotation->getInput()) {
-            $parameters      = array();
+            $parameters = array();
             $normalizedInput = $this->normalizeClassParameter($input);
 
             $supportedParsers = array();
             foreach ($this->getParsers($normalizedInput) as $parser) {
                 if ($parser->supports($normalizedInput)) {
                     $supportedParsers[] = $parser;
-                    $parameters         = $this->mergeParameters($parameters, $parser->parse($normalizedInput));
+                    $parameters = $this->mergeParameters($parameters, $parser->parse($normalizedInput));
                 }
             }
 
@@ -327,33 +333,50 @@ class ApiDocExtractor
 
         // output (populates 'response' for the formatters)
         if (null !== $output = $annotation->getOutput()) {
-            $response         = array();
+            $response = array();
             $supportedParsers = array();
 
-            $normalizedOutput = $this->normalizeClassParameter($output);
+            if (strpos(strtolower($output), '.json')) {
+                $path = 'file://' . realpath($this->schemaPath . $output);
+                $properties = (array) json_decode(file_get_contents($path))->properties;
 
-            foreach ($this->getParsers($normalizedOutput) as $parser) {
-                if ($parser->supports($normalizedOutput)) {
-                    $supportedParsers[] = $parser;
-                    $response = $this->mergeParameters($response, $parser->parse($normalizedOutput));
+                foreach ($properties as $objectName => $property) {
+                    if (isset($property->properties)) {
+                        $response = array_merge($response, $annotation->schemaFormat($property->properties, $property->required, $objectName));
+                    } else {
+                        $required = json_decode(file_get_contents($path))->required;
+                        $response = array_merge($response, $annotation->schemaFormat($properties, $required));
+                    }
                 }
-            }
 
-            foreach ($supportedParsers as $parser) {
-                if ($parser instanceof PostParserInterface) {
-                    $mp = $parser->postParse($normalizedOutput, $response);
-                    $response = $this->mergeParameters($response, $mp);
+                $annotation->setResponse($response);
+                $annotation->setResponseForStatusCode($response, [], 200);
+            } else {
+                $normalizedOutput = $this->normalizeClassParameter($output);
+
+                foreach ($this->getParsers($normalizedOutput) as $parser) {
+                    if ($parser->supports($normalizedOutput)) {
+                        $supportedParsers[] = $parser;
+                        $response = $this->mergeParameters($response, $parser->parse($normalizedOutput));
+                    }
                 }
+
+                foreach ($supportedParsers as $parser) {
+                    if ($parser instanceof PostParserInterface) {
+                        $mp = $parser->postParse($normalizedOutput, $response);
+                        $response = $this->mergeParameters($response, $mp);
+                    }
+                }
+
+                $response = $this->clearClasses($response);
+                $response = $this->generateHumanReadableTypes($response);
+
+                $annotation->setResponse($response);
+                $annotation->setResponseForStatusCode($response, $normalizedOutput, 200);
             }
-
-            $response = $this->clearClasses($response);
-            $response = $this->generateHumanReadableTypes($response);
-
-            $annotation->setResponse($response);
-            $annotation->setResponseForStatusCode($response, $normalizedOutput, 200);
         }
 
-        if (count($annotation->getResponseMap()) > 0) {
+        if (count($annotation->getResponseMap()) > 0 && !strpos(strtolower($annotation->getOutput()), '.json')) {
 
             foreach ($annotation->getResponseMap() as $code => $modelName) {
 
@@ -397,9 +420,9 @@ class ApiDocExtractor
     protected function normalizeClassParameter($input)
     {
         $defaults = array(
-            'class'   => '',
-            'groups'  => array(),
-            'options'  => array(),
+            'class' => '',
+            'groups' => array(),
+            'options' => array(),
         );
 
         // normalize strings

@@ -23,9 +23,15 @@ class PhpDocHandler implements HandlerInterface
      */
     protected $commentExtractor;
 
-    public function __construct(DocCommentExtractor $commentExtractor)
+    /**
+     * @var String $schemaPath
+     */
+    protected $schemaPath;
+
+    public function __construct(DocCommentExtractor $commentExtractor, $schemaPath)
     {
         $this->commentExtractor = $commentExtractor;
+        $this->schemaPath = $schemaPath;
     }
 
     public function handle(ApiDoc $annotation, array $annotations, Route $route, \ReflectionMethod $method)
@@ -42,6 +48,24 @@ class PhpDocHandler implements HandlerInterface
             if ('@' !== substr($comment, 0, 1)) {
                 $annotation->setDescription($comment);
             }
+        }
+
+        // schema
+        if ($annotation->getSchema() !== null) {
+            $path = 'file://' . realpath($this->schemaPath . $annotation->getSchema());
+            $properties = (array)json_decode(file_get_contents($path))->properties;
+
+            $tab = [];
+            foreach ($properties as $objectName => $property) {
+                if (isset($property->properties)) {
+                    $tab = array_merge($tab, $annotation->schemaFormat($property->properties, $property->required, $objectName));
+                } else {
+                    $required = json_decode(file_get_contents($path))->required;
+                    $tab = array_merge($tab, $annotation->schemaFormat($properties, $required));
+                }
+            }
+
+            $annotation->setParameters($tab);
         }
 
         // requirements

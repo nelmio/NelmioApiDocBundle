@@ -164,12 +164,21 @@ class ApiDoc
      */
     private $tags = array();
 
+    /**
+     * @var string
+     */
+    private $schema = null;
+
     public function __construct(array $data)
     {
         $this->resource = !empty($data['resource']) ? $data['resource'] : false;
 
         if (isset($data['description'])) {
             $this->description = $data['description'];
+        }
+
+        if (isset($data['schema'])) {
+            $this->schema = $data['schema'];
         }
 
         if (isset($data['input'])) {
@@ -393,6 +402,14 @@ class ApiDoc
     }
 
     /**
+     * @return string|null
+     */
+    public function getSchema()
+    {
+        return $this->schema;
+    }
+
+    /**
      * @return array
      */
     public function addView($view)
@@ -468,7 +485,7 @@ class ApiDoc
     }
 
     /**
-     * @param Route $route
+     * @param Route $route
      */
     public function setRoute(Route $route)
     {
@@ -735,5 +752,29 @@ class ApiDoc
         if ($statusCode == 200 && $this->response !== $model) {
             $this->response = $model;
         }
+    }
+
+    public function schemaFormat($properties, $required, $objectName = null)
+    {
+        $result = [];
+        foreach ($properties as $key => $val) {
+            $content = (array)$val;
+            if (isset($content['type'])) {
+                if (is_array($content['type'])) {
+                    $content['type'] = implode("|", $content['type']);
+                }
+                $content['dataType'] = $content['type'];
+                unset($content['type']);
+            }
+            if (isset($content['pattern'])) {
+                $content['format'] = $content['pattern'];
+                unset($content['pattern']);
+            }
+            $content['required'] = in_array($key, $required);
+            $key = ($objectName) ? ucfirst($objectName) . ' : ' . $key : $key;
+            $result[$key] = $content;
+        }
+
+        return $result;
     }
 }
