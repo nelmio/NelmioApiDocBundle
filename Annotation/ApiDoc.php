@@ -497,8 +497,8 @@ class ApiDoc
             $this->host = null;
         }
 
-        $this->uri    = $route->getPattern();
-        $this->method = $route->getRequirement('_method') ?: 'ANY';
+        $this->uri    = $route->getPath();
+        $this->method = current($route->getMethods()) ?: 'ANY';
     }
 
     /**
