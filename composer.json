@@ -12,17 +12,18 @@
         {
             "name": "Symfony Community",
             "homepage": "https://github.com/nelmio/NelmioApiDocBundle/contributors"
+        },
+        {
+            "name": "Ala Eddine Khefifi",
+            "homepage": "https://github.com/nayzo"
         }
     ],
     "require": {
         "symfony/twig-bundle": "~2.3",
         "symfony/framework-bundle": "~2.3",
         "symfony/console": "~2.3",
-        "michelf/php-markdown": "~1.4"
-    },
-    "conflict": {
-        "jms/serializer": "<0.12",
-        "jms/serializer-bundle": "<0.11"
+        "michelf/php-markdown": "~1.4",
+        "jms/serializer-bundle" : "~1.0"
     },
     "require-dev": {
         "symfony/css-selector": "~2.3",
