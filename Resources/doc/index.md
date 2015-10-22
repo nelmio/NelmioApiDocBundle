@@ -288,6 +288,36 @@ then the `premium` view will be located at:
         http://example.org/doc/api/v1/premium
 
 
+### Declare your Api doc in files
+
+You can declare your api doc in YAML files if you enable the documentation_files in your config.yml
+ 
+ ```yaml
+ # app/config/config.yml
+ nelmio_api_doc:
+     documentation_files:  ~
+```
+
+The system loads all yaml files in the **BUNDLE_NAME/Resources/nelmio**
+
+The structure of your file configuration use the ```ApiDoc``` annotation
+
+```yaml
+# yaml configuration api doc
+---
+- section: Section test
+  resource: false
+  description: 'Description test 2'
+  route: route_test
+  views: [default, premium]
+  requirements:
+      - { name: foo, dataType: string, requirement: \s+, description: 'foo requirement' }
+  parameters:
+      - { name: foo, dataType: string, required: false, description: 'foo parameter' }
+      - { name: bar, dataType: string, required: true, description: 'bar parameter' }
+  output: Symfony\Component\HttpFoundation\Response
+```
+
 ### Other Bundle Annotations
 
 Also bundle will get information from the other annotations:
@@ -443,6 +473,25 @@ nelmio_api_doc:
 
         entity_to_choice: false     # default is `true`, if `false`, entity collection
                                     # will not be mapped as choice
+    swagger:
+        model_naming_strategy:  dot_notation
+        api_base_path:        /api
+        swagger_version:      '1.2'
+        api_version:          '0.1'
+        info:
+            title:                Symfony2
+            description:          'My awesome Symfony2 app!'
+            TermsOfServiceUrl:    null
+            contact:              null
+            license:              null
+            licenseUrl:           null
+    cache:
+        enabled:              false
+        file:                 '%kernel.cache_dir%/api-doc.cache'
+    # Define your ApiDoc file configuration
+    documentation_files:  []
+
+
 ```
 ### Command
 
@@ -648,4 +697,8 @@ nelmio_api_doc:
     cache:
         enabled:              false
         file:                 '%kernel.cache_dir%/api-doc.cache'
+    # Define your ApiDoc file configuration
+    documentation_files:
+        enabled:              false
+        path:                 /Resources/nelmio
 ```

@@ -13,14 +13,25 @@
         <parameter key="nelmio_api_doc.extractor.handler.jms_security.class">Nelmio\ApiDocBundle\Extractor\Handler\JmsSecurityExtraHandler</parameter>
         <parameter key="nelmio_api_doc.extractor.handler.sensio_framework_extra.class">Nelmio\ApiDocBundle\Extractor\Handler\SensioFrameworkExtraHandler</parameter>
         <parameter key="nelmio_api_doc.extractor.handler.phpdoc.class">Nelmio\ApiDocBundle\Extractor\Handler\PhpDocHandler</parameter>
+        <parameter key="nelmio_api_doc.extractor.documentation_files.class">Nelmio\ApiDocBundle\Extractor\DocumentationFilesExtractor</parameter>
 
         <parameter key="nelmio_api_doc.parser.collection_parser.class">Nelmio\ApiDocBundle\Parser\CollectionParser</parameter>
         <parameter key="nelmio_api_doc.parser.form_errors_parser.class">Nelmio\ApiDocBundle\Parser\FormErrorsParser</parameter>
         <parameter key="nelmio_api_doc.parser.json_serializable_parser.class">Nelmio\ApiDocBundle\Parser\JsonSerializableParser</parameter>
+
+        <parameter key="nelmio_api_doc.factory.api_doc.class">Nelmio\ApiDocBundle\Factory\ApiDocFactory</parameter>
     </parameters>
 
     <services>
         <service id="nelmio_api_doc.doc_comment_extractor" class="%nelmio_api_doc.doc_comment_extractor.class%" />
+        <service id="nelmio_api_doc.factory.api_doc" class="%nelmio_api_doc.factory.api_doc.class%">
+            <argument type="service" id="router" />
+        </service>
+        <service id="nelmio_api_doc.extractor.documentation_files" class="%nelmio_api_doc.extractor.documentation_files.class%">
+             <argument type="service" id="nelmio_api_doc.factory.api_doc" />
+             <argument type="service" id="kernel" />
+             <argument type="string">%nelmio_api_doc.documentation_files%</argument>
+        </service>
 
         <service id="nelmio_api_doc.controller_name_parser" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
             <argument type="service" id="kernel" />
@@ -32,6 +43,7 @@
             <argument type="service" id="annotation_reader" />
             <argument type="service" id="nelmio_api_doc.doc_comment_extractor" />
             <argument type="service" id="nelmio_api_doc.controller_name_parser" />
+            <argument type="service" id="nelmio_api_doc.extractor.documentation_files" />
             <argument type="collection" />
             <argument type="collection" />
         </service>
