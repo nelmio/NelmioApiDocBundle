@@ -83,6 +83,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 'readonly' => null,
                 'children' => $parsed
             );
+
             return $output;
         }
 

@@ -16,6 +16,7 @@ class CachingApiDocExtractorTest extends WebTestCase
         $data = ApiDocExtractorTest::dataProviderForViews();
         // remove default view data from provider
         array_shift($data);
+
         return $data;
     }
 

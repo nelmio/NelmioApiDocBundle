@@ -3,9 +3,7 @@
  * Created by mcfedr on 30/06/15 21:06
  */
 
-
 namespace NelmioApiDocBundle\Tests\Parser;
-
 
 use Nelmio\ApiDocBundle\Parser\JsonSerializableParser;
 

@@ -38,15 +38,15 @@ class CachingApiDocExtractor extends ApiDocExtractor
     private $debug;
 
     /**
-     * @param ContainerInterface $container
-     * @param RouterInterface $router
-     * @param Reader $reader
-     * @param DocCommentExtractor $commentExtractor
+     * @param ContainerInterface   $container
+     * @param RouterInterface      $router
+     * @param Reader               $reader
+     * @param DocCommentExtractor  $commentExtractor
      * @param ControllerNameParser $controllerNameParser
-     * @param array $handlers
-     * @param array $annotationsProviders
-     * @param string $cacheFile
-     * @param bool|false $debug
+     * @param array                $handlers
+     * @param array                $annotationsProviders
+     * @param string               $cacheFile
+     * @param bool|false           $debug
      */
     public function __construct(
         ContainerInterface $container,
@@ -66,7 +66,7 @@ class CachingApiDocExtractor extends ApiDocExtractor
     }
 
     /**
-     * @param string $view View name
+     * @param  string      $view View name
      * @return array|mixed
      */
     public function all($view = ApiDoc::DEFAULT_VIEW)
@@ -99,7 +99,7 @@ class CachingApiDocExtractor extends ApiDocExtractor
     }
 
     /**
-     * @param string $view
+     * @param  string      $view
      * @return ConfigCache
      */
     private function getViewCache($view)

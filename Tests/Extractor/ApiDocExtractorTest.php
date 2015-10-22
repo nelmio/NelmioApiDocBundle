@@ -23,7 +23,8 @@ class ApiDocExtractorTest extends WebTestCase
     private static $ROUTES_QUANTITY_PREMIUM = 6;  // Routes in the premium view
     private static $ROUTES_QUANTITY_TEST    = 2;  // Routes in the test view
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
         if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
             self::$ROUTES_QUANTITY_DEFAULT += self::NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE;
             self::$ROUTES_QUANTITY_PREMIUM += self::NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE;

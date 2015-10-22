@@ -12,9 +12,9 @@ class DumpCommandTest extends WebTestCase
     /**
      * @dataProvider viewProvider
      *
-     * @param string $view Command view option value
-     * @param array $expectedMethodsCount Expected resource methods count
-     * @param array $expectedMethodValues Expected resource method values
+     * @param string $view                 Command view option value
+     * @param array  $expectedMethodsCount Expected resource methods count
+     * @param array  $expectedMethodValues Expected resource method values
      */
     public function testDumpWithViewOption($view, array $expectedMethodsCount, array $expectedMethodValues)
     {
