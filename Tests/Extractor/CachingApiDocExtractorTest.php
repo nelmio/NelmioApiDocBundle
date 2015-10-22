@@ -8,6 +8,8 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class CachingApiDocExtractorTest extends WebTestCase
 {
+    const SYMFONY_VERSION_2_4 = '2.4.*';
+
     /**
      * @return array
      */
@@ -57,6 +59,10 @@ class CachingApiDocExtractorTest extends WebTestCase
      */
     public function testCachedResultSameAsGenerated($view)
     {
+        if (self::SYMFONY_VERSION_2_4 === getenv('SYMFONY_VERSION')) {
+            $this->markTestSkipped('Routing component in 2.4 does not serialize $compiled property');
+        }
+
         $container = $this->getContainer();
         /* @var CachingApiDocExtractor $extractor */
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
