@@ -117,7 +117,7 @@ class YourController extends Controller
      *  }
      * )
      */
-    public function cgetAction($id)
+    public function cgetAction($limit)
     {
     }
 }
