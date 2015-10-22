@@ -80,7 +80,7 @@ class ApiDocExtractor
      */
     protected $namingStrategy;
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ControllerNameParser $controllerNameParser, array $handlers, array $annotationsProviders, MetadataFactoryInterface $factory,  PropertyNamingStrategyInterface $namingStrategy)
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ControllerNameParser $controllerNameParser, array $handlers, array $annotationsProviders)
     {
         $this->container            = $container;
         $this->router               = $router;
@@ -89,8 +89,8 @@ class ApiDocExtractor
         $this->controllerNameParser = $controllerNameParser;
         $this->handlers             = $handlers;
         $this->annotationsProviders = $annotationsProviders;
-        $this->factory = $factory;
-        $this->namingStrategy = $namingStrategy;
+        $this->factory = $container->get("jms_serializer.metadata_factory");
+        $this->namingStrategy = $container->get("jms_serializer.naming_strategy");
     }
 
     /**
