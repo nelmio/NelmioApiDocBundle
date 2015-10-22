@@ -15,7 +15,9 @@ use Nelmio\ApiDocBundle\DataTypes;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\ChoiceList\View\ChoiceListView;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface as LegacyChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -152,7 +154,7 @@ class FormTypeParser implements ParserInterface
                         $bestType   = sprintf('array of %ss', $subType);
                     } else {
                         // Embedded form collection
-                        $embbededType       = $config->getOption('type');
+                        $embbededType = $config->getOption('type');
                         $subForm    = $this->formFactory->create($embbededType, null, $config->getOption('options', array()));
                         $children   = $this->parseForm($subForm);
                         $actualType = DataTypes::COLLECTION;
@@ -260,12 +262,15 @@ class FormTypeParser implements ParserInterface
 
                     if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
                         $parameters[$name]['format'] = json_encode($choices);
-                    } elseif (($choiceList = $config->getOption('choice_list')) && $choiceList instanceof ChoiceListInterface) {
+                    } elseif ($choiceList = $config->getOption('choice_list')) {
                         if (('entity' === $config->getType()->getName() && false === $this->entityToChoice)) {
                             $choices = array();
                         } else {
-                            $choices = $this->handleChoiceListValues($choiceList);
+                            // TODO: fixme
+                            // does not work since: https://github.com/symfony/symfony/commit/03efce1b568379eac21d880e427090e43035f505
+                            $choices = [];
                         }
+
                         if (is_array($choices) && count($choices)) {
                             $parameters[$name]['format'] = json_encode($choices);
                         }

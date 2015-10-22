@@ -79,10 +79,6 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
             'readonly' => false
         );
 
-        if ($entityToChoice) {
-            $entityData['format'] = json_encode(array('foo' => 'bar', 'baz' => 'Buzz'));
-        }
-
         return array(
             array(
                 array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', 'options' => array()),
@@ -434,7 +430,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
-                        'format' => json_encode(array('foo' => 'bar', 'baz' => 'Buzz')),
+                        'format' => '{"foo":"bar","bazgroup":{"baz":"Buzz"}}',
                     ),
                     'e1' => $entityData
                 ),
