@@ -130,10 +130,12 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
 
                 $dataType = $this->processDataType($item);
 
+                $excluded = false;
+                
                 // apply exclusion strategies
                 foreach ($exclusionStrategies as $strategy) {
                     if (true === $strategy->shouldSkipProperty($item, SerializationContext::create())) {
-                        continue 2;
+                        $excluded = true;
                     }
                 }
 
@@ -147,6 +149,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
                         //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
                         'description'  => $this->getDescription($item),
                         'readonly'     => $item->readOnly,
+                        'excluded'     => $excluded,
                         'sinceVersion' => $item->sinceVersion,
                         'untilVersion' => $item->untilVersion,
                     );

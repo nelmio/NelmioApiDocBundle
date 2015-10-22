@@ -128,6 +128,10 @@ class ValidationParser implements ParserInterface, PostParserInterface
                     $vparams[$reqprop] = null;
                 }
             }
+            
+            if (!isset($vparams['excluded'])) {
+                $vparams['excluded'] = false;
+            }
 
             // check for nested classes with All constraint
             if (isset($vparams['class']) && !in_array($vparams['class'], $visited) && null !== $this->factory->getMetadataFor($vparams['class'])) {
