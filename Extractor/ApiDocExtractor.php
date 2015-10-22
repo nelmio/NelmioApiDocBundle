@@ -13,6 +13,8 @@ namespace Nelmio\ApiDocBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Util\ClassUtils;
+use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
+use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
@@ -68,7 +70,17 @@ class ApiDocExtractor
      */
     protected $annotationsProviders;
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ControllerNameParser $controllerNameParser, array $handlers, array $annotationsProviders)
+    /**
+     * @var MetadataFactoryInterface
+     */
+    private $factory;
+
+    /**
+     * @var PropertyNamingStrategyInterface
+     */
+    protected $namingStrategy;
+
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ControllerNameParser $controllerNameParser, array $handlers, array $annotationsProviders, MetadataFactoryInterface $factory,  PropertyNamingStrategyInterface $namingStrategy)
     {
         $this->container            = $container;
         $this->router               = $router;
@@ -77,6 +89,8 @@ class ApiDocExtractor
         $this->controllerNameParser = $controllerNameParser;
         $this->handlers             = $handlers;
         $this->annotationsProviders = $annotationsProviders;
+        $this->factory = $factory;
+        $this->namingStrategy = $namingStrategy;
     }
 
     /**
@@ -299,7 +313,7 @@ class ApiDocExtractor
             foreach ($this->getParsers($normalizedInput) as $parser) {
                 if ($parser->supports($normalizedInput)) {
                     $supportedParsers[] = $parser;
-                    $parameters         = $this->mergeParameters($parameters, $parser->parse($normalizedInput));
+                    $parameters         = $this->mergeParameters($parameters, $this->renameJmsParameters($parser->parse($normalizedInput), $normalizedInput));
                 }
             }
 
@@ -392,6 +406,36 @@ class ApiDocExtractor
         }
 
         return $annotation;
+    }
+
+    /**
+     * rename extracted parameters with JMS metadata naming strategy
+     *
+     * @param array $parameters
+     * @param array $input
+     * @return array
+     */
+    protected function renameJmsParameters($parameters, $input)
+    {
+        $result = [];
+
+        foreach($parameters as $name => $value)
+        {
+            $className = $input['class'];
+            $meta = null;
+
+            try {
+                $meta = $this->factory->getMetadataForClass($className);
+            } catch (\ReflectionException $e) {
+            }
+
+            if(isset($meta->propertyMetadata[$name]))
+                $name = $this->namingStrategy->translateName($meta->propertyMetadata[$name]);
+
+            $result[$name] = $value;
+        }
+
+        return $result;
     }
 
     protected function normalizeClassParameter($input)
