@@ -3877,15 +3877,6 @@ With multiple lines.',
                                                             array(
                                                                 'foo' =>
                                                                     array(
-                                                                        'dataType' => 'DateTime',
-                                                                        'actualType' => 'datetime',
-                                                                        'subType' => null,
-                                                                        'required' => false,
-                                                                        'default' => null,
-                                                                        'description' => '',
-                                                                        'readonly' => true,
-                                                                        'sinceVersion' => null,
-                                                                        'untilVersion' => null,
                                                                     ),
                                                                 'bar' =>
                                                                     array(
