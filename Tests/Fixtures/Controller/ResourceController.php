@@ -62,11 +62,14 @@ class ResourceController
     }
 
     /**
+     * More information for listing another resource.
+     *
      * @ApiDoc(
      *      resource=true,
      *      views={ "default", "premium" },
      *      description="List another resource.",
      *      resourceDescription="Operations on another resource.",
+     *      filters={{"name"="search", "description"="Maximum number of results", "default"="10", "min"="0", "max"="2000", "dataType"="integer"}},
      *      output="array<Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest>"
      * )
      */
@@ -85,6 +88,8 @@ class ResourceController
 
     /**
      * @ApiDoc(description="Update a resource bu ID.")
+     *
+     * @param integer $id Resource id
      */
     public function updateAnotherResourceAction()
     {

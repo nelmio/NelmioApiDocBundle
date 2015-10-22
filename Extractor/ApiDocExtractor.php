@@ -396,16 +396,16 @@ class ApiDocExtractor
 
     protected function normalizeClassParameter($input)
     {
-        $defaults = array(
-            'class'   => '',
-            'groups'  => array(),
-            'options'  => array(),
-        );
-
         // normalize strings
         if (is_string($input)) {
             $input = array('class' => $input);
         }
+
+        $input = array_merge(array(
+            'class'   => '',
+            'groups'  => array(),
+            'options' => array(),
+        ), $input);
 
         $collectionData = array();
 
@@ -430,7 +430,7 @@ class ApiDocExtractor
             $input['groups'] = array_map('trim', explode(',', $input['groups']));
         }
 
-        return array_merge($defaults, $input);
+        return $input;
     }
 
     /**

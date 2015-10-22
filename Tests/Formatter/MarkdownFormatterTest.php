@@ -123,6 +123,16 @@ _List another resource._
 
   - Requirement: json|xml|html
 
+#### Filters ####
+
+search:
+
+  * Description: Maximum number of results
+  * Default: 10
+  * Min: 0
+  * Max: 2000
+  * DataType: integer
+
 #### Response ####
 
 []:
@@ -227,6 +237,8 @@ _Update a resource bu ID._
   - Requirement: json|xml|html
 **id**
 
+  - Type: integer
+  - Description: Resource id
 
 
 ## /api/resources ##
@@ -1048,6 +1060,16 @@ _List another resource._
 
   - Requirement: json|xml|html
 
+#### Filters ####
+
+search:
+
+  * Description: Maximum number of results
+  * Default: 10
+  * Min: 0
+  * Max: 2000
+  * DataType: integer
+
 #### Response ####
 
 []:
@@ -1152,6 +1174,8 @@ _Update a resource bu ID._
   - Requirement: json|xml|html
 **id**
 
+  - Type: integer
+  - Description: Resource id
 
 
 ## /api/resources ##
