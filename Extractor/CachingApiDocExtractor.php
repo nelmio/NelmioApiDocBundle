@@ -73,14 +73,12 @@ class CachingApiDocExtractor extends ApiDocExtractor
     {
         $cache = $this->getViewCache($view);
 
-        if ($cache->isFresh() === false) {
-
+        if (!$cache->isFresh()) {
             $resources = array();
-
             foreach ($this->getRoutes() as $route) {
                 if ( null !== ($method = $this->getReflectionMethod($route->getDefault('_controller')))
                   && null !== ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS))) {
-                    $file = $method->getDeclaringClass()->getFileName();
+                    $file        = $method->getDeclaringClass()->getFileName();
                     $resources[] = new FileResource($file);
                 }
             }
@@ -94,8 +92,14 @@ class CachingApiDocExtractor extends ApiDocExtractor
             return $data;
         }
 
-        return unserialize(file_get_contents($cache));
+        // For BC
+        if (method_exists($cache, 'getPath')) {
+            $cachePath = $cache->getPath();
+        } else {
+            $cachePath = (string) $cache;
+        }
 
+        return unserialize(file_get_contents($cachePath));
     }
 
     /**

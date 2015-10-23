@@ -67,8 +67,6 @@ class CachingApiDocExtractorTest extends WebTestCase
 
         $expectedViewCacheFile = $cacheFile.'.'.$view;
 
-        $this->assertFileNotExists($expectedViewCacheFile);
-
         set_error_handler(array($this, 'handleDeprecation'));
         $data = $extractor->all($view);
 
