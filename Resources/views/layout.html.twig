@@ -471,7 +471,6 @@
 
 
 
-
                     // retrieve the additional headers to send
                     $('.headers .tuple', $(this)).each(function() {
                         var key, value;
@@ -519,12 +518,6 @@
                         endpoint = $('#api_endpoint').val();
                     }
                     {% endif %}
-
-                    // Workaround for Firefox bug and a thereby resulting nginx incompatibility
-                    if (method == "LINK") {
-                        method = "POST";
-                        params._method = "LINK";
-                    }
 
                     // prepare final parameters
                     var body = {};
