@@ -306,16 +306,16 @@ class FormTypeParser implements ParserInterface
         return $refl->newInstance();
     }
 
-    private function createForm($item)
+    private function createForm($item, $data = null, array $options = [])
     {
         if ($this->implementsType($item)) {
             $type = $this->getTypeInstance($item);
 
-            return $this->formFactory->create($type);
+            return $this->formFactory->create($type, $data, $options);
         }
 
         try {
-            return $this->formFactory->create($item);
+            return $this->formFactory->create($item, $data, $options);
         } catch (UnexpectedTypeException $e) {
             // nothing
         } catch (InvalidArgumentException $e) {
