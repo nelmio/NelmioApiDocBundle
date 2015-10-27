@@ -322,6 +322,8 @@ class ApiDocExtractor
                 });
             }
 
+            // merge parameters with parameters block from ApiDoc annotation in controller method
+            $parameters = $this->mergeParameters($parameters, $annotation->getParameters());
             $annotation->setParameters($parameters);
         }
 
