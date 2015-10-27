@@ -19,11 +19,6 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class AppKernel extends Kernel
 {
-    public function __construct($environment, $debug)
-    {
-        parent::__construct($environment, $debug);
-    }
-
     public function registerBundles()
     {
         $bundles = array(

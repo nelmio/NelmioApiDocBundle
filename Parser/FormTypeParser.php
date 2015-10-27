@@ -144,21 +144,31 @@ class FormTypeParser implements ParserInterface
                  $type instanceof FormInterface || $type instanceof ResolvedFormTypeInterface;
                  $type = $type->getParent()
             ) {
-                if (isset($this->mapTypes[$type->getName()])) {
-                    $bestType   = $this->mapTypes[$type->getName()];
+                $typeName = method_exists($type, 'getBlockPrefix') ?
+                    $type->getBlockPrefix() : $type->getName();
+
+                if (isset($this->mapTypes[$typeName])) {
+                    $bestType   = $this->mapTypes[$typeName];
                     $actualType = $bestType;
-                } elseif ('collection' === $type->getName()) {
-                    if (is_string($config->getOption('type')) && isset($this->mapTypes[$config->getOption('type')])) {
-                        $subType    = $this->mapTypes[$config->getOption('type')];
+                } elseif ('collection' === $typeName) {
+                    $typeOption = $config->getOption('type');
+
+                    if (is_object($typeOption)) {
+                        $typeOption = method_exists($typeOption, 'getBlockPrefix') ?
+                            $typeOption->getBlockPrefix() : $typeOption->getName();
+                    }
+
+                    if (isset($this->mapTypes[$typeOption])) {
+                        $subType    = $this->mapTypes[$typeOption];
                         $actualType = DataTypes::COLLECTION;
                         $bestType   = sprintf('array of %ss', $subType);
                     } else {
                         // Embedded form collection
                         $embbededType = $config->getOption('type');
-                        $subForm    = $this->formFactory->create($embbededType, null, $config->getOption('options', array()));
-                        $children   = $this->parseForm($subForm);
-                        $actualType = DataTypes::COLLECTION;
-                        $subType    = is_object($embbededType) ? get_class($embbededType) : $embbededType;
+                        $subForm      = $this->formFactory->create($embbededType, null, $config->getOption('options', array()));
+                        $children     = $this->parseForm($subForm);
+                        $actualType   = DataTypes::COLLECTION;
+                        $subType      = is_object($embbededType) ? get_class($embbededType) : $embbededType;
 
                         if (class_exists($subType)) {
                             $parts = explode('\\', $subType);
@@ -263,7 +273,12 @@ class FormTypeParser implements ParserInterface
                     if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
                         $parameters[$name]['format'] = json_encode($choices);
                     } elseif ($choiceList = $config->getOption('choice_list')) {
-                        if (('entity' === $config->getType()->getName() && false === $this->entityToChoice)) {
+                        $choiceListType = $config->getType();
+                        $choiceListName = method_exists($choiceListType, 'getBlockPrefix') ?
+                            $choiceListType->getBlockPrefix() : $choiceListType->getName();
+
+
+                        if (('entity' === $choiceListName && false === $this->entityToChoice)) {
                             $choices = array();
                         } else {
                             // TODO: fixme
