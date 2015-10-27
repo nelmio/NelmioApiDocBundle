@@ -339,15 +339,40 @@ class TestController
      * @ApiDoc(
      *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest",
      *     input={
-     *         "class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest",
-     *         "groups" = {"post", "put"}
+     *         "class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
      *     },
      *     parameters={
-     *          {"name"="number", "dataType"="integer"},
+     *          {
+     *              "name"="number",
+     *              "dataType"="integer",
+     *              "actualType"="string",
+     *              "subType"=null,
+     *              "required"=true,
+     *              "description"="This is the new description",
+     *              "readonly"=false,
+     *              "sinceVersion"="v3.0",
+     *              "untilVersion"="v4.0"
+     *          },
+     *          {
+     *              "name"="arr",
+     *              "dataType"="object (ArrayCollection)"
+     *          },
      *     }
      * )
      */
     public function overrideJmsAnnotationWithApiDocParametersAction()
+    {
+    }
+
+    /**
+     * @ApiDoc(
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest",
+     *     input={
+     *         "class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
+     *     }
+     * )
+     */
+    public function defaultJmsAnnotations()
     {
     }
 }

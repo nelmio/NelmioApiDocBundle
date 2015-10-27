@@ -385,6 +385,48 @@ class ApiDocExtractorTest extends WebTestCase
 
         $array = $annotation->toArray();
         $this->assertTrue(is_array($array['parameters']));
+
+        $this->assertEquals($array['parameters']['foo']['dataType'], 'string');
+        $this->assertEquals($array['parameters']['bar']['dataType'], 'DateTime');
+
         $this->assertEquals($array['parameters']['number']['dataType'], 'integer');
+        $this->assertEquals($array['parameters']['number']['actualType'], 'string');
+        $this->assertEquals($array['parameters']['number']['subType'], null);
+        $this->assertEquals($array['parameters']['number']['required'], true);
+        $this->assertEquals($array['parameters']['number']['description'], 'This is the new description');
+        $this->assertEquals($array['parameters']['number']['readonly'], false);
+        $this->assertEquals($array['parameters']['number']['sinceVersion'], 'v3.0');
+        $this->assertEquals($array['parameters']['number']['untilVersion'], 'v4.0');
+
+        $this->assertEquals($array['parameters']['arr']['dataType'], 'object (ArrayCollection)');
+    }
+
+    public function testJmsAnnotation()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get(
+            'Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::defaultJmsAnnotations',
+            'test_route_27'
+        );
+
+        $this->assertInstanceOf('Nelmio\ApiDocBundle\Annotation\ApiDoc', $annotation);
+
+        $array = $annotation->toArray();
+        $this->assertTrue(is_array($array['parameters']));
+
+        $this->assertEquals($array['parameters']['foo']['dataType'], 'string');
+        $this->assertEquals($array['parameters']['bar']['dataType'], 'DateTime');
+
+        $this->assertEquals($array['parameters']['number']['dataType'], 'double');
+        $this->assertEquals($array['parameters']['number']['actualType'], 'float');
+        $this->assertEquals($array['parameters']['number']['subType'], null);
+        $this->assertEquals($array['parameters']['number']['required'], false);
+        $this->assertEquals($array['parameters']['number']['description'], '');
+        $this->assertEquals($array['parameters']['number']['readonly'], false);
+        $this->assertEquals($array['parameters']['number']['sinceVersion'], null);
+        $this->assertEquals($array['parameters']['number']['untilVersion'], null);
+
+        $this->assertEquals($array['parameters']['arr']['dataType'], 'array');
     }
 }
