@@ -1,11 +1,11 @@
-NelmioApiDocBundle
-===================
+Swagger Support
+---------------
 
-##Swagger support##
+It is possible to make your application produce Swagger-compliant JSON output
+based on `@ApiDoc` annotations, which can be used for consumption by
+[swagger-ui](https://github.com/wordnik/swagger-ui).
 
-It is now possible to make your application produce Swagger-compliant JSON output based on `@ApiDoc` annotations, which can be used for consumption by [swagger-ui](https://github.com/wordnik/swagger-ui).
-
-###Annotation options###
+### Annotation options
 
 A couple of properties has been added to `@ApiDoc`:
 
@@ -28,11 +28,13 @@ To define a __resource description__:
 
 ```
 
-The `resourceDescription` is distinct from `description` as it applies to the whole resource group and not just the particular API endpoint.
+The `resourceDescription` is distinct from `description` as it applies to the
+whole resource group and not just the particular API endpoint.
 
 #### Defining a form-type as a GET form
 
-If you use forms to capture GET requests, you will have to specify the `paramType` to `query` in the annotation:
+If you use forms to capture GET requests, you will have to specify the
+`paramType` to `query` in the annotation:
 
 ```php
 
@@ -44,14 +46,17 @@ If you use forms to capture GET requests, you will have to specify the `paramTyp
  *   ...
  * )
  */
- 
+
  public function searchAction(Request $request)
  {
 ```
 
 ### Multiple response models
 
-Swagger provides you the ability to specify alternate output models for different status codes. Example, `200` would return your default resource object in JSON form, but `400` may return a custom validation error list object. This can be specified through the `responseMap` property:
+Swagger provides you the ability to specify alternate output models for
+different status codes. Example, `200` would return your default resource object
+in JSON form, but `400` may return a custom validation error list object. This
+can be specified through the `responseMap` property:
 
 ```php
 <?php
@@ -96,7 +101,11 @@ nelmio_api_swagger:
 
 Et voila!, simply specify http://yourdomain.com/api-docs in your `swagger-ui` instance and you are good to go.
 
-__Note__: If your `swagger-ui` instance does not live under the same domain, you will probably encounter some problems related to same-origin policy violations. [NelmioCorsBundle](https://github.com/nelmio/NelmioCorsBundle) can solve this problem for you. Read through how to allow cross-site requests for the `/api-docs/*` pages.
+__Note__: If your `swagger-ui` instance does not live under the same domain, you
+will probably encounter some problems related to same-origin policy violations.
+[NelmioCorsBundle](https://github.com/nelmio/NelmioCorsBundle) can solve this
+problem for you. Read through how to allow cross-site requests for the
+`/api-docs/*` pages.
 
 ### Dumping the Swagger-compliant JSON API definitions
 
@@ -137,26 +146,18 @@ php app/console api:swagger:dump swagger-docs
 
 ### Model naming
 
-By default, the model naming strategy used is the `dot_notation` strategy. The model IDs are simply the Fully Qualified Class Name (FQCN) of the class associated to it, with the `\` replaced with `.`:
+By default, the model naming strategy used is the `dot_notation` strategy. The
+model IDs are simply the Fully Qualified Class Name (FQCN) of the class
+associated to it, with the `\` replaced with `.`:
 
 `Vendor\UserBundle\Entity\User => Vendor.UserBundle.Entity.User`
 
-You can also change the `model_naming_strategy` in the configuration to `last_segment_only`, if you want model IDs to be just the class name minus the namespaces (`Vendor\UserBundle\Entity\User => User`). This will not afford you the guarantee that model IDs are unique, but that would really just depend on the classes you have in use.
+You can also change the `model_naming_strategy` in the configuration to
+`last_segment_only`, if you want model IDs to be just the class name minus the
+namespaces (`Vendor\UserBundle\Entity\User => User`). This will not afford you
+the guarantee that model IDs are unique, but that would really just depend on
+the classes you have in use.
 
-##Configuration reference
+---
 
-```yml
-nelmio_api_doc:
-	swagger:
-        api_base_path:        /api
-        swagger_version:      1.2
-        model_naming_strategy: dot_notation
-        api_version:          0.1
-        info:
-            title:                Symfony2
-            description:          My awesome Symfony2 app!
-            TermsOfServiceUrl:    ~
-            contact:              ~
-            license:              ~
-            licenseUrl:           ~
-```
+[back to index](index.md)
