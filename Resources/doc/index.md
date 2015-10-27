@@ -595,6 +595,17 @@ services:
 
 Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tree/master/Extractor/Handler).
 
+### Frequently Asked Questions
+
+##### How can I remove the parameter `_format` sent in `POST` and `PUT` request?
+
+``` yaml
+nelmio_api_doc:
+    sandbox:
+        request_format:
+            method: accept_header
+```
+
 ### Configuration Reference
 
 ``` yaml
