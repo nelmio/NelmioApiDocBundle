@@ -268,7 +268,7 @@ class FormTypeParser implements ParserInterface
                         } else {
                             // TODO: fixme
                             // does not work since: https://github.com/symfony/symfony/commit/03efce1b568379eac21d880e427090e43035f505
-                            $choices = [];
+                            $choices = array();
                         }
 
                         if (is_array($choices) && count($choices)) {
@@ -306,7 +306,7 @@ class FormTypeParser implements ParserInterface
         return $refl->newInstance();
     }
 
-    private function createForm($item, $data = null, array $options = [])
+    private function createForm($item, $data = null, array $options = array())
     {
         if ($this->implementsType($item)) {
             $type = $this->getTypeInstance($item);
