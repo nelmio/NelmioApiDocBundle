@@ -371,4 +371,20 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertTrue(is_array($data));
         $this->assertCount($count, $data);
     }
+
+    public function testOverrideJmsAnnotationWithApiDocParameters()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get(
+            'Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::overrideJmsAnnotationWithApiDocParametersAction',
+            'test_route_27'
+        );
+
+        $this->assertInstanceOf('Nelmio\ApiDocBundle\Annotation\ApiDoc', $annotation);
+
+        $array = $annotation->toArray();
+        $this->assertTrue(is_array($array['parameters']));
+        $this->assertEquals($array['parameters']['number']['dataType'], 'integer');
+    }
 }

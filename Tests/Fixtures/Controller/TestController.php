@@ -334,4 +334,20 @@ class TestController
     public function withLinkAction()
     {
     }
+
+    /**
+     * @ApiDoc(
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest",
+     *     input={
+     *         "class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest",
+     *         "groups" = {"post", "put"}
+     *     },
+     *     parameters={
+     *          {"name"="number", "dataType"="integer"},
+     *     }
+     * )
+     */
+    public function overrideJmsAnnotationWithApiDocParametersAction()
+    {
+    }
 }
