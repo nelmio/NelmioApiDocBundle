@@ -39,15 +39,17 @@ abstract class WebTestCase extends BaseWebTestCase
 
     protected function getContainer(array $options = array())
     {
+        if (!static::$kernel) {
+            static::$kernel = static::createKernel($options);
+        }
+
+        static::$kernel->boot();
+
         if (!static::$container) {
-            if (!static::$kernel) {
-                static::$kernel = static::createKernel($options);
-            }
-
-            static::$kernel->boot();
-
             static::$container = static::$kernel->getContainer();
         }
+
+        static::$container->set('kernel', static::$kernel);
 
         return static::$container;
     }
