@@ -225,3 +225,8 @@ test_route_26:
     path:  /z-action-with-array-request-param
     methods: [POST]
     defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithArrayRequestParamAction }
+
+test_route_27:
+    path: /api/overrride/properties
+    methods: [POST, PUT]
+    defaults: { _controller: NelmioApiDocTestBundle:Test:overrideJmsAnnotationWithApiDocPropertiesAction, _format: json }

@@ -371,4 +371,69 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertTrue(is_array($data));
         $this->assertCount($count, $data);
     }
+
+    public function testOverrideJmsAnnotationWithApiDocParameters()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get(
+            'Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::overrideJmsAnnotationWithApiDocParametersAction',
+            'test_route_27'
+        );
+
+        $this->assertInstanceOf('Nelmio\ApiDocBundle\Annotation\ApiDoc', $annotation);
+
+        $array = $annotation->toArray();
+        $this->assertTrue(is_array($array['parameters']));
+
+        $this->assertEquals('string', $array['parameters']['foo']['dataType']);
+        $this->assertEquals('DateTime', $array['parameters']['bar']['dataType']);
+
+        $this->assertEquals('integer', $array['parameters']['number']['dataType']);
+        $this->assertEquals('string', $array['parameters']['number']['actualType']);
+        $this->assertEquals(null, $array['parameters']['number']['subType']);
+        $this->assertEquals(true, $array['parameters']['number']['required']);
+        $this->assertEquals('This is the new description', $array['parameters']['number']['description']);
+        $this->assertEquals(false, $array['parameters']['number']['readonly']);
+        $this->assertEquals('v3.0', $array['parameters']['number']['sinceVersion']);
+        $this->assertEquals('v4.0', $array['parameters']['number']['untilVersion']);
+
+        $this->assertEquals('object (ArrayCollection)', $array['parameters']['arr']['dataType']);
+
+        $this->assertEquals('object (JmsNested)', $array['parameters']['nested']['dataType']);
+        $this->assertEquals('integer', $array['parameters']['nested']['children']['bar']['dataType']);
+        $this->assertEquals('d+', $array['parameters']['nested']['children']['bar']['format']);
+    }
+
+    public function testJmsAnnotation()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get(
+            'Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::defaultJmsAnnotations',
+            'test_route_27'
+        );
+
+        $this->assertInstanceOf('Nelmio\ApiDocBundle\Annotation\ApiDoc', $annotation);
+
+        $array = $annotation->toArray();
+        $this->assertTrue(is_array($array['parameters']));
+
+        $this->assertEquals('string', $array['parameters']['foo']['dataType']);
+        $this->assertEquals('DateTime', $array['parameters']['bar']['dataType']);
+
+        $this->assertEquals('double', $array['parameters']['number']['dataType']);
+        $this->assertEquals('float', $array['parameters']['number']['actualType']);
+        $this->assertEquals(null, $array['parameters']['number']['subType']);
+        $this->assertEquals(false, $array['parameters']['number']['required']);
+        $this->assertEquals('', $array['parameters']['number']['description']);
+        $this->assertEquals(false, $array['parameters']['number']['readonly']);
+        $this->assertEquals(null, $array['parameters']['number']['sinceVersion']);
+        $this->assertEquals(null, $array['parameters']['number']['untilVersion']);
+
+        $this->assertEquals('array', $array['parameters']['arr']['dataType']);
+
+        $this->assertEquals('object (JmsNested)', $array['parameters']['nested']['dataType']);
+        $this->assertEquals('string', $array['parameters']['nested']['children']['bar']['dataType']);
+    }
 }

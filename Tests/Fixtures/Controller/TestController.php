@@ -334,4 +334,55 @@ class TestController
     public function withLinkAction()
     {
     }
+
+    /**
+     * @ApiDoc(
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest",
+     *     input={
+     *         "class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
+     *     },
+     *     parameters={
+     *          {
+     *              "name"="number",
+     *              "dataType"="integer",
+     *              "actualType"="string",
+     *              "subType"=null,
+     *              "required"=true,
+     *              "description"="This is the new description",
+     *              "readonly"=false,
+     *              "sinceVersion"="v3.0",
+     *              "untilVersion"="v4.0"
+     *          },
+     *          {
+     *              "name"="arr",
+     *              "dataType"="object (ArrayCollection)"
+     *          },
+     *          {
+     *              "name"="nested",
+     *              "dataType"="object (JmsNested)",
+     *              "children": {
+     *                  "bar": {
+     *                      "dataType"="integer",
+     *                      "format"="d+"
+     *                  }
+     *              }
+     *          }
+     *     }
+     * )
+     */
+    public function overrideJmsAnnotationWithApiDocParametersAction()
+    {
+    }
+
+    /**
+     * @ApiDoc(
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest",
+     *     input={
+     *         "class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
+     *     }
+     * )
+     */
+    public function defaultJmsAnnotations()
+    {
+    }
 }
