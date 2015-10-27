@@ -386,19 +386,23 @@ class ApiDocExtractorTest extends WebTestCase
         $array = $annotation->toArray();
         $this->assertTrue(is_array($array['parameters']));
 
-        $this->assertEquals($array['parameters']['foo']['dataType'], 'string');
-        $this->assertEquals($array['parameters']['bar']['dataType'], 'DateTime');
+        $this->assertEquals('string', $array['parameters']['foo']['dataType']);
+        $this->assertEquals('DateTime', $array['parameters']['bar']['dataType']);
 
-        $this->assertEquals($array['parameters']['number']['dataType'], 'integer');
-        $this->assertEquals($array['parameters']['number']['actualType'], 'string');
-        $this->assertEquals($array['parameters']['number']['subType'], null);
-        $this->assertEquals($array['parameters']['number']['required'], true);
-        $this->assertEquals($array['parameters']['number']['description'], 'This is the new description');
-        $this->assertEquals($array['parameters']['number']['readonly'], false);
-        $this->assertEquals($array['parameters']['number']['sinceVersion'], 'v3.0');
-        $this->assertEquals($array['parameters']['number']['untilVersion'], 'v4.0');
+        $this->assertEquals('integer', $array['parameters']['number']['dataType']);
+        $this->assertEquals('string', $array['parameters']['number']['actualType']);
+        $this->assertEquals(null, $array['parameters']['number']['subType']);
+        $this->assertEquals(true, $array['parameters']['number']['required']);
+        $this->assertEquals('This is the new description', $array['parameters']['number']['description']);
+        $this->assertEquals(false, $array['parameters']['number']['readonly']);
+        $this->assertEquals('v3.0', $array['parameters']['number']['sinceVersion']);
+        $this->assertEquals('v4.0', $array['parameters']['number']['untilVersion']);
 
-        $this->assertEquals($array['parameters']['arr']['dataType'], 'object (ArrayCollection)');
+        $this->assertEquals('object (ArrayCollection)', $array['parameters']['arr']['dataType']);
+
+        $this->assertEquals('object (JmsNested)', $array['parameters']['nested']['dataType']);
+        $this->assertEquals('integer', $array['parameters']['nested']['children']['bar']['dataType']);
+        $this->assertEquals('d+', $array['parameters']['nested']['children']['bar']['format']);
     }
 
     public function testJmsAnnotation()
@@ -415,18 +419,21 @@ class ApiDocExtractorTest extends WebTestCase
         $array = $annotation->toArray();
         $this->assertTrue(is_array($array['parameters']));
 
-        $this->assertEquals($array['parameters']['foo']['dataType'], 'string');
-        $this->assertEquals($array['parameters']['bar']['dataType'], 'DateTime');
+        $this->assertEquals('string', $array['parameters']['foo']['dataType']);
+        $this->assertEquals('DateTime', $array['parameters']['bar']['dataType']);
 
-        $this->assertEquals($array['parameters']['number']['dataType'], 'double');
-        $this->assertEquals($array['parameters']['number']['actualType'], 'float');
-        $this->assertEquals($array['parameters']['number']['subType'], null);
-        $this->assertEquals($array['parameters']['number']['required'], false);
-        $this->assertEquals($array['parameters']['number']['description'], '');
-        $this->assertEquals($array['parameters']['number']['readonly'], false);
-        $this->assertEquals($array['parameters']['number']['sinceVersion'], null);
-        $this->assertEquals($array['parameters']['number']['untilVersion'], null);
+        $this->assertEquals('double', $array['parameters']['number']['dataType']);
+        $this->assertEquals('float', $array['parameters']['number']['actualType']);
+        $this->assertEquals(null, $array['parameters']['number']['subType']);
+        $this->assertEquals(false, $array['parameters']['number']['required']);
+        $this->assertEquals('', $array['parameters']['number']['description']);
+        $this->assertEquals(false, $array['parameters']['number']['readonly']);
+        $this->assertEquals(null, $array['parameters']['number']['sinceVersion']);
+        $this->assertEquals(null, $array['parameters']['number']['untilVersion']);
 
-        $this->assertEquals($array['parameters']['arr']['dataType'], 'array');
+        $this->assertEquals('array', $array['parameters']['arr']['dataType']);
+
+        $this->assertEquals('object (JmsNested)', $array['parameters']['nested']['dataType']);
+        $this->assertEquals('string', $array['parameters']['nested']['children']['bar']['dataType']);
     }
 }

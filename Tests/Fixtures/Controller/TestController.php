@@ -357,6 +357,16 @@ class TestController
      *              "name"="arr",
      *              "dataType"="object (ArrayCollection)"
      *          },
+     *          {
+     *              "name"="nested",
+     *              "dataType"="object (JmsNested)",
+     *              "children": {
+     *                  "bar": {
+     *                      "dataType"="integer",
+     *                      "format"="d+"
+     *                  }
+     *              }
+     *          }
      *     }
      * )
      */
