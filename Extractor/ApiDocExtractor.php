@@ -322,6 +322,11 @@ class ApiDocExtractor
                 });
             }
 
+            $parameters = $this->mergeParameters(
+                $parameters,
+                $annotation->getParameters()
+            );
+
             $annotation->setParameters($parameters);
         }
 
