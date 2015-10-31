@@ -4,6 +4,7 @@ namespace Nelmio\ApiDocBundle\Formatter;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Swagger2\ExpandedDefinition;
+use Nelmio\ApiDocBundle\Swagger2\Segment;
 
 /**
  * Class Swagger2Formatter
@@ -60,32 +61,27 @@ class Swagger2Formatter implements FormatterInterface
                 $input['paramType'] = 'form';
             }
 
+
             $route = $apiDoc->getRoute();
 
             $compiled = $route->compile();
 
-            $path = $this->stripBasePath($route->getPath());
+            $url = $this->stripBasePath($route->getPath());
 
-            if (!isset($paths[$path])) {
-                $paths[$path] = array();
+
+            if ($definition->hasPath($url)) {
+                $path = $definition->getPath($url);
+            } else {
+                $path = new Segment\Path($url);
+                $definition->addPath($path);
             }
 
             $parameters = array();
             $responses = array();
 
             foreach ($compiled->getPathVariables() as $paramValue) {
-                $parameter = array(
-                    'name' => $paramValue,
-                    'in' => 'path',
-                    'type' => 'string',
-                    'required' => true,
-                );
-
-                /*
-                if ($paramValue === '_format' && false != ($req = $route->getRequirement('_format'))) {
-                    $parameter['enum'] = explode('|', $req);
-                }*/
-                $parameters[] = $parameter;
+                $parameter = new Segment\Parameter\Path($paramValue);
+                $path->addParameter($parameter);
             }
 
             $data = $apiDoc->toArray();

@@ -10,7 +10,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @author Bez Hermoso <bezalelhermoso@gmail.com>
  */
-class ExpandedDefinition
+class ExpandedDefinition implements Segment
 {
     /**
      * @var array
