@@ -436,4 +436,39 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertEquals('object (JmsNested)', $array['parameters']['nested']['dataType']);
         $this->assertEquals('string', $array['parameters']['nested']['children']['bar']['dataType']);
     }
+
+    public function testMergeParametersDefaultKeyNotExistingInFirstArray()
+    {
+        $container = $this->getContainer();
+        $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+
+        $mergeMethod = new \ReflectionMethod('Nelmio\ApiDocBundle\Extractor\ApiDocExtractor', 'mergeParameters');
+        $mergeMethod->setAccessible(true);
+
+        $p1 = [
+            'myPropName' => [
+                'dataType'    => 'string',
+                'actualType'  => 'string',
+                'subType'     => null,
+                'required'    => null,
+                'description' => null,
+                'readonly'    => null,
+            ]
+        ];
+
+        $p2 = [
+            'myPropName' => [
+                'dataType'    => 'string',
+                'actualType'  => 'string',
+                'subType'     => null,
+                'required'    => null,
+                'description' => null,
+                'readonly'    => null,
+                'default'     => '',
+            ]
+        ];
+
+        $mergedResult = $mergeMethod->invokeArgs($extractor, [$p1, $p2]);
+        $this->assertEquals($p2, $mergedResult);
+    }
 }
