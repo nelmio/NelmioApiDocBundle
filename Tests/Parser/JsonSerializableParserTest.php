@@ -52,13 +52,15 @@ class JsonSerializableParserTest extends \PHPUnit_Framework_TestCase
             array(
                 'property' => 'id',
                 'expected' => array(
-                    'dataType' => 'integer'
+                    'dataType' => 'integer',
+                    'default'  => 123
                 )
             ),
             array(
                 'property' => 'name',
                 'expected' => array(
-                    'dataType' => 'string'
+                    'dataType' => 'string',
+                    'default'  => 'My name',
                 )
             ),
             array(
@@ -72,7 +74,8 @@ class JsonSerializableParserTest extends \PHPUnit_Framework_TestCase
                             'subType' => null,
                             'required' => null,
                             'description' => null,
-                            'readonly' => null
+                            'readonly' => null,
+                            'default' => null,
                         )
                     )
                 )

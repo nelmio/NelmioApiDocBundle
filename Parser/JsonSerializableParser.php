@@ -59,7 +59,8 @@ class JsonSerializableParser implements ParserInterface
             'subType' => null,
             'required' => null,
             'description' => null,
-            'readonly' => null
+            'readonly' => null,
+            'default' => is_scalar($item) ? $item : null,
         );
 
         if ($type == 'object' && $item instanceof \JsonSerializable) {
