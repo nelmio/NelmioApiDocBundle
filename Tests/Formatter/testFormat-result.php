@@ -2010,6 +2010,38 @@ With multiple lines.',
                 ),
             13 =>
                 array (
+                    'method' => 'GET',
+                    'uri' => '/route_with_host.{_format}',
+                    'host' => 'api.test.dev',
+                    'description' => 'Route with host placeholder',
+                    'requirements' =>
+                        array (
+                            'domain' =>
+                                array (
+                                    'requirement' => 'test.dev|test.com',
+                                    'dataType' => '',
+                                    'description' => '',
+                                ),
+                            '_format' =>
+                                array (
+                                    'requirement' => '',
+                                    'dataType' => '',
+                                    'description' => '',
+                                ),
+                        ),
+                    'views' =>
+                        array (
+                            0 => 'default',
+                        ),
+                    'https' => false,
+                    'authentication' => false,
+                    'authenticationRoles' =>
+                        array (
+                        ),
+                    'deprecated' => false,
+                ),
+            14 =>
+                array (
                     'method' => 'ANY',
                     'uri' => '/secure-route',
                     'https' => true,
@@ -2019,7 +2051,7 @@ With multiple lines.',
                         ),
                     'deprecated' => false,
                 ),
-            14 =>
+            15 =>
                 array (
                     'method' => 'ANY',
                     'uri' => '/yet-another/{id}',
@@ -2039,7 +2071,7 @@ With multiple lines.',
                         ),
                     'deprecated' => false,
                 ),
-            15 =>
+            16 =>
                 array (
                     'method' => 'GET',
                     'uri' => '/z-action-with-deprecated-indicator',
@@ -2050,7 +2082,7 @@ With multiple lines.',
                         ),
                     'deprecated' => true,
                 ),
-            16 =>
+            17 =>
                 array (
                     'method' => 'POST',
                     'uri' => '/z-action-with-nullable-request-param',
@@ -2073,7 +2105,7 @@ With multiple lines.',
                         ),
                     'deprecated' => false,
                 ),
-            17 =>
+            18 =>
                 array (
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param',
@@ -2093,7 +2125,7 @@ With multiple lines.',
                         ),
                     'deprecated' => false,
                 ),
-            18 =>
+            19 =>
                 array (
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param-no-default',
@@ -2112,7 +2144,7 @@ With multiple lines.',
                         ),
                     'deprecated' => false,
                 ),
-            19 =>
+            20 =>
                 array (
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param-strict',
@@ -2132,7 +2164,7 @@ With multiple lines.',
                         ),
                     'deprecated' => false,
                 ),
-            20 =>
+            21 =>
                 array (
                     'method' => 'POST',
                     'uri' => '/z-action-with-request-param',
@@ -2155,7 +2187,7 @@ With multiple lines.',
                         ),
                     'deprecated' => false,
                 ),
-            21 =>
+            22 =>
                 array (
                     'method' => 'ANY',
                     'uri' => '/z-return-jms-and-validator-output',
@@ -2255,7 +2287,7 @@ With multiple lines.',
                         ),
                     'deprecated' => false,
                 ),
-            22 =>
+            23 =>
                 array (
                     'method' => 'ANY',
                     'uri' => '/z-return-selected-parsers-input',
@@ -2309,7 +2341,7 @@ With multiple lines.',
                         ),
                     'deprecated' => false,
                 ),
-            23 =>
+            24 =>
                 array (
                     'method' => 'ANY',
                     'uri' => '/z-return-selected-parsers-output',
@@ -2409,7 +2441,7 @@ With multiple lines.',
                         ),
                     'deprecated' => false,
                 ),
-            24 =>
+            25 =>
                 array (
                     'method' => 'POST',
                     'uri' => '/zcached',
@@ -2421,7 +2453,7 @@ With multiple lines.',
                         ),
                     'deprecated' => false,
                 ),
-            25 =>
+            26 =>
                 array (
                     'method' => 'POST',
                     'uri' => '/zsecured',

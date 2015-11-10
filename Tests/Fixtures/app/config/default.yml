@@ -27,6 +27,10 @@ services:
         tags:
             - { name: form.type, alias: dependency_type }
 
+parameters:
+    domain_prod: test.com
+    domain_dev: test.dev
+
 #JMS Serializer config for testing JmsMetadataParser
 jms_serializer:
     handlers:
