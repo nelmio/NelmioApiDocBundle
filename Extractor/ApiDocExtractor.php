@@ -484,7 +484,11 @@ class ApiDocExtractor
                                 $v1[$name] = $value;
                             }
                         } elseif ($name == 'default') {
-                            $v1[$name] = $value ?: $v1[$name];
+                            if (isset($v1[$name])) {
+                                $v1[$name] = isset($value) ? $value : $v1[$name];
+                            } else {
+                                $v1[$name] = isset($value) ? $value : null;
+                            }
                         } else {
                             $v1[$name] = $value;
                         }
