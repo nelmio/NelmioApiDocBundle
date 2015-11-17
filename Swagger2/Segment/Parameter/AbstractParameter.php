@@ -18,7 +18,7 @@ abstract class AbstractParameter implements SegmentInterface
 
     public function __construct($name)
     {
-        $this->name = name;
+        $this->name = $name;
     }
 
     public function toArray()
@@ -38,6 +38,11 @@ abstract class AbstractParameter implements SegmentInterface
             'description' => $this->description,
             'required' => (boolean) $this->required,
         );
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 
     public final function getIn()

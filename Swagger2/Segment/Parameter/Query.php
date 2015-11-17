@@ -28,6 +28,7 @@ class Query extends AbstractParameter
 
     protected $multipleOf;
 
+    protected $data;
 
     public function setType($type)
     {

@@ -2,7 +2,7 @@
 
 namespace Nelmio\ApiDocBundle\Swagger2;
 
-
+use Nelmio\ApiDocBundle\Swagger2\Segment\Path;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -90,7 +90,47 @@ class ExpandedDefinition implements SegmentInterface
 
     public function addPath(Path $path)
     {
-        $this->paths[] = $path;
+        $url = $path->getUrl();
+        if (!isset($this->paths[$url])) {
+            $this->paths[$url] = array();
+        }
+        $this->paths[$url][] = $path;
+    }
+
+    private function getPaths()
+    {
+        $pathsArray = array();
+
+        foreach ($this->paths as $url => $paths) {
+            $data = array();
+            $parameters = array();
+            foreach ($paths as $path) {
+                $data = array_fill_keys($path->getMethods(), $path->toArray());
+                foreach ($path->getPathParameters() as $pathParameter) {
+                    $paramName = $pathParameter["name"];
+                    if (!isset($parameters[$paramName])) {
+                        $parameters[$paramName] = $pathParameter;
+                    } else {
+                        $parameters[$paramName] = array_merge($parameters[$paramName], $pathParameter);
+                    }
+                }
+            }
+
+            if (count($parameters)) {
+                $data["parameters"] = array_values($parameters);
+            }
+
+            if (count($data)) {
+                $pathsArray[$url] = $data;
+            }
+        }
+
+        return $pathsArray;
+    }
+
+    private function getDefinitions()
+    {
+        return array();
     }
 
     public function toJson($options = null)

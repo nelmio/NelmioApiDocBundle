@@ -17,14 +17,16 @@ class Path implements SegmentInterface
         'form' => array(),
     );
 
+    protected $methods = array('GET');
+
     public function __construct($url)
     {
-        $this->url = $this->url;
+        $this->url = $url;
     }
 
     public function addParameter(AbstractParameter $parameter)
     {
-        $in = $parameter-getIn();
+        $in = $parameter->getIn();
         if (!isset($this->parameters[$in])) {
             throw new \Exception(sprintf('Invalid parameter type %s. Valid types: %s', $in, json_encode(array_keys($this->parameters))));
         }
@@ -32,8 +34,41 @@ class Path implements SegmentInterface
         $this->parameters[$in][] = $parameter;
     }
 
+    public function setMethods(array $methods)
+    {
+        $this->methods = array_map('strtolower', $methods);
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    public function getMethods()
+    {
+        return $this->methods;
+    }
+
+    public function getPathParameters()
+    {
+        $data = array();
+        foreach ($this->parameters["path"] as $pathParam) {
+            $data[] = $pathParam->toArray();
+        }
+        return $data;
+    }
+
     public function toArray()
     {
-        return array();
+        $data = array(
+            "description" => $this->description,
+        );
+
+        return $data;
     }
 }
