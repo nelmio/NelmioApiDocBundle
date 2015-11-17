@@ -10,7 +10,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @author Bez Hermoso <bezalelhermoso@gmail.com>
  */
-class ExpandedDefinition implements Segment
+class ExpandedDefinition implements SegmentInterface
 {
     /**
      * @var array
@@ -28,6 +28,11 @@ class ExpandedDefinition implements Segment
      * @var array
      */
     private $produces;
+
+    /**
+     * @var array
+     */
+    private $paths = array();
 
     public function __construct($basePath, array $info, array $schemes, array $consumes, array $produces)
     {
@@ -81,6 +86,11 @@ class ExpandedDefinition implements Segment
     public function getBasePath()
     {
         return $this->basePath;
+    }
+
+    public function addPath(Path $path)
+    {
+        $this->paths[] = $path;
     }
 
     public function toJson($options = null)

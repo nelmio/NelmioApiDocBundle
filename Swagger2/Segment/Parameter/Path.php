@@ -11,9 +11,4 @@ class Path extends AbstractParameter
         $this->name = $name;
         $this->required = true;
     }
-
-    public final function getType()
-    {
-        return $this->in;
-    }
 }

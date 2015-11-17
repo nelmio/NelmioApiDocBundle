@@ -2,13 +2,15 @@
 
 namespace Nelmio\ApiDocBundle\Swagger2\Segment\Parameter;
 
-use Nelmio\ApiDocBundle\Swagger2\Segment;
+use Nelmio\ApiDocBundle\Swagger2\SegmentInterface;
 
-abstract class AbstractParameter implements Segment
+abstract class AbstractParameter implements SegmentInterface
 {
     protected $name;
 
     protected $in;
+
+    protected $type;
 
     protected $description;
 
@@ -31,10 +33,16 @@ abstract class AbstractParameter implements Segment
 
         return array(
             'name' => $this->name,
+            'type' => $this->type ?: 'string',
             'in' => $this->in,
             'description' => $this->description,
             'required' => (boolean) $this->required,
         );
+    }
+
+    public final function getIn()
+    {
+        return $this->in;
     }
 }
 

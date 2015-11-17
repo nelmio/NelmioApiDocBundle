@@ -68,15 +68,8 @@ class Swagger2Formatter implements FormatterInterface
 
             $url = $this->stripBasePath($route->getPath());
 
+            $path = new Segment\Path($url);
 
-            if ($definition->hasPath($url)) {
-                $path = $definition->getPath($url);
-            } else {
-                $path = new Segment\Path($url);
-                $definition->addPath($path);
-            }
-
-            $parameters = array();
             $responses = array();
 
             foreach ($compiled->getPathVariables() as $paramValue) {
@@ -87,8 +80,14 @@ class Swagger2Formatter implements FormatterInterface
             $data = $apiDoc->toArray();
 
             if (isset($data['filters'])) {
+                foreach ($data['filters'] as $name => $filter) {
+                    $parameter = new Segment\Parameter\Query($name);
+                    $parameter->setType($this->typeMap($filter['dataType']));
+                }
+                var_dump($data['filters']);
                 $parameters = array_merge($parameters, $this->deriveQueryParameters($data['filters']));
             }
+            continue;
 
             if (isset($data['parameters'])) {
                 $parameters = array_merge($parameters, $this->deriveParameters($data['parameters'], $input['paramType']));
