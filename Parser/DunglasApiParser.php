@@ -98,7 +98,7 @@ class DunglasApiParser implements ParserInterface
         $data = array();
         foreach ($classMetadata->getAttributes() as $attributeMetadata) {
             if (
-                ($attributeMetadata->isReadable() && self::OUT_PREFIX === $io) ||
+                (!$attributeMetadata->isIdentifier() && $attributeMetadata->isReadable() && self::OUT_PREFIX === $io) ||
                 ($attributeMetadata->isWritable() && self::IN_PREFIX === $io)
             ) {
                 $data[$attributeMetadata->getName()] = $this->parseAttribute($resource, $attributeMetadata, $io);
