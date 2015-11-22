@@ -19,7 +19,7 @@ class ApiDocExtractorTest extends WebTestCase
 {
     const NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE = 5;
 
-    private static $ROUTES_QUANTITY_DEFAULT = 33; // Routes in the default view
+    private static $ROUTES_QUANTITY_DEFAULT = 34; // Routes in the default view
     private static $ROUTES_QUANTITY_PREMIUM = 6;  // Routes in the premium view
     private static $ROUTES_QUANTITY_TEST    = 2;  // Routes in the test view
 
@@ -40,7 +40,7 @@ class ApiDocExtractorTest extends WebTestCase
         $data = $extractor->all();
         restore_error_handler();
 
-        $httpsKey = 20;
+        $httpsKey = 21;
         if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
             $httpsKey += self::NB_ROUTES_ADDED_BY_DUNGLAS_API_BUNDLE;
         }
@@ -69,13 +69,6 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertTrue(is_array($array1['filters']));
         $this->assertNull($a1->getInput());
 
-        $a1 = $data[7]['annotation'];
-        $array1 = $a1->toArray();
-        $this->assertTrue($a1->isResource());
-        $this->assertEquals('index action', $a1->getDescription());
-        $this->assertTrue(is_array($array1['filters']));
-        $this->assertNull($a1->getInput());
-
         $a2 = $data[8]['annotation'];
         $array2 = $a2->toArray();
         $this->assertFalse($a2->isResource());
@@ -90,12 +83,17 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertFalse(isset($array2['filters']));
         $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
 
+        $a3 = $data[$httpsKey]['annotation'];
+        $this->assertTrue($a3->getHttps());
+
         $a4 = $data[11]['annotation'];
         $this->assertTrue($a4->isResource());
         $this->assertEquals('TestResource', $a4->getResource());
 
-        $a3 = $data[$httpsKey]['annotation'];
-        $this->assertTrue($a3->getHttps());
+        $a5 = $data[$httpsKey - 1]['annotation'];
+        $a5requirements = $a5->getRequirements();
+        $this->assertEquals('api.test.dev', $a5->getHost());
+        $this->assertEquals('test.dev|test.com', $a5requirements['domain']['requirement']);
     }
 
     public function testGet()

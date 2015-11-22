@@ -230,3 +230,11 @@ test_route_27:
     path: /api/overrride/properties
     methods: [POST, PUT]
     defaults: { _controller: NelmioApiDocTestBundle:Test:overrideJmsAnnotationWithApiDocPropertiesAction, _format: json }
+
+test_route_28:
+    path: /route_with_host.{_format}
+    host: api.{domain}
+    methods: [GET]
+    requirements:
+        domain: "%domain_dev%|%domain_prod%"
+    defaults: { _controller: NelmioApiDocTestBundle:Test:routeWithHost, domain: "%domain_dev%", _format: json }

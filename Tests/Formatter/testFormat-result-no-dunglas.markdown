@@ -733,6 +733,19 @@ nested_array[]:
   * type: array of objects (JmsNested)
 
 
+### `GET` /route_with_host.{_format} ###
+
+_Route with host placeholder_
+
+#### Requirements ####
+
+**domain**
+
+  - Requirement: test.dev|test.com
+**_format**
+
+
+
 ### `ANY` /secure-route ###
 
 
