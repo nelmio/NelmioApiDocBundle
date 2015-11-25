@@ -385,4 +385,14 @@ class TestController
     public function defaultJmsAnnotations()
     {
     }
+
+    /**
+     * @ApiDoc(
+     *  description="Route with host placeholder",
+     *  views={ "default" }
+     * )
+     */
+    public function routeWithHostAction()
+    {
+    }
 }
