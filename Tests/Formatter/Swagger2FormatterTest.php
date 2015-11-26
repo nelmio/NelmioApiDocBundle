@@ -75,6 +75,15 @@ class Swagger2FormatterTest extends WebTestCase
                     ),
                     "post" => array(
                     ),
+                    "parameters" => array(
+                        array(
+                            "name" => "id",
+                            "type" => "string",
+                            "in" => "path",
+                            "required" => false,
+                            "description" => "",
+                        )
+                    ),
                 ),
                 "/another" => array(
                     "get" => array(
@@ -124,7 +133,16 @@ class Swagger2FormatterTest extends WebTestCase
                     "get" => array(
                     ),
                     "post" => array(
-                    )
+                    ),
+                    "parameters" => array(
+                        array(
+                            "name" => "id",
+                            "type" => "string",
+                            "in" => "path",
+                            "required" => false,
+                            "description" => "",
+                        )
+                    ),
                 ),
                 "/any" => array(
                     "get" => array(
@@ -132,6 +150,15 @@ class Swagger2FormatterTest extends WebTestCase
                 ),
                 "/tests2.{_format}" => array(
                     "post" => array(
+                    ),
+                    "parameters" => array(
+                        array(
+                            "name" => "id",
+                            "type" => "string",
+                            "in" => "path",
+                            "required" => false,
+                            "description" => "",
+                        )
                     ),
                 ),
                 "/z-action-with-query-param-strict" => array(
@@ -191,17 +218,44 @@ class Swagger2FormatterTest extends WebTestCase
                     ),
                     "post" => array(
                     ),
+                    "parameters" => array(
+                        array(
+                            "name" => "id",
+                            "type" => "string",
+                            "in" => "path",
+                            "required" => false,
+                            "description" => "",
+                        )
+                    ),
                 ),
                 "/resources/{id}.{_format}" => array(
                     "get" => array(
                     ),
                     "post" => array(
                     ),
+                    "parameters" => array(
+                        array(
+                            "name" => "id",
+                            "type" => "string",
+                            "in" => "path",
+                            "required" => false,
+                            "description" => "",
+                        )
+                    ),
                 ),
                 "/other-resources.{_format}" => array(
-                    "get" => array(
+                    "put" => array(
                     ),
-                    "post" => array(
+                    "patch" => array(
+                    ),
+                    "parameters" => array(
+                        array(
+                            "name" => "id",
+                            "type" => "string",
+                            "in" => "path",
+                            "required" => false,
+                            "description" => "",
+                        )
                     ),
                 ),
                 "/other-resources/{id}.{_format}" => array(
@@ -209,7 +263,14 @@ class Swagger2FormatterTest extends WebTestCase
                     ),
                     "post" => array(
                     ),
-                    "post" => array(
+                    "parameters" => array(
+                        array(
+                            "name" => "id",
+                            "type" => "string",
+                            "in" => "path",
+                            "required" => false,
+                            "description" => "",
+                        )
                     ),
                 ),
                 "/zcached" => array(

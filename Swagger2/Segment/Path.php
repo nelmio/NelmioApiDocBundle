@@ -19,6 +19,8 @@ class Path implements SegmentInterface
 
     protected $methods = array('GET');
 
+    protected $responses = array();
+
     public function __construct($url)
     {
         $this->url = $url;
@@ -63,10 +65,16 @@ class Path implements SegmentInterface
         return $data;
     }
 
+    private function getResponses()
+    {
+        return array();
+    }
+
     public function toArray()
     {
         $data = array(
             "description" => $this->description,
+            "responses" => $this->getResponses(),
         );
 
         return $data;

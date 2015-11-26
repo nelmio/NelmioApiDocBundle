@@ -93,6 +93,11 @@ class Swagger2Formatter implements FormatterInterface
 
             foreach ($compiled->getPathVariables() as $paramValue) {
                 $parameter = new Segment\Parameter\Path($paramValue);
+
+                if ($paramValue === "_format" && false != ($req = $route->getRequirement("_format"))) {
+                    $parameter->setEnum(explode("|", $req));
+                }
+
                 $path->addParameter($parameter);
             }
 
@@ -121,103 +126,43 @@ class Swagger2Formatter implements FormatterInterface
                 }
             }
 
-            //if (isset($data['filters'])) {
-                //foreach ($data['filters'] as $name => $filter) {
-                    //$parameter = new Segment\Parameter\Query($name);
-                    //$parameter->setType($this->typeMap($filter['dataType']));
-                //}
-                //var_dump($data['filters']);
-                //$parameters = array_merge($parameters, $this->deriveQueryParameters($data['filters']));
-            //}
-            //continue;
+            if (isset($data['parameters'])) {
+                var_dump($input);
+                //var_dump($apiDoc);
+                //var_dump($data);
+                //$body = $this->handleParameters($definition, $data['parameters'], $input['paramType']);
+            }
 
-            //if (isset($data['parameters'])) {
-                //$parameters = array_merge($parameters, $this->deriveParameters($data['parameters'], $input['paramType']));
-            //}
-
-            //$responseMap = $apiDoc->getParsedResponseMap();
-
-            //$statusMessages = isset($data['statusCodes']) ? $data['statusCodes'] : array();
-
-            //foreach ($responseMap as $statusCode => $prop) {
-
-                //if (isset($statusMessages[$statusCode])) {
-                    //$description = is_array($statusMessages[$statusCode]) ? implode('; ', $statusMessages[$statusCode]) : $statusCode[$statusCode];
-                //} else {
-                    //$description = sprintf('See standard HTTP status code reason for %s', $statusCode);
-                //}
-
-                //$className = !empty($prop['type']['form_errors']) ? $prop['type']['class'] . '.ErrorResponse' : $prop['type']['class'];
-
-                //if (isset($prop['type']['collection']) && $prop['type']['collection'] === true) {
-
-                    /*
-                     * Without alias:       Fully\Qualified\Class\Name[]
-                     * With alias:          Fully\Qualified\Class\Name[alias]
-                     */
-                    //$alias = $prop['type']['collectionName'];
-
-                    //$newName = sprintf('%s[%s]', $className, $alias);
-                    //$collectionId =
-                        //$this->registerModel(
-                            //$newName,
-                            //array(
-                                //$alias => array(
-                                    //'dataType'    => null,
-                                    //'subType'     => $className,
-                                    //'actualType'  => DataTypes::COLLECTION,
-                                    //'required'    => true,
-                                    //'readonly'    => true,
-                                    //'description' => null,
-                                    //'default'     => null,
-                                    //'children'    => $prop['model'][$alias]['children'],
-                                //)
-                            //),
-                            //''
-                        //);
-                    //$responseModel = array(
-                        //'description' => $description,
-                        //'schema' => array(
-                            //'type' => 'array',
-                            //'items' => array(
-                                //'$ref' => '#/definitions/' . $collectionId,
-                            //)
-                        //)
-                    //);
-                //} else {
-
-                    //$responseModel = array(
-                        //'description' => $description,
-                        //'schema' => array(
-                            //'$ref' => $this->registerModel($className, $prop['model'], ''),
-                        //),
-                    //);
-                //}
-                //$responses[$statusCode] = $responseModel;
-            //}
-
-            //$unmappedMessages = array_diff(array_keys($statusMessages), array_keys($responses));
-
-            //foreach ($unmappedMessages as $code) {
-                //$responses[$code] = array(
-                    //'description' => is_array($statusMessages[$code]) ? implode('; ', $statusMessages[$code]) : $statusMessages[$code],
-                //);
-            //}
-
-            //foreach ($apiDoc->getRoute()->getMethods() as $method) {
-                //$method = strtolower($method);
-                //$operation = array(
-                    //'summary' => $apiDoc->getDescription(),
-                    //'description' => $apiDoc->getDescription(),
-                    //'parameters' => $parameters,
-                    //'responses' => $responses,
-                //);
-                //$paths[$path][$method] = $operation;
-            //}
         }
+        exit;
 
         return $definition->toArray();
 
+    }
+
+    private function handleParameters(ExpandedDefinition $definition, array $input, $type)
+    {
+        $defaults = array(
+            "actualType" => "string",
+        );
+
+        $format = null;
+        $type = null;
+        $reference = null;
+        $enum = null;
+        $items = null;
+
+        foreach ($input as $paramName => $paramDefinition) {
+
+            $paramDefinition = array_merge($defaults, $paramDefinition);
+
+            if (isset($this->typeMap[$paramDefinition["actualType"]])) {
+                $type = $this->typeMap[$paramDefinition["actualType"]];
+            } else {
+            
+            }
+
+        }
     }
 
     /**
