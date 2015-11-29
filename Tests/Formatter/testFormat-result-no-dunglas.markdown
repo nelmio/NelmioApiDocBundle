@@ -785,8 +785,8 @@ param1:
 
 page:
 
-  * Requirement: \d+
   * Description: Page of the overview.
+  * Requirement: \d+
   * Default: 1
 
 
@@ -797,8 +797,8 @@ page:
 
 page:
 
-  * Requirement: \d+
   * Description: Page of the overview.
+  * Requirement: \d+
 
 
 ### `GET` /z-action-with-query-param-strict ###

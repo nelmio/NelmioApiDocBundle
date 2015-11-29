@@ -28,39 +28,40 @@ class FosRestHandler implements HandlerInterface
     public function handle(ApiDoc $annotation, array $annotations, Route $route, \ReflectionMethod $method)
     {
         foreach ($annotations as $annot) {
-            if ($annot instanceof RequestParam) {
+            if(!($annot instanceof RequestParam) && !($annot instanceof QueryParam)) {
+                continue;
+            }
 
-                $requirements = $this->handleRequirements($annot->requirements);
-                $data = array(
+            $requirements = $this->handleRequirements($annot->requirements).(
+                (property_exists('FOS\RestBundle\Controller\Annotations\RequestParam', 'array') ? $annot->array : $annot->map) ? '[]' : ''
+            );
+            $data = array(
+                'description' => $annot->description,
+            );
+            if ($annot instanceof RequestParam) {
+                $data = array_merge($data, array(
+                    'dataType'    => $requirements,
                     'required'    => $annot->strict && $annot->nullable === false && $annot->default === null,
-                    'dataType'    => $requirements.($annot->array ? '[]' : ''),
                     'actualType'  => $this->inferType($requirements),
                     'subType'     => null,
-                    'description' => $annot->description,
-                    'readonly'    => false
-                );
+                    'readonly' => false,
+                ));
                 if ($annot->strict === false) {
                     $data['default'] = $annot->default;
                 }
+
                 $annotation->addParameter($annot->name, $data);
             } elseif ($annot instanceof QueryParam) {
+                $data['requirement'] = $requirements;
+
                 if ($annot->strict && $annot->nullable === false && $annot->default === null) {
-                    $annotation->addRequirement($annot->name, array(
-                        'requirement'   => $this->handleRequirements($annot->requirements).($annot->array ? '[]' : ''),
-                        'dataType'      => '',
-                        'description'   => $annot->description,
-                    ));
+                    $data['dataType'] = '';
+                    $annotation->addRequirement($annot->name, $data);
                 } elseif ($annot->default !== null) {
-                    $annotation->addFilter($annot->name, array(
-                        'requirement'   => $this->handleRequirements($annot->requirements).($annot->array ? '[]' : ''),
-                        'description'   => $annot->description,
-                        'default'   => $annot->default,
-                    ));
+                    $data['default'] = $annot->default;
+                    $annotation->addFilter($annot->name, $data);
                 } else {
-                    $annotation->addFilter($annot->name, array(
-                        'requirement'   => $this->handleRequirements($annot->requirements).($annot->array ? '[]' : ''),
-                        'description'   => $annot->description,
-                    ));
+                    $annotation->addFilter($annot->name, $data);
                 }
             }
         }
