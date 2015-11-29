@@ -36,7 +36,7 @@
         "symfony/serializer": "~2.7",
         "doctrine/orm": "~2.3",
         "doctrine/doctrine-bundle": "~1.5",
-        "friendsofsymfony/rest-bundle": "~1.0",
+        "friendsofsymfony/rest-bundle": "~1.0|~2.0",
         "jms/serializer-bundle": ">=0.11",
         "dunglas/api-bundle": "~1.0@dev",
         "sensio/framework-extra-bundle": "~3.0",

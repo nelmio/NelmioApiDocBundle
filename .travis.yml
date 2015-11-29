@@ -31,10 +31,12 @@ matrix:
           env: SYMFONY_VERSION=2.8.*@dev
         - php: 5.6
           env: SYMFONY_VERSION="3.0.x-dev as 2.8"
+        - php: 5.6
+          env: DEPENDENCIES=dev
     allow_failures:
-        - php: nightly
         - env: SYMFONY_VERSION=2.8.*@dev
         - env: SYMFONY_VERSION="3.0.x-dev as 2.8"
+        - env: DEPENDENCIES=dev
     fast_finish: true
 
 before_script:
@@ -42,6 +44,7 @@ before_script:
     - if [ "$SYMFONY_VERSION" = "2.8.*@dev" ] || [ "$SYMFONY_VERSION" = "3.0.x-dev as 2.8" ]; then SYMFONY_DEPRECATIONS_HELPER=strict; fi;
     - if [ "$SYMFONY_VERSION" != "3.0.x-dev as 2.8" ] && [ "$SYMFONY_VERSION" != "2.7.*" ]; then sed -i "/dunglas\/api-bundle/d;/symfony\/serializer/d" composer.json; fi;
     - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
-    - composer install
+    - if [ "$DEPENDENCIES" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
+    - composer update $COMPOSER_FLAGS
 
-script: phpunit --coverage-text
+script: if [ "$TRAVIS_PHP_VERSION" == "5.5" ]; then phpunit --coverage-text; else phpunit; fi
