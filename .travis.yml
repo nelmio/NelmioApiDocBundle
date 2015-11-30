@@ -20,7 +20,7 @@ env:
 matrix:
     include:
         - php: 5.6
-          env: SYMFONY_VERSION=2.3.*
+          env: COMPOSER_FLAGS="--prefer-lowest"
         - php: 5.6
           env: SYMFONY_VERSION=2.4.*
         - php: 5.6
@@ -28,20 +28,20 @@ matrix:
         - php: 5.6
           env: SYMFONY_VERSION=2.7.*
         - php: 5.6
-          env: SYMFONY_VERSION=2.8.*@dev
+          env: SYMFONY_VERSION=2.8.*@dev SYMFONY_DEPRECATIONS_HELPER=strict
         - php: 5.6
-          env: SYMFONY_VERSION="3.0.x-dev as 2.8"
+          env: SYMFONY_VERSION=3.0.* DEPENDENCIES=dev COMPOSER_FLAGS="--prefer-stable" SYMFONY_DEPRECATIONS_HELPER=strict
     allow_failures:
         - php: nightly
         - env: SYMFONY_VERSION=2.8.*@dev
-        - env: SYMFONY_VERSION="3.0.x-dev as 2.8"
+        - env: SYMFONY_VERSION=3.0.*
     fast_finish: true
 
 before_script:
     - composer self-update
-    - if [ "$SYMFONY_VERSION" = "2.8.*@dev" ] || [ "$SYMFONY_VERSION" = "3.0.x-dev as 2.8" ]; then SYMFONY_DEPRECATIONS_HELPER=strict; fi;
+    - if [ "$DEPENDENCIES" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
     - if [ "$SYMFONY_VERSION" != "3.0.x-dev as 2.8" ] && [ "$SYMFONY_VERSION" != "2.7.*" ]; then sed -i "/dunglas\/api-bundle/d;/symfony\/serializer/d" composer.json; fi;
     - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
-    - composer install
+    - composer update $COMPOSER_FLAGS
 
 script: phpunit --coverage-text

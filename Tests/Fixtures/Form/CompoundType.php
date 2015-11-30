@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
 
+use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -24,18 +25,24 @@ class CompoundType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('sub_form', new SimpleType())
-            ->add('a', 'number')
+            ->add('sub_form', LegacyFormHelper::isLegacy() ? new SimpleType() : __NAMESPACE__.'\SimpleType')
+            ->add('a', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\NumberType'))
             ;
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * BC SF < 2.8
+     * {@inheritdoc}
      */
     public function getName()
     {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix() {
         return '';
     }
 }

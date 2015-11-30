@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Formatter;
 
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
+use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
 
 class MarkdownFormatterTest extends WebTestCase
 {
@@ -27,6 +28,9 @@ class MarkdownFormatterTest extends WebTestCase
 
         $suffix = class_exists('Dunglas\ApiBundle\DunglasApiBundle') ? '' : '-no-dunglas';
         $expected = file_get_contents(__DIR__ . '/testFormat-result' . $suffix . '.markdown');
+        if (LegacyFormHelper::isLegacy()) {
+            $expected = str_replace('DependencyType', 'dependency_type', $expected);
+        }
 
         $this->assertEquals($expected, $result . "\n");
     }

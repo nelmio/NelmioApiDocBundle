@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
 
+use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -23,16 +24,22 @@ class RequiredType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('required_field', 'text', array('required' => true));
+        $builder->add('required_field', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\TextType'), array('required' => true));
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * BC SF < 2.8
+     * {@inheritdoc}
      */
     public function getName()
     {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix() {
         return '';
     }
 }
