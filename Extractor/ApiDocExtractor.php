@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Nelmio\ApiDocBundle\Parser\PostParserInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
+use Nelmio\ApiDocBundle\Views\ViewConfiguration;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,7 +69,12 @@ class ApiDocExtractor
      */
     protected $annotationsProviders;
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ControllerNameParser $controllerNameParser, array $handlers, array $annotationsProviders)
+    /**
+     * @var ViewConfiguration[]
+     */
+    protected $viewsConfigurations = array();
+
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, ControllerNameParser $controllerNameParser, array $handlers, array $annotationsProviders, array $viewsConfigurations = array())
     {
         $this->container            = $container;
         $this->router               = $router;
@@ -77,6 +83,7 @@ class ApiDocExtractor
         $this->controllerNameParser = $controllerNameParser;
         $this->handlers             = $handlers;
         $this->annotationsProviders = $annotationsProviders;
+        $this->viewsConfigurations  = $viewsConfigurations;
     }
 
     /**
@@ -115,6 +122,7 @@ class ApiDocExtractor
         $array     = array();
         $resources = array();
         $excludeSections = $this->container->getParameter('nelmio_api_doc.exclude_sections');
+        $viewConfiguration = isset($this->viewsConfigurations[$view]) ? $this->viewsConfigurations[$view] : new ViewConfiguration(array(), true);
 
         foreach ($routes as $route) {
             if (!$route instanceof Route) {
@@ -123,9 +131,14 @@ class ApiDocExtractor
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 $annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS);
+
                 if (
                     $annotation && !in_array($annotation->getSection(), $excludeSections) &&
-                    (in_array($view, $annotation->getViews()) || (0 === count($annotation->getViews()) && $view === ApiDoc::DEFAULT_VIEW))
+                    (
+                        in_array($view, $annotation->getViews()) ||
+                        array_intersect($viewConfiguration->getInclude(), $annotation->getViews()) ||
+                        ($viewConfiguration->isIncludeEmpty() && 0 === count($annotation->getViews()))
+                    )
                 ) {
                     if ($annotation->isResource()) {
                         if ($resource = $annotation->getResource()) {

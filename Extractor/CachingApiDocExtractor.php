@@ -45,6 +45,7 @@ class CachingApiDocExtractor extends ApiDocExtractor
      * @param ControllerNameParser $controllerNameParser
      * @param array                $handlers
      * @param array                $annotationsProviders
+     * @param array                $viewsConfigurations
      * @param string               $cacheFile
      * @param bool|false           $debug
      */
@@ -56,10 +57,11 @@ class CachingApiDocExtractor extends ApiDocExtractor
         ControllerNameParser $controllerNameParser,
         array $handlers,
         array $annotationsProviders,
+        array $viewsConfigurations,
         $cacheFile,
         $debug = false
     ) {
-        parent::__construct($container, $router, $reader, $commentExtractor, $controllerNameParser, $handlers, $annotationsProviders);
+        parent::__construct($container, $router, $reader, $commentExtractor, $controllerNameParser, $handlers, $annotationsProviders, $viewsConfigurations);
 
         $this->cacheFile = $cacheFile;
         $this->debug = $debug;
