@@ -61,6 +61,15 @@ nelmio_api_doc:
         authentication:
             delivery: header
             name: access_token
+    views:
+        personalized_with_premium:
+          include: ['premium']
+          include_empty: false
+        personalized_with_premium_and_test:
+          include: ['premium', 'test']
+        personalized_with_premium_and_empty:
+          include: ['premium']
+          include_empty: true
     cache:
         enabled: true
     exclude_sections: ["private", "exclusive"]
