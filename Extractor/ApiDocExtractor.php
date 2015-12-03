@@ -122,7 +122,7 @@ class ApiDocExtractor
         $array     = array();
         $resources = array();
         $excludeSections = $this->container->getParameter('nelmio_api_doc.exclude_sections');
-        $viewConfiguration = isset($this->viewsConfigurations[$view]) ? $this->viewsConfigurations[$view] : new ViewConfiguration(array(), true);
+        $viewConfiguration = isset($this->viewsConfigurations[$view]) ? $this->viewsConfigurations[$view] : new ViewConfiguration(array(), $view == ApiDoc::DEFAULT_VIEW);
 
         foreach ($routes as $route) {
             if (!$route instanceof Route) {
