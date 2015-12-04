@@ -477,7 +477,7 @@ _create another test_
 
 dependency_type:
 
-  * type: object (dependency_type)
+  * type: object (DependencyType)
   * required: true
 
 dependency_type[a]:
@@ -610,7 +610,7 @@ _Testing return_
 
 dependency_type:
 
-  * type: object (dependency_type)
+  * type: object (DependencyType)
 
 dependency_type[a]:
 
