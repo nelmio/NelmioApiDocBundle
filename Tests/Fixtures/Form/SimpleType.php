@@ -50,7 +50,8 @@ class SimpleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return 'simple';
     }
 }

@@ -59,7 +59,7 @@ class RequireConstructionType extends AbstractType
 
         return;
     }
-    
+
     /**
      * BC SF < 2.8
      * {@inheritdoc}
@@ -72,7 +72,8 @@ class RequireConstructionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return 'require_construction_type';
     }
 }

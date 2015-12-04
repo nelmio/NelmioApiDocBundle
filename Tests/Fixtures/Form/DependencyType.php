@@ -66,7 +66,8 @@ class DependencyType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return 'dependency_type';
     }
 }

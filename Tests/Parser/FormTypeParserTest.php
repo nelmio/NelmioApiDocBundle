@@ -54,7 +54,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testLegacyParse($typeName, $expected)
     {
-        if(LegacyFormHelper::hasBCBreaks()) {
+        if (LegacyFormHelper::hasBCBreaks()) {
             $this->markTestSkipped('Not supported on symfony 3.0.');
         }
 

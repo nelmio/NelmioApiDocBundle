@@ -12,8 +12,10 @@ use FOS\RestBundle\Controller\Annotations\RequestParam;
  *
  * @author Ener-Getick
  */
-class RequestParamHelper extends RequestParam {
-    public function __construct(array $data) {
+class RequestParamHelper extends RequestParam
+{
+    public function __construct(array $data)
+    {
         foreach ($data as $key => $value) {
             if ($key === 'array') {
                 if (property_exists($this, 'map')) {

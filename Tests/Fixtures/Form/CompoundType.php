@@ -42,7 +42,8 @@ class CompoundType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return '';
     }
 }

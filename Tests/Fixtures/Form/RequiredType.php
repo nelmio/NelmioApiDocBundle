@@ -39,7 +39,8 @@ class RequiredType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return '';
     }
 }

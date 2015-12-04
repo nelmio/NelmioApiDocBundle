@@ -15,10 +15,7 @@ use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
-use Symfony\Component\Form\ChoiceList\View\ChoiceListView;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface as LegacyChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -108,7 +105,6 @@ class FormTypeParser implements ParserInterface
         ),
     );
 
-
     public function __construct(FormFactoryInterface $formFactory, $entityToChoice)
     {
         $this->formFactory    = $formFactory;
@@ -154,7 +150,7 @@ class FormTypeParser implements ParserInterface
             }
         }
 
-        if(!isset($form)) {
+        if (!isset($form)) {
             if (!LegacyFormHelper::hasBCBreaks() && $this->implementsType($type)) {
                 $type = $this->getTypeInstance($type);
                 $form = $this->formFactory->create($type, null, $options);
@@ -194,7 +190,8 @@ class FormTypeParser implements ParserInterface
         );
     }
 
-    private function getDataType($type) {
+    private function getDataType($type)
+    {
         foreach ($this->extendedMapTypes as $data => $types) {
             if (in_array($type, $types)) {
                 return $data;
@@ -410,11 +407,12 @@ class FormTypeParser implements ParserInterface
     {
         try {
             return $this->formFactory->create($type, null, $options);
-        } catch(InvalidArgumentException $exception) {
+        } catch (InvalidArgumentException $exception) {
         }
 
         if (!LegacyFormHelper::hasBCBreaks() && !isset($form) && $this->implementsType($type)) {
             $type = $this->getTypeInstance($type);
+
             return $this->formFactory->create($type, null, $options);
         }
     }
