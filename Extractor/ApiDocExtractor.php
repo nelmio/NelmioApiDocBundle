@@ -218,10 +218,17 @@ class ApiDocExtractor
             }
 
             if ($this->container->has($controller)) {
-                $this->container->enterScope('request');
-                $this->container->set('request', new Request(), 'request');
+                // BC SF < 3.0
+                if (method_exists($this->container, 'enterScope')) {
+                    $this->container->enterScope('request');
+                    $this->container->set('request', new Request(), 'request');
+                }
                 $class = ClassUtils::getRealClass(get_class($this->container->get($controller)));
-                $this->container->leaveScope('request');
+                // BC SF < 3.0
+                if (method_exists($this->container, 'enterScope')) {
+                    $this->container->leaveScope('request');
+                }
+
                 if (!isset($method) && method_exists($class, '__invoke')) {
                     $method = '__invoke';
                 }

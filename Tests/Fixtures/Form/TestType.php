@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
 
+use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,8 +27,8 @@ class TestType extends AbstractType
         $builder
             ->add('a', null, array('description' => 'A nice description'))
             ->add('b')
-            ->add($builder->create('c', 'checkbox'))
-            ->add('d','text',array( 'data' => 'DefaultTest'))
+            ->add($builder->create('c', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\CheckboxType')))
+            ->add('d', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\TextType'),array( 'data' => 'DefaultTest'))
         ;
     }
 
@@ -53,8 +54,19 @@ class TestType extends AbstractType
         return;
     }
 
+    /**
+     * BC SF < 2.8
+     * {@inheritdoc}
+     */
     public function getName()
     {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix() {
         return '';
     }
 }

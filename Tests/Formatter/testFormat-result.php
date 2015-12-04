@@ -1,5 +1,7 @@
 <?php
 
+use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
+
 return array (
     '/api/other-resources' =>
         array (
@@ -1167,9 +1169,11 @@ With multiple lines.',
                                     'readonly' => false,
                                     'description' => '',
                                     'default' => NULL,
-                                    'dataType' => 'object (dependency_type)',
+                                    'dataType' => 'object ('.
+                                        (LegacyFormHelper::isLegacy() ? 'dependency_type' : 'DependencyType')
+                                    .')',
                                     'actualType' => 'model',
-                                    'subType' => 'dependency_type',
+                                    'subType' => LegacyFormHelper::isLegacy() ? 'dependency_type' : 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType',
                                     'children' =>
                                         array (
                                             'a' =>
@@ -1518,9 +1522,11 @@ With multiple lines.',
                                     'readonly' => false,
                                     'description' => '',
                                     'default' => NULL,
-                                    'dataType' => 'object (dependency_type)',
+                                    'dataType' => 'object ('.
+                                        (LegacyFormHelper::isLegacy() ? 'dependency_type' : 'DependencyType')
+                                    .')',
                                     'actualType' => 'model',
-                                    'subType' => 'dependency_type',
+                                    'subType' => LegacyFormHelper::isLegacy() ? 'dependency_type' : 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType',
                                     'children' =>
                                         array (
                                             'a' =>

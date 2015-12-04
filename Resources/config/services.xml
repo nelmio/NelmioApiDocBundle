@@ -37,7 +37,7 @@
         </service>
 
         <service id="nelmio_api_doc.form.extension.description_form_type_extension" class="%nelmio_api_doc.form.extension.description_form_type_extension.class%">
-            <tag name="form.type_extension" alias="form" />
+            <tag name="form.type_extension" alias="form" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType" />
         </service>
 
         <service id="nelmio_api_doc.twig.extension.extra_markdown" class="%nelmio_api_doc.twig.extension.extra_markdown.class%">

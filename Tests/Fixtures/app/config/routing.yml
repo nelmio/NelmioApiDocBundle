@@ -189,7 +189,7 @@ test_route_update_another_resource:
         _format: json|xml|html
 
 swagger_doc:
-    resource: @NelmioApiDocBundle/Resources/config/swagger_routing.yml
+    resource: "@NelmioApiDocBundle/Resources/config/swagger_routing.yml"
     prefix: /api-docs
 
 test_route_23:

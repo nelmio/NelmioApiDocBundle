@@ -59,6 +59,11 @@ class AppKernel extends Kernel
         if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {
             $loader->load(__DIR__.'/config/dunglas_api.yml');
         }
+
+        // If symfony/framework-bundle > 3.0
+        if (!class_exists('Symfony\Bundle\FrameworkBundle\Command\RouterApacheDumperCommand')) {
+            $loader->load(__DIR__.'/config/twig_assets.yml');
+        }
     }
 
     public function serialize()
