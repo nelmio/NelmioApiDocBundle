@@ -18,13 +18,20 @@ class Schema implements SegmentInterface
     public function toArray()
     {
 
-        $requiredProperties = array_filter($this->properties, function ($property) {
-            return $property->isRequired();
-        });
+        $required = array();
+        $properties = array();
+
+        foreach ($this->properties as $property) {
+            if ($property->isRequired()) {
+                $required[] = $property;
+            } else {
+                $properties[] = $property;
+            }
+        }
 
         $requiredNames = array_map(function ($property) {
             return $property->getName();
-        }, $requiredParameters);
+        }, $required);
 
         $data = array(
             'type' => 'object',

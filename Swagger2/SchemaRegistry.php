@@ -15,7 +15,7 @@ class SchemaRegistry
     {
         $name = $this->createName($className);
 
-        if (isset($this->schamas[$name])) {
+        if (isset($this->schemas[$name])) {
             return $this->schemas[$name];
         }
 

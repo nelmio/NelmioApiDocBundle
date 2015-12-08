@@ -2,14 +2,17 @@
 
 namespace Nelmio\ApiDocBundle\Swagger2\Segment\Parameter;
 
-class Query extends AbstractParameter
+class SchemaProperty extends AbstractParameter
 {
-    protected $in = 'query';
+    public function __construct($name)
+    {
+        parent::__construct($name);
+    }
 
     public function toArray()
     {
         $output = parent::toArray();
+        unset($output["required"]);
         return $output;
     }
 }
-
