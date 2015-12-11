@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Annotation;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Tests\TestCase;
+use Symfony\Component\Routing\Route;
 
 class ApiDocTest extends TestCase
 {
@@ -372,5 +373,29 @@ class ApiDocTest extends TestCase
         $this->assertArrayHasKey(200, $map);
         $this->assertArrayHasKey(400, $map);
         $this->assertEquals($apiDoc->getOutput(), $map[200]);
+    }
+
+    public function testSetRoute()
+    {
+        $route = new Route(
+            '/path/{foo}',
+            [
+                'foo' => 'bar',
+                'nested' => [
+                    'key1' => 'value1',
+                    'key2' => 'value2',
+                ]
+            ],
+            [],
+            [],
+            '{foo}.awesome_host.com'
+        );
+
+        $apiDoc = new ApiDoc([]);
+        $apiDoc->setRoute($route);
+
+        $this->assertSame($route, $apiDoc->getRoute());
+        $this->assertEquals('bar.awesome_host.com', $apiDoc->getHost());
+        $this->assertEquals('ANY', $apiDoc->getMethod());
     }
 }
