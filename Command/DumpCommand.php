@@ -61,7 +61,7 @@ class DumpCommand extends ContainerAwareCommand
             $formatter->setEnableSandbox(false);
         }
 
-        if ('html' === $format) {
+        if ('html' === $format && method_exists($this->getContainer(), 'enterScope')) {
             $this->getContainer()->enterScope('request');
             $this->getContainer()->set('request', new Request(), 'request');
         }
