@@ -398,4 +398,12 @@ class TestController
     public function routeWithHostAction()
     {
     }
+
+    /**
+     * @ApiDoc()
+     * @QueryParam(name="param1", requirements={"rule": "regexp", "error_message": "warning"}, description="Param1 description.")
+     */
+    public function routeWithQueryParamArrayRequirementsAction()
+    {
+    }
 }
