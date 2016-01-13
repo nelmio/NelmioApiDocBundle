@@ -167,41 +167,11 @@ class Swagger2Formatter implements FormatterInterface
 
     private function registerSchema($identifier, $parameters = null, $type = 'object')
     {
-        $schemaProperties = array();
-        if (is_array($parameters)) {
-            foreach ($parameters as $name => $parameter)
-            {
-                if (!isset($parameters['type'])) {
-                    continue;
-                }
-                var_dump($name);
-                var_dump($parameter);
-                $property = new Segment\Parameter\SchemaProperty($name);
-                $schemaProperties[] = $property;
-
-                switch ($parameter['actualType']) {
-                case DataTypes::MODEL:
-                    $property->setSchema(
-                        $this->registerSchema(
-                            $parameter['subType'],
-                            isset($parameter['children']) ? $parameter['children'] : null
-                        )
-                    );
-                    break;
-                case DataTypes::COLLECTION:
-                    $property->setSchema(
-                        $this->registerSchema(
-                            $parameter['subType'],
-                            isset($parameter['children']) ? $parameter['children'] : null
-                        )
-                    );
-                    $property->setCollection(true);
-                    break;
-                }
-            }
+        if (!is_array($parameters)) {
+            return null;
         }
 
-        return new Segment\Schema($identifier, $schemaProperties);
+        return $this->schemaRegistry->register($identifier, $parameters);
     }
 
     private function handleParameters(ExpandedDefinition $definition, array $input, $type)
