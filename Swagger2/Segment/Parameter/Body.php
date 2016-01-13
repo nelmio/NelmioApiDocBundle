@@ -2,7 +2,7 @@
 
 namespace Nelmio\ApiDocBundle\Swagger2\Segment\Parameter;
 
-use Nelmio\ApiDocBundle\Swagger2\Segment;
+use Nelmio\ApiDocBundle\Swagger2\Segment\Schema;
 
 class Body extends AbstractParameter
 {

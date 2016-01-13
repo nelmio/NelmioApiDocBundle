@@ -16,14 +16,17 @@ class ExpandedDefinition implements SegmentInterface
      * @var array
      */
     private $info;
+    
     /**
      * @var array
      */
     private $schemes;
+    
     /**
      * @var array
      */
     private $consumes;
+
     /**
      * @var array
      */
@@ -117,7 +120,7 @@ class ExpandedDefinition implements SegmentInterface
             }
 
             if (count($parameters)) {
-                $data["parameters"] = array_values($parameters);
+                $data['parameters'] = array_values($parameters);
             }
 
             if (count($data)) {

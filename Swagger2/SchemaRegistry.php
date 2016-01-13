@@ -7,7 +7,7 @@ use Nelmio\ApiDocBundle\Swagger2\Segment\Schema;
 class SchemaRegistry
 {
     /**
-     * @var array|Schema[]
+     * @var Schema[]
      */
     protected $schemas = array();
 

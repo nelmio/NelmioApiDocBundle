@@ -84,7 +84,7 @@ nelmio_api_doc:
           version: 3.14
           title: Nelmio Swagger2
           description: Testing Swagger2 integration.
-          termOfService: https://github.com/nelmio/NelmioApiDocBundle/blob/master/README.md
+          termsOfService: https://github.com/nelmio/NelmioApiDocBundle/blob/master/README.md
 
           contact: 
               name: Bez Hermoso

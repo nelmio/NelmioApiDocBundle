@@ -177,7 +177,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('version')->defaultValue('0.1')->end()
                             ->scalarNode('title')->defaultValue('Symfony2')->end()
                             ->scalarNode('description')->defaultValue('My awesome Symfony2 app!')->end()
-                            ->scalarNode('termOfService')->defaultNull()->end()
+                            ->scalarNode('termsOfService')->defaultNull()->end()
                             ->arrayNode('contact')
                                 ->addDefaultsIfNotSet()
                                 ->children()

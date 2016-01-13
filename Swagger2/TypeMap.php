@@ -2,6 +2,8 @@
 
 namespace Nelmio\ApiDocBundle\Swagger2;
 
+use Nelmio\ApiDocBundle\DataTypes;
+
 class TypeMap
 {
 

@@ -36,7 +36,6 @@ class Swagger2FormatterTest extends WebTestCase
 
     public function testResourceListing()
     {
-
         set_error_handler(array($this, 'handleDeprecation'));
         $data = $this->extractor->all();
         restore_error_handler();

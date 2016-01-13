@@ -14,7 +14,7 @@ class Path implements SegmentInterface
         'query' => array(),
         'header' => array(),
         'body' => array(),
-        'form' => array(),
+        'formData' => array(),
     );
 
     protected $methods = array('GET');

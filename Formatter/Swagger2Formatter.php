@@ -4,6 +4,7 @@ namespace Nelmio\ApiDocBundle\Formatter;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\Swagger2\TypeMap;
 use Nelmio\ApiDocBundle\Swagger2\ExpandedDefinition;
 use Nelmio\ApiDocBundle\Swagger2\SchemaRegistry;
 use Nelmio\ApiDocBundle\Swagger2\Segment;
@@ -15,38 +16,35 @@ use Nelmio\ApiDocBundle\Swagger2\Segment;
  */
 class Swagger2Formatter implements FormatterInterface
 {
+    /**
+     * @var array
+     */
     protected $info = array();
 
+    /**
+     * @var array
+     */
     protected $consumes = array();
 
+    /**
+     * @var array
+     */
     protected $produces = array();
 
+    /**
+     * @var array
+     */
     protected $schemes = array();
 
+    /**
+     * @var string
+     */
     protected $basePath = array();
 
     /**
      * @var SchemaRegistry
      */
     protected $schemaRegistry;
-
-    protected $typeMap = array(
-        DataTypes::INTEGER => 'integer',
-        DataTypes::FLOAT => 'number',
-        DataTypes::STRING => 'string',
-        DataTypes::BOOLEAN => 'boolean',
-        DataTypes::FILE => 'string',
-        DataTypes::DATE => 'string',
-        DataTypes::DATETIME => 'string',
-    );
-
-    protected $formatMap = array(
-        DataTypes::INTEGER => 'int32',
-        DataTypes::FLOAT => 'float',
-        DataTypes::FILE => 'byte',
-        DataTypes::DATE => 'date',
-        DataTypes::DATETIME => 'date-time',
-    );
 
     public function __construct()
     {
@@ -86,7 +84,6 @@ class Swagger2Formatter implements FormatterInterface
                 $input['paramType'] = 'form';
             }
 
-
             $route = $apiDoc->getRoute();
 
             $compiled = $route->compile();
@@ -100,8 +97,8 @@ class Swagger2Formatter implements FormatterInterface
             foreach ($compiled->getPathVariables() as $paramValue) {
                 $parameter = new Segment\Parameter\Path($paramValue);
 
-                if ($paramValue === "_format" && false != ($req = $route->getRequirement("_format"))) {
-                    $parameter->setEnum(explode("|", $req));
+                if ($paramValue === '_format' && false != ($req = $route->getRequirement('_format'))) {
+                    $parameter->setEnum(explode('|', $req));
                 }
 
                 $path->addParameter($parameter);
@@ -114,52 +111,46 @@ class Swagger2Formatter implements FormatterInterface
 
             $data = $apiDoc->toArray();
 
-            if (isset($data["filters"])) {
-                foreach ($data["filters"] as $name => $filter) {
+            if (isset($data['filters'])) {
+                foreach ($data['filters'] as $name => $filter) {
 
                     $filter = array_merge(array(
-                        "dataType" => "string",
-                        "actualType" => "string",
-                        "description" => null,
+                        'dataType' => 'string',
+                        'actualType' => 'string',
+                        'description' => null,
                     ), $filter);
 
                     $queryParameter = new Segment\Parameter\Query($name);
 
-                    $type = TypeMap::type($filter["actualType"], "string");
+                    $type = TypeMap::type($filter['actualType'], 'string');
 
                     $queryParameter->setType($type);
-                    $queryParameter->setDescription($filter["description"]);
+                    $queryParameter->setDescription($filter['description']);
                     $path->addParameter($queryParameter);
                 }
             }
 
             if (isset($data['parameters'])) {
 
-                $identifier = $input["class"];
+                $identifier = $input['class'];
 
-                if ($identifer) {
+                if ($identifier) {
                     $body = new Segment\Parameter\Body("__body__");
-                    $body->setSchema($this->registerSchema($identifier, $data["parameters"]));
-                    $path->addParameter($body);
-                } elseif ($this->inputIsOneDimensional($input['parameters'])) {
+                    $schema = $this->registerSchema($identifier, $data['parameters']);
+                    if ($schema) {
+                        $body->setSchema($schema);
+                        $path->addParameter($body);
+                    }
+                } elseif ($this->inputIsOneDimensional($data['parameters'])) {
                     foreach ($data["parameters"] as $paramDefinition) {
                         $formParam = new Segment\Parameter\FormData($name);
                         $formParam->setType(TypeMap::type($paramDefinition['actualType']));
                         $path->addParameter($formParam);
                     }
                 }
-                var_dump($input);
-                var_dump($data);
-                echo "======\n";
-                echo "======\n";
-
-                //var_dump($apiDoc);
-                //var_dump($data);
-                //$body = $this->handleParameters($definition, $data['parameters'], $input['paramType']);
             }
 
         }
-        exit;
 
         return $definition->toArray();
 
@@ -174,19 +165,26 @@ class Swagger2Formatter implements FormatterInterface
         return count($withChildren) > 0;
     }
 
-    private function registerSchema($identifier, $parameters, $type = "object")
+    private function registerSchema($identifier, $parameters = null, $type = 'object')
     {
-        foreach ($parameters as $name => $parameter)
-        {
-            $property = new Segment\Parameter\SchemaProperty($paramName);
-            $schemaProperties[] = $property;
+        $schemaProperties = array();
+        if (is_array($parameters)) {
+            foreach ($parameters as $name => $parameter)
+            {
+                if (!isset($parameters['type'])) {
+                    continue;
+                }
+                var_dump($name);
+                var_dump($parameter);
+                $property = new Segment\Parameter\SchemaProperty($name);
+                $schemaProperties[] = $property;
 
-            switch ($parameter['actualType']) {
+                switch ($parameter['actualType']) {
                 case DataTypes::MODEL:
                     $property->setSchema(
                         $this->registerSchema(
                             $parameter['subType'],
-                            $parameter['children']
+                            isset($parameter['children']) ? $parameter['children'] : null
                         )
                     );
                     break;
@@ -194,13 +192,16 @@ class Swagger2Formatter implements FormatterInterface
                     $property->setSchema(
                         $this->registerSchema(
                             $parameter['subType'],
-                            $parameter['children']
+                            isset($parameter['children']) ? $parameter['children'] : null
                         )
                     );
                     $property->setCollection(true);
                     break;
+                }
             }
         }
+
+        return new Segment\Schema($identifier, $schemaProperties);
     }
 
     private function handleParameters(ExpandedDefinition $definition, array $input, $type)
@@ -272,7 +273,7 @@ class Swagger2Formatter implements FormatterInterface
     }
 
     /**
-     * @param array $basePath
+     * @param string $basePath
      */
     public function setBasePath($basePath)
     {
@@ -282,8 +283,8 @@ class Swagger2Formatter implements FormatterInterface
     /**
      * Strips the base path from a URL path.
      *
-     * @param $path
-     * @return mixed
+     * @param string $path
+     * @return string
      */
     protected function stripBasePath($path)
     {
