@@ -100,7 +100,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
      *
      * @param  $className
      * @param  array $visited
-     * @param  array $groups
+     * @param  array $groups Only validations in given groups will be print.
      * @return array
      */
     protected function doParse($className, array $visited, array $groups=array())
@@ -134,7 +134,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
                     }
 
                     if ($doParse) {
-                        $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited);
+                        $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited, $groups);
                     }
                 }
             }
@@ -197,9 +197,10 @@ class ValidationParser implements ParserInterface, PostParserInterface
      *
      * @param  Constraint $constraint The constraint metadata object.
      * @param  array      $vparams    The existing validation parameters.
+     * @param  array      $groups     Only validations in given groups will be print.
      * @return mixed      The parsed list of validation parameters.
      */
-    protected function parseConstraint(Constraint $constraint, $vparams, $className, &$visited = array())
+    protected function parseConstraint(Constraint $constraint, $vparams, $className, &$visited = array(), array $groups=array())
     {
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
 
@@ -372,7 +373,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
 
                         if (!in_array($nestedType, $visited)) {
                             $visited[] = $nestedType;
-                            $vparams['children'] = $this->doParse($nestedType, $visited);
+                            $vparams['children'] = $this->doParse($nestedType, $visited, $groups);
                         }
                     }
                 }
