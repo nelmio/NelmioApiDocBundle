@@ -72,8 +72,9 @@ class ValidationParser implements ParserInterface, PostParserInterface
     public function parse(array $input)
     {
         $className = $input['class'];
+        $groups = isset($input['groups']) ? $input['groups'] : array();
 
-        $parsed = $this->doParse($className, array());
+        $parsed = $this->doParse($className, array(), $groups);
 
         if (isset($input['name']) && !empty($input['name'])) {
             $output = array();
@@ -99,9 +100,10 @@ class ValidationParser implements ParserInterface, PostParserInterface
      *
      * @param  $className
      * @param  array $visited
+     * @param  array $groups
      * @return array
      */
-    protected function doParse($className, array $visited)
+    protected function doParse($className, array $visited, array $groups=array())
     {
         $params = array();
         $classdata = $this->factory->getMetadataFor($className);
@@ -120,7 +122,20 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $constraints = $propdata->getConstraints();
 
                 foreach ($constraints as $constraint) {
-                    $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited);
+                    if (!empty($groups)) {
+                        $doParse = false;
+                        foreach ($groups as $group) {
+                            if (isset($constraint->groups) and in_array($group, $constraint->groups)) {
+                                $doParse = true;
+                            }
+                        }
+                    } else {
+                        $doParse = true;
+                    }
+
+                    if ($doParse) {
+                        $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited);
+                    }
                 }
             }
 
@@ -137,7 +152,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
             // check for nested classes with All constraint
             if (isset($vparams['class']) && !in_array($vparams['class'], $visited) && null !== $this->factory->getMetadataFor($vparams['class'])) {
                 $visited[] = $vparams['class'];
-                $vparams['children'] = $this->doParse($vparams['class'], $visited);
+                $vparams['children'] = $this->doParse($vparams['class'], $visited, $groups);
             }
 
             $vparams['actualType'] = isset($vparams['actualType']) ? $vparams['actualType'] : DataTypes::STRING;
