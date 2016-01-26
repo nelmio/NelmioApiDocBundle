@@ -209,9 +209,9 @@ test_required_parameters:
     requirements:
         _format: json|xml|html
 
-test_put_disables_required_parameters:
+test_patch_disables_required_parameters:
     path: /api/other-resources/{id}.{_format}
-    methods: [PUT]
+    methods: [PATCH]
     defaults: { _controller: NelmioApiDocTestBundle:Resource:requiredParametersAction, _format: json }
     requirements:
         _format: json|xml|html
