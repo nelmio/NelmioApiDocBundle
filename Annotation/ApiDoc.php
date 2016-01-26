@@ -675,6 +675,10 @@ class ApiDoc
             $data['response'] = $response;
         }
 
+        if ($parsedResponseMap = $this->parsedResponseMap) {
+            $data['parsedResponseMap'] = $parsedResponseMap;
+        }
+
         if ($statusCodes = $this->statusCodes) {
             $data['statusCodes'] = $statusCodes;
         }
