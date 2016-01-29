@@ -36,6 +36,10 @@ class DumpCommand extends ContainerAwareCommand
             )
             ->addOption('view', '', InputOption::VALUE_OPTIONAL, '', ApiDoc::DEFAULT_VIEW)
             ->addOption('no-sandbox', '', InputOption::VALUE_NONE)
+            ->addOption(
+                'route-filter', '', InputOption::VALUE_REQUIRED,
+                'Filter routes to be documented with keyword'
+            )
             ->setName('api:doc:dump')
             ;
     }
@@ -66,7 +70,18 @@ class DumpCommand extends ContainerAwareCommand
             $this->getContainer()->set('request', new Request(), 'request');
         }
 
-        $extractedDoc = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor')->all($view);
+        if ($input->getOption('route-filter')) {
+            $filteredRoutes = array();
+            foreach ($this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor')->getRoutes() as $routeKey => $route) {
+                if (stripos($routeKey, $input->getOption('route-filter')) !== false) {
+                    $filteredRoutes[$routeKey] = $route;
+                }
+            }
+            $extractedDoc = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor')->extractAnnotations($filteredRoutes, $view);
+        } else {
+            $extractedDoc = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor')->all($view);
+        }
+
         $formattedDoc = $formatter->format($extractedDoc);
 
         if ('json' === $format) {
