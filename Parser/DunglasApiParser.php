@@ -181,7 +181,7 @@ class DunglasApiParser implements ParserInterface
 
             $data['actualType'] = DataTypes::MODEL;
             $data['subType'] = $class;
-            $data['children'] = $this->parseClass($resource, $class, $io);
+            $data['children'] = $resource->getEntityClass() === $class ? [] : $this->parseClass($resource, $class, $io);
 
             return $data;
         }
