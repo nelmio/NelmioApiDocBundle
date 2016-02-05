@@ -123,6 +123,19 @@ class MarkdownFormatter extends AbstractFormatter
                 $markdown .= "\n";
             }
         }
+        
+        if (isset($data['statusCodes'])) {
+            $markdown .= "#### Status Codes ####\n\n";
+            foreach ($data['statusCodes'] as $httpCode => $descriptions) {
+                $markdown .= sprintf("%s:\n\n", $httpCode);
+
+                foreach ($descriptions as $description) {
+                    $markdown .= sprintf("  * %s\n", $description);
+                }
+
+                $markdown .= "\n";
+            }
+        }
 
         return $markdown;
     }
