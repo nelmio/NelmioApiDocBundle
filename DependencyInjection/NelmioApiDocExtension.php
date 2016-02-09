@@ -29,11 +29,12 @@ class NelmioApiDocExtension extends Extension
         $configuration = new Configuration();
         $config = $processor->processConfiguration($configuration, $configs);
 
+        $container->setParameter('nelmio_api_doc.vendors.folder', $config['vendors_folder']);
         $container->setParameter('nelmio_api_doc.motd.template', $config['motd']['template']);
         $container->setParameter('nelmio_api_doc.exclude_sections', $config['exclude_sections']);
         $container->setParameter('nelmio_api_doc.default_sections_opened', $config['default_sections_opened']);
         $container->setParameter('nelmio_api_doc.api_name', $config['name']);
-        $container->setParameter('nelmio_api_doc.sandbox.enabled',  $config['sandbox']['enabled']);
+        $container->setParameter('nelmio_api_doc.sandbox.enabled', $config['sandbox']['enabled']);
         $container->setParameter('nelmio_api_doc.sandbox.endpoint', $config['sandbox']['endpoint']);
         $container->setParameter('nelmio_api_doc.sandbox.accept_type', $config['sandbox']['accept_type']);
         $container->setParameter('nelmio_api_doc.sandbox.body_format.formats', $config['sandbox']['body_format']['formats']);
@@ -90,6 +91,6 @@ class NelmioApiDocExtension extends Extension
      */
     public function getXsdValidationBasePath()
     {
-        return __DIR__ . '/../Resources/config/schema';
+        return __DIR__.'/../Resources/config/schema';
     }
 }

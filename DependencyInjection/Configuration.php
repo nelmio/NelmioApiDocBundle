@@ -74,7 +74,7 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode('formats')
                                     ->defaultValue(array(
                                         'json' => 'application/json',
-                                        'xml' => 'application/xml'
+                                        'xml' => 'application/xml',
                                     ))
                                     ->prototype('scalar')->end()
                                 ->end()
@@ -103,7 +103,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->validate()
                                 ->ifTrue(function ($v) {
-                                    return 'http' === $v['delivery'] && !$v['type'] ;
+                                    return 'http' === $v['delivery'] && !$v['type'];
                                 })
                                 ->thenInvalid('"type" is required when using http delivery.')
                             ->end()
@@ -162,6 +162,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('file')->defaultValue('%kernel.cache_dir%/api-doc.cache')->end()
                     ->end()
                 ->end()
+                ->scalarNode('vendors_folder')->defaultValue('%kernel.root_dir%/config/apidoc')->end()
             ->end();
 
         return $treeBuilder;
