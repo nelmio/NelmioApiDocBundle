@@ -8,23 +8,27 @@ cache:
 
 matrix:
     include:
-        - php: 5.4
-          env: SYMFONY_VERSION=2.3.*
-        - php: 5.5
+#        - php: 5.4
+#          env: SYMFONY_VERSION=2.3.*
+#        - php: 5.5
         - php: 5.6
-          env: SYMFONY_VERSION=2.7.* COVERAGE=true
+          env: SYMFONY_VERSION=2.7.7 COVERAGE=true
         - php: 5.6
-          env: SYMFONY_VERSION=2.8.*
+          env: SYMFONY_VERSION=2.7.8 COVERAGE=true
         - php: 5.6
-          env: SYMFONY_VERSION=3.0.*
-        - php: 7.0
-        - php: hhvm
+          env: SYMFONY_VERSION=2.7.9 COVERAGE=true
+#        - php: 5.6
+#          env: SYMFONY_VERSION=2.8.*
+#        - php: 5.6
+#          env: SYMFONY_VERSION=3.0.*
+#        - php: 7.0
+#        - php: hhvm
     fast_finish: true
 
 before_script:
     - if [ "$COVERAGE" != "true" ] && [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then phpenv config-rm xdebug.ini; fi
     - composer self-update
-    - if [ "$DEPENDENCIES" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
+#    - if [ "$DEPENDENCIES" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
     - if [ "$SYMFONY_VERSION" != "3.0.*" ] && [ "$SYMFONY_VERSION" != "2.8.*" ] && [ "$SYMFONY_VERSION" != "2.7.*" ]; then sed -i "/dunglas\/api-bundle/d;/symfony\/serializer/d" composer.json; fi;
     - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
     - composer update $COMPOSER_FLAGS

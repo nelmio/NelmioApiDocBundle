@@ -24,7 +24,8 @@
     "conflict": {
         "jms/serializer": "<0.12",
         "jms/serializer-bundle": "<0.11",
-        "twig/twig": "<1.12"
+        "twig/twig": "<1.12",
+        "symfony/symfony": ">2.7.7"
     },
     "require-dev": {
         "symfony/css-selector": "~2.3|~3.0",
