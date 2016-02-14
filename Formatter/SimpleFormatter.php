@@ -30,7 +30,10 @@ class SimpleFormatter extends AbstractFormatter
     {
         $array = array();
         foreach ($collection as $coll) {
-            $array[$coll['resource']][] = $coll['annotation']->toArray();
+            $annotationArray = $coll['annotation']->toArray();
+            unset($annotationArray['parsedResponseMap']);
+
+            $array[$coll['resource']][] = $annotationArray;
         }
 
         return $array;
