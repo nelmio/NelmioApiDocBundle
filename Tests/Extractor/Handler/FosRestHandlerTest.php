@@ -189,4 +189,18 @@ class FosRestHandlerTest extends WebTestCase
         $this->assertArrayHasKey('requirement', $filters['param1']);
         $this->assertEquals('regexp', $filters['param1']['requirement']);
     }
+
+    public function testWithRequestParamPlainArrayRequirements()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::routeWithQueryParamPlainArrayRequirementsAction', 'test_route_30');
+
+        $this->assertNotNull($annotation);
+        $filters = $annotation->getFilters();
+
+        $this->assertArrayHasKey('param1', $filters);
+        $this->assertArrayHasKey('requirement', $filters['param1']);
+        $this->assertEquals('NotNull, NotBlank', $filters['param1']['requirement']);
+    }
 }
