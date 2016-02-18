@@ -83,11 +83,14 @@ class DunglasApiParser implements ParserInterface
      * @param ResourceInterface $resource
      * @param string            $entityClass
      * @param string            $io
+     * @param string[]          $visited
      *
      * @return array
      */
-    private function parseClass(ResourceInterface $resource, $entityClass, $io)
+    private function parseClass(ResourceInterface $resource, $entityClass, $io, array $visited = array())
     {
+        $visited[] = $entityClass;
+
         $classMetadata = $this->classMetadataFactory->getMetadataFor(
             $entityClass,
             $resource->getNormalizationGroups(),
@@ -101,7 +104,7 @@ class DunglasApiParser implements ParserInterface
                 (!$attributeMetadata->isIdentifier() && $attributeMetadata->isReadable() && self::OUT_PREFIX === $io) ||
                 ($attributeMetadata->isWritable() && self::IN_PREFIX === $io)
             ) {
-                $data[$attributeMetadata->getName()] = $this->parseAttribute($resource, $attributeMetadata, $io);
+                $data[$attributeMetadata->getName()] = $this->parseAttribute($resource, $attributeMetadata, $io, null, $visited);
             }
         }
 
@@ -115,10 +118,11 @@ class DunglasApiParser implements ParserInterface
      * @param AttributeMetadataInterface $attributeMetadata
      * @param string                     $io
      * @param Type|null                  $type
+     * @param string[]                   $visited
      *
      * @return array
      */
-    private function parseAttribute(ResourceInterface $resource, AttributeMetadataInterface $attributeMetadata, $io, Type $type = null)
+    private function parseAttribute(ResourceInterface $resource, AttributeMetadataInterface $attributeMetadata, $io, Type $type = null, array $visited = array())
     {
         $data = array(
             'dataType' => null,
@@ -143,7 +147,7 @@ class DunglasApiParser implements ParserInterface
             $data['actualType'] = DataTypes::COLLECTION;
 
             if ($collectionType = $type->getCollectionType()) {
-                $subAttribute = $this->parseAttribute($resource, $attributeMetadata, $io, $collectionType);
+                $subAttribute = $this->parseAttribute($resource, $attributeMetadata, $io, $collectionType, $visited);
                 if (self::IRI === $subAttribute['dataType']) {
                     $data['dataType'] = 'array of IRIs';
                     $data['subType'] = DataTypes::STRING;
@@ -181,7 +185,7 @@ class DunglasApiParser implements ParserInterface
 
             $data['actualType'] = DataTypes::MODEL;
             $data['subType'] = $class;
-            $data['children'] = $resource->getEntityClass() === $class ? [] : $this->parseClass($resource, $class, $io);
+            $data['children'] = in_array($class, $visited) ? [] : $this->parseClass($resource, $class, $io, $visited);
 
             return $data;
         }
