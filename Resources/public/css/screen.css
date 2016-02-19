@@ -594,7 +594,7 @@ form .parameters {
   width: 50%;
 }
 
-form .parameters .tuple input {
+form .parameters .tuple input, form .parameters .tuple textarea {
 	width: 40%;
 }
 
