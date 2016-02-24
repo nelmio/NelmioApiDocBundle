@@ -139,27 +139,39 @@
                 </table>
             {% endif %}
 
-            {% if data.response is defined and data.response is not empty %}
+            {% if data.parsedResponseMap is defined and data.parsedResponseMap is not empty %}
                 <h4>Return</h4>
                 <table class='fullwidth'>
                     <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Versions</th>
-                            <th>Description</th>
-                        </tr>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Versions</th>
+                        <th>Description</th>
+                    </tr>
                     </thead>
+                {% for status_code, response in data.parsedResponseMap %}
                     <tbody>
-                        {% for name, infos in data.response %}
-                            <tr>
-                                <td>{{ name }}</td>
-                                <td>{{ infos.dataType }}</td>
-                                <td>{% include 'NelmioApiDocBundle:Components:version.html.twig' with {'sinceVersion': infos.sinceVersion, 'untilVersion': infos.untilVersion} only %}</td>
-                                <td>{{ infos.description }}</td>
-                            </tr>
-                        {% endfor %}
+                        <tr>
+                            <td>
+                                <h4>
+                                    {{ status_code }}
+                                    {% if data.statusCodes[status_code] is defined %}
+                                        - {{ data.statusCodes[status_code]|join(', ') }}
+                                    {% endif %}
+                                </h4>
+                            </td>
+                        </tr>
+                    {% for name, infos in response.model %}
+                        <tr>
+                            <td>{{ name }}</td>
+                            <td>{{ infos.dataType }}</td>
+                            <td>{% include 'NelmioApiDocBundle:Components:version.html.twig' with {'sinceVersion': infos.sinceVersion, 'untilVersion': infos.untilVersion} only %}</td>
+                            <td>{{ infos.description }}</td>
+                        </tr>
+                    {% endfor %}
                     </tbody>
+                {% endfor %}
                 </table>
             {% endif %}
 
