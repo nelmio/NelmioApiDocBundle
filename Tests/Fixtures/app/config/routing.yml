@@ -243,3 +243,8 @@ test_route_29:
     path: /z-query-param-array-requirements
     methods: [GET]
     defaults: { _controller: NelmioApiDocTestBundle:Test:routeWithQueryParamArrayRequirementsAction }
+
+test_route_30:
+    path: /z-query-param-plain-array-requirements
+    methods: [GET]
+    defaults: { _controller: NelmioApiDocTestBundle:Test:routeWithQueryParamPlainArrayRequirementsAction }
