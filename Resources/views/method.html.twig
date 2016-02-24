@@ -248,6 +248,7 @@
                                                 <option value="string">String</option>
                                                 <option value="boolean">Boolean</option>
                                                 <option value="file">File</option>
+                                                <option value="textarea">Textarea</option>
                                             </select>
                                             <input type="text" class="value" placeholder="{% if infos.dataType %}[{{ infos.dataType }}] {% endif %}{% if infos.format %}{{ infos.format }}{% endif %}{% if infos.description %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
                                         </p>
@@ -317,6 +318,7 @@
                                                 <option value="string">String</option>
                                                 <option value="boolean">Boolean</option>
                                                 <option value="file">File</option>
+                                                <option value="textarea">Textarea</option>
                                             </select>
                             <input type="text" class="value" placeholder="Value" /> <span class="remove">-</span>
                         </p>

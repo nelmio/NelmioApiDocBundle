@@ -208,6 +208,9 @@
                         case "file":
                             $('<input type="file" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
                             break;
+                        case "textarea":
+                            $('<textarea class="value" placeholder="'+ placeholder +'" />').insertAfter($context);
+                            break;
                         default:
                             $('<input type="text" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
                     }
