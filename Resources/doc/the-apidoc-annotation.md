@@ -167,6 +167,34 @@ class YourType extends AbstractType
 }
 ```
 
+if you specify a form as input, you can set entity class so that validation & JMS serialization add to output.
+
+```php
+<?php
+
+class YourController
+{
+    /**
+     * @ApiDoc(
+     *      input={
+     *          "class"="FunPro\PassengerBundle\Form\PassengerType",
+     *          "data"={
+     *              "class"="FunPro\PassengerBundle\Entity\Passenger",
+     *              "parsers"={
+     *                  "Nelmio\ApiDocBundle\Parser\ValidationParser",
+     *                  "Nelmio\ApiDocBundle\Parser\JmsMetadataParser",
+     *              },
+     *          },
+     *      }
+     * )
+     */
+    public function postAction(Request $request) {
+    }
+}
+```
+
+![](https://github.com/nelmio/NelmioApiDocBundle/raw/master/Resources/doc/webview3.png)
+
 The bundle will also get information from the routing definition
 (`requirements`, `path`, etc), so to get the best out of it you should
 define strict methods requirements etc.

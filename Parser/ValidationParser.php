@@ -72,8 +72,9 @@ class ValidationParser implements ParserInterface, PostParserInterface
     public function parse(array $input)
     {
         $className = $input['class'];
+        $groups = isset($input['groups']) ? $input['groups'] : array();
 
-        $parsed = $this->doParse($className, array());
+        $parsed = $this->doParse($className, array(), $groups);
 
         if (isset($input['name']) && !empty($input['name'])) {
             $output = array();
@@ -99,9 +100,10 @@ class ValidationParser implements ParserInterface, PostParserInterface
      *
      * @param  $className
      * @param  array $visited
+     * @param  array $groups Only validations in given groups will be print.
      * @return array
      */
-    protected function doParse($className, array $visited)
+    protected function doParse($className, array $visited, array $groups=array())
     {
         $params = array();
         $classdata = $this->factory->getMetadataFor($className);
@@ -120,7 +122,20 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $constraints = $propdata->getConstraints();
 
                 foreach ($constraints as $constraint) {
-                    $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited);
+                    if (!empty($groups)) {
+                        $doParse = false;
+                        foreach ($groups as $group) {
+                            if (isset($constraint->groups) and in_array($group, $constraint->groups)) {
+                                $doParse = true;
+                            }
+                        }
+                    } else {
+                        $doParse = true;
+                    }
+
+                    if ($doParse) {
+                        $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited, $groups);
+                    }
                 }
             }
 
@@ -137,7 +152,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
             // check for nested classes with All constraint
             if (isset($vparams['class']) && !in_array($vparams['class'], $visited) && null !== $this->factory->getMetadataFor($vparams['class'])) {
                 $visited[] = $vparams['class'];
-                $vparams['children'] = $this->doParse($vparams['class'], $visited);
+                $vparams['children'] = $this->doParse($vparams['class'], $visited, $groups);
             }
 
             $vparams['actualType'] = isset($vparams['actualType']) ? $vparams['actualType'] : DataTypes::STRING;
@@ -182,9 +197,10 @@ class ValidationParser implements ParserInterface, PostParserInterface
      *
      * @param  Constraint $constraint The constraint metadata object.
      * @param  array      $vparams    The existing validation parameters.
+     * @param  array      $groups     Only validations in given groups will be print.
      * @return mixed      The parsed list of validation parameters.
      */
-    protected function parseConstraint(Constraint $constraint, $vparams, $className, &$visited = array())
+    protected function parseConstraint(Constraint $constraint, $vparams, $className, &$visited = array(), array $groups=array())
     {
         $class = substr(get_class($constraint), strlen('Symfony\\Component\\Validator\\Constraints\\'));
 
@@ -253,12 +269,89 @@ class ValidationParser implements ParserInterface, PostParserInterface
                     $vparams['format'][] = $format;
                 }
                 break;
+            case 'Collection':
+                foreach ($constraint->fields as $field => $constraints) {
+                    $fieldParams = array();
+                    foreach ($constraints->constraints as $constraint) {
+                        $fieldParams = $this->parseConstraint($constraint, $fieldParams, $className, $visited);
+                    }
+                    $vparams['format'][] = $field . ': [' . join(',', $fieldParams['format']) . ']';
+                }
+                break;
+            case 'Count':
+                $messages = array();
+                if (isset($constraint->min)) {
+                    $messages[] = "min: {$constraint->min}";
+                }
+                if (isset($constraint->max)) {
+                    $messages[] = "max: {$constraint->max}";
+                }
+                $vparams['format'][] = '{Count: ' . join(', ', $messages) . '}';
+                break;
+            case 'File':
+                $messages = array();
+                if (isset($constraint->maxSize)) {
+                    $messages[] = "Max Size: {$constraint->maxSize}";
+                }
+                if (isset($constraint->mimeTypes)) {
+                    $mimeTypes = is_array($constraint->mimeTypes)
+                        ? '[' . join(',', $constraint->mimeTypes) . ']' : $constraint->mimeTypes;
+                    $messages[] = "Mime Types: $mimeTypes";
+                }
+                $vparams['format'][] = '{File: ' . join(', ', $messages) . '}';
+                break;
+            case 'Image':
+                $messages = array();
+                if (isset($constraint->maxSize)) {
+                    $messages[] = "Max Size: {$constraint->maxSize}";
+                }
+                if (isset($constraint->mimeTypes)) {
+                    $mimeTypes = is_array($constraint->mimeTypes)
+                        ? '[' . join(',', $constraint->mimeTypes) . ']' : $constraint->mimeTypes;
+                    $messages[] = "Mime Types: {$mimeTypes}";
+                }
+                if (isset($constraint->minWidth)) {
+                    $messages[] = "Min Width: {$constraint->minWidth}";
+                }
+                if (isset($constraint->maxWidth)) {
+                    $messages[] = "Max Width: {$constraint->maxWidth}";
+                }
+                if (isset($constraint->minHeight)) {
+                    $messages[] = "Min Height: {$constraint->minHeight}";
+                }
+                if (isset($constraint->maxHeight)) {
+                    $messages[] = "Max Height: {$constraint->maxHeight}";
+                }
+                if (isset($constraint->maxRatio)) {
+                    $messages[] = "Max Ratio: {$constraint->maxRatio}";
+                }
+                if (isset($constraint->minRatio)) {
+                    $messages[] = "Min Ratio: {$constraint->minRatio}";
+                }
+                if (isset($constraint->allowLandscape)) {
+                    $messages[] = "Allow Landscape: " . ($constraint->allowLandscape ? 'True' : 'False');
+                }
+                if (isset($constraint->allowPortrait)) {
+                    $messages[] = "Allow Portrait: " . ($constraint->allowPortrait ? 'True' : 'False');
+                }
+                $vparams['format'][] = '{File: ' . join(', ', $messages) . '}';
+                break;
             case 'Regex':
                 if ($constraint->match) {
                     $vparams['format'][] = '{match: ' . $constraint->pattern . '}';
                 } else {
                     $vparams['format'][] = '{not match: ' . $constraint->pattern . '}';
                 }
+                break;
+            case 'Range':
+                $messages = array();
+                if (isset($constraint->min)) {
+                    $messages[] = "min: {$constraint->min}";
+                }
+                if (isset($constraint->max)) {
+                    $messages[] = "max: {$constraint->max}";
+                }
+                $vparams['format'][] = '{Range: ' . join(', ', $messages) . '}';
                 break;
             case 'All':
                 foreach ($constraint->constraints as $childConstraint) {
@@ -280,7 +373,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
 
                         if (!in_array($nestedType, $visited)) {
                             $visited[] = $nestedType;
-                            $vparams['children'] = $this->doParse($nestedType, $visited);
+                            $vparams['children'] = $this->doParse($nestedType, $visited, $groups);
                         }
                     }
                 }
