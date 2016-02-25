@@ -253,12 +253,89 @@ class ValidationParser implements ParserInterface, PostParserInterface
                     $vparams['format'][] = $format;
                 }
                 break;
+            case 'Collection':
+                foreach ($constraint->fields as $field => $constraints) {
+                    $fieldParams = array();
+                    foreach ($constraints->constraints as $constraint) {
+                        $fieldParams = $this->parseConstraint($constraint, $fieldParams, $className, $visited);
+                    }
+                    $vparams['format'][] = $field . ': [' . join(',', $fieldParams['format']) . ']';
+                }
+                break;
+            case 'Count':
+                $messages = array();
+                if (isset($constraint->min)) {
+                    $messages[] = "min: {$constraint->min}";
+                }
+                if (isset($constraint->max)) {
+                    $messages[] = "max: {$constraint->max}";
+                }
+                $vparams['format'][] = '{Count: ' . join(', ', $messages) . '}';
+                break;
+            case 'File':
+                $messages = array();
+                if (isset($constraint->maxSize)) {
+                    $messages[] = "Max Size: {$constraint->maxSize}";
+                }
+                if (isset($constraint->mimeTypes)) {
+                    $mimeTypes = is_array($constraint->mimeTypes)
+                        ? '[' . join(',', $constraint->mimeTypes) . ']' : $constraint->mimeTypes;
+                    $messages[] = "Mime Types: $mimeTypes";
+                }
+                $vparams['format'][] = '{File: ' . join(', ', $messages) . '}';
+                break;
+            case 'Image':
+                $messages = array();
+                if (isset($constraint->maxSize)) {
+                    $messages[] = "Max Size: {$constraint->maxSize}";
+                }
+                if (isset($constraint->mimeTypes)) {
+                    $mimeTypes = is_array($constraint->mimeTypes)
+                        ? '[' . join(',', $constraint->mimeTypes) . ']' : $constraint->mimeTypes;
+                    $messages[] = "Mime Types: {$mimeTypes}";
+                }
+                if (isset($constraint->minWidth)) {
+                    $messages[] = "Min Width: {$constraint->minWidth}";
+                }
+                if (isset($constraint->maxWidth)) {
+                    $messages[] = "Max Width: {$constraint->maxWidth}";
+                }
+                if (isset($constraint->minHeight)) {
+                    $messages[] = "Min Height: {$constraint->minHeight}";
+                }
+                if (isset($constraint->maxHeight)) {
+                    $messages[] = "Max Height: {$constraint->maxHeight}";
+                }
+                if (isset($constraint->maxRatio)) {
+                    $messages[] = "Max Ratio: {$constraint->maxRatio}";
+                }
+                if (isset($constraint->minRatio)) {
+                    $messages[] = "Min Ratio: {$constraint->minRatio}";
+                }
+                if (isset($constraint->allowLandscape)) {
+                    $messages[] = "Allow Landscape: " . ($constraint->allowLandscape ? 'True' : 'False');
+                }
+                if (isset($constraint->allowPortrait)) {
+                    $messages[] = "Allow Portrait: " . ($constraint->allowPortrait ? 'True' : 'False');
+                }
+                $vparams['format'][] = '{File: ' . join(', ', $messages) . '}';
+                break;
             case 'Regex':
                 if ($constraint->match) {
                     $vparams['format'][] = '{match: ' . $constraint->pattern . '}';
                 } else {
                     $vparams['format'][] = '{not match: ' . $constraint->pattern . '}';
                 }
+                break;
+            case 'Range':
+                $messages = array();
+                if (isset($constraint->min)) {
+                    $messages[] = "min: {$constraint->min}";
+                }
+                if (isset($constraint->max)) {
+                    $messages[] = "max: {$constraint->max}";
+                }
+                $vparams['format'][] = '{Range: ' . join(', ', $messages) . '}';
                 break;
             case 'All':
                 foreach ($constraint->constraints as $childConstraint) {

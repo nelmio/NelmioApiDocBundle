@@ -310,11 +310,32 @@ class ApiDocExtractor
                 }
             }
 
+
+            $normalizedChildInput = array();
+            if (array_key_exists('data', $normalizedInput)) {
+                $normalizedChildInput = $this->normalizeClassParameter($normalizedInput['data']);
+                foreach ($this->getParsers($normalizedChildInput) as $parser) {
+                    if ($parser->supports($normalizedChildInput)) {
+                        $supportedParsers[] = $parser;
+                        foreach ($parser->parse($normalizedChildInput) as $name => $parameter) {
+                            if (array_key_exists($name, $parameters)) {
+                                $parameters[$name] = array_merge($parameter, $parameters[$name]);
+                            }
+                        }
+                    }
+                }
+            }
+
             foreach ($supportedParsers as $parser) {
                 if ($parser instanceof PostParserInterface) {
                     $parameters = $this->mergeParameters(
                         $parameters,
                         $parser->postParse($normalizedInput, $parameters)
+                    );
+
+                    $parameters = $this->mergeParameters(
+                        $parameters,
+                        $parser->postParse($normalizedChildInput, $parameters)
                     );
                 }
             }
