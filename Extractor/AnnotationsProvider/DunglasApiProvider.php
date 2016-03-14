@@ -164,6 +164,7 @@ class DunglasApiProvider implements AnnotationsProviderInterface
      *
      * @param string $method
      * @param array  $hydraDoc
+     * @param array  $context
      *
      * @return array|null
      */
