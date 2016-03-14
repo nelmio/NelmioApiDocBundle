@@ -105,7 +105,7 @@ class DunglasApiProvider implements AnnotationsProviderInterface
         if ($collection) {
             $operationHydraDoc = $this->getCollectionOperationHydraDoc($resource->getShortName(), $method, $entrypointHydraDoc);
         } else {
-            $operationHydraDoc = $this->getOperationHydraDoc($operation->getRoute()->getMethods()[0], $resourceHydraDoc);
+            $operationHydraDoc = $this->getOperationHydraDoc($operation->getRoute()->getMethods()[0], $resourceHydraDoc, $operation->getContext());
         }
 
         $route = $operation->getRoute();
@@ -167,10 +167,12 @@ class DunglasApiProvider implements AnnotationsProviderInterface
      *
      * @return array|null
      */
-    private function getOperationHydraDoc($method, array $hydraDoc)
+    private function getOperationHydraDoc($method, array $hydraDoc, $context = null)
     {
+        $contextTitle = isset($context['hydra:title']) ? $context['hydra:title'] : null;
         foreach ($hydraDoc['hydra:supportedOperation'] as $supportedOperation) {
-            if ($supportedOperation['hydra:method'] === $method) {
+            $operationTitle = isset($supportedOperation['hydra:title']) ? $supportedOperation['hydra:title'] : null;
+            if ($supportedOperation['hydra:method'] === $method and ($contextTitle == null or $contextTitle === $operationTitle)) {
                 return $supportedOperation;
             }
         }
