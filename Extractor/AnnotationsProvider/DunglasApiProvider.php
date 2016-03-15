@@ -109,12 +109,14 @@ class DunglasApiProvider implements AnnotationsProviderInterface
         }
 
         $route = $operation->getRoute();
+        $statusCodes = isset($operation->getContext()['statusCodes']) ? $operation->getContext()['statusCodes'] : [];
 
         $data = [
             'resource' => $route->getPath(),
             'description' => $operationHydraDoc['hydra:title'],
             'resourceDescription' => $resourceHydraDoc['hydra:title'],
             'section' => $resourceHydraDoc['hydra:title'],
+            'statusCodes' => $statusCodes,
         ];
 
         $entityClass = $resource->getEntityClass();
