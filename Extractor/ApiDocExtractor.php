@@ -324,9 +324,9 @@ class ApiDocExtractor
 
             if ('PATCH' === $annotation->getMethod()) {
                 // All parameters are optional with PATCH (update)
-                array_walk($parameters, function ($val, $key) use (&$parameters) {
+                foreach ($parameters as $key => $val) {
                     $parameters[$key]['required'] = false;
-                });
+                }
             }
 
             // merge parameters with parameters block from ApiDoc annotation in controller method
