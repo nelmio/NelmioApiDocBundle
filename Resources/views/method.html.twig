@@ -282,6 +282,22 @@
                                     </p>
                                 {% endif %}
 
+                                {% if contentType %}
+                                    <p class="tuple">
+                                        <input type="text" class="key" value="Content-Type" />
+                                        <span>=</span>
+                                        <input type="text" class="value" value="{{ contentType }}" /> <span class="remove">-</span>
+                                    </p>
+                                {% endif %}
+
+                                {% if instanceName %}
+                                    <p class="tuple">
+                                        <input type="text" class="key" value="X-Ied-Instance-Name" />
+                                        <span>=</span>
+                                        <input type="text" class="value" value="{{ instanceName }}" /> <span class="remove">-</span>
+                                    </p>
+                                {% endif %}
+
                                 <p class="tuple">
                                     <input type="text" class="key" placeholder="Key" />
                                     <span>=</span>

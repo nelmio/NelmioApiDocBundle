@@ -16,6 +16,8 @@ Configuration Reference
             enabled:              true
             endpoint:             null
             accept_type:          null
+            content_type:         null
+            instance_name:        null
             body_format:
                 formats:
 

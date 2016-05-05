@@ -56,6 +56,48 @@ class HtmlFormatter extends AbstractFormatter
     private $acceptType;
 
     /**
+     * @var string
+     */
+    private $contentType;
+
+    /**
+     * @var string
+     */
+    private $instanceName;
+
+    /**
+     * @return string
+     */
+    public function getInstanceName()
+    {
+        return $this->instanceName;
+    }
+
+    /**
+     * @param string $instanceName
+     */
+    public function setInstanceName($instanceName)
+    {
+        $this->instanceName = $instanceName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+    /**
+     * @param string $contentType
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+    }
+
+    /**
      * @var array
      */
     private $bodyFormats;
@@ -231,6 +273,8 @@ class HtmlFormatter extends AbstractFormatter
             'enableSandbox'         => $this->enableSandbox,
             'requestFormatMethod'   => $this->requestFormatMethod,
             'acceptType'            => $this->acceptType,
+            'contentType'           => $this->contentType,
+            'instanceName'          => $this->instanceName,
             'bodyFormats'           => $this->bodyFormats,
             'defaultBodyFormat'     => $this->defaultBodyFormat,
             'requestFormats'        => $this->requestFormats,
