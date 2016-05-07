@@ -407,9 +407,6 @@
                         headers['Accept'] = $('#request_format').val();
                     }
 
-                    // set Instance Name
-                    headers['X-Ied-Instance-Name'] = '{{ instanceName }}';
-
                     // set default bodyFormat
                     var bodyFormat = $('#body_format').val() || '{{ defaultBodyFormat }}';
 

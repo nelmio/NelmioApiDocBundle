@@ -56,46 +56,9 @@ class HtmlFormatter extends AbstractFormatter
     private $acceptType;
 
     /**
-     * @var string
+     * @var array
      */
-    private $contentType;
-
-    /**
-     * @var string
-     */
-    private $instanceName;
-
-    /**
-     * @return string
-     */
-    public function getInstanceName()
-    {
-        return $this->instanceName;
-    }
-
-    /**
-     * @param string $instanceName
-     */
-    public function setInstanceName($instanceName)
-    {
-        $this->instanceName = $instanceName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContentType()
-    {
-        return $this->contentType;
-    }
-
-    /**
-     * @param string $contentType
-     */
-    public function setContentType($contentType)
-    {
-        $this->contentType = $contentType;
-    }
+    private $customHeaders;
 
     /**
      * @var array

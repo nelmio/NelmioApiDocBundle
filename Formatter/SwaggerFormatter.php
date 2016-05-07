@@ -412,8 +412,6 @@ class SwaggerFormatter implements FormatterInterface
      * Builds a Swagger-compliant parameter list from the provided parameter array. Models are built when necessary.
      *
      * @param array $input
-     * @param array $models
-     *
      * @param string $paramType
      *
      * @return array

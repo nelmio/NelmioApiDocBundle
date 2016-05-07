@@ -38,6 +38,7 @@ class NelmioApiDocExtension extends Extension
         $container->setParameter('nelmio_api_doc.sandbox.accept_type', $config['sandbox']['accept_type']);
         $container->setParameter('nelmio_api_doc.sandbox.content_type', $config['sandbox']['content_type']);
         $container->setParameter('nelmio_api_doc.sandbox.instance_name', $config['sandbox']['instance_name']);
+        $container->setParameter('nelmio_api_doc.sandbox.custom_headers', $config['sandbox']['custom_headers']);
         $container->setParameter('nelmio_api_doc.sandbox.body_format.formats', $config['sandbox']['body_format']['formats']);
         $container->setParameter('nelmio_api_doc.sandbox.body_format.default_format', $config['sandbox']['body_format']['default_format']);
         $container->setParameter('nelmio_api_doc.sandbox.request_format.method', $config['sandbox']['request_format']['method']);

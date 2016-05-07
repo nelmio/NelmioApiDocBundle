@@ -47,11 +47,8 @@
             <call method="setAcceptType">
                 <argument>%nelmio_api_doc.sandbox.accept_type%</argument>
             </call>
-            <call method="setContentType">
-                <argument>%nelmio_api_doc.sandbox.content_type%</argument>
-            </call>
-            <call method="setInstanceName">
-                <argument>%nelmio_api_doc.sandbox.instance_name%</argument>
+            <call method="setCustomHeaders">
+                <argument>%nelmio_api_doc.sandbox.custom_headers%</argument>
             </call>
             <call method="setBodyFormats">
                 <argument>%nelmio_api_doc.sandbox.body_format.formats%</argument>

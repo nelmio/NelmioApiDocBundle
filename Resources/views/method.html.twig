@@ -282,21 +282,15 @@
                                     </p>
                                 {% endif %}
 
-                                {% if contentType %}
+                                {% for name, value in customHeaders %}
+                                    {% if value %}
                                     <p class="tuple">
-                                        <input type="text" class="key" value="Content-Type" />
+                                        <input type="text" class="key" value="{{ name }}" />
                                         <span>=</span>
-                                        <input type="text" class="value" value="{{ contentType }}" /> <span class="remove">-</span>
+                                        <input type="text" class="value" value="{{ value }}" /> <span class="remove">-</span>
                                     </p>
-                                {% endif %}
-
-                                {% if instanceName %}
-                                    <p class="tuple">
-                                        <input type="text" class="key" value="X-Ied-Instance-Name" />
-                                        <span>=</span>
-                                        <input type="text" class="value" value="{{ instanceName }}" /> <span class="remove">-</span>
-                                    </p>
-                                {% endif %}
+                                    {% endif %}
+                                {% endfor %}
 
                                 <p class="tuple">
                                     <input type="text" class="key" placeholder="Key" />
