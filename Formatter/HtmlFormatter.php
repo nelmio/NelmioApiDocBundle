@@ -134,6 +134,18 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
+     * @param array $customHeaders
+     */
+    public function setCustomHeaders(array $customHeaders)
+    {
+        foreach ($customHeaders as $key => $value) {
+            $customHeaders[str_replace('_', '-', $key)] = $value;
+            unset($customHeaders[$key]);
+        }
+        $this->customHeaders = $customHeaders;
+    }
+
+    /**
      * @param array $bodyFormats
      */
     public function setBodyFormats(array $bodyFormats)
@@ -203,10 +215,10 @@ class HtmlFormatter extends AbstractFormatter
     protected function renderOne(array $data)
     {
         return $this->engine->render('NelmioApiDocBundle::resource.html.twig', array_merge(
-            array(
+            [
                 'data'           => $data,
                 'displayContent' => true,
-            ),
+            ],
             $this->getGlobalVars()
         ));
     }
@@ -217,9 +229,9 @@ class HtmlFormatter extends AbstractFormatter
     protected function render(array $collection)
     {
         return $this->engine->render('NelmioApiDocBundle::resources.html.twig', array_merge(
-            array(
+            [
                 'resources' => $collection,
-            ),
+            ],
             $this->getGlobalVars()
         ));
     }
@@ -229,24 +241,23 @@ class HtmlFormatter extends AbstractFormatter
      */
     private function getGlobalVars()
     {
-        return array(
+        return [
             'apiName'               => $this->apiName,
             'authentication'        => $this->authentication,
             'endpoint'              => $this->endpoint,
             'enableSandbox'         => $this->enableSandbox,
             'requestFormatMethod'   => $this->requestFormatMethod,
             'acceptType'            => $this->acceptType,
-            'contentType'           => $this->contentType,
-            'instanceName'          => $this->instanceName,
+            'customHeaders'         => $this->customHeaders,
             'bodyFormats'           => $this->bodyFormats,
             'defaultBodyFormat'     => $this->defaultBodyFormat,
             'requestFormats'        => $this->requestFormats,
             'defaultRequestFormat'  => $this->defaultRequestFormat,
             'date'                  => date(DATE_RFC822),
-            'css'                   => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
-            'js'                    => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
+            'css'                   => file_get_contents(__DIR__.'/../Resources/public/css/screen.css'),
+            'js'                    => file_get_contents(__DIR__.'/../Resources/public/js/all.js'),
             'motdTemplate'          => $this->motdTemplate,
             'defaultSectionsOpened' => $this->defaultSectionsOpened,
-        );
+        ];
     }
 }
