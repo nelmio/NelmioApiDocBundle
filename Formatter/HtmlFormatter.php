@@ -58,6 +58,11 @@ class HtmlFormatter extends AbstractFormatter
     /**
      * @var array
      */
+    private $customHeaders;
+
+    /**
+     * @var array
+     */
     private $bodyFormats;
 
     /**
