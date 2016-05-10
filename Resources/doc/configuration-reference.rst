@@ -16,6 +16,7 @@ Configuration Reference
             enabled:              true
             endpoint:             null
             accept_type:          null
+            custom_headers:       null
             body_format:
                 formats:
 

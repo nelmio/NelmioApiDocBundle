@@ -31,6 +31,12 @@ configure this sandbox using the following parameters:
             accept_type: application/json           # default is `~` (`null`), if set, the value is
                                                     # automatically populated as the `Accept` header
 
+            content_type: application/json          # default is `~` (`null`), if set, the value is
+                                                    # automatically populated as the `Content-Type` header
+
+            instance_name: ~                        # Required value
+                                                    # automatically populated as the `X-Ied-Instance-Name` header
+
             body_format:
                 formats: [ form, json ]             # array of enabled body formats,
                                                     # remove all elements to disable the selectbox

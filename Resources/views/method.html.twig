@@ -282,6 +282,16 @@
                                     </p>
                                 {% endif %}
 
+                                {% for name, value in customHeaders %}
+                                    {% if value %}
+                                    <p class="tuple">
+                                        <input type="text" class="key" value="{{ name }}" />
+                                        <span>=</span>
+                                        <input type="text" class="value" value="{{ value }}" /> <span class="remove">-</span>
+                                    </p>
+                                    {% endif %}
+                                {% endfor %}
+
                                 <p class="tuple">
                                     <input type="text" class="key" placeholder="Key" />
                                     <span>=</span>
