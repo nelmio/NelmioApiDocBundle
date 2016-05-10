@@ -34,8 +34,8 @@ configure this sandbox using the following parameters:
             content_type: application/json          # default is `~` (`null`), if set, the value is
                                                     # automatically populated as the `Content-Type` header
 
-            instance_name: ~                        # Required value
-                                                    # automatically populated as the `X-Ied-Instance-Name` header
+            custom_headers: ~                       # default is `~`, if set, the values
+                                                    # automatically populated as the header options
 
             body_format:
                 formats: [ form, json ]             # array of enabled body formats,
