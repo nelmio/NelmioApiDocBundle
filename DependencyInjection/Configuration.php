@@ -51,8 +51,6 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('enabled')->defaultTrue()->end()
                         ->scalarNode('endpoint')->defaultNull()->end()
                         ->scalarNode('accept_type')->defaultNull()->end()
-                        ->scalarNode('content_type')->defaultNull()->end()
-                        ->scalarNode('instance_name')->defaultNull()->end()
                         ->arrayNode('custom_headers')
                             ->prototype('scalar')->end()
                         ->end()

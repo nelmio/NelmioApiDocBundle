@@ -28,8 +28,6 @@
         <xsd:attribute name="enabled" default="true" type="xsd:boolean"/>
         <xsd:attribute name="endpoint" type="xsd:string"/>
         <xsd:attribute name="accept_type" type="xsd:string"/>
-        <xsd:attribute name="content_type" type="xsd:string"/>
-        <xsd:attribute name="instance_name" type="xsd:string"/>
         <xsd:attribute name="body_format" type="body_format_enum"/>
         <xsd:attribute name="request_format" type="request_format"/>
         <xsd:attribute name="authentication" type="authentication"/>

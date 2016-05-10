@@ -13,8 +13,7 @@ available. To enable the sandbox, use the following configuration:
     nelmio_api_doc:
         sandbox:
             accept_type:        "application/json"
-            content_type:       "application/json"
-            instance_name:      "dev_demo4"
+            custom_headers:     ~
             body_format:
                 formats:        [ "json" ]
                 default_format: "json"

@@ -16,8 +16,7 @@ Configuration Reference
             enabled:              true
             endpoint:             null
             accept_type:          null
-            content_type:         null
-            instance_name:        null
+            custom_headers:       null
             body_format:
                 formats:
 
