@@ -31,9 +31,6 @@ configure this sandbox using the following parameters:
             accept_type: application/json           # default is `~` (`null`), if set, the value is
                                                     # automatically populated as the `Accept` header
 
-            content_type: application/json          # default is `~` (`null`), if set, the value is
-                                                    # automatically populated as the `Content-Type` header
-
             custom_headers: ~                       # default is `~`, if set, the values
                                                     # automatically populated as the header options
 
