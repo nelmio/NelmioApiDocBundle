@@ -58,6 +58,11 @@ class HtmlFormatter extends AbstractFormatter
     /**
      * @var array
      */
+    private $customHeaders;
+
+    /**
+     * @var array
+     */
     private $bodyFormats;
 
     /**
@@ -126,6 +131,18 @@ class HtmlFormatter extends AbstractFormatter
     public function setAcceptType($acceptType)
     {
         $this->acceptType = $acceptType;
+    }
+
+    /**
+     * @param array $customHeaders
+     */
+    public function setCustomHeaders(array $customHeaders)
+    {
+        foreach ($customHeaders as $key => $value) {
+            $customHeaders[str_replace('_', '-', $key)] = $value;
+            unset($customHeaders[$key]);
+        }
+        $this->customHeaders = $customHeaders;
     }
 
     /**
@@ -231,6 +248,7 @@ class HtmlFormatter extends AbstractFormatter
             'enableSandbox'         => $this->enableSandbox,
             'requestFormatMethod'   => $this->requestFormatMethod,
             'acceptType'            => $this->acceptType,
+            'customHeaders'         => $this->customHeaders,
             'bodyFormats'           => $this->bodyFormats,
             'defaultBodyFormat'     => $this->defaultBodyFormat,
             'requestFormats'        => $this->requestFormats,

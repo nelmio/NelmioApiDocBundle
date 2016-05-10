@@ -58,7 +58,7 @@
             <xsd:enumeration value="xml"/>
         </xsd:restriction>
     </xsd:simpleType>
-    
+
     <xsd:complexType name="authentication">
         <xsd:attribute name="name" type="xsd:string"/>
         <xsd:attribute name="delivery" type="authentication_delivery_enum"/>
