@@ -337,12 +337,22 @@
                 };
 
                 var displayFinalUrl = function(xhr, method, url, data, container) {
-                    if ('GET' == method && !jQuery.isEmptyObject(data)) {
-                        var separator = url.indexOf('?') >= 0 ? '&' : '?';
-                        url = url + separator + decodeURIComponent(jQuery.param(data));
-                    }
+                    container.text(method + ' ' + getFinalUrl(method, url, data));
+                };
 
-                    container.text(method + ' ' + url);
+                var displayRequestBody = function(method, data, container, header) {
+                    if ('GET' != method && !jQuery.isEmptyObject(data) && data !== "" && data !== undefined) {
+                        if (jQuery.type(data) !== 'string') {
+                            data = decodeURIComponent(jQuery.param(data));
+                        }
+
+                        container.text(data);
+                        container.show();
+                        header.show();
+                    } else {
+                        container.hide();
+                        header.hide();
+                    }
                 };
 
                 var displayProfilerUrl = function(xhr, link, container) {
@@ -354,7 +364,7 @@
                         link.attr('href', '');
                         container.hide();
                     }
-                }
+                };
 
                 var displayResponseData = function(xhr, container) {
                     var data = xhr.responseText;
@@ -374,11 +384,51 @@
                     container.text(text);
                 };
 
-                var displayResponse = function(xhr, method, url, data, result_container) {
+                var displayCurl = function(method, url, headers, data, result_container) {
+                    var escapeShell = function(param) {
+                        param = "" + param;
+                        return '"' + param.replace(/(["\s'$`\\])/g,'\\$1') + '"';
+                    };
+
+                    url = getFinalUrl(method, url, data);
+
+                    var command = "curl";
+                    command += " -X " + escapeShell(method);
+
+                    if (method != "GET" && !jQuery.isEmptyObject(data) && data !== "" && data !== undefined) {
+                        if (jQuery.type(data) !== 'string') {
+                            data = decodeURIComponent(jQuery.param(data));
+                        }
+                        command += " -d " + escapeShell(data);
+                    }
+
+                    for (headerKey in headers) {
+                        if (headers.hasOwnProperty(headerKey)) {
+                            command += " -H " + escapeShell(headerKey + ': ' + headers[headerKey]);
+                        }
+                    }
+
+                    command += " " + url;
+
+                    result_container.text(command);
+                };
+
+                var getFinalUrl = function(method, url, data) {
+                    if ('GET' == method && !jQuery.isEmptyObject(data)) {
+                        var separator = url.indexOf('?') >= 0 ? '&' : '?';
+                        url = url + separator + decodeURIComponent(jQuery.param(data));
+                    }
+
+                    return url;
+                };
+
+                var displayResponse = function(xhr, method, url, headers, data, result_container) {
                     displayFinalUrl(xhr, method, url, data, $('.url', result_container));
+                    displayRequestBody(method, data, $('.request-body', result_container), $('.request-body-header', result_container));
                     displayProfilerUrl(xhr, $('.profiler-link', result_container), $('.profiler', result_container));
                     displayResponseData(xhr, $('.response', result_container));
                     displayResponseHeaders(xhr, $('.headers', result_container));
+                    displayCurl(method, url, headers, data, $('.curl-command', result_container));
 
                     result_container.show();
                 };
@@ -559,7 +609,7 @@
                             }
                         },
                         complete: function(xhr) {
-                            displayResponse(xhr, method, url, data, result_container);
+                            displayResponse(xhr, method, url, headers, data, result_container);
 
                             // and enable them back
                             $('input:not(.content-type), button', $(self)).removeAttr('disabled');
