@@ -6,7 +6,7 @@ use Michelf\MarkdownExtra;
 
 class MarkdownExtension extends \Twig_Extension
 {
-    private $markdownParser;
+    protected $markdownParser;
 
     public function __construct()
     {
