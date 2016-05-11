@@ -61,6 +61,8 @@ nelmio_api_doc:
         authentication:
             delivery: header
             name: access_token
+        custom_headers:
+            content_type: application/vnd.api+json
     cache:
         enabled: true
     exclude_sections: ["private", "exclusive"]
