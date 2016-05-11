@@ -443,6 +443,9 @@
                             key = $('.key', $(this)).val();
                             if ($('.value', $(this)).attr('type') === 'file' ) {
                                 value = $('.value', $(this)).prop('files')[0];
+                                if(!value) {
+                                    value = new File([], '');
+                                }
                             } else {
                                 value = $('.value', $(this)).val();
                             }
