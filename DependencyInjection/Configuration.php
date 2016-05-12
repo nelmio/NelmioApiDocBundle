@@ -162,6 +162,13 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('file')->defaultValue('%kernel.cache_dir%/api-doc.cache')->end()
                     ->end()
                 ->end()
+                ->arrayNode('documentation_files')
+                    ->info('Define your ApiDoc configuration file')
+                    ->canBeEnabled()
+                    ->children()
+                        ->scalarNode('path')->defaultValue('/Resources/nelmio')->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

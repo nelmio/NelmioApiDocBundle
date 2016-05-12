@@ -34,7 +34,7 @@ class AnnotationsProviderCompilerPass implements CompilerPassInterface
 
         $container
             ->getDefinition('nelmio_api_doc.extractor.api_doc_extractor')
-            ->replaceArgument(6, $annotationsProviders)
+            ->replaceArgument(7, $annotationsProviders)
         ;
     }
 }

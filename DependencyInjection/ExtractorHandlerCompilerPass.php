@@ -29,6 +29,6 @@ class ExtractorHandlerCompilerPass implements CompilerPassInterface
 
         $container
             ->getDefinition('nelmio_api_doc.extractor.api_doc_extractor')
-            ->replaceArgument(5, $handlers);
+            ->replaceArgument(6, $handlers);
     }
 }
