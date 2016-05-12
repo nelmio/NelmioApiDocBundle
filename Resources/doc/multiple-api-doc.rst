@@ -40,9 +40,24 @@ An example::
 In this case, only the first resource will be available under the default view,
 while both methods will be available under the ``premium`` view.
 
+#### Configuring Views
+
+Each view can be configured.
+```yaml
+# app/config/config.yml
+nelmio_api_doc:
+    views:
+      premium:
+        include: ["code", "platinum", "secret"]
+        include_empty: true
+```
+
+* `include` will include into the `premium` view all the endpoints that belongs to "code", "platinum", "secret" views.
+* `include_empty` will include into the `premium` all the endpoints has no specified views
+
 Accessing Specific API Views
 ----------------------------
-
+The `default` view can be found at the normal location. Other views can be
 The ``default`` view can be found at the normal location. Other views can be
 found at ``http://your.documentation/<view name>``.
 

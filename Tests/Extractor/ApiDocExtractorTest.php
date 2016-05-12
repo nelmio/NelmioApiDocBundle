@@ -22,6 +22,7 @@ class ApiDocExtractorTest extends WebTestCase
     private static $ROUTES_QUANTITY_DEFAULT = 34; // Routes in the default view
     private static $ROUTES_QUANTITY_PREMIUM = 6;  // Routes in the premium view
     private static $ROUTES_QUANTITY_TEST    = 2;  // Routes in the test view
+    private static $ROUTES_QUANTITY_EMPTY   = 25;  // Routes with empty view option
 
     public static function setUpBeforeClass()
     {
@@ -309,6 +310,13 @@ class ApiDocExtractorTest extends WebTestCase
             array('default', self::$ROUTES_QUANTITY_DEFAULT + $offset),
             array('premium', self::$ROUTES_QUANTITY_PREMIUM + $offset),
             array('test', self::$ROUTES_QUANTITY_TEST + $offset),
+
+            array('personalized_with_premium', self::$ROUTES_QUANTITY_PREMIUM + $offset),
+
+            // one route is defined as premium test
+            array('personalized_with_premium_and_test', self::$ROUTES_QUANTITY_PREMIUM  + self::$ROUTES_QUANTITY_TEST - 1 + $offset),
+            array('personalized_with_premium_and_empty', self::$ROUTES_QUANTITY_EMPTY + self::$ROUTES_QUANTITY_PREMIUM + $offset),
+
             array('foobar', $offset),
             array("", $offset),
             array(null, $offset),
@@ -362,6 +370,7 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container = $this->getContainer();
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+
         set_error_handler(array($this, 'handleDeprecation'));
         $data = $extractor->all($view);
         restore_error_handler();

@@ -14,6 +14,7 @@
         <parameter key="nelmio_api_doc.extractor.handler.sensio_framework_extra.class">Nelmio\ApiDocBundle\Extractor\Handler\SensioFrameworkExtraHandler</parameter>
         <parameter key="nelmio_api_doc.extractor.handler.phpdoc.class">Nelmio\ApiDocBundle\Extractor\Handler\PhpDocHandler</parameter>
 
+        <parameter key="nelmio_api_doc.views.view_configuration.class">Nelmio\ApiDocBundle\Views\ViewConfiguration</parameter>
         <parameter key="nelmio_api_doc.parser.collection_parser.class">Nelmio\ApiDocBundle\Parser\CollectionParser</parameter>
         <parameter key="nelmio_api_doc.parser.form_errors_parser.class">Nelmio\ApiDocBundle\Parser\FormErrorsParser</parameter>
         <parameter key="nelmio_api_doc.parser.json_serializable_parser.class">Nelmio\ApiDocBundle\Parser\JsonSerializableParser</parameter>
@@ -32,6 +33,7 @@
             <argument type="service" id="annotation_reader" />
             <argument type="service" id="nelmio_api_doc.doc_comment_extractor" />
             <argument type="service" id="nelmio_api_doc.controller_name_parser" />
+            <argument type="collection" />
             <argument type="collection" />
             <argument type="collection" />
         </service>
