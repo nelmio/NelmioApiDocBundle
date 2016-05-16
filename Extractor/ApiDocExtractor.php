@@ -122,7 +122,7 @@ class ApiDocExtractor
             }
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
-                $annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS);
+                $annotation = $this->reader->getMethodAnnotation($method, static::ANNOTATION_CLASS);
                 if (
                     $annotation && !in_array($annotation->getSection(), $excludeSections) &&
                     (in_array($view, $annotation->getViews()) || (0 === count($annotation->getViews()) && $view === ApiDoc::DEFAULT_VIEW))
@@ -255,7 +255,7 @@ class ApiDocExtractor
     public function get($controller, $route)
     {
         if ($method = $this->getReflectionMethod($controller)) {
-            if ($annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS)) {
+            if ($annotation = $this->reader->getMethodAnnotation($method, static::ANNOTATION_CLASS)) {
                 if ($route = $this->router->getRouteCollection()->get($route)) {
                     return $this->extractData($annotation, $route, $method);
                 }
