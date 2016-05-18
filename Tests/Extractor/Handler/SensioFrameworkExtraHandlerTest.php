@@ -36,4 +36,19 @@ class SensioFrameworkExtraHandlerTest extends WebTestCase
 
         $this->assertTrue($annotation->getAuthentication());
     }
+
+    public function testSecurityClassAnnotation()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestSecuredController::indexAction', 'test_route_31');
+
+        $this->assertNotNull($annotation);
+
+        $this->assertTrue($annotation->getAuthentication());
+
+        $this->assertContains('ROLE_USER', $annotation->getAuthenticationRoles());
+        $this->assertContains('ROLE_FOOBAR', $annotation->getAuthenticationRoles());
+        $this->assertCount(2, $annotation->getAuthenticationRoles());
+    }
 }

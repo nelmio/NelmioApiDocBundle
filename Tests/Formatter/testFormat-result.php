@@ -2467,6 +2467,7 @@ With multiple lines.',
                     'authentication' => true,
                     'authenticationRoles' =>
                         array (
+                            0 => 'ROLE_USER'
                         ),
                     'deprecated' => false,
                 ),

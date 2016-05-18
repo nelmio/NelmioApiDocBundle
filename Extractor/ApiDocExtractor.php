@@ -519,7 +519,14 @@ class ApiDocExtractor
      */
     protected function parseAnnotations(ApiDoc $annotation, Route $route, \ReflectionMethod $method)
     {
+        $securityAnnotName = 'Sensio\Bundle\FrameworkExtraBundle\Configuration\Security';
+        $securityAnnot = $this->reader->getClassAnnotation($method->getDeclaringClass(), $securityAnnotName);
         $annots = $this->reader->getMethodAnnotations($method);
+
+        if (null !== $securityAnnot) {
+            $annots[] = $securityAnnot;
+        }
+
         foreach ($this->handlers as $handler) {
             $handler->handle($annotation, $annots, $route, $method);
         }

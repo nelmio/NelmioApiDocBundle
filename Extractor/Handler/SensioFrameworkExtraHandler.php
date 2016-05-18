@@ -26,6 +26,14 @@ class SensioFrameworkExtraHandler implements HandlerInterface
                 $annotation->setCache($annot->getMaxAge());
             } elseif ($annot instanceof Security) {
                 $annotation->setAuthentication(true);
+
+                preg_match("/has_role\((.*)\)/", $annot->getExpression(), $matches);
+                $securityRoles = array_map('trim', explode(',', $matches[1]));
+
+                $roles = $annotation->getAuthenticationRoles();
+                $roles = array_merge($roles, str_replace("'", "", $securityRoles));
+
+                $annotation->setAuthenticationRoles(array_unique($roles));
             }
         }
     }
