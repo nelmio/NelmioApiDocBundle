@@ -34,6 +34,7 @@ class ApiDocTest extends TestCase
         $this->assertFalse(isset($array['parameters']));
         $this->assertNull($annot->getInput());
         $this->assertFalse($array['authentication']);
+        $this->assertFalse(isset($array['headers']));
         $this->assertTrue(is_array($array['authenticationRoles']));
     }
 
@@ -289,6 +290,28 @@ class ApiDocTest extends TestCase
         $this->assertTrue(is_array($array));
         $this->assertTrue(isset($array['parameters']['fooId']));
         $this->assertTrue(isset($array['parameters']['fooId']['dataType']));
+    }
+
+    public function testConstructWithHeaders()
+    {
+        $data = array(
+            'headers' => array(
+                array(
+                    'name' => 'headerName',
+                    'description' => 'Some description'
+                )
+            )
+        );
+
+        $annot = new ApiDoc($data);
+        $array = $annot->toArray();
+
+        $this->assertArrayHasKey('headerName', $array['headers']);
+        $this->assertNotEmpty($array['headers']['headerName']);
+
+        $keys = array_keys($array['headers']);
+        $this->assertEquals($data['headers'][0]['name'], $keys[0]);
+        $this->assertEquals($data['headers'][0]['description'], $array['headers']['headerName']['description']);
     }
 
     public function testConstructWithOneTag()
