@@ -93,6 +93,28 @@ The following properties are available:
 * ``filters``: an array of filters;
 * ``requirements``: an array of requirements;
 * ``parameters``: an array of parameters;
+* ``headers``: an array of headers; available properties are: ``name``, ``description``, ``required``, ``default``. Example:
+
+.. code-block:: php
+
+    class YourController
+    {
+        /**
+         * @ApiDoc(
+         *     headers={
+         *         {
+         *             "name"="X-AUTHORIZE-KEY",
+         *             "description"="Authorization key"
+         *         }
+         *     }
+         * )
+         */
+        public function myFunction()
+        {
+            // ...
+        }
+    }
+
 * ``input``: the input type associated to the method (currently this supports
   Form Types, classes with JMS Serializer metadata, classes with Validation
   component metadata and classes that implement JsonSerializable) useful for
