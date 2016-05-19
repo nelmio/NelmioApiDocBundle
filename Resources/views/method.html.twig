@@ -139,6 +139,29 @@
                 </table>
             {% endif %}
 
+
+            {% if data.headers is defined and data.headers is not empty %}
+                <h4>Headers</h4>
+                <table class="fullwidth">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Required?</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for name, infos in data.headers %}
+                        <tr>
+                            <td>{{ name }}</td>
+                            <td>{{ infos.required is defined and infos.required == 'true' ? 'true' : 'false'}}</td>
+                            <td>{{ infos.description is defined ? infos.description|trans : ''}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+
             {% if data.parsedResponseMap is defined and data.parsedResponseMap is not empty %}
                 <h4>Return</h4>
                 <table class='fullwidth'>
@@ -280,6 +303,18 @@
                                         <span>=</span>
                                         <input type="text" class="value" value="{{ acceptType }}" /> <span class="remove">-</span>
                                     </p>
+                                {% endif %}
+
+                                {% if data.headers is defined %}
+
+                                    {% for name, infos in data.headers %}
+                                        <p class="tuple">
+                                            <input type="text" class="key" value="{{ name }}" />
+                                            <span>=</span>
+                                            <input type="text" class="value" value="{% if infos.default is defined %}{{ infos.default }}{% endif %}" placeholder="Value" /> <span class="remove">-</span>
+                                        </p>
+                                    {% endfor %}
+
                                 {% endif %}
 
                                 <p class="tuple">

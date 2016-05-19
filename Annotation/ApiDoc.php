@@ -47,6 +47,12 @@ class ApiDoc
      * @var array
      */
     private $parameters = array();
+    /**
+     * Headers that client can send.
+     *
+     * @var array
+     */
+    private $headers = array();
 
     /**
      * @var string
@@ -227,6 +233,19 @@ class ApiDoc
                 unset($parameter['name']);
 
                 $this->addParameter($name, $parameter);
+            }
+        }
+
+        if (isset($data['headers'])) {
+            foreach ($data['headers'] as $header) {
+                if (!isset($header['name'])) {
+                    throw new \InvalidArgumentException('A "header" element has to contain a "name" attribute');
+                }
+
+                $name = $header['name'];
+                unset($header['name']);
+
+                $this->addHeader($name, $header);
             }
         }
 
@@ -458,6 +477,15 @@ class ApiDoc
     }
 
     /**
+     * @param $name
+     * @param array $header
+     */
+    public function addHeader($name, array $header)
+    {
+        $this->headers[$name] = $header;
+    }
+
+    /**
      * Sets the response data as processed by the parsers - same format as parameters
      *
      * @param array $response
@@ -612,7 +640,16 @@ class ApiDoc
     }
 
     /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
      * @param boolean $deprecated
+     * @return $this
      */
     public function setDeprecated($deprecated)
     {
@@ -661,6 +698,10 @@ class ApiDoc
 
         if ($parameters = $this->parameters) {
             $data['parameters'] = $parameters;
+        }
+
+        if ($headers = $this->headers) {
+            $data['headers'] = $headers;
         }
 
         if ($requirements = $this->requirements) {
