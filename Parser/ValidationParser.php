@@ -206,16 +206,13 @@ class ValidationParser implements ParserInterface, PostParserInterface
 
         switch ($class) {
             case 'NotBlank':
-                    $vparams['format'][] = '{not blank}';
+                $vparams['format'][] = '{not blank}';
             case 'NotNull':
-                    $vparams['required'] = true;
+                $vparams['required'] = true;
                 break;
             case 'Type':
                 if (isset($this->typeMap[$constraint->type])) {
                     $vparams['actualType'] = $this->typeMap[$constraint->type];
-                } else {
-                    $vparams['children'] = $this->doParse($constraint->type, $visited);
-                    $vparams['description'] = $constraint->payload;
                 }
                 $vparams['dataType'] = $constraint->type;
                 break;
