@@ -297,7 +297,7 @@ With multiple lines.',
                 ),
             1 =>
                 array (
-                    'method' => 'PUT|PATCH',
+                    'method' => 'PUT PATCH',
                     'uri' => '/api/other-resources/{id}.{_format}',
                     'description' => 'Update a resource bu ID.',
                     'requirements' =>

@@ -187,7 +187,7 @@ With multiple lines.
   * type: array of objects (JmsNested)
 
 
-### `PUT|PATCH` /api/other-resources/{id}.{_format} ###
+### `PUT PATCH` /api/other-resources/{id}.{_format} ###
 
 _Update a resource bu ID._
 

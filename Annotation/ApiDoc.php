@@ -516,7 +516,7 @@ class ApiDoc
         }
 
         $this->uri    = $route->getPath();
-        $this->method = $route->getMethods() ? implode('|', $route->getMethods()) : 'ANY';
+        $this->method = $route->getMethods() ? implode(' ', $route->getMethods()) : 'ANY';
     }
 
     /**
