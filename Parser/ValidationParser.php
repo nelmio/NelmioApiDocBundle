@@ -73,7 +73,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
      */
     public function parse(array $input)
     {
-        if(array_key_exists('groups', $input)) {
+        if(array_key_exists('groups', $input) && is_array($input['groups']) && !empty($input['groups'])) {
             $this->groups = $input['groups'];
         }
 
@@ -126,7 +126,11 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $constraints = $propdata->getConstraints();
 
                 foreach ($constraints as $constraint) {
-                    if (count(array_intersect($this->groups, $constraint->groups)) <= 0) {
+                    $groups = $constraint->groups;
+                    if (empty($groups)) {
+                        $groups = array("Default");
+                    }
+                    if (count(array_intersect($this->groups, $groups)) <= 0) {
                         continue;
                     }
                     $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited);
@@ -202,13 +206,16 @@ class ValidationParser implements ParserInterface, PostParserInterface
 
         switch ($class) {
             case 'NotBlank':
-                $vparams['format'][] = '{not blank}';
+                    $vparams['format'][] = '{not blank}';
             case 'NotNull':
-                $vparams['required'] = true;
+                    $vparams['required'] = true;
                 break;
             case 'Type':
                 if (isset($this->typeMap[$constraint->type])) {
                     $vparams['actualType'] = $this->typeMap[$constraint->type];
+                } else {
+                    $vparams['children'] = $this->doParse($constraint->type, $visited);
+                    $vparams['description'] = $constraint->payload;
                 }
                 $vparams['dataType'] = $constraint->type;
                 break;
