@@ -145,6 +145,10 @@ table tbody tr td {
   line-height: 1.3em;
 }
 
+table tbody tr td.format {
+  word-break: break-word;
+}
+
 #header {
   background-color: #89BF04;
   padding: 1%;
