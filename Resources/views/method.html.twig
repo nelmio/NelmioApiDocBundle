@@ -283,7 +283,7 @@
                             </fieldset>
 
                             <fieldset class="headers">
-                                {% set methods = data.method|upper|split('|') %}
+                                {% set methods = data.method|upper|split(' ') %}
                                 {% if methods|length > 1 %}
                                     <legend>Method</legend>
                                     <select name="header_method">
