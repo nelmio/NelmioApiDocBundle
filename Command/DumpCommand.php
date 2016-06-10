@@ -72,7 +72,7 @@ class DumpCommand extends ContainerAwareCommand
         if ('json' === $format) {
             $output->writeln(json_encode($formattedDoc));
         } else {
-            $output->writeln($formattedDoc);
+            $output->writeln($formattedDoc, OutputInterface::OUTPUT_RAW);
         }
     }
 }
