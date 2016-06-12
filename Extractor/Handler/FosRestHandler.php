@@ -56,9 +56,13 @@ class FosRestHandler implements HandlerInterface
                         'description'   => $annot->description,
                         'default'   => $annot->default,
                     ));
-                } else {
+                } elseif ($annot->requirements !== null) {
                     $annotation->addFilter($annot->name, array(
                         'requirement'   => $this->handleRequirements($annot->requirements).((property_exists($annot, 'map') ? $annot->map : $annot->array) ? '[]' : ''),
+                        'description'   => $annot->description,
+                    ));
+                } else {
+                    $annotation->addFilter($annot->name, array(
                         'description'   => $annot->description,
                     ));
                 }
