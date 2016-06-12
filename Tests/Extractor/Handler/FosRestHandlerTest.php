@@ -203,4 +203,22 @@ class FosRestHandlerTest extends WebTestCase
         $this->assertArrayHasKey('requirement', $filters['param1']);
         $this->assertEquals('NotNull, NotBlank', $filters['param1']['requirement']);
     }
+
+    public function testWithRequirementParamNotSet()
+    {
+        $container  = $this->getContainer();
+        $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithRequirementParamNotSet', 'test_route_31');
+
+        $this->assertNotNull($annotation);
+
+        $filters = $annotation->getFilters();
+        $this->assertCount(1, $filters);
+        $this->assertArrayHasKey('param1', $filters);
+        $filter = $filters['param1'];
+
+        $this->assertArrayNotHasKey('requirement', $filter);
+        $this->assertArrayHasKey('description', $filter);
+        $this->assertEquals($filter['description'], 'Param1 description.');
+    }
 }

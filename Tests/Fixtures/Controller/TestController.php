@@ -414,4 +414,12 @@ class TestController
     public function routeWithQueryParamPlainArrayRequirementsAction()
     {
     }
+
+    /**
+     * @ApiDoc()
+     * @QueryParam(name="param1", description="Param1 description.")
+     */
+    public function zActionWithRequirementParamNotSet()
+    {
+    }
 }
