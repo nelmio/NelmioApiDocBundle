@@ -182,27 +182,6 @@ class ApiDocTest extends TestCase
         $annot = new ApiDoc($data);
     }
 
-    public function testConstructNoFiltersIfFormTypeDefined()
-    {
-        $data = array(
-            'resource'      => true,
-            'description'   => 'Heya',
-            'input'         => 'My\Form\Type',
-            'filters'       => array(
-                array('name' => 'a-filter'),
-            ),
-        );
-
-        $annot = new ApiDoc($data);
-        $array = $annot->toArray();
-
-        $this->assertTrue(is_array($array));
-        $this->assertFalse(isset($array['filters']));
-        $this->assertTrue($annot->isResource());
-        $this->assertEquals($data['description'], $array['description']);
-        $this->assertEquals($data['input'], $annot->getInput());
-    }
-
     public function testConstructWithStatusCodes()
     {
         $data = array(
