@@ -11,6 +11,7 @@ matrix:
         - php: 5.4
           env: SYMFONY_VERSION=2.3.*
         - php: 5.5
+          env: SYMFONY_DEPRECATIONS_HELPER=weak
         - php: 5.6
           env: SYMFONY_VERSION=2.7.* COVERAGE=true
         - php: 5.6
@@ -18,7 +19,9 @@ matrix:
         - php: 5.6
           env: SYMFONY_VERSION=3.0.*
         - php: 7.0
+          env: SYMFONY_DEPRECATIONS_HELPER=weak
         - php: hhvm
+          env: SYMFONY_DEPRECATIONS_HELPER=weak
     fast_finish: true
 
 before_script:
