@@ -1,6 +1,13 @@
 {% extends "NelmioApiDocBundle::layout.html.twig" %}
 
 {% block content %}
+    <div id="summary">
+        <ul>
+            {% for section, sections in resources  %}
+                <li><a href="#section-{{ section }}">{{ section }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
     {% for section, sections in resources  %}
         {% if section != '_others' %}
             <li class="section{{ defaultSectionsOpened? ' active':'' }}">
@@ -13,6 +20,7 @@
                 <ul class="section-list" {% if not defaultSectionsOpened %}style="display: none"{% endif %}>
         {% endif %}
         {% for resource, methods in sections %}
+            <a id="section-{{ section }}"></a>
             <li class="resource">
                 <div class="heading">
                     {% if section == '_others' and resource != 'others' %}
