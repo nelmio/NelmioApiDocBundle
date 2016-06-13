@@ -180,7 +180,9 @@ class ApiDoc
 
         if (isset($data['input'])) {
             $this->input = $data['input'];
-        } elseif (isset($data['filters'])) {
+        }
+
+        if (isset($data['filters'])) {
             foreach ($data['filters'] as $filter) {
                 if (!isset($filter['name'])) {
                     throw new \InvalidArgumentException('A "filter" element has to contain a "name" attribute');
