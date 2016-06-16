@@ -179,7 +179,7 @@
                             <td>
                                 <h4>
                                     {{ status_code }}
-                                    {% if data.statusCodes[status_code] is defined %}
+                                    {% if data.statusCodes is defined and data.statusCodes[status_code] is defined %}
                                         - {{ data.statusCodes[status_code]|join(', ') }}
                                     {% endif %}
                                 </h4>
