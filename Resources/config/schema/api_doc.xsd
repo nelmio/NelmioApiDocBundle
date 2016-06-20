@@ -7,7 +7,8 @@
     <xsd:element name="config">
         <xsd:complexType>
             <xsd:all>
-                <xsd:element name="motd" type="motd" minOccurs="0" maxOccurs="1"/>
+                <xsd:element name="motd" type="template" minOccurs="0" maxOccurs="1"/>
+                <xsd:element name="layout" type="template" minOccurs="0" maxOccurs="1"/>
                 <xsd:element name="request_listener" type="request_listener" minOccurs="0" maxOccurs="1"/>
                 <xsd:element name="sandbox" type="sandbox" minOccurs="0" maxOccurs="1"/>
             </xsd:all>
@@ -15,7 +16,7 @@
         </xsd:complexType>
     </xsd:element>
 
-    <xsd:complexType name="motd">
+    <xsd:complexType name="template">
         <xsd:attribute name="template" type="xsd:string"/>
     </xsd:complexType>
 
