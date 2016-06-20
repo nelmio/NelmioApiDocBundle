@@ -13,6 +13,7 @@
         </script>
     </head>
     <body>
+        {% block header %}
         <div id="header">
             <a href="{{ path('nelmio_api_doc_index') }}"><h1>{{ apiName }}</h1></a>
             {% if enableSandbox %}
@@ -50,15 +51,18 @@
             {% endif %}
             <br style="clear: both;" />
         </div>
+        {% endblock %}
         {% include motdTemplate %}
         <div class="container" id="resources_container">
             <ul id="resources">
                 {% block content %}{% endblock %}
             </ul>
         </div>
+        {% block footer %}
         <p id="colophon">
             Documentation auto-generated on {{ date }}
         </p>
+        {% endblock %}
         <script type="text/javascript">
 
             var getHash = function() {

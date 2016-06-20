@@ -76,6 +76,11 @@ class HtmlFormatter extends AbstractFormatter
     private $motdTemplate;
 
     /**
+     * @var string
+     */
+    private $layoutTemplate;
+
+    /**
      * @var boolean
      */
     private $defaultSectionsOpened;
@@ -185,6 +190,22 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
+     * @param string $layoutTemplate
+     */
+    public function setLayoutTemplate($layoutTemplate)
+    {
+        $this->layoutTemplate = $layoutTemplate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLayoutTemplate()
+    {
+        return $this->layoutTemplate;
+    }
+
+    /**
      * @param boolean $defaultSectionsOpened
      */
     public function setDefaultSectionsOpened($defaultSectionsOpened)
@@ -239,6 +260,7 @@ class HtmlFormatter extends AbstractFormatter
             'css'                   => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
             'js'                    => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
             'motdTemplate'          => $this->motdTemplate,
+            'layoutTemplate'        => $this->layoutTemplate,
             'defaultSectionsOpened' => $this->defaultSectionsOpened,
         );
     }

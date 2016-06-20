@@ -26,6 +26,9 @@
             <call method="setMotdTemplate">
                 <argument>%nelmio_api_doc.motd.template%</argument>
             </call>
+            <call method="setLayoutTemplate">
+                <argument>%nelmio_api_doc.layout.template%</argument>
+            </call>
             <call method="setApiName">
                 <argument>%nelmio_api_doc.api_name%</argument>
             </call>

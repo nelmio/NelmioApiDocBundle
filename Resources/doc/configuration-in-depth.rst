@@ -108,6 +108,21 @@ do is add to configuration:
         motd:
             template: AcmeApiBundle::Components/motd.html.twig
 
+Layout
+------
+
+Similar to the motd, you can also provide your own custom layout template. Make
+sure you base it off the one included in the bundle to get all functionality.
+Activate your custom layout template like this:
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+    nelmio_api_doc:
+        # ...
+        layout:
+            template: AcmeApiBundle::layout.html.twig
+
 Caching
 -------
 
