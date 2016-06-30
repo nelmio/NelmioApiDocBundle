@@ -1,0 +1,33 @@
+{
+    "name": "exsyst/api-doc-bundle",
+    "type": "symfony-bundle",
+    "description": "[WIP] Generates Swagger docs from several sources",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "EXSyst"
+        }
+    ],
+    "require": {
+        "php": ">=5.5",
+        "symfony/framework-bundle": "^2.7|^3.0",
+        "gossi/swagger": "^0.2"
+    },
+    "require-dev": {
+        "nelmio/api-doc-bundle": "^2.0",
+        "symfony/phpunit-bridge": "^2.7|^3.0"
+    },
+    "suggest": {
+        "nelmio/api-doc-bundle": "For using the ApiDoc annotation."
+    },
+    "autoload": {
+        "psr-4": {
+            "EXSyst\\Bundle\\ApiDocBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    }
+}
