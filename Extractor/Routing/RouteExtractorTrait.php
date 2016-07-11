@@ -27,7 +27,7 @@ trait RouteExtractorTrait
      */
     private function getOperations(Swagger $api, Route $route)
     {
-        $path = $swagger->getPaths()->get($route->getPath());
+        $path = $api->getPaths()->get($route->getPath());
         $methods = $route->getMethods() ?: Swagger::$METHODS;
         foreach ($methods as $method) {
             $method = strtolower($method);

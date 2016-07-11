@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
-class RouteExtractor implements ExtractorInterface
+class RoutingExtractor implements ExtractorInterface
 {
     private $routeExtractors;
 
@@ -37,13 +37,12 @@ class RouteExtractor implements ExtractorInterface
     /**
      * @return Swagger
      */
-    public function extract()
+    public function extractIn(Swagger $swagger)
     {
         if (0 === count($this->routeExtractors)) {
             return;
         }
 
-        $swagger = new Swagger();
         foreach ($this->getRoutes() as $route) {
             // if able to resolve the controller
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
@@ -53,8 +52,6 @@ class RouteExtractor implements ExtractorInterface
                 }
             }
         }
-
-        return $swagger;
     }
 
     /**

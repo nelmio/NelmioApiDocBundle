@@ -37,12 +37,13 @@ class NelmioAnnotationExtractor implements RouteExtractorInterface
         }
 
         $annotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, ApiDoc::class);
-        // some fields aren't available otherwise
-        $annotationArray = $annotation->toArray();
         if (null === $annotation) {
             return;
         }
 
+        // some fields aren't available otherwise
+        $annotationArray = $annotation->toArray();
+        
         foreach ($this->getOperations($api, $route) as $operation) {
             if ($annotation->getDescription()) {
                 $operation->setDescription($annotation->getDescription());

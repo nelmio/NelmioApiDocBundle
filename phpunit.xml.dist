@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!-- http://phpunit.de/manual/4.1/en/appendixes.configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.6/phpunit.xsd"
          backupGlobals="false"
          colors="true"
          bootstrap="vendor/autoload.php"
@@ -9,17 +10,23 @@
     <php>
         <ini name="error_reporting" value="-1" />
     </php>
+
     <testsuites>
-        <testsuite name="EXSyst Api Doc Bundle Test Suite">
-            <directory>./Tests/</directory>
+        <testsuite name="Project Test Suite">
+            <directory>Tests</directory>
         </testsuite>
     </testsuites>
+
+    <php>
+        <server name="KERNEL_DIR" value="Tests/Functional/" />
+    </php>
+
     <filter>
         <whitelist>
-            <directory>./</directory>
+            <directory>.</directory>
             <exclude>
-                <directory>./vendor</directory>
-                <directory>./Tests/</directory>
+                <directory>Tests</directory>
+                <directory>vendor</directory>
             </exclude>
         </whitelist>
     </filter>

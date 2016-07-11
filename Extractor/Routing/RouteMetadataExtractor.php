@@ -26,7 +26,7 @@ class RouteMetadataExtractor implements RouteExtractorInterface
             foreach ($route->getRequirements() as $parameterName => $requirement) {
                 $parameter = $operation->getParameters()->get($parameterName, 'path');
                 $parameter->setRequired(true);
-                $parameter->setType(swagger\Swagger::T_STRING);
+                $parameter->setType(Swagger::T_STRING);
                 $parameter->setFormat($requirement);
             }
         }
