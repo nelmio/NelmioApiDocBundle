@@ -22,20 +22,14 @@ class NelmioAnnotationExtractor implements RouteExtractorInterface
     use RouteExtractorTrait;
 
     private $annotationReader;
-    private $nelmioLoaded;
 
     public function __construct(Reader $annotationReader)
     {
         $this->annotationReader = $annotationReader;
-        $this->nelmioLoaded = class_exists(ApiDoc::class);
     }
 
     public function extractIn(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
-        if (!$this->nelmioLoaded) {
-            return;
-        }
-
         $annotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, ApiDoc::class);
         if (null === $annotation) {
             return;
@@ -43,14 +37,12 @@ class NelmioAnnotationExtractor implements RouteExtractorInterface
 
         // some fields aren't available otherwise
         $annotationArray = $annotation->toArray();
-        
+
         foreach ($this->getOperations($api, $route) as $operation) {
             if ($annotation->getDescription()) {
                 $operation->setDescription($annotation->getDescription());
             }
-            if (null !== $annotation->getDeprecated()) {
-                $operation->setDeprecated($operation->getDeprecated || $annotation->getDeprecated());
-            }
+            $operation->setDeprecated($operation->getDeprecated() || $annotation->getDeprecated());
 
             // Request parameters
             foreach ($annotation->getParameters() as $name => $configuration) {

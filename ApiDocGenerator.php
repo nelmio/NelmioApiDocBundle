@@ -16,6 +16,7 @@ use gossi\swagger\Swagger;
 
 class ApiDocGenerator
 {
+    private $swagger;
     private $extractors;
 
     /**
@@ -31,11 +32,15 @@ class ApiDocGenerator
      */
     public function extract()
     {
-        $swagger = new Swagger();
-        foreach ($this->extractors as $extractor) {
-            $extractor->extractIn($swagger);
+        if (null !== $this->swagger) {
+            return $this->swagger;
         }
 
-        return $swagger;
+        $this->swagger = new Swagger();
+        foreach ($this->extractors as $extractor) {
+            $extractor->extractIn($this->swagger);
+        }
+
+        return $this->swagger;
     }
 }

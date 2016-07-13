@@ -19,13 +19,17 @@
 
         <!-- Routing Extractors -->
         <service id="exsyst_api_doc.routing_extractors.route_metadata" class="EXSyst\Bundle\ApiDocBundle\Extractor\Routing\RouteMetadataExtractor" public="false">
-            <tag name="exsyst_api_doc.routing_extractor" />
+            <tag name="exsyst_api_doc.routing_extractor" priority="-50" />
+        </service>
+
+        <service id="exsyst_api_doc.routing_extractors.php_doc" class="EXSyst\Bundle\ApiDocBundle\Extractor\Routing\PhpDocExtractor" public="false">
+            <tag name="exsyst_api_doc.routing_extractor" priority="-70" />
         </service>
 
         <service id="exsyst_api_doc.routing_extractors.nelmio_annotation" class="EXSyst\Bundle\ApiDocBundle\Extractor\Routing\NelmioAnnotationExtractor" public="false">
             <argument type="service" id="annotation_reader" />
 
-            <tag name="exsyst_api_doc.routing_extractor" />
+            <tag name="exsyst_api_doc.routing_extractor" priority="-100" />
         </service>
     </services>
 
