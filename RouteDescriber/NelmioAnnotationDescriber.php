@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace EXSyst\Bundle\ApiDocBundle\Extractor\Routing;
+namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
 use gossi\swagger\Parameter;
@@ -17,9 +17,9 @@ use gossi\swagger\Swagger;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
 
-class NelmioAnnotationExtractor implements RouteExtractorInterface
+class NelmioAnnotationDescriber implements RouteDescriberInterface
 {
-    use RouteExtractorTrait;
+    use RouteDescriberTrait;
 
     private $annotationReader;
 
@@ -28,7 +28,7 @@ class NelmioAnnotationExtractor implements RouteExtractorInterface
         $this->annotationReader = $annotationReader;
     }
 
-    public function extractIn(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         $annotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, ApiDoc::class);
         if (null === $annotation) {

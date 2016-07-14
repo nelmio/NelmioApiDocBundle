@@ -11,20 +11,20 @@
 
 namespace EXSyst\Bundle\ApiDocBundle;
 
-use EXSyst\Bundle\ApiDocBundle\Extractor\ExtractorInterface;
+use EXSyst\Bundle\ApiDocBundle\Describer\DescriberInterface;
 use gossi\swagger\Swagger;
 
 class ApiDocGenerator
 {
     private $swagger;
-    private $extractors;
+    private $describers;
 
     /**
-     * @param ExtractorInterface[] $extractors
+     * @param DescriberInterface[] $describers
      */
-    public function __construct(array $extractors)
+    public function __construct(array $describers)
     {
-        $this->extractors = $extractors;
+        $this->describers = $describers;
     }
 
     /**
@@ -37,8 +37,8 @@ class ApiDocGenerator
         }
 
         $this->swagger = new Swagger();
-        foreach ($this->extractors as $extractor) {
-            $extractor->extractIn($this->swagger);
+        foreach ($this->describers as $describer) {
+            $describer->describe($this->swagger);
         }
 
         return $this->swagger;

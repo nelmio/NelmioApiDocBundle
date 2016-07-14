@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace EXSyst\Bundle\ApiDocBundle\Extractor\Routing;
+namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
 use gossi\swagger\Swagger;
 use Symfony\Component\Routing\Route;
 
-class RouteMetadataExtractor implements RouteExtractorInterface
+class RouteMetadataDescriber implements RouteDescriberInterface
 {
-    use RouteExtractorTrait;
+    use RouteDescriberTrait;
 
-    public function extractIn(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         foreach ($this->getOperations($api, $route) as $operation) {
             $operation->getSchemes()->addAll($route->getSchemes());

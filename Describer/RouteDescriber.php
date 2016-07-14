@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace EXSyst\Bundle\ApiDocBundle\Extractor;
+namespace EXSyst\Bundle\ApiDocBundle\Describer;
 
 use Doctrine\Common\Util\ClassUtils;
 use EXSyst\Bundle\ApiDocBundle\Extractor\Routing\RouteExtractorInterface;
@@ -18,25 +18,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
-class RoutingExtractor implements ExtractorInterface
+class RouteDescriber implements DescriberInterface
 {
-    private $routeExtractors;
+    private $routeDescribers;
 
     /**
      * @param RouterInterface           $router
      * @param ControllerNameParser      $controllerNameParser
-     * @param RouteExtractorInterface[] $extractors
+     * @param RouteDescriberInterface[] $routeDescribers
      */
-    public function __construct(RouterInterface $router, ControllerNameParser $controllerNameParser, array $routeExtractors)
+    public function __construct(RouterInterface $router, ControllerNameParser $controllerNameParser, array $routeDescribers)
     {
         $this->router = $router;
         $this->controllerNameParser = $controllerNameParser;
-        $this->routeExtractors = $routeExtractors;
+        $this->routeDescribers = $routeDescribers;
     }
 
-    public function extractIn(Swagger $swagger)
+    public function describe(Swagger $swagger)
     {
-        if (0 === count($this->routeExtractors)) {
+        if (0 === count($this->routeDescribers)) {
             return;
         }
 
@@ -44,8 +44,8 @@ class RoutingExtractor implements ExtractorInterface
             // if able to resolve the controller
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 // Extract as many informations as possible about this route
-                foreach ($this->routeExtractors as $extractor) {
-                    $extractor->extractIn($swagger, $route, $method);
+                foreach ($this->routeDescribers as $describer) {
+                    $describer->describe($swagger, $route, $method);
                 }
             }
         }
@@ -68,7 +68,7 @@ class RoutingExtractor implements ExtractorInterface
      *
      * @return \ReflectionMethod|null
      */
-    private function getReflectionMethod($controller)
+    private function getReflectionMethod(string $controller)
     {
         if (false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
             $controller = $this->controllerNameParser->parse($controller);

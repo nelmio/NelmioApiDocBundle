@@ -15,14 +15,14 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class AddRoutingExtractorsPass implements CompilerPassInterface
+class AddRouteDescribersPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
 
     public function process(ContainerBuilder $container)
     {
-        $extractors = $this->findAndSortTaggedServices('exsyst_api_doc.routing_extractor', $container);
+        $routeDescribers = $this->findAndSortTaggedServices('exsyst_api_doc.route_describer', $container);
 
-        $container->getDefinition('exsyst_api_doc.extractors.routing')->replaceArgument(2, $extractors);
+        $container->getDefinition('exsyst_api_doc.describers.route')->replaceArgument(2, $routeDescribers);
     }
 }

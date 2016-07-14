@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace EXSyst\Bundle\ApiDocBundle\Extractor\Routing;
+namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
 use gossi\swagger\Swagger;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Symfony\Component\Routing\Route;
 
-class PhpDocExtractor implements RouteExtractorInterface
+class PhpDocDescriber implements RouteDescriberInterface
 {
-    use RouteExtractorTrait;
+    use RouteDescriberTrait;
 
     private $docBlockFactory;
 
@@ -30,7 +30,7 @@ class PhpDocExtractor implements RouteExtractorInterface
         $this->docBlockFactory = $docBlockFactory;
     }
 
-    public function extractIn(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         $classDocBlock = null;
         $docBlock = null;

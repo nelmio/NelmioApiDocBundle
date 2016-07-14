@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace EXSyst\Bundle\ApiDocBundle\Extractor\Routing;
+namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
 use gossi\swagger\Operation;
 use gossi\swagger\Swagger;
@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Route;
 /**
  * @internal
  */
-trait RouteExtractorTrait
+trait RouteDescriberTrait
 {
     /**
      * @internal

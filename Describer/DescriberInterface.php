@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace EXSyst\Bundle\ApiDocBundle\Extractor\Routing;
+namespace EXSyst\Bundle\ApiDocBundle\Describer;
 
 use gossi\swagger\Swagger;
-use Symfony\Component\Routing\Route;
 
-interface RouteExtractorInterface
+interface DescriberInterface
 {
-    public function extractIn(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod);
+    public function describe(Swagger $api);
 }

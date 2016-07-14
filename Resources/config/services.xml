@@ -9,27 +9,27 @@
         </service>
 
         <!-- Extractors -->
-        <service id="exsyst_api_doc.extractors.routing" class="EXSyst\Bundle\ApiDocBundle\Extractor\RoutingExtractor" public="false">
+        <service id="exsyst_api_doc.describers.route" class="EXSyst\Bundle\ApiDocBundle\Describer\RouteDescriber" public="false">
             <argument type="service" id="router" />
             <argument type="service" id="controller_name_converter" />
             <argument type="collection" />
 
-            <tag name="exsyst_api_doc.extractor" priority="-100" />
+            <tag name="exsyst_api_doc.describer" priority="-100" />
         </service>
 
         <!-- Routing Extractors -->
-        <service id="exsyst_api_doc.routing_extractors.route_metadata" class="EXSyst\Bundle\ApiDocBundle\Extractor\Routing\RouteMetadataExtractor" public="false">
-            <tag name="exsyst_api_doc.routing_extractor" priority="-50" />
+        <service id="exsyst_api_doc.route_describers.route_metadata" class="EXSyst\Bundle\ApiDocBundle\RouteDescriber\RouteMetadataDescriber" public="false">
+            <tag name="exsyst_api_doc.route_describer" priority="-50" />
         </service>
 
-        <service id="exsyst_api_doc.routing_extractors.php_doc" class="EXSyst\Bundle\ApiDocBundle\Extractor\Routing\PhpDocExtractor" public="false">
-            <tag name="exsyst_api_doc.routing_extractor" priority="-70" />
+        <service id="exsyst_api_doc.route_describers.php_doc" class="EXSyst\Bundle\ApiDocBundle\RouteDescriber\PhpDocDescriber" public="false">
+            <tag name="exsyst_api_doc.route_describer" priority="-70" />
         </service>
 
-        <service id="exsyst_api_doc.routing_extractors.nelmio_annotation" class="EXSyst\Bundle\ApiDocBundle\Extractor\Routing\NelmioAnnotationExtractor" public="false">
+        <service id="exsyst_api_doc.route_describers.nelmio_annotation" class="EXSyst\Bundle\ApiDocBundle\RouteDescriber\NelmioAnnotationDescriber" public="false">
             <argument type="service" id="annotation_reader" />
 
-            <tag name="exsyst_api_doc.routing_extractor" priority="-100" />
+            <tag name="exsyst_api_doc.route_describer" priority="-100" />
         </service>
     </services>
 

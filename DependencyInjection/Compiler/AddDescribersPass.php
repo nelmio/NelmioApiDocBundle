@@ -15,14 +15,14 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class AddExtractorsPass implements CompilerPassInterface
+class AddDescribersPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
 
     public function process(ContainerBuilder $container)
     {
-        $extractors = $this->findAndSortTaggedServices('exsyst_api_doc.extractor', $container);
+        $describers = $this->findAndSortTaggedServices('exsyst_api_doc.describer', $container);
 
-        $container->getDefinition('exsyst_api_doc.generator')->replaceArgument(0, $extractors);
+        $container->getDefinition('exsyst_api_doc.generator')->replaceArgument(0, $describers);
     }
 }

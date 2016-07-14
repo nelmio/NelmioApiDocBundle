@@ -11,8 +11,8 @@
 
 namespace EXSyst\Bundle\ApiDocBundle;
 
-use EXSyst\Bundle\ApiDocBundle\DependencyInjection\Compiler\AddExtractorsPass;
-use EXSyst\Bundle\ApiDocBundle\DependencyInjection\Compiler\AddRoutingExtractorsPass;
+use EXSyst\Bundle\ApiDocBundle\DependencyInjection\Compiler\AddDescribersPass;
+use EXSyst\Bundle\ApiDocBundle\DependencyInjection\Compiler\AddRouteDescribersPass;
 use EXSyst\Bundle\ApiDocBundle\DependencyInjection\EXSystApiDocExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -24,8 +24,8 @@ class EXSystApiDocBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new AddExtractorsPass());
-        $container->addCompilerPass(new AddRoutingExtractorsPass());
+        $container->addCompilerPass(new AddDescribersPass());
+        $container->addCompilerPass(new AddRouteDescribersPass());
     }
 
     /**
