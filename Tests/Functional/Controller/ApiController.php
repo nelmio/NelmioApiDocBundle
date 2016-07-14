@@ -39,6 +39,7 @@ class ApiController
      * Please do not use this action.
      *
      * @Route("/deprecated", methods={"GET"})
+     *
      * @deprecated
      */
     public function deprecatedAction()

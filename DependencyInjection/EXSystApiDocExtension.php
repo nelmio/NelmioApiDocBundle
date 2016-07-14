@@ -43,7 +43,7 @@ class EXSystApiDocExtension extends Extension
             $container->removeDefinition('exsyst_api_doc.routing_extractors.nelmio_annotation');
         }
         if (!class_exists(DocBlockFactory::class)) {
-            $container->removeDefinition('exsyst_api_doc.routing_extractors.php_doc');            
+            $container->removeDefinition('exsyst_api_doc.routing_extractors.php_doc');
         }
     }
 }

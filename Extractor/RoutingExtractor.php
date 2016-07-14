@@ -34,9 +34,6 @@ class RoutingExtractor implements ExtractorInterface
         $this->routeExtractors = $routeExtractors;
     }
 
-    /**
-     * @return Swagger
-     */
     public function extractIn(Swagger $swagger)
     {
         if (0 === count($this->routeExtractors)) {

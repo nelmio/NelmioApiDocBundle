@@ -13,10 +13,7 @@ namespace EXSyst\Bundle\ApiDocBundle\Extractor\Routing;
 
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
-use Doctrine\Common\Annotations\Reader;
-use gossi\swagger\Parameter;
 use gossi\swagger\Swagger;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
 
 class PhpDocExtractor implements RouteExtractorInterface
