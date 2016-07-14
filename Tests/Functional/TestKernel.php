@@ -33,6 +33,7 @@ class TestKernel extends Kernel
             new EXSystApiDocBundle(),
         ];
     }
+
     /**
      * {@inheritdoc}
      */

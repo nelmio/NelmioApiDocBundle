@@ -14,9 +14,9 @@ namespace EXSyst\Bundle\ApiDocBundle\DependencyInjection;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class EXSystApiDocExtension extends Extension
 {

@@ -14,8 +14,8 @@ namespace EXSyst\Bundle\ApiDocBundle;
 use EXSyst\Bundle\ApiDocBundle\DependencyInjection\Compiler\AddExtractorsPass;
 use EXSyst\Bundle\ApiDocBundle\DependencyInjection\Compiler\AddRoutingExtractorsPass;
 use EXSyst\Bundle\ApiDocBundle\DependencyInjection\EXSystApiDocExtension;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class EXSystApiDocBundle extends Bundle
 {

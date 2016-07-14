@@ -11,9 +11,9 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\Extractor\Routing;
 
+use gossi\swagger\Swagger;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
-use gossi\swagger\Swagger;
 use Symfony\Component\Routing\Route;
 
 class PhpDocExtractor implements RouteExtractorInterface
