@@ -102,10 +102,21 @@ class DunglasApiProvider implements AnnotationsProviderInterface
     ) {
         $method = $operation->getRoute()->getMethods()[0];
 
+        $operation_context = $operation->getContext();
+
         if ($collection) {
-            $operationHydraDoc = $this->getCollectionOperationHydraDoc($resource->getShortName(), $method, $entrypointHydraDoc);
+            $operationHydraDoc = $this->getCollectionOperationHydraDoc(
+                $resource->getShortName(),
+                $method,
+                $entrypointHydraDoc,
+                $operation_context
+            );
         } else {
-            $operationHydraDoc = $this->getOperationHydraDoc($operation->getRoute()->getMethods()[0], $resourceHydraDoc, $operation->getContext());
+            $operationHydraDoc = $this->getOperationHydraDoc(
+                $operation->getRoute()->getMethods()[0],
+                $resourceHydraDoc,
+                $operation_context
+            );
         }
 
         $route = $operation->getRoute();
@@ -190,14 +201,14 @@ class DunglasApiProvider implements AnnotationsProviderInterface
      *
      * @return array|null
      */
-    private function getCollectionOperationHydraDoc($shortName, $method, array $hydraEntrypointDoc)
+    private function getCollectionOperationHydraDoc($shortName, $method, array $hydraEntrypointDoc, $context = null)
     {
         $propertyName = '#Entrypoint/'.lcfirst($shortName);
 
         foreach ($hydraEntrypointDoc['hydra:supportedProperty'] as $supportedProperty) {
             $hydraProperty = $supportedProperty['hydra:property'];
             if ($hydraProperty['@id'] === $propertyName) {
-                return $this->getOperationHydraDoc($method, $hydraProperty);
+                return $this->getOperationHydraDoc($method, $hydraProperty, $context);
             }
         }
     }
