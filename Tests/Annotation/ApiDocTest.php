@@ -400,4 +400,18 @@ class ApiDocTest extends TestCase
         $this->assertEquals('bar.awesome_host.com', $apiDoc->getHost());
         $this->assertEquals('ANY', $apiDoc->getMethod());
     }
+
+    public function testExamplesFromFile()
+    {
+        $fileName = tempnam(sys_get_temp_dir(), 'nelmio');
+        file_put_contents($fileName, '{"that_is_json_key": "my sample json"}');
+        $data = array(
+            'responseExample' => ['file' => $fileName],
+            'requestExample' => ['file' => $fileName],
+        );
+        $apiDoc = new ApiDoc($data);
+
+        $this->assertEquals('{"that_is_json_key": "my sample json"}', $apiDoc->getResponseExample());
+        $this->assertEquals('{"that_is_json_key": "my sample json"}', $apiDoc->getRequestExample());
+    }
 }

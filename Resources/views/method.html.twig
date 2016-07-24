@@ -229,6 +229,26 @@
                 <div>{{ data.cache }}s</div>
             {% endif %}
 
+                {% if data.requestExample is defined and data.requestExample is not empty %}
+                    <div>
+                        <div class="toggler"><h4>Request example</h4></div>
+                        <div style="display: none;">
+                            {% set requestExample = "```\n" ~ data.requestExample ~ "\n```" %}
+                            {{ requestExample|extra_markdown }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if data.responseExample is defined and data.responseExample is not empty %}
+                    <div>
+                        <div class="toggler"><h4>Response example</h4></div>
+                        <div style="display: none;">
+                            {% set responseExample = "```\n" ~ data.responseExample ~ "\n```" %}
+                            {{ responseExample|extra_markdown }}
+                        </div>
+                    </div>
+                {% endif %}
+
             </div>
 
             {% if enableSandbox %}

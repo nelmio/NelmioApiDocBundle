@@ -181,3 +181,43 @@ For Form Types, you can add an extra option named ``description`` on each field:
 The bundle will also get information from the routing definition
 (``requirements``, ``path``, etc), so to get the best out of it you should
 define strict methods requirements etc.
+
+* ``responseExample``: example of response body from endpoint. This properties can be an array with
+ `file` key and path value to example with the response; Examples:
+
+.. code-block:: php
+
+    class YourController
+    {
+        /**
+         * @ApiDoc(
+         *     responseExample={
+         *         "file": "../src/AppBundle/Resources/getActionExample.json"
+         *     }
+         * )
+         */
+        public function myFunction()
+        {
+            // ...
+        }
+    }
+
+* ``requestExample``: example of response body from endpoint. This properties can be an array with
+ `file` key and path value to example with the response; Examples:
+
+.. code-block:: php
+
+    class YourController
+    {
+        /**
+         * @ApiDoc(
+         *     requestExample={
+         *         "file": "../src/AppBundle/Resources/getActionExample.json"
+         *     }
+         * )
+         */
+        public function myFunction()
+        {
+            // ...
+        }
+    }

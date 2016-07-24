@@ -170,6 +170,16 @@ class ApiDoc
      */
     private $tags = array();
 
+    /**
+     * @var string
+     */
+    private $requestExample;
+
+    /**
+     * @var string
+     */
+    private $responseExample;
+
     public function __construct(array $data)
     {
         $this->resource = !empty($data['resource']) ? $data['resource'] : false;
@@ -311,6 +321,14 @@ class ApiDoc
                 $this->output = $this->responseMap[200];
             }
         }
+
+        if (isset($data['requestExample'])) {
+            $this->requestExample = $this->addExample($data['requestExample']);
+        }
+
+        if (isset($data['responseExample'])) {
+            $this->responseExample = $this->addExample($data['responseExample']);
+        }
     }
 
     /**
@@ -379,6 +397,22 @@ class ApiDoc
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestExample()
+    {
+        return $this->requestExample;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResponseExample()
+    {
+        return $this->responseExample;
     }
 
     /**
@@ -738,6 +772,14 @@ class ApiDoc
             $data['tags'] = $tags;
         }
 
+        if ($responseExample = $this->responseExample) {
+            $data['responseExample'] = $responseExample;
+        }
+
+        if ($requestExample = $this->requestExample) {
+            $data['requestExample'] = $requestExample;
+        }
+
         if ($resourceDescription = $this->resourceDescription) {
             $data['resourceDescription'] = $resourceDescription;
         }
@@ -789,5 +831,21 @@ class ApiDoc
         if ($statusCode == 200 && $this->response !== $model) {
             $this->response = $model;
         }
+    }
+
+    /**
+     * @param string|array $example
+     * @return string|null
+     */
+    public function addExample($example)
+    {
+        $content = null;
+        if (is_array($example)) {
+            if (!empty($example['file']) && is_readable($example['file'])) {
+                $content = file_get_contents($example['file']);
+            }
+        }
+
+        return $content;
     }
 }
