@@ -11,12 +11,7 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\Describer;
 
-use Doctrine\Common\Util\ClassUtils;
-use EXSyst\Bundle\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use gossi\swagger\Swagger;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouterInterface;
 
 class SwaggerPhpDescriber implements DescriberInterface
 {
