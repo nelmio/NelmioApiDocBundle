@@ -12,7 +12,7 @@
 namespace EXSyst\Bundle\ApiDocBundle\Describer;
 
 use Doctrine\Common\Util\ClassUtils;
-use EXSyst\Bundle\ApiDocBundle\Extractor\Routing\RouteExtractorInterface;
+use EXSyst\Bundle\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use gossi\swagger\Swagger;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\Routing\Route;
@@ -34,7 +34,7 @@ class RouteDescriber implements DescriberInterface
         $this->routeDescribers = $routeDescribers;
     }
 
-    public function describe(Swagger $swagger)
+    public function describe(Swagger $api)
     {
         if (0 === count($this->routeDescribers)) {
             return;
@@ -45,7 +45,7 @@ class RouteDescriber implements DescriberInterface
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 // Extract as many informations as possible about this route
                 foreach ($this->routeDescribers as $describer) {
-                    $describer->describe($swagger, $route, $method);
+                    $describer->describe($api, $route, $method);
                 }
             }
         }

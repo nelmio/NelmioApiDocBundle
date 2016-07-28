@@ -9,17 +9,18 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": "^7.0",
         "symfony/framework-bundle": "^3.2@dev",
-        "gossi/swagger": "^0.2"
+        "exsyst/swagger": "dev-master"
     },
     "require-dev": {
-        "symfony/browser-kit": "~2.8|~3.0",
+        "symfony/browser-kit": "^2.8|^3.0",
         "symfony/phpunit-bridge": "^3.2@dev",
-        "sensio/framework-extra-bundle": "~3.0",
+        "sensio/framework-extra-bundle": "^3.0",
         "nelmio/api-doc-bundle": "^2.0",
         "phpdocumentor/reflection-docblock": "^3.1",
-        "phpunit/phpunit": "^5.4"
+        "phpunit/phpunit": "^5.4",
+        "zircote/swagger-php": "^2.0"
     },
     "suggest": {
         "nelmio/api-doc-bundle": "For using the ApiDoc annotation.",

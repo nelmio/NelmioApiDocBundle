@@ -13,6 +13,7 @@ namespace EXSyst\Bundle\ApiDocBundle\DependencyInjection;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use phpDocumentor\Reflection\DocBlockFactory;
+use Swagger\Annotations\Swagger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -40,10 +41,13 @@ class EXSystApiDocExtension extends Extension
 
         // Removes useless services
         if (!class_exists(ApiDoc::class)) {
-            $container->removeDefinition('exsyst_api_doc.routing_extractors.nelmio_annotation');
+            $container->removeDefinition('exsyst_api_doc.route_describers.nelmio_annotation');
         }
         if (!class_exists(DocBlockFactory::class)) {
-            $container->removeDefinition('exsyst_api_doc.routing_extractors.php_doc');
+            $container->removeDefinition('exsyst_api_doc.route_describers.php_doc');
+        }
+        if (!class_exists(Swagger::class)) {
+            $container->removeDefinition('exsyst_api_doc.describers.swagger_php');
         }
     }
 }

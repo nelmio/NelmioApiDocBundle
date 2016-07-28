@@ -26,7 +26,7 @@ class RouteMetadataDescriber implements RouteDescriberInterface
             foreach ($route->getRequirements() as $parameterName => $requirement) {
                 $parameter = $operation->getParameters()->get($parameterName, 'path');
                 $parameter->setRequired(true);
-                $parameter->setType(Swagger::T_STRING);
+                $parameter->setType('string');
                 $parameter->setFormat($requirement);
             }
         }

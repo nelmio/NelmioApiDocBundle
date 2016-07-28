@@ -50,6 +50,15 @@ class FunctionalTest extends WebTestCase
         $this->assertTrue($operation->getDeprecated());
     }
 
+    public function testSwaggerPhpInfo()
+    {
+        $api = $this->getSwaggerDefinition();
+        $info = $api->getInfo();
+
+        $this->assertEquals('My Awesome App', $info->getTitle());
+        $this->assertEquals('1.3', $info->getVersion());
+    }
+
     private function getSwaggerDefinition()
     {
         static::createClient();

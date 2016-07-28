@@ -9,6 +9,12 @@
         </service>
 
         <!-- Extractors -->
+        <service id="exsyst_api_doc.describers.swagger_php" class="EXSyst\Bundle\ApiDocBundle\Describer\SwaggerPhpDescriber" public="false">
+            <argument>%kernel.root_dir%</argument>
+
+            <tag name="exsyst_api_doc.describer" priority="-150" />
+        </service>
+
         <service id="exsyst_api_doc.describers.route" class="EXSyst\Bundle\ApiDocBundle\Describer\RouteDescriber" public="false">
             <argument type="service" id="router" />
             <argument type="service" id="controller_name_converter" />

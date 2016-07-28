@@ -101,10 +101,10 @@ class NelmioAnnotationDescriber implements RouteDescriberInterface
                 $items = $items->getItems();
             } while ('[]' === substr($requirement, -2));
 
-            $items->setType(Swagger::T_STRING);
+            $items->setType('string');
             $items->setFormat($requirement);
         } else {
-            $parameter->setType(Swagger::T_STRING);
+            $parameter->setType('string');
             $parameter->setFormat($requirement);
         }
 
