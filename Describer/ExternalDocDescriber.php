@@ -11,35 +11,30 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\Describer;
 
-use Doctrine\Common\Util\ClassUtils;
-use EXSyst\Bundle\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use gossi\swagger\Swagger;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouterInterface;
 
 class ExternalDocDescriber implements DescriberInterface
 {
     private $externalDoc;
-    private $stategy;
+    private $overwrite;
 
     /**
      * @param array|callable $externalDoc
      * @param int            $strategy
      */
-    public function __construct($externalDoc, $strategy = Swagger::PREFER_ORIGINAL)
+    public function __construct($externalDoc, bool $overwrite = false)
     {
         $this->externalDoc = $externalDoc;
-        $this->strategy = $strategy;
+        $this->overwrite = $overwrite;
     }
 
     public function describe(Swagger $api)
     {
         $externalDoc = $this->getExternalDoc();
-        $api->merge($externalDoc, $this->strategy);
+        $api->merge($externalDoc, $this->overwrite);
     }
 
-    private function getExternalDoc(): array
+    private function getExternalDoc()
     {
         if (is_callable($this->externalDoc)) {
             return call_user_func($this->externalDoc);

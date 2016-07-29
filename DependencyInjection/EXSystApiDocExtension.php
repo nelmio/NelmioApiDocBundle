@@ -49,5 +49,11 @@ class EXSystApiDocExtension extends Extension
         if (!class_exists(Swagger::class)) {
             $container->removeDefinition('exsyst_api_doc.describers.swagger_php');
         }
+
+        $bundles = $container->getParameter('kernel.bundles');
+        // ApiPlatform support
+        if (isset($bundles['ApiPlatformBundle']) && class_exists('ApiPlatform\Core\Documentation\Documentation')) {
+            $loader->load('api_platform.xml');
+        }
     }
 }

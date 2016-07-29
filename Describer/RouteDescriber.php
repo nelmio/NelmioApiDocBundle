@@ -15,20 +15,26 @@ use Doctrine\Common\Util\ClassUtils;
 use EXSyst\Bundle\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use gossi\swagger\Swagger;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
 class RouteDescriber implements DescriberInterface
 {
+    private $container;
+    private $router;
+    private $controllerNameParser;
     private $routeDescribers;
 
     /**
+     * @param ContainerInterface        $container
      * @param RouterInterface           $router
      * @param ControllerNameParser      $controllerNameParser
      * @param RouteDescriberInterface[] $routeDescribers
      */
-    public function __construct(RouterInterface $router, ControllerNameParser $controllerNameParser, array $routeDescribers)
+    public function __construct(ContainerInterface $container, RouterInterface $router, ControllerNameParser $controllerNameParser, array $routeDescribers)
     {
+        $this->container = $container;
         $this->router = $router;
         $this->controllerNameParser = $controllerNameParser;
         $this->routeDescribers = $routeDescribers;

@@ -16,6 +16,7 @@
         </service>
 
         <service id="exsyst_api_doc.describers.route" class="EXSyst\Bundle\ApiDocBundle\Describer\RouteDescriber" public="false">
+            <argument type="service" id="service_container" />
             <argument type="service" id="router" />
             <argument type="service" id="controller_name_converter" />
             <argument type="collection" />

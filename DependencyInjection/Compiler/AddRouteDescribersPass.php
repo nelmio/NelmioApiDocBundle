@@ -23,6 +23,6 @@ class AddRouteDescribersPass implements CompilerPassInterface
     {
         $routeDescribers = $this->findAndSortTaggedServices('exsyst_api_doc.route_describer', $container);
 
-        $container->getDefinition('exsyst_api_doc.describers.route')->replaceArgument(2, $routeDescribers);
+        $container->getDefinition('exsyst_api_doc.describers.route')->replaceArgument(3, $routeDescribers);
     }
 }

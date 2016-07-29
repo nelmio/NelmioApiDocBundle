@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
+use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use EXSyst\Bundle\ApiDocBundle\EXSystApiDocBundle;
+use EXSyst\Bundle\ApiDocBundle\Tests\Functional\TestBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -30,7 +32,9 @@ class TestKernel extends Kernel
         return [
             new FrameworkBundle(),
             new SensioFrameworkExtraBundle(),
+            new ApiPlatformBundle(),
             new EXSystApiDocBundle(),
+            new TestBundle(),
         ];
     }
 
@@ -40,6 +44,7 @@ class TestKernel extends Kernel
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
         $routes->import(__DIR__.'/Controller/', '/', 'annotation');
+        $routes->import('', '/api', 'api_platform');
     }
 
     /**
@@ -49,7 +54,8 @@ class TestKernel extends Kernel
     {
         $c->loadFromExtension('framework', [
             'secret' => 'MySecretKey',
-            'test'   => null,
+            'test' => null,
+            'validation' => null,
         ]);
     }
 }
