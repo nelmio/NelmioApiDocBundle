@@ -19,15 +19,15 @@ class FunctionalTest extends WebTestCase
     {
         $operation = $this->getOperation('/test/{user}', 'get');
 
-        $this->assertEquals(['https'], $operation->getSchemes()->toArray());
+        $this->assertEquals(['https'], $operation->getSchemes());
         $this->assertEmpty($operation->getSummary());
         $this->assertEmpty($operation->getDescription());
         $this->assertFalse($operation->getDeprecated());
 
         $parameters = $operation->getParameters();
-        $this->assertTrue($parameters->search('user', 'path'));
+        $this->assertTrue($parameters->has('user', 'path'));
 
-        $parameter = $parameters->find('user', 'path');
+        $parameter = $parameters->get('user', 'path');
         $this->assertTrue($parameter->getRequired());
         $this->assertEquals('string', $parameter->getType());
         $this->assertEquals('/foo/', $parameter->getFormat());

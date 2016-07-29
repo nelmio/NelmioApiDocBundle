@@ -19,7 +19,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author Guilhem N. <egetick@gmail.com>
  *
  * @ApiResource(
- *   collectionOperations={"get"={"method"="GET"}},
+ *   collectionOperations={
+ *     "get"={"method"="GET"},
+ *     "custom2"={"path"="/foo", "method"="GET"},
+ *     "custom"={"path"="/foo", "method"="POST"},
+ *   },
  *   itemOperations={"get"={"method"="GET"}})
  * )
  */

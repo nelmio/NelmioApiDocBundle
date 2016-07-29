@@ -13,7 +13,7 @@ namespace EXSyst\Bundle\ApiDocBundle\Describer;
 
 use Doctrine\Common\Util\ClassUtils;
 use EXSyst\Bundle\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
-use gossi\swagger\Swagger;
+use EXSyst\Swagger\Swagger;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;

@@ -11,7 +11,7 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
-use gossi\swagger\Swagger;
+use EXSyst\Swagger\Swagger;
 use Symfony\Component\Routing\Route;
 
 class RouteMetadataDescriber implements RouteDescriberInterface
@@ -21,7 +21,7 @@ class RouteMetadataDescriber implements RouteDescriberInterface
     public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         foreach ($this->getOperations($api, $route) as $operation) {
-            $operation->getSchemes()->addAll($route->getSchemes());
+            $operation->merge(['schemes' => $route->getSchemes()]);
 
             foreach ($route->getRequirements() as $parameterName => $requirement) {
                 $parameter = $operation->getParameters()->get($parameterName, 'path');

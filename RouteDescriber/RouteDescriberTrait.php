@@ -11,8 +11,8 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
-use gossi\swagger\Operation;
-use gossi\swagger\Swagger;
+use EXSyst\Swagger\Operation;
+use EXSyst\Swagger\Swagger;
 use Symfony\Component\Routing\Route;
 
 /**

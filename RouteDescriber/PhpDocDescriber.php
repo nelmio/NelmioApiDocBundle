@@ -11,7 +11,7 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
-use gossi\swagger\Swagger;
+use EXSyst\Swagger\Swagger;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Symfony\Component\Routing\Route;

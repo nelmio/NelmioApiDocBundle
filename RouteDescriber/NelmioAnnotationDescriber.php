@@ -12,8 +12,8 @@
 namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use gossi\swagger\Parameter;
-use gossi\swagger\Swagger;
+use EXSyst\Swagger\Parameter;
+use EXSyst\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
 

@@ -11,7 +11,7 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
-use gossi\swagger\Swagger;
+use EXSyst\Swagger\Swagger;
 use Symfony\Component\Routing\Route;
 
 interface RouteDescriberInterface

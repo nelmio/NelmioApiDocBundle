@@ -11,7 +11,7 @@
     "require": {
         "php": "^7.0",
         "symfony/framework-bundle": "^3.2",
-        "exsyst/swagger": "dev-master"
+        "exsyst/swagger": "~0.1"
     },
     "require-dev": {
         "symfony/validator": "^3.2",

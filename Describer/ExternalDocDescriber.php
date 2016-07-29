@@ -11,7 +11,7 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\Describer;
 
-use gossi\swagger\Swagger;
+use EXSyst\Swagger\Swagger;
 
 class ExternalDocDescriber implements DescriberInterface
 {
