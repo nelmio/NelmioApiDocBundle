@@ -20,7 +20,7 @@ class ExternalDocDescriber implements DescriberInterface
 
     /**
      * @param array|callable $externalDoc
-     * @param int            $strategy
+     * @param bool           $overwrite
      */
     public function __construct($externalDoc, bool $overwrite = false)
     {

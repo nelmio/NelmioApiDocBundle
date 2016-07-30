@@ -13,9 +13,6 @@ namespace EXSyst\Bundle\ApiDocBundle\Describer;
 
 class SwaggerPhpDescriber extends ExternalDocDescriber
 {
-    /**
-     * @param string $projectPath
-     */
     public function __construct(string $projectPath, bool $overwrite = false)
     {
         parent::__construct(function () use ($projectPath) {

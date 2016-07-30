@@ -27,10 +27,7 @@ class ApiDocGenerator
         $this->describers = $describers;
     }
 
-    /**
-     * @return Swagger
-     */
-    public function extract()
+    public function extract(): Swagger
     {
         if (null !== $this->swagger) {
             return $this->swagger;

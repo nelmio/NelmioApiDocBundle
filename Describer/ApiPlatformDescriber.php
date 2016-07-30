@@ -16,9 +16,6 @@ use ApiPlatform\Core\Swagger\DocumentationNormalizer;
 
 class ApiPlatformDescriber extends ExternalDocDescriber
 {
-    /**
-     * @param string $projectPath
-     */
     public function __construct(Documentation $documentation, DocumentationNormalizer $normalizer, bool $overwrite = false)
     {
         parent::__construct(function () use ($documentation, $normalizer) {
