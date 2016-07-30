@@ -22,7 +22,6 @@ class ApiPlatformDescriber extends ExternalDocDescriber
     public function __construct(Documentation $documentation, DocumentationNormalizer $normalizer, bool $overwrite = false)
     {
         parent::__construct(function () use ($documentation, $normalizer) {
-            var_dump($normalizer->normalize($documentation));
             return $normalizer->normalize($documentation);
         }, $overwrite);
     }
