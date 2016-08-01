@@ -11,8 +11,8 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
-use EXSyst\Swagger\Operation;
-use EXSyst\Swagger\Swagger;
+use EXSyst\Component\Swagger\Operation;
+use EXSyst\Component\Swagger\Swagger;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -27,7 +27,7 @@ trait RouteDescriberTrait
      */
     private function getOperations(Swagger $api, Route $route)
     {
-        $path = $api->getPaths()->get($route->getPath());
+        $path = $api->getPaths()->get($this->normalizePath($route->getPath()));
         $methods = $route->getMethods() ?: Swagger::$METHODS;
         foreach ($methods as $method) {
             $method = strtolower($method);
@@ -39,5 +39,14 @@ trait RouteDescriberTrait
         }
 
         return $operations;
+    }
+
+    private function normalizePath(string $path)
+    {
+        if (substr($path, -10) === '.{_format}') {
+            $path = substr($path, 0, -10);
+        }
+
+        return $path;
     }
 }

@@ -12,7 +12,7 @@
 namespace EXSyst\Bundle\ApiDocBundle;
 
 use EXSyst\Bundle\ApiDocBundle\Describer\DescriberInterface;
-use EXSyst\Swagger\Swagger;
+use EXSyst\Component\Swagger\Swagger;
 
 class ApiDocGenerator
 {

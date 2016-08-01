@@ -22,7 +22,7 @@ class FunctionalTest extends WebTestCase
         $this->assertEquals(['https'], $operation->getSchemes());
         $this->assertEmpty($operation->getSummary());
         $this->assertEmpty($operation->getDescription());
-        $this->assertFalse($operation->getDeprecated());
+        $this->assertNull($operation->getDeprecated());
 
         $parameters = $operation->getParameters();
         $this->assertTrue($parameters->has('user', 'path'));
@@ -35,10 +35,14 @@ class FunctionalTest extends WebTestCase
 
     public function testNelmioAction()
     {
-        $operation = $this->getOperation('/nelmio', 'post');
+        $operation = $this->getOperation('/nelmio/{foo}', 'post');
 
         $this->assertEquals('This action is described.', $operation->getDescription());
         $this->assertFalse($operation->getDeprecated());
+
+        $foo = $operation->getParameters()->get('foo', 'path');
+        $this->assertTrue($foo->getRequired());
+        $this->assertEquals('string', $foo->getType());
     }
 
     public function testDeprecatedAction()
@@ -50,13 +54,12 @@ class FunctionalTest extends WebTestCase
         $this->assertTrue($operation->getDeprecated());
     }
 
-    public function testSwaggerPhpInfo()
+    public function testApiPlatform()
     {
-        $api = $this->getSwaggerDefinition();
-        $info = $api->getInfo();
-
-        $this->assertEquals('My Awesome App', $info->getTitle());
-        $this->assertEquals('1.3', $info->getVersion());
+        $operation = $this->getOperation('/api/dummies', 'get');
+        $operation = $this->getOperation('/api/foo', 'get');
+        $operation = $this->getOperation('/api/foo', 'post');
+        $operation = $this->getOperation('/api/dummies/{id}', 'get');
     }
 
     private function getSwaggerDefinition()

@@ -11,7 +11,7 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\Describer;
 
-use EXSyst\Swagger\Swagger;
+use EXSyst\Component\Swagger\Swagger;
 
 interface DescriberInterface
 {

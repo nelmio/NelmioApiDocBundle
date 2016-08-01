@@ -16,9 +16,22 @@ class SwaggerPhpDescriber extends ExternalDocDescriber
     public function __construct(string $projectPath, bool $overwrite = false)
     {
         parent::__construct(function () use ($projectPath) {
-            $annotation = \Swagger\scan($projectPath);
+            // Catch notices as the documentation can be completed by other describers
+            $prevHandler = set_error_handler(function ($type, $message, $file, $line, $context) use (&$prevHandler) {
+                if (E_USER_NOTICE === $type || E_USER_WARNING === $type) {
+                    return;
+                }
 
-            return json_decode(json_encode($annotation));
+                return null !== $prevHandler && call_user_func($prevHandler, $type, $message, $file, $line, $context);
+            });
+
+            try {
+                $annotation = \Swagger\scan($projectPath);
+
+                return json_decode(json_encode($annotation));
+            } finally {
+                restore_error_handler();
+            }
         }, $overwrite);
     }
 }

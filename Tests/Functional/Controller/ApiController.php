@@ -24,7 +24,7 @@ class ApiController
     }
 
     /**
-     * @Route("/nelmio", methods={"POST"})
+     * @Route("/nelmio/{foo}", methods={"POST"})
      * @ApiDoc(
      *   description="This action is described."
      * )

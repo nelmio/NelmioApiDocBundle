@@ -11,7 +11,7 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
-use EXSyst\Swagger\Swagger;
+use EXSyst\Component\Swagger\Swagger;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Symfony\Component\Routing\Route;
@@ -48,10 +48,14 @@ class PhpDocDescriber implements RouteDescriberInterface
             if (null !== $docBlock) {
                 $operation->setSummary($docBlock->getSummary());
                 $operation->setDescription((string) $docBlock->getDescription());
-                $operation->setDeprecated($operation->getDeprecated() || $docBlock->hasTag('deprecated'));
+                if ($docBlock->hasTag('deprecated')) {
+                    $operation->setDeprecated(true);
+                }
             }
             if (null !== $classDocBlock) {
-                $operation->setDeprecated($operation->getDeprecated() || $classDocBlock->hasTag('deprecated'));
+                if ($classDocBlock->hasTag('deprecated')) {
+                    $operation->setDeprecated(true);
+                }
             }
         }
     }

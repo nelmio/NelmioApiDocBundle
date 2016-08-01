@@ -24,6 +24,10 @@
             <tag name="exsyst_api_doc.describer" priority="-100" />
         </service>
 
+        <service id="exsyst_api_doc.describers.default" class="EXSyst\Bundle\ApiDocBundle\Describer\DefaultDescriber" public="false">
+            <tag name="exsyst_api_doc.describer" priority="-1000" />
+        </service>
+
         <!-- Routing Extractors -->
         <service id="exsyst_api_doc.route_describers.route_metadata" class="EXSyst\Bundle\ApiDocBundle\RouteDescriber\RouteMetadataDescriber" public="false">
             <tag name="exsyst_api_doc.route_describer" priority="-50" />
