@@ -12,7 +12,6 @@
 namespace EXSyst\Bundle\ApiDocBundle\Tests\Describer;
 
 use EXSyst\Bundle\ApiDocBundle\Describer\SwaggerPhpDescriber;
-use EXSyst\Component\Swagger\Swagger;
 
 class SwaggerPhpDescriberTest extends AbstractDescriberTest
 {
