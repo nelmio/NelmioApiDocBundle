@@ -38,7 +38,7 @@ class FunctionalTest extends WebTestCase
         $operation = $this->getOperation('/nelmio/{foo}', 'post');
 
         $this->assertEquals('This action is described.', $operation->getDescription());
-        $this->assertFalse($operation->getDeprecated());
+        $this->assertNull($operation->getDeprecated());
 
         $foo = $operation->getParameters()->get('foo', 'path');
         $this->assertTrue($foo->getRequired());

@@ -34,24 +34,8 @@ class DefaultDescriber implements DescriberInterface
         // Paths
         $paths = $api->getPaths();
         foreach ($paths as $uri => $path) {
-            // Path Parameters
-            preg_match_all('/\{(.+)\}/SU', $uri, $matches);
-            $pathParameters = $matches[1];
-
             foreach ($path->getMethods() as $method) {
                 $operation = $path->getOperation($method);
-                $parameters = $operation->getParameters();
-
-                // Default Path Parameters
-                foreach ($pathParameters as $pathParameter) {
-                    if ($parameters->has($pathParameter, 'path')) {
-                        continue;
-                    }
-
-                    $parameters->get($pathParameter, 'path')
-                        ->setRequired(true)
-                        ->setType('string');
-                }
 
                 // Default Response
                 if (0 === iterator_count($operation->getResponses())) {

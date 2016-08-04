@@ -39,15 +39,15 @@ class EXSystApiDocExtension extends Extension
 
         $loader->load('services.xml');
 
-        // Removes useless services
-        if (!class_exists(ApiDoc::class)) {
-            $container->removeDefinition('exsyst_api_doc.route_describers.nelmio_annotation');
+        // Import services needed for each library
+        if (class_exists(ApiDoc::class)) {
+            $loader->load('nelmio_apidoc.xml');
         }
-        if (!class_exists(DocBlockFactory::class)) {
-            $container->removeDefinition('exsyst_api_doc.route_describers.php_doc');
+        if (class_exists(DocBlockFactory::class)) {
+            $loader->load('php_doc.xml');
         }
-        if (!class_exists(Swagger::class)) {
-            $container->removeDefinition('exsyst_api_doc.describers.swagger_php');
+        if (class_exists(Swagger::class)) {
+            $loader->load('swagger_php.xml');
         }
 
         $bundles = $container->getParameter('kernel.bundles');

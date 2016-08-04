@@ -9,12 +9,6 @@
         </service>
 
         <!-- Extractors -->
-        <service id="exsyst_api_doc.describers.swagger_php" class="EXSyst\Bundle\ApiDocBundle\Describer\SwaggerPhpDescriber" public="false">
-            <argument>%kernel.root_dir%</argument>
-
-            <tag name="exsyst_api_doc.describer" priority="-150" />
-        </service>
-
         <service id="exsyst_api_doc.describers.route" class="EXSyst\Bundle\ApiDocBundle\Describer\RouteDescriber" public="false">
             <argument type="service" id="service_container" />
             <argument type="service" id="router" />
@@ -30,16 +24,6 @@
 
         <!-- Routing Extractors -->
         <service id="exsyst_api_doc.route_describers.route_metadata" class="EXSyst\Bundle\ApiDocBundle\RouteDescriber\RouteMetadataDescriber" public="false">
-            <tag name="exsyst_api_doc.route_describer" priority="-50" />
-        </service>
-
-        <service id="exsyst_api_doc.route_describers.php_doc" class="EXSyst\Bundle\ApiDocBundle\RouteDescriber\PhpDocDescriber" public="false">
-            <tag name="exsyst_api_doc.route_describer" priority="-70" />
-        </service>
-
-        <service id="exsyst_api_doc.route_describers.nelmio_annotation" class="EXSyst\Bundle\ApiDocBundle\RouteDescriber\NelmioAnnotationDescriber" public="false">
-            <argument type="service" id="annotation_reader" />
-
             <tag name="exsyst_api_doc.route_describer" priority="-100" />
         </service>
     </services>

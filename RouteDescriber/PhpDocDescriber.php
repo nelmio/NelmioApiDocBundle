@@ -46,8 +46,12 @@ class PhpDocDescriber implements RouteDescriberInterface
 
         foreach ($this->getOperations($api, $route) as $operation) {
             if (null !== $docBlock) {
-                $operation->setSummary($docBlock->getSummary());
-                $operation->setDescription((string) $docBlock->getDescription());
+                if (null === $operation->getSummary() && '' !== $docBlock->getSummary()) {
+                    $operation->setSummary($docBlock->getSummary());
+                }
+                if (null === $operation->getDescription() && '' !== (string) $docBlock->getDescription()) {
+                    $operation->setDescription((string) $docBlock->getDescription());
+                }
                 if ($docBlock->hasTag('deprecated')) {
                     $operation->setDeprecated(true);
                 }

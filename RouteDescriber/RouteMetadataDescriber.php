@@ -23,11 +23,18 @@ class RouteMetadataDescriber implements RouteDescriberInterface
         foreach ($this->getOperations($api, $route) as $operation) {
             $operation->merge(['schemes' => $route->getSchemes()]);
 
-            foreach ($route->getRequirements() as $parameterName => $requirement) {
-                $parameter = $operation->getParameters()->get($parameterName, 'path');
+            $requirements = $route->getRequirements();
+            $compiledRoute = $route->compile();
+
+            // Don't include path variables
+            foreach ($compiledRoute->getPathVariables() as $pathVariable) {
+                $parameter = $operation->getParameters()->get($pathVariable, 'path');
                 $parameter->setRequired(true);
                 $parameter->setType('string');
-                $parameter->setFormat($requirement);
+
+                if (isset($requirements[$pathVariable])) {
+                    $parameter->setFormat($requirements[$pathVariable]);
+                }
             }
         }
     }

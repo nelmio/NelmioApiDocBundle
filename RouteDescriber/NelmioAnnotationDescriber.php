@@ -39,28 +39,41 @@ class NelmioAnnotationDescriber implements RouteDescriberInterface
         $annotationArray = $annotation->toArray();
 
         foreach ($this->getOperations($api, $route) as $operation) {
-            if ($annotation->getDescription()) {
+            if (null === $operation->getDescription()) {
                 $operation->setDescription($annotation->getDescription());
             }
-            $operation->setDeprecated($operation->getDeprecated() || $annotation->getDeprecated());
+            if (null === $operation->getDeprecated() && $annotation->getDeprecated()) {
+                $operation->setDeprecated(true);
+            }
 
             // Request parameters
             foreach ($annotation->getParameters() as $name => $configuration) {
                 $parameter = $operation->getParameters()->get($name, 'formData');
-                if (isset($configuration['required'])) {
-                    $parameter->setRequired($parameter->getRequired() || $configuration['required']);
+                if (isset($configuration['required']) && $configuration['required']) {
+                    $parameter->setRequired(true);
                 }
 
                 $this->configureParameter($parameter, $configuration);
             }
 
-            // Query parameters
+            // Query/Path required parameters
+            $compiledRoute = $route->compile();
+            $pathVariables = $compiledRoute->getVariables();
+            $hostVariables = $compiledRoute->getHostVariables();
             foreach ($annotation->getRequirements() as $name => $configuration) {
-                $parameter = $operation->getParameters()->get($name, 'query');
+                if (in_array($name, $pathVariables)) {
+                    $in = 'path';
+                } elseif (!in_array($name, $hostVariables)) {
+                    $in = 'query';
+                } else { // Host variables not supported
+                    continue;
+                }
+                $parameter = $operation->getParameters()->get($name, $in);
                 $parameter->setRequired(true);
 
                 $this->configureParameter($parameter, $configuration);
             }
+            // Optional Query parameters
             foreach ($annotation->getFilters() as $name => $configuration) {
                 $parameter = $operation->getParameters()->get($name, 'query');
                 $this->configureParameter($parameter, $configuration);

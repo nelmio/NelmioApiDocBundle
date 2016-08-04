@@ -11,7 +11,7 @@
     "require": {
         "php": "^7.0",
         "symfony/framework-bundle": "^3.2",
-        "exsyst/swagger": "dev-master"
+        "exsyst/swagger": "~0.2.1"
     },
     "require-dev": {
         "symfony/validator": "^3.2",
@@ -20,17 +20,20 @@
         "symfony/cache": "^3.2",
         "symfony/phpunit-bridge": "^3.2",
         "sensio/framework-extra-bundle": "^3.0",
+        "phpunit/phpunit": "^5.4",
+
         "nelmio/api-doc-bundle": "^2.0",
         "phpdocumentor/reflection-docblock": "^3.1",
-        "phpunit/phpunit": "^5.4",
         "zircote/swagger-php": "^2.0",
-        "api-platform/core": "dev-master"
+        "api-platform/core": "dev-master",
+        "friendsofsymfony/rest-bundle": "^2.0"
     },
     "suggest": {
         "nelmio/api-doc-bundle": "For using the ApiDoc annotation.",
         "phpdocumentor/reflection-docblock": "For parsing php docs.",
         "zircote/swagger-php": "For using swagger annotations.",
-        "api-platform/core": "For using an API oriented framework."
+        "api-platform/core": "For using an API oriented framework.",
+        "friendsofsymfony/rest-bundle": "For using the parameters annotations."
     },
     "autoload": {
         "psr-4": {
