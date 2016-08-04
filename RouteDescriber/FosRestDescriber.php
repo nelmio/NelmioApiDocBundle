@@ -32,7 +32,7 @@ class FosRestDescriber implements RouteDescriberInterface
 
     public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
-        $annotations = $this->annotationReader->getMethodAnnotations();
+        $annotations = $this->annotationReader->getMethodAnnotations($reflectionMethod);
         $annotations = array_filter($annotations, function ($value) {
             return $value instanceof RequestParam || $value instanceof QueryParam;
         });

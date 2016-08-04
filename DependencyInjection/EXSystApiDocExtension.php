@@ -11,6 +11,7 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\DependencyInjection;
 
+use FOS\RestBundle\Controller\Annotations\ParamInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Swagger\Annotations\Swagger;
@@ -48,6 +49,9 @@ class EXSystApiDocExtension extends Extension
         }
         if (class_exists(Swagger::class)) {
             $loader->load('swagger_php.xml');
+        }
+        if (interface_exists(ParamInterface::class)) {
+            $loader->load('fos_rest.xml');
         }
 
         $bundles = $container->getParameter('kernel.bundles');
