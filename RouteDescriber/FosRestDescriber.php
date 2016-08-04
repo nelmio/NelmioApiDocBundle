@@ -13,8 +13,8 @@ namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Swagger;
-use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;
