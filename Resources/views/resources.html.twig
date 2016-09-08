@@ -1,27 +1,29 @@
 {% extends "NelmioApiDocBundle::layout.html.twig" %}
 
 {% block content %}
-    <div id="summary">
-        <ul>
-            {% set i=0 %}
-            {% for section, sections in resources  %}
-                <li><a href="#section-{{ i }}">{{ section }}</a></li>
-                {% set i=i+1 %}
-            {% endfor %}
-        </ul>
-    </div>
+    {% if summary %}
+        <div id="summary">
+            <ul>
+                {% set i=0 %}
+                {% for section, sections in resources  %}
+                    <li><a href="#section-{{ i }}">{{ section }}</a></li>
+                    {% set i=i+1 %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
     {% set i=0 %}
     {% for section, sections in resources  %}
         {% if section != '_others' %}
             <li class="section{{ defaultSectionsOpened? ' active':'' }}">
-                <div class="actions">
-                    <a class="action-show-hide">Show/hide</a>
-                    <a class="action-list">List Operations</a>
-                    <a class="action-expand">Expand Operations</a>
-                </div>
-                <h1 id="section-{{ i }}">{{ section }}</h1>
-                {% set i=i+1 %}
-                <ul class="section-list" {% if not defaultSectionsOpened %}style="display: none"{% endif %}>
+            <div class="actions">
+                <a class="action-show-hide">Show/hide</a>
+                <a class="action-list">List Operations</a>
+                <a class="action-expand">Expand Operations</a>
+            </div>
+            <h1 id="section-{{ i }}">{{ section }}</h1>
+            {% set i=i+1 %}
+            <ul class="section-list" {% if not defaultSectionsOpened %}style="display: none"{% endif %}>
         {% endif %}
         {% for resource, methods in sections %}
             <li class="resource">
@@ -44,7 +46,7 @@
             </li>
         {% endfor %}
         {% if section != '_others' %}
-                </ul>
+            </ul>
             </li>
         {% endif %}
     {% endfor %}

@@ -7,6 +7,7 @@ Configuration Reference
         name:                 'API documentation'
         exclude_sections:     []
         default_sections_opened:  true
+        summary:                  true
         motd:
             template:             'NelmioApiDocBundle::Components/motd.html.twig'
         request_listener:

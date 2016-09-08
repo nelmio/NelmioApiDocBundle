@@ -81,6 +81,11 @@ class HtmlFormatter extends AbstractFormatter
     private $defaultSectionsOpened;
 
     /**
+     * @var boolean
+     */
+    private $summary;
+
+    /**
      * @param array $authentication
      */
     public function setAuthentication(array $authentication = null)
@@ -193,6 +198,14 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
+     * @param boolean $summary
+     */
+    public function setSummary($summary)
+    {
+        $this->summary = $summary;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function renderOne(array $data)
@@ -240,6 +253,7 @@ class HtmlFormatter extends AbstractFormatter
             'js'                    => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
             'motdTemplate'          => $this->motdTemplate,
             'defaultSectionsOpened' => $this->defaultSectionsOpened,
+            'summary'               => $this->summary,
         );
     }
 }
