@@ -3,11 +3,14 @@
 {% block content %}
     <div id="summary">
         <ul>
+            {% set i=0 %}
             {% for section, sections in resources  %}
-                <li><a href="#section-{{ section }}">{{ section }}</a></li>
+                <li><a href="#section-{{ i }}">{{ section }}</a></li>
+                {% set i=i+1 %}
             {% endfor %}
         </ul>
     </div>
+    {% set i=0 %}
     {% for section, sections in resources  %}
         {% if section != '_others' %}
             <li class="section{{ defaultSectionsOpened? ' active':'' }}">
@@ -16,11 +19,11 @@
                     <a class="action-list">List Operations</a>
                     <a class="action-expand">Expand Operations</a>
                 </div>
-                <h1>{{ section }}</h1>
+                <h1 id="section-{{ i }}">{{ section }}</h1>
+                {% set i=i+1 %}
                 <ul class="section-list" {% if not defaultSectionsOpened %}style="display: none"{% endif %}>
         {% endif %}
         {% for resource, methods in sections %}
-            <a id="section-{{ section }}"></a>
             <li class="resource">
                 <div class="heading">
                     {% if section == '_others' and resource != 'others' %}
