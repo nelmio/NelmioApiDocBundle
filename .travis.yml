@@ -24,8 +24,11 @@ matrix:
           env: SYMFONY_DEPRECATIONS_HELPER=weak
     fast_finish: true
 
+before_install:
+  - if [ "$COVERAGE" != "true" ] && [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then phpenv config-rm xdebug.ini; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;
+
 before_script:
-    - if [ "$COVERAGE" != "true" ] && [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then phpenv config-rm xdebug.ini; fi
     - composer self-update
     - if [ "$DEPENDENCIES" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
     - if [ "$SYMFONY_VERSION" != "3.0.*" ] && [ "$SYMFONY_VERSION" != "2.8.*" ] && [ "$SYMFONY_VERSION" != "2.7.*" ]; then sed -i "/dunglas\/api-bundle/d;/symfony\/serializer/d" composer.json; fi;
