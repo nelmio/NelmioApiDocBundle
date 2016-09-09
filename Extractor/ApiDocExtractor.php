@@ -165,6 +165,21 @@ class ApiDocExtractor
             if (false === $hasResource) {
                 $array[$index]['resource'] = 'others';
             }
+
+            if ($element['annotation']->getRequestExample()) {
+                $exampleFilename = $this->container->get('file_locator')->locate($element['annotation']->getRequestExample());
+                if (is_readable($exampleFilename)) {
+                    $element['annotation']->setRequestExample(file_get_contents($exampleFilename));
+                }
+            }
+
+            if ($element['annotation']->getResponseExample()) {
+                $exampleFilename = $this->container->get('file_locator')->locate($element['annotation']->getResponseExample());
+                if (is_readable($exampleFilename)) {
+                    $element['annotation']->setResponseExample(file_get_contents($exampleFilename));
+                }
+            }
+
         }
 
         $methodOrder = array('GET', 'POST', 'PUT', 'DELETE');
@@ -192,7 +207,6 @@ class ApiDocExtractor
 
             return strcmp($a['resource'], $b['resource']);
         });
-
         return $array;
     }
 

@@ -382,6 +382,23 @@ class ApiDoc
     }
 
     /**
+     * @param string $requestExample
+     */
+    public function setRequestExample($requestExample)
+    {
+        $this->requestExample = $requestExample;
+    }
+
+    /**
+     * @param string $responseExample
+     */
+    public function setResponseExample($responseExample)
+    {
+        $this->responseExample = $responseExample;
+    }
+
+
+    /**
      * @param string $description
      */
     public function setDescription($description)
