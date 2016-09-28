@@ -211,6 +211,9 @@
                         case "textarea":
                             $('<textarea class="value" placeholder="'+ placeholder +'" />').insertAfter($context);
                             break;
+                        case "integer":
+                            $('<input type="number" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+                            break;
                         default:
                             $('<input type="text" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
                     }
@@ -513,6 +516,11 @@
 
                         key = $('.key', $(this)).val();
                         value = $('.value', $(this)).val();
+
+                        var validType = $('.value', $(this)).attr('type');
+                        if(validType == 'number'){
+                            value = parseInt(value);                            
+                        }
 
                         if (value) {
                             // temporary save all additional/doubled parameters
