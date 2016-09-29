@@ -14,7 +14,7 @@
     </head>
     <body>
         <div id="header">
-            <a href="{{ path('nelmio_api_doc_index') }}"><h1>{{ apiName }}</h1></a>
+            <a href="{{ path(app.request.attributes.get('_route')) }}"><h1>{{ apiName }}</h1></a>
             {% if enableSandbox %}
                 <div id="sandbox_configuration">
                     {% if bodyFormats|length > 0 %}
