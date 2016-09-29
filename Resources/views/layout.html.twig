@@ -201,6 +201,7 @@
                         placeholder += "Value";
                     }
 
+                    var defaultValue = $context.parent().attr('data-default') || '';
                     switch(setType) {
                         case "boolean":
                             $('<select class="value"><option value=""></option><option value="1">True</option><option value="0">False</option></select>').insertAfter($context);
@@ -209,10 +210,10 @@
                             $('<input type="file" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
                             break;
                         case "textarea":
-                            $('<textarea class="value" placeholder="'+ placeholder +'" />').insertAfter($context);
+                            $('<textarea class="value" placeholder="'+ placeholder +'">'+ defaultValue +'</textarea>').insertAfter($context);
                             break;
                         default:
-                            $('<input type="text" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
+                            $('<input type="text" class="value" placeholder="'+ placeholder +'" value="'+ defaultValue +'">').insertAfter($context);
                     }
                 };
 
