@@ -214,6 +214,26 @@
                         case "integer":
                             $('<input type="number" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
                             break;
+                        case "date":
+                            $('<input type="text" class="value datepicker" placeholder="'+ placeholder +'">').insertAfter($context);
+                            jQuery('.datepicker').datetimepicker({
+                                timepicker:false,
+                                format: 'Y-m-d'
+                            });
+                            break;
+                        case "time":
+                            $('<input type="text" class="value timepicker" placeholder="'+ placeholder +'">').insertAfter($context);
+                            jQuery('.timepicker').datetimepicker({
+                                datepicker:false,
+                                format: 'H:i'
+                            });
+                            break;                        
+                        case "datetime":
+                            $('<input type="text" class="value datetimepicker" placeholder="'+ placeholder +'">').insertAfter($context);
+                            jQuery('.datetimepicker').datetimepicker({
+                                format: 'Y-m-d H:i'
+                            });
+                            break;
                         default:
                             $('<input type="text" class="value" placeholder="'+ placeholder +'">').insertAfter($context);
                     }
