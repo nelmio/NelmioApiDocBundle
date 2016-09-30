@@ -144,6 +144,7 @@ class ApiDocExtractor
         foreach ($this->annotationsProviders as $annotationProvider) {
             foreach ($annotationProvider->getAnnotations() as $annotation) {
                 $route = $annotation->getRoute();
+                $reflectionMethod = $this->getReflectionMethod($route->getDefault('_controller'));
                 if (null !== $reflectionMethod) {
                     $array[] = ['annotation' => $this->extractData($annotation, $route, $reflectionMethod)];
                 }
