@@ -10,7 +10,7 @@ Annotation options
 
 A couple of properties has been added to ``@ApiDoc``:
 
-To define a **resource description*::
+To define a **resource description**::
 
     /**
      * @ApiDoc(
