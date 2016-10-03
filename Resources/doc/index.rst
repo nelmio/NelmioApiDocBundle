@@ -97,6 +97,9 @@ setup your API documentation:
     dunglasapibundle
     sandbox
     commands
+    configuration-in-depth
+    configuration-reference
+    faq
 
 Web Interface
 ~~~~~~~~~~~~~
