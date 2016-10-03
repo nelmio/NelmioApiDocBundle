@@ -128,12 +128,7 @@ class ApiDocExtractor
                     (in_array($view, $annotation->getViews()) || (0 === count($annotation->getViews()) && $view === ApiDoc::DEFAULT_VIEW))
                 ) {
                     if ($annotation->isResource()) {
-                        if ($resource = $annotation->getResource()) {
-                            $resources[] = $resource;
-                        } else {
-                            // remove format from routes used for resource grouping
-                            $resources[] = str_replace('.{_format}', '', $route->getPath());
-                        }
+                        $resources[] = $this->extractResource($annotation, $route);
                     }
 
                     $array[] = array('annotation' => $this->extractData($annotation, $route, $method));
@@ -145,6 +140,10 @@ class ApiDocExtractor
             foreach ($annotationProvider->getAnnotations() as $annotation) {
                 $route = $annotation->getRoute();
                 $array[] = array('annotation' => $this->extractData($annotation, $route, $this->getReflectionMethod($route->getDefault('_controller'))));
+
+                if ($annotation->isResource()) {
+                    $resources[] = $this->extractResource($annotation, $route);
+                }
             }
         }
 
@@ -617,5 +616,15 @@ class ApiDocExtractor
         }
 
         return $parsers;
+    }
+
+    private function extractResource(ApiDoc $annotation, Route $route)
+    {
+        if ($resource = $annotation->getResource()) {
+            return $resource;
+        }
+
+        // remove format from routes used for resource grouping
+        return str_replace('.{_format}', '', $route->getPath());
     }
 }
