@@ -231,7 +231,7 @@
                         case "datetime":
                             $('<input type="text" class="value datetimepicker" placeholder="'+ placeholder +'">').insertAfter($context);
                             jQuery('.datetimepicker').datetimepicker({
-                                format: 'Y-m-d H:i'
+                                format: 'Y-m-d\\TH:i:sO'
                             });
                             break;
                         default:

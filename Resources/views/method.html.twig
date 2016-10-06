@@ -242,7 +242,11 @@
                                 {% if data.requirements is defined %}
                                     <h4>Requirements</h4>
                                     {% for name, infos in data.requirements %}
-                                        <p class="tuple" data-dataType="{% if infos.dataType %}{{ infos.dataType }}{% endif %}">
+                                        <p class="tuple" 
+                                            data-dataType="{% if infos.dataType %}{{ infos.dataType }}{% endif %}"
+                                            data-format="{% if infos.format is defined %}{{ infos.format }} {% endif %}"
+                                            data-description="{% if infos.description is defined %}{{ infos.description }}{% endif %}"
+                                        >
                                             <input disabled type="text" class="key" value="{{ name }}" placeholder="Key" />
                                             <span>=</span>
                                             <select class="tuple_type">
@@ -256,7 +260,7 @@
                                                 <option value="file">File</option>
                                                 <option value="textarea">Textarea</option>
                                             </select>                                            
-                                            <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> 
+                                            <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %} /> 
                                             <span class="remove">-</span>
                                         </p>
                                     {% endfor %}
