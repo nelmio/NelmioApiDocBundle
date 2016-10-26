@@ -28,7 +28,7 @@ class DumpCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setDescription('')
+            ->setDescription('Dumps API documentation in various formats')
             ->addOption(
                 'format', '', InputOption::VALUE_REQUIRED,
                 'Output format like: ' . implode(', ', $this->availableFormats),
