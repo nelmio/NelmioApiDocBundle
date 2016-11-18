@@ -15,6 +15,7 @@ use EXSyst\Bundle\ApiDocBundle\Tests\Functional\TestBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
@@ -31,6 +32,7 @@ class TestKernel extends Kernel
     {
         return [
             new FrameworkBundle(),
+            new TwigBundle(),
             new SensioFrameworkExtraBundle(),
             new ApiPlatformBundle(),
             new EXSystApiDocBundle(),

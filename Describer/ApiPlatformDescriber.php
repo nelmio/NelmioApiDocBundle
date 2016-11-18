@@ -12,14 +12,14 @@
 namespace EXSyst\Bundle\ApiDocBundle\Describer;
 
 use ApiPlatform\Core\Documentation\Documentation;
-use ApiPlatform\Core\Swagger\DocumentationNormalizer;
+use ApiPlatform\Core\Swagger\Serializer\DocumentationNormalizer;
 
 class ApiPlatformDescriber extends ExternalDocDescriber
 {
     public function __construct(Documentation $documentation, DocumentationNormalizer $normalizer, bool $overwrite = false)
     {
         parent::__construct(function () use ($documentation, $normalizer) {
-            return $normalizer->normalize($documentation);
+            return (array) $normalizer->normalize($documentation);
         }, $overwrite);
     }
 }

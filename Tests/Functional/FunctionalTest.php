@@ -66,7 +66,7 @@ class FunctionalTest extends WebTestCase
     {
         static::createClient();
 
-        return static::$kernel->getContainer()->get('exsyst_api_doc.generator')->extract();
+        return static::$kernel->getContainer()->get('exsyst_api_doc.generator')->generate();
     }
 
     private function getOperation($path, $method)
