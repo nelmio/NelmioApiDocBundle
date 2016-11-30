@@ -17,25 +17,25 @@ use EXSyst\Component\Swagger\Swagger;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\RouteCollection;
 
 class RouteDescriber implements DescriberInterface
 {
     private $container;
-    private $router;
+    private $routeCollection;
     private $controllerNameParser;
     private $routeDescribers;
 
     /**
      * @param ContainerInterface        $container
-     * @param RouterInterface           $router
+     * @param RouteCollection           $routeCollection
      * @param ControllerNameParser      $controllerNameParser
      * @param RouteDescriberInterface[] $routeDescribers
      */
-    public function __construct(ContainerInterface $container, RouterInterface $router, ControllerNameParser $controllerNameParser, array $routeDescribers)
+    public function __construct(ContainerInterface $container, RouteCollection $routeCollection, ControllerNameParser $controllerNameParser, array $routeDescribers)
     {
         $this->container = $container;
-        $this->router = $router;
+        $this->routeCollection = $routeCollection;
         $this->controllerNameParser = $controllerNameParser;
         $this->routeDescribers = $routeDescribers;
     }
@@ -46,7 +46,7 @@ class RouteDescriber implements DescriberInterface
             return;
         }
 
-        foreach ($this->getRoutes() as $route) {
+        foreach ($this->routeCollection->all() as $route) {
             // if able to resolve the controller
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 // Extract as many informations as possible about this route
@@ -55,16 +55,6 @@ class RouteDescriber implements DescriberInterface
                 }
             }
         }
-    }
-
-    /**
-     * Return a list of route to inspect.
-     *
-     * @return Route[] An array of routes
-     */
-    private function getRoutes()
-    {
-        return $this->router->getRouteCollection()->all();
     }
 
     /**

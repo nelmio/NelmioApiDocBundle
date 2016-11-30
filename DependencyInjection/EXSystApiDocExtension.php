@@ -40,6 +40,10 @@ class EXSystApiDocExtension extends Extension
 
         $loader->load('services.xml');
 
+        // Filter routes
+        $routeCollectionBuilder = $container->getDefinition('exsyst_api_doc.describers.route.filtered_route_collection_builder');
+        $routeCollectionBuilder->replaceArgument(0, $config['routes']['path_patterns']);
+
         // Import services needed for each library
         if (class_exists(ApiDoc::class)) {
             $loader->load('nelmio_apidoc.xml');
