@@ -29,7 +29,7 @@ class ApiController
     }
 
     /**
-     * @Route("/fosrest", methods={"POST"})
+     * @Route("/fosrest.{_format}", methods={"POST"})
      * @QueryParam(name="foo")
      * @RequestParam(name="bar")
      */
