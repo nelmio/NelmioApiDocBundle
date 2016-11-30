@@ -48,7 +48,7 @@ final class RouteDescriber implements DescriberInterface
 
         foreach ($this->routeCollection->all() as $route) {
             // if able to resolve the controller
-            if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
+            if ($method = $this->getReflectionMethod($route->getDefault('_controller') ?? '')) {
                 // Extract as many informations as possible about this route
                 foreach ($this->routeDescribers as $describer) {
                     $describer->describe($api, $route, $method);
