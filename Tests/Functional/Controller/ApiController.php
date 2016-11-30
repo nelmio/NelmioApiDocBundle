@@ -11,6 +11,8 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\Tests\Functional\Controller;
 
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -23,6 +25,15 @@ class ApiController
      * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="/foo/"})
      */
     public function userAction()
+    {
+    }
+
+    /**
+     * @Route("/fosrest", methods={"POST"})
+     * @QueryParam(name="foo")
+     * @RequestParam(name="bar")
+     */
+    public function fosrestAction()
     {
     }
 

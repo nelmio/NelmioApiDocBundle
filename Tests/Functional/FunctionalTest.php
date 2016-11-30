@@ -40,6 +40,15 @@ class FunctionalTest extends WebTestCase
         $this->assertEquals('/foo/', $parameter->getFormat());
     }
 
+    public function testFOSRestAction()
+    {
+        $operation = $this->getOperation('/api/fosrest', 'post');
+
+        $parameters = $operation->getParameters();
+        $this->assertTrue($parameters->has('foo', 'query'));
+        $this->assertTrue($parameters->has('bar', 'formData'));
+    }
+
     public function testNelmioAction()
     {
         $operation = $this->getOperation('/api/nelmio/{foo}', 'post');
