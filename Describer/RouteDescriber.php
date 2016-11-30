@@ -107,6 +107,8 @@ class RouteDescriber implements DescriberInterface
             try {
                 return new \ReflectionMethod($class, $method);
             } catch (\ReflectionException $e) {
+                // In case we can't reflect the controller, we just
+                // ignore the route
             }
         }
     }
