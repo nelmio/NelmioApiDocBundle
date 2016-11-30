@@ -15,9 +15,16 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class FunctionalTest extends WebTestCase
 {
+    public function testUndocumentedAction()
+    {
+        $paths = $this->getSwaggerDefinition()->getPaths();
+        $this->assertFalse($paths->has('/undocumented'));
+        $this->assertFalse($paths->has('/api/admin'));
+    }
+
     public function testUserAction()
     {
-        $operation = $this->getOperation('/test/{user}', 'get');
+        $operation = $this->getOperation('/api/test/{user}', 'get');
 
         $this->assertEquals(['https'], $operation->getSchemes());
         $this->assertEmpty($operation->getSummary());
@@ -35,7 +42,7 @@ class FunctionalTest extends WebTestCase
 
     public function testNelmioAction()
     {
-        $operation = $this->getOperation('/nelmio/{foo}', 'post');
+        $operation = $this->getOperation('/api/nelmio/{foo}', 'post');
 
         $this->assertEquals('This action is described.', $operation->getDescription());
         $this->assertNull($operation->getDeprecated());
@@ -47,7 +54,7 @@ class FunctionalTest extends WebTestCase
 
     public function testDeprecatedAction()
     {
-        $operation = $this->getOperation('/deprecated', 'get');
+        $operation = $this->getOperation('/api/deprecated', 'get');
 
         $this->assertEquals('This action is deprecated.', $operation->getSummary());
         $this->assertEquals('Please do not use this action.', $operation->getDescription());

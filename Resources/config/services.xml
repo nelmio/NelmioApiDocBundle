@@ -9,9 +9,23 @@
         </service>
 
         <!-- Extractors -->
+        <service id="exsyst_api_doc.describers.route.filtered_route_collection_builder" class="EXSyst\Bundle\ApiDocBundle\Routing\FilteredRouteCollectionBuilder" public="false">
+            <argument type="collection" /> <!-- Path patterns -->
+        </service>
+
+
         <service id="exsyst_api_doc.describers.route" class="EXSyst\Bundle\ApiDocBundle\Describer\RouteDescriber" public="false">
             <argument type="service" id="service_container" />
-            <argument type="service" id="router" />
+            <argument type="service">
+                <service class="Symfony\Component\Routing\RouteCollection">
+                    <factory service="exsyst_api_doc.describers.route.filtered_route_collection_builder" method="filter" />
+                    <argument type="service">
+                        <service class="Symfony\Component\Routing\RouteCollection">
+                            <factory service="router" method="getRouteCollection" />
+                        </service>
+                    </argument>
+                </service>
+            </argument>
             <argument type="service" id="controller_name_converter" />
             <argument type="collection" />
 

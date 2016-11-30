@@ -19,7 +19,21 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('exsyst_api_doc');
+        $treeBuilder
+            ->root('exsyst_api_doc')
+            ->children()
+                ->arrayNode('routes')
+                    ->info('Filter the routes that are documented')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('path_patterns')
+                            ->example(array('^/api', '^/api(?!/admin)'))
+                            ->prototype('scalar')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+
 
         return $treeBuilder;
     }

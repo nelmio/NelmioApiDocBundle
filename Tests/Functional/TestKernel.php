@@ -59,5 +59,12 @@ class TestKernel extends Kernel
             'test' => null,
             'validation' => null,
         ]);
+
+        // Filter routes
+        $c->loadFromExtension('exsyst_api_doc', [
+            'routes' => [
+                'path_patterns' => ['^/api(?!/admin)'],
+            ],
+        ]);
     }
 }

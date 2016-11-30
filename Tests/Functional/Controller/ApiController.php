@@ -14,6 +14,9 @@ namespace EXSyst\Bundle\ApiDocBundle\Tests\Functional\Controller;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+/**
+ * @Route("/api")
+ */
 class ApiController
 {
     /**
@@ -43,6 +46,15 @@ class ApiController
      * @deprecated
      */
     public function deprecatedAction()
+    {
+    }
+
+    /**
+     * This action is not documented. It is excluded by the config.
+     *
+     * @Route("/admin", methods={"GET"})
+     */
+    public function adminAction()
     {
     }
 }
