@@ -1,6 +1,8 @@
 /vendor/
+/composer.phar
 /composer.lock
 /.php_cs.cache
+/.php_cs
 /phpunit.xml
 /Tests/Functional/cache
 /Tests/Functional/logs

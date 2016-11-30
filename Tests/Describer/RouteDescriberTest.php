@@ -13,11 +13,11 @@ namespace EXSyst\Bundle\ApiDocBundle\Tests\Describer;
 
 use EXSyst\Bundle\ApiDocBundle\Describer\RouteDescriber;
 use EXSyst\Bundle\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
+use EXSyst\Component\Swagger\Swagger;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use EXSyst\Component\Swagger\Swagger;
 
 class RouteDescriberTest extends AbstractDescriberTest
 {
