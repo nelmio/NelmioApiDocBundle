@@ -14,7 +14,7 @@ namespace EXSyst\Bundle\ApiDocBundle;
 use EXSyst\Bundle\ApiDocBundle\Describer\DescriberInterface;
 use EXSyst\Component\Swagger\Swagger;
 
-class ApiDocGenerator
+final class ApiDocGenerator
 {
     private $swagger;
     private $describers;
