@@ -11,7 +11,7 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\Describer;
 
-class SwaggerPhpDescriber extends ExternalDocDescriber
+final class SwaggerPhpDescriber extends ExternalDocDescriber
 {
     public function __construct(string $projectPath, bool $overwrite = false)
     {

@@ -16,7 +16,7 @@ use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Symfony\Component\Routing\Route;
 
-class PhpDocDescriber implements RouteDescriberInterface
+final class PhpDocDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 

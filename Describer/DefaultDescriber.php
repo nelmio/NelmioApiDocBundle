@@ -18,7 +18,7 @@ use EXSyst\Component\Swagger\Swagger;
  *
  * @author Ener-Getick <egetick@gmail.com>
  */
-class DefaultDescriber implements DescriberInterface
+final class DefaultDescriber implements DescriberInterface
 {
     public function describe(Swagger $api)
     {

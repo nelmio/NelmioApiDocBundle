@@ -14,7 +14,7 @@ namespace EXSyst\Bundle\ApiDocBundle\RouteDescriber;
 use EXSyst\Component\Swagger\Swagger;
 use Symfony\Component\Routing\Route;
 
-class RouteMetadataDescriber implements RouteDescriberInterface
+final class RouteMetadataDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 

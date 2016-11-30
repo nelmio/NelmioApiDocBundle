@@ -14,7 +14,7 @@ namespace EXSyst\Bundle\ApiDocBundle\Describer;
 use ApiPlatform\Core\Documentation\Documentation;
 use ApiPlatform\Core\Swagger\Serializer\DocumentationNormalizer;
 
-class ApiPlatformDescriber extends ExternalDocDescriber
+final class ApiPlatformDescriber extends ExternalDocDescriber
 {
     public function __construct(Documentation $documentation, DocumentationNormalizer $normalizer, bool $overwrite = false)
     {

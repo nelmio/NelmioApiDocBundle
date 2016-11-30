@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class RouteDescriber implements DescriberInterface
+final class RouteDescriber implements DescriberInterface
 {
     private $container;
     private $routeCollection;

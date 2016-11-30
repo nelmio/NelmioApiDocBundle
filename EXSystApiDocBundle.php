@@ -17,7 +17,7 @@ use EXSyst\Bundle\ApiDocBundle\DependencyInjection\EXSystApiDocExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class EXSystApiDocBundle extends Bundle
+final class EXSystApiDocBundle extends Bundle
 {
     /**
      * {@inheritdoc}

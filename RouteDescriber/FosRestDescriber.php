@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class FosRestDescriber implements RouteDescriberInterface
+final class FosRestDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 

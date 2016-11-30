@@ -17,7 +17,7 @@ use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
 
-class NelmioAnnotationDescriber implements RouteDescriberInterface
+final class NelmioAnnotationDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
