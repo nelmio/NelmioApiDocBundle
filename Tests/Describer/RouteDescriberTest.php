@@ -41,7 +41,7 @@ class RouteDescriberTest extends AbstractDescriberTest
             new Container(),
             $this->routes,
             $this->createMock(ControllerNameParser::class),
-            [ $this->routeDescriber ]
+            [$this->routeDescriber]
         );
     }
 }

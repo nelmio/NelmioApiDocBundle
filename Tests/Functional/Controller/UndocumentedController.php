@@ -11,7 +11,6 @@
 
 namespace EXSyst\Bundle\ApiDocBundle\Tests\Functional\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class UndocumentedController

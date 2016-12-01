@@ -27,13 +27,12 @@ final class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('path_patterns')
-                            ->example(array('^/api', '^/api(?!/admin)'))
+                            ->example(['^/api', '^/api(?!/admin)'])
                             ->prototype('scalar')->end()
                         ->end()
                     ->end()
                 ->end()
             ->end();
-
 
         return $treeBuilder;
     }
