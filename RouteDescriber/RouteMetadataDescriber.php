@@ -26,8 +26,12 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
             $requirements = $route->getRequirements();
             $compiledRoute = $route->compile();
 
-            // Don't include path variables
+            // Don't include host requirements
             foreach ($compiledRoute->getPathVariables() as $pathVariable) {
+                if ('_format' === $pathVariable) {
+                    continue;
+                }
+
                 $parameter = $operation->getParameters()->get($pathVariable, 'path');
                 $parameter->setRequired(true);
                 $parameter->setType('string');

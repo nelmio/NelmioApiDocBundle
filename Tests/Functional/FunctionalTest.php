@@ -47,6 +47,9 @@ class FunctionalTest extends WebTestCase
         $parameters = $operation->getParameters();
         $this->assertTrue($parameters->has('foo', 'query'));
         $this->assertTrue($parameters->has('bar', 'formData'));
+
+        // The _format path attribute should be removed
+        $this->assertFalse($parameters->has('_format', 'path'));
     }
 
     public function testNelmioAction()
