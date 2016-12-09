@@ -24,6 +24,15 @@ class ValidatorTest
      * @Assert\Length(min=1, max=10)
      */
     public $length1to10;
+    /**
+     * @Assert\Range(min=10);
+     */
+    public $range10 = 'validate this';
+
+    /**
+     * @Assert\Range(min=1, max=10)
+     */
+    public $range1to10;
 
     /**
      * @Assert\NotBlank()

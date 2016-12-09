@@ -234,6 +234,16 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 }
                 $vparams['format'][] = '{length: ' . join(', ', $messages) . '}';
                 break;
+            case 'Range':
+                $messages = array();
+                if (isset($constraint->min)) {
+                    $messages[] = "min: {$constraint->min}";
+                }
+                if (isset($constraint->max)) {
+                    $messages[] = "max: {$constraint->max}";
+                }
+                $vparams['format'][] = '{range: ' . join(', ', $messages) . '}';
+                break;
             case 'Choice':
                 $choices = $this->getChoices($constraint, $className);
                 $format = '[' . join('|', $choices) . ']';

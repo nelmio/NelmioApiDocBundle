@@ -69,6 +69,20 @@ class ValidationParserTest extends WebTestCase
                 )
             ),
             array(
+                'property' => 'range10',
+                'expected' => array(
+                    'format' => '{range: min: 10}',
+                    'default' => 'validate this',
+                )
+            ),
+            array(
+                'property' => 'range1to10',
+                'expected' => array(
+                    'format' => '{range: min: 1, max: 10}',
+                    'default' => null,
+                )
+            ),
+            array(
                 'property' => 'notblank',
                 'expected' => array(
                     'required' => true,
