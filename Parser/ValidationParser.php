@@ -302,7 +302,12 @@ class ValidationParser implements ParserInterface, PostParserInterface
     {
         if ($constraint->callback) {
             if (is_callable(array($className, $constraint->callback))) {
-                $choices = call_user_func(array($className, $constraint->callback));
+                $method = new \ReflectionMethod($className, $constraint->callback);
+                if(!$method->isStatic()) {
+                    $choices = [];
+                } else {
+                    $choices = call_user_func(array($className, $constraint->callback));
+                }
             } elseif (is_callable($constraint->callback)) {
                 $choices = call_user_func($constraint->callback);
             } else {
