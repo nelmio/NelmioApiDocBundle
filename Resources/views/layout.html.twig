@@ -36,6 +36,9 @@
                         {% if authentication.delivery == 'http' and authentication.type == 'basic' %}
                             api login: <input type="text" id="api_login" value=""/>
                             api password: <input type="text" id="api_pass" value=""/>
+                        {% elseif authentication.delivery == 'header' and authentication.type == 'hmac' %}
+                            api key: <input type="text" id="api_key" value=""/>
+                            secret: <input type="text" id="api_secret" value=""/>
                         {% elseif authentication.delivery in ['query', 'http', 'header'] %}
                             api key: <input type="text" id="api_key" value=""/>
                         {% endif %}
@@ -149,7 +152,7 @@
 
             {% if enableSandbox %}
                 var getStoredValue, storeValue, deleteStoredValue;
-                var apiAuthKeys = ['api_key', 'api_login', 'api_pass', 'api_endpoint'];
+                var apiAuthKeys = ['api_key', 'api_login', 'api_pass', 'api_endpoint', 'api_secret'];
 
                 if ('localStorage' in window) {
                     var buildKey = function (key) {
@@ -254,6 +257,15 @@
 
                     toggleButtonText($btn);
                 };
+
+                var randomString = function(length) {
+                    var text = "";
+                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                    for(var i = 0; i < length; i++) {
+                        text += possible.charAt(Math.floor(Math.random() * possible.length));
+                    }
+                    return text;
+                }
 
                 var unflattenDict = function (body) {
                     var found = true;
@@ -558,6 +570,7 @@
 
                     // append the query authentication
                     var api_key_val = $('#api_key').val();
+                    var api_secret = $('#api_secret').val();
                     if (authentication_delivery == 'query' && api_key_val.length>0) {
                         url += url.indexOf('?') > 0 ? '&' : '?';
                         url += api_key_parameter + '=' + api_key_val;
@@ -584,6 +597,30 @@
                         body = params;
                     }
                     var data = content.length ? content : body;
+
+                    if (authentication_delivery == 'header' && authentication_type == 'hmac') {
+
+                        headers['x-lb-apikey'] = api_key_val;
+                        headers['Api-Key'] = api_key_val;
+                        headers['x-lb-hmac'] = api_secret;
+                        var nonce = randomString(16);
+                        headers['Nonce'] = nonce;
+                        headers['Signed-Headers'] = 'api-key,nonce';
+
+                        var message = method + ' /app_dev.php' + getFinalUrl(method, url, data) + " HTTP/1.1\r\n" +
+                            "host: marketplace.test\r\n" +
+                            "api-key: " + api_key_val + "\r\n" +
+                            "nonce: " + nonce + "\r\n\r\n";
+
+                        var hash = CryptoJS.HmacSHA256(message, api_secret);
+//                        console.log('hash: ' + hash);
+                        var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+//                        console.log('base64: ' + hashInBase64);
+
+                        headers['Authorization'] = 'HMAC-SHA256 ' + hashInBase64;
+//                        console.log(message);
+                    }
+
                     var ajaxOptions = {
                         url: (url.indexOf('http')!=0?endpoint:'') + url,
                         xhrFields: { withCredentials: true },
@@ -594,7 +631,6 @@
                         beforeSend: function (xhr) {
                             if (authentication_delivery) {
                                 var value;
-
                                 if ('http' == authentication_delivery) {
                                     if ('basic' == authentication_type) {
                                         value = 'Basic ' + btoa($('#api_login').val() + ':' + $('#api_pass').val());
@@ -602,7 +638,9 @@
                                         value = 'Bearer ' + $('#api_key').val();
                                     }
                                 } else if ('header' == authentication_delivery) {
-                                    value = $('#api_key').val();
+                                    if ('hmac' != authentication_type) {
+                                        value = $('#api_key').val();
+                                    }
                                 }
 
                                 xhr.setRequestHeader(api_key_parameter, value);
@@ -771,6 +809,7 @@
                 {% elseif authentication and authentication.delivery == 'header' %}
                 var authentication_delivery = '{{ authentication.delivery }}';
                 var api_key_parameter = '{{ authentication.name }}';
+                var authentication_type = '{{ authentication.type }}';
                 {% else %}
                 var authentication_delivery = false;
                 {% endif %}
