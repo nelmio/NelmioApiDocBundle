@@ -54,7 +54,7 @@ class RequireConstructionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
+            'data_class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\Test',
         ));
 
         return;

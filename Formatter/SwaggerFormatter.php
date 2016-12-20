@@ -53,7 +53,7 @@ class SwaggerFormatter implements FormatterInterface
     );
 
     /**
-     * @var \Nelmio\ApiDocBundle\Swagger\ModelRegistry
+     * @var \Jlpoveda\ApiDocBundle\Swagger\ModelRegistry
      */
     protected $modelRegistry;
 

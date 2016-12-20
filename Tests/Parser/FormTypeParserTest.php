@@ -39,7 +39,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
         $formFactory = $formFactoryBuilder->getFormFactory();
         $formTypeParser = new FormTypeParser($formFactory, $entityToChoice = true);
 
-        set_error_handler(array('Nelmio\ApiDocBundle\Tests\WebTestCase', 'handleDeprecation'));
+        set_error_handler(array('Jlpoveda\ApiDocBundle\Tests\WebTestCase', 'handleDeprecation'));
         trigger_error('test', E_USER_DEPRECATED);
 
         $output = $formTypeParser->parse($typeName);
@@ -66,7 +66,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
         $formFactory = $formFactoryBuilder->getFormFactory();
         $formTypeParser = new FormTypeParser($formFactory, $entityToChoice = true);
 
-        set_error_handler(array('Nelmio\ApiDocBundle\Tests\WebTestCase', 'handleDeprecation'));
+        set_error_handler(array('Jlpoveda\ApiDocBundle\Tests\WebTestCase', 'handleDeprecation'));
         trigger_error('test', E_USER_DEPRECATED);
 
         $output = $formTypeParser->parse($typeName);
@@ -89,7 +89,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
         $formFactory = $formFactoryBuilder->getFormFactory();
         $formTypeParser = new FormTypeParser($formFactory, $entityToChoice = false);
 
-        set_error_handler(array('Nelmio\ApiDocBundle\Tests\WebTestCase', 'handleDeprecation'));
+        set_error_handler(array('Jlpoveda\ApiDocBundle\Tests\WebTestCase', 'handleDeprecation'));
         trigger_error('test', E_USER_DEPRECATED);
 
         $output = $formTypeParser->parse($typeName);
@@ -125,7 +125,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
 
         return array(
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', 'options' => array()),
+                array('class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\TestType', 'options' => array()),
                 array(
                     'a' => array(
                         'dataType' => 'string',
@@ -166,12 +166,12 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType', 'options' => array()),
+                array('class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\CollectionType', 'options' => array()),
                 array(
                     'collection_type' => array(
                         'dataType' => 'object (CollectionType)',
                         'actualType' => DataTypes::MODEL,
-                        'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType',
+                        'subType' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\CollectionType',
                         'default' => null,
                         'required' => true,
                         'description' => '',
@@ -189,7 +189,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                             'b' => array(
                                 'dataType' => 'array of objects (TestType)',
                                 'actualType' => DataTypes::COLLECTION,
-                                'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType',
+                                'subType' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\TestType',
                                 'default' => null,
                                 'required' => true,
                                 'description' => '',
@@ -239,7 +239,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    'class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType',
+                    'class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\CollectionType',
                     'name' => '',
                     'options' => array(),
                 ),
@@ -256,7 +256,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     'b' => array(
                         'dataType' => 'array of objects (TestType)',
                         'actualType' => DataTypes::COLLECTION,
-                        'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType',
+                        'subType' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\TestType',
                         'required' => true,
                         'description' => '',
                         'default' => null,
@@ -304,7 +304,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    'class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CollectionType',
+                    'class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\CollectionType',
                     'name' => null,
                     'options' => array(),
                 ),
@@ -321,7 +321,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                     'b' => array(
                         'dataType' => 'array of objects (TestType)',
                         'actualType' => DataTypes::COLLECTION,
-                        'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType',
+                        'subType' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\TestType',
                         'default' => null,
                         'required' => true,
                         'description' => '',
@@ -368,7 +368,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\ImprovedTestType', 'options' => array()),
+                array('class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\ImprovedTestType', 'options' => array()),
                 array(
                     'dt1' => array(
                         'dataType' => 'datetime',
@@ -480,7 +480,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\CompoundType', 'options' => array()),
+                array('class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\CompoundType', 'options' => array()),
                 array (
                     'sub_form' =>
                         array (
@@ -569,7 +569,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\RequireConstructionType', 'options' => array()),
+                array('class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\RequireConstructionType', 'options' => array()),
                 array(
                     'require_construction_type' => array(
                         'dataType' => 'object (RequireConstructionType)',
@@ -578,7 +578,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'readonly' => false,
                         'default' => null,
                         'actualType' => 'model',
-                        'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\RequireConstructionType',
+                        'subType' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\RequireConstructionType',
                         'children' => array(
                             'a' => array(
                                 'dataType' => 'string',
@@ -594,7 +594,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
-                array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType', 'options' => array()),
+                array('class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\DependencyType', 'options' => array()),
                 array(
                     'dependency_type' => array(
                         'dataType' => 'object (DependencyType)',
@@ -603,7 +603,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'readonly' => false,
                         'default' => null,
                         'actualType' => 'model',
-                        'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType',
+                        'subType' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\DependencyType',
                         'children' => array(
                             'a' => array(
                                 'dataType' => 'string',

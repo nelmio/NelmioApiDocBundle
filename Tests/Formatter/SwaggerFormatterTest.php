@@ -9,7 +9,7 @@ use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
 /**
  * Class SwaggerFormatterTest
  *
- * @package Nelmio\ApiDocBundle\Tests\Formatter
+ * @package Jlpoveda\ApiDocBundle\Tests\Formatter
  * @author  Bez Hermoso <bez@activelamp.com>
  */
 class SwaggerFormatterTest extends WebTestCase

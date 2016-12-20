@@ -37,12 +37,12 @@ class JmsNested
     public $baz;
 
     /**
-     * @JMS\Type("Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested");
+     * @JMS\Type("Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsNested");
      */
     public $circular;
 
     /**
-     * @JMS\Type("Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest");
+     * @JMS\Type("Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsTest");
      */
     public $parent;
 

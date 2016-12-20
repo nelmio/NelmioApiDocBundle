@@ -43,7 +43,7 @@ class ValidationParserTest extends WebTestCase
      */
     public function testParser($property, $expected)
     {
-        $result = $this->parser->parse(array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\ValidatorTest'));
+        $result = $this->parser->parse(array('class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\ValidatorTest'));
         foreach ($expected as $name => $value) {
             $this->assertArrayHasKey($property, $result);
             $this->assertArrayHasKey($name, $result[$property]);
