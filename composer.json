@@ -55,9 +55,10 @@
         "jms/serializer": "For making use of serializer information in the doc."
     },
     "autoload": {
-        "psr-0": { "Nelmio\\ApiDocBundle": "" }
+        "psr-4": {
+            "Nelmio\\ApiDocBundle\\": ""
+        }
     },
-    "target-dir": "jlpoveda/ApiDocBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "2.13-dev"
