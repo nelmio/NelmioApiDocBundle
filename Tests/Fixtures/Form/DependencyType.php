@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
+namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

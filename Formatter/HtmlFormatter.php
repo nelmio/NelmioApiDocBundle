@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Formatter;
+namespace Jlpoveda\ApiDocBundle\Formatter;
 
 use Symfony\Component\Templating\EngineInterface;
 

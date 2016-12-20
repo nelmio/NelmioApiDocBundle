@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Command;
+namespace Jlpoveda\ApiDocBundle\Command;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

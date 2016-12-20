@@ -55,7 +55,7 @@
         "jms/serializer": "For making use of serializer information in the doc."
     },
     "autoload": {
-        "psr-0": { "jlpoveda\\ApiDocBundle": "" }
+        "psr-0": { "Jlpoveda\\ApiDocBundle": "" }
     },
     "target-dir": "jlpoveda/ApiDocBundle",
     "extra": {

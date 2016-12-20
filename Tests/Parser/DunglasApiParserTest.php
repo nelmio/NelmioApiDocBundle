@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace NelmioApiDocBundle\Tests\Parser;
+namespace JlpovedaApiDocBundle\Tests\Parser;
 
-use Nelmio\ApiDocBundle\DataTypes;
-use Nelmio\ApiDocBundle\Parser\DunglasApiParser;
-use Nelmio\ApiDocBundle\Tests\WebTestCase;
+use Jlpoveda\ApiDocBundle\DataTypes;
+use Jlpoveda\ApiDocBundle\Parser\DunglasApiParser;
+use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>

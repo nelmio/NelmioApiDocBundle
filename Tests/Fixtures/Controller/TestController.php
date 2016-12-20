@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Fixtures\Controller;
+namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller;
 
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Nelmio\ApiDocBundle\Tests\Fixtures\DependencyTypePath;
-use Nelmio\ApiDocBundle\Tests\Fixtures\RequestParamHelper;
-use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\Tests\Fixtures\DependencyTypePath;
+use Jlpoveda\ApiDocBundle\Tests\Fixtures\RequestParamHelper;
+use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;

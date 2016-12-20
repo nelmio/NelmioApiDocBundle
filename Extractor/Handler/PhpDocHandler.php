@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Extractor\Handler;
+namespace Jlpoveda\ApiDocBundle\Extractor\Handler;
 
-use Nelmio\ApiDocBundle\Extractor\HandlerInterface;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\Extractor\HandlerInterface;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
-use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
+use Jlpoveda\ApiDocBundle\Util\DocCommentExtractor;
 
 class PhpDocHandler implements HandlerInterface
 {

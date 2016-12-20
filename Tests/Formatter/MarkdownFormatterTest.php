@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Formatter;
+namespace Jlpoveda\ApiDocBundle\Tests\Formatter;
 
-use Nelmio\ApiDocBundle\Tests\WebTestCase;
-use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
+use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
 
 class MarkdownFormatterTest extends WebTestCase
 {

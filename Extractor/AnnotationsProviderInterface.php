@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Extractor;
+namespace Jlpoveda\ApiDocBundle\Extractor;
 
 /**
  * Interface for annotations providers.

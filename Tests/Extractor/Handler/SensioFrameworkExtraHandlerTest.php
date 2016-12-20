@@ -9,9 +9,9 @@
 * file that was distributed with this source code.
 */
 
-namespace Nelmio\ApiDocBundle\Tests\Extractor;
+namespace Jlpoveda\ApiDocBundle\Tests\Extractor;
 
-use Nelmio\ApiDocBundle\Tests\WebTestCase;
+use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
 
 class SensioFrameworkExtraHandlerTest extends WebTestCase
 {

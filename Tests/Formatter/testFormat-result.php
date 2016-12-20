@@ -1,6 +1,6 @@
 <?php
 
-use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
+use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
 
 return array (
     '/api/other-resources' =>

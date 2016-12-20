@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Fixtures;
+namespace Jlpoveda\ApiDocBundle\Tests\Fixtures;
 
-use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
+use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
 
 /**
  * This class is used to have dynamic annotations for BC.

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Util;
+namespace Jlpoveda\ApiDocBundle\Util;
 
 /**
  * Extracted from FOSUserBundle.

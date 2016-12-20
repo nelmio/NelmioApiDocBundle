@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests;
+namespace Jlpoveda\ApiDocBundle\Tests;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {

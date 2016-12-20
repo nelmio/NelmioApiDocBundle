@@ -9,9 +9,9 @@
 * file that was distributed with this source code.
 */
 
-namespace Nelmio\ApiDocBundle\Tests\Extractor\AnnotationsProvider;
+namespace Jlpoveda\ApiDocBundle\Tests\Extractor\AnnotationsProvider;
 
-use Nelmio\ApiDocBundle\Tests\WebTestCase;
+use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>

@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace NelmioApiDocBundle\Tests\Parser;
+namespace JlpovedaApiDocBundle\Tests\Parser;
 
-use Nelmio\ApiDocBundle\DataTypes;
-use Nelmio\ApiDocBundle\Form\Extension\DescriptionFormTypeExtension;
-use Nelmio\ApiDocBundle\Parser\FormTypeParser;
-use Nelmio\ApiDocBundle\Tests\Fixtures;
-use Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType;
-use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
+use Jlpoveda\ApiDocBundle\DataTypes;
+use Jlpoveda\ApiDocBundle\Form\Extension\DescriptionFormTypeExtension;
+use Jlpoveda\ApiDocBundle\Parser\FormTypeParser;
+use Jlpoveda\ApiDocBundle\Tests\Fixtures;
+use Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\DependencyType;
+use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormFactory;

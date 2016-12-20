@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Parser;
+namespace Jlpoveda\ApiDocBundle\Parser;
 
 /**
  * This is the interface parsers must implement in order to register a second parsing pass after the initial structure

@@ -1,6 +1,6 @@
 <?php
 
-namespace Nelmio\ApiDocBundle\DependencyInjection;
+namespace Jlpoveda\ApiDocBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

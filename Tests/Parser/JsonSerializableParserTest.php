@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace NelmioApiDocBundle\Tests\Parser;
+namespace JlpovedaApiDocBundle\Tests\Parser;
 
-use Nelmio\ApiDocBundle\Parser\JsonSerializableParser;
+use Jlpoveda\ApiDocBundle\Parser\JsonSerializableParser;
 
 class JsonSerializableParserTest extends \PHPUnit_Framework_TestCase
 {

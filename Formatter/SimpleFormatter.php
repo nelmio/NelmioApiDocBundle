@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Formatter;
+namespace Jlpoveda\ApiDocBundle\Formatter;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
 
 class SimpleFormatter extends AbstractFormatter
 {

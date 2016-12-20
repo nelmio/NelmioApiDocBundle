@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Fixtures\Controller;
+namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
 
 class ResourceController
 {

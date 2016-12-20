@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Extractor;
+namespace Jlpoveda\ApiDocBundle\Tests\Extractor;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Nelmio\ApiDocBundle\Extractor\CachingApiDocExtractor;
-use Nelmio\ApiDocBundle\Tests\WebTestCase;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\Extractor\CachingApiDocExtractor;
+use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
 
 class CachingApiDocExtractorTest extends WebTestCase
 {

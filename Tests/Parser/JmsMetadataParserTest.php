@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace NelmioApiDocBundle\Tests\Parser;
+namespace JlpovedaApiDocBundle\Tests\Parser;
 
-use Nelmio\ApiDocBundle\DataTypes;
-use Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested;
-use Nelmio\ApiDocBundle\Parser\JmsMetadataParser;
+use Jlpoveda\ApiDocBundle\DataTypes;
+use Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsNested;
+use Jlpoveda\ApiDocBundle\Parser\JmsMetadataParser;
 use JMS\Serializer\Metadata\ClassMetadata;
 use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\Naming\CamelCaseNamingStrategy;

@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Formatter;
+namespace Jlpoveda\ApiDocBundle\Formatter;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Nelmio\ApiDocBundle\DataTypes;
-use Nelmio\ApiDocBundle\Swagger\ModelRegistry;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\DataTypes;
+use Jlpoveda\ApiDocBundle\Swagger\ModelRegistry;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Extractor;
+namespace Jlpoveda\ApiDocBundle\Tests\Extractor;
 
-use Nelmio\ApiDocBundle\Extractor\ApiDocExtractor;
+use Jlpoveda\ApiDocBundle\Extractor\ApiDocExtractor;
 
 class TestExtractor extends ApiDocExtractor
 {

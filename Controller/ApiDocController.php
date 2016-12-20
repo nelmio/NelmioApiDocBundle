@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Controller;
+namespace Jlpoveda\ApiDocBundle\Controller;
 
-use Nelmio\ApiDocBundle\Formatter\RequestAwareSwaggerFormatter;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\Formatter\RequestAwareSwaggerFormatter;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

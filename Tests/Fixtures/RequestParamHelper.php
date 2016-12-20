@@ -1,6 +1,6 @@
 <?php
 
-namespace Nelmio\ApiDocBundle\Tests\Fixtures;
+namespace Jlpoveda\ApiDocBundle\Tests\Fixtures;
 
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 

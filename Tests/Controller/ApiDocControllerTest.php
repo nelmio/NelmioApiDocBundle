@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace NelmioApiDocBundle\Tests\Controller;
-use Nelmio\ApiDocBundle\Tests\WebTestCase;
+namespace JlpovedaApiDocBundle\Tests\Controller;
+use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
 
 /**
  * Class ApiDocControllerTest

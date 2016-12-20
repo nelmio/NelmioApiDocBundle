@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace NelmioApiDocBundle\Tests\Parser;
+namespace JlpovedaApiDocBundle\Tests\Parser;
 
-use Nelmio\ApiDocBundle\DataTypes;
-use Nelmio\ApiDocBundle\Tests\WebTestCase;
-use Nelmio\ApiDocBundle\Parser\ValidationParser;
-use Nelmio\ApiDocBundle\Parser\ValidationParserLegacy;
+use Jlpoveda\ApiDocBundle\DataTypes;
+use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Jlpoveda\ApiDocBundle\Parser\ValidationParser;
+use Jlpoveda\ApiDocBundle\Parser\ValidationParserLegacy;
 use Symfony\Component\HttpKernel\Kernel;
 
 class ValidationParserTest extends WebTestCase

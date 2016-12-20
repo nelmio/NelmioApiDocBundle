@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Formatter;
+namespace Jlpoveda\ApiDocBundle\Tests\Formatter;
 
-use Nelmio\ApiDocBundle\Tests\WebTestCase;
+use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
 
 class SimpleFormatterTest extends WebTestCase
 {

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Extractor;
+namespace Jlpoveda\ApiDocBundle\Extractor;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
 
 interface HandlerInterface
