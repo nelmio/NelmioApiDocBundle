@@ -17,14 +17,14 @@ For documentation, see:
 
     Resources/doc/
 
-[Read the documentation](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/index.rst)
+[Read the documentation](https://github.com/jlpoveda/NelmioApiDocBundle/blob/master/Resources/doc/index.rst)
 
 
 Contributing
 ------------
 
 See
-[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/jlpoveda/NelmioApiDocBundle/blob/master/CONTRIBUTING.md)
 file.
 
 
