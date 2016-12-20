@@ -18,4 +18,4 @@ if (class_exists('Doctrine\Common\Annotations\AnnotationRegistry')) {
 }
 
 // force loading the ApiDoc annotation since the composer target-dir autoloader does not run through $loader::loadClass
-class_exists('Jlpoveda\ApiDocBundle\Annotation\ApiDoc');
+class_exists('Nelmio\ApiDocBundle\Annotation\ApiDoc');

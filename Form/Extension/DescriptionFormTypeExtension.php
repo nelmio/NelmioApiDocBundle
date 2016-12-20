@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Form\Extension;
+namespace Nelmio\ApiDocBundle\Form\Extension;
 
-use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
+use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;

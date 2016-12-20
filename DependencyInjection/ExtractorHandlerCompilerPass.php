@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\DependencyInjection;
+namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle;
+namespace Nelmio\ApiDocBundle;
 
 /**
  * All the supported data-types which will be specified in the `actualType` properties in parameters.

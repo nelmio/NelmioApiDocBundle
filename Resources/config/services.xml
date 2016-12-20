@@ -4,19 +4,19 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="nelmio_api_doc.extractor.api_doc_extractor.class">Jlpoveda\ApiDocBundle\Extractor\ApiDocExtractor</parameter>
-        <parameter key="nelmio_api_doc.form.extension.description_form_type_extension.class">Jlpoveda\ApiDocBundle\Form\Extension\DescriptionFormTypeExtension</parameter>
-        <parameter key="nelmio_api_doc.twig.extension.extra_markdown.class">Jlpoveda\ApiDocBundle\Twig\Extension\MarkdownExtension</parameter>
-        <parameter key="nelmio_api_doc.doc_comment_extractor.class">Jlpoveda\ApiDocBundle\Util\DocCommentExtractor</parameter>
+        <parameter key="nelmio_api_doc.extractor.api_doc_extractor.class">Nelmio\ApiDocBundle\Extractor\ApiDocExtractor</parameter>
+        <parameter key="nelmio_api_doc.form.extension.description_form_type_extension.class">Nelmio\ApiDocBundle\Form\Extension\DescriptionFormTypeExtension</parameter>
+        <parameter key="nelmio_api_doc.twig.extension.extra_markdown.class">Nelmio\ApiDocBundle\Twig\Extension\MarkdownExtension</parameter>
+        <parameter key="nelmio_api_doc.doc_comment_extractor.class">Nelmio\ApiDocBundle\Util\DocCommentExtractor</parameter>
 
-        <parameter key="nelmio_api_doc.extractor.handler.fos_rest.class">Jlpoveda\ApiDocBundle\Extractor\Handler\FosRestHandler</parameter>
-        <parameter key="nelmio_api_doc.extractor.handler.jms_security.class">Jlpoveda\ApiDocBundle\Extractor\Handler\JmsSecurityExtraHandler</parameter>
-        <parameter key="nelmio_api_doc.extractor.handler.sensio_framework_extra.class">Jlpoveda\ApiDocBundle\Extractor\Handler\SensioFrameworkExtraHandler</parameter>
-        <parameter key="nelmio_api_doc.extractor.handler.phpdoc.class">Jlpoveda\ApiDocBundle\Extractor\Handler\PhpDocHandler</parameter>
+        <parameter key="nelmio_api_doc.extractor.handler.fos_rest.class">Nelmio\ApiDocBundle\Extractor\Handler\FosRestHandler</parameter>
+        <parameter key="nelmio_api_doc.extractor.handler.jms_security.class">Nelmio\ApiDocBundle\Extractor\Handler\JmsSecurityExtraHandler</parameter>
+        <parameter key="nelmio_api_doc.extractor.handler.sensio_framework_extra.class">Nelmio\ApiDocBundle\Extractor\Handler\SensioFrameworkExtraHandler</parameter>
+        <parameter key="nelmio_api_doc.extractor.handler.phpdoc.class">Nelmio\ApiDocBundle\Extractor\Handler\PhpDocHandler</parameter>
 
-        <parameter key="nelmio_api_doc.parser.collection_parser.class">Jlpoveda\ApiDocBundle\Parser\CollectionParser</parameter>
-        <parameter key="nelmio_api_doc.parser.form_errors_parser.class">Jlpoveda\ApiDocBundle\Parser\FormErrorsParser</parameter>
-        <parameter key="nelmio_api_doc.parser.json_serializable_parser.class">Jlpoveda\ApiDocBundle\Parser\JsonSerializableParser</parameter>
+        <parameter key="nelmio_api_doc.parser.collection_parser.class">Nelmio\ApiDocBundle\Parser\CollectionParser</parameter>
+        <parameter key="nelmio_api_doc.parser.form_errors_parser.class">Nelmio\ApiDocBundle\Parser\FormErrorsParser</parameter>
+        <parameter key="nelmio_api_doc.parser.json_serializable_parser.class">Nelmio\ApiDocBundle\Parser\JsonSerializableParser</parameter>
     </parameters>
 
     <services>

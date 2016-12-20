@@ -11,9 +11,9 @@
 
 namespace JlpovedaApiDocBundle\Tests\Parser;
 
-use Jlpoveda\ApiDocBundle\DataTypes;
-use Jlpoveda\ApiDocBundle\Parser\DunglasApiParser;
-use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Nelmio\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\Parser\DunglasApiParser;
+use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
@@ -34,7 +34,7 @@ class DunglasApiParserTest extends WebTestCase
         $container = $this->getContainer();
         $parser = $container->get('nelmio_api_doc.parser.dunglas_api_parser');
 
-        $item = array('class' => DunglasApiParser::OUT_PREFIX.':Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\Popo');
+        $item = array('class' => DunglasApiParser::OUT_PREFIX.':Nelmio\ApiDocBundle\Tests\Fixtures\Model\Popo');
 
         $expected = array (
             'foo' =>

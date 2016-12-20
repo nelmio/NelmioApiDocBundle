@@ -1,6 +1,6 @@
 <?php
 
-namespace Jlpoveda\ApiDocBundle\Twig\Extension;
+namespace Nelmio\ApiDocBundle\Twig\Extension;
 
 use Michelf\MarkdownExtra;
 

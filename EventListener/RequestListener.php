@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\EventListener;
+namespace Nelmio\ApiDocBundle\EventListener;
 
-use Jlpoveda\ApiDocBundle\Extractor\ApiDocExtractor;
-use Jlpoveda\ApiDocBundle\Formatter\FormatterInterface;
+use Nelmio\ApiDocBundle\Extractor\ApiDocExtractor;
+use Nelmio\ApiDocBundle\Formatter\FormatterInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -20,12 +20,12 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class RequestListener
 {
     /**
-     * @var \Jlpoveda\ApiDocBundle\Extractor\ApiDocExtractor
+     * @var \Nelmio\ApiDocBundle\Extractor\ApiDocExtractor
      */
     protected $extractor;
 
     /**
-     * @var \Jlpoveda\ApiDocBundle\Formatter\FormatterInterface
+     * @var \Nelmio\ApiDocBundle\Formatter\FormatterInterface
      */
     protected $formatter;
 

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Formatter;
+namespace Nelmio\ApiDocBundle\Tests\Formatter;
 
-use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class SimpleFormatterTest extends WebTestCase
 {
@@ -36,7 +36,7 @@ class SimpleFormatterTest extends WebTestCase
         $container = $this->getContainer();
 
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
         $result     = $container->get('nelmio_api_doc.formatter.simple_formatter')->formatOne($annotation);
 
         $expected = array(

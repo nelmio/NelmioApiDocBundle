@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Extractor;
+namespace Nelmio\ApiDocBundle\Extractor;
 
 /**
  * Interface for annotations providers.
@@ -21,7 +21,7 @@ interface AnnotationsProviderInterface
     /**
      * Returns an array ApiDoc annotations.
      *
-     * @return \Jlpoveda\ApiDocBundle\Annotation\ApiDoc[]
+     * @return \Nelmio\ApiDocBundle\Annotation\ApiDoc[]
      */
     public function getAnnotations();
 }

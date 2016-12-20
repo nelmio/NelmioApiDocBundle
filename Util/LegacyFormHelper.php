@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Util;
+namespace Nelmio\ApiDocBundle\Util;
 
 /**
  * Extracted from FOSUserBundle.
@@ -30,7 +30,7 @@ final class LegacyFormHelper
         'Symfony\Component\Form\Extension\Core\Type\TextType' => 'text',
         'Symfony\Component\Form\Extension\Core\Type\TextareaType' => 'textarea',
         'Symfony\Component\Form\Extension\Core\Type\CheckboxType' => 'checkbox',
-        'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\DependencyType' => 'dependency_type',
+        'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType' => 'dependency_type',
     );
 
     public static function getType($class)

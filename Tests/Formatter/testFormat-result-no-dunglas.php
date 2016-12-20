@@ -1,6 +1,6 @@
 <?php
 
-use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
+use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
 
 return array (
   '/api/other-resources' =>
@@ -1180,7 +1180,7 @@ With multiple lines.',
               (LegacyFormHelper::isLegacy() ? 'dependency_type' : 'DependencyType')
           .')',
           'actualType' => 'model',
-          'subType' => LegacyFormHelper::isLegacy() ? 'dependency_type' : 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\DependencyType',
+          'subType' => LegacyFormHelper::isLegacy() ? 'dependency_type' : 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType',
           'children' =>
           array (
             'a' =>
@@ -1534,7 +1534,7 @@ With multiple lines.',
               (LegacyFormHelper::isLegacy() ? 'dependency_type' : 'DependencyType')
           .')',
           'actualType' => 'model',
-          'subType' => LegacyFormHelper::isLegacy() ? 'dependency_type' : 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\DependencyType',
+          'subType' => LegacyFormHelper::isLegacy() ? 'dependency_type' : 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType',
           'children' =>
           array (
             'a' =>

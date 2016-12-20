@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Parser;
+namespace Nelmio\ApiDocBundle\Parser;
 
-use Jlpoveda\ApiDocBundle\DataTypes;
-use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
+use Nelmio\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;

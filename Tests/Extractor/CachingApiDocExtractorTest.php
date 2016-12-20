@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Extractor;
+namespace Nelmio\ApiDocBundle\Tests\Extractor;
 
-use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
-use Jlpoveda\ApiDocBundle\Extractor\CachingApiDocExtractor;
-use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Extractor\CachingApiDocExtractor;
+use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class CachingApiDocExtractorTest extends WebTestCase
 {
@@ -40,7 +40,7 @@ class CachingApiDocExtractorTest extends WebTestCase
         $container = $this->getContainer();
         /* @var CachingApiDocExtractor $extractor */
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $this->assertInstanceOf('\Jlpoveda\ApiDocBundle\Extractor\CachingApiDocExtractor', $extractor);
+        $this->assertInstanceOf('\Nelmio\ApiDocBundle\Extractor\CachingApiDocExtractor', $extractor);
 
         set_error_handler(array($this, 'handleDeprecation'));
         $defaultData = $extractor->all(ApiDoc::DEFAULT_VIEW);
@@ -62,7 +62,7 @@ class CachingApiDocExtractorTest extends WebTestCase
     }
 
     /**
-     * @dataProvider \Jlpoveda\ApiDocBundle\Tests\Extractor\ApiDocExtractorTest::dataProviderForViews
+     * @dataProvider \Nelmio\ApiDocBundle\Tests\Extractor\ApiDocExtractorTest::dataProviderForViews
      * @param string $view View name to test
      */
     public function testCachedResultSameAsGenerated($view)
@@ -70,7 +70,7 @@ class CachingApiDocExtractorTest extends WebTestCase
         $container = $this->getContainer();
         /* @var CachingApiDocExtractor $extractor */
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $this->assertInstanceOf('\Jlpoveda\ApiDocBundle\Extractor\CachingApiDocExtractor', $extractor);
+        $this->assertInstanceOf('\Nelmio\ApiDocBundle\Extractor\CachingApiDocExtractor', $extractor);
 
         $cacheFile = $container->getParameter('kernel.cache_dir').'/api-doc.cache';
 

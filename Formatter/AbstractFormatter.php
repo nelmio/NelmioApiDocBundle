@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Formatter;
+namespace Nelmio\ApiDocBundle\Formatter;
 
-use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
-use Jlpoveda\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\DataTypes;
 
 abstract class AbstractFormatter implements FormatterInterface
 {

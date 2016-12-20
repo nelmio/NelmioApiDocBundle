@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Command;
+namespace Nelmio\ApiDocBundle\Command;
 
-use Jlpoveda\ApiDocBundle\Formatter\SwaggerFormatter;
+use Nelmio\ApiDocBundle\Formatter\SwaggerFormatter;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

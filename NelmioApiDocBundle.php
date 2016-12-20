@@ -1,14 +1,14 @@
 <?php
 
-namespace Jlpoveda\ApiDocBundle;
+namespace Nelmio\ApiDocBundle;
 
-use Jlpoveda\ApiDocBundle\DependencyInjection\AnnotationsProviderCompilerPass;
-use Jlpoveda\ApiDocBundle\DependencyInjection\SwaggerConfigCompilerPass;
+use Nelmio\ApiDocBundle\DependencyInjection\AnnotationsProviderCompilerPass;
+use Nelmio\ApiDocBundle\DependencyInjection\SwaggerConfigCompilerPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Jlpoveda\ApiDocBundle\DependencyInjection\LoadExtractorParsersPass;
-use Jlpoveda\ApiDocBundle\DependencyInjection\RegisterExtractorParsersPass;
-use Jlpoveda\ApiDocBundle\DependencyInjection\ExtractorHandlerCompilerPass;
+use Nelmio\ApiDocBundle\DependencyInjection\LoadExtractorParsersPass;
+use Nelmio\ApiDocBundle\DependencyInjection\RegisterExtractorParsersPass;
+use Nelmio\ApiDocBundle\DependencyInjection\ExtractorHandlerCompilerPass;
 
 class NelmioApiDocBundle extends Bundle
 {

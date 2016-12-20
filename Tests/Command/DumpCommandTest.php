@@ -11,7 +11,7 @@
 
 namespace JlpovedaApiDocBundle\Tests\Command;
 
-use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Nelmio\ApiDocBundle\Tests\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Component\PropertyAccess\PropertyAccess;

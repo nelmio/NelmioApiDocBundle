@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Fixtures;
+namespace Nelmio\ApiDocBundle\Tests\Fixtures;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

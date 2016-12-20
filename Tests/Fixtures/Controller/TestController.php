@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller;
+namespace Nelmio\ApiDocBundle\Tests\Fixtures\Controller;
 
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
-use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
-use Jlpoveda\ApiDocBundle\Tests\Fixtures\DependencyTypePath;
-use Jlpoveda\ApiDocBundle\Tests\Fixtures\RequestParamHelper;
-use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Tests\Fixtures\DependencyTypePath;
+use Nelmio\ApiDocBundle\Tests\Fixtures\RequestParamHelper;
+use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -53,7 +53,7 @@ class TestController
      * @ApiDoc(
      *  description="create test",
      *  views={ "default", "premium" },
-     *  input="Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\TestType"
+     *  input="Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType"
      * )
      */
     public function postTestAction()
@@ -73,7 +73,7 @@ class TestController
 
     /**
      * @ApiDoc(
-     *  input="Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\RequiredType"
+     *  input="Nelmio\ApiDocBundle\Tests\Fixtures\Form\RequiredType"
      * )
      */
     public function requiredParametersAction()
@@ -159,7 +159,7 @@ class TestController
     /**
      * @ApiDoc(
      *  description="Testing JMS",
-     *  input="Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
+     *  input="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
      * )
      */
     public function jmsInputTestAction()
@@ -243,7 +243,7 @@ class TestController
 
     /**
      * @ApiDoc(
-     *     output="Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
      * )
      */
     public function jmsReturnNestedOutputAction()
@@ -252,7 +252,7 @@ class TestController
 
     /**
      * @ApiDoc(
-     *     output="Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsChild"
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsChild"
      * )
      */
     public function jmsReturnNestedExtendedOutputAction()
@@ -261,7 +261,7 @@ class TestController
 
     /**
      * @ApiDoc(
-     *     output="Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\MultipleTest"
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\MultipleTest"
      * )
      */
     public function zReturnJmsAndValidationOutputAction()
@@ -286,9 +286,9 @@ class TestController
     /**
      * @ApiDoc(
      *     input={
-     *          "class"="Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\TestType",
+     *          "class"="Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType",
      *          "parsers"={
-     *              "Jlpoveda\ApiDocBundle\Parser\FormTypeParser",
+     *              "Nelmio\ApiDocBundle\Parser\FormTypeParser",
      *          }
      *     }
      * )
@@ -300,10 +300,10 @@ class TestController
     /**
      * @ApiDoc(
      *     output={
-     *          "class"="Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\MultipleTest",
+     *          "class"="Nelmio\ApiDocBundle\Tests\Fixtures\Model\MultipleTest",
      *          "parsers"={
-     *              "Jlpoveda\ApiDocBundle\Parser\JmsMetadataParser",
-     *              "Jlpoveda\ApiDocBundle\Parser\ValidationParser"
+     *              "Nelmio\ApiDocBundle\Parser\JmsMetadataParser",
+     *              "Nelmio\ApiDocBundle\Parser\ValidationParser"
      *          }
      *     }
      * )
@@ -340,9 +340,9 @@ class TestController
 
     /**
      * @ApiDoc(
-     *     output="Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsTest",
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest",
      *     input={
-     *         "class" = "Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
+     *         "class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
      *     },
      *     parameters={
      *          {
@@ -379,9 +379,9 @@ class TestController
 
     /**
      * @ApiDoc(
-     *     output="Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsTest",
+     *     output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest",
      *     input={
-     *         "class" = "Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
+     *         "class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest"
      *     }
      * )
      */

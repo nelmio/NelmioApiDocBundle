@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Extractor;
+namespace Nelmio\ApiDocBundle\Extractor;
 
-use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
 
 interface HandlerInterface
@@ -19,7 +19,7 @@ interface HandlerInterface
     /**
      * Parse route parameters in order to populate ApiDoc.
      *
-     * @param \Jlpoveda\ApiDocBundle\Annotation\ApiDoc $annotation
+     * @param \Nelmio\ApiDocBundle\Annotation\ApiDoc $annotation
      * @param array                                  $annotations
      * @param \Symfony\Component\Routing\Route       $route
      * @param \ReflectionMethod                      $method

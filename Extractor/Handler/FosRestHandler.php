@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Extractor\Handler;
+namespace Nelmio\ApiDocBundle\Extractor\Handler;
 
-use Jlpoveda\ApiDocBundle\DataTypes;
-use Jlpoveda\ApiDocBundle\Extractor\HandlerInterface;
-use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\Extractor\HandlerInterface;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;

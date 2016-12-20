@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Extractor;
+namespace Nelmio\ApiDocBundle\Tests\Extractor;
 
 class CollectionDirectiveTest extends \PHPUnit_Framework_TestCase
 {

@@ -10,7 +10,7 @@
  */
 
 namespace JlpovedaApiDocBundle\Tests\Controller;
-use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 /**
  * Class ApiDocControllerTest

@@ -1,15 +1,15 @@
 <?php
 
-namespace Jlpoveda\ApiDocBundle\Tests\Formatter;
+namespace Nelmio\ApiDocBundle\Tests\Formatter;
 
-use Jlpoveda\ApiDocBundle\Extractor\ApiDocExtractor;
-use Jlpoveda\ApiDocBundle\Formatter\SwaggerFormatter;
-use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Nelmio\ApiDocBundle\Extractor\ApiDocExtractor;
+use Nelmio\ApiDocBundle\Formatter\SwaggerFormatter;
+use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 /**
  * Class SwaggerFormatterTest
  *
- * @package Jlpoveda\ApiDocBundle\Tests\Formatter
+ * @package Nelmio\ApiDocBundle\Tests\Formatter
  * @author  Bez Hermoso <bez@activelamp.com>
  */
 class SwaggerFormatterTest extends WebTestCase

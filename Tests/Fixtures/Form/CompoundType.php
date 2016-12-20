@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Form;
+namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
 
-use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
+use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 

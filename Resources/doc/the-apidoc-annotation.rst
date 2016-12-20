@@ -5,7 +5,7 @@ The bundle provides an ``ApiDoc()`` annotation for your controllers::
 
     namespace Your\Namespace;
 
-    use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
+    use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
     class YourController extends Controller
     {
