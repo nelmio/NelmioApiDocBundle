@@ -30,7 +30,7 @@ class MultipleTest
     public $baz;
 
     /**
-     * @JMS\Type("Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test")
+     * @JMS\Type("Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\Test")
      */
     public $related;
 

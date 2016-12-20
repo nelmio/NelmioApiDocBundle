@@ -36,7 +36,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
     private $namingStrategy;
 
     /**
-     * @var \Nelmio\ApiDocBundle\Util\DocCommentExtractor
+     * @var \Jlpoveda\ApiDocBundle\Util\DocCommentExtractor
      */
     private $commentExtractor;
 

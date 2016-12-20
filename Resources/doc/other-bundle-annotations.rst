@@ -71,7 +71,7 @@ Using Your Own Annotations
 If you have developed your own project-related annotations, and you want to
 parse them to populate the ``ApiDoc``, you can provide custom handlers as
 services. You just have to implement the
-``Nelmio\ApiDocBundle\Extractor\HandlerInterface`` and tag it as
+``Jlpoveda\ApiDocBundle\Extractor\HandlerInterface`` and tag it as
 ``nelmio_api_doc.extractor.handler``:
 
 .. code-block:: yaml

@@ -36,7 +36,7 @@ class EntityType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\EntityTest',
+            'data_class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\EntityTest',
         ));
 
         return;

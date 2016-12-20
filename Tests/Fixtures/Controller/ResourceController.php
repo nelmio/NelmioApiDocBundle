@@ -21,7 +21,7 @@ class ResourceController
      *      views={ "test", "premium", "default" },
      *      resourceDescription="Operations on resource.",
      *      description="List resources.",
-     *      output="array<Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test> as tests",
+     *      output="array<Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\Test> as tests",
      *      statusCodes={200 = "Returned on success.", 404 = "Returned if resource cannot be found."}
      * )
      */
@@ -50,10 +50,10 @@ class ResourceController
      * @ApiDoc(
      *      description="Create a new resource.",
      *      views={ "default", "premium" },
-     *      input={"class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Form\SimpleType", "name" = ""},
-     *      output="Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested",
+     *      input={"class" = "Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\SimpleType", "name" = ""},
+     *      output="Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsNested",
      *      responseMap={
-     *          400 = {"class" = "Nelmio\ApiDocBundle\Tests\Fixtures\Form\SimpleType", "form_errors" = true}
+     *          400 = {"class" = "Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\SimpleType", "form_errors" = true}
      *      }
      * )
      */
@@ -68,7 +68,7 @@ class ResourceController
      *      views={ "default", "premium" },
      *      description="List another resource.",
      *      resourceDescription="Operations on another resource.",
-     *      output="array<Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest>"
+     *      output="array<Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsTest>"
      * )
      */
     public function listAnotherResourcesAction()

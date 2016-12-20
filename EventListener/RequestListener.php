@@ -20,12 +20,12 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class RequestListener
 {
     /**
-     * @var \Nelmio\ApiDocBundle\Extractor\ApiDocExtractor
+     * @var \Jlpoveda\ApiDocBundle\Extractor\ApiDocExtractor
      */
     protected $extractor;
 
     /**
-     * @var \Nelmio\ApiDocBundle\Formatter\FormatterInterface
+     * @var \Jlpoveda\ApiDocBundle\Formatter\FormatterInterface
      */
     protected $formatter;
 

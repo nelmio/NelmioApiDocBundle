@@ -19,13 +19,13 @@ twig:
 
 services:
     nelmio.test.controller:
-        class: Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestServiceController
+        class: Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestServiceController
     nelmio.test.type:
-        class: Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType
+        class: Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\DependencyType
         arguments:
             - [foo, bar]
         tags:
-            - { name: form.type, alias: dependency_type, extended_type: Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType }
+            - { name: form.type, alias: dependency_type, extended_type: Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\DependencyType }
 
 parameters:
     domain_prod: test.com
