@@ -600,25 +600,21 @@
 
                     if (authentication_delivery == 'header' && authentication_type == 'hmac') {
 
-                        headers['x-lb-apikey'] = api_key_val;
-                        headers['Api-Key'] = api_key_val;
-                        headers['x-lb-hmac'] = api_secret;
                         var nonce = randomString(16);
-                        headers['Nonce'] = nonce;
-                        headers['Signed-Headers'] = 'api-key,nonce';
-
                         var message = method + ' /app_dev.php' + getFinalUrl(method, url, data) + " HTTP/1.1\r\n" +
                             "host: marketplace.test\r\n" +
                             "api-key: " + api_key_val + "\r\n" +
                             "nonce: " + nonce + "\r\n\r\n";
 
                         var hash = CryptoJS.HmacSHA256(message, api_secret);
-//                        console.log('hash: ' + hash);
                         var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
-//                        console.log('base64: ' + hashInBase64);
 
+                        headers['Nonce'] = nonce;
+                        headers['Signed-Headers'] = 'api-key,nonce';
+                        headers['x-lb-apikey'] = api_key_val;
+                        headers['Api-Key'] = api_key_val;
+                        headers['x-lb-hmac'] = hashInBase64;
                         headers['Authorization'] = 'HMAC-SHA256 ' + hashInBase64;
-//                        console.log(message);
                     }
 
                     var ajaxOptions = {
