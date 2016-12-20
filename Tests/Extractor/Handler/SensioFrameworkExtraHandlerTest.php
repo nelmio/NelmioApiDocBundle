@@ -9,9 +9,9 @@
 * file that was distributed with this source code.
 */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Extractor;
+namespace Nelmio\ApiDocBundle\Tests\Extractor;
 
-use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class SensioFrameworkExtraHandlerTest extends WebTestCase
 {
@@ -19,7 +19,7 @@ class SensioFrameworkExtraHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zCachedAction', 'test_route_23');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zCachedAction', 'test_route_23');
 
         $this->assertNotNull($annotation);
 
@@ -30,7 +30,7 @@ class SensioFrameworkExtraHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zSecuredAction', 'test_route_24');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zSecuredAction', 'test_route_24');
 
         $this->assertNotNull($annotation);
 

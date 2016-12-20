@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Annotation;
+namespace Nelmio\ApiDocBundle\Tests\Annotation;
 
-use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
-use Jlpoveda\ApiDocBundle\Tests\TestCase;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Tests\TestCase;
 use Symfony\Component\Routing\Route;
 
 class ApiDocTest extends TestCase

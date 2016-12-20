@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Parser;
+namespace Nelmio\ApiDocBundle\Parser;
 
-use Jlpoveda\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\DataTypes;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 use Symfony\Component\Validator\MetadataFactoryInterface as LegacyMetadataFactoryInterface;

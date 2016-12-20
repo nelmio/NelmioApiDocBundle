@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Formatter;
+namespace Nelmio\ApiDocBundle\Formatter;
 
-use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
-use Jlpoveda\ApiDocBundle\DataTypes;
-use Jlpoveda\ApiDocBundle\Swagger\ModelRegistry;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\Swagger\ModelRegistry;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -53,7 +53,7 @@ class SwaggerFormatter implements FormatterInterface
     );
 
     /**
-     * @var \Jlpoveda\ApiDocBundle\Swagger\ModelRegistry
+     * @var \Nelmio\ApiDocBundle\Swagger\ModelRegistry
      */
     protected $modelRegistry;
 

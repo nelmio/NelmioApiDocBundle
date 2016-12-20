@@ -71,8 +71,8 @@ configure a list of parsers that will be used::
     output={
         "class"   = "Acme\Bundle\Entity\User",
         "parsers" = {
-            "Jlpoveda\ApiDocBundle\Parser\JmsMetadataParser",
-            "Jlpoveda\ApiDocBundle\Parser\ValidationParser"
+            "Nelmio\ApiDocBundle\Parser\JmsMetadataParser",
+            "Nelmio\ApiDocBundle\Parser\ValidationParser"
         }
     }
 

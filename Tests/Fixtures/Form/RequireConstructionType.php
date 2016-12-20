@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Form;
+namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -54,7 +54,7 @@ class RequireConstructionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\Test',
+            'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
         ));
 
         return;

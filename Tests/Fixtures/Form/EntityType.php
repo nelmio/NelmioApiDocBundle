@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Form;
+namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
 
-use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
+use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,7 +36,7 @@ class EntityType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\EntityTest',
+            'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\EntityTest',
         ));
 
         return;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Model;
+namespace Nelmio\ApiDocBundle\Tests\Fixtures\Model;
 
 use JMS\Serializer\Annotation as JMS;
 
@@ -37,12 +37,12 @@ class JmsNested
     public $baz;
 
     /**
-     * @JMS\Type("Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsNested");
+     * @JMS\Type("Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested");
      */
     public $circular;
 
     /**
-     * @JMS\Type("Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JmsTest");
+     * @JMS\Type("Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsTest");
      */
     public $parent;
 

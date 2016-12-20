@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Annotation;
+namespace Nelmio\ApiDocBundle\Annotation;
 
 use Symfony\Component\Routing\Route;
 

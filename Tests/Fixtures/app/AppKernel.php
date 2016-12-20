@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Functional;
+namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
@@ -25,8 +25,8 @@ class AppKernel extends Kernel
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
             new \JMS\SerializerBundle\JMSSerializerBundle($this),
-            new \Jlpoveda\ApiDocBundle\NelmioApiDocBundle(),
-            new \Jlpoveda\ApiDocBundle\Tests\Fixtures\NelmioApiDocTestBundle(),
+            new \Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+            new \Nelmio\ApiDocBundle\Tests\Fixtures\NelmioApiDocTestBundle(),
         );
 
         if (class_exists('Dunglas\ApiBundle\DunglasApiBundle')) {

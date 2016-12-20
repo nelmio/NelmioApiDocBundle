@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller;
+namespace Nelmio\ApiDocBundle\Tests\Fixtures\Controller;
 
 class TestServiceController extends TestController
 {

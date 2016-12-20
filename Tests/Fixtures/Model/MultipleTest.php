@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Model;
+namespace Nelmio\ApiDocBundle\Tests\Fixtures\Model;
 
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -30,7 +30,7 @@ class MultipleTest
     public $baz;
 
     /**
-     * @JMS\Type("Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\Test")
+     * @JMS\Type("Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test")
      */
     public $related;
 

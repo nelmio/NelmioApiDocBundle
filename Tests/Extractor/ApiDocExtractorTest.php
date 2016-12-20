@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\Extractor;
+namespace Nelmio\ApiDocBundle\Tests\Extractor;
 
-use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
-use Jlpoveda\ApiDocBundle\Extractor\ApiDocExtractor;
-use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Extractor\ApiDocExtractor;
+use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
@@ -57,7 +57,7 @@ class ApiDocExtractorTest extends WebTestCase
             $this->assertArrayHasKey('annotation', $d);
             $this->assertArrayHasKey('resource', $d);
 
-            $this->assertInstanceOf('Jlpoveda\ApiDocBundle\Annotation\ApiDoc', $d['annotation']);
+            $this->assertInstanceOf('Nelmio\ApiDocBundle\Annotation\ApiDoc', $d['annotation']);
             $this->assertInstanceOf('Symfony\Component\Routing\Route', $d['annotation']->getRoute());
             $this->assertNotNull($d['resource']);
         }
@@ -74,14 +74,14 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertFalse($a2->isResource());
         $this->assertEquals('create test', $a2->getDescription());
         $this->assertFalse(isset($array2['filters']));
-        $this->assertEquals('Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
+        $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
 
         $a2 = $data[9]['annotation'];
         $array2 = $a2->toArray();
         $this->assertFalse($a2->isResource());
         $this->assertEquals('create test', $a2->getDescription());
         $this->assertFalse(isset($array2['filters']));
-        $this->assertEquals('Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
+        $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
 
         $a3 = $data[$httpsKey]['annotation'];
         $this->assertTrue($a3->getHttps());
@@ -100,9 +100,9 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
 
-        $this->assertInstanceOf('Jlpoveda\ApiDocBundle\Annotation\ApiDoc', $annotation);
+        $this->assertInstanceOf('Nelmio\ApiDocBundle\Annotation\ApiDoc', $annotation);
 
         $this->assertTrue($annotation->isResource());
         $this->assertEquals('index action', $annotation->getDescription());
@@ -135,7 +135,7 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container = $this->getContainer();
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $data = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'invalid_route');
+        $data = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'invalid_route');
 
         $this->assertNull($data);
 
@@ -148,7 +148,7 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container = $this->getContainer();
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $data = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController', 'test_route_1');
+        $data = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController', 'test_route_1');
 
         $this->assertNull($data);
 
@@ -161,7 +161,7 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container = $this->getContainer();
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $data = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::anotherAction', 'test_route_3');
+        $data = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::anotherAction', 'test_route_3');
 
         $this->assertNull($data);
 
@@ -174,7 +174,7 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::myCommentedAction', 'test_route_5');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::myCommentedAction', 'test_route_5');
 
         $this->assertNotNull($annotation);
         $this->assertEquals(
@@ -201,7 +201,7 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::AuthenticatedAction', 'test_route_13');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::AuthenticatedAction', 'test_route_13');
 
         $this->assertNotNull($annotation);
         $this->assertTrue(
@@ -216,7 +216,7 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zCachedAction', 'test_route_23');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zCachedAction', 'test_route_23');
 
         $this->assertNotNull($annotation);
         $this->assertEquals(
@@ -229,7 +229,7 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::DeprecatedAction', 'test_route_14');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::DeprecatedAction', 'test_route_14');
 
         $this->assertNotNull($annotation);
         $this->assertTrue(
@@ -241,7 +241,7 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zReturnSelectedParsersOutputAction', 'test_route_19');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zReturnSelectedParsersOutputAction', 'test_route_19');
 
         $this->assertNotNull($annotation);
         $output = $annotation->getOutput();
@@ -262,7 +262,7 @@ class ApiDocExtractorTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zReturnSelectedParsersInputAction', 'test_route_20');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zReturnSelectedParsersInputAction', 'test_route_20');
 
         $this->assertNotNull($annotation);
         $input = $annotation->getInput();
@@ -280,7 +280,7 @@ class ApiDocExtractorTest extends WebTestCase
         /** @var ApiDocExtractor $extractor */
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
         /** @var ApiDoc $annotation */
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::requiredParametersAction', 'test_required_parameters');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::requiredParametersAction', 'test_required_parameters');
 
         $parameters = $annotation->getParameters();
         $this->assertTrue($parameters['required_field']['required']);
@@ -292,7 +292,7 @@ class ApiDocExtractorTest extends WebTestCase
         /** @var ApiDocExtractor $extractor */
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
         /** @var ApiDoc $annotation */
-        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::requiredParametersAction', 'test_patch_disables_required_parameters');
+        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::requiredParametersAction', 'test_patch_disables_required_parameters');
 
         $parameters = $annotation->getParameters();
         $this->assertFalse($parameters['required_field']['required']);
@@ -375,11 +375,11 @@ class ApiDocExtractorTest extends WebTestCase
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
         $annotation = $extractor->get(
-            'Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::overrideJmsAnnotationWithApiDocParametersAction',
+            'Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::overrideJmsAnnotationWithApiDocParametersAction',
             'test_route_27'
         );
 
-        $this->assertInstanceOf('Jlpoveda\ApiDocBundle\Annotation\ApiDoc', $annotation);
+        $this->assertInstanceOf('Nelmio\ApiDocBundle\Annotation\ApiDoc', $annotation);
 
         $array = $annotation->toArray();
         $this->assertTrue(is_array($array['parameters']));
@@ -408,11 +408,11 @@ class ApiDocExtractorTest extends WebTestCase
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
         $annotation = $extractor->get(
-            'Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::defaultJmsAnnotations',
+            'Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::defaultJmsAnnotations',
             'test_route_27'
         );
 
-        $this->assertInstanceOf('Jlpoveda\ApiDocBundle\Annotation\ApiDoc', $annotation);
+        $this->assertInstanceOf('Nelmio\ApiDocBundle\Annotation\ApiDoc', $annotation);
 
         $array = $annotation->toArray();
         $this->assertTrue(is_array($array['parameters']));
@@ -440,7 +440,7 @@ class ApiDocExtractorTest extends WebTestCase
         $container = $this->getContainer();
         $extractor = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
 
-        $mergeMethod = new \ReflectionMethod('Jlpoveda\ApiDocBundle\Extractor\ApiDocExtractor', 'mergeParameters');
+        $mergeMethod = new \ReflectionMethod('Nelmio\ApiDocBundle\Extractor\ApiDocExtractor', 'mergeParameters');
         $mergeMethod->setAccessible(true);
 
         $p1 = [

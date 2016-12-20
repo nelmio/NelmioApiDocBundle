@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Parser;
+namespace Nelmio\ApiDocBundle\Parser;
 
 /**
  * This is the interface parsers must implement in order to be registered in the ApiDocExtractor.

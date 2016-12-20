@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\DependencyInjection;
+namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
@@ -58,7 +58,7 @@ class NelmioApiDocExtension extends Extension
 
         // backwards compatibility for Symfony2.1 https://github.com/nelmio/NelmioApiDocBundle/issues/231
         if (!interface_exists('\Symfony\Component\Validator\MetadataFactoryInterface')) {
-            $container->setParameter('nelmio_api_doc.parser.validation_parser.class', 'Jlpoveda\ApiDocBundle\Parser\ValidationParserLegacy');
+            $container->setParameter('nelmio_api_doc.parser.validation_parser.class', 'Nelmio\ApiDocBundle\Parser\ValidationParserLegacy');
         }
 
         $container->setParameter('nelmio_api_doc.swagger.base_path', $config['swagger']['api_base_path']);
@@ -69,7 +69,7 @@ class NelmioApiDocExtension extends Extension
 
         if ($config['cache']['enabled'] === true) {
             $arguments = $container->getDefinition('nelmio_api_doc.extractor.api_doc_extractor')->getArguments();
-            $caching = new Definition('Jlpoveda\ApiDocBundle\Extractor\CachingApiDocExtractor');
+            $caching = new Definition('Nelmio\ApiDocBundle\Extractor\CachingApiDocExtractor');
             $arguments[] = $config['cache']['file'];
             $arguments[] = '%kernel.debug%';
             $caching->setArguments($arguments);

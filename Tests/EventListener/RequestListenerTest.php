@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Tests\EventListener;
+namespace Nelmio\ApiDocBundle\Tests\EventListener;
 
-use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class RequestListenerTest extends WebTestCase
 {

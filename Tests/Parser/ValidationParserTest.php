@@ -11,10 +11,10 @@
 
 namespace JlpovedaApiDocBundle\Tests\Parser;
 
-use Jlpoveda\ApiDocBundle\DataTypes;
-use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
-use Jlpoveda\ApiDocBundle\Parser\ValidationParser;
-use Jlpoveda\ApiDocBundle\Parser\ValidationParserLegacy;
+use Nelmio\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\Tests\WebTestCase;
+use Nelmio\ApiDocBundle\Parser\ValidationParser;
+use Nelmio\ApiDocBundle\Parser\ValidationParserLegacy;
 use Symfony\Component\HttpKernel\Kernel;
 
 class ValidationParserTest extends WebTestCase
@@ -43,7 +43,7 @@ class ValidationParserTest extends WebTestCase
      */
     public function testParser($property, $expected)
     {
-        $result = $this->parser->parse(array('class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\ValidatorTest'));
+        $result = $this->parser->parse(array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\ValidatorTest'));
         foreach ($expected as $name => $value) {
             $this->assertArrayHasKey($property, $result);
             $this->assertArrayHasKey($name, $result[$property]);

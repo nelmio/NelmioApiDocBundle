@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Jlpoveda\ApiDocBundle\Extractor\AnnotationsProvider;
+namespace Nelmio\ApiDocBundle\Extractor\AnnotationsProvider;
 
 use Dunglas\ApiBundle\Api\Operation\OperationInterface;
 use Dunglas\ApiBundle\Api\ResourceCollectionInterface;
 use Dunglas\ApiBundle\Api\ResourceInterface;
 use Dunglas\ApiBundle\Hydra\ApiDocumentationBuilderInterface;
 use Dunglas\ApiBundle\Mapping\ClassMetadataFactoryInterface;
-use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
-use Jlpoveda\ApiDocBundle\Extractor\AnnotationsProviderInterface;
-use Jlpoveda\ApiDocBundle\Parser\DunglasApiParser;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Extractor\AnnotationsProviderInterface;
+use Nelmio\ApiDocBundle\Parser\DunglasApiParser;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
