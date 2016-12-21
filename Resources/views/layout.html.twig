@@ -446,6 +446,7 @@
     }
 
     var getOrderedFinalUrl = function(method, url, data) {
+
         if ('GET' == method && !jQuery.isEmptyObject(data)) {
             var separator = url.indexOf('?') >= 0 ? '&' : '?';
             url = url + separator + jQuery.param(ksort(data));
@@ -622,9 +623,13 @@
 
             var nonce = randomString(16);
             var message = method + ' ' + getOrderedFinalUrl(method, url, data) + " HTTP/1.1\r\n" +
-                "host: " + app.request.host + "\r\n" +
+                "host: {{ app.request.host }}\r\n" +
                 "api-key: " + api_key_val + "\r\n" +
                 "nonce: " + nonce + "\r\n\r\n";
+
+            if(('POST' == method) || ('PUT' == method)) {
+                message = message + decodeURIComponent(jQuery.param(data));
+            }
 
             var hash = CryptoJS.HmacSHA256(message, api_secret);
             var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
@@ -633,6 +638,8 @@
             headers['Signed-Headers'] = 'api-key,nonce';
             headers['Api-Key'] = api_key_val;
             headers['Authorization'] = 'HMAC-SHA256 ' + hashInBase64;
+
+            console.log(hashInBase64);
         }
 
         var ajaxOptions = {
