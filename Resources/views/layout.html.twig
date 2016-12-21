@@ -622,7 +622,7 @@
 
             var nonce = randomString(16);
             var message = method + ' ' + getOrderedFinalUrl(method, url, data) + " HTTP/1.1\r\n" +
-                "host: marketplace.test\r\n" +
+                "host: " + app.request.host + "\r\n" +
                 "api-key: " + api_key_val + "\r\n" +
                 "nonce: " + nonce + "\r\n\r\n";
 
