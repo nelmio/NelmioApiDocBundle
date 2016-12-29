@@ -1,17 +1,17 @@
 <?php
 
 /*
- * This file is part of the ApiDocBundle package.
+ * This file is part of the NelmioApiDocBundle package.
  *
- * (c) EXSyst
+ * (c) Nelmio
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
-use EXSyst\Bundle\ApiDocBundle\EXSystApiDocBundle;
-use EXSyst\Bundle\ApiDocBundle\Tests\Functional\TestBundle;
+use Nelmio\ApiDocBundle\NelmioApiDocBundle;
+use Nelmio\ApiDocBundle\Tests\Functional\TestBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -35,7 +35,7 @@ class TestKernel extends Kernel
             new TwigBundle(),
             new SensioFrameworkExtraBundle(),
             new ApiPlatformBundle(),
-            new EXSystApiDocBundle(),
+            new NelmioApiDocBundle(),
             new TestBundle(),
         ];
     }
@@ -61,7 +61,7 @@ class TestKernel extends Kernel
         ]);
 
         // Filter routes
-        $c->loadFromExtension('exsyst_api_doc', [
+        $c->loadFromExtension('nelmio_api_doc', [
             'routes' => [
                 'path_patterns' => ['^/api(?!/admin)'],
             ],

@@ -1,18 +1,17 @@
 <?php
 
 /*
- * This file is part of the ApiDocBundle package.
+ * This file is part of the NelmioApiDocBundle package.
  *
- * (c) EXSyst
+ * (c) Nelmio
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace EXSyst\Bundle\ApiDocBundle\DependencyInjection;
+namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use FOS\RestBundle\Controller\Annotations\ParamInterface;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Swagger\Annotations\Swagger;
 use Symfony\Component\Config\FileLocator;
@@ -20,16 +19,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class EXSystApiDocExtension extends Extension
+final class NelmioApiDocExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return 'exsyst_api_doc';
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -41,13 +32,11 @@ final class EXSystApiDocExtension extends Extension
         $loader->load('services.xml');
 
         // Filter routes
-        $routeCollectionBuilder = $container->getDefinition('exsyst_api_doc.describers.route.filtered_route_collection_builder');
+        $routeCollectionBuilder = $container->getDefinition('nelmio_api_doc.describers.route.filtered_route_collection_builder');
         $routeCollectionBuilder->replaceArgument(0, $config['routes']['path_patterns']);
 
         // Import services needed for each library
-        if (class_exists(ApiDoc::class)) {
-            $loader->load('nelmio_apidoc.xml');
-        }
+        $loader->load('nelmio_apidoc.xml');
         if (class_exists(DocBlockFactory::class)) {
             $loader->load('php_doc.xml');
         }

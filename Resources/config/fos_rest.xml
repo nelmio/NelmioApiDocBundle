@@ -4,10 +4,10 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="exsyst_api_doc.route_describers.fos_rest" class="EXSyst\Bundle\ApiDocBundle\RouteDescriber\FosRestDescriber" public="false">
+        <service id="nelmio_api_doc.route_describers.fos_rest" class="Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber" public="false">
             <argument type="service" id="annotation_reader" />
 
-            <tag name="exsyst_api_doc.route_describer" priority="-300" />
+            <tag name="nelmio_api_doc.route_describer" priority="-300" />
         </service>
     </services>
 

@@ -4,14 +4,14 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="exsyst_api_doc.describers.api_platform" class="EXSyst\Bundle\ApiDocBundle\Describer\ApiPlatformDescriber" public="false">
-            <argument type="service" id="exsyst_api_doc.describers.api_platform.documentation" />
+        <service id="nelmio_api_doc.describers.api_platform" class="Nelmio\ApiDocBundle\Describer\ApiPlatformDescriber" public="false">
+            <argument type="service" id="nelmio_api_doc.describers.api_platform.documentation" />
             <argument type="service" id="api_platform.swagger.normalizer.documentation" />
 
-            <tag name="exsyst_api_doc.describer" priority="-200" />
+            <tag name="nelmio_api_doc.describer" priority="-200" />
         </service>
 
-        <service id="exsyst_api_doc.describers.api_platform.documentation" class="ApiPlatform\Core\Documentation\Documentation" public="false">
+        <service id="nelmio_api_doc.describers.api_platform.documentation" class="ApiPlatform\Core\Documentation\Documentation" public="false">
             <factory service="api_platform.action.documentation" method="__invoke" />
         </service>
     </services>

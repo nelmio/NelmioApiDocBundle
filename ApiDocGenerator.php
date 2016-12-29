@@ -1,18 +1,18 @@
 <?php
 
 /*
- * This file is part of the ApiDocBundle package.
+ * This file is part of the NelmioApiDocBundle package.
  *
- * (c) EXSyst
+ * (c) Nelmio
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace EXSyst\Bundle\ApiDocBundle;
+namespace Nelmio\ApiDocBundle;
 
-use EXSyst\Bundle\ApiDocBundle\Describer\DescriberInterface;
 use EXSyst\Component\Swagger\Swagger;
+use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
 final class ApiDocGenerator

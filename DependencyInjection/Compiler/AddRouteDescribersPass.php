@@ -1,15 +1,15 @@
 <?php
 
 /*
- * This file is part of the ApiDocBundle package.
+ * This file is part of the NelmioApiDocBundle package.
  *
- * (c) EXSyst
+ * (c) Nelmio
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace EXSyst\Bundle\ApiDocBundle\DependencyInjection\Compiler;
+namespace Nelmio\ApiDocBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
@@ -21,8 +21,8 @@ class AddRouteDescribersPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        $routeDescribers = $this->findAndSortTaggedServices('exsyst_api_doc.route_describer', $container);
+        $routeDescribers = $this->findAndSortTaggedServices('nelmio_api_doc.route_describer', $container);
 
-        $container->getDefinition('exsyst_api_doc.describers.route')->replaceArgument(3, $routeDescribers);
+        $container->getDefinition('nelmio_api_doc.describers.route')->replaceArgument(3, $routeDescribers);
     }
 }

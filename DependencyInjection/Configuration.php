@@ -1,15 +1,15 @@
 <?php
 
 /*
- * This file is part of the ApiDocBundle package.
+ * This file is part of the NelmioApiDocBundle package.
  *
- * (c) EXSyst
+ * (c) Nelmio
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace EXSyst\Bundle\ApiDocBundle\DependencyInjection;
+namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -20,7 +20,7 @@ final class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $treeBuilder
-            ->root('exsyst_api_doc')
+            ->root('nelmio_api_doc')
             ->children()
                 ->arrayNode('routes')
                     ->info('Filter the routes that are documented')

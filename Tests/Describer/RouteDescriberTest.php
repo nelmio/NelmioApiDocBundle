@@ -1,19 +1,19 @@
 <?php
 
 /*
- * This file is part of the ApiDocBundle package.
+ * This file is part of the NelmioApiDocBundle package.
  *
- * (c) EXSyst
+ * (c) Nelmio
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace EXSyst\Bundle\ApiDocBundle\Tests\Describer;
+namespace Nelmio\ApiDocBundle\Tests\Describer;
 
-use EXSyst\Bundle\ApiDocBundle\Describer\RouteDescriber;
-use EXSyst\Bundle\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use EXSyst\Component\Swagger\Swagger;
+use Nelmio\ApiDocBundle\Describer\RouteDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Route;

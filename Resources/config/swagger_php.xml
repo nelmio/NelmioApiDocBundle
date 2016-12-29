@@ -4,10 +4,10 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="exsyst_api_doc.describers.swagger_php" class="EXSyst\Bundle\ApiDocBundle\Describer\SwaggerPhpDescriber" public="false">
+        <service id="nelmio_api_doc.describers.swagger_php" class="Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber" public="false">
             <argument>%kernel.root_dir%</argument>
 
-            <tag name="exsyst_api_doc.describer" priority="-300" />
+            <tag name="nelmio_api_doc.describer" priority="-300" />
         </service>
     </services>
 

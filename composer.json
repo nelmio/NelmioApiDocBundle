@@ -1,20 +1,27 @@
 {
-    "name": "exsyst/api-doc-bundle",
+    "name": "nelmio/api-doc-bundle",
+    "description": "Generates documentation for your REST API from annotations",
+    "keywords": ["api", "documentation", "doc", "rest"],
     "type": "symfony-bundle",
-    "description": "[WIP] Generates Swagger docs from several sources",
     "license": "MIT",
     "authors": [
         {
-            "name": "EXSyst"
+            "name": "Nelmio",
+            "homepage": "http://nelm.io"
+        },
+        {
+            "name": "Symfony Community",
+            "homepage": "https://github.com/nelmio/NelmioApiDocBundle/contributors"
         }
     ],
     "require": {
-        "php": "^7.0",
+        "php": "~7.0|~7.1",
         "symfony/framework-bundle": "^3.2",
         "exsyst/swagger": "~0.2.2"
     },
     "require-dev": {
         "symfony/twig-bundle": "^3.2",
+        "symfony/console": "^3.2",
         "symfony/config": "^3.2",
         "symfony/validator": "^3.2",
         "symfony/property-access": "^3.2",
@@ -25,14 +32,12 @@
         "phpunit/phpunit": "^5.4",
         "doctrine/annotations": "^1.2",
 
-        "nelmio/api-doc-bundle": "^2.0",
         "phpdocumentor/reflection-docblock": "^3.1",
         "zircote/swagger-php": "^2.0",
-        "api-platform/core": "dev-master",
+        "api-platform/core": "^2.0",
         "friendsofsymfony/rest-bundle": "^2.0"
     },
     "suggest": {
-        "nelmio/api-doc-bundle": "For using the ApiDoc annotation.",
         "phpdocumentor/reflection-docblock": "For parsing php docs.",
         "zircote/swagger-php": "For using swagger annotations.",
         "api-platform/core": "For using an API oriented framework.",
@@ -40,14 +45,12 @@
     },
     "autoload": {
         "psr-4": {
-            "EXSyst\\Bundle\\ApiDocBundle\\": ""
+            "Nelmio\\ApiDocBundle\\": ""
         }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.1.x-dev"
+            "dev-master": "3.0.x-dev"
         }
-    },
-    "prefer-stable": true,
-    "minimum-stability": "dev"
+    }
 }

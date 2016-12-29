@@ -6,7 +6,7 @@
 
 Just like any bundle, you have to download it using composer:
 ```
-composer require exsyst/api-doc-bundle dev-master
+composer require nelmio/api-doc-bundle dev-master
 ```
 
 And then add it to your kernel:
@@ -18,7 +18,7 @@ class AppKernel extends Kernel
         $bundles = [
             // ...
 
-            new EXSyst\Bundle\ApiDocBundle\ApiDocBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
         ];
 
         // ...
@@ -37,7 +37,7 @@ documentation.
 
 You can fetch your swagger documentation in your app:
 ```php
-$generator = $container->get('exsyst_api_doc.generator');
+$generator = $container->get('nelmio_api_doc.generator');
 $swagger = $generator->generate()->toArray();
 ```
 
