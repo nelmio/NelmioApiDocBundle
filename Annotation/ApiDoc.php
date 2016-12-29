@@ -18,21 +18,12 @@ use Symfony\Component\Routing\Route;
  */
 class ApiDoc
 {
-    const DEFAULT_VIEW = 'default';
-
     /**
      * Requirements are mandatory parameters in a route.
      *
      * @var array
      */
     private $requirements = array();
-
-    /**
-     * Which views is this route used. Defaults to "Default".
-     *
-     * @var array
-     */
-    private $views = array();
 
     /**
      * Filters are optional parameters in the query string.
@@ -77,53 +68,9 @@ class ApiDoc
     private $description = null;
 
     /**
-     * Section to group actions together.
-     *
-     * @var string
-     */
-    private $section = null;
-
-    /**
-     * Extended documentation.
-     *
-     * @var string
-     */
-    private $documentation = null;
-
-    /**
-     * @var bool
-     */
-    private $resource = false;
-
-    /**
-     * @var string
-     */
-    private $method;
-
-    /**
-     * @var string
-     */
-    private $host;
-
-    /**
-     * @var string
-     */
-    private $uri;
-
-    /**
      * @var array
      */
     private $response = array();
-
-    /**
-     * @var Route
-     */
-    private $route;
-
-    /**
-     * @var bool
-     */
-    private $https = false;
 
     /**
      * @var bool
@@ -136,11 +83,6 @@ class ApiDoc
     private $authenticationRoles = array();
 
     /**
-     * @var int
-     */
-    private $cache;
-
-    /**
      * @var bool
      */
     private $deprecated = false;
@@ -149,11 +91,6 @@ class ApiDoc
      * @var array
      */
     private $statusCodes = array();
-
-    /**
-     * @var string|null
-     */
-    private $resourceDescription = null;
 
     /**
      * @var array
@@ -172,8 +109,6 @@ class ApiDoc
 
     public function __construct(array $data)
     {
-        $this->resource = !empty($data['resource']) ? $data['resource'] : false;
-
         if (isset($data['description'])) {
             $this->description = $data['description'];
         }
@@ -205,16 +140,6 @@ class ApiDoc
                 unset($requirement['name']);
 
                 $this->addRequirement($name, $requirement);
-            }
-        }
-
-        if (isset($data['views'])) {
-            if (!is_array($data['views'])) {
-                $data['views'] = array($data['views']);
-            }
-
-            foreach ($data['views'] as $view) {
-                $this->addView($view);
             }
         }
 
@@ -271,14 +196,6 @@ class ApiDoc
             }
         }
 
-        if (isset($data['cache'])) {
-            $this->setCache($data['cache']);
-        }
-
-        if (isset($data['section'])) {
-            $this->section = $data['section'];
-        }
-
         if (isset($data['deprecated'])) {
             $this->deprecated = $data['deprecated'];
         }
@@ -295,14 +212,6 @@ class ApiDoc
             } else {
                 $this->tags[] = $data['tags'];
             }
-        }
-
-        if (isset($data['https'])) {
-            $this->https = $data['https'];
-        }
-
-        if (isset($data['resourceDescription'])) {
-            $this->resourceDescription = $data['resourceDescription'];
         }
 
         if (isset($data['responseMap'])) {
@@ -398,70 +307,6 @@ class ApiDoc
     }
 
     /**
-     * @param string $section
-     */
-    public function setSection($section)
-    {
-        $this->section = $section;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSection()
-    {
-        return $this->section;
-    }
-
-    /**
-     * @return array
-     */
-    public function addView($view)
-    {
-        $this->views[] = $view;
-    }
-
-    /**
-     * @return array
-     */
-    public function getViews()
-    {
-        return $this->views;
-    }
-
-    /**
-     * @param string $documentation
-     */
-    public function setDocumentation($documentation)
-    {
-        $this->documentation = $documentation;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDocumentation()
-    {
-        return $this->documentation;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isResource()
-    {
-        return (bool) $this->resource;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getResource()
-    {
-        return $this->resource && is_string($this->resource) ? $this->resource : false;
-    }
-
-    /**
      * @param string $name
      * @param array  $parameter
      */
@@ -498,70 +343,6 @@ class ApiDoc
     }
 
     /**
-     * @param Route $route
-     */
-    public function setRoute(Route $route)
-    {
-        $this->route = $route;
-
-        if (method_exists($route, 'getHost')) {
-            $this->host = $route->getHost() ?: null;
-
-            //replace route placeholders
-            foreach ($route->getDefaults() as $key => $value) {
-                if (is_string($value)) {
-                    $this->host = str_replace('{'.$key.'}', $value, $this->host);
-                }
-            }
-        } else {
-            $this->host = null;
-        }
-
-        $this->uri = $route->getPath();
-        $this->method = $route->getMethods() ? implode('|', $route->getMethods()) : 'ANY';
-    }
-
-    /**
-     * @return Route
-     */
-    public function getRoute()
-    {
-        return $this->route;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHost()
-    {
-        return $this->host;
-    }
-
-    /**
-     * @param string $host
-     */
-    public function setHost($host)
-    {
-        $this->host = $host;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getHttps()
-    {
-        return $this->https;
-    }
-
-    /**
-     * @param bool $https
-     */
-    public function setHttps($https)
-    {
-        $this->https = $https;
-    }
-
-    /**
      * @return bool
      */
     public function getAuthentication()
@@ -591,22 +372,6 @@ class ApiDoc
     public function setAuthenticationRoles($authenticationRoles)
     {
         $this->authenticationRoles = $authenticationRoles;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCache()
-    {
-        return $this->cache;
-    }
-
-    /**
-     * @param int $cache
-     */
-    public function setCache($cache)
-    {
-        $this->cache = (int) $cache;
     }
 
     /**
@@ -662,37 +427,16 @@ class ApiDoc
     }
 
     /**
-     * @return string
-     */
-    public function getMethod()
-    {
-        return $this->method;
-    }
-
-    /**
      * @return array
      */
     public function toArray()
     {
-        $data = array(
-            'method' => $this->method,
-            'uri' => $this->uri,
-        );
-
-        if ($host = $this->host) {
-            $data['host'] = $host;
-        }
-
         if ($description = $this->description) {
             $data['description'] = $description;
         }
 
         if ($link = $this->link) {
             $data['link'] = $link;
-        }
-
-        if ($documentation = $this->documentation) {
-            $data['documentation'] = $documentation;
         }
 
         if ($filters = $this->filters) {
@@ -711,10 +455,6 @@ class ApiDoc
             $data['requirements'] = $requirements;
         }
 
-        if ($views = $this->views) {
-            $data['views'] = $views;
-        }
-
         if ($response = $this->response) {
             $data['response'] = $response;
         }
@@ -727,36 +467,15 @@ class ApiDoc
             $data['statusCodes'] = $statusCodes;
         }
 
-        if ($section = $this->section) {
-            $data['section'] = $section;
-        }
-
-        if ($cache = $this->cache) {
-            $data['cache'] = $cache;
-        }
-
         if ($tags = $this->tags) {
             $data['tags'] = $tags;
         }
 
-        if ($resourceDescription = $this->resourceDescription) {
-            $data['resourceDescription'] = $resourceDescription;
-        }
-
-        $data['https'] = $this->https;
         $data['authentication'] = $this->authentication;
         $data['authenticationRoles'] = $this->authenticationRoles;
         $data['deprecated'] = $this->deprecated;
 
         return $data;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getResourceDescription()
-    {
-        return $this->resourceDescription;
     }
 
     /**
