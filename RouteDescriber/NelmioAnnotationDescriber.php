@@ -12,14 +12,17 @@
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use EXSyst\Component\Swagger\Parameter;
 use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Routing\Route;
 
-final class NelmioAnnotationDescriber implements RouteDescriberInterface
+final class NelmioAnnotationDescriber implements RouteDescriberInterface, ModelRegistryAwareInterface
 {
-    use RouteDescriberTrait;
+    use RouteDescriberTrait, ModelRegistryAwareTrait;
 
     private $annotationReader;
 
@@ -85,12 +88,27 @@ final class NelmioAnnotationDescriber implements RouteDescriberInterface
             }
 
             // Responses
+            $responses = $operation->getResponses();
             if (isset($annotationArray['statusCodes'])) {
-                $responses = $operation->getResponses();
                 foreach ($annotationArray['statusCodes'] as $statusCode => $description) {
                     $response = $responses->get($statusCode);
-                    $response->setDescription($description);
+                    $response->setDescription($description[0]);
                 }
+            }
+
+            // Input
+            $input = $annotation->getInput();
+            if (null !== $input) {
+                list($type) = $this->normalizeModel($input);
+                $this->modelRegistry->register($operation->getParameters()->get('input', 'body')->getSchema())
+                    ->setType($type);
+            }
+
+            // Outputs
+            foreach ($annotation->getResponseMap() as $statusCode => $output) {
+                list($type) = $this->normalizeModel($output);
+                $this->modelRegistry->register($responses->get($statusCode)->getSchema())
+                    ->setType($type);
             }
         }
     }
@@ -127,5 +145,30 @@ final class NelmioAnnotationDescriber implements RouteDescriberInterface
         if (isset($configuration['default'])) {
             $parameter->setDefault($configuration['default']);
         }
+    }
+
+    /**
+     * @return array (Type $type, array|null $groups)
+     */
+    private function normalizeModel($parameter)
+    {
+        // normalize strings
+        if (is_string($parameter)) {
+            $parameter = array('class' => $parameter);
+        }
+        if (0 === strpos($parameter['class'], 'array<')) {
+            $parameter['class'] = substr($parameter['class'], 6, -1);
+            $parameter['collection'] = true;
+        }
+        if (isset($input['groups']) && is_string($input['groups'])) {
+            $input['groups'] = array_map('trim', explode(',', $input['groups']));
+        }
+
+        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, $parameter['class']);
+        if ($parameter['collection'] ?? false) {
+            $type = new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true, null, $type);
+        }
+
+        return [$type, $input['groups'] ?? null];
     }
 }

@@ -42,11 +42,6 @@ class Dummy
      */
     private $name;
 
-    /**
-     * @var array
-     */
-    private $foo;
-
     public function getId(): int
     {
         return $this->id;
@@ -63,10 +58,6 @@ class Dummy
     }
 
     public function hasRole(string $role)
-    {
-    }
-
-    public function setFoo(array $foo = null)
     {
     }
 }

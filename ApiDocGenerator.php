@@ -11,6 +11,8 @@
 
 namespace Nelmio\ApiDocBundle;
 
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use Psr\Cache\CacheItemPoolInterface;
@@ -19,14 +21,16 @@ final class ApiDocGenerator
 {
     private $swagger;
     private $describers;
+    private $modelRegistry;
     private $cacheItemPool;
 
     /**
      * @param DescriberInterface[] $describers
      */
-    public function __construct(array $describers, CacheItemPoolInterface $cacheItemPool = null)
+    public function __construct(array $describers, ModelRegistry $modelRegistry, CacheItemPoolInterface $cacheItemPool = null)
     {
         $this->describers = $describers;
+        $this->modelRegistry = $modelRegistry;
         $this->cacheItemPool = $cacheItemPool;
     }
 
@@ -44,9 +48,15 @@ final class ApiDocGenerator
         }
 
         $this->swagger = new Swagger();
+        $modelRegistry = clone $this->modelRegistry;
         foreach ($this->describers as $describer) {
+            if ($describer instanceof ModelRegistryAwareInterface) {
+                $describer->setModelRegistry($modelRegistry);
+            }
+
             $describer->describe($this->swagger);
         }
+        $modelRegistry->registerModelsIn($this->swagger);
 
         if (isset($item)) {
             $this->cacheItemPool->save($item->set($this->swagger));

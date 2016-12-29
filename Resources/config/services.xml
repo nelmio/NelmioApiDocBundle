@@ -6,13 +6,17 @@
     <services>
         <service id="nelmio_api_doc.generator" class="Nelmio\ApiDocBundle\ApiDocGenerator">
             <argument type="collection" />
+            <argument type="service" id="nelmio_api_doc.model_registry" />
         </service>
 
-        <!-- Extractors -->
+        <service id="nelmio_api_doc.model_registry" class="Nelmio\ApiDocBundle\Model\ModelRegistry" public="false">
+            <argument type="collection" />
+        </service>
+
+        <!-- Describers -->
         <service id="nelmio_api_doc.describers.route.filtered_route_collection_builder" class="Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder" public="false">
             <argument type="collection" /> <!-- Path patterns -->
         </service>
-
 
         <service id="nelmio_api_doc.describers.route" class="Nelmio\ApiDocBundle\Describer\RouteDescriber" public="false">
             <argument type="service" id="service_container" />
@@ -36,9 +40,24 @@
             <tag name="nelmio_api_doc.describer" priority="-1000" />
         </service>
 
-        <!-- Routing Extractors -->
+        <!-- Routing Describers -->
         <service id="nelmio_api_doc.route_describers.route_metadata" class="Nelmio\ApiDocBundle\RouteDescriber\RouteMetadataDescriber" public="false">
             <tag name="nelmio_api_doc.route_describer" priority="-100" />
+        </service>
+
+        <!-- Model Describers -->
+        <service id="nelmio_api_doc.model_describers.object" class="Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber" public="false">
+            <argument type="service" id="property_info" />
+
+            <tag name="nelmio_api_doc.model_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.model_describers.collection" class="Nelmio\ApiDocBundle\ModelDescriber\CollectionModelDescriber" public="false">
+            <tag name="nelmio_api_doc.model_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.model_describers.scalar" class="Nelmio\ApiDocBundle\ModelDescriber\ScalarModelDescriber" public="false">
+            <tag name="nelmio_api_doc.model_describer" />
         </service>
     </services>
 
