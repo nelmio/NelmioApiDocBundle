@@ -11,10 +11,10 @@
 
 namespace Nelmio\ApiDocBundle;
 
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
-use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Describer\DescriberInterface;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Psr\Cache\CacheItemPoolInterface;
 
 final class ApiDocGenerator

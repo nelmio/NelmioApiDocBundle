@@ -11,11 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\Dummy;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\Dummy;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**

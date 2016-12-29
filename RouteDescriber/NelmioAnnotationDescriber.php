@@ -12,11 +12,11 @@
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use EXSyst\Component\Swagger\Parameter;
 use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Routing\Route;
 

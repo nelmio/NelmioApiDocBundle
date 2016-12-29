@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the ApiDocBundle package.
+ * This file is part of the NelmioApiDocBundle package.
  *
- * (c) EXSyst
+ * (c) Nelmio
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,11 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\Model;
 
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
-use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use EXSyst\Component\Swagger\Items;
 use EXSyst\Component\Swagger\Schema;
 use EXSyst\Component\Swagger\Swagger;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 final class ModelRegistry
@@ -142,7 +142,7 @@ final class ModelRegistry
     {
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
             return $type->getClassName();
-        } elseif (Type::BUILTIN_TYPE_ARRAY === $type->getBuiltinType()) {
+        } elseif ($type->isCollection()) {
             if (null !== $type->getCollectionValueType()) {
                 return $this->typeToString($type->getCollectionValueType()).'[]';
             } else {
