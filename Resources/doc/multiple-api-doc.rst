@@ -6,7 +6,7 @@ different views of your API documentation. Without the tag, all methods are
 located in the ``default`` view, and can be found under the normal API
 documentation url.
 
-You can specify one or more _view_ names under which the method will be
+You can specify one or more *view* names under which the method will be
 visible.
 
 An example::
