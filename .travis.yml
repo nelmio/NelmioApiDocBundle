@@ -13,6 +13,7 @@ cache:
 branches:
   only:
     - master
+    - dev
     - /^\d+\.\d+$/
 
 matrix:
