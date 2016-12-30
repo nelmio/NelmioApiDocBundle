@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Describer;
 use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
+use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Route;
@@ -38,9 +39,11 @@ class RouteDescriberTest extends AbstractDescriberTest
         $this->routeDescriber = $this->createMock(RouteDescriberInterface::class);
         $this->routes = new RouteCollection();
         $this->describer = new RouteDescriber(
-            new Container(),
             $this->routes,
-            $this->createMock(ControllerNameParser::class),
+            new ControllerReflector(
+                new Container(),
+                $this->createMock(ControllerNameParser::class)
+            ),
             [$this->routeDescriber]
         );
     }

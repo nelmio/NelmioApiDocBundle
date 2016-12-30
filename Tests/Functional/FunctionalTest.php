@@ -22,6 +22,46 @@ class FunctionalTest extends WebTestCase
         $this->assertFalse($paths->has('/api/admin'));
     }
 
+    /**
+     * Tests that the paths are automatically resolved in Swagger annotations.
+     *
+     * @dataProvider swaggerActionPathsProvider
+     */
+    public function testSwaggerAction($path)
+    {
+        $operation = $this->getOperation($path, 'get');
+
+        $responses = $operation->getResponses();
+        $this->assertTrue($responses->has('201'));
+        $this->assertEquals('An example resource', $responses->get('201')->getDescription());
+    }
+
+    public function swaggerActionPathsProvider()
+    {
+        return [['/api/swagger'], ['/api/swagger2']];
+    }
+
+    /**
+     * @dataProvider implicitSwaggerActionMethodsProvider
+     */
+    public function testImplicitSwaggerAction($method)
+    {
+        $operation = $this->getOperation('/api/swagger/implicit', $method);
+
+        $responses = $operation->getResponses();
+        $this->assertTrue($responses->has('201'));
+        $this->assertEquals('Operation automatically detected', $responses->get('201')->getDescription());
+
+        $parameters = $operation->getParameters();
+        $this->assertTrue($parameters->has('foo', 'query'));
+        $this->assertEquals('This is a parameter', $parameters->get('foo', 'query')->getDescription());
+    }
+
+    public function implicitSwaggerActionMethodsProvider()
+    {
+        return [['get'], ['post']];
+    }
+
     public function testUserAction()
     {
         $operation = $this->getOperation('/api/test/{user}', 'get');
@@ -93,10 +133,10 @@ class FunctionalTest extends WebTestCase
         $api = $this->getSwaggerDefinition();
         $paths = $api->getPaths();
 
-        $this->assertTrue($paths->has($path));
+        $this->assertTrue($paths->has($path), sprintf('Path "%s" does not exist', $path));
         $action = $paths->get($path);
 
-        $this->assertTrue($action->hasOperation($method));
+        $this->assertTrue($action->hasOperation($method), sprintf('Operation "%s" for path "%s" does not exist', $path, $method));
 
         return $action->getOperation($method);
     }

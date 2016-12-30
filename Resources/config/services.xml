@@ -8,6 +8,11 @@
             <argument type="collection" />
         </service>
 
+        <service id="nelmio_api_doc.controller_reflector" class="Nelmio\ApiDocBundle\Util\ControllerReflector" public="false">
+            <argument type="service" id="service_container" />
+            <argument type="service" id="controller_name_converter" />
+        </service>
+
         <!-- Extractors -->
         <service id="nelmio_api_doc.describers.route.filtered_route_collection_builder" class="Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder" public="false">
             <argument type="collection" /> <!-- Path patterns -->
@@ -15,7 +20,6 @@
 
 
         <service id="nelmio_api_doc.describers.route" class="Nelmio\ApiDocBundle\Describer\RouteDescriber" public="false">
-            <argument type="service" id="service_container" />
             <argument type="service">
                 <service class="Symfony\Component\Routing\RouteCollection">
                     <factory service="nelmio_api_doc.describers.route.filtered_route_collection_builder" method="filter" />
@@ -26,7 +30,7 @@
                     </argument>
                 </service>
             </argument>
-            <argument type="service" id="controller_name_converter" />
+            <argument type="service" id="nelmio_api_doc.controller_reflector" />
             <argument type="collection" />
 
             <tag name="nelmio_api_doc.describer" priority="-100" />

@@ -15,12 +15,37 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Swagger\Annotations as SWG;
 
 /**
  * @Route("/api")
  */
 class ApiController
 {
+    /**
+     * @Route("/swagger", methods={"GET"})
+     * @Route("/swagger2", methods={"GET"})
+     * @SWG\Get(
+     *     @SWG\Response(response="201", description="An example resource")
+     * )
+     */
+    public function swaggerAction()
+    {
+    }
+
+    /**
+     * @Route("/swagger/implicit", methods={"GET", "POST"})
+     * @SWG\Response(response="201", description="Operation automatically detected")
+     * @SWG\Parameter(
+     *     name="foo",
+     *     in="query",
+     *     description="This is a parameter"
+     * )
+     */
+    public function implicitSwaggerAction()
+    {
+    }
+
     /**
      * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="/foo/"})
      */

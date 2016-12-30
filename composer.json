@@ -17,7 +17,7 @@
     "require": {
         "php": "~7.0|~7.1",
         "symfony/framework-bundle": "^2.8|^3.0",
-        "exsyst/swagger": "~0.2.2"
+        "exsyst/swagger": "~0.2.3"
     },
     "require-dev": {
         "symfony/twig-bundle": "^2.8|^3.0",
