@@ -100,11 +100,6 @@ class ApiDoc
     /**
      * @var array
      */
-    private $parsedResponseMap = array();
-
-    /**
-     * @var array
-     */
     private $tags = array();
 
     public function __construct(array $data)
@@ -459,10 +454,6 @@ class ApiDoc
             $data['response'] = $response;
         }
 
-        if ($parsedResponseMap = $this->parsedResponseMap) {
-            $data['parsedResponseMap'] = $parsedResponseMap;
-        }
-
         if ($statusCodes = $this->statusCodes) {
             $data['statusCodes'] = $statusCodes;
         }
@@ -488,26 +479,5 @@ class ApiDoc
         }
 
         return $this->responseMap;
-    }
-
-    /**
-     * @return array
-     */
-    public function getParsedResponseMap()
-    {
-        return $this->parsedResponseMap;
-    }
-
-    /**
-     * @param $model
-     * @param $type
-     * @param int $statusCode
-     */
-    public function setResponseForStatusCode($model, $type, $statusCode = 200)
-    {
-        $this->parsedResponseMap[$statusCode] = array('type' => $type, 'model' => $model);
-        if ($statusCode == 200 && $this->response !== $model) {
-            $this->response = $model;
-        }
     }
 }
