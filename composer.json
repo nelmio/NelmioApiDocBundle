@@ -14,6 +14,7 @@
             "homepage": "https://github.com/nelmio/NelmioApiDocBundle/contributors"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3",
         "symfony/twig-bundle": "~2.3|~3.0",
