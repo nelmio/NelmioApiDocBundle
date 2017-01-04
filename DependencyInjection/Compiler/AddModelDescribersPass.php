@@ -25,6 +25,6 @@ final class AddModelDescribersPass implements CompilerPassInterface
     {
         $modelDescribers = $this->findAndSortTaggedServices('nelmio_api_doc.model_describer', $container);
 
-        $container->getDefinition('nelmio_api_doc.model_registry')->replaceArgument(0, $modelDescribers);
+        $container->getDefinition('nelmio_api_doc.generator')->replaceArgument(1, $modelDescribers);
     }
 }

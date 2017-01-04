@@ -13,9 +13,14 @@ namespace Nelmio\ApiDocBundle\Model;
 
 use Symfony\Component\PropertyInfo\Type;
 
-final class ModelOptions
+final class Model
 {
     private $type;
+
+    public function __construct(Type $type)
+    {
+        $this->type = $type;
+    }
 
     /**
      * @return Type|null
@@ -25,20 +30,8 @@ final class ModelOptions
         return $this->type;
     }
 
-    public function setType(Type $type)
-    {
-        $this->type = $type;
-    }
-
     public function getHash()
     {
         return md5(serialize($this->type));
-    }
-
-    public function validate()
-    {
-        if (null === $this->type) {
-            throw new \LogicException('The model type must be specified.');
-        }
     }
 }

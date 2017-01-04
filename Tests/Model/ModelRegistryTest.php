@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Model;
 
 use EXSyst\Component\Swagger\Schema;
 use EXSyst\Component\Swagger\Swagger;
+use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -25,10 +26,9 @@ class ModelRegistryTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\LogicException', sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $stringType));
 
-        $registry = new ModelRegistry();
-        $registry->register(new Schema())
-            ->setType($type);
-        $registry->registerModelsIn(new Swagger());
+        $registry = new ModelRegistry([], new Swagger());
+        $registry->register(new Model($type));
+        $registry->registerDefinitions();
     }
 
     public function unsupportedTypesProvider()

@@ -7,7 +7,7 @@
         <service id="nelmio_api_doc.describers.swagger_php" class="Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber" public="false">
             <argument>%kernel.root_dir%</argument>
 
-            <tag name="nelmio_api_doc.describer" priority="-300" />
+            <tag name="nelmio_api_doc.describer" priority="-200" />
         </service>
     </services>
 

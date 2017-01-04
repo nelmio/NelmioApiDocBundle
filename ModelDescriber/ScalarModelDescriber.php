@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
-use Nelmio\ApiDocBundle\Model\ModelOptions;
+use Nelmio\ApiDocBundle\Model\Model;
 use Symfony\Component\PropertyInfo\Type;
 
 class ScalarModelDescriber implements ModelDescriberInterface
@@ -23,14 +23,14 @@ class ScalarModelDescriber implements ModelDescriberInterface
         Type::BUILTIN_TYPE_STRING => 'string',
     ];
 
-    public function describe(Schema $schema, ModelOptions $options)
+    public function describe(Model $model, Schema $schema)
     {
-        $type = self::$supportedTypes[$options->getType()->getBuiltinType()];
+        $type = self::$supportedTypes[$model->getType()->getBuiltinType()];
         $schema->setType($type);
     }
 
-    public function supports(ModelOptions $options)
+    public function supports(Model $model)
     {
-        return isset(self::$supportedTypes[$options->getType()->getBuiltinType()]);
+        return isset(self::$supportedTypes[$model->getType()->getBuiltinType()]);
     }
 }

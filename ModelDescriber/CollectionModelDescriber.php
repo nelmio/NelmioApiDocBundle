@@ -14,21 +14,22 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\Model\ModelOptions;
+use Nelmio\ApiDocBundle\Model\Model;
 
 class CollectionModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
-    public function describe(Schema $schema, ModelOptions $options)
+    public function describe(Model $model, Schema $schema)
     {
         $schema->setType('array');
-        $this->modelRegistry->register($schema->getItems())
-            ->setType($options->getType()->getCollectionValueType());
+        $schema->getItems()->setRef(
+            $this->modelRegistry->register(new Model($model->getType()->getCollectionValueType()))
+        );
     }
 
-    public function supports(ModelOptions $options)
+    public function supports(Model $model)
     {
-        return $options->getType()->isCollection() && null !== $options->getType()->getCollectionValueType();
+        return $model->getType()->isCollection() && null !== $model->getType()->getCollectionValueType();
     }
 }

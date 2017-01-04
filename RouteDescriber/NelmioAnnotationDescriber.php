@@ -17,6 +17,7 @@ use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
+use Nelmio\ApiDocBundle\Model\Model;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Routing\Route;
 
@@ -100,15 +101,17 @@ final class NelmioAnnotationDescriber implements RouteDescriberInterface, ModelR
             $input = $annotation->getInput();
             if (null !== $input) {
                 list($type) = $this->normalizeModel($input);
-                $this->modelRegistry->register($operation->getParameters()->get('input', 'body')->getSchema())
-                    ->setType($type);
+                $operation->getParameters()->get('input', 'body')->getSchema()->setRef(
+                    $this->modelRegistry->register(new Model($type))
+                );
             }
 
             // Outputs
             foreach ($annotation->getResponseMap() as $statusCode => $output) {
                 list($type) = $this->normalizeModel($output);
-                $this->modelRegistry->register($responses->get($statusCode)->getSchema())
-                    ->setType($type);
+                $responses->get($statusCode)->getSchema()->setRef(
+                    $this->modelRegistry->register(new Model($type))
+                );
             }
         }
     }

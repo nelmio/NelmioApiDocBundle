@@ -5,12 +5,8 @@
 
     <services>
         <service id="nelmio_api_doc.generator" class="Nelmio\ApiDocBundle\ApiDocGenerator">
-            <argument type="collection" />
-            <argument type="service" id="nelmio_api_doc.model_registry" />
-        </service>
-
-        <service id="nelmio_api_doc.model_registry" class="Nelmio\ApiDocBundle\Model\ModelRegistry" public="false">
-            <argument type="collection" />
+            <argument type="collection" /> <!-- Describers -->
+            <argument type="collection" /> <!-- Model Describers -->
         </service>
 
         <!-- Describers -->
@@ -33,7 +29,7 @@
             <argument type="service" id="controller_name_converter" />
             <argument type="collection" />
 
-            <tag name="nelmio_api_doc.describer" priority="-100" />
+            <tag name="nelmio_api_doc.describer" priority="-400" />
         </service>
 
         <service id="nelmio_api_doc.describers.default" class="Nelmio\ApiDocBundle\Describer\DefaultDescriber" public="false">
@@ -42,7 +38,7 @@
 
         <!-- Routing Describers -->
         <service id="nelmio_api_doc.route_describers.route_metadata" class="Nelmio\ApiDocBundle\RouteDescriber\RouteMetadataDescriber" public="false">
-            <tag name="nelmio_api_doc.route_describer" priority="-100" />
+            <tag name="nelmio_api_doc.route_describer" priority="-300" />
         </service>
 
         <!-- Model Describers -->

@@ -12,11 +12,10 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
-use Nelmio\ApiDocBundle\Model\ModelOptions;
+use Nelmio\ApiDocBundle\Model\Model;
 
 interface ModelDescriberInterface
 {
-    public function describe(Schema $schema, ModelOptions $options);
-
-    public function supports(ModelOptions $options);
+    public function describe(Model $model, Schema $schema);
+    public function supports(Model $model);
 }

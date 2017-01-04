@@ -20,103 +20,79 @@ use Symfony\Component\PropertyInfo\Type;
 
 final class ModelRegistry
 {
-    private $modelDescribers = [];
-    private $options;
     private $unregistered = [];
-    private $hashes = [];
+    private $models = [];
+    private $names = [];
+    private $modelDescribers = [];
+    private $api;
 
     /**
      * @param ModelDescriberInterface[] $modelDescribers
+     *
+     * @internal
      */
-    public function __construct(array $modelDescribers = [])
+    public function __construct(array $modelDescribers = [], Swagger $api)
     {
-        $this->options = new \SplObjectStorage();
         $this->modelDescribers = $modelDescribers;
+        $this->api = $api;
     }
 
-    /**
-     * @param Schema|Items $schema
-     */
-    public function register($schema): ModelOptions
+    public function register(Model $model): string
     {
-        if (!$schema instanceof Schema && !$schema instanceof Items) {
-            throw new \LogicException(sprintf('Expected %s or %s, got %s', Schema::class, Items::class, get_class($schema)));
+        $hash = $model->getHash();
+        if (isset($this->names[$hash])) {
+            return '#/definitions/'.$this->names[$hash];
         }
 
-        if (!isset($this->options[$schema])) {
-            $this->unregistered[] = $schema;
-            $this->options[$schema] = new ModelOptions();
-        }
+        $this->names[$hash] = $name = $this->generateModelName($model);
+        $this->models[$hash] = $model;
+        $this->unregistered[] = $hash;
 
-        return $this->options[$schema];
+        // Reserve the name
+        $this->api->getDefinitions()->get($name);
+
+        return '#/definitions/'.$name;
     }
 
     /**
      * @internal
      */
-    public function registerModelsIn(Swagger $api)
+    public function registerDefinitions()
     {
         while (count($this->unregistered)) {
             $tmp = [];
-            foreach ($this->unregistered as $schema) {
-                $options = $this->options[$schema];
-                $options->validate();
-
-                $hash = $options->getHash();
-                if (isset($this->hashes[$hash])) {
-                    $schema->setRef('#/definitions/'.$this->hashes[$hash]);
-
-                    continue;
-                }
-
-                if (!isset($tmp[$hash])) {
-                    $tmp[$hash] = [$options, [/* schemas */]];
-                }
-                $tmp[$hash][1][] = $schema;
+            foreach ($this->unregistered as $hash) {
+                $tmp[$this->names[$hash]] = $this->models[$hash];
             }
             $this->unregistered = [];
 
-            foreach ($tmp as $hash => list($options, $schemas)) {
-                $baseSchema = new Schema();
-                $described = false;
+            foreach ($tmp as $name => $model) {
+                $schema = null;
                 foreach ($this->modelDescribers as $modelDescriber) {
                     if ($modelDescriber instanceof ModelRegistryAwareInterface) {
                         $modelDescriber->setModelRegistry($this);
                     }
-                    if ($modelDescriber->supports($options)) {
-                        $described = true;
-                        $modelDescriber->describe($baseSchema, $options);
+                    if ($modelDescriber->supports($model)) {
+                        $schema = new Schema();
+                        $modelDescriber->describe($model, $schema);
 
                         break;
                     }
                 }
 
-                if (!$described) {
-                    throw new \LogicException(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($options->getType())));
+                if (null === $schema) {
+                    throw new \LogicException(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType())));
                 }
 
-                $name = $this->generateModelName($api, $options);
-                $this->hashes[$hash] = $name;
-                $api->getDefinitions()->set($name, $baseSchema);
-
-                foreach ($schemas as $schema) {
-                    $schema->setRef('#/definitions/'.$name);
-                }
+                $this->api->getDefinitions()->set($name, $schema);
             }
         }
     }
 
-    public function __clone()
+    private function generateModelName(Model $model): string
     {
-        $this->options = new \SplObjectStorage();
-        $this->unregistered = [];
-        $this->hashes = [];
-    }
-
-    private function generateModelName(Swagger $api, ModelOptions $options): string
-    {
-        $definitions = $api->getDefinitions();
-        $base = $name = $this->getTypeShortName($options->getType());
+        $definitions = $this->api->getDefinitions();
+        $base = $name = $this->getTypeShortName($model->getType());
         $i = 1;
         while ($definitions->has($name)) {
             ++$i;

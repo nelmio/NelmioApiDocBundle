@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\Model\ModelOptions;
+use Nelmio\ApiDocBundle\Model\Model;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -27,12 +27,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $this->propertyInfo = $propertyInfo;
     }
 
-    public function describe(Schema $schema, ModelOptions $options)
+    public function describe(Model $model, Schema $schema)
     {
         $schema->setType('object');
         $properties = $schema->getProperties();
 
-        $class = $options->getType()->getClassName();
+        $class = $model->getType()->getClassName();
         foreach ($this->propertyInfo->getProperties($class) as $propertyName) {
             $types = $this->propertyInfo->getTypes($class, $propertyName);
             if (0 === count($types)) {
@@ -42,13 +42,14 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 throw new \LogicException(sprintf('Property %s::$%s defines more than one type.', $class, $propertyName));
             }
 
-            $this->modelRegistry->register($properties->get($propertyName))
-                ->setType($types[0]);
+            $properties->get($propertyName)->setRef(
+                $this->modelRegistry->register(new Model($types[0]))
+            );
         }
     }
 
-    public function supports(ModelOptions $options)
+    public function supports(Model $model)
     {
-        return Type::BUILTIN_TYPE_OBJECT === $options->getType()->getBuiltinType();
+        return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType();
     }
 }
