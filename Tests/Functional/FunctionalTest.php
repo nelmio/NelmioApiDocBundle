@@ -11,6 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use EXSyst\Component\Swagger\Operation;
+use EXSyst\Component\Swagger\Schema;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class FunctionalTest extends WebTestCase
@@ -56,12 +58,30 @@ class FunctionalTest extends WebTestCase
     {
         $operation = $this->getOperation('/api/nelmio/{foo}', 'post');
 
+        // Action
         $this->assertEquals('This action is described.', $operation->getDescription());
         $this->assertNull($operation->getDeprecated());
 
-        $foo = $operation->getParameters()->get('foo', 'path');
+        // Parameters
+        $parameters = $operation->getParameters();
+        $foo = $parameters->get('foo', 'path');
         $this->assertTrue($foo->getRequired());
         $this->assertEquals('string', $foo->getType());
+
+        // Input model
+        $this->assertTrue($parameters->has('input', 'body'));
+        $this->assertEquals('#/definitions/Dummy2', $parameters->get('input', 'body')->getSchema()->getRef());
+
+        // Responses / Status codes
+        $responses = $operation->getResponses();
+        $this->assertTrue($responses->has('200'));
+        $this->assertEquals('Returned when successful', $responses->get('200')->getDescription());
+
+        $this->assertTrue($responses->has('403'));
+        $this->assertEquals('Returned when the user is not authorized to say hello', $responses->get('403')->getDescription());
+
+        // Output model
+        $this->assertEquals('#/definitions/User', $responses->get('200')->getSchema()->getRef());
     }
 
     public function testDeprecatedAction()
@@ -81,6 +101,27 @@ class FunctionalTest extends WebTestCase
         $operation = $this->getOperation('/api/dummies/{id}', 'get');
     }
 
+    public function testUserModel()
+    {
+        $model = $this->getModel('User');
+        $this->assertEquals('object', $model->getType());
+        $properties = $model->getProperties();
+
+        $this->assertTrue($properties->has('users'));
+        $this->assertEquals('#/definitions/User[]', $properties->get('users')->getRef());
+
+        $this->assertTrue($properties->has('dummy'));
+        $this->assertEquals('#/definitions/Dummy2', $properties->get('dummy')->getRef());
+    }
+
+    public function testUsersModel()
+    {
+        $model = $this->getModel('User[]');
+        $this->assertEquals('array', $model->getType());
+
+        $this->assertEquals('#/definitions/User', $model->getItems()->getRef());
+    }
+
     private function getSwaggerDefinition()
     {
         static::createClient();
@@ -88,12 +129,20 @@ class FunctionalTest extends WebTestCase
         return static::$kernel->getContainer()->get('nelmio_api_doc.generator')->generate();
     }
 
-    private function getOperation($path, $method)
+    private function getModel($name): Schema
+    {
+        $definitions = $this->getSwaggerDefinition()->getDefinitions();
+        $this->assertTrue($definitions->has($name));
+
+        return $definitions->get($name);
+    }
+
+    private function getOperation($path, $method): Operation
     {
         $api = $this->getSwaggerDefinition();
         $paths = $api->getPaths();
 
-        $this->assertTrue($paths->has($path));
+        $this->assertTrue($paths->has($path), sprintf('Path "%s" does not exist.', $path));
         $action = $paths->get($path);
 
         $this->assertTrue($action->hasOperation($method));
