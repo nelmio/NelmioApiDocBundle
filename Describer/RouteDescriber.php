@@ -11,32 +11,27 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use Doctrine\Common\Util\ClassUtils;
 use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 final class RouteDescriber implements DescriberInterface
 {
-    private $container;
     private $routeCollection;
-    private $controllerNameParser;
+    private $controllerReflector;
     private $routeDescribers;
 
     /**
-     * @param ContainerInterface        $container
      * @param RouteCollection           $routeCollection
-     * @param ControllerNameParser      $controllerNameParser
+     * @param ControllerReflector       $controllerReflector
      * @param RouteDescriberInterface[] $routeDescribers
      */
-    public function __construct(ContainerInterface $container, RouteCollection $routeCollection, ControllerNameParser $controllerNameParser, array $routeDescribers)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, array $routeDescribers)
     {
-        $this->container = $container;
         $this->routeCollection = $routeCollection;
-        $this->controllerNameParser = $controllerNameParser;
+        $this->controllerReflector = $controllerReflector;
         $this->routeDescribers = $routeDescribers;
     }
 
@@ -47,58 +42,17 @@ final class RouteDescriber implements DescriberInterface
         }
 
         foreach ($this->routeCollection->all() as $route) {
+            if (!$route->hasDefault('_controller')) {
+                continue;
+            }
+
             // if able to resolve the controller
-            if ($method = $this->getReflectionMethod($route->getDefault('_controller') ?? '')) {
+            $controller = $route->getDefault('_controller');
+            if ($method = $this->controllerReflector->getReflectionMethod($controller)) {
                 // Extract as many informations as possible about this route
                 foreach ($this->routeDescribers as $describer) {
                     $describer->describe($api, $route, $method);
                 }
-            }
-        }
-    }
-
-    /**
-     * Returns the ReflectionMethod for the given controller string.
-     *
-     * @param string $controller
-     *
-     * @return \ReflectionMethod|null
-     */
-    private function getReflectionMethod(string $controller)
-    {
-        if (false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
-            $controller = $this->controllerNameParser->parse($controller);
-        }
-
-        if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
-            $class = $matches[1];
-            $method = $matches[2];
-        } elseif (class_exists($controller)) {
-            $class = $controller;
-            $method = '__invoke';
-        } else {
-            if (preg_match('#(.+):([\w]+)#', $controller, $matches)) {
-                $controller = $matches[1];
-                $method = $matches[2];
-            }
-
-            if ($this->container->has($controller)) {
-                if (class_exists(ClassUtils::class)) {
-                    $class = ClassUtils::getRealClass(get_class($this->container->get($controller)));
-                }
-
-                if (!isset($method) && method_exists($class, '__invoke')) {
-                    $method = '__invoke';
-                }
-            }
-        }
-
-        if (isset($class) && isset($method)) {
-            try {
-                return new \ReflectionMethod($class, $method);
-            } catch (\ReflectionException $e) {
-                // In case we can't reflect the controller, we just
-                // ignore the route
             }
         }
     }

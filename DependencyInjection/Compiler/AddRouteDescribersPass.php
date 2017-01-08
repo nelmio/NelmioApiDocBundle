@@ -22,6 +22,6 @@ class AddRouteDescribersPass implements CompilerPassInterface
     {
         $routeDescribers = $this->findAndSortTaggedServices('nelmio_api_doc.route_describer', $container);
 
-        $container->getDefinition('nelmio_api_doc.describers.route')->replaceArgument(3, $routeDescribers);
+        $container->getDefinition('nelmio_api_doc.describers.route')->replaceArgument(2, $routeDescribers);
     }
 }

@@ -11,14 +11,14 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Fixtures\SwaggerPhp;
 
-use Swagger\Annotations\Info as InfoAnnotation;
+use Swagger\Annotations\Info;
 
 /**
- * @InfoAnnotation(
+ * @Info(
  *   title="My Awesome App",
  *   version="1.3"
  * )
  */
-class Info
+class Api
 {
 }

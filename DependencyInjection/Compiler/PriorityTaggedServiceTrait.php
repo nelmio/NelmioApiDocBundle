@@ -1,8 +1,9 @@
 <?php
+
 /*
- * This file is part of the Symfony package.
+ * This file is part of the NelmioApiDocBundle package.
  *
- * (c) Fabien Potencier <fabien@symfony.com>
+ * (c) Nelmio
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -50,6 +51,7 @@ trait PriorityTaggedServiceTrait
             krsort($services);
             $services = call_user_func_array('array_merge', $services);
         }
+
         return $services;
     }
 }
