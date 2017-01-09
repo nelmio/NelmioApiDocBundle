@@ -92,18 +92,6 @@ class FunctionalTest extends WebTestCase
         $this->assertFalse($parameters->has('_format', 'path'));
     }
 
-    public function testNelmioAction()
-    {
-        $operation = $this->getOperation('/api/nelmio/{foo}', 'post');
-
-        $this->assertEquals('This action is described.', $operation->getDescription());
-        $this->assertNull($operation->getDeprecated());
-
-        $foo = $operation->getParameters()->get('foo', 'path');
-        $this->assertTrue($foo->getRequired());
-        $this->assertEquals('string', $foo->getType());
-    }
-
     public function testDeprecatedAction()
     {
         $operation = $this->getOperation('/api/deprecated', 'get');

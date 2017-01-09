@@ -2,20 +2,57 @@
 
 NelmioApiDocBundle has been entirely refactored in 3.0 to focus on Swagger
 and most of it has changed.
-However, we tried to keep its API as familiar as possible: the `@ApiDoc`
-annotation is kept and the bundle remains the same (it is required the same
-way it was in 2.0).
 
 ## Upgrade Your Annotations
 
-Some fields of the `@ApiDoc` annotation were removed as they are no
-longer used by the bundle:
+The `@ApiDoc` annotation has been removed and you must now use
+[Swagger-php](https://github.com/zircote/swagger-php) annotations.
 
-- `section`
-- `views`
-- `host`
-- `cache`
-- `resource`
-- `resourceDescription`
-- `https`, add a scheme requirement to your route instead
-- `documentation`, use `description` instead
+An upgrade example:
+```php
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
+class YourController extends Controller
+{
+    /**
+     * This is a description of your API method.
+     *
+     * @ApiDoc(
+     *  filters={
+     *      {"name"="a-filter", "dataType"="integer"},
+     *      {"name"="another-filter", "dataType"="string", "pattern"="(foo|bar) ASC|DESC"}
+     *  }
+     * )
+     */
+    public function getAction()
+    {
+    }
+}
+```
+
+will become:
+```php
+use Swagger\Annotations as SWG;
+
+class YourController extends Controller
+{
+    /**
+     * This is a description of your API method.
+     *
+     * @SWG\Parameter(
+     *     name="a-filter",
+     *     in="query",
+     *     type="integer"
+     * )
+     * @SWG\Parameter(
+     *     name="another-filter",
+     *     in="query",
+     *     type="string",
+     *     format="(foo|bar) ASC|DESC"
+     * )
+     */
+    public function getAction()
+    {
+    }
+}
+```
