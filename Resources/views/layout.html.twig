@@ -397,6 +397,7 @@
     };
 
     var displayCurl = function(method, url, headers, data, result_container) {
+
         var escapeShell = function(param) {
             param = "" + param;
             return '"' + param.replace(/(["\s'$`\\])/g,'\\$1') + '"';
@@ -628,7 +629,7 @@
                 "nonce: " + nonce + "\r\n\r\n";
 
             if(('POST' == method) || ('PUT' == method)) {
-                message = message + decodeURIComponent(jQuery.param(data));
+                message = message + jQuery.param(data);
             }
 
             var hash = CryptoJS.HmacSHA256(message, api_secret);
