@@ -38,7 +38,7 @@ final class DefaultDescriber implements DescriberInterface
                 $operation = $path->getOperation($method);
 
                 // Default Response
-                if (0 === iterator_count($operation->getResponses())) {
+                if (0 === count($operation->getResponses())) {
                     $defaultResponse = $operation->getResponses()->get('default');
                     $defaultResponse->setDescription('');
                 }

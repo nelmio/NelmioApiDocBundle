@@ -14,6 +14,9 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\Dummy;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
 
@@ -35,11 +38,19 @@ class ApiController
 
     /**
      * @Route("/swagger/implicit", methods={"GET", "POST"})
-     * @SWG\Response(response="201", description="Operation automatically detected")
+     * @SWG\Response(
+     *     response="201",
+     *     description="Operation automatically detected",
+     *     @Model(type="Nelmio\ApiDocBundle\Tests\Functional\Entity\User")
+     * )
      * @SWG\Parameter(
      *     name="foo",
-     *     in="query",
-     *     description="This is a parameter"
+     *     in="body",
+     *     description="This is a parameter",
+     *     @SWG\Schema(
+     *         type="array",
+     *         @Model(type="Nelmio\ApiDocBundle\Tests\Functional\Entity\User")
+     *     )
      * )
      */
     public function implicitSwaggerAction()

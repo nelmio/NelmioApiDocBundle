@@ -17,8 +17,10 @@ use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-final class RouteDescriber implements DescriberInterface
+final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInterface
 {
+    use ModelRegistryAwareTrait;
+
     private $routeCollection;
     private $controllerReflector;
     private $routeDescribers;
@@ -51,6 +53,10 @@ final class RouteDescriber implements DescriberInterface
             if ($method = $this->controllerReflector->getReflectionMethod($controller)) {
                 // Extract as many informations as possible about this route
                 foreach ($this->routeDescribers as $describer) {
+                    if ($describer instanceof ModelRegistryAwareInterface) {
+                        $describer->setModelRegistry($this->modelRegistry);
+                    }
+
                     $describer->describe($api, $route, $method);
                 }
             }

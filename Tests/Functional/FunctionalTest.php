@@ -11,6 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use EXSyst\Component\Swagger\Operation;
+use EXSyst\Component\Swagger\Schema;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class FunctionalTest extends WebTestCase
@@ -50,11 +52,16 @@ class FunctionalTest extends WebTestCase
 
         $responses = $operation->getResponses();
         $this->assertTrue($responses->has('201'));
-        $this->assertEquals('Operation automatically detected', $responses->get('201')->getDescription());
+        $response = $responses->get('201');
+        $this->assertEquals('Operation automatically detected', $response->getDescription());
+        $this->assertEquals('#/definitions/User', $response->getSchema()->getRef());
 
         $parameters = $operation->getParameters();
-        $this->assertTrue($parameters->has('foo', 'query'));
-        $this->assertEquals('This is a parameter', $parameters->get('foo', 'query')->getDescription());
+        $this->assertTrue($parameters->has('foo', 'body'));
+        $parameter = $parameters->get('foo', 'body');
+
+        $this->assertEquals('This is a parameter', $parameter->getDescription());
+        $this->assertEquals('#/definitions/User', $parameter->getSchema()->getItems()->getRef());
     }
 
     public function implicitSwaggerActionMethodsProvider()
@@ -109,6 +116,27 @@ class FunctionalTest extends WebTestCase
         $operation = $this->getOperation('/api/dummies/{id}', 'get');
     }
 
+    public function testUserModel()
+    {
+        $model = $this->getModel('User');
+        $this->assertEquals('object', $model->getType());
+        $properties = $model->getProperties();
+
+        $this->assertTrue($properties->has('users'));
+        $this->assertEquals('#/definitions/User[]', $properties->get('users')->getRef());
+
+        $this->assertTrue($properties->has('dummy'));
+        $this->assertEquals('#/definitions/Dummy2', $properties->get('dummy')->getRef());
+    }
+
+    public function testUsersModel()
+    {
+        $model = $this->getModel('User[]');
+        $this->assertEquals('array', $model->getType());
+
+        $this->assertEquals('#/definitions/User', $model->getItems()->getRef());
+    }
+
     private function getSwaggerDefinition()
     {
         static::createClient();
@@ -116,12 +144,20 @@ class FunctionalTest extends WebTestCase
         return static::$kernel->getContainer()->get('nelmio_api_doc.generator')->generate();
     }
 
-    private function getOperation($path, $method)
+    private function getModel($name): Schema
+    {
+        $definitions = $this->getSwaggerDefinition()->getDefinitions();
+        $this->assertTrue($definitions->has($name));
+
+        return $definitions->get($name);
+    }
+
+    private function getOperation($path, $method): Operation
     {
         $api = $this->getSwaggerDefinition();
         $paths = $api->getPaths();
 
-        $this->assertTrue($paths->has($path), sprintf('Path "%s" does not exist', $path));
+        $this->assertTrue($paths->has($path), sprintf('Path "%s" does not exist.', $path));
         $action = $paths->get($path);
 
         $this->assertTrue($action->hasOperation($method), sprintf('Operation "%s" for path "%s" does not exist', $path, $method));

@@ -5,7 +5,8 @@
 
     <services>
         <service id="nelmio_api_doc.generator" class="Nelmio\ApiDocBundle\ApiDocGenerator">
-            <argument type="collection" />
+            <argument type="collection" /> <!-- Describers -->
+            <argument type="collection" /> <!-- Model Describers -->
         </service>
 
         <service id="nelmio_api_doc.controller_reflector" class="Nelmio\ApiDocBundle\Util\ControllerReflector" public="false">
@@ -17,7 +18,6 @@
         <service id="nelmio_api_doc.describers.route.filtered_route_collection_builder" class="Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder" public="false">
             <argument type="collection" /> <!-- Path patterns -->
         </service>
-
 
         <service id="nelmio_api_doc.describers.route" class="Nelmio\ApiDocBundle\Describer\RouteDescriber" public="false">
             <argument type="service">
@@ -33,16 +33,31 @@
             <argument type="service" id="nelmio_api_doc.controller_reflector" />
             <argument type="collection" />
 
-            <tag name="nelmio_api_doc.describer" priority="-100" />
+            <tag name="nelmio_api_doc.describer" priority="-400" />
         </service>
 
         <service id="nelmio_api_doc.describers.default" class="Nelmio\ApiDocBundle\Describer\DefaultDescriber" public="false">
             <tag name="nelmio_api_doc.describer" priority="-1000" />
         </service>
 
-        <!-- Routing Extractors -->
+        <!-- Routing Describers -->
         <service id="nelmio_api_doc.route_describers.route_metadata" class="Nelmio\ApiDocBundle\RouteDescriber\RouteMetadataDescriber" public="false">
-            <tag name="nelmio_api_doc.route_describer" priority="-100" />
+            <tag name="nelmio_api_doc.route_describer" priority="-300" />
+        </service>
+
+        <!-- Model Describers -->
+        <service id="nelmio_api_doc.model_describers.object" class="Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber" public="false">
+            <argument type="service" id="property_info" />
+
+            <tag name="nelmio_api_doc.model_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.model_describers.collection" class="Nelmio\ApiDocBundle\ModelDescriber\CollectionModelDescriber" public="false">
+            <tag name="nelmio_api_doc.model_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.model_describers.scalar" class="Nelmio\ApiDocBundle\ModelDescriber\ScalarModelDescriber" public="false">
+            <tag name="nelmio_api_doc.model_describer" />
         </service>
     </services>
 
