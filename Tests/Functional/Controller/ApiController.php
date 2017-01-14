@@ -63,16 +63,6 @@ class ApiController
     }
 
     /**
-     * @Route("/nelmio/{foo}", methods={"POST"})
-     * @ApiDoc(
-     *   description="This action is described."
-     * )
-     */
-    public function nelmioAction()
-    {
-    }
-
-    /**
      * This action is deprecated.
      *
      * Please do not use this action.

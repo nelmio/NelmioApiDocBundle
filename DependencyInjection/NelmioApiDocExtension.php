@@ -36,7 +36,6 @@ final class NelmioApiDocExtension extends Extension
         $routeCollectionBuilder->replaceArgument(0, $config['routes']['path_patterns']);
 
         // Import services needed for each library
-        $loader->load('nelmio_apidoc.xml');
         if (class_exists(DocBlockFactory::class)) {
             $loader->load('php_doc.xml');
         }
