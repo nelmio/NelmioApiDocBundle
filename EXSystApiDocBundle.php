@@ -14,10 +14,11 @@ namespace Nelmio\ApiDocBundle;
 use Nelmio\ApiDocBundle\DependencyInjection\Compiler\AddDescribersPass;
 use Nelmio\ApiDocBundle\DependencyInjection\Compiler\AddModelDescribersPass;
 use Nelmio\ApiDocBundle\DependencyInjection\Compiler\AddRouteDescribersPass;
+use Nelmio\ApiDocBundle\DependencyInjection\EXSystApiDocExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class NelmioApiDocBundle extends Bundle
+final class EXSystApiDocBundle extends Bundle
 {
     /**
      * {@inheritdoc}
@@ -25,7 +26,20 @@ final class NelmioApiDocBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new AddDescribersPass());
-        $container->addCompilerPass(new AddModelDescribersPass());
         $container->addCompilerPass(new AddRouteDescribersPass());
+        $container->addCompilerPass(new AddModelDescribersPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContainerExtension()
+    {
+        if (null === $this->extension) {
+            $this->extension = new EXSystApiDocExtension();
+        }
+        if ($this->extension) {
+            return $this->extension;
+        }
     }
 }

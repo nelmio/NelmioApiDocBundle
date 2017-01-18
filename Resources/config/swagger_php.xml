@@ -10,7 +10,16 @@
               <argument type="service" id="nelmio_api_doc.describers.swagger_php.operation_resolver" />
             </call>
 
-            <tag name="nelmio_api_doc.describer" priority="-300" />
+            <tag name="nelmio_api_doc.describer" priority="-200" />
+        </service>
+
+        <service id="nelmio_api_doc.describers.swagger_php.path_resolver" class="Nelmio\ApiDocBundle\SwaggerPhp\PathResolver" public="false">
+            <argument type="service">
+                <service class="Symfony\Component\Routing\RouteCollection">
+                    <factory service="router" method="getRouteCollection" />
+                </service>
+            </argument>
+            <argument type="service" id="nelmio_api_doc.controller_reflector" />
         </service>
 
         <service id="nelmio_api_doc.describers.swagger_php.operation_resolver" class="Nelmio\ApiDocBundle\SwaggerPhp\OperationResolver" public="false">
