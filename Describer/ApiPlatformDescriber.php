@@ -19,7 +19,19 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
     public function __construct(Documentation $documentation, DocumentationNormalizer $normalizer, bool $overwrite = false)
     {
         parent::__construct(function () use ($documentation, $normalizer) {
-            return (array) $normalizer->normalize($documentation);
+            $documentation = (array) $normalizer->normalize($documentation);
+            // Remove base path
+            if (isset($documentation['basePath'])) {
+                $paths = [];
+                foreach ($documentation['paths'] as $path => $value) {
+                    $paths['/'.ltrim($documentation['basePath'].'/'.ltrim($path, '/'), '/')] = $value;
+                }
+
+                unset($documentation['basePath']);
+                $documentation['paths'] = $paths;
+            }
+
+            return $documentation;
         }, $overwrite);
     }
 }

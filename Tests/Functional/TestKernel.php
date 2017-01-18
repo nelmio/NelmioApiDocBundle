@@ -47,6 +47,7 @@ class TestKernel extends Kernel
     {
         $routes->import(__DIR__.'/Controller/', '/', 'annotation');
         $routes->import('', '/api', 'api_platform');
+        $routes->import('@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml', '/docs');
     }
 
     /**
@@ -58,6 +59,9 @@ class TestKernel extends Kernel
             'secret' => 'MySecretKey',
             'test' => null,
             'validation' => null,
+            'templating' => [
+                'engines' => ['twig'],
+            ],
         ]);
 
         // Filter routes
