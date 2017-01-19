@@ -41,6 +41,9 @@ final class NelmioApiDocExtension extends Extension
         }
         if (class_exists(Swagger::class)) {
             $loader->load('swagger_php.xml');
+
+            $swaggerPHPDescriber = $container->getDefinition('nelmio_api_doc.describers.swagger_php');
+            $swaggerPHPDescriber->replaceArgument(0, $config['source_folder']);
         }
         if (interface_exists(ParamInterface::class)) {
             $loader->load('fos_rest.xml');
