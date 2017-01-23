@@ -22,6 +22,8 @@ final class ControllerReflector
     private $container;
     private $controllerNameParser;
 
+    private $controllers = [];
+
     public function __construct(ContainerInterface $container, ControllerNameParser $controllerNameParser)
     {
         $this->container = $container;
@@ -69,6 +71,10 @@ final class ControllerReflector
 
     private function getClassAndMethod(string $controller)
     {
+        if (isset($this->controllers[$controller])) {
+            return $this->controllers[$controller];
+        }
+
         if (false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
             $controller = $this->controllerNameParser->parse($controller);
         }
@@ -98,9 +104,11 @@ final class ControllerReflector
         }
 
         if (!isset($class) || !isset($method)) {
+            $this->controllers[$controller] = null;
+
             return;
         }
 
-        return [$class, $method];
+        return $this->controllers[$controller] = [$class, $method];
     }
 }

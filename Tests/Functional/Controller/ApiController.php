@@ -13,9 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\Dummy;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
@@ -41,7 +39,7 @@ class ApiController
      * @SWG\Response(
      *     response="201",
      *     description="Operation automatically detected",
-     *     @Model(type="Nelmio\ApiDocBundle\Tests\Functional\Entity\User")
+     *     @Model(type=User::class)
      * )
      * @SWG\Parameter(
      *     name="foo",
@@ -49,7 +47,7 @@ class ApiController
      *     description="This is a parameter",
      *     @SWG\Schema(
      *         type="array",
-     *         @Model(type="Nelmio\ApiDocBundle\Tests\Functional\Entity\User")
+     *         @Model(type=User::class)
      *     )
      * )
      */
