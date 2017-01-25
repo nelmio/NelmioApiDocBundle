@@ -17,10 +17,19 @@ use Swagger\Annotations\Swagger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class NelmioApiDocExtension extends Extension
+final class NelmioApiDocExtension extends Extension implements PrependExtensionInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $container->prependExtensionConfig('framework', ['property_info' => ['enabled' => true]]);
+    }
+
     /**
      * {@inheritdoc}
      */
