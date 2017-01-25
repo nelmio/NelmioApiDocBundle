@@ -62,6 +62,11 @@ class TestKernel extends Kernel
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
+            'documentation' => [
+                'info' => [
+                    'title' => 'My Test App',
+                ],
+            ],
             'source_folder' => '%kernel.root_dir%',
             'routes' => [
                 'path_patterns' => ['^/api(?!/admin)'],

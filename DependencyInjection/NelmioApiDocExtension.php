@@ -54,5 +54,8 @@ final class NelmioApiDocExtension extends Extension
         if (isset($bundles['ApiPlatformBundle']) && class_exists('ApiPlatform\Core\Documentation\Documentation')) {
             $loader->load('api_platform.xml');
         }
+
+        // Import the base configuration
+        $container->getDefinition('nelmio_api_doc.describers.config')->replaceArgument(0, $config['documentation']);
     }
 }

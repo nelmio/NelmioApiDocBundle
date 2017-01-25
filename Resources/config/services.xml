@@ -14,7 +14,13 @@
             <argument type="service" id="controller_name_converter" />
         </service>
 
-        <!-- Extractors -->
+        <!-- Describers -->
+        <service id="nelmio_api_doc.describers.config" class="Nelmio\ApiDocBundle\Describer\ExternalDocDescriber" public="false">
+            <argument type="collection" />
+
+            <tag name="nelmio_api_doc.describer" priority="1000" />
+        </service>
+
         <service id="nelmio_api_doc.describers.route.filtered_route_collection_builder" class="Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder" public="false">
             <argument type="collection" /> <!-- Path patterns -->
         </service>
