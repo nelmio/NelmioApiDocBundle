@@ -21,7 +21,7 @@ class ScalarModelDescriber implements ModelDescriberInterface
         Type::BUILTIN_TYPE_INT => 'integer',
         Type::BUILTIN_TYPE_FLOAT => 'float',
         Type::BUILTIN_TYPE_STRING => 'string',
-        Type::BUILTIN_TYPE_BOOL => 'boolean'
+        Type::BUILTIN_TYPE_BOOL => 'boolean',
     ];
 
     public function describe(Model $model, Schema $schema)

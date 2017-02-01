@@ -22,7 +22,6 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder
             ->root('nelmio_api_doc')
             ->children()
-                ->scalarNode('source_folder')->defaultValue('%kernel.root_dir%/../src')->end()
                 ->arrayNode('routes')
                     ->info('Filter the routes that are documented')
                     ->addDefaultsIfNotSet()
