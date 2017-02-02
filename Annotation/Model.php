@@ -22,7 +22,6 @@ final class Model extends AbstractAnnotation
     public static $_parents = [
         'Swagger\Annotations\Parameter',
         'Swagger\Annotations\Response',
-        'Swagger\Annotations\Swagger',
     ];
 
     public $type;
