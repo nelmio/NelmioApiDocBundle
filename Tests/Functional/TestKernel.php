@@ -67,8 +67,7 @@ class TestKernel extends Kernel
                     'title' => 'My Test App',
                 ],
             ],
-            'source_folder' => '%kernel.root_dir%',
-            'routes' => [
+           'routes' => [
                 'path_patterns' => ['^/api(?!/admin)'],
             ],
         ]);

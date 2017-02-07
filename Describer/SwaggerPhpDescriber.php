@@ -14,37 +14,59 @@ namespace Nelmio\ApiDocBundle\Describer;
 use Nelmio\ApiDocBundle\SwaggerPhp\AddDefaults;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
 use Nelmio\ApiDocBundle\SwaggerPhp\OperationResolver;
+use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Swagger\Analyser;
 use Swagger\Analysis;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Routing\RouteCollection;
 
 final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
-    private $operationResolver;
+    private $routeCollection;
+    private $controllerReflector;
 
-    public function __construct(string $projectPath, bool $overwrite = false)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, bool $overwrite = false)
     {
-        $nelmioNamespace = 'Nelmio\\ApiDocBundle\\';
-        if (!in_array($nelmioNamespace, Analyser::$whitelist)) {
-            Analyser::$whitelist[] = $nelmioNamespace;
-        }
+        $this->routeCollection = $routeCollection;
+        $this->controllerReflector = $controllerReflector;
 
-        parent::__construct(function () use ($projectPath) {
-            $options = ['processors' => $this->getProcessors()];
-            $annotation = \Swagger\scan($projectPath, $options);
+        parent::__construct(function () {
+            $whitelist = Analyser::$whitelist;
+            Analyser::$whitelist = false;
+            try {
+                $options = ['processors' => $this->getProcessors()];
+                $annotation = \Swagger\scan($this->getFinder(), $options);
 
-            return json_decode(json_encode($annotation));
+                return json_decode(json_encode($annotation));
+            } finally {
+                Analyser::$whitelist = $whitelist;
+            }
         }, $overwrite);
     }
 
-    /**
-     * If set, the describer will try to complete paths and create
-     * implicit operations.
-     */
-    public function setOperationResolver(OperationResolver $operationResolver)
+    private function getFinder()
     {
-        $this->operationResolver = $operationResolver;
+        $files = [];
+        foreach ($this->routeCollection->all() as $route) {
+            if (!$route->hasDefault('_controller')) {
+                continue;
+            }
+
+            // if able to resolve the controller
+            $controller = $route->getDefault('_controller');
+            if ($callable = $this->controllerReflector->getReflectionClassAndMethod($controller)) {
+                list($class, $method) = $callable;
+
+                $files[$class->getFileName()] = true;
+            }
+        }
+
+        $finder = new Finder();
+        $finder->append(array_keys($files));
+
+        return $finder;
     }
 
     private function getProcessors(): array
@@ -52,10 +74,8 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
         $processors = [
             new AddDefaults(),
             new ModelRegister($this->modelRegistry),
+            new OperationResolver($this->routeCollection, $this->controllerReflector),
         ];
-        if (null !== $this->operationResolver) {
-            $processors[] = $this->operationResolver;
-        }
 
         return array_merge($processors, Analysis::processors());
     }

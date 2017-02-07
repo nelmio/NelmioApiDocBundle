@@ -17,10 +17,19 @@ use Swagger\Annotations\Swagger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class NelmioApiDocExtension extends Extension
+final class NelmioApiDocExtension extends Extension implements PrependExtensionInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $container->prependExtensionConfig('framework', ['property_info' => ['enabled' => true]]);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,14 +45,9 @@ final class NelmioApiDocExtension extends Extension
         $routeCollectionBuilder->replaceArgument(0, $config['routes']['path_patterns']);
 
         // Import services needed for each library
+        $loader->load('swagger_php.xml');
         if (class_exists(DocBlockFactory::class)) {
             $loader->load('php_doc.xml');
-        }
-        if (class_exists(Swagger::class)) {
-            $loader->load('swagger_php.xml');
-
-            $swaggerPHPDescriber = $container->getDefinition('nelmio_api_doc.describers.swagger_php');
-            $swaggerPHPDescriber->replaceArgument(0, $config['source_folder']);
         }
         if (interface_exists(ParamInterface::class)) {
             $loader->load('fos_rest.xml');

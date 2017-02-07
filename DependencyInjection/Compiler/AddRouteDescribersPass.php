@@ -14,7 +14,10 @@ namespace Nelmio\ApiDocBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class AddRouteDescribersPass implements CompilerPassInterface
+/**
+ * @internal
+ */
+final class AddRouteDescribersPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
 

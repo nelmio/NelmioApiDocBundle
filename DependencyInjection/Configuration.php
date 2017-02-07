@@ -27,7 +27,6 @@ final class Configuration implements ConfigurationInterface
                     ->example(['info' => ['title' => 'My App']])
                     ->prototype('variable')->end()
                 ->end()
-                ->scalarNode('source_folder')->defaultValue('%kernel.root_dir%/../src')->end()
                 ->arrayNode('routes')
                     ->info('Filter the routes that are documented')
                     ->addDefaultsIfNotSet()
