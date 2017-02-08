@@ -776,7 +776,29 @@
     });
 
     $('.pane.sandbox').on('click', '.remove', function() {
+        if ($(this).parent().find('.duplicate').hasClass('max')) {
+            $(this).parent().prev().find('.duplicate').addClass('max');
+            $(this).parent().prev().find('.remove').attr('disabled', false);
+
+        }
+
         $(this).parent().remove();
+    });
+
+    $('.pane.sandbox').on('click', '.duplicate', function() {
+        var target = $(this).parent().clone();
+        el = target.find('.key');
+        el.val(el.val().replace('[7]', '[8]'));
+        el.val(el.val().replace('[6]', '[7]'));
+        el.val(el.val().replace('[5]', '[6]'));
+        el.val(el.val().replace('[4]', '[5]'));
+        el.val(el.val().replace('[3]', '[4]'));
+        el.val(el.val().replace('[2]', '[3]'));
+        el.val(el.val().replace('[1]', '[2]'));
+        el.val(el.val().replace('[0]', '[1]'));
+        $(this).parent().after(target);
+        $(this).parent().find('.remove').attr('disabled', true);
+        $(this).removeClass('max');
     });
 
     $('.pane.sandbox').on('click', '.set-content-type', function(e) {

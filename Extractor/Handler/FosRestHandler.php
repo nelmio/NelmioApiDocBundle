@@ -54,7 +54,7 @@ class FosRestHandler implements HandlerInterface
                     $annotation->addFilter($annot->name, array(
                         'requirement'   => $this->handleRequirements($annot->requirements).((property_exists($annot, 'map') ? $annot->map : $annot->array) ? '[]' : ''),
                         'description'   => $annot->description,
-                        'default'   => $annot->default,
+                        'default'       => $annot->default,
                     ));
                 } elseif ($annot->requirements !== null) {
                     $annotation->addFilter($annot->name, array(
@@ -62,9 +62,16 @@ class FosRestHandler implements HandlerInterface
                         'description'   => $annot->description,
                     ));
                 } else {
-                    $annotation->addFilter($annot->name, array(
-                        'description'   => $annot->description,
-                    ));
+                    if (isset($annot->map) && $annot->map) {
+                        $annotation->addFilter($annot->name, array(
+                            'description'   => $annot->description,
+                            'map'           => true
+                        ));
+                    } else {
+                        $annotation->setRequirements(array(
+                            'description'   => $annot->description,
+                        ));
+                    }
                 }
             }
         }
