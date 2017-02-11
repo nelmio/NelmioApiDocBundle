@@ -17,6 +17,11 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class FunctionalTest extends WebTestCase
 {
+    public function testConfiguredDocumentation()
+    {
+        $this->assertEquals('My Test App', $this->getSwaggerDefinition()->getInfo()->getTitle());
+    }
+
     public function testUndocumentedAction()
     {
         $paths = $this->getSwaggerDefinition()->getPaths();

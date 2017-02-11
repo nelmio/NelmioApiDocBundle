@@ -22,6 +22,11 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder
             ->root('nelmio_api_doc')
             ->children()
+                ->arrayNode('documentation')
+                    ->info('The documentation used as base')
+                    ->example(['info' => ['title' => 'My App']])
+                    ->prototype('variable')->end()
+                ->end()
                 ->arrayNode('routes')
                     ->info('Filter the routes that are documented')
                     ->addDefaultsIfNotSet()
