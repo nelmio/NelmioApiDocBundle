@@ -243,9 +243,11 @@
                                     <h4>Requirements</h4>
                                     {% for name, infos in data.requirements %}
                                         <p class="tuple">
-                                            <input type="text" class="key" value="{{ name }}" placeholder="Key" />
-                                            <span>=</span>
-                                            <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
+                                            <input type="text" class="key" value="{{ name }}{% if infos.map is defined %}[0]{% endif %}" placeholder="Key" />
+                                            <span>= </span>
+                                            <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/>
+                                            {% if infos.map is defined %} <button type="button" class="duplicate max"> + </button>{% endif %}
+                                            <button type="button" class="remove"> - </button>
                                         </p>
                                     {% endfor %}
                                 {% endif %}
