@@ -31,9 +31,12 @@ class CollectionDirectiveTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider dataNormalizationTests
      */
-    public function testNormalizations($input, callable $callable)
+    public function testNormalizations($input, $callable)
     {
-          call_user_func($callable, $this->normalize($input), $this);
+        if (!is_callable($callable)) {
+            throw new \InvalidArgumentException(sprintf('Argument 2 for %s must be of type callable, %s given', __METHOD__, gettype($callable)));
+        }
+        call_user_func($callable, $this->normalize($input), $this);
     }
 
     public function dataNormalizationTests()

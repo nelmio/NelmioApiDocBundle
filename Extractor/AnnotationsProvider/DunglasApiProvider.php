@@ -56,7 +56,7 @@ class DunglasApiProvider implements AnnotationsProviderInterface
      */
     public function getAnnotations()
     {
-        $annotations = [];
+        $annotations = array();
         $hydraDoc = $this->apiDocumentationBuilder->getApiDocumentation();
         $entrypointHydraDoc = $this->getResourceHydraDoc($hydraDoc, '#Entrypoint');
 
@@ -98,24 +98,25 @@ class DunglasApiProvider implements AnnotationsProviderInterface
         ResourceInterface $resource,
         OperationInterface $operation,
         array $resourceHydraDoc,
-        array $entrypointHydraDoc = []
+        array $entrypointHydraDoc = array()
     ) {
-        $method = $operation->getRoute()->getMethods()[0];
+        $methods = $operation->getRoute()->getMethods();
+        $method = $methods[0];
 
         if ($collection) {
             $operationHydraDoc = $this->getCollectionOperationHydraDoc($resource->getShortName(), $method, $entrypointHydraDoc);
         } else {
-            $operationHydraDoc = $this->getOperationHydraDoc($operation->getRoute()->getMethods()[0], $resourceHydraDoc);
+            $operationHydraDoc = $this->getOperationHydraDoc($method, $resourceHydraDoc);
         }
 
         $route = $operation->getRoute();
 
-        $data = [
+        $data = array(
             'resource' => $route->getPath(),
             'description' => $operationHydraDoc['hydra:title'],
             'resourceDescription' => $resourceHydraDoc['hydra:title'],
             'section' => $resourceHydraDoc['hydra:title'],
-        ];
+        );
 
         $entityClass = $resource->getEntityClass();
 
@@ -128,10 +129,10 @@ class DunglasApiProvider implements AnnotationsProviderInterface
         }
 
         if (Request::METHOD_GET === $method && $collection) {
-            $data['filters'] = [];
+            $data['filters'] = array();
             foreach ($resource->getFilters() as $filter) {
                 foreach ($filter->getDescription($resource) as $name => $definition) {
-                    $data['filters'][] = ['name' => $name] + $definition;
+                    $data['filters'][] = array('name' => $name) + $definition;
                 }
             }
         }
