@@ -217,7 +217,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 $vparams['actualType'] = DataTypes::DATE;
                 break;
             case 'DateTime':
-                $vparams['format'][] = '{DateTime YYYY-MM-DD HH:MM:SS}';
+                $format = property_exists($constraint, 'format') ? $constraint->format : 'YYYY-MM-DD HH:MM:SS';
+                $vparams['format'][] = "{DateTime $format}";
                 $vparams['actualType'] = DataTypes::DATETIME;
                 break;
             case 'Time':
