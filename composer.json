@@ -19,7 +19,7 @@
         "symfony/framework-bundle": "^2.8|^3.0",
         "symfony/property-info": "^2.8|^3.0",
         "exsyst/swagger": "~0.2.3",
-        "zircote/swagger-php": "dev-master"
+        "zircote/swagger-php": "^2.0.9"
     },
     "require-dev": {
         "symfony/twig-bundle": "^2.8|^3.0",
