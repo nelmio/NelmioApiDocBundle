@@ -22,6 +22,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 {
     use ModelRegistryAwareTrait;
 
+    private $propertyInfo;
+
     public function __construct(PropertyInfoExtractorInterface $propertyInfo)
     {
         $this->propertyInfo = $propertyInfo;
@@ -33,7 +35,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $properties = $schema->getProperties();
 
         $class = $model->getType()->getClassName();
-        foreach ($this->propertyInfo->getProperties($class) as $propertyName) {
+        $propertyInfoProperties = $this->propertyInfo->getProperties($class);
+        if (null === $propertyInfoProperties) {
+            return;
+        }
+        
+        foreach ($propertyInfoProperties as $propertyName) {
             $types = $this->propertyInfo->getTypes($class, $propertyName);
             if (0 === count($types)) {
                 throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s', $class, $propertyName));
