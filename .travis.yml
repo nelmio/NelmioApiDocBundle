@@ -8,6 +8,7 @@ sudo: false
 
 cache:
   directories:
+    - .phpunit
     - $HOME/.composer/cache
 
 branches:
@@ -22,4 +23,8 @@ matrix:
     - php: 7.0
       env: COMPOSER_FLAGS="--prefer-lowest"
 
+before_install: phpenv config-rm xdebug.ini
+
 install: composer update $COMPOSER_FLAGS
+
+script: ./phpunit
