@@ -42,6 +42,8 @@ If you use forms to capture GET requests, you will have to specify the
 
     public function searchAction(Request $request)
     {
+        //...
+    }
 
 Multiple response models
 ------------------------
