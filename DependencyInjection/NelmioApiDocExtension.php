@@ -13,11 +13,10 @@ namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use FOS\RestBundle\Controller\Annotations\ParamInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
-use Swagger\Annotations\Swagger;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 final class NelmioApiDocExtension extends Extension implements PrependExtensionInterface
@@ -41,7 +40,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $loader->load('services.xml');
 
         // Filter routes
-        $routeCollectionBuilder = $container->getDefinition('nelmio_api_doc.describers.route.filtered_route_collection_builder');
+        $routeCollectionBuilder = $container->getDefinition('nelmio_api_doc.filtered_route_collection_builder');
         $routeCollectionBuilder->replaceArgument(0, $config['routes']['path_patterns']);
 
         // Import services needed for each library

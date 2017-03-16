@@ -11,13 +11,15 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
+use Doctrine\Common\Annotations\Reader;
+use EXSyst\Component\Swagger\Swagger;
+use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\SwaggerPhp\AddDefaults;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
-use Nelmio\ApiDocBundle\SwaggerPhp\OperationResolver;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
-use Swagger\Analyser;
 use Swagger\Analysis;
-use Symfony\Component\Finder\Finder;
+use Swagger\Annotations as SWG;
+use Swagger\Context;
 use Symfony\Component\Routing\RouteCollection;
 
 final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelRegistryAwareInterface
@@ -26,47 +28,22 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
 
     private $routeCollection;
     private $controllerReflector;
+    private $annotationReader;
 
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, bool $overwrite = false)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, bool $overwrite = false)
     {
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
+        $this->annotationReader = $annotationReader;
 
         parent::__construct(function () {
-            $whitelist = Analyser::$whitelist;
-            Analyser::$whitelist = false;
-            try {
-                $options = ['processors' => $this->getProcessors()];
-                $annotation = \Swagger\scan($this->getFinder(), $options);
+            $analysis = $this->getAnnotations();
 
-                return json_decode(json_encode($annotation));
-            } finally {
-                Analyser::$whitelist = $whitelist;
-            }
+            $analysis->process($this->getProcessors());
+            $analysis->validate();
+
+            return json_decode(json_encode($analysis->swagger));
         }, $overwrite);
-    }
-
-    private function getFinder()
-    {
-        $files = [];
-        foreach ($this->routeCollection->all() as $route) {
-            if (!$route->hasDefault('_controller')) {
-                continue;
-            }
-
-            // if able to resolve the controller
-            $controller = $route->getDefault('_controller');
-            if ($callable = $this->controllerReflector->getReflectionClassAndMethod($controller)) {
-                list($class, $method) = $callable;
-
-                $files[$class->getFileName()] = true;
-            }
-        }
-
-        $finder = new Finder();
-        $finder->append(array_keys($files));
-
-        return $finder;
     }
 
     private function getProcessors(): array
@@ -74,9 +51,115 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
         $processors = [
             new AddDefaults(),
             new ModelRegister($this->modelRegistry),
-            new OperationResolver($this->routeCollection, $this->controllerReflector),
         ];
 
         return array_merge($processors, Analysis::processors());
+    }
+
+    private function getAnnotations(): Analysis
+    {
+        $analysis = new Analysis();
+
+        $operationAnnotations = [
+            'get' => SWG\Get::class,
+            'post' => SWG\Post::class,
+            'put' => SWG\Put::class,
+            'patch' => SWG\Patch::class,
+            'delete' => SWG\Delete::class,
+            'options' => SWG\Options::class,
+            'head' => SWG\Head::class,
+        ];
+
+        foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods)) {
+            $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
+                return $v instanceof SWG\AbstractAnnotation;
+            });
+
+            if (0 === count($annotations)) {
+                continue;
+            }
+
+            $declaringClass = $method->getDeclaringClass();
+            $context = new Context([
+                'namespace' => $method->getNamespaceName(),
+                'class' => $declaringClass->getShortName(),
+                'method' => $method->name,
+                'filename' => $method->getFileName(),
+            ]);
+            $implicitAnnotations = [];
+            foreach ($annotations as $annotation) {
+                $annotation->_context = $context;
+
+                if ($annotation instanceof Operation) {
+                    foreach ($httpMethods as $httpMethod) {
+                        $annotationClass = $operationAnnotations[$httpMethod];
+                        $operation = new $annotationClass(['_context' => $context]);
+                        $operation->path = $path;
+                        $operation->mergeProperties($annotation);
+
+                        $analysis->addAnnotation($operation, null);
+                    }
+
+                    continue;
+                }
+
+                if ($annotation instanceof SWG\Operation) {
+                    if (null === $annotation->path) {
+                        $annotation = clone $annotation;
+                        $annotation->path = $path;
+                    }
+
+                    $analysis->addAnnotation($annotation, null);
+
+                    continue;
+                }
+
+                if (!$annotation instanceof SWG\Response && !$annotation instanceof SWG\Parameter && !$annotation instanceof SWG\ExternalDocumentation) {
+                    throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', get_class($annotation), $method->getDeclaringClass()->name, $method->name));
+                }
+
+                $implicitAnnotations[] = $annotation;
+            }
+
+            if (0 === count($implicitAnnotations)) {
+                continue;
+            }
+
+            foreach ($httpMethods as $httpMethod) {
+                $annotationClass = $operationAnnotations[$httpMethod];
+                $operation = new $annotationClass(['_context' => $context, 'path' => $path, 'value' => $implicitAnnotations]);
+                $analysis->addAnnotation($operation, null);
+            }
+        }
+
+        return $analysis;
+    }
+
+    private function getMethodsToParse()
+    {
+        foreach ($this->routeCollection->all() as $route) {
+            if (!$route->hasDefault('_controller')) {
+                continue;
+            }
+
+            $controller = $route->getDefault('_controller');
+            if ($callable = $this->controllerReflector->getReflectionClassAndMethod($controller)) {
+                list($class, $method) = $callable;
+                $path = $this->normalizePath($route->getPath());
+                $httpMethods = $route->getMethods() ?: Swagger::$METHODS;
+                $httpMethods = array_map('strtolower', $httpMethods);
+
+                yield $method => [$path, $httpMethods];
+            }
+        }
+    }
+
+    private function normalizePath(string $path)
+    {
+        if (substr($path, -10) === '.{_format}') {
+            $path = substr($path, 0, -10);
+        }
+
+        return $path;
     }
 }

@@ -29,6 +29,13 @@ class FunctionalTest extends WebTestCase
         $this->assertFalse($paths->has('/api/admin'));
     }
 
+    public function testFilteredAction()
+    {
+        $paths = $this->getSwaggerDefinition()->getPaths();
+
+        $this->assertFalse($paths->has('/filtered'));
+    }
+
     /**
      * Tests that the paths are automatically resolved in Swagger annotations.
      *

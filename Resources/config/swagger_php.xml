@@ -5,12 +5,9 @@
 
     <services>
         <service id="nelmio_api_doc.describers.swagger_php" class="Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber" public="false">
-            <argument type="service">
-                <service class="Symfony\Component\Routing\RouteCollection">
-                    <factory service="router" method="getRouteCollection" />
-                </service>
-            </argument>
+            <argument type="service" id="nelmio_api_doc.filtered_route_collection" />
             <argument type="service" id="nelmio_api_doc.controller_reflector" />
+            <argument type="service" id="annotation_reader" />
 
             <tag name="nelmio_api_doc.describer" priority="-200" />
         </service>
