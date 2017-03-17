@@ -51,6 +51,7 @@ class ApiController
      *         @Model(type=User::class)
      *     )
      * )
+     * @SWG\Tag(name="implicit")
      */
     public function implicitSwaggerAction()
     {

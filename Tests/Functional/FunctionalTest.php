@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use EXSyst\Component\Swagger\Operation;
+use EXSyst\Component\Swagger\Tag;
 use EXSyst\Component\Swagger\Schema;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -61,6 +62,8 @@ class FunctionalTest extends WebTestCase
     public function testImplicitSwaggerAction($method)
     {
         $operation = $this->getOperation('/api/swagger/implicit', $method);
+
+        $this->assertEquals(array(new Tag('implicit')), $operation->getTags());
 
         $responses = $operation->getResponses();
         $this->assertTrue($responses->has('201'));
