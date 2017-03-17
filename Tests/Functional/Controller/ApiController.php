@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
@@ -26,7 +27,7 @@ class ApiController
     /**
      * @Route("/swagger", methods={"GET"})
      * @Route("/swagger2", methods={"GET"})
-     * @SWG\Get(
+     * @Operation(
      *     @SWG\Response(response="201", description="An example resource")
      * )
      */
@@ -90,6 +91,16 @@ class ApiController
      * @Route("/admin", methods={"GET"})
      */
     public function adminAction()
+    {
+    }
+
+    /**
+     * @SWG\Get(
+     *     path="/filtered",
+     *     @SWG\Response(response="201", description="")
+     * )
+     */
+    public function filteredAction()
     {
     }
 }

@@ -38,38 +38,51 @@ final class ModelRegister
     public function __invoke(Analysis $analysis)
     {
         foreach ($analysis->annotations as $annotation) {
-            if (!$annotation instanceof ModelAnnotation || $annotation->_context->not('nested')) {
-                continue;
-            }
-
-            if (!is_string($annotation->type)) {
-                // Ignore invalid annotations, they are validated later
-                continue;
-            }
-
-            $parent = $annotation->_context->nested;
-            if (!$parent instanceof Response && !$parent instanceof Parameter && !$parent instanceof Schema) {
-                continue;
-            }
-
-            $annotationClass = Schema::class;
-            if ($parent instanceof Schema) {
+            if ($annotation instanceof Response) {
+                $annotationClass = Schema::class;
+            } elseif ($annotation instanceof Parameter) {
+                if ('array' === $annotation->type) {
+                    $annotationClass = Items::class;
+                } else {
+                    $annotationClass = Schema::class;
+                }
+            } elseif ($annotation instanceof Schema) {
                 $annotationClass = Items::class;
+            } else {
+                continue;
             }
 
-            $parent->merge([new $annotationClass([
-                'ref' => $this->modelRegistry->register(new Model($this->createType($annotation->type))),
-            ])]);
-
-            // It is no longer an unmerged annotation
-            foreach ($parent->_unmerged as $key => $unmerged) {
-                if ($unmerged === $annotation) {
-                    unset($parent->_unmerged[$key]);
+            $model = null;
+            foreach ($annotation->_unmerged as $unmerged) {
+                if ($unmerged instanceof ModelAnnotation) {
+                    $model = $unmerged;
 
                     break;
                 }
             }
-            $analysis->annotations->detach($annotation);
+
+            if (null === $model || !$model instanceof ModelAnnotation) {
+                continue;
+            }
+
+            if (!is_string($model->type)) {
+                // Ignore invalid annotations, they are validated later
+                continue;
+            }
+
+            $annotation->merge([new $annotationClass([
+                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type))),
+            ])]);
+
+            // It is no longer an unmerged annotation
+            foreach ($annotation->_unmerged as $key => $unmerged) {
+                if ($unmerged === $model) {
+                    unset($annotation->_unmerged[$key]);
+
+                    break;
+                }
+            }
+            $analysis->annotations->detach($model);
         }
     }
 
