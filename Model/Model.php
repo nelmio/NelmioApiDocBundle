@@ -30,7 +30,7 @@ final class Model
         return $this->type;
     }
 
-    public function getHash()
+    public function getHash(): string
     {
         return md5(serialize($this->type));
     }

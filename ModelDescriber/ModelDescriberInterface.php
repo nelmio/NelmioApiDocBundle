@@ -18,5 +18,5 @@ interface ModelDescriberInterface
 {
     public function describe(Model $model, Schema $schema);
 
-    public function supports(Model $model);
+    public function supports(Model $model): bool;
 }

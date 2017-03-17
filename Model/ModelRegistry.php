@@ -101,11 +101,12 @@ final class ModelRegistry
         return $name;
     }
 
-    private function getTypeShortName(Type $type)
+    private function getTypeShortName(Type $type): string
     {
         if (null !== $type->getCollectionValueType()) {
             return $this->getTypeShortName($type->getCollectionValueType()).'[]';
         }
+
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
             $parts = explode('\\', $type->getClassName());
 

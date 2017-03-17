@@ -55,7 +55,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
     }
 
-    public function supports(Model $model)
+    public function supports(Model $model): bool
     {
         return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType();
     }

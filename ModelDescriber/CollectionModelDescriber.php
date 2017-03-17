@@ -28,7 +28,7 @@ class CollectionModelDescriber implements ModelDescriberInterface, ModelRegistry
         );
     }
 
-    public function supports(Model $model)
+    public function supports(Model $model): bool
     {
         return $model->getType()->isCollection() && null !== $model->getType()->getCollectionValueType();
     }

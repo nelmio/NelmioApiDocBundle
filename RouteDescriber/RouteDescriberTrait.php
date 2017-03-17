@@ -25,7 +25,7 @@ trait RouteDescriberTrait
      *
      * @return Operation[]
      */
-    private function getOperations(Swagger $api, Route $route)
+    private function getOperations(Swagger $api, Route $route): array
     {
         $path = $api->getPaths()->get($this->normalizePath($route->getPath()));
         $methods = $route->getMethods() ?: Swagger::$METHODS;
@@ -41,7 +41,7 @@ trait RouteDescriberTrait
         return $operations;
     }
 
-    private function normalizePath(string $path)
+    private function normalizePath(string $path): string
     {
         if (substr($path, -10) === '.{_format}') {
             $path = substr($path, 0, -10);

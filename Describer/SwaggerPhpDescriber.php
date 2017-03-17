@@ -135,7 +135,7 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
         return $analysis;
     }
 
-    private function getMethodsToParse()
+    private function getMethodsToParse(): \Generator
     {
         foreach ($this->routeCollection->all() as $route) {
             if (!$route->hasDefault('_controller')) {
@@ -154,7 +154,7 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
         }
     }
 
-    private function normalizePath(string $path)
+    private function normalizePath(string $path): string
     {
         if (substr($path, -10) === '.{_format}') {
             $path = substr($path, 0, -10);

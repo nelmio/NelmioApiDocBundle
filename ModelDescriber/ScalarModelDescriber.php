@@ -30,7 +30,7 @@ class ScalarModelDescriber implements ModelDescriberInterface
         $schema->setType($type);
     }
 
-    public function supports(Model $model)
+    public function supports(Model $model): bool
     {
         return isset(self::$supportedTypes[$model->getType()->getBuiltinType()]);
     }
