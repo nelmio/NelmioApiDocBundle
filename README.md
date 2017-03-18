@@ -2,10 +2,10 @@ NelmioApiDocBundle
 ==================
 
 [![Build
-Status](https://secure.travis-ci.org/nelmio/NelmioApiDocBundle.png?branch=master)](http://travis-ci.org/nelmio/NelmioApiDocBundle)
-[![Total Downloads](https://poser.pugx.org/nelmio/api-doc-bundle/downloads)](https://packagist.org/packages/nelmio/api-doc-bundle)
+Status](https://secure.travis-ci.org/jlpoveda/NelmioApiDocBundle.png?branch=master)](http://travis-ci.org/jlpoveda/NelmioApiDocBundle)
+[![Total Downloads](https://poser.pugx.org/jlpoveda/api-doc-bundle/downloads)](https://packagist.org/packages/jlpoveda/api-doc-bundle)
 [![Latest Stable
-Version](https://poser.pugx.org/nelmio/api-doc-bundle/v/stable)](https://packagist.org/packages/nelmio/api-doc-bundle)
+Version](https://poser.pugx.org/jlpoveda/api-doc-bundle/v/stable)](https://packagist.org/packages/jlpoveda/api-doc-bundle)
 
 The **NelmioApiDocBundle** bundle allows you to generate a decent documentation
 for your APIs.
@@ -17,14 +17,14 @@ For documentation, see:
 
     Resources/doc/
 
-[Read the documentation](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/index.rst)
+[Read the documentation](https://github.com/jlpoveda/NelmioApiDocBundle/blob/master/Resources/doc/index.rst)
 
 
 Contributing
 ------------
 
 See
-[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/jlpoveda/NelmioApiDocBundle/blob/master/CONTRIBUTING.md)
 file.
 
 

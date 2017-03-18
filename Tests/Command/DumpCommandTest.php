@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace NelmioApiDocBundle\Tests\Command;
+namespace JlpovedaApiDocBundle\Tests\Command;
 
 use Nelmio\ApiDocBundle\Tests\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

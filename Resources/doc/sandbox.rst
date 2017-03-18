@@ -17,7 +17,7 @@ configure this sandbox using the following parameters:
                 delivery: http          # `query`, `http`, and `header` are supported
 
                 # Required if http delivery is selected.
-                type:     basic         # `basic`, `bearer` are supported
+                type:     basic         # `basic`, `bearer` and `hmac` are supported
 
                 custom_endpoint: true   # default is `false`, if `true`, your user will be able to
                                         # specify its own endpoint

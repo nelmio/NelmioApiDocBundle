@@ -1,6 +1,6 @@
 {
-    "name": "nelmio/api-doc-bundle",
-    "description": "Generates documentation for your REST API from annotations",
+    "name": "jlpoveda/api-doc-bundle",
+    "description": "Generates documentation for your REST API from annotations and allow HMAC authentication in the sandbox",
     "keywords": ["api", "documentation", "doc", "rest"],
     "type": "symfony-bundle",
     "license": "MIT",
@@ -12,6 +12,10 @@
         {
             "name": "Symfony Community",
             "homepage": "https://github.com/nelmio/NelmioApiDocBundle/contributors"
+        },
+        {
+            "name": "jlpoveda",
+            "homepage": "https://github.com/jlpoveda/NelmioApiDocBundle"
         }
     ],
     "require": {
@@ -51,9 +55,10 @@
         "jms/serializer": "For making use of serializer information in the doc."
     },
     "autoload": {
-        "psr-0": { "Nelmio\\ApiDocBundle": "" }
+        "psr-4": {
+            "Nelmio\\ApiDocBundle\\": ""
+        }
     },
-    "target-dir": "Nelmio/ApiDocBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "2.13-dev"

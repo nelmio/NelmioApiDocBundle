@@ -237,7 +237,10 @@ class HtmlFormatter extends AbstractFormatter
             'defaultRequestFormat'  => $this->defaultRequestFormat,
             'date'                  => date(DATE_RFC822),
             'css'                   => file_get_contents(__DIR__ . '/../Resources/public/css/screen.css'),
-            'js'                    => file_get_contents(__DIR__ . '/../Resources/public/js/all.js'),
+            'js'                    =>
+                file_get_contents(__DIR__ . '/../Resources/public/js/all.js') .
+                file_get_contents(__DIR__ . '/../Resources/public/js/hmac-sha256.js') .
+                file_get_contents(__DIR__ . '/../Resources/public/js/enc-base64-min.js'),
             'motdTemplate'          => $this->motdTemplate,
             'defaultSectionsOpened' => $this->defaultSectionsOpened,
         );
