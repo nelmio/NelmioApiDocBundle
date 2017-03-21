@@ -87,6 +87,7 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
                 'filename' => $method->getFileName(),
             ]);
             $implicitAnnotations = [];
+            $tags = [];
             foreach ($annotations as $annotation) {
                 $annotation->_context = $context;
 
@@ -114,6 +115,13 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
                     continue;
                 }
 
+                if ($annotation instanceof SWG\Tag) {
+                    $annotation->validate();
+                    $tags[] = $annotation->name;
+
+                    continue;
+                }
+
                 if (!$annotation instanceof SWG\Response && !$annotation instanceof SWG\Parameter && !$annotation instanceof SWG\ExternalDocumentation) {
                     throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', get_class($annotation), $method->getDeclaringClass()->name, $method->name));
                 }
@@ -121,13 +129,13 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
                 $implicitAnnotations[] = $annotation;
             }
 
-            if (0 === count($implicitAnnotations)) {
+            if (0 === count($implicitAnnotations) && 0 === count($tags)) {
                 continue;
             }
 
             foreach ($httpMethods as $httpMethod) {
                 $annotationClass = $operationAnnotations[$httpMethod];
-                $operation = new $annotationClass(['_context' => $context, 'path' => $path, 'value' => $implicitAnnotations]);
+                $operation = new $annotationClass(['_context' => $context, 'path' => $path, 'value' => $implicitAnnotations, 'tags' => $tags]);
                 $analysis->addAnnotation($operation, null);
             }
         }
