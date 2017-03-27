@@ -299,7 +299,7 @@ class ApiDocExtractor
 
         // input (populates 'parameters' for the formatters)
         if (null !== $input = $annotation->getInput()) {
-            $parameters      = array();
+            $parameters      = $annotation->getParameters();
             $normalizedInput = $this->normalizeClassParameter($input);
 
             $supportedParsers = array();
