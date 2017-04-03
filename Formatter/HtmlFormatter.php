@@ -222,7 +222,7 @@ class HtmlFormatter extends AbstractFormatter
     /**
      * @return array
      */
-    private function getGlobalVars()
+    protected function getGlobalVars()
     {
         return array(
             'apiName'               => $this->apiName,
