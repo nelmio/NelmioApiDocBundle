@@ -115,6 +115,7 @@ class ApiDocExtractor
         $array     = array();
         $resources = array();
         $excludeSections = $this->container->getParameter('nelmio_api_doc.exclude_sections');
+        $securityContext = $this->container->get('security.context');
 
         foreach ($routes as $route) {
             if (!$route instanceof Route) {
@@ -136,7 +137,13 @@ class ApiDocExtractor
                         }
                     }
 
-                    $array[] = array('annotation' => $this->extractData($annotation, $route, $method));
+                    $annotationData = $this->extractData($annotation, $route, $method);
+
+                    if ($annotationData->getAuthentication() && !$securityContext->isGranted($annotationData->getAuthenticationRoles())) {
+                        continue;
+                    }
+
+                    $array[] = array('annotation' => $annotationData);
                 }
             }
         }
