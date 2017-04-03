@@ -268,7 +268,7 @@ class FormTypeParser implements ParserInterface
                                 unset($subForm);
                             }
 
-                            if (!LegacyFormHelper::isLegacy()) {
+                            if (LegacyFormHelper::hasBCBreaks() || !LegacyFormHelper::isLegacy()) {
                                 try {
                                     $subForm = $this->formFactory->create(get_class($type), null, $options);
                                 } catch (\Exception $e) {
