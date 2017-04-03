@@ -89,7 +89,25 @@ abstract class AbstractFormatter implements FormatterInterface
             }
         }
 
+        $newParams = $this->sortParamsList($newParams);
+
         return $newParams;
+    }
+
+    /**
+     *
+     * Sorting Required to be before not required items
+     * 
+     * @param array $params
+     * @return array
+     */
+    protected function sortParamsList(array $params)
+    {
+        uasort($params, function ($left, $right) {
+            return $right['required'] - $left['required'];
+        });
+
+        return $params;
     }
 
     /**
