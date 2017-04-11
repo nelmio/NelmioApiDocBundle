@@ -25,6 +25,15 @@ class ValidationParserTest extends WebTestCase
     {
         $container  = $this->getContainer();
 
+        if($container->has('doc_comment_extractor')){
+            $docCommentExtractor = $container->get('doc_comment_extractor');
+        }else{
+            $docCommentExtractor = $this->getMockBuilder('Nelmio\ApiDocBundle\Util\DocCommentExtractor')
+                ->disableOriginalConstructor()
+                ->getMock();
+        }
+
+
         if ($container->has('validator.mapping.class_metadata_factory')) {
             $factory = $container->get('validator.mapping.class_metadata_factory');
         } else {
@@ -34,7 +43,7 @@ class ValidationParserTest extends WebTestCase
         if (version_compare(Kernel::VERSION, '2.2.0', '<')) {
             $this->parser = new ValidationParserLegacy($factory);
         } else {
-            $this->parser = new ValidationParser($factory);
+            $this->parser = new ValidationParser($factory, $docCommentExtractor);
         }
     }
 

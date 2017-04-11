@@ -12,8 +12,10 @@
 namespace Nelmio\ApiDocBundle\Parser;
 
 use Nelmio\ApiDocBundle\DataTypes;
+use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
+use Symfony\Component\Validator\Mapping\PropertyMetadata;
 use Symfony\Component\Validator\MetadataFactoryInterface as LegacyMetadataFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Type;
@@ -44,16 +46,23 @@ class ValidationParser implements ParserInterface, PostParserInterface
     );
 
     /**
+     * @var DocCommentExtractor
+     */
+    private $docCommentExtractor;
+
+    /**
      * Requires a validation MetadataFactory.
      *
      * @param MetadataFactoryInterface|LegacyMetadataFactoryInterface $factory
+     * @param DocCommentExtractor $docCommentExtractor
      */
-    public function __construct($factory)
+    public function __construct($factory, DocCommentExtractor $docCommentExtractor)
     {
         if (!($factory instanceof MetadataFactoryInterface) && !($factory instanceof LegacyMetadataFactoryInterface)) {
             throw new \InvalidArgumentException('Argument 1 of %s constructor must be either an instance of Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface or Symfony\Component\Validator\MetadataFactoryInterface.');
         }
         $this->factory = $factory;
+        $this->docCommentExtractor = $docCommentExtractor;
     }
 
     /**
@@ -116,13 +125,17 @@ class ValidationParser implements ParserInterface, PostParserInterface
             $vparams['default'] = isset($defaults[$property]) ? $defaults[$property] : null;
 
             $pds = $classdata->getPropertyMetadata($property);
+
             foreach ($pds as $propdata) {
+
                 $constraints = $propdata->getConstraints();
 
                 foreach ($constraints as $constraint) {
                     $vparams = $this->parseConstraint($constraint, $vparams, $className, $visited);
                 }
             }
+
+            $vparams['description'] = $this->getDescription($pds[0]);
 
             if (isset($vparams['format'])) {
                 $vparams['format'] = join(', ', $vparams['format']);
@@ -143,6 +156,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
             $vparams['actualType'] = isset($vparams['actualType']) ? $vparams['actualType'] : DataTypes::STRING;
 
             $params[$property] = $vparams;
+
+
         }
 
         return $params;
@@ -313,5 +328,28 @@ class ValidationParser implements ParserInterface, PostParserInterface
         }
 
         return $choices;
+    }
+
+    /**
+     * Get description of property
+     * @param $item
+     * @return string
+     */
+    protected function getDescription($item)
+    {
+
+        if($item instanceof PropertyMetadata){
+
+            $ref = new \ReflectionClass($item->getClassName());
+
+            $extracted = $this->docCommentExtractor->getDocCommentText($ref->getProperty($item->getName()));
+
+            return $extracted;
+
+        }
+
+        return '';
+
+
     }
 }
