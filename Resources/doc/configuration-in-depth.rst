@@ -94,6 +94,16 @@ registration:
             tags:
                 - { name: nelmio_api_doc.extractor.parser, priority: 2 }
 
+
+If you want to user another Validation Parser, or want backwards Compatibility for Symfony 2.1, change the validation parser config
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+    nelmio_api_doc:
+        parser:
+            validation: MyBundl\Parser\MyValidationParser
+
 MOTD
 ----
 
@@ -130,3 +140,4 @@ cached:
         cache:
             enabled: true
             file: "/tmp/symfony-app/%kernel.environment%/api-doc.cache"
+

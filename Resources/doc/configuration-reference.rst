@@ -53,3 +53,5 @@ Configuration Reference
         cache:
             enabled:              false
             file:                 '%kernel.cache_dir%/api-doc.cache'
+        parser:
+            validation:           Nelmio\ApiDocBundle\Parser\ValidationParser
