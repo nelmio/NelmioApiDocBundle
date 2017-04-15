@@ -354,7 +354,7 @@ class ApiDoc
      */
     public function setRequirements(array $requirements)
     {
-        $this->requirements = array_merge($this->requirements, $requirements);
+        $this->requirements = array_merge( $requirements, $this->requirements);
     }
 
     /**
