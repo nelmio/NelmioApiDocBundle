@@ -319,7 +319,11 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
         if ($item instanceof VirtualPropertyMetadata) {
             $extracted = $this->commentExtractor->getDocCommentText($ref->getMethod($item->getter));
         } else {
-            $extracted = $this->commentExtractor->getDocCommentText($ref->getProperty($item->name));
+        	if ($ref->hasProperty($item->name)) {
+        		$extracted = $this->commentExtractor->getDocCommentText($ref->getProperty($item->name));
+        	} else {
+    			$extracted = '';
+        	}
         }
 
         return $extracted;
