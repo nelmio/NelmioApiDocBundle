@@ -285,6 +285,14 @@ class ValidationParser implements ParserInterface, PostParserInterface
                     }
                 }
                 break;
+            default:
+                if(method_exists($constraint, 'getValue')){
+                    $vparams['description'] = $constraint->getValue();
+                }
+                if(isset($constraint->value)){
+                    $vparams['description'] = $constraint->value;
+                }
+                break;
         }
 
         return $vparams;
