@@ -517,6 +517,11 @@
                         value = $('.value', $(this)).val();
 
                         if (value) {
+                            // convert boolean values to boolean
+                            if ('json' === bodyFormat && 'boolean' === $('.tuple_type', $(this)).val()) {
+                                value = '1' === value;
+                            }
+
                             // temporary save all additional/doubled parameters
                             if (key in params) {
                                 doubledParams[key] = value;
