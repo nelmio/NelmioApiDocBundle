@@ -252,7 +252,7 @@
                                 {% if data.filters is defined %}
                                     <h4>Filters</h4>
                                     {% for name, infos in data.filters %}
-                                        <p class="tuple">
+                                        <p class="tuple filter">
                                             <input type="text" class="key" value="{{ name }}" placeholder="Key" />
                                             <span>=</span>
                                             <input type="text" class="value" placeholder="{% if infos.description is defined %}{{ infos.description }}{% else %}Value{% endif %}" {% if infos.default is defined %} value="{{ infos.default }}" {% endif %}/> <span class="remove">-</span>
