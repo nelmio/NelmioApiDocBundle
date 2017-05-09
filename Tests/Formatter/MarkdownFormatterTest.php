@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Formatter;
+namespace Jlpoveda\ApiDocBundle\Tests\Formatter;
 
-use Nelmio\ApiDocBundle\Tests\WebTestCase;
-use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
+use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
+use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
 
 class MarkdownFormatterTest extends WebTestCase
 {
@@ -40,7 +40,7 @@ class MarkdownFormatterTest extends WebTestCase
         $container = $this->getContainer();
 
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
+        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::indexAction', 'test_route_1');
         $result     = $container->get('nelmio_api_doc.formatter.markdown_formatter')->formatOne($annotation);
 
         $expected = <<<MARKDOWN

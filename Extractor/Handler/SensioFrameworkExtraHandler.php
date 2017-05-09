@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Extractor\Handler;
+namespace Jlpoveda\ApiDocBundle\Extractor\Handler;
 
-use Nelmio\ApiDocBundle\Extractor\HandlerInterface;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\Extractor\HandlerInterface;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

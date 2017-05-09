@@ -38,7 +38,7 @@ in the ``app/AppKernel.php`` file of your project:
         {
             $bundles = array(
                 // ...
-                new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+                new Jlpoveda\ApiDocBundle\NelmioApiDocBundle(),
             );
 
             // ...

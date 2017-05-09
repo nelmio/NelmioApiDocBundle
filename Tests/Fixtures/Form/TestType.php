@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Fixtures\Form;
+namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Form;
 
-use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
+use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -48,7 +48,7 @@ class TestType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Test',
+            'data_class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\Test',
         ));
 
         return;

@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\DependencyInjection;
+namespace Jlpoveda\ApiDocBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
+
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
@@ -97,7 +98,7 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('name')->isRequired()->end()
                                 ->enumNode('type')
                                     ->info('Required if http delivery is selected.')
-                                    ->values(array('basic', 'bearer'))
+                                    ->values(array('basic', 'bearer', 'hmac'))
                                 ->end()
                                 ->booleanNode('custom_endpoint')->defaultFalse()->end()
                             ->end()

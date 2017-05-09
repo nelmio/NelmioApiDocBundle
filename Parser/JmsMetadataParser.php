@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Parser;
+namespace Jlpoveda\ApiDocBundle\Parser;
 
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
-use Nelmio\ApiDocBundle\DataTypes;
-use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
+use Jlpoveda\ApiDocBundle\DataTypes;
+use Jlpoveda\ApiDocBundle\Util\DocCommentExtractor;
 use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\Metadata\VirtualPropertyMetadata;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
@@ -36,7 +36,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
     private $namingStrategy;
 
     /**
-     * @var \Nelmio\ApiDocBundle\Util\DocCommentExtractor
+     * @var \Jlpoveda\ApiDocBundle\Util\DocCommentExtractor
      */
     private $commentExtractor;
 

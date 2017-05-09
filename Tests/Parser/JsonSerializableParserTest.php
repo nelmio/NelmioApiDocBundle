@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace NelmioApiDocBundle\Tests\Parser;
+namespace JlpovedaApiDocBundle\Tests\Parser;
 
-use Nelmio\ApiDocBundle\Parser\JsonSerializableParser;
+use Jlpoveda\ApiDocBundle\Parser\JsonSerializableParser;
 
 class JsonSerializableParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,7 +30,7 @@ class JsonSerializableParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testParser($property, $expected)
     {
-        $result = $this->parser->parse(array('class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\JsonSerializableTest'));
+        $result = $this->parser->parse(array('class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JsonSerializableTest'));
         foreach ($expected as $name => $value) {
             $this->assertArrayHasKey($property, $result);
             $this->assertArrayHasKey($name, $result[$property]);
@@ -87,19 +87,19 @@ class JsonSerializableParserTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\JsonSerializableTest',
+                'class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JsonSerializableTest',
                 'expected' => true
             ),
             array(
-                'class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\JsonSerializableRequiredConstructorTest',
+                'class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JsonSerializableRequiredConstructorTest',
                 'expected' => false
             ),
             array(
-                'class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\JsonSerializableOptionalConstructorTest',
+                'class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\JsonSerializableOptionalConstructorTest',
                 'expected' => true
             ),
             array(
-                'class' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\Popo',
+                'class' => 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Model\Popo',
                 'expected' => false
             )
         );

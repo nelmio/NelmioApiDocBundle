@@ -63,7 +63,7 @@ can be specified through the ``responseMap`` property::
      *     	200 = "FooBundle\Entity\User",
      *         400 = {
      *             "class"="CommonBundle\Model\ValidationErrors",
-     *             "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *             "parsers"={"Jlpoveda\ApiDocBundle\Parser\JmsMetadataParser"}
      *         }
      *     }
      *  )

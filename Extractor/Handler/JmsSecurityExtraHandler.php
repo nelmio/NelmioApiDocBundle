@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Extractor\Handler;
+namespace Jlpoveda\ApiDocBundle\Extractor\Handler;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
-use Nelmio\ApiDocBundle\Extractor\HandlerInterface;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\Extractor\HandlerInterface;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Routing\Route;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 

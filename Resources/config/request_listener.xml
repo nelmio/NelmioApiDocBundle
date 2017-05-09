@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="nelmio_api_doc.event_listener.request.class">Nelmio\ApiDocBundle\EventListener\RequestListener</parameter>
+        <parameter key="nelmio_api_doc.event_listener.request.class">Jlpoveda\ApiDocBundle\EventListener\RequestListener</parameter>
     </parameters>
 
     <services>

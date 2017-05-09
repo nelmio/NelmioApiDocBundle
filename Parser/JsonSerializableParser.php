@@ -3,7 +3,7 @@
  * Created by mcfedr on 30/06/15 21:03
  */
 
-namespace Nelmio\ApiDocBundle\Parser;
+namespace Jlpoveda\ApiDocBundle\Parser;
 
 class JsonSerializableParser implements ParserInterface
 {

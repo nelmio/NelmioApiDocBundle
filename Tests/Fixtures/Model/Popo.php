@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Fixtures\Model;
+namespace Jlpoveda\ApiDocBundle\Tests\Fixtures\Model;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>

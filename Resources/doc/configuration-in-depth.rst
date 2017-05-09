@@ -42,7 +42,7 @@ You can choose between different authentication methods:
 
 When choosing an ``http`` delivery, ``name`` defaults to ``Authorization``, and
 the header value will automatically be prefixed by the corresponding type (ie.
-``Basic`` or ``Bearer``).
+``Basic`` or ``Bearer`` or ``Hmac``).
 
 Section Exclusion
 -----------------
@@ -71,8 +71,8 @@ configure a list of parsers that will be used::
     output={
         "class"   = "Acme\Bundle\Entity\User",
         "parsers" = {
-            "Nelmio\ApiDocBundle\Parser\JmsMetadataParser",
-            "Nelmio\ApiDocBundle\Parser\ValidationParser"
+            "Jlpoveda\ApiDocBundle\Parser\JmsMetadataParser",
+            "Jlpoveda\ApiDocBundle\Parser\ValidationParser"
         }
     }
 

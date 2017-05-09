@@ -1,6 +1,6 @@
 <?php
 
-namespace Nelmio\ApiDocBundle\Util;
+namespace Jlpoveda\ApiDocBundle\Util;
 
 class DocCommentExtractor
 {

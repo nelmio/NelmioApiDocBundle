@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests;
+namespace Jlpoveda\ApiDocBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\HttpKernel\Kernel;
@@ -57,7 +57,7 @@ abstract class WebTestCase extends BaseWebTestCase
     {
         require_once __DIR__.'/Fixtures/app/AppKernel.php';
 
-        return 'Nelmio\ApiDocBundle\Tests\Functional\AppKernel';
+        return 'Jlpoveda\ApiDocBundle\Tests\Functional\AppKernel';
     }
 
     protected static function createKernel(array $options = array())

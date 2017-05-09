@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Parser;
+namespace Jlpoveda\ApiDocBundle\Parser;
 
 use Dunglas\ApiBundle\Api\ResourceCollectionInterface;
 use Dunglas\ApiBundle\Api\ResourceInterface;
 use Dunglas\ApiBundle\Mapping\AttributeMetadataInterface;
 use Dunglas\ApiBundle\Mapping\ClassMetadataFactoryInterface;
-use Nelmio\ApiDocBundle\DataTypes;
+use Jlpoveda\ApiDocBundle\DataTypes;
 use PropertyInfo\Type;
 
 /**

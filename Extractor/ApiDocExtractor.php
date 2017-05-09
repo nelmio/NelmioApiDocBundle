@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Extractor;
+namespace Jlpoveda\ApiDocBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Util\ClassUtils;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Nelmio\ApiDocBundle\DataTypes;
-use Nelmio\ApiDocBundle\Parser\ParserInterface;
-use Nelmio\ApiDocBundle\Parser\PostParserInterface;
-use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
+use Jlpoveda\ApiDocBundle\Annotation\ApiDoc;
+use Jlpoveda\ApiDocBundle\DataTypes;
+use Jlpoveda\ApiDocBundle\Parser\ParserInterface;
+use Jlpoveda\ApiDocBundle\Parser\PostParserInterface;
+use Jlpoveda\ApiDocBundle\Util\DocCommentExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;

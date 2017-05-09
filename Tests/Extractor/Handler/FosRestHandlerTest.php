@@ -9,9 +9,9 @@
 * file that was distributed with this source code.
 */
 
-namespace Nelmio\ApiDocBundle\Tests\Extractor;
+namespace Jlpoveda\ApiDocBundle\Tests\Extractor;
 
-use Nelmio\ApiDocBundle\Tests\WebTestCase;
+use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
 
 class FosRestHandlerTest extends WebTestCase
 {
@@ -20,7 +20,7 @@ class FosRestHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithQueryParamStrictAction', 'test_route_15');
+        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithQueryParamStrictAction', 'test_route_15');
 
         $this->assertNotNull($annotation);
 
@@ -45,7 +45,7 @@ class FosRestHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithQueryParamAction', 'test_route_8');
+        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithQueryParamAction', 'test_route_8');
 
         $this->assertNotNull($annotation);
 
@@ -69,7 +69,7 @@ class FosRestHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithQueryParamNoDefaultAction', 'test_route_16');
+        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithQueryParamNoDefaultAction', 'test_route_16');
 
         $this->assertNotNull($annotation);
 
@@ -92,7 +92,7 @@ class FosRestHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithConstraintAsRequirements', 'test_route_21');
+        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithConstraintAsRequirements', 'test_route_21');
 
         $this->assertNotNull($annotation);
 
@@ -110,7 +110,7 @@ class FosRestHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithRequestParamAction', 'test_route_11');
+        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithRequestParamAction', 'test_route_11');
 
         $this->assertNotNull($annotation);
 
@@ -136,7 +136,7 @@ class FosRestHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithNullableRequestParamAction', 'test_route_22');
+        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithNullableRequestParamAction', 'test_route_22');
 
         $this->assertNotNull($annotation);
 
@@ -162,7 +162,7 @@ class FosRestHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithArrayRequestParamAction', 'test_route_26');
+        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithArrayRequestParamAction', 'test_route_26');
 
         $this->assertNotNull($annotation);
 
@@ -180,7 +180,7 @@ class FosRestHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::routeWithQueryParamArrayRequirementsAction', 'test_route_29');
+        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::routeWithQueryParamArrayRequirementsAction', 'test_route_29');
 
         $this->assertNotNull($annotation);
         $filters = $annotation->getFilters();
@@ -194,7 +194,7 @@ class FosRestHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::routeWithQueryParamPlainArrayRequirementsAction', 'test_route_30');
+        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::routeWithQueryParamPlainArrayRequirementsAction', 'test_route_30');
 
         $this->assertNotNull($annotation);
         $filters = $annotation->getFilters();
@@ -208,7 +208,7 @@ class FosRestHandlerTest extends WebTestCase
     {
         $container  = $this->getContainer();
         $extractor  = $container->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $annotation = $extractor->get('Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithRequirementParamNotSet', 'test_route_31');
+        $annotation = $extractor->get('Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController::zActionWithRequirementParamNotSet', 'test_route_31');
 
         $this->assertNotNull($annotation);
 

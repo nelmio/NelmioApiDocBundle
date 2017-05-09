@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Fixtures;
+namespace Jlpoveda\ApiDocBundle\Tests\Fixtures;
 
-use Nelmio\ApiDocBundle\Util\LegacyFormHelper;
+use Jlpoveda\ApiDocBundle\Util\LegacyFormHelper;
 
 /**
  * This class is used to have dynamic annotations for BC.
- * {@see Nelmio\ApiDocBundle\Tests\Fixtures\Controller\TestController}
+ * {@see Jlpoveda\ApiDocBundle\Tests\Fixtures\Controller\TestController}
  *
  * @author Ener-Getick <egetick@gmail.com>
  */
@@ -27,6 +27,6 @@ if (LegacyFormHelper::isLegacy()) {
 } else {
     class DependencyTypePath
     {
-        const TYPE = 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType';
+        const TYPE = 'Jlpoveda\ApiDocBundle\Tests\Fixtures\Form\DependencyType';
     }
 }

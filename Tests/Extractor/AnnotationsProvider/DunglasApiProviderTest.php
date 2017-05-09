@@ -9,9 +9,9 @@
 * file that was distributed with this source code.
 */
 
-namespace Nelmio\ApiDocBundle\Tests\Extractor\AnnotationsProvider;
+namespace Jlpoveda\ApiDocBundle\Tests\Extractor\AnnotationsProvider;
 
-use Nelmio\ApiDocBundle\Tests\WebTestCase;
+use Jlpoveda\ApiDocBundle\Tests\WebTestCase;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
@@ -36,7 +36,7 @@ class DunglasApiProviderTest extends WebTestCase
         $this->assertCount(5, $annotations);
 
         foreach ($annotations as $annotation) {
-            $this->assertInstanceOf('Nelmio\ApiDocBundle\Annotation\ApiDoc', $annotation);
+            $this->assertInstanceOf('Jlpoveda\ApiDocBundle\Annotation\ApiDoc', $annotation);
             $this->assertInstanceOf('Symfony\Component\Routing\Route', $annotation->getRoute());
             $this->assertTrue('' != $annotation->getDescription());
         }
