@@ -79,6 +79,18 @@ to enable it:
         templating:
             engines: ['twig']
 
+Step 5: Additional configurations
+---------------------------------
+
+To hide FormType object from parameters set ``show_form_type`` to ``false``:
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+    nelmio_api_doc:
+        parser:
+            show_form_type: false
+
 Usage
 -----
 

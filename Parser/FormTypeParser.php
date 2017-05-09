@@ -41,6 +41,11 @@ class FormTypeParser implements ParserInterface
     protected $entityToChoice;
 
     /**
+     * @var boolean
+     */
+    protected $showFormType;
+
+    /**
      * @var array
      *
      * @deprecated since 2.12, to be removed in 3.0. Use $extendedMapTypes instead.
@@ -105,10 +110,11 @@ class FormTypeParser implements ParserInterface
         ),
     );
 
-    public function __construct(FormFactoryInterface $formFactory, $entityToChoice)
+    public function __construct(FormFactoryInterface $formFactory, $entityToChoice, $showFormType)
     {
         $this->formFactory    = $formFactory;
         $this->entityToChoice = (boolean) $entityToChoice;
+        $this->showFormType   = (boolean) $showFormType;
     }
 
     /**
@@ -176,6 +182,10 @@ class FormTypeParser implements ParserInterface
             $dataType = sprintf('object (%s)', $subType);
         }
 
+        if (!$this->showFormType) {
+            return $this->parseForm($form, $name);
+        }
+
         return array(
             $name => array(
                 'required'    => true,
@@ -199,10 +209,11 @@ class FormTypeParser implements ParserInterface
         }
     }
 
-    private function parseForm($form)
+    private function parseForm($form, $formName = null)
     {
         $parameters = array();
         foreach ($form as $name => $child) {
+            $name =($formName)? $formName.'['.$name.']':$name;
             $config     = $child->getConfig();
             $options    = $config->getOptions();
             $bestType   = '';

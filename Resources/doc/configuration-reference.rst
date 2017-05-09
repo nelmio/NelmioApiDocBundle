@@ -9,6 +9,8 @@ Configuration Reference
         default_sections_opened:  true
         motd:
             template:             'NelmioApiDocBundle::Components/motd.html.twig'
+        parser:
+            show_form_type:       true
         request_listener:
             enabled:              true
             parameter:            _doc
