@@ -12,12 +12,13 @@ for your APIs.
 
 ## Installation
 
-Just like any bundle, you have to download it using composer:
+First, open a command console, enter your project directory and execute the following command to download the latest stable version of this bundle:
+
 ```
-composer require nelmio/api-doc-bundle dev-master
+composer require nelmio/api-doc-bundle dev-dev
 ```
 
-And then add it to your kernel:
+Then add the bundle to your kernel:
 ```php
 class AppKernel extends Kernel
 {
@@ -34,46 +35,104 @@ class AppKernel extends Kernel
 }
 ```
 
-And that's all, no configuration needed!
+To access your documentation in your browser, register the following route:
+
+```yml
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
+    prefix:   /api/doc
+```
 
 ## What does this bundle?
 
 It generates you a swagger documentation from your symfony app thanks to
-different sources called _Describers_. These _Describers_ are specific
-to a library and extract data from it and merge it into your swagger
-documentation.
+_Describers_. Each of this _Describers_ extract infos from various sources.
+For instance, one extract data from SwaggerPHP annotations, one from your
+routes, etc.
 
-You can fetch your swagger documentation in your app:
+If you configured the route above, you can browse your documentation at
+`http://example.org/api/doc`.
+
+## Configure the bundle
+
+If you just installed the bundle, you'll likely see routes you don't want in
+your documentation such as `/_profiler/`.
+To fix this, you can filter the routes that are documented by configuring the
+bundle:
+
+```yml
+# app/config/config.yml
+nelmio_api_doc:
+    routes:
+        path_patterns: # an array of regexps
+            - ^/api
+```
+
+## Use the bundle
+
+You can configure globally your documentation in the config (take a look at
+[the Swagger specification](http://swagger.io/specification/) to know the fields
+available):
+
+```yml
+nelmio_api_doc:
+    documentation:
+        info:
+            title: My App
+            description: This is an awesome app!
+            version: 1.0.0
+```
+
+To document your routes, you can use annotations in your controllers:
+
 ```php
-$generator = $container->get('nelmio_api_doc.generator');
-$swagger = $generator->generate()->toArray();
+use AppBundle\Entity\User;
+use AppBundle\Entity\Reward;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Swagger\Annotations as SWG;
+
+class DefaultController
+{
+    /*
+     * @Route("/api/{user}/rewards", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the rewards of an user",
+     *     @SWG\Schema(
+     *         type="array",
+     *         @Model(type=Reward::class)
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="order",
+     *     in="query",
+     *     type="string",
+     *     description="The field used to order rewards"
+     * )
+     * @SWG\Tag(name="rewards")
+     */
+    public function indexAction(User $user)
+    {
+        // ...
+    }
+}
 ```
 
 ## What's supported?
 
 This bundle supports _Symfony_ route requirements, PHP annotations,
-[the `ApiDoc` annotation](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Annotation/ApiDoc.php),
 [_Swagger-Php_](https://github.com/zircote/swagger-php) annotations,
-[_FOSRestBundle_](https://github.com/FriendsOfSymfony/FOSRestBundle) annotations and
-[_Api-Platform_](https://github.com/api-platform/api-platform) apps.
+[_FOSRestBundle_](https://github.com/FriendsOfSymfony/FOSRestBundle) annotations
+and apps using [_Api-Platform_](https://github.com/api-platform/api-platform).
 
-This bundle is a **Work In Progress** and as such it does only support input
-documentation for now (if you use _Swagger-Php_ or _Api-Platform_, output is supported as well).
-
-## What's next?
-
-The hardest part remain: **models**. We have to build something to
-manage models that can vary based on several factors (serialization
-groups, class, etc.) and then put it in the app's documentation.
-
-Other libraries support might be added but the priority is to finalize the bundle first.
+It supports models through the ``@Model`` annotation.
 
 ## Contributing
 
 See
 [CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/master/CONTRIBUTING.md)
 file.
-
 
 ## Running the Tests
 
@@ -83,11 +142,9 @@ Install the [Composer](http://getcomposer.org/) dependencies:
     cd NelmioApiDocBundle
     composer update
 
-Then, run the test suite using
-[PHPUnit](https://github.com/sebastianbergmann/phpunit/):
+Then run the test suite:
 
-    phpunit
-
+    ./phpunit
 
 ## License
 
