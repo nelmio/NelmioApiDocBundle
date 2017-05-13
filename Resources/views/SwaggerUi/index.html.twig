@@ -1,0 +1,53 @@
+{# This file is part of the API Platform project.
+
+(c) Kévin Dunglas <dunglas@gmail.com>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code. #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NelmioApiDocBundle</title>
+
+    <link href="{{ asset('bundles/nelmioapidoc/swagger-ui/css/typography.css') }}" media="screen" rel="stylesheet">
+    <link href="{{ asset('bundles/nelmioapidoc/swagger-ui/css/reset.css') }}" media="screen" rel="stylesheet">
+    <link href="{{ asset('bundles/nelmioapidoc/swagger-ui/css/screen.css') }}" media="screen" rel="stylesheet">
+    <link href="{{ asset('bundles/nelmioapidoc/swagger-ui/css/reset.css') }}" media="print" rel="stylesheet">
+    <link href="{{ asset('bundles/nelmioapidoc/swagger-ui/css/print.css') }}" media="print" rel="stylesheet">
+
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/object-assign-pollyfill.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/jquery-1.8.0.min.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/jquery.slideto.min.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/jquery.wiggle.min.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/jquery.ba-bbq.min.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/handlebars-4.0.5.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/lodash.min.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/backbone-min.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/swagger-ui.min.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/highlight.9.1.0.pack.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/jsoneditor.min.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/marked.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/lib/swagger-oauth.js') }}"></script>
+    <script src="{{ asset('bundles/nelmioapidoc/init-swagger-ui.js') }}"></script>
+
+    {# json_encode(65) is for JSON_UNESCAPED_SLASHES|JSON_HEX_TAG to avoid JS XSS #}
+    <script id="swagger-data" type="application/json">{{ swagger_data|json_encode(65)|raw }}</script>
+</head>
+
+<body class="swagger-section">
+    <div id="header" style="background-color: #253032; height: 35px">
+        <div class="swagger-ui-wrap">
+            <a id="logo" href="https://github.com/nelmio/NelmioApiDocBundle"><img height="48" src="{{ asset('bundles/nelmioapidoc/logo.png') }}" alt="API Platform" style="position: relative; right: 10px"></a>
+        </div>
+    </div>
+
+    <div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
+    <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+
+    <div class="swagger-ui-wrap" style="margin-top: 20px; margin-bottom: 20px;">
+        &copy; 2017 <a href="https://api-platform.com">Api-Platform</a>
+    </div>
+</body>
+</html>
