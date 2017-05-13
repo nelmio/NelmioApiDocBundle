@@ -381,19 +381,19 @@ class ApiDocTest extends TestCase
     {
         $route = new Route(
             '/path/{foo}',
-            [
+            array(
                 'foo' => 'bar',
-                'nested' => [
+                'nested' => array(
                     'key1' => 'value1',
                     'key2' => 'value2',
-                ]
-            ],
-            [],
-            [],
+                ),
+            ),
+            array(),
+            array(),
             '{foo}.awesome_host.com'
         );
 
-        $apiDoc = new ApiDoc([]);
+        $apiDoc = new ApiDoc(array());
         $apiDoc->setRoute($route);
 
         $this->assertSame($route, $apiDoc->getRoute());

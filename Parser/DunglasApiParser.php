@@ -131,8 +131,9 @@ class DunglasApiParser implements ParserInterface
             'readonly' => !$attributeMetadata->isWritable(),
         );
 
-        if (null == $type) {
-            if (!isset($attributeMetadata->getTypes()[0])) {
+        if (null === $type) {
+            $attributeTypes = $attributeMetadata->getTypes();
+            if (!isset($attributeTypes[0])) {
                 // Default to string
                 $data['dataType'] = DataTypes::STRING;
 
@@ -140,7 +141,7 @@ class DunglasApiParser implements ParserInterface
             }
 
             // Use the first type found as primary
-            $type = $attributeMetadata->getTypes()[0];
+            $type = $attributeTypes[0];
         }
 
         if ($type->isCollection()) {
@@ -185,7 +186,7 @@ class DunglasApiParser implements ParserInterface
 
             $data['actualType'] = DataTypes::MODEL;
             $data['subType'] = $class;
-            $data['children'] = in_array($class, $visited) ? [] : $this->parseClass($resource, $class, $io, $visited);
+            $data['children'] = in_array($class, $visited) ? array() : $this->parseClass($resource, $class, $io, $visited);
 
             return $data;
         }

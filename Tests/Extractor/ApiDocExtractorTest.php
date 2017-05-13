@@ -443,19 +443,19 @@ class ApiDocExtractorTest extends WebTestCase
         $mergeMethod = new \ReflectionMethod('Nelmio\ApiDocBundle\Extractor\ApiDocExtractor', 'mergeParameters');
         $mergeMethod->setAccessible(true);
 
-        $p1 = [
-            'myPropName' => [
+        $p1 = array(
+            'myPropName' => array(
                 'dataType'    => 'string',
                 'actualType'  => 'string',
                 'subType'     => null,
                 'required'    => null,
                 'description' => null,
                 'readonly'    => null,
-            ]
-        ];
+            ),
+        );
 
-        $p2 = [
-            'myPropName' => [
+        $p2 = array(
+            'myPropName' => array(
                 'dataType'    => 'string',
                 'actualType'  => 'string',
                 'subType'     => null,
@@ -463,10 +463,10 @@ class ApiDocExtractorTest extends WebTestCase
                 'description' => null,
                 'readonly'    => null,
                 'default'     => '',
-            ]
-        ];
+            ),
+        );
 
-        $mergedResult = $mergeMethod->invokeArgs($extractor, [$p1, $p2]);
+        $mergedResult = $mergeMethod->invokeArgs($extractor, array($p1, $p2));
         $this->assertEquals($p2, $mergedResult);
     }
 }
