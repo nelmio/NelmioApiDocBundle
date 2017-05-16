@@ -199,7 +199,9 @@ class ModelRegistry
             }
 
             $model['properties'] = $properties;
-            $model['required'] = $required;
+            if( !empty($required) ){
+                $model['required'] = $required;
+            }
             $this->models[$id] = $model;
         }
 
