@@ -15,10 +15,25 @@ class RegisterExtractorParsersPass implements CompilerPassInterface
         }
 
         $definition = $container->getDefinition('nelmio_api_doc.extractor.api_doc_extractor');
+        $parserList = $container->getParameter('nelmio_api_doc.ignore_parsers');
 
         //find registered parsers and sort by priority
         $sortedParsers = array();
         foreach ($container->findTaggedServiceIds('nelmio_api_doc.extractor.parser') as $id => $tagAttributes) {
+
+            $class = $container->getDefinition($id)->getClass();
+            $matches = [];
+            if (preg_match('/^%(.*)%$/', $class, $matches)) {
+                $class = $container->getParameter($matches[1]);
+                $class = explode('\\', $class);
+                $class = array_pop($class);
+            }
+
+            // Cause of BC the rule is only available for configured parsers
+            if (in_array($class, $parserList)) {
+                continue;
+            }
+
             foreach ($tagAttributes as $attributes) {
                 $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
                 $sortedParsers[$priority][] = $id;

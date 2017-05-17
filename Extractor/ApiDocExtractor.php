@@ -276,6 +276,14 @@ class ApiDocExtractor
     }
 
     /**
+     * @return array
+     */
+    public function getParser()
+    {
+        return $this->parsers;
+    }
+
+    /**
      * Returns a new ApiDoc instance with more data.
      *
      * @param  ApiDoc            $annotation
