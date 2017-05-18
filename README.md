@@ -10,6 +10,10 @@ Version](https://poser.pugx.org/nelmio/api-doc-bundle/v/stable)](https://packagi
 The **NelmioApiDocBundle** bundle allows you to generate a decent documentation
 for your APIs.
 
+## Migrate from 2.x to 3.0
+
+[To migrate from 2.x to 3.0, just follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/dev/UPGRADE-3.0.md)
+
 ## Installation
 
 First, open a command console, enter your project directory and execute the following command to download the latest stable version of this bundle:
@@ -38,6 +42,7 @@ class AppKernel extends Kernel
 To access your documentation in your browser, register the following route:
 
 ```yml
+# app/config/routing.yml
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
     prefix:   /api/doc
