@@ -51,6 +51,12 @@
             <br style="clear: both;" />
         </div>
         {% include motdTemplate %}
+        <div id="expand_collapse_options">
+            <div class="actions">
+                <a id="action-expand-all" href="#">Expand All</a>
+                <a id="action-collapse-all" href="#">Collapse All</a>
+            </div>
+        </div>
         <div class="container" id="resources_container">
             <ul id="resources">
                 {% block content %}{% endblock %}
@@ -145,6 +151,16 @@
                 }
                 $(section).find('ul').slideDown('fast');
                 $(section).find('.operation > .content').slideDown('fast');
+            });
+            
+            $('#action-expand-all').on('click', function(){
+                $('#resources li').addClass('active');
+                $('#resources li ul.section-list').css('display','block');
+            });
+
+            $('#action-collapse-all').on('click', function(){
+                $('#resources li').removeClass('active');
+                $('#resources li ul.section-list').css('display','none');
             });
 
             {% if enableSandbox %}
