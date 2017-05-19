@@ -75,3 +75,22 @@ nelmio_api_doc:
             contact: user@domain.tld
             license: MIT
             licenseUrl: http://opensource.org/licenses/MIT
+    swagger2:
+        base_path: /api
+        schemes: ['http', 'https']
+        consumes: ['application/json', 'text/xml']
+        produces: ['application/json', 'text/xml']
+        info:
+          version: 3.14
+          title: Nelmio Swagger2
+          description: Testing Swagger2 integration.
+          termsOfService: https://github.com/nelmio/NelmioApiDocBundle/blob/master/README.md
+
+          contact: 
+              name: Bez Hermoso
+              email: bezalelhermoso@gmail.com
+              url: https://github.com/nelmio/NelmioApiDocBundle
+          license:
+              name: MIT
+              url: https://opensource.org/licenses/MIT
+              
