@@ -12,13 +12,14 @@
 namespace Nelmio\ApiDocBundle\Parser;
 
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
+use JMS\Serializer\Metadata\ExpressionPropertyMetadata;
+use JMS\Serializer\Metadata\PropertyMetadata;
+use JMS\Serializer\Metadata\VirtualPropertyMetadata;
+use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
-use JMS\Serializer\Metadata\PropertyMetadata;
-use JMS\Serializer\Metadata\VirtualPropertyMetadata;
-use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 
 /**
  * Uses the JMS metadata factory to extract input/output model information
@@ -318,6 +319,8 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
         $ref = new \ReflectionClass($item->class);
         if ($item instanceof VirtualPropertyMetadata) {
             $extracted = $this->commentExtractor->getDocCommentText($ref->getMethod($item->getter));
+        } elseif ($item instanceof ExpressionPropertyMetadata) {
+            $extracted = '';
         } else {
             $extracted = $this->commentExtractor->getDocCommentText($ref->getProperty($item->name));
         }
