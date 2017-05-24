@@ -28,19 +28,19 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
     /**
      * @var \Metadata\MetadataFactoryInterface
      */
-    private $factory;
+    protected $factory;
 
     /**
      * @var PropertyNamingStrategyInterface
      */
-    private $namingStrategy;
+    protected $namingStrategy;
 
     /**
      * @var \Nelmio\ApiDocBundle\Util\DocCommentExtractor
      */
-    private $commentExtractor;
+    protected $commentExtractor;
 
-    private $typeMap = array(
+    protected $typeMap = array(
         'integer' => DataTypes::INTEGER,
         'boolean' => DataTypes::BOOLEAN,
         'string' => DataTypes::STRING,
