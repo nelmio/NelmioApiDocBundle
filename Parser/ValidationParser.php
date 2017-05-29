@@ -61,6 +61,10 @@ class ValidationParser implements ParserInterface, PostParserInterface
      */
     public function supports(array $input)
     {
+        if ($input['groups']){
+            return false;
+        }
+
         $className = $input['class'];
 
         return $this->factory->hasMetadataFor($className);
