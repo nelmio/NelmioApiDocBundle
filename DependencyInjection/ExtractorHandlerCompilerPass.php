@@ -22,13 +22,26 @@ class ExtractorHandlerCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $handlers = array();
-        foreach ($container->findTaggedServiceIds('nelmio_api_doc.extractor.handler') as $id => $attributes) {
-            $handlers[] = new Reference($id);
+        $extractorId = 'nelmio_api_doc.extractor.api_doc_extractor';
+
+        if (!$container->hasDefinition($extractorId)) {
+            return;
         }
 
-        $container
-            ->getDefinition('nelmio_api_doc.extractor.api_doc_extractor')
-            ->replaceArgument(5, $handlers);
+        $handlers = array();
+        foreach ($container->findTaggedServiceIds('nelmio_api_doc.extractor.handler') as $id => $attributes) {
+            $priority = isset($attributes[0]['priority']) ? $attributes[0]['priority'] : 0;
+            $handlers[$priority][] = new Reference($id);
+        }
+
+        if (empty($handlers)) {
+            return;
+        }
+
+        // sort by priority and flatten
+        krsort($handlers);
+        $handlers = call_user_func_array('array_merge', $handlers);
+
+        $container->getDefinition($extractorId)->replaceArgument(5, $handlers);
     }
 }
