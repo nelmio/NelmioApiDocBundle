@@ -39,7 +39,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         if (null === $propertyInfoProperties) {
             return;
         }
-        
+
         foreach ($propertyInfoProperties as $propertyName) {
             $types = $this->propertyInfo->getTypes($class, $propertyName);
             if (0 === count($types)) {
