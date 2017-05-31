@@ -200,6 +200,8 @@ class ValidationParser implements ParserInterface, PostParserInterface
             case 'Type':
                 if (isset($this->typeMap[$constraint->type])) {
                     $vparams['actualType'] = $this->typeMap[$constraint->type];
+                } else {
+                    $vparams['children'] = $this->doParse($constraint->type, $visited);
                 }
                 $vparams['dataType'] = $constraint->type;
                 break;
