@@ -260,12 +260,12 @@ Step 4: Update the bundle
 -------------------------
 
 Change the constraint of ``nelmio/api-doc-bundle`` in your ``composer.json`` file
-to ``dev-dev``:
+to ``~3.0@beta``:
 
 ```json
 {
     "require": {
-        "nelmio/api-doc-bundle": "dev-dev"
+        "nelmio/api-doc-bundle": "~3.0@beta"
     }
 }
 ```
