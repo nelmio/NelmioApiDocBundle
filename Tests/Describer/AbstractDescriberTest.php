@@ -12,8 +12,9 @@
 namespace Nelmio\ApiDocBundle\Tests\Describer;
 
 use EXSyst\Component\Swagger\Swagger;
+use PHPUnit\Framework\TestCase;
 
-abstract class AbstractDescriberTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractDescriberTest extends TestCase
 {
     protected $describer;
 
