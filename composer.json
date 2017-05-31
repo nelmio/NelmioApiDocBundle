@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "~7.0|~7.1",
-        "symfony/framework-bundle": "^2.8|^3.0",
+        "symfony/framework-bundle": "^2.8.18|^3.0",
         "symfony/property-info": "^2.8|^3.0",
         "exsyst/swagger": "~0.2.3",
         "zircote/swagger-php": "^2.0.9"
@@ -31,7 +31,7 @@
         "symfony/dom-crawler": "^2.8|^3.0",
         "symfony/browser-kit": "^2.8|^3.0",
         "symfony/cache": "^3.1",
-        "symfony/phpunit-bridge": "^3.2",
+        "symfony/phpunit-bridge": "^3.3",
         "sensio/framework-extra-bundle": "^3.0",
         "doctrine/annotations": "^1.2",
 
