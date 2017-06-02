@@ -76,7 +76,7 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
         }
         $path = str_replace('.{_format}', '', $apiDoc->getRoute()->getPath());
 
-        $annotation = '@Operaion(
+        $annotation = '@Operation(
      *     tags={"'.$apiDoc->getSection().'"},
      *     summary="'.$this->escapeQuotes($apiDoc->getDescription()).'"';
 
