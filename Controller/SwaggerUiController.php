@@ -27,6 +27,6 @@ final class SwaggerUiController
 
     public function __invoke()
     {
-        return new Response($this->twig->render('NelmioApiDocBundle:SwaggerUi:index.html.twig', ['swagger_data' => ['spec' => $this->apiDocGenerator->generate()->toArray()]]));
+        return new Response($this->twig->render('@NelmioApiDoc/SwaggerUi/index.html.twig', ['swagger_data' => ['spec' => $this->apiDocGenerator->generate()->toArray()]]));
     }
 }
