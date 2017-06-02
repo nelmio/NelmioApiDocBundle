@@ -63,7 +63,7 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
         $old = $this->locateNelmioAnnotation($code, $method->name);
 
         $code = substr_replace($code, $this->renderSwaggerAnnotation($apiDoc, $method), $old['start'], $old['length']);
-        $code = str_replace('use Nelmio\ApiDocBundle\Annotation\ApiDoc;', "use Nelmio\ApiDocBundle\Annotation\Model;\nuse Swagger\Annotations as SWG;", $code);
+        $code = str_replace('use Nelmio\ApiDocBundle\Annotation\ApiDoc;', "use Nelmio\ApiDocBundle\Annotation\Operation;\nuse Nelmio\ApiDocBundle\Annotation\Model;\nuse Swagger\Annotations as SWG;", $code);
 
         file_put_contents($path, $code);
     }
@@ -76,7 +76,7 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
         }
         $path = str_replace('.{_format}', '', $apiDoc->getRoute()->getPath());
 
-        $annotation = '@SWG\\'.ucfirst(strtolower($apiDoc->getMethod())).'(
+        $annotation = '@Operaion(
      *     tags={"'.$apiDoc->getSection().'"},
      *     summary="'.$this->escapeQuotes($apiDoc->getDescription()).'"';
 
