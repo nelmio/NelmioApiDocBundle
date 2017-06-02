@@ -20,6 +20,7 @@ use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Swagger\Analysis;
 use Swagger\Annotations as SWG;
 use Swagger\Context;
+use Swagger\Annotations\AbstractAnnotation;
 use Symfony\Component\Routing\RouteCollection;
 
 final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelRegistryAwareInterface
@@ -86,10 +87,13 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
                 'method' => $method->name,
                 'filename' => $method->getFileName(),
             ]);
+            $nestedContext = clone $context;
+            $nestedContext->nested = true;
             $implicitAnnotations = [];
             $tags = [];
             foreach ($annotations as $annotation) {
                 $annotation->_context = $context;
+                $this->updateNestedAnnotations($annotation, $nestedContext);
 
                 if ($annotation instanceof Operation) {
                     foreach ($httpMethods as $httpMethod) {
@@ -169,5 +173,17 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
         }
 
         return $path;
+    }
+
+    private function updateNestedAnnotations($value, Context $context) {
+        if ($value instanceof AbstractAnnotation) {
+            $value->_context = $context;
+        } elseif (!is_array($value)) {
+            return;
+        }
+
+        foreach ($value as $v) {
+            $this->updateNestedAnnotations($v, $context);
+        }
     }
 }
