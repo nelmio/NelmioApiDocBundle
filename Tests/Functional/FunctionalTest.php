@@ -92,6 +92,7 @@ class FunctionalTest extends WebTestCase
         $this->assertEmpty($operation->getSummary());
         $this->assertEmpty($operation->getDescription());
         $this->assertNull($operation->getDeprecated());
+        $this->assertTrue($operation->getResponses()->has(200));
 
         $parameters = $operation->getParameters();
         $this->assertTrue($parameters->has('user', 'path'));

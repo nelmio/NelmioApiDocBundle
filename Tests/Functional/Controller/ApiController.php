@@ -59,6 +59,9 @@ class ApiController
 
     /**
      * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="/foo/"})
+     * @Operation(
+     *     @SWG\Response(response=200, description="sucessful")
+     * )
      */
     public function userAction()
     {
