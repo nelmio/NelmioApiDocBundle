@@ -22,9 +22,14 @@ matrix:
   include:
     - php: 7.0
       env: COMPOSER_FLAGS="--prefer-lowest"
+    - php: 7.1
+      env: SF_4="true"
 
-before_install: phpenv config-rm xdebug.ini
+before_install:
+    - phpenv config-rm xdebug.ini
+    - if [ "$SF_4" == "true" ]; then composer config minimum-stability dev; fi
+    - if [ "$SF_4" == "true" ]; then composer require symfony/symfony:4.0.* --dev --no-update; fi
 
-install: composer update $COMPOSER_FLAGS
+install: composer update $COMPOSER_FLAGS --prefer-stable
 
 script: ./phpunit
