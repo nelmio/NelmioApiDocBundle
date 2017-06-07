@@ -38,11 +38,11 @@ final class FilteredRouteCollectionBuilder
     private function match(Route $route): bool
     {
         foreach ($this->pathPatterns as $pathPattern) {
-            if (!preg_match('{'.$pathPattern.'}', $route->getPath())) {
-                return false;
+            if (preg_match('{'.$pathPattern.'}', $route->getPath())) {
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 }
