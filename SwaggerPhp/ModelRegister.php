@@ -70,8 +70,9 @@ final class ModelRegister
                 continue;
             }
 
+
             $annotation->merge([new $annotationClass([
-                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type))),
+                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups)),
             ])]);
 
             // It is no longer an unmerged annotation

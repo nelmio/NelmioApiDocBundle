@@ -16,6 +16,7 @@ use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
 
@@ -24,6 +25,18 @@ use Swagger\Annotations as SWG;
  */
 class ApiController
 {
+    /**
+     * @SWG\Response(
+     *     response="200",
+     *     description="Success",
+     *     @Model(type=Article::class, groups={"light"})
+     * )
+     * @Route("/article/{id}", methods={"GET"})
+     */
+    public function fetchArticleAction()
+    {
+    }
+
     /**
      * @Route("/swagger", methods={"GET"})
      * @Route("/swagger2", methods={"GET"})

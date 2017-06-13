@@ -16,22 +16,35 @@ use Symfony\Component\PropertyInfo\Type;
 final class Model
 {
     private $type;
+    private $groups;
 
-    public function __construct(Type $type)
+    /**
+     * @param string[]|null $groups
+     */
+    public function __construct(Type $type, array $groups = null)
     {
         $this->type = $type;
+        $this->groups = $groups;
     }
 
     /**
-     * @return Type|null
+     * @return Type
      */
     public function getType()
     {
         return $this->type;
     }
 
+    /**
+     * @return string[]|null
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
     public function getHash(): string
     {
-        return md5(serialize($this->type));
+        return md5(serialize([$this->type, $this->groups]));
     }
 }

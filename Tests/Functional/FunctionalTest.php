@@ -30,6 +30,21 @@ class FunctionalTest extends WebTestCase
         $this->assertFalse($paths->has('/api/admin'));
     }
 
+    public function testFetchArticleAction()
+    {
+        $operation = $this->getOperation('/api/article/{id}', 'get');
+
+        $responses = $operation->getResponses();
+        $this->assertTrue($responses->has('200'));
+        $this->assertEquals('#/definitions/Article', $responses->get('200')->getSchema()->getRef());
+
+        // Ensure that groups are supported
+        $modelProperties = $this->getModel('Article')->getProperties();
+        $this->assertCount(1, $modelProperties);
+        $this->assertTrue($modelProperties->has('author'));
+        $this->assertFalse($modelProperties->has('content'));
+    }
+
     public function testFilteredAction()
     {
         $paths = $this->getSwaggerDefinition()->getPaths();
