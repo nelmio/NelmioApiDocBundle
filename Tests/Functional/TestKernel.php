@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+namespace Nelmio\ApiDocBundle\Tests\Functional;
+
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Tests\Functional\TestBundle;
@@ -62,6 +64,7 @@ class TestKernel extends Kernel
             'templating' => [
                 'engines' => ['twig'],
             ],
+            'serializer' => ['enable_annotations' => true],
         ]);
 
         // Filter routes

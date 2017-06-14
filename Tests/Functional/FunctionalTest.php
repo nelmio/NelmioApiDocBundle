@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use EXSyst\Component\Swagger\Operation;
 use EXSyst\Component\Swagger\Schema;
 use EXSyst\Component\Swagger\Tag;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class FunctionalTest extends WebTestCase
 {

@@ -16,12 +16,13 @@
     ],
     "require": {
         "php": "~7.0|~7.1",
-        "symfony/framework-bundle": "^3.1|^4.0",
+        "symfony/framework-bundle": "^3.2.5|^4.0",
         "symfony/property-info": "^3.1|^4.0",
         "exsyst/swagger": "~0.2.3",
         "zircote/swagger-php": "^2.0.9"
     },
     "require-dev": {
+        "symfony/templating": "^2.8|^3.0|^4.0",
         "symfony/twig-bundle": "^3.0|^4.0",
         "symfony/asset": "^2.8|^3.0|^4.0",
         "symfony/console": "^2.8|^3.0|^4.0",

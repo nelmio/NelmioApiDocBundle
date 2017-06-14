@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Article
 {
     /**
-     * @Groups("light")
+     * @Groups({"light"})
      */
     public function setAuthor(User $author)
     {

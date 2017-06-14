@@ -11,8 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
 class SwaggerUiTest extends WebTestCase
 {
     public function testSwaggerUi()
