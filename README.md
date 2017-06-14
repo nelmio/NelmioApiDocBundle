@@ -91,13 +91,15 @@ nelmio_api_doc:
 To document your routes, you can use annotations in your controllers:
 
 ```php
+namespace AppBundle\Controller;
+
 use AppBundle\Entity\User;
 use AppBundle\Entity\Reward;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
 
-class DefaultController
+class UserController
 {
     /*
      * @Route("/api/{user}/rewards", methods={"GET"})
@@ -106,7 +108,7 @@ class DefaultController
      *     description="Returns the rewards of an user",
      *     @SWG\Schema(
      *         type="array",
-     *         @Model(type=Reward::class)
+     *         @Model(type=Reward::class, groups={"full"})
      *     )
      * )
      * @SWG\Parameter(
@@ -117,7 +119,7 @@ class DefaultController
      * )
      * @SWG\Tag(name="rewards")
      */
-    public function indexAction(User $user)
+    public function fetchUserRewardsAction(User $user)
     {
         // ...
     }
