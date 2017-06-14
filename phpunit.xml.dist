@@ -17,10 +17,6 @@
         </testsuite>
     </testsuites>
 
-    <php>
-        <server name="KERNEL_DIR" value="Tests/Functional/" />
-    </php>
-
     <filter>
         <whitelist>
             <directory>.</directory>

@@ -24,7 +24,7 @@ class CollectionModelDescriber implements ModelDescriberInterface, ModelRegistry
     {
         $schema->setType('array');
         $schema->getItems()->setRef(
-            $this->modelRegistry->register(new Model($model->getType()->getCollectionValueType()))
+            $this->modelRegistry->register(new Model($model->getType()->getCollectionValueType(), $model->getGroups()))
         );
     }
 

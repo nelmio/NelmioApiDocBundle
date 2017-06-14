@@ -35,7 +35,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $properties = $schema->getProperties();
 
         $class = $model->getType()->getClassName();
-        $propertyInfoProperties = $this->propertyInfo->getProperties($class);
+        $context = [];
+        if (null !== $model->getGroups()) {
+            $context = ['serializer_groups' => $model->getGroups()];
+        }
+
+        $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);
         if (null === $propertyInfoProperties) {
             return;
         }
@@ -50,7 +55,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             $properties->get($propertyName)->setRef(
-                $this->modelRegistry->register(new Model($types[0]))
+                $this->modelRegistry->register(new Model($types[0], $model->getGroups()))
             );
         }
     }
