@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
+use FOS\RestBundle\FOSRestBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Tests\Functional\TestBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
@@ -38,6 +39,7 @@ class TestKernel extends Kernel
             new SensioFrameworkExtraBundle(),
             new ApiPlatformBundle(),
             new NelmioApiDocBundle(),
+            new FOSRestBundle(),
             new TestBundle(),
         ];
     }
@@ -65,6 +67,17 @@ class TestKernel extends Kernel
                 'engines' => ['twig'],
             ],
             'serializer' => ['enable_annotations' => true],
+        ]);
+
+        $c->loadFromExtension('fos_rest', [
+            'format_listener' => [
+                'rules' => [
+                    [
+                        'path' => '^/',
+                        'fallback_format' => 'json',
+                    ]
+                ],
+            ],
         ]);
 
         // Filter routes
