@@ -15,9 +15,13 @@ use FOS\RestBundle\Controller\Annotations\ParamInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Routing\RouteCollection;
+use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 
 final class NelmioApiDocExtension extends Extension implements PrependExtensionInterface
 {
@@ -40,8 +44,22 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $loader->load('services.xml');
 
         // Filter routes
-        $routeCollectionBuilder = $container->getDefinition('nelmio_api_doc.filtered_route_collection_builder');
-        $routeCollectionBuilder->replaceArgument(0, $config['routes']['path_patterns']);
+        $routesDefinition = (new Definition(RouteCollection::class))
+            ->setFactory([new Reference('router'), 'getRouteCollection']);
+
+        if (0 === count($config['routes']['path_patterns'])) {
+            $container->setDefinition('nelmio_api_doc.routes', $routesDefinition)
+                ->setPublic(false);
+        } else {
+            $container->register('nelmio_api_doc.routes', RouteCollection::class)
+                ->setPublic(false)
+                ->setFactory([
+                    (new Definition(FilteredRouteCollectionBuilder::class))
+                        ->addArgument($config['routes']['path_patterns']),
+                    'filter']
+                )
+                ->addArgument($routesDefinition);
+        }
 
         // Import services needed for each library
         $loader->load('swagger_php.xml');

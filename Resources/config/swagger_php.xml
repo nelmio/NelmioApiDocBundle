@@ -5,7 +5,7 @@
 
     <services>
         <service id="nelmio_api_doc.describers.swagger_php" class="Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber" public="false">
-            <argument type="service" id="nelmio_api_doc.filtered_route_collection" />
+            <argument type="service" id="nelmio_api_doc.routes" />
             <argument type="service" id="nelmio_api_doc.controller_reflector" />
             <argument type="service" id="annotation_reader" />
 

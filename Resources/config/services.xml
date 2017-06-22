@@ -21,19 +21,6 @@
             <argument type="service" id="controller_name_converter" />
         </service>
 
-        <service id="nelmio_api_doc.filtered_route_collection" class="Symfony\Component\Routing\RouteCollection" public="false">
-            <factory service="nelmio_api_doc.filtered_route_collection_builder" method="filter" />
-            <argument type="service">
-                <service class="Symfony\Component\Routing\RouteCollection">
-                    <factory service="router" method="getRouteCollection" />
-                </service>
-            </argument>
-        </service>
-
-        <service id="nelmio_api_doc.filtered_route_collection_builder" class="Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder" public="false">
-            <argument type="collection" /> <!-- Path patterns -->
-        </service>
-
         <!-- Describers -->
         <service id="nelmio_api_doc.describers.config" class="Nelmio\ApiDocBundle\Describer\ExternalDocDescriber" public="false">
             <argument type="collection" />
@@ -42,7 +29,7 @@
         </service>
 
         <service id="nelmio_api_doc.describers.route" class="Nelmio\ApiDocBundle\Describer\RouteDescriber" public="false">
-            <argument type="service" id="nelmio_api_doc.filtered_route_collection" />
+            <argument type="service" id="nelmio_api_doc.routes" />
             <argument type="service" id="nelmio_api_doc.controller_reflector" />
             <argument type="collection" />
 
