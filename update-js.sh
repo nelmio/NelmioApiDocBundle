@@ -14,7 +14,11 @@ if [ -d $dest ]; then
   rm -Rf $dest
 fi
 mkdir -p $dest
+
 cp node_modules/swagger-ui-dist/swagger-ui-bundle.js $dest
+cp node_modules/swagger-ui-dist/swagger-ui-bundle.js.map $dest
 cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js $dest
+cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js.map $dest
 cp node_modules/swagger-ui-dist/swagger-ui.css $dest
+cp node_modules/swagger-ui-dist/swagger-ui.css.map $dest
 rm -Rf package.json node_modules/
