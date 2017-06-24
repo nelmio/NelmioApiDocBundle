@@ -167,6 +167,23 @@ class FunctionalTest extends WebTestCase
         $this->assertEquals('#/definitions/User', $model->getItems()->getRef());
     }
 
+    public function testFormSupport()
+    {
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'bar' => [
+                    'type' => 'string',
+                ],
+                'foo' => [
+                    'type' => 'string',
+                    'enum' => ['male', 'female'],
+                ]
+            ],
+            'required' => ['foo'],
+        ], $this->getModel('DummyType')->toArray());
+    }
+
     private function getSwaggerDefinition()
     {
         static::createClient();

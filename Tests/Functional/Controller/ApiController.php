@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
 
@@ -119,5 +120,20 @@ class ApiController
      */
     public function filteredAction()
     {
+    }
+
+    /**
+     * @Route("/form", methods={"POST"})
+     * @SWG\Parameter(
+     *     name="form",
+     *     in="body",
+     *     description="Request content",
+     *     @Model(type=DummyType::class)
+     * )
+     * @SWG\Response(response="201", description="")
+     */
+    public function formAction()
+    {
+
     }
 }
