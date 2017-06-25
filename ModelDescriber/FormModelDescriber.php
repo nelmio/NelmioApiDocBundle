@@ -12,8 +12,6 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -21,10 +19,8 @@ use Symfony\Component\Form\FormTypeInterface;
 /**
  * @internal
  */
-final class FormModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
+final class FormModelDescriber implements ModelDescriberInterface
 {
-    use ModelRegistryAwareTrait;
-
     private $formFactory;
 
     public function __construct(FormFactoryInterface $formFactory = null)
