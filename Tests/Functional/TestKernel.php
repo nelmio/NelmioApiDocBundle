@@ -63,6 +63,7 @@ class TestKernel extends Kernel
             'secret' => 'MySecretKey',
             'test' => null,
             'validation' => null,
+            'form' => null,
             'templating' => [
                 'engines' => ['twig'],
             ],

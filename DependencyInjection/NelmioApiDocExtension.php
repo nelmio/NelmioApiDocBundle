@@ -19,9 +19,11 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Routing\RouteCollection;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
+use Nelmio\ApiDocBundle\ModelDescriber\FormModelDescriber;
 
 final class NelmioApiDocExtension extends Extension implements PrependExtensionInterface
 {
@@ -42,6 +44,13 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('services.xml');
+
+        if (interface_exists(FormInterface::class)) {
+            $container->register('nelmio_api_doc.model_describers.form', FormModelDescriber::class)
+                ->setPublic(false)
+                ->addArgument(new Reference('form.factory'))
+                ->addTag('nelmio_api_doc.model_describer', ['priority' => 10]);
+        }
 
         // Filter routes
         $routesDefinition = (new Definition(RouteCollection::class))
