@@ -56,6 +56,10 @@
             <tag name="nelmio_api_doc.model_describer" />
         </service>
 
+        <service id="nelmio_api_doc.model_describers.datetime" class="Nelmio\ApiDocBundle\ModelDescriber\DateTimeModelDescriber" public="false">
+            <tag name="nelmio_api_doc.model_describer" priority="100" />
+        </service>
+
         <service id="nelmio_api_doc.model_describers.collection" class="Nelmio\ApiDocBundle\ModelDescriber\CollectionModelDescriber" public="false">
             <tag name="nelmio_api_doc.model_describer" />
         </service>

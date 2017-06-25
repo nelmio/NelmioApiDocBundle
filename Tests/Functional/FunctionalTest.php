@@ -150,12 +150,20 @@ class FunctionalTest extends WebTestCase
         $model = $this->getModel('User');
         $this->assertEquals('object', $model->getType());
         $properties = $model->getProperties();
+        $this->assertCount(3, $properties);
 
         $this->assertTrue($properties->has('users'));
         $this->assertEquals('#/definitions/User[]', $properties->get('users')->getRef());
 
         $this->assertTrue($properties->has('dummy'));
         $this->assertEquals('#/definitions/Dummy2', $properties->get('dummy')->getRef());
+
+        $this->assertTrue($properties->has('createdAt'));
+        $this->assertEquals('#/definitions/DateTime', $properties->get('createdAt')->getRef());
+
+        $model = $this->getModel('DateTime');
+        $this->assertEquals('string', $model->getType());
+        $this->assertEquals('date-time', $model->getFormat());
     }
 
     public function testUsersModel()
