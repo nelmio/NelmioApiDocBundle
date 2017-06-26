@@ -4,10 +4,14 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <!-- Swagger Ui Controller -->
+        <!-- Controllers -->
         <service id="nelmio_api_doc.controller.swagger_ui" class="Nelmio\ApiDocBundle\Controller\SwaggerUiController">
             <argument type="service" id="nelmio_api_doc.generator" />
             <argument type="service" id="twig" />
+        </service>
+
+        <service id="nelmio_api_doc.controller.swagger" class="Nelmio\ApiDocBundle\Controller\DocumentationController">
+            <argument type="service" id="nelmio_api_doc.generator" />
         </service>
 
         <!-- Swagger Spec Generator -->

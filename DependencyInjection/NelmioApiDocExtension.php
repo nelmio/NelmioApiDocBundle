@@ -12,18 +12,18 @@
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use FOS\RestBundle\Controller\Annotations\ParamInterface;
+use Nelmio\ApiDocBundle\ModelDescriber\FormModelDescriber;
+use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Routing\RouteCollection;
-use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
-use Nelmio\ApiDocBundle\ModelDescriber\FormModelDescriber;
 
 final class NelmioApiDocExtension extends Extension implements PrependExtensionInterface
 {
@@ -65,8 +65,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setFactory([
                     (new Definition(FilteredRouteCollectionBuilder::class))
                         ->addArgument($config['routes']['path_patterns']),
-                    'filter']
-                )
+                    'filter',
+                ])
                 ->addArgument($routesDefinition);
         }
 

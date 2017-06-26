@@ -70,7 +70,6 @@ final class ModelRegister
                 continue;
             }
 
-
             $annotation->merge([new $annotationClass([
                 'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups)),
             ])]);
