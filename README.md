@@ -39,31 +39,40 @@ class AppKernel extends Kernel
 }
 ```
 
-To access your documentation in your browser, register the following route:
+To browse your documentation with Swagger UI, register the following route:
 
 ```yml
 # app/config/routing.yml
-NelmioApiDocBundle:
+app.swagger_ui:
     resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
     prefix:   /api/doc
+```
+
+If you also want to expose it in JSON, register this route:
+
+```yml
+# app/config/routing.yml
+app.swagger:
+    path: /api/doc.json
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger }
 ```
 
 ## What does this bundle?
 
 It generates you a swagger documentation from your symfony app thanks to
-_Describers_. Each of this _Describers_ extract infos from various sources.
+_Describers_. Each of these _Describers_ extract infos from various sources.
 For instance, one extract data from SwaggerPHP annotations, one from your
 routes, etc.
 
-If you configured the route above, you can browse your documentation at
-`http://example.org/api/doc`.
+If you configured the ``app.swagger_ui`` route above, you can browse your
+documentation at `http://example.org/api/doc`.
 
 ## Configure the bundle
 
-If you just installed the bundle, you'll likely see routes you don't want in
-your documentation such as `/_profiler/`.
-To fix this, you can filter the routes that are documented by configuring the
-bundle:
+As you just installed the bundle, you'll likely see routes you don't want in
+your documentation such as `/_profiler/`. To fix this, you can filter the
+routes that are documented by configuring the bundle:
 
 ```yml
 # app/config/config.yml

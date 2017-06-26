@@ -23,7 +23,18 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
 
         $swaggerUiSpec = json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true);
-        $appSpec = $client->getContainer()->get('nelmio_api_doc.generator')->generate()->toArray();
-        $this->assertEquals($appSpec, $swaggerUiSpec['spec']);
+        $this->assertEquals($this->getSwaggerDefinition()->toArray(), $swaggerUiSpec['spec']);
+    }
+
+    public function testJsonDocs()
+    {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/docs.json');
+
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('application/json', $response->headers->get('Content-Type'));
+
+        $this->assertEquals($this->getSwaggerDefinition()->toArray(), json_decode($response->getContent(), true));
     }
 }

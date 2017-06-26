@@ -13,9 +13,9 @@ namespace Nelmio\ApiDocBundle\Tests\Model;
 
 use EXSyst\Component\Swagger\Schema;
 use EXSyst\Component\Swagger\Swagger;
-use PHPUnit\Framework\TestCase;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type;
 
 class ModelRegistryTest extends TestCase

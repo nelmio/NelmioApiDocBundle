@@ -12,12 +12,12 @@
 namespace Nelmio\ApiDocBundle\Tests\Routing;
 
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use PHPUnit\Framework\TestCase;
 
 /**
- * Tests for FilteredRouteCollectionBuilder class
+ * Tests for FilteredRouteCollectionBuilder class.
  */
 class FilteredRouteCollectionBuilderTest extends TestCase
 {

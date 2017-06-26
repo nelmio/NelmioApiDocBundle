@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use FOS\RestBundle\FOSRestBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
-use Nelmio\ApiDocBundle\Tests\Functional\TestBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -52,6 +51,8 @@ class TestKernel extends Kernel
         $routes->import(__DIR__.'/Controller/', '/', 'annotation');
         $routes->import('', '/api', 'api_platform');
         $routes->import('@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml', '/docs');
+
+        $routes->add('/docs.json', 'nelmio_api_doc.controller.swagger');
     }
 
     /**
@@ -76,7 +77,7 @@ class TestKernel extends Kernel
                     [
                         'path' => '^/',
                         'fallback_format' => 'json',
-                    ]
+                    ],
                 ],
             ],
         ]);

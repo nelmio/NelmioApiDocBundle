@@ -18,8 +18,7 @@ use Swagger\Annotations\AbstractAnnotation;
  */
 final class Model extends AbstractAnnotation
 {
-
-    /** @inheritdoc */
+    /** {@inheritdoc} */
     public static $_types = [
         'type' => 'string',
         'groups' => '[string]',

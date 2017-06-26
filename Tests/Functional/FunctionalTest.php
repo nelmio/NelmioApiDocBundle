@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use EXSyst\Component\Swagger\Operation;
-use EXSyst\Component\Swagger\Schema;
 use EXSyst\Component\Swagger\Tag;
 
 class FunctionalTest extends WebTestCase
@@ -178,37 +177,9 @@ class FunctionalTest extends WebTestCase
                 'foo' => [
                     'type' => 'string',
                     'enum' => ['male', 'female'],
-                ]
+                ],
             ],
             'required' => ['foo'],
         ], $this->getModel('DummyType')->toArray());
-    }
-
-    private function getSwaggerDefinition()
-    {
-        static::createClient();
-
-        return static::$kernel->getContainer()->get('nelmio_api_doc.generator')->generate();
-    }
-
-    private function getModel($name): Schema
-    {
-        $definitions = $this->getSwaggerDefinition()->getDefinitions();
-        $this->assertTrue($definitions->has($name));
-
-        return $definitions->get($name);
-    }
-
-    private function getOperation($path, $method): Operation
-    {
-        $api = $this->getSwaggerDefinition();
-        $paths = $api->getPaths();
-
-        $this->assertTrue($paths->has($path), sprintf('Path "%s" does not exist.', $path));
-        $action = $paths->get($path);
-
-        $this->assertTrue($action->hasOperation($method), sprintf('Operation "%s" for path "%s" does not exist', $path, $method));
-
-        return $action->getOperation($method);
     }
 }

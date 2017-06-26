@@ -18,9 +18,9 @@ use Nelmio\ApiDocBundle\SwaggerPhp\AddDefaults;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Swagger\Analysis;
+use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations as SWG;
 use Swagger\Context;
-use Swagger\Annotations\AbstractAnnotation;
 use Symfony\Component\Routing\RouteCollection;
 
 final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelRegistryAwareInterface
@@ -175,7 +175,8 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
         return $path;
     }
 
-    private function updateNestedAnnotations($value, Context $context) {
+    private function updateNestedAnnotations($value, Context $context)
+    {
         if ($value instanceof AbstractAnnotation) {
             $value->_context = $context;
         } elseif (!is_array($value)) {
