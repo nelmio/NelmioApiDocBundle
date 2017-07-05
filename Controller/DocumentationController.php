@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Controller;
 
 use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 final class DocumentationController
 {
@@ -23,8 +24,13 @@ final class DocumentationController
         $this->apiDocGenerator = $apiDocGenerator;
     }
 
-    public function __invoke()
+    public function __invoke(Request $request)
     {
-        return new JsonResponse($this->apiDocGenerator->generate()->toArray());
+        $spec = $this->apiDocGenerator->generate()->toArray();
+        if ('' !== $request->getBaseUrl()) {
+            $spec['basePath'] = $request->getBaseUrl();
+        }
+
+        return new JsonResponse($spec);
     }
 }

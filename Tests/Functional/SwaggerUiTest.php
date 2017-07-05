@@ -13,28 +13,38 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 class SwaggerUiTest extends WebTestCase
 {
+    protected static function createClient(array $options = [], array $server = [])
+    {
+        return parent::createClient([], ['PHP_SELF' => '/app_dev.php/docs', 'SCRIPT_FILENAME' => '/var/www/app/web/app_dev.php']);
+    }
+
     public function testSwaggerUi()
     {
         $client = self::createClient();
-        $crawler = $client->request('GET', '/docs/');
+        $crawler = $client->request('GET', '/app_dev.php/docs/');
 
         $response = $client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
 
-        $swaggerUiSpec = json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true);
-        $this->assertEquals($this->getSwaggerDefinition()->toArray(), $swaggerUiSpec['spec']);
+        $expected = $this->getSwaggerDefinition()->toArray();
+        $expected['basePath'] = '/app_dev.php';
+
+        $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
 
     public function testJsonDocs()
     {
         $client = self::createClient();
-        $crawler = $client->request('GET', '/docs.json');
+        $crawler = $client->request('GET', '/app_dev.php/docs.json');
 
         $response = $client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
 
-        $this->assertEquals($this->getSwaggerDefinition()->toArray(), json_decode($response->getContent(), true));
+        $expected = $this->getSwaggerDefinition()->toArray();
+        $expected['basePath'] = '/app_dev.php';
+
+        $this->assertEquals($expected, json_decode($response->getContent(), true));
     }
 }
