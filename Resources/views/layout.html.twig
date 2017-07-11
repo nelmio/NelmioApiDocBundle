@@ -438,8 +438,10 @@
                         method = $('[name="header_method"]', this).val(),
                         self = this,
                         params = {},
+                        filters = {},
                         formData = new FormData(),
                         doubledParams = {},
+                        doubledFilters = {},
                         headers = {},
                         content = $(this).find('textarea.content').val(),
                         result_container = $('.result', $(this).parent());
@@ -515,11 +517,36 @@
                         value = $('.value', $(this)).val();
 
                         if (value) {
+                            // convert boolean values to boolean
+                            if ('json' === bodyFormat && 'boolean' === $('.tuple_type', $(this)).val()) {
+                                value = '1' === value;
+                            }
+
                             // temporary save all additional/doubled parameters
                             if (key in params) {
                                 doubledParams[key] = value;
                             } else {
                                 params[key] = value;
+                            }
+                        }
+                    });
+
+
+
+
+                    // retrieve all the filters to send
+                    $('.parameters .tuple.filter', $(this)).each(function() {
+                        var key, value;
+
+                        key = $('.key', $(this)).val();
+                        value = $('.value', $(this)).val();
+
+                        if (value) {
+                            // temporary save all additional/doubled parameters
+                            if (key in filters) {
+                                doubledFilters[key] = value;
+                            } else {
+                                filters[key] = value;
                             }
                         }
                     });
@@ -574,6 +601,18 @@
                         endpoint = $('#api_endpoint').val();
                     }
                     {% endif %}
+
+                    //add filters as GET params and remove them from params
+                    if(method != 'GET'){
+                        for (var filterKey in $.extend({}, filters)){
+                            url += url.indexOf('?') > 0 ? '&' : '?';
+                            url += filterKey + '=' + filters[filterKey];
+
+                            if (params.hasOwnProperty(filterKey)){
+                                delete(params[filterKey]);
+                            }
+                        }
+                    }
 
                     // prepare final parameters
                     var body = {};

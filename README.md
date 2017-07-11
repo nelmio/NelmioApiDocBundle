@@ -13,11 +13,7 @@ for your APIs.
 Documentation
 -------------
 
-For documentation, see:
-
-    Resources/doc/
-
-[Read the documentation](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/index.rst)
+[Read the documentation on symfony.com](https://symfony.com/doc/current/bundles/NelmioApiDocBundle/index.html)
 
 
 Contributing
