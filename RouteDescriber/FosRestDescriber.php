@@ -44,8 +44,10 @@ final class FosRestDescriber implements RouteDescriberInterface
 
                 $parameter->setRequired(!$annotation->nullable && $annotation->strict);
                 $parameter->setAllowEmptyValue($annotation->nullable && $annotation->allowBlank);
-                $parameter->setType($annotation->map ? 'array' : 'string');
                 $parameter->setDefault($annotation->getDefault());
+                if (null === $parameter->getType()) {
+                    $parameter->setType($annotation->map ? 'array' : 'string');
+                }
                 if (null === $parameter->getDescription()) {
                     $parameter->setDescription($annotation->description);
                 }
