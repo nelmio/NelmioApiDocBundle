@@ -34,7 +34,10 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
 
                 $parameter = $operation->getParameters()->get($pathVariable, 'path');
                 $parameter->setRequired(true);
-                $parameter->setType('string');
+
+                if (null === $parameter->getType()) {
+                    $parameter->setType('string');
+                }
 
                 if (isset($requirements[$pathVariable])) {
                     $parameter->setFormat($requirements[$pathVariable]);
