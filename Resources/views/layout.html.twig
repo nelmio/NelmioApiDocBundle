@@ -85,6 +85,22 @@
                 }
             };
 
+            var generateAuthorizationHeaderValue = function() {
+                var value;
+
+                if ('http' === authentication_delivery) {
+                    if ('basic' === authentication_type) {
+                        value = 'Basic ' + btoa($('#api_login').val() + ':' + $('#api_pass').val());
+                    } else if ('bearer' === authentication_type) {
+                        value = 'Bearer ' + $('#api_key').val();
+                    }
+                } else if ('header' === authentication_delivery) {
+                    value = $('#api_key').val();
+                }
+
+                return value;
+            };
+
             $(window).load(function() {
                 var id = getHash().substr(1).replace( /([:\.\[\]\{\}|])/g, "\\$1");
                 var elem = $('#' + id);
@@ -387,10 +403,10 @@
                 var displayCurl = function(method, url, headers, data, result_container) {
                     var escapeShell = function(param) {
                         param = "" + param;
-                        return '"' + param.replace(/(["\s'$`\\])/g,'\\$1') + '"';
+                        return '"' + param.replace(/(["'$`\\])/g,'\\$1') + '"';
                     };
 
-                    url = getFinalUrl(method, url, data);
+                    url = window.location.origin + getFinalUrl(method, url, data);
 
                     var command = "curl";
                     command += " -X " + escapeShell(method);
@@ -406,6 +422,10 @@
                         if (headers.hasOwnProperty(headerKey)) {
                             command += " -H " + escapeShell(headerKey + ': ' + headers[headerKey]);
                         }
+                    }
+
+                    if (authentication_delivery) {
+                        command += " -H " + escapeShell(api_key_parameter + ': ' + generateAuthorizationHeaderValue());
                     }
 
                     command += " " + url;
@@ -632,17 +652,7 @@
                         crossDomain: true,
                         beforeSend: function (xhr) {
                             if (authentication_delivery) {
-                                var value;
-
-                                if ('http' == authentication_delivery) {
-                                    if ('basic' == authentication_type) {
-                                        value = 'Basic ' + btoa($('#api_login').val() + ':' + $('#api_pass').val());
-                                    } else if ('bearer' == authentication_type) {
-                                        value = 'Bearer ' + $('#api_key').val();
-                                    }
-                                } else if ('header' == authentication_delivery) {
-                                    value = $('#api_key').val();
-                                }
+                                var value = generateAuthorizationHeaderValue();
 
                                 xhr.setRequestHeader(api_key_parameter, value);
                             }
