@@ -11,8 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use JMS\SerializerBundle\JMSSerializerBundle;
-
 class JMSFunctionalTest extends WebTestCase
 {
     public function testModelDocumentation()

@@ -16,7 +16,21 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
  */
 class User
 {
-    public function addUsers(User $user)
+    /**
+     * @var \DateTime
+     */
+    private $createdAt;
+
+    /**
+     * @var User[]
+     */
+    private $users;
+
+    public function setCreatedAt(\DateTime $createAt)
+    {
+    }
+
+    public function setUsers(array $users)
     {
     }
 
