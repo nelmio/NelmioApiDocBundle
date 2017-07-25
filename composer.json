@@ -18,7 +18,7 @@
         "php": "~7.0|~7.1",
         "symfony/framework-bundle": "^3.2.5|^4.0",
         "symfony/property-info": "^3.1|^4.0",
-        "exsyst/swagger": "~0.2.3",
+        "exsyst/swagger": "~0.3",
         "zircote/swagger-php": "^2.0.9"
     },
     "require-dev": {
