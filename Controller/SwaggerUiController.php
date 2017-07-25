@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Controller;
 
 use Nelmio\ApiDocBundle\ApiDocGenerator;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class SwaggerUiController
@@ -25,10 +26,15 @@ final class SwaggerUiController
         $this->twig = $twig;
     }
 
-    public function __invoke()
+    public function __invoke(Request $request)
     {
+        $spec = $this->apiDocGenerator->generate()->toArray();
+        if ('' !== $request->getBaseUrl()) {
+            $spec['basePath'] = $request->getBaseUrl();
+        }
+
         return new Response(
-            $this->twig->render('@NelmioApiDoc/SwaggerUi/index.html.twig', ['swagger_data' => ['spec' => $this->apiDocGenerator->generate()->toArray()]]),
+            $this->twig->render('@NelmioApiDoc/SwaggerUi/index.html.twig', ['swagger_data' => ['spec' => $spec]]),
             Response::HTTP_OK,
             ['Content-Type' => 'text/html']
         );
