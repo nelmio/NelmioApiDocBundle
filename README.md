@@ -135,6 +135,33 @@ class UserController
 }
 ```
 
+## Use models
+
+As shown in the example above, the bundle provides the ``@Model`` annotation.
+When you use it, the bundle will deduce your model properties.
+
+### If you're not using the JMS Serializer
+
+The [Symfony PropertyInfo component](https://symfony.com/doc/current/components/property_info.html)
+is used to describe your models. It supports doctrine annotations, type hints,
+and even PHP doc blocks as long as you required the
+``phpdocumentor/reflection-docblock`` library. It does also support
+serialization groups when using the Symfony serializer.
+
+### If you're using the JMS Serializer
+
+The metadata of the JMS serializer are used by default to describe your
+models. Note that PHP doc blocks aren't supported in this case.
+
+In case you prefer using the [Symfony PropertyInfo component](https://symfony.com/doc/current/components/property_info.html) (you
+won't be able to use JMS serialization groups), you can disable JMS serializer
+support in your config:
+
+```yml
+nelmio_api_doc:
+    models: { use_jms: false }
+```
+
 ## What's supported?
 
 This bundle supports _Symfony_ route requirements, PHP annotations,
@@ -142,7 +169,7 @@ This bundle supports _Symfony_ route requirements, PHP annotations,
 [_FOSRestBundle_](https://github.com/FriendsOfSymfony/FOSRestBundle) annotations
 and apps using [_Api-Platform_](https://github.com/api-platform/api-platform).
 
-It supports models through the ``@Model`` annotation.
+For models, it supports the Symfony serializer and the JMS serializer.
 
 ## Contributing
 

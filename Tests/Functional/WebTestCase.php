@@ -17,12 +17,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
 class WebTestCase extends BaseWebTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected static function getKernelClass()
+    protected static function createKernel(array $options = array())
     {
-        return TestKernel::class;
+        return new TestKernel();
     }
 
     protected function getSwaggerDefinition()

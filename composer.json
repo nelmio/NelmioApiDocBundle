@@ -39,7 +39,8 @@
 
         "phpdocumentor/reflection-docblock": "^3.1",
         "api-platform/core": "^2.0.3",
-        "friendsofsymfony/rest-bundle": "^2.0"
+        "friendsofsymfony/rest-bundle": "^2.0",
+        "jms/serializer-bundle": "^1.0|^2.0"
     },
     "suggest": {
         "phpdocumentor/reflection-docblock": "For parsing php docs.",

@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use FOS\RestBundle\FOSRestBundle;
+use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -27,12 +28,21 @@ class TestKernel extends Kernel
 {
     use MicroKernelTrait;
 
+    private $useJMS;
+
+    public function __construct(bool $useJMS = false)
+    {
+        parent::__construct('test'.(int) $useJMS, true);
+
+        $this->useJMS = $useJMS;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function registerBundles()
     {
-        return [
+        $bundles = [
             new FrameworkBundle(),
             new TwigBundle(),
             new SensioFrameworkExtraBundle(),
@@ -41,6 +51,12 @@ class TestKernel extends Kernel
             new FOSRestBundle(),
             new TestBundle(),
         ];
+
+        if ($this->useJMS) {
+            $bundles[] = new JMSSerializerBundle();
+        }
+
+        return $bundles;
     }
 
     /**
@@ -48,11 +64,16 @@ class TestKernel extends Kernel
      */
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        $routes->import(__DIR__.'/Controller/', '/', 'annotation');
+        $routes->import(__DIR__.'/Controller/ApiController.php', '/', 'annotation');
+        $routes->import(__DIR__.'/Controller/UndocumentedController.php', '/', 'annotation');
         $routes->import('', '/api', 'api_platform');
         $routes->import('@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml', '/docs');
 
         $routes->add('/docs.json', 'nelmio_api_doc.controller.swagger');
+
+        if ($this->useJMS) {
+            $routes->import(__DIR__.'/Controller/JMSController.php', '/', 'annotation');
+        }
     }
 
     /**
@@ -93,5 +114,31 @@ class TestKernel extends Kernel
                 'path_patterns' => ['^/api(?!/admin)'],
             ],
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheDir()
+    {
+        return parent::getCacheDir().'/'.(int) $this->useJMS;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLogDir()
+    {
+        return parent::getLogDir().'/'.(int) $this->useJMS;
+    }
+
+    public function serialize()
+    {
+        return serialize($this->useJMS);
+    }
+
+    public function unserialize($str)
+    {
+        $this->__construct(unserialize($str));
     }
 }

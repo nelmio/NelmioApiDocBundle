@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use FOS\RestBundle\Controller\Annotations\ParamInterface;
 use Nelmio\ApiDocBundle\ModelDescriber\FormModelDescriber;
+use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Symfony\Component\Config\FileLocator;
@@ -33,6 +34,12 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
     public function prepend(ContainerBuilder $container)
     {
         $container->prependExtensionConfig('framework', ['property_info' => ['enabled' => true]]);
+
+        // JMS Serializer support
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['JMSSerializerBundle'])) {
+            $container->prependExtensionConfig('nelmio_api_doc', ['models' => ['use_jms' => true]]);
+        }
     }
 
     /**
@@ -49,7 +56,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $container->register('nelmio_api_doc.model_describers.form', FormModelDescriber::class)
                 ->setPublic(false)
                 ->addArgument(new Reference('form.factory'))
-                ->addTag('nelmio_api_doc.model_describer', ['priority' => 10]);
+                ->addTag('nelmio_api_doc.model_describer', ['priority' => 100]);
         }
 
         // Filter routes
@@ -79,10 +86,18 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $loader->load('fos_rest.xml');
         }
 
-        $bundles = $container->getParameter('kernel.bundles');
         // ApiPlatform support
+        $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['ApiPlatformBundle']) && class_exists('ApiPlatform\Core\Documentation\Documentation')) {
             $loader->load('api_platform.xml');
+        }
+
+        // JMS metadata support
+        if ($config['models']['use_jms']) {
+            $container->register('nelmio_api_doc.model_describers.jms', JMSModelDescriber::class)
+                ->setPublic(false)
+                ->setArguments([new Reference('jms_serializer.metadata_factory'), new Reference('jms_serializer.naming_strategy')])
+                ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
         }
 
         // Import the base configuration

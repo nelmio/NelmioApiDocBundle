@@ -37,6 +37,12 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('models')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('use_jms')->defaultFalse()->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
