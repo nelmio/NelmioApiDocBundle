@@ -19,6 +19,7 @@ file that was distributed with this source code. #}
     <script id="swagger-data" type="application/json">{{ swagger_data|json_encode(65)|raw }}</script>
 </head>
 <body>
+    {% include '@NelmioApiDoc/SwaggerUi/svg_defs.html.twig' %}
     <header>
         <a id="logo" href="https://github.com/nelmio/NelmioApiDocBundle"><img src="{{ asset('bundles/nelmioapidoc/logo.png') }}" alt="NelmioApiDocBundle"></a>
     </header>
