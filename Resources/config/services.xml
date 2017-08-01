@@ -50,6 +50,10 @@
         </service>
 
         <!-- Model Describers -->
+        <service id="nelmio_api_doc.model_describers.collection" class="Nelmio\ApiDocBundle\ModelDescriber\CollectionModelDescriber" public="false">
+            <tag name="nelmio_api_doc.model_describer" priority="10" />
+        </service>
+
         <service id="nelmio_api_doc.model_describers.object" class="Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber" public="false">
             <argument type="service" id="property_info" />
 
