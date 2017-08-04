@@ -84,6 +84,10 @@ class ValidationParserLegacy extends ValidationParser
                 }
             }
 
+            if (!isset($vparams['excluded'])) {
+                $vparams['excluded'] = false;
+            }
+
             $params[$property] = $vparams;
         }
 

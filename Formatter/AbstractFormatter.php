@@ -72,6 +72,7 @@ abstract class AbstractFormatter implements FormatterInterface
             $newParams[$newName] = array(
                 'dataType'     => $info['dataType'],
                 'readonly'     => array_key_exists('readonly', $info) ? $info['readonly'] : null,
+                'excluded'     => array_key_exists('excluded', $info) ? $info['excluded'] : false,
                 'required'     => $info['required'],
                 'default'      => array_key_exists('default', $info) ? $info['default'] : null,
                 'description'  => array_key_exists('description', $info) ? $info['description'] : null,

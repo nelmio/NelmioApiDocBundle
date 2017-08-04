@@ -66,6 +66,7 @@ class CollectionParser implements ParserInterface, PostParserInterface
             'subType' => $item['class'],
             'actualType' => DataTypes::COLLECTION,
             'readonly' => true,
+            'excluded' => false,
             'required' => true,
             'default' => true,
             'description' => '',

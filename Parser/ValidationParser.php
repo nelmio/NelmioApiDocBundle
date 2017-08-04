@@ -85,6 +85,7 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 'required' => null,
                 'description' => null,
                 'readonly' => null,
+                'excluded' => false,
                 'children' => $parsed
             );
 
@@ -132,6 +133,10 @@ class ValidationParser implements ParserInterface, PostParserInterface
                 if (!isset($vparams[$reqprop])) {
                     $vparams[$reqprop] = null;
                 }
+            }
+
+            if (!isset($vparams['excluded'])) {
+                $vparams['excluded'] = false;
             }
 
             // check for nested classes with All constraint

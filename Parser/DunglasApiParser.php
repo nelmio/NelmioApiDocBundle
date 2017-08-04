@@ -129,6 +129,7 @@ class DunglasApiParser implements ParserInterface
             'required' => $attributeMetadata->isRequired(),
             'description' => $attributeMetadata->getDescription(),
             'readonly' => !$attributeMetadata->isWritable(),
+            'excluded' => false,
         );
 
         if (null == $type) {

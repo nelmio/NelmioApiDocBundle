@@ -60,6 +60,7 @@ class JsonSerializableParser implements ParserInterface
             'required' => null,
             'description' => null,
             'readonly' => null,
+            'excluded' => false,
             'default' => is_scalar($item) ? $item : null,
         );
 
