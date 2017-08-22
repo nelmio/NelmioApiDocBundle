@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Swagger\Analysis;
+use Swagger\Annotations\Definition;
 use Swagger\Annotations\Items;
 use Swagger\Annotations\Parameter;
 use Swagger\Annotations\Response;
@@ -47,7 +48,7 @@ final class ModelRegister
                     $annotationClass = Schema::class;
                 }
             } elseif ($annotation instanceof Schema) {
-                $annotationClass = Items::class;
+                $annotationClass = Definition::class;
             } else {
                 continue;
             }
