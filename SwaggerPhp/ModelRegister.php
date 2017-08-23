@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Swagger\Analysis;
+use Swagger\Annotations\Definition;
 use Swagger\Annotations\Items;
 use Swagger\Annotations\Parameter;
 use Swagger\Annotations\Response;
@@ -70,7 +71,9 @@ final class ModelRegister
                 continue;
             }
 
-            $annotation->merge([new $annotationClass([
+            //Adds a fake definition
+            //@todo Remove fake definition for a more permanent fix
+            $annotation->merge([new Definition(["title" => "Fake"]), new $annotationClass([
                 'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups)),
             ])]);
 
