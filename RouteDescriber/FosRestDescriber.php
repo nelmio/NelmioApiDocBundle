@@ -63,7 +63,7 @@ final class FosRestDescriber implements RouteDescriberInterface
     private function normalizeRequirements($requirements)
     {
         // if pattern
-        if (isset($requirements['rule'])) {
+        if (is_array($requirements) && isset($requirements['rule'])) {
             return (string) $requirements['rule'];
         }
         if (is_string($requirements)) {
