@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Swagger\Analysis;
+use Swagger\Annotations\Definition;
 use Swagger\Annotations\Items;
 use Swagger\Annotations\Parameter;
 use Swagger\Annotations\Response;
@@ -37,6 +38,7 @@ final class ModelRegister
 
     public function __invoke(Analysis $analysis)
     {
+        $modelsRegistered = [];
         foreach ($analysis->annotations as $annotation) {
             if ($annotation instanceof Response) {
                 $annotationClass = Schema::class;
@@ -70,8 +72,12 @@ final class ModelRegister
                 continue;
             }
 
+            $ref = $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups));
+            $parts = explode('/', $ref);
+            $modelsRegistered[end($parts)] = true;
+
             $annotation->merge([new $annotationClass([
-                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups)),
+                'ref' => $ref,
             ])]);
 
             // It is no longer an unmerged annotation
@@ -83,6 +89,10 @@ final class ModelRegister
                 }
             }
             $analysis->annotations->detach($model);
+        }
+
+        foreach ($modelsRegistered as $model => $v) {
+            $analysis->annotations->attach(new Definition(['definition' => $model]));
         }
     }
 
