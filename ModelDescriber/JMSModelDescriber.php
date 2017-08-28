@@ -73,10 +73,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $type = $item->type['name'];
             }
 
-            if (in_array($type, array('boolean', 'integer', 'string', ' float', 'array'))) {
+            if (in_array($type, array('boolean', 'integer', 'string', 'array'))) {
                 $property->setType($type);
-            } elseif ('double' === $type) {
-                $property->setType('float');
+            } elseif ('double' === $type || 'float' === $type) {
+                $property->setType('number');
             } elseif ('DateTime' === $type || 'DateTimeImmutable' === $type) {
                 $property->setType('string');
                 $property->setFormat('date-time');
