@@ -41,7 +41,8 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
             $analysis = $this->getAnnotations();
 
             $analysis->process($this->getProcessors());
-            $analysis->validate();
+            //FIX FOR $ref not found #1065
+            //$analysis->validate();
 
             return json_decode(json_encode($analysis->swagger));
         }, $overwrite);
