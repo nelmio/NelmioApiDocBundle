@@ -113,7 +113,8 @@ class FunctionalTest extends WebTestCase
         $parameter = $parameters->get('user', 'path');
         $this->assertTrue($parameter->getRequired());
         $this->assertEquals('string', $parameter->getType());
-        $this->assertEquals('/foo/', $parameter->getFormat());
+        $this->assertEquals('/foo/', $parameter->getPattern());
+        $this->assertEmpty($parameter->getFormat());
     }
 
     public function testFOSRestAction()
