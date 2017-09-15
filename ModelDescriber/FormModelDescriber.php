@@ -116,11 +116,8 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                     break;
                 }
 
-                if (
-                    ($formType = $type->getInnerType()) &&
-                    ($formClass = get_class($formType)) &&
-                    !$this->isBuiltinType($formClass)   //don't check builtin types in Form component.
-                ) {
+                if ($type->getInnerType() && ($formClass = get_class($type->getInnerType())) && !$this->isBuiltinType($formClass)) {
+                    //if form type is not builtin in Form component.
                     $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $formClass));
                     $property->setRef($this->modelRegistry->register($model));
                     break;
@@ -136,13 +133,8 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         }
     }
 
-    /**
-     * @param string $type
-     *
-     * @return bool
-     */
-    private function isBuiltinType(string $type) : bool
+    private function isBuiltinType(string $type): bool
     {
-        return strpos($type, 'Symfony\Component\Form\Extension\Core\Type') !== false;
+        return 0 === strpos($type, 'Symfony\Component\Form\Extension\Core\Type');
     }
 }

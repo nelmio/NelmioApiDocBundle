@@ -18,9 +18,9 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
-use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 
 /**
  * @Route("/api")

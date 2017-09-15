@@ -20,9 +20,6 @@ trait ModelRegistryAwareTrait
      */
     private $modelRegistry;
 
-    /**
-     * @param ModelRegistry $modelRegistry
-     */
     public function setModelRegistry(ModelRegistry $modelRegistry)
     {
         $this->modelRegistry = $modelRegistry;
