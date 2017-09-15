@@ -179,6 +179,14 @@ class FunctionalTest extends WebTestCase
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
+                'dummy' => ['$ref' => '#/definitions/DummyType']
+            ],
+            'required' => ['dummy'],
+        ], $this->getModel('UserType')->toArray());
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
                 'bar' => [
                     'type' => 'string',
                 ],

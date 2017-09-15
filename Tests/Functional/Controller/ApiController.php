@@ -20,6 +20,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 
 /**
  * @Route("/api")
@@ -68,6 +69,27 @@ class ApiController
      * @SWG\Tag(name="implicit")
      */
     public function implicitSwaggerAction()
+    {
+    }
+
+    /**
+     * @Route("/test/users/{user}", methods={"POST"}, schemes={"https"}, requirements={"user"="/foo/"})
+     * @SWG\Response(
+     *     response="201",
+     *     description="Operation automatically detected",
+     *     @Model(type=User::class)
+     * )
+     * @SWG\Parameter(
+     *     name="foo",
+     *     in="body",
+     *     description="This is a parameter",
+     *     @SWG\Schema(
+     *         type="array",
+     *         @Model(type=UserType::class)
+     *     )
+     * )
+     */
+    public function submitUserTypeAction()
     {
     }
 
