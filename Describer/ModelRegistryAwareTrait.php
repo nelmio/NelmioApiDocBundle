@@ -15,6 +15,9 @@ use Nelmio\ApiDocBundle\Model\ModelRegistry;
 
 trait ModelRegistryAwareTrait
 {
+    /**
+     * @var ModelRegistry
+     */
     private $modelRegistry;
 
     public function setModelRegistry(ModelRegistry $modelRegistry)
