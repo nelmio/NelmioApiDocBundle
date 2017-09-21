@@ -42,7 +42,8 @@ final class FilteredRouteCollectionBuilder
 
     private function match(Route $route): bool
     {
-        $actualHost = $this->requestStack->getCurrentRequest()->getHost();
+        $masterRequest = $this->requestStack->getMasterRequest();
+        $actualHost = $masterRequest ? $masterRequest->getHost() : null;
         foreach ($this->routesConfig as $oneRouteConfig) {
             if (array_key_exists('host', $oneRouteConfig) && $oneRouteConfig['host'] !== null && $oneRouteConfig['host'] !== $actualHost) {
                 continue;
