@@ -40,7 +40,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 }
 
                 if (isset($requirements[$pathVariable])) {
-                    $parameter->setFormat($requirements[$pathVariable]);
+                    $parameter->setPattern($requirements[$pathVariable]);
                 }
             }
         }
