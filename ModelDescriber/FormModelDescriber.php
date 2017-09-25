@@ -45,12 +45,10 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         }
 
         $schema->setType('object');
-        $properties = $schema->getProperties();
-
         $class = $model->getType()->getClassName();
 
         $form = $this->formFactory->create($class, null, []);
-        $this->parseForm($schema, $form);
+        $this->parseForm($schema, $form, $model);
     }
 
     public function supports(Model $model): bool
@@ -58,7 +56,16 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         return is_a($model->getType()->getClassName(), FormTypeInterface::class, true);
     }
 
-    private function parseForm(Schema $schema, FormInterface $form)
+    private function parseForm(Schema $schema, FormInterface $form, Model $model)
+    {
+        if ('Properties' === substr($model->getType()->getClassName(), -strlen('Properties'))) {
+            return $this->addProperties($schema, $form);
+        }
+
+        $this->addEnclosingDefinition($schema, $model);
+    }
+
+    private function addProperties(Schema $schema, FormInterface $form)
     {
         $properties = $schema->getProperties();
 
@@ -131,6 +138,26 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $schema->setRequired($required);
             }
         }
+    }
+
+    private function addEnclosingDefinition(Schema $schema, Model $model)
+    {
+        $formClass = $model->getType()->getClassName();
+        $properties = $schema->getProperties();
+
+        $propertiesFormClass = substr($formClass, strrpos($formClass, '\\') + 1) . 'Properties';
+        $entityName = strtolower(str_replace('TypeProperties', '', $propertiesFormClass));
+
+        $property = $properties->get($entityName);
+        $schema->setRequired([$entityName]);
+        $property->setRef('#/definitions/'.$propertiesFormClass);
+
+        // register the properties for next pass
+        if (!class_exists($propertiesFormClass)) {
+            eval("class $propertiesFormClass extends $formClass {}");
+        }
+        $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $propertiesFormClass));
+        $this->modelRegistry->register($model);
     }
 
     private function isBuiltinType(string $type): bool

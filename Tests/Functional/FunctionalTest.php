@@ -177,26 +177,37 @@ class FunctionalTest extends WebTestCase
 
     public function testFormSupport()
     {
+        // User Object
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
-                'dummy' => ['$ref' => '#/definitions/DummyType'],
+                'user' => ['$ref' => '#/definitions/UserTypeProperties'],
             ],
-            'required' => ['dummy'],
+            'required' => ['user'],
         ], $this->getModel('UserType')->toArray());
 
+        $this->assertTrue($this->getSwaggerDefinition()->getDefinitions()->has('UserTypeProperties'));
+
+        $userTypeProperties = $this->getSwaggerDefinition()->getDefinitions()->get('UserTypeProperties');
+        $properties = $userTypeProperties->getProperties();
+
+        $this->assertTrue($properties->has('dummy'));
+
+        // Dummy object
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
-                'bar' => [
-                    'type' => 'string',
-                ],
-                'foo' => [
-                    'type' => 'string',
-                    'enum' => ['male', 'female'],
-                ],
+                'dummy' => ['$ref' => '#/definitions/DummyTypeProperties'],
             ],
-            'required' => ['foo'],
+            'required' => ['dummy'],
         ], $this->getModel('DummyType')->toArray());
+
+        $this->assertTrue($this->getSwaggerDefinition()->getDefinitions()->has('DummyTypeProperties'));
+
+        $userTypeProperties = $this->getSwaggerDefinition()->getDefinitions()->get('DummyTypeProperties');
+        $properties = $userTypeProperties->getProperties();
+
+        $this->assertTrue($properties->has('foo'));
+        $this->assertTrue($properties->has('bar'));
     }
 }
