@@ -100,7 +100,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 }
                 if ('collection' === $blockPrefix) {
                     $subType = $config->getOption('entry_type');
-					$property->setType('array');
+                    $property->setType('array');
 
                     $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $subType), null);
                     $property->getItems()->setRef($this->modelRegistry->register($model));
