@@ -102,7 +102,7 @@ If you want to user another Validation Parser, or want backwards Compatibility f
     # app/config/config.yml
     nelmio_api_doc:
         parser:
-            validation: MyBundl\Parser\MyValidationParser
+            validation: Nelmio\ApiDocBundle\Parser\ValidationParserLegacy
 
 MOTD
 ----
