@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use EXSyst\Component\Swagger\Operation;
 use EXSyst\Component\Swagger\Schema;
+use EXSyst\Component\Swagger\Swagger;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
 class WebTestCase extends BaseWebTestCase
@@ -22,7 +23,7 @@ class WebTestCase extends BaseWebTestCase
         return new TestKernel();
     }
 
-    protected function getSwaggerDefinition()
+    protected function getSwaggerDefinition(): Swagger
     {
         static::createClient();
 
