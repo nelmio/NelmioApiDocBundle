@@ -9,6 +9,7 @@
 >
     <php>
         <ini name="error_reporting" value="-1" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors" />
     </php>
 
     <testsuites>

@@ -5,17 +5,17 @@
 
     <services>
         <!-- Controllers -->
-        <service id="nelmio_api_doc.controller.swagger_ui" class="Nelmio\ApiDocBundle\Controller\SwaggerUiController">
+        <service id="nelmio_api_doc.controller.swagger_ui" class="Nelmio\ApiDocBundle\Controller\SwaggerUiController" public="true">
             <argument type="service" id="nelmio_api_doc.generator" />
             <argument type="service" id="twig" />
         </service>
 
-        <service id="nelmio_api_doc.controller.swagger" class="Nelmio\ApiDocBundle\Controller\DocumentationController">
+        <service id="nelmio_api_doc.controller.swagger" class="Nelmio\ApiDocBundle\Controller\DocumentationController" public="true">
             <argument type="service" id="nelmio_api_doc.generator" />
         </service>
 
         <!-- Swagger Spec Generator -->
-        <service id="nelmio_api_doc.generator" class="Nelmio\ApiDocBundle\ApiDocGenerator">
+        <service id="nelmio_api_doc.generator" class="Nelmio\ApiDocBundle\ApiDocGenerator" public="true">
             <argument type="collection" /> <!-- Describers -->
             <argument type="collection" /> <!-- Model Describers -->
         </service>
