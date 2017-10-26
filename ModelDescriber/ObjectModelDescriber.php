@@ -11,10 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
+use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Swagger\Annotations\Property;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -23,10 +25,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     use ModelRegistryAwareTrait;
 
     private $propertyInfo;
+    private $annotationReader;
 
-    public function __construct(PropertyInfoExtractorInterface $propertyInfo)
+    public function __construct(PropertyInfoExtractorInterface $propertyInfo, Reader $reader)
     {
         $this->propertyInfo = $propertyInfo;
+        $this->annotationReader = $reader;
     }
 
     public function describe(Model $model, Schema $schema)
@@ -45,18 +49,27 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             return;
         }
 
+        $refClass = new \ReflectionClass($class);
         foreach ($propertyInfoProperties as $propertyName) {
-            $types = $this->propertyInfo->getTypes($class, $propertyName);
-            if (0 === count($types)) {
-                throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s', $class, $propertyName));
+            $annotation = null;
+            if ($refClass->hasProperty($propertyName)) {
+                $annotation = $this->annotationReader->getPropertyAnnotation($refClass->getProperty($propertyName), Property::class);
             }
-            if (count($types) > 1) {
-                throw new \LogicException(sprintf('Property %s::$%s defines more than one type.', $class, $propertyName));
-            }
+            if ($annotation) {
+                $properties->get($propertyName)->merge(json_decode(json_encode($annotation)));
+            } else {
+                $types = $this->propertyInfo->getTypes($class, $propertyName);
+                if (0 === count($types)) {
+                    throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s', $class, $propertyName));
+                }
+                if (count($types) > 1) {
+                    throw new \LogicException(sprintf('Property %s::$%s defines more than one type.', $class, $propertyName));
+                }
 
-            $properties->get($propertyName)->setRef(
-                $this->modelRegistry->register(new Model($types[0], $model->getGroups()))
-            );
+                $properties->get($propertyName)->setRef(
+                    $this->modelRegistry->register(new Model($types[0], $model->getGroups()))
+                );
+            }
         }
     }
 
