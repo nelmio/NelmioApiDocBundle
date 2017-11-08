@@ -7,3 +7,4 @@
 /.phpunit
 /Tests/Functional/cache
 /Tests/Functional/logs
+/.idea
