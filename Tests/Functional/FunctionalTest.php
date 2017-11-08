@@ -148,31 +148,45 @@ class FunctionalTest extends WebTestCase
 
     public function testUserModel()
     {
-        $model = $this->getModel('User');
-        $this->assertEquals('object', $model->getType());
-        $properties = $model->getProperties();
-        $this->assertCount(3, $properties);
-
-        $this->assertTrue($properties->has('users'));
-        $this->assertEquals('#/definitions/User[]', $properties->get('users')->getRef());
-
-        $this->assertTrue($properties->has('dummy'));
-        $this->assertEquals('#/definitions/Dummy2', $properties->get('dummy')->getRef());
-
-        $this->assertTrue($properties->has('createdAt'));
-        $this->assertEquals('#/definitions/DateTime', $properties->get('createdAt')->getRef());
-
-        $model = $this->getModel('DateTime');
-        $this->assertEquals('string', $model->getType());
-        $this->assertEquals('date-time', $model->getFormat());
-    }
-
-    public function testUsersModel()
-    {
-        $model = $this->getModel('User[]');
-        $this->assertEquals('array', $model->getType());
-
-        $this->assertEquals('#/definitions/User', $model->getItems()->getRef());
+        $this->assertEquals(
+            [
+                'type' => 'object',
+                'properties' => [
+                    'money' => [
+                        'type' => 'number',
+                        'format' => 'float',
+                    ],
+                    'id' => [
+                        'type' => 'integer',
+                        'description' => "User id",
+                        'readOnly' => true,
+                        'title' => "userid",
+                        'example' => 1,
+                    ],
+                    'email' => [
+                        'type' => 'string',
+                        'readOnly' => false,
+                    ],
+                    'friendsNumber' => [
+                        'type' => 'string',
+                    ],
+                    'createdAt' => [
+                        'type' => 'string',
+                        'format' => 'date-time',
+                    ],
+                    'users' => [
+                        'items' => [
+                            '$ref' => '#/definitions/User',
+                        ],
+                        'type' => 'array',
+                    ],
+                    'dummy' => [
+                        '$ref' => '#/definitions/Dummy2',
+                    ],
+                ],
+            ],
+            $this->getModel('User')->toArray()
+        );
     }
 
     public function testFormSupport()

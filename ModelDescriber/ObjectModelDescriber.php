@@ -18,17 +18,42 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
+/**
+ * Class ObjectModelDescriber
+ * @package Nelmio\ApiDocBundle\ModelDescriber
+ */
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
+    /**
+     * @var PropertyInfoExtractorInterface
+     */
     private $propertyInfo;
 
-    public function __construct(PropertyInfoExtractorInterface $propertyInfo)
+    /**
+     * @var SwaggerPropertyAnnotationReader
+     */
+    private $swaggerPropertyAnnotationReader;
+
+    /**
+     * @param PropertyInfoExtractorInterface  $propertyInfo
+     * @param SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader
+     */
+    public function __construct(
+        PropertyInfoExtractorInterface $propertyInfo,
+        SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader
+    )
     {
         $this->propertyInfo = $propertyInfo;
+        $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
     }
 
+    /**
+     * @param Model $model
+     * @param Schema $schema
+     * @throws \Exception
+     */
     public function describe(Model $model, Schema $schema)
     {
         $schema->setType('object');
@@ -54,12 +79,51 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 throw new \LogicException(sprintf('Property %s::$%s defines more than one type.', $class, $propertyName));
             }
 
-            $properties->get($propertyName)->setRef(
-                $this->modelRegistry->register(new Model($types[0], $model->getGroups()))
-            );
+            $type = $types[0];
+            $property = $properties->get($propertyName);
+
+            if (Type::BUILTIN_TYPE_ARRAY === $type->getBuiltinType()) {
+                $type = $type->getCollectionValueType();
+                $property->setType('array');
+                $property = $property->getItems();
+            }
+
+            if ($type->getBuiltinType() === Type::BUILTIN_TYPE_STRING) {
+                $property->setType('string');
+            } elseif ($type->getBuiltinType() === Type::BUILTIN_TYPE_BOOL) {
+                $property->setType('boolean');
+            } elseif ($type->getBuiltinType() === Type::BUILTIN_TYPE_INT) {
+                $property->setType('integer');
+            } elseif ($type->getBuiltinType() === Type::BUILTIN_TYPE_FLOAT) {
+                $property->setType('number');
+                $property->setFormat('float');
+            } elseif ($type->getBuiltinType() === Type::BUILTIN_TYPE_OBJECT) {
+                if (in_array($type->getClassName(), ['DateTime', 'DateTimeImmutable'])) {
+                    $property->setType('string');
+                    $property->setFormat('date-time');
+                } else {
+                    $property->setRef(
+                        $this->modelRegistry->register(new Model($type, $model->getGroups()))
+                    );
+                }
+            } else {
+                throw new \Exception("Unknow type: {$type->getBuiltinType()}");
+            }
+
+            //read property options from Swagger Property annotation if it exists
+            if (property_exists($class, $propertyName)) {
+                $property = $this->swaggerPropertyAnnotationReader->readSwaggerPropertyAnnotation(
+                    new \ReflectionProperty($class, $propertyName),
+                    $property
+                );
+            }
         }
     }
 
+    /**
+     * @param Model $model
+     * @return bool
+     */
     public function supports(Model $model): bool
     {
         return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType();

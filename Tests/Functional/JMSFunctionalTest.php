@@ -18,11 +18,23 @@ class JMSFunctionalTest extends WebTestCase
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
-                'id' => ['type' => 'integer'],
-                'email' => ['type' => 'string'],
+                'id' => [
+                    'type' => 'integer',
+                    'description' => "User id",
+                    'readOnly' => true,
+                    'title' => "userid",
+                    'example' => 1,
+                ],
+                'email' => [
+                    'type' => 'string',
+                    'readOnly' => false,
+                ],
                 'roles' => [
                     'type' => 'array',
                     'items' => ['type' => 'string'],
+                ],
+                'friendsNumber' => [
+                    'type' => 'string',
                 ],
                 'friends' => [
                     'type' => 'array',
