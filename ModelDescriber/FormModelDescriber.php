@@ -105,6 +105,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                     $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $subType), null);
                     $property->getItems()->setRef($this->modelRegistry->register($model));
                     $property->setExample(sprintf('[{%s}]', $subType));
+                    break;
                 }
 
                 if ('entity' === $blockPrefix) {
