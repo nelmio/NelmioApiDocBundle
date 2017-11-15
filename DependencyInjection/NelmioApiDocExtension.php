@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use FOS\RestBundle\Controller\Annotations\ParamInterface;
+use Nelmio\ApiDocBundle\ModelDescriber\DoctrineModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\FormModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
@@ -95,13 +96,21 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $loader->load('api_platform.xml');
         }
 
+
         // JMS metadata support
+
         if ($config['models']['use_jms']) {
             $container->register('nelmio_api_doc.model_describers.jms', JMSModelDescriber::class)
                 ->setPublic(false)
                 ->setArguments([new Reference('jms_serializer.metadata_factory'), new Reference('jms_serializer.naming_strategy')])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
         }
+
+        // Doctrine metadata support
+        $container->register('nelmio_api_doc.model_describers.doctrine', DoctrineModelDescriber::class)
+            ->setPublic(false)
+            ->setArguments([new Reference('doctrine.orm.entity_manager'), new Reference('jms_serializer.naming_strategy'),$config['models']['use_jms']])
+            ->addTag('nelmio_api_doc.model_describer', ['priority' => 40]);
 
         // Import the base configuration
         $container->getDefinition('nelmio_api_doc.describers.config')->replaceArgument(0, $config['documentation']);

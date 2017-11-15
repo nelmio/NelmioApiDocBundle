@@ -66,21 +66,27 @@ final class ModelRegistry
             $this->unregistered = [];
 
             foreach ($tmp as $name => $model) {
-                $schema = null;
+                $schema = $this->api->getDefinitions()->get($name);
+
                 foreach ($this->modelDescribers as $modelDescriber) {
-                    if ($modelDescriber instanceof ModelRegistryAwareInterface) {
+                    if ($modelDescriber instanceof
+                        ModelRegistryAwareInterface
+                    ) {
                         $modelDescriber->setModelRegistry($this);
                     }
-                    if ($modelDescriber->supports($model)) {
-                        $schema = new Schema();
-                        $modelDescriber->describe($model, $schema);
 
-                        break;
+                    if ($modelDescriber->supports($model)) {
+                        try {
+                            $modelDescriber->describe($model, $schema);
+                        } catch (\LogicException $ex) {
+                            break;
+                        }
                     }
                 }
 
                 if (null === $schema) {
-                    throw new \LogicException(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType())));
+                    throw new \LogicException(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.',
+                        $this->typeToString($model->getType())));
                 }
 
                 $this->api->getDefinitions()->set($name, $schema);
@@ -104,7 +110,8 @@ final class ModelRegistry
     private function getTypeShortName(Type $type): string
     {
         if (null !== $type->getCollectionValueType()) {
-            return $this->getTypeShortName($type->getCollectionValueType()).'[]';
+            return $this->getTypeShortName($type->getCollectionValueType())
+                .'[]';
         }
 
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
@@ -122,7 +129,8 @@ final class ModelRegistry
             return $type->getClassName();
         } elseif ($type->isCollection()) {
             if (null !== $type->getCollectionValueType()) {
-                return $this->typeToString($type->getCollectionValueType()).'[]';
+                return $this->typeToString($type->getCollectionValueType())
+                    .'[]';
             } else {
                 return 'mixed[]';
             }
