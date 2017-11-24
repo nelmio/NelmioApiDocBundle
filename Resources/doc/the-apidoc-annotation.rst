@@ -51,7 +51,8 @@ The bundle provides an ``ApiDoc()`` annotation for your controllers::
          *  },
          *  parameters={
          *      {"name"="categoryId", "dataType"="integer", "required"=true, "description"="category id"}
-         *  }
+         *  },
+         *  output={"collection"=true, "collectionName"="classes", "class"="Your\Namespace\Class"}
          * )
          */
         public function cgetAction($limit)
@@ -121,7 +122,9 @@ The following properties are available:
   POST|PUT methods, either as FQCN or as form type (if it is registered in the
   form factory in the container).
 * ``output``: the output type associated with the response.  Specified and
-  parsed the same way as ``input``.
+  parsed the same way as ``input``. The above ``cgetAction()`` shows an example
+  of specifying the return object to have an array of ``Your\Namespace\Class``
+  objects under the key ``classes``.
 * ``statusCodes``: an array of HTTP status codes and a description of when that
   status is returned; Example:
 
