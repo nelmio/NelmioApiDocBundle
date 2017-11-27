@@ -39,7 +39,7 @@ class SwaggerPropertyAnnotationReader
      * @param Items|Schema        $property
      * @return Items|Schema
      */
-    public function readSwaggerPropertyAnnotation(\ReflectionProperty $reflectionProperty, $property)
+    public function updateWithSwaggerPropertyAnnotation(\ReflectionProperty $reflectionProperty, $property)
     {
         $swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class);
         if ($swgProperty instanceof SwgProperty) {

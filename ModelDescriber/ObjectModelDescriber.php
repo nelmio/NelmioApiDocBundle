@@ -108,7 +108,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
             // read property options from Swagger Property annotation if it exists
             if (property_exists($class, $propertyName)) {
-                $this->swaggerPropertyAnnotationReader->readSwaggerPropertyAnnotation(
+                $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation(
                     new \ReflectionProperty($class, $propertyName),
                     $property
                 );
