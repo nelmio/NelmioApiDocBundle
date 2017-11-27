@@ -22,20 +22,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 {
     use ModelRegistryAwareTrait;
 
-    /**
-     * @var PropertyInfoExtractorInterface
-     */
     private $propertyInfo;
 
-    /**
-     * @var SwaggerPropertyAnnotationReader
-     */
     private $swaggerPropertyAnnotationReader;
 
-    /**
-     * @param PropertyInfoExtractorInterface  $propertyInfo
-     * @param SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader
-     */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
         SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader
@@ -45,11 +35,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
     }
 
-    /**
-     * @param Model $model
-     * @param Schema $schema
-     * @throws \Exception
-     */
     public function describe(Model $model, Schema $schema)
     {
         $schema->setType('object');
@@ -116,10 +101,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
     }
 
-    /**
-     * @param Model $model
-     * @return bool
-     */
     public function supports(Model $model): bool
     {
         return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType();

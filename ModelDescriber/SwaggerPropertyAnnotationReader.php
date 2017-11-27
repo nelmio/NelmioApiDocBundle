@@ -21,14 +21,8 @@ use Doctrine\Common\Annotations\Reader;
  */
 class SwaggerPropertyAnnotationReader
 {
-    /**
-     * @var Reader
-     */
     private $annotationsReader;
 
-    /**
-     * @param Reader $annotationsReader
-     */
     public function __construct(Reader $annotationsReader)
     {
         $this->annotationsReader = $annotationsReader;

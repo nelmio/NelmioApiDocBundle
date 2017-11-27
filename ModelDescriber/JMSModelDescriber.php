@@ -29,26 +29,12 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 {
     use ModelRegistryAwareTrait;
 
-    /**
-     * @var MetadataFactoryInterface
-     */
     private $factory;
 
-    /**
-     * @var PropertyNamingStrategyInterface
-     */
     private $namingStrategy;
 
-    /**
-     * @var SwaggerPropertyAnnotationReader
-     */
     private $swaggerPropertyAnnotationReader;
 
-    /**
-     * @param MetadataFactoryInterface        $factory
-     * @param PropertyNamingStrategyInterface $namingStrategy
-     * @param SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader
-     */
     public function __construct(
         MetadataFactoryInterface $factory,
         PropertyNamingStrategyInterface $namingStrategy,
