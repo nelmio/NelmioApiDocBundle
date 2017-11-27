@@ -18,10 +18,6 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
-/**
- * Class ObjectModelDescriber
- * @package Nelmio\ApiDocBundle\ModelDescriber
- */
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
@@ -107,12 +103,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                     );
                 }
             } else {
-                throw new \Exception("Unknow type: {$type->getBuiltinType()}");
+                throw new \Exception(sprintf("Unknow type: %s", $type->getBuiltinType()));
             }
 
-            //read property options from Swagger Property annotation if it exists
+            // read property options from Swagger Property annotation if it exists
             if (property_exists($class, $propertyName)) {
-                $property = $this->swaggerPropertyAnnotationReader->readSwaggerPropertyAnnotation(
+                $this->swaggerPropertyAnnotationReader->readSwaggerPropertyAnnotation(
                     new \ReflectionProperty($class, $propertyName),
                     $property
                 );

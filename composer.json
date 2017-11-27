@@ -39,8 +39,9 @@
 
         "phpdocumentor/reflection-docblock": "^3.1",
         "api-platform/core": "^2.0.3",
-        "friendsofsymfony/rest-bundle": "^2.0",
-        "jms/serializer-bundle": "^1.0|^2.0"
+        "friendsofsymfony/rest-bundle": "dev-master",
+        "jms/serializer-bundle": "^1.0|^2.0",
+        "symfony/symfony": "4.0.*"
     },
     "suggest": {
         "phpdocumentor/reflection-docblock": "For parsing php docs.",
@@ -56,5 +57,6 @@
         "branch-alias": {
             "dev-master": "3.0.x-dev"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }

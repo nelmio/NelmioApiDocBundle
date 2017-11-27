@@ -14,19 +14,22 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 use EXSyst\Component\Swagger\Schema;
 use EXSyst\Component\Swagger\Items;
 use Swagger\Annotations\Property as SwgProperty;
-use Doctrine\Common\Annotations\Reader as AnnotationsReader;
+use Doctrine\Common\Annotations\Reader;
 
+/**
+ * @internal
+ */
 class SwaggerPropertyAnnotationReader
 {
     /**
-     * @var AnnotationsReader
+     * @var Reader
      */
     private $annotationsReader;
 
     /**
-     * @param AnnotationsReader $annotationsReader
+     * @param Reader $annotationsReader
      */
-    public function __construct(AnnotationsReader $annotationsReader)
+    public function __construct(Reader $annotationsReader)
     {
         $this->annotationsReader = $annotationsReader;
     }
