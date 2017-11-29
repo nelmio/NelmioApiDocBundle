@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use EXSyst\Component\Swagger\Operation;
 use EXSyst\Component\Swagger\Tag;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 
 class FunctionalTest extends WebTestCase
 {
@@ -181,8 +182,13 @@ class FunctionalTest extends WebTestCase
             'type' => 'object',
             'properties' => [
                 'dummy' => ['$ref' => '#/definitions/DummyType'],
+                'dummies' => [
+                    'items' => ['$ref' => '#/definitions/DummyType'],
+                    'type' => 'array',
+                    'example' => sprintf('[{%s}]', DummyType::class)
+                ]
             ],
-            'required' => ['dummy'],
+            'required' => ['dummy', 'dummies'],
         ], $this->getModel('UserType')->toArray());
 
         $this->assertEquals([
