@@ -27,7 +27,6 @@ matrix:
 
 before_install:
     - phpenv config-rm xdebug.ini
-    - composer require symfony/symfony:^3.0 --dev --no-update;
     - if [ "$SF_4" == "true" ]; then composer config minimum-stability dev; fi
     - if [ "$SF_4" == "true" ]; then composer require symfony/symfony:4.0.* --dev --no-update; fi
     - if [ "$SF_4" == "true" ]; then composer require friendsofsymfony/rest-bundle:dev-master --dev --no-update; fi
