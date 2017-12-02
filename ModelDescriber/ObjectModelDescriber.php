@@ -88,7 +88,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                     );
                 }
             } else {
-                throw new \Exception(sprintf("Unknow type: %s", $type->getBuiltinType()));
+                throw new \Exception(sprintf("Unknown type: %s", $type->getBuiltinType()));
             }
 
             // read property options from Swagger Property annotation if it exists

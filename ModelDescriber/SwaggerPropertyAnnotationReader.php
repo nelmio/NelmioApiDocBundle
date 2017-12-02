@@ -31,7 +31,6 @@ class SwaggerPropertyAnnotationReader
     /**
      * @param \ReflectionProperty $reflectionProperty
      * @param Items|Schema        $property
-     * @return Items|Schema
      */
     public function updateWithSwaggerPropertyAnnotation(\ReflectionProperty $reflectionProperty, $property)
     {
@@ -53,7 +52,5 @@ class SwaggerPropertyAnnotationReader
                 $property->setExample((string) $swgProperty->example);
             }
         }
-
-        return $property;
     }
 }
