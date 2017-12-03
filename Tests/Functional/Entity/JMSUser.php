@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
+use Swagger\Annotations as SWG;
 
 /**
  * User.
@@ -23,12 +24,16 @@ class JMSUser
     /**
      * @Serializer\Type("integer")
      * @Serializer\Expose
+     *
+     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1)
      */
     private $id;
 
     /**
      * @Serializer\Type("string")
      * @Serializer\Expose
+     *
+     * @SWG\Property(readOnly = false)
      */
     private $email;
 
@@ -56,6 +61,15 @@ class JMSUser
      * @Serializer\Expose
      */
     private $friends;
+
+    /**
+     * @Serializer\Type("integer")
+     * @Serializer\Expose
+     * @Serializer\SerializedName("friendsNumber")
+     *
+     * @SWG\Property(type = "string")
+     */
+    private $friendsNumber;
 
     /**
      * @Serializer\Type(User::class)

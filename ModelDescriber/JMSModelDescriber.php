@@ -30,12 +30,20 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     use ModelRegistryAwareTrait;
 
     private $factory;
+
     private $namingStrategy;
 
-    public function __construct(MetadataFactoryInterface $factory, PropertyNamingStrategyInterface $namingStrategy)
+    private $swaggerPropertyAnnotationReader;
+
+    public function __construct(
+        MetadataFactoryInterface $factory,
+        PropertyNamingStrategyInterface $namingStrategy,
+        SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader
+    )
     {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
+        $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
     }
 
     /**
@@ -73,12 +81,12 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $type = $item->type['name'];
             }
 
-            if (in_array($type, array('boolean', 'integer', 'string', 'array'))) {
+            if (in_array($type, ['boolean', 'integer', 'string', 'array'])) {
                 $property->setType($type);
-            } elseif ('double' === $type || 'float' === $type) {
+            } elseif (in_array($type, ['double', 'float'])) {
                 $property->setType('number');
                 $property->setFormat($type);
-            } elseif ('DateTime' === $type || 'DateTimeImmutable' === $type) {
+            } elseif (in_array($type, ['DateTime', 'DateTimeImmutable'])) {
                 $property->setType('string');
                 $property->setFormat('date-time');
             } else {
@@ -91,6 +99,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                     $this->modelRegistry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $model->getGroups()))
                 );
             }
+
+            // read property options from Swagger Property annotation if it exists
+            $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation($item->reflection, $property);
         }
     }
 

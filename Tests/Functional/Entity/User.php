@@ -11,11 +11,39 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use Swagger\Annotations as SWG;
+
 /**
  * @author Guilhem N. <egetick@gmail.com>
  */
 class User
 {
+    /**
+     * @var integer
+     *
+     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1)
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @SWG\Property(readOnly = false)
+     */
+    private $email;
+
+    /**
+     * @var int
+     *
+     * @SWG\Property(type = "string")
+     */
+    private $friendsNumber;
+
+    /**
+     * @var float
+     */
+    private $money;
+
     /**
      * @var \DateTime
      */
@@ -25,6 +53,38 @@ class User
      * @var User[]
      */
     private $users;
+
+    /**
+     * @param float $money
+     */
+    public function setMoney(float $money)
+    {
+        $this->money = $money;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail(string $email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @param int $friendsNumber
+     */
+    public function setFriendsNumber(int $friendsNumber)
+    {
+        $this->friendsNumber = $friendsNumber;
+    }
 
     public function setCreatedAt(\DateTime $createAt)
     {
