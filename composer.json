@@ -16,9 +16,9 @@
     ],
     "require": {
         "php": ">=5.4",
-        "symfony/twig-bundle": "~2.3|~3.0",
-        "symfony/framework-bundle": "~2.3|~3.0",
-        "symfony/console": "~2.3|~3.0",
+        "symfony/twig-bundle": "~2.3|~3.0|~4.0",
+        "symfony/framework-bundle": "~2.3|~3.0|~4.0",
+        "symfony/console": "~2.3|~3.0|~4.0",
         "michelf/php-markdown": "~1.4"
     },
     "conflict": {
@@ -28,20 +28,20 @@
         "symfony/symfony": "~2.7.8"
     },
     "require-dev": {
-        "symfony/css-selector": "~2.3|~3.0",
-        "symfony/browser-kit": "~2.3|~3.0",
-        "symfony/validator": "~2.3|~3.0",
-        "symfony/yaml": "~2.3|~3.0",
-        "symfony/form": "~2.3|~3.0",
-        "symfony/finder": "~2.3|~3.0",
-        "symfony/serializer": "~2.7|~3.0",
+        "symfony/css-selector": "~2.3|~3.0|~4.0",
+        "symfony/browser-kit": "~2.3|~3.0|~4.0",
+        "symfony/validator": "~2.3|~3.0|~4.0",
+        "symfony/yaml": "~2.3|~3.0|~4.0",
+        "symfony/form": "~2.3|~3.0|~4.0",
+        "symfony/finder": "~2.3|~3.0|~4.0",
+        "symfony/serializer": "~2.7|~3.0|~4.0",
         "doctrine/orm": "~2.3",
         "doctrine/doctrine-bundle": "~1.5",
         "friendsofsymfony/rest-bundle": "~1.0|~2.0",
         "jms/serializer-bundle": ">=0.11",
-        "dunglas/api-bundle": "~1.0@dev",
+        "dunglas/api-bundle": "~1.0",
         "sensio/framework-extra-bundle": "~3.0",
-        "symfony/phpunit-bridge": "~2.7|~3.0"
+        "symfony/phpunit-bridge": "~2.7|~3.0|~4.0"
     },
     "suggest": {
         "symfony/form": "For using form definitions as input.",

@@ -19,7 +19,7 @@
         <service id="nelmio_api_doc.formatter.simple_formatter" class="%nelmio_api_doc.formatter.simple_formatter.class%"
             parent="nelmio_api_doc.formatter.abstract_formatter" />
         <service id="nelmio_api_doc.formatter.html_formatter" class="%nelmio_api_doc.formatter.html_formatter.class%"
-            parent="nelmio_api_doc.formatter.abstract_formatter">
+            parent="nelmio_api_doc.formatter.abstract_formatter" public="true">
             <call method="setTemplatingEngine">
                 <argument type="service" id="templating" />
             </call>
@@ -61,7 +61,7 @@
             </call>
         </service>
         <service id="nelmio_api_doc.formatter.swagger_formatter" class="%nelmio_api_doc.formatter.swagger_formatter.class%"
-            parent="nelmio_api_doc.formatter.abstract_formatter" />
+            parent="nelmio_api_doc.formatter.abstract_formatter" public="true" />
     </services>
 
 </container>
