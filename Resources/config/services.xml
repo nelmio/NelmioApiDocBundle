@@ -26,7 +26,7 @@
             <argument type="service" id="kernel" />
         </service>
 
-        <service id="nelmio_api_doc.extractor.api_doc_extractor" class="%nelmio_api_doc.extractor.api_doc_extractor.class%">
+        <service id="nelmio_api_doc.extractor.api_doc_extractor" class="%nelmio_api_doc.extractor.api_doc_extractor.class%" public="true">
             <argument type="service" id="service_container" />
             <argument type="service" id="router" />
             <argument type="service" id="annotation_reader" />
