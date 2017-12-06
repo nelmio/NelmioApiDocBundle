@@ -82,6 +82,23 @@ nelmio_api_doc:
             - ^/api
 ```
 
+Alternative configuration for different hosts.
+
+```yml
+# app/config/config.yml
+nelmio_api_doc:
+    routes:
+        api:
+            host: api.example.com
+            path_patterns: # an array of regexps
+                - ^/api
+        rest:
+            host: rest.example.com
+            path_patterns:
+                - ^/rest
+            
+```
+
 ## Use the bundle
 
 You can configure globally your documentation in the config (take a look at

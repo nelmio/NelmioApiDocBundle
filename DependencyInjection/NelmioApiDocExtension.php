@@ -63,7 +63,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $routesDefinition = (new Definition(RouteCollection::class))
             ->setFactory([new Reference('router'), 'getRouteCollection']);
 
-        if (0 === count($config['routes']['path_patterns'])) {
+        if (0 === count($config['routes'])) {
             $container->setDefinition('nelmio_api_doc.routes', $routesDefinition)
                 ->setPublic(false);
         } else {
@@ -71,7 +71,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setPublic(false)
                 ->setFactory([
                     (new Definition(FilteredRouteCollectionBuilder::class))
-                        ->addArgument($config['routes']['path_patterns']),
+                        ->addArgument(new Reference('request_stack'))
+                        ->addArgument($config['routes']),
                     'filter',
                 ])
                 ->addArgument($routesDefinition);
