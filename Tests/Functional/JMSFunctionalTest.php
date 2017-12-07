@@ -49,6 +49,32 @@ class JMSFunctionalTest extends WebTestCase
         ], $this->getModel('JMSUser')->toArray());
     }
 
+    public function testModelComplexDocumentation()
+    {
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'integer'],
+                'user' => ['$ref' => '#/definitions/JMSUser2'],
+                'name' => ['type' => 'string']
+            ],
+        ], $this->getModel('JMSComplex')->toArray());
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                    'title' => 'userid',
+                    'description' => 'User id',
+                    'readOnly' => true,
+                    'example' => '1',
+                ],
+            ],
+        ], $this->getModel('JMSUser2')->toArray());
+
+    }
+
     protected static function createKernel(array $options = array())
     {
         return new TestKernel(true);

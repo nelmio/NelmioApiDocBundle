@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSUser;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
 
@@ -28,5 +29,18 @@ class JMSController
      */
     public function userAction()
     {
+    }
+
+    /**
+     * @Route("/api/jms_complex", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=JMSComplex::class, groups={"list", "details", "user" : {"list"}})
+     * )
+     */
+    public function complexAction()
+    {
+
     }
 }
