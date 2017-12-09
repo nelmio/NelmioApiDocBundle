@@ -49,6 +49,21 @@ class JMSFunctionalTest extends WebTestCase
         ], $this->getModel('JMSUser')->toArray());
     }
 
+    public function testYamlConfig()
+    {
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                ],
+                'email' => [
+                    'type' => 'string'
+                ],
+            ],
+        ], $this->getModel('VirtualProperty')->toArray());
+    }
+
     protected static function createKernel(array $options = array())
     {
         return new TestKernel(true);
