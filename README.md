@@ -16,7 +16,7 @@ for your APIs.
 
 ## Installation
 
-First, open a command console, enter your project directory and execute the following command to download the latest version of this bundle (still in beta, for a stable version look [here](https://github.com/nelmio/NelmioApiDocBundle/tree/2.x)):
+First, open a command console, enter your project directory and execute the following command to download the latest version of this bundle:
 
 ```
 composer require nelmio/api-doc-bundle dev-master
