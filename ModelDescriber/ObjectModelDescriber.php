@@ -61,7 +61,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             $type = $types[0];
-            $property = $properties->get($propertyName);
+            $realProp = $property = $properties->get($propertyName);
 
             if (Type::BUILTIN_TYPE_ARRAY === $type->getBuiltinType()) {
                 $type = $type->getCollectionValueType();
@@ -95,7 +95,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             if (property_exists($class, $propertyName)) {
                 $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation(
                     new \ReflectionProperty($class, $propertyName),
-                    $property
+                    $realProp
                 );
             }
         }

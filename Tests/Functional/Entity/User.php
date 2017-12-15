@@ -33,6 +33,20 @@ class User
     private $email;
 
     /**
+     * @var string[]
+     *
+     * @SWG\Property(
+     *     description = "User roles",
+     *     type = "array",
+     *     items=@SWG\Items(type="string"),
+     *     required = true,
+     *     title = "roles",
+     *     example="[""ADMIN"",""SUPERUSER""]")
+     * )
+     */
+    private $roles;
+
+    /**
      * @var int
      *
      * @SWG\Property(type = "string")
@@ -76,6 +90,14 @@ class User
     public function setEmail(string $email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
     }
 
     /**

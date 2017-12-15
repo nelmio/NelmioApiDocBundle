@@ -72,7 +72,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             }
 
             $name = $this->namingStrategy->translateName($item);
-            $property = $properties->get($name);
+            $realProp = $property = $properties->get($name);
 
             if ($type = $this->getNestedTypeInArray($item)) {
                 $property->setType('array');
@@ -102,7 +102,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             // read property options from Swagger Property annotation if it exists
             if($item->reflection !== null)
-                $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation($item->reflection, $property);
+                $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation($item->reflection, $realProp);
         }
     }
 
