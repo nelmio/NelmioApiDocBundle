@@ -80,8 +80,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $type = $item->type['name'];
             }
 
-            if (in_array($type, ['boolean', 'integer', 'string', 'array'])) {
+            if (in_array($type, ['boolean', 'string', 'array'])) {
                 $property->setType($type);
+            } elseif (in_array($type, ['int', 'integer'])) {
+                $property->setType('integer');
             } elseif (in_array($type, ['double', 'float'])) {
                 $property->setType('number');
                 $property->setFormat($type);

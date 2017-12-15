@@ -15,6 +15,7 @@ use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Items;
 use EXSyst\Component\Swagger\Schema;
 use Swagger\Annotations\Property as SwgProperty;
+use const Swagger\Annotations\UNDEFINED;
 
 /**
  * @internal
@@ -42,16 +43,14 @@ class SwaggerPropertyAnnotationReader
             if (null !== $swgProperty->readOnly) {
                 $property->setReadOnly($swgProperty->readOnly);
             }
-            if ($property instanceof Schema) {
-                if (null !== $swgProperty->description) {
-                    $property->setDescription($swgProperty->description);
-                }
-                if (null !== $swgProperty->title) {
-                    $property->setTitle($swgProperty->title);
-                }
-                if (null !== $swgProperty->example) {
-                    $property->setExample((string) $swgProperty->example);
-                }
+            if ($swgProperty->title !== null) {
+                $property->setTitle($swgProperty->title);
+            }
+            if ($swgProperty->example !== null) {
+                $property->setExample($swgProperty->example);
+            }
+            if ($swgProperty->default !== UNDEFINED) {
+                $property->setDefault($swgProperty->default);
             }
         }
     }

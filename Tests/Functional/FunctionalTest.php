@@ -156,6 +156,7 @@ class FunctionalTest extends WebTestCase
                     'money' => [
                         'type' => 'number',
                         'format' => 'float',
+                        'default' => 0.0
                     ],
                     'id' => [
                         'type' => 'integer',
@@ -190,6 +191,12 @@ class FunctionalTest extends WebTestCase
                     ],
                     'dummy' => [
                         '$ref' => '#/definitions/Dummy2',
+                    ],
+                    'roles' => [
+                        'type' => 'array',
+                        'items' => ['type' => 'string'],
+                        'default' => ['user'],
+                        'description' => 'Roles list',
                     ],
                 ],
             ],

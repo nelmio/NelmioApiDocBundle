@@ -21,7 +21,7 @@ class User
     /**
      * @var int
      *
-     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1)
+     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1, default = null)
      */
     private $id;
 
@@ -37,11 +37,10 @@ class User
      *
      * @SWG\Property(
      *     description = "User roles",
-     *     type = "array",
-     *     items=@SWG\Items(type="string"),
      *     required = true,
      *     title = "roles",
-     *     example="[""ADMIN"",""SUPERUSER""]")
+     *     example="[""ADMIN"",""SUPERUSER""]"),
+     *     default = {"user"},
      * )
      */
     private $roles;
@@ -55,6 +54,7 @@ class User
 
     /**
      * @var float
+	 * @SWG\Property(default = 0.0)
      */
     private $money;
 

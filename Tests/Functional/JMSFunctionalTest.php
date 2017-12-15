@@ -25,6 +25,10 @@ class JMSFunctionalTest extends WebTestCase
                     'title' => 'userid',
                     'example' => 1,
                 ],
+                'daysOnline' => [
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
                 'email' => [
                     'type' => 'string',
                     'readOnly' => false,
@@ -35,6 +39,8 @@ class JMSFunctionalTest extends WebTestCase
                     'title' => 'roles',
                     'example' => '["ADMIN","SUPERUSER"]',
                     'items' => ['type' => 'string'],
+                    'default' => ['user'],
+                    'description' => 'Roles list',
                 ],
                 'friendsNumber' => [
                     'type' => 'string',

@@ -25,9 +25,18 @@ class JMSUser
      * @Serializer\Type("integer")
      * @Serializer\Expose
      *
-     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1)
+     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1, default = null)
      */
     private $id;
+
+    /**
+     * @Serializer\Type("int")
+     * @Serializer\Expose
+     * @Serializer\SerializedName("daysOnline")
+     *
+     * @SWG\Property(default = 0)
+     */
+    private $daysOnline;
 
     /**
      * @Serializer\Type("string")
@@ -41,7 +50,8 @@ class JMSUser
      * @Serializer\Type("array<string>")
      * @Serializer\Accessor(getter="getRoles", setter="setRoles")
      * @Serializer\Expose
-     * @SWG\Property(description = "User roles", required = true, title = "roles", example="[""ADMIN"",""SUPERUSER""]")
+     *
+     * @SWG\Property(default = {"user"}, description = "Roles list", example="[""ADMIN"",""SUPERUSER""]")
      */
     private $roles;
 
