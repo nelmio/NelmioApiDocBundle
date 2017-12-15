@@ -198,6 +198,10 @@ class FunctionalTest extends WebTestCase
                         'default' => ['user'],
                         'description' => 'Roles list',
                     ],
+                    'status' => [
+                        'type' => 'string',
+                        'enum' => ["disabled", "enabled"],
+                    ],
                 ],
             ],
             $this->getModel('User')->toArray()

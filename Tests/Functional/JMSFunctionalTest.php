@@ -54,6 +54,10 @@ class JMSFunctionalTest extends WebTestCase
                 'best_friend' => [
                     '$ref' => '#/definitions/User',
                 ],
+                'status' => [
+                    'type' => 'string',
+                    'enum' => ["disabled", "enabled"],
+                ],
             ],
         ], $this->getModel('JMSUser')->toArray());
     }

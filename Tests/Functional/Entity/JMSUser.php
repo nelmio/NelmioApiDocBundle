@@ -88,6 +88,14 @@ class JMSUser
      */
     private $bestFriend;
 
+    /**
+     * @Serializer\Type("string")
+     * @Serializer\Expose
+     *
+     * @SWG\Property(enum = {"disabled", "enabled"})
+     */
+    private $status;
+
     public function setRoles($roles)
     {
     }

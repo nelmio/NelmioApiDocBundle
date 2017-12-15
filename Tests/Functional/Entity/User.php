@@ -69,6 +69,13 @@ class User
     private $users;
 
     /**
+     * @var string
+     *
+     * @SWG\Property(enum = {"disabled", "enabled"})
+     */
+    private $status;
+
+    /**
      * @param float $money
      */
     public function setMoney(float $money)
@@ -117,6 +124,10 @@ class User
     }
 
     public function setDummy(Dummy $dummy)
+    {
+    }
+
+    public function setStatus(string $status)
     {
     }
 }
