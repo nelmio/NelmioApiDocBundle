@@ -215,6 +215,9 @@ class FunctionalTest extends WebTestCase
                     'type' => 'string',
                     'enum' => ['male', 'female'],
                 ],
+                'baz' => [
+                    'type' => 'boolean'
+                ]
             ],
             'required' => ['foo'],
         ], $this->getModel('DummyType')->toArray());

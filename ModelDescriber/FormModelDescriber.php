@@ -98,6 +98,11 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
                     break;
                 }
+
+                if ('checkbox' === $blockPrefix) {
+                    $property->setType('boolean');
+                }
+
                 if ('collection' === $blockPrefix) {
                     $subType = $config->getOption('entry_type');
                     $property->setType('array');
