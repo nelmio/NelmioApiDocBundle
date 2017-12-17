@@ -41,6 +41,5 @@ class JMSController
      */
     public function yamlAction()
     {
-
     }
 }

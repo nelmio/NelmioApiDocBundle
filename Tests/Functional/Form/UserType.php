@@ -24,7 +24,7 @@ class UserType extends AbstractType
         $builder
             ->add('dummy', DummyType::class)
             ->add('dummies', CollectionType::class, [
-                'entry_type' => DummyType::class
+                'entry_type' => DummyType::class,
             ]);
     }
 

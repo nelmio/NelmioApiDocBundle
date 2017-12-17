@@ -159,9 +159,9 @@ class FunctionalTest extends WebTestCase
                     ],
                     'id' => [
                         'type' => 'integer',
-                        'description' => "User id",
+                        'description' => 'User id',
                         'readOnly' => true,
-                        'title' => "userid",
+                        'title' => 'userid',
                         'example' => 1,
                     ],
                     'email' => [
@@ -206,8 +206,8 @@ class FunctionalTest extends WebTestCase
                 'dummies' => [
                     'items' => ['$ref' => '#/definitions/DummyType'],
                     'type' => 'array',
-                    'example' => sprintf('[{%s}]', DummyType::class)
-                ]
+                    'example' => sprintf('[{%s}]', DummyType::class),
+                ],
             ],
             'required' => ['dummy', 'dummies'],
         ], $this->getModel('UserType')->toArray());
@@ -223,8 +223,8 @@ class FunctionalTest extends WebTestCase
                     'enum' => ['male', 'female'],
                 ],
                 'baz' => [
-                    'type' => 'boolean'
-                ]
+                    'type' => 'boolean',
+                ],
             ],
             'required' => ['foo'],
         ], $this->getModel('DummyType')->toArray());

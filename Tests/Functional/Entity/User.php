@@ -19,7 +19,7 @@ use Swagger\Annotations as SWG;
 class User
 {
     /**
-     * @var integer
+     * @var int
      *
      * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1)
      */

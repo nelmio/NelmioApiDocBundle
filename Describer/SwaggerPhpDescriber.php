@@ -168,7 +168,7 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
 
     private function normalizePath(string $path): string
     {
-        if (substr($path, -10) === '.{_format}') {
+        if ('.{_format}' === substr($path, -10)) {
             $path = substr($path, 0, -10);
         }
 

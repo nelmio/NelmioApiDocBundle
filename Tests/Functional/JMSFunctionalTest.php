@@ -20,9 +20,9 @@ class JMSFunctionalTest extends WebTestCase
             'properties' => [
                 'id' => [
                     'type' => 'integer',
-                    'description' => "User id",
+                    'description' => 'User id',
                     'readOnly' => true,
-                    'title' => "userid",
+                    'title' => 'userid',
                     'example' => 1,
                 ],
                 'email' => [
@@ -32,7 +32,7 @@ class JMSFunctionalTest extends WebTestCase
                 'roles' => [
                     'type' => 'array',
                     'description' => 'User roles',
-                    'title' => "roles",
+                    'title' => 'roles',
                     'example' => '["ADMIN","SUPERUSER"]',
                     'items' => ['type' => 'string'],
                 ],
@@ -61,7 +61,7 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'integer',
                 ],
                 'email' => [
-                    'type' => 'string'
+                    'type' => 'string',
                 ],
             ],
         ], $this->getModel('VirtualProperty')->toArray());

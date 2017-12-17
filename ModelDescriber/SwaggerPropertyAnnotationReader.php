@@ -11,10 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use EXSyst\Component\Swagger\Schema;
-use EXSyst\Component\Swagger\Items;
-use Swagger\Annotations\Property as SwgProperty;
 use Doctrine\Common\Annotations\Reader;
+use EXSyst\Component\Swagger\Items;
+use EXSyst\Component\Swagger\Schema;
+use Swagger\Annotations\Property as SwgProperty;
 
 /**
  * @internal
@@ -36,20 +36,20 @@ class SwaggerPropertyAnnotationReader
     {
         $swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class);
         if ($swgProperty instanceof SwgProperty) {
-            if ($swgProperty->type !== null) {
+            if (null !== $swgProperty->type) {
                 $property->setType($swgProperty->type);
             }
-            if ($swgProperty->readOnly !== null) {
+            if (null !== $swgProperty->readOnly) {
                 $property->setReadOnly($swgProperty->readOnly);
             }
             if ($property instanceof Schema) {
-                if ($swgProperty->description !== null) {
+                if (null !== $swgProperty->description) {
                     $property->setDescription($swgProperty->description);
                 }
-                if ($swgProperty->title !== null) {
+                if (null !== $swgProperty->title) {
                     $property->setTitle($swgProperty->title);
                 }
-                if ($swgProperty->example !== null) {
+                if (null !== $swgProperty->example) {
                     $property->setExample((string) $swgProperty->example);
                 }
             }

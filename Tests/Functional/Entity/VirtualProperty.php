@@ -1,13 +1,20 @@
 <?php
 
+/*
+ * This file is part of the NelmioApiDocBundle package.
+ *
+ * (c) Nelmio
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Class VirtualProperty
- * @package Nelmio\ApiDocBundle\Tests\Functional\Entity
+ * Class VirtualProperty.
  *
  * @Serializer\ExclusionPolicy("all")
  * @Serializer\VirtualProperty(
@@ -18,7 +25,6 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class VirtualProperty
 {
-
     /**
      * @var int
      * @Serializer\Type("integer")
@@ -34,6 +40,6 @@ class VirtualProperty
     public function __construct()
     {
         $this->user = new User();
-        $this->user->setEmail("dummy@test.com");
+        $this->user->setEmail('dummy@test.com');
     }
 }

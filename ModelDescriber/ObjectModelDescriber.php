@@ -29,8 +29,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
         SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader
-    )
-    {
+    ) {
         $this->propertyInfo = $propertyInfo;
         $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
     }
@@ -69,16 +68,16 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 $property = $property->getItems();
             }
 
-            if ($type->getBuiltinType() === Type::BUILTIN_TYPE_STRING) {
+            if (Type::BUILTIN_TYPE_STRING === $type->getBuiltinType()) {
                 $property->setType('string');
-            } elseif ($type->getBuiltinType() === Type::BUILTIN_TYPE_BOOL) {
+            } elseif (Type::BUILTIN_TYPE_BOOL === $type->getBuiltinType()) {
                 $property->setType('boolean');
-            } elseif ($type->getBuiltinType() === Type::BUILTIN_TYPE_INT) {
+            } elseif (Type::BUILTIN_TYPE_INT === $type->getBuiltinType()) {
                 $property->setType('integer');
-            } elseif ($type->getBuiltinType() === Type::BUILTIN_TYPE_FLOAT) {
+            } elseif (Type::BUILTIN_TYPE_FLOAT === $type->getBuiltinType()) {
                 $property->setType('number');
                 $property->setFormat('float');
-            } elseif ($type->getBuiltinType() === Type::BUILTIN_TYPE_OBJECT) {
+            } elseif (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
                 if (in_array($type->getClassName(), ['DateTime', 'DateTimeImmutable'])) {
                     $property->setType('string');
                     $property->setFormat('date-time');
@@ -88,7 +87,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                     );
                 }
             } else {
-                throw new \Exception(sprintf("Unknown type: %s", $type->getBuiltinType()));
+                throw new \Exception(sprintf('Unknown type: %s', $type->getBuiltinType()));
             }
 
             // read property options from Swagger Property annotation if it exists
