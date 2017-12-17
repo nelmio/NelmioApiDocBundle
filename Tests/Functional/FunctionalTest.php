@@ -168,6 +168,13 @@ class FunctionalTest extends WebTestCase
                         'type' => 'string',
                         'readOnly' => false,
                     ],
+                    'roles' => [
+                        'type' => 'array',
+                        'description' => 'User roles',
+                        'title' => 'roles',
+                        'example' => '["ADMIN","SUPERUSER"]',
+                        'items' => ['type' => 'string'],
+                    ],
                     'friendsNumber' => [
                         'type' => 'string',
                     ],
