@@ -170,11 +170,12 @@ class FunctionalTest extends WebTestCase
                         'readOnly' => false,
                     ],
                     'roles' => [
+                        'title' => 'roles',
                         'type' => 'array',
                         'description' => 'User roles',
-                        'title' => 'roles',
                         'example' => '["ADMIN","SUPERUSER"]',
                         'items' => ['type' => 'string'],
+                        'default' => ['user'],
                     ],
                     'friendsNumber' => [
                         'type' => 'string',
@@ -191,12 +192,6 @@ class FunctionalTest extends WebTestCase
                     ],
                     'dummy' => [
                         '$ref' => '#/definitions/Dummy2',
-                    ],
-                    'roles' => [
-                        'type' => 'array',
-                        'items' => ['type' => 'string'],
-                        'default' => ['user'],
-                        'description' => 'Roles list',
                     ],
                     'status' => [
                         'type' => 'string',

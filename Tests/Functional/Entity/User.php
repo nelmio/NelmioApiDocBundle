@@ -39,7 +39,7 @@ class User
      *     description = "User roles",
      *     required = true,
      *     title = "roles",
-     *     example="[""ADMIN"",""SUPERUSER""]"),
+     *     example="[""ADMIN"",""SUPERUSER""]",
      *     default = {"user"},
      * )
      */

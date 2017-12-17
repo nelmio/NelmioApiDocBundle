@@ -35,7 +35,6 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'roles' => [
                     'type' => 'array',
-                    'description' => 'User roles',
                     'title' => 'roles',
                     'example' => '["ADMIN","SUPERUSER"]',
                     'items' => ['type' => 'string'],

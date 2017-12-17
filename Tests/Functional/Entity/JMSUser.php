@@ -51,7 +51,7 @@ class JMSUser
      * @Serializer\Accessor(getter="getRoles", setter="setRoles")
      * @Serializer\Expose
      *
-     * @SWG\Property(default = {"user"}, description = "Roles list", example="[""ADMIN"",""SUPERUSER""]")
+     * @SWG\Property(default = {"user"}, description = "Roles list", example="[""ADMIN"",""SUPERUSER""]", title="roles")
      */
     private $roles;
 
