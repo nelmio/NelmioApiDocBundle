@@ -25,16 +25,21 @@ class JMSFunctionalTest extends WebTestCase
                     'title' => 'userid',
                     'example' => 1,
                 ],
+                'daysOnline' => [
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
                 'email' => [
                     'type' => 'string',
                     'readOnly' => false,
                 ],
                 'roles' => [
                     'type' => 'array',
-                    'description' => 'User roles',
                     'title' => 'roles',
                     'example' => '["ADMIN","SUPERUSER"]',
                     'items' => ['type' => 'string'],
+                    'default' => ['user'],
+                    'description' => 'Roles list',
                 ],
                 'friendsNumber' => [
                     'type' => 'string',
@@ -47,6 +52,10 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'best_friend' => [
                     '$ref' => '#/definitions/User',
+                ],
+                'status' => [
+                    'type' => 'string',
+                    'enum' => ["disabled", "enabled"],
                 ],
             ],
         ], $this->getModel('JMSUser')->toArray());

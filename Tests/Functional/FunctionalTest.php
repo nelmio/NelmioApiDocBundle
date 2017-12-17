@@ -156,6 +156,7 @@ class FunctionalTest extends WebTestCase
                     'money' => [
                         'type' => 'number',
                         'format' => 'float',
+                        'default' => 0.0
                     ],
                     'id' => [
                         'type' => 'integer',
@@ -169,11 +170,12 @@ class FunctionalTest extends WebTestCase
                         'readOnly' => false,
                     ],
                     'roles' => [
+                        'title' => 'roles',
                         'type' => 'array',
                         'description' => 'User roles',
-                        'title' => 'roles',
                         'example' => '["ADMIN","SUPERUSER"]',
                         'items' => ['type' => 'string'],
+                        'default' => ['user'],
                     ],
                     'friendsNumber' => [
                         'type' => 'string',
@@ -190,6 +192,10 @@ class FunctionalTest extends WebTestCase
                     ],
                     'dummy' => [
                         '$ref' => '#/definitions/Dummy2',
+                    ],
+                    'status' => [
+                        'type' => 'string',
+                        'enum' => ["disabled", "enabled"],
                     ],
                 ],
             ],

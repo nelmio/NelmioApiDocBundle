@@ -15,6 +15,7 @@ use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Items;
 use EXSyst\Component\Swagger\Schema;
 use Swagger\Annotations\Property as SwgProperty;
+use const Swagger\Annotations\UNDEFINED;
 
 /**
  * @internal
@@ -36,21 +37,27 @@ class SwaggerPropertyAnnotationReader
     {
         $swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class);
         if ($swgProperty instanceof SwgProperty) {
-            if (null !== $swgProperty->type) {
+            if ($swgProperty->type !== null) {
                 $property->setType($swgProperty->type);
             }
-            if (null !== $swgProperty->readOnly) {
-                $property->setReadOnly($swgProperty->readOnly);
+            if ($swgProperty->default !== UNDEFINED) {
+                $property->setDefault($swgProperty->default);
+            }
+            if ($swgProperty->enum !== null) {
+                $property->setEnum($swgProperty->enum);
             }
             if ($property instanceof Schema) {
-                if (null !== $swgProperty->description) {
+                if ($swgProperty->description !== null) {
                     $property->setDescription($swgProperty->description);
                 }
-                if (null !== $swgProperty->title) {
+                if ($swgProperty->title !== null) {
                     $property->setTitle($swgProperty->title);
                 }
-                if (null !== $swgProperty->example) {
-                    $property->setExample((string) $swgProperty->example);
+                if ($swgProperty->example !== null) {
+                    $property->setExample($swgProperty->example);
+                }
+                if ($swgProperty->readOnly !== null) {
+                    $property->setReadOnly($swgProperty->readOnly);
                 }
             }
         }
