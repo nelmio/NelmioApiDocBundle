@@ -103,6 +103,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             // read property options from Swagger Property annotation if it exists
             if (null !== $item->reflection) {
+                $phpdocReader = new PhpdocAnnotationReader();
+                $phpdocReader->updateWithPhpdoc($item->reflection, $realProp);
                 $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation($item->reflection, $realProp);
             }
         }
