@@ -37,26 +37,26 @@ class SwaggerPropertyAnnotationReader
     {
         $swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class);
         if ($swgProperty instanceof SwgProperty) {
-            if ($swgProperty->type !== null) {
+            if (null !== $swgProperty->type) {
                 $property->setType($swgProperty->type);
             }
-            if ($swgProperty->default !== UNDEFINED) {
+            if (UNDEFINED !== $swgProperty->default) {
                 $property->setDefault($swgProperty->default);
             }
-            if ($swgProperty->enum !== null) {
+            if (null !== $swgProperty->enum) {
                 $property->setEnum($swgProperty->enum);
             }
             if ($property instanceof Schema) {
-                if ($swgProperty->description !== null) {
+                if (null !== $swgProperty->description) {
                     $property->setDescription($swgProperty->description);
                 }
-                if ($swgProperty->title !== null) {
+                if (null !== $swgProperty->title) {
                     $property->setTitle($swgProperty->title);
                 }
-                if ($swgProperty->example !== null) {
+                if (null !== $swgProperty->example) {
                     $property->setExample($swgProperty->example);
                 }
-                if ($swgProperty->readOnly !== null) {
+                if (null !== $swgProperty->readOnly) {
                     $property->setReadOnly($swgProperty->readOnly);
                 }
             }

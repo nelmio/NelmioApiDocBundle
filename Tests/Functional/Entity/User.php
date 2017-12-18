@@ -54,7 +54,7 @@ class User
 
     /**
      * @var float
-	 * @SWG\Property(default = 0.0)
+     * @SWG\Property(default = 0.0)
      */
     private $money;
 

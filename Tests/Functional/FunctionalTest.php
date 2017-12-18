@@ -156,7 +156,7 @@ class FunctionalTest extends WebTestCase
                     'money' => [
                         'type' => 'number',
                         'format' => 'float',
-                        'default' => 0.0
+                        'default' => 0.0,
                     ],
                     'id' => [
                         'type' => 'integer',
@@ -195,7 +195,7 @@ class FunctionalTest extends WebTestCase
                     ],
                     'status' => [
                         'type' => 'string',
-                        'enum' => ["disabled", "enabled"],
+                        'enum' => ['disabled', 'enabled'],
                     ],
                 ],
             ],

@@ -55,7 +55,7 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'status' => [
                     'type' => 'string',
-                    'enum' => ["disabled", "enabled"],
+                    'enum' => ['disabled', 'enabled'],
                 ],
             ],
         ], $this->getModel('JMSUser')->toArray());
