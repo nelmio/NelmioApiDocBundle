@@ -95,10 +95,11 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                     continue;
                 }
 
-                if(empty($model->getGroups()) || !array_key_exists($name, $model->getGroups()) || !is_array($model->getGroups()[$name]))
+                if(!array_key_exists($name, $model->getGroups()) || !is_array($model->getGroups()[$name])) {
                     $groups = $model->getGroups();
-                else
+                } else {
                     $groups = $model->getGroups()[$name];
+                }
 
 
                 $property->setRef(
