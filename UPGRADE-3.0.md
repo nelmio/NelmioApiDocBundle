@@ -265,7 +265,7 @@ to ``~3.0@beta``:
 ```json
 {
     "require": {
-        "nelmio/api-doc-bundle": "~3.0@beta"
+        "nelmio/api-doc-bundle": "^3.0"
     }
 }
 ```
