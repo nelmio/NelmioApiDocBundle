@@ -17,6 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
+ * Enables the FormModelDescriber only if forms are enabled.
+ *
  * @internal
  */
 final class ConfigurationPass implements CompilerPassInterface
