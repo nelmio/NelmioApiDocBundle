@@ -18,9 +18,11 @@ use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 
 /**
+ * Extract information about properties of a model from the DocBlock comment.
+ *
  * @internal
  */
-class PhpdocAnnotationReader
+class PhpdocPropertyAnnotationReader
 {
     private $docBlockFactory;
 
@@ -33,6 +35,8 @@ class PhpdocAnnotationReader
     }
 
     /**
+     * Update the Swagger information with information from the DocBlock comment.
+     *
      * @param \ReflectionProperty $reflectionProperty
      * @param Items|Schema        $property
      */
@@ -40,22 +44,33 @@ class PhpdocAnnotationReader
     {
         try {
             $docBlock = $this->docBlockFactory->create($reflectionProperty);
-            if (!$title = $docBlock->getSummary()) {
-                /** @var Var_ $var */
-                foreach ($docBlock->getTagsByName('var') as $var) {
-                    if (null === $description = $var->getDescription()) continue;
-                    $title = $description->render();
-                    if ($title) break;
-                }
-            }
-            if ($property->getTitle() === null && $title) {
-                $property->setTitle($title);
-            }
-            if ($property->getDescription() === null && $docBlock->getDescription()) {
-                $property->setDescription($docBlock->getDescription()->render());
-            }
         } catch (\Exception $e) {
             // ignore
+            return;
+        }
+
+        if (!$title = $docBlock->getSummary()) {
+            /** @var Var_ $var */
+            foreach ($docBlock->getTagsByName('var') as $var) {
+                if (null === $description = $var->getDescription()) continue;
+                $title = $description->render();
+                if ($title) break;
+            }
+        }
+        if ($property->getTitle() === null && $title) {
+            $property->setTitle($title);
+        }
+        if ($property->getDescription() === null && $docBlock->getDescription()) {
+            $property->setDescription($docBlock->getDescription()->render());
+        }
+        if ($property->getType() === null) {
+            /** @var Var_ $var */
+            foreach ($docBlock->getTagsByName('var') as $var) {
+                if ($var->getType()) {
+                    $property->setType($var->getType());
+                    break;
+                }
+            }
         }
     }
 }
