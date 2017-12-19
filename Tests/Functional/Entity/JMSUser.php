@@ -89,6 +89,11 @@ class JMSUser
     private $bestFriend;
 
     /**
+     * Whether this user is enabled or disabled.
+     *
+     * Only enabled users may be used in actions.
+     *
+     * @var string
      * @Serializer\Type("string")
      * @Serializer\Expose
      *
