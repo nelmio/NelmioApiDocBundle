@@ -52,7 +52,9 @@ class PhpdocPropertyAnnotationReader
         if (!$title = $docBlock->getSummary()) {
             /** @var Var_ $var */
             foreach ($docBlock->getTagsByName('var') as $var) {
-                if (!$description = $var->getDescription()) continue;
+                if (!$description = $var->getDescription()) {
+                    continue;
+                }
                 $title = $description->render();
                 if ($title) break;
             }
@@ -62,15 +64,6 @@ class PhpdocPropertyAnnotationReader
         }
         if ($property->getDescription() === null && $docBlock->getDescription() && $docBlock->getDescription()->render()) {
             $property->setDescription($docBlock->getDescription()->render());
-        }
-        if ($property->getType() === null) {
-            /** @var Var_ $var */
-            foreach ($docBlock->getTagsByName('var') as $var) {
-                if ($var->getType()) {
-                    $property->setType($var->getType());
-                    break;
-                }
-            }
         }
     }
 }

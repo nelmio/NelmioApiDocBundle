@@ -151,7 +151,8 @@ serialization groups when using the Symfony serializer.
 ### If you're using the JMS Serializer
 
 The metadata of the JMS serializer are used by default to describe your
-models. Additional information is extracted from the PHP doc block comment.
+models. Additional information is extracted from the PHP doc block comment,
+but the property types must be specified in the JMS annotations.
 
 In case you prefer using the [Symfony PropertyInfo component](https://symfony.com/doc/current/components/property_info.html) (you
 won't be able to use JMS serialization groups), you can disable JMS serializer
