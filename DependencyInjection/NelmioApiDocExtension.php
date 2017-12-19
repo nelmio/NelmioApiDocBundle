@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use FOS\RestBundle\Controller\Annotations\ParamInterface;
-use Nelmio\ApiDocBundle\ModelDescriber\FormModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use phpDocumentor\Reflection\DocBlockFactory;
@@ -22,7 +21,6 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -51,13 +49,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('services.xml');
-
-        if (interface_exists(FormInterface::class)) {
-            $container->register('nelmio_api_doc.model_describers.form', FormModelDescriber::class)
-                ->setPublic(false)
-                ->addArgument(new Reference('form.factory'))
-                ->addTag('nelmio_api_doc.model_describer', ['priority' => 100]);
-        }
 
         // Filter routes
         $routesDefinition = (new Definition(RouteCollection::class))
