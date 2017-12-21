@@ -55,6 +55,8 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'status' => [
                     'type' => 'string',
+                    'title' => 'Whether this user is enabled or disabled.',
+                    'description' => 'Only enabled users may be used in actions.',
                     'enum' => ['disabled', 'enabled'],
                 ],
             ],

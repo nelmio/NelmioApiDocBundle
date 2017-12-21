@@ -94,6 +94,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference('jms_serializer.metadata_factory'),
                     new Reference('jms_serializer.naming_strategy'),
                     new Reference('nelmio_api_doc.model_describers.swagger_property_annotation_reader'),
+                    new Reference('nelmio_api_doc.model_describers.phpdoc_property_annotation_reader'),
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
         }

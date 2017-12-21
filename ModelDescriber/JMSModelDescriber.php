@@ -35,14 +35,18 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     private $swaggerPropertyAnnotationReader;
 
+    private $phpdocPropertyAnnotationsReader;
+
     public function __construct(
         MetadataFactoryInterface $factory,
         PropertyNamingStrategyInterface $namingStrategy,
-        SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader
+        SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader,
+        PhpdocPropertyAnnotationReader $phpdocPropertyAnnotationReader
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
+        $this->phpdocPropertyAnnotationsReader = $phpdocPropertyAnnotationReader;
     }
 
     /**
@@ -103,6 +107,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             // read property options from Swagger Property annotation if it exists
             if (null !== $item->reflection) {
+                $this->phpdocPropertyAnnotationsReader->updateWithPhpdoc($item->reflection, $realProp);
                 $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation($item->reflection, $realProp);
             }
         }
