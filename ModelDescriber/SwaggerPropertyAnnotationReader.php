@@ -11,10 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use EXSyst\Component\Swagger\Schema;
-use EXSyst\Component\Swagger\Items;
-use Swagger\Annotations\Property as SwgProperty;
 use Doctrine\Common\Annotations\Reader;
+use EXSyst\Component\Swagger\Items;
+use EXSyst\Component\Swagger\Schema;
+use Swagger\Annotations\Property as SwgProperty;
+use const Swagger\Annotations\UNDEFINED;
 
 /**
  * @internal
@@ -36,20 +37,28 @@ class SwaggerPropertyAnnotationReader
     {
         $swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class);
         if ($swgProperty instanceof SwgProperty) {
-            if ($swgProperty->description !== null) {
-                $property->setDescription($swgProperty->description);
-            }
-            if ($swgProperty->type !== null) {
+            if (null !== $swgProperty->type) {
                 $property->setType($swgProperty->type);
             }
-            if ($swgProperty->readOnly !== null) {
-                $property->setReadOnly($swgProperty->readOnly);
+            if (UNDEFINED !== $swgProperty->default) {
+                $property->setDefault($swgProperty->default);
             }
-            if ($swgProperty->title !== null) {
-                $property->setTitle($swgProperty->title);
+            if (null !== $swgProperty->enum) {
+                $property->setEnum($swgProperty->enum);
             }
-            if ($swgProperty->example !== null) {
-                $property->setExample((string) $swgProperty->example);
+            if ($property instanceof Schema) {
+                if (null !== $swgProperty->description) {
+                    $property->setDescription($swgProperty->description);
+                }
+                if (null !== $swgProperty->title) {
+                    $property->setTitle($swgProperty->title);
+                }
+                if (null !== $swgProperty->example) {
+                    $property->setExample($swgProperty->example);
+                }
+                if (null !== $swgProperty->readOnly) {
+                    $property->setReadOnly($swgProperty->readOnly);
+                }
             }
         }
     }

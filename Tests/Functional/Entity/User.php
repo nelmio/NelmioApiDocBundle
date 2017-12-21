@@ -19,9 +19,9 @@ use Swagger\Annotations as SWG;
 class User
 {
     /**
-     * @var integer
+     * @var int
      *
-     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1)
+     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1, default = null)
      */
     private $id;
 
@@ -33,6 +33,19 @@ class User
     private $email;
 
     /**
+     * @var string[]
+     *
+     * @SWG\Property(
+     *     description = "User roles",
+     *     required = true,
+     *     title = "roles",
+     *     example="[""ADMIN"",""SUPERUSER""]",
+     *     default = {"user"},
+     * )
+     */
+    private $roles;
+
+    /**
      * @var int
      *
      * @SWG\Property(type = "string")
@@ -41,6 +54,7 @@ class User
 
     /**
      * @var float
+     * @SWG\Property(default = 0.0)
      */
     private $money;
 
@@ -53,6 +67,13 @@ class User
      * @var User[]
      */
     private $users;
+
+    /**
+     * @var string
+     *
+     * @SWG\Property(enum = {"disabled", "enabled"})
+     */
+    private $status;
 
     /**
      * @param float $money
@@ -79,6 +100,14 @@ class User
     }
 
     /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+    }
+
+    /**
      * @param int $friendsNumber
      */
     public function setFriendsNumber(int $friendsNumber)
@@ -95,6 +124,10 @@ class User
     }
 
     public function setDummy(Dummy $dummy)
+    {
+    }
+
+    public function setStatus(string $status)
     {
     }
 }

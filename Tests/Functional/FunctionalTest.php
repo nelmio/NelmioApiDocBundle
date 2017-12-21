@@ -156,17 +156,26 @@ class FunctionalTest extends WebTestCase
                     'money' => [
                         'type' => 'number',
                         'format' => 'float',
+                        'default' => 0.0,
                     ],
                     'id' => [
                         'type' => 'integer',
-                        'description' => "User id",
+                        'description' => 'User id',
                         'readOnly' => true,
-                        'title' => "userid",
+                        'title' => 'userid',
                         'example' => 1,
                     ],
                     'email' => [
                         'type' => 'string',
                         'readOnly' => false,
+                    ],
+                    'roles' => [
+                        'title' => 'roles',
+                        'type' => 'array',
+                        'description' => 'User roles',
+                        'example' => '["ADMIN","SUPERUSER"]',
+                        'items' => ['type' => 'string'],
+                        'default' => ['user'],
                     ],
                     'friendsNumber' => [
                         'type' => 'string',
@@ -184,6 +193,10 @@ class FunctionalTest extends WebTestCase
                     'dummy' => [
                         '$ref' => '#/definitions/Dummy2',
                     ],
+                    'status' => [
+                        'type' => 'string',
+                        'enum' => ['disabled', 'enabled'],
+                    ],
                 ],
             ],
             $this->getModel('User')->toArray()
@@ -199,8 +212,8 @@ class FunctionalTest extends WebTestCase
                 'dummies' => [
                     'items' => ['$ref' => '#/definitions/DummyType'],
                     'type' => 'array',
-                    'example' => sprintf('[{%s}]', DummyType::class)
-                ]
+                    'example' => sprintf('[{%s}]', DummyType::class),
+                ],
             ],
             'required' => ['dummy', 'dummies'],
         ], $this->getModel('UserType')->toArray());
@@ -214,6 +227,12 @@ class FunctionalTest extends WebTestCase
                 'foo' => [
                     'type' => 'string',
                     'enum' => ['male', 'female'],
+                ],
+                'baz' => [
+                    'type' => 'boolean',
+                ],
+                'bey' => [
+                    'type' => 'integer',
                 ],
             ],
             'required' => ['foo'],

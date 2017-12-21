@@ -78,6 +78,11 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                     break;
                 }
 
+                if ('integer' === $blockPrefix) {
+                    $property->setType('integer');
+                    break;
+                }
+
                 if ('date' === $blockPrefix) {
                     $property->setType('string');
                     $property->setFormat('date');
@@ -98,6 +103,11 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
                     break;
                 }
+
+                if ('checkbox' === $blockPrefix) {
+                    $property->setType('boolean');
+                }
+
                 if ('collection' === $blockPrefix) {
                     $subType = $config->getOption('entry_type');
                     $property->setType('array');

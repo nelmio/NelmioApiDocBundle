@@ -25,9 +25,19 @@ class JMSUser
      * @Serializer\Type("integer")
      * @Serializer\Expose
      * @Serializer\Groups({"list"})
-     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1)
+     *
+     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1, default = null)
      */
     private $id;
+
+    /**
+     * @Serializer\Type("int")
+     * @Serializer\Expose
+     * @Serializer\SerializedName("daysOnline")
+     *
+     * @SWG\Property(default = 0)
+     */
+    private $daysOnline;
 
     /**
      * @Serializer\Type("string")
@@ -41,6 +51,8 @@ class JMSUser
      * @Serializer\Type("array<string>")
      * @Serializer\Accessor(getter="getRoles", setter="setRoles")
      * @Serializer\Expose
+     *
+     * @SWG\Property(default = {"user"}, description = "Roles list", example="[""ADMIN"",""SUPERUSER""]", title="roles")
      */
     private $roles;
 
@@ -76,6 +88,19 @@ class JMSUser
      * @Serializer\Expose
      */
     private $bestFriend;
+
+    /**
+     * Whether this user is enabled or disabled.
+     *
+     * Only enabled users may be used in actions.
+     *
+     * @var string
+     * @Serializer\Type("string")
+     * @Serializer\Expose
+     *
+     * @SWG\Property(enum = {"disabled", "enabled"})
+     */
+    private $status;
 
     public function setRoles($roles)
     {

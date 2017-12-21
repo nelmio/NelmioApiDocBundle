@@ -81,7 +81,7 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
      *     summary="'.$this->escapeQuotes($apiDoc->getDescription()).'"';
 
         foreach ($apiDoc->getFilters() as $name => $parameter) {
-            $description = array_key_exists('description', $parameter)
+            $description = array_key_exists('description', $parameter) && null !== $parameter['description']
                 ? $this->escapeQuotes($parameter['description'])
                 : 'todo';
 
@@ -265,7 +265,7 @@ to ``~3.0@beta``:
 ```json
 {
     "require": {
-        "nelmio/api-doc-bundle": "~3.0@beta"
+        "nelmio/api-doc-bundle": "^3.0"
     }
 }
 ```

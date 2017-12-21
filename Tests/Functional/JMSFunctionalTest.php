@@ -20,10 +20,14 @@ class JMSFunctionalTest extends WebTestCase
             'properties' => [
                 'id' => [
                     'type' => 'integer',
-                    'description' => "User id",
+                    'description' => 'User id',
                     'readOnly' => true,
-                    'title' => "userid",
+                    'title' => 'userid',
                     'example' => 1,
+                ],
+                'daysOnline' => [
+                    'type' => 'integer',
+                    'default' => 0,
                 ],
                 'email' => [
                     'type' => 'string',
@@ -31,7 +35,11 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'roles' => [
                     'type' => 'array',
+                    'title' => 'roles',
+                    'example' => '["ADMIN","SUPERUSER"]',
                     'items' => ['type' => 'string'],
+                    'default' => ['user'],
+                    'description' => 'Roles list',
                 ],
                 'friendsNumber' => [
                     'type' => 'string',
@@ -45,6 +53,12 @@ class JMSFunctionalTest extends WebTestCase
                 'best_friend' => [
                     '$ref' => '#/definitions/User',
                 ],
+                'status' => [
+                    'type' => 'string',
+                    'title' => 'Whether this user is enabled or disabled.',
+                    'description' => 'Only enabled users may be used in actions.',
+                    'enum' => ['disabled', 'enabled'],
+                ],
             ],
         ], $this->getModel('JMSUser')->toArray());
     }
@@ -54,7 +68,7 @@ class JMSFunctionalTest extends WebTestCase
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
-                'id' => ['type' => 'integer'],
+                              'id' => ['type' => 'integer'],
                 'user' => ['$ref' => '#/definitions/JMSUser2'],
                 'name' => ['type' => 'string']
             ],
@@ -72,7 +86,21 @@ class JMSFunctionalTest extends WebTestCase
                 ],
             ],
         ], $this->getModel('JMSUser2')->toArray());
+    }
 
+    public function testYamlConfig()
+    {
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                ],
+                'email' => [
+                    'type' => 'string',
+                ],
+            ],
+        ], $this->getModel('VirtualProperty')->toArray());
     }
 
     protected static function createKernel(array $options = array())

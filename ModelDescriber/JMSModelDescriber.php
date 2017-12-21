@@ -35,15 +35,18 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     private $swaggerPropertyAnnotationReader;
 
+    private $phpdocPropertyAnnotationsReader;
+
     public function __construct(
         MetadataFactoryInterface $factory,
         PropertyNamingStrategyInterface $namingStrategy,
-        SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader
-    )
-    {
+        SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader,
+        PhpdocPropertyAnnotationReader $phpdocPropertyAnnotationReader
+    ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
+        $this->phpdocPropertyAnnotationsReader = $phpdocPropertyAnnotationReader;
     }
 
     /**
@@ -72,7 +75,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             }
 
             $name = $this->namingStrategy->translateName($item);
-            $property = $properties->get($name);
+            $realProp = $property = $properties->get($name);
 
             if ($type = $this->getNestedTypeInArray($item)) {
                 $property->setType('array');
@@ -81,8 +84,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $type = $item->type['name'];
             }
 
-            if (in_array($type, ['boolean', 'integer', 'string', 'array'])) {
+            if (in_array($type, ['boolean', 'string', 'array'])) {
                 $property->setType($type);
+            } elseif (in_array($type, ['int', 'integer'])) {
+                $property->setType('integer');
             } elseif (in_array($type, ['double', 'float'])) {
                 $property->setType('number');
                 $property->setFormat($type);
@@ -108,7 +113,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             }
 
             // read property options from Swagger Property annotation if it exists
-            $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation($item->reflection, $property);
+            if (null !== $item->reflection) {
+                $this->phpdocPropertyAnnotationsReader->updateWithPhpdoc($item->reflection, $realProp);
+                $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation($item->reflection, $realProp);
+            }
         }
     }
 
