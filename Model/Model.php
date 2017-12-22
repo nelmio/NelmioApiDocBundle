@@ -16,6 +16,7 @@ use Symfony\Component\PropertyInfo\Type;
 final class Model
 {
     private $type;
+
     private $groups;
 
     /**

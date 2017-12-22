@@ -28,7 +28,9 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
     use ModelRegistryAwareTrait;
 
     private $routeCollection;
+
     private $controllerReflector;
+
     private $annotationReader;
 
     public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, bool $overwrite = false)

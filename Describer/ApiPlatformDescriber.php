@@ -23,6 +23,7 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
         parent::__construct(function () use ($documentation, $normalizer, $urlGenerator) {
             $baseContext = $urlGenerator->getContext();
             $urlGenerator->setContext(new RequestContext());
+
             try {
                 $basePath = $urlGenerator->generate('api_entrypoint');
             } finally {

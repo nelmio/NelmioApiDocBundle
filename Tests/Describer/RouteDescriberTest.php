@@ -23,6 +23,7 @@ use Symfony\Component\Routing\RouteCollection;
 class RouteDescriberTest extends AbstractDescriberTest
 {
     private $routes;
+
     private $routeDescriber;
 
     public function testIgnoreWhenNoController()

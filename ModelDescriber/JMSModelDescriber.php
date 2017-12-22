@@ -119,6 +119,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     public function supports(Model $model): bool
     {
         $className = $model->getType()->getClassName();
+
         try {
             if ($this->factory->getMetadataForClass($className)) {
                 return true;

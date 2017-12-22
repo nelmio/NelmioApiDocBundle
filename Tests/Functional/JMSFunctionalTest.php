@@ -78,7 +78,7 @@ class JMSFunctionalTest extends WebTestCase
         ], $this->getModel('VirtualProperty')->toArray());
     }
 
-    protected static function createKernel(array $options = array())
+    protected static function createKernel(array $options = [])
     {
         return new TestKernel(true);
     }

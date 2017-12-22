@@ -77,7 +77,7 @@ class FunctionalTest extends WebTestCase
     {
         $operation = $this->getOperation('/api/swagger/implicit', $method);
 
-        $this->assertEquals(array(new Tag('implicit')), $operation->getTags());
+        $this->assertEquals([new Tag('implicit')], $operation->getTags());
 
         $responses = $operation->getResponses();
         $this->assertTrue($responses->has('201'));

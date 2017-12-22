@@ -40,7 +40,7 @@ trait PriorityTaggedServiceTrait
      */
     private function findAndSortTaggedServices($tagName, ContainerBuilder $container)
     {
-        $services = array();
+        $services = [];
         foreach ($container->findTaggedServiceIds($tagName) as $serviceId => $tags) {
             foreach ($tags as $attributes) {
                 $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;

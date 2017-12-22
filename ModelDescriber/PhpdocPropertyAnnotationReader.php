@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use EXSyst\Component\Swagger\Schema;
 use EXSyst\Component\Swagger\Items;
+use EXSyst\Component\Swagger\Schema;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
@@ -56,13 +56,15 @@ class PhpdocPropertyAnnotationReader
                     continue;
                 }
                 $title = $description->render();
-                if ($title) break;
+                if ($title) {
+                    break;
+                }
             }
         }
-        if ($property->getTitle() === null && $title) {
+        if (null === $property->getTitle() && $title) {
             $property->setTitle($title);
         }
-        if ($property->getDescription() === null && $docBlock->getDescription() && $docBlock->getDescription()->render()) {
+        if (null === $property->getDescription() && $docBlock->getDescription() && $docBlock->getDescription()->render()) {
             $property->setDescription($docBlock->getDescription()->render());
         }
     }

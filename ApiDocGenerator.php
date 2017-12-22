@@ -21,8 +21,11 @@ use Psr\Cache\CacheItemPoolInterface;
 final class ApiDocGenerator
 {
     private $swagger;
+
     private $describers;
+
     private $modelDescribers;
+
     private $cacheItemPool;
 
     /**
