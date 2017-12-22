@@ -39,6 +39,7 @@ final class PhpDocDescriber implements RouteDescriberInterface
             $classDocBlock = $this->docBlockFactory->create($reflectionMethod->getDeclaringClass());
         } catch (\Exception $e) {
         }
+
         try {
             $docBlock = $this->docBlockFactory->create($reflectionMethod);
         } catch (\Exception $e) {

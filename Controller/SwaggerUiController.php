@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class SwaggerUiController
 {
     private $apiDocGenerator;
+
     private $twig;
 
     public function __construct(ApiDocGenerator $apiDocGenerator, \Twig_Environment $twig)

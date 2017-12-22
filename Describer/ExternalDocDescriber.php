@@ -16,6 +16,7 @@ use EXSyst\Component\Swagger\Swagger;
 class ExternalDocDescriber implements DescriberInterface
 {
     private $externalDoc;
+
     private $overwrite;
 
     /**

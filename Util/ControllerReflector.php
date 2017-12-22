@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class ControllerReflector
 {
     private $container;
+
     private $controllerNameParser;
 
     private $controllers = [];
@@ -45,6 +46,7 @@ final class ControllerReflector
         }
 
         list($class, $method) = $callable;
+
         try {
             return new \ReflectionMethod($class, $method);
         } catch (\ReflectionException $e) {
@@ -61,6 +63,7 @@ final class ControllerReflector
         }
 
         list($class, $method) = $callable;
+
         try {
             return [new \ReflectionClass($class), new \ReflectionMethod($class, $method)];
         } catch (\ReflectionException $e) {

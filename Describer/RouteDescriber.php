@@ -22,7 +22,9 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
     use ModelRegistryAwareTrait;
 
     private $routeCollection;
+
     private $controllerReflector;
+
     private $routeDescribers;
 
     /**

@@ -70,28 +70,33 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
                 if ('text' === $blockPrefix) {
                     $property->setType('string');
+
                     break;
                 }
 
                 if ('number' === $blockPrefix) {
                     $property->setType('number');
+
                     break;
                 }
 
                 if ('integer' === $blockPrefix) {
                     $property->setType('integer');
+
                     break;
                 }
 
                 if ('date' === $blockPrefix) {
                     $property->setType('string');
                     $property->setFormat('date');
+
                     break;
                 }
 
                 if ('datetime' === $blockPrefix) {
                     $property->setType('string');
                     $property->setFormat('date-time');
+
                     break;
                 }
 
@@ -115,6 +120,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                     $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $subType), null);
                     $property->getItems()->setRef($this->modelRegistry->register($model));
                     $property->setExample(sprintf('[{%s}]', $subType));
+
                     break;
                 }
 
@@ -129,6 +135,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                         $property->setType('string');
                         $property->setFormat(sprintf('%s id', $entityClass));
                     }
+
                     break;
                 }
 
@@ -136,6 +143,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                     //if form type is not builtin in Form component.
                     $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $formClass));
                     $property->setRef($this->modelRegistry->register($model));
+
                     break;
                 }
             }

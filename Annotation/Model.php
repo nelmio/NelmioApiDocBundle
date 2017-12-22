@@ -23,7 +23,9 @@ final class Model extends AbstractAnnotation
         'type' => 'string',
         'groups' => '[string]',
     ];
+
     public static $_required = ['type'];
+
     public static $_parents = [
         'Swagger\Annotations\Parameter',
         'Swagger\Annotations\Response',

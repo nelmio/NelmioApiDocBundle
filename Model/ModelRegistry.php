@@ -20,9 +20,13 @@ use Symfony\Component\PropertyInfo\Type;
 final class ModelRegistry
 {
     private $unregistered = [];
+
     private $models = [];
+
     private $names = [];
+
     private $modelDescribers = [];
+
     private $api;
 
     /**
