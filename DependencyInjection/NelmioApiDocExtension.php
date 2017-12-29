@@ -88,14 +88,18 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // JMS metadata support
         if ($config['models']['use_jms']) {
+            $arguments = [
+                new Reference('jms_serializer.metadata_factory'),
+                new Reference('jms_serializer.naming_strategy'),
+                new Reference('nelmio_api_doc.model_describers.swagger_property_annotation_reader'),
+            ];
+            // phpdocumentor is not a hard requirement, only use if available
+            if (class_exists(DocBlockFactory::class)) {
+                $arguments[] = new Reference('nelmio_api_doc.model_describers.phpdoc_property_annotation_reader');
+            }
             $container->register('nelmio_api_doc.model_describers.jms', JMSModelDescriber::class)
                 ->setPublic(false)
-                ->setArguments([
-                    new Reference('jms_serializer.metadata_factory'),
-                    new Reference('jms_serializer.naming_strategy'),
-                    new Reference('nelmio_api_doc.model_describers.swagger_property_annotation_reader'),
-                    new Reference('nelmio_api_doc.model_describers.phpdoc_property_annotation_reader'),
-                ])
+                ->setArguments($arguments)
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
         }
 
