@@ -21,6 +21,7 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
     public function __construct(Documentation $documentation, DocumentationNormalizer $normalizer, UrlGeneratorInterface $urlGenerator)
     {
         parent::__construct(function () use ($documentation, $normalizer, $urlGenerator) {
+            $paths = [];
             $baseContext = $urlGenerator->getContext();
             $urlGenerator->setContext(new RequestContext());
 
