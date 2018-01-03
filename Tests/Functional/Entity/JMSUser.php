@@ -24,6 +24,7 @@ class JMSUser
     /**
      * @Serializer\Type("integer")
      * @Serializer\Expose
+     * @Serializer\Groups({"list"})
      *
      * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1, default = null)
      */
@@ -41,8 +42,8 @@ class JMSUser
     /**
      * @Serializer\Type("string")
      * @Serializer\Expose
-     *
      * @SWG\Property(readOnly = false)
+     * @Serializer\Groups({"details"})
      */
     private $email;
 
