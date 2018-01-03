@@ -21,6 +21,17 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $treeBuilder
             ->root('nelmio_api_doc')
+            ->beforeNormalization()
+                ->ifTrue(function ($v) {
+                    return !isset($v['areas']) && isset($v['routes']);
+                })
+                ->then(function ($v) {
+                    $v['areas'] = $v['routes'];
+                    unset($v['routes']);
+
+                    return $v;
+                })
+            ->end()
             ->children()
                 ->arrayNode('documentation')
                     ->useAttributeAsKey('key')
@@ -28,13 +39,31 @@ final class Configuration implements ConfigurationInterface
                     ->example(['info' => ['title' => 'My App']])
                     ->prototype('variable')->end()
                 ->end()
-                ->arrayNode('routes')
+                ->arrayNode('areas')
                     ->info('Filter the routes that are documented')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('path_patterns')
-                            ->example(['^/api', '^/api(?!/admin)'])
-                            ->prototype('scalar')->end()
+                    ->defaultValue(['default' => ['path_patterns' => []]])
+                    ->beforeNormalization()
+                        ->ifTrue(function ($v) {
+                            return empty($v) or isset($v['path_patterns']);
+                        })
+                        ->then(function ($v) {
+                            return ['default' => $v];
+                        })
+                    ->end()
+                    ->validate()
+                        ->ifTrue(function ($v) {
+                            return !isset($v['default']);
+                        })
+                        ->thenInvalid('You must specify a `default` area under `nelmio_api_doc.areas`.')
+                    ->end()
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->arrayNode('path_patterns')
+                                ->example(['^/api', '^/api(?!/admin)'])
+                                ->prototype('scalar')->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

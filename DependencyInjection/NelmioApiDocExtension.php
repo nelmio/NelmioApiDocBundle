@@ -12,10 +12,14 @@
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use FOS\RestBundle\Controller\Annotations\ParamInterface;
+use Nelmio\ApiDocBundle\ApiDocGenerator;
+use Nelmio\ApiDocBundle\Describer\RouteDescriber;
+use Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -54,22 +58,49 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $routesDefinition = (new Definition(RouteCollection::class))
             ->setFactory([new Reference('router'), 'getRouteCollection']);
 
-        if (0 === count($config['routes']['path_patterns'])) {
-            $container->setDefinition('nelmio_api_doc.routes', $routesDefinition)
-                ->setPublic(false);
-        } else {
-            $container->register('nelmio_api_doc.routes', RouteCollection::class)
+        $container->setParameter('nelmio_api_doc.areas', array_keys($config['areas']));
+        foreach ($config['areas'] as $area => $areaConfig) {
+            $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
                 ->setPublic(false)
-                ->setFactory([
-                    (new Definition(FilteredRouteCollectionBuilder::class))
-                        ->addArgument($config['routes']['path_patterns']),
-                    'filter',
+                ->setArguments([
+                    new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
+                    new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
+                ]);
+
+            if (0 === count($areaConfig['path_patterns'])) {
+                $container->setDefinition(sprintf('nelmio_api_doc.routes.%s', $area), $routesDefinition)
+                    ->setPublic(false);
+            } else {
+                $container->register(sprintf('nelmio_api_doc.routes.%s', $area), RouteCollection::class)
+                    ->setPublic(false)
+                    ->setFactory([
+                        (new Definition(FilteredRouteCollectionBuilder::class))
+                            ->addArgument($areaConfig['path_patterns']),
+                        'filter',
+                    ])
+                    ->addArgument($routesDefinition);
+            }
+
+            $container->register(sprintf('nelmio_api_doc.describers.route.%s', $area), RouteDescriber::class)
+                ->setPublic(false)
+                ->setArguments([
+                    new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
+                    new Reference('nelmio_api_doc.controller_reflector'),
+                    new TaggedIteratorArgument('nelmio_api_doc.route_describer'),
                 ])
-                ->addArgument($routesDefinition);
+                ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -400]);
+
+            $container->register(sprintf('nelmio_api_doc.describers.swagger_php.%s', $area), SwaggerPhpDescriber::class)
+                ->setPublic(false)
+                ->setArguments([
+                    new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
+                    new Reference('nelmio_api_doc.controller_reflector'),
+                    new Reference('annotation_reader'),
+                ])
+                ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
         }
 
         // Import services needed for each library
-        $loader->load('swagger_php.xml');
         if (class_exists(DocBlockFactory::class)) {
             $loader->load('php_doc.xml');
         }
