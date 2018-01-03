@@ -293,6 +293,7 @@ class SwaggerFormatter implements FormatterInterface
                                     'actualType'  => DataTypes::COLLECTION,
                                     'required'    => true,
                                     'readonly'    => true,
+                                    'excluded'    => false,
                                     'description' => null,
                                     'default'     => null,
                                     'children'    => $prop['model'][$alias]['children'],

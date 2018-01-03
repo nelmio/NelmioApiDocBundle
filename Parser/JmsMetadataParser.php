@@ -126,14 +126,27 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
         // iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
             if (!is_null($item->type)) {
-                $name = $this->namingStrategy->translateName($item);
 
+                $name = $this->namingStrategy->translateName($item);
                 $dataType = $this->processDataType($item);
+
+                $excluded = false;
+
+                if($item->name != $name){
+
+                    $params[$item->name] = array(
+                        'dataType'     => $dataType['normalized'],
+                        'subType'      => $dataType['class'],
+                        'required'     => false,
+                        'readonly'     => false,
+                        'excluded'     => true,
+                    );
+                }
 
                 // apply exclusion strategies
                 foreach ($exclusionStrategies as $strategy) {
                     if (true === $strategy->shouldSkipProperty($item, SerializationContext::create())) {
-                        continue 2;
+                        $excluded = true;
                     }
                 }
 
@@ -147,6 +160,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
                         //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
                         'description'  => $this->getDescription($item),
                         'readonly'     => $item->readOnly,
+                        'excluded'     => $excluded,
                         'sinceVersion' => $item->sinceVersion,
                         'untilVersion' => $item->untilVersion,
                     );
@@ -167,7 +181,7 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
                 }
 
                 // check for nested classes with JMS metadata
-                if ($dataType['class'] && false === $dataType['primitive'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
+                if (($params[$name]['excluded'] === false) && $dataType['class'] && false === $dataType['primitive'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
                     $visited[] = $dataType['class'];
                     $children  = $this->doParse($dataType['class'], $visited, $groups);
 
@@ -216,7 +230,6 @@ class JmsMetadataParser implements ParserInterface, PostParserInterface
         }
 
         $type = $item->type['name'];
-
         // could be basic type
         if ($this->isPrimitive($type)) {
             return array(

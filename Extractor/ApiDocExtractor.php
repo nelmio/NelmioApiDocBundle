@@ -482,7 +482,7 @@ class ApiDocExtractor
                             $v1[$name] = $value;
                         }
                     } elseif (!is_null($value)) {
-                        if (in_array($name, array('required', 'readonly'))) {
+                        if (in_array($name, array('required', 'readonly', 'excluded'))) {
                             $v1[$name] = $v1[$name] || $value;
                         } elseif (in_array($name, array('requirement'))) {
                             if (isset($v1[$name])) {
@@ -505,7 +505,6 @@ class ApiDocExtractor
                 $params[$propname] = $v1;
             }
         }
-
         return $params;
     }
 

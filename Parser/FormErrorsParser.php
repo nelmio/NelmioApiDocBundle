@@ -61,6 +61,7 @@ class FormErrorsParser implements ParserInterface, PostParserInterface
             'required' => false,
             'description' => 'The status code',
             'readonly' => true,
+            'excluded' => false,
             'default' => 400,
         );
 
@@ -80,6 +81,7 @@ class FormErrorsParser implements ParserInterface, PostParserInterface
             'required' => false,
             'description' => 'Errors',
             'readonly' => true,
+            'excluded' => false,
             'children' => $this->doPostParse($parameters),
         );
 
@@ -99,6 +101,7 @@ class FormErrorsParser implements ParserInterface, PostParserInterface
                 'required' => false,
                 'description' => 'Errors on the parameter',
                 'readonly' => true,
+                'excluded' => false,
                 'children' => array(
                     'errors' => array(
                         'dataType' => 'array of errors',
@@ -107,6 +110,7 @@ class FormErrorsParser implements ParserInterface, PostParserInterface
                         'required' => false,
                         'dscription' => '',
                         'readonly' => true,
+                        'excluded' => false,
                     ),
                 ),
             );

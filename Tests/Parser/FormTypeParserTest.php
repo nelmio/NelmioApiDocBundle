@@ -119,6 +119,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                 'required' => true,
                 'description' => '',
                 'readonly' => false,
+                'excluded' => false,
             ),
             LegacyFormHelper::isLegacy() ? array() : array('format' => '{"foo":"bar","bazgroup":{"baz":"Buzz"}}',)
         );
@@ -134,6 +135,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => 'A nice description',
                         'readonly' => false,
+                        'excluded' => false,
                         'default' => null
                     ),
                     'b' => array(
@@ -143,6 +145,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'default' => null
                     ),
                     'c' => array(
@@ -153,6 +156,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                     ),
                     'd' => array(
                         'dataType' => 'string',
@@ -161,6 +165,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'default' => "DefaultTest"
                     )
                 )
@@ -176,6 +181,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'children' => array(
                             'a' => array(
                                 'dataType' => 'array of strings',
@@ -185,6 +191,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'required' => true,
                                 'description' => '',
                                 'readonly' => false,
+                                'excluded' => false,
                             ),
                             'b' => array(
                                 'dataType' => 'array of objects (TestType)',
@@ -194,6 +201,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'required' => true,
                                 'description' => '',
                                 'readonly' => false,
+                                'excluded' => false,
                                 'children' => array(
                                     'a' => array(
                                         'dataType' => 'string',
@@ -203,6 +211,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                         'required' => true,
                                         'description' => 'A nice description',
                                         'readonly' => false,
+                                        'excluded' => false,
                                     ),
                                     'b' => array(
                                         'dataType' => 'string',
@@ -212,6 +221,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                         'required' => true,
                                         'description' => '',
                                         'readonly' => false,
+                                        'excluded' => false,
                                     ),
                                     'c' => array(
                                         'dataType' => 'boolean',
@@ -221,6 +231,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                         'required' => true,
                                         'description' => '',
                                         'readonly' => false,
+                                        'excluded' => false,
                                     ),
                                     'd' => array(
                                         'dataType' => 'string',
@@ -229,6 +240,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                         'required' => true,
                                         'description' => '',
                                         'readonly' => false,
+                                        'excluded' => false,
                                         'default' => "DefaultTest"
                                     ),
                                 ),
@@ -252,6 +264,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                     ),
                     'b' => array(
                         'dataType' => 'array of objects (TestType)',
@@ -261,6 +274,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'description' => '',
                         'default' => null,
                         'readonly' => false,
+                        'excluded' => false,
                         'children' => array(
                             'a' => array(
                                 'dataType' => 'string',
@@ -270,6 +284,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'required' => true,
                                 'description' => 'A nice description',
                                 'readonly' => false,
+                                'excluded' => false,
                             ),
                             'b' => array(
                                 'dataType' => 'string',
@@ -279,6 +294,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'required' => true,
                                 'description' => '',
                                 'readonly' => false,
+                                'excluded' => false,
                             ),
                             'c' => array(
                                 'dataType' => 'boolean',
@@ -288,6 +304,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'required' => true,
                                 'description' => '',
                                 'readonly' => false,
+                                'excluded' => false,
                             ),
                             'd' => array(
                                 'dataType' => 'string',
@@ -296,6 +313,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'required' => true,
                                 'description' => '',
                                 'readonly' => false,
+                                'excluded' => false,
                                 'default' => "DefaultTest"
                             ),
                         ),
@@ -317,6 +335,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                     ),
                     'b' => array(
                         'dataType' => 'array of objects (TestType)',
@@ -326,6 +345,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'children' => array(
                             'a' => array(
                                 'dataType' => 'string',
@@ -335,6 +355,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'required' => true,
                                 'description' => 'A nice description',
                                 'readonly' => false,
+                        'excluded' => false,
                             ),
                             'b' => array(
                                 'dataType' => 'string',
@@ -344,6 +365,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'required' => true,
                                 'description' => '',
                                 'readonly' => false,
+                        'excluded' => false,
                             ),
                             'c' => array(
                                 'dataType' => 'boolean',
@@ -353,6 +375,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'required' => true,
                                 'description' => '',
                                 'readonly' => false,
+                                'excluded' => false,
                             ),
                             'd' => array(
                                 'dataType' => 'string',
@@ -361,7 +384,8 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'default' => "DefaultTest",
                                 'required' => true,
                                 'description' => '',
-                                'readonly' => false
+                                'readonly' => false,
+                                'excluded' => false
                             ),
                         ),
                     ),
@@ -378,6 +402,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => 'A nice description',
                         'readonly' => false,
+                        'excluded' => false,
                         'format' => DateTimeType::HTML5_FORMAT,
                     ),
                     'dt2' => array(
@@ -388,6 +413,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'format' => 'M/d/y',
                     ),
                     'dt3' => array(
@@ -398,6 +424,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'format' => 'M/d/y H:i:s',
                     ),
                     'dt4' => array(
@@ -408,6 +435,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                     ),
                     'dt5' => array(
                         'dataType' => 'datetime',
@@ -417,6 +445,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                     ),
                     'd1' => array(
                         'dataType' => 'date',
@@ -426,6 +455,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                     ),
                     'd2' => array(
                         'dataType' => 'date',
@@ -435,6 +465,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'format' => 'd-M-y',
                     ),
                     'c1' => array(
@@ -445,6 +476,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'format' => json_encode(array('m' => 'Male', 'f' => 'Female')),
                     ),
                     'c2' => array(
@@ -455,6 +487,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'format' => json_encode(array('m' => 'Male', 'f' => 'Female')),
                     ),
                     'c3' => array(
@@ -465,6 +498,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                     ),
                     'c4' => array(
                         'dataType' => 'choice',
@@ -474,6 +508,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'format' => '{"foo":"bar","bazgroup":{"baz":"Buzz"}}',
                     ),
                     'e1' => $entityData
@@ -491,6 +526,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                             'required' => true,
                             'description' => '',
                             'readonly' => false,
+                            'excluded' => false,
                             'children' =>
                                 array (
                                     'a' =>
@@ -502,6 +538,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                             'required' => true,
                                             'description' => 'Something that describes A.',
                                             'readonly' => false,
+                                           'excluded' => false,
                                         ),
                                     'b' =>
                                         array (
@@ -512,6 +549,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                             'required' => true,
                                             'description' => '',
                                             'readonly' => false,
+                                           'excluded' => false,
                                         ),
                                     'c' =>
                                         array (
@@ -522,6 +560,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                             'required' => true,
                                             'description' => '',
                                             'readonly' => false,
+                                           'excluded' => false,
                                             'format' => '{"x":"X","y":"Y","z":"Z"}',
                                         ),
                                     'd' =>
@@ -533,6 +572,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                             'required' => true,
                                             'description' => '',
                                             'readonly' => false,
+                                           'excluded' => false,
                                         ),
                                     'e' =>
                                         array (
@@ -543,6 +583,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                             'required' => true,
                                             'description' => '',
                                             'readonly' => false,
+                                           'excluded' => false,
                                         ),
                                     'g' =>
                                         array (
@@ -553,6 +594,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                             'required' => true,
                                             'description' => '',
                                             'readonly' => false,
+                                            'excluded' => false,
                                         ),
                                 ),
                         ),
@@ -565,6 +607,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                             'required' => true,
                             'description' => '',
                             'readonly' => false,
+                            'excluded' => false,
                         ),
                 ),
             ),
@@ -576,6 +619,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'default' => null,
                         'actualType' => 'model',
                         'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\RequireConstructionType',
@@ -588,6 +632,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'required' => true,
                                 'description' => 'A nice description',
                                 'readonly' => false,
+                                'excluded' => false,
                             ),
                         ),
                     ),
@@ -601,6 +646,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                         'required' => true,
                         'description' => '',
                         'readonly' => false,
+                        'excluded' => false,
                         'default' => null,
                         'actualType' => 'model',
                         'subType' => 'Nelmio\ApiDocBundle\Tests\Fixtures\Form\DependencyType',
@@ -613,6 +659,7 @@ class FormTypeParserTest extends \PHPUnit_Framework_TestCase
                                 'required' => true,
                                 'description' => 'A nice description',
                                 'readonly' => false,
+                                'excluded' => false,
                             ),
                         ),
                     ),

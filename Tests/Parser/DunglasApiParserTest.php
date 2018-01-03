@@ -42,6 +42,7 @@ class DunglasApiParserTest extends WebTestCase
                     'required' => false,
                     'description' => '',
                     'readonly' => false,
+                    'excluded' => false,
                     'dataType' => DataTypes::STRING,
                 ),
         );

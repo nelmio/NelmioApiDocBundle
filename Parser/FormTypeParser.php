@@ -180,6 +180,7 @@ class FormTypeParser implements ParserInterface
             $name => array(
                 'required'    => true,
                 'readonly'    => false,
+                'excluded' => false,
                 'description' => '',
                 'default'     => null,
                 'dataType'    => $dataType,
@@ -295,6 +296,7 @@ class FormTypeParser implements ParserInterface
                                     'required'    => $config->getRequired(),
                                     'description' => ($config->getOption('description')) ? $config->getOption('description') : $config->getOption('label'),
                                     'readonly'    => $config->getDisabled(),
+                                    'excluded' => false,
                                     'children'    => $children,
                                 );
 
@@ -313,6 +315,7 @@ class FormTypeParser implements ParserInterface
                                 'required'    => $config->getRequired(),
                                 'description' => ($config->getOption('description')) ? $config->getOption('description') : $config->getOption('label'),
                                 'readonly'    => $config->getDisabled(),
+                                'excluded' => false,
                             );
                         }
 
@@ -329,6 +332,7 @@ class FormTypeParser implements ParserInterface
                 'required'    => $config->getRequired(),
                 'description' => ($config->getOption('description')) ? $config->getOption('description'):$config->getOption('label'),
                 'readonly'    => $config->getDisabled(),
+                'excluded' => false,
             );
 
             if (null !== $children) {

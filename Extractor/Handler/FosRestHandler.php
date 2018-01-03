@@ -37,7 +37,8 @@ class FosRestHandler implements HandlerInterface
                     'actualType'  => $this->inferType($requirements),
                     'subType'     => null,
                     'description' => $annot->description,
-                    'readonly'    => false
+                    'readonly'    => false,
+                    'excluded'    => false,
                 );
                 if ($annot->strict === false) {
                     $data['default'] = $annot->default;
