@@ -162,6 +162,12 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('file')->defaultValue('%kernel.cache_dir%/api-doc.cache')->end()
                     ->end()
                 ->end()
+                ->arrayNode('parser')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('validation')->defaultValue('Nelmio\ApiDocBundle\Parser\ValidationParser')->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
