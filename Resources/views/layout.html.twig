@@ -147,6 +147,11 @@
                 $(section).find('.operation > .content').slideDown('fast');
             });
 
+            $('.action-show-hide-deprecated').on('click', function(e){
+                $('.heading.deprecated', $(this).parents('.section').first()).parent().toggle();
+                e.preventDefault();
+            });
+
             {% if enableSandbox %}
                 var getStoredValue, storeValue, deleteStoredValue;
                 var apiAuthKeys = ['api_key', 'api_login', 'api_pass', 'api_endpoint'];
