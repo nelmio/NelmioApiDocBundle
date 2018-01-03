@@ -176,7 +176,7 @@
                 {% for status_code, response in data.parsedResponseMap %}
                     <tbody>
                         <tr>
-                            <td>
+                            <td colspan="4">
                                 <h4>
                                     {{ status_code }}
                                     {% if data.statusCodes is defined and data.statusCodes[status_code] is defined %}
