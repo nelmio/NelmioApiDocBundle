@@ -102,6 +102,40 @@ class ApiDocExtractor
     }
 
     /**
+     * Merge two ApiDoc annotations together
+     *
+     * @param ApiDoc|null $routeAnnotation
+     * @param ApiDoc|null $classAnnotation
+     *
+     * @return ApiDoc|null
+     */
+    private function mergeAnnotations(ApiDoc $routeAnnotation = null, ApiDoc $classAnnotation = null)
+    {
+        if ($routeAnnotation === null && $classAnnotation === null) {
+            return null;
+        }
+
+        if ($routeAnnotation === null) {
+            return $classAnnotation;
+        }
+
+        if ($classAnnotation === null) {
+            return $routeAnnotation;
+        }
+
+        $merge = $this->mergeParameters($routeAnnotation->toArray(), $classAnnotation->toArray());
+
+        $reflection = new \ReflectionClass($routeAnnotation);
+        foreach ($merge as $key => $value) {
+            $property = $reflection->getProperty($key);
+            $property->setAccessible(true);
+            $property->setValue($routeAnnotation, $value);
+        }
+
+        return $routeAnnotation;
+    }
+
+    /**
      * Returns an array of data where each data is an array with the following keys:
      *  - annotation
      *  - resource
@@ -122,7 +156,9 @@ class ApiDocExtractor
             }
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
-                $annotation = $this->reader->getMethodAnnotation($method, static::ANNOTATION_CLASS);
+                $classAnnotation = $this->reader->getClassAnnotation($method->getDeclaringClass(), static::ANNOTATION_CLASS);
+                $routeAnnotation = $this->reader->getMethodAnnotation($method, static::ANNOTATION_CLASS);
+                $annotation = $this->mergeAnnotations($routeAnnotation, $classAnnotation);
                 if (
                     $annotation && !in_array($annotation->getSection(), $excludeSections) &&
                     (in_array($view, $annotation->getViews()) || (0 === count($annotation->getViews()) && $view === ApiDoc::DEFAULT_VIEW))
