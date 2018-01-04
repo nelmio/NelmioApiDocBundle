@@ -39,4 +39,10 @@ Then update your routing to be able to access your different documentations:
         methods: GET
         defaults: { _controller: nelmio_api_doc.controller.swagger_ui, area: default }
 
+    # To expose them as JSON
+    #app.swagger.areas:
+    #    path: /api/doc/{area}.json
+    #    methods: GET
+    #    defaults: { _controller: nelmio_api_doc.controller.swagger }
+
 That's all! You can now access ``/api/doc/internal`` and ``/api/doc/commercial``.

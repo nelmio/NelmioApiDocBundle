@@ -42,9 +42,9 @@ class SwaggerUiTest extends WebTestCase
 
         // Api-platform documentation
         $expected['paths'] = [
-            '/api/api/dummies' => $expected['paths']['/api/api/dummies'],
-            '/api/api/foo' => $expected['paths']['/api/api/foo'],
-            '/api/api/dummies/{id}' => $expected['paths']['/api/api/dummies/{id}'],
+            '/api/dummies' => $expected['paths']['/api/dummies'],
+            '/api/foo' => $expected['paths']['/api/foo'],
+            '/api/dummies/{id}' => $expected['paths']['/api/dummies/{id}'],
             '/test/test/' => ['get' => [
                 'responses' => ['200' => ['description' => 'Test']],
             ]],
