@@ -1,8 +1,18 @@
 NelmioApiDocBundle
 ==================
 
-The **NelmioApiDocBundle** bundle allows you to generate a decent documentation
-for your APIs.
+The **NelmioApiDocBundle** bundle allows you to generate documentation in the
+OpenAPI (Swagger) format and provides a sandbox to interactively browse the API documentation.
+
+What's supported?
+-----------------
+
+This bundle supports _Symfony_ route requirements, PHP annotations,
+[_Swagger-Php_](https://github.com/zircote/swagger-php) annotations,
+[_FOSRestBundle_](https://github.com/FriendsOfSymfony/FOSRestBundle) annotations
+and apps using [_Api-Platform_](https://github.com/api-platform/api-platform).
+
+For models, it supports the Symfony serializer and the JMS serializer.
 
 Migrate from 2.x to 3.0
 -----------------------
@@ -12,7 +22,7 @@ Migrate from 2.x to 3.0
 Installation
 ------------
 
-First, open a command console, enter your project directory and execute the following command to download the latest version of this bundle:
+Open a command console, enter your project directory and execute the following command to download the latest version of this bundle:
 
 .. code-block:: bash
 
@@ -56,8 +66,20 @@ First, open a command console, enter your project directory and execute the foll
             methods: GET
             defaults: { _controller: nelmio_api_doc.controller.swagger }
 
-What does this bundle?
-----------------------
+    As you just installed the bundle, you'll likely see routes you don't want in
+    your documentation such as `/_profiler/`. To fix this, you can filter the
+    routes that are documented by configuring the bundle:
+
+    .. code-block:: yaml
+
+        # app/config/config.yml
+        nelmio_api_doc:
+            areas:
+                path_patterns: # an array of regexps
+                    - ^/api(?!/doc$)
+
+How does this bundle work?
+--------------------------
 
 It generates you a swagger documentation from your symfony app thanks to
 _Describers_. Each of these _Describers_ extract infos from various sources.
@@ -67,25 +89,10 @@ routes, etc.
 If you configured the ``app.swagger_ui`` route above, you can browse your
 documentation at `http://example.org/api/doc`.
 
-Configure the bundle
---------------------
+Using the bundle
+----------------
 
-As you just installed the bundle, you'll likely see routes you don't want in
-your documentation such as `/_profiler/`. To fix this, you can filter the
-routes that are documented by configuring the bundle (default config when using Flex):
-
-.. code-block:: yaml
-
-    # app/config/config.yml
-    nelmio_api_doc:
-        areas:
-            path_patterns: # an array of regexps
-                - ^/api(?!/doc$)
-
-Use the bundle
---------------
-
-You can configure globally your documentation in the config (take a look at
+You can configure global information in the bundle configuration ``documentation.info`` section (take a look at
 [the Swagger specification](http://swagger.io/specification/) to know the fields
 available):
 
@@ -98,7 +105,12 @@ available):
                 description: This is an awesome app!
                 version: 1.0.0
 
-To document your routes, you can use annotations in your controllers::
+.. note::
+
+    If you're using Flex, this config is there by default. Don't forget to adapt it to your app!
+
+To document your routes, you can use the SwaggerPHP annotations and the
+``Nelmio\ApiDocBundle\Annotation\Model`` annotation in your controllers::
 
     namespace AppBundle\Controller;
 
@@ -140,10 +152,69 @@ Use models
 As shown in the example above, the bundle provides the ``@Model`` annotation.
 When you use it, the bundle will deduce your model properties.
 
+It has two options:
+
+* ``type`` to specify your model's type::
+
+    /**
+     * @Model(type=User::class)
+     */
+
+* ``groups`` to specify the serialization groups used to (de)serialize your model::
+
+    /**
+     * @Model(type=User::class, groups={"non_sensitive_data"})
+     */
+
 .. warning::
 
     The ``@Model`` annotation acts like a ``@Schema`` annotation. If you nest it with a ``@Schema`` annotation, the bundle will consider that
     you're documenting an array of models.
+
+    For instance, the following example::
+
+        /**
+         * @SWG\Response(
+         *   response="200",
+         *   description="Success",
+         *   @SWG\Schema(@Model(type=User::class))
+         * )
+         */
+        public function getUserAction()
+        {
+        }
+
+    will produce:
+
+    .. code-block:: yaml
+
+        # ...
+        responses:
+            200:
+                schema:
+                    items: { $ref: '#/definitions/MyModel' }
+
+    while you probably expected:
+
+    .. code-block:: yaml
+
+        # ...
+        responses:
+            200:
+                schema: { $ref: '#/definitions/MyModel' }
+
+    To obtain the output you expected, remove the ``@Schema`` annotation::
+
+        /**
+         * @SWG\Response(
+         *   response="200",
+         *   description="Success",
+         *   @Model(type=MyModel::class)
+         * )
+         */
+        public function myAction()
+        {
+        }
 
 If you're not using the JMS Serializer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -169,13 +240,3 @@ support in your config:
 
     nelmio_api_doc:
         models: { use_jms: false }
-
-What's supported?
------------------
-
-This bundle supports _Symfony_ route requirements, PHP annotations,
-[_Swagger-Php_](https://github.com/zircote/swagger-php) annotations,
-[_FOSRestBundle_](https://github.com/FriendsOfSymfony/FOSRestBundle) annotations
-and apps using [_Api-Platform_](https://github.com/api-platform/api-platform).
-
-For models, it supports the Symfony serializer and the JMS serializer.
