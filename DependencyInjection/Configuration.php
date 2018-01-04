@@ -28,9 +28,16 @@ final class Configuration implements ConfigurationInterface
                 ->then(function ($v) {
                     $v['areas'] = $v['routes'];
                     unset($v['routes']);
+                    @trigger_error('The `nelmio_api_doc.routes` config option is deprecated. Please use `nelmio_api_doc.areas` instead (just replace `routes` by `areas` in your config).', E_USER_DEPRECATED);
 
                     return $v;
                 })
+            ->end()
+            ->beforeNormalization()
+                ->ifTrue(function ($v) {
+                    return isset($v['routes']);
+                })
+                ->thenInvalid('You must not use both `nelmio_api_doc.areas` and `nelmio_api_doc.routes` config options. Please update your config to only use `nelmio_api_doc.areas`.')
             ->end()
             ->children()
                 ->arrayNode('documentation')
@@ -41,7 +48,6 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('areas')
                     ->info('Filter the routes that are documented')
-                    ->defaultValue(['default' => ['path_patterns' => []]])
                     ->beforeNormalization()
                         ->ifTrue(function ($v) {
                             return empty($v) or isset($v['path_patterns']);

@@ -100,6 +100,14 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
         }
 
+        $container->getDefinition('nelmio_api_doc.controller.swagger_ui')
+            ->replaceArgument(0, (new Definition())->addTag('container.service_locator')
+                ->addArgument(array_combine(
+                    array_keys($config['areas']),
+                    array_map(function ($area) { return new Reference(sprintf('nelmio_api_doc.generator.%s', $area)); }, array_keys($config['areas']))
+                ))
+            );
+
         // Import services needed for each library
         if (class_exists(DocBlockFactory::class)) {
             $loader->load('php_doc.xml');

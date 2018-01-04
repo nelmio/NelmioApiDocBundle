@@ -7,3 +7,5 @@ enabled:
 
 disabled:
   - unalign_equals
+  - braces
+  - property_separation

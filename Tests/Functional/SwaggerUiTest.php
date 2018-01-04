@@ -18,19 +18,40 @@ class SwaggerUiTest extends WebTestCase
         return parent::createClient([], ['PHP_SELF' => '/app_dev.php/docs', 'SCRIPT_FILENAME' => '/var/www/app/web/app_dev.php']);
     }
 
-    public function testSwaggerUi()
+    /**
+     * @dataProvider areaProvider
+     */
+    public function testSwaggerUi($url, $area, $expected)
     {
         $client = self::createClient();
-        $crawler = $client->request('GET', '/app_dev.php/docs/');
+        $crawler = $client->request('GET', '/app_dev.php'.$url);
 
         $response = $client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
 
+        $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
+    }
+
+    public function areaProvider()
+    {
         $expected = $this->getSwaggerDefinition()->toArray();
         $expected['basePath'] = '/app_dev.php';
 
-        $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
+        yield ['/docs', 'default', $expected];
+
+        // Api-platform documentation
+        $expected['paths'] = [
+            '/api/api/dummies' => $expected['paths']['/api/api/dummies'],
+            '/api/api/foo' => $expected['paths']['/api/api/foo'],
+            '/api/api/dummies/{id}' => $expected['paths']['/api/api/dummies/{id}'],
+            '/test/test/' => ['get' => [
+                'responses' => ['200' => ['description' => 'Test']],
+            ]],
+        ];
+        $expected['definitions'] = ['Dummy' => $expected['definitions']['Dummy']];
+
+        yield ['/docs/test', 'test', $expected];
     }
 
     public function testJsonDocs()

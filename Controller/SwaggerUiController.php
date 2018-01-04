@@ -12,24 +12,41 @@
 namespace Nelmio\ApiDocBundle\Controller;
 
 use Nelmio\ApiDocBundle\ApiDocGenerator;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class SwaggerUiController
 {
-    private $apiDocGenerator;
+    private $generatorLocator;
 
     private $twig;
 
-    public function __construct(ApiDocGenerator $apiDocGenerator, \Twig_Environment $twig)
+    /**
+     * @param ContainerInterface $generatorLocator
+     */
+    public function __construct($generatorLocator, \Twig_Environment $twig)
     {
-        $this->apiDocGenerator = $apiDocGenerator;
+        if (!$generatorLocator instanceof ContainerInterface) {
+            @trigger_error(sprintf('Providing an instance of "%s" to "%s()" is deprecated since version 3.1. Provide it an instance of "%s" instead.', ApiDocGenerator::class, __METHOD__, ContainerInterface::class), E_USER_DEPRECATED);
+            $generatorLocator = new ServiceLocator(['default' => function () use ($generatorLocator) {
+                return $generatorLocator;
+            }]);
+        }
+
+        $this->generatorLocator = $generatorLocator;
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, $area = 'default')
     {
-        $spec = $this->apiDocGenerator->generate()->toArray();
+        if (!$this->generatorLocator->has($area)) {
+            throw new BadRequestHttpException(sprintf('Area "%s" is not supported.', $area));
+        }
+
+        $spec = $this->generatorLocator->get($area)->generate()->toArray();
         if ('' !== $request->getBaseUrl()) {
             $spec['basePath'] = $request->getBaseUrl();
         }

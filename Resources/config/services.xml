@@ -6,7 +6,7 @@
     <services>
         <!-- Controllers -->
         <service id="nelmio_api_doc.controller.swagger_ui" class="Nelmio\ApiDocBundle\Controller\SwaggerUiController" public="true">
-            <argument type="service" id="nelmio_api_doc.generator" />
+            <argument /> <!-- Generators locator -->
             <argument type="service" id="twig" />
         </service>
 

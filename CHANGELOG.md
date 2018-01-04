@@ -15,6 +15,21 @@ JMS Serializer
 SwaggerPHP
 * Handle `enum` and `default` properties from SwaggerPHP annotation
 
+Config
+* `nelmio_api_doc.routes` has been replaced by `nelmio_api_doc.areas`. Please update your config accordingly.
+
+  Before:
+  ```yml
+  nelmio_api_doc:
+      routes: [ path_patterns: [ /api ] ]
+  ```
+
+  After:
+  ```yml
+  nelmio_api_doc:
+      areas: [ path_patterns: [ /api ] ]
+  ```
+
 3.0.0 (2017-12-10)
 ------------------
 
