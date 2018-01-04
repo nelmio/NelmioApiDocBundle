@@ -29,10 +29,10 @@ final class ApiDocGenerator
     private $cacheItemPool;
 
     /**
-     * @param DescriberInterface[]      $describers
-     * @param ModelDescriberInterface[] $modelDescribers
+     * @param DescriberInterface[]|iterable      $describers
+     * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct(array $describers, array $modelDescribers, CacheItemPoolInterface $cacheItemPool = null)
+    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null)
     {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
