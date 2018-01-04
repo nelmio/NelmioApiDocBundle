@@ -70,7 +70,7 @@ class JMSFunctionalTest extends WebTestCase
             'properties' => [
                               'id' => ['type' => 'integer'],
                 'user' => ['$ref' => '#/definitions/JMSUser2'],
-                'name' => ['type' => 'string']
+                'name' => ['type' => 'string'],
             ],
         ], $this->getModel('JMSComplex')->toArray());
 

@@ -100,12 +100,11 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                     continue;
                 }
 
-                if(!array_key_exists($name, $model->getGroups()) || !is_array($model->getGroups()[$name])) {
+                if (!isset($model->getGroups()[$name]) || !is_array($model->getGroups()[$name])) {
                     $groups = $model->getGroups();
                 } else {
                     $groups = $model->getGroups()[$name];
                 }
-
 
                 $property->setRef(
                     $this->modelRegistry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $groups))

@@ -30,11 +30,11 @@ final class ModelRegistry
     private $api;
 
     /**
-     * @param ModelDescriberInterface[] $modelDescribers
+     * @param ModelDescriberInterface[]|iterable $modelDescribers
      *
      * @internal
      */
-    public function __construct(array $modelDescribers, Swagger $api)
+    public function __construct($modelDescribers, Swagger $api)
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
