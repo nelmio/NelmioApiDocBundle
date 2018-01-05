@@ -12,20 +12,22 @@
 namespace Nelmio\ApiDocBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * @internal
  */
-final class AddModelDescribersPass implements CompilerPassInterface
+final class TagDescribersPass implements CompilerPassInterface
 {
-    use PriorityTaggedServiceTrait;
-
     public function process(ContainerBuilder $container)
     {
-        $modelDescribers = $this->findAndSortTaggedServices('nelmio_api_doc.model_describer', $container);
-
-        $container->getDefinition('nelmio_api_doc.generator')->replaceArgument(1, $modelDescribers);
+        foreach ($container->findTaggedServiceIds('nelmio_api_doc.describer') as $id => $tags) {
+            $describer = $container->getDefinition($id);
+            foreach ($container->getParameter('nelmio_api_doc.areas') as $area) {
+                foreach ($tags as $tag) {
+                    $describer->addTag(sprintf('nelmio_api_doc.describer.%s', $area), $tag);
+                }
+            }
+        }
     }
 }

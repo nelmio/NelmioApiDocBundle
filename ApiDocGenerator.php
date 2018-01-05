@@ -32,11 +32,12 @@ final class ApiDocGenerator
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null)
+    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null)
     {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
         $this->cacheItemPool = $cacheItemPool;
+        $this->cacheItemId = $cacheItemId;
     }
 
     public function generate(): Swagger
@@ -46,7 +47,7 @@ final class ApiDocGenerator
         }
 
         if ($this->cacheItemPool) {
-            $item = $this->cacheItemPool->getItem('swagger_doc');
+            $item = $this->cacheItemPool->getItem($this->cacheItemId ?? 'swagger_doc');
             if ($item->isHit()) {
                 return $this->swagger = $item->get();
             }

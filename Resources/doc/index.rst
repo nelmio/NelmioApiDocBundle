@@ -240,3 +240,13 @@ support in your config:
 
     nelmio_api_doc:
         models: { use_jms: false }
+
+Learn more
+----------
+
+If you need more complex features, take a look at:
+
+.. toctree::
+    :maxdepth: 1
+
+    areas

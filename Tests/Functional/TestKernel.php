@@ -64,11 +64,11 @@ class TestKernel extends Kernel
      */
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
+        $routes->import(__DIR__.'/Controller/TestController.php', '/', 'annotation');
         $routes->import(__DIR__.'/Controller/ApiController.php', '/', 'annotation');
         $routes->import(__DIR__.'/Controller/UndocumentedController.php', '/', 'annotation');
         $routes->import('', '/api', 'api_platform');
-        $routes->import('@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml', '/docs');
-
+        $routes->add('/docs/{area}', 'nelmio_api_doc.controller.swagger_ui')->setDefault('area', 'default');
         $routes->add('/docs.json', 'nelmio_api_doc.controller.swagger');
 
         if ($this->useJMS) {
@@ -110,8 +110,9 @@ class TestKernel extends Kernel
                     'title' => 'My Test App',
                 ],
             ],
-           'routes' => [
-                'path_patterns' => ['^/api(?!/admin)'],
+           'areas' => [
+               'default' => ['path_patterns' => ['^/api(?!/admin)']],
+               'test' => ['path_patterns' => ['^/test']],
             ],
         ]);
     }
