@@ -9,7 +9,7 @@ We've already seen that you can configure which routes are documented using ``ne
         areas:
             path_patterns: [ ^/api ]
 
-But in fact, this config option is way more powerful and allows you to split your api in several parts.
+But in fact, this config option is way more powerful and allows you to split your documentation in several parts.
 
 Configuration
 -------------
