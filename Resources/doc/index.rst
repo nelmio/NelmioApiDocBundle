@@ -123,6 +123,10 @@ To document your routes, you can use the SwaggerPHP annotations and the
     class UserController
     {
         /*
+         * List the rewards of the specified user.
+         *
+         * This call takes into account all confirmed awards, but not pending or refused awards.
+         *
          * @Route("/api/{user}/rewards", methods={"GET"})
          * @SWG\Response(
          *     response=200,
@@ -145,6 +149,8 @@ To document your routes, you can use the SwaggerPHP annotations and the
             // ...
         }
     }
+
+The normal PHP docblock for the controller method is used for the summary and description.
 
 Use models
 ----------
