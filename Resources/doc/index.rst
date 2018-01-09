@@ -95,7 +95,7 @@ Using the bundle
 ----------------
 
 You can configure global information in the bundle configuration ``documentation.info`` section (take a look at
-[the Swagger specification](http://swagger.io/specification/) to know the fields
+`the Swagger specification`_ to know the fields
 available):
 
 .. code-block:: yaml
@@ -106,6 +106,8 @@ available):
                 title: My App
                 description: This is an awesome app!
                 version: 1.0.0
+
+.. _`The Swagger specification`: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
 
 .. note::
 
@@ -227,10 +229,8 @@ It has two options:
 If you're not using the JMS Serializer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The [Symfony PropertyInfo component](https://symfony.com/doc/current/components/property_info.html)
-is used to describe your models. It supports doctrine annotations, type hints,
-and even PHP doc blocks as long as you required the
-``phpdocumentor/reflection-docblock`` library. It does also support
+The `Symfony PropertyInfo component`_ is used to describe your models. It supports doctrine annotations, type hints,
+and even PHP doc blocks as long as you required the ``phpdocumentor/reflection-docblock`` library. It does also support
 serialization groups when using the Symfony serializer.
 
 If you're using the JMS Serializer
@@ -240,7 +240,7 @@ The metadata of the JMS serializer are used by default to describe your
 models. Additional information is extracted from the PHP doc block comment,
 but the property types must be specified in the JMS annotations.
 
-In case you prefer using the [Symfony PropertyInfo component](https://symfony.com/doc/current/components/property_info.html) (you
+In case you prefer using the `Symfony PropertyInfo component`_ (you
 won't be able to use JMS serialization groups), you can disable JMS serializer
 support in your config:
 
@@ -258,3 +258,5 @@ If you need more complex features, take a look at:
     :maxdepth: 1
 
     areas
+
+.. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
