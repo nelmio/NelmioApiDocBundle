@@ -7,10 +7,12 @@ OpenAPI (Swagger) format and provides a sandbox to interactively browse the API 
 What's supported?
 -----------------
 
-This bundle supports _Symfony_ route requirements, PHP annotations,
-[_Swagger-Php_](https://github.com/zircote/swagger-php) annotations,
-[_FOSRestBundle_](https://github.com/FriendsOfSymfony/FOSRestBundle) annotations
-and apps using [_Api-Platform_](https://github.com/api-platform/api-platform).
+This bundle supports *Symfony* route requirements, PHP annotations, `Swagger-Php`_ annotations,
+`FOSRestBundle`_ annotations and apps using `Api-Platform`_.
+
+.. _`Swagger-Php`: https://github.com/zircote/swagger-php
+.. _`FOSRestBundle`: https://github.com/FriendsOfSymfony/FOSRestBundle
+.. _`Api-Platform`: https://github.com/api-platform/api-platform
 
 For models, it supports the Symfony serializer and the JMS serializer.
 
