@@ -51,6 +51,21 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         foreach ($propertyInfoProperties as $propertyName) {
+            $property = $properties->get($propertyName);
+
+            // read property options from Swagger Property annotation if it exists
+            if (property_exists($class, $propertyName)) {
+                $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation(
+                    new \ReflectionProperty($class, $propertyName),
+                    $property
+                );
+            }
+
+            // If type manually defined
+            if (null !== $property->getType()) {
+                continue;
+            }
+
             $types = $this->propertyInfo->getTypes($class, $propertyName);
             if (0 === count($types)) {
                 throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s', $class, $propertyName));
@@ -60,13 +75,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             $type = $types[0];
-            $realProp = $property = $properties->get($propertyName);
-
             if (Type::BUILTIN_TYPE_ARRAY === $type->getBuiltinType()) {
                 $type = $type->getCollectionValueType();
                 if (null === $type) {
-                    throw new \LogicException(sprintf('The sub type of the property "%s::$%s" is not detected by the PropertyInfo Component. Please update your code to make sure it is.', $class, $propertyName));
+                    throw new \LogicException(sprintf('Property "%s:%s" is an array, but no indication of the array elements are made. Use e.g. string[] for an array of string.', $class, $propertyName));
                 }
+
                 $property->setType('array');
                 $property = $property->getItems();
             }
@@ -91,14 +105,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 }
             } else {
                 throw new \Exception(sprintf('Unknown type: %s', $type->getBuiltinType()));
-            }
-
-            // read property options from Swagger Property annotation if it exists
-            if (property_exists($class, $propertyName)) {
-                $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation(
-                    new \ReflectionProperty($class, $propertyName),
-                    $realProp
-                );
             }
         }
     }
