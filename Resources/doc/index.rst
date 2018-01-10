@@ -19,7 +19,9 @@ For models, it supports the Symfony serializer and the JMS serializer.
 Migrate from 2.x to 3.0
 -----------------------
 
-[To migrate from 2.x to 3.0, just follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-3.0.md)
+`To migrate from 2.x to 3.0, just follow our guide.`__
+
+__ https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-3.0.md
 
 Installation
 ------------
@@ -80,11 +82,15 @@ Open a command console, enter your project directory and execute the following c
                 path_patterns: # an array of regexps
                     - ^/api(?!/doc$)
 
+    .. versionadded:: 3.1
+
+        The ``areas`` config option was added in version 3.1. You had to use ``routes`` in 3.0 instead.
+
 How does this bundle work?
 --------------------------
 
 It generates you a swagger documentation from your symfony app thanks to
-_Describers_. Each of these _Describers_ extract infos from various sources.
+**Describers**. Each of these **Describers** extract infos from various sources.
 For instance, one extract data from SwaggerPHP annotations, one from your
 routes, etc.
 
@@ -176,7 +182,7 @@ It has two options:
      * @Model(type=User::class, groups={"non_sensitive_data"})
      */
 
-.. warning::
+.. caution::
 
     The ``@Model`` annotation acts like a ``@Schema`` annotation. If you nest it with a ``@Schema`` annotation, the bundle will consider that
     you're documenting an array of models.
