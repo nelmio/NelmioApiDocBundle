@@ -59,6 +59,9 @@ class JMSFunctionalTest extends WebTestCase
                     'description' => 'Only enabled users may be used in actions.',
                     'enum' => ['disabled', 'enabled'],
                 ],
+                'updated_at' => [
+                    'type' => 'date',
+                ],
             ],
         ], $this->getModel('JMSUser')->toArray());
     }

@@ -65,17 +65,28 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $schema->setType('object');
         $properties = $schema->getProperties();
         foreach ($metadata->propertyMetadata as $item) {
-            if (null === $item->type) {
-                continue;
-            }
-
             // filter groups
             if (null !== $groupsExclusion && $groupsExclusion->shouldSkipProperty($item, SerializationContext::create())) {
                 continue;
             }
 
             $name = $this->namingStrategy->translateName($item);
-            $realProp = $property = $properties->get($name);
+            $property = $properties->get($name);
+
+            // read property options from Swagger Property annotation if it exists
+            if (null !== $item->reflection) {
+                if ($this->phpdocPropertyAnnotationsReader) {
+                    $this->phpdocPropertyAnnotationsReader->updateWithPhpdoc($item->reflection, $property);
+                }
+                $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation($item->reflection, $property);
+            }
+
+            if (null !== $property->getType()) {
+                continue;
+            }
+            if (null === $item->type) {
+                $properties->remove($name);
+            }
 
             if ($type = $this->getNestedTypeInArray($item)) {
                 $property->setType('array');
@@ -109,14 +120,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $property->setRef(
                     $this->modelRegistry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $groups))
                 );
-            }
-
-            // read property options from Swagger Property annotation if it exists
-            if (null !== $item->reflection) {
-                if ($this->phpdocPropertyAnnotationsReader) {
-                    $this->phpdocPropertyAnnotationsReader->updateWithPhpdoc($item->reflection, $realProp);
-                }
-                $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation($item->reflection, $realProp);
             }
         }
     }

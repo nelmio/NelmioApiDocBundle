@@ -62,6 +62,12 @@ class JMSUser
     private $password;
 
     /**
+     * @SWG\Property(type="date")
+     * @Serializer\Expose
+     */
+    private $updatedAt;
+
+    /**
      * Ignored as the JMS serializer can't detect its type.
      *
      * @Serializer\Expose

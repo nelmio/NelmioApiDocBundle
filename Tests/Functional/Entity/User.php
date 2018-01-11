@@ -26,9 +26,7 @@ class User
     private $id;
 
     /**
-     * @var string
-     *
-     * @SWG\Property(readOnly = false)
+     * @SWG\Property(type="string", readOnly = false)
      */
     private $email;
 
@@ -91,10 +89,7 @@ class User
         $this->id = $id;
     }
 
-    /**
-     * @param string $email
-     */
-    public function setEmail(string $email)
+    public function setEmail($email)
     {
         $this->email = $email;
     }
