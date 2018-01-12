@@ -168,19 +168,29 @@ Use models
 As shown in the example above, the bundle provides the ``@Model`` annotation.
 When you use it, the bundle will deduce your model properties.
 
+.. note::
+
+    A model can be a form type, an entity or any object.
+
 It has two options:
 
 * ``type`` to specify your model's type::
 
     /**
-     * @Model(type=User::class)
-     */
+     * @SWG\Response(
+     *     response=200,
+     *     @Model(type=User::class)
+     * )
+     */
 
 * ``groups`` to specify the serialization groups used to (de)serialize your model::
 
-    /**
-     * @Model(type=User::class, groups={"non_sensitive_data"})
-     */
+    /**
+     * @SWG\Response(
+     *     response=200,
+     *     @Model(type=User::class, groups={"non_sensitive_data"})
+     * )
+     */
 
 .. caution::
 
@@ -191,8 +201,8 @@ It has two options:
 
         /**
          * @SWG\Response(
-         *   response="200",
-         *   description="Success",
+         *   response="200"
+         *   description="Success",
          *   @SWG\Schema(@Model(type=User::class))
          * )
          */
@@ -208,7 +218,7 @@ It has two options:
         responses:
             200:
                 schema:
-                    items: { $ref: '#/definitions/MyModel' }
+                    items: { $ref: '#/definitions/User' }
 
     while you probably expected:
 
@@ -217,7 +227,7 @@ It has two options:
         # ...
         responses:
             200:
-                schema: { $ref: '#/definitions/MyModel' }
+                schema: { $ref: '#/definitions/User' }
 
     To obtain the output you expected, remove the ``@Schema`` annotation::
 
@@ -225,10 +235,10 @@ It has two options:
          * @SWG\Response(
          *   response="200",
          *   description="Success",
-         *   @Model(type=MyModel::class)
+         *   @Model(type=User::class)
          * )
          */
-        public function myAction()
+        public function getUserAction()
         {
         }
 
