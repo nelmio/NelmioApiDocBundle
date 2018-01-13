@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Items;
 use EXSyst\Component\Swagger\Schema;
 use Swagger\Annotations\Property as SwgProperty;
 use const Swagger\Annotations\UNDEFINED;

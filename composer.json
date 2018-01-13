@@ -19,7 +19,8 @@
         "symfony/framework-bundle": "^3.4|^4.0",
         "symfony/property-info": "^3.4|^4.0",
         "exsyst/swagger": "~0.3",
-        "zircote/swagger-php": "^2.0.9"
+        "zircote/swagger-php": "^2.0.9",
+        "phpdocumentor/reflection-docblock": "^3.1"
     },
     "require-dev": {
         "symfony/templating": "^3.4|^4.0",
@@ -39,13 +40,11 @@
         "doctrine/annotations": "^1.2",
         "doctrine/common": "^2.4",
 
-        "phpdocumentor/reflection-docblock": "^3.1",
         "api-platform/core": "^2.1.0",
         "friendsofsymfony/rest-bundle": "^2.0",
         "jms/serializer-bundle": "^2.0"
     },
     "suggest": {
-        "phpdocumentor/reflection-docblock": "For parsing php docs.",
         "api-platform/core": "For using an API oriented framework.",
         "friendsofsymfony/rest-bundle": "For using the parameters annotations."
     },

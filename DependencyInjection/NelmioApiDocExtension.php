@@ -17,7 +17,6 @@ use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
-use phpDocumentor\Reflection\DocBlockFactory;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -109,9 +108,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ));
 
         // Import services needed for each library
-        if (class_exists(DocBlockFactory::class)) {
-            $loader->load('php_doc.xml');
-        }
+        $loader->load('php_doc.xml');
+
         if (interface_exists(ParamInterface::class)) {
             $loader->load('fos_rest.xml');
         }
@@ -127,18 +125,14 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // JMS metadata support
         if ($config['models']['use_jms']) {
-            $arguments = [
-                new Reference('jms_serializer.metadata_factory'),
-                new Reference('jms_serializer.naming_strategy'),
-                new Reference('nelmio_api_doc.model_describers.swagger_property_annotation_reader'),
-            ];
-            // phpdocumentor is not a hard requirement, only use if available
-            if (class_exists(DocBlockFactory::class)) {
-                $arguments[] = new Reference('nelmio_api_doc.model_describers.phpdoc_property_annotation_reader');
-            }
             $container->register('nelmio_api_doc.model_describers.jms', JMSModelDescriber::class)
                 ->setPublic(false)
-                ->setArguments($arguments)
+                ->setArguments([
+                    new Reference('jms_serializer.metadata_factory'),
+                    new Reference('jms_serializer.naming_strategy'),
+                    new Reference('nelmio_api_doc.model_describers.swagger_property_annotation_reader'),
+                    new Reference('nelmio_api_doc.model_describers.phpdoc_property_annotation_reader'),
+                ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
         }
 

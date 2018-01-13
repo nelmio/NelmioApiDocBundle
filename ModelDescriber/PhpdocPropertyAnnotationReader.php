@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use EXSyst\Component\Swagger\Items;
 use EXSyst\Component\Swagger\Schema;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
