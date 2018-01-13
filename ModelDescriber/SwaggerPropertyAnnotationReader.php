@@ -29,37 +29,33 @@ class SwaggerPropertyAnnotationReader
         $this->annotationsReader = $annotationsReader;
     }
 
-    /**
-     * @param \ReflectionProperty $reflectionProperty
-     * @param Items|Schema        $property
-     */
-    public function updateWithSwaggerPropertyAnnotation(\ReflectionProperty $reflectionProperty, $property)
+    public function updateWithSwaggerPropertyAnnotation(\ReflectionProperty $reflectionProperty, Schema $property)
     {
-        $swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class);
-        if ($swgProperty instanceof SwgProperty) {
-            if (null !== $swgProperty->type) {
-                $property->setType($swgProperty->type);
-            }
-            if (UNDEFINED !== $swgProperty->default) {
-                $property->setDefault($swgProperty->default);
-            }
-            if (null !== $swgProperty->enum) {
-                $property->setEnum($swgProperty->enum);
-            }
-            if ($property instanceof Schema) {
-                if (null !== $swgProperty->description) {
-                    $property->setDescription($swgProperty->description);
-                }
-                if (null !== $swgProperty->title) {
-                    $property->setTitle($swgProperty->title);
-                }
-                if (null !== $swgProperty->example) {
-                    $property->setExample($swgProperty->example);
-                }
-                if (null !== $swgProperty->readOnly) {
-                    $property->setReadOnly($swgProperty->readOnly);
-                }
-            }
+        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class)) {
+            return;
+        }
+
+        if (null !== $swgProperty->type) {
+            $property->setType($swgProperty->type);
+        }
+        if (UNDEFINED !== $swgProperty->default) {
+            $property->setDefault($swgProperty->default);
+        }
+        if (null !== $swgProperty->enum) {
+            $property->setEnum($swgProperty->enum);
+        }
+
+        if (null !== $swgProperty->description) {
+            $property->setDescription($swgProperty->description);
+        }
+        if (null !== $swgProperty->title) {
+            $property->setTitle($swgProperty->title);
+        }
+        if (null !== $swgProperty->example) {
+            $property->setExample($swgProperty->example);
+        }
+        if (null !== $swgProperty->readOnly) {
+            $property->setReadOnly($swgProperty->readOnly);
         }
     }
 }
