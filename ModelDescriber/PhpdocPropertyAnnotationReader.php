@@ -36,11 +36,8 @@ class PhpdocPropertyAnnotationReader
 
     /**
      * Update the Swagger information with information from the DocBlock comment.
-     *
-     * @param \ReflectionProperty $reflectionProperty
-     * @param Items|Schema        $property
      */
-    public function updateWithPhpdoc(\ReflectionProperty $reflectionProperty, $property)
+    public function updateWithPhpdoc(\ReflectionProperty $reflectionProperty, Schema $property)
     {
         try {
             $docBlock = $this->docBlockFactory->create($reflectionProperty);
