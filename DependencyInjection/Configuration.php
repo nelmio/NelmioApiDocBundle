@@ -48,6 +48,7 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('areas')
                     ->info('Filter the routes that are documented')
+                    ->defaultValue(['default' => ['path_patterns' => []]])
                     ->beforeNormalization()
                         ->ifTrue(function ($v) {
                             return empty($v) or isset($v['path_patterns']);
