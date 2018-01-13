@@ -170,7 +170,7 @@ When you use it, the bundle will deduce your model properties.
 
 .. note::
 
-    A model can be a form type, an entity or any object.
+    A model can be a Symfony form type, a Doctrine ORM entity or a general PHP object.
 
 It has two options:
 
@@ -201,7 +201,7 @@ It has two options:
 
         /**
          * @SWG\Response(
-         *   response="200"
+         *   response="200",
          *   description="Success",
          *   @SWG\Schema(@Model(type=User::class))
          * )
