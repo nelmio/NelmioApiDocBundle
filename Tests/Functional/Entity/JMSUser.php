@@ -35,7 +35,7 @@ class JMSUser
      * @Serializer\Expose
      * @Serializer\SerializedName("daysOnline")
      *
-     * @SWG\Property(default = 0)
+     * @SWG\Property(default = 0, minimum = 1, maximum = 300)
      */
     private $daysOnline;
 
@@ -85,7 +85,7 @@ class JMSUser
      * @Serializer\Expose
      * @Serializer\SerializedName("friendsNumber")
      *
-     * @SWG\Property(type = "string")
+     * @SWG\Property(type = "string", minLength = 1, maxLength = 100)
      */
     private $friendsNumber;
 
