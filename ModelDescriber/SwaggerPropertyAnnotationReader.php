@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
 use Swagger\Annotations\Property as SwgProperty;
+use Swagger\Annotations\Definition as SwgDefinition;
 use const Swagger\Annotations\UNDEFINED;
 
 /**
@@ -55,6 +56,13 @@ class SwaggerPropertyAnnotationReader
         }
         if (null !== $swgProperty->readOnly) {
             $property->setReadOnly($swgProperty->readOnly);
+        }
+
+        $swgDefinition = $this->annotationsReader->getClassAnnotation($reflectionProperty->getDeclaringClass(), SwgDefinition::class);
+        if ($swgDefinition instanceof SwgDefinition) {
+            if (in_array($reflectionProperty->getName(), $swgDefinition->required)) {
+                $property->setRequired(true);
+            }
         }
     }
 }
