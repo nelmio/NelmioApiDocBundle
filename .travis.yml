@@ -3,8 +3,11 @@ language: php
 php:
   - 7.0
   - 7.1
+  - 7.2
 
 sudo: false
+
+env: SYMFONY_DEPRECATIONS_HELPER=weak_vendors
 
 cache:
   directories:
@@ -22,10 +25,14 @@ matrix:
   include:
     - php: 7.0
       env: COMPOSER_FLAGS="--prefer-lowest"
+    - php: 7.1
+      env: SYMFONY_DEPRECATIONS_HELPER=weak_vendors SYMFONY_VERSION=4.0.*
+    - php: 7.2 
+      env: SYMFONY_DEPRECATIONS_HELPER=weak_vendors SYMFONY_VERSION=4.0.*
 
 before_install:
     - phpenv config-rm xdebug.ini
 
 install: composer update $COMPOSER_FLAGS --prefer-stable
 
-script: ./phpunit
+script: vendor/bin/phpunit
