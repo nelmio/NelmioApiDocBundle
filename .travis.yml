@@ -3,6 +3,9 @@ language: php
 php:
   - 7.0
   - 7.1
+  - 7.2
+  
+env: SYMFONY_DEPRECATIONS_HELPER=weak_vendors
 
 sudo: false
 
@@ -28,4 +31,4 @@ before_install:
 
 install: composer update $COMPOSER_FLAGS --prefer-stable
 
-script: ./phpunit
+script: vendor/bin/phpunit
