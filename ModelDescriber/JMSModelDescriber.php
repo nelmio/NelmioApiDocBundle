@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\Metadata\PropertyMetadata;
@@ -21,7 +20,6 @@ use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
-use Swagger\Annotations\Definition as SwgDefinition;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -37,22 +35,22 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     private $swaggerPropertyAnnotationReader;
 
-    private $phpdocPropertyAnnotationsReader;
+    private $swaggerDefinitionAnnotationReader;
 
-    private $doctrineAnnoationReader;
+    private $phpdocPropertyAnnotationsReader;
 
     public function __construct(
         MetadataFactoryInterface $factory,
         PropertyNamingStrategyInterface $namingStrategy,
         SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader,
-        PhpdocPropertyAnnotationReader $phpdocPropertyAnnotationReader = null,
-        Reader $doctrineAnnotationReader
+        SwaggerDefinitionAnnotationReader $swaggerDefinitionAnnotationReader,
+        PhpdocPropertyAnnotationReader $phpdocPropertyAnnotationReader = null
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
+        $this->swaggerDefinitionAnnotationReader = $swaggerDefinitionAnnotationReader;
         $this->phpdocPropertyAnnotationsReader = $phpdocPropertyAnnotationReader;
-        $this->doctrineAnnoationReader = $doctrineAnnotationReader;
     }
 
     /**
@@ -69,12 +67,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $groupsExclusion = null !== $model->getGroups() ? new GroupsExclusionStrategy($model->getGroups()) : null;
 
         $schema->setType('object');
-
-        $definitionAnnotation = $this->doctrineAnnoationReader->getClassAnnotation(new \ReflectionClass($className), SwgDefinition::class);
-        if ($definitionAnnotation) {
-            $schema->setRequired($definitionAnnotation->required);
-        }
-
+        $this->swaggerDefinitionAnnotationReader->updateWithSwaggerDefinitionAnnotation(new \ReflectionClass($className), $schema);
         $properties = $schema->getProperties();
         foreach ($metadata->propertyMetadata as $item) {
             // filter groups
