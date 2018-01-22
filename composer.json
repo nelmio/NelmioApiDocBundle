@@ -36,6 +36,7 @@
         "symfony/cache": "^3.4|^4.0",
         "symfony/phpunit-bridge": "^3.4",
         "symfony/stopwatch": "^3.4|^4.0",
+        "phpunit/phpunit": "^4.8.35|^5.4.4|^6.0.0",
         "sensio/framework-extra-bundle": "^3.0",
         "doctrine/annotations": "^1.2",
         "doctrine/common": "^2.4",
