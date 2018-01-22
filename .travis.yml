@@ -7,6 +7,8 @@ php:
 
 sudo: false
 
+env: SYMFONY_DEPRECATIONS_HELPER=weak_vendors
+
 cache:
   directories:
     - .phpunit
