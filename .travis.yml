@@ -25,6 +25,8 @@ matrix:
   include:
     - php: 7.0
       env: COMPOSER_FLAGS="--prefer-lowest"
+    - php 7.2 
+      env: SYMFONY_DEPRECATIONS_HELPER=weak_vendors SYMFONY_VERSION=4.0.*
 
 before_install:
     - phpenv config-rm xdebug.ini
