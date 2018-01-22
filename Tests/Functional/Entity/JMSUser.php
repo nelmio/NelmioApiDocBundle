@@ -26,7 +26,7 @@ class JMSUser
      * @Serializer\Expose
      * @Serializer\Groups({"list"})
      *
-     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1, default = null)
+     * @SWG\Property(description = "User id", readOnly = true, title = "userid", example=1, default = null)
      */
     private $id;
 
