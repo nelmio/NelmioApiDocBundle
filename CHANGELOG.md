@@ -14,6 +14,7 @@ JMS Serializer
 
 SwaggerPHP
 * Handle `enum` and `default` properties from SwaggerPHP annotation
+* Support `@Security` annotations
 
 Config
 * `nelmio_api_doc.routes` has been replaced by `nelmio_api_doc.areas`. Please update your config accordingly.

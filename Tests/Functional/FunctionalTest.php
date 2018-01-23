@@ -238,4 +238,15 @@ class FunctionalTest extends WebTestCase
             'required' => ['foo'],
         ], $this->getModel('DummyType')->toArray());
     }
+
+    public function testSecurityAction()
+    {
+        $operation = $this->getOperation('/api/security', 'get');
+
+        $expected = [
+            ['api_key' => []],
+            ['basic' => []],
+        ];
+        $this->assertEquals($expected, $operation->getSecurity());
+    }
 }
