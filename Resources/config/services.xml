@@ -43,6 +43,10 @@
             <argument type="service" id="annotation_reader" />
         </service>
 
+        <service id="nelmio_api_doc.model_describers.symfony_constraint_annotation_reader" class="Nelmio\ApiDocBundle\ModelDescriber\SymfonyConstraintAnnotationReader" public="false">
+            <argument type="service" id="annotation_reader" />
+        </service>
+
         <service
                 id="nelmio_api_doc.model_describers.phpdoc_property_annotation_reader"
                 class="Nelmio\ApiDocBundle\ModelDescriber\PhpdocPropertyAnnotationReader"

@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User.
@@ -27,6 +28,8 @@ class JMSUser
      * @Serializer\Groups({"list"})
      *
      * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1, default = null)
+     *
+     * @Assert\NotBlank()
      */
     private $id;
 

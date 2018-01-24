@@ -37,16 +37,20 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     private $phpdocPropertyAnnotationsReader;
 
+    private $symfonyConstraintAnnotationReader;
+
     public function __construct(
         MetadataFactoryInterface $factory,
         PropertyNamingStrategyInterface $namingStrategy,
         SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader,
+        SymfonyConstraintAnnotationReader $symfonyConstraintAnnotationReader,
         PhpdocPropertyAnnotationReader $phpdocPropertyAnnotationReader = null
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
         $this->phpdocPropertyAnnotationsReader = $phpdocPropertyAnnotationReader;
+        $this->symfonyConstraintAnnotationReader = $symfonyConstraintAnnotationReader;
     }
 
     /**
@@ -79,6 +83,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                     $this->phpdocPropertyAnnotationsReader->updateWithPhpdoc($item->reflection, $property);
                 }
                 $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation($item->reflection, $property);
+                $this->symfonyConstraintAnnotationReader->updateWithSymfonyConstraintAnnotations($item->reflection, $property, $schema);
             }
 
             if (null !== $property->getType()) {

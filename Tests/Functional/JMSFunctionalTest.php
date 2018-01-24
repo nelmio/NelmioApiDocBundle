@@ -20,10 +20,10 @@ class JMSFunctionalTest extends WebTestCase
             'properties' => [
                 'id' => [
                     'type' => 'integer',
-                    'description' => 'User id',
+                    'description' => 'User id, This value should not be blank.',
                     'readOnly' => true,
                     'title' => 'userid',
-                    'example' => 1,
+                    'example' => 1
                 ],
                 'daysOnline' => [
                     'type' => 'integer',
@@ -61,8 +61,11 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'updated_at' => [
                     'type' => 'date',
-                ],
+                ]
             ],
+            'required' => [
+                'id'
+            ]
         ], $this->getModel('JMSUser')->toArray());
     }
 
@@ -83,11 +86,14 @@ class JMSFunctionalTest extends WebTestCase
                 'id' => [
                     'type' => 'integer',
                     'title' => 'userid',
-                    'description' => 'User id',
+                    'description' => 'User id, This value should not be blank.',
                     'readOnly' => true,
                     'example' => '1',
                 ],
             ],
+            'required' => [
+                'id'
+            ]
         ], $this->getModel('JMSUser2')->toArray());
     }
 
