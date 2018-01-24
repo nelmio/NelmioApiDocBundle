@@ -9,34 +9,30 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\ModelDescriber;
+namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use EXSyst\Component\Swagger\Schema;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
-use phpDocumentor\Reflection\DocBlockFactoryInterface;
 
 /**
  * Extract information about properties of a model from the DocBlock comment.
  *
  * @internal
  */
-class PhpdocPropertyAnnotationReader
+class PropertyPhpDocReader
 {
     private $docBlockFactory;
 
-    public function __construct(DocBlockFactoryInterface $docBlockFactory = null)
+    public function __construct()
     {
-        if (null === $docBlockFactory) {
-            $docBlockFactory = DocBlockFactory::createInstance();
-        }
-        $this->docBlockFactory = $docBlockFactory;
+        $this->docBlockFactory = DocBlockFactory::createInstance();
     }
 
     /**
      * Update the Swagger information with information from the DocBlock comment.
      */
-    public function updateWithPhpdoc(\ReflectionProperty $reflectionProperty, Schema $property)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
     {
         try {
             $docBlock = $this->docBlockFactory->create($reflectionProperty);

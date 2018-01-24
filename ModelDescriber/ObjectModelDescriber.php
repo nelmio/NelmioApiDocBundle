@@ -11,10 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
+use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -23,19 +25,16 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     use ModelRegistryAwareTrait;
 
     private $propertyInfo;
-
-    private $swaggerPropertyAnnotationReader;
+    private $annotationsReader;
 
     private $swaggerDefinitionAnnotationReader;
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader,
-        SwaggerDefinitionAnnotationReader $swaggerDefinitionAnnotationReader
+        Reader $reader
     ) {
         $this->propertyInfo = $propertyInfo;
-        $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
-        $this->swaggerDefinitionAnnotationReader = $swaggerDefinitionAnnotationReader;
+        $this->annotationsReader = new AnnotationsReader($reader);
     }
 
     public function describe(Model $model, Schema $schema)
@@ -48,7 +47,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         if (null !== $model->getGroups()) {
             $context = ['serializer_groups' => $model->getGroups()];
         }
-        $this->swaggerDefinitionAnnotationReader->updateWithSwaggerDefinitionAnnotation(new \ReflectionClass($class), $schema);
+        $this->annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);
         if (null === $propertyInfoProperties) {
@@ -60,7 +59,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
             // read property options from Swagger Property annotation if it exists
             if (property_exists($class, $propertyName)) {
-                $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation(
+                $this->annotationsReader->updateProperty(
                     new \ReflectionProperty($class, $propertyName),
                     $property
                 );

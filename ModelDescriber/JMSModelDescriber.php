@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
+use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\Metadata\PropertyMetadata;
@@ -20,6 +21,7 @@ use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -30,27 +32,17 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     use ModelRegistryAwareTrait;
 
     private $factory;
-
     private $namingStrategy;
-
-    private $swaggerPropertyAnnotationReader;
-
-    private $swaggerDefinitionAnnotationReader;
-
-    private $phpdocPropertyAnnotationsReader;
+    private $annotationsReader;
 
     public function __construct(
         MetadataFactoryInterface $factory,
         PropertyNamingStrategyInterface $namingStrategy,
-        SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader,
-        SwaggerDefinitionAnnotationReader $swaggerDefinitionAnnotationReader,
-        PhpdocPropertyAnnotationReader $phpdocPropertyAnnotationReader = null
+        Reader $reader
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
-        $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
-        $this->swaggerDefinitionAnnotationReader = $swaggerDefinitionAnnotationReader;
-        $this->phpdocPropertyAnnotationsReader = $phpdocPropertyAnnotationReader;
+        $this->annotationsReader = new AnnotationsReader($reader);
     }
 
     /**
@@ -67,7 +59,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $groupsExclusion = null !== $model->getGroups() ? new GroupsExclusionStrategy($model->getGroups()) : null;
 
         $schema->setType('object');
-        $this->swaggerDefinitionAnnotationReader->updateWithSwaggerDefinitionAnnotation(new \ReflectionClass($className), $schema);
+        $this->annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
+
         $properties = $schema->getProperties();
         foreach ($metadata->propertyMetadata as $item) {
             // filter groups
@@ -80,10 +73,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             // read property options from Swagger Property annotation if it exists
             if (null !== $item->reflection) {
-                if ($this->phpdocPropertyAnnotationsReader) {
-                    $this->phpdocPropertyAnnotationsReader->updateWithPhpdoc($item->reflection, $property);
-                }
-                $this->swaggerPropertyAnnotationReader->updateWithSwaggerPropertyAnnotation($item->reflection, $property);
+                $this->annotationsReader->updateProperty($item->reflection, $property);
             }
 
             if (null !== $property->getType()) {
