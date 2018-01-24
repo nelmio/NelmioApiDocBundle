@@ -21,7 +21,7 @@ class User
     /**
      * @var int
      *
-     * @SWG\Property(description = "User id", required = true, readOnly = true, title = "userid", example=1, default = null)
+     * @SWG\Property(description = "User id", readOnly = true, title = "userid", example=1, default = null)
      */
     private $id;
 
@@ -35,7 +35,6 @@ class User
      *
      * @SWG\Property(
      *     description = "User roles",
-     *     required = true,
      *     title = "roles",
      *     example="[""ADMIN"",""SUPERUSER""]",
      *     default = {"user"},

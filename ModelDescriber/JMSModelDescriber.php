@@ -35,6 +35,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     private $swaggerPropertyAnnotationReader;
 
+    private $swaggerDefinitionAnnotationReader;
+
     private $phpdocPropertyAnnotationsReader;
 
     private $symfonyConstraintAnnotationReader;
@@ -43,12 +45,14 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         MetadataFactoryInterface $factory,
         PropertyNamingStrategyInterface $namingStrategy,
         SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader,
+        SwaggerDefinitionAnnotationReader $swaggerDefinitionAnnotationReader,
         SymfonyConstraintAnnotationReader $symfonyConstraintAnnotationReader,
         PhpdocPropertyAnnotationReader $phpdocPropertyAnnotationReader = null
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
+        $this->swaggerDefinitionAnnotationReader = $swaggerDefinitionAnnotationReader;
         $this->phpdocPropertyAnnotationsReader = $phpdocPropertyAnnotationReader;
         $this->symfonyConstraintAnnotationReader = $symfonyConstraintAnnotationReader;
     }
@@ -67,6 +71,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $groupsExclusion = null !== $model->getGroups() ? new GroupsExclusionStrategy($model->getGroups()) : null;
 
         $schema->setType('object');
+        $this->swaggerDefinitionAnnotationReader->updateWithSwaggerDefinitionAnnotation(new \ReflectionClass($className), $schema);
         $properties = $schema->getProperties();
         foreach ($metadata->propertyMetadata as $item) {
             // filter groups

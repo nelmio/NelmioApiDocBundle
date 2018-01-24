@@ -28,6 +28,8 @@ class JMSFunctionalTest extends WebTestCase
                 'daysOnline' => [
                     'type' => 'integer',
                     'default' => 0,
+                    'minimum' => 1,
+                    'maximum' => 300,
                 ],
                 'email' => [
                     'type' => 'string',
@@ -43,6 +45,8 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'friendsNumber' => [
                     'type' => 'string',
+                    'maxLength' => 100,
+                    'minLength' => 1,
                 ],
                 'friends' => [
                     'type' => 'array',
@@ -77,6 +81,10 @@ class JMSFunctionalTest extends WebTestCase
                               'id' => ['type' => 'integer'],
                 'user' => ['$ref' => '#/definitions/JMSUser2'],
                 'name' => ['type' => 'string'],
+            ],
+            'required' => [
+                'id',
+                'user',
             ],
         ], $this->getModel('JMSComplex')->toArray());
 

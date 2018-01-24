@@ -26,12 +26,16 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     private $swaggerPropertyAnnotationReader;
 
+    private $swaggerDefinitionAnnotationReader;
+
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader
+        SwaggerPropertyAnnotationReader $swaggerPropertyAnnotationReader,
+        SwaggerDefinitionAnnotationReader $swaggerDefinitionAnnotationReader
     ) {
         $this->propertyInfo = $propertyInfo;
         $this->swaggerPropertyAnnotationReader = $swaggerPropertyAnnotationReader;
+        $this->swaggerDefinitionAnnotationReader = $swaggerDefinitionAnnotationReader;
     }
 
     public function describe(Model $model, Schema $schema)
@@ -44,6 +48,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         if (null !== $model->getGroups()) {
             $context = ['serializer_groups' => $model->getGroups()];
         }
+        $this->swaggerDefinitionAnnotationReader->updateWithSwaggerDefinitionAnnotation(new \ReflectionClass($class), $schema);
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);
         if (null === $propertyInfoProperties) {
