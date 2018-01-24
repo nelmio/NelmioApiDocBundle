@@ -13,12 +13,12 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
-use Swagger\Annotations\Property as SwgProperty;
+use Swagger\Annotations\Definition as SwgDefinition;
 
 /**
  * @internal
  */
-class SwaggerPropertyAnnotationReader
+class SwaggerDefinitionAnnotationReader
 {
     private $annotationsReader;
 
@@ -27,17 +27,15 @@ class SwaggerPropertyAnnotationReader
         $this->annotationsReader = $annotationsReader;
     }
 
-    public function updateWithSwaggerPropertyAnnotation(\ReflectionProperty $reflectionProperty, Schema $property)
+    public function updateWithSwaggerDefinitionAnnotation(\ReflectionClass $reflectionClass, Schema $schema)
     {
-        /** @var SwgProperty $swgProperty */
-        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class)) {
+        /** @var SwgDefinition $swgDefinition */
+        if (!$swgDefinition = $this->annotationsReader->getClassAnnotation($reflectionClass, SwgDefinition::class)) {
             return;
         }
 
-        if (!$swgProperty->validate()) {
-            return;
+        if (null !== $swgDefinition->required) {
+            $schema->setRequired($swgDefinition->required);
         }
-
-        $property->merge(\json_decode(\json_encode($swgProperty)));
     }
 }

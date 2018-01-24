@@ -43,6 +43,10 @@
             <argument type="service" id="annotation_reader" />
         </service>
 
+        <service id="nelmio_api_doc.model_describers.swagger_definition_annotation_reader" class="Nelmio\ApiDocBundle\ModelDescriber\SwaggerDefinitionAnnotationReader" public="false">
+            <argument type="service" id="annotation_reader" />
+        </service>
+
         <service
                 id="nelmio_api_doc.model_describers.phpdoc_property_annotation_reader"
                 class="Nelmio\ApiDocBundle\ModelDescriber\PhpdocPropertyAnnotationReader"
@@ -52,6 +56,7 @@
         <service id="nelmio_api_doc.model_describers.object" class="Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber" public="false">
             <argument type="service" id="property_info" />
             <argument type="service" id="nelmio_api_doc.model_describers.swagger_property_annotation_reader" />
+            <argument type="service" id="nelmio_api_doc.model_describers.swagger_definition_annotation_reader" />
 
             <tag name="nelmio_api_doc.model_describer" />
         </service>
