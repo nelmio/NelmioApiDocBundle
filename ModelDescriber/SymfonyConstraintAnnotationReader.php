@@ -30,7 +30,6 @@ use Symfony\Component\Validator\Constraints\Regex;
  */
 class SymfonyConstraintAnnotationReader
 {
-
     /**
      * @var Reader
      */
@@ -137,5 +136,4 @@ class SymfonyConstraintAnnotationReader
             $property->setDescription($newDescription);
         }
     }
-
 }
