@@ -9,16 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\ModelDescriber;
+namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
+use Swagger\Annotations\Definition as SwgDefinition;
 use Swagger\Annotations\Property as SwgProperty;
 
 /**
  * @internal
  */
-class SwaggerPropertyAnnotationReader
+class SwgAnnotationsReader
 {
     private $annotationsReader;
 
@@ -27,7 +28,19 @@ class SwaggerPropertyAnnotationReader
         $this->annotationsReader = $annotationsReader;
     }
 
-    public function updateWithSwaggerPropertyAnnotation(\ReflectionProperty $reflectionProperty, Schema $property)
+    public function updateDefinition(\ReflectionClass $reflectionClass, Schema $schema)
+    {
+        /** @var SwgDefinition $swgDefinition */
+        if (!$swgDefinition = $this->annotationsReader->getClassAnnotation($reflectionClass, SwgDefinition::class)) {
+            return;
+        }
+
+        if (null !== $swgDefinition->required) {
+            $schema->setRequired($swgDefinition->required);
+        }
+    }
+
+    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
     {
         /** @var SwgProperty $swgProperty */
         if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class)) {
@@ -38,6 +51,6 @@ class SwaggerPropertyAnnotationReader
             return;
         }
 
-        $property->merge(\json_decode(\json_encode($swgProperty)));
+        $property->merge(json_decode(json_encode($swgProperty)));
     }
 }
