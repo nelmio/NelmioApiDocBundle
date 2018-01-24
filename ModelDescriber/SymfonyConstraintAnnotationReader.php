@@ -42,15 +42,15 @@ class SymfonyConstraintAnnotationReader
     }
 
     /**
-     * Update the given property and schema with defined Symfony constraints
+     * Update the given property and schema with defined Symfony constraints.
      *
      * @param ReflectionProperty $reflectionProperty
-     * @param Schema $property
-     * @param Schema $schema
+     * @param Schema             $property
+     * @param Schema             $schema
      */
     public function updateWithSymfonyConstraintAnnotations(ReflectionProperty $reflectionProperty, Schema $property, Schema $schema)
     {
-        $required = $schema->getRequired() ?? array();
+        $required = $schema->getRequired() ?? [];
 
         $annotations = $this->annotationsReader->getPropertyAnnotations($reflectionProperty);
 
@@ -109,14 +109,14 @@ class SymfonyConstraintAnnotationReader
     }
 
     /**
-     * Append the pattern from the constraint to the existing pattern
+     * Append the pattern from the constraint to the existing pattern.
      *
      * @param Schema $property
      * @param string $newPattern
      */
     private function appendPattern(Schema $property, string $newPattern)
     {
-        if ($property->getPattern() !== null) {
+        if (null !== $property->getPattern()) {
             $property->setPattern(sprintf('%s, %s', $property->getPattern(), $newPattern));
         } else {
             $property->setPattern($newPattern);
@@ -124,14 +124,14 @@ class SymfonyConstraintAnnotationReader
     }
 
     /**
-     * Append the description from the constraint to the existing description
+     * Append the description from the constraint to the existing description.
      *
      * @param Schema $property
      * @param string $newDescription
      */
     private function appendDescription(Schema $property, string $newDescription)
     {
-        if ($property->getDescription() !== null) {
+        if (null !== $property->getDescription()) {
             $property->setDescription(sprintf('%s, %s', $property->getDescription(), $newDescription));
         } else {
             $property->setDescription($newDescription);
