@@ -62,7 +62,6 @@ class SymfonyConstraintAnnotationReader
 
             if ($annotation instanceof NotBlank || $annotation instanceof NotNull) {
                 $required[] = $reflectionProperty->getName();
-                $this->appendDescription($property, $annotation->message);
             }
 
             if ($annotation instanceof Length) {

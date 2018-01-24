@@ -20,7 +20,7 @@ class JMSFunctionalTest extends WebTestCase
             'properties' => [
                 'id' => [
                     'type' => 'integer',
-                    'description' => 'User id, This value should not be blank.',
+                    'description' => 'User id',
                     'readOnly' => true,
                     'title' => 'userid',
                     'example' => 1,
@@ -86,7 +86,7 @@ class JMSFunctionalTest extends WebTestCase
                 'id' => [
                     'type' => 'integer',
                     'title' => 'userid',
-                    'description' => 'User id, This value should not be blank.',
+                    'description' => 'User id',
                     'readOnly' => true,
                     'example' => '1',
                 ],
