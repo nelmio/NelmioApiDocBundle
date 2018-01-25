@@ -14,15 +14,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
 use ReflectionProperty;
-use Symfony\Component\Validator\Constraints\AbstractComparison;
-use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\Constraints\Count;
-use Symfony\Component\Validator\Constraints\DateTime;
-use Symfony\Component\Validator\Constraints\Expression;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @internal
@@ -52,11 +44,11 @@ class SymfonyConstraintAnnotationReader
         $annotations = $this->annotationsReader->getPropertyAnnotations($reflectionProperty);
 
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof NotBlank || $annotation instanceof NotNull) {
+            if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
                 $this->updateSchemaDefinitionWithRequiredProperty($reflectionProperty);
             }
 
-            if ($annotation instanceof Length) {
+            if ($annotation instanceof Assert\Length) {
                 if ($annotation->min > 0) {
                     $this->updateSchemaDefinitionWithRequiredProperty($reflectionProperty);
                 }
@@ -65,24 +57,24 @@ class SymfonyConstraintAnnotationReader
                 $property->setMaxLength($annotation->max);
             }
 
-            if ($annotation instanceof Regex) {
+            if ($annotation instanceof Assert\Regex) {
                 $this->appendPattern($property, $annotation->getHtmlPattern());
             }
 
-            if ($annotation instanceof DateTime) {
+            if ($annotation instanceof Assert\DateTime) {
                 $this->appendPattern($property, $annotation->format);
             }
 
-            if ($annotation instanceof Count) {
+            if ($annotation instanceof Assert\Count) {
                 $property->setMinItems($annotation->min);
                 $property->setMaxItems($annotation->max);
             }
 
-            if ($annotation instanceof Choice) {
+            if ($annotation instanceof Assert\Choice) {
                 $property->setEnum($annotation->choices);
             }
 
-            if ($annotation instanceof Expression) {
+            if ($annotation instanceof Assert\Expression) {
                 $this->appendPattern($property, $annotation->message);
             }
         }
@@ -118,18 +110,6 @@ class SymfonyConstraintAnnotationReader
             $property->setPattern(sprintf('%s, %s', $property->getPattern(), $newPattern));
         } else {
             $property->setPattern($newPattern);
-        }
-    }
-
-    /**
-     * Append the description from the constraint to the existing description.
-     */
-    private function appendDescription(Schema $property, string $newDescription)
-    {
-        if (null !== $property->getDescription()) {
-            $property->setDescription(sprintf('%s, %s', $property->getDescription(), $newDescription));
-        } else {
-            $property->setDescription($newDescription);
         }
     }
 }
