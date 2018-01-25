@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\ModelDescriber;
+namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
 use ReflectionProperty;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\AbstractComparison;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Count;
@@ -35,6 +34,11 @@ class SymfonyConstraintAnnotationReader
      */
     private $annotationsReader;
 
+    /**
+     * @var Schema
+     */
+    private $schema;
+
     public function __construct(Reader $annotationsReader)
     {
         $this->annotationsReader = $annotationsReader;
@@ -45,28 +49,19 @@ class SymfonyConstraintAnnotationReader
      *
      * @param ReflectionProperty $reflectionProperty
      * @param Schema             $property
-     * @param Schema             $schema
      */
-    public function updateWithSymfonyConstraintAnnotations(ReflectionProperty $reflectionProperty, Schema $property, Schema $schema)
+    public function updateProperty(ReflectionProperty $reflectionProperty, Schema $property)
     {
-        $required = $schema->getRequired() ?? [];
-
         $annotations = $this->annotationsReader->getPropertyAnnotations($reflectionProperty);
 
-        $symfonyConstraintDefined = false;
-
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof Constraint) {
-                $symfonyConstraintDefined = true;
-            }
-
             if ($annotation instanceof NotBlank || $annotation instanceof NotNull) {
-                $required[] = $reflectionProperty->getName();
+                $this->updateSchemaDefinitionWithRequiredProperty($reflectionProperty);
             }
 
             if ($annotation instanceof Length) {
                 if ($annotation->min > 0) {
-                    $required[] = $reflectionProperty->getName();
+                    $this->updateSchemaDefinitionWithRequiredProperty($reflectionProperty);
                 }
 
                 $property->setMinLength($annotation->min);
@@ -98,12 +93,32 @@ class SymfonyConstraintAnnotationReader
                 $this->appendPattern($property, $annotation->message);
             }
         }
+    }
 
-        if (!$symfonyConstraintDefined) {
+    /**
+     * @param Schema $schema
+     */
+    public function setSchema($schema)
+    {
+        $this->schema = $schema;
+    }
+
+    /**
+     * Set the required properties on the scheme
+     *
+     * @param ReflectionProperty $reflectionProperty
+     */
+    private function updateSchemaDefinitionWithRequiredProperty(ReflectionProperty $reflectionProperty)
+    {
+        if (null === $this->schema) {
             return;
         }
 
-        $schema->setRequired($required);
+        $existingRequiredFields = $this->schema->getRequired() ?? [];
+
+        $existingRequiredFields[] = $reflectionProperty->getName();
+
+        $this->schema->setRequired(array_unique($existingRequiredFields));
     }
 
     /**
