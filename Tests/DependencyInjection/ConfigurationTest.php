@@ -32,6 +32,7 @@ class ConfigurationTest extends TestCase
             'default' => ['path_patterns' => ['/foo']],
             'internal' => ['path_patterns' => ['/internal']],
             'commercial' => ['path_patterns' => ['/internal']],
+            'admin' => ['path_patterns' => ['/'], 'check_default' => '_areas'],
         ]]]);
 
         $this->assertEquals($areas, $config['areas']);

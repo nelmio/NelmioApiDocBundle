@@ -22,6 +22,9 @@ You can define areas which will each generates a different documentation:
         areas:
             default:
                 path_patterns: [ ^/api ]
+            admin:
+                path_patterns: [ ^/api ]
+                check_default: doc_area
             internal:
                 path_patterns: [ ^/internal ]
             commercial:
@@ -45,4 +48,42 @@ Then update your routing to be able to access your different documentations:
     #    methods: GET
     #    defaults: { _controller: nelmio_api_doc.controller.swagger }
 
-That's all! You can now access ``/api/doc/internal`` and ``/api/doc/commercial``.
+That's all! You can now access ``/api/doc/internal``, ``/api/doc/admin`` and ``/api/doc/commercial``.
+
+Advanced Configuration
+----------------------
+
+The admin area will now only show paths in ``/api`` that have the default doc_area set to contain admin.
+
+.. code-block:: php
+
+    namespace AppBundle\Controller;
+
+    use AppBundle\Entity\User;
+    use AppBundle\Entity\Reward;
+    use Nelmio\ApiDocBundle\Annotation\Model;
+    use Swagger\Annotations as SWG;
+    use Symfony\Component\Routing\Annotation\Route;
+
+    class AdminController
+    {
+        /*
+         * will show in the admin area
+         * @Route("/api/execute1", defaults={"doc_area" = {"admin"}})
+         */
+        public function executeAction()
+        {
+            // ...
+        }
+
+        /*
+         * only in default area
+         * @Route("/api/execute2")
+         */
+        public function executeAction()
+        {
+            // ...
+        }
+    }
+
+..

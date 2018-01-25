@@ -40,4 +40,25 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
         $this->assertCount(3, $filteredRoutes);
     }
+
+    public function testDefaultFilter()
+    {
+        $pathPattern = [
+            '^/api',
+        ];
+        $checkDefault = 'api_doc';
+        $area = 'admin';
+
+        $routes = new RouteCollection();
+        $routes->add('r1', new Route('/api/bar/action1', ['api_doc' => 'admin']));
+        $routes->add('r2', new Route('/api/foo/action1', ['api_doc' => 'admin']));
+        $routes->add('r3', new Route('/api/foo/action2'));
+        $routes->add('r4', new Route('/api/demo', ['api_doc' => ['admin', 'default']]));
+        $routes->add('r5', new Route('/_profiler/test/test'));
+
+        $routeBuilder = new FilteredRouteCollectionBuilder($pathPattern, $checkDefault, $area);
+        $filteredRoutes = $routeBuilder->filter($routes);
+
+        $this->assertCount(3, $filteredRoutes);
+    }
 }

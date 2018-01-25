@@ -17,10 +17,14 @@ use Symfony\Component\Routing\RouteCollection;
 final class FilteredRouteCollectionBuilder
 {
     private $pathPatterns;
+    private $checkDefault;
+    private $area;
 
-    public function __construct(array $pathPatterns = [])
+    public function __construct(array $pathPatterns = [], $checkDefault = null, $area = null)
     {
         $this->pathPatterns = $pathPatterns;
+        $this->checkDefault = $checkDefault;
+        $this->area = $area;
     }
 
     public function filter(RouteCollection $routes): RouteCollection
@@ -37,6 +41,17 @@ final class FilteredRouteCollectionBuilder
 
     private function match(Route $route): bool
     {
+        if (null !== $this->area && null !== $this->checkDefault) {
+            $areas = $route->getDefault($this->checkDefault);
+            if (!is_array($areas) && !empty($areas)) {
+                $areas = [$areas];
+            }
+
+            if (empty($areas) || !in_array($this->area, $areas)) {
+                return false;
+            }
+        }
+
         foreach ($this->pathPatterns as $pathPattern) {
             if (preg_match('{'.$pathPattern.'}', $route->getPath())) {
                 return true;
