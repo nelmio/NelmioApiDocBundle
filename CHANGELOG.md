@@ -4,13 +4,15 @@ CHANGELOG
 3.1.0 (unreleased)
 ------------------
 
+* Added Symfony Validator constraints support
+
 Symfony Forms
 * Support for boolean checkbox
 * Support for integer
 
 JMS Serializer
 * Support JMS `int` (alias for `integer`)
-* Also process phpdoc annotations (if `phpdocumentor/reflection-docblock` is available)
+* Also process phpdoc annotations
 
 SwaggerPHP
 * Handle `enum` and `default` properties from SwaggerPHP annotation
