@@ -47,7 +47,6 @@ class SwaggerUiTest extends WebTestCase
             '/api/dummies/{id}' => $expected['paths']['/api/dummies/{id}'],
             '/test/test/' => ['get' => [
                 'responses' => ['200' => ['description' => 'Test']],
-                'security' => [],
             ]],
         ];
         $expected['definitions'] = ['Dummy' => $expected['definitions']['Dummy']];

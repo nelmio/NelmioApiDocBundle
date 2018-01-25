@@ -144,13 +144,26 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
                 $implicitAnnotations[] = $annotation;
             }
 
-            if (0 === count($implicitAnnotations) && 0 === count($tags)) {
+            if (0 === count($implicitAnnotations) && 0 === count($tags) && 0 === count($security)) {
                 continue;
             }
 
             foreach ($httpMethods as $httpMethod) {
                 $annotationClass = $operationAnnotations[$httpMethod];
-                $operation = new $annotationClass(['_context' => $context, 'path' => $path, 'value' => $implicitAnnotations, 'tags' => $tags, 'security' => $security]);
+                $constructorArg = [
+                    '_context' => $context,
+                    'path' => $path,
+                    'value' => $implicitAnnotations,
+                ];
+
+                if (0 !== count($tags)) {
+                    $constructorArg['tags'] = $tags;
+                }
+                if (0 !== count($security)) {
+                    $constructorArg['security'] = $security;
+                }
+
+                $operation = new $annotationClass($constructorArg);
                 $analysis->addAnnotation($operation, null);
             }
         }
