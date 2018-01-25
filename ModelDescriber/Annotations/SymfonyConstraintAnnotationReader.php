@@ -69,10 +69,6 @@ class SymfonyConstraintAnnotationReader
                 $this->appendPattern($property, $annotation->getHtmlPattern());
             }
 
-            if ($annotation instanceof AbstractComparison) {
-                $this->appendDescription($property, $annotation->message);
-            }
-
             if ($annotation instanceof DateTime) {
                 $this->appendPattern($property, $annotation->format);
             }
