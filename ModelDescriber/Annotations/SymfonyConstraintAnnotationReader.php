@@ -104,7 +104,7 @@ class SymfonyConstraintAnnotationReader
     }
 
     /**
-     * Set the required properties on the scheme
+     * Set the required properties on the scheme.
      *
      * @param ReflectionProperty $reflectionProperty
      */
