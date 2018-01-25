@@ -15,6 +15,7 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
@@ -155,6 +156,16 @@ class ApiController
      * @SWG\Response(response="201", description="")
      */
     public function formAction()
+    {
+    }
+
+    /**
+     * @Route("/security")
+     * @SWG\Response(response="201", description="")
+     * @Security(name="api_key")
+     * @Security(name="basic")
+     */
+    public function securityAction()
     {
     }
 }

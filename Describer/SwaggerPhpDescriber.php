@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Describer;
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\SwaggerPhp\AddDefaults;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
@@ -45,7 +46,7 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
             $analysis->process($this->getProcessors());
             $analysis->validate();
 
-            return json_decode(json_encode($analysis->swagger));
+            return json_decode(json_encode($analysis->swagger), true);
         }, $overwrite);
     }
 
@@ -93,6 +94,7 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
             $nestedContext->nested = true;
             $implicitAnnotations = [];
             $tags = [];
+            $security = [];
             foreach ($annotations as $annotation) {
                 $annotation->_context = $context;
                 $this->updateNestedAnnotations($annotation, $nestedContext);
@@ -121,6 +123,13 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
                     continue;
                 }
 
+                if ($annotation instanceof Security) {
+                    $annotation->validate();
+                    $security[] = [$annotation->name => []];
+
+                    continue;
+                }
+
                 if ($annotation instanceof SWG\Tag) {
                     $annotation->validate();
                     $tags[] = $annotation->name;
@@ -135,13 +144,26 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
                 $implicitAnnotations[] = $annotation;
             }
 
-            if (0 === count($implicitAnnotations) && 0 === count($tags)) {
+            if (0 === count($implicitAnnotations) && 0 === count($tags) && 0 === count($security)) {
                 continue;
             }
 
             foreach ($httpMethods as $httpMethod) {
                 $annotationClass = $operationAnnotations[$httpMethod];
-                $operation = new $annotationClass(['_context' => $context, 'path' => $path, 'value' => $implicitAnnotations, 'tags' => $tags]);
+                $constructorArg = [
+                    '_context' => $context,
+                    'path' => $path,
+                    'value' => $implicitAnnotations,
+                ];
+
+                if (0 !== count($tags)) {
+                    $constructorArg['tags'] = $tags;
+                }
+                if (0 !== count($security)) {
+                    $constructorArg['security'] = $security;
+                }
+
+                $operation = new $annotationClass($constructorArg);
                 $analysis->addAnnotation($operation, null);
             }
         }
