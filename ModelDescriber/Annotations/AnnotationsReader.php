@@ -23,6 +23,7 @@ class AnnotationsReader
 
     private $phpDocReader;
     private $swgAnnotationsReader;
+    private $symfonyConstraintAnnotationReader;
 
     public function __construct(Reader $annotationsReader)
     {
@@ -30,16 +31,19 @@ class AnnotationsReader
 
         $this->phpDocReader = new PropertyPhpDocReader();
         $this->swgAnnotationsReader = new SwgAnnotationsReader($annotationsReader);
+        $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($annotationsReader);
     }
 
     public function updateDefinition(\ReflectionClass $reflectionClass, Schema $schema)
     {
         $this->swgAnnotationsReader->updateDefinition($reflectionClass, $schema);
+        $this->symfonyConstraintAnnotationReader->setSchema($schema);
     }
 
     public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
     {
         $this->phpDocReader->updateProperty($reflectionProperty, $property);
         $this->swgAnnotationsReader->updateProperty($reflectionProperty, $property);
+        $this->symfonyConstraintAnnotationReader->updateProperty($reflectionProperty, $property);
     }
 }
