@@ -27,6 +27,7 @@ trait RouteDescriberTrait
      */
     private function getOperations(Swagger $api, Route $route): array
     {
+        $operations = [];
         $path = $api->getPaths()->get($this->normalizePath($route->getPath()));
         $methods = $route->getMethods() ?: Swagger::$METHODS;
         foreach ($methods as $method) {
