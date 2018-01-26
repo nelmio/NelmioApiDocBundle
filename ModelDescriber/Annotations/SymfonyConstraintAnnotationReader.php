@@ -104,8 +104,12 @@ class SymfonyConstraintAnnotationReader
     /**
      * Append the pattern from the constraint to the existing pattern.
      */
-    private function appendPattern(Schema $property, string $newPattern)
+    private function appendPattern(Schema $property, $newPattern)
     {
+        if (null === $newPattern) {
+            return;
+        }
+
         if (null !== $property->getPattern()) {
             $property->setPattern(sprintf('%s, %s', $property->getPattern(), $newPattern));
         } else {
