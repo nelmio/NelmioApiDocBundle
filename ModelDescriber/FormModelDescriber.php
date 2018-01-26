@@ -101,7 +101,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 }
 
                 if ('choice' === $blockPrefix) {
-                    $property->setType('string');
+                    if ($config->getOption('multiple')) {
+                        $property->setType('array');
+                        $property->setExample('[1, 2, 3]');
+                    } else {
+                        $property->setType('string');
+                    }
                     if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
                         $property->setEnum(array_values($choices));
                     }
