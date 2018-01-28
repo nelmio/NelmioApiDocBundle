@@ -140,12 +140,12 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'propertyRegex' => [
                     'type' => 'integer',
-                    'pattern' => '.*[a-z]{2}.*'
+                    'pattern' => '.*[a-z]{2}.*',
                 ],
                 'propertyCount' => [
                     'type' => 'integer',
                     'maxItems' => '10',
-                    'minItems' => '0'
+                    'minItems' => '0',
                 ],
                 'propertyChoice' => [
                     'type' => 'integer',
@@ -154,7 +154,7 @@ class JMSFunctionalTest extends WebTestCase
                 'propertyExpression' => [
                     'type' => 'integer',
                     'pattern' => 'If this is a tech post, the category should be either php or symfony!',
-                ]
+                ],
             ],
             'type' => 'object',
         ], $this->getModel('SymfonyConstraints')->toArray());
