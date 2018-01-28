@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-3.1.0 (unreleased)
+3.1.0 (2017-01-28)
 ------------------
 
 * Added Symfony Validator constraints support
