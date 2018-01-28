@@ -228,6 +228,10 @@ class FunctionalTest extends WebTestCase
                     'type' => 'string',
                     'enum' => ['male', 'female'],
                 ],
+                'foz' => [
+                    'type' => 'array',
+                    'enum' => ['male', 'female'],
+                ],
                 'baz' => [
                     'type' => 'boolean',
                 ],
@@ -235,7 +239,7 @@ class FunctionalTest extends WebTestCase
                     'type' => 'integer',
                 ],
             ],
-            'required' => ['foo'],
+            'required' => ['foo', 'foz'],
         ], $this->getModel('DummyType')->toArray());
     }
 

@@ -103,7 +103,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 if ('choice' === $blockPrefix) {
                     if ($config->getOption('multiple')) {
                         $property->setType('array');
-                        $property->setExample('[1, 2, 3]');
                     } else {
                         $property->setType('string');
                     }
@@ -135,7 +134,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                     if ($config->getOption('multiple')) {
                         $property->setFormat(sprintf('[%s id]', $entityClass));
                         $property->setType('array');
-                        $property->setExample('[1, 2, 3]');
                     } else {
                         $property->setType('string');
                         $property->setFormat(sprintf('%s id', $entityClass));
