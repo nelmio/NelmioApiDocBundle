@@ -93,5 +93,4 @@ class SymfonyConstraints
      * )
      */
     private $propertyExpression;
-
 }
