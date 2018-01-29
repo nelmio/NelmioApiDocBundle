@@ -230,7 +230,10 @@ class FunctionalTest extends WebTestCase
                 ],
                 'foz' => [
                     'type' => 'array',
-                    'enum' => ['male', 'female'],
+                    'items' => [
+                        'type' => 'string',
+                        'enum' => ['male', 'female'],
+                    ],
                 ],
                 'baz' => [
                     'type' => 'boolean',
