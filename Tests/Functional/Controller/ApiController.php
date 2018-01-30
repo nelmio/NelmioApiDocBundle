@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -166,6 +167,18 @@ class ApiController
      * @Security(name="basic")
      */
     public function securityAction()
+    {
+    }
+
+    /**
+     * @Route("/swagger/symfonyConstraints", methods={"GET"})
+     * @SWG\Response(
+     *     response="201",
+     *     description="Used for symfony constraints test",
+     *     @Model(type=SymfonyConstraints::class)
+     * )
+     */
+    public function symfonyConstraintsAction()
     {
     }
 }

@@ -12,80 +12,62 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Serializer\ExclusionPolicy("all")
- */
 class SymfonyConstraints
 {
     /**
-     * @Serializer\Type("integer")
-     * @Serializer\Expose
-     * @Serializer\SerializedName("propertyNotBlank")
+     * @var int
      *
      * @Assert\NotBlank()
      */
     private $propertyNotBlank;
 
     /**
-     * @Serializer\Type("integer")
-     * @Serializer\Expose
-     * @Serializer\SerializedName("propertyNotNull")
+     * @var int
      *
      * @Assert\NotNull()
      */
     private $propertyNotNull;
 
     /**
-     * @Serializer\Type("integer")
-     * @Serializer\Expose
-     * @Serializer\SerializedName("propertyAssertLengthRequired")
+     * @var int
      *
      * @Assert\Length(min="1")
      */
     private $propertyAssertLengthRequired;
 
     /**
-     * @Serializer\Type("integer")
-     * @Serializer\Expose
-     * @Serializer\SerializedName("propertyAssertLengthMinAndMax")
+     * @var int
      *
      * @Assert\Length(min="0", max="50")
      */
     private $propertyAssertLengthMinAndMax;
 
     /**
-     * @Serializer\Type("integer")
-     * @Serializer\Expose
-     * @Serializer\SerializedName("propertyRegex")
+     * @var int
      *
      * @Assert\Regex(pattern="/[a-z]{2}/")
      */
     private $propertyRegex;
 
     /**
-     * @Serializer\Type("integer")
-     * @Serializer\Expose
-     * @Serializer\SerializedName("propertyCount")
+     * @var int
      *
      * @Assert\Count(min="0", max="10")
      */
     private $propertyCount;
 
     /**
-     * @Serializer\Type("integer")
-     * @Serializer\Expose
-     * @Serializer\SerializedName("propertyChoice")
+     * @var int
      *
      * @Assert\Choice(choices={"choice1", "choice2"})
      */
     private $propertyChoice;
 
     /**
-     * @Serializer\Type("integer")
-     * @Serializer\Expose
-     * @Serializer\SerializedName("propertyExpression")
+     * @var int
      *
      * @Assert\Expression(
      *     "this.getCategory() in ['php', 'symfony'] or !this.isTechnicalPost()",
@@ -93,4 +75,68 @@ class SymfonyConstraints
      * )
      */
     private $propertyExpression;
+
+    /**
+     * @param int $propertyNotBlank
+     */
+    public function setPropertyNotBlank(int $propertyNotBlank): void
+    {
+        $this->propertyNotBlank = $propertyNotBlank;
+    }
+
+    /**
+     * @param int $propertyNotNull
+     */
+    public function setPropertyNotNull(int $propertyNotNull): void
+    {
+        $this->propertyNotNull = $propertyNotNull;
+    }
+
+    /**
+     * @param int $propertyAssertLengthRequired
+     */
+    public function setPropertyAssertLengthRequired(int $propertyAssertLengthRequired): void
+    {
+        $this->propertyAssertLengthRequired = $propertyAssertLengthRequired;
+    }
+
+    /**
+     * @param int $propertyAssertLengthMinAndMax
+     */
+    public function setPropertyAssertLengthMinAndMax(int $propertyAssertLengthMinAndMax): void
+    {
+        $this->propertyAssertLengthMinAndMax = $propertyAssertLengthMinAndMax;
+    }
+
+    /**
+     * @param int $propertyRegex
+     */
+    public function setPropertyRegex(int $propertyRegex): void
+    {
+        $this->propertyRegex = $propertyRegex;
+    }
+
+    /**
+     * @param int $propertyCount
+     */
+    public function setPropertyCount(int $propertyCount): void
+    {
+        $this->propertyCount = $propertyCount;
+    }
+
+    /**
+     * @param int $propertyChoice
+     */
+    public function setPropertyChoice(int $propertyChoice): void
+    {
+        $this->propertyChoice = $propertyChoice;
+    }
+
+    /**
+     * @param int $propertyExpression
+     */
+    public function setPropertyExpression(int $propertyExpression): void
+    {
+        $this->propertyExpression = $propertyExpression;
+    }
 }
