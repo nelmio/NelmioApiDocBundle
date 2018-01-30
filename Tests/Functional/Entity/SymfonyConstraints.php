@@ -11,8 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use JMS\Serializer\Annotation as Serializer;
-use Swagger\Annotations as SWG;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SymfonyConstraints
