@@ -45,7 +45,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         }
 
         $schema->setType('object');
-        $properties = $schema->getProperties();
 
         $class = $model->getType()->getClassName();
 
@@ -101,9 +100,19 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 }
 
                 if ('choice' === $blockPrefix) {
-                    $property->setType('string');
+                    if ($config->getOption('multiple')) {
+                        $property->setType('array');
+                    } else {
+                        $property->setType('string');
+                    }
                     if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
-                        $property->setEnum(array_values($choices));
+                        $enums = array_values($choices);
+                        $type = $this->isNumbersArray($enums) ? 'number' : 'string';
+                        if ($config->getOption('multiple')) {
+                            $property->getItems()->setType($type)->setEnum($enums);
+                        } else {
+                            $property->setType($type)->setEnum($enums);
+                        }
                     }
 
                     break;
@@ -130,7 +139,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                     if ($config->getOption('multiple')) {
                         $property->setFormat(sprintf('[%s id]', $entityClass));
                         $property->setType('array');
-                        $property->setExample('[1, 2, 3]');
                     } else {
                         $property->setType('string');
                         $property->setFormat(sprintf('%s id', $entityClass));
@@ -155,6 +163,22 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $schema->setRequired($required);
             }
         }
+    }
+
+    /**
+     * @param array $array
+     *
+     * @return bool true if $array contains only numbers, false otherwise
+     */
+    private function isNumbersArray(array $array): bool
+    {
+        foreach ($array as $item) {
+            if (!is_numeric($item)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function isBuiltinType(string $type): bool

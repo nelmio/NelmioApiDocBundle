@@ -24,6 +24,7 @@ class DummyType extends AbstractType
     {
         $builder->add('bar', TextType::class, ['required' => false]);
         $builder->add('foo', ChoiceType::class, ['choices' => ['male', 'female']]);
+        $builder->add('foz', ChoiceType::class, ['choices' => ['male', 'female'], 'multiple' => true]);
         $builder->add('baz', CheckboxType::class, ['required' => false]);
         $builder->add('bey', IntegerType::class, ['required' => false]);
     }
