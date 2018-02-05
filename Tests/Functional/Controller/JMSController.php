@@ -34,18 +34,6 @@ class JMSController
     }
 
     /**
-     * @Route("/api/symfonyConstraints")
-     * @SWG\Response(
-     *     response=200,
-     *     description="Success",
-     *     @Model(type=SymfonyConstraints::class)
-     * )
-     */
-    public function symfonyConstraintsAction()
-    {
-    }
-
-    /**
      * @Route("/api/yaml", methods={"GET"})
      * @SWG\Response(
      *     response=200,
