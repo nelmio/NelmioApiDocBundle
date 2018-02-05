@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use EXSyst\Component\Swagger\Operation;
 use EXSyst\Component\Swagger\Tag;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 
@@ -255,5 +254,51 @@ class FunctionalTest extends WebTestCase
             ['basic' => []],
         ];
         $this->assertEquals($expected, $operation->getSecurity());
+    }
+
+    public function testSymfonyConstraintDocumentation()
+    {
+        $this->assertEquals([
+            'required' => [
+                'propertyNotBlank',
+                'propertyNotNull',
+                'propertyAssertLengthRequired',
+            ],
+            'properties' => [
+                'propertyNotBlank' => [
+                    'type' => 'integer',
+                ],
+                'propertyNotNull' => [
+                    'type' => 'integer',
+                ],
+                'propertyAssertLengthRequired' => [
+                    'type' => 'integer',
+                    'minLength' => '1',
+                ],
+                'propertyAssertLengthMinAndMax' => [
+                    'type' => 'integer',
+                    'maxLength' => '50',
+                    'minLength' => '0',
+                ],
+                'propertyRegex' => [
+                    'type' => 'integer',
+                    'pattern' => '.*[a-z]{2}.*',
+                ],
+                'propertyCount' => [
+                    'type' => 'integer',
+                    'maxItems' => '10',
+                    'minItems' => '0',
+                ],
+                'propertyChoice' => [
+                    'type' => 'integer',
+                    'enum' => ['choice1', 'choice2'],
+                ],
+                'propertyExpression' => [
+                    'type' => 'integer',
+                    'pattern' => 'If this is a tech post, the category should be either php or symfony!',
+                ],
+            ],
+            'type' => 'object',
+        ], $this->getModel('SymfonyConstraints')->toArray());
     }
 }

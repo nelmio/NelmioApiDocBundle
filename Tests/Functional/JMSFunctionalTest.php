@@ -67,9 +67,6 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'date',
                 ],
             ],
-            'required' => [
-                'id',
-            ],
         ], $this->getModel('JMSUser')->toArray());
     }
 
@@ -78,7 +75,7 @@ class JMSFunctionalTest extends WebTestCase
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
-                              'id' => ['type' => 'integer'],
+                'id' => ['type' => 'integer'],
                 'user' => ['$ref' => '#/definitions/JMSUser2'],
                 'name' => ['type' => 'string'],
             ],
@@ -98,9 +95,6 @@ class JMSFunctionalTest extends WebTestCase
                     'readOnly' => true,
                     'example' => '1',
                 ],
-            ],
-            'required' => [
-                'id',
             ],
         ], $this->getModel('JMSUser2')->toArray());
     }
