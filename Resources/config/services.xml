@@ -45,6 +45,15 @@
 
             <tag name="nelmio_api_doc.model_describer" />
         </service>
+
+        <!-- Form Type Extensions -->
+
+        <service id="Nelmio\ApiDocBundle\Form\Extension\ExampleExtension">
+            <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType"/>
+        </service>
+        <service id="Nelmio\ApiDocBundle\Form\Extension\FormatExtension">
+            <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType"/>
+        </service>
     </services>
 
 </container>

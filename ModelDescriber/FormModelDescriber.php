@@ -15,7 +15,13 @@ use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -38,13 +44,16 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     public function describe(Model $model, Schema $schema)
     {
         if (method_exists(AbstractType::class, 'setDefaultOptions')) {
-            throw new \LogicException('symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.');
+            throw new \LogicException(
+                'symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.'
+            );
         }
         if (null === $this->formFactory) {
             throw new \LogicException('You need to enable forms in your application to use a form as a model.');
         }
 
         $schema->setType('object');
+        $properties = $schema->getProperties();
 
         $class = $model->getType()->getClassName();
 
@@ -61,103 +70,74 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     {
         $properties = $schema->getProperties();
 
+        /** @var FormInterface $child */
         foreach ($form as $name => $child) {
-            $config = $child->getConfig();
+            $config   = $child->getConfig();
             $property = $properties->get($name);
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 $blockPrefix = $type->getBlockPrefix();
+                $property->setType($this->getPropertyType(get_class($type->getInnerType()), $config));
 
-                if ('text' === $blockPrefix) {
-                    $property->setType('string');
+                switch (true) {
+                    case 'date' === $blockPrefix:
+                        $property->setFormat('date');
 
-                    break;
-                }
+                        break 2;
+                    case 'datetime' === $blockPrefix:
+                        $property->setFormat('date-time');
 
-                if ('number' === $blockPrefix) {
-                    $property->setType('number');
-
-                    break;
-                }
-
-                if ('integer' === $blockPrefix) {
-                    $property->setType('integer');
-
-                    break;
-                }
-
-                if ('date' === $blockPrefix) {
-                    $property->setType('string');
-                    $property->setFormat('date');
-
-                    break;
-                }
-
-                if ('datetime' === $blockPrefix) {
-                    $property->setType('string');
-                    $property->setFormat('date-time');
-
-                    break;
-                }
-
-                if ('choice' === $blockPrefix) {
-                    if ($config->getOption('multiple')) {
-                        $property->setType('array');
-                    } else {
-                        $property->setType('string');
-                    }
-                    if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
-                        $enums = array_values($choices);
-                        $type = $this->isNumbersArray($enums) ? 'number' : 'string';
-                        if ($config->getOption('multiple')) {
-                            $property->getItems()->setType($type)->setEnum($enums);
-                        } else {
-                            $property->setType($type)->setEnum($enums);
+                        break 2;
+                    case 'choice' === $blockPrefix:
+                        if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
+                            $property->setEnum(array_values($choices));
                         }
-                    }
 
-                    break;
-                }
+                        break 2;
+                    case 'collection' === $blockPrefix:
+                        $subTypeClass = $config->getOption('entry_type');
+                        $subType      = $this->getPropertyType($subTypeClass, $config);
+                        if ('array' === $subType) {
+                            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $subType), null);
+                            $property->getItems()->setRef($this->modelRegistry->register($model));
+                        } else {
+                            $property->getItems()->setFormat($subType);
+                        }
 
-                if ('checkbox' === $blockPrefix) {
-                    $property->setType('boolean');
-                }
+                        $property->setExample(sprintf('[%s]', $subType));
 
-                if ('collection' === $blockPrefix) {
-                    $subType = $config->getOption('entry_type');
-                    $property->setType('array');
-
-                    $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $subType), null);
-                    $property->getItems()->setRef($this->modelRegistry->register($model));
-                    $property->setExample(sprintf('[{%s}]', $subType));
-
-                    break;
-                }
-
-                if ('entity' === $blockPrefix) {
-                    $entityClass = $config->getOption('class');
-
-                    if ($config->getOption('multiple')) {
-                        $property->setFormat(sprintf('[%s id]', $entityClass));
-                        $property->setType('array');
-                    } else {
-                        $property->setType('string');
+                        break 2;
+                    case 'entity' === $blockPrefix:
+                        $entityClass = $config->getOption('class');
                         $property->setFormat(sprintf('%s id', $entityClass));
-                    }
 
-                    break;
-                }
+                        if ($config->getOption('multiple')) {
+                            $property->setFormat(sprintf('[%s id]', $entityClass));
+                            $property->setExample('[1, 2, 3]');
+                        }
 
-                if ($type->getInnerType() && ($formClass = get_class($type->getInnerType())) && !$this->isBuiltinType($formClass)) {
-                    //if form type is not builtin in Form component.
-                    $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $formClass));
-                    $property->setRef($this->modelRegistry->register($model));
+                        break;
+                    case $type->getInnerType() && ($formClass = get_class(
+                            $type->getInnerType()
+                        )) && !$this->isBuiltinType($formClass):
+                        //if form type is not builtin in Form component.
+                        $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $formClass));
+                        $property->setRef($this->modelRegistry->register($model));
 
-                    break;
+                        break;
+                    default:
+                        break 2;
                 }
             }
 
+            if ($config->hasOption('format') && !empty($config->getOption('format'))) {
+                $property->setFormat($config->getOption('format'));
+            }
+            if ($config->hasOption('example') && !empty($config->getOption('example'))) {
+                $property->setExample($config->getOption('example'));
+            }
+
             if ($config->getRequired()) {
-                $required = $schema->getRequired() ?? [];
+                $required   = $schema->getRequired() ?? [];
                 $required[] = $name;
 
                 $schema->setRequired($required);
@@ -165,24 +145,26 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         }
     }
 
-    /**
-     * @param array $array
-     *
-     * @return bool true if $array contains only numbers, false otherwise
-     */
-    private function isNumbersArray(array $array): bool
-    {
-        foreach ($array as $item) {
-            if (!is_numeric($item)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     private function isBuiltinType(string $type): bool
     {
         return 0 === strpos($type, 'Symfony\Component\Form\Extension\Core\Type');
+    }
+
+    private function getPropertyType($class, FormConfigInterface $config)
+    {
+        switch ($class) {
+            case NumberType::class:
+                return 'number';
+            case IntegerType::class:
+                return 'integer';
+            case CheckboxType::class:
+                return 'boolean';
+            case CollectionType::class:
+                return 'array';
+            case EntityType::class:
+                return $config->getOption('multiple') ? 'array' : 'string';
+            default:
+                return 'string';
+        }
     }
 }
