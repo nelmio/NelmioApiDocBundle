@@ -162,6 +162,13 @@ To document your routes, you can use the SwaggerPHP annotations and the
 
 The normal PHP docblock for the controller method is used for the summary and description.
 
+Don't forget to symlink an assets:
+
+.. code-block:: bash
+
+    $ bin/console assets:install --symlink
+
+
 Use models
 ----------
 
