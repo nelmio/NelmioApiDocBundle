@@ -280,4 +280,6 @@ If you need more complex features, take a look at:
 Frequently Asked Questions (FAQ)
 --------------------------------
 
-.. _`/Resources/doc/faq.rst`: https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/faq.rst
+`Read it here`_
+
+.. _`Read it here`: https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/faq.rst
