@@ -276,3 +276,8 @@ If you need more complex features, take a look at:
     areas
 
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
+
+Frequently Asked Questions (FAQ)
+--------------------------------
+
+.. _`/Resources/doc/faq.rst`: https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/faq.rst
