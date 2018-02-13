@@ -274,8 +274,7 @@ If you need more complex features, take a look at:
     :maxdepth: 1
 
     areas
-
-`FAQ`_
-
+    faq
+    
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
-.. _`FAQ`: /Resources/doc/faq.rst
+
