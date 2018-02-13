@@ -282,4 +282,4 @@ Frequently Asked Questions (FAQ)
 
 `Read it here`_
 
-.. _`Read it here`: https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/faq.rst
+.. _`Read it here`: /Resources/doc/faq.rst
