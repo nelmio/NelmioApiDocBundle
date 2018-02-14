@@ -71,7 +71,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             $types = $this->propertyInfo->getTypes($class, $propertyName);
-            if (0 === count($types)) {
+            if (null === $types || 0 === count($types)) {
                 throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s', $class, $propertyName));
             }
             if (count($types) > 1) {
