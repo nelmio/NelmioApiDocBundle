@@ -20,8 +20,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Aaron Scherer <aequasi@gmail.com>
- *
- * DocumentationExtension Class
  */
 class DocumentationExtension extends AbstractTypeExtension
 {
