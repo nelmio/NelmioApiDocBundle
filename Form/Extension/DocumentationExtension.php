@@ -21,23 +21,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Aaron Scherer <aequasi@gmail.com>
  *
- * ExampleExtension Class
+ * DocumentationExtension Class
  */
-class ExampleExtension extends AbstractTypeExtension
+class DocumentationExtension extends AbstractTypeExtension
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->setAttribute('example', $options['example']);
+        $builder->setAttribute('documentation', $options['documentation']);
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['example'] = $options['example'];
+        $view->vars['documentation'] = $options['documentation'];
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['example' => null]);
+        $resolver->setDefaults(['documentation' => []])
+            ->setAllowedTypes('documentation', ['array']);
     }
 
     public function getExtendedType()

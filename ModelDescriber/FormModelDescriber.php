@@ -44,16 +44,13 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     public function describe(Model $model, Schema $schema)
     {
         if (method_exists(AbstractType::class, 'setDefaultOptions')) {
-            throw new \LogicException(
-                'symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.'
-            );
+            throw new \LogicException('symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.');
         }
         if (null === $this->formFactory) {
             throw new \LogicException('You need to enable forms in your application to use a form as a model.');
         }
 
         $schema->setType('object');
-        $properties = $schema->getProperties();
 
         $class = $model->getType()->getClassName();
 
@@ -100,10 +97,10 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                             $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $subType), null);
                             $property->getItems()->setRef($this->modelRegistry->register($model));
                         } else {
-                            $property->getItems()->setFormat($subType);
+                            $property->getItems()->setType($subType);
                         }
 
-                        $property->setExample(sprintf('[%s]', $subType));
+                        $property->setExample(sprintf('[{%s}]', $subType));
 
                         break 2;
                     case 'entity' === $blockPrefix:
@@ -129,15 +126,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 }
             }
 
-            if ($config->hasOption('format') && !empty($config->getOption('format'))) {
-                $property->setFormat($config->getOption('format'));
-            }
-            if ($config->hasOption('example') && !empty($config->getOption('example'))) {
-                $property->setExample($config->getOption('example'));
+            foreach ($config->getOption('documentation', []) as $key => $value) {
+                $property->{'set'.ucfirst($key)}($value);
             }
 
             if ($config->getRequired()) {
-                $required   = $schema->getRequired() ?? [];
+                $required = $schema->getRequired() ?? [];
                 $required[] = $name;
 
                 $schema->setRequired($required);
