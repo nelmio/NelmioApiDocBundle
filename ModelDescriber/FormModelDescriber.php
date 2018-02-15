@@ -118,6 +118,8 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                         $property->setFormat(sprintf('[%s id]', $entityClass));
                         $property->setExample('[1, 2, 3]');
                     }
+
+                    break;
                 }
 
                 if ($type->getInnerType() && ($formClass = get_class($type->getInnerType())) && !$this->isBuiltinType($formClass)) {
