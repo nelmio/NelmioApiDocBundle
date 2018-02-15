@@ -127,7 +127,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             }
 
             foreach ($config->getOption('documentation', []) as $key => $value) {
-                $property->{'set'.ucfirst($key)}($value);
+                $method = 'set'.ucfirst($key);
+                if (!method_exists($property, $method)) {
+                    throw new \InvalidArgumentException('`' . $key . '`` is not a valid documentation property');
+                }
+
+                $property->{$method}($value);
             }
 
             if ($config->getRequired()) {
