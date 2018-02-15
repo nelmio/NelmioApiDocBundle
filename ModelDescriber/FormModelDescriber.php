@@ -140,8 +140,8 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $schema->setRequired($required);
             }
         }
-
     }
+
     private function isBuiltinType(string $type): bool
     {
         return 0 === strpos($type, 'Symfony\Component\Form\Extension\Core\Type');
