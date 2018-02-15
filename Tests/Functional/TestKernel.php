@@ -109,6 +109,11 @@ class TestKernel extends Kernel
                 'info' => [
                     'title' => 'My Test App',
                 ],
+                'definitions' => [
+                    'Test' => [
+                        'type' => 'string',
+                    ],
+                ],
             ],
            'areas' => [
                'default' => ['path_patterns' => ['^/api(?!/admin)']],

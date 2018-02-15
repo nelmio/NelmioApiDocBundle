@@ -24,30 +24,31 @@ use Swagger\Annotations as SWG;
 use Swagger\Context;
 use Symfony\Component\Routing\RouteCollection;
 
-final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelRegistryAwareInterface
+final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
     private $routeCollection;
-
     private $controllerReflector;
-
     private $annotationReader;
+    private $overwrite;
 
     public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, bool $overwrite = false)
     {
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
         $this->annotationReader = $annotationReader;
+        $this->overwrite = $overwrite;
+    }
 
-        parent::__construct(function () {
-            $analysis = $this->getAnnotations();
+    public function describe(Swagger $api)
+    {
+        $analysis = $this->getAnnotations($api);
 
-            $analysis->process($this->getProcessors());
-            $analysis->validate();
+        $analysis->process($this->getProcessors());
+        $analysis->validate();
 
-            return json_decode(json_encode($analysis->swagger), true);
-        }, $overwrite);
+        $api->merge(json_decode(json_encode($analysis->swagger), true), $this->overwrite);
     }
 
     private function getProcessors(): array
@@ -60,9 +61,30 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
         return array_merge($processors, Analysis::processors());
     }
 
-    private function getAnnotations(): Analysis
+    private function getAnnotations(Swagger $api): Analysis
     {
         $analysis = new Analysis();
+        $analysis->addAnnotation(new class($api) extends SWG\Swagger {
+            private $api;
+
+            public function __construct($api)
+            {
+                $this->api = $api;
+                parent::__construct([]);
+            }
+
+            /**
+             * Support definitions from the config and reference to models.
+             */
+            public function ref($ref)
+            {
+                if (0 === strpos($ref, '#/definitions/') && $this->api->getDefinitions()->has(substr($ref, 14))) {
+                    return;
+                }
+
+                parent::ref($ref);
+            }
+        }, null);
 
         $operationAnnotations = [
             'get' => SWG\Get::class,

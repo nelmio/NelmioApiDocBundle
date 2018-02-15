@@ -181,4 +181,16 @@ class ApiController
     public function symfonyConstraintsAction()
     {
     }
+
+    /**
+     * @SWG\Response(
+     *     response="200",
+     *     description="Success",
+     *     @SWG\Schema(ref="#/definitions/Test")
+     * )
+     * @Route("/configReference", methods={"GET"})
+     */
+    public function configReferenceAction()
+    {
+    }
 }

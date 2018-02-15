@@ -49,7 +49,7 @@ class SwaggerUiTest extends WebTestCase
                 'responses' => ['200' => ['description' => 'Test']],
             ]],
         ];
-        $expected['definitions'] = ['Dummy' => $expected['definitions']['Dummy']];
+        $expected['definitions'] = ['Dummy' => $expected['definitions']['Dummy'], 'Test' => ['type' => 'string']];
 
         yield ['/docs/test', 'test', $expected];
     }
