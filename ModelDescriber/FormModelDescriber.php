@@ -69,71 +69,67 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
         /** @var FormInterface $child */
         foreach ($form as $name => $child) {
-            $config   = $child->getConfig();
+            $config = $child->getConfig();
             $property = $properties->get($name);
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 $blockPrefix = $type->getBlockPrefix();
                 $property->setType($this->getPropertyType(get_class($type->getInnerType()), $config));
 
-                switch (true) {
-                    case 'date' === $blockPrefix:
-                        $property->setFormat('date');
+                if ('date' === $blockPrefix) {
+                    $property->setFormat('date');
 
-                        break 2;
-                    case 'datetime' === $blockPrefix:
-                        $property->setFormat('date-time');
+                    break;
+                }
 
-                        break 2;
-                    case 'choice' === $blockPrefix:
-                        if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
-                            $property->setEnum(array_values($choices));
-                        }
+                if ('datetime' === $blockPrefix) {
+                    $property->setFormat('date-time');
 
-                        break 2;
-                    case 'collection' === $blockPrefix:
-                        $subTypeClass = $config->getOption('entry_type');
-                        $subType      = $this->getPropertyType($subTypeClass, $config);
-                        if ('array' === $subType) {
-                            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $subType), null);
-                            $property->getItems()->setRef($this->modelRegistry->register($model));
-                        } else {
-                            $property->getItems()->setType($subType);
-                        }
+                    break;
+                }
 
-                        $property->setExample(sprintf('[{%s}]', $subType));
+                if ('choice' === $blockPrefix) {
+                    if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
+                        $property->setEnum(array_values($choices));
+                    }
 
-                        break 2;
-                    case 'entity' === $blockPrefix:
-                        $entityClass = $config->getOption('class');
-                        $property->setFormat(sprintf('%s id', $entityClass));
+                    break;
+                }
 
-                        if ($config->getOption('multiple')) {
-                            $property->setFormat(sprintf('[%s id]', $entityClass));
-                            $property->setExample('[1, 2, 3]');
-                        }
+                if ('collection' === $blockPrefix) {
+                    $subTypeClass = $config->getOption('entry_type');
+                    $subType      = $this->getPropertyType($subTypeClass, $config);
+                    if ('array' === $subType) {
+                        $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $subType), null);
+                        $property->getItems()->setRef($this->modelRegistry->register($model));
+                    } else {
+                        $property->getItems()->setType($subType);
+                    }
 
-                        break;
-                    case $type->getInnerType() && ($formClass = get_class(
-                            $type->getInnerType()
-                        )) && !$this->isBuiltinType($formClass):
-                        //if form type is not builtin in Form component.
-                        $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $formClass));
-                        $property->setRef($this->modelRegistry->register($model));
+                    $property->setExample(sprintf('[{%s}]', $subType));
 
-                        break;
-                    default:
-                        break 2;
+                    break;
+                }
+
+                if ('entity' === $blockPrefix) {
+                    $entityClass = $config->getOption('class');
+                    $property->setFormat(sprintf('%s id', $entityClass));
+
+                    if ($config->getOption('multiple')) {
+                        $property->setFormat(sprintf('[%s id]', $entityClass));
+                        $property->setExample('[1, 2, 3]');
+                    }
+                }
+
+                if ($type->getInnerType() && ($formClass = get_class($type->getInnerType())) && !$this->isBuiltinType($formClass)) {
+                    //if form type is not builtin in Form component.
+                    $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $formClass));
+                    $property->setRef($this->modelRegistry->register($model));
+
+                    break;
                 }
             }
 
-            foreach ($config->getOption('documentation', []) as $key => $value) {
-                $method = 'set'.ucfirst($key);
-                if (!method_exists($property, $method)) {
-                    throw new \InvalidArgumentException('`' . $key . '`` is not a valid documentation property');
-                }
-
-                $property->{$method}($value);
-            }
+            $property->merge($config->getOption('documentation'));
 
             if ($config->getRequired()) {
                 $required = $schema->getRequired() ?? [];
@@ -142,8 +138,8 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $schema->setRequired($required);
             }
         }
-    }
 
+    }
     private function isBuiltinType(string $type): bool
     {
         return 0 === strpos($type, 'Symfony\Component\Form\Extension\Core\Type');
