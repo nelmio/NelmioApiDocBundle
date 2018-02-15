@@ -14,8 +14,6 @@ namespace Nelmio\ApiDocBundle\Form\Extension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -26,11 +24,6 @@ class DocumentationExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setAttribute('documentation', $options['documentation']);
-    }
-
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars['documentation'] = $options['documentation'];
     }
 
     public function configureOptions(OptionsResolver $resolver)
