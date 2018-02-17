@@ -19,6 +19,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormConfigInterface;
@@ -68,7 +69,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         $properties = $schema->getProperties();
 
         /** @var FormInterface $child */
-        foreach ($form as $name => $child) {
+        foreach ($form->all() as $name => $child) {
             $config = $child->getConfig();
             $property = $properties->get($name);
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
@@ -92,6 +93,10 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                         $property->setEnum(array_values($choices));
                     }
 
+                    break;
+                }
+
+                if (in_array($blockPrefix, ['text', 'number', 'integer'])) {
                     break;
                 }
 
@@ -129,6 +134,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
                     break;
                 }
+                break;
             }
 
             $property->merge($config->getOption('documentation'));
