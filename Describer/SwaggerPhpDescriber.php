@@ -67,7 +67,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
         $analysis->addAnnotation(new class($api) extends SWG\Swagger {
             private $api;
 
-            public function __construct($api)
+            public function __construct(Swagger $api)
             {
                 $this->api = $api;
                 parent::__construct([]);
