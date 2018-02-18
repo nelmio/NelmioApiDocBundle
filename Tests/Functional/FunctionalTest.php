@@ -213,6 +213,10 @@ class FunctionalTest extends WebTestCase
                     'type' => 'array',
                     'example' => sprintf('[{%s}]', DummyType::class),
                 ],
+                'quz' => [
+                    'type' => 'string',
+                    'description' => 'User type.',
+                ],
             ],
             'required' => ['dummy', 'dummies'],
         ], $this->getModel('UserType')->toArray());
