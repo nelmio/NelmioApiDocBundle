@@ -62,7 +62,7 @@ class JMSUser
     private $password;
 
     /**
-     * @SWG\Property(type="date")
+     * @SWG\Property(property="last_update", type="date")
      * @Serializer\Expose
      */
     private $updatedAt;

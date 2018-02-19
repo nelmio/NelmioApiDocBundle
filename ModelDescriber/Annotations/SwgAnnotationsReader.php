@@ -40,6 +40,16 @@ class SwgAnnotationsReader
         }
     }
 
+    public function getPropertyName(\ReflectionProperty $reflectionProperty, string $default): string
+    {
+        /** @var SwgProperty $swgProperty */
+        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class)) {
+            return $default;
+        }
+
+        return $swgProperty->property ?? $default;
+    }
+
     public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
     {
         /** @var SwgProperty $swgProperty */
