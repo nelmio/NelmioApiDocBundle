@@ -301,4 +301,10 @@ class FunctionalTest extends WebTestCase
             'type' => 'object',
         ], $this->getModel('SymfonyConstraints')->toArray());
     }
+
+    public function testConfigReference()
+    {
+        $operation = $this->getOperation('/api/configReference', 'get');
+        $this->assertEquals('#/definitions/Test', $operation->getResponses()->get('200')->getSchema()->getRef());
+    }
 }
