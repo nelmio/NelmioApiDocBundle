@@ -64,6 +64,19 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
             $property = $properties->get($name);
+
+            if ($config->getRequired()) {
+                $required = $schema->getRequired() ?? [];
+                $required[] = $name;
+
+                $schema->setRequired($required);
+            }
+
+            $property->merge($config->getOption('documentation'));
+            if (null !== $property->getType()) {
+                continue; // Type manually defined
+            }
+
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 $blockPrefix = $type->getBlockPrefix();
 
@@ -148,19 +161,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 }
 
                 if ($type->getInnerType() && ($formClass = get_class($type->getInnerType())) && !$this->isBuiltinType($formClass)) {
-                    //if form type is not builtin in Form component.
+                    // if form type is not builtin in Form component.
                     $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $formClass));
                     $property->setRef($this->modelRegistry->register($model));
 
                     break;
                 }
-            }
-
-            if ($config->getRequired()) {
-                $required = $schema->getRequired() ?? [];
-                $required[] = $name;
-
-                $schema->setRequired($required);
             }
         }
     }

@@ -25,7 +25,8 @@ class UserType extends AbstractType
             ->add('dummy', DummyType::class)
             ->add('dummies', CollectionType::class, [
                 'entry_type' => DummyType::class,
-            ]);
+            ])
+            ->add('quz', DummyType::class, ['documentation' => ['type' => 'string', 'description' => 'User type.'], 'required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
