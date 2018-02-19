@@ -14,7 +14,7 @@ This bundle supports *Symfony* route requirements, PHP annotations, `Swagger-Php
 .. _`FOSRestBundle`: https://github.com/FriendsOfSymfony/FOSRestBundle
 .. _`Api-Platform`: https://github.com/api-platform/api-platform
 
-For models, it supports the Symfony serializer and the JMS serializer.
+For models, it supports the Symfony serializer and the JMS serializer. It does also support Symfony form types.
 
 Migrate from 2.x to 3.0
 -----------------------
@@ -82,16 +82,11 @@ Open a command console, enter your project directory and execute the following c
                 path_patterns: # an array of regexps
                     - ^/api(?!/doc$)
 
-    .. versionadded:: 3.1
-
-        The ``areas`` config option was added in version 3.1. You had to use ``routes`` in 3.0 instead.
-
 How does this bundle work?
 --------------------------
 
-It generates you a swagger documentation from your symfony app thanks to
-**Describers**. Each of these **Describers** extract infos from various sources.
-For instance, one extract data from SwaggerPHP annotations, one from your
+It generates you an OpenAPI documentation from your symfony app thanks to
+**Describers**. One extracts data from SwaggerPHP annotations, one from your
 routes, etc.
 
 If you configured the ``app.swagger_ui`` route above, you can browse your
@@ -172,7 +167,7 @@ When you use it, the bundle will deduce your model properties.
 
     A model can be a Symfony form type, a Doctrine ORM entity or a general PHP object.
 
-It has two options:
+This annotation has two options:
 
 * ``type`` to specify your model's type::
 
@@ -192,78 +187,65 @@ It has two options:
      * )
      */
 
-.. caution::
+Symfony Form types
+~~~~~~~~~~~~~~~~~~
 
-    The ``@Model`` annotation acts like a ``@Schema`` annotation. If you nest it with a ``@Schema`` annotation, the bundle will consider that
-    you're documenting an array of models.
+You can customize the documentation of a form field using the ``documentation`` option::
 
-    For instance, the following example::
+    $builder->add('username', TextType::class, [
+        'documentation' => [
+            'type' => 'string', // would have been automatically detected in this case
+            'description' => 'Your username.',
+        ],
+    ]);
 
-        /**
-         * @SWG\Response(
-         *   response="200",
-         *   description="Success",
-         *   @SWG\Schema(@Model(type=User::class))
-         * )
-         */
-        public function getUserAction()
-        {
-        }
+See the `OpenAPI specification`__ to see all the available fields of the ``documentation`` option.
 
-    will produce:
+__ https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject
+
+
+General PHP objects
+~~~~~~~~~~~~~~~~~~~
+
+.. tip::
+
+    **If you're not using the JMS Serializer**, the `Symfony PropertyInfo component`_ is used to describe your models. It supports doctrine annotations, type hints,
+    and even PHP doc blocks. It does also support serialization groups when using the Symfony serializer.
+
+    **If you're using the JMS Serializer**, the metadata of the JMS serializer are used by default to describe your
+    models. Additional information is extracted from the PHP doc block comment,
+    but the property types must be specified in the JMS annotations.
+
+    In case you prefer using the `Symfony PropertyInfo component`_ (you
+    won't be able to use JMS serialization groups), you can disable JMS serializer
+    support in your config:
 
     .. code-block:: yaml
 
-        # ...
-        responses:
-            200:
-                schema:
-                    items: { $ref: '#/definitions/User' }
+        nelmio_api_doc:
+            models: { use_jms: false }
 
-    while you probably expected:
+If you want to customize the documentation of a property of an object, you can use ``@SWG\Property``::
 
-    .. code-block:: yaml
+    use Swagger\Annotations as SWG;
 
-        # ...
-        responses:
-            200:
-                schema: { $ref: '#/definitions/User' }
-
-    To obtain the output you expected, remove the ``@Schema`` annotation::
+    class User
+    {
+        /**
+         * @var int
+         * @SWG\Property(description="The unique identifier of the user.")
+         */
+        public $id;
 
         /**
-         * @SWG\Response(
-         *   response="200",
-         *   description="Success",
-         *   @Model(type=User::class)
-         * )
+         * @SWG\Property(type="string", maxLength=255)
          */
-        public function getUserAction()
-        {
-        }
+        public $username;
+    }
 
-If you're not using the JMS Serializer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+See the `OpenAPI specification`__ to see all the available fields of ``@SWG\Property``.
 
-The `Symfony PropertyInfo component`_ is used to describe your models. It supports doctrine annotations, type hints,
-and even PHP doc blocks as long as you required the ``phpdocumentor/reflection-docblock`` library. It does also support
-serialization groups when using the Symfony serializer.
-
-If you're using the JMS Serializer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The metadata of the JMS serializer are used by default to describe your
-models. Additional information is extracted from the PHP doc block comment,
-but the property types must be specified in the JMS annotations.
-
-In case you prefer using the `Symfony PropertyInfo component`_ (you
-won't be able to use JMS serialization groups), you can disable JMS serializer
-support in your config:
-
-.. code-block:: yaml
-
-    nelmio_api_doc:
-        models: { use_jms: false }
+__ https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject
 
 Learn more
 ----------
@@ -275,6 +257,5 @@ If you need more complex features, take a look at:
 
     areas
     faq
-    
-.. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
 
+.. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
