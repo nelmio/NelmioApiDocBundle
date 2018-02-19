@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+3.2.0 (unreleased)
+------------------
+
+* Add a documentation form extension. Use the ``documentation`` option to define how a form field is documented.
+* Allow references to config definitions in controllers.
+
 3.1.0 (2017-01-28)
 ------------------
 
