@@ -44,7 +44,7 @@ Frequently Asked Questions (FAQ)
           * @SWG\Response(
           *   response="200",
           *   description="Success",
-            *   @Model(type=User::class)
+          *   @Model(type=User::class)
           * )
           */
          public function getUserAction()
