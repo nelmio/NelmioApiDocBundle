@@ -57,6 +57,7 @@ class User
 
     /**
      * @var \DateTime
+     * @SWG\Property(property="creationDate")
      */
     private $createdAt;
 

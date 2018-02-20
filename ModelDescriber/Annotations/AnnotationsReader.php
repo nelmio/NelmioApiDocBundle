@@ -40,6 +40,11 @@ class AnnotationsReader
         $this->symfonyConstraintAnnotationReader->setSchema($schema);
     }
 
+    public function getPropertyName(\ReflectionProperty $reflectionProperty, string $default): string
+    {
+        return $this->swgAnnotationsReader->getPropertyName($reflectionProperty, $default);
+    }
+
     public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
     {
         $this->phpDocReader->updateProperty($reflectionProperty, $property);

@@ -179,7 +179,7 @@ class FunctionalTest extends WebTestCase
                     'friendsNumber' => [
                         'type' => 'string',
                     ],
-                    'createdAt' => [
+                    'creationDate' => [
                         'type' => 'string',
                         'format' => 'date-time',
                     ],

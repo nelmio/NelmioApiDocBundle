@@ -55,14 +55,13 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         foreach ($propertyInfoProperties as $propertyName) {
-            $property = $properties->get($propertyName);
-
             // read property options from Swagger Property annotation if it exists
             if (property_exists($class, $propertyName)) {
-                $this->annotationsReader->updateProperty(
-                    new \ReflectionProperty($class, $propertyName),
-                    $property
-                );
+                $reflectionProperty = new \ReflectionProperty($class, $propertyName);
+                $property = $properties->get($this->annotationsReader->getPropertyName($reflectionProperty, $propertyName));
+                $this->annotationsReader->updateProperty($reflectionProperty, $property);
+            } else {
+                $property = $properties->get($propertyName);
             }
 
             // If type manually defined
