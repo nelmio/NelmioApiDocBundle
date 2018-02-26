@@ -260,7 +260,7 @@ Step 4: Update the bundle
 -------------------------
 
 Change the constraint of ``nelmio/api-doc-bundle`` in your ``composer.json`` file
-to ``~3.0@beta``:
+to ``^3.0``:
 
 ```json
 {
