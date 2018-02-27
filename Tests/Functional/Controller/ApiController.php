@@ -108,7 +108,7 @@ class ApiController
     /**
      * @Route("/fosrest.{_format}", methods={"POST"})
      * @QueryParam(name="foo")
-     * @RequestParam(name="bar")
+     * @RequestParam(name="bar", requirements="\d+")
      */
     public function fosrestAction()
     {

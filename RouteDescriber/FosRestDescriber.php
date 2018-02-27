@@ -54,7 +54,7 @@ final class FosRestDescriber implements RouteDescriberInterface
 
                 $normalizedRequirements = $this->normalizeRequirements($annotation->requirements);
                 if (null !== $normalizedRequirements) {
-                    $parameter->setFormat($normalizedRequirements);
+                    $parameter->setPattern($normalizedRequirements);
                 }
             }
         }

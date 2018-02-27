@@ -125,6 +125,10 @@ class FunctionalTest extends WebTestCase
         $this->assertTrue($parameters->has('foo', 'query'));
         $this->assertTrue($parameters->has('bar', 'formData'));
 
+        $barParameter = $parameters->get('bar', 'formData');
+        $this->assertNotNull($barParameter->getPattern());
+        $this->assertEquals('\d+', $barParameter->getPattern());
+
         // The _format path attribute should be removed
         $this->assertFalse($parameters->has('_format', 'path'));
     }
