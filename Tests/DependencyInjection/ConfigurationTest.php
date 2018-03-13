@@ -22,19 +22,19 @@ class ConfigurationTest extends TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => ['path_patterns' => ['/foo']]]]);
 
-        $this->assertEquals(['default' => ['path_patterns' => ['/foo']]], $config['areas']);
+        $this->assertSame(['default' => ['path_patterns' => ['/foo'], 'host_patterns' => []]], $config['areas']);
     }
 
     public function testAreas()
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => $areas = [
-            'default' => ['path_patterns' => ['/foo']],
-            'internal' => ['path_patterns' => ['/internal']],
-            'commercial' => ['path_patterns' => ['/internal']],
+            'default' => ['path_patterns' => ['/foo'], 'host_patterns' => []],
+            'internal' => ['path_patterns' => ['/internal'], 'host_patterns' => ['^swagger\.']],
+            'commercial' => ['path_patterns' => ['/internal'], 'host_patterns' => []],
         ]]]);
 
-        $this->assertEquals($areas, $config['areas']);
+        $this->assertSame($areas, $config['areas']);
     }
 
     /**
@@ -57,6 +57,6 @@ class ConfigurationTest extends TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['routes' => ['path_patterns' => ['/foo']]]]);
 
-        $this->assertEquals(['default' => ['path_patterns' => ['/foo']]], $config['areas']);
+        $this->assertSame(['default' => ['path_patterns' => ['/foo'], 'host_patterns' => []]], $config['areas']);
     }
 }

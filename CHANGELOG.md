@@ -7,6 +7,16 @@ CHANGELOG
 * Add a documentation form extension. Use the ``documentation`` option to define how a form field is documented.
 * Allow references to config definitions in controllers.
 
+Config
+* `nelmio_api_doc.areas` added support to filter by host patterns.
+
+  ```yml
+  nelmio_api_doc:
+      routes: [ host_patterns: [ ^api\. ] ]
+  ```
+
+* Added dependency for "symfony/options-resolver:^3.4.4|^4.0"
+
 3.1.0 (2017-01-28)
 ------------------
 

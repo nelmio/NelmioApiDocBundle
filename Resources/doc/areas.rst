@@ -8,6 +8,7 @@ We've already seen that you can configure which routes are documented using ``ne
     nelmio_api_doc:
         areas:
             path_patterns: [ ^/api ]
+            host_patterns: [ ^api\. ]
 
 But in fact, this config option is way more powerful and allows you to split your documentation in several parts.
 
@@ -22,6 +23,7 @@ You can define areas which will each generates a different documentation:
         areas:
             default:
                 path_patterns: [ ^/api ]
+                host_patterns: [ ^api\. ]
             internal:
                 path_patterns: [ ^/internal ]
             commercial:

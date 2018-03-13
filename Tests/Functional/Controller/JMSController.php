@@ -18,6 +18,9 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\VirtualProperty;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
 
+/**
+ * @Route(host="api.example.com")
+ */
 class JMSController
 {
     /**

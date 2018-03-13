@@ -81,6 +81,8 @@ Open a command console, enter your project directory and execute the following c
             areas:
                 path_patterns: # an array of regexps
                     - ^/api(?!/doc$)
+                host_patterns:
+                    - ^api\.
 
 How does this bundle work?
 --------------------------

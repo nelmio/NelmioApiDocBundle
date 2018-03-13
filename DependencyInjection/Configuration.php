@@ -48,10 +48,10 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('areas')
                     ->info('Filter the routes that are documented')
-                    ->defaultValue(['default' => ['path_patterns' => []]])
+                    ->defaultValue(['default' => ['path_patterns' => [], 'host_patterns' => []]])
                     ->beforeNormalization()
                         ->ifTrue(function ($v) {
-                            return empty($v) or isset($v['path_patterns']);
+                            return 0 === count($v) || isset($v['path_patterns']) || isset($v['host_patterns']);
                         })
                         ->then(function ($v) {
                             return ['default' => $v];
@@ -68,7 +68,13 @@ final class Configuration implements ConfigurationInterface
                         ->addDefaultsIfNotSet()
                         ->children()
                             ->arrayNode('path_patterns')
+                                ->defaultValue([])
                                 ->example(['^/api', '^/api(?!/admin)'])
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('host_patterns')
+                                ->defaultValue([])
+                                ->example(['^api\.'])
                                 ->prototype('scalar')->end()
                             ->end()
                         ->end()
