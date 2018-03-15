@@ -54,7 +54,18 @@ final class FosRestDescriber implements RouteDescriberInterface
 
                 $normalizedRequirements = $this->normalizeRequirements($annotation->requirements);
                 if (null !== $normalizedRequirements) {
-                    $parameter->setPattern($normalizedRequirements);
+                    if ($normalizedRequirements instanceof Constraint) {
+                        if ($normalizedRequirements instanceof Regex) {
+                            $format = $normalizedRequirements->getHtmlPattern();
+                        } else {
+                            $reflectionClass = new \ReflectionClass($normalizedRequirements);
+                            $format = $reflectionClass->getShortName();
+                        }
+
+                        $parameter->setFormat($format);
+                    } else {
+                        $parameter->setPattern($normalizedRequirements);
+                    }
                 }
             }
         }
@@ -71,13 +82,7 @@ final class FosRestDescriber implements RouteDescriberInterface
         }
         // if custom constraint
         if ($requirements instanceof Constraint) {
-            if ($requirements instanceof Regex) {
-                return $requirements->getHtmlPattern();
-            }
-
-            $reflectionClass = new \ReflectionClass($requirements);
-
-            return $reflectionClass->getShortName();
+            return $requirements;
         }
     }
 }

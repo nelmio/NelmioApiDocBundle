@@ -23,6 +23,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * @Route("/api")
@@ -107,7 +108,7 @@ class ApiController
 
     /**
      * @Route("/fosrest.{_format}", methods={"POST"})
-     * @QueryParam(name="foo")
+     * @QueryParam(name="foo", requirements=@Regex("/^\d+$/"))
      * @RequestParam(name="bar", requirements="\d+")
      */
     public function fosrestAction()
