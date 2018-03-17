@@ -6,6 +6,27 @@ CHANGELOG
 
 * Add a documentation form extension. Use the ``documentation`` option to define how a form field is documented.
 * Allow references to config definitions in controllers.
+* Using `@Model` implicitely in `@SWG\Schema`, `@SWG\Items` and `@SWG\Property` is deprecated. Use `ref=@Model()` instead.
+
+  Before:
+  ```php
+  /**
+   * This was considered as an array of models.
+   *
+   * @SWG\Property(@Model(type=FooClass::class))
+   */
+  ```
+
+  After:
+  ```php
+  /**
+   * For an individual object:
+   * @SWG\Property(ref=@Model(type=FooClass::class))
+   *
+   * For an array:
+   * @SWG\Property(type="array", @SWG\Items(ref=@Model(type=FooClass::class)))
+   */
+  ```
 
 Config
 * `nelmio_api_doc.areas` added support to filter by host patterns.
