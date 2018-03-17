@@ -21,7 +21,7 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
     public function __construct(Documentation $documentation, $normalizer, UrlGeneratorInterface $urlGenerator)
     {
         if (!$normalizer instanceof ApiGatewayNormalizer && !$normalizer instanceof DocumentationNormalizer) {
-            throw new \LogicException(sprintf('Argument $normalizer of %s must be an instance of %s or %s. %s provided.', __METHOD__, ApiGatewayNormalizer::class, DocumentationNormalizer::class, get_class($normalizer)));
+            throw new \InvalidArgumentException(sprintf('Argument 2 passed to %s() must be an instance of %s or %s, %s given.', __METHOD__, ApiGatewayNormalizer::class, DocumentationNormalizer::class, get_class($normalizer)));
         }
 
         parent::__construct(function () use ($documentation, $normalizer, $urlGenerator) {
