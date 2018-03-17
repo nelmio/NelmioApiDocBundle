@@ -12,13 +12,18 @@
 namespace Nelmio\ApiDocBundle\Describer;
 
 use ApiPlatform\Core\Documentation\Documentation;
+use ApiPlatform\Core\Swagger\Serializer\ApiGatewayNormalizer;
 use ApiPlatform\Core\Swagger\Serializer\DocumentationNormalizer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class ApiPlatformDescriber extends ExternalDocDescriber
 {
-    public function __construct(Documentation $documentation, DocumentationNormalizer $normalizer, UrlGeneratorInterface $urlGenerator)
+    public function __construct(Documentation $documentation, $normalizer, UrlGeneratorInterface $urlGenerator)
     {
+        if (!$normalizer instanceof ApiGatewayNormalizer && !$normalizer instanceof DocumentationNormalizer) {
+            throw new \LogicException(sprintf('Argument $normalizer of %s must be an instance of %s or %s. %s provided.', __METHOD__, ApiGatewayNormalizer::class, DocumentationNormalizer::class, get_class($normalizer)));
+        }
+
         parent::__construct(function () use ($documentation, $normalizer, $urlGenerator) {
             $documentation = (array) $normalizer->normalize($documentation);
             unset($documentation['basePath']);
