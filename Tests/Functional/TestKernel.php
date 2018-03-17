@@ -116,8 +116,8 @@ class TestKernel extends Kernel
                 ],
             ],
            'areas' => [
-               'default' => ['path_patterns' => ['^/api(?!/admin)']],
-               'test' => ['path_patterns' => ['^/test']],
+               'default' => ['path_patterns' => ['^/api(?!/admin)'], 'host_patterns' => ['^api\.']],
+               'test' => ['path_patterns' => ['^/test'], 'host_patterns' => ['^api-test\.']],
             ],
         ]);
     }

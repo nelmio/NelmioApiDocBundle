@@ -17,6 +17,7 @@
     "require": {
         "php": "^7.0",
         "symfony/framework-bundle": "^3.4|^4.0",
+        "symfony/options-resolver": "^3.4.4|^4.0",
         "symfony/property-info": "^3.4|^4.0",
         "exsyst/swagger": "~0.3|~0.4",
         "zircote/swagger-php": "^2.0.9",

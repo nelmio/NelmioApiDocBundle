@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
 
 /**
- * @Route("/test")
+ * @Route("/test", host="api-test.example.com")
  */
 class TestController
 {

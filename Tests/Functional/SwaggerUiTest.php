@@ -15,7 +15,7 @@ class SwaggerUiTest extends WebTestCase
 {
     protected static function createClient(array $options = [], array $server = [])
     {
-        return parent::createClient([], ['PHP_SELF' => '/app_dev.php/docs', 'SCRIPT_FILENAME' => '/var/www/app/web/app_dev.php']);
+        return parent::createClient([], $server + ['HTTP_HOST' => 'api.example.com', 'PHP_SELF' => '/app_dev.php/docs', 'SCRIPT_FILENAME' => '/var/www/app/web/app_dev.php']);
     }
 
     /**
