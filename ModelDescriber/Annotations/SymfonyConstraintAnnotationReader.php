@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
-use ReflectionProperty;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -39,7 +38,7 @@ class SymfonyConstraintAnnotationReader
     /**
      * Update the given property and schema with defined Symfony constraints.
      */
-    public function updateProperty(ReflectionProperty $reflectionProperty, Schema $property)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
     {
         $annotations = $this->annotationsReader->getPropertyAnnotations($reflectionProperty);
 
@@ -88,7 +87,7 @@ class SymfonyConstraintAnnotationReader
     /**
      * Set the required properties on the scheme.
      */
-    private function updateSchemaDefinitionWithRequiredProperty(ReflectionProperty $reflectionProperty)
+    private function updateSchemaDefinitionWithRequiredProperty(\ReflectionProperty $reflectionProperty)
     {
         if (null === $this->schema) {
             return;

@@ -25,7 +25,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     use ModelRegistryAwareTrait;
 
     private $propertyInfo;
-    private $annotationsReader;
+    private $doctrineReader;
 
     private $swaggerDefinitionAnnotationReader;
 
@@ -34,7 +34,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         Reader $reader
     ) {
         $this->propertyInfo = $propertyInfo;
-        $this->annotationsReader = new AnnotationsReader($reader);
+        $this->doctrineReader = $reader;
     }
 
     public function describe(Model $model, Schema $schema)
@@ -47,7 +47,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         if (null !== $model->getGroups()) {
             $context = ['serializer_groups' => $model->getGroups()];
         }
-        $this->annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
+
+        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
+        $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);
         if (null === $propertyInfoProperties) {
@@ -58,14 +60,20 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             // read property options from Swagger Property annotation if it exists
             if (property_exists($class, $propertyName)) {
                 $reflectionProperty = new \ReflectionProperty($class, $propertyName);
-                $property = $properties->get($this->annotationsReader->getPropertyName($reflectionProperty, $propertyName));
-                $this->annotationsReader->updateProperty($reflectionProperty, $property);
+                $property = $properties->get($annotationsReader->getPropertyName($reflectionProperty, $propertyName));
+
+                $groups = $model->getGroups();
+                if (isset($groups[$property]) && is_array($groups[$property])) {
+                    $groups = $model->getGroups()[$property];
+                }
+
+                $annotationsReader->updateProperty($reflectionProperty, $property, $groups);
             } else {
                 $property = $properties->get($propertyName);
             }
 
             // If type manually defined
-            if (null !== $property->getType()) {
+            if (null !== $property->getType() || null !== $property->getRef()) {
                 continue;
             }
 

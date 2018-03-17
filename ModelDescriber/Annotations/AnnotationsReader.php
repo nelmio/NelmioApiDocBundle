@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
+use Nelmio\ApiDocBundle\Model\ModelRegistry;
 
 /**
  * @internal
@@ -20,17 +21,19 @@ use EXSyst\Component\Swagger\Schema;
 class AnnotationsReader
 {
     private $annotationsReader;
+    private $modelRegistry;
 
     private $phpDocReader;
     private $swgAnnotationsReader;
     private $symfonyConstraintAnnotationReader;
 
-    public function __construct(Reader $annotationsReader)
+    public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry)
     {
         $this->annotationsReader = $annotationsReader;
+        $this->modelRegistry = $modelRegistry;
 
         $this->phpDocReader = new PropertyPhpDocReader();
-        $this->swgAnnotationsReader = new SwgAnnotationsReader($annotationsReader);
+        $this->swgAnnotationsReader = new SwgAnnotationsReader($annotationsReader, $modelRegistry);
         $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($annotationsReader);
     }
 
@@ -45,10 +48,10 @@ class AnnotationsReader
         return $this->swgAnnotationsReader->getPropertyName($reflectionProperty, $default);
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property, array $serializationGroups = null)
     {
         $this->phpDocReader->updateProperty($reflectionProperty, $property);
-        $this->swgAnnotationsReader->updateProperty($reflectionProperty, $property);
+        $this->swgAnnotationsReader->updateProperty($reflectionProperty, $property, $serializationGroups);
         $this->symfonyConstraintAnnotationReader->updateProperty($reflectionProperty, $property);
     }
 }

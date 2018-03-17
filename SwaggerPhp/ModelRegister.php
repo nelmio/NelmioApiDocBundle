@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Swagger\Analysis;
+use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Items;
 use Swagger\Annotations\Parameter;
 use Swagger\Annotations\Response;
@@ -35,7 +36,7 @@ final class ModelRegister
         $this->modelRegistry = $modelRegistry;
     }
 
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis, array $parentGroups = null)
     {
         $modelsRegistered = [];
         foreach ($analysis->annotations as $annotation) {
@@ -43,16 +44,10 @@ final class ModelRegister
             if ($annotation instanceof Schema && $annotation->ref instanceof ModelAnnotation) {
                 $model = $annotation->ref;
 
-                $annotation->ref = $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups));
+                $annotation->ref = $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups)));
 
-                foreach ($annotation->_unmerged as $key => $unmerged) {
-                    if ($unmerged === $model) {
-                        unset($annotation->_unmerged[$key]);
-
-                        break;
-                    }
-                }
-                $analysis->annotations->detach($model);
+                // It is no longer an unmerged annotation
+                $this->detach($model, $annotation, $analysis);
 
                 continue;
             }
@@ -95,19 +90,33 @@ final class ModelRegister
             }
 
             $annotation->merge([new $annotationClass([
-                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups)),
+                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups))),
             ])]);
 
             // It is no longer an unmerged annotation
-            foreach ($annotation->_unmerged as $key => $unmerged) {
-                if ($unmerged === $model) {
-                    unset($annotation->_unmerged[$key]);
-
-                    break;
-                }
-            }
-            $analysis->annotations->detach($model);
+            $this->detach($model, $annotation, $analysis);
         }
+    }
+
+    private function getGroups(ModelAnnotation $model, array $parentGroups = null)
+    {
+        if (null === $model->groups) {
+            return $parentGroups;
+        }
+
+        return array_merge($parentGroups ?? [], $model->groups);
+    }
+
+    private function detach(ModelAnnotation $model, AbstractAnnotation $annotation, Analysis $analysis)
+    {
+        foreach ($annotation->_unmerged as $key => $unmerged) {
+            if ($unmerged === $model) {
+                unset($annotation->_unmerged[$key]);
+
+                break;
+            }
+        }
+        $analysis->annotations->detach($model);
     }
 
     private function createType(string $type): Type

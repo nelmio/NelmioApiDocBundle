@@ -78,6 +78,7 @@ class JMSFunctionalTest extends WebTestCase
                 'id' => ['type' => 'integer'],
                 'user' => ['$ref' => '#/definitions/JMSUser2'],
                 'name' => ['type' => 'string'],
+                'virtual' => ['$ref' => '#/definitions/JMSUser'],
             ],
             'required' => [
                 'id',

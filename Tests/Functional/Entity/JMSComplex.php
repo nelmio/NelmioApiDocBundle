@@ -12,11 +12,15 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 
 /**
  * @Serializer\ExclusionPolicy("all")
- * @SWG\Definition(required={"id", "user"})
+ * @SWG\Definition(
+ *     required={"id", "user"},
+ *     @SWG\Property(property="virtual", ref=@Model(type=JMSUser::class))
+ * )
  */
 class JMSComplex
 {
@@ -28,7 +32,7 @@ class JMSComplex
     private $id;
 
     /**
-     * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSUser")
+     * @SWG\Property(ref=@Model(type=JMSUser::class))
      * @Serializer\Expose
      * @Serializer\Groups({"details"})
      */
