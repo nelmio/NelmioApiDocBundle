@@ -66,6 +66,7 @@ class TestKernel extends Kernel
     {
         $routes->import(__DIR__.'/Controller/TestController.php', '/', 'annotation');
         $routes->import(__DIR__.'/Controller/ApiController.php', '/', 'annotation');
+        $routes->import(__DIR__.'/Controller/ApiChildController.php', '/', 'annotation');
         $routes->import(__DIR__.'/Controller/UndocumentedController.php', '/', 'annotation');
         $routes->import('', '/api', 'api_platform');
         $routes->add('/docs/{area}', 'nelmio_api_doc.controller.swagger_ui')->setDefault('area', 'default');
