@@ -165,7 +165,12 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
 
         $docstart = strrpos(substr($code, 0, $position), '@ApiDoc');
         if (false === $docstart) {
-            throw new \RuntimeException("Method $methodName has no @ApiDoc annotation around\n".substr($code, $position - 200, 150));
+            //If action is defined more than once. Should continue and don't throw exception
+            $docstart = strrpos(substr($code, 0, $position), '@Operation');
+            if (false === $docstart) {
+
+                throw new \RuntimeException("Method $methodName has no @ApiDoc annotation around\n".substr($code, $position - 200, 150));
+            }
         }
         $docend = strpos($code, '* )', $docstart) + 3;
 
