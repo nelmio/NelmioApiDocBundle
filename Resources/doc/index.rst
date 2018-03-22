@@ -105,12 +105,22 @@ available):
 
     nelmio_api_doc:
         documentation:
+            host: api.example.com
+            schemes: [http, https]
             info:
                 title: My App
                 description: This is an awesome app!
                 version: 1.0.0
+            securityDefinitions:
+                Bearer:
+                    type: apiKey
+                    description: 'Value: Bearer {jwt}'
+                    name: Authorization
+                    in: header
+            security:
+                - Bearer: []
 
-.. _`The Swagger specification`: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
+.. _`The OpenAPI 2.0 specification (formerly Swagger)`: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
 
 .. note::
 
@@ -124,6 +134,7 @@ To document your routes, you can use the SwaggerPHP annotations and the
     use AppBundle\Entity\User;
     use AppBundle\Entity\Reward;
     use Nelmio\ApiDocBundle\Annotation\Model;
+    use Nelmio\ApiDocBundle\Annotation\Security;
     use Swagger\Annotations as SWG;
     use Symfony\Component\Routing\Annotation\Route;
 
@@ -150,6 +161,7 @@ To document your routes, you can use the SwaggerPHP annotations and the
          *     description="The field used to order rewards"
          * )
          * @SWG\Tag(name="rewards")
+         * @Security(name="Bearer")
          */
         public function fetchUserRewardsAction(User $user)
         {
@@ -201,7 +213,7 @@ You can customize the documentation of a form field using the ``documentation`` 
         ],
     ]);
 
-See the `OpenAPI specification`__ to see all the available fields of the ``documentation`` option.
+See the `OpenAPI 2.0 specification`__ to see all the available fields of the ``documentation`` option.
 
 __ https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject
 
@@ -245,7 +257,7 @@ If you want to customize the documentation of a property of an object, you can u
         public $username;
     }
 
-See the `OpenAPI specification`__ to see all the available fields of ``@SWG\Property``.
+See the `OpenAPI 2.0 specification`__ to see all the available fields of ``@SWG\Property``.
 
 __ https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject
 
