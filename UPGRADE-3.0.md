@@ -205,7 +205,14 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
     }
 }
 ```
-
+Before running the command, be sure that the annotation closing parenthesis is 
+on next row with the a star separated by one space
+```
+ /**
+ * @apiDoc(description="some description"
+ * )
+ *
+```
 Then open a command console, enter your project directory and run:
 
 ```
