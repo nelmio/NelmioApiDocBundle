@@ -140,7 +140,7 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
             if (200 === $code && isset($responseMap[$code]['class'])) {
                 $model = $responseMap[$code]['class'];
                 $annotation .= ",
-     *         @Model(type=\"$model\")";
+     *         @SWG\\Schema(ref=@Model(type=\"$model\"))";
             }
             $annotation .= '
      *     )';

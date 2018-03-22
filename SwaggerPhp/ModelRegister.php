@@ -15,7 +15,6 @@ use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Swagger\Analysis;
-use Swagger\Annotations\Definition;
 use Swagger\Annotations\Items;
 use Swagger\Annotations\Parameter;
 use Swagger\Annotations\Response;
@@ -40,6 +39,25 @@ final class ModelRegister
     {
         $modelsRegistered = [];
         foreach ($analysis->annotations as $annotation) {
+            // @Model using the ref field
+            if ($annotation instanceof Schema && $annotation->ref instanceof ModelAnnotation) {
+                $model = $annotation->ref;
+
+                $annotation->ref = $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups));
+
+                foreach ($annotation->_unmerged as $key => $unmerged) {
+                    if ($unmerged === $model) {
+                        unset($annotation->_unmerged[$key]);
+
+                        break;
+                    }
+                }
+                $analysis->annotations->detach($model);
+
+                continue;
+            }
+
+            // Implicit usages
             if ($annotation instanceof Response) {
                 $annotationClass = Schema::class;
             } elseif ($annotation instanceof Parameter) {
@@ -72,12 +90,12 @@ final class ModelRegister
                 continue;
             }
 
-            $ref = $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups));
-            $parts = explode('/', $ref);
-            $modelsRegistered[end($parts)] = true;
+            if ($annotation instanceof Schema) {
+                @trigger_error(sprintf('Using `@Model` implicitely in a `@SWG\Schema`, `@SWG\Items` or `@SWG\Property` annotation in %s is deprecated since version 3.2 and won\'t be supported in 4.0. Use `ref=@Model()` instead.', $annotation->_context->getDebugLocation()), E_USER_DEPRECATED);
+            }
 
             $annotation->merge([new $annotationClass([
-                'ref' => $ref,
+                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups)),
             ])]);
 
             // It is no longer an unmerged annotation
@@ -89,10 +107,6 @@ final class ModelRegister
                 }
             }
             $analysis->annotations->detach($model);
-        }
-
-        foreach ($modelsRegistered as $model => $v) {
-            $analysis->annotations->attach(new Definition(['definition' => $model]));
         }
     }
 
