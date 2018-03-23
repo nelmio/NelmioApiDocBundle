@@ -98,7 +98,7 @@ Using the bundle
 ----------------
 
 You can configure global information in the bundle configuration ``documentation.info`` section (take a look at
-`the Swagger specification`_ to know the fields
+`the OpenAPI 2.0 specification (formerly Swagger)`_ to know the fields
 available):
 
 .. code-block:: yaml
@@ -120,7 +120,7 @@ available):
             security:
                 - Bearer: []
 
-.. _`The OpenAPI 2.0 specification (formerly Swagger)`: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
+.. _`the OpenAPI 2.0 specification (formerly Swagger)`: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
 
 .. note::
 
