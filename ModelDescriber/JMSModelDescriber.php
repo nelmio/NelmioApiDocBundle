@@ -33,7 +33,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     private $factory;
     private $namingStrategy;
-    private $annotationsReader;
+    private $doctrineReader;
 
     public function __construct(
         MetadataFactoryInterface $factory,
@@ -42,7 +42,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
-        $this->annotationsReader = new AnnotationsReader($reader);
+        $this->doctrineReader = $reader;
     }
 
     /**
@@ -59,7 +59,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $groupsExclusion = null !== $model->getGroups() ? new GroupsExclusionStrategy($model->getGroups()) : null;
 
         $schema->setType('object');
-        $this->annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
+        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
+        $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
 
         $properties = $schema->getProperties();
         foreach ($metadata->propertyMetadata as $item) {
@@ -69,20 +70,26 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             }
 
             $name = $this->namingStrategy->translateName($item);
+            $groups = $model->getGroups();
+            if (isset($groups[$name]) && is_array($groups[$name])) {
+                $groups = $model->getGroups()[$name];
+            }
 
             // read property options from Swagger Property annotation if it exists
             if (null !== $item->reflection) {
-                $property = $properties->get($this->annotationsReader->getPropertyName($item->reflection, $name));
-                $this->annotationsReader->updateProperty($item->reflection, $property);
+                $property = $properties->get($annotationsReader->getPropertyName($item->reflection, $name));
+                $annotationsReader->updateProperty($item->reflection, $property, $groups);
             } else {
                 $property = $properties->get($name);
             }
 
-            if (null !== $property->getType()) {
+            if (null !== $property->getType() || null !== $property->getRef()) {
                 continue;
             }
             if (null === $item->type) {
                 $properties->remove($name);
+
+                continue;
             }
 
             if ($type = $this->getNestedTypeInArray($item)) {
@@ -106,12 +113,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 // we can use property type also for custom handlers, then we don't have here real class name
                 if (!class_exists($type)) {
                     continue;
-                }
-
-                if (!isset($model->getGroups()[$name]) || !is_array($model->getGroups()[$name])) {
-                    $groups = $model->getGroups();
-                } else {
-                    $groups = $model->getGroups()[$name];
                 }
 
                 $property->setRef(

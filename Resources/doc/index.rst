@@ -262,6 +262,7 @@ General PHP objects
 
 If you want to customize the documentation of a property of an object, you can use ``@SWG\Property``::
 
+    use NelmioApiDocBundle\Annotation\Model;
     use Swagger\Annotations as SWG;
 
     class User
@@ -276,6 +277,11 @@ If you want to customize the documentation of a property of an object, you can u
          * @SWG\Property(type="string", maxLength=255)
          */
         public $username;
+
+        /**
+         * @SWG\Property(ref=@Model(type=User::class))
+         */
+        public $friend;
     }
 
 See the `OpenAPI 2.0 specification`__ to see all the available fields of ``@SWG\Property``.
