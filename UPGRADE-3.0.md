@@ -20,6 +20,7 @@ namespace AppBundle\Command;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -35,13 +36,20 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
         $this
             ->setDescription('')
             ->setName('api:doc:convert')
+            ->addOption('views', null, InputOption::VALUE_OPTIONAL, 'Comma separated list of views to convert the documentation for', 'default')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $views = explode(',', $input->getOption('views'));
+
         $extractor = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor');
-        $apiDocs = $extractor->extractAnnotations($extractor->getRoutes());
+
+        $apiDocs = [];
+        foreach ($views as $view) {
+            $apiDocs = array_merge($apiDocs, $extractor->extractAnnotations($extractor->getRoutes(), $view));
+        }
 
         foreach ($apiDocs as $annotation) {
             /** @var ApiDoc $apiDoc */
@@ -180,8 +188,11 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
         ];
     }
 
-    private function escapeQuotes(string $str): string
+    private function escapeQuotes(string $str = null): string
     {
+        if ($str === null) {
+            return '';
+        }
         $lines = [];
         foreach (explode("\n", $str) as $line) {
             $lines[] = trim($line, ' *');
