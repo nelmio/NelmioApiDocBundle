@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-3.2.0 (unreleased)
+3.2.0 (2018-03-24)
 ------------------
 
 * Add a documentation form extension. Use the ``documentation`` option to define how a form field is documented.
@@ -38,7 +38,7 @@ Config
 
 * Added dependency for "symfony/options-resolver:^3.4.4|^4.0"
 
-3.1.0 (2017-01-28)
+3.1.0 (2018-01-28)
 ------------------
 
 * Added Symfony Validator constraints support
