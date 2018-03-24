@@ -52,32 +52,44 @@ final class FosRestDescriber implements RouteDescriberInterface
                     $parameter->setDescription($annotation->description);
                 }
 
-                $normalizedRequirements = $this->normalizeRequirements($annotation->requirements);
-                if (null !== $normalizedRequirements) {
-                    $parameter->setFormat($normalizedRequirements);
+                $pattern = $this->getPattern($annotation->requirements);
+                if (null !== $pattern) {
+                    $parameter->setPattern($pattern);
+                }
+
+                $format = $this->getFormat($annotation->requirements);
+                if (null !== $format) {
+                    $parameter->setFormat($format);
                 }
             }
         }
     }
 
-    private function normalizeRequirements($requirements)
+    private function getPattern($requirements)
     {
-        // if pattern
         if (is_array($requirements) && isset($requirements['rule'])) {
             return (string) $requirements['rule'];
         }
+
         if (is_string($requirements)) {
             return $requirements;
         }
-        // if custom constraint
-        if ($requirements instanceof Constraint) {
-            if ($requirements instanceof Regex) {
-                return $requirements->getHtmlPattern();
-            }
 
+        if ($requirements instanceof Regex) {
+            return $requirements->getHtmlPattern();
+        }
+
+        return null;
+    }
+
+    private function getFormat($requirements)
+    {
+        if ($requirements instanceof Constraint && !$requirements instanceof Regex) {
             $reflectionClass = new \ReflectionClass($requirements);
 
             return $reflectionClass->getShortName();
         }
+
+        return null;
     }
 }
