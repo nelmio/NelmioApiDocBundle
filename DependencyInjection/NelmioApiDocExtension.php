@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
+use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
@@ -36,10 +37,16 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
     {
         $container->prependExtensionConfig('framework', ['property_info' => ['enabled' => true]]);
 
-        // JMS Serializer support
         $bundles = $container->getParameter('kernel.bundles');
+
+        // JMS Serializer support
         if (isset($bundles['JMSSerializerBundle'])) {
             $container->prependExtensionConfig('nelmio_api_doc', ['models' => ['use_jms' => true]]);
+        }
+
+        // Bazinga Hateoas support
+        if (isset($bundles['BazingaHateoasBundle'])) {
+            $container->prependExtensionConfig('nelmio_api_doc', ['models' => ['use_bazinga_hateoas' => true]]);
         }
     }
 
@@ -126,7 +133,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // JMS metadata support
         if ($config['models']['use_jms']) {
-            $container->register('nelmio_api_doc.model_describers.jms', JMSModelDescriber::class)
+            $jmsDefinition = $container->register('nelmio_api_doc.model_describers.jms', JMSModelDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
@@ -134,6 +141,16 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference('annotation_reader'),
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
+
+            // Bazinga Hateoas metadata support
+            if ($config['models']['use_bazinga_hateoas']) {
+                $container->register('nelmio_api_doc.model_describers.jms.bazinga_hateoas', BazingaHateoasModelDescriber::class)
+                    ->setPublic(false)
+                    ->setArguments([
+                        new Reference('hateoas.configuration.metadata_factory'),
+                    ]);
+                $jmsDefinition->addArgument(new Reference('nelmio_api_doc.model_describers.jms.bazinga_hateoas'));
+            }
         }
 
         // Import the base configuration
