@@ -34,7 +34,7 @@ class TestKernel extends Kernel
 
     public function __construct(bool $useJMS = false, bool $useBazinga = false)
     {
-        parent::__construct('test' . (int)$useJMS . (int)$useBazinga, true);
+        parent::__construct('test'.(int) $useJMS.(int) $useBazinga, true);
 
         $this->useJMS = $useJMS;
         $this->useBazinga = $useBazinga;

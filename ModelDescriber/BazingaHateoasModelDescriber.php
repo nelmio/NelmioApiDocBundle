@@ -39,9 +39,6 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
     public function describe(Model $model, Schema $schema)
     {
         $className = $model->getType()->getClassName();
-        /**
-         * @var $metadata \Hateoas\Configuration\Metadata\ClassMetadata
-         */
         $metadata = $this->factory->getMetadataForClass($className);
 
         if (null === $metadata) {
@@ -52,15 +49,12 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 
         $schema->setType('object');
 
-        /**
-         * @var $relation \Hateoas\Configuration\Relation
-         */
         foreach ($metadata->getRelations() as $relation) {
             if (!$relation->getEmbedded() && !$relation->getHref()) {
                 continue;
             }
 
-            if ($groupsExclusion !== null && $relation->getExclusion()) {
+            if (null !== $groupsExclusion && $relation->getExclusion()) {
                 $item = new RelationPropertyMetadata($relation->getExclusion(), $relation);
 
                 // filter groups
@@ -77,10 +71,10 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
             }
 
             if ($relation->getEmbedded()) {
-                $embeddedSchema = $schema->getProperties()->get("_embedded");
+                $embeddedSchema = $schema->getProperties()->get('_embedded');
                 $properties = $embeddedSchema->getProperties();
             } else {
-                $linksSchema = $schema->getProperties()->get("_links");
+                $linksSchema = $schema->getProperties()->get('_links');
                 $properties = $linksSchema->getProperties();
             }
 
@@ -116,7 +110,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
     {
         $ref = new \ReflectionClass($className);
 
-        $onlyClass = $ref->getShortName() . "HateoasLink" . ucfirst($relation->getName());
+        $onlyClass = $ref->getShortName().'HateoasLink'.ucfirst($relation->getName());
         $onlyNs = $className;
 
         $classContent = "<?php\n";
@@ -130,12 +124,12 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
                     /** @Swagger\\Annotations\\Property(type=\"string\") */
                     private \$$attribute;\n";
         }
-        $classContent .= "}";
+        $classContent .= '}';
 
         $linkClassName = "$onlyNs\\$onlyClass";
 
         if (!class_exists($linkClassName, false)) {
-            $tempName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . md5($linkClassName);
+            $tempName = sys_get_temp_dir().DIRECTORY_SEPARATOR.md5($linkClassName);
             file_put_contents($tempName, $classContent);
             require_once $tempName;
         }

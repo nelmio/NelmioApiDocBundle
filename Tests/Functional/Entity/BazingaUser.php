@@ -22,5 +22,4 @@ use Hateoas\Configuration\Annotation as Hateoas;
  */
 class BazingaUser
 {
-
 }

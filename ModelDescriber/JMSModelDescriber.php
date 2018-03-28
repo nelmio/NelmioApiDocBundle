@@ -124,7 +124,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $this->registerPropertyType($typeDef, $property);
         }
 
-        if ($this->extraModelDescriber !== null) {
+        if (null !== $this->extraModelDescriber) {
             if ($this->extraModelDescriber instanceof ModelRegistryAwareInterface) {
                 $this->extraModelDescriber->setModelRegistry($this->modelRegistry);
             }
