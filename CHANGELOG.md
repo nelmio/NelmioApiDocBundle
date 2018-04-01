@@ -33,7 +33,7 @@ Config
 
   ```yml
   nelmio_api_doc:
-      routes: [ host_patterns: [ ^api\. ] ]
+      areas: [ host_patterns: [ ^api\. ] ]
   ```
 
 * Added dependency for "symfony/options-resolver:^3.4.4|^4.0"
