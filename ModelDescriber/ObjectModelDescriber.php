@@ -63,8 +63,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 $property = $properties->get($annotationsReader->getPropertyName($reflectionProperty, $propertyName));
 
                 $groups = $model->getGroups();
-                if (isset($groups[$property]) && is_array($groups[$property])) {
-                    $groups = $model->getGroups()[$property];
+                if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
+                    $groups = $model->getGroups()[$propertyName];
                 }
 
                 $annotationsReader->updateProperty($reflectionProperty, $property, $groups);
