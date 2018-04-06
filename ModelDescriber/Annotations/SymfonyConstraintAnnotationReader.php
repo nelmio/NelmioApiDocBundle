@@ -97,7 +97,7 @@ class SymfonyConstraintAnnotationReader
 
         $existingRequiredFields[] = $reflectionProperty->getName();
 
-        $this->schema->setRequired(array_unique($existingRequiredFields));
+        $this->schema->setRequired(array_values(array_unique($existingRequiredFields)));
     }
 
     /**
