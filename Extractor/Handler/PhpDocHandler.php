@@ -107,6 +107,14 @@ class PhpDocHandler implements HandlerInterface
             }
         }
 
+        foreach ($route->getDefaults() as $var => $default) {
+            if (strpos($var, '_') !== 0) {
+                if (!isset($annotationRequirements[$var]['default'])) {
+                    $requirements[$var]['default'] = isset($default) ? $default : '';
+                }
+            }
+        }
+
         $annotation->setRequirements($requirements);
     }
 }
