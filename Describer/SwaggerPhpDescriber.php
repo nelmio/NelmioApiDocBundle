@@ -206,6 +206,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 $path = $this->normalizePath($route->getPath());
                 $httpMethods = $route->getMethods() ?: Swagger::$METHODS;
                 $httpMethods = array_map('strtolower', $httpMethods);
+                $httpMethods = array_intersect($httpMethods, Swagger::$METHODS);
 
                 yield $method => [$path, $httpMethods];
             }
