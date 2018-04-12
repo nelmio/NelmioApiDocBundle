@@ -19,13 +19,20 @@ final class Model
 
     private $groups;
 
+    private $definition;
+
     /**
-     * @param string[]|null $groups
+     * Model constructor.
+     *
+     * @param Type $type
+     * @param array|null $groups
+     * @param string|null $definition
      */
-    public function __construct(Type $type, array $groups = null)
+    public function __construct(Type $type, array $groups = null, $definition = null)
     {
         $this->type = $type;
         $this->groups = $groups;
+        $this->definition = $definition;
     }
 
     /**
@@ -44,8 +51,19 @@ final class Model
         return $this->groups;
     }
 
+    /**
+     * @return string
+     */
     public function getHash(): string
     {
-        return md5(serialize([$this->type, $this->groups]));
+        return md5(serialize([$this->type, $this->groups, $this->definition]));
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDefinition()
+    {
+        return $this->definition;
     }
 }

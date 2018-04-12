@@ -116,7 +116,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 }
 
                 $property->setRef(
-                    $this->modelRegistry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $groups))
+                    $this->modelRegistry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $groups, $model->getDefinition()))
                 );
             }
         }
