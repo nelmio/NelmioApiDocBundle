@@ -24,15 +24,15 @@ final class Model
     /**
      * Model constructor.
      *
-     * @param Type $type
-     * @param array|null $groups
+     * @param Type        $type
+     * @param array|null  $groups
      * @param string|null $definition
      */
     public function __construct(Type $type, array $groups = null, $name = null)
     {
-        $this->type = $type;
+        $this->type   = $type;
         $this->groups = $groups;
-        $this->name = $name;
+        $this->name   = $name;
     }
 
     /**
