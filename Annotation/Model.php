@@ -44,5 +44,5 @@ final class Model extends AbstractAnnotation
     /**
      * @var string
      */
-    public $definition;
+    public $name;
 }

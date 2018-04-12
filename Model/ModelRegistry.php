@@ -96,8 +96,8 @@ final class ModelRegistry
     {
         $definitions = $this->api->getDefinitions();
 
-        if ($model->getDefinition() !== null) {
-            $base = $name = $model->getDefinition();
+        if ($model->getName() !== null) {
+            $base = $name = $model->getName();
         } else {
             $base = $name = $this->getTypeShortName($model->getType());
         }

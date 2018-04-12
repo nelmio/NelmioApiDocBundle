@@ -111,7 +111,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                     $property->setFormat('date-time');
                 } else {
                     $property->setRef(
-                        $this->modelRegistry->register(new Model($type, $model->getGroups(), $model->getDefinition()))
+                        $this->modelRegistry->register(new Model($type, $model->getGroups(), $model->getName()))
                     );
                 }
             } else {

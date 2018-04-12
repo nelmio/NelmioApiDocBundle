@@ -44,7 +44,7 @@ final class ModelRegister
             if ($annotation instanceof Schema && $annotation->ref instanceof ModelAnnotation) {
                 $model = $annotation->ref;
 
-                $annotation->ref = $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->defintion));
+                $annotation->ref = $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->name));
 
                 // It is no longer an unmerged annotation
                 $this->detach($model, $annotation, $analysis);
@@ -90,7 +90,7 @@ final class ModelRegister
             }
 
             $annotation->merge([new $annotationClass([
-                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->definition)),
+                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->name)),
             ])]);
 
             // It is no longer an unmerged annotation
