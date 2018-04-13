@@ -146,22 +146,24 @@ To document your routes, you can use the SwaggerPHP annotations and the
          * This call takes into account all confirmed awards, but not pending or refused awards.
          *
          * @Route("/api/{user}/rewards", methods={"GET"})
-         * @SWG\Response(
-         *     response=200,
-         *     description="Returns the rewards of an user",
-         *     @SWG\Schema(
-         *         type="array",
-         *         @SWG\Items(ref=@Model(type=Reward::class, groups={"full"}))
+         * @SWG\Get(
+         *     @SWG\Response(
+         *         response=200,
+         *         description="Returns the rewards of an user",
+         *         @SWG\Schema(
+         *             type="array",
+         *            @SWG\Items(ref=@Model(type=Reward::class, groups={"full"}))
+         *         )
          *     )
+         *     @SWG\Parameter(
+         *         name="order",
+         *         in="query",
+         *         type="string",
+         *         description="The field used to order rewards"
+         *     )
+         *     @SWG\Tag(name="rewards")
+         *     @Security(name="Bearer")
          * )
-         * @SWG\Parameter(
-         *     name="order",
-         *     in="query",
-         *     type="string",
-         *     description="The field used to order rewards"
-         * )
-         * @SWG\Tag(name="rewards")
-         * @Security(name="Bearer")
          */
         public function fetchUserRewardsAction(User $user)
         {
