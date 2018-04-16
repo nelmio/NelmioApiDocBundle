@@ -96,7 +96,17 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
             'head' => SWG\Head::class,
         ];
 
+        $classAnnotations = [];
+
         foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods)) {
+            $declaringClass = $method->getDeclaringClass();
+            if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
+                $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
+                    return $v instanceof SWG\AbstractAnnotation;
+                });
+                $classAnnotations[$declaringClass->getName()] = $classAnnotations;
+            }
+
             $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
                 return $v instanceof SWG\AbstractAnnotation;
             });
@@ -105,7 +115,6 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 continue;
             }
 
-            $declaringClass = $method->getDeclaringClass();
             $context = new Context([
                 'namespace' => $method->getNamespaceName(),
                 'class' => $declaringClass->getShortName(),
@@ -117,7 +126,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
             $implicitAnnotations = [];
             $tags = [];
             $security = [];
-            foreach ($annotations as $annotation) {
+            foreach (array_merge($annotations, $classAnnotations[$declaringClass->getName()]) as $annotation) {
                 $annotation->_context = $context;
                 $this->updateNestedAnnotations($annotation, $nestedContext);
 
