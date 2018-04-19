@@ -276,6 +276,16 @@ class FunctionalTest extends WebTestCase
         $this->assertEquals($expected, $operation->getSecurity());
     }
 
+    public function testClassSecurityAction()
+    {
+        $operation = $this->getOperation('/api/security/class', 'get');
+
+        $expected = [
+            ['basic' => []],
+        ];
+        $this->assertEquals($expected, $operation->getSecurity());
+    }
+
     public function testSymfonyConstraintDocumentation()
     {
         $this->assertEquals([
