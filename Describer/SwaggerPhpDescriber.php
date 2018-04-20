@@ -209,10 +209,10 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 $path = $this->normalizePath($route->getPath());
                 $httpMethods = $route->getMethods() ?: Swagger::$METHODS;
                 $httpMethods = array_map('strtolower', $httpMethods);
-                $validHttpMethods = array_intersect($httpMethods, Swagger::$METHODS);
+                $supportedHttpMethods = array_intersect($httpMethods, Swagger::$METHODS);
 
-                if (empty($validHttpMethods)) {
-                    $this->logger->warning('No valid HTTP method for path', [
+                if (empty($supportedHttpMethods)) {
+                    $this->logger->warning('None of the HTTP methods specified for path {path} are supported by swagger-ui, skipping this path', [
                         'path' => $path,
                         'methods' => $httpMethods,
                     ]);
@@ -220,7 +220,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                     continue;
                 }
 
-                yield $method => [$path, $validHttpMethods];
+                yield $method => [$path, $supportedHttpMethods];
             }
         }
     }
