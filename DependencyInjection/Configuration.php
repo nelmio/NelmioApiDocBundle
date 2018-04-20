@@ -84,7 +84,6 @@ final class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('use_jms')->defaultFalse()->end()
-                        ->booleanNode('use_bazinga_hateoas')->defaultFalse()->end()
                     ->end()
                 ->end()
             ->end();

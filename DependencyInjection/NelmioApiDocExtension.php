@@ -43,11 +43,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         if (isset($bundles['JMSSerializerBundle'])) {
             $container->prependExtensionConfig('nelmio_api_doc', ['models' => ['use_jms' => true]]);
         }
-
-        // Bazinga Hateoas support
-        if (isset($bundles['BazingaHateoasBundle'])) {
-            $container->prependExtensionConfig('nelmio_api_doc', ['models' => ['use_bazinga_hateoas' => true]]);
-        }
     }
 
     /**
@@ -143,7 +138,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
 
             // Bazinga Hateoas metadata support
-            if ($config['models']['use_bazinga_hateoas']) {
+            if (isset($bundles['BazingaHateoasBundle'])) {
                 $container->register('nelmio_api_doc.model_describers.jms.bazinga_hateoas', BazingaHateoasModelDescriber::class)
                     ->setPublic(false)
                     ->setArguments([

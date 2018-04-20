@@ -263,12 +263,7 @@ General PHP objects
             models: { use_jms: false }
 
     When using the JMS serializer combined with `willdurand/Hateoas`_ (and the `BazingaHateoasBundle`_),
-    HATEOAS metadata are also used by default. You can disable the automatic extraction of those metadata with:
-
-    .. code-block:: yaml
-
-        nelmio_api_doc:
-            models: { use_bazinga_hateoas: false }
+    HATEOAS metadata are automatically extracted
 
 If you want to customize the documentation of a property of an object, you can use ``@SWG\Property``::
 
