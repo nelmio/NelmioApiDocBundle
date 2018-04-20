@@ -44,7 +44,9 @@ class ApiController
     }
 
     /**
-     * @Route("/swagger", methods={"GET"})
+     * The method LINK is not supported by OpenAPI so the method will be ignored.
+     *
+     * @Route("/swagger", methods={"GET", "LINK"})
      * @Route("/swagger2", methods={"GET"})
      * @Operation(
      *     @SWG\Response(response="201", description="An example resource")

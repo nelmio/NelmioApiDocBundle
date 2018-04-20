@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\SwaggerPhp\AddDefaults;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
+use Psr\Log\LoggerInterface;
 use Swagger\Analysis;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations as SWG;
@@ -31,13 +32,15 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
     private $routeCollection;
     private $controllerReflector;
     private $annotationReader;
+    private $logger;
     private $overwrite;
 
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, bool $overwrite = false)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
     {
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
         $this->annotationReader = $annotationReader;
+        $this->logger = $logger;
         $this->overwrite = $overwrite;
     }
 
@@ -206,13 +209,18 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 $path = $this->normalizePath($route->getPath());
                 $httpMethods = $route->getMethods() ?: Swagger::$METHODS;
                 $httpMethods = array_map('strtolower', $httpMethods);
-                $httpMethods = array_intersect($httpMethods, Swagger::$METHODS);
+                $validHttpMethods = array_intersect($httpMethods, Swagger::$METHODS);
 
-                if (empty($httpMethods)) {
+                if (empty($validHttpMethods)) {
+                    $this->logger->warning('No valid HTTP method for path', [
+                        'path' => $path,
+                        'methods' => $httpMethods,
+                    ]);
+
                     continue;
                 }
 
-                yield $method => [$path, $httpMethods];
+                yield $method => [$path, $validHttpMethods];
             }
         }
     }
