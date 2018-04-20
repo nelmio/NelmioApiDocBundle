@@ -98,11 +98,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                     $property->setType('object');
 
                     $typeDef = $this->findPropertyType($type, $groups);
-                    $ref = new \ReflectionObject($property);
-                    $p = $ref->getProperty('additionalProperties');
-                    $p->setAccessible(true);
+
                     // in the case of a virtual property, set it as free object type
-                    $p->setValue($property, $typeDef ?: []);
+                    $property->merge(['additionalProperties' => $typeDef ?: []]);
 
                     continue;
                 } else {
