@@ -81,6 +81,17 @@ class JMSUser
     private $friends;
 
     /**
+     * @Serializer\Type("array<string, Nelmio\ApiDocBundle\Tests\Functional\Entity\User>")
+     * @Serializer\Expose
+     */
+    private $indexedFriends;
+
+    /**
+     * @Serializer\Type("array<string, DateTime>")
+     * @Serializer\Expose
+     */
+    private $favoriteDates;
+    /**
      * @Serializer\Type("integer")
      * @Serializer\Expose
      * @Serializer\SerializedName("friendsNumber")

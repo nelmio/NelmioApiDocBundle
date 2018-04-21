@@ -92,33 +92,33 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 continue;
             }
 
-            if ($type = $this->getNestedTypeInArray($item)) {
-                $property->setType('array');
-                $property = $property->getItems();
+            if ($nestedType = $this->getNestedTypeInArray($item)) {
+                list($type, $isHash) = $nestedType;
+                if ($isHash) {
+                    $property->setType('object');
+
+                    $typeDef = $this->findPropertyType($type, $groups);
+
+                    // in the case of a virtual property, set it as free object type
+                    $property->merge(['additionalProperties' => $typeDef ?: []]);
+
+                    continue;
+                } else {
+                    $property->setType('array');
+                    $property = $property->getItems();
+                }
             } else {
                 $type = $item->type['name'];
             }
 
-            if (in_array($type, ['boolean', 'string', 'array'])) {
-                $property->setType($type);
-            } elseif (in_array($type, ['int', 'integer'])) {
-                $property->setType('integer');
-            } elseif (in_array($type, ['double', 'float'])) {
-                $property->setType('number');
-                $property->setFormat($type);
-            } elseif (in_array($type, ['DateTime', 'DateTimeImmutable'])) {
-                $property->setType('string');
-                $property->setFormat('date-time');
-            } else {
-                // we can use property type also for custom handlers, then we don't have here real class name
-                if (!class_exists($type)) {
-                    continue;
-                }
+            $typeDef = $this->findPropertyType($type, $groups);
 
-                $property->setRef(
-                    $this->modelRegistry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $groups))
-                );
+            // virtual property
+            if (!$typeDef) {
+                continue;
             }
+
+            $this->registerPropertyType($typeDef, $property);
         }
     }
 
@@ -139,20 +139,74 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return false;
     }
 
+    /**
+     * @param string     $type
+     * @param array|null $groups
+     *
+     * @return array|null
+     */
+    private function findPropertyType(string $type, array $groups = null)
+    {
+        $typeDef = [];
+        if (in_array($type, ['boolean', 'string', 'array'])) {
+            $typeDef['type'] = $type;
+        } elseif (in_array($type, ['int', 'integer'])) {
+            $typeDef['type'] = 'integer';
+        } elseif (in_array($type, ['double', 'float'])) {
+            $typeDef['type'] = 'number';
+            $typeDef['format'] = $type;
+        } elseif (in_array($type, ['DateTime', 'DateTimeImmutable'])) {
+            $typeDef['type'] = 'string';
+            $typeDef['format'] = 'date-time';
+        } else {
+            // we can use property type also for custom handlers, then we don't have here real class name
+            if (!class_exists($type)) {
+                return null;
+            }
+
+            $typeDef['$ref'] = $this->modelRegistry->register(
+                new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $groups)
+            );
+        }
+
+        return $typeDef;
+    }
+
+    private function registerPropertyType(array $typeDef, $property)
+    {
+        if (isset($typeDef['$ref'])) {
+            $property->setRef($typeDef['$ref']);
+        } else {
+            if (isset($typeDef['type'])) {
+                $property->setType($typeDef['type']);
+            }
+            if (isset($typeDef['format'])) {
+                $property->setFormat($typeDef['format']);
+            }
+        }
+    }
+
+    /**
+     * @param PropertyMetadata $item
+     *
+     * @return array|null
+     */
     private function getNestedTypeInArray(PropertyMetadata $item)
     {
         if ('array' !== $item->type['name'] && 'ArrayCollection' !== $item->type['name']) {
-            return;
+            return null;
         }
 
         // array<string, MyNamespaceMyObject>
         if (isset($item->type['params'][1]['name'])) {
-            return $item->type['params'][1]['name'];
+            return [$item->type['params'][1]['name'], true];
         }
 
         // array<MyNamespaceMyObject>
         if (isset($item->type['params'][0]['name'])) {
-            return $item->type['params'][0]['name'];
+            return [$item->type['params'][0]['name'], false];
         }
+
+        return null;
     }
 }

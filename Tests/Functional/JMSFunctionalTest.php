@@ -54,6 +54,19 @@ class JMSFunctionalTest extends WebTestCase
                         '$ref' => '#/definitions/User',
                     ],
                 ],
+                'indexed_friends' => [
+                    'type' => 'object',
+                    'additionalProperties' => [
+                        '$ref' => '#/definitions/User',
+                    ],
+                ],
+                'favorite_dates' => [
+                    'type' => 'object',
+                    'additionalProperties' => [
+                        'type' => 'string',
+                        'format' => 'date-time',
+                    ],
+                ],
                 'best_friend' => [
                     '$ref' => '#/definitions/User',
                 ],
