@@ -197,9 +197,11 @@ This annotation has two options:
     /**
      * @SWG\Response(
      *     response=200,
-     *     @Model(type=User::class, groups={"non_sensitive_data"})
+     *     @Model(type=User::class, groups={"non_sensitive_data"}, name="User_Data")
      * )
      */
+
+* ``name`` to describe the result model
 
  .. tip::
 

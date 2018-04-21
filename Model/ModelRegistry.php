@@ -95,7 +95,13 @@ final class ModelRegistry
     private function generateModelName(Model $model): string
     {
         $definitions = $this->api->getDefinitions();
-        $base = $name = $this->getTypeShortName($model->getType());
+
+        if (null !== $model->getName()) {
+            $base = $name = $model->getName();
+        } else {
+            $base = $name = $this->getTypeShortName($model->getType());
+        }
+
         $i = 1;
         while ($definitions->has($name)) {
             ++$i;
