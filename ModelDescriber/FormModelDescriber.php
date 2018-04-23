@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -180,8 +181,9 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
                 return true;
             }
+            if (!$this->isBuiltinType($type)) {
+                $formClass = get_class($type->getInnerType());
 
-            if ($type->getInnerType() && ($formClass = get_class($type->getInnerType())) && !$this->isBuiltinType($formClass)) {
                 // if form type is not builtin in Form component.
                 $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $formClass));
                 $property->setRef($this->modelRegistry->register($model));
@@ -209,8 +211,9 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         return true;
     }
 
-    private function isBuiltinType(string $type): bool
+    private function isBuiltinType($type): bool
     {
-        return 0 === strpos($type, 'Symfony\Component\Form\Extension\Core\Type');
+        return $type->getInnerType() && 0 === strpos(get_class($type->getInnerType()), 'Symfony\Component\Form\Extension\Core\Type')
+            || ($type->getParent() && FormType::class !== get_class($type->getParent()->getInnerType()));
     }
 }
