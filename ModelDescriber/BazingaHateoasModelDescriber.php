@@ -20,7 +20,6 @@ use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
-use Symfony\Component\PropertyInfo\Type;
 
 class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
@@ -65,26 +64,25 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 
             $name = $relation->getName();
 
-            $groups = $model->getGroups();
-            if (isset($groups[$name]) && is_array($groups[$name])) {
-                $groups = $model->getGroups()[$name];
-            }
-
             if ($relation->getEmbedded()) {
-                $embeddedSchema = $schema->getProperties()->get('_embedded');
-                $properties = $embeddedSchema->getProperties();
+                $relationSchema = $schema->getProperties()->get('_embedded');
+                $properties = $relationSchema->getProperties();
             } else {
-                $linksSchema = $schema->getProperties()->get('_links');
-                $properties = $linksSchema->getProperties();
+                $relationSchema = $schema->getProperties()->get('_links');
+                $properties = $relationSchema->getProperties();
             }
+            $relationSchema->setReadOnly(true);
 
             $property = $properties->get($name);
             $property->setType('object');
 
             if ($relation->getHref()) {
-                $linkClassName = $this->generateLinkClass($className, $relation);
-                $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $linkClassName), $groups);
-                $property->setRef($this->modelRegistry->register($model));
+                $subProperties = $property->getProperties();
+
+                $hrefProp = $subProperties->get('href');
+                $hrefProp->setType('string');
+
+                $this->setAttributeProprieties($relation, $subProperties);
             }
         }
     }
@@ -106,34 +104,33 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         return false;
     }
 
-    private function generateLinkClass($className, Relation $relation): string
+    private function setAttributeProprieties(Relation $relation, $subProperties)
     {
-        $ref = new \ReflectionClass($className);
-
-        $onlyClass = $ref->getShortName().'HateoasLink'.ucfirst($relation->getName());
-        $onlyNs = $className;
-
-        $classContent = "<?php\n";
-        $classContent .= "namespace $onlyNs;\n";
-        $classContent .= "class $onlyClass {\n";
-        $classContent .= "
-                    /** @Swagger\\Annotations\Property(type=\"string\") */
-                    private \$href;\n";
         foreach ($relation->getAttributes() as $attribute => $value) {
-            $classContent .= "
-                    /** @Swagger\\Annotations\\Property(type=\"string\") */
-                    private \$$attribute;\n";
+            $subSubProp = $subProperties->get($attribute);
+            switch (gettype($value)) {
+                case 'integer':
+                    $subSubProp->setType('integer');
+                    $subSubProp->setDefault($value);
+
+                    break;
+                case 'double':
+                case 'float':
+                    $subSubProp->setType('number');
+                    $subSubProp->setDefault($value);
+
+                    break;
+                case 'boolean':
+                    $subSubProp->setType('boolean');
+                    $subSubProp->setDefault($value);
+
+                    break;
+                case 'string':
+                    $subSubProp->setType('string');
+                    $subSubProp->setDefault($value);
+
+                    break;
+            }
         }
-        $classContent .= '}';
-
-        $linkClassName = "$onlyNs\\$onlyClass";
-
-        if (!class_exists($linkClassName, false)) {
-            $tempName = sys_get_temp_dir().DIRECTORY_SEPARATOR.md5($linkClassName);
-            file_put_contents($tempName, $classContent);
-            require_once $tempName;
-        }
-
-        return $linkClassName;
     }
 }

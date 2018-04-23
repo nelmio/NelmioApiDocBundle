@@ -19,16 +19,40 @@ class BazingaFunctionalTest extends WebTestCase
             'type' => 'object',
             'properties' => [
                 '_links' => [
+                    'readOnly' => true,
                     'properties' => [
                         'example' => [
-                            '$ref' => '#/definitions/BazingaUserHateoasLinkExample',
+                            'properties' => [
+                                'href' => [
+                                    'type' => 'string',
+                                ],
+                                'str_att' => [
+                                    'type' => 'string',
+                                    'default' => 'bar',
+                                ],
+                                'float_att' => [
+                                    'type' => 'number',
+                                    'default' => 5.6,
+                                ],
+                                'bool_att' => [
+                                    'type' => 'boolean',
+                                    'default' => false,
+                                ],
+                            ],
+                            'type' => 'object',
                         ],
                         'route' => [
-                            '$ref' => '#/definitions/BazingaUserHateoasLinkRoute',
+                            'properties' => [
+                                'href' => [
+                                    'type' => 'string',
+                                ],
+                            ],
+                            'type' => 'object',
                         ],
                     ],
                 ],
                 '_embedded' => [
+                    'readOnly' => true,
                     'properties' => [
                         'route' => [
                             'type' => 'object',
