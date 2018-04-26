@@ -67,7 +67,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
     private function getAnnotations(Swagger $api): Analysis
     {
         $analysis = new Analysis();
-        $analysis->addAnnotation(new class($api) extends SWG\Swagger {
+        $this->addAnnotation($analysis, new class($api) extends SWG\Swagger {
             private $api;
 
             public function __construct(Swagger $api)
@@ -140,7 +140,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                         $operation->path = $path;
                         $operation->mergeProperties($annotation);
 
-                        $analysis->addAnnotation($operation, null);
+                        $this->addAnnotation($analysis, $operation);
                     }
 
                     continue;
@@ -152,7 +152,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                         $annotation->path = $path;
                     }
 
-                    $analysis->addAnnotation($annotation, null);
+                    $this->addAnnotation($analysis, $annotation);
 
                     continue;
                 }
@@ -198,7 +198,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 }
 
                 $operation = new $annotationClass($constructorArg);
-                $analysis->addAnnotation($operation, null);
+                $this->addAnnotation($analysis, $operation);
             }
         }
 
@@ -254,5 +254,19 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
         foreach ($value as $v) {
             $this->updateNestedAnnotations($v, $context);
         }
+    }
+
+    private function addAnnotation($analysis, $annotation)
+    {
+        if ($annotation instanceof SWG\Operation) {
+            foreach ($analysis->getAnnotationsOfType(get_class($annotation)) as $existingAnnotation) {
+                if ($existingAnnotation->path === $annotation->path) {
+                    $analysis->annotations->detach($existingAnnotation);
+                    $existingAnnotation->mergeProperties($annotation);
+                    $annotation = $existingAnnotation;
+                }
+            }
+        }
+        $analysis->addAnnotation($annotation, null);
     }
 }
