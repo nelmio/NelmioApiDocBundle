@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Form;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,9 +23,17 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('strings', CollectionType::class, [
+                'entry_type' => TextType::class,
+                'required' => false,
+            ])
             ->add('dummy', DummyType::class)
             ->add('dummies', CollectionType::class, [
                 'entry_type' => DummyType::class,
+            ])
+            ->add('empty_dummies', CollectionType::class, [
+                'entry_type' => DummyEmptyType::class,
+                'required' => false,
             ])
             ->add('quz', DummyType::class, ['documentation' => ['type' => 'string', 'description' => 'User type.'], 'required' => false]);
     }

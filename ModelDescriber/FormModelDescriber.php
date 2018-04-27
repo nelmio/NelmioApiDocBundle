@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormConfigBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -77,98 +78,119 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 continue; // Type manually defined
             }
 
-            for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
-                $blockPrefix = $type->getBlockPrefix();
+            $this->findFormType($config, $property);
+        }
+    }
 
-                if ('text' === $blockPrefix) {
-                    $property->setType('string');
+    /**
+     * Finds and sets the schema type on $property based on $config info.
+     *
+     * Returns true if a native Swagger type was found, false otherwise
+     *
+     * @param FormConfigBuilderInterface $config
+     * @param                            $property
+     *
+     * @return bool
+     */
+    private function findFormType(FormConfigBuilderInterface $config, $property): bool
+    {
+        for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
+            $blockPrefix = $type->getBlockPrefix();
 
-                    break;
-                }
+            if ('text' === $blockPrefix) {
+                $property->setType('string');
 
-                if ('number' === $blockPrefix) {
-                    $property->setType('number');
+                return true;
+            }
 
-                    break;
-                }
+            if ('number' === $blockPrefix) {
+                $property->setType('number');
 
-                if ('integer' === $blockPrefix) {
-                    $property->setType('integer');
+                return true;
+            }
 
-                    break;
-                }
+            if ('integer' === $blockPrefix) {
+                $property->setType('integer');
 
-                if ('date' === $blockPrefix) {
-                    $property->setType('string');
-                    $property->setFormat('date');
+                return true;
+            }
 
-                    break;
-                }
+            if ('date' === $blockPrefix) {
+                $property->setType('string');
+                $property->setFormat('date');
 
-                if ('datetime' === $blockPrefix) {
-                    $property->setType('string');
-                    $property->setFormat('date-time');
+                return true;
+            }
 
-                    break;
-                }
+            if ('datetime' === $blockPrefix) {
+                $property->setType('string');
+                $property->setFormat('date-time');
 
-                if ('choice' === $blockPrefix) {
-                    if ($config->getOption('multiple')) {
-                        $property->setType('array');
-                    } else {
-                        $property->setType('string');
-                    }
-                    if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
-                        $enums = array_values($choices);
-                        $type = $this->isNumbersArray($enums) ? 'number' : 'string';
-                        if ($config->getOption('multiple')) {
-                            $property->getItems()->setType($type)->setEnum($enums);
-                        } else {
-                            $property->setType($type)->setEnum($enums);
-                        }
-                    }
+                return true;
+            }
 
-                    break;
-                }
-
-                if ('checkbox' === $blockPrefix) {
-                    $property->setType('boolean');
-                }
-
-                if ('collection' === $blockPrefix) {
-                    $subType = $config->getOption('entry_type');
+            if ('choice' === $blockPrefix) {
+                if ($config->getOption('multiple')) {
                     $property->setType('array');
-
-                    $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $subType), null);
-                    $property->getItems()->setRef($this->modelRegistry->register($model));
-                    $property->setExample(sprintf('[{%s}]', $subType));
-
-                    break;
+                } else {
+                    $property->setType('string');
                 }
-
-                if ('entity' === $blockPrefix) {
-                    $entityClass = $config->getOption('class');
-
+                if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
+                    $enums = array_values($choices);
+                    $type = $this->isNumbersArray($enums) ? 'number' : 'string';
                     if ($config->getOption('multiple')) {
-                        $property->setFormat(sprintf('[%s id]', $entityClass));
-                        $property->setType('array');
+                        $property->getItems()->setType($type)->setEnum($enums);
                     } else {
-                        $property->setType('string');
-                        $property->setFormat(sprintf('%s id', $entityClass));
+                        $property->setType($type)->setEnum($enums);
                     }
-
-                    break;
                 }
 
-                if ($type->getInnerType() && ($formClass = get_class($type->getInnerType())) && !$this->isBuiltinType($formClass)) {
-                    // if form type is not builtin in Form component.
-                    $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $formClass));
-                    $property->setRef($this->modelRegistry->register($model));
+                return true;
+            }
 
-                    break;
+            if ('checkbox' === $blockPrefix) {
+                $property->setType('boolean');
+            }
+
+            if ('collection' === $blockPrefix) {
+                $subType = $config->getOption('entry_type');
+                $subOptions = $config->getOption('entry_options');
+                $subForm = $this->formFactory->create($subType, null, $subOptions);
+
+                $property->setType('array');
+                $itemsProp = $property->getItems();
+
+                if (!$this->findFormType($subForm->getConfig(), $itemsProp)) {
+                    $property->setExample(sprintf('[{%s}]', $subType));
                 }
+
+                return true;
+            }
+
+            if ('entity' === $blockPrefix) {
+                $entityClass = $config->getOption('class');
+
+                if ($config->getOption('multiple')) {
+                    $property->setFormat(sprintf('[%s id]', $entityClass));
+                    $property->setType('array');
+                } else {
+                    $property->setType('string');
+                    $property->setFormat(sprintf('%s id', $entityClass));
+                }
+
+                return true;
+            }
+
+            if ($type->getInnerType() && ($formClass = get_class($type->getInnerType())) && !$this->isBuiltinType($formClass)) {
+                // if form type is not builtin in Form component.
+                $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $formClass));
+                $property->setRef($this->modelRegistry->register($model));
+
+                return false;
             }
         }
+
+        return false;
     }
 
     /**
