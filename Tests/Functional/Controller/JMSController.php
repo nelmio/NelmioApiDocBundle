@@ -15,6 +15,9 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSDualComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSUser;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChat;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatUser;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\VirtualProperty;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
@@ -69,6 +72,42 @@ class JMSController
      * )
      */
     public function complexDualAction()
+    {
+    }
+
+    /**
+     * @Route("/api/jms_chat", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=JMSChat::class, groups={"Default", "members" : {"mini"}})
+     * )
+     */
+    public function chatAction()
+    {
+    }
+
+    /**
+     * @Route("/api/jms_picture", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=JMSPicture::class, groups={"mini"})
+     * )
+     */
+    public function pictureAction()
+    {
+    }
+
+    /**
+     * @Route("/api/jms_mini_user", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=JMSChatUser::class, groups={"mini"})
+     * )
+     */
+    public function minUserAction()
     {
     }
 }
