@@ -63,14 +63,10 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
             }
 
             $name = $relation->getName();
+            
+            $relationSchema = $schema->getProperties()->get($relation->getEmbedded() ? '_embedded' : '_links');
 
-            if ($relation->getEmbedded()) {
-                $relationSchema = $schema->getProperties()->get('_embedded');
-                $properties = $relationSchema->getProperties();
-            } else {
-                $relationSchema = $schema->getProperties()->get('_links');
-                $properties = $relationSchema->getProperties();
-            }
+            $properties = $relationSchema->getProperties();
             $relationSchema->setReadOnly(true);
 
             $property = $properties->get($name);
@@ -82,7 +78,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
                 $hrefProp = $subProperties->get('href');
                 $hrefProp->setType('string');
 
-                $this->setAttributeProprieties($relation, $subProperties);
+                $this->setAttributeProperties($relation, $subProperties);
             }
         }
     }
@@ -104,7 +100,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         return false;
     }
 
-    private function setAttributeProprieties(Relation $relation, $subProperties)
+    private function setAttributeProperties(Relation $relation, $subProperties)
     {
         foreach ($relation->getAttributes() as $attribute => $value) {
             $subSubProp = $subProperties->get($attribute);
