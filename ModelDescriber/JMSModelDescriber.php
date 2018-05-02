@@ -34,18 +34,15 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     private $factory;
     private $namingStrategy;
     private $doctrineReader;
-    private $extraModelDescriber;
 
     public function __construct(
         MetadataFactoryInterface $factory,
         PropertyNamingStrategyInterface $namingStrategy,
-        Reader $reader,
-        ModelDescriberInterface $extraModelDescriber = null
+        Reader $reader
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->doctrineReader = $reader;
-        $this->extraModelDescriber = $extraModelDescriber;
     }
 
     /**
@@ -122,16 +119,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             }
 
             $this->registerPropertyType($typeDef, $property);
-        }
-
-        if (null !== $this->extraModelDescriber) {
-            if ($this->extraModelDescriber instanceof ModelRegistryAwareInterface) {
-                $this->extraModelDescriber->setModelRegistry($this->modelRegistry);
-            }
-
-            if ($this->extraModelDescriber->supports($model)) {
-                $this->extraModelDescriber->describe($model, $schema);
-            }
         }
     }
 

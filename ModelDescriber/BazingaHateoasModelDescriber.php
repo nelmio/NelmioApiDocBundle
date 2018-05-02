@@ -20,16 +20,25 @@ use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\Model\ModelRegistry;
 
 class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
     private $factory;
+    private $JMSModelDescriber;
 
-    public function __construct(MetadataFactoryInterface $factory)
+    public function __construct(MetadataFactoryInterface $factory, JMSModelDescriber $JMSModelDescriber)
     {
         $this->factory = $factory;
+        $this->JMSModelDescriber = $JMSModelDescriber;
+    }
+
+    public function setModelRegistry(ModelRegistry $modelRegistry)
+    {
+        $this->modelRegistry = $modelRegistry;
+        $this->JMSModelDescriber->setModelRegistry($modelRegistry);
     }
 
     /**
@@ -37,11 +46,11 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
      */
     public function describe(Model $model, Schema $schema)
     {
-        $className = $model->getType()->getClassName();
-        $metadata = $this->factory->getMetadataForClass($className);
+        $this->JMSModelDescriber->describe($model, $schema);
 
+        $metadata = $this->getHateoasMetadata($model);
         if (null === $metadata) {
-            throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
+            return;
         }
 
         $groupsExclusion = null !== $model->getGroups() ? new GroupsExclusionStrategy($model->getGroups()) : null;
@@ -63,7 +72,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
             }
 
             $name = $relation->getName();
-            
+
             $relationSchema = $schema->getProperties()->get($relation->getEmbedded() ? '_embedded' : '_links');
 
             $properties = $relationSchema->getProperties();
@@ -83,21 +92,26 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         }
     }
 
+    private function getHateoasMetadata(Model $model)
+    {
+        $className = $model->getType()->getClassName();
+
+        try {
+            if ($metadata = $this->factory->getMetadataForClass($className)) {
+                return $metadata;
+            }
+        } catch (\ReflectionException $e) {
+        }
+
+        return null;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supports(Model $model): bool
     {
-        $className = $model->getType()->getClassName();
-
-        try {
-            if ($this->factory->getMetadataForClass($className)) {
-                return true;
-            }
-        } catch (\ReflectionException $e) {
-        }
-
-        return false;
+        return $this->JMSModelDescriber->supports($model) || null !== $this->getHateoasMetadata($model);
     }
 
     private function setAttributeProperties(Relation $relation, $subProperties)

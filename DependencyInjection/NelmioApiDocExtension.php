@@ -143,8 +143,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     ->setPublic(false)
                     ->setArguments([
                         new Reference('hateoas.configuration.metadata_factory'),
-                    ]);
-                $jmsDefinition->addArgument(new Reference('nelmio_api_doc.model_describers.jms.bazinga_hateoas'));
+                        new Reference('nelmio_api_doc.model_describers.jms'),
+                    ])
+                    ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
+                $jmsDefinition->clearTag('nelmio_api_doc.model_describer');
             }
         }
 
