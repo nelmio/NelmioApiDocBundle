@@ -61,8 +61,13 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         $container->setParameter('nelmio_api_doc.areas', array_keys($config['areas']));
         foreach ($config['areas'] as $area => $areaConfig) {
+            $names = array_filter($config['models']['names'], function ($name) use ($area) {
+                return empty($name['areas']) || in_array($area, $name['areas'], true);
+            });
+
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
                 ->setPublic(false)
+                ->addMethodCall('setAlternativeNames', [$names])
                 ->setArguments([
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),

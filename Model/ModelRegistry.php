@@ -19,6 +19,8 @@ use Symfony\Component\PropertyInfo\Type;
 
 final class ModelRegistry
 {
+    private $alternativeNames = [];
+
     private $unregistered = [];
 
     private $models = [];
@@ -34,10 +36,11 @@ final class ModelRegistry
      *
      * @internal
      */
-    public function __construct($modelDescribers, Swagger $api)
+    public function __construct($modelDescribers, Swagger $api, array $alternativeNames = [])
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
+        $this->alternativeNames = $alternativeNames;
     }
 
     public function register(Model $model): string
@@ -95,7 +98,9 @@ final class ModelRegistry
     private function generateModelName(Model $model): string
     {
         $definitions = $this->api->getDefinitions();
-        $base = $name = $this->getTypeShortName($model->getType());
+
+        $name = $base = $this->getAlternativeName($model) ?? $this->getTypeShortName($model->getType());
+
         $i = 1;
         while ($definitions->has($name)) {
             ++$i;
@@ -103,6 +108,23 @@ final class ModelRegistry
         }
 
         return $name;
+    }
+
+    /**
+     * @param Model $model
+     *
+     * @return string|null
+     */
+    private function getAlternativeName(Model $model)
+    {
+        $type = $model->getType();
+        foreach ($this->alternativeNames as $alternativeName => $criteria) {
+            if ($type->getClassName() === $criteria['type'] && $criteria['groups'] == $model->getGroups()) {
+                return $alternativeName;
+            }
+        }
+
+        return null;
     }
 
     private function getTypeShortName(Type $type): string
