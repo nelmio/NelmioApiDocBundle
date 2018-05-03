@@ -128,7 +128,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // JMS metadata support
         if ($config['models']['use_jms']) {
-            $jmsDefinition = $container->register('nelmio_api_doc.model_describers.jms', JMSModelDescriber::class)
+            $container->register('nelmio_api_doc.model_describers.jms', JMSModelDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
@@ -140,13 +140,12 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             // Bazinga Hateoas metadata support
             if (isset($bundles['BazingaHateoasBundle'])) {
                 $container->register('nelmio_api_doc.model_describers.jms.bazinga_hateoas', BazingaHateoasModelDescriber::class)
+                    ->setDecoratedService('nelmio_api_doc.model_describers.jms', 'nelmio_api_doc.model_describers.jms.inner')
                     ->setPublic(false)
                     ->setArguments([
                         new Reference('hateoas.configuration.metadata_factory'),
-                        new Reference('nelmio_api_doc.model_describers.jms'),
-                    ])
-                    ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
-                $jmsDefinition->clearTag('nelmio_api_doc.model_describer');
+                        new Reference('nelmio_api_doc.model_describers.jms.inner'),
+                    ]);
             }
         }
 
