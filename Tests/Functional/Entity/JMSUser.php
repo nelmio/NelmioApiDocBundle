@@ -91,6 +91,13 @@ class JMSUser
      * @Serializer\Expose
      */
     private $favoriteDates;
+
+    /**
+     * @Serializer\Type(Nelmio\ApiDocBundle\Tests\Functional\Entity\CustomDateTime::class)
+     * @Serializer\Expose
+     */
+    private $customDate;
+
     /**
      * @Serializer\Type("integer")
      * @Serializer\Expose
