@@ -15,6 +15,7 @@ use FOS\RestBundle\Controller\Annotations\ParamInterface;
 use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber;
+use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -36,8 +37,9 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
     {
         $container->prependExtensionConfig('framework', ['property_info' => ['enabled' => true]]);
 
-        // JMS Serializer support
         $bundles = $container->getParameter('kernel.bundles');
+
+        // JMS Serializer support
         if (isset($bundles['JMSSerializerBundle'])) {
             $container->prependExtensionConfig('nelmio_api_doc', ['models' => ['use_jms' => true]]);
         }
@@ -134,6 +136,17 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference('annotation_reader'),
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
+
+            // Bazinga Hateoas metadata support
+            if (isset($bundles['BazingaHateoasBundle'])) {
+                $container->register('nelmio_api_doc.model_describers.jms.bazinga_hateoas', BazingaHateoasModelDescriber::class)
+                    ->setDecoratedService('nelmio_api_doc.model_describers.jms', 'nelmio_api_doc.model_describers.jms.inner')
+                    ->setPublic(false)
+                    ->setArguments([
+                        new Reference('hateoas.configuration.metadata_factory'),
+                        new Reference('nelmio_api_doc.model_describers.jms.inner'),
+                    ]);
+            }
         }
 
         // Import the base configuration

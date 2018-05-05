@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
+use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use FOS\RestBundle\FOSRestBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
@@ -29,12 +30,14 @@ class TestKernel extends Kernel
     use MicroKernelTrait;
 
     private $useJMS;
+    private $useBazinga;
 
-    public function __construct(bool $useJMS = false)
+    public function __construct(bool $useJMS = false, bool $useBazinga = false)
     {
-        parent::__construct('test'.(int) $useJMS, true);
+        parent::__construct('test'.(int) $useJMS.(int) $useBazinga, true);
 
         $this->useJMS = $useJMS;
+        $this->useBazinga = $useBazinga;
     }
 
     /**
@@ -54,6 +57,10 @@ class TestKernel extends Kernel
 
         if ($this->useJMS) {
             $bundles[] = new JMSSerializerBundle();
+
+            if ($this->useBazinga) {
+                $bundles[] = new BazingaHateoasBundle();
+            }
         }
 
         return $bundles;
@@ -74,6 +81,10 @@ class TestKernel extends Kernel
 
         if ($this->useJMS) {
             $routes->import(__DIR__.'/Controller/JMSController.php', '/', 'annotation');
+        }
+
+        if ($this->useBazinga) {
+            $routes->import(__DIR__.'/Controller/BazingaController.php', '/', 'annotation');
         }
     }
 

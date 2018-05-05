@@ -14,7 +14,8 @@ This bundle supports *Symfony* route requirements, PHP annotations, `Swagger-Php
 .. _`FOSRestBundle`: https://github.com/FriendsOfSymfony/FOSRestBundle
 .. _`Api-Platform`: https://github.com/api-platform/api-platform
 
-For models, it supports the Symfony serializer and the JMS serializer. It does also support Symfony form types.
+For models, it supports the `Symfony serializer`_ , the `JMS serializer`_ and the `willdurand/Hateoas`_ library.
+It does also support `Symfony form`_ types.
 
 Migrate from 2.x to 3.0
 -----------------------
@@ -244,8 +245,9 @@ General PHP objects
 
 .. tip::
 
-    **If you're not using the JMS Serializer**, the `Symfony PropertyInfo component`_ is used to describe your models. It supports doctrine annotations, type hints,
-    and even PHP doc blocks. It does also support serialization groups when using the Symfony serializer.
+    **If you're not using the JMS Serializer**, the `Symfony PropertyInfo component`_ is used to describe your models.
+    It supports doctrine annotations, type hints, and even PHP doc blocks.
+    It does also support serialization groups when using the Symfony serializer.
 
     **If you're using the JMS Serializer**, the metadata of the JMS serializer are used by default to describe your
     models. Additional information is extracted from the PHP doc block comment,
@@ -259,6 +261,9 @@ General PHP objects
 
         nelmio_api_doc:
             models: { use_jms: false }
+
+    When using the JMS serializer combined with `willdurand/Hateoas`_ (and the `BazingaHateoasBundle`_),
+    HATEOAS metadata are automatically extracted
 
 If you want to customize the documentation of a property of an object, you can use ``@SWG\Property``::
 
@@ -300,3 +305,8 @@ If you need more complex features, take a look at:
     faq
 
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
+.. _`willdurand/Hateoas`: https://github.com/willdurand/Hateoas
+.. _`BazingaHateoasBundle`: https://github.com/willdurand/BazingaHateoasBundle
+.. _`JMS serializer`: https://jmsyst.com/libs/serializer
+.. _`Symfony form`: https://symfony.com/doc/current/forms.html
+.. _`Symfony serializer`: https://symfony.com/doc/current/components/serializer.html
