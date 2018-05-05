@@ -67,6 +67,10 @@ class JMSFunctionalTest extends WebTestCase
                         'format' => 'date-time',
                     ],
                 ],
+                'custom_date' => [
+                    'type' => 'string',
+                    'format' => 'date-time',
+                ],
                 'best_friend' => [
                     '$ref' => '#/definitions/User',
                 ],

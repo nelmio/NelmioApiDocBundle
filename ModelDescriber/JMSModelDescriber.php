@@ -155,7 +155,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         } elseif (in_array($type, ['double', 'float'])) {
             $typeDef['type'] = 'number';
             $typeDef['format'] = $type;
-        } elseif (in_array($type, ['DateTime', 'DateTimeImmutable'])) {
+        } elseif (is_subclass_of($type, \DateTimeInterface::class)) {
             $typeDef['type'] = 'string';
             $typeDef['format'] = 'date-time';
         } else {
