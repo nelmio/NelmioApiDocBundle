@@ -119,7 +119,7 @@ final class ModelRegistry
     {
         $type = $model->getType();
         foreach ($this->alternativeNames as $alternativeName => $criteria) {
-            if ($type->getClassName() === $criteria['type'] && $criteria['groups'] === $model->getGroups()) {
+            if ($type->getClassName() === $criteria['type'] && $criteria['groups'] == $model->getGroups()) {
                 return $alternativeName;
             }
         }
