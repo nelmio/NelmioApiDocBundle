@@ -58,8 +58,8 @@ class ConfigurationTest extends TestCase
                             'type' => 'App\Foo',
                             'areas' => ['internal'],
                         ],
-                    ]
-                ]
+                    ],
+                ],
         ]]);
 
         $this->assertSame([

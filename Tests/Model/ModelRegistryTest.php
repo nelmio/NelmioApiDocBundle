@@ -24,7 +24,7 @@ class ModelRegistryTest extends TestCase
         $alternativeNames = [
             'Foo1' => [
                 'type' => self::class,
-                'groups' => ['group1']
+                'groups' => ['group1'],
             ],
         ];
         $registry = new ModelRegistry([], new Swagger(), $alternativeNames);
@@ -35,6 +35,7 @@ class ModelRegistryTest extends TestCase
 
     /**
      * @dataProvider getNameAlternatives
+     *
      * @param $expected
      */
     public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames)
@@ -54,7 +55,7 @@ class ModelRegistryTest extends TestCase
                 [
                     'Foo1' => [
                         'type' => self::class,
-                        'groups' => ['group1']
+                        'groups' => ['group1'],
                     ],
                 ],
             ],
@@ -64,7 +65,7 @@ class ModelRegistryTest extends TestCase
                 [
                     'Foo1' => [
                         'type' => self::class,
-                        'groups' => ['group1']
+                        'groups' => ['group1'],
                     ],
                 ],
             ],
@@ -74,7 +75,7 @@ class ModelRegistryTest extends TestCase
                 [
                     'Foo1' => [
                         'type' => self::class,
-                        'groups' => ['group1', 'group2']
+                        'groups' => ['group1', 'group2'],
                     ],
                 ],
             ],
@@ -84,10 +85,10 @@ class ModelRegistryTest extends TestCase
                 [
                     'Foo1' => [
                         'type' => self::class,
-                        'groups' => []
+                        'groups' => [],
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 

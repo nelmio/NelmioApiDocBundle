@@ -36,8 +36,8 @@ class NelmioApiDocExtensionTest extends TestCase
                         'type' => 'App\Bar',
                         'areas' => ['commercial'],
                     ],
-                ]
-            ]
+                ],
+            ],
         ]], $container);
 
         $methodCalls = $container->getDefinition('nelmio_api_doc.generator.default')->getMethodCalls();
@@ -70,6 +70,7 @@ class NelmioApiDocExtensionTest extends TestCase
         }
         $this->assertTrue($foundMethodCall);
     }
+
     public function testMergesRootKeysFromMultipleConfigurations()
     {
         $container = new ContainerBuilder();

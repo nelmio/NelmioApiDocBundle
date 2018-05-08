@@ -61,7 +61,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         $container->setParameter('nelmio_api_doc.areas', array_keys($config['areas']));
         foreach ($config['areas'] as $area => $areaConfig) {
-
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
 
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
@@ -164,7 +163,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         });
 
         return array_map(function (array $aliasInfo) {
-            unset($aliasInfo["areas"]);
+            unset($aliasInfo['areas']);
+
             return $aliasInfo;
         }, $nameAliases);
     }
