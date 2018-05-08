@@ -17,6 +17,59 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class NelmioApiDocExtensionTest extends TestCase
 {
+    public function testNameAliasesArePassedToModelRegistry()
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', []);
+        $extension = new NelmioApiDocExtension();
+        $extension->load([[
+            'areas' => [
+                'default' => ['path_patterns' => ['/foo'], 'host_patterns' => []],
+                'commercial' => ['path_patterns' => ['/internal'], 'host_patterns' => []],
+            ],
+            'models' => [
+                'names' => [
+                    'Foo1' => [
+                        'type' => 'App\Foo',
+                    ],
+                    'Bar1' => [
+                        'type' => 'App\Bar',
+                        'areas' => ['commercial'],
+                    ],
+                ]
+            ]
+        ]], $container);
+
+        $methodCalls = $container->getDefinition('nelmio_api_doc.generator.default')->getMethodCalls();
+        $foundMethodCall = false;
+        foreach ($methodCalls as $methodCall) {
+            if ('setAlternativeNames' == $methodCall[0]){
+                $this->assertEquals([
+                    'Foo1' => [
+                        'type' => 'App\\Foo',
+                        'groups' => [],
+                    ],
+                ], $methodCall[1][0]);
+                $foundMethodCall = true;
+            }
+        }
+        $this->assertTrue($foundMethodCall);
+
+        $methodCalls = $container->getDefinition('nelmio_api_doc.generator.commercial')->getMethodCalls();
+        $foundMethodCall = false;
+        foreach ($methodCalls as $methodCall) {
+            if ('setAlternativeNames' == $methodCall[0]){
+                $this->assertEquals([
+                    'Bar1' => [
+                        'type' => 'App\\Bar',
+                        'groups' => [],
+                    ],
+                ], $methodCall[1][0]);
+                $foundMethodCall = true;
+            }
+        }
+        $this->assertTrue($foundMethodCall);
+    }
     public function testMergesRootKeysFromMultipleConfigurations()
     {
         $container = new ContainerBuilder();

@@ -61,13 +61,12 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         $container->setParameter('nelmio_api_doc.areas', array_keys($config['areas']));
         foreach ($config['areas'] as $area => $areaConfig) {
-            $names = array_filter($config['models']['names'], function ($name) use ($area) {
-                return empty($name['areas']) || in_array($area, $name['areas'], true);
-            });
+
+            $nameAliases = $this->findNameAliases($config['models']['names'], $area);
 
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
                 ->setPublic(false)
-                ->addMethodCall('setAlternativeNames', [$names])
+                ->addMethodCall('setAlternativeNames', [$nameAliases])
                 ->setArguments([
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
@@ -156,5 +155,17 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // Import the base configuration
         $container->getDefinition('nelmio_api_doc.describers.config')->replaceArgument(0, $config['documentation']);
+    }
+
+    private function findNameAliases(array $names, string $area): array
+    {
+        $nameAliases = array_filter($names, function (array $aliasInfo) use ($area) {
+            return empty($aliasInfo['areas']) || in_array($area, $aliasInfo['areas'], true);
+        });
+
+        return array_map(function (array $aliasInfo) {
+            unset($aliasInfo["areas"]);
+            return $aliasInfo;
+        }, $nameAliases);
     }
 }
