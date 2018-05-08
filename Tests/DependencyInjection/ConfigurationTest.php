@@ -37,6 +37,55 @@ class ConfigurationTest extends TestCase
         $this->assertSame($areas, $config['areas']);
     }
 
+    public function testAlternativeNames()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [[
+                'models' => [
+                    'names' => [
+                        'Foo1' => [
+                            'type' => 'App\Foo',
+                            'groups' => ['group'],
+                        ],
+                        'Foo2' => [
+                            'type' => 'App\Foo',
+                            'groups' => [],
+                        ],
+                        'Foo3' => [
+                            'type' => 'App\Foo',
+                        ],
+                        'Foo4' => [
+                            'type' => 'App\Foo',
+                            'areas' => ['default'],
+                        ],
+                    ]
+                ]]]
+        );
+
+        $this->assertSame([
+            'Foo1' => [
+                'type' => 'App\Foo',
+                'groups' => ['group'],
+                'areas' => []
+            ],
+            'Foo2' => [
+                'type' => 'App\Foo',
+                'groups' => [],
+                'areas' => [],
+            ],
+            'Foo3' => [
+                'type' => 'App\Foo',
+                'groups' => [],
+                'areas' => [],
+            ],
+            'Foo4' => [
+                'type' => 'App\\Foo',
+                'areas' => ['default'],
+                'groups' => [],
+            ],
+        ], $config['models']['names']);
+    }
+
     /**
      * @group legacy
      * @expectedException \InvalidArgumentException
