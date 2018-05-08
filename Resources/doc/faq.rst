@@ -65,7 +65,7 @@ Q: I have a controller with an optional path parameter. In swagger-ui, the param
         ...
     }
 
-A: Optional path parameters are not supported by the swagger specification. The solution to this is to define two
+A: Optional path parameters are not supported by the OpenAPI specification. The solution to this is to define two
    separate actions in your controller. For example::
 
     /**
@@ -112,15 +112,16 @@ A: Optional path parameters are not supported by the swagger specification. The 
         ...
     }
 
-The first action is redundant for Symfony, but adds all the relevant documentation for swagger.
+The first action is redundant for Symfony, but adds all the relevant documentation for the OpenAPI specification.
 
 Asset files not loaded
 ----------------------
 
 Q: How do I fix 404 or 406 HTTP status on NelmioApiDocBundle assets files (css, js, images)?
 
-A: The assets normally are installed by composer in the ``installAssets`` step.
-   If you have not set up this step, you can manually execute this command:
+A: The assets normally are installed by composer if any command event (usually ``post-install-cmd`` or
+   ``post-update-cmd``) triggers the ``ScriptHandler::installAssets`` script.
+   If you have not set up this script, you can manually execute this command:
 
 .. code-block:: bash
 
