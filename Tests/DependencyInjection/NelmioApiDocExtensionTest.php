@@ -43,7 +43,7 @@ class NelmioApiDocExtensionTest extends TestCase
         $methodCalls = $container->getDefinition('nelmio_api_doc.generator.default')->getMethodCalls();
         $foundMethodCall = false;
         foreach ($methodCalls as $methodCall) {
-            if ('setAlternativeNames' == $methodCall[0]){
+            if ('setAlternativeNames' === $methodCall[0]) {
                 $this->assertEquals([
                     'Foo1' => [
                         'type' => 'App\\Foo',
@@ -58,7 +58,7 @@ class NelmioApiDocExtensionTest extends TestCase
         $methodCalls = $container->getDefinition('nelmio_api_doc.generator.commercial')->getMethodCalls();
         $foundMethodCall = false;
         foreach ($methodCalls as $methodCall) {
-            if ('setAlternativeNames' == $methodCall[0]){
+            if ('setAlternativeNames' === $methodCall[0]) {
                 $this->assertEquals([
                     'Bar1' => [
                         'type' => 'App\\Bar',
