@@ -56,31 +56,31 @@ class ConfigurationTest extends TestCase
                         ],
                         'Foo4' => [
                             'type' => 'App\Foo',
-                            'areas' => ['default'],
+                            'areas' => ['internal'],
                         ],
                     ]
-                ]]]
-        );
+                ]
+        ]]);
 
         $this->assertSame([
             'Foo1' => [
                 'type' => 'App\Foo',
                 'groups' => ['group'],
-                'areas' => []
+                'areas' => ['default'],
             ],
             'Foo2' => [
                 'type' => 'App\Foo',
                 'groups' => [],
-                'areas' => [],
+                'areas' => ['default'],
             ],
             'Foo3' => [
                 'type' => 'App\Foo',
                 'groups' => [],
-                'areas' => [],
+                'areas' => ['default'],
             ],
             'Foo4' => [
                 'type' => 'App\\Foo',
-                'areas' => ['default'],
+                'areas' => ['internal'],
                 'groups' => [],
             ],
         ], $config['models']['names']);
