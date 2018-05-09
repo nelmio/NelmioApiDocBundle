@@ -35,7 +35,8 @@ class UserType extends AbstractType
                 'entry_type' => DummyEmptyType::class,
                 'required' => false,
             ])
-            ->add('quz', DummyType::class, ['documentation' => ['type' => 'string', 'description' => 'User type.'], 'required' => false]);
+            ->add('quz', DummyType::class, ['documentation' => ['type' => 'string', 'description' => 'User type.'], 'required' => false])
+            ->add('extended_builtin', ExtendedBuiltinType::class, ['required_option' => 'foo']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -16,10 +16,12 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -94,8 +96,18 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
      */
     private function findFormType(FormConfigBuilderInterface $config, $property): bool
     {
-        for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
-            $blockPrefix = $type->getBlockPrefix();
+        $type = $config->getType();
+
+        if (!$builtinFormType = $this->getBuiltinFormType($type)) {
+            // if form type is not builtin in Form component.
+            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, get_class($type->getInnerType())));
+            $property->setRef($this->modelRegistry->register($model));
+
+            return false;
+        }
+
+        do {
+            $blockPrefix = $builtinFormType->getBlockPrefix();
 
             if ('text' === $blockPrefix) {
                 $property->setType('string');
@@ -150,6 +162,8 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
             if ('checkbox' === $blockPrefix) {
                 $property->setType('boolean');
+
+                return true;
             }
 
             if ('collection' === $blockPrefix) {
@@ -180,15 +194,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
                 return true;
             }
-
-            if ($type->getInnerType() && ($formClass = get_class($type->getInnerType())) && !$this->isBuiltinType($formClass)) {
-                // if form type is not builtin in Form component.
-                $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $formClass));
-                $property->setRef($this->modelRegistry->register($model));
-
-                return false;
-            }
-        }
+        } while ($builtinFormType = $builtinFormType->getParent());
 
         return false;
     }
@@ -209,8 +215,21 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         return true;
     }
 
-    private function isBuiltinType(string $type): bool
+    /**
+     * @param ResolvedFormTypeInterface $type
+     *
+     * @return ResolvedFormTypeInterface|null
+     */
+    private function getBuiltinFormType(ResolvedFormTypeInterface $type)
     {
-        return 0 === strpos($type, 'Symfony\Component\Form\Extension\Core\Type');
+        do {
+            $class = get_class($type->getInnerType());
+
+            if (FormType::class !== $class && 0 === strpos($class, 'Symfony\Component\Form\Extension\Core\Type\\')) {
+                return $type;
+            }
+        } while ($type = $type->getParent());
+
+        return null;
     }
 }
