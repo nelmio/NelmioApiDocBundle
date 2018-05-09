@@ -218,7 +218,7 @@ This annotation has two options:
           *
           * @SWG\Response(
           *     @SWG\Schema(type="object",
-          *         @SWG\Property(property="foo", ref=@Model(FooClass::class))
+          *         @SWG\Property(property="foo", ref=@Model(type=FooClass::class))
           *     )
           * )
           */
