@@ -347,4 +347,15 @@ class FunctionalTest extends WebTestCase
         $operation = $this->getOperation('/api/configReference', 'get');
         $this->assertEquals('#/definitions/Test', $operation->getResponses()->get('200')->getSchema()->getRef());
     }
+
+    public function testOperationsWithOtherAnnotationsAction()
+    {
+        $getOperation = $this->getOperation('/api/multi-annotations', 'get');
+        $this->assertEquals('This is the get operation', $getOperation->getDescription());
+        $this->assertEquals('Worked well!', $getOperation->getResponses()->get(200)->getDescription());
+
+        $postOperation = $this->getOperation('/api/multi-annotations', 'post');
+        $this->assertEquals('This is post', $postOperation->getDescription());
+        $this->assertEquals('Worked well!', $postOperation->getResponses()->get(200)->getDescription());
+    }
 }
