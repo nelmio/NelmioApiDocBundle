@@ -224,6 +224,10 @@ class FunctionalTest extends WebTestCase
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
+            'role' => [
+                    'type' => 'string',
+                    'enum' => ['user', 'admin'],
+                ],
                 'strings' => [
                     'items' => ['type' => 'string'],
                     'type' => 'array',
@@ -244,7 +248,7 @@ class FunctionalTest extends WebTestCase
                     'description' => 'User type.',
                 ],
             ],
-            'required' => ['dummy', 'dummies'],
+            'required' => ['role', 'dummy', 'dummies'],
         ], $this->getModel('UserType')->toArray());
 
         $this->assertEquals([
