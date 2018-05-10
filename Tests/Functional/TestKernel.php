@@ -126,6 +126,13 @@ class TestKernel extends Kernel
                         'type' => 'string',
                     ],
                 ],
+                'parameters' => [
+                    'test' => [
+                        'name' => 'id',
+                        'in' => 'path',
+                        'required' => true,
+                    ],
+                ],
             ],
            'areas' => [
                'default' => ['path_patterns' => ['^/api(?!/admin)'], 'host_patterns' => ['^api\.']],
