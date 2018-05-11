@@ -37,6 +37,7 @@ class ApiController
      *     description="Success",
      *     @SWG\Schema(ref=@Model(type=Article::class, groups={"light"}))
      * )
+     * @SWG\Parameter(ref="#/parameters/test")
      * @Route("/article/{id}", methods={"GET"})
      */
     public function fetchArticleAction()
