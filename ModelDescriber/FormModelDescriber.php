@@ -225,7 +225,15 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         do {
             $class = get_class($type->getInnerType());
 
-            if (FormType::class !== $class && 0 === strpos($class, 'Symfony\Component\Form\Extension\Core\Type\\')) {
+            if (FormType::class === $class) {
+                return null;
+            }
+
+            if ('entity' === $type->getBlockPrefix()) {
+                return $type;
+            }
+
+            if (0 === strpos($class, 'Symfony\Component\Form\Extension\Core\Type\\')) {
                 return $type;
             }
         } while ($type = $type->getParent());

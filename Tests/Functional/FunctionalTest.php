@@ -243,12 +243,16 @@ class FunctionalTest extends WebTestCase
                     'type' => 'string',
                     'description' => 'User type.',
                 ],
+                'entity' => [
+                    'type' => 'string',
+                    'format' => 'Entity id',
+                ],
                 'extended_builtin' => [
                     'type' => 'string',
                     'enum' => ['foo', 'bar'],
                 ],
             ],
-            'required' => ['dummy', 'dummies', 'extended_builtin'],
+            'required' => ['dummy', 'dummies', 'entity', 'extended_builtin'],
         ], $this->getModel('UserType')->toArray());
 
         $this->assertEquals([
