@@ -158,6 +158,6 @@ class SymfonyConstraints
      */
     public static function fetchAllowedChoices()
     {
-        return ["choice1", "choice2"];
+        return ['choice1', 'choice2'];
     }
 }
