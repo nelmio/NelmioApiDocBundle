@@ -126,7 +126,7 @@ class FunctionalTest extends WebTestCase
         $this->assertTrue($parameters->has('foo', 'query'));
         $this->assertTrue($parameters->has('body', 'body'));
         $body = $parameters->get('body', 'body')->getSchema()->getProperties();
-        
+
         $this->assertTrue($body->has('bar'));
         $this->assertTrue($body->has('baz'));
 
