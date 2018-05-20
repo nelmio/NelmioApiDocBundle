@@ -70,7 +70,7 @@ class SymfonyConstraintAnnotationReader
             }
 
             if ($annotation instanceof Assert\Choice) {
-                $property->setEnum($annotation->choices);
+                $property->setEnum($annotation->callback ? call_user_func($annotation->callback) : $annotation->choices);
             }
 
             if ($annotation instanceof Assert\Expression) {
