@@ -29,10 +29,12 @@ class NelmioApiDocExtensionTest extends TestCase
             ],
             'models' => [
                 'names' => [
-                    'Foo1' => [
+                    [
+                        'alias' => 'Foo1',
                         'type' => 'App\Foo',
                     ],
-                    'Bar1' => [
+                    [
+                        'alias' => 'Foo1',
                         'type' => 'App\Bar',
                         'areas' => ['commercial'],
                     ],
@@ -60,7 +62,7 @@ class NelmioApiDocExtensionTest extends TestCase
         foreach ($methodCalls as $methodCall) {
             if ('setAlternativeNames' === $methodCall[0]) {
                 $this->assertEquals([
-                    'Bar1' => [
+                    'Foo1' => [
                         'type' => 'App\\Bar',
                         'groups' => [],
                     ],

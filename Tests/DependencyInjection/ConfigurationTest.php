@@ -41,47 +41,66 @@ class ConfigurationTest extends TestCase
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[
-                'models' => [
-                    'names' => [
-                        'Foo1' => [
-                            'type' => 'App\Foo',
-                            'groups' => ['group'],
-                        ],
-                        'Foo2' => [
-                            'type' => 'App\Foo',
-                            'groups' => [],
-                        ],
-                        'Foo3' => [
-                            'type' => 'App\Foo',
-                        ],
-                        'Foo4' => [
-                            'type' => 'App\Foo',
-                            'areas' => ['internal'],
-                        ],
+            'models' => [
+                'names' => [
+                    [
+                        'alias' => 'Foo1',
+                        'type' => 'App\Foo',
+                        'groups' => ['group'],
+                    ],
+                    [
+                        'alias' => 'Foo2',
+                        'type' => 'App\Foo',
+                        'groups' => [],
+                    ],
+                    [
+                        'alias' => 'Foo3',
+                        'type' => 'App\Foo',
+                    ],
+                    [
+                        'alias' => 'Foo4',
+                        'type' => 'App\Foo',
+                        'groups' => ['group'],
+                        'areas' => ['internal'],
+                    ],
+                    [
+                        'alias' => 'Foo1',
+                        'type' => 'App\Foo',
+                        'areas' => ['internal'],
                     ],
                 ],
+            ],
         ]]);
-
-        $this->assertSame([
-            'Foo1' => [
+        $this->assertEquals([
+            [
+                'alias' => 'Foo1',
                 'type' => 'App\Foo',
                 'groups' => ['group'],
                 'areas' => ['default'],
             ],
-            'Foo2' => [
+            [
+                'alias' => 'Foo2',
                 'type' => 'App\Foo',
                 'groups' => [],
                 'areas' => ['default'],
             ],
-            'Foo3' => [
+            [
+                'alias' => 'Foo3',
                 'type' => 'App\Foo',
                 'groups' => [],
                 'areas' => ['default'],
             ],
-            'Foo4' => [
+            [
+                'alias' => 'Foo4',
                 'type' => 'App\\Foo',
+                'groups' => ['group'],
                 'areas' => ['internal'],
+            ],
+            [
+                'alias' => 'Foo1',
+                'type' => 'App\\Foo',
                 'groups' => [],
+                'areas' => ['internal'],
             ],
         ], $config['models']['names']);
     }

@@ -162,10 +162,14 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             return empty($aliasInfo['areas']) || in_array($area, $aliasInfo['areas'], true);
         });
 
-        return array_map(function (array $aliasInfo) {
-            unset($aliasInfo['areas']);
+        $aliases = [];
+        foreach ($nameAliases as $nameAlias) {
+            $aliases[$nameAlias['alias']] = [
+                'type' => $nameAlias['type'],
+                'groups' => $nameAlias['groups'],
+            ];
+        }
 
-            return $aliasInfo;
-        }, $nameAliases);
+        return $aliases;
     }
 }
