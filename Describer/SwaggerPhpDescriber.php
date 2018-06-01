@@ -185,6 +185,9 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 continue;
             }
 
+            // Registers new annotations
+            $analysis->addAnnotations($implicitAnnotations, null);
+
             foreach ($httpMethods as $httpMethod) {
                 $annotationClass = $operationAnnotations[$httpMethod];
                 $constructorArg = [
