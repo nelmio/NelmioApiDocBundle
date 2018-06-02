@@ -7,6 +7,10 @@ php:
 
 sudo: false
 
+env:
+  - OLD_PROP="~4.0.11"
+  - OLD_PROP="~4.1.0"
+
 cache:
   directories:
     - .phpunit
@@ -26,6 +30,7 @@ matrix:
 
 before_install:
     - phpenv config-rm xdebug.ini
+    - if [[ "$OLD_PROP" != "" ]]; then composer require "symfony/property-info:$OLD_PROP" --no-update; fi
 
 install: composer update $COMPOSER_FLAGS --prefer-stable
 
