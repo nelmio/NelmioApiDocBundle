@@ -196,4 +196,15 @@ class ApiController
     public function configReferenceAction()
     {
     }
+
+    /**
+     * @Route("/multi-annotations", methods={"GET", "POST"})
+     * @SWG\Get(description="This is the get operation")
+     * @SWG\Post(description="This is post")
+     *
+     * @SWG\Response(response=200, description="Worked well!", @Model(type=DummyType::class))
+     */
+    public function operationsWithOtherAnnotations()
+    {
+    }
 }

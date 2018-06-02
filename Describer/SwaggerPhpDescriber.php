@@ -130,6 +130,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
             $nestedContext = clone $context;
             $nestedContext->nested = true;
             $implicitAnnotations = [];
+            $operations = [];
             $tags = [];
             $security = [];
             foreach (array_merge($annotations, $classAnnotations[$declaringClass->getName()]) as $annotation) {
@@ -143,6 +144,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                         $operation->path = $path;
                         $operation->mergeProperties($annotation);
 
+                        $operations[$httpMethod] = $operation;
                         $analysis->addAnnotation($operation, null);
                     }
 
@@ -155,6 +157,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                         $annotation->path = $path;
                     }
 
+                    $operations[$annotation->method] = $annotation;
                     $analysis->addAnnotation($annotation, null);
 
                     continue;
@@ -185,6 +188,9 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 continue;
             }
 
+            // Registers new annotations
+            $analysis->addAnnotations($implicitAnnotations, null);
+
             foreach ($httpMethods as $httpMethod) {
                 $annotationClass = $operationAnnotations[$httpMethod];
                 $constructorArg = [
@@ -201,7 +207,11 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 }
 
                 $operation = new $annotationClass($constructorArg);
-                $analysis->addAnnotation($operation, null);
+                if (isset($operations[$httpMethod])) {
+                    $operations[$httpMethod]->mergeProperties($operation);
+                } else {
+                    $analysis->addAnnotation($operation, null);
+                }
             }
         }
 
