@@ -29,11 +29,15 @@ class NelmioApiDocExtensionTest extends TestCase
             ],
             'models' => [
                 'names' => [
-                    [
+                    [ // Test1 alias for all the areas
+                        'alias' => 'Test1',
+                        'type' => 'App\Test',
+                    ],
+                    [ // Foo1 alias for all the areas
                         'alias' => 'Foo1',
                         'type' => 'App\Foo',
                     ],
-                    [
+                    [ // overwrite Foo1 alias for all the commercial area
                         'alias' => 'Foo1',
                         'type' => 'App\Bar',
                         'areas' => ['commercial'],
@@ -51,6 +55,10 @@ class NelmioApiDocExtensionTest extends TestCase
                         'type' => 'App\\Foo',
                         'groups' => [],
                     ],
+                    'Test1' => [
+                        'type' => 'App\\Test',
+                        'groups' => [],
+                    ],
                 ], $methodCall[1][0]);
                 $foundMethodCall = true;
             }
@@ -64,6 +72,10 @@ class NelmioApiDocExtensionTest extends TestCase
                 $this->assertEquals([
                     'Foo1' => [
                         'type' => 'App\\Bar',
+                        'groups' => [],
+                    ],
+                    'Test1' => [
+                        'type' => 'App\\Test',
                         'groups' => [],
                     ],
                 ], $methodCall[1][0]);

@@ -76,19 +76,19 @@ class ConfigurationTest extends TestCase
                 'alias' => 'Foo1',
                 'type' => 'App\Foo',
                 'groups' => ['group'],
-                'areas' => ['default'],
+                'areas' => [],
             ],
             [
                 'alias' => 'Foo2',
                 'type' => 'App\Foo',
                 'groups' => [],
-                'areas' => ['default'],
+                'areas' => [],
             ],
             [
                 'alias' => 'Foo3',
                 'type' => 'App\Foo',
                 'groups' => [],
-                'areas' => ['default'],
+                'areas' => [],
             ],
             [
                 'alias' => 'Foo4',

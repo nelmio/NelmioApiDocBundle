@@ -96,7 +96,7 @@ final class Configuration implements ConfigurationInterface
                                         ->prototype('scalar')->end()
                                     ->end()
                                     ->arrayNode('areas')
-                                        ->defaultValue(['default'])
+                                        ->defaultValue([])
                                         ->prototype('scalar')->end()
                                     ->end()
                                 ->end()

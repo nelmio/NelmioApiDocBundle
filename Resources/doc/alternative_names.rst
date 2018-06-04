@@ -20,9 +20,9 @@ You can define alternative names for each group and area combination:
                 - { alias: MainUser,        type: App\Entity\User, groups: [standard], areas: [private] }
 
 
-In this case the class ``App\Entity\User`` will be named:
+In this case the class ``App\Entity\User`` will be aliased into:
 
-- ``MainUser`` in the default area and default group
-- ``MainUser_light`` in the default area when the group is equal to ``light``
-- ``MainUser_secret`` in the ``private`` area
-- ``MainUser_light`` in the ``private`` area when the group is equal to ``light``
+- ``MainUser`` when no more detailed rules are specified
+- ``MainUser_light`` when the group is equal to ``light``
+- ``MainUser_secret`` for the ``private`` area
+- ``MainUser_light`` for the ``private`` area when the group is equal to ``light``
