@@ -56,8 +56,4 @@ class Dummy
     {
         return $this->name;
     }
-
-    public function hasRole(string $role)
-    {
-    }
 }
