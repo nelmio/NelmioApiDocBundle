@@ -7,7 +7,7 @@ customize the names for some models.
 Configuration
 -------------
 
-You can define alternative names for each group and area combination:
+You can define alternative names for each group and area combination, the last matching rule is used:
 
 .. code-block:: yaml
 
