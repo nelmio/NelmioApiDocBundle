@@ -302,6 +302,7 @@ If you need more complex features, take a look at:
     :maxdepth: 1
 
     areas
+    alternative_names
     faq
 
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html

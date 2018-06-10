@@ -37,6 +37,74 @@ class ConfigurationTest extends TestCase
         $this->assertSame($areas, $config['areas']);
     }
 
+    public function testAlternativeNames()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [[
+            'models' => [
+                'names' => [
+                    [
+                        'alias' => 'Foo1',
+                        'type' => 'App\Foo',
+                        'groups' => ['group'],
+                    ],
+                    [
+                        'alias' => 'Foo2',
+                        'type' => 'App\Foo',
+                        'groups' => [],
+                    ],
+                    [
+                        'alias' => 'Foo3',
+                        'type' => 'App\Foo',
+                    ],
+                    [
+                        'alias' => 'Foo4',
+                        'type' => 'App\Foo',
+                        'groups' => ['group'],
+                        'areas' => ['internal'],
+                    ],
+                    [
+                        'alias' => 'Foo1',
+                        'type' => 'App\Foo',
+                        'areas' => ['internal'],
+                    ],
+                ],
+            ],
+        ]]);
+        $this->assertEquals([
+            [
+                'alias' => 'Foo1',
+                'type' => 'App\Foo',
+                'groups' => ['group'],
+                'areas' => [],
+            ],
+            [
+                'alias' => 'Foo2',
+                'type' => 'App\Foo',
+                'groups' => [],
+                'areas' => [],
+            ],
+            [
+                'alias' => 'Foo3',
+                'type' => 'App\Foo',
+                'groups' => [],
+                'areas' => [],
+            ],
+            [
+                'alias' => 'Foo4',
+                'type' => 'App\\Foo',
+                'groups' => ['group'],
+                'areas' => ['internal'],
+            ],
+            [
+                'alias' => 'Foo1',
+                'type' => 'App\\Foo',
+                'groups' => [],
+                'areas' => ['internal'],
+            ],
+        ], $config['models']['names']);
+    }
+
     /**
      * @group legacy
      * @expectedException \InvalidArgumentException

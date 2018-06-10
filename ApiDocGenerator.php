@@ -28,6 +28,8 @@ final class ApiDocGenerator
 
     private $cacheItemPool;
 
+    private $alternativeNames = [];
+
     /**
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
@@ -38,6 +40,11 @@ final class ApiDocGenerator
         $this->modelDescribers = $modelDescribers;
         $this->cacheItemPool = $cacheItemPool;
         $this->cacheItemId = $cacheItemId;
+    }
+
+    public function setAlternativeNames(array $alternativeNames)
+    {
+        $this->alternativeNames = $alternativeNames;
     }
 
     public function generate(): Swagger
@@ -54,7 +61,7 @@ final class ApiDocGenerator
         }
 
         $this->swagger = new Swagger();
-        $modelRegistry = new ModelRegistry($this->modelDescribers, $this->swagger);
+        $modelRegistry = new ModelRegistry($this->modelDescribers, $this->swagger, $this->alternativeNames);
         foreach ($this->describers as $describer) {
             if ($describer instanceof ModelRegistryAwareInterface) {
                 $describer->setModelRegistry($modelRegistry);

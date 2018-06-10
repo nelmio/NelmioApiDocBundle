@@ -17,6 +17,74 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class NelmioApiDocExtensionTest extends TestCase
 {
+    public function testNameAliasesArePassedToModelRegistry()
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', []);
+        $extension = new NelmioApiDocExtension();
+        $extension->load([[
+            'areas' => [
+                'default' => ['path_patterns' => ['/foo'], 'host_patterns' => []],
+                'commercial' => ['path_patterns' => ['/internal'], 'host_patterns' => []],
+            ],
+            'models' => [
+                'names' => [
+                    [ // Test1 alias for all the areas
+                        'alias' => 'Test1',
+                        'type' => 'App\Test',
+                    ],
+                    [ // Foo1 alias for all the areas
+                        'alias' => 'Foo1',
+                        'type' => 'App\Foo',
+                    ],
+                    [ // overwrite Foo1 alias for all the commercial area
+                        'alias' => 'Foo1',
+                        'type' => 'App\Bar',
+                        'areas' => ['commercial'],
+                    ],
+                ],
+            ],
+        ]], $container);
+
+        $methodCalls = $container->getDefinition('nelmio_api_doc.generator.default')->getMethodCalls();
+        $foundMethodCall = false;
+        foreach ($methodCalls as $methodCall) {
+            if ('setAlternativeNames' === $methodCall[0]) {
+                $this->assertEquals([
+                    'Foo1' => [
+                        'type' => 'App\\Foo',
+                        'groups' => [],
+                    ],
+                    'Test1' => [
+                        'type' => 'App\\Test',
+                        'groups' => [],
+                    ],
+                ], $methodCall[1][0]);
+                $foundMethodCall = true;
+            }
+        }
+        $this->assertTrue($foundMethodCall);
+
+        $methodCalls = $container->getDefinition('nelmio_api_doc.generator.commercial')->getMethodCalls();
+        $foundMethodCall = false;
+        foreach ($methodCalls as $methodCall) {
+            if ('setAlternativeNames' === $methodCall[0]) {
+                $this->assertEquals([
+                    'Foo1' => [
+                        'type' => 'App\\Bar',
+                        'groups' => [],
+                    ],
+                    'Test1' => [
+                        'type' => 'App\\Test',
+                        'groups' => [],
+                    ],
+                ], $methodCall[1][0]);
+                $foundMethodCall = true;
+            }
+        }
+        $this->assertTrue($foundMethodCall);
+    }
+
     public function testMergesRootKeysFromMultipleConfigurations()
     {
         $container = new ContainerBuilder();
