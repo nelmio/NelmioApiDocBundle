@@ -25,4 +25,4 @@ In this case the class ``App\Entity\User`` will be aliased into:
 - ``MainUser`` when no more detailed rules are specified
 - ``MainUser_light`` when the group is equal to ``light``
 - ``MainUser_secret`` for the ``private`` area
-- ``MainUser_light`` for the ``private`` area when the group is equal to ``light``
+- ``MainUser`` for the ``private`` area when the group is equal to ``standard``
