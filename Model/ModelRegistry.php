@@ -40,7 +40,7 @@ final class ModelRegistry
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
-        $this->alternativeNames = $alternativeNames;
+        $this->alternativeNames = array_reverse($alternativeNames); // last rule wins
     }
 
     public function register(Model $model): string
