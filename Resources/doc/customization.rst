@@ -7,7 +7,7 @@ The look and feel of the Swagger UI can be customized.
 Overwrite Twig Template
 -----------------------
 
-If you want to change parts of the template you can create your own Twig template.
+If you want to customize parts of the template, you can create your own Twig template.
 This allows to change the title, the header, add additional or replace existing styles or scripts.
 
 Add the template name to the configuration:
@@ -18,7 +18,7 @@ Add the template name to the configuration:
         config:
             template: /path/to/template.html.twig
 
-Take a look at the Twig documentation how to override templates.
+Take a look at the Twig documentation `how to extend templates <https://twig.symfony.com/doc/2.x/tags/extends.html>`_.
 
 The following example will add additional scripts and a custom style to the template:
 
@@ -36,4 +36,4 @@ The following example will add additional scripts and a custom style to the temp
         <script type="text/javascript" src="{{ asset('js/custom-request-signer.js') }}"></script>
     {% endblock javascripts %}
 
-You can have a look at the original tempplate to see what blocks can be overridden.
+You can have a look at the original template to see which blocks can be overridden.
