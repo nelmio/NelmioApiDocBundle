@@ -302,6 +302,7 @@ If you need more complex features, take a look at:
     :maxdepth: 1
 
     areas
+    alternative_names
     customization
     faq
 
