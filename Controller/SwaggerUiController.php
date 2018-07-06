@@ -24,10 +24,12 @@ final class SwaggerUiController
 
     private $twig;
 
+    private $twigTemplate;
+
     /**
      * @param ContainerInterface $generatorLocator
      */
-    public function __construct($generatorLocator, \Twig_Environment $twig)
+    public function __construct($generatorLocator, \Twig_Environment $twig, string $twigTemplate)
     {
         if (!$generatorLocator instanceof ContainerInterface) {
             if (!$generatorLocator instanceof ApiDocGenerator) {
@@ -42,6 +44,7 @@ final class SwaggerUiController
 
         $this->generatorLocator = $generatorLocator;
         $this->twig = $twig;
+        $this->twigTemplate = $twigTemplate;
     }
 
     public function __invoke(Request $request, $area = 'default')
@@ -56,7 +59,7 @@ final class SwaggerUiController
         }
 
         return new Response(
-            $this->twig->render('@NelmioApiDoc/SwaggerUi/index.html.twig', ['swagger_data' => ['spec' => $spec]]),
+            $this->twig->render($this->twigTemplate, ['swagger_data' => ['spec' => $spec]]),
             Response::HTTP_OK,
             ['Content-Type' => 'text/html']
         );

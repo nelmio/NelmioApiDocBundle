@@ -86,6 +86,11 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('use_jms')->defaultFalse()->end()
                     ->end()
                 ->end()
+                ->arrayNode('config')
+                    ->children()
+                        ->stringNode('template')->defaultValue('@NelmioApiDoc/SwaggerUi/index.html.twig')->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

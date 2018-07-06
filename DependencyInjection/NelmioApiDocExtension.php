@@ -102,6 +102,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
         }
 
+        $container->setParameter('nelmio_api_doc.template', $config['config']['template']);
+
         $container->register('nelmio_api_doc.generator_locator')
             ->setPublic(false)
             ->addTag('container.service_locator')
