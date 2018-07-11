@@ -30,8 +30,8 @@ final class SwaggerUiController
 
     /**
      * @param ContainerInterface $generatorLocator
-     * @param \Twig_Environment $twig
-     * @param string $twigTemplate
+     * @param \Twig_Environment  $twig
+     * @param string             $twigTemplate
      */
     public function __construct($generatorLocator, \Twig_Environment $twig, string $twigTemplate = self::TWIG_TEMPLATE_DEFAULT)
     {
