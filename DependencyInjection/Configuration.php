@@ -103,6 +103,12 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('ui')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('view')->defaultValue('@NelmioApiDoc/SwaggerUi/index.html.twig')->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

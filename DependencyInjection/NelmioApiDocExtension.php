@@ -154,6 +154,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // Import the base configuration
         $container->getDefinition('nelmio_api_doc.describers.config')->replaceArgument(0, $config['documentation']);
+
+        $container->setParameter('nelmio_api_doc.ui.view', $config['ui']['view']);
     }
 
     private function findNameAliases(array $names, string $area): array

@@ -48,7 +48,7 @@ file that was distributed with this source code. #}
         <a id="logo" href="https://github.com/nelmio/NelmioApiDocBundle"><img src="{{ asset('bundles/nelmioapidoc/logo.png') }}" alt="NelmioApiDocBundle"></a>
     </header>
 
-    <div id="swagger-ui" class="api-platform"></div>
+    {% block documentation %}<div id="swagger-ui" class="api-platform"></div>{% endblock %}
 
     <div class="swagger-ui-wrap" style="margin-top: 20px; margin-bottom: 20px;">
         &copy; 2017 <a href="https://api-platform.com">Api-Platform</a>
