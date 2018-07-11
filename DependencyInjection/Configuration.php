@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
+use Nelmio\ApiDocBundle\Controller\SwaggerUiController;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -49,7 +50,7 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('config')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('template')->defaultValue('@NelmioApiDoc/SwaggerUi/index.html.twig')->end()
+                        ->scalarNode('template')->defaultValue(SwaggerUiController::TWIG_TEMPLATE_DEFAULT)->end()
                     ->end()
                 ->end()
                 ->arrayNode('areas')

@@ -20,6 +20,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class SwaggerUiController
 {
+    const TWIG_TEMPLATE_DEFAULT = '@NelmioApiDoc/SwaggerUi/index.html.twig';
+
     private $generatorLocator;
 
     private $twig;
@@ -28,8 +30,10 @@ final class SwaggerUiController
 
     /**
      * @param ContainerInterface $generatorLocator
+     * @param \Twig_Environment $twig
+     * @param string $twigTemplate
      */
-    public function __construct($generatorLocator, \Twig_Environment $twig, string $twigTemplate)
+    public function __construct($generatorLocator, \Twig_Environment $twig, string $twigTemplate = self::TWIG_TEMPLATE_DEFAULT)
     {
         if (!$generatorLocator instanceof ContainerInterface) {
             if (!$generatorLocator instanceof ApiDocGenerator) {
