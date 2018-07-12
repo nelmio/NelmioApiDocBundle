@@ -175,7 +175,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $itemsProp = $property->getItems();
 
                 if (!$this->findFormType($subForm->getConfig(), $itemsProp)) {
-                    $property->setExample(sprintf('[{%s}]', $subType));
+                    
                 }
 
                 return true;
