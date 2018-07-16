@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+3.3.0 (unreleased)
+------------------
+
+* Usage of Google Fonts was removed. System fonts `serif` / `sans` will be used instead. 
+  This can lead to a different look on different operating systems.
+  You can [re-add Google Fonts again manually by overriding the template](https://symfony.com/doc/current/bundles/NelmioApiDocBundle/faq.html#re-add-google-fonts).
+
+* The Twig template for the Swagger UI now contains blocks to make it easier to overwrite certain parts.
+  See the [official documentation](https://symfony.com/doc/current/bundles/NelmioApiDocBundle/customization.html) how to do this.
+
 3.2.0 (2018-03-24)
 ------------------
 

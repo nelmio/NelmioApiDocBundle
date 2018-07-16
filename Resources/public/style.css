@@ -171,7 +171,7 @@ header #logo img {
 
 #formats {
   text-align:right;
-  font-family: Open Sans,sans-serif;
+  font-family: sans-serif;
   width: 100%;
   max-width: 1460px;
   padding: 0px 60px;
@@ -287,5 +287,5 @@ text-align:center;
 .swagger-ui .info .title small pre,
 .swagger-ui .scopes h2,
 .swagger-ui .errors-wrapper hgroup h4 {
-  font-family: Open Sans,sans-serif!important;
+  font-family: sans-serif !important;
 }

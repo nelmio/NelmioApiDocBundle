@@ -303,6 +303,7 @@ If you need more complex features, take a look at:
 
     areas
     alternative_names
+    customization
     faq
 
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
