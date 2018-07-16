@@ -13,10 +13,6 @@ file that was distributed with this source code. #}
     {% endblock meta %}
     <title>{% block title %}{{ swagger_data.spec.info.title }}{% endblock title %}</title>
 
-    {% block fonts %}
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700">
-    {% endblock fonts %}
-
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('bundles/nelmioapidoc/swagger-ui/swagger-ui.css') }}">
         <link rel="stylesheet" href="{{ asset('bundles/nelmioapidoc/style.css') }}">
