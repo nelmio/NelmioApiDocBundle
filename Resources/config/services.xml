@@ -8,7 +8,6 @@
         <service id="nelmio_api_doc.controller.swagger_ui" class="Nelmio\ApiDocBundle\Controller\SwaggerUiController" public="true">
             <argument type="service" id="nelmio_api_doc.generator_locator" />
             <argument type="service" id="twig" />
-            <argument>%nelmio_api_doc.template%</argument>
         </service>
 
         <service id="nelmio_api_doc.controller.swagger" class="Nelmio\ApiDocBundle\Controller\DocumentationController" public="true">
