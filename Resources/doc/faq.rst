@@ -127,3 +127,48 @@ A: The assets normally are installed by composer if any command event (usually `
 
     $ bin/console assets:install --symlink
 
+Re-add Google Fonts
+-------------------
+
+Q: How can I re-add Google Fonts?
+
+A: Create a override template file inside your project and add the following content:
+
+.. code-block:: twig
+
+    {# templates/bundles/NelmioApiDocBundle/SwaggerUI/index.html.twig #}
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700">
+        {{ parent() }}
+        <style type="text/css" rel="stylesheet">
+            #formats {
+                font-family: Open Sans,sans-serif;
+            }
+
+            .swagger-ui .opblock-tag,
+            .swagger-ui .opblock .opblock-section-header label,
+            .swagger-ui .opblock .opblock-section-header h4,
+            .swagger-ui .opblock .opblock-summary-method,
+            .swagger-ui .tab li,
+            .swagger-ui .scheme-container .schemes>label,
+            .swagger-ui .loading-container .loading:after,
+            .swagger-ui .btn,
+            .swagger-ui .btn.cancel,
+            .swagger-ui select,
+            .swagger-ui label,
+            .swagger-ui .dialog-ux .modal-ux-content h4,
+            .swagger-ui .dialog-ux .modal-ux-header h3,
+            .swagger-ui section.models h4,
+            .swagger-ui section.models h5,
+            .swagger-ui .model-title,
+            .swagger-ui .parameter__name,
+            .swagger-ui .topbar a,
+            .swagger-ui .topbar .download-url-wrapper .download-url-button,
+            .swagger-ui .info .title small pre,
+            .swagger-ui .scopes h2,
+            .swagger-ui .errors-wrapper hgroup h4 {
+                font-family: Open Sans,sans-serif!important;
+            }
+        </style>
+    {% endblock stylesheets %}

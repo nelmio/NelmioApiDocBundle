@@ -6,49 +6,10 @@ CHANGELOG
 
 * Usage of Google Fonts was removed. System fonts `serif` / `sans` will be used instead. 
   This can lead to a different look on different operating systems.
-  You can add the Google Fonts again manually by overriding the template:
-  
-  * Create a new file ``
-  * Add the following content:
-    ```twig
-    {% block stylesheets %}
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700">
-        {{ parent() }}
-        <style type="text/css" rel="stylesheet">
-            #formats {
-                font-family: Open Sans,sans-serif;
-            }
-    
-            .swagger-ui .opblock-tag,
-            .swagger-ui .opblock .opblock-section-header label,
-            .swagger-ui .opblock .opblock-section-header h4,
-            .swagger-ui .opblock .opblock-summary-method,
-            .swagger-ui .tab li,
-            .swagger-ui .scheme-container .schemes>label,
-            .swagger-ui .loading-container .loading:after,
-            .swagger-ui .btn,
-            .swagger-ui .btn.cancel,
-            .swagger-ui select,
-            .swagger-ui label,
-            .swagger-ui .dialog-ux .modal-ux-content h4,
-            .swagger-ui .dialog-ux .modal-ux-header h3,
-            .swagger-ui section.models h4,
-            .swagger-ui section.models h5,
-            .swagger-ui .model-title,
-            .swagger-ui .parameter__name,
-            .swagger-ui .topbar a,
-            .swagger-ui .topbar .download-url-wrapper .download-url-button,
-            .swagger-ui .info .title small pre,
-            .swagger-ui .scopes h2,
-            .swagger-ui .errors-wrapper hgroup h4 {
-                font-family: Open Sans,sans-serif!important;
-            }
-        </style>
-    {% endblock stylesheets %}
-    ```
+  You can [re-add Google Fonts again manually by overriding the template](https://symfony.com/doc/current/bundles/NelmioApiDocBundle/faq.html#re-add-google-fonts).
 
 * The Twig template for the Swagger UI now contains blocks to make it easier to overwrite certain parts.
-  See the official documentation how to do this.
+  See the [official documentation](https://symfony.com/doc/current/bundles/NelmioApiDocBundle/customization.html) how to do this.
 
 3.2.0 (2018-03-24)
 ------------------
