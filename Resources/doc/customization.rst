@@ -13,7 +13,7 @@ This allows to change the title, the header, add additional or replace existing 
 Take a look at the Twig documentation `how to extend templates <https://twig.symfony.com/doc/2.x/tags/extends.html>`_.
 
 The following example will add additional scripts and a custom style to the template.
-Just create a file ``templates/bundles/NelmioApiDocBundle/views/SwaggerUI/index.html.twig``.
+Just create a file ``templates/bundles/NelmioApiDocBundle/SwaggerUI/index.html.twig``.
 
 .. code-block:: twig
 
