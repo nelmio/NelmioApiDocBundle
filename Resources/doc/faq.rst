@@ -130,14 +130,20 @@ A: The assets normally are installed by composer if any command event (usually `
 Re-add Google Fonts
 -------------------
 
-Q: How can I re-add Google Fonts?
+Q: How can I change the font for the UI?
 
-A: Create a override template file inside your project and add the following content:
+A: We removed the google fonts in 3.3 to avoid the external request for GDPR reasons. To change the font, you can :doc:`customize the template <customization>` to add this style information:
 
 .. code-block:: twig
 
     {# templates/bundles/NelmioApiDocBundle/SwaggerUI/index.html.twig #}
-
+    
+    {#
+       To avoid a "reached nested level" error an exclamation mark `!` has to be added
+       See https://symfony.com/blog/new-in-symfony-3-4-improved-the-overriding-of-templates
+    #}
+    {% extends '@!NelmioApiDoc/SwaggerUi/index.html.twig' %}
+    
     {% block stylesheets %}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700">
         {{ parent() }}
