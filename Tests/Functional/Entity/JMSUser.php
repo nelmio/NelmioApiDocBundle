@@ -81,6 +81,12 @@ class JMSUser
     private $friends;
 
     /**
+     * @Serializer\Type("array<integer, Nelmio\ApiDocBundle\Tests\Functional\Entity\User>")
+     * @Serializer\Expose
+     */
+    private $integerIndexedFriends;
+
+    /**
      * @Serializer\Type("array<string, Nelmio\ApiDocBundle\Tests\Functional\Entity\User>")
      * @Serializer\Expose
      */

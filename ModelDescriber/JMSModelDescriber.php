@@ -93,13 +93,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             }
 
             if ($nestedType = $this->getNestedTypeInArray($item)) {
-                list($type, $isHash) = $nestedType;
-                if ($isHash) {
+                list($type, $isObject) = $nestedType;
+                if ($isObject) {
                     $property->setType('object');
 
                     $typeDef = $this->findPropertyType($type, $groups);
 
-                    // in the case of a virtual property, set it as free object type
+                    // set it as object type
                     $property->merge(['additionalProperties' => $typeDef ?: []]);
 
                     continue;
@@ -193,20 +193,16 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      */
     private function getNestedTypeInArray(PropertyMetadata $item)
     {
-        if ('array' !== $item->type['name'] && 'ArrayCollection' !== $item->type['name']) {
+        if (('array' !== $item->type['name'] && 'ArrayCollection' !== $item->type['name']) || !isset($item->type['params'][0]['name'])) {
             return null;
         }
 
-        // array<string, MyNamespaceMyObject>
         if (isset($item->type['params'][1]['name'])) {
-            return [$item->type['params'][1]['name'], true];
+            // array<string, MyNamespaceMyObject>
+            return [$item->type['params'][1]['name'], 'integer' !== $item->type['params'][0]['name']];
         }
 
         // array<MyNamespaceMyObject>
-        if (isset($item->type['params'][0]['name'])) {
-            return [$item->type['params'][0]['name'], false];
-        }
-
-        return null;
+        return [$item->type['params'][0]['name'], false];
     }
 }
