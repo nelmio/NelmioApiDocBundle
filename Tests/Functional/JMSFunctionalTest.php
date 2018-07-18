@@ -54,6 +54,12 @@ class JMSFunctionalTest extends WebTestCase
                         '$ref' => '#/definitions/User',
                     ],
                 ],
+                'integer_indexed_friends' => [
+                    'type' => 'array',
+                    'items' => [
+                        '$ref' => '#/definitions/User',
+                    ],
+                ],
                 'indexed_friends' => [
                     'type' => 'object',
                     'additionalProperties' => [
