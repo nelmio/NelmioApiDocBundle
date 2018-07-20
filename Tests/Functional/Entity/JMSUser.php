@@ -126,6 +126,12 @@ class JMSUser
      */
     private $status;
 
+    /**
+     * @Serializer\Type("array<array<float>>")
+     * @Serializer\Expose
+     */
+    private $latLonHistory;
+
     public function setRoles($roles)
     {
     }

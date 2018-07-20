@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
-use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
@@ -92,33 +91,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 continue;
             }
 
-            if ($nestedType = $this->getNestedTypeInArray($item)) {
-                list($type, $isHash) = $nestedType;
-                if ($isHash) {
-                    $property->setType('object');
-
-                    $typeDef = $this->findPropertyType($type, $groups);
-
-                    // in the case of a virtual property, set it as free object type
-                    $property->merge(['additionalProperties' => $typeDef ?: []]);
-
-                    continue;
-                } else {
-                    $property->setType('array');
-                    $property = $property->getItems();
-                }
-            } else {
-                $type = $item->type['name'];
-            }
-
-            $typeDef = $this->findPropertyType($type, $groups);
-
-            // virtual property
-            if (!$typeDef) {
-                continue;
-            }
-
-            $this->registerPropertyType($typeDef, $property);
+            $this->describeItem($item->type, $property, $groups);
         }
     }
 
@@ -186,25 +159,40 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
     }
 
-    /**
-     * @param PropertyMetadata $item
-     *
-     * @return array|null
-     */
-    private function getNestedTypeInArray(PropertyMetadata $item)
+    private function describeItem(array $type, $property, array $groups = null)
     {
-        if ('array' !== $item->type['name'] && 'ArrayCollection' !== $item->type['name']) {
+        if (list($nestedType, $isHash) = $this->getNestedTypeInArray($type)) { // @ todo update a bit getNestedTypeInArray and describe ($type = $item->type)
+            if ($isHash) {
+                $property->setType('object');
+                // in the case of a virtual property, set it as free object type
+                $property->merge(['additionalProperties' => []]);
+
+                $this->describeItem($nestedType, $property->getAdditionalProperties(), $groups);
+
+                return;
+            }
+
+            $property->setType('array');
+            $this->describeItem($nestedType, $property->getItems(), $groups);
+        }
+
+        if ($typeDef = $this->findPropertyType($type['name'], $groups)) {
+            $this->registerPropertyType($typeDef, $property);
+        }
+    }
+
+    private function getNestedTypeInArray(array $type)
+    {
+        if ('array' !== $type['name'] && 'ArrayCollection' !== $type['name']) {
             return null;
         }
-
         // array<string, MyNamespaceMyObject>
-        if (isset($item->type['params'][1]['name'])) {
-            return [$item->type['params'][1]['name'], true];
+        if (isset($type['params'][1]['name'])) {
+            return [$type['params'][1], true];
         }
-
         // array<MyNamespaceMyObject>
-        if (isset($item->type['params'][0]['name'])) {
-            return [$item->type['params'][0]['name'], false];
+        if (isset($type['params'][0]['name'])) {
+            return [$type['params'][0], false];
         }
 
         return null;
