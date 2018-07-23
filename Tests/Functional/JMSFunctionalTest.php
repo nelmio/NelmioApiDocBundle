@@ -83,6 +83,16 @@ class JMSFunctionalTest extends WebTestCase
                 'last_update' => [
                     'type' => 'date',
                 ],
+                'lat_lon_history' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'array',
+                        'items' => [
+                            'type' => 'number',
+                            'format' => 'float',
+                        ],
+                    ],
+                ],
             ],
         ], $this->getModel('JMSUser')->toArray());
     }
