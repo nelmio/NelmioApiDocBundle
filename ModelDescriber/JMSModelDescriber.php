@@ -76,7 +76,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $groups = array_filter($groups, 'is_scalar');
             }
 
-            if ([GroupsExclusionStrategy::DEFAULT_GROUP] == $groups) {
+            if ([GroupsExclusionStrategy::DEFAULT_GROUP] === $groups) {
                 $groups = null;
             }
 
