@@ -165,11 +165,17 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
     }
 
+    /**
+     * @param array      $type
+     * @param Schema     $property
+     * @param array|null $groups
+     */
     private function describeItem(array $type, $property, array $groups = null)
     {
         if (list($nestedType, $isHash) = $this->getNestedTypeInArray($type)) { // @ todo update a bit getNestedTypeInArray and describe ($type = $item->type)
             if ($isHash) {
                 $property->setType('object');
+                $additionalProperties = $property->getAdditionalProperties();
                 // in the case of a virtual property, set it as free object type
                 $property->merge(['additionalProperties' => []]);
 
@@ -183,6 +189,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
 
         if ($typeDef = $this->findPropertyType($type['name'], $groups)) {
+            if (isset($typeDef['type']) && 'array' === $typeDef['type'] && null === $property->getItems()->toArray()) {
+                unset($typeDef['type']);
+            }
+
             $this->registerPropertyType($typeDef, $property);
         }
     }

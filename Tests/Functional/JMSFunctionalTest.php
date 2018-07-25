@@ -93,6 +93,10 @@ class JMSFunctionalTest extends WebTestCase
                         ],
                     ],
                 ],
+                'free_form_object' => [
+                    'type' => 'object',
+                    'additionalProperties' => true,
+                ],
             ],
         ], $this->getModel('JMSUser')->toArray());
     }

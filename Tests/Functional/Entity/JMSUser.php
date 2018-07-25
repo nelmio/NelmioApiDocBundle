@@ -132,6 +132,12 @@ class JMSUser
      */
     private $latLonHistory;
 
+    /**
+     * @Serializer\Type("array<string, array>")
+     * @Serializer\Expose
+     */
+    private $freeFormObject;
+
     public function setRoles($roles)
     {
     }
