@@ -97,6 +97,24 @@ class JMSFunctionalTest extends WebTestCase
         ], $this->getModel('JMSUser')->toArray());
     }
 
+    public function testModelComplexDualDocumentation()
+    {
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                ],
+                'complex' => [
+                    '$ref' => '#/definitions/JMSComplex2',
+                ],
+                'user' => [
+                    '$ref' => '#/definitions/JMSUser',
+                ],
+            ],
+        ], $this->getModel('JMSDualComplex')->toArray());
+    }
+
     public function testModelComplexDocumentation()
     {
         $this->assertEquals([
