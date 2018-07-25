@@ -68,6 +68,11 @@ class ConfigurationTest extends TestCase
                         'type' => 'App\Foo',
                         'areas' => ['internal'],
                     ],
+                    [
+                        'alias' => 'Foo1',
+                        'type' => 'App\Foo',
+                        'groups' => ['group1', ['group2', 'parent' => 'child3']],
+                    ],
                 ],
             ],
         ]]);
@@ -101,6 +106,12 @@ class ConfigurationTest extends TestCase
                 'type' => 'App\\Foo',
                 'groups' => [],
                 'areas' => ['internal'],
+            ],
+            [
+                'alias' => 'Foo1',
+                'type' => 'App\Foo',
+                'groups' => ['group1', ['group2', 'parent' => 'child3']],
+                'areas' => [],
             ],
         ], $config['models']['names']);
     }
