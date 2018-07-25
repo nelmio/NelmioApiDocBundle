@@ -93,7 +93,7 @@ final class Configuration implements ConfigurationInterface
                                     ->scalarNode('type')->isRequired()->end()
                                     ->arrayNode('groups')
                                         ->defaultValue([])
-                                        ->prototype('scalar')->end()
+                                        ->variablePrototype()->end()
                                     ->end()
                                     ->arrayNode('areas')
                                         ->defaultValue([])
