@@ -26,7 +26,7 @@
         <service id="nelmio_api_doc.describers.config" class="Nelmio\ApiDocBundle\Describer\ExternalDocDescriber" public="false">
             <argument type="collection" />
 
-            <tag name="nelmio_api_doc.describer" priority="1000" />
+            <tag name="nelmio_api_doc.describer" priority="-1000" />
         </service>
 
         <service id="nelmio_api_doc.describers.default" class="Nelmio\ApiDocBundle\Describer\DefaultDescriber" public="false">
