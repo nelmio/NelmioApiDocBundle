@@ -235,12 +235,10 @@ class FunctionalTest extends WebTestCase
                 'dummies' => [
                     'items' => ['$ref' => '#/definitions/DummyType'],
                     'type' => 'array',
-                    'example' => sprintf('[{%s}]', DummyType::class),
                 ],
                 'empty_dummies' => [
                     'items' => ['$ref' => '#/definitions/DummyEmptyType'],
                     'type' => 'array',
-                    'example' => sprintf('[{%s}]', DummyEmptyType::class),
                 ],
                 'quz' => [
                     'type' => 'string',
