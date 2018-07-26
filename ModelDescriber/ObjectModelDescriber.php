@@ -86,7 +86,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             $type = $types[0];
-            if (Type::BUILTIN_TYPE_ARRAY === $type->getBuiltinType()) {
+            if ($type->isCollection()) {
                 $type = $type->getCollectionValueType();
                 if (null === $type) {
                     throw new \LogicException(sprintf('Property "%s:%s" is an array, but no indication of the array elements are made. Use e.g. string[] for an array of string.', $class, $propertyName));
