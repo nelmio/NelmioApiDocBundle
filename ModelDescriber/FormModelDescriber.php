@@ -91,10 +91,8 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
      *
      * @param FormConfigBuilderInterface $config
      * @param                            $property
-     *
-     * @return bool
      */
-    private function findFormType(FormConfigBuilderInterface $config, $property): bool
+    private function findFormType(FormConfigBuilderInterface $config, $property)
     {
         $type = $config->getType();
 
@@ -103,7 +101,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, get_class($type->getInnerType())));
             $property->setRef($this->modelRegistry->register($model));
 
-            return false;
+            return;
         }
 
         do {
@@ -112,33 +110,33 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             if ('text' === $blockPrefix) {
                 $property->setType('string');
 
-                return true;
+                break;
             }
 
             if ('number' === $blockPrefix) {
                 $property->setType('number');
 
-                return true;
+                break;
             }
 
             if ('integer' === $blockPrefix) {
                 $property->setType('integer');
 
-                return true;
+                break;
             }
 
             if ('date' === $blockPrefix) {
                 $property->setType('string');
                 $property->setFormat('date');
 
-                return true;
+                break;
             }
 
             if ('datetime' === $blockPrefix) {
                 $property->setType('string');
                 $property->setFormat('date-time');
 
-                return true;
+                break;
             }
 
             if ('choice' === $blockPrefix) {
@@ -157,13 +155,13 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                     }
                 }
 
-                return true;
+                break;
             }
 
             if ('checkbox' === $blockPrefix) {
                 $property->setType('boolean');
 
-                return true;
+                break;
             }
 
             if ('collection' === $blockPrefix) {
@@ -174,11 +172,9 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $property->setType('array');
                 $itemsProp = $property->getItems();
 
-                if (!$this->findFormType($subForm->getConfig(), $itemsProp)) {
-                    $property->setExample(sprintf('[{%s}]', $subType));
-                }
+                $this->findFormType($subForm->getConfig(), $itemsProp);
 
-                return true;
+                break;
             }
 
             if ('entity' === $blockPrefix) {
@@ -192,11 +188,9 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                     $property->setFormat(sprintf('%s id', $entityClass));
                 }
 
-                return true;
+                break;
             }
         } while ($builtinFormType = $builtinFormType->getParent());
-
-        return false;
     }
 
     /**
