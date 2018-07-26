@@ -35,6 +35,11 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     private $doctrineReader;
     private $previousGroups = [];
 
+    /**
+     * @var array
+     */
+    private $propertyTypeUseGroupsCache = [];
+
     public function __construct(
         MetadataFactoryInterface $factory,
         PropertyNamingStrategyInterface $namingStrategy,
@@ -183,17 +188,26 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      */
     private function propertyTypeUsesGroups(array $type)
     {
+        if (!array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
+            return $this->propertyTypeUseGroupsCache[$type['name']];
+        }
+
         try {
             $metadata = $this->factory->getMetadataForClass($type['name']);
 
             foreach ($metadata->propertyMetadata as $item) {
-                if ($item->groups && $item->groups != [GroupsExclusionStrategy::DEFAULT_GROUP]) {
+                if (null !== $item->groups && $item->groups != [GroupsExclusionStrategy::DEFAULT_GROUP]) {
+                    $this->propertyTypeUseGroupsCache[$type['name']] = true;
+
                     return true;
                 }
             }
+            $this->propertyTypeUseGroupsCache[$type['name']] = false;
 
             return false;
         } catch (\ReflectionException $e) {
+            $this->propertyTypeUseGroupsCache[$type['name']] = null;
+
             return null;
         }
     }
