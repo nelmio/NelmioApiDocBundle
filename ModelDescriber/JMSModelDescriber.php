@@ -72,6 +72,12 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $groups = $model->getGroups();
             if (isset($groups[$name]) && is_array($groups[$name])) {
                 $groups = $model->getGroups()[$name];
+            } elseif (is_array($groups)) {
+                $groups = array_filter($groups, 'is_scalar');
+            }
+
+            if ([GroupsExclusionStrategy::DEFAULT_GROUP] === $groups) {
+                $groups = null;
             }
 
             // read property options from Swagger Property annotation if it exists

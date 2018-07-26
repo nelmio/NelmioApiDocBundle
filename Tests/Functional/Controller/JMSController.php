@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSDualComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\VirtualProperty;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -56,6 +57,18 @@ class JMSController
      * )
      */
     public function complexAction()
+    {
+    }
+
+    /**
+     * @Route("/api/jms_complex_dual", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=JMSDualComplex::class, groups={"Default", "complex" : {"user" : {"details"}}})
+     * )
+     */
+    public function complexDualAction()
     {
     }
 }
