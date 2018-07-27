@@ -59,6 +59,7 @@ class SwaggerUiTest extends WebTestCase
         $client = self::createClient();
         $crawler = $client->request('GET', '/app_dev.php/docs.json');
 
+
         $response = $client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));

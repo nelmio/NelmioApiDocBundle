@@ -24,8 +24,8 @@ class NelmioApiDocExtensionTest extends TestCase
         $extension = new NelmioApiDocExtension();
         $extension->load([[
             'areas' => [
-                'default' => ['path_patterns' => ['/foo'], 'host_patterns' => []],
-                'commercial' => ['path_patterns' => ['/internal'], 'host_patterns' => []],
+                'default' => ['path_patterns' => ['/foo'], 'host_patterns' => [], 'documentation' => []],
+                'commercial' => ['path_patterns' => ['/internal'], 'host_patterns' => [], 'documentation' => []],
             ],
             'models' => [
                 'names' => [
@@ -92,33 +92,45 @@ class NelmioApiDocExtensionTest extends TestCase
         $extension = new NelmioApiDocExtension();
         $extension->load([
             [
-                'documentation' => [
-                    'info' => [
-                        'title' => 'API documentation',
-                        'description' => 'This is the api documentation, use it wisely',
+                'areas' => [
+                    'default' => [
+                        'documentation' => [
+                            'info' => [
+                                'title' => 'API documentation',
+                                'description' => 'This is the api documentation, use it wisely',
+                            ],
+                        ],
+                    ]
+                ]
+            ],
+            [
+                'areas' => [
+                    'default' => [
+                        'documentation' => [
+                            'tags' => [
+                                [
+                                    'name' => 'secured',
+                                    'description' => 'Requires authentication',
+                                ],
+                                [
+                                    'name' => 'another',
+                                    'description' => 'Another tag serving another purpose',
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],
             [
-                'documentation' => [
-                    'tags' => [
-                        [
-                            'name' => 'secured',
-                            'description' => 'Requires authentication',
-                        ],
-                        [
-                            'name' => 'another',
-                            'description' => 'Another tag serving another purpose',
-                        ],
-                    ],
-                ],
-            ],
-            [
-                'documentation' => [
-                    'paths' => [
-                        '/api/v1/model' => [
-                            'get' => [
-                                'tags' => ['secured'],
+                'areas' => [
+                    'default' => [
+                        'documentation' => [
+                            'paths' => [
+                                '/api/v1/model' => [
+                                    'get' => [
+                                        'tags' => ['secured'],
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -148,6 +160,6 @@ class NelmioApiDocExtensionTest extends TestCase
                     ],
                 ],
             ],
-        ], $container->getDefinition('nelmio_api_doc.describers.config')->getArgument(0));
+        ], $container->getDefinition('nelmio_api_doc.describers.config.default')->getArgument(0));
     }
 }
