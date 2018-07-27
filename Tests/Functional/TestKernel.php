@@ -118,63 +118,51 @@ class TestKernel extends Kernel
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
            'areas' => [
-               'default' => ['path_patterns' => ['^/api(?!/admin)'], 'host_patterns' => ['^api\.'], 'documentation' => [
-                   'info' => [
-                       'title' => 'My Test App',
-                   ],
-                   'definitions' => [
-                       'Test' => [
-                           'type' => 'string',
+               'default' => [
+                   'path_patterns' => ['^/api(?!/admin)'],
+                   'host_patterns' => ['^api\.'],
+                   'documentation' => [
+                       'info' => [
+                           'title' => 'My Test App',
+                       ],
+                       'definitions' => [
+                           'Test' => [
+                               'type' => 'string',
+                           ],
+                       ],
+                       'parameters' => [
+                           'test' => [
+                               'name' => 'id',
+                               'in' => 'path',
+                               'required' => true,
+                           ],
                        ],
                    ],
-                   'parameters' => [
-                       'test' => [
-                           'name' => 'id',
-                           'in' => 'path',
-                           'required' => true,
+               ],
+               'test' => [
+                   'path_patterns' => ['^/test'],
+                   'host_patterns' => ['^api-test\.'],
+                   'documentation' => [
+                       'info' => [
+                           'title' => 'My Test App',
+                       ],
+                       'definitions' => [
+                           'Test' => [
+                               'type' => 'string',
+                           ],
+                       ],
+                       'parameters' => [
+                           'test' => [
+                               'name' => 'id',
+                               'in' => 'path',
+                               'required' => true,
+                           ],
                        ],
                    ],
-               ]],
-               'test' => ['path_patterns' => ['^/test'], 'host_patterns' => ['^api-test\.'], 'documentation' => [
-                   'info' => [
-                       'title' => 'My Test App',
-                   ],
-                   'definitions' => [
-                       'Test' => [
-                           'type' => 'string',
-                       ],
-                   ],
-                   'parameters' => [
-                       'test' => [
-                           'name' => 'id',
-                           'in' => 'path',
-                           'required' => true,
-                       ],
-                   ],
-               ]],
+               ],
             ],
         ]);
     }
-
-    /*
-     * 'documentation' => [
-                'info' => [
-                    'title' => 'My Test App',
-                ],
-                'definitions' => [
-                    'Test' => [
-                        'type' => 'string',
-                    ],
-                ],
-                'parameters' => [
-                    'test' => [
-                        'name' => 'id',
-                        'in' => 'path',
-                        'required' => true,
-                    ],
-                ],
-            ],
-     */
 
     /**
      * {@inheritdoc}
