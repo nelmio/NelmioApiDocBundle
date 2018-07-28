@@ -138,6 +138,24 @@ class JMSUser
      */
     private $freeFormObject;
 
+    /**
+     * @Serializer\Type("array<string, array<string, DateTime>>")
+     * @Serializer\Expose
+     */
+    private $deepObject;
+
+    /**
+     * @Serializer\Type("array<string, array<DateTime>>")
+     * @Serializer\Expose
+     */
+    private $deepObjectWithItems;
+
+    /**
+     * @Serializer\Type("array<array<array<string, array>>>")
+     * @Serializer\Expose
+     */
+    private $deepFreeFormObjectCollection;
+
     public function setRoles($roles)
     {
     }
