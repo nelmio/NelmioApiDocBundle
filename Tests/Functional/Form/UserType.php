@@ -37,6 +37,9 @@ class UserType extends AbstractType
             ])
             ->add('quz', DummyType::class, ['documentation' => ['type' => 'string', 'description' => 'User type.'], 'required' => false])
             ->add('entity', EntityType::class, ['class' => 'Entity'])
+            ->add('entities', EntityType::class, ['class' => 'Entity', 'multiple' => true])
+            ->add('document', DocumentType::class, ['class' => 'Document'])
+            ->add('documents', DocumentType::class, ['class' => 'Document', 'multiple' => true])
             ->add('extended_builtin', ExtendedBuiltinType::class, ['required_option' => 'foo']);
     }
 

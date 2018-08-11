@@ -190,6 +190,16 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
                 break;
             }
+
+            if ('document' === $blockPrefix) {
+                if ($config->getOption('multiple')) {
+                    $property->setType('array');
+                } else {
+                    $property->setType('string');
+                }
+
+                break;
+            }
         } while ($builtinFormType = $builtinFormType->getParent());
     }
 
@@ -224,6 +234,10 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             }
 
             if ('entity' === $type->getBlockPrefix()) {
+                return $type;
+            }
+
+            if ('document' === $type->getBlockPrefix()) {
                 return $type;
             }
 
