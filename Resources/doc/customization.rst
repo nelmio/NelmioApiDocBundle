@@ -17,7 +17,7 @@ Just create a file ``templates/bundles/NelmioApiDocBundle/SwaggerUI/index.html.t
 
 .. code-block:: twig
 
-    {# templates/bundles/NelmioApiDocBundle/views/SwaggerUI/index.html.twig #}
+    {# templates/bundles/NelmioApiDocBundle/views/SwaggerUi/index.html.twig #}
 
     {#
         To avoid a "reached nested level" error an exclamation mark `!` has to be added
