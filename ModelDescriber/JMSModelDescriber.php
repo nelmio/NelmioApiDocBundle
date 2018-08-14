@@ -173,8 +173,12 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 // in the case of a virtual property, set it as free object type
                 $property->merge(['additionalProperties' => []]);
 
-                $this->describeItem($nestedType, $property->getAdditionalProperties(), $groups);
+                // this is a free form object (as nested array)
+                if ('array' === $nestedType['name'] && !isset($nestedType['params'][0])) {
+                    return;
+                }
 
+                $this->describeItem($nestedType, $property->getAdditionalProperties(), $groups);
                 return;
             }
 
@@ -183,10 +187,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
 
         if ($typeDef = $this->findPropertyType($type['name'], $groups)) {
-            if (isset($typeDef['type']) && 'array' === $typeDef['type'] && null === $property->getItems()->toArray()) {
-                unset($typeDef['type']);
-            }
-
             $this->registerPropertyType($typeDef, $property);
         }
     }
