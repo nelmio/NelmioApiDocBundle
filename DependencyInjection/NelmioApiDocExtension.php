@@ -105,18 +105,16 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
 
-            if (isset($config['areas'][$area]['documentation'])) {
-                $container->register(sprintf('nelmio_api_doc.describers.config.%s', $area), ExternalDocDescriber::class)
-                    ->setPublic(false)
-                    ->setArguments([
-                        $config['areas'][$area]['documentation'],
-                        true,
-                    ])
-                    ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => 1000]);
+            $documentation = count($config['areas'][$area]['documentation']) ? $config['areas'][$area]['documentation'] : $config['documentation'];
+            $container->register(sprintf('nelmio_api_doc.describers.config.%s', $area), ExternalDocDescriber::class)
+                ->setPublic(false)
+                ->setArguments([
+                    $documentation,
+                    true,
+                ])
+                ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => 1000]);
 
-                $container->getDefinition(sprintf('nelmio_api_doc.describers.config.%s', $area))->replaceArgument(0, $config['areas'][$area]['documentation']);
-            }
-
+            $container->getDefinition(sprintf('nelmio_api_doc.describers.config.%s', $area))->replaceArgument(0, $documentation);
         }
 
         $container->register('nelmio_api_doc.generator_locator')
@@ -165,9 +163,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     ]);
             }
         }
-
-        // Import the base configuration
-        $container->getDefinition('nelmio_api_doc.describers.config')->replaceArgument(0, $config['documentation']);
     }
 
     private function findNameAliases(array $names, string $area): array
