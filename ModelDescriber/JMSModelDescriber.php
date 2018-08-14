@@ -33,6 +33,12 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     private $factory;
     private $namingStrategy;
     private $doctrineReader;
+    private $previousGroups = [];
+
+    /**
+     * @var array
+     */
+    private $propertyTypeUseGroupsCache = [];
 
     public function __construct(
         MetadataFactoryInterface $factory,
@@ -70,8 +76,14 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             $name = $this->namingStrategy->translateName($item);
             $groups = $model->getGroups();
+
+            $previousGroups = null;
             if (isset($groups[$name]) && is_array($groups[$name])) {
+                $previousGroups = $groups;
                 $groups = $model->getGroups()[$name];
+            } elseif (!isset($groups[$name]) && !empty($this->previousGroups[spl_object_hash($model)])) {
+                // $groups = $this->previousGroups[spl_object_hash($model)]; use this for jms/serializer 2.0
+                $groups = false === $this->propertyTypeUsesGroups($item->type) ? null : [GroupsExclusionStrategy::DEFAULT_GROUP];
             } elseif (is_array($groups)) {
                 $groups = array_filter($groups, 'is_scalar');
             }
@@ -97,7 +109,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 continue;
             }
 
-            $this->describeItem($item->type, $property, $groups);
+            $this->describeItem($item->type, $property, $groups, $previousGroups);
         }
     }
 
@@ -121,10 +133,11 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     /**
      * @param string     $type
      * @param array|null $groups
+     * @param array|null $previousGroups
      *
      * @return array|null
      */
-    private function findPropertyType(string $type, array $groups = null)
+    private function findPropertyType(string $type, array $groups = null, array $previousGroups = null)
     {
         $typeDef = [];
         if (in_array($type, ['boolean', 'string', 'array'])) {
@@ -143,9 +156,12 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 return null;
             }
 
-            $typeDef['$ref'] = $this->modelRegistry->register(
-                new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $groups)
-            );
+            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $groups);
+            $typeDef['$ref'] = $this->modelRegistry->register($model);
+
+            if ($previousGroups) {
+                $this->previousGroups[spl_object_hash($model)] = $previousGroups;
+            }
         }
 
         return $typeDef;
@@ -165,24 +181,55 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
     }
 
-    private function describeItem(array $type, $property, array $groups = null)
+    /**
+     * @param array $type
+     *
+     * @return bool|null
+     */
+    private function propertyTypeUsesGroups(array $type)
     {
-        if (list($nestedType, $isHash) = $this->getNestedTypeInArray($type)) { // @ todo update a bit getNestedTypeInArray and describe ($type = $item->type)
+        if (!array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
+            return $this->propertyTypeUseGroupsCache[$type['name']];
+        }
+
+        try {
+            $metadata = $this->factory->getMetadataForClass($type['name']);
+
+            foreach ($metadata->propertyMetadata as $item) {
+                if (null !== $item->groups && $item->groups != [GroupsExclusionStrategy::DEFAULT_GROUP]) {
+                    $this->propertyTypeUseGroupsCache[$type['name']] = true;
+
+                    return true;
+                }
+            }
+            $this->propertyTypeUseGroupsCache[$type['name']] = false;
+
+            return false;
+        } catch (\ReflectionException $e) {
+            $this->propertyTypeUseGroupsCache[$type['name']] = null;
+
+            return null;
+        }
+    }
+
+    private function describeItem(array $type, $property, array $groups = null, array $previousGroups = null)
+    {
+        $nestedTypeInfo = $this->getNestedTypeInArray($type);
+        if (null !== $nestedTypeInfo) {
+            list($nestedType, $isHash) = $nestedTypeInfo;
             if ($isHash) {
                 $property->setType('object');
                 // in the case of a virtual property, set it as free object type
                 $property->merge(['additionalProperties' => []]);
 
-                $this->describeItem($nestedType, $property->getAdditionalProperties(), $groups);
+                $this->describeItem($nestedType, $property->getAdditionalProperties(), $groups, $previousGroups);
 
                 return;
             }
 
             $property->setType('array');
-            $this->describeItem($nestedType, $property->getItems(), $groups);
-        }
-
-        if ($typeDef = $this->findPropertyType($type['name'], $groups)) {
+            $this->describeItem($nestedType, $property->getItems(), $groups, $previousGroups);
+        } elseif ($typeDef = $this->findPropertyType($type['name'], $groups, $previousGroups)) {
             $this->registerPropertyType($typeDef, $property);
         }
     }
