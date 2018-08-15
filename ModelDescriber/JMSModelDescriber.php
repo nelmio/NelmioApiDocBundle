@@ -179,6 +179,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 }
 
                 $this->describeItem($nestedType, $property->getAdditionalProperties(), $groups);
+
                 return;
             }
 

@@ -93,9 +93,13 @@ class JMSFunctionalTest extends WebTestCase
                         ],
                     ],
                 ],
+                'free_form_object_without_type' => [
+                    'type' => 'object',
+                    'additionalProperties' => true,
+                ],
                 'free_form_object' => [
                     'type' => 'object',
-                    'additionalProperties' => [],
+                    'additionalProperties' => true,
                 ],
                 'deep_object' => [
                     'type' => 'object',
@@ -123,7 +127,7 @@ class JMSFunctionalTest extends WebTestCase
                         'type' => 'array',
                         'items' => [
                             'type' => 'object',
-                            'additionalProperties' => [],
+                            'additionalProperties' => true,
                         ],
                     ],
                 ],

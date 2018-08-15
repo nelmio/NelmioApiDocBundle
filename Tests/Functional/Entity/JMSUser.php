@@ -139,6 +139,12 @@ class JMSUser
     private $freeFormObject;
 
     /**
+     * @Serializer\Type("array")
+     * @Serializer\Expose
+     */
+    private $freeFormObjectWithoutType;
+
+    /**
      * @Serializer\Type("array<string, array<string, DateTime>>")
      * @Serializer\Expose
      */
