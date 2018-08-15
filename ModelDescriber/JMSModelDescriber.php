@@ -121,7 +121,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     private function registerPropertyType(Schema $property, string $type, array $groups = null)
     {
         $typeDef = [];
-        if (in_array($type, ['boolean', 'string', 'array'], true)) {
+        if ('array' === $type) {
+            $typeDef['type'] = null !== $property->getItems()->toArray() ? 'array' : 'object';
+        } elseif (in_array($type, ['boolean', 'string'], true)) {
             $typeDef['type'] = $type;
         } elseif (in_array($type, ['int', 'integer'], true)) {
             $typeDef['type'] = 'integer';
