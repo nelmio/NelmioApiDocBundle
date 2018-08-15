@@ -122,7 +122,12 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     {
         $typeDef = [];
         if ('array' === $type) {
-            $typeDef['type'] = null !== $property->getItems()->toArray() ? 'array' : 'object';
+            if (null === $property->getItems()->toArray()) {
+                $typeDef['type'] = 'object';
+                $property->merge(['additionalProperties' => []]);
+            } else {
+                $typeDef['type'] = 'array';
+            }
         } elseif (in_array($type, ['boolean', 'string'], true)) {
             $typeDef['type'] = $type;
         } elseif (in_array($type, ['int', 'integer'], true)) {
