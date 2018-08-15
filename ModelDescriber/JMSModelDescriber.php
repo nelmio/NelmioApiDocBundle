@@ -118,20 +118,14 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return false;
     }
 
-    /**
-     * @param string     $type
-     * @param array|null $groups
-     *
-     * @return array|null
-     */
-    private function findPropertyType(string $type, array $groups = null)
+    private function registerPropertyType(Schema $property, string $type, array $groups = null)
     {
         $typeDef = [];
-        if (in_array($type, ['boolean', 'string', 'array'])) {
+        if (in_array($type, ['boolean', 'string', 'array'], true)) {
             $typeDef['type'] = $type;
-        } elseif (in_array($type, ['int', 'integer'])) {
+        } elseif (in_array($type, ['int', 'integer'], true)) {
             $typeDef['type'] = 'integer';
-        } elseif (in_array($type, ['double', 'float'])) {
+        } elseif (in_array($type, ['double', 'float'], true)) {
             $typeDef['type'] = 'number';
             $typeDef['format'] = $type;
         } elseif (is_subclass_of($type, \DateTimeInterface::class)) {
@@ -148,11 +142,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             );
         }
 
-        return $typeDef;
-    }
-
-    private function registerPropertyType(array $typeDef, $property)
-    {
         if (isset($typeDef['$ref'])) {
             $property->setRef($typeDef['$ref']);
         } else {
@@ -187,9 +176,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $this->describeItem($nestedType, $property->getItems(), $groups);
         }
 
-        if ($typeDef = $this->findPropertyType($type['name'], $groups)) {
-            $this->registerPropertyType($typeDef, $property);
-        }
+        $this->registerPropertyType($property, $type['name'], $groups);
     }
 
     private function getNestedTypeInArray(array $type)
