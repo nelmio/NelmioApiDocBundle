@@ -120,44 +120,32 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     private function registerPropertyType(Schema $property, string $type, array $groups = null)
     {
-        $typeDef = [];
         if ('array' === $type) {
             if (null === $property->getItems()->toArray()) {
-                $typeDef['type'] = 'object';
+                $property->setType('object');
                 $property->merge(['additionalProperties' => []]);
             } else {
-                $typeDef['type'] = 'array';
+                $property->setType($type);
             }
         } elseif (in_array($type, ['boolean', 'string'], true)) {
-            $typeDef['type'] = $type;
+            $property->setType($type);
         } elseif (in_array($type, ['int', 'integer'], true)) {
-            $typeDef['type'] = 'integer';
+            $property->setType('integer');
         } elseif (in_array($type, ['double', 'float'], true)) {
-            $typeDef['type'] = 'number';
-            $typeDef['format'] = $type;
+            $property->setType('number');
+            $property->setFormat($type);
         } elseif (is_subclass_of($type, \DateTimeInterface::class)) {
-            $typeDef['type'] = 'string';
-            $typeDef['format'] = 'date-time';
+            $property->setType('string');
+            $property->setFormat('date-time');
         } else {
             // we can use property type also for custom handlers, then we don't have here real class name
             if (!class_exists($type)) {
                 return null;
             }
 
-            $typeDef['$ref'] = $this->modelRegistry->register(
+            $property->setRef($this->modelRegistry->register(
                 new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $groups)
-            );
-        }
-
-        if (isset($typeDef['$ref'])) {
-            $property->setRef($typeDef['$ref']);
-        } else {
-            if (isset($typeDef['type'])) {
-                $property->setType($typeDef['type']);
-            }
-            if (isset($typeDef['format'])) {
-                $property->setFormat($typeDef['format']);
-            }
+            ));
         }
     }
 
