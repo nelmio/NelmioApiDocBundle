@@ -118,37 +118,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return false;
     }
 
-    private function registerPropertyType(Schema $property, string $type, array $groups = null)
-    {
-        if ('array' === $type) {
-            if (null === $property->getItems()->toArray()) {
-                $property->setType('object');
-                $property->merge(['additionalProperties' => []]);
-            } else {
-                $property->setType($type);
-            }
-        } elseif (in_array($type, ['boolean', 'string'], true)) {
-            $property->setType($type);
-        } elseif (in_array($type, ['int', 'integer'], true)) {
-            $property->setType('integer');
-        } elseif (in_array($type, ['double', 'float'], true)) {
-            $property->setType('number');
-            $property->setFormat($type);
-        } elseif (is_subclass_of($type, \DateTimeInterface::class)) {
-            $property->setType('string');
-            $property->setFormat('date-time');
-        } else {
-            // we can use property type also for custom handlers, then we don't have here real class name
-            if (!class_exists($type)) {
-                return null;
-            }
-
-            $property->setRef($this->modelRegistry->register(
-                new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $groups)
-            ));
-        }
-    }
-
     private function describeItem(array $type, Schema $property, array $groups = null)
     {
         if (list($nestedType, $isHash) = $this->getNestedTypeInArray($type)) { // @ todo update a bit getNestedTypeInArray and describe ($type = $item->type)
@@ -171,7 +140,29 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $this->describeItem($nestedType, $property->getItems(), $groups);
         }
 
-        $this->registerPropertyType($property, $type['name'], $groups);
+        if ('array' === $type['name'] && null === $property->getItems()->toArray()) {
+            $property->setType('object');
+            $property->merge(['additionalProperties' => []]);
+        } elseif (in_array($type['name'], ['boolean', 'string', 'array'], true)) {
+            $property->setType($type['name']);
+        } elseif (in_array($type['name'], ['int', 'integer'], true)) {
+            $property->setType('integer');
+        } elseif (in_array($type['name'], ['double', 'float'], true)) {
+            $property->setType('number');
+            $property->setFormat($type['name']);
+        } elseif (is_subclass_of($type['name'], \DateTimeInterface::class)) {
+            $property->setType('string');
+            $property->setFormat('date-time');
+        } else {
+            // we can use property type also for custom handlers, then we don't have here real class name
+            if (!class_exists($type['name'])) {
+                return null;
+            }
+
+            $property->setRef($this->modelRegistry->register(
+                new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups)
+            ));
+        }
     }
 
     private function getNestedTypeInArray(array $type)
