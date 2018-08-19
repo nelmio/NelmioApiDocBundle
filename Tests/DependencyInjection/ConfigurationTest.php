@@ -92,7 +92,7 @@ class ConfigurationTest extends TestCase
             [
                 'alias' => 'Foo3',
                 'type' => 'App\Foo',
-                'groups' => [],
+                'groups' => null,
                 'areas' => [],
             ],
             [
@@ -104,7 +104,7 @@ class ConfigurationTest extends TestCase
             [
                 'alias' => 'Foo1',
                 'type' => 'App\\Foo',
-                'groups' => [],
+                'groups' => null,
                 'areas' => ['internal'],
             ],
             [

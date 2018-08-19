@@ -53,11 +53,11 @@ class NelmioApiDocExtensionTest extends TestCase
                 $this->assertEquals([
                     'Foo1' => [
                         'type' => 'App\\Foo',
-                        'groups' => [],
+                        'groups' => null,
                     ],
                     'Test1' => [
                         'type' => 'App\\Test',
-                        'groups' => [],
+                        'groups' => null,
                     ],
                 ], $methodCall[1][0]);
                 $foundMethodCall = true;
@@ -72,11 +72,11 @@ class NelmioApiDocExtensionTest extends TestCase
                 $this->assertEquals([
                     'Foo1' => [
                         'type' => 'App\\Bar',
-                        'groups' => [],
+                        'groups' => null,
                     ],
                     'Test1' => [
                         'type' => 'App\\Test',
-                        'groups' => [],
+                        'groups' => null,
                     ],
                 ], $methodCall[1][0]);
                 $foundMethodCall = true;
