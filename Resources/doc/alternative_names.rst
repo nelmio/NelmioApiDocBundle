@@ -26,3 +26,26 @@ In this case the class ``App\Entity\User`` will be aliased into:
 - ``MainUser_light`` when the group is equal to ``light``
 - ``MainUser_secret`` for the ``private`` area
 - ``MainUser`` for the ``private`` area when the group is equal to ``standard``
+
+.. tip::
+
+    This allows to use normal references instead of ``@Model``. Notably, you can specify
+    the groups used for a model once in config and then refer to its alternative name:
+
+    .. code-block:: yaml
+
+        nelmio_api_doc:
+            models:
+                names: [ { alias: MyModel, type: App\MyModel, groups: [light] }]
+
+    .. code-block:: php
+
+        class HomeController
+        {
+            /**
+             * @SWG\Response(response=200, @SWG\Schema(ref="MyModel"))
+             */
+            public function indexAction()
+            {
+            }
+        }
