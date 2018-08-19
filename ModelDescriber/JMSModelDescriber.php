@@ -138,9 +138,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             $property->setType('array');
             $this->describeItem($nestedType, $property->getItems(), $groups);
-        }
-
-        if ('array' === $type['name'] && null === $property->getItems()->toArray()) {
+        } elseif ('array' === $type['name']) {
             $property->setType('object');
             $property->merge(['additionalProperties' => []]);
         } elseif (in_array($type['name'], ['boolean', 'string', 'array'], true)) {
