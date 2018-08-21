@@ -93,6 +93,44 @@ class JMSFunctionalTest extends WebTestCase
                         ],
                     ],
                 ],
+                'free_form_object_without_type' => [
+                    'type' => 'object',
+                    'additionalProperties' => true,
+                ],
+                'free_form_object' => [
+                    'type' => 'object',
+                    'additionalProperties' => true,
+                ],
+                'deep_object' => [
+                    'type' => 'object',
+                    'additionalProperties' => [
+                        'type' => 'object',
+                        'additionalProperties' => [
+                            'type' => 'string',
+                            'format' => 'date-time',
+                        ],
+                    ],
+                ],
+                'deep_object_with_items' => [
+                    'type' => 'object',
+                    'additionalProperties' => [
+                        'type' => 'array',
+                        'items' => [
+                            'type' => 'string',
+                            'format' => 'date-time',
+                        ],
+                    ],
+                ],
+                'deep_free_form_object_collection' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'array',
+                        'items' => [
+                            'type' => 'object',
+                            'additionalProperties' => true,
+                        ],
+                    ],
+                ],
             ],
         ], $this->getModel('JMSUser')->toArray());
     }

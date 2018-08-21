@@ -118,60 +118,18 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return false;
     }
 
-    /**
-     * @param string     $type
-     * @param array|null $groups
-     *
-     * @return array|null
-     */
-    private function findPropertyType(string $type, array $groups = null)
-    {
-        $typeDef = [];
-        if (in_array($type, ['boolean', 'string', 'array'])) {
-            $typeDef['type'] = $type;
-        } elseif (in_array($type, ['int', 'integer'])) {
-            $typeDef['type'] = 'integer';
-        } elseif (in_array($type, ['double', 'float'])) {
-            $typeDef['type'] = 'number';
-            $typeDef['format'] = $type;
-        } elseif (is_subclass_of($type, \DateTimeInterface::class)) {
-            $typeDef['type'] = 'string';
-            $typeDef['format'] = 'date-time';
-        } else {
-            // we can use property type also for custom handlers, then we don't have here real class name
-            if (!class_exists($type)) {
-                return null;
-            }
-
-            $typeDef['$ref'] = $this->modelRegistry->register(
-                new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type), $groups)
-            );
-        }
-
-        return $typeDef;
-    }
-
-    private function registerPropertyType(array $typeDef, $property)
-    {
-        if (isset($typeDef['$ref'])) {
-            $property->setRef($typeDef['$ref']);
-        } else {
-            if (isset($typeDef['type'])) {
-                $property->setType($typeDef['type']);
-            }
-            if (isset($typeDef['format'])) {
-                $property->setFormat($typeDef['format']);
-            }
-        }
-    }
-
-    private function describeItem(array $type, $property, array $groups = null)
+    private function describeItem(array $type, Schema $property, array $groups = null)
     {
         if (list($nestedType, $isHash) = $this->getNestedTypeInArray($type)) { // @ todo update a bit getNestedTypeInArray and describe ($type = $item->type)
             if ($isHash) {
                 $property->setType('object');
                 // in the case of a virtual property, set it as free object type
                 $property->merge(['additionalProperties' => []]);
+
+                // this is a free form object (as nested array)
+                if ('array' === $nestedType['name'] && !isset($nestedType['params'][0])) {
+                    return;
+                }
 
                 $this->describeItem($nestedType, $property->getAdditionalProperties(), $groups);
 
@@ -180,10 +138,28 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             $property->setType('array');
             $this->describeItem($nestedType, $property->getItems(), $groups);
-        }
+        } elseif ('array' === $type['name']) {
+            $property->setType('object');
+            $property->merge(['additionalProperties' => []]);
+        } elseif (in_array($type['name'], ['boolean', 'string'], true)) {
+            $property->setType($type['name']);
+        } elseif (in_array($type['name'], ['int', 'integer'], true)) {
+            $property->setType('integer');
+        } elseif (in_array($type['name'], ['double', 'float'], true)) {
+            $property->setType('number');
+            $property->setFormat($type['name']);
+        } elseif (is_subclass_of($type['name'], \DateTimeInterface::class)) {
+            $property->setType('string');
+            $property->setFormat('date-time');
+        } else {
+            // we can use property type also for custom handlers, then we don't have here real class name
+            if (!class_exists($type['name'])) {
+                return null;
+            }
 
-        if ($typeDef = $this->findPropertyType($type['name'], $groups)) {
-            $this->registerPropertyType($typeDef, $property);
+            $property->setRef($this->modelRegistry->register(
+                new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups)
+            ));
         }
     }
 
