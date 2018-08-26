@@ -80,8 +80,18 @@ class ModelRegistryTest extends TestCase
                 ],
             ],
             [
-                '#/definitions/Foo1',
+                '#/definitions/ModelRegistryTest',
                 null,
+                [
+                    'Foo1' => [
+                        'type' => self::class,
+                        'groups' => [],
+                    ],
+                ],
+            ],
+            [
+                '#/definitions/Foo1',
+                [],
                 [
                     'Foo1' => [
                         'type' => self::class,
