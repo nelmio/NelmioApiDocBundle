@@ -94,7 +94,7 @@ final class Configuration implements ConfigurationInterface
                                     ->variableNode('groups')
                                         ->defaultValue(null)
                                         ->validate()
-                                            ->ifTrue(function($v) { return null !== $v && !is_array($v); })
+                                            ->ifTrue(function ($v) { return null !== $v && !is_array($v); })
                                             ->thenInvalid('Model groups must be either `null` or an array.')
                                         ->end()
                                     ->end()
