@@ -164,6 +164,14 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 break;
             }
 
+            if ('repeated' === $blockPrefix) {
+                $subType = $config->getOption('type');
+
+                $property->setType($subType);
+
+                break;
+            }
+
             if ('collection' === $blockPrefix) {
                 $subType = $config->getOption('entry_type');
                 $subOptions = $config->getOption('entry_options');
