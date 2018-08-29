@@ -44,36 +44,28 @@ class SymfonyConstraintAnnotationReader
 
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
-                $this->updateSchemaDefinitionWithRequiredProperty($reflectionProperty);
-            }
-
-            if ($annotation instanceof Assert\Length) {
-                if ($annotation->min > 0) {
-                    $this->updateSchemaDefinitionWithRequiredProperty($reflectionProperty);
+                // The field is required
+                if (null === $this->schema) {
+                    continue;
                 }
 
+                $existingRequiredFields = $this->schema->getRequired() ?? [];
+                $existingRequiredFields[] = $reflectionProperty->getName();
+
+                $this->schema->setRequired(array_values(array_unique($existingRequiredFields)));
+            } elseif ($annotation instanceof Assert\Length) {
                 $property->setMinLength($annotation->min);
                 $property->setMaxLength($annotation->max);
-            }
-
-            if ($annotation instanceof Assert\Regex) {
+            } elseif ($annotation instanceof Assert\Regex) {
                 $this->appendPattern($property, $annotation->getHtmlPattern());
-            }
-
-            if ($annotation instanceof Assert\DateTime) {
+            } elseif ($annotation instanceof Assert\DateTime) {
                 $this->appendPattern($property, $annotation->format);
-            }
-
-            if ($annotation instanceof Assert\Count) {
+            } elseif ($annotation instanceof Assert\Count) {
                 $property->setMinItems($annotation->min);
                 $property->setMaxItems($annotation->max);
-            }
-
-            if ($annotation instanceof Assert\Choice) {
+            } elseif ($annotation instanceof Assert\Choice) {
                 $property->setEnum($annotation->callback ? call_user_func($annotation->callback) : $annotation->choices);
-            }
-
-            if ($annotation instanceof Assert\Expression) {
+            } elseif ($annotation instanceof Assert\Expression) {
                 $this->appendPattern($property, $annotation->message);
             }
         }
@@ -82,22 +74,6 @@ class SymfonyConstraintAnnotationReader
     public function setSchema($schema)
     {
         $this->schema = $schema;
-    }
-
-    /**
-     * Set the required properties on the scheme.
-     */
-    private function updateSchemaDefinitionWithRequiredProperty(\ReflectionProperty $reflectionProperty)
-    {
-        if (null === $this->schema) {
-            return;
-        }
-
-        $existingRequiredFields = $this->schema->getRequired() ?? [];
-
-        $existingRequiredFields[] = $reflectionProperty->getName();
-
-        $this->schema->setRequired(array_values(array_unique($existingRequiredFields)));
     }
 
     /**

@@ -32,16 +32,9 @@ class SymfonyConstraints
     /**
      * @var int
      *
-     * @Assert\Length(min="1")
-     */
-    private $propertyAssertLengthRequired;
-
-    /**
-     * @var int
-     *
      * @Assert\Length(min="0", max="50")
      */
-    private $propertyAssertLengthMinAndMax;
+    private $propertyAssertLength;
 
     /**
      * @var int
@@ -98,19 +91,11 @@ class SymfonyConstraints
     }
 
     /**
-     * @param int $propertyAssertLengthRequired
+     * @param int $propertyAssertLength
      */
-    public function setPropertyAssertLengthRequired(int $propertyAssertLengthRequired): void
+    public function setPropertyAssertLength(int $propertyAssertLength): void
     {
-        $this->propertyAssertLengthRequired = $propertyAssertLengthRequired;
-    }
-
-    /**
-     * @param int $propertyAssertLengthMinAndMax
-     */
-    public function setPropertyAssertLengthMinAndMax(int $propertyAssertLengthMinAndMax): void
-    {
-        $this->propertyAssertLengthMinAndMax = $propertyAssertLengthMinAndMax;
+        $this->propertyAssertLength = $propertyAssertLength;
     }
 
     /**
