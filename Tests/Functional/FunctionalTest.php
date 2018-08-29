@@ -279,8 +279,22 @@ class FunctionalTest extends WebTestCase
                 'bey' => [
                     'type' => 'integer',
                 ],
+                'password' => [
+                    'type' => 'object',
+                    'required' => ['first_field', 'second'],
+                    'properties' => [
+                        'first_field' => [
+                            'type' => 'string',
+                            'format' => 'password',
+                        ],
+                        'second' => [
+                            'type' => 'string',
+                            'format' => 'password',
+                        ],
+                    ],
+                ],
             ],
-            'required' => ['foo', 'foz'],
+            'required' => ['foo', 'foz', 'password'],
         ], $this->getModel('DummyType')->toArray());
     }
 

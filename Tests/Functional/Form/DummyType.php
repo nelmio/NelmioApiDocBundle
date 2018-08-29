@@ -15,6 +15,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -27,5 +29,10 @@ class DummyType extends AbstractType
         $builder->add('foz', ChoiceType::class, ['choices' => ['male', 'female'], 'multiple' => true]);
         $builder->add('baz', CheckboxType::class, ['required' => false]);
         $builder->add('bey', IntegerType::class, ['required' => false]);
+        $builder->add('password', RepeatedType::class, [
+            'type' => PasswordType::class,
+            'first_name' => 'first_field',
+            'required' => true
+        ]);
     }
 }
