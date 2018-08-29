@@ -110,6 +110,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                     $property->setType('string');
                     $property->setFormat('date-time');
                 } else {
+                    $type = new Type($type->getBuiltinType(), false, $type->getClassName(), $type->isCollection(), $type->getCollectionKeyType(), $type->getCollectionValueType()); // ignore nullable field
+
                     $property->setRef(
                         $this->modelRegistry->register(new Model($type, $model->getGroups()))
                     );

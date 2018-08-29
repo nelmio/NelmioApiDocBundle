@@ -41,6 +41,8 @@ class FunctionalTest extends WebTestCase
         $modelProperties = $this->getModel('Article')->getProperties();
         $this->assertCount(1, $modelProperties);
         $this->assertTrue($modelProperties->has('author'));
+        $this->assertSame('#/definitions/User2', $modelProperties->get('author')->getRef());
+
         $this->assertFalse($modelProperties->has('content'));
     }
 
@@ -208,6 +210,9 @@ class FunctionalTest extends WebTestCase
                             '$ref' => '#/definitions/User',
                         ],
                         'type' => 'array',
+                    ],
+                    'friend' => [
+                        '$ref' => '#/definitions/User',
                     ],
                     'dummy' => [
                         '$ref' => '#/definitions/Dummy2',

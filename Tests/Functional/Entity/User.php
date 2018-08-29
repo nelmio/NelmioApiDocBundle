@@ -67,6 +67,11 @@ class User
     private $users;
 
     /**
+     * @var User|null
+     */
+    private $friend;
+
+    /**
      * @var string
      *
      * @SWG\Property(enum = {"disabled", "enabled"})
@@ -115,6 +120,10 @@ class User
     }
 
     public function setUsers(array $users)
+    {
+    }
+
+    public function setFriend(self $friend = null)
     {
     }
 
