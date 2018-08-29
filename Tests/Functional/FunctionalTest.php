@@ -339,7 +339,6 @@ class FunctionalTest extends WebTestCase
             'required' => [
                 'propertyNotBlank',
                 'propertyNotNull',
-                'propertyAssertLengthRequired',
             ],
             'properties' => [
                 'propertyNotBlank' => [
@@ -348,11 +347,7 @@ class FunctionalTest extends WebTestCase
                 'propertyNotNull' => [
                     'type' => 'integer',
                 ],
-                'propertyAssertLengthRequired' => [
-                    'type' => 'integer',
-                    'minLength' => '1',
-                ],
-                'propertyAssertLengthMinAndMax' => [
+                'propertyAssertLength' => [
                     'type' => 'integer',
                     'maxLength' => '50',
                     'minLength' => '0',
