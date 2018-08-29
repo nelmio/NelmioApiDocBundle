@@ -32,7 +32,7 @@ class DummyType extends AbstractType
         $builder->add('password', RepeatedType::class, [
             'type' => PasswordType::class,
             'first_name' => 'first_field',
-            'required' => true
+            'required' => true,
         ]);
     }
 }

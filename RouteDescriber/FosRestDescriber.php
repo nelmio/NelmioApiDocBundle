@@ -42,13 +42,21 @@ final class FosRestDescriber implements RouteDescriberInterface
                 if ($annotation instanceof QueryParam) {
                     $parameter = $operation->getParameters()->get($annotation->getName(), 'query');
                     $parameter->setAllowEmptyValue($annotation->nullable && $annotation->allowBlank);
+
+                    $parameter->setRequired(!$annotation->nullable && $annotation->strict);
                 } else {
                     $body = $operation->getParameters()->get('body', 'body')->getSchema();
                     $body->setType('object');
                     $parameter = $body->getProperties()->get($annotation->getName());
+
+                    if (!$annotation->nullable && $annotation->strict) {
+                        $requiredParameters = $body->getRequired();
+                        $requiredParameters[] = $annotation->getName();
+
+                        $body->setRequired(array_values(array_unique($requiredParameters)));
+                    }
                 }
 
-                $parameter->setRequired(!$annotation->nullable && $annotation->strict);
                 $parameter->setDefault($annotation->getDefault());
                 if (null === $parameter->getType()) {
                     $parameter->setType($annotation->map ? 'array' : 'string');
