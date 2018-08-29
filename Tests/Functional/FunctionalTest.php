@@ -251,12 +251,16 @@ class FunctionalTest extends WebTestCase
                 'entities' => [
                     'type' => 'array',
                     'format' => '[Entity id]',
+                    'items' => ['type' => 'string'],
                 ],
                 'document' => [
                     'type' => 'string',
+                    'format' => 'Document id',
                 ],
                 'documents' => [
                     'type' => 'array',
+                    'format' => '[Document id]',
+                    'items' => ['type' => 'string'],
                 ],
                 'extended_builtin' => [
                     'type' => 'string',

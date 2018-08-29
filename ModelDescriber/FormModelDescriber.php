@@ -177,25 +177,17 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 break;
             }
 
-            if ('entity' === $blockPrefix) {
+            // The DocumentType is bundled with the DoctrineMongoDBBundle
+            if ('entity' === $blockPrefix || 'document' === $blockPrefix) {
                 $entityClass = $config->getOption('class');
 
                 if ($config->getOption('multiple')) {
                     $property->setFormat(sprintf('[%s id]', $entityClass));
                     $property->setType('array');
+                    $property->getItems()->setType('string');
                 } else {
                     $property->setType('string');
                     $property->setFormat(sprintf('%s id', $entityClass));
-                }
-
-                break;
-            }
-
-            if ('document' === $blockPrefix) {
-                if ($config->getOption('multiple')) {
-                    $property->setType('array');
-                } else {
-                    $property->setType('string');
                 }
 
                 break;
@@ -233,11 +225,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 return null;
             }
 
-            if ('entity' === $type->getBlockPrefix()) {
-                return $type;
-            }
-
-            if ('document' === $type->getBlockPrefix()) {
+            if ('entity' === $type->getBlockPrefix() || 'document' === $type->getBlockPrefix()) {
                 return $type;
             }
 
