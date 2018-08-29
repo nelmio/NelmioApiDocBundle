@@ -164,6 +164,28 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 break;
             }
 
+            if ('password' === $blockPrefix) {
+                $property->setType('string');
+                $property->setFormat('password');
+
+                break;
+            }
+
+            if ('repeated' === $blockPrefix) {
+                $property->setType('object');
+                $property->setRequired([$config->getOption('first_name'), $config->getOption('second_name')]);
+                $subType = $config->getOption('type');
+
+                foreach (['first', 'second'] as $subField) {
+                    $subName = $config->getOption($subField.'_name');
+                    $subForm = $this->formFactory->create($subType, null, array_merge($config->getOption('options'), $config->getOption($subField.'_options')));
+
+                    $this->findFormType($subForm->getConfig(), $property->getProperties()->get($subName));
+                }
+
+                break;
+            }
+
             if ('collection' === $blockPrefix) {
                 $subType = $config->getOption('entry_type');
                 $subOptions = $config->getOption('entry_options');
