@@ -32,15 +32,16 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
              */
             private $property2;
         };
-        $reflectionProperties = (new \ReflectionClass($entity))->getProperties();
-        $property = new Schema();
+
         $schema = new Schema();
+        $schema->getProperties()->set('property1', new Schema());
+        $schema->getProperties()->set('property2', new Schema());
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
-        foreach ($reflectionProperties as $reflectionProperty) {
-            $symfonyConstraintAnnotationReader->updateProperty($reflectionProperty, $property);
-        }
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->getProperties()->get('property1'));
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->getProperties()->get('property2'));
 
         // expect required to be numeric array with sequential keys (not [0 => ..., 2 => ...])
         $this->assertEquals($schema->getRequired(), ['property1', 'property2']);
