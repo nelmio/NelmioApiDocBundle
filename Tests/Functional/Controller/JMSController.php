@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSDualComplex;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSNamingStrategyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChat;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatUser;
@@ -72,6 +73,18 @@ class JMSController
      * )
      */
     public function complexDualAction()
+    {
+    }
+
+    /**
+     * @Route("/api/jms_naming_strategy", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=JMSNamingStrategyConstraints::class, groups={"Default"})
+     * )
+     */
+    public function namingStrategyConstraintsAction()
     {
     }
 
