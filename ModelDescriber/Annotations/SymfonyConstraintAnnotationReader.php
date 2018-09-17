@@ -49,8 +49,13 @@ class SymfonyConstraintAnnotationReader
                     continue;
                 }
 
+                $propertyName = $this->getSchemaPropertyName($property);
+                if (null === $propertyName) {
+                    continue;
+                }
+
                 $existingRequiredFields = $this->schema->getRequired() ?? [];
-                $existingRequiredFields[] = $reflectionProperty->getName();
+                $existingRequiredFields[] = $propertyName;
 
                 $this->schema->setRequired(array_values(array_unique($existingRequiredFields)));
             } elseif ($annotation instanceof Assert\Length) {
@@ -74,6 +79,24 @@ class SymfonyConstraintAnnotationReader
     public function setSchema($schema)
     {
         $this->schema = $schema;
+    }
+
+    /**
+     * Get assigned property name for property schema.
+     */
+    private function getSchemaPropertyName(Schema $property)
+    {
+        if (null === $this->schema) {
+            return null;
+        }
+
+        foreach ($this->schema->getProperties() as $name => $schemaProperty) {
+            if ($schemaProperty === $property) {
+                return $name;
+            }
+        }
+
+        return null;
     }
 
     /**

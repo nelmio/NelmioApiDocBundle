@@ -237,6 +237,21 @@ class JMSFunctionalTest extends WebTestCase
         ], $this->getModel('VirtualProperty')->toArray());
     }
 
+    public function testNamingStrategyWithConstraints()
+    {
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'beautifulName' => [
+                    'type' => 'string',
+                    'maxLength' => '10',
+                    'minLength' => '3',
+                ],
+            ],
+            'required' => ['beautifulName'],
+        ], $this->getModel('JMSNamingStrategyConstraints')->toArray());
+    }
+
     protected static function createKernel(array $options = [])
     {
         return new TestKernel(true);
