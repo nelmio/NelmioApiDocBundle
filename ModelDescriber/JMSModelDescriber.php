@@ -81,7 +81,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if (isset($groups[$name]) && is_array($groups[$name])) {
                 $previousGroups = $groups;
                 $groups = $model->getGroups()[$name];
-            } elseif (!isset($groups[$name]) && !empty($this->previousGroups[spl_object_hash($model)])) {
+            } elseif (!isset($groups[$name]) && !empty($this->previousGroups[$model->getHash()])) {
                 // $groups = $this->previousGroups[spl_object_hash($model)]; use this for jms/serializer 2.0
                 $groups = false === $this->propertyTypeUsesGroups($item->type) ? null : [GroupsExclusionStrategy::DEFAULT_GROUP];
             } elseif (is_array($groups)) {
@@ -175,7 +175,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $property->setRef($this->modelRegistry->register($model));
 
             if ($previousGroups) {
-                $this->previousGroups[spl_object_hash($model)] = $previousGroups;
+                $this->previousGroups[$model->getHash()] = $previousGroups;
             }
         }
     }
