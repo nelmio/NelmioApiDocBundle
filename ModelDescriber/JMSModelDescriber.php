@@ -171,9 +171,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 return null;
             }
 
-            $property->setRef($this->modelRegistry->register(
-                new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups)
-            ));
+            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups);
+            $property->setRef($this->modelRegistry->register($model));
 
             if ($previousGroups) {
                 $this->previousGroups[spl_object_hash($model)] = $previousGroups;
