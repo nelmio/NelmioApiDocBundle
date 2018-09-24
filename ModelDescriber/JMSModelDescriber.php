@@ -205,7 +205,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      */
     private function propertyTypeUsesGroups(array $type)
     {
-        if (!array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
+        if (array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
             return $this->propertyTypeUseGroupsCache[$type['name']];
         }
 
