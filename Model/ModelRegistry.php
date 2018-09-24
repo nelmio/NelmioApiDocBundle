@@ -41,10 +41,6 @@ final class ModelRegistry
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
         $this->alternativeNames = array_reverse($alternativeNames); // last rule wins
-
-        foreach ($this->alternativeNames as $alternativeName => $criteria) {
-            $this->doRegister(new Model(new Type('object', false, $criteria['type']), $criteria['groups']), $alternativeName);
-        }
     }
 
     public function register(Model $model): string
@@ -107,19 +103,55 @@ final class ModelRegistry
         }
     }
 
+    private function isReservedForAnotherModel(string $name, Model $model): bool
+    {
+        foreach ($this->alternativeNames as $alternativeName => $criteria) {
+            if ($name !== $alternativeName) {
+                continue;
+            }
+            $candidate = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
+            if ($candidate->getHash() !== $model->getHash()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function generateModelName(Model $model): string
     {
         $definitions = $this->api->getDefinitions();
 
-        $name = $base = $this->getTypeShortName($model->getType());
+        $name = $base = $this->getAlternativeName($model) ?? $this->getTypeShortName($model->getType());
 
         $i = 1;
-        while ($definitions->has($name)) {
+        while ($definitions->has($name) || $this->isReservedForAnotherModel($name, $model)) {
             ++$i;
             $name = $base.$i;
         }
 
         return $name;
+    }
+
+    /**
+     * @param Model $model
+     *
+     * @return string|null
+     */
+    private function getAlternativeName(Model $model)
+    {
+        $type = $model->getType();
+        foreach ($this->alternativeNames as $alternativeName => $criteria) {
+            if (
+                Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType() &&
+                $type->getClassName() === $criteria['type'] &&
+                $criteria['groups'] === $model->getGroups()
+            ) {
+                return $alternativeName;
+            }
+        }
+
+        return null;
     }
 
     private function getTypeShortName(Type $type): string
