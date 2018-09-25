@@ -87,11 +87,20 @@ class NelmioApiDocExtensionTest extends TestCase
 
     public function testMergesRootKeysFromMultipleConfigurations()
     {
+        /**
+         * areas:
+        default:
+        path_patterns: '%client_api_regexp_filter%'
+        host_patterns: ['%domain.client%']
+         */
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);
         $extension = new NelmioApiDocExtension();
         $extension->load([
             [
+                'areas' => [
+                    'default' => []
+                ],
                 'documentation' => [
                     'info' => [
                         'title' => 'API documentation',
@@ -125,6 +134,7 @@ class NelmioApiDocExtensionTest extends TestCase
                 ],
             ],
         ], $container);
+
         $this->assertSame([
             'info' => [
                 'title' => 'API documentation',
@@ -147,6 +157,6 @@ class NelmioApiDocExtensionTest extends TestCase
                     ],
                 ],
             ],
-        ], $container->getDefinition('nelmio_api_doc.describers.config')->getArgument(0));
+        ], $container->getDefinition('nelmio_api_doc.describers.config.default')->getArgument(0));
     }
 }
