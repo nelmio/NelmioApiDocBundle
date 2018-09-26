@@ -374,6 +374,10 @@ class FunctionalTest extends WebTestCase
                     'type' => 'integer',
                     'enum' => ['choice1', 'choice2'],
                 ],
+                'propertyChoiceWithCallbackWithoutClass' => [
+                    'type' => 'integer',
+                    'enum' => ['choice1', 'choice2'],
+                ],
                 'propertyExpression' => [
                     'type' => 'integer',
                     'pattern' => 'If this is a tech post, the category should be either php or symfony!',
