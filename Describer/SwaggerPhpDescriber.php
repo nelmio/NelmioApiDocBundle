@@ -87,6 +87,9 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 if (0 === strpos($ref, '#/parameters/') && isset($this->api->getParameters()[substr($ref, 13)])) {
                     return;
                 }
+                if (0 === strpos($ref, '#/responses/') && $this->api->getResponses()->has(substr($ref, 12))) {
+                    return;
+                }
 
                 parent::ref($ref);
             }

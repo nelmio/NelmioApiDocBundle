@@ -191,6 +191,10 @@ class ApiController
      *     description="Success",
      *     @SWG\Schema(ref="#/definitions/Test")
      * )
+     * @SWG\Response(
+     *     response="201",
+     *     ref="#/responses/201"
+     * )
      * @Route("/configReference", methods={"GET"})
      */
     public function configReferenceAction()

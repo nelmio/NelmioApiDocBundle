@@ -387,6 +387,7 @@ class FunctionalTest extends WebTestCase
     {
         $operation = $this->getOperation('/api/configReference', 'get');
         $this->assertEquals('#/definitions/Test', $operation->getResponses()->get('200')->getSchema()->getRef());
+        $this->assertEquals('#/responses/201', $operation->getResponses()->get('201')->getRef());
     }
 
     public function testOperationsWithOtherAnnotationsAction()
