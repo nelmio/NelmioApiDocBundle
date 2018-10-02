@@ -133,6 +133,11 @@ class TestKernel extends Kernel
                         'required' => true,
                     ],
                 ],
+                'responses' => [
+                    '201' => [
+                        'description' => 'Awesome description',
+                    ],
+                ],
             ],
            'areas' => [
                'default' => ['path_patterns' => ['^/api(?!/admin)'], 'host_patterns' => ['^api\.']],
