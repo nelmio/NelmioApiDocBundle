@@ -67,6 +67,13 @@ class SymfonyConstraints
     /**
      * @var int
      *
+     * @Assert\Choice(callback="fetchAllowedChoices")
+     */
+    private $propertyChoiceWithCallbackWithoutClass;
+
+    /**
+     * @var int
+     *
      * @Assert\Expression(
      *     "this.getCategory() in ['php', 'symfony'] or !this.isTechnicalPost()",
      *     message="If this is a tech post, the category should be either php or symfony!"
@@ -128,6 +135,14 @@ class SymfonyConstraints
     public function setPropertyChoiceWithCallback(int $propertyChoiceWithCallback): void
     {
         $this->propertyChoiceWithCallback = $propertyChoiceWithCallback;
+    }
+
+    /**
+     * @param int $propertyChoiceWithCallbackWithoutClass
+     */
+    public function setPropertyChoiceWithCallbackWithoutClass(int $propertyChoiceWithCallbackWithoutClass): void
+    {
+        $this->propertyChoiceWithCallbackWithoutClass = $propertyChoiceWithCallbackWithoutClass;
     }
 
     /**
