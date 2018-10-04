@@ -147,7 +147,14 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 }
                 if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
                     $enums = array_values($choices);
-                    $type = $this->isNumbersArray($enums) ? 'number' : 'string';
+                    if ($this->isNumbersArray($enums)) {
+                        $type = 'number';
+                    } elseif ($this->isBooleansArray($enums)) {
+                        $type = 'boolean';
+                    } else {
+                        $type = 'string';
+                    }
+
                     if ($config->getOption('multiple')) {
                         $property->getItems()->setType($type)->setEnum($enums);
                     } else {
@@ -226,6 +233,22 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     {
         foreach ($array as $item) {
             if (!is_numeric($item)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param array $array
+     *
+     * @return bool true if $array contains only booleans, false otherwise
+     */
+    private function isBooleansArray(array $array): bool
+    {
+        foreach ($array as $item) {
+            if (!is_bool($item)) {
                 return false;
             }
         }

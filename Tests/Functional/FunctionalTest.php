@@ -285,6 +285,10 @@ class FunctionalTest extends WebTestCase
                     'type' => 'string',
                     'enum' => ['male', 'female'],
                 ],
+                'boo' => [
+                    'type' => 'boolean',
+                    'enum' => [true, false],
+                ],
                 'foz' => [
                     'type' => 'array',
                     'items' => [
