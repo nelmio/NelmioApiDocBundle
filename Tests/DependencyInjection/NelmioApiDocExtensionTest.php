@@ -92,9 +92,6 @@ class NelmioApiDocExtensionTest extends TestCase
         $extension = new NelmioApiDocExtension();
         $extension->load([
             [
-                'areas' => [
-                    'default' => [],
-                ],
                 'documentation' => [
                     'info' => [
                         'title' => 'API documentation',

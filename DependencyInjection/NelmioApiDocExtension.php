@@ -112,7 +112,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     $documentation,
                     true,
                 ])
-                ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => 1000]);
+                ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => 990]);
 
             $container->getDefinition(sprintf('nelmio_api_doc.describers.config.%s', $area))->replaceArgument(0, $documentation);
         }
@@ -163,6 +163,9 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     ]);
             }
         }
+
+        // Import the base configuration
+        $container->getDefinition('nelmio_api_doc.describers.config')->replaceArgument(0, $config['documentation']);
     }
 
     private function findNameAliases(array $names, string $area): array
