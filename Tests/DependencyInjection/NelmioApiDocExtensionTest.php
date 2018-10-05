@@ -148,6 +148,6 @@ class NelmioApiDocExtensionTest extends TestCase
                     ],
                 ],
             ],
-        ], $container->getDefinition('nelmio_api_doc.describers.config.default')->getArgument(0));
+        ], $container->getDefinition('nelmio_api_doc.describers.config')->getArgument(0));
     }
 }
