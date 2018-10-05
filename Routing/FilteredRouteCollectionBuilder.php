@@ -26,7 +26,6 @@ final class FilteredRouteCollectionBuilder
             ->setDefaults([
                 'path_patterns' => [],
                 'host_patterns' => [],
-                'documentation' => [],
             ])
             ->setAllowedTypes('path_patterns', 'string[]')
             ->setAllowedTypes('host_patterns', 'string[]')
