@@ -72,22 +72,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
                 ]);
 
-            unset($areaConfig['documentation']);
-
-            if (0 === count($areaConfig['path_patterns']) && 0 === count($areaConfig['host_patterns'])) {
-                $container->setDefinition(sprintf('nelmio_api_doc.routes.%s', $area), $routesDefinition)
-                    ->setPublic(false);
-            } else {
-                $container->register(sprintf('nelmio_api_doc.routes.%s', $area), RouteCollection::class)
-                    ->setPublic(false)
-                    ->setFactory([
-                        (new Definition(FilteredRouteCollectionBuilder::class))
-                            ->addArgument($areaConfig),
-                        'filter',
-                    ])
-                    ->addArgument($routesDefinition);
-            }
-
             $container->register(sprintf('nelmio_api_doc.describers.route.%s', $area), RouteDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
@@ -107,16 +91,28 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
 
-            $documentation = count($config['areas'][$area]['documentation']) ? $config['areas'][$area]['documentation'] : $config['documentation'];
             $container->register(sprintf('nelmio_api_doc.describers.config.%s', $area), ExternalDocDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
-                    $documentation,
+                    $areaConfig['documentation'],
                     true,
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => 990]);
 
-            $container->getDefinition(sprintf('nelmio_api_doc.describers.config.%s', $area))->replaceArgument(0, $documentation);
+            unset($areaConfig['documentation']);
+            if (0 === count($areaConfig['path_patterns']) && 0 === count($areaConfig['host_patterns'])) {
+                $container->setDefinition(sprintf('nelmio_api_doc.routes.%s', $area), $routesDefinition)
+                    ->setPublic(false);
+            } else {
+                $container->register(sprintf('nelmio_api_doc.routes.%s', $area), RouteCollection::class)
+                    ->setPublic(false)
+                    ->setFactory([
+                        (new Definition(FilteredRouteCollectionBuilder::class))
+                            ->addArgument($areaConfig),
+                        'filter',
+                    ])
+                    ->addArgument($routesDefinition);
+            }
         }
 
         $container->register('nelmio_api_doc.generator_locator')
