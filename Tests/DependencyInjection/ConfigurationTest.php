@@ -20,7 +20,7 @@ class ConfigurationTest extends TestCase
     public function testDefaultArea()
     {
         $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), [['areas' => ['path_patterns' => ['/foo'], 'host_patterns' => [], 'documentation' => []]]]);
+        $config = $processor->processConfiguration(new Configuration(), [['areas' => ['path_patterns' => ['/foo']]]]);
 
         $this->assertSame(['default' => ['path_patterns' => ['/foo'], 'host_patterns' => [], 'documentation' => []]], $config['areas']);
     }
@@ -29,9 +29,9 @@ class ConfigurationTest extends TestCase
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => $areas = [
-            'default' => ['path_patterns' => ['/foo'], 'host_patterns' => [], 'documentation' => []],
-            'internal' => ['path_patterns' => ['/internal'], 'host_patterns' => ['^swagger\.'], 'documentation' => []],
-            'commercial' => ['path_patterns' => ['/internal'], 'host_patterns' => [], 'documentation' => []],
+            'default' => ['path_patterns' => ['/foo'], 'documentation' => []],
+            'internal' => ['path_patterns' => ['/internal'], 'host_patterns' => ['^swagger\.']],
+            'commercial' => ['path_patterns' => ['/internal'], 'host_patterns' => []],
         ]]]);
 
         $this->assertSame($areas, $config['areas']);
