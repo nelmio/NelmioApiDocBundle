@@ -65,7 +65,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
 
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
-                ->setPublic(false)
+                ->setPublic(true)
                 ->addMethodCall('setAlternativeNames', [$nameAliases])
                 ->setArguments([
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),

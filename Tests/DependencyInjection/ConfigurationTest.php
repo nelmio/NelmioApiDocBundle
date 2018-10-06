@@ -29,9 +29,9 @@ class ConfigurationTest extends TestCase
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => $areas = [
-            'default' => ['path_patterns' => ['/foo'], 'documentation' => []],
-            'internal' => ['path_patterns' => ['/internal'], 'host_patterns' => ['^swagger\.']],
-            'commercial' => ['path_patterns' => ['/internal'], 'host_patterns' => []],
+            'default' => ['path_patterns' => ['/foo'], 'host_patterns' => [], 'documentation' => []],
+            'internal' => ['path_patterns' => ['/internal'], 'host_patterns' => ['^swagger\.'], 'documentation' => []],
+            'commercial' => ['path_patterns' => ['/internal'], 'host_patterns' => [], 'documentation' => []],
         ]]]);
 
         $this->assertSame($areas, $config['areas']);

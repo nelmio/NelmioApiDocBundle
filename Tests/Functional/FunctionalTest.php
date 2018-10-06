@@ -19,7 +19,8 @@ class FunctionalTest extends WebTestCase
 {
     public function testConfiguredDocumentation()
     {
-        $this->assertEquals('My Test App', $this->getSwaggerDefinition()->getInfo()->getTitle());
+        $this->assertEquals('My Default App', $this->getSwaggerDefinition()->getInfo()->getTitle());
+        $this->assertEquals('My Test App', $this->getSwaggerDefinition('test')->getInfo()->getTitle());
     }
 
     public function testUndocumentedAction()

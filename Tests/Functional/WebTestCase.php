@@ -22,11 +22,11 @@ class WebTestCase extends BaseWebTestCase
         return new TestKernel();
     }
 
-    protected function getSwaggerDefinition()
+    protected function getSwaggerDefinition($area = 'default')
     {
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
 
-        return static::$kernel->getContainer()->get('nelmio_api_doc.generator')->generate();
+        return static::$kernel->getContainer()->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }
 
     protected function getModel($name): Schema

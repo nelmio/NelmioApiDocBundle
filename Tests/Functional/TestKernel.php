@@ -119,7 +119,7 @@ class TestKernel extends Kernel
         $c->loadFromExtension('nelmio_api_doc', [
             'documentation' => [
                 'info' => [
-                    'title' => 'My Test App',
+                    'title' => 'My Default App',
                 ],
                 'definitions' => [
                     'Test' => [
@@ -138,23 +138,6 @@ class TestKernel extends Kernel
                'default' => [
                    'path_patterns' => ['^/api(?!/admin)'],
                    'host_patterns' => ['^api\.'],
-                   'documentation' => [
-                       'info' => [
-                           'title' => 'My Test App',
-                       ],
-                       'definitions' => [
-                           'Test' => [
-                               'type' => 'string',
-                           ],
-                       ],
-                       'parameters' => [
-                           'test' => [
-                               'name' => 'id',
-                               'in' => 'path',
-                               'required' => true,
-                           ],
-                       ],
-                   ],
                ],
                'test' => [
                    'path_patterns' => ['^/test'],
@@ -162,18 +145,6 @@ class TestKernel extends Kernel
                    'documentation' => [
                        'info' => [
                            'title' => 'My Test App',
-                       ],
-                       'definitions' => [
-                           'Test' => [
-                               'type' => 'string',
-                           ],
-                       ],
-                       'parameters' => [
-                           'test' => [
-                               'name' => 'id',
-                               'in' => 'path',
-                               'required' => true,
-                           ],
                        ],
                    ],
                ],
