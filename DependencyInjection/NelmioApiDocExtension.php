@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use FOS\RestBundle\Controller\Annotations\ParamInterface;
 use Nelmio\ApiDocBundle\ApiDocGenerator;
+use Nelmio\ApiDocBundle\Describer\ExternalDocDescriber;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
@@ -64,26 +65,12 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
 
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
-                ->setPublic(false)
+                ->setPublic(true)
                 ->addMethodCall('setAlternativeNames', [$nameAliases])
                 ->setArguments([
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
                 ]);
-
-            if (0 === count($areaConfig['path_patterns']) && 0 === count($areaConfig['host_patterns'])) {
-                $container->setDefinition(sprintf('nelmio_api_doc.routes.%s', $area), $routesDefinition)
-                    ->setPublic(false);
-            } else {
-                $container->register(sprintf('nelmio_api_doc.routes.%s', $area), RouteCollection::class)
-                    ->setPublic(false)
-                    ->setFactory([
-                        (new Definition(FilteredRouteCollectionBuilder::class))
-                            ->addArgument($areaConfig),
-                        'filter',
-                    ])
-                    ->addArgument($routesDefinition);
-            }
 
             $container->register(sprintf('nelmio_api_doc.describers.route.%s', $area), RouteDescriber::class)
                 ->setPublic(false)
@@ -103,6 +90,29 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference('logger'),
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
+
+            $container->register(sprintf('nelmio_api_doc.describers.config.%s', $area), ExternalDocDescriber::class)
+                ->setPublic(false)
+                ->setArguments([
+                    $areaConfig['documentation'],
+                    true,
+                ])
+                ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => 990]);
+
+            unset($areaConfig['documentation']);
+            if (0 === count($areaConfig['path_patterns']) && 0 === count($areaConfig['host_patterns'])) {
+                $container->setDefinition(sprintf('nelmio_api_doc.routes.%s', $area), $routesDefinition)
+                    ->setPublic(false);
+            } else {
+                $container->register(sprintf('nelmio_api_doc.routes.%s', $area), RouteCollection::class)
+                    ->setPublic(false)
+                    ->setFactory([
+                        (new Definition(FilteredRouteCollectionBuilder::class))
+                            ->addArgument($areaConfig),
+                        'filter',
+                    ])
+                    ->addArgument($routesDefinition);
+            }
         }
 
         $container->register('nelmio_api_doc.generator_locator')

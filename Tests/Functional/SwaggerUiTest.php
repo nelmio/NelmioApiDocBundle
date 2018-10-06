@@ -41,6 +41,7 @@ class SwaggerUiTest extends WebTestCase
         yield ['/docs', 'default', $expected];
 
         // Api-platform documentation
+        $expected['info']['title'] = 'My Test App';
         $expected['paths'] = [
             '/api/dummies' => $expected['paths']['/api/dummies'],
             '/api/foo' => $expected['paths']['/api/foo'],

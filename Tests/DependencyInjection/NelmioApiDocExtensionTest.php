@@ -24,8 +24,8 @@ class NelmioApiDocExtensionTest extends TestCase
         $extension = new NelmioApiDocExtension();
         $extension->load([[
             'areas' => [
-                'default' => ['path_patterns' => ['/foo'], 'host_patterns' => []],
-                'commercial' => ['path_patterns' => ['/internal'], 'host_patterns' => []],
+                'default' => ['path_patterns' => ['/foo']],
+                'commercial' => ['path_patterns' => ['/internal']],
             ],
             'models' => [
                 'names' => [
