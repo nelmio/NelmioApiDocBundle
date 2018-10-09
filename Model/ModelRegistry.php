@@ -40,32 +40,30 @@ final class ModelRegistry
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
-        $this->alternativeNames = array_reverse($alternativeNames); // last rule wins
+        $this->alternativeNames = []; // last rule wins
+
+        foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
+            $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
+            $this->names[$model->getHash()] = $alternativeName;
+            $this->api->getDefinitions()->get($alternativeName);
+        }
     }
 
     public function register(Model $model): string
     {
-        return $this->doRegister($model);
-    }
-
-    /**
-     * Private method allowing to enforce the model name for alternative names.
-     */
-    private function doRegister(Model $model, string $name = null)
-    {
         $hash = $model->getHash();
-        if (isset($this->names[$hash])) {
-            return '#/definitions/'.$this->names[$hash];
+        if (!isset($this->models[$hash])) {
+            $this->models[$hash] = $model;
+            $this->unregistered[] = $hash;
+        }
+        if (!isset($this->names[$hash])) {
+            $this->names[$hash] = $this->generateModelName($model);
         }
 
-        $this->names[$hash] = $name = ($name ?? $this->generateModelName($model));
-        $this->models[$hash] = $model;
-        $this->unregistered[] = $hash;
-
         // Reserve the name
-        $this->api->getDefinitions()->get($name);
+        $this->api->getDefinitions()->get($this->names[$hash]);
 
-        return '#/definitions/'.$name;
+        return '#/definitions/'.$this->names[$hash];
     }
 
     /**
@@ -100,58 +98,29 @@ final class ModelRegistry
 
                 $this->api->getDefinitions()->set($name, $schema);
             }
-        }
-    }
 
-    private function isReservedForAnotherModel(string $name, Model $model): bool
-    {
-        foreach ($this->alternativeNames as $alternativeName => $criteria) {
-            if ($name !== $alternativeName) {
-                continue;
-            }
-            $candidate = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
-            if ($candidate->getHash() !== $model->getHash()) {
-                return true;
+            if (0 === count($this->unregistered)) {
+                foreach ($this->alternativeNames as $model) {
+                    $this->register($model);
+                }
+                $this->alternativeNames = [];
             }
         }
-
-        return false;
     }
 
     private function generateModelName(Model $model): string
     {
         $definitions = $this->api->getDefinitions();
 
-        $name = $base = $this->getAlternativeName($model) ?? $this->getTypeShortName($model->getType());
+        $name = $base = $this->getTypeShortName($model->getType());
 
         $i = 1;
-        while ($definitions->has($name) || $this->isReservedForAnotherModel($name, $model)) {
+        while ($definitions->has($name)) {
             ++$i;
             $name = $base.$i;
         }
 
         return $name;
-    }
-
-    /**
-     * @param Model $model
-     *
-     * @return string|null
-     */
-    private function getAlternativeName(Model $model)
-    {
-        $type = $model->getType();
-        foreach ($this->alternativeNames as $alternativeName => $criteria) {
-            if (
-                Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType() &&
-                $type->getClassName() === $criteria['type'] &&
-                $criteria['groups'] === $model->getGroups()
-            ) {
-                return $alternativeName;
-            }
-        }
-
-        return null;
     }
 
     private function getTypeShortName(Type $type): string
