@@ -40,36 +40,30 @@ final class ModelRegistry
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
-        $this->alternativeNames = array_reverse($alternativeNames); // last rule wins
+        $this->alternativeNames = []; // last rule wins
 
-        foreach ($this->alternativeNames as $alternativeName => $criteria) {
-            $this->doRegister(new Model(new Type('object', false, $criteria['type']), $criteria['groups']), $alternativeName);
+        foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
+            $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
+            $this->names[$model->getHash()] = $alternativeName;
+            $this->api->getDefinitions()->get($alternativeName);
         }
     }
 
     public function register(Model $model): string
     {
-        return $this->doRegister($model);
-    }
-
-    /**
-     * Private method allowing to enforce the model name for alternative names.
-     */
-    private function doRegister(Model $model, string $name = null)
-    {
         $hash = $model->getHash();
-        if (isset($this->names[$hash])) {
-            return '#/definitions/'.$this->names[$hash];
+        if (!isset($this->models[$hash])) {
+            $this->models[$hash] = $model;
+            $this->unregistered[] = $hash;
+        }
+        if (!isset($this->names[$hash])) {
+            $this->names[$hash] = $this->generateModelName($model);
         }
 
-        $this->names[$hash] = $name = ($name ?? $this->generateModelName($model));
-        $this->models[$hash] = $model;
-        $this->unregistered[] = $hash;
-
         // Reserve the name
-        $this->api->getDefinitions()->get($name);
+        $this->api->getDefinitions()->get($this->names[$hash]);
 
-        return '#/definitions/'.$name;
+        return '#/definitions/'.$this->names[$hash];
     }
 
     /**
@@ -103,6 +97,13 @@ final class ModelRegistry
                 }
 
                 $this->api->getDefinitions()->set($name, $schema);
+            }
+
+            if (0 === count($this->unregistered)) {
+                foreach ($this->alternativeNames as $model) {
+                    $this->register($model);
+                }
+                $this->alternativeNames = [];
             }
         }
     }

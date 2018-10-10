@@ -81,7 +81,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if (isset($groups[$name]) && is_array($groups[$name])) {
                 $previousGroups = $groups;
                 $groups = $model->getGroups()[$name];
-            } elseif (!isset($groups[$name]) && !empty($this->previousGroups[spl_object_hash($model)])) {
+            } elseif (!isset($groups[$name]) && !empty($this->previousGroups[$model->getHash()])) {
                 // $groups = $this->previousGroups[spl_object_hash($model)]; use this for jms/serializer 2.0
                 $groups = false === $this->propertyTypeUsesGroups($item->type) ? null : [GroupsExclusionStrategy::DEFAULT_GROUP];
             } elseif (is_array($groups)) {
@@ -171,12 +171,11 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 return null;
             }
 
-            $property->setRef($this->modelRegistry->register(
-                new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups)
-            ));
+            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups);
+            $property->setRef($this->modelRegistry->register($model));
 
             if ($previousGroups) {
-                $this->previousGroups[spl_object_hash($model)] = $previousGroups;
+                $this->previousGroups[$model->getHash()] = $previousGroups;
             }
         }
     }
@@ -205,7 +204,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      */
     private function propertyTypeUsesGroups(array $type)
     {
-        if (!array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
+        if (array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
             return $this->propertyTypeUseGroupsCache[$type['name']];
         }
 
