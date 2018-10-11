@@ -18,6 +18,7 @@ use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;
+use EXSyst\Component\Swagger\Parameter;
 
 final class FosRestDescriber implements RouteDescriberInterface
 {
@@ -45,12 +46,7 @@ final class FosRestDescriber implements RouteDescriberInterface
 
                     $parameter->setRequired(!$annotation->nullable && $annotation->strict);
 
-                    $annotationPattern = $this->getPattern($annotation->requirements);
-                    $oldDescription = $parameter->getDescription() ?: $annotation->description;
-
-                    if (null !== $oldDescription && null !== $annotationPattern) {
-                        $parameter->setDescription(sprintf("%s \r\n Pattern: %s", $oldDescription, $annotationPattern));
-                    }
+                    $this->addPatternToDescription($parameter, $annotation);
                 } else {
                     $body = $operation->getParameters()->get('body', 'body')->getSchema();
                     $body->setType('object');
@@ -82,6 +78,16 @@ final class FosRestDescriber implements RouteDescriberInterface
                     $parameter->setFormat($format);
                 }
             }
+        }
+    }
+
+    private function addPatternToDescription(Parameter $parameter, QueryParam $annotation)
+    {
+        $annotationPattern = $this->getPattern($annotation->requirements);
+        $oldDescription = $parameter->getDescription() ?: $annotation->description;
+
+        if (null !== $oldDescription && null !== $annotationPattern) {
+            $parameter->setDescription(sprintf("%s \r\n Pattern: %s", $oldDescription, $annotationPattern));
         }
     }
 
