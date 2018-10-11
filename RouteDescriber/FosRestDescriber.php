@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
+use EXSyst\Component\Swagger\Parameter;
 use EXSyst\Component\Swagger\Swagger;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
@@ -44,6 +45,8 @@ final class FosRestDescriber implements RouteDescriberInterface
                     $parameter->setAllowEmptyValue($annotation->nullable && $annotation->allowBlank);
 
                     $parameter->setRequired(!$annotation->nullable && $annotation->strict);
+
+                    $this->addPatternToDescription($parameter, $annotation);
                 } else {
                     $body = $operation->getParameters()->get('body', 'body')->getSchema();
                     $body->setType('object');
@@ -75,6 +78,16 @@ final class FosRestDescriber implements RouteDescriberInterface
                     $parameter->setFormat($format);
                 }
             }
+        }
+    }
+
+    private function addPatternToDescription(Parameter $parameter, QueryParam $annotation)
+    {
+        $annotationPattern = $this->getPattern($annotation->requirements);
+        $oldDescription = $parameter->getDescription() ?: $annotation->description;
+
+        if (null !== $oldDescription && null !== $annotationPattern) {
+            $parameter->setDescription(sprintf("%s \r\n Pattern: %s", $oldDescription, $annotationPattern));
         }
     }
 
