@@ -58,6 +58,6 @@ class FosRestDescriberTest extends AbstractDescriberTest
 
         $method->invoke($describer, $parameter, $queryParamAnnotation);
 
-        self::assertEquals("Country code filter", $parameter->getDescription());
+        self::assertEquals('Country code filter', $parameter->getDescription());
     }
 }
