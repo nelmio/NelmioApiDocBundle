@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use EXSyst\Component\Swagger\Swagger;
+use Swagger\Annotations\Swagger;
 
 interface DescriberInterface
 {

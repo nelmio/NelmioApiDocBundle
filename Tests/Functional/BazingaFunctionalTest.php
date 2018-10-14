@@ -60,7 +60,8 @@ class BazingaFunctionalTest extends WebTestCase
                     ],
                 ],
             ],
-        ], $this->getModel('BazingaUser')->toArray());
+            'definition' => 'BazingaUser',
+        ], $this->toArray($this->getModel('BazingaUser')));
     }
 
     protected static function createKernel(array $options = [])

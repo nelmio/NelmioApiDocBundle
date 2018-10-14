@@ -11,12 +11,12 @@
 
 namespace Nelmio\ApiDocBundle;
 
-use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Psr\Cache\CacheItemPoolInterface;
+use Swagger\Annotations\Swagger;
 
 final class ApiDocGenerator
 {
@@ -60,7 +60,7 @@ final class ApiDocGenerator
             }
         }
 
-        $this->swagger = new Swagger();
+        $this->swagger = new Swagger([]);
         $modelRegistry = new ModelRegistry($this->modelDescribers, $this->swagger, $this->alternativeNames);
         foreach ($this->describers as $describer) {
             if ($describer instanceof ModelRegistryAwareInterface) {

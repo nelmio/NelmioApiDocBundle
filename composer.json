@@ -19,8 +19,7 @@
         "symfony/framework-bundle": "^3.4|^4.0",
         "symfony/options-resolver": "^3.4.4|^4.0",
         "symfony/property-info": "^3.4|^4.0",
-        "exsyst/swagger": "^0.4.1",
-        "zircote/swagger-php": "^2.0.9",
+        "zircote/swagger-php": "^2.0.12",
         "phpdocumentor/reflection-docblock": "^3.1|^4.0"
     },
     "require-dev": {
@@ -44,6 +43,7 @@
         "api-platform/core": "^2.1.0",
         "friendsofsymfony/rest-bundle": "^2.0",
         "willdurand/hateoas-bundle": "^1.0",
+        "jms/serializer": "^1.13",
         "jms/serializer-bundle": "^2.0"
     },
     "suggest": {

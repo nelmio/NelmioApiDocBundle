@@ -12,13 +12,11 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
-use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
 use Swagger\Analysis;
-use Swagger\Annotations\Definition as SwgDefinition;
-use Swagger\Annotations\Property as SwgProperty;
+use Swagger\Annotations\Definition;
+use Swagger\Annotations\Property;
 use Swagger\Context;
 
 /**
@@ -35,36 +33,36 @@ class SwgAnnotationsReader
         $this->modelRegister = new ModelRegister($modelRegistry);
     }
 
-    public function updateDefinition(\ReflectionClass $reflectionClass, Schema $schema)
+    public function updateDefinition(\ReflectionClass $reflectionClass, Definition $definition)
     {
-        /** @var SwgDefinition $swgDefinition */
-        if (!$swgDefinition = $this->annotationsReader->getClassAnnotation($reflectionClass, SwgDefinition::class)) {
+        /** @var Definition $classDefinition */
+        if (!$classDefinition = $this->annotationsReader->getClassAnnotation($reflectionClass, Definition::class)) {
             return;
         }
 
         // Read @Model annotations
-        $this->modelRegister->__invoke(new Analysis([$swgDefinition]));
+        $this->modelRegister->__invoke(new Analysis([$classDefinition]));
 
-        if (!$swgDefinition->validate()) {
+        if (!$classDefinition->validate()) {
             return;
         }
 
-        $schema->merge(json_decode(json_encode($swgDefinition)));
+        $definition->mergeProperties($classDefinition);
     }
 
     public function getPropertyName(\ReflectionProperty $reflectionProperty, string $default): string
     {
-        /** @var SwgProperty $swgProperty */
-        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class)) {
+        /** @var Property $swgProperty */
+        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, Property::class)) {
             return $default;
         }
 
         return $swgProperty->property ?? $default;
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property, array $serializationGroups = null)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property, array $serializationGroups = null)
     {
-        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class)) {
+        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, Property::class)) {
             return;
         }
 
@@ -84,6 +82,6 @@ class SwgAnnotationsReader
             return;
         }
 
-        $property->merge(json_decode(json_encode($swgProperty)));
+        $property->mergeProperties($swgProperty);
     }
 }

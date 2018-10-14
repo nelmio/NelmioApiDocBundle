@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use EXSyst\Component\Swagger\Swagger;
+use Swagger\Annotations\Swagger;
 use Symfony\Component\Routing\Route;
 
 interface RouteDescriberInterface

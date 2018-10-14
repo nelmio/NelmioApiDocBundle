@@ -11,7 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use EXSyst\Component\Swagger\Swagger;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Swagger\Annotations\Swagger;
 use Symfony\Component\Routing\Route;
 
 final class RouteMetadataDescriber implements RouteDescriberInterface
@@ -21,7 +22,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         foreach ($this->getOperations($api, $route) as $operation) {
-            $operation->merge(['schemes' => $route->getSchemes()]);
+            $operation->schemes = $route->getSchemes() ?: null;
 
             $requirements = $route->getRequirements();
             $compiledRoute = $route->compile();
@@ -32,15 +33,15 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                     continue;
                 }
 
-                $parameter = $operation->getParameters()->get($pathVariable, 'path');
-                $parameter->setRequired(true);
+                $parameter = Util::getOperationParameter($operation, $pathVariable, 'path');
+                $parameter->required = true;
 
-                if (null === $parameter->getType()) {
-                    $parameter->setType('string');
+                if (null === $parameter->type) {
+                    $parameter->type = 'string';
                 }
 
                 if (isset($requirements[$pathVariable])) {
-                    $parameter->setPattern($requirements[$pathVariable]);
+                    $parameter->pattern = $requirements[$pathVariable];
                 }
             }
         }

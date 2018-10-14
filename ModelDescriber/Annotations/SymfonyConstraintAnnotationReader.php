@@ -12,7 +12,8 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
+use Swagger\Annotations\Property;
+use Swagger\Annotations\Schema;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -38,7 +39,7 @@ class SymfonyConstraintAnnotationReader
     /**
      * Update the given property and schema with defined Symfony constraints.
      */
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property)
     {
         $annotations = $this->annotationsReader->getPropertyAnnotations($reflectionProperty);
 
@@ -54,29 +55,29 @@ class SymfonyConstraintAnnotationReader
                     continue;
                 }
 
-                $existingRequiredFields = $this->schema->getRequired() ?? [];
+                $existingRequiredFields = $this->schema->required ?? [];
                 $existingRequiredFields[] = $propertyName;
 
-                $this->schema->setRequired(array_values(array_unique($existingRequiredFields)));
+                $this->schema->required = array_values(array_unique($existingRequiredFields));
             } elseif ($annotation instanceof Assert\Length) {
-                $property->setMinLength($annotation->min);
-                $property->setMaxLength($annotation->max);
+                $property->minLength = $annotation->min;
+                $property->maxLength = $annotation->max;
             } elseif ($annotation instanceof Assert\Regex) {
                 $this->appendPattern($property, $annotation->getHtmlPattern());
             } elseif ($annotation instanceof Assert\DateTime) {
                 $this->appendPattern($property, $annotation->format);
             } elseif ($annotation instanceof Assert\Count) {
-                $property->setMinItems($annotation->min);
-                $property->setMaxItems($annotation->max);
+                $property->minItems = $annotation->min;
+                $property->maxItems = $annotation->max;
             } elseif ($annotation instanceof Assert\Choice) {
-                $property->setEnum($annotation->callback ? call_user_func(is_array($annotation->callback) ? $annotation->callback : [$reflectionProperty->class, $annotation->callback]) : $annotation->choices);
+                $property->enum = $annotation->callback ? call_user_func(is_array($annotation->callback) ? $annotation->callback : [$reflectionProperty->class, $annotation->callback]) : $annotation->choices;
             } elseif ($annotation instanceof Assert\Expression) {
                 $this->appendPattern($property, $annotation->message);
             }
         }
     }
 
-    public function setSchema($schema)
+    public function setSchema(Schema $schema)
     {
         $this->schema = $schema;
     }
@@ -90,9 +91,9 @@ class SymfonyConstraintAnnotationReader
             return null;
         }
 
-        foreach ($this->schema->getProperties() as $name => $schemaProperty) {
+        foreach ($this->schema->properties as $schemaProperty) {
             if ($schemaProperty === $property) {
-                return $name;
+                return $schemaProperty->property;
             }
         }
 
@@ -108,10 +109,10 @@ class SymfonyConstraintAnnotationReader
             return;
         }
 
-        if (null !== $property->getPattern()) {
-            $property->setPattern(sprintf('%s, %s', $property->getPattern(), $newPattern));
+        if (null !== $property->pattern) {
+            $property->pattern = sprintf('%s, %s', $property->pattern, $newPattern);
         } else {
-            $property->setPattern($newPattern);
+            $property->pattern = $newPattern;
         }
     }
 }

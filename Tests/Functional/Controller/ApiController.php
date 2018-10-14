@@ -206,7 +206,7 @@ class ApiController
      * @SWG\Get(description="This is the get operation")
      * @SWG\Post(description="This is post")
      *
-     * @SWG\Response(response=200, description="Worked well!", @Model(type=DummyType::class))
+     * @SWG\Response(response="200", description="Worked well!", @Model(type=DummyType::class))
      */
     public function operationsWithOtherAnnotations()
     {
