@@ -57,7 +57,7 @@ class JMSController
      * @SWG\Response(
      *     response=200,
      *     description="Success",
-     *     @Model(type=JMSComplex::class, groups={"list", "details", "user" : {"list"}})
+     *     @Model(type=JMSComplex::class, groups={"list", "details", "User" : {"list"}})
      * )
      */
     public function complexAction()
@@ -69,7 +69,7 @@ class JMSController
      * @SWG\Response(
      *     response=200,
      *     description="Success",
-     *     @Model(type=JMSDualComplex::class, groups={"Default", "complex" : {"user" : {"details"}}})
+     *     @Model(type=JMSDualComplex::class, groups={"Default", "complex" : {"User" : {"details"}}})
      * )
      */
     public function complexDualAction()

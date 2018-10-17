@@ -74,14 +74,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 continue;
             }
 
-            $name = $this->namingStrategy->translateName($item);
             $groups = $model->getGroups();
 
             $previousGroups = null;
-            if (isset($groups[$name]) && is_array($groups[$name])) {
+            if (isset($groups[$item->name]) && is_array($groups[$item->name])) {
                 $previousGroups = $groups;
-                $groups = $model->getGroups()[$name];
-            } elseif (!isset($groups[$name]) && !empty($this->previousGroups[$model->getHash()])) {
+                $groups = $groups[$item->name];
+            } elseif (!isset($groups[$item->name]) && !empty($this->previousGroups[$model->getHash()])) {
                 // $groups = $this->previousGroups[spl_object_hash($model)]; use this for jms/serializer 2.0
                 $groups = false === $this->propertyTypeUsesGroups($item->type) ? null : [GroupsExclusionStrategy::DEFAULT_GROUP];
             } elseif (is_array($groups)) {
@@ -92,6 +91,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $groups = null;
             }
 
+            $name = $this->namingStrategy->translateName($item);
             // read property options from Swagger Property annotation if it exists
             if (null !== $item->reflection) {
                 $property = $properties->get($annotationsReader->getPropertyName($item->reflection, $name));

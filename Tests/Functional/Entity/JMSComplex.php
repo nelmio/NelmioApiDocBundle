@@ -35,8 +35,9 @@ class JMSComplex
      * @SWG\Property(ref=@Model(type=JMSUser::class))
      * @Serializer\Expose
      * @Serializer\Groups({"details"})
+     * @Serializer\SerializedName("user")
      */
-    private $user;
+    private $User;
 
     /**
      * @Serializer\Type("string")
