@@ -41,10 +41,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function describe(Model $model, Definition $definition)
     {
-        $type = $model->getType();
-        $class = $type->getClassName();
+        $definition->type = 'object';
 
-        $definition->type = $type->getBuiltinType();
+        $class = $model->getType()->getClassName();
         $definition->_context->class = $class;
 
         $context = [];
