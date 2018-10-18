@@ -17,6 +17,7 @@ use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations\Definition;
 use Swagger\Annotations\Delete;
 use Swagger\Annotations\Get;
+use Swagger\Annotations\Header;
 use Swagger\Annotations\Info;
 use Swagger\Annotations\Items;
 use Swagger\Annotations\Parameter;
@@ -37,6 +38,7 @@ use Swagger\Context;
  * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::getChild
  * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::getCollectionItem
  * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::getIndexedCollectionItem
+ * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::searchCollectionItem
  * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::searchIndexedCollectionItem
  * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::createCollectionItem
  * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::createChild
@@ -180,10 +182,48 @@ class UtilTest extends TestCase
         restore_error_handler();
     }
 
+    public function testSearchCollectionItem()
+    {
+        $item1 = new \stdClass();
+        $item1->prop1 = 'item 1 prop 1';
+        $item1->prop2 = 'item 1 prop 2';
+        $item1->prop3 = 'item 1 prop 3';
+
+        $item2 = new \stdClass();
+        $item2->prop1 = 'item 2 prop 1';
+        $item2->prop2 = 'item 2 prop 2';
+        $item2->prop3 = 'item 2 prop 3';
+
+        $collection = [
+            $item1,
+            $item2,
+        ];
+
+        $this->assertSame(0, Util::searchCollectionItem($collection, get_object_vars($item1)));
+        $this->assertSame(1, Util::searchCollectionItem($collection, get_object_vars($item2)));
+
+        $this->assertNull(Util::searchCollectionItem(
+            $collection,
+            array_merge(get_object_vars($item2), ['prop3' => 'foobar'])
+        ));
+
+        $search = ['baz' => 'foobar'];
+        $this->expectOutputString('Undefined property: stdClass::$baz');
+
+        try {
+            Util::searchCollectionItem($collection, array_merge(get_object_vars($item2), $search));
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+
+        // no exception on empty collection
+        $this->assertNull(Util::searchCollectionItem([], get_object_vars($item2)));
+    }
+
     /**
-     * @dataProvider provideNestedKeyedCollectionData
+     * @dataProvider provideIndexedCollectionData
      */
-    public function testSearchCollectionItem($setup, $asserts)
+    public function testSearchIndexedCollectionItem($setup, $asserts)
     {
         foreach ($asserts as $collection => $items) {
             $preset = \count($setup[$collection] ?? []);
@@ -208,9 +248,9 @@ class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider provideNestedKeyedCollectionData
+     * @dataProvider provideIndexedCollectionData
      */
-    public function testGetNestedKeyedCollectionItem($setup, $asserts)
+    public function testGetIndexedCollectionItem($setup, $asserts)
     {
         $parent = new $setup['class'](array_merge(
             $this->getSetupPropertiesWithoutClass($setup),
@@ -237,7 +277,7 @@ class UtilTest extends TestCase
         }
     }
 
-    public function provideNestedKeyedCollectionData(): array
+    public function provideIndexedCollectionData(): array
     {
         return [[
             'setup' => [
@@ -325,9 +365,9 @@ class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider provideNestedData
+     * @dataProvider provideChildData
      */
-    public function testGetNested($setup, $asserts)
+    public function testGetChild($setup, $asserts)
     {
         $parent = new $setup['class'](array_merge(
             $this->getSetupPropertiesWithoutClass($setup),
@@ -335,6 +375,9 @@ class UtilTest extends TestCase
         ));
 
         foreach ($asserts as $key => $assert) {
+            if (array_key_exists('exceptionMessage', $assert)) {
+                $this->expectExceptionMessage($assert['exceptionMessage']);
+            }
             $child = Util::getChild($parent, $assert['class'], $assert['props']);
 
             $this->assertInstanceOf($assert['class'], $child);
@@ -348,7 +391,7 @@ class UtilTest extends TestCase
         }
     }
 
-    public function provideNestedData()
+    public function provideChildData(): array
     {
         return [[
             'setup' => [
@@ -394,6 +437,20 @@ class UtilTest extends TestCase
                         'minProperties' => 0,
                         'enum' => [null, 'check', 999, false],
                     ],
+                ],
+            ],
+        ], [
+            'setup' => [
+                'class' => Parameter::class,
+            ],
+            'assert' => [
+                // externalDocs triggers invalid argument exception
+                'items' => [
+                    'class' => Items::class,
+                    'props' => [
+                        'externalDocs' => [],
+                    ],
+                    'exceptionMessage' => 'Nesting Annotations is not supported.',
                 ],
             ],
         ]];
@@ -471,69 +528,245 @@ class UtilTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    public function testMergeWillOverwriteDefaultsDespiteOverwriteFalse()
+    /**
+     * @dataProvider provideMergeData
+     */
+    public function testMerge($setup, $merge, $assert)
     {
-        $doNotOverwrite = 'do not overwrite';
-        $doOverwrite = 'do overwrite';
-
-        $merge = [
-            'info' => [
-                'title' => $doOverwrite,
-                'version' => $doOverwrite,
-            ],
-            'definitions' => [
-                $doNotOverwrite => [
-                    'title' => $doOverwrite,
-                    'description' => $doOverwrite,
-                ],
-            ],
-            'tags' => [[
-                // this is actually appending right now, no clue if this is wanted,
-                // but the complete NelmioApiDocBundle test suite is not upset by this fact
-                'name' => $doOverwrite,
-            ], [
-                // this should not append since a tag with exactly the same properties
-                // is already present
-                'name' => $doNotOverwrite,
-            ], [
-                // this should not append since the name already exists, and the docs in Tag
-                // state that the tag names must be unique, but it is complicated
-                // and $api->validate() does not complain either
-                'name' => $doNotOverwrite,
-                'description' => $doOverwrite,
-            ]],
-        ];
-
-        $api = new Swagger([
-            'info' => new Info([
-                'version' => $doNotOverwrite,
-            ]),
-            'definitions' => [
-                new Definition([
-                    'definition' => $doNotOverwrite,
-                    'title' => $doNotOverwrite,
-                ]),
-            ],
-            'tags' => [
-                new Tag(['name' => $doNotOverwrite]),
-            ],
-        ]);
+        $api = new Swagger($setup);
 
         Util::merge($api, $merge, false);
         $this->assertTrue($api->validate());
         $actual = json_decode(json_encode($api), true);
 
-        $this->assertSame($doNotOverwrite, $actual['info']['version']);
-        $this->assertSame($doOverwrite, $actual['info']['title']);
+        $this->assertEquals($assert, $actual);
+    }
 
-        $this->assertSame($doNotOverwrite, $actual['definitions'][$doNotOverwrite]['title']);
-        $this->assertSame($doOverwrite, $actual['definitions'][$doNotOverwrite]['description']);
-        $this->assertCount(1, $actual['definitions']);
+    public function provideMergeData(): array
+    {
+        $no = 'do not overwrite';
+        $yes = 'do overwrite';
 
-        $this->assertSame($doNotOverwrite, $actual['tags'][0]['name']);
-        $this->assertSame($doOverwrite, $actual['tags'][1]['name']);
-        $this->assertSame($doOverwrite, $actual['tags'][2]['description']);
-        $this->assertCount(3, $actual['tags']);
+        $requiredInfo = ['title' => '', 'version' => ''];
+
+        $setupDefaults = ['info' => new Info($requiredInfo)];
+        $assertDefaults = [
+            'info' => $requiredInfo,
+            'swagger' => '2.0',
+            'paths' => [],
+            'definitions' => [],
+        ];
+
+        return [[
+            // simple child merge
+            'setup' => ['info' => new Info(['version' => $no])],
+            'merge' => ['info' => ['title' => $yes, 'version' => $yes]],
+            'assert' => [
+                'info' => ['title' => $yes, 'version' => $no],
+            ] + $assertDefaults,
+        ], [
+            // indexed collection merge
+            'setup' => [
+                'definitions' => [
+                    new Definition(['definition' => $no, 'title' => $no]),
+                ],
+            ] + $setupDefaults,
+            'merge' => [
+                'definitions' => [
+                    $no => ['title' => $yes, 'description' => $yes],
+                ],
+            ],
+            'assert' => [
+                'definitions' => [
+                    $no => ['title' => $no, 'description' => $yes],
+                ],
+            ] + $assertDefaults,
+        ], [
+            // collection merge
+            'setup' => [
+                'tags' => [new Tag(['name' => $no])],
+            ] + $setupDefaults,
+            'merge' => [
+                'tags' => [
+                    // this is actually appending right now, no clue if this is wanted,
+                    // but the complete NelmioApiDocBundle test suite is not upset by this fact
+                    ['name' => $yes],
+                    // this should not append since a tag with exactly the same properties
+                    // is already present
+                    ['name' => $no],
+                    // this does, but should not append since the name already exists, and the
+                    // docs in Tag state that the tag names must be unique, but it is complicated
+                    // and $api->validate() does not complain either
+                    ['name' => $no, 'description' => $yes],
+                ],
+            ],
+            'assert' => [
+                'tags' => [
+                    ['name' => $no],
+                    ['name' => $yes],
+                    ['name' => $no, 'description' => $yes],
+                ],
+            ] + $assertDefaults,
+        ], [
+            // heavy nested merge array
+            'setup' => $setupDefaults,
+            'merge' => $merge = [
+                'schemes' => ['http', 'https'],
+                'paths' => [
+                    '/path/to/resource' => [
+                        'get' => [
+                            'responses' => [
+                                '200' => [
+                                    '$ref' => '#/responses/default',
+                                ],
+                            ],
+                        ],
+                        'parameters' => [[
+                            'name' => 'parameter foo',
+                            'in' => 'body',
+                            'type' => 'object',
+                            'schema' => [
+                                'required' => ['baz', 'bar'],
+                            ],
+                        ]],
+                    ],
+                ],
+                'tags' => [
+                    ['name' => 'baz'],
+                    ['name' => 'foo'],
+                    ['name' => 'baz'],
+                    ['name' => 'foo'],
+                    ['name' => 'foo'],
+                ],
+                'responses' => [
+                    'default' => [
+                        'description' => 'default response',
+                        'headers' => [
+                            'foo-header' => [
+                                'type' => 'array',
+                                'items' => [
+                                    'type' => 'string',
+                                    'enum' => ['foo', 'bar', 'baz'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'assert' => array_merge(
+                $assertDefaults,
+                $merge,
+                ['tags' => \array_slice($merge['tags'], 0, 2, true)]
+            ),
+        ], [
+            // heavy nested merge array object
+            'setup' => $setupDefaults,
+            'merge' => new \ArrayObject([
+                'schemes' => ['http', 'https'],
+                'paths' => [
+                    '/path/to/resource' => [
+                        'get' => new \ArrayObject([
+                            'responses' => [
+                                '200' => [
+                                    '$ref' => '#/responses/default',
+                                ],
+                            ],
+                        ]),
+                        'parameters' => [[
+                            'name' => 'parameter foo',
+                            'in' => 'body',
+                            'type' => 'object',
+                            'schema' => [
+                                'required' => ['baz', 'bar'],
+                            ],
+                        ]],
+                    ],
+                ],
+                'tags' => new \ArrayObject([
+                    ['name' => 'baz'],
+                    ['name' => 'foo'],
+                    new \ArrayObject(['name' => 'baz']),
+                    ['name' => 'foo'],
+                    ['name' => 'foo'],
+                ]),
+                'responses' => [
+                    'default' => [
+                        'description' => 'default response',
+                        'headers' => new \ArrayObject([
+                            'foo-header' => new \ArrayObject([
+                                'type' => 'array',
+                                'items' => new \ArrayObject([
+                                    'type' => 'string',
+                                    'enum' => ['foo', 'bar', 'baz'],
+                                ]),
+                            ]),
+                        ]),
+                    ],
+                ],
+            ]),
+            'assert' => array_merge(
+                $assertDefaults,
+                $merge,
+                ['tags' => \array_slice($merge['tags'], 0, 2, true)]
+            ),
+        ], [
+            // heavy nested merge swagger instance
+            'setup' => $setupDefaults,
+            'merge' => new Swagger([
+                'schemes' => ['http', 'https'],
+                'paths' => [
+                    new Path([
+                        'path' => '/path/to/resource',
+                        'get' => new Get([
+                            'responses' => [
+                                new Response([
+                                    'response' => '200',
+                                    'ref' => '#/responses/default',
+                                ]),
+                            ],
+                        ]),
+                        'parameters' => [
+                            new Parameter([
+                                'name' => 'parameter foo',
+                                'in' => 'body',
+                                'type' => 'object',
+                                'schema' => new Schema([
+                                    'required' => ['baz', 'bar'],
+                                ]),
+                            ]),
+                        ],
+                    ]),
+                ],
+                'tags' => [
+                    new Tag(['name' => 'baz']),
+                    new Tag(['name' => 'foo']),
+                    new Tag(['name' => 'baz']),
+                    new Tag(['name' => 'foo']),
+                    new Tag(['name' => 'foo']),
+                ],
+                'responses' => [
+                    new Response([
+                        'response' => 'default',
+                        'description' => 'default response',
+                        'headers' => [
+                            new Header([
+                                'header' => 'foo-header',
+                                'type' => 'array',
+                                'items' => new Items([
+                                    'type' => 'string',
+                                    'enum' => ['foo', 'bar', 'baz'],
+                                ]),
+                            ]),
+                        ],
+                    ]),
+                ],
+            ]),
+            'assert' => array_merge(
+                $assertDefaults,
+                $merge,
+                ['tags' => \array_slice($merge['tags'], 0, 2, true)]
+            ),
+        ]];
     }
 
     public function assertIsNested(AbstractAnnotation $parent, AbstractAnnotation $child)
