@@ -2,7 +2,7 @@ NelmioApiDocBundle
 ==================
 
 The **NelmioApiDocBundle** bundle allows you to generate documentation in the
-OpenAPI (Swagger) format and provides a sandbox to interactively browse the API documentation.
+OpenAPI (Swagger) format and provides a sandbox to interactively experiment with the API.
 
 What's supported?
 -----------------
@@ -88,7 +88,7 @@ Open a command console, enter your project directory and execute the following c
 How does this bundle work?
 --------------------------
 
-It generates you an OpenAPI documentation from your symfony app thanks to
+It generates an OpenAPI documentation from your Symfony app thanks to
 **Describers**. One extracts data from SwaggerPHP annotations, one from your
 routes, etc.
 
@@ -99,8 +99,7 @@ Using the bundle
 ----------------
 
 You can configure global information in the bundle configuration ``documentation.info`` section (take a look at
-`the OpenAPI 2.0 specification (formerly Swagger)`_ to know the fields
-available):
+`the OpenAPI 2.0 specification (formerly Swagger)`_ to know the available fields):
 
 .. code-block:: yaml
 
@@ -170,7 +169,7 @@ To document your routes, you can use the SwaggerPHP annotations and the
         }
     }
 
-The normal PHP docblock for the controller method is used for the summary and description.
+The normal PHPdoc block on the controller method is used for the summary and description.
 
 Use models
 ----------
@@ -265,7 +264,7 @@ General PHP objects
     When using the JMS serializer combined with `willdurand/Hateoas`_ (and the `BazingaHateoasBundle`_),
     HATEOAS metadata are automatically extracted
 
-If you want to customize the documentation of a property of an object, you can use ``@SWG\Property``::
+If you want to customize the documentation of an object's property, you can use ``@SWG\Property``::
 
     use Nelmio\ApiDocBundle\Annotation\Model;
     use Swagger\Annotations as SWG;
