@@ -45,7 +45,7 @@ Optional Path Parameters
 ------------------------
 
 Q: I have a controller with an optional path parameter. In swagger-ui, the parameter is required - can I make it
-   optional? The controller might look like this::
+optional? The controller might look like this::
 
     /**
      * Get all user meta or metadata for a specific field.
@@ -66,7 +66,7 @@ Q: I have a controller with an optional path parameter. In swagger-ui, the param
     }
 
 A: Optional path parameters are not supported by the OpenAPI specification. The solution to this is to define two
-   separate actions in your controller. For example::
+separate actions in your controller. For example::
 
     /**
      * Get all user meta data.
@@ -120,8 +120,8 @@ Asset files not loaded
 Q: How do I fix 404 or 406 HTTP status on NelmioApiDocBundle assets files (css, js, images)?
 
 A: The assets normally are installed by composer if any command event (usually ``post-install-cmd`` or
-   ``post-update-cmd``) triggers the ``ScriptHandler::installAssets`` script.
-   If you have not set up this script, you can manually execute this command:
+``post-update-cmd``) triggers the ``ScriptHandler::installAssets`` script.
+If you have not set up this script, you can manually execute this command:
 
 .. code-block:: bash
 
