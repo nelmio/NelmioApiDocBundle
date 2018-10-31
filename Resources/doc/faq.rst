@@ -4,7 +4,7 @@ Frequently Asked Questions (FAQ)
 Sharing parameter configuration
 -------------------------------
 
-Q: I use the same value in multiple end points. How can I avoid duplicating the descriptions?
+Q: I use the same value in multiple endpoints. How can I avoid duplicating the descriptions?
 
 A: You can configure ``definitions`` in the nelmio_api_doc configuration and then reference them:
 

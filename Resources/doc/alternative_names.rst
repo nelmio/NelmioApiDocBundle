@@ -1,13 +1,13 @@
 Alternative Names
 =================
 
-NelmioApiDoc generates automatically the model names but the ``nelmio_api_doc.models.names`` option allows to
+NelmioApiDoc automatically generates the model names but the ``nelmio_api_doc.models.names`` option allows to
 customize the names for some models.
 
 Configuration
 -------------
 
-You can define alternative names for each group and area combination, the last matching rule is used:
+You can define alternative names for each group and area combinations: when conflicts arises, the last matching rule will be used:
 
 .. code-block:: yaml
 
