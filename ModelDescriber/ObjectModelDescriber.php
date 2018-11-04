@@ -12,11 +12,13 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Swagger\Annotations\Definition;
+use Swagger\Annotations\Items;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -37,19 +39,20 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $this->doctrineReader = $reader;
     }
 
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, Definition $definition)
     {
-        $schema->setType('object');
-        $properties = $schema->getProperties();
+        $definition->type = 'object';
 
         $class = $model->getType()->getClassName();
+        $definition->_context->class = $class;
+
         $context = [];
         if (null !== $model->getGroups()) {
             $context = ['serializer_groups' => $model->getGroups()];
         }
 
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
-        $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
+        $annotationsReader->updateDefinition(new \ReflectionClass($class), $definition);
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);
         if (null === $propertyInfoProperties) {
@@ -60,7 +63,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             // read property options from Swagger Property annotation if it exists
             if (property_exists($class, $propertyName)) {
                 $reflectionProperty = new \ReflectionProperty($class, $propertyName);
-                $property = $properties->get($annotationsReader->getPropertyName($reflectionProperty, $propertyName));
+                $property = Util::getProperty($definition, $annotationsReader->getPropertyName($reflectionProperty, $propertyName));
 
                 $groups = $model->getGroups();
                 if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
@@ -69,11 +72,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
                 $annotationsReader->updateProperty($reflectionProperty, $property, $groups);
             } else {
-                $property = $properties->get($propertyName);
+                $property = Util::getProperty($definition, $propertyName);
             }
 
             // If type manually defined
-            if (null !== $property->getType() || null !== $property->getRef()) {
+            if (null !== $property->type || null !== $property->ref) {
                 continue;
             }
 
@@ -92,29 +95,27 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                     throw new \LogicException(sprintf('Property "%s:%s" is an array, but no indication of the array elements are made. Use e.g. string[] for an array of string.', $class, $propertyName));
                 }
 
-                $property->setType('array');
-                $property = $property->getItems();
+                $property->type = 'array';
+                $property = Util::getChild($property, Items::class);
             }
 
             if (Type::BUILTIN_TYPE_STRING === $type->getBuiltinType()) {
-                $property->setType('string');
+                $property->type = 'string';
             } elseif (Type::BUILTIN_TYPE_BOOL === $type->getBuiltinType()) {
-                $property->setType('boolean');
+                $property->type = 'boolean';
             } elseif (Type::BUILTIN_TYPE_INT === $type->getBuiltinType()) {
-                $property->setType('integer');
+                $property->type = 'integer';
             } elseif (Type::BUILTIN_TYPE_FLOAT === $type->getBuiltinType()) {
-                $property->setType('number');
-                $property->setFormat('float');
+                $property->type = 'number';
+                $property->format = 'float';
             } elseif (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
                 if (is_subclass_of($type->getClassName(), \DateTimeInterface::class)) {
-                    $property->setType('string');
-                    $property->setFormat('date-time');
+                    $property->type = 'string';
+                    $property->format = 'date-time';
                 } else {
                     $type = new Type($type->getBuiltinType(), false, $type->getClassName(), $type->isCollection(), $type->getCollectionKeyType(), $type->getCollectionValueType()); // ignore nullable field
 
-                    $property->setRef(
-                        $this->modelRegistry->register(new Model($type, $model->getGroups()))
-                    );
+                    $property->ref = $this->modelRegistry->register(new Model($type, $model->getGroups()));
                 }
             } else {
                 throw new \Exception(sprintf('Unknown type: %s', $type->getBuiltinType()));

@@ -22,7 +22,8 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'integer',
                 ],
             ],
-        ], $this->getModel('JMSPicture')->toArray());
+            'definition' => 'JMSPicture',
+        ], $this->toArray($this->getModel('JMSPicture')));
     }
 
     public function testModeChatDocumentation()
@@ -40,7 +41,8 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'array',
                 ],
             ],
-        ], $this->getModel('JMSChat')->toArray());
+            'definition' => 'JMSChat',
+        ], $this->toArray($this->getModel('JMSChat')));
 
         $this->assertEquals([
             'type' => 'object',
@@ -49,7 +51,8 @@ class JMSFunctionalTest extends WebTestCase
                     '$ref' => '#/definitions/JMSPicture',
                 ],
             ],
-        ], $this->getModel('JMSChatUser')->toArray());
+            'definition' => 'JMSChatUser',
+        ], $this->toArray($this->getModel('JMSChatUser')));
     }
 
     public function testModelDocumentation()
@@ -63,6 +66,7 @@ class JMSFunctionalTest extends WebTestCase
                     'readOnly' => true,
                     'title' => 'userid',
                     'example' => 1,
+                    'default' => null,
                 ],
                 'daysOnline' => [
                     'type' => 'integer',
@@ -171,7 +175,8 @@ class JMSFunctionalTest extends WebTestCase
                     ],
                 ],
             ],
-        ], $this->getModel('JMSUser')->toArray());
+            'definition' => 'JMSUser',
+        ], $this->toArray($this->getModel('JMSUser')));
     }
 
     public function testModelComplexDualDocumentation()
@@ -189,7 +194,8 @@ class JMSFunctionalTest extends WebTestCase
                     '$ref' => '#/definitions/JMSUser',
                 ],
             ],
-        ], $this->getModel('JMSDualComplex')->toArray());
+            'definition' => 'JMSDualComplex',
+        ], $this->toArray($this->getModel('JMSDualComplex')));
     }
 
     public function testModelComplexDocumentation()
@@ -206,7 +212,8 @@ class JMSFunctionalTest extends WebTestCase
                 'id',
                 'user',
             ],
-        ], $this->getModel('JMSComplex')->toArray());
+            'definition' => 'JMSComplex',
+        ], $this->toArray($this->getModel('JMSComplex')));
 
         $this->assertEquals([
             'type' => 'object',
@@ -216,10 +223,12 @@ class JMSFunctionalTest extends WebTestCase
                     'title' => 'userid',
                     'description' => 'User id',
                     'readOnly' => true,
-                    'example' => '1',
+                    'example' => 1,
+                    'default' => null,
                 ],
             ],
-        ], $this->getModel('JMSUser2')->toArray());
+            'definition' => 'JMSUser2',
+        ], $this->toArray($this->getModel('JMSUser2')));
     }
 
     public function testYamlConfig()
@@ -234,7 +243,8 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'string',
                 ],
             ],
-        ], $this->getModel('VirtualProperty')->toArray());
+            'definition' => 'VirtualProperty',
+        ], $this->toArray($this->getModel('VirtualProperty')));
     }
 
     public function testNamingStrategyWithConstraints()
@@ -249,7 +259,8 @@ class JMSFunctionalTest extends WebTestCase
                 ],
             ],
             'required' => ['beautifulName'],
-        ], $this->getModel('JMSNamingStrategyConstraints')->toArray());
+            'definition' => 'JMSNamingStrategyConstraints',
+        ], $this->toArray($this->getModel('JMSNamingStrategyConstraints')));
     }
 
     protected static function createKernel(array $options = [])

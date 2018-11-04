@@ -11,10 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Model;
 
-use EXSyst\Component\Swagger\Schema;
-use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Swagger\Annotations\Swagger;
 use Symfony\Component\PropertyInfo\Type;
 
 final class ModelRegistry
@@ -45,7 +45,7 @@ final class ModelRegistry
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
             $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
             $this->names[$model->getHash()] = $alternativeName;
-            $this->api->getDefinitions()->get($alternativeName);
+            Util::getDefinition($api, $alternativeName);
         }
     }
 
@@ -61,7 +61,7 @@ final class ModelRegistry
         }
 
         // Reserve the name
-        $this->api->getDefinitions()->get($this->names[$hash]);
+        Util::getDefinition($this->api, $this->names[$hash]);
 
         return '#/definitions/'.$this->names[$hash];
     }
@@ -79,24 +79,22 @@ final class ModelRegistry
             $this->unregistered = [];
 
             foreach ($tmp as $name => $model) {
-                $schema = null;
+                $definition = null;
                 foreach ($this->modelDescribers as $modelDescriber) {
                     if ($modelDescriber instanceof ModelRegistryAwareInterface) {
                         $modelDescriber->setModelRegistry($this);
                     }
                     if ($modelDescriber->supports($model)) {
-                        $schema = new Schema();
-                        $modelDescriber->describe($model, $schema);
+                        $definition = Util::getDefinition($this->api, $name);
+                        $modelDescriber->describe($model, $definition);
 
                         break;
                     }
                 }
 
-                if (null === $schema) {
-                    throw new \LogicException(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType())));
+                if (null === $definition) {
+                    throw new \LogicException(sprintf('Definition of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType())));
                 }
-
-                $this->api->getDefinitions()->set($name, $schema);
             }
 
             if (0 === count($this->unregistered)) {
@@ -110,12 +108,10 @@ final class ModelRegistry
 
     private function generateModelName(Model $model): string
     {
-        $definitions = $this->api->getDefinitions();
-
         $name = $base = $this->getTypeShortName($model->getType());
-
+        $names = array_column($this->api->definitions ?: [], 'definition');
         $i = 1;
-        while ($definitions->has($name)) {
+        while (\in_array($name, $names, true)) {
             ++$i;
             $name = $base.$i;
         }
@@ -142,14 +138,16 @@ final class ModelRegistry
     {
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
             return $type->getClassName();
-        } elseif ($type->isCollection()) {
+        }
+
+        if ($type->isCollection()) {
             if (null !== $type->getCollectionValueType()) {
                 return $this->typeToString($type->getCollectionValueType()).'[]';
-            } else {
-                return 'mixed[]';
             }
-        } else {
-            return $type->getBuiltinType();
+
+            return 'mixed[]';
         }
+
+        return $type->getBuiltinType();
     }
 }

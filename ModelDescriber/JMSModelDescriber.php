@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
@@ -21,6 +20,11 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Swagger\Annotations\Definition;
+use Swagger\Annotations\Items;
+use Swagger\Annotations\Property;
+use Swagger\Annotations\Schema;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -53,7 +57,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     /**
      * {@inheritdoc}
      */
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, Definition $definition)
     {
         $className = $model->getType()->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
@@ -63,11 +67,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
         $groupsExclusion = null !== $model->getGroups() ? new GroupsExclusionStrategy($model->getGroups()) : null;
 
-        $schema->setType('object');
+        $definition->type = 'object';
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
-        $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
+        $annotationsReader->updateDefinition(new \ReflectionClass($className), $definition);
 
-        $properties = $schema->getProperties();
         foreach ($metadata->propertyMetadata as $item) {
             // filter groups
             if (null !== $groupsExclusion && $groupsExclusion->shouldSkipProperty($item, SerializationContext::create())) {
@@ -94,17 +97,18 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $name = $this->namingStrategy->translateName($item);
             // read property options from Swagger Property annotation if it exists
             if (null !== $item->reflection) {
-                $property = $properties->get($annotationsReader->getPropertyName($item->reflection, $name));
+                $property = Util::getProperty($definition, $annotationsReader->getPropertyName($item->reflection, $name));
                 $annotationsReader->updateProperty($item->reflection, $property, $groups);
             } else {
-                $property = $properties->get($name);
+                $property = Util::getProperty($definition, $name);
             }
 
-            if (null !== $property->getType() || null !== $property->getRef()) {
+            if (null !== $property->type || null !== $property->ref) {
                 continue;
             }
             if (null === $item->type) {
-                $properties->remove($name);
+                $key = Util::searchIndexedCollectionItem($definition->properties, 'property', $name);
+                unset($definition->properties[$key]);
 
                 continue;
             }
@@ -120,51 +124,51 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     {
         $className = $model->getType()->getClassName();
 
-        try {
-            if ($this->factory->getMetadataForClass($className)) {
-                return true;
-            }
-        } catch (\ReflectionException $e) {
+        if ($this->factory->getMetadataForClass($className)) {
+            return true;
         }
 
         return false;
     }
 
-    private function describeItem(array $type, $property, array $groups = null, array $previousGroups = null)
+    private function describeItem(array $type, Schema $property, array $groups = null, array $previousGroups = null)
     {
         $nestedTypeInfo = $this->getNestedTypeInArray($type);
         if (null !== $nestedTypeInfo) {
             list($nestedType, $isHash) = $nestedTypeInfo;
             if ($isHash) {
-                $property->setType('object');
-                // in the case of a virtual property, set it as free object type
-                $property->merge(['additionalProperties' => []]);
+                $property->type = 'object';
+                $property->additionalProperties = Util::createChild($property, Property::class);
 
                 // this is a free form object (as nested array)
                 if ('array' === $nestedType['name'] && !isset($nestedType['params'][0])) {
+                    // in the case of a virtual property, set it as free object type
+                    $property->additionalProperties = true;
+
                     return;
                 }
 
-                $this->describeItem($nestedType, $property->getAdditionalProperties(), $groups, $previousGroups);
+                $this->describeItem($nestedType, $property->additionalProperties, $groups, $previousGroups);
 
                 return;
             }
 
-            $property->setType('array');
-            $this->describeItem($nestedType, $property->getItems(), $groups);
+            $property->type = 'array';
+            $property->items = Util::createChild($property, Items::class);
+            $this->describeItem($nestedType, $property->items, $groups);
         } elseif ('array' === $type['name']) {
-            $property->setType('object');
-            $property->merge(['additionalProperties' => []]);
+            $property->type = 'object';
+            $property->additionalProperties = true;
         } elseif (in_array($type['name'], ['boolean', 'string'], true)) {
-            $property->setType($type['name']);
+            $property->type = $type['name'];
         } elseif (in_array($type['name'], ['int', 'integer'], true)) {
-            $property->setType('integer');
+            $property->type = 'integer';
         } elseif (in_array($type['name'], ['double', 'float'], true)) {
-            $property->setType('number');
-            $property->setFormat($type['name']);
+            $property->type = 'number';
+            $property->format = $type['name'];
         } elseif (is_subclass_of($type['name'], \DateTimeInterface::class)) {
-            $property->setType('string');
-            $property->setFormat('date-time');
+            $property->type = 'string';
+            $property->format = 'date-time';
         } else {
             // we can use property type also for custom handlers, then we don't have here real class name
             if (!class_exists($type['name'])) {
@@ -172,7 +176,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             }
 
             $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups);
-            $property->setRef($this->modelRegistry->register($model));
+            $property->ref = $this->modelRegistry->register($model);
 
             if ($previousGroups) {
                 $this->previousGroups[$model->getHash()] = $previousGroups;

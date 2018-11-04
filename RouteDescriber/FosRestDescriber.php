@@ -12,9 +12,10 @@
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Swagger;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Swagger\Annotations\Swagger;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -40,39 +41,40 @@ final class FosRestDescriber implements RouteDescriberInterface
         foreach ($this->getOperations($api, $route) as $operation) {
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof QueryParam) {
-                    $parameter = $operation->getParameters()->get($annotation->getName(), 'query');
-                    $parameter->setAllowEmptyValue($annotation->nullable && $annotation->allowBlank);
+                    $parameter = Util::getOperationParameter($operation, $annotation->getName(), 'query');
+                    $parameter->allowEmptyValue = $annotation->nullable && $annotation->allowBlank;
 
-                    $parameter->setRequired(!$annotation->nullable && $annotation->strict);
+                    $parameter->required = !$annotation->nullable && $annotation->strict;
                 } else {
-                    $body = $operation->getParameters()->get('body', 'body')->getSchema();
-                    $body->setType('object');
-                    $parameter = $body->getProperties()->get($annotation->getName());
+                    $bodyParameter = Util::getOperationParameter($operation, 'body', 'body');
+                    $body = Util::getSchema($bodyParameter);
+                    $body->type = 'object';
+                    $parameter = Util::getProperty($body, $annotation->getName());
 
                     if (!$annotation->nullable && $annotation->strict) {
-                        $requiredParameters = $body->getRequired();
+                        $requiredParameters = $body->required;
                         $requiredParameters[] = $annotation->getName();
 
-                        $body->setRequired(array_values(array_unique($requiredParameters)));
+                        $body->required = array_values(array_unique($requiredParameters));
                     }
                 }
 
-                $parameter->setDefault($annotation->getDefault());
-                if (null === $parameter->getType()) {
-                    $parameter->setType($annotation->map ? 'array' : 'string');
+                $parameter->default = $annotation->getDefault();
+                if (null === $parameter->type) {
+                    $parameter->type = $annotation->map ? 'array' : 'string';
                 }
-                if (null === $parameter->getDescription()) {
-                    $parameter->setDescription($annotation->description);
+                if (null === $parameter->description) {
+                    $parameter->description = $annotation->description;
                 }
 
                 $pattern = $this->getPattern($annotation->requirements);
                 if (null !== $pattern) {
-                    $parameter->setPattern($pattern);
+                    $parameter->pattern = $pattern;
                 }
 
                 $format = $this->getFormat($annotation->requirements);
                 if (null !== $format) {
-                    $parameter->setFormat($format);
+                    $parameter->format = $format;
                 }
             }
         }

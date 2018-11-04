@@ -11,10 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
-use Symfony\Component\Routing\Route;
+use Swagger\Annotations\Swagger;
 use Symfony\Component\Routing\RouteCollection;
 
 final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInterface

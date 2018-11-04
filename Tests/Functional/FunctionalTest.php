@@ -11,47 +11,41 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use EXSyst\Component\Swagger\Tag;
-use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyEmptyType;
-use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
-
 class FunctionalTest extends WebTestCase
 {
     public function testConfiguredDocumentation()
     {
-        $this->assertEquals('My Default App', $this->getSwaggerDefinition()->getInfo()->getTitle());
-        $this->assertEquals('My Test App', $this->getSwaggerDefinition('test')->getInfo()->getTitle());
+        $this->assertEquals('My Default App', $this->getSwaggerDefinition()->info->title);
+        $this->assertEquals('My Test App', $this->getSwaggerDefinition('test')->info->title);
     }
 
     public function testUndocumentedAction()
     {
-        $paths = $this->getSwaggerDefinition()->getPaths();
-        $this->assertFalse($paths->has('/undocumented'));
-        $this->assertFalse($paths->has('/api/admin'));
+        $api = $this->getSwaggerDefinition();
+
+        $this->assertNotHasPath('/undocumented', $api);
+        $this->assertNotHasPath('/api/admin', $api);
     }
 
     public function testFetchArticleAction()
     {
         $operation = $this->getOperation('/api/article/{id}', 'get');
 
-        $responses = $operation->getResponses();
-        $this->assertTrue($responses->has('200'));
-        $this->assertEquals('#/definitions/Article', $responses->get('200')->getSchema()->getRef());
+        $response = $this->getResponse($operation, '200');
+        $this->assertEquals('#/definitions/Article', $response->schema->ref);
 
         // Ensure that groups are supported
-        $modelProperties = $this->getModel('Article')->getProperties();
-        $this->assertCount(1, $modelProperties);
-        $this->assertTrue($modelProperties->has('author'));
-        $this->assertSame('#/definitions/User2', $modelProperties->get('author')->getRef());
-
-        $this->assertFalse($modelProperties->has('content'));
+        $model = $this->getModel('Article');
+        $property = $this->getProperty($model, 'author');
+        $this->assertSame('#/definitions/User2', $property->ref);
+        $this->assertObjectNotHasAttribute('content', $property);
     }
 
     public function testFilteredAction()
     {
-        $paths = $this->getSwaggerDefinition()->getPaths();
+        $api = $this->getSwaggerDefinition();
 
-        $this->assertFalse($paths->has('/filtered'));
+        $this->assertNotHasPath('/filtered', $api);
     }
 
     /**
@@ -62,10 +56,8 @@ class FunctionalTest extends WebTestCase
     public function testSwaggerAction($path)
     {
         $operation = $this->getOperation($path, 'get');
-
-        $responses = $operation->getResponses();
-        $this->assertTrue($responses->has('201'));
-        $this->assertEquals('An example resource', $responses->get('201')->getDescription());
+        $response = $this->getResponse($operation, '201');
+        $this->assertEquals('An example resource', $response->description);
     }
 
     public function swaggerActionPathsProvider()
@@ -80,20 +72,15 @@ class FunctionalTest extends WebTestCase
     {
         $operation = $this->getOperation('/api/swagger/implicit', $method);
 
-        $this->assertEquals([new Tag('implicit')], $operation->getTags());
+        $this->assertEquals(['implicit'], $operation->tags);
 
-        $responses = $operation->getResponses();
-        $this->assertTrue($responses->has('201'));
-        $response = $responses->get('201');
-        $this->assertEquals('Operation automatically detected', $response->getDescription());
-        $this->assertEquals('#/definitions/User', $response->getSchema()->getRef());
+        $response = $this->getResponse($operation, '201');
+        $this->assertEquals('Operation automatically detected', $response->description);
+        $this->assertEquals('#/definitions/User', $response->schema->ref);
 
-        $parameters = $operation->getParameters();
-        $this->assertTrue($parameters->has('foo', 'body'));
-        $parameter = $parameters->get('foo', 'body');
-
-        $this->assertEquals('This is a parameter', $parameter->getDescription());
-        $this->assertEquals('#/definitions/User', $parameter->getSchema()->getItems()->getRef());
+        $parameter = $this->getParameter($operation, 'foo', 'body');
+        $this->assertEquals('This is a parameter', $parameter->description);
+        $this->assertEquals('#/definitions/User', $parameter->schema->items->ref);
     }
 
     public function implicitSwaggerActionMethodsProvider()
@@ -105,68 +92,59 @@ class FunctionalTest extends WebTestCase
     {
         $operation = $this->getOperation('/api/test/{user}', 'get');
 
-        $this->assertEquals(['https'], $operation->getSchemes());
-        $this->assertEmpty($operation->getSummary());
-        $this->assertEmpty($operation->getDescription());
-        $this->assertNull($operation->getDeprecated());
-        $this->assertTrue($operation->getResponses()->has(200));
+        $this->assertEquals(['https'], $operation->schemes);
+        $this->assertEmpty($operation->summary);
+        $this->assertEmpty($operation->description);
+        $this->assertNull($operation->deprecated);
+        $this->assertHasResponse('200', $operation);
 
-        $parameters = $operation->getParameters();
-        $this->assertTrue($parameters->has('user', 'path'));
-
-        $parameter = $parameters->get('user', 'path');
-        $this->assertTrue($parameter->getRequired());
-        $this->assertEquals('string', $parameter->getType());
-        $this->assertEquals('/foo/', $parameter->getPattern());
-        $this->assertEmpty($parameter->getFormat());
+        $parameter = $this->getParameter($operation, 'user', 'path');
+        $this->assertTrue($parameter->required);
+        $this->assertEquals('string', $parameter->type);
+        $this->assertEquals('/foo/', $parameter->pattern);
+        $this->assertEmpty($parameter->format);
     }
 
     public function testFOSRestAction()
     {
         $operation = $this->getOperation('/api/fosrest', 'post');
 
-        $parameters = $operation->getParameters();
-        $this->assertTrue($parameters->has('foo', 'query'));
-        $this->assertTrue($parameters->has('body', 'body'));
-        $body = $parameters->get('body', 'body')->getSchema()->getProperties();
+        $body = $this->getParameter($operation, 'body', 'body');
 
-        $this->assertTrue($body->has('bar'));
-        $this->assertTrue($body->has('baz'));
+        $fooParameter = $this->getParameter($operation, 'foo', 'query');
+        $this->assertNotNull($fooParameter->pattern);
+        $this->assertEquals('\d+', $fooParameter->pattern);
+        $this->assertNull($fooParameter->format);
 
-        $fooParameter = $parameters->get('foo', 'query');
-        $this->assertNotNull($fooParameter->getPattern());
-        $this->assertEquals('\d+', $fooParameter->getPattern());
-        $this->assertNull($fooParameter->getFormat());
+        $barProperty = $this->getProperty($body->schema, 'bar');
+        $this->assertNotNull($barProperty->pattern);
+        $this->assertEquals('\d+', $barProperty->pattern);
+        $this->assertNull($barProperty->format);
 
-        $barParameter = $body->get('bar');
-        $this->assertNotNull($barParameter->getPattern());
-        $this->assertEquals('\d+', $barParameter->getPattern());
-        $this->assertNull($barParameter->getFormat());
-
-        $bazParameter = $body->get('baz');
-        $this->assertNotNull($bazParameter->getFormat());
-        $this->assertEquals('IsTrue', $bazParameter->getFormat());
-        $this->assertNull($bazParameter->getPattern());
+        $bazProperty = $this->getProperty($body->schema, 'baz');
+        $this->assertNotNull($bazProperty->format);
+        $this->assertEquals('IsTrue', $bazProperty->format);
+        $this->assertNull($bazProperty->pattern);
 
         // The _format path attribute should be removed
-        $this->assertFalse($parameters->has('_format', 'path'));
+        $this->assertNotHasParameter('_format', 'path', $operation);
     }
 
     public function testDeprecatedAction()
     {
         $operation = $this->getOperation('/api/deprecated', 'get');
 
-        $this->assertEquals('This action is deprecated.', $operation->getSummary());
-        $this->assertEquals('Please do not use this action.', $operation->getDescription());
-        $this->assertTrue($operation->getDeprecated());
+        $this->assertEquals('This action is deprecated.', $operation->summary);
+        $this->assertEquals('Please do not use this action.', $operation->description);
+        $this->assertTrue($operation->deprecated);
     }
 
     public function testApiPlatform()
     {
-        $operation = $this->getOperation('/api/dummies', 'get');
-        $operation = $this->getOperation('/api/foo', 'get');
-        $operation = $this->getOperation('/api/foo', 'post');
-        $operation = $this->getOperation('/api/dummies/{id}', 'get');
+        $this->getOperation('/api/dummies', 'get');
+        $this->getOperation('/api/foo', 'get');
+        $this->getOperation('/api/foo', 'post');
+        $this->getOperation('/api/dummies/{id}', 'get');
     }
 
     public function testUserModel()
@@ -186,6 +164,7 @@ class FunctionalTest extends WebTestCase
                         'readOnly' => true,
                         'title' => 'userid',
                         'example' => 1,
+                        'default' => null,
                     ],
                     'email' => [
                         'type' => 'string',
@@ -223,8 +202,9 @@ class FunctionalTest extends WebTestCase
                         'enum' => ['disabled', 'enabled'],
                     ],
                 ],
+                'definition' => 'User',
             ],
-            $this->getModel('User')->toArray()
+            $this->toArray($this->getModel('User'))
         );
     }
 
@@ -274,7 +254,8 @@ class FunctionalTest extends WebTestCase
                 ],
             ],
             'required' => ['dummy', 'dummies', 'entity', 'entities', 'document', 'documents', 'extended_builtin'],
-        ], $this->getModel('UserType')->toArray());
+            'definition' => 'UserType',
+        ], $this->toArray($this->getModel('UserType')));
 
         $this->assertEquals([
             'type' => 'object',
@@ -319,7 +300,8 @@ class FunctionalTest extends WebTestCase
                 ],
             ],
             'required' => ['foo', 'foz', 'password'],
-        ], $this->getModel('DummyType')->toArray());
+            'definition' => 'DummyType',
+        ], $this->toArray($this->getModel('DummyType')));
     }
 
     public function testSecurityAction()
@@ -330,7 +312,7 @@ class FunctionalTest extends WebTestCase
             ['api_key' => []],
             ['basic' => []],
         ];
-        $this->assertEquals($expected, $operation->getSecurity());
+        $this->assertEquals($expected, $operation->security);
     }
 
     public function testClassSecurityAction()
@@ -340,7 +322,7 @@ class FunctionalTest extends WebTestCase
         $expected = [
             ['basic' => []],
         ];
-        $this->assertEquals($expected, $operation->getSecurity());
+        $this->assertEquals($expected, $operation->security);
     }
 
     public function testSymfonyConstraintDocumentation()
@@ -389,24 +371,29 @@ class FunctionalTest extends WebTestCase
                 ],
             ],
             'type' => 'object',
-        ], $this->getModel('SymfonyConstraints')->toArray());
+            'definition' => 'SymfonyConstraints',
+        ], $this->toArray($this->getModel('SymfonyConstraints')));
     }
 
     public function testConfigReference()
     {
         $operation = $this->getOperation('/api/configReference', 'get');
-        $this->assertEquals('#/definitions/Test', $operation->getResponses()->get('200')->getSchema()->getRef());
-        $this->assertEquals('#/responses/201', $operation->getResponses()->get('201')->getRef());
+        $response = $this->getResponse($operation, '200');
+        $this->assertEquals('#/definitions/Test', $response->schema->ref);
+        $response = $this->getResponse($operation, '201');
+        $this->assertEquals('#/responses/201', $response->ref);
     }
 
     public function testOperationsWithOtherAnnotationsAction()
     {
         $getOperation = $this->getOperation('/api/multi-annotations', 'get');
-        $this->assertSame('This is the get operation', $getOperation->getDescription());
-        $this->assertSame('Worked well!', $getOperation->getResponses()->get(200)->getDescription());
+        $this->assertSame('This is the get operation', $getOperation->description);
+        $getResponse = $this->getResponse($getOperation, '200');
+        $this->assertSame('Worked well!', $getResponse->description);
 
         $postOperation = $this->getOperation('/api/multi-annotations', 'post');
-        $this->assertSame('This is post', $postOperation->getDescription());
-        $this->assertSame('Worked well!', $postOperation->getResponses()->get(200)->getDescription());
+        $this->assertSame('This is post', $postOperation->description);
+        $postResponse = $this->getResponse($postOperation, '200');
+        $this->assertSame('Worked well!', $postResponse->description);
     }
 }

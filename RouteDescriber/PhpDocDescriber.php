@@ -11,9 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use EXSyst\Component\Swagger\Swagger;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
+use Swagger\Annotations\Swagger;
 use Symfony\Component\Routing\Route;
 
 final class PhpDocDescriber implements RouteDescriberInterface
@@ -47,20 +47,18 @@ final class PhpDocDescriber implements RouteDescriberInterface
 
         foreach ($this->getOperations($api, $route) as $operation) {
             if (null !== $docBlock) {
-                if (null === $operation->getSummary() && '' !== $docBlock->getSummary()) {
-                    $operation->setSummary($docBlock->getSummary());
+                if (null === $operation->summary && '' !== $docBlock->getSummary()) {
+                    $operation->summary = $docBlock->getSummary();
                 }
-                if (null === $operation->getDescription() && '' !== (string) $docBlock->getDescription()) {
-                    $operation->setDescription((string) $docBlock->getDescription());
+                if (null === $operation->description && '' !== (string) $docBlock->getDescription()) {
+                    $operation->description = (string) $docBlock->getDescription();
                 }
                 if ($docBlock->hasTag('deprecated')) {
-                    $operation->setDeprecated(true);
+                    $operation->deprecated = true;
                 }
             }
-            if (null !== $classDocBlock) {
-                if ($classDocBlock->hasTag('deprecated')) {
-                    $operation->setDeprecated(true);
-                }
+            if ((null !== $classDocBlock) && $classDocBlock->hasTag('deprecated')) {
+                $operation->deprecated = true;
             }
         }
     }

@@ -12,17 +12,16 @@
 namespace Nelmio\ApiDocBundle\Describer;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
-use Nelmio\ApiDocBundle\SwaggerPhp\AddDefaults;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Psr\Log\LoggerInterface;
 use Swagger\Analysis;
-use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations as SWG;
-use Swagger\Context;
+use Swagger\Annotations\Swagger;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
@@ -35,29 +34,24 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
     private $logger;
     private $overwrite;
 
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, LoggerInterface $logger)
     {
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
         $this->annotationReader = $annotationReader;
         $this->logger = $logger;
-        $this->overwrite = $overwrite;
     }
 
     public function describe(Swagger $api)
     {
         $analysis = $this->getAnnotations($api);
-
         $analysis->process($this->getProcessors());
         $analysis->validate();
-
-        $api->merge(json_decode(json_encode($analysis->swagger), true), $this->overwrite);
     }
 
     private function getProcessors(): array
     {
         $processors = [
-            new AddDefaults(),
             new ModelRegister($this->modelRegistry),
         ];
 
@@ -67,53 +61,20 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
     private function getAnnotations(Swagger $api): Analysis
     {
         $analysis = new Analysis();
-        $analysis->addAnnotation(new class($api) extends SWG\Swagger {
-            private $api;
-
-            public function __construct(Swagger $api)
-            {
-                $this->api = $api;
-                parent::__construct([]);
-            }
-
-            /**
-             * Support definitions from the config and reference to models.
-             */
-            public function ref($ref)
-            {
-                if (0 === strpos($ref, '#/definitions/') && $this->api->getDefinitions()->has(substr($ref, 14))) {
-                    return;
-                }
-                if (0 === strpos($ref, '#/parameters/') && isset($this->api->getParameters()[substr($ref, 13)])) {
-                    return;
-                }
-                if (0 === strpos($ref, '#/responses/') && $this->api->getResponses()->has(substr($ref, 12))) {
-                    return;
-                }
-
-                parent::ref($ref);
-            }
-        }, null);
-
-        $operationAnnotations = [
-            'get' => SWG\Get::class,
-            'post' => SWG\Post::class,
-            'put' => SWG\Put::class,
-            'patch' => SWG\Patch::class,
-            'delete' => SWG\Delete::class,
-            'options' => SWG\Options::class,
-            'head' => SWG\Head::class,
-        ];
+        $analysis->swagger = $api;
 
         $classAnnotations = [];
 
+        /** @var \ReflectionMethod $method */
         foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods)) {
             $declaringClass = $method->getDeclaringClass();
-            if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
+            $declaringClassName = $declaringClass->getName();
+
+            if (!array_key_exists($declaringClassName, $classAnnotations)) {
                 $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
                     return $v instanceof SWG\AbstractAnnotation;
                 });
-                $classAnnotations[$declaringClass->getName()] = $classAnnotations;
+                $classAnnotations[$declaringClassName] = $classAnnotations;
             }
 
             $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
@@ -124,58 +85,45 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 continue;
             }
 
-            $context = new Context([
-                'namespace' => $method->getNamespaceName(),
-                'class' => $declaringClass->getShortName(),
-                'method' => $method->name,
-                'filename' => $method->getFileName(),
-            ]);
-            $nestedContext = clone $context;
-            $nestedContext->nested = true;
+            $path = Util::getPath($api, $path);
+            $path->_context->namespace = $method->getNamespaceName();
+            $path->_context->class = $declaringClass->getShortName();
+            $path->_context->method = $method->name;
+            $path->_context->filename = $method->getFileName();
+
+            $nestedContext = Util::createContext(['nested' => $path], $path->_context);
             $implicitAnnotations = [];
-            $operations = [];
-            $tags = [];
-            $security = [];
+            $mergeProperties = new \stdClass();
+
             foreach (array_merge($annotations, $classAnnotations[$declaringClass->getName()]) as $annotation) {
-                $annotation->_context = $context;
-                $this->updateNestedAnnotations($annotation, $nestedContext);
+                $annotation->_context = $nestedContext;
 
                 if ($annotation instanceof Operation) {
                     foreach ($httpMethods as $httpMethod) {
-                        $annotationClass = $operationAnnotations[$httpMethod];
-                        $operation = new $annotationClass(['_context' => $context]);
-                        $operation->path = $path;
+                        $operation = Util::getOperation($path, $httpMethod);
                         $operation->mergeProperties($annotation);
-
-                        $operations[$httpMethod] = $operation;
-                        $analysis->addAnnotation($operation, null);
                     }
 
                     continue;
                 }
 
                 if ($annotation instanceof SWG\Operation) {
-                    if (null === $annotation->path) {
-                        $annotation = clone $annotation;
-                        $annotation->path = $path;
-                    }
-
-                    $operations[$annotation->method] = $annotation;
-                    $analysis->addAnnotation($annotation, null);
+                    $operation = Util::getOperation($path, $annotation->method);
+                    $operation->mergeProperties($annotation);
 
                     continue;
                 }
 
                 if ($annotation instanceof Security) {
                     $annotation->validate();
-                    $security[] = [$annotation->name => []];
+                    $mergeProperties->security[] = [$annotation->name => []];
 
                     continue;
                 }
 
                 if ($annotation instanceof SWG\Tag) {
                     $annotation->validate();
-                    $tags[] = $annotation->name;
+                    $mergeProperties->tags[] = $annotation->name;
 
                     continue;
                 }
@@ -187,7 +135,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 $implicitAnnotations[] = $annotation;
             }
 
-            if (0 === count($implicitAnnotations) && 0 === count($tags) && 0 === count($security)) {
+            if (empty($implicitAnnotations) && empty(get_object_vars($mergeProperties))) {
                 continue;
             }
 
@@ -195,26 +143,9 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
             $analysis->addAnnotations($implicitAnnotations, null);
 
             foreach ($httpMethods as $httpMethod) {
-                $annotationClass = $operationAnnotations[$httpMethod];
-                $constructorArg = [
-                    '_context' => $context,
-                    'path' => $path,
-                    'value' => $implicitAnnotations,
-                ];
-
-                if (0 !== count($tags)) {
-                    $constructorArg['tags'] = $tags;
-                }
-                if (0 !== count($security)) {
-                    $constructorArg['security'] = $security;
-                }
-
-                $operation = new $annotationClass($constructorArg);
-                if (isset($operations[$httpMethod])) {
-                    $operations[$httpMethod]->mergeProperties($operation);
-                } else {
-                    $analysis->addAnnotation($operation, null);
-                }
+                $operation = Util::getOperation($path, $httpMethod);
+                $operation->merge($implicitAnnotations);
+                $operation->mergeProperties($mergeProperties);
             }
         }
 
@@ -229,25 +160,34 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
             }
 
             $controller = $route->getDefault('_controller');
-            if ($callable = $this->controllerReflector->getReflectionClassAndMethod($controller)) {
-                list($class, $method) = $callable;
-                $path = $this->normalizePath($route->getPath());
-                $httpMethods = $route->getMethods() ?: Swagger::$METHODS;
-                $httpMethods = array_map('strtolower', $httpMethods);
-                $supportedHttpMethods = array_intersect($httpMethods, Swagger::$METHODS);
+            $reflectedMethod = $this->controllerReflector->getReflectionMethod($controller);
 
-                if (empty($supportedHttpMethods)) {
-                    $this->logger->warning('None of the HTTP methods specified for path {path} are supported by swagger-ui, skipping this path', [
-                        'path' => $path,
-                        'methods' => $httpMethods,
-                    ]);
-
-                    continue;
-                }
-
-                yield $method => [$path, $supportedHttpMethods];
+            if (null === $reflectedMethod) {
+                continue;
             }
+
+            $path = $this->normalizePath($route->getPath());
+
+            $supportedHttpMethods = $this->getSupportedHttpMethods($route);
+
+            if (empty($supportedHttpMethods)) {
+                $this->logger->warning('None of the HTTP methods specified for path {path} are supported by swagger-ui, skipping this path', [
+                    'path' => $path,
+                ]);
+
+                continue;
+            }
+
+            yield $reflectedMethod => [$path, $supportedHttpMethods];
         }
+    }
+
+    private function getSupportedHttpMethods(Route $route): array
+    {
+        $allMethods = Util::$operations;
+        $methods = array_map('strtolower', $route->getMethods());
+
+        return array_intersect($methods ?: $allMethods, $allMethods);
     }
 
     private function normalizePath(string $path): string
@@ -257,18 +197,5 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
         }
 
         return $path;
-    }
-
-    private function updateNestedAnnotations($value, Context $context)
-    {
-        if ($value instanceof AbstractAnnotation) {
-            $value->_context = $context;
-        } elseif (!is_array($value)) {
-            return;
-        }
-
-        foreach ($value as $v) {
-            $this->updateNestedAnnotations($v, $context);
-        }
     }
 }

@@ -131,6 +131,7 @@ class TestKernel extends Kernel
                         'name' => 'id',
                         'in' => 'path',
                         'required' => true,
+                        'type' => 'string',
                     ],
                 ],
                 'responses' => [

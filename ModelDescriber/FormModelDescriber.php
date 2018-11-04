@@ -11,10 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Swagger\Annotations\Definition;
+use Swagger\Annotations\Items;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigBuilderInterface;
@@ -38,7 +40,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         $this->formFactory = $formFactory;
     }
 
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, Definition $definition)
     {
         if (method_exists(AbstractType::class, 'setDefaultOptions')) {
             throw new \LogicException('symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.');
@@ -47,12 +49,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             throw new \LogicException('You need to enable forms in your application to use a form as a model.');
         }
 
-        $schema->setType('object');
+        $definition->type = 'object';
 
         $class = $model->getType()->getClassName();
 
         $form = $this->formFactory->create($class, null, []);
-        $this->parseForm($schema, $form);
+        $this->parseForm($definition, $form);
     }
 
     public function supports(Model $model): bool
@@ -60,23 +62,21 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         return is_a($model->getType()->getClassName(), FormTypeInterface::class, true);
     }
 
-    private function parseForm(Schema $schema, FormInterface $form)
+    private function parseForm(Definition $definition, FormInterface $form)
     {
-        $properties = $schema->getProperties();
-
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
-            $property = $properties->get($name);
+            $property = Util::getProperty($definition, $name);
 
             if ($config->getRequired()) {
-                $required = $schema->getRequired() ?? [];
+                $required = $definition->required ?? [];
                 $required[] = $name;
 
-                $schema->setRequired($required);
+                $definition->required = $required;
             }
 
-            $property->merge($config->getOption('documentation'));
-            if (null !== $property->getType()) {
+            $property->mergeProperties($config->getOption('documentation'));
+            if (null !== $property->type) {
                 continue; // Type manually defined
             }
 
@@ -99,7 +99,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         if (!$builtinFormType = $this->getBuiltinFormType($type)) {
             // if form type is not builtin in Form component.
             $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, get_class($type->getInnerType())));
-            $property->setRef($this->modelRegistry->register($model));
+            $property->ref = $this->modelRegistry->register($model);
 
             return;
         }
@@ -108,42 +108,42 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             $blockPrefix = $builtinFormType->getBlockPrefix();
 
             if ('text' === $blockPrefix) {
-                $property->setType('string');
+                $property->type = 'string';
 
                 break;
             }
 
             if ('number' === $blockPrefix) {
-                $property->setType('number');
+                $property->type = 'number';
 
                 break;
             }
 
             if ('integer' === $blockPrefix) {
-                $property->setType('integer');
+                $property->type = 'integer';
 
                 break;
             }
 
             if ('date' === $blockPrefix) {
-                $property->setType('string');
-                $property->setFormat('date');
+                $property->type = 'string';
+                $property->format = 'date';
 
                 break;
             }
 
             if ('datetime' === $blockPrefix) {
-                $property->setType('string');
-                $property->setFormat('date-time');
+                $property->type = 'string';
+                $property->format = 'date-time';
 
                 break;
             }
 
             if ('choice' === $blockPrefix) {
                 if ($config->getOption('multiple')) {
-                    $property->setType('array');
+                    $property->type = 'array';
                 } else {
-                    $property->setType('string');
+                    $property->type = 'string';
                 }
                 if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
                     $enums = array_values($choices);
@@ -156,9 +156,10 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                     }
 
                     if ($config->getOption('multiple')) {
-                        $property->getItems()->setType($type)->setEnum($enums);
+                        $property->items = Util::createChild($property, Items::class, ['type' => $type, 'enum' => $enums]);
                     } else {
-                        $property->setType($type)->setEnum($enums);
+                        $property->type = $type;
+                        $property->enum = $enums;
                     }
                 }
 
@@ -166,28 +167,28 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             }
 
             if ('checkbox' === $blockPrefix) {
-                $property->setType('boolean');
+                $property->type = 'boolean';
 
                 break;
             }
 
             if ('password' === $blockPrefix) {
-                $property->setType('string');
-                $property->setFormat('password');
+                $property->type = 'string';
+                $property->format = 'password';
 
                 break;
             }
 
             if ('repeated' === $blockPrefix) {
-                $property->setType('object');
-                $property->setRequired([$config->getOption('first_name'), $config->getOption('second_name')]);
+                $property->type = 'object';
+                $property->required = [$config->getOption('first_name'), $config->getOption('second_name')];
                 $subType = $config->getOption('type');
 
                 foreach (['first', 'second'] as $subField) {
                     $subName = $config->getOption($subField.'_name');
                     $subForm = $this->formFactory->create($subType, null, array_merge($config->getOption('options'), $config->getOption($subField.'_options')));
 
-                    $this->findFormType($subForm->getConfig(), $property->getProperties()->get($subName));
+                    $this->findFormType($subForm->getConfig(), Util::getProperty($property, $subName));
                 }
 
                 break;
@@ -198,10 +199,10 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $subOptions = $config->getOption('entry_options');
                 $subForm = $this->formFactory->create($subType, null, $subOptions);
 
-                $property->setType('array');
-                $itemsProp = $property->getItems();
+                $property->type = 'array';
+                $property->items = Util::createChild($property, Items::class);
 
-                $this->findFormType($subForm->getConfig(), $itemsProp);
+                $this->findFormType($subForm->getConfig(), $property->items);
 
                 break;
             }
@@ -211,12 +212,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $entityClass = $config->getOption('class');
 
                 if ($config->getOption('multiple')) {
-                    $property->setFormat(sprintf('[%s id]', $entityClass));
-                    $property->setType('array');
-                    $property->getItems()->setType('string');
+                    $property->format = sprintf('[%s id]', $entityClass);
+                    $property->type = 'array';
+                    $property->items = Util::createChild($property, Items::class, ['type' => 'string']);
                 } else {
-                    $property->setType('string');
-                    $property->setFormat(sprintf('%s id', $entityClass));
+                    $property->type = 'string';
+                    $property->format = sprintf('%s id', $entityClass);
                 }
 
                 break;
@@ -270,7 +271,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 return null;
             }
 
-            if ('entity' === $type->getBlockPrefix() || 'document' === $type->getBlockPrefix()) {
+            if (in_array($type->getBlockPrefix(), ['entity', 'document'], true)) {
                 return $type;
             }
 

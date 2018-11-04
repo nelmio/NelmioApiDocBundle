@@ -11,7 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use EXSyst\Component\Swagger\Swagger;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Swagger\Annotations\Info;
+use Swagger\Annotations\Operation;
+use Swagger\Annotations\Response;
+use Swagger\Annotations\Swagger;
 
 /**
  * Makes the swagger documentation valid even if there are missing fields.
@@ -22,25 +26,23 @@ final class DefaultDescriber implements DescriberInterface
 {
     public function describe(Swagger $api)
     {
-        // Info
-        $info = $api->getInfo();
-        if (null === $info->getTitle()) {
-            $info->setTitle('');
+        /** @var Info $info */
+        $info = Util::getChild($api, Info::class);
+        if (null === $info->title) {
+            $info->title  = '';
         }
-        if (null === $info->getVersion()) {
-            $info->setVersion('0.0.0');
+        if (null === $info->version) {
+            $info->version = '0.0.0';
         }
-
-        // Paths
-        $paths = $api->getPaths();
+        $paths = $api->paths ?? [];
         foreach ($paths as $uri => $path) {
-            foreach ($path->getMethods() as $method) {
-                $operation = $path->getOperation($method);
-
-                // Default Response
-                if (0 === iterator_count($operation->getResponses())) {
-                    $defaultResponse = $operation->getResponses()->get('default');
-                    $defaultResponse->setDescription('');
+            foreach (Util::$operations as $method) {
+                /** @var Operation $operation */
+                $operation = $path->{$method};
+                if (null !== $operation && empty($operation->responses ?? [])) {
+                    /** @var Response $response */
+                    $response = Util::getIndexedCollectionItem($operation, Response::class, 'default');
+                    $response->description = '';
                 }
             }
         }

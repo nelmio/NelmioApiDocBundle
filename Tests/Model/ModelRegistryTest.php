@@ -11,10 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Model;
 
-use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use PHPUnit\Framework\TestCase;
+use Swagger\Annotations\Swagger;
 use Symfony\Component\PropertyInfo\Type;
 
 class ModelRegistryTest extends TestCase
@@ -27,7 +27,7 @@ class ModelRegistryTest extends TestCase
                 'groups' => ['group1'],
             ],
         ];
-        $registry = new ModelRegistry([], new Swagger(), $alternativeNames);
+        $registry = new ModelRegistry([], new Swagger([]), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true);
 
         $this->assertEquals('#/definitions/array', $registry->register(new Model($type, ['group1'])));
@@ -40,7 +40,7 @@ class ModelRegistryTest extends TestCase
      */
     public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames)
     {
-        $registry = new ModelRegistry([], new Swagger(), $alternativeNames);
+        $registry = new ModelRegistry([], new Swagger([]), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
 
         $this->assertEquals($expected, $registry->register(new Model($type, $groups)));
@@ -108,9 +108,9 @@ class ModelRegistryTest extends TestCase
     public function testUnsupportedTypeException(Type $type, string $stringType)
     {
         $this->expectException('\LogicException');
-        $this->expectExceptionMessage(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $stringType));
+        $this->expectExceptionMessage(sprintf('Definition of type "%s" can\'t be generated, no describer supports it.', $stringType));
 
-        $registry = new ModelRegistry([], new Swagger());
+        $registry = new ModelRegistry([], new Swagger([]));
         $registry->register(new Model($type));
         $registry->registerDefinitions();
     }

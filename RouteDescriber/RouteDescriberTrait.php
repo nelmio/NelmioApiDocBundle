@@ -11,8 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use EXSyst\Component\Swagger\Operation;
-use EXSyst\Component\Swagger\Swagger;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Swagger\Annotations\Operation;
+use Swagger\Annotations\Swagger;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -28,15 +29,15 @@ trait RouteDescriberTrait
     private function getOperations(Swagger $api, Route $route): array
     {
         $operations = [];
-        $path = $api->getPaths()->get($this->normalizePath($route->getPath()));
-        $methods = $route->getMethods() ?: Swagger::$METHODS;
+        $path = Util::getPath($api, $this->normalizePath($route->getPath()));
+        $methods = $route->getMethods() ?: Util::$operations;
         foreach ($methods as $method) {
             $method = strtolower($method);
-            if (!in_array($method, Swagger::$METHODS)) {
+            if (!\in_array($method, Util::$operations, true)) {
                 continue;
             }
 
-            $operations[] = $path->getOperation($method);
+            $operations[] = Util::getOperation($path, $method);
         }
 
         return $operations;

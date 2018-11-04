@@ -12,16 +12,17 @@
 namespace Nelmio\ApiDocBundle\Tests\Swagger;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use EXSyst\Component\Swagger\Schema;
-use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
 use PHPUnit\Framework\TestCase;
-use  Swagger\Analysis;
+use Swagger\Analysis;
 use Swagger\Annotations as SWG;
+use Swagger\Annotations\Definition;
+use Swagger\Annotations\Property;
+use Swagger\Annotations\Swagger;
 
 class ModelRegisterTest extends TestCase
 {
@@ -31,7 +32,7 @@ class ModelRegisterTest extends TestCase
      */
     public function testDeprecatedImplicitUseOfModel()
     {
-        $api = new Swagger();
+        $api = new Swagger([]);
         $registry = new ModelRegistry([new NullModelDescriber()], $api);
         $modelRegister = new ModelRegister($registry);
 
@@ -39,7 +40,7 @@ class ModelRegisterTest extends TestCase
 
         $modelRegister->__invoke(new Analysis([$annotation = $annotationsReader->getPropertyAnnotation(
             new \ReflectionProperty(Foo::class, 'bar'),
-            SWG\Property::class
+            Property::class
         )]));
 
         $this->assertEquals(['items' => ['$ref' => '#/definitions/Foo']], json_decode(json_encode($annotation), true));
@@ -56,7 +57,7 @@ class Foo
 
 class NullModelDescriber implements ModelDescriberInterface
 {
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, Definition $definition)
     {
     }
 

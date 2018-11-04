@@ -12,35 +12,30 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use Swagger\Annotations\Definition;
+use Swagger\Annotations\Property;
 
 /**
  * @internal
  */
 class AnnotationsReader
 {
-    private $annotationsReader;
-    private $modelRegistry;
-
     private $phpDocReader;
     private $swgAnnotationsReader;
     private $symfonyConstraintAnnotationReader;
 
     public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry)
     {
-        $this->annotationsReader = $annotationsReader;
-        $this->modelRegistry = $modelRegistry;
-
         $this->phpDocReader = new PropertyPhpDocReader();
         $this->swgAnnotationsReader = new SwgAnnotationsReader($annotationsReader, $modelRegistry);
         $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($annotationsReader);
     }
 
-    public function updateDefinition(\ReflectionClass $reflectionClass, Schema $schema)
+    public function updateDefinition(\ReflectionClass $reflectionClass, Definition $definition)
     {
-        $this->swgAnnotationsReader->updateDefinition($reflectionClass, $schema);
-        $this->symfonyConstraintAnnotationReader->setSchema($schema);
+        $this->swgAnnotationsReader->updateDefinition($reflectionClass, $definition);
+        $this->symfonyConstraintAnnotationReader->setSchema($definition);
     }
 
     public function getPropertyName(\ReflectionProperty $reflectionProperty, string $default): string
@@ -48,7 +43,7 @@ class AnnotationsReader
         return $this->swgAnnotationsReader->getPropertyName($reflectionProperty, $default);
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property, array $serializationGroups = null)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property, array $serializationGroups = null)
     {
         $this->phpDocReader->updateProperty($reflectionProperty, $property);
         $this->swgAnnotationsReader->updateProperty($reflectionProperty, $property, $serializationGroups);
