@@ -96,13 +96,14 @@ final class ModelRegistry
                     throw new \LogicException(sprintf('Definition of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType())));
                 }
             }
+        }
 
-            if (0 === count($this->unregistered)) {
-                foreach ($this->alternativeNames as $model) {
-                    $this->register($model);
-                }
-                $this->alternativeNames = [];
+        if (empty($this->unregistered) && !empty($this->alternativeNames)) {
+            foreach ($this->alternativeNames as $model) {
+                $this->register($model);
             }
+            $this->alternativeNames = [];
+            $this->registerDefinitions();
         }
     }
 

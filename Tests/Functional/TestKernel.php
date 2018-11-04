@@ -104,6 +104,10 @@ class TestKernel extends Kernel
             'serializer' => ['enable_annotations' => true],
         ]);
 
+        $c->loadFromExtension('twig', [
+            'strict_variables' => '%kernel.debug%',
+        ]);
+
         $c->loadFromExtension('fos_rest', [
             'format_listener' => [
                 'rules' => [
