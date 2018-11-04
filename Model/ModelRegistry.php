@@ -98,13 +98,14 @@ final class ModelRegistry
 
                 $this->api->getDefinitions()->set($name, $schema);
             }
+        }
 
-            if (0 === count($this->unregistered)) {
-                foreach ($this->alternativeNames as $model) {
-                    $this->register($model);
-                }
-                $this->alternativeNames = [];
+        if (empty($this->unregistered) && !empty($this->alternativeNames)) {
+            foreach ($this->alternativeNames as $model) {
+                $this->register($model);
             }
+            $this->alternativeNames = [];
+            $this->registerDefinitions();
         }
     }
 
