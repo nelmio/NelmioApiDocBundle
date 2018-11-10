@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -41,6 +42,7 @@ class UserType extends AbstractType
             ->add('document', DocumentType::class, ['class' => 'Document'])
             ->add('documents', DocumentType::class, ['class' => 'Document', 'multiple' => true])
             ->add('extended_builtin', ExtendedBuiltinType::class, ['required_option' => 'foo']);
+            ->add('save', SubmitType::class)
     }
 
     public function configureOptions(OptionsResolver $resolver)
