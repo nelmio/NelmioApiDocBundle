@@ -271,9 +271,8 @@ class FunctionalTest extends WebTestCase
                 'extended_builtin' => [
                     'type' => 'string',
                     'enum' => ['foo', 'bar'],
-                ],                
+                ],
                 'save' => [
-                    'type' => 'array',
                 ],
             ],
             'required' => ['dummy', 'dummies', 'entity', 'entities', 'document', 'documents', 'extended_builtin'],
