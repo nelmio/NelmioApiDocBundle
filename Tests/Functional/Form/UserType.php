@@ -41,8 +41,8 @@ class UserType extends AbstractType
             ->add('entities', EntityType::class, ['class' => 'Entity', 'multiple' => true])
             ->add('document', DocumentType::class, ['class' => 'Document'])
             ->add('documents', DocumentType::class, ['class' => 'Document', 'multiple' => true])
-            ->add('extended_builtin', ExtendedBuiltinType::class, ['required_option' => 'foo']);
-            ->add('save', SubmitType::class)
+            ->add('extended_builtin', ExtendedBuiltinType::class, ['required_option' => 'foo'])
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
