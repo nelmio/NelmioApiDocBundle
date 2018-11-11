@@ -42,7 +42,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function __construct(
         MetadataFactoryInterface $factory,
-        PropertyNamingStrategyInterface $namingStrategy,
+        PropertyNamingStrategyInterface $namingStrategy = null,
         Reader $reader
     ) {
         $this->factory = $factory;
@@ -81,8 +81,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $previousGroups = $groups;
                 $groups = $groups[$item->name];
             } elseif (!isset($groups[$item->name]) && !empty($this->previousGroups[$model->getHash()])) {
-                // $groups = $this->previousGroups[spl_object_hash($model)]; use this for jms/serializer 2.0
-                $groups = false === $this->propertyTypeUsesGroups($item->type) ? null : [GroupsExclusionStrategy::DEFAULT_GROUP];
+                $groups = false === $this->propertyTypeUsesGroups($item->type)
+                    ? null
+                    : ($this->namingStrategy ? [GroupsExclusionStrategy::DEFAULT_GROUP] : $this->previousGroups[$model->getHash()]);
             } elseif (is_array($groups)) {
                 $groups = array_filter($groups, 'is_scalar');
             }
@@ -91,7 +92,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $groups = null;
             }
 
-            $name = $this->namingStrategy->translateName($item);
+            $name = $this->namingStrategy ? $this->namingStrategy->translateName($item) : $item->serializedName;
             // read property options from Swagger Property annotation if it exists
             if (null !== $item->reflection) {
                 $property = $properties->get($annotationsReader->getPropertyName($item->reflection, $name));
