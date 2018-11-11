@@ -12,8 +12,6 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use EXSyst\Component\Swagger\Tag;
-use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyEmptyType;
-use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 
 class FunctionalTest extends WebTestCase
 {
