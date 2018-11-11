@@ -346,11 +346,12 @@ class Util
     /**
      * Create a new Object of $class with members $properties and set the context parent to be $parent.
      *
-     * @throws \InvalidArgumentException at an attempt to pass in properties that are found in $parent::$_nested
      *
      * @param AbstractAnnotation $parent
      * @param string             $class
      * @param array              $properties
+     *
+     * @throws \InvalidArgumentException at an attempt to pass in properties that are found in $parent::$_nested
      *
      * @return AbstractAnnotation
      */
@@ -450,7 +451,7 @@ class Util
     private static function mergeCollection(AbstractAnnotation $annotation, $className, $collection, $property, $items, bool $overwrite)
     {
         if (null !== $property) {
-            foreach($items as $prop => $value) {
+            foreach ($items as $prop => $value) {
                 $child = self::getIndexedCollectionItem($annotation, $className, (string) $prop);
                 self::merge($child, $value);
             }
