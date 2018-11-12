@@ -29,7 +29,7 @@ final class DefaultDescriber implements DescriberInterface
         /** @var Info $info */
         $info = Util::getChild($api, Info::class);
         if (null === $info->title) {
-            $info->title  = '';
+            $info->title = '';
         }
         if (null === $info->version) {
             $info->version = '0.0.0';

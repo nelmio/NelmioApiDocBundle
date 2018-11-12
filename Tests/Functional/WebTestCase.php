@@ -108,7 +108,8 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    public function toArray(AbstractAnnotation $obj) {
+    public function toArray(AbstractAnnotation $obj)
+    {
         return json_decode(json_encode($obj), true);
     }
 
