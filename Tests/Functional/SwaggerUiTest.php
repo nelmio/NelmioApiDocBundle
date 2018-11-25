@@ -11,17 +11,23 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Symfony\Bundle\FrameworkBundle\Client;
+
 class SwaggerUiTest extends WebTestCase
 {
-    protected static function createClient(array $options = [], array $server = [])
+    protected static function createClient(array $options = [], array $server = []): Client
     {
         return parent::createClient([], $server + ['HTTP_HOST' => 'api.example.com', 'PHP_SELF' => '/app_dev.php/docs', 'SCRIPT_FILENAME' => '/var/www/app/web/app_dev.php']);
     }
 
     /**
      * @dataProvider areaProvider
+     *
+     * @param $url
+     * @param $area
+     * @param $expected
      */
-    public function testSwaggerUi($url, $area, $expected)
+    public function testSwaggerUi($url, $area, $expected): void
     {
         $client = self::createClient();
         $crawler = $client->request('GET', '/app_dev.php'.$url);
@@ -33,7 +39,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
 
-    public function areaProvider()
+    public function areaProvider(): ?\Generator
     {
         $expected = $this->toArray($this->getSwaggerDefinition());
         $expected['basePath'] = '/app_dev.php';
@@ -55,7 +61,7 @@ class SwaggerUiTest extends WebTestCase
         yield ['/docs/test', 'test', $expected];
     }
 
-    public function testJsonDocs()
+    public function testJsonDocs(): void
     {
         $client = self::createClient();
         $crawler = $client->request('GET', '/app_dev.php/docs.json');

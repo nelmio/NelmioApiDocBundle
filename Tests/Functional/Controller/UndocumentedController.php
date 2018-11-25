@@ -23,7 +23,7 @@ class UndocumentedController
      *
      * @Route("/undocumented", methods={"GET"})
      */
-    public function undocumentedAction()
+    public function undocumentedAction(): void
     {
     }
 }

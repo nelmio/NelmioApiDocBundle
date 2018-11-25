@@ -29,7 +29,7 @@ class BazingaController
      *     @Model(type=BazingaUser::class)
      * )
      */
-    public function userAction()
+    public function userAction(): void
     {
     }
 }

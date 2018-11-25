@@ -13,7 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 class BazingaFunctionalTest extends WebTestCase
 {
-    public function testModelComplexDocumentationBazinga()
+    public function testModelComplexDocumentationBazinga(): void
     {
         $this->assertEquals([
             'type' => 'object',

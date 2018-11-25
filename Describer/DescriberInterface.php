@@ -15,5 +15,5 @@ use Swagger\Annotations\Swagger;
 
 interface DescriberInterface
 {
-    public function describe(Swagger $api);
+    public function describe(Swagger $api): void;
 }

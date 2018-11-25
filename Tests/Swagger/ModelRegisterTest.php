@@ -30,7 +30,7 @@ class ModelRegisterTest extends TestCase
      * @group legacy
      * @expectedDeprecation Using `@Model` implicitely in a `@SWG\Schema`, `@SWG\Items` or `@SWG\Property` annotation in %s. Use `ref=@Model()` instead.
      */
-    public function testDeprecatedImplicitUseOfModel()
+    public function testDeprecatedImplicitUseOfModel(): void
     {
         $api = new Swagger([]);
         $registry = new ModelRegistry([new NullModelDescriber()], $api);
@@ -57,7 +57,7 @@ class Foo
 
 class NullModelDescriber implements ModelDescriberInterface
 {
-    public function describe(Model $model, Definition $definition)
+    public function describe(Model $model, Definition $definition): void
     {
     }
 

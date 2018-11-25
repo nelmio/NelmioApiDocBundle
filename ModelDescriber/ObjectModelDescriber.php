@@ -39,7 +39,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $this->doctrineReader = $reader;
     }
 
-    public function describe(Model $model, Definition $definition)
+    public function describe(Model $model, Definition $definition): void
     {
         $definition->type = 'object';
 

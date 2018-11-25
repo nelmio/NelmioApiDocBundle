@@ -57,7 +57,7 @@ class UtilTest extends TestCase
     public $rootContext;
     public $rootAnnotation;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -65,14 +65,14 @@ class UtilTest extends TestCase
         $this->rootAnnotation = new Swagger(['_context' => $this->rootContext]);
     }
 
-    public function testCreateContextSetsParentContext()
+    public function testCreateContextSetsParentContext(): void
     {
         $context = Util::createContext([], $this->rootContext);
 
         $this->assertSame($this->rootContext, $context->getRootContext());
     }
 
-    public function testCreateContextWithProperties()
+    public function testCreateContextWithProperties(): void
     {
         $context = Util::createContext(['testing' => 'trait']);
 
@@ -80,21 +80,21 @@ class UtilTest extends TestCase
         $this->assertSame('trait', $context->testing);
     }
 
-    public function testCreateChild()
+    public function testCreateChild(): void
     {
         $info = Util::createChild($this->rootAnnotation, Info::class);
 
         $this->assertInstanceOf(Info::class, $info);
     }
 
-    public function testCreateChildHasContext()
+    public function testCreateChildHasContext(): void
     {
         $info = Util::createChild($this->rootAnnotation, Info::class);
 
         $this->assertInstanceOf(Context::class, $info->_context);
     }
 
-    public function testCreateChildHasNestedContext()
+    public function testCreateChildHasNestedContext(): void
     {
         $path = Util::createChild($this->rootAnnotation, Path::class);
         $this->assertIsNested($this->rootAnnotation, $path);
@@ -108,7 +108,7 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($schema);
     }
 
-    public function testCreateChildWithEmptyProperties()
+    public function testCreateChildWithEmptyProperties(): void
     {
         $properties = [];
         /** @var Info $info */
@@ -124,7 +124,7 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($info);
     }
 
-    public function testCreateChildWithProperties()
+    public function testCreateChildWithProperties(): void
     {
         $properties = ['title' => 'testing', 'version' => '999', 'x' => new \stdClass()];
         /** @var Info $info */
@@ -138,7 +138,7 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($info);
     }
 
-    public function testCreateCollectionItemAddsCreatedItemToCollection()
+    public function testCreateCollectionItemAddsCreatedItemToCollection(): void
     {
         $collection = 'paths';
         $class = Path::class;
@@ -168,13 +168,13 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($this->rootAnnotation->{$collection}[$d1]);
     }
 
-    public function testCreateCollectionItemDoesNotAddToUnknownProperty()
+    public function testCreateCollectionItemDoesNotAddToUnknownProperty(): void
     {
         $collection = 'foobars';
         $class = Info::class;
 
         $expectedRegex = "/Property \"{$collection}\" doesn't exist .*/";
-        set_error_handler(function ($_, $err) { echo $err; });
+        set_error_handler(function ($_, $err): void { echo $err; });
         $this->expectOutputRegex($expectedRegex);
         Util::createCollectionItem($this->rootAnnotation, $collection, $class);
         $this->expectOutputRegex($expectedRegex);
@@ -182,7 +182,7 @@ class UtilTest extends TestCase
         restore_error_handler();
     }
 
-    public function testSearchCollectionItem()
+    public function testSearchCollectionItem(): void
     {
         $item1 = new \stdClass();
         $item1->prop1 = 'item 1 prop 1';
@@ -222,8 +222,11 @@ class UtilTest extends TestCase
 
     /**
      * @dataProvider provideIndexedCollectionData
+     *
+     * @param $setup
+     * @param $asserts
      */
-    public function testSearchIndexedCollectionItem($setup, $asserts)
+    public function testSearchIndexedCollectionItem($setup, $asserts): void
     {
         foreach ($asserts as $collection => $items) {
             $preset = \count($setup[$collection] ?? []);
@@ -249,8 +252,11 @@ class UtilTest extends TestCase
 
     /**
      * @dataProvider provideIndexedCollectionData
+     *
+     * @param $setup
+     * @param $asserts
      */
-    public function testGetIndexedCollectionItem($setup, $asserts)
+    public function testGetIndexedCollectionItem($setup, $asserts): void
     {
         $parent = new $setup['class'](array_merge(
             $this->getSetupPropertiesWithoutClass($setup),
@@ -366,8 +372,11 @@ class UtilTest extends TestCase
 
     /**
      * @dataProvider provideChildData
+     *
+     * @param $setup
+     * @param $asserts
      */
-    public function testGetChild($setup, $asserts)
+    public function testGetChild($setup, $asserts): void
     {
         $parent = new $setup['class'](array_merge(
             $this->getSetupPropertiesWithoutClass($setup),
@@ -456,7 +465,7 @@ class UtilTest extends TestCase
         ]];
     }
 
-    public function testGetOperationParameterReturnsExisting()
+    public function testGetOperationParameterReturnsExisting(): void
     {
         $name = 'operation name';
         $in = 'operation in';
@@ -475,7 +484,7 @@ class UtilTest extends TestCase
         $this->assertSame($parameter, $actual);
     }
 
-    public function testGetOperationParameterCreatesWithNameAndIn()
+    public function testGetOperationParameterCreatesWithNameAndIn(): void
     {
         $name = 'operation name';
         $in = 'operation in';
@@ -494,7 +503,7 @@ class UtilTest extends TestCase
         $this->assertSame($in, $actual->in);
     }
 
-    public function testGetOperationReturnsExisting()
+    public function testGetOperationReturnsExisting(): void
     {
         $get = new Get([]);
         $path = new Path(['get' => $get]);
@@ -502,7 +511,7 @@ class UtilTest extends TestCase
         $this->assertSame($get, Util::getOperation($path, 'get'));
     }
 
-    public function testGetOperationCreatesWithPath()
+    public function testGetOperationCreatesWithPath(): void
     {
         $pathStr = '/testing/get/path';
         $path = new Path(['path' => $pathStr]);
@@ -512,7 +521,7 @@ class UtilTest extends TestCase
         $this->assertSame($pathStr, $get->path);
     }
 
-    public function testMergeWithEmptyArray()
+    public function testMergeWithEmptyArray(): void
     {
         $api = new Swagger([]);
         $expected = json_encode($api);
@@ -530,8 +539,14 @@ class UtilTest extends TestCase
 
     /**
      * @dataProvider provideMergeData
+     *
+     * @param $setup
+     * @param $merge
+     * @param $assert
+     *
+     * @throws \Exception
      */
-    public function testMerge($setup, $merge, $assert)
+    public function testMerge($setup, $merge, $assert): void
     {
         $api = new Swagger($setup);
 
@@ -769,13 +784,13 @@ class UtilTest extends TestCase
         ]];
     }
 
-    public function assertIsNested(AbstractAnnotation $parent, AbstractAnnotation $child)
+    public function assertIsNested(AbstractAnnotation $parent, AbstractAnnotation $child): void
     {
         self::assertTrue($child->_context->is('nested'));
         self::assertSame($parent, $child->_context->nested);
     }
 
-    public function assertIsConnectedToRootContext(AbstractAnnotation $annotation)
+    public function assertIsConnectedToRootContext(AbstractAnnotation $annotation): void
     {
         $this->assertSame($this->rootContext, $annotation->_context->getRootContext());
     }
@@ -785,7 +800,7 @@ class UtilTest extends TestCase
         return array_filter($setup, function ($k) {return 'class' !== $k; }, ARRAY_FILTER_USE_KEY);
     }
 
-    private function getNonDefaultProperties($object)
+    private function getNonDefaultProperties($object): array
     {
         $objectVars = \get_object_vars($object);
         $classVars = \get_class_vars(\get_class($object));

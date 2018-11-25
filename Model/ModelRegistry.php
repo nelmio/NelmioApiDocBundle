@@ -33,10 +33,12 @@ final class ModelRegistry
 
     /**
      * @param ModelDescriberInterface[]|iterable $modelDescribers
+     * @param Swagger                            $api
+     * @param array                              $alternativeNames
      *
      * @internal
      */
-    public function __construct($modelDescribers, Swagger $api, array $alternativeNames = [])
+    public function __construct(iterable $modelDescribers, Swagger $api, array $alternativeNames = [])
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
@@ -69,7 +71,7 @@ final class ModelRegistry
     /**
      * @internal
      */
-    public function registerDefinitions()
+    public function registerDefinitions(): void
     {
         while (count($this->unregistered)) {
             $tmp = [];

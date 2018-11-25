@@ -26,7 +26,7 @@ class RouteDescriberTest extends AbstractDescriberTest
 
     private $routeDescriber;
 
-    public function testIgnoreWhenNoController()
+    public function testIgnoreWhenNoController(): void
     {
         $this->routes->add('foo', new Route('foo'));
         $this->routeDescriber->expects($this->never())
@@ -39,7 +39,7 @@ class RouteDescriberTest extends AbstractDescriberTest
         $this->assertEquals($toArray(new Swagger([])), $toArray($this->getSwaggerDoc()));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->routeDescriber = $this->createMock(RouteDescriberInterface::class);
         $this->routes = new RouteCollection();

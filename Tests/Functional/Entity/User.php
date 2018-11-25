@@ -78,23 +78,17 @@ class User
      */
     private $status;
 
-    /**
-     * @param float $money
-     */
-    public function setMoney(float $money)
+    public function setMoney(float $money): void
     {
         $this->money = $money;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
@@ -102,36 +96,33 @@ class User
     /**
      * @param string[] $roles
      */
-    public function setRoles(array $roles)
+    public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
 
-    /**
-     * @param int $friendsNumber
-     */
-    public function setFriendsNumber(int $friendsNumber)
+    public function setFriendsNumber(int $friendsNumber): void
     {
         $this->friendsNumber = $friendsNumber;
     }
 
-    public function setCreatedAt(\DateTime $createAt)
+    public function setCreatedAt(\DateTime $createAt): void
     {
     }
 
-    public function setUsers(array $users)
+    public function setUsers(array $users): void
     {
     }
 
-    public function setFriend(self $friend = null)
+    public function setFriend(?self $friend = null): void
     {
     }
 
-    public function setDummy(Dummy $dummy)
+    public function setDummy(Dummy $dummy): void
     {
     }
 
-    public function setStatus(string $status)
+    public function setStatus(string $status): void
     {
     }
 }

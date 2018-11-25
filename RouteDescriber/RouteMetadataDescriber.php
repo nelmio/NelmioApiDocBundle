@@ -19,7 +19,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         foreach ($this->getOperations($api, $route) as $operation) {
             $operation->schemes = $route->getSchemes() ?: null;

@@ -162,15 +162,15 @@ class JMSUser
      */
     private $deepFreeFormObjectCollection;
 
-    public function setRoles($roles)
+    public function setRoles($roles): void
     {
     }
 
-    public function getRoles()
+    public function getRoles(): void
     {
     }
 
-    public function setDummy(Dummy $dummy)
+    public function setDummy(Dummy $dummy): void
     {
     }
 }

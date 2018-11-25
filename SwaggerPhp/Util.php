@@ -89,7 +89,7 @@ class Util
      *
      * @return Path
      */
-    public static function getPath(Swagger $api, $path): Path
+    public static function getPath(Swagger $api, string $path): Path
     {
         return self::getIndexedCollectionItem($api, Path::class, $path);
     }
@@ -106,7 +106,7 @@ class Util
      *
      * @return Definition
      */
-    public static function getDefinition(Swagger $api, $definition): Definition
+    public static function getDefinition(Swagger $api, string $definition): Definition
     {
         return self::getIndexedCollectionItem($api, Definition::class, $definition);
     }
@@ -142,7 +142,7 @@ class Util
      *
      * @return Property
      */
-    public static function getProperty(Schema $schema, $property): Property
+    public static function getProperty(Schema $schema, string $property): Property
     {
         return self::getIndexedCollectionItem($schema, Property::class, $property);
     }
@@ -164,7 +164,7 @@ class Util
      *
      * @return Operation
      */
-    public static function getOperation(Path $path, $method): Operation
+    public static function getOperation(Path $path, string $method): Operation
     {
         $class = array_keys($path::$_nested, \strtolower($method), true)[0];
 
@@ -188,7 +188,7 @@ class Util
      *
      * @return Parameter
      */
-    public static function getOperationParameter(Operation $operation, $name, $in): Parameter
+    public static function getOperationParameter(Operation $operation, string $name, string $in): Parameter
     {
         return self::getCollectionItem($operation, Parameter::class, ['name' => $name, 'in' => $in]);
     }
@@ -238,7 +238,7 @@ class Util
      *
      * @return AbstractAnnotation
      */
-    public static function getCollectionItem(AbstractAnnotation $parent, $class, array $properties = []): AbstractAnnotation
+    public static function getCollectionItem(AbstractAnnotation $parent, string $class, array $properties = []): AbstractAnnotation
     {
         $key = null;
         $nested = $parent::$_nested;
@@ -272,7 +272,7 @@ class Util
      *
      * @return AbstractAnnotation
      */
-    public static function getIndexedCollectionItem(AbstractAnnotation $parent, $class, $value): AbstractAnnotation
+    public static function getIndexedCollectionItem(AbstractAnnotation $parent, string $class, $value): AbstractAnnotation
     {
         $nested = $parent::$_nested;
         list($collection, $property) = $nested[$class];
@@ -293,7 +293,7 @@ class Util
      * @param array $collection
      * @param array $properties
      *
-     * @return int|null|string
+     * @return int|string|null
      */
     public static function searchCollectionItem(array $collection, array $properties)
     {
@@ -319,7 +319,7 @@ class Util
      *
      * @return false|int|string
      */
-    public static function searchIndexedCollectionItem(array $collection, $member, $value)
+    public static function searchIndexedCollectionItem(array $collection, string $member, $value)
     {
         return array_search($value, array_column($collection, $member), true);
     }
@@ -335,7 +335,7 @@ class Util
      *
      * @return int
      */
-    public static function createCollectionItem(AbstractAnnotation $parent, $collection, $class, array $properties = []): int
+    public static function createCollectionItem(AbstractAnnotation $parent, string $collection, string $class, array $properties = []): int
     {
         $key = \count($parent->{$collection} ?: []);
         $parent->{$collection}[$key] = self::createChild($parent, $class, $properties);
@@ -355,7 +355,7 @@ class Util
      *
      * @return AbstractAnnotation
      */
-    public static function createChild(AbstractAnnotation $parent, $class, array $properties = []): AbstractAnnotation
+    public static function createChild(AbstractAnnotation $parent, string $class, array $properties = []): AbstractAnnotation
     {
         $nesting = self::getNestingIndexes($class);
 
@@ -378,7 +378,7 @@ class Util
      *
      * @return Context
      */
-    public static function createContext(array $properties = [], Context $parent = null): Context
+    public static function createContext(array $properties = [], ?Context $parent = null): Context
     {
         return new Context($properties, $parent);
     }
@@ -393,7 +393,7 @@ class Util
      * @param array|\ArrayObject|AbstractAnnotation $from
      * @param bool                                  $overwrite
      */
-    public static function merge(AbstractAnnotation $annotation, $from, bool $overwrite = false)
+    public static function merge(AbstractAnnotation $annotation, $from, bool $overwrite = false): void
     {
         if (\is_array($from)) {
             self::mergeFromArray($annotation, $from, $overwrite);
@@ -406,7 +406,7 @@ class Util
         }
     }
 
-    private static function mergeFromArray(AbstractAnnotation $annotation, array $properties, bool $overwrite)
+    private static function mergeFromArray(AbstractAnnotation $annotation, array $properties, bool $overwrite): void
     {
         $done = [];
 
@@ -443,12 +443,12 @@ class Util
         }
     }
 
-    private static function mergeChild(AbstractAnnotation $annotation, $className, $value, bool $overwrite)
+    private static function mergeChild(AbstractAnnotation $annotation, $className, $value, bool $overwrite): void
     {
         self::merge(self::getChild($annotation, $className), $value, $overwrite);
     }
 
-    private static function mergeCollection(AbstractAnnotation $annotation, $className, $collection, $property, $items, bool $overwrite)
+    private static function mergeCollection(AbstractAnnotation $annotation, $className, $collection, $property, $items, bool $overwrite): void
     {
         if (null !== $property) {
             foreach ($items as $prop => $value) {
@@ -472,7 +472,7 @@ class Util
         }
     }
 
-    private static function mergeTyped(AbstractAnnotation $annotation, $propertyName, $type, array $properties, array $defaults, bool $overwrite)
+    private static function mergeTyped(AbstractAnnotation $annotation, $propertyName, $type, array $properties, array $defaults, bool $overwrite): void
     {
         if (\is_string($type) && 0 === strpos($type, '[')) {
             /* type is declared as array in @see AbstractAnnotation::$_types */
@@ -485,7 +485,7 @@ class Util
         }
     }
 
-    private static function mergeProperty(AbstractAnnotation $annotation, $propertyName, $value, $default, bool $overwrite)
+    private static function mergeProperty(AbstractAnnotation $annotation, $propertyName, $value, $default, bool $overwrite): void
     {
         if (true === $overwrite || $default === $annotation->{$propertyName}) {
             $annotation->{$propertyName} = $value;
@@ -502,7 +502,7 @@ class Util
         ));
     }
 
-    private static function getNesting($class)
+    private static function getNesting($class): ?array
     {
         switch ($class) {
             case Swagger::class:

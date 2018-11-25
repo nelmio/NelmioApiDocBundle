@@ -23,7 +23,7 @@ class ControllersTest extends TestCase
      * @group legacy
      * @expectedDeprecation Providing an instance of "Nelmio\ApiDocBundle\ApiDocGenerator" to "Nelmio\ApiDocBundle\Controller\SwaggerUiController::__construct()" is deprecated since version 3.1. Provide it an instance of "Psr\Container\ContainerInterface" instead.
      */
-    public function testSwaggerUiControllerInstanciation()
+    public function testSwaggerUiControllerInstanciation(): void
     {
         $controller = new SwaggerUiController(new ApiDocGenerator([], []), $this->createMock('Twig_Environment'));
         $controller(new Request());
@@ -33,7 +33,7 @@ class ControllersTest extends TestCase
      * @group legacy
      * @expectedDeprecation Providing an instance of "Nelmio\ApiDocBundle\ApiDocGenerator" to "Nelmio\ApiDocBundle\Controller\DocumentationController::__construct()" is deprecated since version 3.1. Provide it an instance of "Psr\Container\ContainerInterface" instead.
      */
-    public function testDocumentationControllerInstanciation()
+    public function testDocumentationControllerInstanciation(): void
     {
         $controller = new DocumentationController(new ApiDocGenerator([], []));
         $controller(new Request());

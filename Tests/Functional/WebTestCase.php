@@ -27,11 +27,7 @@ class WebTestCase extends BaseWebTestCase
 {
     protected static $swaggerDefinition;
 
-    /**
-     * @param string  $path
-     * @param Swagger $api
-     */
-    public function assertHasPath($path, Swagger $api)
+    public function assertHasPath(string $path, Swagger $api): void
     {
         $paths = array_column($api->paths ?: [], 'path');
 
@@ -42,11 +38,7 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    /**
-     * @param string  $path
-     * @param Swagger $api
-     */
-    public function assertNotHasPath($path, Swagger $api)
+    public function assertNotHasPath(string $path, Swagger $api): void
     {
         $paths = array_column($api->paths ?: [], 'path');
 
@@ -57,11 +49,7 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    /**
-     * @param string    $responseCode
-     * @param Operation $operation
-     */
-    public function assertHasResponse($responseCode, Operation $operation)
+    public function assertHasResponse(string $responseCode, Operation $operation): void
     {
         $responses = array_column($operation->responses ?: [], 'response');
 
@@ -72,7 +60,7 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    public function assertHasParameter($name, $in, AbstractAnnotation $annotation)
+    public function assertHasParameter($name, $in, AbstractAnnotation $annotation): void
     {
         /* @var Operation|Swagger $annotation */
         $parameters = array_column($annotation->parameters ?: [], 'name', 'in');
@@ -84,7 +72,7 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    public function assertNotHasParameter($name, $in, AbstractAnnotation $annotation)
+    public function assertNotHasParameter($name, $in, AbstractAnnotation $annotation): void
     {
         /* @var Operation|Swagger $annotation */
         $parameters = array_column($annotation->parameters ?: [], 'name', 'in');
@@ -96,7 +84,7 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    public function assertHasProperty($property, AbstractAnnotation $annotation)
+    public function assertHasProperty($property, AbstractAnnotation $annotation): void
     {
         /* @var Definition|Schema|Property|Items $annotation */
         $properties = array_column($annotation->properties ?: [], 'property');

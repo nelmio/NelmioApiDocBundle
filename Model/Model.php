@@ -20,18 +20,16 @@ final class Model
     private $groups;
 
     /**
+     * @param Type          $type
      * @param string[]|null $groups
      */
-    public function __construct(Type $type, array $groups = null)
+    public function __construct(Type $type, ?array $groups = null)
     {
         $this->type = $type;
         $this->groups = $groups;
     }
 
-    /**
-     * @return Type
-     */
-    public function getType()
+    public function getType(): Type
     {
         return $this->type;
     }
@@ -39,7 +37,7 @@ final class Model
     /**
      * @return string[]|null
      */
-    public function getGroups()
+    public function getGroups(): ?array
     {
         return $this->groups;
     }

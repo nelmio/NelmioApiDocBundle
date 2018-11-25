@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class NelmioApiDocExtensionTest extends TestCase
 {
-    public function testNameAliasesArePassedToModelRegistry()
+    public function testNameAliasesArePassedToModelRegistry(): void
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);
@@ -85,7 +85,7 @@ class NelmioApiDocExtensionTest extends TestCase
         $this->assertTrue($foundMethodCall);
     }
 
-    public function testMergesRootKeysFromMultipleConfigurations()
+    public function testMergesRootKeysFromMultipleConfigurations(): void
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);

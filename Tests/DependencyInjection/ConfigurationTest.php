@@ -17,7 +17,7 @@ use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase
 {
-    public function testDefaultArea()
+    public function testDefaultArea(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => ['path_patterns' => ['/foo']]]]);
@@ -25,7 +25,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame(['default' => ['path_patterns' => ['/foo'], 'host_patterns' => [], 'documentation' => []]], $config['areas']);
     }
 
-    public function testAreas()
+    public function testAreas(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => $areas = [
@@ -37,7 +37,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame($areas, $config['areas']);
     }
 
-    public function testAlternativeNames()
+    public function testAlternativeNames(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[
@@ -121,7 +121,7 @@ class ConfigurationTest extends TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage You must not use both `nelmio_api_doc.areas` and `nelmio_api_doc.routes` config options. Please update your config to only use `nelmio_api_doc.areas`.
      */
-    public function testBothAreasAndRoutes()
+    public function testBothAreasAndRoutes(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => [], 'routes' => []]]);
@@ -131,7 +131,7 @@ class ConfigurationTest extends TestCase
      * @group legacy
      * @expectedDeprecation The `nelmio_api_doc.routes` config option is deprecated. Please use `nelmio_api_doc.areas` instead (just replace `routes` by `areas` in your config).
      */
-    public function testDefaultConfig()
+    public function testDefaultConfig(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['routes' => ['path_patterns' => ['/foo']]]]);

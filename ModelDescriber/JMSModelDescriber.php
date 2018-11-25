@@ -57,7 +57,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     /**
      * {@inheritdoc}
      */
-    public function describe(Model $model, Definition $definition)
+    public function describe(Model $model, Definition $definition): void
     {
         $className = $model->getType()->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
@@ -131,7 +131,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return false;
     }
 
-    private function describeItem(array $type, Schema $property, array $groups = null, array $previousGroups = null)
+    private function describeItem(array $type, Schema $property, ?array $groups = null, ?array $previousGroups = null): void
     {
         $nestedTypeInfo = $this->getNestedTypeInArray($type);
         if (null !== $nestedTypeInfo) {
@@ -172,7 +172,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         } else {
             // we can use property type also for custom handlers, then we don't have here real class name
             if (!class_exists($type['name'])) {
-                return null;
+                return;
             }
 
             $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups);
@@ -206,7 +206,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      *
      * @return bool|null
      */
-    private function propertyTypeUsesGroups(array $type)
+    private function propertyTypeUsesGroups(array $type): ?bool
     {
         if (array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
             return $this->propertyTypeUseGroupsCache[$type['name']];

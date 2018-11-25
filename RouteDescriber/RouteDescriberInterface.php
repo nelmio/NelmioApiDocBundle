@@ -16,5 +16,5 @@ use Symfony\Component\Routing\Route;
 
 interface RouteDescriberInterface
 {
-    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod);
+    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod): void;
 }

@@ -69,7 +69,7 @@ class TestKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    protected function configureRoutes(RouteCollectionBuilder $routes)
+    protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $routes->import(__DIR__.'/Controller/TestController.php', '/', 'annotation');
         $routes->import(__DIR__.'/Controller/ApiController.php', '/', 'annotation');
@@ -91,7 +91,7 @@ class TestKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader): void
     {
         $c->loadFromExtension('framework', [
             'secret' => 'MySecretKey',
@@ -183,7 +183,7 @@ class TestKernel extends Kernel
         return serialize($this->useJMS);
     }
 
-    public function unserialize($str)
+    public function unserialize($str): void
     {
         $this->__construct(unserialize($str));
     }

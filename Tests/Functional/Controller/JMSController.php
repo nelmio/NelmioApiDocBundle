@@ -36,7 +36,7 @@ class JMSController
      *     @Model(type=JMSUser::class)
      * )
      */
-    public function userAction()
+    public function userAction(): void
     {
     }
 
@@ -48,7 +48,7 @@ class JMSController
      *     @Model(type=VirtualProperty::class)
      * )
      */
-    public function yamlAction()
+    public function yamlAction(): void
     {
     }
 
@@ -60,7 +60,7 @@ class JMSController
      *     @Model(type=JMSComplex::class, groups={"list", "details", "User" : {"list"}})
      * )
      */
-    public function complexAction()
+    public function complexAction(): void
     {
     }
 
@@ -72,7 +72,7 @@ class JMSController
      *     @Model(type=JMSDualComplex::class, groups={"Default", "complex" : {"User" : {"details"}}})
      * )
      */
-    public function complexDualAction()
+    public function complexDualAction(): void
     {
     }
 
@@ -84,7 +84,7 @@ class JMSController
      *     @Model(type=JMSNamingStrategyConstraints::class, groups={"Default"})
      * )
      */
-    public function namingStrategyConstraintsAction()
+    public function namingStrategyConstraintsAction(): void
     {
     }
 
@@ -96,7 +96,7 @@ class JMSController
      *     @Model(type=JMSChat::class, groups={"Default", "members" : {"mini"}})
      * )
      */
-    public function chatAction()
+    public function chatAction(): void
     {
     }
 
@@ -108,7 +108,7 @@ class JMSController
      *     @Model(type=JMSPicture::class, groups={"mini"})
      * )
      */
-    public function pictureAction()
+    public function pictureAction(): void
     {
     }
 
@@ -120,7 +120,7 @@ class JMSController
      *     @Model(type=JMSChatUser::class, groups={"mini"})
      * )
      */
-    public function minUserAction()
+    public function minUserAction(): void
     {
     }
 }

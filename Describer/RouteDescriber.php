@@ -31,14 +31,14 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
      * @param ControllerReflector                $controllerReflector
      * @param RouteDescriberInterface[]|iterable $routeDescribers
      */
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, $routeDescribers)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, iterable $routeDescribers)
     {
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
         $this->routeDescribers = $routeDescribers;
     }
 
-    public function describe(Swagger $api)
+    public function describe(Swagger $api): void
     {
         if (0 === count($this->routeDescribers)) {
             return;

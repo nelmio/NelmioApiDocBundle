@@ -38,8 +38,11 @@ class SymfonyConstraintAnnotationReader
 
     /**
      * Update the given property and schema with defined Symfony constraints.
+     *
+     * @param \ReflectionProperty $reflectionProperty
+     * @param Property            $property
      */
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property): void
     {
         $annotations = $this->annotationsReader->getPropertyAnnotations($reflectionProperty);
 
@@ -77,13 +80,17 @@ class SymfonyConstraintAnnotationReader
         }
     }
 
-    public function setSchema(Schema $schema)
+    public function setSchema(Schema $schema): void
     {
         $this->schema = $schema;
     }
 
     /**
      * Get assigned property name for property schema.
+     *
+     * @param Schema $property
+     *
+     * @return string|void|null
      */
     private function getSchemaPropertyName(Schema $property)
     {
@@ -102,8 +109,11 @@ class SymfonyConstraintAnnotationReader
 
     /**
      * Append the pattern from the constraint to the existing pattern.
+     *
+     * @param Schema $property
+     * @param        $newPattern
      */
-    private function appendPattern(Schema $property, $newPattern)
+    private function appendPattern(Schema $property, $newPattern): void
     {
         if (null === $newPattern) {
             return;

@@ -13,13 +13,13 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 class FunctionalTest extends WebTestCase
 {
-    public function testConfiguredDocumentation()
+    public function testConfiguredDocumentation(): void
     {
         $this->assertEquals('My Default App', $this->getSwaggerDefinition()->info->title);
         $this->assertEquals('My Test App', $this->getSwaggerDefinition('test')->info->title);
     }
 
-    public function testUndocumentedAction()
+    public function testUndocumentedAction(): void
     {
         $api = $this->getSwaggerDefinition();
 
@@ -27,7 +27,7 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasPath('/api/admin', $api);
     }
 
-    public function testFetchArticleAction()
+    public function testFetchArticleAction(): void
     {
         $operation = $this->getOperation('/api/article/{id}', 'get');
 
@@ -41,7 +41,7 @@ class FunctionalTest extends WebTestCase
         $this->assertObjectNotHasAttribute('content', $property);
     }
 
-    public function testFilteredAction()
+    public function testFilteredAction(): void
     {
         $api = $this->getSwaggerDefinition();
 
@@ -52,23 +52,27 @@ class FunctionalTest extends WebTestCase
      * Tests that the paths are automatically resolved in Swagger annotations.
      *
      * @dataProvider swaggerActionPathsProvider
+     *
+     * @param $path
      */
-    public function testSwaggerAction($path)
+    public function testSwaggerAction($path): void
     {
         $operation = $this->getOperation($path, 'get');
         $response = $this->getResponse($operation, '201');
         $this->assertEquals('An example resource', $response->description);
     }
 
-    public function swaggerActionPathsProvider()
+    public function swaggerActionPathsProvider(): array
     {
         return [['/api/swagger'], ['/api/swagger2']];
     }
 
     /**
      * @dataProvider implicitSwaggerActionMethodsProvider
+     *
+     * @param $method
      */
-    public function testImplicitSwaggerAction($method)
+    public function testImplicitSwaggerAction($method): void
     {
         $operation = $this->getOperation('/api/swagger/implicit', $method);
 
@@ -83,12 +87,12 @@ class FunctionalTest extends WebTestCase
         $this->assertEquals('#/definitions/User', $parameter->schema->items->ref);
     }
 
-    public function implicitSwaggerActionMethodsProvider()
+    public function implicitSwaggerActionMethodsProvider(): array
     {
         return [['get'], ['post']];
     }
 
-    public function testUserAction()
+    public function testUserAction(): void
     {
         $operation = $this->getOperation('/api/test/{user}', 'get');
 
@@ -105,7 +109,7 @@ class FunctionalTest extends WebTestCase
         $this->assertEmpty($parameter->format);
     }
 
-    public function testFOSRestAction()
+    public function testFOSRestAction(): void
     {
         $operation = $this->getOperation('/api/fosrest', 'post');
 
@@ -130,7 +134,7 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasParameter('_format', 'path', $operation);
     }
 
-    public function testDeprecatedAction()
+    public function testDeprecatedAction(): void
     {
         $operation = $this->getOperation('/api/deprecated', 'get');
 
@@ -139,7 +143,7 @@ class FunctionalTest extends WebTestCase
         $this->assertTrue($operation->deprecated);
     }
 
-    public function testApiPlatform()
+    public function testApiPlatform(): void
     {
         $this->getOperation('/api/dummies', 'get');
         $this->getOperation('/api/foo', 'get');
@@ -147,7 +151,7 @@ class FunctionalTest extends WebTestCase
         $this->getOperation('/api/dummies/{id}', 'get');
     }
 
-    public function testUserModel()
+    public function testUserModel(): void
     {
         $this->assertEquals(
             [
@@ -208,7 +212,7 @@ class FunctionalTest extends WebTestCase
         );
     }
 
-    public function testFormSupport()
+    public function testFormSupport(): void
     {
         $this->assertEquals([
             'type' => 'object',
@@ -304,7 +308,7 @@ class FunctionalTest extends WebTestCase
         ], $this->toArray($this->getModel('DummyType')));
     }
 
-    public function testSecurityAction()
+    public function testSecurityAction(): void
     {
         $operation = $this->getOperation('/api/security', 'get');
 
@@ -315,7 +319,7 @@ class FunctionalTest extends WebTestCase
         $this->assertEquals($expected, $operation->security);
     }
 
-    public function testClassSecurityAction()
+    public function testClassSecurityAction(): void
     {
         $operation = $this->getOperation('/api/security/class', 'get');
 
@@ -325,7 +329,7 @@ class FunctionalTest extends WebTestCase
         $this->assertEquals($expected, $operation->security);
     }
 
-    public function testSymfonyConstraintDocumentation()
+    public function testSymfonyConstraintDocumentation(): void
     {
         $this->assertEquals([
             'required' => [
@@ -375,7 +379,7 @@ class FunctionalTest extends WebTestCase
         ], $this->toArray($this->getModel('SymfonyConstraints')));
     }
 
-    public function testConfigReference()
+    public function testConfigReference(): void
     {
         $operation = $this->getOperation('/api/configReference', 'get');
         $response = $this->getResponse($operation, '200');
@@ -384,7 +388,7 @@ class FunctionalTest extends WebTestCase
         $this->assertEquals('#/responses/201', $response->ref);
     }
 
-    public function testOperationsWithOtherAnnotationsAction()
+    public function testOperationsWithOtherAnnotationsAction(): void
     {
         $getOperation = $this->getOperation('/api/multi-annotations', 'get');
         $this->assertSame('This is the get operation', $getOperation->description);

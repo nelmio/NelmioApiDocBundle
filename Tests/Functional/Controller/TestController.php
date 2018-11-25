@@ -26,7 +26,7 @@ class TestController
      * )
      * @Route("/test/", methods={"GET"})
      */
-    public function testAction()
+    public function testAction(): void
     {
     }
 }

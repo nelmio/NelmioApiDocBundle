@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SymfonyConstraintAnnotationReaderTest extends TestCase
 {
-    public function testUpdatePropertyFix1283()
+    public function testUpdatePropertyFix1283(): void
     {
         $entity = new class() {
             /**

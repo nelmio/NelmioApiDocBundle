@@ -32,7 +32,7 @@ class AnnotationsReader
         $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($annotationsReader);
     }
 
-    public function updateDefinition(\ReflectionClass $reflectionClass, Definition $definition)
+    public function updateDefinition(\ReflectionClass $reflectionClass, Definition $definition): void
     {
         $this->swgAnnotationsReader->updateDefinition($reflectionClass, $definition);
         $this->symfonyConstraintAnnotationReader->setSchema($definition);
@@ -43,7 +43,7 @@ class AnnotationsReader
         return $this->swgAnnotationsReader->getPropertyName($reflectionProperty, $default);
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property, array $serializationGroups = null)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property, ?array $serializationGroups = null): void
     {
         $this->phpDocReader->updateProperty($reflectionProperty, $property);
         $this->swgAnnotationsReader->updateProperty($reflectionProperty, $property, $serializationGroups);

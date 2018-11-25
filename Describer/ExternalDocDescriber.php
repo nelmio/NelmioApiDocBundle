@@ -30,7 +30,7 @@ class ExternalDocDescriber implements DescriberInterface
         $this->overwrite = $overwrite;
     }
 
-    public function describe(Swagger $api)
+    public function describe(Swagger $api): void
     {
         $externalDoc = $this->getExternalDoc();
 

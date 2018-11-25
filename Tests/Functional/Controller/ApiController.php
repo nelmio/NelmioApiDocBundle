@@ -40,7 +40,7 @@ class ApiController
      * @SWG\Parameter(ref="#/parameters/test")
      * @Route("/article/{id}", methods={"GET"})
      */
-    public function fetchArticleAction()
+    public function fetchArticleAction(): void
     {
     }
 
@@ -53,7 +53,7 @@ class ApiController
      *     @SWG\Response(response="201", description="An example resource")
      * )
      */
-    public function swaggerAction()
+    public function swaggerAction(): void
     {
     }
 
@@ -75,7 +75,7 @@ class ApiController
      * )
      * @SWG\Tag(name="implicit")
      */
-    public function implicitSwaggerAction()
+    public function implicitSwaggerAction(): void
     {
     }
 
@@ -93,7 +93,7 @@ class ApiController
      *     @SWG\Schema(ref=@Model(type=UserType::class))
      * )
      */
-    public function submitUserTypeAction()
+    public function submitUserTypeAction(): void
     {
     }
 
@@ -103,7 +103,7 @@ class ApiController
      *     @SWG\Response(response=200, description="sucessful")
      * )
      */
-    public function userAction()
+    public function userAction(): void
     {
     }
 
@@ -113,7 +113,7 @@ class ApiController
      * @RequestParam(name="bar", requirements="\d+")
      * @RequestParam(name="baz", requirements=@IsTrue)
      */
-    public function fosrestAction()
+    public function fosrestAction(): void
     {
     }
 
@@ -126,7 +126,7 @@ class ApiController
      *
      * @deprecated
      */
-    public function deprecatedAction()
+    public function deprecatedAction(): void
     {
     }
 
@@ -135,7 +135,7 @@ class ApiController
      *
      * @Route("/admin", methods={"GET"})
      */
-    public function adminAction()
+    public function adminAction(): void
     {
     }
 
@@ -145,7 +145,7 @@ class ApiController
      *     @SWG\Response(response="201", description="")
      * )
      */
-    public function filteredAction()
+    public function filteredAction(): void
     {
     }
 
@@ -159,7 +159,7 @@ class ApiController
      * )
      * @SWG\Response(response="201", description="")
      */
-    public function formAction()
+    public function formAction(): void
     {
     }
 
@@ -169,7 +169,7 @@ class ApiController
      * @Security(name="api_key")
      * @Security(name="basic")
      */
-    public function securityAction()
+    public function securityAction(): void
     {
     }
 
@@ -181,7 +181,7 @@ class ApiController
      *     @SWG\Schema(ref=@Model(type=SymfonyConstraints::class))
      * )
      */
-    public function symfonyConstraintsAction()
+    public function symfonyConstraintsAction(): void
     {
     }
 
@@ -197,7 +197,7 @@ class ApiController
      * )
      * @Route("/configReference", methods={"GET"})
      */
-    public function configReferenceAction()
+    public function configReferenceAction(): void
     {
     }
 
@@ -208,7 +208,7 @@ class ApiController
      *
      * @SWG\Response(response="200", description="Worked well!", @Model(type=DummyType::class))
      */
-    public function operationsWithOtherAnnotations()
+    public function operationsWithOtherAnnotations(): void
     {
     }
 }

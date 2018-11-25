@@ -33,7 +33,7 @@ class SwgAnnotationsReader
         $this->modelRegister = new ModelRegister($modelRegistry);
     }
 
-    public function updateDefinition(\ReflectionClass $reflectionClass, Definition $definition)
+    public function updateDefinition(\ReflectionClass $reflectionClass, Definition $definition): void
     {
         /** @var Definition $classDefinition */
         if (!$classDefinition = $this->annotationsReader->getClassAnnotation($reflectionClass, Definition::class)) {
@@ -60,7 +60,7 @@ class SwgAnnotationsReader
         return $swgProperty->property ?? $default;
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property, array $serializationGroups = null)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property, ?array $serializationGroups = null): void
     {
         if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, Property::class)) {
             return;

@@ -13,7 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 class JMSFunctionalTest extends WebTestCase
 {
-    public function testModelPictureDocumentation()
+    public function testModelPictureDocumentation(): void
     {
         $this->assertEquals([
             'type' => 'object',
@@ -26,7 +26,7 @@ class JMSFunctionalTest extends WebTestCase
         ], $this->toArray($this->getModel('JMSPicture')));
     }
 
-    public function testModeChatDocumentation()
+    public function testModeChatDocumentation(): void
     {
         $this->assertEquals([
             'type' => 'object',
@@ -55,7 +55,7 @@ class JMSFunctionalTest extends WebTestCase
         ], $this->toArray($this->getModel('JMSChatUser')));
     }
 
-    public function testModelDocumentation()
+    public function testModelDocumentation(): void
     {
         $this->assertEquals([
             'type' => 'object',
@@ -179,7 +179,7 @@ class JMSFunctionalTest extends WebTestCase
         ], $this->toArray($this->getModel('JMSUser')));
     }
 
-    public function testModelComplexDualDocumentation()
+    public function testModelComplexDualDocumentation(): void
     {
         $this->assertEquals([
             'type' => 'object',
@@ -198,7 +198,7 @@ class JMSFunctionalTest extends WebTestCase
         ], $this->toArray($this->getModel('JMSDualComplex')));
     }
 
-    public function testModelComplexDocumentation()
+    public function testModelComplexDocumentation(): void
     {
         $this->assertEquals([
             'type' => 'object',
@@ -231,7 +231,7 @@ class JMSFunctionalTest extends WebTestCase
         ], $this->toArray($this->getModel('JMSUser2')));
     }
 
-    public function testYamlConfig()
+    public function testYamlConfig(): void
     {
         $this->assertEquals([
             'type' => 'object',
@@ -247,7 +247,7 @@ class JMSFunctionalTest extends WebTestCase
         ], $this->toArray($this->getModel('VirtualProperty')));
     }
 
-    public function testNamingStrategyWithConstraints()
+    public function testNamingStrategyWithConstraints(): void
     {
         $this->assertEquals([
             'type' => 'object',

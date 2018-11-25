@@ -31,7 +31,7 @@ final class FosRestDescriber implements RouteDescriberInterface
         $this->annotationReader = $annotationReader;
     }
 
-    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         $annotations = $this->annotationReader->getMethodAnnotations($reflectionMethod);
         $annotations = array_filter($annotations, function ($value) {

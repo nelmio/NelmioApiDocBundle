@@ -20,12 +20,14 @@ class Article
 {
     /**
      * @Groups({"light"})
+     *
+     * @param User $author
      */
-    public function setAuthor(User $author)
+    public function setAuthor(User $author): void
     {
     }
 
-    public function setContent(string $content)
+    public function setContent(string $content): void
     {
     }
 }

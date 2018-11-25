@@ -38,11 +38,11 @@ final class ControllerReflector
      *
      * @return \ReflectionMethod|null
      */
-    public function getReflectionMethod(string $controller)
+    public function getReflectionMethod(string $controller): ?\ReflectionMethod
     {
         $callable = $this->getClassAndMethod($controller);
         if (null === $callable) {
-            return;
+            return null;
         }
 
         list($class, $method) = $callable;
@@ -55,11 +55,11 @@ final class ControllerReflector
         }
     }
 
-    public function getReflectionClassAndMethod(string $controller)
+    public function getReflectionClassAndMethod(string $controller): ?array
     {
         $callable = $this->getClassAndMethod($controller);
         if (null === $callable) {
-            return;
+            return null;
         }
 
         list($class, $method) = $callable;

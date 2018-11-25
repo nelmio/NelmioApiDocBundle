@@ -35,12 +35,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     private $formFactory;
 
-    public function __construct(FormFactoryInterface $formFactory = null)
+    public function __construct(?FormFactoryInterface $formFactory = null)
     {
         $this->formFactory = $formFactory;
     }
 
-    public function describe(Model $model, Definition $definition)
+    public function describe(Model $model, Definition $definition): void
     {
         if (method_exists(AbstractType::class, 'setDefaultOptions')) {
             throw new \LogicException('symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.');
@@ -62,7 +62,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         return is_a($model->getType()->getClassName(), FormTypeInterface::class, true);
     }
 
-    private function parseForm(Definition $definition, FormInterface $form)
+    private function parseForm(Definition $definition, FormInterface $form): void
     {
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
@@ -92,7 +92,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
      * @param FormConfigBuilderInterface $config
      * @param                            $property
      */
-    private function findFormType(FormConfigBuilderInterface $config, $property)
+    private function findFormType(FormConfigBuilderInterface $config, $property): void
     {
         $type = $config->getType();
 
@@ -257,12 +257,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         return true;
     }
 
-    /**
-     * @param ResolvedFormTypeInterface $type
-     *
-     * @return ResolvedFormTypeInterface|null
-     */
-    private function getBuiltinFormType(ResolvedFormTypeInterface $type)
+    private function getBuiltinFormType(ResolvedFormTypeInterface $type): ?ResolvedFormTypeInterface
     {
         do {
             $class = get_class($type->getInnerType());

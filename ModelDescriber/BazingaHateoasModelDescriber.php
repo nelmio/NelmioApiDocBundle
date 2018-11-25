@@ -37,7 +37,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         $this->JMSModelDescriber = $JMSModelDescriber;
     }
 
-    public function setModelRegistry(ModelRegistry $modelRegistry)
+    public function setModelRegistry(ModelRegistry $modelRegistry): void
     {
         $this->modelRegistry = $modelRegistry;
         $this->JMSModelDescriber->setModelRegistry($modelRegistry);
@@ -112,7 +112,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         return $this->JMSModelDescriber->supports($model) || null !== $this->getHateoasMetadata($model);
     }
 
-    private function setAttributeProperties(Relation $relation, Property $subProperty)
+    private function setAttributeProperties(Relation $relation, Property $subProperty): void
     {
         foreach ($relation->getAttributes() as $attribute => $value) {
             $subSubProp = Util::getProperty($subProperty, $attribute);

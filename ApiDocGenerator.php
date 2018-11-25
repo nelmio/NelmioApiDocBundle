@@ -34,7 +34,7 @@ final class ApiDocGenerator
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null)
+    public function __construct(iterable $describers, iterable $modelDescribers, ?CacheItemPoolInterface $cacheItemPool = null, ?string $cacheItemId = null)
     {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
@@ -42,7 +42,7 @@ final class ApiDocGenerator
         $this->cacheItemId = $cacheItemId;
     }
 
-    public function setAlternativeNames(array $alternativeNames)
+    public function setAlternativeNames(array $alternativeNames): void
     {
         $this->alternativeNames = $alternativeNames;
     }

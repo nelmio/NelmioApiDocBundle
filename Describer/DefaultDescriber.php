@@ -24,7 +24,7 @@ use Swagger\Annotations\Swagger;
  */
 final class DefaultDescriber implements DescriberInterface
 {
-    public function describe(Swagger $api)
+    public function describe(Swagger $api): void
     {
         /** @var Info $info */
         $info = Util::getChild($api, Info::class);

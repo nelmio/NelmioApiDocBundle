@@ -36,7 +36,7 @@ final class ModelRegister
         $this->modelRegistry = $modelRegistry;
     }
 
-    public function __invoke(Analysis $analysis, array $parentGroups = null)
+    public function __invoke(Analysis $analysis, ?array $parentGroups = null): void
     {
         $modelsRegistered = [];
         foreach ($analysis->annotations as $annotation) {
@@ -102,7 +102,7 @@ final class ModelRegister
         }
     }
 
-    private function getGroups(ModelAnnotation $model, array $parentGroups = null)
+    private function getGroups(ModelAnnotation $model, ?array $parentGroups = null): ?array
     {
         if (null === $model->groups) {
             return $parentGroups;
@@ -111,7 +111,7 @@ final class ModelRegister
         return array_merge($parentGroups ?? [], $model->groups);
     }
 
-    private function detach(ModelAnnotation $model, AbstractAnnotation $annotation, Analysis $analysis)
+    private function detach(ModelAnnotation $model, AbstractAnnotation $annotation, Analysis $analysis): void
     {
         foreach ($annotation->_unmerged as $key => $unmerged) {
             if ($unmerged === $model) {

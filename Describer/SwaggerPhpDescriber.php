@@ -42,7 +42,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
         $this->logger = $logger;
     }
 
-    public function describe(Swagger $api)
+    public function describe(Swagger $api): void
     {
         $analysis = $this->getAnnotations($api);
         $analysis->process($this->getProcessors());

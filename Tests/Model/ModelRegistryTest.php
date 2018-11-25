@@ -19,7 +19,7 @@ use Symfony\Component\PropertyInfo\Type;
 
 class ModelRegistryTest extends TestCase
 {
-    public function testNameAliasingNotAppliedForCollections()
+    public function testNameAliasingNotAppliedForCollections(): void
     {
         $alternativeNames = [
             'Foo1' => [
@@ -36,9 +36,11 @@ class ModelRegistryTest extends TestCase
     /**
      * @dataProvider getNameAlternatives
      *
-     * @param $expected
+     * @param string $expected
+     * @param        $groups
+     * @param array  $alternativeNames
      */
-    public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames)
+    public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames): void
     {
         $registry = new ModelRegistry([], new Swagger([]), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
@@ -46,7 +48,7 @@ class ModelRegistryTest extends TestCase
         $this->assertEquals($expected, $registry->register(new Model($type, $groups)));
     }
 
-    public function getNameAlternatives()
+    public function getNameAlternatives(): array
     {
         return [
             [
@@ -104,8 +106,11 @@ class ModelRegistryTest extends TestCase
 
     /**
      * @dataProvider unsupportedTypesProvider
+     *
+     * @param Type   $type
+     * @param string $stringType
      */
-    public function testUnsupportedTypeException(Type $type, string $stringType)
+    public function testUnsupportedTypeException(Type $type, string $stringType): void
     {
         $this->expectException('\LogicException');
         $this->expectExceptionMessage(sprintf('Definition of type "%s" can\'t be generated, no describer supports it.', $stringType));
@@ -115,7 +120,7 @@ class ModelRegistryTest extends TestCase
         $registry->registerDefinitions();
     }
 
-    public function unsupportedTypesProvider()
+    public function unsupportedTypesProvider(): array
     {
         return [
             [new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true), 'mixed[]'],

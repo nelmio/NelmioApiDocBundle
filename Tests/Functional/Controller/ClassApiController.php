@@ -25,7 +25,7 @@ class ClassApiController
      * @Route("/security/class")
      * @SWG\Response(response="201", description="")
      */
-    public function securityAction()
+    public function securityAction(): void
     {
     }
 }

@@ -24,6 +24,9 @@ trait RouteDescriberTrait
     /**
      * @internal
      *
+     * @param Swagger $api
+     * @param Route   $route
+     *
      * @return Operation[]
      */
     private function getOperations(Swagger $api, Route $route): array
