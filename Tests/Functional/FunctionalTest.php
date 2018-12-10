@@ -223,7 +223,7 @@ class FunctionalTest extends WebTestCase
                     'dateAsInterface' => [
                         'type' => 'string',
                         'format' => 'date-time',
-                    ]
+                    ],
                 ],
             ],
             $this->getModel('User')->toArray()
