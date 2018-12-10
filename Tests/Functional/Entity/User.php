@@ -79,6 +79,11 @@ class User
     private $status;
 
     /**
+     * @var \DateTimeInterface
+     */
+    private $dateAsInterface;
+
+    /**
      * @param float $money
      */
     public function setMoney(float $money)
@@ -133,5 +138,21 @@ class User
 
     public function setStatus(string $status)
     {
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getDateAsInterface(): \DateTimeInterface
+    {
+        return $this->dateAsInterface;
+    }
+
+    /**
+     * @param \DateTimeInterface $dateAsInterface
+     */
+    public function setDateAsInterface(\DateTimeInterface $dateAsInterface)
+    {
+        $this->dateAsInterface = $dateAsInterface;
     }
 }

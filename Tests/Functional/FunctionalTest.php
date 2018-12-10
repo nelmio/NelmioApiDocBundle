@@ -220,6 +220,10 @@ class FunctionalTest extends WebTestCase
                         'type' => 'string',
                         'enum' => ['disabled', 'enabled'],
                     ],
+                    'dateAsInterface' => [
+                        'type' => 'string',
+                        'format' => 'date-time',
+                    ]
                 ],
             ],
             $this->getModel('User')->toArray()
