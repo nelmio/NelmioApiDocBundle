@@ -23,10 +23,11 @@ final class Configuration implements ConfigurationInterface
         // For compatibility with older versions
         if(!method_exists($treeBuilder, 'getRootNode')) {
             $rootNode = $treeBuilder->root('nelmio_api_doc');
+        } else {
+            $rootNode = $treeBuilder->getRootNode();
         }
 
         $rootNode
-            ->getRootNode()
             ->beforeNormalization()
                 ->ifTrue(function ($v) {
                     return !isset($v['areas']) && isset($v['routes']);
