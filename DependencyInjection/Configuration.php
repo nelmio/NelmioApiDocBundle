@@ -19,7 +19,13 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('nelmio_api_doc');
-        $treeBuilder
+
+        // For compatibility with older versions
+        if(!method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->root('nelmio_api_doc');
+        }
+
+        $rootNode
             ->getRootNode()
             ->beforeNormalization()
                 ->ifTrue(function ($v) {
@@ -115,6 +121,6 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
 
-        return $treeBuilder;
+        return $rootNode;
     }
 }
