@@ -20,6 +20,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\OptionType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
@@ -90,7 +91,7 @@ class ApiController
      *     name="foo",
      *     in="body",
      *     description="This is a parameter",
-     *     @SWG\Schema(ref=@Model(type=UserType::class))
+     *     @SWG\Schema(ref=@Model(type=UserType::class, options={"bar": "baz"}))
      * )
      */
     public function submitUserTypeAction()

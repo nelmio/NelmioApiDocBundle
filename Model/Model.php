@@ -19,13 +19,17 @@ final class Model
 
     private $groups;
 
+    private $options;
+
     /**
      * @param string[]|null $groups
+     * @param mixed[]|null $options
      */
-    public function __construct(Type $type, array $groups = null)
+    public function __construct(Type $type, array $groups = null, array $options = null)
     {
         $this->type = $type;
         $this->groups = $groups;
+        $this->options = $options;
     }
 
     /**
@@ -42,6 +46,14 @@ final class Model
     public function getGroups()
     {
         return $this->groups;
+    }
+
+    /**
+     * @return mixed[]|null
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 
     public function getHash(): string
