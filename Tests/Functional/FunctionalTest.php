@@ -385,6 +385,19 @@ class FunctionalTest extends WebTestCase
                     'type' => 'integer',
                     'pattern' => 'If this is a tech post, the category should be either php or symfony!',
                 ],
+                'propertyRange' => [
+                    'type' => 'integer',
+                    'maximum' => 5,
+                    'minimum' => 1,
+                ],
+                'propertyLessThan' => [
+                    'type' => 'integer',
+                    'exclusiveMaximum' => 42,
+                ],
+                'propertyLessThanOrEqual' => [
+                    'type' => 'integer',
+                    'maximum' => 23,
+                ],
             ],
             'type' => 'object',
         ], $this->getModel('SymfonyConstraints')->toArray());
