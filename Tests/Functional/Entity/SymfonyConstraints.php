@@ -82,6 +82,27 @@ class SymfonyConstraints
     private $propertyExpression;
 
     /**
+     * @var int
+     *
+     * @Assert\Range(min=1, max=5)
+     */
+    private $propertyRange;
+
+    /**
+     * @var int
+     *
+     * @Assert\LessThan(42)
+     */
+    private $propertyLessThan;
+
+    /**
+     * @var int
+     *
+     * @Assert\LessThanOrEqual(23)
+     */
+    private $propertyLessThanOrEqual;
+
+    /**
      * @param int $propertyNotBlank
      */
     public function setPropertyNotBlank(int $propertyNotBlank): void
@@ -151,6 +172,30 @@ class SymfonyConstraints
     public function setPropertyExpression(int $propertyExpression): void
     {
         $this->propertyExpression = $propertyExpression;
+    }
+
+    /**
+     * @param int $propertyRange
+     */
+    public function setPropertyRange(int $propertyRange): void
+    {
+        $this->propertyRange = $propertyRange;
+    }
+
+    /**
+     * @param int $propertyLessThan
+     */
+    public function setPropertyLessThan(int $propertyLessThan): void
+    {
+        $this->propertyLessThan = $propertyLessThan;
+    }
+
+    /**
+     * @param int $propertyLessThanOrEqual
+     */
+    public function setPropertyLessThanOrEqual(int $propertyLessThanOrEqual): void
+    {
+        $this->propertyLessThanOrEqual = $propertyLessThanOrEqual;
     }
 
     /**
