@@ -34,6 +34,11 @@ class DocumentationExtension extends AbstractTypeExtension
 
     public function getExtendedType()
     {
-        return FormType::class;
+        return self::getExtendedTypes()[0];
+    }
+
+    public static function getExtendedTypes()
+    {
+        return [FormType::class];
     }
 }
