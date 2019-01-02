@@ -45,7 +45,7 @@ final class ModelRegister
                 $model = $annotation->ref;
 
                 $annotation->ref = $this->modelRegistry->register(
-                    new Model($this->createType($model->type), $this->getGroups($model, $parentGroups))
+                    new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options)
                 );
 
                 // It is no longer an unmerged annotation
@@ -93,7 +93,7 @@ final class ModelRegister
 
             Util::getChild($annotation, $annotationClass, [
                 'ref' => $this->modelRegistry->register(
-                    new Model($this->createType($model->type), $this->getGroups($model, $parentGroups))
+                    new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options)
                 ),
             ]);
 
