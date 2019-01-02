@@ -21,10 +21,10 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('nelmio_api_doc');
 
         // For compatibility with older versions
-        if(!method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->root('nelmio_api_doc');
-        } else {
+        if (method_exists($treeBuilder, 'getRootNode')) {
             $rootNode = $treeBuilder->getRootNode();
+        } else {
+            $rootNode = $treeBuilder->root('fos_rest');
         }
 
         $rootNode
