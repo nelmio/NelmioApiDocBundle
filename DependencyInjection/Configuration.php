@@ -27,7 +27,7 @@ final class Configuration implements ConfigurationInterface
             $rootNode = $treeBuilder->root('nelmio_api_doc');
         }
 
-        $rootNode
+        $rootNode->children()
             ->beforeNormalization()
                 ->ifTrue(function ($v) {
                     return !isset($v['areas']) && isset($v['routes']);
