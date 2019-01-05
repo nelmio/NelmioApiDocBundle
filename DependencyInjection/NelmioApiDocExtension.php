@@ -100,7 +100,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => 990]);
 
             unset($areaConfig['documentation']);
-            if (0 === count($areaConfig['path_patterns']) && 0 === count($areaConfig['host_patterns'])) {
+            if (0 === count($areaConfig['path_patterns'])
+                && 0 === count($areaConfig['host_patterns'])
+                && false === $areaConfig['with_annotation']
+            ) {
                 $container->setDefinition(sprintf('nelmio_api_doc.routes.%s', $area), $routesDefinition)
                     ->setPublic(false);
             } else {
@@ -108,7 +111,14 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     ->setPublic(false)
                     ->setFactory([
                         (new Definition(FilteredRouteCollectionBuilder::class))
-                            ->addArgument($areaConfig),
+                            ->setArguments(
+                                [
+                                    new Reference('annotation_reader'),
+                                    new Reference('nelmio_api_doc.controller_reflector'),
+                                    $area,
+                                    $areaConfig,
+                                ]
+                            ),
                         'filter',
                     ])
                     ->addArgument($routesDefinition);
