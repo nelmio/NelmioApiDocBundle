@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
+use JMS\Serializer\Annotation\VirtualProperty;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
@@ -94,10 +95,18 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             $name = $this->namingStrategy ? $this->namingStrategy->translateName($item) : $item->serializedName;
             // read property options from Swagger Property annotation if it exists
-            if (null !== $item->reflection) {
-                $property = $properties->get($annotationsReader->getPropertyName($item->reflection, $name));
-                $annotationsReader->updateProperty($item->reflection, $property, $groups);
-            } else {
+            try {
+                if (property_exists($item, 'reflection') && null !== $item->reflection) {
+                    $reflection = $item->reflection;
+                } elseif ($item instanceof VirtualProperty) {
+                    $reflection = new \ReflectionProperty($item->class, $item->name);
+                } else {
+                    $reflection = new \ReflectionProperty($item->class, $item->name);
+                }
+
+                $property = $properties->get($annotationsReader->getPropertyName($reflection, $name));
+                $annotationsReader->updateProperty($reflection, $property, $groups);
+            } catch (\ReflectionException $e) {
                 $property = $properties->get($name);
             }
 
