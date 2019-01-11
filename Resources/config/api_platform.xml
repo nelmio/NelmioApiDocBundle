@@ -7,7 +7,6 @@
         <service id="nelmio_api_doc.describers.api_platform" class="Nelmio\ApiDocBundle\Describer\ApiPlatformDescriber" public="false">
             <argument type="service" id="nelmio_api_doc.describers.api_platform.documentation" />
             <argument type="service" id="api_platform.swagger.normalizer.documentation" />
-            <argument type="service" id="router" />
 
             <tag name="nelmio_api_doc.describer" priority="-100" />
         </service>

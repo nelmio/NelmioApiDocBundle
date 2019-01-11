@@ -12,19 +12,17 @@
 namespace Nelmio\ApiDocBundle\Describer;
 
 use ApiPlatform\Core\Documentation\Documentation;
-use ApiPlatform\Core\Swagger\Serializer\ApiGatewayNormalizer;
-use ApiPlatform\Core\Swagger\Serializer\DocumentationNormalizer;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class ApiPlatformDescriber extends ExternalDocDescriber
 {
-    public function __construct(Documentation $documentation, $normalizer, UrlGeneratorInterface $urlGenerator)
+    public function __construct(Documentation $documentation, NormalizerInterface $normalizer)
     {
-        if (!$normalizer instanceof ApiGatewayNormalizer && !$normalizer instanceof DocumentationNormalizer) {
-            throw new \InvalidArgumentException(sprintf('Argument 2 passed to %s() must be an instance of %s or %s, %s given.', __METHOD__, ApiGatewayNormalizer::class, DocumentationNormalizer::class, get_class($normalizer)));
+        if (!$normalizer->supportsNormalization($documentation, 'json')) {
+            throw new \InvalidArgumentException(sprintf('Argument 2 passed to %s() must implement %s and support normalization of %s, %s given.', __METHOD__, NormalizerInterface::class, Documentation::class, get_class($normalizer)));
         }
 
-        parent::__construct(function () use ($documentation, $normalizer, $urlGenerator) {
+        parent::__construct(function () use ($documentation, $normalizer) {
             $documentation = (array) $normalizer->normalize($documentation);
             unset($documentation['basePath']);
 
