@@ -55,7 +55,7 @@ Open a command console, enter your project directory and execute the following c
 
     .. code-block:: yaml
 
-        # app/config/routing.yml
+        # config/routes.yaml
         app.swagger_ui:
             path: /api/doc
             methods: GET
@@ -65,7 +65,7 @@ Open a command console, enter your project directory and execute the following c
 
     .. code-block:: yaml
 
-        # app/config/routing.yml
+        # config/routes.yaml
         app.swagger:
             path: /api/doc.json
             methods: GET
@@ -77,7 +77,7 @@ Open a command console, enter your project directory and execute the following c
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/nelmio_api_doc.yaml
         nelmio_api_doc:
             areas:
                 path_patterns: # an array of regexps
