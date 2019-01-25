@@ -18,9 +18,16 @@ final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $treeBuilder
-            ->root('nelmio_api_doc')
+        $treeBuilder = new TreeBuilder('nelmio_api_doc');
+
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            // symfony < 4.2 support
+            $rootNode = $treeBuilder->root('nelmio_api_doc');
+        }
+
+        $rootNode
             ->beforeNormalization()
                 ->ifTrue(function ($v) {
                     return !isset($v['areas']) && isset($v['routes']);
