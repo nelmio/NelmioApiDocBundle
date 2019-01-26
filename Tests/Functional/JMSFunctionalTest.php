@@ -48,7 +48,7 @@ class JMSFunctionalTest extends WebTestCase
             'type' => 'object',
             'properties' => [
                 'picture' => [
-                    '$ref' => '#/definitions/JMSPicture',
+                    '$ref' => '#/definitions/JMSPicture2',
                 ],
             ],
         ], $this->getModel('JMSChatUser')->toArray());
