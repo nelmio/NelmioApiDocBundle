@@ -68,6 +68,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
         $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
 
+        $isJmsV1 = null !== $this->namingStrategy;
+
         $properties = $schema->getProperties();
         foreach ($metadata->propertyMetadata as $item) {
             // filter groups
@@ -84,8 +86,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             } elseif (!isset($groups[$item->name]) && !empty($this->previousGroups[$model->getHash()])) {
                 $groups = false === $this->propertyTypeUsesGroups($item->type)
                     ? null
-                    : ($this->namingStrategy ? [GroupsExclusionStrategy::DEFAULT_GROUP] : $this->previousGroups[$model->getHash()]);
-            } elseif (is_array($groups)) {
+                    : ($isJmsV1 ? [GroupsExclusionStrategy::DEFAULT_GROUP] : $this->previousGroups[$model->getHash()]);
+            }
+
+            if (is_array($groups)) {
                 $groups = array_filter($groups, 'is_scalar');
             }
 
@@ -93,10 +97,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $groups = null;
             }
 
-            $name = $this->namingStrategy ? $this->namingStrategy->translateName($item) : $item->serializedName;
+            $name = true === $isJmsV1 ? $this->namingStrategy->translateName($item) : $item->serializedName;
             // read property options from Swagger Property annotation if it exists
             try {
-                if (property_exists($item, 'reflection') && null !== $item->reflection) {
+                if (true === $isJmsV1 && property_exists($item, 'reflection') && null !== $item->reflection) {
                     $reflection = $item->reflection;
                 } elseif ($item instanceof VirtualProperty) {
                     $reflection = new \ReflectionProperty($item->class, $item->name);
