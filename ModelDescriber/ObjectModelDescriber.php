@@ -117,7 +117,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                     );
                 }
             } else {
-                throw new \Exception(sprintf('Unknown type: %s', $type->getBuiltinType()));
+                throw new \Exception(sprintf('in '.$class. ': Unknown type: %s', $type->getBuiltinType()));
             }
         }
     }
