@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use FOS\RestBundle\Controller\Annotations\ParamInterface;
+use JMS\Serializer\Visitor\SerializationVisitorInterface;
 use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Describer\ExternalDocDescriber;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
@@ -141,11 +142,13 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // JMS metadata support
         if ($config['models']['use_jms']) {
+            $jmsNamingStrategy = interface_exists(SerializationVisitorInterface::class) ? null : new Reference('jms_serializer.naming_strategy');
+
             $container->register('nelmio_api_doc.model_describers.jms', JMSModelDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
-                    new Reference('jms_serializer.naming_strategy'),
+                    $jmsNamingStrategy,
                     new Reference('annotation_reader'),
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);

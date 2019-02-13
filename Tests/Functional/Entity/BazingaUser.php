@@ -18,7 +18,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
  *
  * @Hateoas\Relation(name="example", attributes={"str_att":"bar", "float_att":5.6, "bool_att": false}, href="http://www.example.com")
  * @Hateoas\Relation(name="route", href=@Hateoas\Route("foo"))
- * @Hateoas\Relation(name="route", attributes={"foo":"bar"}, embedded=@Hateoas\Embedded("expr(foo)"))
+ * @Hateoas\Relation(name="route", attributes={"foo":"bar"}, embedded=@Hateoas\Embedded("expr(service('xx'))"))
  */
 class BazingaUser
 {

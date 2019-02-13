@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSDualComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSNamingStrategyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChat;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoomUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\VirtualProperty;
@@ -121,6 +122,18 @@ class JMSController
      * )
      */
     public function minUserAction()
+    {
+    }
+
+    /**
+     * @Route("/api/jms_mini_user_nested", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=JMSChatRoomUser::class, groups={"mini", "friend": {"living":{"Default"}}})
+     * )
+     */
+    public function minUserNestedAction()
     {
     }
 }

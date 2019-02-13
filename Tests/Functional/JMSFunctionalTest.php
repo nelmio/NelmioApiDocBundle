@@ -11,6 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use JMS\Serializer\Visitor\SerializationVisitorInterface;
+
 class JMSFunctionalTest extends WebTestCase
 {
     public function testModelPictureDocumentation()
@@ -46,7 +48,7 @@ class JMSFunctionalTest extends WebTestCase
             'type' => 'object',
             'properties' => [
                 'picture' => [
-                    '$ref' => '#/definitions/JMSPicture',
+                    '$ref' => '#/definitions/JMSPicture2',
                 ],
             ],
         ], $this->getModel('JMSChatUser')->toArray());
@@ -190,6 +192,59 @@ class JMSFunctionalTest extends WebTestCase
                 ],
             ],
         ], $this->getModel('JMSDualComplex')->toArray());
+    }
+
+    public function testNestedGroupsV1()
+    {
+        if (interface_exists(SerializationVisitorInterface::class)){
+            $this->markTestSkipped('This applies only for jms/serializer v1.x');
+        }
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'living' => ['$ref' => '#/definitions/JMSChatLivingRoom'],
+                'dining' => ['$ref' => '#/definitions/JMSChatRoom'],
+            ],
+        ], $this->getModel('JMSChatFriend')->toArray());
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id1' => ['type' => 'integer'],
+                'id2' => ['type' => 'integer'],
+                'id3' => ['type' => 'integer'],
+            ],
+        ], $this->getModel('JMSChatRoom')->toArray());
+    }
+
+    public function testNestedGroupsV2()
+    {
+        if (!interface_exists(SerializationVisitorInterface::class)){
+           $this->markTestSkipped('This applies only for jms/serializer v2.x');
+        }
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'living' => ['$ref' => '#/definitions/JMSChatLivingRoom'],
+                'dining' => ['$ref' => '#/definitions/JMSChatRoom'],
+            ],
+        ], $this->getModel('JMSChatFriend')->toArray());
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id2' => ['type' => 'integer'],
+            ],
+        ], $this->getModel('JMSChatRoom')->toArray());
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'integer'],
+            ],
+        ], $this->getModel('JMSChatLivingRoom')->toArray());
     }
 
     public function testModelComplexDocumentation()
