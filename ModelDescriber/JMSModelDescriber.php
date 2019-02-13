@@ -102,8 +102,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             try {
                 if (true === $isJmsV1 && property_exists($item, 'reflection') && null !== $item->reflection) {
                     $reflection = $item->reflection;
-                } elseif ($item instanceof VirtualProperty) {
-                    $reflection = new \ReflectionProperty($item->class, $item->name);
                 } else {
                     $reflection = new \ReflectionProperty($item->class, $item->name);
                 }
