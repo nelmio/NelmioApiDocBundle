@@ -11,8 +11,14 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Routing;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\Reader;
+use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
+use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -39,7 +45,15 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             $routes->add($name, $route);
         }
 
-        $routeBuilder = new FilteredRouteCollectionBuilder($options);
+        $routeBuilder = new FilteredRouteCollectionBuilder(
+            new AnnotationReader(),
+            new ControllerReflector(
+                new Container(),
+                $this->createMock(ControllerNameParser::class)
+            ),
+            'areaName',
+            $options
+        );
         $filteredRoutes = $routeBuilder->filter($routes);
 
         $this->assertCount(4, $filteredRoutes);
@@ -61,7 +75,15 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             $routes->add($name, $route);
         }
 
-        $routeBuilder = new FilteredRouteCollectionBuilder($pathPattern);
+        $routeBuilder = new FilteredRouteCollectionBuilder(
+            new AnnotationReader(),
+            new ControllerReflector(
+                new Container(),
+                $this->createMock(ControllerNameParser::class)
+            ),
+            'areaName',
+            $pathPattern
+        );
         $filteredRoutes = $routeBuilder->filter($routes);
 
         $this->assertCount(5, $filteredRoutes);
@@ -74,7 +96,15 @@ class FilteredRouteCollectionBuilderTest extends TestCase
      */
     public function testFilterWithInvalidOption(array $options)
     {
-        new FilteredRouteCollectionBuilder($options);
+        new FilteredRouteCollectionBuilder(
+            new AnnotationReader(),
+            new ControllerReflector(
+                new Container(),
+                $this->createMock(ControllerNameParser::class)
+            ),
+            'areaName',
+            $options
+        );
     }
 
     public function getInvalidOptions(): array
@@ -87,6 +117,9 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             [['path_patterns' => [null]]],
             [['path_patterns' => [new \stdClass()]]],
             [['path_patterns' => ['^/foo$', 1]]],
+            [['with_annotation' => ['an array']]],
+            [['path_patterns' => 'a string']],
+            [['path_patterns' => 11]],
         ];
     }
 
@@ -102,6 +135,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             'r7' => new Route('/api/bar/action1', [], [], [], 'www.example.com'),
             'r8' => new Route('/admin/bar/action1', [], [], [], 'api.example.com'),
             'r9' => new Route('/api/bar/action1', [], [], [], 'api.example.com'),
+            'r10' => new Route('/api/areas/new'),
         ];
     }
 
@@ -113,7 +147,15 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes = new RouteCollection();
         $routes->add($name, $route);
 
-        $routeBuilder = new FilteredRouteCollectionBuilder($options);
+        $routeBuilder = new FilteredRouteCollectionBuilder(
+            new AnnotationReader(),
+            new ControllerReflector(
+                new Container(),
+                $this->createMock(ControllerNameParser::class)
+            ),
+            'area',
+            $options
+        );
         $filteredRoutes = $routeBuilder->filter($routes);
 
         $this->assertCount(1, $filteredRoutes);
@@ -127,6 +169,55 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             ['r3', new Route('/api/foo/action2'), ['path_patterns' => ['^/api/foo/action2$']]],
             ['r4', new Route('/api/demo'), ['path_patterns' => ['/api/demo']]],
             ['r9', new Route('/api/bar/action1', [], [], [], 'api.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.ex']]],
+            ['r10', new Route('/api/areas/new'), ['path_patterns' => ['^/api']]],
+        ];
+    }
+
+    /**
+     * @group test
+     * @dataProvider getMatchingRoutesWithAnnotation
+     */
+    public function testMatchingRoutesWithAnnotation(string $name, Route $route, array $options = [])
+    {
+        $routes = new RouteCollection();
+        $routes->add($name, $route);
+        $area = 'area';
+
+        $reflectionMethodStub = $this->createMock(\ReflectionMethod::class);
+        $controllerReflectorStub = $this->createMock(ControllerReflector::class);
+        $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethodStub);
+
+        $annotationReader = $this->createMock(Reader::class);
+        $annotationReader
+            ->method('getMethodAnnotation')
+            ->with($reflectionMethodStub, Areas::class)
+            ->willReturn(new Areas(['value' => [$area]]))
+        ;
+
+        $routeBuilder = new FilteredRouteCollectionBuilder(
+            $annotationReader,
+            $controllerReflectorStub,
+            $area,
+            $options
+        );
+        $filteredRoutes = $routeBuilder->filter($routes);
+
+        $this->assertCount(1, $filteredRoutes);
+    }
+
+    public function getMatchingRoutesWithAnnotation(): array
+    {
+        return [
+            'with annotation only' => [
+                'r10',
+                new Route('/api/areas/new', ['_controller' => 'ApiController::newAreaAction']),
+                ['with_annotation' => true],
+            ],
+            'with annotation and path patterns' => [
+                'r10',
+                new Route('/api/areas/new', ['_controller' => 'ApiController::newAreaAction']),
+                ['path_patterns' => ['^/api'], 'with_annotation' => true],
+            ],
         ];
     }
 
@@ -138,7 +229,15 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes = new RouteCollection();
         $routes->add($name, $route);
 
-        $routeBuilder = new FilteredRouteCollectionBuilder($options);
+        $routeBuilder = new FilteredRouteCollectionBuilder(
+            new AnnotationReader(),
+            new ControllerReflector(
+                new Container(),
+                $this->createMock(ControllerNameParser::class)
+            ),
+            'areaName',
+            $options
+        );
         $filteredRoutes = $routeBuilder->filter($routes);
 
         $this->assertCount(0, $filteredRoutes);

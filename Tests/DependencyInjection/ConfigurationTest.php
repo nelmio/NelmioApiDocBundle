@@ -22,16 +22,41 @@ class ConfigurationTest extends TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => ['path_patterns' => ['/foo']]]]);
 
-        $this->assertSame(['default' => ['path_patterns' => ['/foo'], 'host_patterns' => [], 'documentation' => []]], $config['areas']);
+        $this->assertSame(
+            [
+                'default' => [
+                    'path_patterns' => ['/foo'],
+                    'host_patterns' => [],
+                    'with_annotation' => false,
+                    'documentation' => [],
+                ],
+            ],
+            $config['areas']
+        );
     }
 
     public function testAreas()
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => $areas = [
-            'default' => ['path_patterns' => ['/foo'], 'host_patterns' => [], 'documentation' => []],
-            'internal' => ['path_patterns' => ['/internal'], 'host_patterns' => ['^swagger\.'], 'documentation' => []],
-            'commercial' => ['path_patterns' => ['/internal'], 'host_patterns' => [], 'documentation' => []],
+            'default' => [
+                'path_patterns' => ['/foo'],
+                'host_patterns' => [],
+                'with_annotation' => false,
+                'documentation' => [],
+            ],
+            'internal' => [
+                'path_patterns' => ['/internal'],
+                'host_patterns' => ['^swagger\.'],
+                'with_annotation' => false,
+                'documentation' => [],
+            ],
+            'commercial' => [
+                'path_patterns' => ['/internal'],
+                'host_patterns' => [],
+                'with_annotation' => false,
+                'documentation' => [],
+            ],
         ]]]);
 
         $this->assertSame($areas, $config['areas']);
@@ -136,6 +161,16 @@ class ConfigurationTest extends TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['routes' => ['path_patterns' => ['/foo']]]]);
 
-        $this->assertSame(['default' => ['path_patterns' => ['/foo'], 'host_patterns' => [], 'documentation' => []]], $config['areas']);
+        $this->assertSame(
+            [
+                'default' => [
+                    'path_patterns' => ['/foo'],
+                    'host_patterns' => [],
+                    'with_annotation' => false,
+                    'documentation' => [],
+                ],
+            ],
+            $config['areas']
+        );
     }
 }

@@ -55,7 +55,16 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('areas')
                     ->info('Filter the routes that are documented')
-                    ->defaultValue(['default' => ['path_patterns' => [], 'host_patterns' => [], 'documentation' => []]])
+                    ->defaultValue(
+                        [
+                            'default' => [
+                                'path_patterns' => [],
+                                'host_patterns' => [],
+                                'with_annotation' => false,
+                                'documentation' => [],
+                            ],
+                        ]
+                    )
                     ->beforeNormalization()
                         ->ifTrue(function ($v) {
                             return 0 === count($v) || isset($v['path_patterns']) || isset($v['host_patterns']) || isset($v['documentation']);
@@ -83,6 +92,10 @@ final class Configuration implements ConfigurationInterface
                                 ->defaultValue([])
                                 ->example(['^api\.'])
                                 ->prototype('scalar')->end()
+                            ->end()
+                            ->booleanNode('with_annotation')
+                                ->defaultFalse()
+                                ->info('whether to filter by annotation')
                             ->end()
                             ->arrayNode('documentation')
                                 ->useAttributeAsKey('key')
