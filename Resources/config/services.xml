@@ -48,7 +48,7 @@
 
         <!-- Form Type Extensions -->
 
-        <service id="Nelmio\ApiDocBundle\Form\Extension\DocumentationExtension">
+        <service id="nelmio_api_doc.form.documentation_extension" class="Nelmio\ApiDocBundle\Form\Extension\DocumentationExtension">
             <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType"/>
         </service>
     </services>
