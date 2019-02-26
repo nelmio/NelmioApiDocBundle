@@ -81,7 +81,7 @@ Open a command console, enter your project directory and execute the following c
         nelmio_api_doc:
             areas:
                 path_patterns: # an array of regexps
-                    - ^/api(?!/doc$)
+                    - ^\/api(?!\/doc$)
                 host_patterns:
                     - ^api\.
 
