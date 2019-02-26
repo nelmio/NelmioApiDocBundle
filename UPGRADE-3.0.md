@@ -123,7 +123,7 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
 
             if ('POST' !== $apiDoc->getMethod()) {
                 $annotation .= ',
-     *         schema=""';
+     *         @SWG\Schema(type="'.$this->determineDataType($parameter).'")';
             }
 
             $annotation .= '
