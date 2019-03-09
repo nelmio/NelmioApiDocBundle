@@ -118,12 +118,14 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
      *         name="'.$name.'",
      *         in="'.$in.'",
      *         description="'.$description.'",
-     *         required='.(array_key_exists($name, $apiDoc->getRequirements()) ? 'true' : 'false').',
-     *         type="'.$this->determineDataType($parameter).'"';
+     *         required='.(array_key_exists($name, $apiDoc->getRequirements()) ? 'true' : 'false');
 
             if ('POST' !== $apiDoc->getMethod()) {
                 $annotation .= ',
      *         @SWG\Schema(type="'.$this->determineDataType($parameter).'")';
+            } else {
+                $annotation .= ',
+     *         type="'.$this->determineDataType($parameter).'"';
             }
 
             $annotation .= '
