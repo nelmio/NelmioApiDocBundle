@@ -28,7 +28,7 @@ class JMSChatUser
 
     /**
      * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture")
-     * @Serializer\Groups({"Default", "mini"})
+     * @Serializer\Groups({"mini"})
      * @Serializer\Expose
      */
     private $picture;
