@@ -43,9 +43,6 @@ class SwaggerUiTest extends WebTestCase
         // Api-platform documentation
         $expected['info']['title'] = 'My Test App';
         $expected['paths'] = [
-            '/api/dummies' => $expected['paths']['/api/dummies'],
-            '/api/foo' => $expected['paths']['/api/foo'],
-            '/api/dummies/{id}' => $expected['paths']['/api/dummies/{id}'],
             '/test/test/' => ['get' => [
                 'responses' => ['200' => ['description' => 'Test']],
             ]],
@@ -58,7 +55,7 @@ class SwaggerUiTest extends WebTestCase
     public function testJsonDocs()
     {
         $client = self::createClient();
-        $crawler = $client->request('GET', '/app_dev.php/docs.json');
+        $client->request('GET', '/app_dev.php/docs.json');
 
         $response = $client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -66,6 +63,7 @@ class SwaggerUiTest extends WebTestCase
 
         $expected = $this->getSwaggerDefinition()->toArray();
         $expected['basePath'] = '/app_dev.php';
+        $expected['host'] = 'api.example.com';
 
         $this->assertEquals($expected, json_decode($response->getContent(), true));
     }
