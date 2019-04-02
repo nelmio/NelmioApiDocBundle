@@ -214,7 +214,7 @@ class FunctionalTest extends WebTestCase
                         '$ref' => '#/definitions/User',
                     ],
                     'dummy' => [
-                        '$ref' => '#/definitions/Dummy',
+                        '$ref' => '#/definitions/Dummy2',
                     ],
                     'status' => [
                         'type' => 'string',
