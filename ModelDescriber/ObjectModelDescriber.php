@@ -124,6 +124,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function supports(Model $model): bool
     {
-        return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType();
+        return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType() && class_exists($model->getType()->getClassName());
     }
 }
