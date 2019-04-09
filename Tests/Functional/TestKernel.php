@@ -16,12 +16,14 @@ use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use FOS\RestBundle\FOSRestBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
+use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
@@ -163,6 +165,10 @@ class TestKernel extends Kernel
                ],
             ],
         ]);
+
+        $def = new Definition(VirtualTypeClassDoesNotExistsHandlerDefinedDescriber::class);
+        $def->addTag('nelmio_api_doc.model_describer');
+        $c->setDefinition('nelmio.test.jms.virtual_type.describer', $def);
     }
 
     /**

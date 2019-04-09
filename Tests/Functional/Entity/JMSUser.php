@@ -127,6 +127,24 @@ class JMSUser
     private $status;
 
     /**
+     * JMS custom types handled via Custom Type Handlers.
+     *
+     * @var string
+     * @Serializer\Type("VirtualTypeClassDoesNotExistsHandlerDefined")
+     * @Serializer\Expose
+     */
+    private $virtualType1;
+
+    /**
+     * JMS custom types handled via Custom Type Handlers.
+     *
+     * @var string
+     * @Serializer\Type("VirtualTypeClassDoesNotExistsHandlerNotDefined")
+     * @Serializer\Expose
+     */
+    private $virtualType2;
+
+    /**
      * @Serializer\Type("array<array<float>>")
      * @Serializer\Expose
      */
