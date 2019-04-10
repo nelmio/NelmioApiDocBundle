@@ -108,6 +108,10 @@ class TestKernel extends Kernel
             'strict_variables' => '%kernel.debug%',
         ]);
 
+        $c->loadFromExtension('api_platform', [
+            'mapping' => ['paths' => ['%kernel.project_dir%/Tests/Functional/Entity']],
+        ]);
+
         $c->loadFromExtension('fos_rest', [
             'format_listener' => [
                 'rules' => [
