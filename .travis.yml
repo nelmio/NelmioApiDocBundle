@@ -29,6 +29,6 @@ matrix:
 before_install:
     - phpenv config-rm xdebug.ini
 
-install: composer update $COMPOSER_FLAGS --prefer-stable
+install: composer update $COMPOSER_FLAGS
 
 script: ./phpunit
