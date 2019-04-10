@@ -48,8 +48,13 @@ final class DocumentationController
         }
 
         $spec = $this->generatorLocator->get($area)->generate()->toArray();
+
         if ('' !== $request->getBaseUrl()) {
             $spec['basePath'] = $request->getBaseUrl();
+        }
+
+        if (empty($spec['host'])) {
+            $spec['host'] = $request->getHost();
         }
 
         return new JsonResponse($spec);
