@@ -32,10 +32,6 @@
             <tag name="nelmio_api_doc.describer" priority="-1000" />
         </service>
 
-        <service id="nelmio_api_doc.describers.param_ref_merge" class="Nelmio\ApiDocBundle\Describer\ParameterRefMergeDescriber" public="false">
-            <tag name="nelmio_api_doc.describer" priority="-999" />
-        </service>
-
         <!-- Routing Describers -->
         <service id="nelmio_api_doc.route_describers.route_metadata" class="Nelmio\ApiDocBundle\RouteDescriber\RouteMetadataDescriber" public="false">
             <tag name="nelmio_api_doc.route_describer" priority="-300" />

@@ -14,6 +14,9 @@ namespace Nelmio\ApiDocBundle\RouteDescriber;
 use EXSyst\Component\Swagger\Swagger;
 use Symfony\Component\Routing\Route;
 
+/**
+ * Should be last route describer executed to make sure all params are set.
+ */
 final class RouteMetadataDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
@@ -26,10 +29,37 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
             $requirements = $route->getRequirements();
             $compiledRoute = $route->compile();
 
+            $globalParams = $api->getParameters();
+            $existingParams = [];
+            foreach ($operation->getParameters() as $id => $parameter) {
+                $ref = $parameter->getRef();
+                if (null === $ref) {
+                    $existingParams[$id] = true;
+
+                    // we only concern ourselves with '$ref' parameters
+                    continue;
+                }
+
+                $ref = \mb_substr($ref, 13); // trim the '#/parameters/' part of ref
+                if (!isset($globalParams[$ref])) {
+                    // this shouldn't happen, so just ignore here
+                    continue;
+                }
+
+                $refParameter = $globalParams[$ref];
+
+                // param ids are in form {name}/{in}
+                $existingParams[\sprintf('%s/%s', $refParameter->getName(), $refParameter->getIn())] = true;
+            }
+
             // Don't include host requirements
             foreach ($compiledRoute->getPathVariables() as $pathVariable) {
                 if ('_format' === $pathVariable) {
                     continue;
+                }
+
+                if (isset($existingParams[$pathVariable.'/path'])) {
+                    continue; // ignore this param, it is already defined
                 }
 
                 $parameter = $operation->getParameters()->get($pathVariable, 'path');
@@ -39,7 +69,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                     $parameter->setType('string');
                 }
 
-                if (isset($requirements[$pathVariable])) {
+                if (isset($requirements[$pathVariable]) && null === $parameter->getPattern()) {
                     $parameter->setPattern($requirements[$pathVariable]);
                 }
             }
