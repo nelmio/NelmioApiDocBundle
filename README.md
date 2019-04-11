@@ -12,7 +12,7 @@ for your APIs.
 
 ## Migrate from 2.x to 3.0
 
-[To migrate from 2.x to 3.0, just follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-3.0.md)
+[To migrate from 2.x to 3.0, follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-3.0.md)
 
 ## Installation
 
