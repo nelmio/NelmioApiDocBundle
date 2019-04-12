@@ -44,7 +44,7 @@ final class DocumentationController
     public function __invoke(Request $request, $area = 'default')
     {
         if (!$this->generatorLocator->has($area)) {
-            throw new BadRequestHttpException(sprintf('Area "%s" is not supported.', $area));
+            throw new BadRequestHttpException(sprintf('Area "%s" is not supported as it isn\'t defined in config.', $area));
         }
 
         $spec = $this->generatorLocator->get($area)->generate()->toArray();
