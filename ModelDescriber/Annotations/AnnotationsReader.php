@@ -13,8 +13,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
-use Swagger\Annotations\Definition;
-use Swagger\Annotations\Property;
+use OpenApi\Annotations as OA;
 
 /**
  * @internal
@@ -32,7 +31,7 @@ class AnnotationsReader
         $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($annotationsReader);
     }
 
-    public function updateDefinition(\ReflectionClass $reflectionClass, Definition $definition)
+    public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $definition)
     {
         $this->swgAnnotationsReader->updateDefinition($reflectionClass, $definition);
         $this->symfonyConstraintAnnotationReader->setSchema($definition);
@@ -43,7 +42,7 @@ class AnnotationsReader
         return $this->swgAnnotationsReader->getPropertyName($reflectionProperty, $default);
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property, array $serializationGroups = null)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null)
     {
         $this->phpDocReader->updateProperty($reflectionProperty, $property);
         $this->swgAnnotationsReader->updateProperty($reflectionProperty, $property, $serializationGroups);

@@ -17,10 +17,9 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
+use OpenApi\Analysis;
+use OpenApi\Annotations as OA;
 use Psr\Log\LoggerInterface;
-use Swagger\Analysis;
-use Swagger\Annotations as SWG;
-use Swagger\Annotations\Swagger;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -42,7 +41,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
         $this->logger = $logger;
     }
 
-    public function describe(Swagger $api)
+    public function describe(OA\OpenApi $api): void
     {
         $analysis = $this->getAnnotations($api);
         $analysis->process($this->getProcessors());
@@ -58,7 +57,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
         return array_merge($processors, Analysis::processors());
     }
 
-    private function getAnnotations(Swagger $api): Analysis
+    private function getAnnotations(OA\OpenApi $api): Analysis
     {
         $analysis = new Analysis();
         $analysis->swagger = $api;
@@ -72,13 +71,13 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
 
             if (!array_key_exists($declaringClassName, $classAnnotations)) {
                 $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
-                    return $v instanceof SWG\AbstractAnnotation;
+                    return $v instanceof OA\AbstractAnnotation;
                 });
                 $classAnnotations[$declaringClassName] = $classAnnotations;
             }
 
             $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
-                return $v instanceof SWG\AbstractAnnotation;
+                return $v instanceof OA\AbstractAnnotation;
             });
 
             if (0 === count($annotations)) {
@@ -107,7 +106,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                     continue;
                 }
 
-                if ($annotation instanceof SWG\Operation) {
+                if ($annotation instanceof OA\Operation) {
                     $operation = Util::getOperation($path, $annotation->method);
                     $operation->mergeProperties($annotation);
 
@@ -121,14 +120,14 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                     continue;
                 }
 
-                if ($annotation instanceof SWG\Tag) {
+                if ($annotation instanceof OA\Tag) {
                     $annotation->validate();
                     $mergeProperties->tags[] = $annotation->name;
 
                     continue;
                 }
 
-                if (!$annotation instanceof SWG\Response && !$annotation instanceof SWG\Parameter && !$annotation instanceof SWG\ExternalDocumentation) {
+                if (!$annotation instanceof OA\Response && !$annotation instanceof OA\Parameter && !$annotation instanceof OA\ExternalDocumentation) {
                     throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', get_class($annotation), $method->getDeclaringClass()->name, $method->name));
                 }
 

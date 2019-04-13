@@ -14,12 +14,8 @@ namespace Nelmio\ApiDocBundle\SwaggerPhp;
 use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
-use Swagger\Analysis;
-use Swagger\Annotations\AbstractAnnotation;
-use Swagger\Annotations\Items;
-use Swagger\Annotations\Parameter;
-use Swagger\Annotations\Response;
-use Swagger\Annotations\Schema;
+use OpenApi\Analysis;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -41,7 +37,7 @@ final class ModelRegister
         $modelsRegistered = [];
         foreach ($analysis->annotations as $annotation) {
             // @Model using the ref field
-            if ($annotation instanceof Schema && $annotation->ref instanceof ModelAnnotation) {
+            if ($annotation instanceof OA\Schema && $annotation->ref instanceof ModelAnnotation) {
                 $model = $annotation->ref;
 
                 $annotation->ref = $this->modelRegistry->register(
@@ -55,16 +51,16 @@ final class ModelRegister
             }
 
             // Implicit usages
-            if ($annotation instanceof Response) {
-                $annotationClass = Schema::class;
-            } elseif ($annotation instanceof Parameter) {
+            if ($annotation instanceof OA\Response) {
+                $annotationClass = OA\Schema::class;
+            } elseif ($annotation instanceof OA\Parameter) {
                 if ('array' === $annotation->type) {
-                    $annotationClass = Items::class;
+                    $annotationClass = OA\Items::class;
                 } else {
-                    $annotationClass = Schema::class;
+                    $annotationClass = OA\Schema::class;
                 }
-            } elseif ($annotation instanceof Schema) {
-                $annotationClass = Items::class;
+            } elseif ($annotation instanceof OA\Schema) {
+                $annotationClass = OA\Items::class;
             } else {
                 continue;
             }
@@ -87,8 +83,8 @@ final class ModelRegister
                 continue;
             }
 
-            if ($annotation instanceof Schema) {
-                @trigger_error(sprintf('Using `@Model` implicitely in a `@SWG\Schema`, `@SWG\Items` or `@SWG\Property` annotation in %s is deprecated since version 3.2 and won\'t be supported in 4.0. Use `ref=@Model()` instead.', $annotation->_context->getDebugLocation()), E_USER_DEPRECATED);
+            if ($annotation instanceof OA\Schema) {
+                @trigger_error(sprintf('Using `@Model` implicitly in a `@OA\Schema`, `@OA\Items` or `@OA\Property` annotation in %s is deprecated since version 3.2 and won\'t be supported in 4.0. Use `ref=@Model()` instead.', $annotation->_context->getDebugLocation()), E_USER_DEPRECATED);
             }
 
             Util::getChild($annotation, $annotationClass, [
@@ -111,7 +107,7 @@ final class ModelRegister
         return array_merge($parentGroups ?? [], $model->groups);
     }
 
-    private function detach(ModelAnnotation $model, AbstractAnnotation $annotation, Analysis $analysis)
+    private function detach(ModelAnnotation $model, OA\AbstractAnnotation $annotation, Analysis $analysis)
     {
         foreach ($annotation->_unmerged as $key => $unmerged) {
             if ($unmerged === $model) {

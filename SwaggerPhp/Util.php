@@ -11,27 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\SwaggerPhp;
 
-use FOS\RestBundle\Controller\Annotations\Put;
-use Swagger\Annotations\AbstractAnnotation;
-use Swagger\Annotations\Definition;
-use Swagger\Annotations\Delete;
-use Swagger\Annotations\Get;
-use Swagger\Annotations\Head;
-use Swagger\Annotations\Header;
-use Swagger\Annotations\Info;
-use Swagger\Annotations\Items;
-use Swagger\Annotations\Operation;
-use Swagger\Annotations\Options;
-use Swagger\Annotations\Parameter;
-use Swagger\Annotations\Patch;
-use Swagger\Annotations\Path;
-use Swagger\Annotations\Post;
-use Swagger\Annotations\Property;
-use Swagger\Annotations\Response;
-use Swagger\Annotations\Schema;
-use Swagger\Annotations\Swagger;
-use Swagger\Annotations\Tag;
-use Swagger\Context;
+use OpenApi\Annotations as OA;
+use OpenApi\Context;
+use const OpenApi\UNDEFINED;
 
 /**
  * Class Util.
@@ -78,53 +60,54 @@ class Util
     public static $operations = ['get', 'post', 'put', 'patch', 'delete', 'options', 'head'];
 
     /**
-     * Return an existing Path object from $api->paths[] having its member path set to $path.
-     * Create, add to $api->paths[] and return this new Path object and set the property if none found.
+     * Return an existing PathItem object from $api->paths[] having its member path set to $path.
+     * Create, add to $api->paths[] and return this new PathItem object and set the property if none found.
      *
-     * @see \Swagger\Annotations\Swagger::$paths
-     * @see \Swagger\Annotations\Path::path
+     * @see OA\OpenApi::$paths
+     * @see OA\PathItem::path
      *
-     * @param Swagger $api
-     * @param string  $path
+     * @param OA\OpenApi $api
+     * @param string     $path
      *
-     * @return Path
+     * @return OA\PathItem
      */
-    public static function getPath(Swagger $api, $path): Path
+    public static function getPath(OA\OpenApi $api, $path): OA\PathItem
     {
-        return self::getIndexedCollectionItem($api, Path::class, $path);
+        return self::getIndexedCollectionItem($api, OA\PathItem::class, $path);
     }
 
     /**
+     * @deprecated todo
+     *
      * Return an existing Definition object from $api->definitions[] having its member definition set to $definition.
      * Create, add to $api->definitions[] and return this new Definition object and set the property if none found.
+     * @see OA\Swagger::$definitions todo
+     * @see OA\Definition::$definition
      *
-     * @see \Swagger\Annotations\Swagger::$definitions
-     * @see \Swagger\Annotations\Definition::$definition
+     * @param OA\OpenApi $api
+     * @param string     $definition
      *
-     * @param Swagger $api
-     * @param string  $definition
-     *
-     * @return Definition
+     * @return OA\Schema
      */
-    public static function getDefinition(Swagger $api, $definition): Definition
+    public static function getDefinition(OA\OpenApi $api, $definition): OA\Schema
     {
-        return self::getIndexedCollectionItem($api, Definition::class, $definition);
+        return self::getIndexedCollectionItem($api, OA\Schema::class, $definition);
     }
 
     /**
      * Return an existing Schema object from either a Response or a Parameter object $annotation->schema.
      * Create, set $annotation->schema and return this new Schema object if none exists.
      *
-     * @see \Swagger\Annotations\Response::$schema
-     * @see \Swagger\Annotations\Parameter::$schema
+     * @see OA\Response::$schema
+     * @see OA\Parameter::$schema
      *
-     * @param Response|Parameter $annotation
+     * @param OA\Response|OA\Parameter $annotation
      *
-     * @return Schema
+     * @return OA\Schema
      */
-    public static function getSchema(AbstractAnnotation $annotation): Schema
+    public static function getSchema(OA\AbstractAnnotation $annotation): OA\Schema
     {
-        return self::getChild($annotation, Schema::class);
+        return self::getChild($annotation, OA\Schema::class);
     }
 
     /**
@@ -134,37 +117,37 @@ class Util
      * Create, add to $schema->properties[] and return this new Property object
      * and set the property if none found.
      *
-     * @see \Swagger\Annotations\Schema::$properties
-     * @see \Swagger\Annotations\Property::$property
+     * @see OA\Schema::$properties
+     * @see OA\Property::$property
      *
-     * @param Schema $schema
-     * @param string $property
+     * @param OA\Schema $schema
+     * @param string    $property
      *
-     * @return Property
+     * @return OA\Property
      */
-    public static function getProperty(Schema $schema, $property): Property
+    public static function getProperty(OA\Schema $schema, $property): OA\Property
     {
-        return self::getIndexedCollectionItem($schema, Property::class, $property);
+        return self::getIndexedCollectionItem($schema, OA\Property::class, $property);
     }
 
     /**
      * Return an existing Operation from $path->{$method}
      * or create, set $path->{$method} and return this new Operation object.
      *
-     * @see \Swagger\Annotations\Path::$get
-     * @see \Swagger\Annotations\Path::$post
-     * @see \Swagger\Annotations\Path::$put
-     * @see \Swagger\Annotations\Path::$patch
-     * @see \Swagger\Annotations\Path::$delete
-     * @see \Swagger\Annotations\Path::$options
-     * @see \Swagger\Annotations\Path::$head
+     * @see OA\PathItem::$get
+     * @see OA\PathItem::$post
+     * @see OA\PathItem::$put
+     * @see OA\PathItem::$patch
+     * @see OA\PathItem::$delete
+     * @see OA\PathItem::$options
+     * @see OA\PathItem::$head
      *
-     * @param Path   $path
-     * @param string $method
+     * @param OA\PathItem $path
+     * @param string      $method
      *
-     * @return Operation
+     * @return OA\Operation
      */
-    public static function getOperation(Path $path, $method): Operation
+    public static function getOperation(OA\PathItem $path, $method): OA\Operation
     {
         $class = array_keys($path::$_nested, \strtolower($method), true)[0];
 
@@ -178,19 +161,19 @@ class Util
      * Create, add to $operation->parameters[] and return
      * this new Parameter object and set its members if none found.
      *
-     * @see \Swagger\Annotations\Operation::$parameters
-     * @see \Swagger\Annotations\Parameter::$name
-     * @see \Swagger\Annotations\Parameter::$in
+     * @see OA\Operation::$parameters
+     * @see OA\Parameter::$name
+     * @see OA\Parameter::$in
      *
-     * @param Operation $operation
-     * @param string    $name
-     * @param string    $in
+     * @param OA\Operation $operation
+     * @param string       $name
+     * @param string       $in
      *
-     * @return Parameter
+     * @return OA\Parameter
      */
-    public static function getOperationParameter(Operation $operation, $name, $in): Parameter
+    public static function getOperationParameter(OA\Operation $operation, $name, $in): OA\Parameter
     {
-        return self::getCollectionItem($operation, Parameter::class, ['name' => $name, 'in' => $in]);
+        return self::getCollectionItem($operation, OA\Parameter::class, ['name' => $name, 'in' => $in]);
     }
 
     /**
@@ -200,15 +183,15 @@ class Util
      * $property is determined from $parent::$_nested[$class]
      * it is expected to be a string nested property.
      *
-     * @see \Swagger\Annotations\AbstractAnnotation::$_nested
+     * @see OA\AbstractAnnotation::$_nested
      *
-     * @param AbstractAnnotation $parent
+     * @param OA\AbstractAnnotation $parent
      * @param $class
      * @param array $properties
      *
-     * @return AbstractAnnotation
+     * @return OA\AbstractAnnotation
      */
-    public static function getChild(AbstractAnnotation $parent, $class, array $properties = []): AbstractAnnotation
+    public static function getChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
     {
         $nested = $parent::$_nested;
         $property = $nested[$class];
@@ -230,15 +213,15 @@ class Util
      * $collection is determined from $parent::$_nested[$class]
      * it is expected to be a single value array nested Annotation.
      *
-     * @see \Swagger\Annotations\AbstractAnnotation::$_nested
+     * @see OA\AbstractAnnotation::$_nested
      *
-     * @param AbstractAnnotation $parent
-     * @param string             $class
-     * @param array              $properties
+     * @param OA\AbstractAnnotation $parent
+     * @param string                $class
+     * @param array                 $properties
      *
-     * @return AbstractAnnotation
+     * @return OA\AbstractAnnotation
      */
-    public static function getCollectionItem(AbstractAnnotation $parent, $class, array $properties = []): AbstractAnnotation
+    public static function getCollectionItem(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
     {
         $key = null;
         $nested = $parent::$_nested;
@@ -264,18 +247,18 @@ class Util
      * it is expected to be a double value array nested Annotation
      * with the second value being the mapping index $property.
      *
-     * @see \Swagger\Annotations\AbstractAnnotation::$_nested
+     * @see OA\AbstractAnnotation::$_nested
      *
-     * @param AbstractAnnotation $parent
-     * @param string             $class
-     * @param mixed              $value
+     * @param OA\AbstractAnnotation $parent
+     * @param string                $class
+     * @param mixed                 $value
      *
-     * @return AbstractAnnotation
+     * @return OA\AbstractAnnotation
      */
-    public static function getIndexedCollectionItem(AbstractAnnotation $parent, $class, $value): AbstractAnnotation
+    public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, $class, $value): OA\AbstractAnnotation
     {
         $nested = $parent::$_nested;
-        list($collection, $property) = $nested[$class];
+        [$collection, $property] = $nested[$class];
 
         $key = self::searchIndexedCollectionItem($parent->{$collection} ?: [], $property, $value);
 
@@ -293,7 +276,7 @@ class Util
      * @param array $collection
      * @param array $properties
      *
-     * @return int|null|string
+     * @return int|string|null
      */
     public static function searchCollectionItem(array $collection, array $properties)
     {
@@ -328,14 +311,14 @@ class Util
      * Create a new Object of $class with members $properties within $parent->{$collection}[]
      * and return the created index.
      *
-     * @param AbstractAnnotation $parent
-     * @param string             $collection
-     * @param string             $class
-     * @param array              $properties
+     * @param OA\AbstractAnnotation $parent
+     * @param string                $collection
+     * @param string                $class
+     * @param array                 $properties
      *
      * @return int
      */
-    public static function createCollectionItem(AbstractAnnotation $parent, $collection, $class, array $properties = []): int
+    public static function createCollectionItem(OA\AbstractAnnotation $parent, $collection, $class, array $properties = []): int
     {
         $key = \count($parent->{$collection} ?: []);
         $parent->{$collection}[$key] = self::createChild($parent, $class, $properties);
@@ -347,15 +330,15 @@ class Util
      * Create a new Object of $class with members $properties and set the context parent to be $parent.
      *
      *
-     * @param AbstractAnnotation $parent
-     * @param string             $class
-     * @param array              $properties
+     * @param OA\AbstractAnnotation $parent
+     * @param string                $class
+     * @param array                 $properties
      *
      * @throws \InvalidArgumentException at an attempt to pass in properties that are found in $parent::$_nested
      *
-     * @return AbstractAnnotation
+     * @return OA\AbstractAnnotation
      */
-    public static function createChild(AbstractAnnotation $parent, $class, array $properties = []): AbstractAnnotation
+    public static function createChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
     {
         $nesting = self::getNestingIndexes($class);
 
@@ -371,7 +354,7 @@ class Util
     /**
      * Create a new Context with members $properties and parent context $parent.
      *
-     * @see \Swagger\Context
+     * @see Context
      *
      * @param array        $properties
      * @param Context|null $parent
@@ -389,16 +372,16 @@ class Util
      * The main purpose is to create a Swagger Object from array config values
      * in the structure of a json serialized Swagger object.
      *
-     * @param AbstractAnnotation                    $annotation
-     * @param array|\ArrayObject|AbstractAnnotation $from
-     * @param bool                                  $overwrite
+     * @param OA\AbstractAnnotation                    $annotation
+     * @param array|\ArrayObject|OA\AbstractAnnotation $from
+     * @param bool                                     $overwrite
      */
-    public static function merge(AbstractAnnotation $annotation, $from, bool $overwrite = false)
+    public static function merge(OA\AbstractAnnotation $annotation, $from, bool $overwrite = false)
     {
         if (\is_array($from)) {
             self::mergeFromArray($annotation, $from, $overwrite);
-        } elseif (\is_a($from, AbstractAnnotation::class)) {
-            /* @var AbstractAnnotation $from */
+        } elseif (\is_a($from, OA\AbstractAnnotation::class)) {
+            /* @var OA\AbstractAnnotation $from */
             self::mergeFromArray($annotation, json_decode(json_encode($from), true), $overwrite);
         } elseif (\is_a($from, \ArrayObject::class)) {
             /* @var \ArrayObject $from */
@@ -406,7 +389,7 @@ class Util
         }
     }
 
-    private static function mergeFromArray(AbstractAnnotation $annotation, array $properties, bool $overwrite)
+    private static function mergeFromArray(OA\AbstractAnnotation $annotation, array $properties, bool $overwrite)
     {
         $done = [];
 
@@ -443,12 +426,12 @@ class Util
         }
     }
 
-    private static function mergeChild(AbstractAnnotation $annotation, $className, $value, bool $overwrite)
+    private static function mergeChild(OA\AbstractAnnotation $annotation, $className, $value, bool $overwrite)
     {
         self::merge(self::getChild($annotation, $className), $value, $overwrite);
     }
 
-    private static function mergeCollection(AbstractAnnotation $annotation, $className, $collection, $property, $items, bool $overwrite)
+    private static function mergeCollection(OA\AbstractAnnotation $annotation, $className, $collection, $property, $items, bool $overwrite)
     {
         if (null !== $property) {
             foreach ($items as $prop => $value) {
@@ -472,10 +455,10 @@ class Util
         }
     }
 
-    private static function mergeTyped(AbstractAnnotation $annotation, $propertyName, $type, array $properties, array $defaults, bool $overwrite)
+    private static function mergeTyped(OA\AbstractAnnotation $annotation, $propertyName, $type, array $properties, array $defaults, bool $overwrite)
     {
         if (\is_string($type) && 0 === strpos($type, '[')) {
-            /* type is declared as array in @see AbstractAnnotation::$_types */
+            /* type is declared as array in @see OA\AbstractAnnotation::$_types */
             $annotation->{$propertyName} = array_unique(array_merge(
                 $annotation->{$propertyName} ?: [],
                 $properties[$propertyName]
@@ -485,7 +468,7 @@ class Util
         }
     }
 
-    private static function mergeProperty(AbstractAnnotation $annotation, $propertyName, $value, $default, bool $overwrite)
+    private static function mergeProperty(OA\AbstractAnnotation $annotation, $propertyName, $value, $default, bool $overwrite)
     {
         if (true === $overwrite || $default === $annotation->{$propertyName}) {
             $annotation->{$propertyName} = $value;
@@ -505,35 +488,33 @@ class Util
     private static function getNesting($class)
     {
         switch ($class) {
-            case Swagger::class:
-                return Swagger::$_nested;
-            case Info::class:
-                return Info::$_nested;
-            case Path::class:
-                return Path::$_nested;
-            case Get::class:
-            case Post::class:
-            case Put::class:
-            case Delete::class:
-            case Patch::class:
-            case Head::class:
-            case Options::class:
-                return Operation::$_nested;
-            case Parameter::class:
-                return Parameter::$_nested;
-            case Items::class:
-                return Items::$_nested;
-            case Property::class:
-            case Definition::class:
-                return Schema::$_nested;
-            case Schema::class:
-                return Schema::$_nested;
-            case Tag::class:
-                return Tag::$_nested;
-            case Response::class:
-                return Response::$_nested;
-            case Header::class:
-                return Header::$_nested;
+            case OA\OpenApi::class:
+                return OA\OpenApi::$_nested;
+            case OA\Info::class:
+                return OA\Info::$_nested;
+            case OA\PathItem::class:
+                return OA\PathItem::$_nested;
+            case OA\Get::class:
+            case OA\Post::class:
+            case OA\Put::class:
+            case OA\Delete::class:
+            case OA\Patch::class:
+            case OA\Head::class:
+            case OA\Options::class:
+                return OA\Operation::$_nested;
+            case OA\Parameter::class:
+                return OA\Parameter::$_nested;
+            case OA\Items::class:
+                return OA\Items::$_nested;
+            case OA\Property::class:
+            case OA\Schema::class:
+                return OA\Schema::$_nested;
+            case OA\Tag::class:
+                return OA\Tag::$_nested;
+            case OA\Response::class:
+                return OA\Response::$_nested;
+            case OA\Header::class:
+                return OA\Header::$_nested;
             default:
                 return null;
         }

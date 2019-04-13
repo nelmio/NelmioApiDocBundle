@@ -11,9 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
+use OpenApi\Annotations as OA;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
-use Swagger\Annotations\Property;
 
 /**
  * Extract information about properties of a model from the DocBlock comment.
@@ -31,8 +31,11 @@ class PropertyPhpDocReader
 
     /**
      * Update the Swagger information with information from the DocBlock comment.
+     *
+     * @param \ReflectionProperty $reflectionProperty
+     * @param OA\Property         $property
      */
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property): void
     {
         try {
             $docBlock = $this->docBlockFactory->create($reflectionProperty);

@@ -21,10 +21,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
-use Swagger\Annotations\Definition;
-use Swagger\Annotations\Items;
-use Swagger\Annotations\Property;
-use Swagger\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -57,7 +54,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     /**
      * {@inheritdoc}
      */
-    public function describe(Model $model, Definition $definition)
+    public function describe(Model $model, OA\Schema $schema)
     {
         $className = $model->getType()->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
@@ -67,9 +64,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
         $groupsExclusion = null !== $model->getGroups() ? new GroupsExclusionStrategy($model->getGroups()) : null;
 
-        $definition->type = 'object';
+        $schema->type = 'object';
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
-        $annotationsReader->updateDefinition(new \ReflectionClass($className), $definition);
+        $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
 
         foreach ($metadata->propertyMetadata as $item) {
             // filter groups
@@ -97,18 +94,18 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $name = $this->namingStrategy->translateName($item);
             // read property options from Swagger Property annotation if it exists
             if (null !== $item->reflection) {
-                $property = Util::getProperty($definition, $annotationsReader->getPropertyName($item->reflection, $name));
+                $property = Util::getProperty($schema, $annotationsReader->getPropertyName($item->reflection, $name));
                 $annotationsReader->updateProperty($item->reflection, $property, $groups);
             } else {
-                $property = Util::getProperty($definition, $name);
+                $property = Util::getProperty($schema, $name);
             }
 
             if (null !== $property->type || null !== $property->ref) {
                 continue;
             }
             if (null === $item->type) {
-                $key = Util::searchIndexedCollectionItem($definition->properties, 'property', $name);
-                unset($definition->properties[$key]);
+                $key = Util::searchIndexedCollectionItem($schema->properties, 'property', $name);
+                unset($schema->properties[$key]);
 
                 continue;
             }
@@ -131,14 +128,14 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return false;
     }
 
-    private function describeItem(array $type, Schema $property, array $groups = null, array $previousGroups = null)
+    private function describeItem(array $type, OA\Schema $property, array $groups = null, array $previousGroups = null)
     {
         $nestedTypeInfo = $this->getNestedTypeInArray($type);
         if (null !== $nestedTypeInfo) {
             list($nestedType, $isHash) = $nestedTypeInfo;
             if ($isHash) {
                 $property->type = 'object';
-                $property->additionalProperties = Util::createChild($property, Property::class);
+                $property->additionalProperties = Util::createChild($property, OA\Property::class);
 
                 // this is a free form object (as nested array)
                 if ('array' === $nestedType['name'] && !isset($nestedType['params'][0])) {
@@ -154,7 +151,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             }
 
             $property->type = 'array';
-            $property->items = Util::createChild($property, Items::class);
+            $property->items = Util::createChild($property, OA\Items::class);
             $this->describeItem($nestedType, $property->items, $groups);
         } elseif ('array' === $type['name']) {
             $property->type = 'object';

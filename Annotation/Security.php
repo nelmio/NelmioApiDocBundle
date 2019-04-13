@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Annotation;
 
-use Swagger\Annotations\AbstractAnnotation;
+use OpenApi\Annotations\AbstractAnnotation;
 
 /**
  * @Annotation

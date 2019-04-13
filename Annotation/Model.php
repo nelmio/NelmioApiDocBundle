@@ -11,12 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Annotation;
 
-use Swagger\Annotations\AbstractAnnotation;
+use OpenApi\Annotations as OA;
 
 /**
  * @Annotation
  */
-final class Model extends AbstractAnnotation
+final class Model extends OA\AbstractAnnotation
 {
     /** {@inheritdoc} */
     public static $_types = [
@@ -28,8 +28,8 @@ final class Model extends AbstractAnnotation
     public static $_required = ['type'];
 
     public static $_parents = [
-        'Swagger\Annotations\Parameter',
-        'Swagger\Annotations\Response',
+        OA\Parameter::class,
+        OA\Response::class,
     ];
 
     /**

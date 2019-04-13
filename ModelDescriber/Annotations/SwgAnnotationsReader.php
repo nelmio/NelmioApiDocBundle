@@ -14,10 +14,9 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
-use Swagger\Analysis;
-use Swagger\Annotations\Definition;
-use Swagger\Annotations\Property;
-use Swagger\Context;
+use OpenApi\Analysis;
+use OpenApi\Annotations as OA;
+use OpenApi\Context;
 
 /**
  * @internal
@@ -33,10 +32,10 @@ class SwgAnnotationsReader
         $this->modelRegister = new ModelRegister($modelRegistry);
     }
 
-    public function updateDefinition(\ReflectionClass $reflectionClass, Definition $definition)
+    public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema)
     {
         /** @var Definition $classDefinition */
-        if (!$classDefinition = $this->annotationsReader->getClassAnnotation($reflectionClass, Definition::class)) {
+        if (!$classDefinition = $this->annotationsReader->getClassAnnotation($reflectionClass, OA\Schema::class)) {
             return;
         }
 
@@ -47,22 +46,22 @@ class SwgAnnotationsReader
             return;
         }
 
-        $definition->mergeProperties($classDefinition);
+        $schema->mergeProperties($classDefinition);
     }
 
     public function getPropertyName(\ReflectionProperty $reflectionProperty, string $default): string
     {
-        /** @var Property $swgProperty */
-        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, Property::class)) {
+        /** @var OA\Property $swgProperty */
+        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, OA\Property::class)) {
             return $default;
         }
 
         return $swgProperty->property ?? $default;
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property, array $serializationGroups = null)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null)
     {
-        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, Property::class)) {
+        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, OA\Property::class)) {
             return;
         }
 

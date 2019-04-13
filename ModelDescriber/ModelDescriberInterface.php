@@ -12,11 +12,11 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Nelmio\ApiDocBundle\Model\Model;
-use Swagger\Annotations\Definition;
+use OpenApi\Annotations\Schema;
 
 interface ModelDescriberInterface
 {
-    public function describe(Model $model, Definition $definition);
+    public function describe(Model $model, Schema $schema);
 
     public function supports(Model $model): bool;
 }

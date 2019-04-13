@@ -17,8 +17,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
-use Swagger\Annotations\Definition;
-use Swagger\Annotations\Items;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -39,12 +38,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $this->doctrineReader = $reader;
     }
 
-    public function describe(Model $model, Definition $definition)
+    public function describe(Model $model, OA\Schema $schema)
     {
-        $definition->type = 'object';
+        $schema->type = 'object';
 
         $class = $model->getType()->getClassName();
-        $definition->_context->class = $class;
+        $schema->_context->class = $class;
 
         $context = [];
         if (null !== $model->getGroups()) {
@@ -52,7 +51,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
-        $annotationsReader->updateDefinition(new \ReflectionClass($class), $definition);
+        $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);
         if (null === $propertyInfoProperties) {
@@ -63,7 +62,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             // read property options from Swagger Property annotation if it exists
             if (property_exists($class, $propertyName)) {
                 $reflectionProperty = new \ReflectionProperty($class, $propertyName);
-                $property = Util::getProperty($definition, $annotationsReader->getPropertyName($reflectionProperty, $propertyName));
+                $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflectionProperty, $propertyName));
 
                 $groups = $model->getGroups();
                 if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
@@ -72,7 +71,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
                 $annotationsReader->updateProperty($reflectionProperty, $property, $groups);
             } else {
-                $property = Util::getProperty($definition, $propertyName);
+                $property = Util::getProperty($schema, $propertyName);
             }
 
             // If type manually defined
@@ -96,7 +95,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 }
 
                 $property->type = 'array';
-                $property = Util::getChild($property, Items::class);
+                $property = Util::getChild($property, OA\Items::class);
             }
 
             if (Type::BUILTIN_TYPE_STRING === $type->getBuiltinType()) {

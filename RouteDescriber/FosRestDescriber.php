@@ -15,7 +15,7 @@ use Doctrine\Common\Annotations\Reader;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
-use Swagger\Annotations\Swagger;
+use OpenApi\Annotations\OpenApi;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -31,7 +31,7 @@ final class FosRestDescriber implements RouteDescriberInterface
         $this->annotationReader = $annotationReader;
     }
 
-    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         $annotations = $this->annotationReader->getMethodAnnotations($reflectionMethod);
         $annotations = array_filter($annotations, function ($value) {

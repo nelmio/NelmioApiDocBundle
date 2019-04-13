@@ -12,10 +12,7 @@
 namespace Nelmio\ApiDocBundle\Describer;
 
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
-use Swagger\Annotations\Info;
-use Swagger\Annotations\Operation;
-use Swagger\Annotations\Response;
-use Swagger\Annotations\Swagger;
+use OpenApi\Annotations as OA;
 
 /**
  * Makes the swagger documentation valid even if there are missing fields.
@@ -24,10 +21,10 @@ use Swagger\Annotations\Swagger;
  */
 final class DefaultDescriber implements DescriberInterface
 {
-    public function describe(Swagger $api)
+    public function describe(OA\OpenApi $api): void
     {
-        /** @var Info $info */
-        $info = Util::getChild($api, Info::class);
+        /** @var OA\Info $info */
+        $info = Util::getChild($api, OA\Info::class);
         if (null === $info->title) {
             $info->title = '';
         }
@@ -37,11 +34,11 @@ final class DefaultDescriber implements DescriberInterface
         $paths = $api->paths ?? [];
         foreach ($paths as $uri => $path) {
             foreach (Util::$operations as $method) {
-                /** @var Operation $operation */
+                /** @var OA\Operation $operation */
                 $operation = $path->{$method};
                 if (null !== $operation && empty($operation->responses ?? [])) {
-                    /** @var Response $response */
-                    $response = Util::getIndexedCollectionItem($operation, Response::class, 'default');
+                    /** @var OA\Response $response */
+                    $response = Util::getIndexedCollectionItem($operation, OA\Response::class, 'default');
                     $response->description = '';
                 }
             }

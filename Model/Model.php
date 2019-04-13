@@ -23,7 +23,7 @@ final class Model
 
     /**
      * @param string[]|null $groups
-     * @param mixed[]|null $options
+     * @param mixed[]|null  $options
      */
     public function __construct(Type $type, array $groups = null, array $options = null)
     {

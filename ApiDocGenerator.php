@@ -15,8 +15,8 @@ use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use OpenApi\Annotations\OpenApi;
 use Psr\Cache\CacheItemPoolInterface;
-use Swagger\Annotations\Swagger;
 
 final class ApiDocGenerator
 {
@@ -28,11 +28,15 @@ final class ApiDocGenerator
 
     private $cacheItemPool;
 
+    private $cacheItemId;
+
     private $alternativeNames = [];
 
     /**
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
+     * @param CacheItemPoolInterface|null        $cacheItemPool
+     * @param string|null                        $cacheItemId
      */
     public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null)
     {
@@ -42,12 +46,12 @@ final class ApiDocGenerator
         $this->cacheItemId = $cacheItemId;
     }
 
-    public function setAlternativeNames(array $alternativeNames)
+    public function setAlternativeNames(array $alternativeNames): void
     {
         $this->alternativeNames = $alternativeNames;
     }
 
-    public function generate(): Swagger
+    public function generate(): OpenApi
     {
         if (null !== $this->swagger) {
             return $this->swagger;
@@ -60,7 +64,7 @@ final class ApiDocGenerator
             }
         }
 
-        $this->swagger = new Swagger([]);
+        $this->swagger = new OpenApi([]);
         $modelRegistry = new ModelRegistry($this->modelDescribers, $this->swagger, $this->alternativeNames);
         foreach ($this->describers as $describer) {
             if ($describer instanceof ModelRegistryAwareInterface) {

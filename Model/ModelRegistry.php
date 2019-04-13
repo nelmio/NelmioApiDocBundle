@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\Model;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
-use Swagger\Annotations\Swagger;
+use OpenApi\Annotations\OpenApi;
 use Symfony\Component\PropertyInfo\Type;
 
 final class ModelRegistry
@@ -33,10 +33,12 @@ final class ModelRegistry
 
     /**
      * @param ModelDescriberInterface[]|iterable $modelDescribers
+     * @param OpenApi                            $api
+     * @param array                              $alternativeNames
      *
      * @internal
      */
-    public function __construct($modelDescribers, Swagger $api, array $alternativeNames = [])
+    public function __construct($modelDescribers, OpenApi $api, array $alternativeNames = [])
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;

@@ -11,9 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
+use OpenApi\Annotations\OpenApi;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
-use Swagger\Annotations\Swagger;
 use Symfony\Component\Routing\Route;
 
 final class PhpDocDescriber implements RouteDescriberInterface
@@ -30,7 +30,7 @@ final class PhpDocDescriber implements RouteDescriberInterface
         $this->docBlockFactory = $docBlockFactory;
     }
 
-    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         $classDocBlock = null;
         $docBlock = null;

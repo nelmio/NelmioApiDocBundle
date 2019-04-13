@@ -12,8 +12,7 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
-use Swagger\Annotations\Property;
-use Swagger\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -27,7 +26,7 @@ class SymfonyConstraintAnnotationReader
     private $annotationsReader;
 
     /**
-     * @var Schema
+     * @var OA\Schema
      */
     private $schema;
 
@@ -39,7 +38,7 @@ class SymfonyConstraintAnnotationReader
     /**
      * Update the given property and schema with defined Symfony constraints.
      */
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Property $property)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property)
     {
         $annotations = $this->annotationsReader->getPropertyAnnotations($reflectionProperty);
 
@@ -77,15 +76,19 @@ class SymfonyConstraintAnnotationReader
         }
     }
 
-    public function setSchema(Schema $schema)
+    public function setSchema(OA\Schema $schema)
     {
         $this->schema = $schema;
     }
 
     /**
      * Get assigned property name for property schema.
+     *
+     * @param OA\Schema $property
+     *
+     * @return string|void|null
      */
-    private function getSchemaPropertyName(Schema $property)
+    private function getSchemaPropertyName(OA\Schema $property)
     {
         if (null === $this->schema) {
             return null;
@@ -102,8 +105,11 @@ class SymfonyConstraintAnnotationReader
 
     /**
      * Append the pattern from the constraint to the existing pattern.
+     *
+     * @param OA\Schema $property
+     * @param $newPattern
      */
-    private function appendPattern(Schema $property, $newPattern)
+    private function appendPattern(OA\Schema $property, $newPattern)
     {
         if (null === $newPattern) {
             return;

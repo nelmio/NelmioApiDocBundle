@@ -19,7 +19,7 @@
         "symfony/framework-bundle": "^3.4|^4.0",
         "symfony/options-resolver": "^3.4.4|^4.0",
         "symfony/property-info": "^3.4|^4.0",
-        "zircote/swagger-php": "^2.0.12",
+        "zircote/swagger-php": "^3.0.2",
         "phpdocumentor/reflection-docblock": "^3.1|^4.0"
     },
     "require-dev": {

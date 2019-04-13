@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Describer;
 
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
-use Swagger\Annotations\Swagger;
+use OpenApi\Annotations\OpenApi;
 
 class ExternalDocDescriber implements DescriberInterface
 {
@@ -30,7 +30,7 @@ class ExternalDocDescriber implements DescriberInterface
         $this->overwrite = $overwrite;
     }
 
-    public function describe(Swagger $api)
+    public function describe(OpenApi $api): void
     {
         $externalDoc = $this->getExternalDoc();
 

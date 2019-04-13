@@ -21,8 +21,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
-use Swagger\Annotations\Definition;
-use Swagger\Annotations\Property;
+use OpenApi\Annotations as OA;
 
 class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
@@ -46,9 +45,9 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
     /**
      * {@inheritdoc}
      */
-    public function describe(Model $model, Definition $definition)
+    public function describe(Model $model, OA\Schema $schema)
     {
-        $this->JMSModelDescriber->describe($model, $definition);
+        $this->JMSModelDescriber->describe($model, $schema);
 
         $metadata = $this->getHateoasMetadata($model);
         if (null === $metadata) {
@@ -57,7 +56,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 
         $groupsExclusion = null !== $model->getGroups() ? new GroupsExclusionStrategy($model->getGroups()) : null;
 
-        $definition->type = 'object';
+        $schema->type = 'object';
 
         foreach ($metadata->getRelations() as $relation) {
             if (!$relation->getEmbedded() && !$relation->getHref()) {
@@ -75,7 +74,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 
             $name = $relation->getName();
 
-            $relationSchema = Util::getProperty($definition, $relation->getEmbedded() ? '_embedded' : '_links');
+            $relationSchema = Util::getProperty($schema, $relation->getEmbedded() ? '_embedded' : '_links');
             $relationSchema->readOnly = true;
 
             $property = Util::getProperty($relationSchema, $name);
@@ -112,7 +111,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         return $this->JMSModelDescriber->supports($model) || null !== $this->getHateoasMetadata($model);
     }
 
-    private function setAttributeProperties(Relation $relation, Property $subProperty)
+    private function setAttributeProperties(Relation $relation, OA\Property $subProperty)
     {
         foreach ($relation->getAttributes() as $attribute => $value) {
             $subSubProp = Util::getProperty($subProperty, $attribute);

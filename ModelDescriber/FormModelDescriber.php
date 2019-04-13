@@ -15,8 +15,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
-use Swagger\Annotations\Definition;
-use Swagger\Annotations\Items;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigBuilderInterface;
@@ -40,7 +39,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         $this->formFactory = $formFactory;
     }
 
-    public function describe(Model $model, Definition $definition)
+    public function describe(Model $model, OA\Schema $schema)
     {
         if (method_exists(AbstractType::class, 'setDefaultOptions')) {
             throw new \LogicException('symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.');
@@ -49,12 +48,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             throw new \LogicException('You need to enable forms in your application to use a form as a model.');
         }
 
-        $definition->type = 'object';
+        $schema->type = 'object';
 
         $class = $model->getType()->getClassName();
 
         $form = $this->formFactory->create($class, null, $model->getOptions() ?? []);
-        $this->parseForm($definition, $form);
+        $this->parseForm($schema, $form);
     }
 
     public function supports(Model $model): bool
@@ -62,7 +61,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         return is_a($model->getType()->getClassName(), FormTypeInterface::class, true);
     }
 
-    private function parseForm(Definition $definition, FormInterface $form)
+    private function parseForm(OA\Schema $definition, FormInterface $form)
     {
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
@@ -160,7 +159,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                     }
 
                     if ($config->getOption('multiple')) {
-                        $property->items = Util::createChild($property, Items::class, ['type' => $type, 'enum' => $enums]);
+                        $property->items = Util::createChild($property, OA\Items::class, ['type' => $type, 'enum' => $enums]);
                     } else {
                         $property->type = $type;
                         $property->enum = $enums;
@@ -204,7 +203,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $subForm = $this->formFactory->create($subType, null, $subOptions);
 
                 $property->type = 'array';
-                $property->items = Util::createChild($property, Items::class);
+                $property->items = Util::createChild($property, OA\Items::class);
 
                 $this->findFormType($subForm->getConfig(), $property->items);
 
@@ -218,7 +217,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 if ($config->getOption('multiple')) {
                     $property->format = sprintf('[%s id]', $entityClass);
                     $property->type = 'array';
-                    $property->items = Util::createChild($property, Items::class, ['type' => 'string']);
+                    $property->items = Util::createChild($property, OA\Items::class, ['type' => 'string']);
                 } else {
                     $property->type = 'string';
                     $property->format = sprintf('%s id', $entityClass);
