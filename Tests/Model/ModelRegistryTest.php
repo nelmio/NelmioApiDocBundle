@@ -13,8 +13,8 @@ namespace Nelmio\ApiDocBundle\Tests\Model;
 
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use OpenApi\Annotations\OpenApi;
 use PHPUnit\Framework\TestCase;
-use Swagger\Annotations\Swagger;
 use Symfony\Component\PropertyInfo\Type;
 
 class ModelRegistryTest extends TestCase
@@ -27,7 +27,7 @@ class ModelRegistryTest extends TestCase
                 'groups' => ['group1'],
             ],
         ];
-        $registry = new ModelRegistry([], new Swagger([]), $alternativeNames);
+        $registry = new ModelRegistry([], new OpenApi([]), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true);
 
         $this->assertEquals('#/definitions/array', $registry->register(new Model($type, ['group1'])));
@@ -40,7 +40,7 @@ class ModelRegistryTest extends TestCase
      */
     public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames)
     {
-        $registry = new ModelRegistry([], new Swagger([]), $alternativeNames);
+        $registry = new ModelRegistry([], new OpenApi([]), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
 
         $this->assertEquals($expected, $registry->register(new Model($type, $groups)));
@@ -110,9 +110,9 @@ class ModelRegistryTest extends TestCase
         $this->expectException('\LogicException');
         $this->expectExceptionMessage(sprintf('Definition of type "%s" can\'t be generated, no describer supports it.', $stringType));
 
-        $registry = new ModelRegistry([], new Swagger([]));
+        $registry = new ModelRegistry([], new OpenApi([]));
         $registry->register(new Model($type));
-        $registry->registerDefinitions();
+        $registry->registerSchemas();
     }
 
     public function unsupportedTypesProvider()

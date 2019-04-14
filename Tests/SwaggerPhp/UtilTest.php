@@ -12,23 +12,10 @@
 namespace Nelmio\ApiDocBundle\Tests;
 
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use OpenApi\Annotations as OA;
+use OpenApi\Context;
+use const OpenApi\UNDEFINED;
 use PHPUnit\Framework\TestCase;
-use Swagger\Annotations\AbstractAnnotation;
-use Swagger\Annotations\Definition;
-use Swagger\Annotations\Delete;
-use Swagger\Annotations\Get;
-use Swagger\Annotations\Header;
-use Swagger\Annotations\Info;
-use Swagger\Annotations\Items;
-use Swagger\Annotations\Parameter;
-use Swagger\Annotations\Path;
-use Swagger\Annotations\Put;
-use Swagger\Annotations\Response;
-use Swagger\Annotations\Schema;
-use Swagger\Annotations\SecurityScheme;
-use Swagger\Annotations\Swagger;
-use Swagger\Annotations\Tag;
-use Swagger\Context;
 
 /**
  * Class UtilTest.
@@ -55,6 +42,8 @@ use Swagger\Context;
 class UtilTest extends TestCase
 {
     public $rootContext;
+
+    /** @var OA\OpenApi */
     public $rootAnnotation;
 
     public function setUp()
@@ -62,7 +51,7 @@ class UtilTest extends TestCase
         parent::setUp();
 
         $this->rootContext = new Context(['isTestingRoot' => true]);
-        $this->rootAnnotation = new Swagger(['_context' => $this->rootContext]);
+        $this->rootAnnotation = new OA\OpenApi(['_context' => $this->rootContext]);
     }
 
     public function testCreateContextSetsParentContext()
@@ -82,27 +71,27 @@ class UtilTest extends TestCase
 
     public function testCreateChild()
     {
-        $info = Util::createChild($this->rootAnnotation, Info::class);
+        $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
-        $this->assertInstanceOf(Info::class, $info);
+        $this->assertInstanceOf(OA\Info::class, $info);
     }
 
     public function testCreateChildHasContext()
     {
-        $info = Util::createChild($this->rootAnnotation, Info::class);
+        $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
         $this->assertInstanceOf(Context::class, $info->_context);
     }
 
     public function testCreateChildHasNestedContext()
     {
-        $path = Util::createChild($this->rootAnnotation, Path::class);
+        $path = Util::createChild($this->rootAnnotation, OA\PathItem::class);
         $this->assertIsNested($this->rootAnnotation, $path);
 
-        $parameter = Util::createChild($path, Parameter::class);
+        $parameter = Util::createChild($path, OA\Parameter::class);
         $this->assertIsNested($path, $parameter);
 
-        $schema = Util::createChild($parameter, Schema::class);
+        $schema = Util::createChild($parameter, OA\Schema::class);
         $this->assertIsNested($parameter, $schema);
 
         $this->assertIsConnectedToRootContext($schema);
@@ -111,14 +100,14 @@ class UtilTest extends TestCase
     public function testCreateChildWithEmptyProperties()
     {
         $properties = [];
-        /** @var Info $info */
-        $info = Util::createChild($this->rootAnnotation, Info::class, $properties);
+        /** @var OA\Info $info */
+        $info = Util::createChild($this->rootAnnotation, OA\Info::class, $properties);
 
         $properties = array_filter(get_object_vars($info), function ($key) {
             return 0 !== strpos($key, '_');
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->assertEquals([null], array_unique(array_values($properties)));
+        $this->assertEquals([UNDEFINED], array_unique(array_values($properties)));
 
         $this->assertIsNested($this->rootAnnotation, $info);
         $this->assertIsConnectedToRootContext($info);
@@ -127,8 +116,8 @@ class UtilTest extends TestCase
     public function testCreateChildWithProperties()
     {
         $properties = ['title' => 'testing', 'version' => '999', 'x' => new \stdClass()];
-        /** @var Info $info */
-        $info = Util::createChild($this->rootAnnotation, Info::class, $properties);
+        /** @var OA\Info $info */
+        $info = Util::createChild($this->rootAnnotation, OA\Info::class, $properties);
 
         $this->assertSame($info->title, $properties['title']);
         $this->assertSame($info->version, $properties['version']);
@@ -141,7 +130,7 @@ class UtilTest extends TestCase
     public function testCreateCollectionItemAddsCreatedItemToCollection()
     {
         $collection = 'paths';
-        $class = Path::class;
+        $class = OA\PathItem::class;
 
         $p1 = Util::createCollectionItem($this->rootAnnotation, $collection, $class);
         $this->assertSame(0, $p1);
@@ -157,21 +146,23 @@ class UtilTest extends TestCase
         $this->assertIsNested($this->rootAnnotation, $this->rootAnnotation->{$collection}[$p2]);
         $this->assertIsConnectedToRootContext($this->rootAnnotation->{$collection}[$p2]);
 
-        $collection = 'definitions';
-        $class = Definition::class;
+        $this->rootAnnotation->components = Util::createChild($this->rootAnnotation, OA\Components::class);
 
-        $d1 = Util::createCollectionItem($this->rootAnnotation, $collection, $class);
+        $collection = 'schemas';
+        $class = OA\Schema::class;
+
+        $d1 = Util::createCollectionItem($this->rootAnnotation->components, $collection, $class);
         $this->assertSame(0, $d1);
-        $this->assertCount(1, $this->rootAnnotation->{$collection});
-        $this->assertInstanceOf($class, $this->rootAnnotation->{$collection}[$d1]);
-        $this->assertIsNested($this->rootAnnotation, $this->rootAnnotation->{$collection}[$d1]);
-        $this->assertIsConnectedToRootContext($this->rootAnnotation->{$collection}[$d1]);
+        $this->assertCount(1, $this->rootAnnotation->components->{$collection});
+        $this->assertInstanceOf($class, $this->rootAnnotation->components->{$collection}[$d1]);
+        $this->assertIsNested($this->rootAnnotation->components, $this->rootAnnotation->components->{$collection}[$d1]);
+        $this->assertIsConnectedToRootContext($this->rootAnnotation->components->{$collection}[$d1]);
     }
 
     public function testCreateCollectionItemDoesNotAddToUnknownProperty()
     {
         $collection = 'foobars';
-        $class = Info::class;
+        $class = OA\Info::class;
 
         $expectedRegex = "/Property \"{$collection}\" doesn't exist .*/";
         set_error_handler(function ($_, $err) { echo $err; });
@@ -226,18 +217,22 @@ class UtilTest extends TestCase
     public function testSearchIndexedCollectionItem($setup, $asserts)
     {
         foreach ($asserts as $collection => $items) {
-            $preset = \count($setup[$collection] ?? []);
-            // get the indexing correct within haystack preparation
-            $properties = array_fill(0, $preset, null);
+            foreach ($items as $assert) {
+                $setupCollection = empty($assert['components']) ?
+                    $setup[$collection] ?? [] :
+                    $setup['components']->{$collection} ?? [];
 
-            // prepare the haystack array
-            foreach ($items as $assert) {
-                // e.g. $properties[1] = new Path(['path' => 'path 1'])
-                $properties[$assert['index']] = new $assert['class']([
-                    $assert['key'] => $assert['value'],
-                ]);
-            }
-            foreach ($items as $assert) {
+                // get the indexing correct within haystack preparation
+                $properties = array_fill(0, \count($setupCollection), null);
+
+                // prepare the haystack array
+                foreach ($items as $assertItem) {
+                    // e.g. $properties[1] = new OA\PathItem(['path' => 'path 1'])
+                    $properties[$assertItem['index']] = new $assertItem['class']([
+                        $assertItem['key'] => $assertItem['value'],
+                    ]);
+                }
+
                 $this->assertSame(
                     $assert['index'],
                     Util::searchIndexedCollectionItem($properties, $assert['key'], $assert['value']),
@@ -259,18 +254,26 @@ class UtilTest extends TestCase
 
         foreach ($asserts as $collection => $items) {
             foreach ($items as $assert) {
+                $itemParent = empty($assert['components']) ? $parent : $parent->components;
+
                 $child = Util::getIndexedCollectionItem(
-                    $parent, $assert['class'], $assert['value']
+                    $itemParent, $assert['class'], $assert['value']
                 );
+
                 $this->assertInstanceOf($assert['class'], $child);
                 $this->assertSame($child->{$assert['key']}, $assert['value']);
                 $this->assertSame(
-                    $parent->{$collection}[$assert['index']],
+                    $itemParent->{$collection}[$assert['index']],
                     $child
                 );
+
+                $setupHaystack = empty($assert['components']) ?
+                    $setup[$collection] ?? [] :
+                    $setup['components']->{$collection} ?? [];
+
                 // the children created within provider are not connected
-                if (!\in_array($child, $setup[$collection] ?? [], true)) {
-                    $this->assertIsNested($parent, $child);
+                if (!\in_array($child, $setupHaystack, true)) {
+                    $this->assertIsNested($itemParent, $child);
                     $this->assertIsConnectedToRootContext($child);
                 }
             }
@@ -281,83 +284,92 @@ class UtilTest extends TestCase
     {
         return [[
             'setup' => [
-                'class' => Swagger::class,
+                'class' => OA\OpenApi::class,
                 'paths' => [
-                    new Path(['path' => 'path 0']),
+                    new OA\PathItem(['path' => 'path 0']),
                 ],
-                'parameters' => [
-                    new Parameter(['parameter' => 'parameter 0']),
-                    new Parameter(['parameter' => 'parameter 1']),
-                ],
+                'components' => new OA\Components([
+                    'parameters' => [
+                        new OA\Parameter(['parameter' => 'parameter 0']),
+                        new OA\Parameter(['parameter' => 'parameter 1']),
+                    ],
+                ]),
             ],
             'assert' => [
                 // one fixed within setup and one dynamically created
                 'paths' => [
                     [
                         'index' => 0,
-                        'class' => Path::class,
+                        'class' => OA\PathItem::class,
                         'key' => 'path',
                         'value' => 'path 0',
                     ],
                     [
                         'index' => 1,
-                        'class' => Path::class,
+                        'class' => OA\PathItem::class,
                         'key' => 'path',
                         'value' => 'path 1',
                     ],
                 ],
                 // not contained in setup
-                'definitions' => [
+                'schemas' => [
                     [
                         'index' => 0,
-                        'class' => Definition::class,
-                        'key' => 'definition',
-                        'value' => 'definition 0',
+                        'class' => OA\Schema::class,
+                        'key' => 'schema',
+                        'value' => 'schema 0',
+                        'components' => true,
                     ],
                 ],
                 // search indexes out of order followed by dynamically created
                 'parameters' => [
                     [
                         'index' => 1,
-                        'class' => Parameter::class,
+                        'class' => OA\Parameter::class,
                         'key' => 'parameter',
                         'value' => 'parameter 1',
+                        'components' => true,
                     ],
                     [
                         'index' => 0,
-                        'class' => Parameter::class,
+                        'class' => OA\Parameter::class,
                         'key' => 'parameter',
                         'value' => 'parameter 0',
+                        'components' => true,
                     ],
                     [
                         'index' => 2,
-                        'class' => Parameter::class,
+                        'class' => OA\Parameter::class,
                         'key' => 'parameter',
                         'value' => 'parameter 2',
+                        'components' => true,
                     ],
                 ],
                 // two dynamically created
                 'responses' => [
                     [
                         'index' => 0,
-                        'class' => Response::class,
+                        'class' => OA\Response::class,
                         'key' => 'response',
                         'value' => 'response 0',
+                        'components' => true,
                     ],
                     [
                         'index' => 1,
-                        'class' => Response::class,
+                        'class' => OA\Response::class,
                         'key' => 'response',
                         'value' => 'response 1',
+                        'components' => true,
                     ],
                 ],
                 // for sake of completeness
-                'securityDefinitions' => [
+                'securitySchemes' => [
                     [
                         'index' => 0,
-                        'class' => SecurityScheme::class,
-                        'key' => 'securityDefinition',
-                        'value' => 'securityDefinition 0',
+                        'class' => OA\SecurityScheme::class,
+                        'key' => 'securityScheme',
+                        'value' => 'securityScheme 0',
+                        'components' => true,
                     ],
                 ],
             ],
@@ -395,23 +407,23 @@ class UtilTest extends TestCase
     {
         return [[
             'setup' => [
-                'class' => Path::class,
-                'get' => new Get([]),
+                'class' => OA\PathItem::class,
+                'get' => new OA\Get([]),
             ],
             'assert' => [
                 // fixed within setup
                 'get' => [
-                    'class' => Get::class,
+                    'class' => OA\Get::class,
                     'props' => [],
                 ],
                 // create new without props
                 'put' => [
-                    'class' => Put::class,
+                    'class' => OA\Put::class,
                     'props' => [],
                 ],
                 // create new with multiple props
                 'delete' => [
-                    'class' => Delete::class,
+                    'class' => OA\Delete::class,
                     'props' => [
                         'summary' => 'testing delete',
                         'deprecated' => true,
@@ -420,18 +432,12 @@ class UtilTest extends TestCase
             ],
         ], [
             'setup' => [
-                'class' => Parameter::class,
-                'items' => new Items([]),
+                'class' => OA\Parameter::class,
             ],
             'assert' => [
-                // fixed within setup
-                'items' => [
-                    'class' => Items::class,
-                    'props' => [],
-                ],
                 // create new with multiple props
                 'schema' => [
-                    'class' => Schema::class,
+                    'class' => OA\Schema::class,
                     'props' => [
                         'ref' => '#/testing/schema',
                         'minProperties' => 0,
@@ -441,12 +447,12 @@ class UtilTest extends TestCase
             ],
         ], [
             'setup' => [
-                'class' => Parameter::class,
+                'class' => OA\Parameter::class,
             ],
             'assert' => [
                 // externalDocs triggers invalid argument exception
-                'items' => [
-                    'class' => Items::class,
+                'schema' => [
+                    'class' => OA\Schema::class,
                     'props' => [
                         'externalDocs' => [],
                     ],
@@ -461,13 +467,13 @@ class UtilTest extends TestCase
         $name = 'operation name';
         $in = 'operation in';
 
-        $parameter = new Parameter(['name' => $name, 'in' => $in]);
-        $operation = new Get(['parameters' => [
-            new Parameter([]),
-            new Parameter(['name' => 'foo']),
-            new Parameter(['in' => 'bar']),
-            new Parameter(['name' => $name, 'in' => 'bar']),
-            new Parameter(['name' => 'foo', 'in' => $in]),
+        $parameter = new OA\Parameter(['name' => $name, 'in' => $in]);
+        $operation = new OA\Get(['parameters' => [
+            new OA\Parameter([]),
+            new OA\Parameter(['name' => 'foo']),
+            new OA\Parameter(['in' => 'bar']),
+            new OA\Parameter(['name' => $name, 'in' => 'bar']),
+            new OA\Parameter(['name' => 'foo', 'in' => $in]),
             $parameter,
         ]]);
 
@@ -480,24 +486,24 @@ class UtilTest extends TestCase
         $name = 'operation name';
         $in = 'operation in';
 
-        $operation = new Get(['parameters' => [
-            new Parameter([]),
-            new Parameter(['name' => 'foo']),
-            new Parameter(['in' => 'bar']),
-            new Parameter(['name' => $name, 'in' => 'bar']),
-            new Parameter(['name' => 'foo', 'in' => $in]),
+        $operation = new OA\Get(['parameters' => [
+            new OA\Parameter([]),
+            new OA\Parameter(['name' => 'foo']),
+            new OA\Parameter(['in' => 'bar']),
+            new OA\Parameter(['name' => $name, 'in' => 'bar']),
+            new OA\Parameter(['name' => 'foo', 'in' => $in]),
         ]]);
 
         $actual = Util::getOperationParameter($operation, $name, $in);
-        $this->assertInstanceOf(Parameter::class, $actual);
+        $this->assertInstanceOf(OA\Parameter::class, $actual);
         $this->assertSame($name, $actual->name);
         $this->assertSame($in, $actual->in);
     }
 
     public function testGetOperationReturnsExisting()
     {
-        $get = new Get([]);
-        $path = new Path(['get' => $get]);
+        $get = new OA\Get([]);
+        $path = new OA\PathItem(['get' => $get]);
 
         $this->assertSame($get, Util::getOperation($path, 'get'));
     }
@@ -505,16 +511,16 @@ class UtilTest extends TestCase
     public function testGetOperationCreatesWithPath()
     {
         $pathStr = '/testing/get/path';
-        $path = new Path(['path' => $pathStr]);
+        $path = new OA\PathItem(['path' => $pathStr]);
 
         $get = Util::getOperation($path, 'get');
-        $this->assertInstanceOf(Get::class, $get);
+        $this->assertInstanceOf(OA\Get::class, $get);
         $this->assertSame($pathStr, $get->path);
     }
 
     public function testMergeWithEmptyArray()
     {
-        $api = new Swagger([]);
+        $api = new OA\OpenApi([]);
         $expected = json_encode($api);
 
         Util::merge($api, [], false);
@@ -533,7 +539,7 @@ class UtilTest extends TestCase
      */
     public function testMerge($setup, $merge, $assert)
     {
-        $api = new Swagger($setup);
+        $api = new OA\OpenApi($setup);
 
         Util::merge($api, $merge, false);
         $this->assertTrue($api->validate());
@@ -549,42 +555,55 @@ class UtilTest extends TestCase
 
         $requiredInfo = ['title' => '', 'version' => ''];
 
-        $setupDefaults = ['info' => new Info($requiredInfo)];
+        $setupDefaults = [
+            'info' => new OA\Info($requiredInfo),
+            'paths' => [],
+        ];
         $assertDefaults = [
             'info' => $requiredInfo,
-            'swagger' => '2.0',
+            'openapi' => '3.0.0',
             'paths' => [],
-            'definitions' => [],
         ];
 
         return [[
             // simple child merge
-            'setup' => ['info' => new Info(['version' => $no])],
-            'merge' => ['info' => ['title' => $yes, 'version' => $yes]],
+            'setup' => [
+                'info' => new OA\Info(['version' => $no]),
+                'paths' => [],
+            ],
+            'merge' => [
+                'info' => ['title' => $yes, 'version' => $yes],
+            ],
             'assert' => [
                 'info' => ['title' => $yes, 'version' => $no],
             ] + $assertDefaults,
         ], [
             // indexed collection merge
             'setup' => [
-                'definitions' => [
-                    new Definition(['definition' => $no, 'title' => $no]),
-                ],
+                'components' => new OA\Components([
+                    'schemas' => [
+                        new OA\Schema(['schema' => $no, 'title' => $no]),
+                    ],
+                ]),
             ] + $setupDefaults,
             'merge' => [
-                'definitions' => [
-                    $no => ['title' => $yes, 'description' => $yes],
+                'components' => [
+                    'schemas' => [
+                        $no => ['title' => $yes, 'description' => $yes],
+                    ],
                 ],
             ],
             'assert' => [
-                'definitions' => [
-                    $no => ['title' => $no, 'description' => $yes],
+                'components' => [
+                    'schemas' => [
+                        $no => ['title' => $no, 'description' => $yes],
+                    ],
                 ],
             ] + $assertDefaults,
         ], [
             // collection merge
             'setup' => [
-                'tags' => [new Tag(['name' => $no])],
+                'tags' => [new OA\Tag(['name' => $no])],
             ] + $setupDefaults,
             'merge' => [
                 'tags' => [
@@ -607,28 +626,35 @@ class UtilTest extends TestCase
                     ['name' => $no, 'description' => $yes],
                 ],
             ] + $assertDefaults,
-        ], [
+        ],
+            [
             // heavy nested merge array
             'setup' => $setupDefaults,
             'merge' => $merge = [
-                'schemes' => ['http', 'https'],
+                'servers' => [
+                    ['url' => 'http'],
+                    ['url' => 'https'],
+                ],
                 'paths' => [
                     '/path/to/resource' => [
                         'get' => [
                             'responses' => [
                                 '200' => [
-                                    '$ref' => '#/responses/default',
+                                    '$ref' => '#/components/responses/default',
+                                ],
+                            ],
+                            'requestBody' => [
+                                'description' => 'request foo',
+                                'content' => [
+                                    'foo-request' => [
+                                        'schema' => [
+                                            'type' => 'object',
+                                            'required' => ['baz', 'bar'],
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
-                        'parameters' => [[
-                            'name' => 'parameter foo',
-                            'in' => 'body',
-                            'type' => 'object',
-                            'schema' => [
-                                'required' => ['baz', 'bar'],
-                            ],
-                        ]],
                     ],
                 ],
                 'tags' => [
@@ -638,15 +664,19 @@ class UtilTest extends TestCase
                     ['name' => 'foo'],
                     ['name' => 'foo'],
                 ],
-                'responses' => [
-                    'default' => [
-                        'description' => 'default response',
-                        'headers' => [
-                            'foo-header' => [
-                                'type' => 'array',
-                                'items' => [
-                                    'type' => 'string',
-                                    'enum' => ['foo', 'bar', 'baz'],
+                'components' => [
+                    'responses' => [
+                        'default' => [
+                            'description' => 'default response',
+                            'headers' => [
+                                'foo-header' => [
+                                    'schema' => [
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string',
+                                            'enum' => ['foo', 'bar', 'baz'],
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
@@ -662,24 +692,30 @@ class UtilTest extends TestCase
             // heavy nested merge array object
             'setup' => $setupDefaults,
             'merge' => new \ArrayObject([
-                'schemes' => ['http', 'https'],
+                'servers' => [
+                    ['url' => 'http'],
+                    ['url' => 'https'],
+                ],
                 'paths' => [
                     '/path/to/resource' => [
                         'get' => new \ArrayObject([
                             'responses' => [
                                 '200' => [
-                                    '$ref' => '#/responses/default',
+                                    '$ref' => '#/components/responses/default',
                                 ],
                             ],
+                            'requestBody' => new \ArrayObject([
+                                'description' => 'request foo',
+                                'content' => [
+                                    'foo-request' => [
+                                        'schema' => [
+                                            'required' => ['baz', 'bar'],
+                                            'type' => 'object',
+                                        ],
+                                    ],
+                                ],
+                            ]),
                         ]),
-                        'parameters' => [[
-                            'name' => 'parameter foo',
-                            'in' => 'body',
-                            'type' => 'object',
-                            'schema' => [
-                                'required' => ['baz', 'bar'],
-                            ],
-                        ]],
                     ],
                 ],
                 'tags' => new \ArrayObject([
@@ -689,20 +725,24 @@ class UtilTest extends TestCase
                     ['name' => 'foo'],
                     ['name' => 'foo'],
                 ]),
-                'responses' => [
-                    'default' => [
-                        'description' => 'default response',
-                        'headers' => new \ArrayObject([
-                            'foo-header' => new \ArrayObject([
-                                'type' => 'array',
-                                'items' => new \ArrayObject([
-                                    'type' => 'string',
-                                    'enum' => ['foo', 'bar', 'baz'],
+                'components' => new \ArrayObject([
+                    'responses' => [
+                        'default' => [
+                            'description' => 'default response',
+                            'headers' => new \ArrayObject([
+                                'foo-header' => new \ArrayObject([
+                                    'schema' => new \ArrayObject([
+                                        'type' => 'array',
+                                        'items' => new \ArrayObject([
+                                            'type' => 'string',
+                                            'enum' => ['foo', 'bar', 'baz'],
+                                        ]),
+                                    ]),
                                 ]),
                             ]),
-                        ]),
+                        ],
                     ],
-                ],
+                ]),
             ]),
             'assert' => array_merge(
                 $assertDefaults,
@@ -712,70 +752,79 @@ class UtilTest extends TestCase
         ], [
             // heavy nested merge swagger instance
             'setup' => $setupDefaults,
-            'merge' => new Swagger([
-                'schemes' => ['http', 'https'],
+            'merge' => new OA\OpenApi([
+                'servers' => [
+                    new OA\Server(['url' => 'http']),
+                    new OA\Server(['url' => 'https']),
+                ],
                 'paths' => [
-                    new Path([
+                    new OA\PathItem([
                         'path' => '/path/to/resource',
-                        'get' => new Get([
+                        'get' => new OA\Get([
                             'responses' => [
-                                new Response([
+                                new OA\Response([
                                     'response' => '200',
-                                    'ref' => '#/responses/default',
+                                    'ref' => '#/components/responses/default',
                                 ]),
                             ],
-                        ]),
-                        'parameters' => [
-                            new Parameter([
-                                'name' => 'parameter foo',
-                                'in' => 'body',
-                                'type' => 'object',
-                                'schema' => new Schema([
-                                    'required' => ['baz', 'bar'],
-                                ]),
+                            'requestBody' => new OA\RequestBody([
+                                'description' => 'request foo',
+                                'content' => [
+                                    new OA\MediaType([
+                                        'mediaType' => 'foo-request',
+                                        'schema' => new OA\Schema([
+                                            'type' => 'object',
+                                            'required' => ['baz', 'bar'],
+                                        ]),
+                                    ]),
+                                ],
                             ]),
-                        ],
+                        ]),
                     ]),
                 ],
                 'tags' => [
-                    new Tag(['name' => 'baz']),
-                    new Tag(['name' => 'foo']),
-                    new Tag(['name' => 'baz']),
-                    new Tag(['name' => 'foo']),
-                    new Tag(['name' => 'foo']),
+                    new OA\Tag(['name' => 'baz']),
+                    new OA\Tag(['name' => 'foo']),
+                    new OA\Tag(['name' => 'baz']),
+                    new OA\Tag(['name' => 'foo']),
+                    new OA\Tag(['name' => 'foo']),
                 ],
-                'responses' => [
-                    new Response([
-                        'response' => 'default',
-                        'description' => 'default response',
-                        'headers' => [
-                            new Header([
-                                'header' => 'foo-header',
-                                'type' => 'array',
-                                'items' => new Items([
-                                    'type' => 'string',
-                                    'enum' => ['foo', 'bar', 'baz'],
+                'components' => new OA\Components([
+                    'responses' => [
+                        new OA\Response([
+                            'response' => 'default',
+                            'description' => 'default response',
+                            'headers' => [
+                                new OA\Header([
+                                    'header' => 'foo-header',
+                                    'schema' => new OA\Schema([
+                                        'type' => 'array',
+                                        'items' => new OA\Items([
+                                            'type' => 'string',
+                                            'enum' => ['foo', 'bar', 'baz'],
+                                        ]),
+                                    ]),
                                 ]),
-                            ]),
-                        ],
-                    ]),
-                ],
+                            ],
+                        ]),
+                    ],
+                ]),
             ]),
             'assert' => array_merge(
                 $assertDefaults,
                 $merge,
                 ['tags' => \array_slice($merge['tags'], 0, 2, true)]
             ),
-        ]];
+        ], ];
     }
 
-    public function assertIsNested(AbstractAnnotation $parent, AbstractAnnotation $child)
+    public function assertIsNested(OA\AbstractAnnotation $parent, OA\AbstractAnnotation $child)
     {
         self::assertTrue($child->_context->is('nested'));
         self::assertSame($parent, $child->_context->nested);
     }
 
-    public function assertIsConnectedToRootContext(AbstractAnnotation $annotation)
+    public function assertIsConnectedToRootContext(OA\AbstractAnnotation $annotation)
     {
         $this->assertSame($this->rootContext, $annotation->_context->getRootContext());
     }

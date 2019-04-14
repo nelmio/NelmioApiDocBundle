@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\Model;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
 final class ModelRegistry
@@ -27,27 +27,26 @@ final class ModelRegistry
 
     private $names = [];
 
-    private $modelDescribers = [];
+    private $modelDescribers;
 
     private $api;
 
     /**
      * @param ModelDescriberInterface[]|iterable $modelDescribers
-     * @param OpenApi                            $api
+     * @param OA\OpenApi                         $api
      * @param array                              $alternativeNames
      *
      * @internal
      */
-    public function __construct($modelDescribers, OpenApi $api, array $alternativeNames = [])
+    public function __construct($modelDescribers, OA\OpenApi $api, array $alternativeNames = [])
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
-        $this->alternativeNames = []; // last rule wins
 
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
             $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
             $this->names[$model->getHash()] = $alternativeName;
-            Util::getDefinition($api, $alternativeName);
+            Util::getSchema($api, $alternativeName);
         }
     }
 
@@ -63,15 +62,15 @@ final class ModelRegistry
         }
 
         // Reserve the name
-        Util::getDefinition($this->api, $this->names[$hash]);
+        Util::getSchema($this->api, $this->names[$hash]);
 
-        return '#/definitions/'.$this->names[$hash];
+        return OA\Components::SCHEMA_REF.$this->names[$hash];
     }
 
     /**
      * @internal
      */
-    public function registerDefinitions()
+    public function registerSchemas(): void
     {
         while (count($this->unregistered)) {
             $tmp = [];
@@ -81,21 +80,21 @@ final class ModelRegistry
             $this->unregistered = [];
 
             foreach ($tmp as $name => $model) {
-                $definition = null;
+                $schema = null;
                 foreach ($this->modelDescribers as $modelDescriber) {
                     if ($modelDescriber instanceof ModelRegistryAwareInterface) {
                         $modelDescriber->setModelRegistry($this);
                     }
                     if ($modelDescriber->supports($model)) {
-                        $definition = Util::getDefinition($this->api, $name);
-                        $modelDescriber->describe($model, $definition);
+                        $schema = Util::getSchema($this->api, $name);
+                        $modelDescriber->describe($model, $schema);
 
                         break;
                     }
                 }
 
-                if (null === $definition) {
-                    throw new \LogicException(sprintf('Definition of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType())));
+                if (null === $schema) {
+                    throw new \LogicException(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType())));
                 }
             }
         }
@@ -105,14 +104,17 @@ final class ModelRegistry
                 $this->register($model);
             }
             $this->alternativeNames = [];
-            $this->registerDefinitions();
+            $this->registerSchemas();
         }
     }
 
     private function generateModelName(Model $model): string
     {
         $name = $base = $this->getTypeShortName($model->getType());
-        $names = array_column($this->api->definitions ?: [], 'definition');
+        $names = array_column(
+            $this->api->components instanceof OA\Components && is_array($this->api->components->schemas) ? $this->api->components->schemas : [],
+            'schema'
+        );
         $i = 1;
         while (\in_array($name, $names, true)) {
             ++$i;

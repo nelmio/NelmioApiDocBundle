@@ -27,8 +27,7 @@ use const OpenApi\UNDEFINED;
  * to get or create the respective Annotation instances if not found
  *
  * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getPath()
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getDefinition()
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getSchem()
+ * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getSchema()
  * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getProperty()
  * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getOperation()
  * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getOperationParameter()
@@ -77,37 +76,24 @@ class Util
     }
 
     /**
-     * @deprecated todo
-     *
-     * Return an existing Definition object from $api->definitions[] having its member definition set to $definition.
-     * Create, add to $api->definitions[] and return this new Definition object and set the property if none found.
-     * @see OA\Swagger::$definitions todo
-     * @see OA\Definition::$definition
+     * Return an existing Schema object from $api->components->schemas[] having its member schema set to $schema.
+     * Create, add to $api->components->schemas[] and return this new Schema object and set the property if none found.
      *
      * @param OA\OpenApi $api
-     * @param string     $definition
+     * @param string     $schema
      *
      * @return OA\Schema
+     *
+     * @see OA\Schema::$schema
+     * @see OA\Components::$schemas
      */
-    public static function getDefinition(OA\OpenApi $api, $definition): OA\Schema
+    public static function getSchema(OA\OpenApi $api, $schema): OA\Schema
     {
-        return self::getIndexedCollectionItem($api, OA\Schema::class, $definition);
-    }
+        if (!$api->components instanceof OA\Components) {
+            $api->components = new OA\Components([]);
+        }
 
-    /**
-     * Return an existing Schema object from either a Response or a Parameter object $annotation->schema.
-     * Create, set $annotation->schema and return this new Schema object if none exists.
-     *
-     * @see OA\Response::$schema
-     * @see OA\Parameter::$schema
-     *
-     * @param OA\Response|OA\Parameter $annotation
-     *
-     * @return OA\Schema
-     */
-    public static function getSchema(OA\AbstractAnnotation $annotation): OA\Schema
-    {
-        return self::getChild($annotation, OA\Schema::class);
+        return self::getIndexedCollectionItem($api->components, OA\Schema::class, $schema);
     }
 
     /**
@@ -196,7 +182,7 @@ class Util
         $nested = $parent::$_nested;
         $property = $nested[$class];
 
-        if (null === $parent->{$property}) {
+        if (null === $parent->{$property} || UNDEFINED === $parent->{$property}) {
             $parent->{$property} = self::createChild($parent, $class, $properties);
         }
 
@@ -228,7 +214,10 @@ class Util
         $collection = $nested[$class][0];
 
         if (!empty($properties)) {
-            $key = self::searchCollectionItem($parent->{$collection} ?: [], $properties);
+            $key = self::searchCollectionItem(
+                $parent->{$collection} && UNDEFINED !== $parent->{$collection} ? $parent->{$collection} : [],
+                $properties
+            );
         }
         if (null === $key) {
             $key = self::createCollectionItem($parent, $collection, $class, $properties);
@@ -260,7 +249,11 @@ class Util
         $nested = $parent::$_nested;
         [$collection, $property] = $nested[$class];
 
-        $key = self::searchIndexedCollectionItem($parent->{$collection} ?: [], $property, $value);
+        $key = self::searchIndexedCollectionItem(
+            $parent->{$collection} && UNDEFINED !== $parent->{$collection} ? $parent->{$collection} : [],
+            $property,
+            $value
+        );
 
         if (false === $key) {
             $key = self::createCollectionItem($parent, $collection, $class, [$property => $value]);
@@ -320,6 +313,10 @@ class Util
      */
     public static function createCollectionItem(OA\AbstractAnnotation $parent, $collection, $class, array $properties = []): int
     {
+        if (UNDEFINED === $parent->{$collection}) {
+            $parent->{$collection} = [];
+        }
+
         $key = \count($parent->{$collection} ?: []);
         $parent->{$collection}[$key] = self::createChild($parent, $class, $properties);
 
@@ -379,6 +376,7 @@ class Util
     public static function merge(OA\AbstractAnnotation $annotation, $from, bool $overwrite = false)
     {
         if (\is_array($from)) {
+            var_dump($from);
             self::mergeFromArray($annotation, $from, $overwrite);
         } elseif (\is_a($from, OA\AbstractAnnotation::class)) {
             /* @var OA\AbstractAnnotation $from */
@@ -460,7 +458,7 @@ class Util
         if (\is_string($type) && 0 === strpos($type, '[')) {
             /* type is declared as array in @see OA\AbstractAnnotation::$_types */
             $annotation->{$propertyName} = array_unique(array_merge(
-                $annotation->{$propertyName} ?: [],
+                $annotation->{$propertyName} && UNDEFINED !== $annotation->{$propertyName} ? $annotation->{$propertyName} : [],
                 $properties[$propertyName]
             ));
         } else {

@@ -61,17 +61,17 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         return is_a($model->getType()->getClassName(), FormTypeInterface::class, true);
     }
 
-    private function parseForm(OA\Schema $definition, FormInterface $form)
+    private function parseForm(OA\Schema $schema, FormInterface $form)
     {
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
-            $property = Util::getProperty($definition, $name);
+            $property = Util::getProperty($schema, $name);
 
             if ($config->getRequired()) {
-                $required = $definition->required ?? [];
+                $required = $schema->required ?? [];
                 $required[] = $name;
 
-                $definition->required = $required;
+                $schema->required = $required;
             }
 
             $property->mergeProperties($config->getOption('documentation'));

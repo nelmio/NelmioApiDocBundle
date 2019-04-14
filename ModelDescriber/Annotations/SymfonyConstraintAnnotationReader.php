@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
 use OpenApi\Annotations as OA;
+use const OpenApi\UNDEFINED;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -54,7 +55,7 @@ class SymfonyConstraintAnnotationReader
                     continue;
                 }
 
-                $existingRequiredFields = $this->schema->required ?? [];
+                $existingRequiredFields = isset($this->schema->required) && UNDEFINED !== $this->schema->required ? $this->schema->required : [];
                 $existingRequiredFields[] = $propertyName;
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));

@@ -13,9 +13,8 @@ namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader;
+use OpenApi\Annotations as OA;
 use PHPUnit\Framework\TestCase;
-use Swagger\Annotations\Property;
-use Swagger\Annotations\Schema;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SymfonyConstraintAnnotationReaderTest extends TestCase
@@ -34,9 +33,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             private $property2;
         };
 
-        $schema = new Schema([]);
-        $schema->merge([new Property(['property' => 'property1'])]);
-        $schema->merge([new Property(['property' => 'property2'])]);
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $schema->merge([new OA\Property(['property' => 'property2'])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);

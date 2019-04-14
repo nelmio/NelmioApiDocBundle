@@ -20,7 +20,7 @@ use Psr\Cache\CacheItemPoolInterface;
 
 final class ApiDocGenerator
 {
-    private $swagger;
+    private $openApi;
 
     private $describers;
 
@@ -53,32 +53,32 @@ final class ApiDocGenerator
 
     public function generate(): OpenApi
     {
-        if (null !== $this->swagger) {
-            return $this->swagger;
+        if (null !== $this->openApi) {
+            return $this->openApi;
         }
 
         if ($this->cacheItemPool) {
             $item = $this->cacheItemPool->getItem($this->cacheItemId ?? 'swagger_doc');
             if ($item->isHit()) {
-                return $this->swagger = $item->get();
+                return $this->openApi = $item->get();
             }
         }
 
-        $this->swagger = new OpenApi([]);
-        $modelRegistry = new ModelRegistry($this->modelDescribers, $this->swagger, $this->alternativeNames);
+        $this->openApi = new OpenApi([]);
+        $modelRegistry = new ModelRegistry($this->modelDescribers, $this->openApi, $this->alternativeNames);
         foreach ($this->describers as $describer) {
             if ($describer instanceof ModelRegistryAwareInterface) {
                 $describer->setModelRegistry($modelRegistry);
             }
 
-            $describer->describe($this->swagger);
+            $describer->describe($this->openApi);
         }
-        $modelRegistry->registerDefinitions();
+        $modelRegistry->registerSchemas();
 
         if (isset($item)) {
-            $this->cacheItemPool->save($item->set($this->swagger));
+            $this->cacheItemPool->save($item->set($this->openApi));
         }
 
-        return $this->swagger;
+        return $this->openApi;
     }
 }

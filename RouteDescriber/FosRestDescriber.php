@@ -15,7 +15,7 @@ use Doctrine\Common\Annotations\Reader;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
-use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -31,7 +31,7 @@ final class FosRestDescriber implements RouteDescriberInterface
         $this->annotationReader = $annotationReader;
     }
 
-    public function describe(OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         $annotations = $this->annotationReader->getMethodAnnotations($reflectionMethod);
         $annotations = array_filter($annotations, function ($value) {
@@ -47,7 +47,8 @@ final class FosRestDescriber implements RouteDescriberInterface
                     $parameter->required = !$annotation->nullable && $annotation->strict;
                 } else {
                     $bodyParameter = Util::getOperationParameter($operation, 'body', 'body');
-                    $body = Util::getSchema($bodyParameter);
+                    /** @var OA\Schema $body */
+                    $body = Util::getChild($bodyParameter, OA\Schema::class);
                     $body->type = 'object';
                     $parameter = Util::getProperty($body, $annotation->getName());
 

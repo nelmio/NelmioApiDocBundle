@@ -17,22 +17,20 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
+use OpenApi\Analysis;
+use OpenApi\Annotations as OA;
+use OpenApi\Annotations\OpenApi;
 use PHPUnit\Framework\TestCase;
-use Swagger\Analysis;
-use Swagger\Annotations as SWG;
-use Swagger\Annotations\Definition;
-use Swagger\Annotations\Property;
-use Swagger\Annotations\Swagger;
 
 class ModelRegisterTest extends TestCase
 {
     /**
      * @group legacy
-     * @expectedDeprecation Using `@Model` implicitely in a `@SWG\Schema`, `@SWG\Items` or `@SWG\Property` annotation in %s. Use `ref=@Model()` instead.
+     * @expectedDeprecation Using `@Model` implicitly in a `@OA\Schema`, `@OA\Items` or `@OA\Property` annotation in %s is deprecated since version 3.2 and won't be supported in 4.0. Use `ref=@Model()` instead.
      */
     public function testDeprecatedImplicitUseOfModel()
     {
-        $api = new Swagger([]);
+        $api = new OpenApi([]);
         $registry = new ModelRegistry([new NullModelDescriber()], $api);
         $modelRegister = new ModelRegister($registry);
 
@@ -40,24 +38,24 @@ class ModelRegisterTest extends TestCase
 
         $modelRegister->__invoke(new Analysis([$annotation = $annotationsReader->getPropertyAnnotation(
             new \ReflectionProperty(Foo::class, 'bar'),
-            Property::class
+            OA\Property::class
         )]));
 
-        $this->assertEquals(['items' => ['$ref' => '#/definitions/Foo']], json_decode(json_encode($annotation), true));
+        $this->assertEquals(['items' => ['$ref' => '#/components/schemas/Foo']], json_decode(json_encode($annotation), true));
     }
 }
 
 class Foo
 {
     /**
-     * @SWG\Property(@ModelAnnotation(type=Foo::class))
+     * @OA\Property(@ModelAnnotation(type=Foo::class))
      */
     private $bar;
 }
 
 class NullModelDescriber implements ModelDescriberInterface
 {
-    public function describe(Model $model, Definition $definition)
+    public function describe(Model $model, OA\Schema $schema)
     {
     }
 
