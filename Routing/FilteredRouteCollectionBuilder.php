@@ -43,10 +43,12 @@ final class FilteredRouteCollectionBuilder
             ->setDefaults([
                 'path_patterns' => [],
                 'host_patterns' => [],
+                'name_patterns' => [],
                 'with_annotation' => false,
             ])
             ->setAllowedTypes('path_patterns', 'string[]')
             ->setAllowedTypes('host_patterns', 'string[]')
+            ->setAllowedTypes('name_patterns', 'string[]')
             ->setAllowedTypes('with_annotation', 'boolean')
         ;
 
@@ -67,7 +69,11 @@ final class FilteredRouteCollectionBuilder
     {
         $filteredRoutes = new RouteCollection();
         foreach ($routes->all() as $name => $route) {
-            if ($this->matchPath($route) && $this->matchHost($route) && $this->matchAnnotation($route)) {
+            if ($this->matchPath($route)
+                && $this->matchHost($route)
+                && $this->matchAnnotation($route)
+                && $this->matchName($name)
+            ) {
                 $filteredRoutes->add($name, $route);
             }
         }
@@ -95,6 +101,17 @@ final class FilteredRouteCollectionBuilder
         }
 
         return 0 === count($this->options['host_patterns']);
+    }
+
+    private function matchName(string $name): bool
+    {
+        foreach ($this->options['name_patterns'] as $namePattern) {
+            if (preg_match('{'.$namePattern.'}', $name)) {
+                return true;
+            }
+        }
+
+        return  0 === count($this->options['name_patterns']);
     }
 
     private function matchAnnotation(Route $route): bool

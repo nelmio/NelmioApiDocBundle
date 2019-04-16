@@ -62,6 +62,7 @@ final class Configuration implements ConfigurationInterface
                                 'host_patterns' => [],
                                 'with_annotation' => false,
                                 'documentation' => [],
+                                'name_patterns' => [],
                             ],
                         ]
                     )
@@ -91,6 +92,11 @@ final class Configuration implements ConfigurationInterface
                             ->arrayNode('host_patterns')
                                 ->defaultValue([])
                                 ->example(['^api\.'])
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('name_patterns')
+                                ->defaultValue([])
+                                ->example(['^api_v1'])
                                 ->prototype('scalar')->end()
                             ->end()
                             ->booleanNode('with_annotation')

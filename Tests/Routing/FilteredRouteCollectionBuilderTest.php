@@ -120,6 +120,11 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             [['with_annotation' => ['an array']]],
             [['path_patterns' => 'a string']],
             [['path_patterns' => 11]],
+            [['name_patterns' => 22]],
+            [['name_patterns' => 'a string']],
+            [['name_patterns' => [22]]],
+            [['name_patterns' => [null]]],
+            [['name_patterns' => [new \stdClass()]]],
         ];
     }
 
@@ -167,7 +172,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             ['r1', new Route('/api/bar/action1')],
             ['r2', new Route('/api/foo/action1'), ['path_patterns' => ['^/api', 'i/fo', 'n1$']]],
             ['r3', new Route('/api/foo/action2'), ['path_patterns' => ['^/api/foo/action2$']]],
-            ['r4', new Route('/api/demo'), ['path_patterns' => ['/api/demo']]],
+            ['r4', new Route('/api/demo'), ['path_patterns' => ['/api/demo'], 'name_patterns' => ['r4']]],
             ['r9', new Route('/api/bar/action1', [], [], [], 'api.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.ex']]],
             ['r10', new Route('/api/areas/new'), ['path_patterns' => ['^/api']]],
         ];
@@ -247,7 +252,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     {
         return [
             ['r1', new Route('/api/bar/action1'), ['path_patterns' => ['^/apis']]],
-            ['r2', new Route('/api/foo/action1'), ['path_patterns' => ['^/apis', 'i/foo/b', 'n1/$']]],
+            ['r2', new Route('/api/foo/action1'), ['path_patterns' => ['^/apis', 'i/foo/b', 'n1/$'], 'name_patterns' => ['r2']]],
             ['r3_matching_path_and_non_matching_host', new Route('/api/foo/action2'), ['path_patterns' => ['^/api/foo/action2$'], 'host_patterns' => ['^api\.']]],
             ['r4_matching_path_and_non_matching_host', new Route('/api/bar/action1', [], [], [], 'www.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.']]],
             ['r5_non_matching_path_and_matching_host', new Route('/admin/bar/action1', [], [], [], 'api.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.']]],
