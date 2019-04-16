@@ -173,6 +173,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                         new Reference('nelmio_api_doc.model_describers.jms.inner'),
                     ]);
             }
+        } else {
+            $container->removeDefinition('nelmio_api_doc.model_describers.object_fallback');
         }
 
         // Import the base configuration

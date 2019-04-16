@@ -177,11 +177,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $property->setType('string');
             $property->setFormat('date-time');
         } else {
-            // we can use property type also for custom handlers, then we don't have here real class name
-            if (!class_exists($type['name'])) {
-                return null;
-            }
-
             $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups);
             $property->setRef($this->modelRegistry->register($model));
 

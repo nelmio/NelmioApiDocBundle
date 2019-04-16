@@ -121,6 +121,12 @@ class JMSFunctionalTest extends WebTestCase
                     'description' => 'Only enabled users may be used in actions.',
                     'enum' => ['disabled', 'enabled'],
                 ],
+                'virtual_type1' => [
+                    '$ref' => '#/definitions/VirtualTypeClassDoesNotExistsHandlerDefined',
+                ],
+                'virtual_type2' => [
+                    '$ref' => '#/definitions/VirtualTypeClassDoesNotExistsHandlerNotDefined',
+                ],
                 'last_update' => [
                     'type' => 'date',
                 ],
@@ -174,6 +180,18 @@ class JMSFunctionalTest extends WebTestCase
                 ],
             ],
         ], $this->getModel('JMSUser')->toArray());
+
+        $this->assertEquals([
+        ], $this->getModel('VirtualTypeClassDoesNotExistsHandlerNotDefined')->toArray());
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'custom_prop' => [
+                    'type' => 'string',
+                ],
+            ],
+        ], $this->getModel('VirtualTypeClassDoesNotExistsHandlerDefined')->toArray());
     }
 
     public function testModelComplexDualDocumentation()
