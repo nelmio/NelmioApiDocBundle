@@ -61,16 +61,16 @@ final class FosRestDescriber implements RouteDescriberInterface
                 if (null !== $parameter->getType()) {
                     continue;
                 }
-                        
+
                 if (null === $parameter->getDescription()) {
                     $parameter->setDescription($annotation->description);
                 }
-                
+
                 if ($annotation->map) {
                     $parameter->setType('array');
                     $parameter = $parameter->getItems();
                 }
-                        
+
                 $parameter->setType('string');
 
                 $pattern = $this->getPattern($annotation->requirements);
