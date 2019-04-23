@@ -30,7 +30,7 @@ class JMSChatFriend
     /**
      * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatLivingRoom")
      * @Serializer\Expose
-     * @Serializer\Groups({"Default"})
+     * @Serializer\Groups({"Default", "mini"})
      */
     private $living;
 

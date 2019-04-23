@@ -16,6 +16,7 @@ use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use FOS\RestBundle\FOSRestBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -163,6 +164,15 @@ class TestKernel extends Kernel
                        ],
                    ],
                ],
+            ],
+            'models' => [
+                'names' => [
+                    [
+                        'alias' => 'JMSPicture_mini',
+                        'type' => JMSPicture::class,
+                        'groups' => ['mini'],
+                    ],
+                ],
             ],
         ]);
 
