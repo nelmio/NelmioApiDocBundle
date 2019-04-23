@@ -40,7 +40,8 @@ final class FosRestDescriber implements RouteDescriberInterface
         foreach ($this->getOperations($api, $route) as $operation) {
             foreach ($annotations as $annotation) {
                 if ($annotation instanceof QueryParam) {
-                    $parameter = $operation->getParameters()->get($annotation->getName(), 'query');
+                    $name = $annotation->getName().($annotation->map ? '[]' : '');
+                    $parameter = $operation->getParameters()->get($name, 'query');
                     $parameter->setAllowEmptyValue($annotation->nullable && $annotation->allowBlank);
 
                     $parameter->setRequired(!$annotation->nullable && $annotation->strict);
@@ -68,6 +69,7 @@ final class FosRestDescriber implements RouteDescriberInterface
 
                 if ($annotation->map) {
                     $parameter->setType('array');
+                    $parameter->setCollectionFormat('multi');
                     $parameter = $parameter->getItems();
                 }
 
