@@ -11,6 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Hateoas\Configuration\Embedded;
+
 class BazingaFunctionalTest extends WebTestCase
 {
     public function testModelComplexDocumentationBazinga()
@@ -57,10 +59,58 @@ class BazingaFunctionalTest extends WebTestCase
                         'route' => [
                             'type' => 'object',
                         ],
+                        'embed_with_group' => [
+                            'type' => 'object',
+                        ],
                     ],
                 ],
             ],
         ], $this->getModel('BazingaUser')->toArray());
+    }
+
+    public function testWithGroup()
+    {
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                '_embedded' => [
+                    'readOnly' => true,
+                    'properties' => [
+                        'embed_with_group' => [
+                            'type' => 'object',
+                        ],
+                    ],
+                ],
+            ],
+        ], $this->getModel('BazingaUser_grouped')->toArray());
+    }
+
+    public function testWithType()
+    {
+        try {
+            new \ReflectionMethod(Embedded::class, 'getType');
+        } catch (\ReflectionException $e) {
+            $this->markTestSkipped('Typed embedded properties require at least willdurand/hateoas 3.0');
+        }
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                '_embedded' => [
+                    'readOnly' => true,
+                    'properties' => [
+                        'typed_bazinga_users' => [
+                            'items' => [
+                                '$ref' => '#/definitions/BazingaUser',
+                            ],
+                            'type' => 'array',
+                        ],
+                        'typed_bazinga_name' => [
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
+            ],
+        ], $this->getModel('BazingaUserTyped')->toArray());
     }
 
     protected static function createKernel(array $options = [])

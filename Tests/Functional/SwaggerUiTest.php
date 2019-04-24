@@ -54,6 +54,7 @@ class SwaggerUiTest extends WebTestCase
             'Dummy' => $expected['definitions']['Dummy'],
             'Test' => ['type' => 'string'],
             'JMSPicture_mini' => ['type' => 'object'],
+            'BazingaUser_grouped' => ['type' => 'object'],
         ];
 
         yield ['/docs/test', 'test', $expected];

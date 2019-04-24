@@ -12,10 +12,9 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
+use Hateoas\Configuration\Metadata\ClassMetadata;
 use Hateoas\Configuration\Relation;
 use Hateoas\Serializer\Metadata\RelationPropertyMetadata;
-use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
-use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
@@ -48,39 +47,43 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
     {
         $this->JMSModelDescriber->describe($model, $schema);
 
+        /**
+         * @var ClassMetadata
+         */
         $metadata = $this->getHateoasMetadata($model);
         if (null === $metadata) {
             return;
         }
 
-        $groupsExclusion = null !== $model->getGroups() ? new GroupsExclusionStrategy($model->getGroups()) : null;
-
         $schema->setType('object');
+        $context = $this->JMSModelDescriber->getSerializationContext($model);
 
         foreach ($metadata->getRelations() as $relation) {
             if (!$relation->getEmbedded() && !$relation->getHref()) {
                 continue;
             }
+            $item = new RelationPropertyMetadata($relation->getExclusion(), $relation);
 
-            if (null !== $groupsExclusion && $relation->getExclusion()) {
-                $item = new RelationPropertyMetadata($relation->getExclusion(), $relation);
-
-                // filter groups
-                if ($groupsExclusion->shouldSkipProperty($item, SerializationContext::create())) {
-                    continue;
-                }
+            if (null !== $context->getExclusionStrategy() && $context->getExclusionStrategy()->shouldSkipProperty($item, $context)) {
+                continue;
             }
 
-            $name = $relation->getName();
+            $context->pushPropertyMetadata($item);
 
-            $relationSchema = $schema->getProperties()->get($relation->getEmbedded() ? '_embedded' : '_links');
+            $embedded = $relation->getEmbedded();
+            $relationSchema = $schema->getProperties()->get($embedded ? '_embedded' : '_links');
 
             $properties = $relationSchema->getProperties();
             $relationSchema->setReadOnly(true);
 
+            $name = $relation->getName();
             $property = $properties->get($name);
-            $property->setType('object');
 
+            if ($embedded && method_exists($embedded, 'getType') && $embedded->getType()) {
+                $this->JMSModelDescriber->describeItem($embedded->getType(), $property, $context);
+            } else {
+                $property->setType('object');
+            }
             if ($relation->getHref()) {
                 $subProperties = $property->getProperties();
 
@@ -89,6 +92,8 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 
                 $this->setAttributeProperties($relation, $subProperties);
             }
+
+            $context->popPropertyMetadata();
         }
     }
 
@@ -119,7 +124,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         foreach ($relation->getAttributes() as $attribute => $value) {
             $subSubProp = $subProperties->get($attribute);
             switch (gettype($value)) {
-                case 'integer':
+                case 'integer' :
                     $subSubProp->setType('integer');
                     $subSubProp->setDefault($value);
 

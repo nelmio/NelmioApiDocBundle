@@ -12,36 +12,24 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
+use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\BazingaUserTyped;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
 
 /**
  * @Route(host="api.example.com")
  */
-class BazingaController
+class BazingaTypedController
 {
     /**
-     * @Route("/api/bazinga", methods={"GET"})
+     * @Route("/api/bazinga_typed", methods={"GET"})
      * @SWG\Response(
      *     response=200,
      *     description="Success",
-     *     @Model(type=BazingaUser::class)
+     *     @Model(type=BazingaUserTyped::class)
      * )
      */
-    public function userAction()
-    {
-    }
-
-    /**
-     * @Route("/api/bazinga_foo", methods={"GET"})
-     * @SWG\Response(
-     *     response=200,
-     *     description="Success",
-     *     @Model(type=BazingaUser::class, groups={"foo"})
-     * )
-     */
-    public function userGroupAction()
+    public function userTypedAction()
     {
     }
 }
