@@ -33,6 +33,10 @@
             <tag name="nelmio_api_doc.describer" priority="-1000" />
         </service>
 
+        <service id="nelmio_api_doc.describers.duplicate_ref_parameter_cleaner" class="Nelmio\ApiDocBundle\Describer\DuplicateRefParameterCleanerDescriber" public="false">
+            <tag name="nelmio_api_doc.describer" priority="-1000" />
+        </service>
+
         <!-- Routing Describers -->
         <service id="nelmio_api_doc.route_describers.route_metadata" class="Nelmio\ApiDocBundle\RouteDescriber\RouteMetadataDescriber" public="false">
             <tag name="nelmio_api_doc.route_describer" priority="-300" />
