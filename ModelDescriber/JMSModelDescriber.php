@@ -118,6 +118,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $context->popClassMetadata();
     }
 
+    /**
+     * @internal
+     */
     public function getSerializationContext(Model $model): SerializationContext
     {
         if (isset($this->contexts[$model->getHash()])) {
@@ -178,6 +181,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return false;
     }
 
+    /**
+     * @internal
+     * @return void
+     */
     public function describeItem(array $type, $property, Context $context)
     {
         $nestedTypeInfo = $this->getNestedTypeInArray($type);
