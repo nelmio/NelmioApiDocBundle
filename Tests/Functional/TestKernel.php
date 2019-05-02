@@ -14,8 +14,10 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use FOS\RestBundle\FOSRestBundle;
+use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
@@ -88,6 +90,12 @@ class TestKernel extends Kernel
 
         if ($this->useBazinga) {
             $routes->import(__DIR__.'/Controller/BazingaController.php', '/', 'annotation');
+
+            try {
+                new \ReflectionMethod(Embedded::class, 'getType');
+                $routes->import(__DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
+            } catch (\ReflectionException $e) {
+            }
         }
     }
 
@@ -171,6 +179,11 @@ class TestKernel extends Kernel
                         'alias' => 'JMSPicture_mini',
                         'type' => JMSPicture::class,
                         'groups' => ['mini'],
+                    ],
+                    [
+                        'alias' => 'BazingaUser_grouped',
+                        'type' => BazingaUser::class,
+                        'groups' => ['foo'],
                     ],
                 ],
             ],

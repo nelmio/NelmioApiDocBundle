@@ -51,6 +51,9 @@
         "api-platform/core": "For using an API oriented framework.",
         "friendsofsymfony/rest-bundle": "For using the parameters annotations."
     },
+    "conflict": {
+        "symfony/framework-bundle": "4.2.7"
+    },
     "autoload": {
         "psr-4": {
             "Nelmio\\ApiDocBundle\\": ""
