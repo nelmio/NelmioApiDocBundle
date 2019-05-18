@@ -20,10 +20,9 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
-use Nelmio\ApiDocBundle\Tests\Functional\Form\OptionType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
+use OpenApi\Annotations as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Swagger\Annotations as SWG;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Regex;
 
@@ -33,12 +32,12 @@ use Symfony\Component\Validator\Constraints\Regex;
 class ApiController
 {
     /**
-     * @SWG\Response(
+     * @OA\Response(
      *     response="200",
      *     description="Success",
-     *     @SWG\Schema(ref=@Model(type=Article::class, groups={"light"}))
+     *     @OA\JsonContent(ref=@Model(type=Article::class, groups={"light"}))
      * )
-     * @SWG\Parameter(ref="#/parameters/test")
+     * @OA\Parameter(ref="#/components/parameters/test")
      * @Route("/article/{id}", methods={"GET"})
      */
     public function fetchArticleAction()
@@ -51,7 +50,7 @@ class ApiController
      * @Route("/swagger", methods={"GET", "LINK"})
      * @Route("/swagger2", methods={"GET"})
      * @Operation(
-     *     @SWG\Response(response="201", description="An example resource")
+     *     @OA\Response(response="201", description="An example resource")
      * )
      */
     public function swaggerAction()
@@ -60,156 +59,162 @@ class ApiController
 
     /**
      * @Route("/swagger/implicit", methods={"GET", "POST"})
-     * @SWG\Response(
+     * @OA\Response(
      *     response="201",
      *     description="Operation automatically detected",
-     *     @Model(type=User::class)
+     *     @OA\JsonContent(@Model(type=User::class))
      * )
-     * @SWG\Parameter(
-     *     name="foo",
-     *     in="body",
-     *     description="This is a parameter",
-     *     @SWG\Schema(
-     *         type="array",
-     *         @SWG\Items(ref=@Model(type=User::class))
+     * @OA\Post(
+     *     @OA\RequestBody(
+     *         request="foo",
+     *         description="This is a parameter",
+     *         @OA\JsonContent(@OA\Schema(type="array", @OA\Items(ref=@Model(type=User::class))))
      *     )
      * )
-     * @SWG\Tag(name="implicit")
+     * @OA\Tag(name="implicit")
      */
     public function implicitSwaggerAction()
     {
     }
 
-    /**
-     * @Route("/test/users/{user}", methods={"POST"}, schemes={"https"}, requirements={"user"="/foo/"})
-     * @SWG\Response(
-     *     response="201",
-     *     description="Operation automatically detected",
-     *     @Model(type=User::class)
-     * )
-     * @SWG\Parameter(
-     *     name="foo",
-     *     in="body",
-     *     description="This is a parameter",
-     *     @SWG\Schema(ref=@Model(type=UserType::class, options={"bar": "baz"}))
-     * )
-     */
-    public function submitUserTypeAction()
-    {
-    }
-
-    /**
-     * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="/foo/"})
-     * @Operation(
-     *     @SWG\Response(response=200, description="sucessful")
-     * )
-     */
-    public function userAction()
-    {
-    }
-
-    /**
-     * @Route("/fosrest.{_format}", methods={"POST"})
-     * @QueryParam(name="foo", requirements=@Regex("/^\d+$/"))
-     * @RequestParam(name="bar", requirements="\d+")
-     * @RequestParam(name="baz", requirements=@IsTrue)
-     */
-    public function fosrestAction()
-    {
-    }
-
-    /**
-     * This action is deprecated.
-     *
-     * Please do not use this action.
-     *
-     * @Route("/deprecated", methods={"GET"})
-     *
-     * @deprecated
-     */
-    public function deprecatedAction()
-    {
-    }
-
-    /**
-     * This action is not documented. It is excluded by the config.
-     *
-     * @Route("/admin", methods={"GET"})
-     */
-    public function adminAction()
-    {
-    }
-
-    /**
-     * @SWG\Get(
-     *     path="/filtered",
-     *     @SWG\Response(response="201", description="")
-     * )
-     */
-    public function filteredAction()
-    {
-    }
-
-    /**
-     * @Route("/form", methods={"POST"})
-     * @SWG\Parameter(
-     *     name="form",
-     *     in="body",
-     *     description="Request content",
-     *     @SWG\Schema(ref=@Model(type=DummyType::class))
-     * )
-     * @SWG\Response(response="201", description="")
-     */
-    public function formAction()
-    {
-    }
-
-    /**
-     * @Route("/security")
-     * @SWG\Response(response="201", description="")
-     * @Security(name="api_key")
-     * @Security(name="basic")
-     */
-    public function securityAction()
-    {
-    }
-
-    /**
-     * @Route("/swagger/symfonyConstraints", methods={"GET"})
-     * @SWG\Response(
-     *     response="201",
-     *     description="Used for symfony constraints test",
-     *     @SWG\Schema(ref=@Model(type=SymfonyConstraints::class))
-     * )
-     */
-    public function symfonyConstraintsAction()
-    {
-    }
-
-    /**
-     * @SWG\Response(
-     *     response="200",
-     *     description="Success",
-     *     @SWG\Schema(ref="#/definitions/Test")
-     * )
-     * @SWG\Response(
-     *     response="201",
-     *     ref="#/responses/201"
-     * )
-     * @Route("/configReference", methods={"GET"})
-     */
-    public function configReferenceAction()
-    {
-    }
-
-    /**
-     * @Route("/multi-annotations", methods={"GET", "POST"})
-     * @SWG\Get(description="This is the get operation")
-     * @SWG\Post(description="This is post")
-     *
-     * @SWG\Response(response="200", description="Worked well!", @Model(type=DummyType::class))
-     */
-    public function operationsWithOtherAnnotations()
-    {
-    }
+//    /**
+//     * @Route("/test/users/{user}", methods={"POST"}, schemes={"https"}, requirements={"user"="/foo/"})
+//     * @OA\Response(
+//     *     response="201",
+//     *     description="Operation automatically detected",
+//     *     @OA\JsonContent(@Model(type=User::class))
+//     * )
+//     * @OA\Post(
+//     *     @OA\RequestBody(
+//     *         request="foo",
+//     *         description="This is a parameter",
+//     *         @OA\MediaType(
+//     *             mediaType="application/json",
+//     *             @OA\Schema(ref=@Model(type=UserType::class, options={"bar": "baz"}))
+//     *         )
+//     *     )
+//     * )
+//     */
+//    public function submitUserTypeAction()
+//    {
+//    }
+//
+//    /**
+//     * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="/foo/"})
+//     * @Operation(
+//     *     @OA\Response(response=200, description="sucessful")
+//     * )
+//     */
+//    public function userAction()
+//    {
+//    }
+//
+//    /**
+//     * @Route("/fosrest.{_format}", methods={"POST"})
+//     * @QueryParam(name="foo", requirements=@Regex("/^\d+$/"))
+//     * @RequestParam(name="bar", requirements="\d+")
+//     * @RequestParam(name="baz", requirements=@IsTrue)
+//     */
+//    public function fosrestAction()
+//    {
+//    }
+//
+//    /**
+//     * This action is deprecated.
+//     *
+//     * Please do not use this action.
+//     *
+//     * @Route("/deprecated", methods={"GET"})
+//     *
+//     * @deprecated
+//     */
+//    public function deprecatedAction()
+//    {
+//    }
+//
+//    /**
+//     * This action is not documented. It is excluded by the config.
+//     *
+//     * @Route("/admin", methods={"GET"})
+//     */
+//    public function adminAction()
+//    {
+//    }
+//
+//    /**
+//     * @OA\Get(
+//     *     path="/filtered",
+//     *     @OA\Response(response="201", description="")
+//     * )
+//     */
+//    public function filteredAction()
+//    {
+//    }
+//
+//    /**
+//     * @Route("/form", methods={"POST"})
+//     * @OA\Parameter(
+//     *     name="form",
+//     *     in="body",
+//     *     description="Request content",
+//     *     @OA\Schema(ref=@Model(type=DummyType::class))
+//     * )
+//     * @OA\Response(response="201", description="")
+//     */
+//    public function formAction()
+//    {
+//    }
+//
+//    /**
+//     * @Route("/security")
+//     * @OA\Response(response="201", description="")
+//     * @Security(name="api_key")
+//     * @Security(name="basic")
+//     */
+//    public function securityAction()
+//    {
+//    }
+//
+//    /**
+//     * @Route("/swagger/symfonyConstraints", methods={"GET"})
+//     * @OA\Response(
+//     *     response="201",
+//     *     description="Used for symfony constraints test",
+//     *     @OA\JsonContent(ref=@Model(type=SymfonyConstraints::class))
+//     * )
+//     */
+//    public function symfonyConstraintsAction()
+//    {
+//    }
+//
+//    /**
+//     * @OA\Response(
+//     *     response="200",
+//     *     description="Success",
+//     *     @OA\JsonContent(@OA\Schema(ref="#/definitions/Test"))
+//     * )
+//     * @OA\Response(
+//     *     response="201",
+//     *     ref="#/responses/201"
+//     * )
+//     * @Route("/configReference", methods={"GET"})
+//     */
+//    public function configReferenceAction()
+//    {
+//    }
+//
+//    /**
+//     * @Route("/multi-annotations", methods={"GET", "POST"})
+//     * @OA\Get(description="This is the get operation")
+//     * @OA\Post(description="This is post")
+//     *
+//     * @OA\Response(
+//     *     response="200",
+//     *     description="Worked well!",
+//     *     @OA\JsonContent(@Model(type=DummyType::class))
+//     * )
+//     */
+//    public function operationsWithOtherAnnotations()
+//    {
+//    }
 }

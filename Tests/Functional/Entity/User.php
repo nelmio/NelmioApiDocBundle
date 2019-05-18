@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 /**
  * @author Guilhem N. <egetick@gmail.com>
@@ -21,19 +21,19 @@ class User
     /**
      * @var int
      *
-     * @SWG\Property(description = "User id", readOnly = true, title = "userid", example=1, default = null)
+     * @OA\Property(description = "User id", readOnly = true, title = "userid", example=1, default = null)
      */
     private $id;
 
     /**
-     * @SWG\Property(type="string", readOnly = false)
+     * @OA\Property(type="string", readOnly = false)
      */
     private $email;
 
     /**
      * @var string[]
      *
-     * @SWG\Property(
+     * @OA\Property(
      *     description = "User roles",
      *     title = "roles",
      *     example="[""ADMIN"",""SUPERUSER""]",
@@ -45,19 +45,19 @@ class User
     /**
      * @var int
      *
-     * @SWG\Property(type = "string")
+     * @OA\Property(type = "string")
      */
     private $friendsNumber;
 
     /**
      * @var float
-     * @SWG\Property(default = 0.0)
+     * @OA\Property(default = 0.0)
      */
     private $money;
 
     /**
      * @var \DateTime
-     * @SWG\Property(property="creationDate")
+     * @OA\Property(property="creationDate")
      */
     private $createdAt;
 
@@ -74,7 +74,7 @@ class User
     /**
      * @var string
      *
-     * @SWG\Property(enum = {"disabled", "enabled"})
+     * @OA\Property(enum = {"disabled", "enabled"})
      */
     private $status;
 

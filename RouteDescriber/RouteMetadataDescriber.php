@@ -22,7 +22,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     public function describe(OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         foreach ($this->getOperations($api, $route) as $operation) {
-            $operation->schemes = $route->getSchemes() ?: null;
+            $operation->security = $route->getSchemes() ?: null;
 
             $requirements = $route->getRequirements();
             $compiledRoute = $route->compile();
@@ -36,8 +36,9 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 $parameter = Util::getOperationParameter($operation, $pathVariable, 'path');
                 $parameter->required = true;
 
-                if (null === $parameter->type) {
-                    $parameter->type = 'string';
+                if (null === $parameter->schema) {
+                    var_dump('@TODO='.get_class($parameter));
+//                    $parameter->type = 'string';
                 }
 
                 if (isset($requirements[$pathVariable])) {

@@ -180,6 +180,7 @@ class Util
     public static function getChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
     {
         $nested = $parent::$_nested;
+//        var_dump(get_class($parent) . $class);
         $property = $nested[$class];
 
         if (null === $parent->{$property} || UNDEFINED === $parent->{$property}) {
@@ -376,7 +377,6 @@ class Util
     public static function merge(OA\AbstractAnnotation $annotation, $from, bool $overwrite = false)
     {
         if (\is_array($from)) {
-            var_dump($from);
             self::mergeFromArray($annotation, $from, $overwrite);
         } elseif (\is_a($from, OA\AbstractAnnotation::class)) {
             /* @var OA\AbstractAnnotation $from */

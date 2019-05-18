@@ -25,7 +25,12 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
         }
 
         parent::__construct(function () use ($documentation, $normalizer, $urlGenerator) {
-            $documentation = (array) $normalizer->normalize($documentation);
+            $documentation = (array) $normalizer->normalize(
+                $documentation,
+                null,
+                [DocumentationNormalizer::SPEC_VERSION => 3]
+            );
+
             unset($documentation['basePath']);
 
             return $documentation;

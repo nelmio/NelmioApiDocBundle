@@ -40,7 +40,7 @@
         "doctrine/annotations": "^1.2",
         "doctrine/common": "^2.4",
 
-        "api-platform/core": "^2.1.0",
+        "api-platform/core": "^2.4.2",
         "friendsofsymfony/rest-bundle": "^2.0",
         "willdurand/hateoas-bundle": "^1.0",
         "jms/serializer": "^1.13",

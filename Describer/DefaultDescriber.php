@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Describer;
 
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
 use OpenApi\Annotations as OA;
+use const OpenApi\UNDEFINED;
 
 /**
  * Makes the swagger documentation valid even if there are missing fields.
@@ -36,7 +37,7 @@ final class DefaultDescriber implements DescriberInterface
             foreach (Util::$operations as $method) {
                 /** @var OA\Operation $operation */
                 $operation = $path->{$method};
-                if (null !== $operation && empty($operation->responses ?? [])) {
+                if (UNDEFINED !== $operation && null !== $operation && empty($operation->responses ?? [])) {
                     /** @var OA\Response $response */
                     $response = Util::getIndexedCollectionItem($operation, OA\Response::class, 'default');
                     $response->description = '';

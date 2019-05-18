@@ -15,13 +15,13 @@ class FunctionalTest extends WebTestCase
 {
     public function testConfiguredDocumentation()
     {
-        $this->assertEquals('My Default App', $this->getSwaggerDefinition()->info->title);
-        $this->assertEquals('My Test App', $this->getSwaggerDefinition('test')->info->title);
+        $this->assertEquals('My Default App', $this->getOpenApiDefinition()->info->title);
+        $this->assertEquals('My Test App', $this->getOpenApiDefinition('test')->info->title);
     }
 
     public function testUndocumentedAction()
     {
-        $api = $this->getSwaggerDefinition();
+        $api = $this->getOpenApiDefinition();
 
         $this->assertNotHasPath('/undocumented', $api);
         $this->assertNotHasPath('/api/admin', $api);
@@ -43,7 +43,7 @@ class FunctionalTest extends WebTestCase
 
     public function testFilteredAction()
     {
-        $api = $this->getSwaggerDefinition();
+        $api = $this->getOpenApiDefinition();
 
         $this->assertNotHasPath('/filtered', $api);
     }

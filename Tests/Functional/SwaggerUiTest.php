@@ -35,7 +35,7 @@ class SwaggerUiTest extends WebTestCase
 
     public function areaProvider()
     {
-        $expected = $this->toArray($this->getSwaggerDefinition());
+        $expected = $this->toArray($this->getOpenApiDefinition());
         $expected['basePath'] = '/app_dev.php';
 
         yield ['/docs', 'default', $expected];
@@ -64,7 +64,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
 
-        $expected = $this->toArray($this->getSwaggerDefinition());
+        $expected = $this->toArray($this->getOpenApiDefinition());
         $expected['basePath'] = '/app_dev.php';
 
         $this->assertEquals($expected, json_decode($response->getContent(), true));

@@ -19,6 +19,8 @@ use Nelmio\ApiDocBundle\SwaggerPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Processors\MergeJsonContent;
+use OpenApi\Processors\MergeXmlContent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -45,22 +47,48 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
     {
         $analysis = $this->getAnnotations($api);
         $analysis->process($this->getProcessors());
-        $analysis->validate();
+        try {
+            $analysis->validate();
+        } catch (\Throwable $e) {
+//            var_dump($api);
+            throw $e;
+        }
     }
 
     private function getProcessors(): array
     {
+//        $defaultProcessors = [];
+//        $processors = [];
+//
+//        foreach (Analysis::processors() as $processor) {
+//            if ($processor instanceof MergeJsonContent || $processor instanceof MergeXmlContent) {
+//                $processors[] = $processor;
+//            } else {
+//                $defaultProcessors[] = $processor;
+//            }
+//        }
+//
+//        $processors[] = new ModelRegister($this->modelRegistry);
+//
+//        return array_merge($processors, $defaultProcessors);
+
         $processors = [
             new ModelRegister($this->modelRegistry),
         ];
 
         return array_merge($processors, Analysis::processors());
+
+//        Analysis::registerProcessor(new ModelRegister($this->modelRegistry));
+//
+//        var_dump(count(Analysis::processors()));
+//
+//        return Analysis::processors();
     }
 
     private function getAnnotations(OA\OpenApi $api): Analysis
     {
         $analysis = new Analysis();
-        $analysis->swagger = $api;
+        $analysis->openapi = $api;
 
         $classAnnotations = [];
 

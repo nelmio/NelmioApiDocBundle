@@ -11,27 +11,18 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use Swagger\Annotations\AbstractAnnotation;
-use Swagger\Annotations\Definition;
-use Swagger\Annotations\Items;
-use Swagger\Annotations\Operation;
-use Swagger\Annotations\Parameter;
-use Swagger\Annotations\Path;
-use Swagger\Annotations\Property;
-use Swagger\Annotations\Response;
-use Swagger\Annotations\Schema;
-use Swagger\Annotations\Swagger;
+use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
 class WebTestCase extends BaseWebTestCase
 {
-    protected static $swaggerDefinition;
+    protected static $openApiDefinition;
 
     /**
-     * @param string  $path
-     * @param Swagger $api
+     * @param string     $path
+     * @param OA\OpenApi $api
      */
-    public function assertHasPath($path, Swagger $api)
+    public function assertHasPath($path, OA\OpenApi $api)
     {
         $paths = array_column($api->paths ?: [], 'path');
 
@@ -43,10 +34,10 @@ class WebTestCase extends BaseWebTestCase
     }
 
     /**
-     * @param string  $path
-     * @param Swagger $api
+     * @param string     $path
+     * @param OA\OpenApi $api
      */
-    public function assertNotHasPath($path, Swagger $api)
+    public function assertNotHasPath($path, OA\OpenApi $api)
     {
         $paths = array_column($api->paths ?: [], 'path');
 
@@ -58,10 +49,10 @@ class WebTestCase extends BaseWebTestCase
     }
 
     /**
-     * @param string    $responseCode
-     * @param Operation $operation
+     * @param string       $responseCode
+     * @param OA\Operation $operation
      */
-    public function assertHasResponse($responseCode, Operation $operation)
+    public function assertHasResponse($responseCode, OA\Operation $operation)
     {
         $responses = array_column($operation->responses ?: [], 'response');
 
@@ -72,9 +63,9 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    public function assertHasParameter($name, $in, AbstractAnnotation $annotation)
+    public function assertHasParameter($name, $in, OA\AbstractAnnotation $annotation)
     {
-        /* @var Operation|Swagger $annotation */
+        /* @var OA\Operation|OA\OpenApi $annotation */
         $parameters = array_column($annotation->parameters ?: [], 'name', 'in');
 
         static::assertContains(
@@ -84,9 +75,9 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    public function assertNotHasParameter($name, $in, AbstractAnnotation $annotation)
+    public function assertNotHasParameter($name, $in, OA\AbstractAnnotation $annotation)
     {
-        /* @var Operation|Swagger $annotation */
+        /* @var OA\Operation|OA\OpenApi $annotation */
         $parameters = array_column($annotation->parameters ?: [], 'name', 'in');
 
         static::assertNotContains(
@@ -96,9 +87,9 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    public function assertHasProperty($property, AbstractAnnotation $annotation)
+    public function assertHasProperty($property, OA\AbstractAnnotation $annotation)
     {
-        /* @var Definition|Schema|Property|Items $annotation */
+        /* @var OA\Schema|OA\Property|OA\Items $annotation */
         $properties = array_column($annotation->properties ?: [], 'property');
 
         static::assertContains(
@@ -108,7 +99,7 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    public function toArray(AbstractAnnotation $obj)
+    public function toArray(OA\AbstractAnnotation $obj)
     {
         return json_decode(json_encode($obj), true);
     }
@@ -118,37 +109,42 @@ class WebTestCase extends BaseWebTestCase
         return new TestKernel();
     }
 
-    protected function getSwaggerDefinition($area = 'default')
+    /**
+     * @param string $area
+     *
+     * @return OA\OpenApi
+     */
+    protected function getOpenApiDefinition($area = 'default')
     {
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
 
         return static::$kernel->getContainer()->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }
 
-    protected function getModel($name): Schema
+    protected function getModel($name): OA\Schema
     {
-        $api = $this->getSwaggerDefinition();
+        $api = $this->getOpenApiDefinition();
 
-        $key = array_search($name, array_column($api->definitions, 'definition'), true);
+        $key = array_search($name, array_column($api->components->schemas, 'schema'), true);
         static::assertNotFalse($key, sprintf('Model "%s" does not exist.', $name));
 
-        return $api->definitions[$key];
+        return $api->components->schemas[$key];
     }
 
-    protected function getPath($path): Path
+    protected function getPath($path): OA\PathItem
     {
-        $api = $this->getSwaggerDefinition();
+        $api = $this->getOpenApiDefinition();
         $this->assertHasPath($path, $api);
 
         return $api->paths[array_search($path, array_column($api->paths, 'path'), true)];
     }
 
-    protected function getOperation($path, $method): Operation
+    protected function getOperation($path, $method): OA\Operation
     {
         $path = $this->getPath($path);
 
         $this->assertInstanceOf(
-            Operation::class,
+            OA\Operation::class,
             $path->{$method},
             sprintf('Operation "%s" for path "%s" does not exist', $method, $path->path)
         );
@@ -156,7 +152,7 @@ class WebTestCase extends BaseWebTestCase
         return $path->{$method};
     }
 
-    protected function getResponse(Operation $operation, $response): Response
+    protected function getResponse(OA\Operation $operation, $response): OA\Response
     {
         $this->assertHasResponse($response, $operation);
         $key = array_search($response, array_column($operation->responses, 'response'), true);
@@ -164,7 +160,7 @@ class WebTestCase extends BaseWebTestCase
         return $operation->responses[$key];
     }
 
-    protected function getProperty(Schema $annotation, $property): Property
+    protected function getProperty(OA\Schema $annotation, $property): OA\Property
     {
         $this->assertHasProperty($property, $annotation);
         $key = array_search($property, array_column($annotation->properties, 'property'), true);
@@ -172,11 +168,11 @@ class WebTestCase extends BaseWebTestCase
         return $annotation->properties[$key];
     }
 
-    protected function getParameter(AbstractAnnotation $annotation, $name, $in): Parameter
+    protected function getParameter(OA\AbstractAnnotation $annotation, $name, $in): OA\Parameter
     {
-        /* @var Operation|Swagger $annotation */
+        /* @var OA\Operation|OA\OpenApi $annotation */
         $this->assertHasParameter($name, $in, $annotation);
-        $parameters = array_filter($annotation->parameters ?: [], function (Parameter $parameter) use ($name, $in) {
+        $parameters = array_filter($annotation->parameters ?: [], function (OA\Parameter $parameter) use ($name, $in) {
             return $parameter->name === $name && $parameter->in === $in;
         });
 

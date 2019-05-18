@@ -125,22 +125,26 @@ class TestKernel extends Kernel
                 'info' => [
                     'title' => 'My Default App',
                 ],
-                'definitions' => [
-                    'Test' => [
-                        'type' => 'string',
+                'components' => [
+                    'responses' => [
+                        '201' => [
+                            'description' => 'Awesome description',
+                        ],
                     ],
-                ],
-                'parameters' => [
-                    'test' => [
-                        'name' => 'id',
-                        'in' => 'path',
-                        'required' => true,
-                        'type' => 'string',
+                    'parameters' => [
+                        'test' => [
+                            'name' => 'id',
+                            'in' => 'path',
+                            'required' => true,
+                            'schema' => [
+                                'type' => 'string',
+                            ],
+                        ],
                     ],
-                ],
-                'responses' => [
-                    '201' => [
-                        'description' => 'Awesome description',
+                    'schemas' => [
+                        'Test' => [
+                            'type' => 'string',
+                        ],
                     ],
                 ],
             ],
