@@ -91,7 +91,7 @@ class ApiController
      *     name="foo",
      *     in="body",
      *     description="This is a parameter",
-     *     @SWG\Schema(ref=@Model(type=UserType::class))
+     *     @SWG\Schema(ref=@Model(type=UserType::class, options={"bar": "baz"}))
      * )
      */
     public function submitUserTypeAction()
