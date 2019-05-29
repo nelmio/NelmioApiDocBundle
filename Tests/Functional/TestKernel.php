@@ -14,14 +14,19 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use FOS\RestBundle\FOSRestBundle;
+use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
+use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
@@ -85,6 +90,12 @@ class TestKernel extends Kernel
 
         if ($this->useBazinga) {
             $routes->import(__DIR__.'/Controller/BazingaController.php', '/', 'annotation');
+
+            try {
+                new \ReflectionMethod(Embedded::class, 'getType');
+                $routes->import(__DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
+            } catch (\ReflectionException $e) {
+            }
         }
     }
 
@@ -106,6 +117,10 @@ class TestKernel extends Kernel
 
         $c->loadFromExtension('twig', [
             'strict_variables' => '%kernel.debug%',
+        ]);
+
+        $c->loadFromExtension('api_platform', [
+            'mapping' => ['paths' => ['%kernel.project_dir%/Tests/Functional/Entity']],
         ]);
 
         $c->loadFromExtension('fos_rest', [
@@ -158,7 +173,25 @@ class TestKernel extends Kernel
                    ],
                ],
             ],
+            'models' => [
+                'names' => [
+                    [
+                        'alias' => 'JMSPicture_mini',
+                        'type' => JMSPicture::class,
+                        'groups' => ['mini'],
+                    ],
+                    [
+                        'alias' => 'BazingaUser_grouped',
+                        'type' => BazingaUser::class,
+                        'groups' => ['foo'],
+                    ],
+                ],
+            ],
         ]);
+
+        $def = new Definition(VirtualTypeClassDoesNotExistsHandlerDefinedDescriber::class);
+        $def->addTag('nelmio_api_doc.model_describer');
+        $c->setDefinition('nelmio.test.jms.virtual_type.describer', $def);
     }
 
     /**

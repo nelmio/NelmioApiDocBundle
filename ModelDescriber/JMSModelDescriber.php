@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
+use JMS\Serializer\Context;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
@@ -31,9 +32,14 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     use ModelRegistryAwareTrait;
 
     private $factory;
+
     private $namingStrategy;
+
     private $doctrineReader;
-    private $previousGroups = [];
+
+    private $contexts = [];
+
+    private $metadataStacks = [];
 
     /**
      * @var array
@@ -61,40 +67,22 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
         }
 
-        $groupsExclusion = null !== $model->getGroups() ? new GroupsExclusionStrategy($model->getGroups()) : null;
-
         $schema->setType('object');
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
         $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
 
         $isJmsV1 = null !== $this->namingStrategy;
-
         $properties = $schema->getProperties();
+
+        $context = $this->getSerializationContext($model);
+        $context->pushClassMetadata($metadata);
         foreach ($metadata->propertyMetadata as $item) {
             // filter groups
-            if (null !== $groupsExclusion && $groupsExclusion->shouldSkipProperty($item, SerializationContext::create())) {
+            if (null !== $context->getExclusionStrategy() && $context->getExclusionStrategy()->shouldSkipProperty($item, $context)) {
                 continue;
             }
 
-            $groups = $model->getGroups();
-
-            $previousGroups = null;
-            if (isset($groups[$item->name]) && is_array($groups[$item->name])) {
-                $previousGroups = $groups;
-                $groups = $groups[$item->name];
-            } elseif (!isset($groups[$item->name]) && !empty($this->previousGroups[$model->getHash()])) {
-                $groups = false === $this->propertyTypeUsesGroups($item->type)
-                    ? null
-                    : ($isJmsV1 ? [GroupsExclusionStrategy::DEFAULT_GROUP] : $this->previousGroups[$model->getHash()]);
-            }
-
-            if (is_array($groups)) {
-                $groups = array_filter($groups, 'is_scalar');
-            }
-
-            if ([GroupsExclusionStrategy::DEFAULT_GROUP] === $groups) {
-                $groups = null;
-            }
+            $context->pushPropertyMetadata($item);
 
             $name = true === $isJmsV1 ? $this->namingStrategy->translateName($item) : $item->serializedName;
             // read property options from Swagger Property annotation if it exists
@@ -106,22 +94,74 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 }
 
                 $property = $properties->get($annotationsReader->getPropertyName($reflection, $name));
+                $groups = $this->computeGroups($context, $item->type);
                 $annotationsReader->updateProperty($reflection, $property, $groups);
             } catch (\ReflectionException $e) {
                 $property = $properties->get($name);
             }
 
             if (null !== $property->getType() || null !== $property->getRef()) {
+                $context->popPropertyMetadata();
+
                 continue;
             }
             if (null === $item->type) {
                 $properties->remove($name);
+                $context->popPropertyMetadata();
 
                 continue;
             }
 
-            $this->describeItem($item->type, $property, $groups, $previousGroups);
+            $this->describeItem($item->type, $property, $context, $item);
+            $context->popPropertyMetadata();
         }
+        $context->popClassMetadata();
+    }
+
+    /**
+     * @internal
+     */
+    public function getSerializationContext(Model $model): SerializationContext
+    {
+        if (isset($this->contexts[$model->getHash()])) {
+            $context = $this->contexts[$model->getHash()];
+
+            $stack = $context->getMetadataStack();
+            while (!$stack->isEmpty()) {
+                $stack->pop();
+            }
+
+            foreach ($this->metadataStacks[$model->getHash()] as $metadataCopy) {
+                $stack->unshift($metadataCopy);
+            }
+        } else {
+            $context = SerializationContext::create();
+
+            if (null !== $model->getGroups()) {
+                $context->addExclusionStrategy(new GroupsExclusionStrategy($model->getGroups()));
+            }
+        }
+
+        return $context;
+    }
+
+    private function computeGroups(Context $context, array $type = null)
+    {
+        if (null === $type || true !== $this->propertyTypeUsesGroups($type)) {
+            return null;
+        }
+
+        $groupsExclusion = $context->getExclusionStrategy();
+        if (!($groupsExclusion instanceof GroupsExclusionStrategy)) {
+            return null;
+        }
+
+        $groups = $groupsExclusion->getGroupsFor($context);
+        if ([GroupsExclusionStrategy::DEFAULT_GROUP] === $groups) {
+            return null;
+        }
+
+        return $groups;
     }
 
     /**
@@ -141,7 +181,11 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return false;
     }
 
-    private function describeItem(array $type, $property, array $groups = null, array $previousGroups = null)
+    /**
+     * @internal
+     * @return void
+     */
+    public function describeItem(array $type, $property, Context $context)
     {
         $nestedTypeInfo = $this->getNestedTypeInArray($type);
         if (null !== $nestedTypeInfo) {
@@ -156,13 +200,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                     return;
                 }
 
-                $this->describeItem($nestedType, $property->getAdditionalProperties(), $groups, $previousGroups);
+                $this->describeItem($nestedType, $property->getAdditionalProperties(), $context);
 
                 return;
             }
 
             $property->setType('array');
-            $this->describeItem($nestedType, $property->getItems(), $groups, $previousGroups);
+            $this->describeItem($nestedType, $property->getItems(), $context);
         } elseif ('array' === $type['name']) {
             $property->setType('object');
             $property->merge(['additionalProperties' => []]);
@@ -177,17 +221,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $property->setType('string');
             $property->setFormat('date-time');
         } else {
-            // we can use property type also for custom handlers, then we don't have here real class name
-            if (!class_exists($type['name'])) {
-                return null;
-            }
+            $groups = $this->computeGroups($context, $type);
 
             $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups);
             $property->setRef($this->modelRegistry->register($model));
 
-            if ($previousGroups) {
-                $this->previousGroups[$model->getHash()] = $previousGroups;
-            }
+            $this->contexts[$model->getHash()] = $context;
+            $this->metadataStacks[$model->getHash()] = clone $context->getMetadataStack();
         }
     }
 

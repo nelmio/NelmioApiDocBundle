@@ -44,6 +44,14 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
     {
         $views = explode(',', $input->getOption('views'));
 
+        if (!$this->getContainer()->has('nelmio_api_doc.extractor.api_doc_extractor')) {
+            if (!$this->getContainer()->has('nelmio_api_doc.controller.swagger_ui')) {
+                throw new \RuntimeException('NelmioApiDocBundle is not installed. Please run `composer require nelmio/api-doc-bundle`.');
+            } else {
+                throw new \RuntimeException('This command only works with NelmioApiDocBundle 2.x installed while version 3.x is currently installed. Please downgrade to 2.x to execute this command and bump your constraint only after its execution.');                      
+            }
+        }
+
         $extractor = $this->getContainer()->get('nelmio_api_doc.extractor.api_doc_extractor');
 
         $apiDocs = [];
@@ -118,12 +126,14 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
      *         name="'.$name.'",
      *         in="'.$in.'",
      *         description="'.$description.'",
-     *         required='.(array_key_exists($name, $apiDoc->getRequirements()) ? 'true' : 'false').',
-     *         type="'.$this->determineDataType($parameter).'"';
+     *         required='.(array_key_exists($name, $apiDoc->getRequirements()) ? 'true' : 'false');
 
             if ('POST' !== $apiDoc->getMethod()) {
                 $annotation .= ',
-     *         schema=""';
+     *         @SWG\Schema(type="'.$this->determineDataType($parameter).'")';
+            } else {
+                $annotation .= ',
+     *         type="'.$this->determineDataType($parameter).'"';
             }
 
             $annotation .= '
