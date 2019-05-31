@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Formatter;
 
 use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment as TwigEnvironment;
 
 class HtmlFormatter extends AbstractFormatter
 {
@@ -31,7 +32,7 @@ class HtmlFormatter extends AbstractFormatter
     protected $defaultRequestFormat;
 
     /**
-     * @var EngineInterface
+     * @var EngineInterface|TwigEnvironment
      */
     protected $engine;
 
@@ -113,9 +114,9 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
-     * @param EngineInterface $engine
+     * @param EngineInterface|TwigEnvironment $engine
      */
-    public function setTemplatingEngine(EngineInterface $engine)
+    public function setTemplatingEngine($engine)
     {
         $this->engine = $engine;
     }
