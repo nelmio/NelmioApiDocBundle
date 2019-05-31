@@ -198,7 +198,7 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function renderOne(array $data)
     {
-        return $this->engine->render('NelmioApiDocBundle::resource.html.twig', array_merge(
+        return $this->engine->render('@NelmioApiDoc/resource.html.twig', array_merge(
             array(
                 'data'           => $data,
                 'displayContent' => true,
@@ -212,7 +212,7 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function render(array $collection)
     {
-        return $this->engine->render('NelmioApiDocBundle::resources.html.twig', array_merge(
+        return $this->engine->render('@NelmioApiDoc/resources.html.twig', array_merge(
             array(
                 'resources' => $collection,
             ),

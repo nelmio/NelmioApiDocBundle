@@ -1,4 +1,4 @@
-{% extends "NelmioApiDocBundle::layout.html.twig" %}
+{% extends "@NelmioApiDoc/layout.html.twig" %}
 
 {% block content %}
     <div id="summary">
@@ -33,7 +33,7 @@
                     <li class="endpoint">
                         <ul class="operations">
                             {% for data in methods %}
-                                {% include 'NelmioApiDocBundle::method.html.twig' %}
+                                {% include '@NelmioApiDoc/method.html.twig' %}
                             {% endfor %}
                         </ul>
                     </li>

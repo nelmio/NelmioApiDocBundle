@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('motd')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('template')->defaultValue('NelmioApiDocBundle::Components/motd.html.twig')->end()
+                        ->scalarNode('template')->defaultValue('@NelmioApiDoc/Components/motd.html.twig')->end()
                     ->end()
                 ->end()
                 ->arrayNode('request_listener')
