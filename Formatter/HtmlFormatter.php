@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Formatter;
 
 use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment as TwigEnvironment;
 
 class HtmlFormatter extends AbstractFormatter
 {
@@ -31,7 +32,7 @@ class HtmlFormatter extends AbstractFormatter
     protected $defaultRequestFormat;
 
     /**
-     * @var EngineInterface
+     * @var EngineInterface|TwigEnvironment
      */
     protected $engine;
 
@@ -113,9 +114,9 @@ class HtmlFormatter extends AbstractFormatter
     }
 
     /**
-     * @param EngineInterface $engine
+     * @param EngineInterface|TwigEnvironment $engine
      */
-    public function setTemplatingEngine(EngineInterface $engine)
+    public function setTemplatingEngine($engine)
     {
         $this->engine = $engine;
     }
@@ -197,7 +198,7 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function renderOne(array $data)
     {
-        return $this->engine->render('NelmioApiDocBundle::resource.html.twig', array_merge(
+        return $this->engine->render('@NelmioApiDoc/resource.html.twig', array_merge(
             array(
                 'data'           => $data,
                 'displayContent' => true,
@@ -211,7 +212,7 @@ class HtmlFormatter extends AbstractFormatter
      */
     protected function render(array $collection)
     {
-        return $this->engine->render('NelmioApiDocBundle::resources.html.twig', array_merge(
+        return $this->engine->render('@NelmioApiDoc/resources.html.twig', array_merge(
             array(
                 'resources' => $collection,
             ),

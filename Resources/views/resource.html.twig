@@ -1,11 +1,11 @@
-{% extends "NelmioApiDocBundle::layout.html.twig" %}
+{% extends "@NelmioApiDoc/layout.html.twig" %}
 
 {% block content %}
     <li class="resource">
         <ul class="endpoints">
             <li class="endpoint">
                 <ul class="operations">
-                    {% include 'NelmioApiDocBundle::method.html.twig' %}
+                    {% include '@NelmioApiDoc/method.html.twig' %}
                 </ul>
             </li>
         </ul>

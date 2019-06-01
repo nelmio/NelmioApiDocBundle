@@ -8,7 +8,7 @@ Configuration Reference
         exclude_sections:     []
         default_sections_opened:  true
         motd:
-            template:             'NelmioApiDocBundle::Components/motd.html.twig'
+            template:             '@NelmioApiDoc/Components/motd.html.twig'
         request_listener:
             enabled:              true
             parameter:            _doc

@@ -706,6 +706,9 @@ dependency_type[a]:
 
 _This method is useful to test if the getDocComment works._
 
+This method is useful to test if the getDocComment works.
+And, it supports multilines until the first '@' char.
+
 #### Requirements ####
 
 **id**

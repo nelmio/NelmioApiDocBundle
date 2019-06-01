@@ -21,7 +21,7 @@
         <service id="nelmio_api_doc.formatter.html_formatter" class="%nelmio_api_doc.formatter.html_formatter.class%"
             parent="nelmio_api_doc.formatter.abstract_formatter" public="true">
             <call method="setTemplatingEngine">
-                <argument type="service" id="templating" />
+                <argument type="service" id="twig" />
             </call>
             <call method="setMotdTemplate">
                 <argument>%nelmio_api_doc.motd.template%</argument>
