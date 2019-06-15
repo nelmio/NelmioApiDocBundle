@@ -178,3 +178,22 @@ A: We removed the google fonts in 3.3 to avoid the external request for GDPR rea
             }
         </style>
     {% endblock stylesheets %}
+
+Endpoints grouping
+------------------
+
+Q: Areas feature doesn't fit my needs. So how can I group similar endpoints of one or more controllers in a separate section in the documentation?
+
+A: Use ``@SWG\Tag`` annotation.
+
+.. code-block:: php
+
+    /**
+     * Class BookmarkController
+     *
+     * @SWG\Tag(name="Bookmarks")
+     */
+    class BookmarkController extends AbstractFOSRestController implements ContextPresetInterface
+    {
+        //...
+    }
