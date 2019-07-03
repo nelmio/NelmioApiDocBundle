@@ -83,8 +83,6 @@ class ControllerReflector
             $controller = $this->controllerNameParser->parse($controller);
         }
 
-
-
         if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
             $class = $matches[1];
             $method = $matches[2];
