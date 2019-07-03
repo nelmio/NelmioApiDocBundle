@@ -85,11 +85,21 @@ class ControllerReflector
         if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
             $class = $matches[1];
             $method = $matches[2];
+            // Since symfony 4.1 routes are defined like service_id::method_name
+            if (Kernel::VERSION_ID >= 40100 && !class_exists($class)) {
+                if ($this->container->has($class)) {
+                    $class = get_class($this->container->get($class));
+                    if (class_exists(ClassUtils::class)) {
+                        $class = ClassUtils::getRealClass($class);
+                    }
+                }
+            }
         } elseif (class_exists($controller)) {
             $class = $controller;
             $method = '__invoke';
         } else {
-            if (preg_match('#(.+):([\w]+)#', $controller, $matches)) {
+            // Has to be removed when dropping support of symfony < 4.1
+            if (Kernel::VERSION_ID < 40100 && preg_match('#(.+):([\w]+)#', $controller, $matches)) {
                 $controller = $matches[1];
                 $method = $matches[2];
             }
