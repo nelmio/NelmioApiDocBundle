@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Util;
 
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @internal
@@ -81,6 +82,8 @@ class ControllerReflector
         if (false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
             $controller = $this->controllerNameParser->parse($controller);
         }
+
+
 
         if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
             $class = $matches[1];
