@@ -25,12 +25,6 @@ matrix:
       env: COMPOSER_FLAGS="--prefer-lowest"
     - php: 7.2
       env: COMPOSER_FLAGS="--prefer-lowest"
-    - php: 7.0
-      env: SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
-    - php: 7.1
-      env: SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
-    - php: 7.2
-      env: SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
 
 before_install:
     - phpenv config-rm xdebug.ini
