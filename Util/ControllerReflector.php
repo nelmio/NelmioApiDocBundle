@@ -100,7 +100,7 @@ class ControllerReflector
             $method = '__invoke';
         } else {
             // Has to be removed when dropping support of symfony < 4.1
-            if (Kernel::VERSION_ID < 40100 && preg_match('#(.+):([\w]+)#', $controller, $matches)) {
+            if (preg_match('#(.+):([\w]+)#', $controller, $matches)) {
                 $controller = $matches[1];
                 $method = $matches[2];
             }
