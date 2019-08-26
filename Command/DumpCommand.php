@@ -18,8 +18,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class DumpCommand extends Command
@@ -60,7 +58,7 @@ class DumpCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $area = $input->getOption( 'area' );
+        $area = $input->getOption('area');
 
         if (!$this->generatorLocator->has($area)) {
             throw new BadRequestHttpException(sprintf('Area "%s" is not supported.', $area));
@@ -68,10 +66,10 @@ class DumpCommand extends Command
 
         $spec = $this->generatorLocator->get($area)->generate()->toArray();
 
-        if( $input->hasParameterOption(['--no-pretty']) ) {
-            $output->writeln( json_encode( $spec ) );
+        if( $input->hasParameterOption(['--no-pretty'])) {
+            $output->writeln(json_encode($spec));
         } else {
-            $output->writeln( json_encode( $spec, JSON_PRETTY_PRINT ) );
+            $output->writeln(json_encode($spec, JSON_PRETTY_PRINT));
         }
     }
 }
