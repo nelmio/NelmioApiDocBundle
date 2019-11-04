@@ -20,6 +20,8 @@ use Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
+use Nelmio\ApiDocBundle\Translator\EntityTranslator;
+use Nelmio\ApiDocBundle\Translator\NullTranslator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -155,12 +157,22 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         if ($config['models']['use_jms']) {
             $jmsNamingStrategy = interface_exists(SerializationVisitorInterface::class) ? null : new Reference('jms_serializer.naming_strategy');
 
+            //manage JMS entity translation
+            if (isset($config['translation']['entity'])) {
+                $container->register('nelmio_entity_translator', EntityTranslator::class)
+                    ->setPublic(false)
+                    ->addArgument($config['translation']['entity']);
+            } else {
+                //no translation path for ObjectNormalizer, we inject NullObject Translator
+                $container->register('nelmio_entity_translator', NullTranslator::class);
+            }
             $container->register('nelmio_api_doc.model_describers.jms', JMSModelDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
-                    $jmsNamingStrategy,
                     new Reference('annotation_reader'),
+                    new Reference('nelmio_entity_translator'),
+                    $jmsNamingStrategy,
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
 
@@ -180,6 +192,11 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // Import the base configuration
         $container->getDefinition('nelmio_api_doc.describers.config')->replaceArgument(0, $config['documentation']);
+
+        //prepar translation if is defined in yml config of NelmioApiDoc
+        if (isset($config['translation'])) {
+            $container->setParameter('nelmio_translator_paths', $config['translation']);
+        }
     }
 
     private function findNameAliases(array $names, string $area): array

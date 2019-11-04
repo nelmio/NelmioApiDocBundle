@@ -17,6 +17,8 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
+use Nelmio\ApiDocBundle\Translator\EntityTranslator;
+use Nelmio\ApiDocBundle\Translator\TranslatorInterface;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -24,17 +26,25 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 {
     use ModelRegistryAwareTrait;
 
+    /** @var PropertyInfoExtractorInterface */
     private $propertyInfo;
+
+    /** @var Reader */
     private $doctrineReader;
+
+    /** @var EntityTranslator */
+    private $translator;
 
     private $swaggerDefinitionAnnotationReader;
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        Reader $reader
+        Reader $reader,
+        TranslatorInterface $translator
     ) {
         $this->propertyInfo = $propertyInfo;
         $this->doctrineReader = $reader;
+        $this->translator = $translator;
     }
 
     public function describe(Model $model, Schema $schema)
@@ -48,7 +58,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             $context = ['serializer_groups' => array_filter($model->getGroups(), 'is_string')];
         }
 
-        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
+        $annotationsReader = new AnnotationsReader(
+            $this->doctrineReader,
+            $this->modelRegistry,
+            $this->translator->setDefinitions($model->getType()->getClassName())
+        );
         $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);

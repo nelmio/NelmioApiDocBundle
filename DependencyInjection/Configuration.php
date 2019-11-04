@@ -53,6 +53,12 @@ final class Configuration implements ConfigurationInterface
                     ->example(['info' => ['title' => 'My App']])
                     ->prototype('variable')->end()
                 ->end()
+                ->arrayNode('translation')
+                    ->info('List of directory for translation files')
+                    ->scalarPrototype()
+                        ->defaultValue('')
+                    ->end()
+                ->end()
                 ->arrayNode('areas')
                     ->info('Filter the routes that are documented')
                     ->defaultValue(
@@ -139,6 +145,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+
             ->end();
 
         return $treeBuilder;
