@@ -39,13 +39,6 @@
         </service>
 
         <!-- Model Describers -->
-        <service id="nelmio_api_doc.model_describers.object" class="Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber" public="false">
-            <argument type="service" id="property_info" />
-            <argument type="service" id="annotation_reader" />
-
-            <tag name="nelmio_api_doc.model_describer" />
-        </service>
-
         <service id="nelmio_api_doc.model_describers.object_fallback" class="Nelmio\ApiDocBundle\ModelDescriber\FallbackObjectModelDescriber" public="false">
             <tag name="nelmio_api_doc.model_describer" priority="-1000" />
         </service>

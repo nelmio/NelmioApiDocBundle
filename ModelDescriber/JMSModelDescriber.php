@@ -22,6 +22,8 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
+use Nelmio\ApiDocBundle\Translator\EntityTranslator;
+use Nelmio\ApiDocBundle\Translator\TranslatorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -31,11 +33,17 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 {
     use ModelRegistryAwareTrait;
 
+    /** @var MetadataFactoryInterface */
     private $factory;
 
+    /** @var PropertyNamingStrategyInterface */
     private $namingStrategy;
 
+    /** @var Reader */
     private $doctrineReader;
+
+    /** @var EntityTranslator */
+    private $translator;
 
     private $contexts = [];
 
@@ -48,12 +56,14 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function __construct(
         MetadataFactoryInterface $factory,
-        PropertyNamingStrategyInterface $namingStrategy = null,
-        Reader $reader
+        Reader $reader,
+        TranslatorInterface $translator,
+        PropertyNamingStrategyInterface $namingStrategy = null
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->doctrineReader = $reader;
+        $this->translator = $translator;
     }
 
     /**
@@ -68,7 +78,12 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
 
         $schema->setType('object');
-        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
+
+        $annotationsReader = new AnnotationsReader(
+            $this->doctrineReader,
+            $this->modelRegistry,
+            $this->translator->setDefinitions($model->getType()->getClassName())
+        );
         $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
 
         $isJmsV1 = null !== $this->namingStrategy;
@@ -76,6 +91,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
         $context = $this->getSerializationContext($model);
         $context->pushClassMetadata($metadata);
+
         foreach ($metadata->propertyMetadata as $item) {
             // filter groups
             if (null !== $context->getExclusionStrategy() && $context->getExclusionStrategy()->shouldSkipProperty($item, $context)) {
@@ -183,6 +199,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     /**
      * @internal
+     *
      * @return void
      */
     public function describeItem(array $type, $property, Context $context)

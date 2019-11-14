@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use Nelmio\ApiDocBundle\Translator\TranslatorInterface;
 
 /**
  * @internal
@@ -22,15 +23,21 @@ class AnnotationsReader
 {
     private $annotationsReader;
     private $modelRegistry;
+    private $translator;
 
     private $phpDocReader;
     private $swgAnnotationsReader;
     private $symfonyConstraintAnnotationReader;
 
-    public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry)
+    public function __construct(
+        Reader $annotationsReader,
+        ModelRegistry $modelRegistry,
+        TranslatorInterface $translator
+    )
     {
         $this->annotationsReader = $annotationsReader;
         $this->modelRegistry = $modelRegistry;
+        $this->translator = $translator;
 
         $this->phpDocReader = new PropertyPhpDocReader();
         $this->swgAnnotationsReader = new SwgAnnotationsReader($annotationsReader, $modelRegistry);
@@ -53,5 +60,6 @@ class AnnotationsReader
         $this->phpDocReader->updateProperty($reflectionProperty, $property);
         $this->swgAnnotationsReader->updateProperty($reflectionProperty, $property, $serializationGroups);
         $this->symfonyConstraintAnnotationReader->updateProperty($reflectionProperty, $property);
+        $this->translator->translate($reflectionProperty, $property);
     }
 }
