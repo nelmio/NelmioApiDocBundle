@@ -210,8 +210,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         } elseif ('array' === $type['name']) {
             $property->setType('object');
             $property->merge(['additionalProperties' => []]);
-        } elseif (in_array($type['name'], ['boolean', 'string'], true)) {
-            $property->setType($type['name']);
+        } elseif ('string' === $type['name']) {
+            $property->setType('string');
+        } elseif (in_array($type['name'], ['bool', 'boolean'], true)) {
+            $property->setType('boolean');
         } elseif (in_array($type['name'], ['int', 'integer'], true)) {
             $property->setType('integer');
         } elseif (in_array($type['name'], ['double', 'float'], true)) {
