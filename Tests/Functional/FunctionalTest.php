@@ -31,7 +31,7 @@ class FunctionalTest extends WebTestCase
     {
         $operation = $this->getOperation('/api/article/{id}', 'get');
 
-        $response = $this->getResponse($operation, '200');
+        $response = $this->getOperationResponse($operation, '200');
         $this->assertEquals('#/definitions/Article', $response->schema->ref);
 
         // Ensure that groups are supported
@@ -56,7 +56,7 @@ class FunctionalTest extends WebTestCase
     public function testSwaggerAction($path)
     {
         $operation = $this->getOperation($path, 'get');
-        $response = $this->getResponse($operation, '201');
+        $response = $this->getOperationResponse($operation, '201');
         $this->assertEquals('An example resource', $response->description);
     }
 
@@ -74,7 +74,7 @@ class FunctionalTest extends WebTestCase
 
         $this->assertEquals(['implicit'], $operation->tags);
 
-        $response = $this->getResponse($operation, '201');
+        $response = $this->getOperationResponse($operation, '201');
         $this->assertEquals('Operation automatically detected', $response->description);
         $this->assertEquals('#/definitions/User', $response->schema->ref);
 
@@ -378,9 +378,9 @@ class FunctionalTest extends WebTestCase
     public function testConfigReference()
     {
         $operation = $this->getOperation('/api/configReference', 'get');
-        $response = $this->getResponse($operation, '200');
+        $response = $this->getOperationResponse($operation, '200');
         $this->assertEquals('#/definitions/Test', $response->schema->ref);
-        $response = $this->getResponse($operation, '201');
+        $response = $this->getOperationResponse($operation, '201');
         $this->assertEquals('#/responses/201', $response->ref);
     }
 
@@ -388,12 +388,12 @@ class FunctionalTest extends WebTestCase
     {
         $getOperation = $this->getOperation('/api/multi-annotations', 'get');
         $this->assertSame('This is the get operation', $getOperation->description);
-        $getResponse = $this->getResponse($getOperation, '200');
+        $getResponse = $this->getOperationResponse($getOperation, '200');
         $this->assertSame('Worked well!', $getResponse->description);
 
         $postOperation = $this->getOperation('/api/multi-annotations', 'post');
         $this->assertSame('This is post', $postOperation->description);
-        $postResponse = $this->getResponse($postOperation, '200');
+        $postResponse = $this->getOperationResponse($postOperation, '200');
         $this->assertSame('Worked well!', $postResponse->description);
     }
 }

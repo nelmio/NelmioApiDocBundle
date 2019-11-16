@@ -52,9 +52,6 @@ final class ModelRegister
 
             // Implicit usages
             if ($annotation instanceof OA\Response) {
-//                var_dump(get_class($annotation));
-//                var_dump($annotation);
-//                die;
                 $annotationClass = OA\Schema::class;
             } elseif ($annotation instanceof OA\Parameter) {
                 if ($annotation->schema instanceof OA\Schema && 'array' === $annotation->schema->type) {
@@ -67,7 +64,6 @@ final class ModelRegister
             } else {
                 continue;
             }
-            var_dump('ANNOTATION='.get_class($annotation).' :: '.$annotationClass);
 
             $model = null;
             foreach ($annotation->_unmerged as $unmerged) {
@@ -96,8 +92,6 @@ final class ModelRegister
                     new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options)
                 ),
             ]);
-
-            var_dump('DETACH=' . get_class($annotation));
 
             // It is no longer an unmerged annotation
             $this->detach($model, $annotation, $analysis);

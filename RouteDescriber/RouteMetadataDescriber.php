@@ -37,12 +37,11 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 $parameter->required = true;
 
                 if (null === $parameter->schema) {
-                    var_dump('@TODO='.get_class($parameter));
-//                    $parameter->type = 'string';
+                    $parameter->type = 'string'; // @todo
                 }
 
                 if (isset($requirements[$pathVariable])) {
-                    $parameter->pattern = $requirements[$pathVariable];
+                    $parameter->pattern = $requirements[$pathVariable]; // @todo
                 }
             }
         }

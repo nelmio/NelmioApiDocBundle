@@ -152,7 +152,7 @@ class WebTestCase extends BaseWebTestCase
         return $path->{$method};
     }
 
-    protected function getResponse(OA\Operation $operation, $response): OA\Response
+    protected function getOperationResponse(OA\Operation $operation, $response): OA\Response
     {
         $this->assertHasResponse($response, $operation);
         $key = array_search($response, array_column($operation->responses, 'response'), true);

@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
+use ReflectionProperty;
 
 /**
  * @internal
@@ -49,7 +50,7 @@ class SwgAnnotationsReader
         $schema->mergeProperties($classDefinition);
     }
 
-    public function getPropertyName(\ReflectionProperty $reflectionProperty, string $default): string
+    public function getPropertyName(ReflectionProperty $reflectionProperty, string $default): string
     {
         /** @var OA\Property $swgProperty */
         if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, OA\Property::class)) {
@@ -59,7 +60,7 @@ class SwgAnnotationsReader
         return $swgProperty->property ?? $default;
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null)
+    public function updateProperty(ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null)
     {
         if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, OA\Property::class)) {
             return;

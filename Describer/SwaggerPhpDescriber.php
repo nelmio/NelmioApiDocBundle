@@ -47,42 +47,16 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
     {
         $analysis = $this->getAnnotations($api);
         $analysis->process($this->getProcessors());
-        try {
-            $analysis->validate();
-        } catch (\Throwable $e) {
-//            var_dump($api);
-            throw $e;
-        }
+        $analysis->validate();
     }
 
     private function getProcessors(): array
     {
-//        $defaultProcessors = [];
-//        $processors = [];
-//
-//        foreach (Analysis::processors() as $processor) {
-//            if ($processor instanceof MergeJsonContent || $processor instanceof MergeXmlContent) {
-//                $processors[] = $processor;
-//            } else {
-//                $defaultProcessors[] = $processor;
-//            }
-//        }
-//
-//        $processors[] = new ModelRegister($this->modelRegistry);
-//
-//        return array_merge($processors, $defaultProcessors);
-
         $processors = [
             new ModelRegister($this->modelRegistry),
         ];
 
         return array_merge($processors, Analysis::processors());
-
-//        Analysis::registerProcessor(new ModelRegister($this->modelRegistry));
-//
-//        var_dump(count(Analysis::processors()));
-//
-//        return Analysis::processors();
     }
 
     private function getAnnotations(OA\OpenApi $api): Analysis
@@ -155,7 +129,12 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                     continue;
                 }
 
-                if (!$annotation instanceof OA\Response && !$annotation instanceof OA\Parameter && !$annotation instanceof OA\ExternalDocumentation) {
+                if (
+                    !$annotation instanceof OA\Response &&
+                    !$annotation instanceof OA\RequestBody &&
+                    !$annotation instanceof OA\Parameter &&
+                    !$annotation instanceof OA\ExternalDocumentation
+                ) {
                     throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', get_class($annotation), $method->getDeclaringClass()->name, $method->name));
                 }
 

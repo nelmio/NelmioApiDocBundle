@@ -32,7 +32,7 @@ final class DefaultDescriber implements DescriberInterface
         if (null === $info->version) {
             $info->version = '0.0.0';
         }
-        $paths = $api->paths ?? [];
+        $paths = isset($api->paths) && UNDEFINED !== $api->paths ? $api->paths : [];
         foreach ($paths as $uri => $path) {
             foreach (Util::$operations as $method) {
                 /** @var OA\Operation $operation */
