@@ -180,7 +180,6 @@ class Util
     public static function getChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
     {
         $nested = $parent::$_nested;
-//        var_dump(get_class($parent) . $class);
         $property = $nested[$class];
 
         if (null === $parent->{$property} || UNDEFINED === $parent->{$property}) {
