@@ -2,6 +2,7 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
+    ->exclude('var')
     ->exclude('Tests/Functional/cache')
 ;
 
