@@ -26,10 +26,13 @@ class ControllerReflector
 
     private $controllers = [];
 
-    public function __construct(ContainerInterface $container, ControllerNameParser $controllerNameParser)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->controllerNameParser = $controllerNameParser;
+
+        if (1 < \func_num_args() && func_get_arg(1) instanceof ControllerNameParser) {
+            $this->controllerNameParser = func_get_arg(1);
+        }
     }
 
     /**
@@ -79,8 +82,16 @@ class ControllerReflector
             return $this->controllers[$controller];
         }
 
-        if (false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
-            $controller = $this->controllerNameParser->parse($controller);
+        if ($this->controllerNameParser && false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
+            $deprecatedNotation = $controller;
+
+            try {
+                $controller = $this->controllerNameParser->parse($controller);
+
+                @trigger_error(sprintf('Referencing controllers with %s is deprecated since Symfony 4.1, use "%s" instead.', $deprecatedNotation, $controller), E_USER_DEPRECATED);
+            } catch (\InvalidArgumentException $e) {
+                // unable to optimize unknown notation
+            }
         }
 
         if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
