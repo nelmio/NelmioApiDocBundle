@@ -229,8 +229,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
             }
 
             $controller = $route->getDefault('_controller');
-            if ($callable = $this->controllerReflector->getReflectionClassAndMethod($controller)) {
-                list($class, $method) = $callable;
+            if ($method = $this->controllerReflector->getReflectionMethod($controller)) {
                 $path = $this->normalizePath($route->getPath());
                 $httpMethods = $route->getMethods() ?: Swagger::$METHODS;
                 $httpMethods = array_map('strtolower', $httpMethods);
