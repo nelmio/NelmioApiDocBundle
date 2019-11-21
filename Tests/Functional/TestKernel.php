@@ -104,19 +104,29 @@ class TestKernel extends Kernel
      */
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
     {
-        $c->loadFromExtension('framework', [
+        $framework = [
             'secret' => 'MySecretKey',
             'test' => null,
             'validation' => null,
             'form' => null,
-            'templating' => [
-                'engines' => ['twig'],
-            ],
             'serializer' => ['enable_annotations' => true],
-        ]);
+        ];
+
+        // templating is deprecated
+        if (Kernel::VERSION_ID <= 40300) {
+            $framework['templating'] = ['engines' => ['twig']];
+        }
+
+        $c->loadFromExtension('framework', $framework);
 
         $c->loadFromExtension('twig', [
             'strict_variables' => '%kernel.debug%',
+        ]);
+
+        $c->loadFromExtension('sensio_framework_extra', [
+            'router' => [
+                'annotations' => false,
+            ],
         ]);
 
         $c->loadFromExtension('api_platform', [

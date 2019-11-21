@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/test", host="api-test.example.com")
