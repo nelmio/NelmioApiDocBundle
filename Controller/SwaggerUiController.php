@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Twig\Environment;
 
 final class SwaggerUiController
 {
@@ -27,8 +28,12 @@ final class SwaggerUiController
     /**
      * @param ContainerInterface $generatorLocator
      */
-    public function __construct($generatorLocator, \Twig_Environment $twig)
+    public function __construct($generatorLocator, $twig)
     {
+        if (!$twig instanceof \Twig_Environment && !$twig instanceof Environment) {
+            throw new \InvalidArgumentException(sprintf('Providing an instance of "%s" as twig is not supported.', get_class($twig)));
+        }
+
         if (!$generatorLocator instanceof ContainerInterface) {
             if (!$generatorLocator instanceof ApiDocGenerator) {
                 throw new \InvalidArgumentException(sprintf('Providing an instance of "%s" to "%s" is not supported.', get_class($generatorLocator), __METHOD__));
