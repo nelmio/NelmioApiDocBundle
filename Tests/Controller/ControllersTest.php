@@ -25,7 +25,13 @@ class ControllersTest extends TestCase
      */
     public function testSwaggerUiControllerInstanciation()
     {
-        $controller = new SwaggerUiController(new ApiDocGenerator([], []), $this->createMock('Twig_Environment'));
+        if (class_exists('Twig_Environment')) {
+            $twigMock = $this->createMock('Twig_Environment');
+        } else {
+            $twigMock = $this->createMock('Twig\Environment');
+        }
+
+        $controller = new SwaggerUiController(new ApiDocGenerator([], []), $twigMock);
         $controller(new Request());
     }
 
