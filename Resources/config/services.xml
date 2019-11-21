@@ -19,7 +19,6 @@
 
         <service id="nelmio_api_doc.controller_reflector" class="Nelmio\ApiDocBundle\Util\ControllerReflector" public="false">
             <argument type="service" id="service_container" />
-            <argument type="service" id="controller_name_converter" />
         </service>
 
         <!-- Describers -->
