@@ -59,23 +59,6 @@ class ControllerReflector
         }
     }
 
-    public function getReflectionClassAndMethod(string $controller)
-    {
-        $callable = $this->getClassAndMethod($controller);
-        if (null === $callable) {
-            return;
-        }
-
-        list($class, $method) = $callable;
-
-        try {
-            return [new \ReflectionClass($class), new \ReflectionMethod($class, $method)];
-        } catch (\ReflectionException $e) {
-            // In case we can't reflect the controller, we just
-            // ignore the route
-        }
-    }
-
     private function getClassAndMethod(string $controller)
     {
         if (isset($this->controllers[$controller])) {
