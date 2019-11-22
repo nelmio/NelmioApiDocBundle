@@ -105,6 +105,7 @@ class TestKernel extends Kernel
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
     {
         $framework = [
+            'assets' => true,
             'secret' => 'MySecretKey',
             'test' => null,
             'validation' => null,
