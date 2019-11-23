@@ -68,7 +68,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             $property = Util::getProperty($schema, $name);
 
             if ($config->getRequired()) {
-                $required = $schema->required ?? [];
+                $required = $schema->required ?? []; // @todo check for UNDEFINED
                 $required[] = $name;
 
                 $schema->required = $required;

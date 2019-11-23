@@ -66,7 +66,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
         $schema->type = 'object';
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
-        $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
+        $annotationsReader->updateSchema(new \ReflectionClass($className), $schema);
 
         foreach ($metadata->propertyMetadata as $item) {
             // filter groups

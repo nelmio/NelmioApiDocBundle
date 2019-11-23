@@ -17,7 +17,9 @@ use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
+use ReflectionClass;
 use ReflectionProperty;
+use const OpenApi\UNDEFINED;
 
 /**
  * @internal
@@ -33,21 +35,21 @@ class SwgAnnotationsReader
         $this->modelRegister = new ModelRegister($modelRegistry);
     }
 
-    public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema)
+    public function updateSchema(ReflectionClass $reflectionClass, OA\Schema $schema): void
     {
-        /** @var Definition $classDefinition */
-        if (!$classDefinition = $this->annotationsReader->getClassAnnotation($reflectionClass, OA\Schema::class)) {
+        /** @var OA\Schema $classSchema */
+        if (!$classSchema = $this->annotationsReader->getClassAnnotation($reflectionClass, OA\Schema::class)) {
             return;
         }
 
         // Read @Model annotations
-        $this->modelRegister->__invoke(new Analysis([$classDefinition]));
+        $this->modelRegister->__invoke(new Analysis([$classSchema]));
 
-        if (!$classDefinition->validate()) {
+        if (!$classSchema->validate()) {
             return;
         }
 
-        $schema->mergeProperties($classDefinition);
+        $schema->mergeProperties($classSchema);
     }
 
     public function getPropertyName(ReflectionProperty $reflectionProperty, string $default): string
@@ -57,10 +59,12 @@ class SwgAnnotationsReader
             return $default;
         }
 
-        return $swgProperty->property ?? $default;
+        return isset($swgProperty->property) && UNDEFINED !== $swgProperty->property ?
+            $swgProperty->property :
+            $default;
     }
 
-    public function updateProperty(ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null)
+    public function updateProperty(ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null): void
     {
         if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, OA\Property::class)) {
             return;

@@ -18,6 +18,8 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
 use OpenApi\Annotations as OA;
+use ReflectionClass;
+use ReflectionProperty;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -51,7 +53,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
-        $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
+        $annotationsReader->updateSchema(new ReflectionClass($class), $schema);
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);
         if (null === $propertyInfoProperties) {
@@ -61,7 +63,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         foreach ($propertyInfoProperties as $propertyName) {
             // read property options from Swagger Property annotation if it exists
             if (property_exists($class, $propertyName)) {
-                $reflectionProperty = new \ReflectionProperty($class, $propertyName);
+                $reflectionProperty = new ReflectionProperty($class, $propertyName);
                 $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflectionProperty, $propertyName));
 
                 $groups = $model->getGroups();
