@@ -12,8 +12,10 @@
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use OpenApi\Annotations as OA;
 use OpenApi\Annotations\OpenApi;
 use Symfony\Component\Routing\Route;
+use const OpenApi\UNDEFINED;
 
 final class RouteMetadataDescriber implements RouteDescriberInterface
 {
@@ -36,12 +38,12 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 $parameter = Util::getOperationParameter($operation, $pathVariable, 'path');
                 $parameter->required = true;
 
-                if (null === $parameter->schema) {
-                    $parameter->type = 'string'; // @todo
+                if (null === $parameter->schema || UNDEFINED === $parameter->schema) {
+                    Util::getChild($parameter, OA\Schema::class)->type = 'string';
                 }
 
                 if (isset($requirements[$pathVariable])) {
-                    $parameter->pattern = $requirements[$pathVariable]; // @todo
+                    $parameter->schema->pattern = $requirements[$pathVariable];
                 }
             }
         }

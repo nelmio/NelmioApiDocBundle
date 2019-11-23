@@ -95,7 +95,7 @@ class ApiController
     /**
      * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="/foo/"})
      * @Operation(
-     *     @OA\Response(response=200, description="sucessful")
+     *     @OA\Response(response=200, description="successful")
      * )
      */
     public function userAction()
@@ -146,11 +146,10 @@ class ApiController
 
     /**
      * @Route("/form", methods={"POST"})
-     * @OA\Parameter(
-     *     name="form",
-     *     in="body",
+     * @OA\RequestBody(
+     *     request="form",
      *     description="Request content",
-     *     @OA\Schema(ref=@Model(type=DummyType::class))
+     *     @OA\JsonContent(ref=@Model(type=DummyType::class))
      * )
      * @OA\Response(response="201", description="")
      */
@@ -184,11 +183,11 @@ class ApiController
      * @OA\Response(
      *     response="200",
      *     description="Success",
-     *     @OA\JsonContent(@OA\Schema(ref="#/definitions/Test"))
+     *     @OA\JsonContent(ref="#/components/schemas/Test")
      * )
      * @OA\Response(
      *     response="201",
-     *     ref="#/responses/201"
+     *     ref="#/components/responses/201"
      * )
      * @Route("/configReference", methods={"GET"})
      */

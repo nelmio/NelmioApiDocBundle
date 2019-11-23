@@ -16,9 +16,12 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\SwaggerPhp\Util;
 use OpenApi\Annotations as OA;
+use ReflectionClass;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;
+use function is_array;
+use const OpenApi\UNDEFINED;
 
 final class FosRestDescriber implements RouteDescriberInterface
 {
@@ -34,7 +37,7 @@ final class FosRestDescriber implements RouteDescriberInterface
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         $annotations = $this->annotationReader->getMethodAnnotations($reflectionMethod);
-        $annotations = array_filter($annotations, function ($value) {
+        $annotations = array_filter($annotations, static function ($value) {
             return $value instanceof RequestParam || $value instanceof QueryParam;
         });
 
@@ -53,24 +56,27 @@ final class FosRestDescriber implements RouteDescriberInterface
                     $parameter = Util::getProperty($body, $annotation->getName());
 
                     if (!$annotation->nullable && $annotation->strict) {
-                        $requiredParameters = $body->required;
+                        $requiredParameters = is_array($body->required) ? $body->required : [];
                         $requiredParameters[] = $annotation->getName();
 
                         $body->required = array_values(array_unique($requiredParameters));
                     }
                 }
 
-                $parameter->default = $annotation->getDefault();
-                if (null === $parameter->type) {
-                    $parameter->type = $annotation->map ? 'array' : 'string';
+                $parameter->schema = Util::createChild($parameter, OA\Schema::class);
+                $parameter->schema->default = $annotation->getDefault();
+
+                if (null === $parameter->schema->type) {
+                    $parameter->schema->type = $annotation->map ? 'array' : 'string';
                 }
+
                 if (null === $parameter->description) {
                     $parameter->description = $annotation->description;
                 }
 
                 $pattern = $this->getPattern($annotation->requirements);
                 if (null !== $pattern) {
-                    $parameter->pattern = $pattern;
+                    $parameter->schema->pattern = $pattern;
                 }
 
                 $format = $this->getFormat($annotation->requirements);
@@ -101,7 +107,7 @@ final class FosRestDescriber implements RouteDescriberInterface
     private function getFormat($requirements)
     {
         if ($requirements instanceof Constraint && !$requirements instanceof Regex) {
-            $reflectionClass = new \ReflectionClass($requirements);
+            $reflectionClass = new ReflectionClass($requirements);
 
             return $reflectionClass->getShortName();
         }

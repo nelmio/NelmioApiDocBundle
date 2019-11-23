@@ -32,7 +32,7 @@ class FunctionalTest extends WebTestCase
         $operation = $this->getOperation('/api/article/{id}', 'get');
 
         $response = $this->getOperationResponse($operation, '200');
-        $this->assertEquals('#/definitions/Article', $response->schema->ref);
+        $this->assertEquals('#/components/schema/Article', $response->content['application/json']->schema->ref);
 
         // Ensure that groups are supported
         $model = $this->getModel('Article');

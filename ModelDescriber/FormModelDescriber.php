@@ -24,6 +24,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
 use Symfony\Component\PropertyInfo\Type;
+use const OpenApi\UNDEFINED;
 
 /**
  * @internal
@@ -68,7 +69,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             $property = Util::getProperty($schema, $name);
 
             if ($config->getRequired()) {
-                $required = $schema->required ?? []; // @todo check for UNDEFINED
+                $required = $schema->required && UNDEFINED !== $schema->required ? $schema->required : [];
                 $required[] = $name;
 
                 $schema->required = $required;
