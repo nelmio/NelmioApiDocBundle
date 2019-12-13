@@ -93,11 +93,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             $type = $types[0];
-            $this->describeProperty($type, $model, $property);
+            $this->describeProperty($type, $model, $property, $propertyName);
         }
     }
 
-    private function describeProperty(Type $type, Model $model, Schema $property)
+    private function describeProperty(Type $type, Model $model, Schema $property, string $propertyName)
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
@@ -110,10 +110,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
         }
 
-        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@SWG\Property(type="")` annotation to specify it manually.', $type->getBuiltinType(), $class, $propertyName));
-
+        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@SWG\Property(type="")` annotation to specify it manually.', $type->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
     }
-
 
     public function supports(Model $model): bool
     {
