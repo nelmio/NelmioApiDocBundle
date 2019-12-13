@@ -16,7 +16,6 @@ use Symfony\Component\PropertyInfo\Type;
 
 class FloatPropertyDescriber implements PropertyDescriberInterface
 {
-
     public function describe(Type $type, Schema $property, array $groups)
     {
         $property->setType('number');

@@ -54,5 +54,4 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
     {
         return $type->isCollection();
     }
-
 }
