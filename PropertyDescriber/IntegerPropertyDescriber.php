@@ -16,7 +16,7 @@ use Symfony\Component\PropertyInfo\Type;
 
 class IntegerPropertyDescriber implements PropertyDescriberInterface
 {
-    public function describe(Type $type, Schema $property, array $groups)
+    public function describe(Type $type, Schema $property, array $groups = null)
     {
         $property->setType('integer');
     }

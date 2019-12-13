@@ -28,7 +28,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         $this->propertyDescribers = $propertyDescribers;
     }
 
-    public function describe(Type $type, Schema $property, array $groups)
+    public function describe(Type $type, Schema $property, array $groups = null)
     {
         $type = $type->getCollectionValueType();
         if (null === $type) {
