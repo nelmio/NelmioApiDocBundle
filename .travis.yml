@@ -1,9 +1,10 @@
 language: php
 
 php:
-  - 7.0
   - 7.1
   - 7.2
+  - 7.3
+  - 7.4snapshot
 
 sudo: false
 
@@ -12,23 +13,24 @@ cache:
     - .phpunit
     - $HOME/.composer/cache
 
-branches:
-  only:
-    - master
-    - dev
-    - /^\d+\.\d+$/
-
 matrix:
   fast_finish: true
   include:
-    - php: 7.0
+    - php: 7.1
       env: COMPOSER_FLAGS="--prefer-lowest"
     - php: 7.2
-      env: COMPOSER_FLAGS="--prefer-lowest"
+      env: SYMFONY_VERSION=^3.4
+    - php: 7.3
+      env: SYMFONY_VERSION=^4.0
+    - php: 7.3
+      env: SYMFONY_VERSION=^5.0
+  allow_failures:
+    - php: 7.4snapshot
 
 before_install:
-    - phpenv config-rm xdebug.ini
+    - phpenv config-rm xdebug.ini || true
+    - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --dev --no-update; fi;
 
-install: composer update $COMPOSER_FLAGS
+install: composer update --no-interaction $COMPOSER_FLAGS
 
 script: ./phpunit
