@@ -52,7 +52,7 @@
 
         <!-- Property Describers -->
         <service id="nelmio_api_doc.property_describers.array" class="Nelmio\ApiDocBundle\PropertyDescriber\ArrayPropertyDescriber" public="false">
-            <argument type="tagged_iterator" tag="nelmio_api_doc.property_describer" />
+            <argument type="tagged" tag="nelmio_api_doc.property_describer" />
 
             <tag name="nelmio_api_doc.property_describer" />
         </service>
