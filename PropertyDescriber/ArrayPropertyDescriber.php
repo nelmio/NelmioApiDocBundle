@@ -43,7 +43,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
             if ($propertyDescriber->supports($type)) {
-                $propertyDescriber->describe($type, $property);
+                $propertyDescriber->describe($type, $property, $groups);
 
                 break;
             }

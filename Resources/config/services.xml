@@ -41,7 +41,7 @@
         <service id="nelmio_api_doc.model_describers.object" class="Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber" public="false">
             <argument type="service" id="property_info" />
             <argument type="service" id="annotation_reader" />
-            <argument type="tagged_iterator" tag="nelmio_api_doc.property_describer" />
+            <argument type="tagged" tag="nelmio_api_doc.property_describer" />
 
             <tag name="nelmio_api_doc.model_describer" />
         </service>
