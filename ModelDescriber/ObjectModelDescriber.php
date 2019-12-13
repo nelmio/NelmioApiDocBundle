@@ -37,11 +37,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
         Reader $reader,
-        array $propertyDescribers
+        $propertyDescribers
     ) {
         $this->propertyInfo = $propertyInfo;
-        $this->propertyDescribers = $propertyDescribers;
         $this->doctrineReader = $reader;
+        $this->propertyDescribers = $propertyDescribers;
     }
 
     public function describe(Model $model, Schema $schema)
@@ -93,20 +93,27 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             $type = $types[0];
-            foreach ($this->propertyDescribers as $propertyDescriber) {
-                if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
-                    $propertyDescriber->setModelRegistry($this->modelRegistry);
-                }
-                if ($propertyDescriber->supports($type)) {
-                    $propertyDescriber->describe($type, $property, $model->getGroups());
-
-                    break;
-                }
-            }
-
-            throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@SWG\Property(type="")` annotation to specify it manually.', $type->getBuiltinType(), $class, $propertyName));
+            $this->describeProperty($type, $model, $property);
         }
     }
+
+    private function describeProperty(Type $type, Model $model, Schema $property)
+    {
+        foreach ($this->propertyDescribers as $propertyDescriber) {
+            if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
+                $propertyDescriber->setModelRegistry($this->modelRegistry);
+            }
+            if ($propertyDescriber->supports($type)) {
+                $propertyDescriber->describe($type, $property, $model->getGroups());
+
+                return;
+            }
+        }
+
+        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@SWG\Property(type="")` annotation to specify it manually.', $type->getBuiltinType(), $class, $propertyName));
+
+    }
+
 
     public function supports(Model $model): bool
     {

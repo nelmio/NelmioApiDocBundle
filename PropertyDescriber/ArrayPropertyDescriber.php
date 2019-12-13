@@ -23,7 +23,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
     /** @var PropertyDescriberInterface[] */
     private $propertyDescribers;
 
-    public function __construct(array $propertyDescribers)
+    public function __construct($propertyDescribers = [])
     {
         $this->propertyDescribers = $propertyDescribers;
     }

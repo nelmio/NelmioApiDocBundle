@@ -12,11 +12,12 @@
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 use EXSyst\Component\Swagger\Schema;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Symfony\Component\PropertyInfo\Type;
 
-class ObjectPropertyDescriber implements PropertyDescriberInterface
+class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
