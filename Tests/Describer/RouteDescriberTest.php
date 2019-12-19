@@ -41,11 +41,20 @@ class RouteDescriberTest extends AbstractDescriberTest
         $this->routes = new RouteCollection();
         $this->describer = new RouteDescriber(
             $this->routes,
-            new ControllerReflector(
-                new Container(),
-                $this->createMock(ControllerNameParser::class)
-            ),
+            $this->createControllerReflector(),
             [$this->routeDescriber]
         );
+    }
+
+    protected function createControllerReflector(): ControllerReflector
+    {
+        if (class_exists(ControllerNameParser::class)) {
+            return new ControllerReflector(
+                new Container(),
+                $this->createMock(ControllerNameParser::class)
+            );
+        }
+
+        return new ControllerReflector(new Container());
     }
 }

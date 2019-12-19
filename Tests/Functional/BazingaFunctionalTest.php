@@ -15,6 +15,13 @@ use Hateoas\Configuration\Embedded;
 
 class BazingaFunctionalTest extends WebTestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        static::createClient([], ['HTTP_HOST' => 'api.example.com']);
+    }
+
     public function testModelComplexDocumentationBazinga()
     {
         $this->assertEquals([

@@ -15,6 +15,13 @@ use EXSyst\Component\Swagger\Tag;
 
 class FunctionalTest extends WebTestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        static::createClient([], ['HTTP_HOST' => 'api.example.com']);
+    }
+
     public function testConfiguredDocumentation()
     {
         $this->assertEquals('My Default App', $this->getSwaggerDefinition()->getInfo()->getTitle());
