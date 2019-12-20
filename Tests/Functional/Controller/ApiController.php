@@ -11,8 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
@@ -24,8 +22,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * @Route("/api", host="api.example.com")
@@ -105,16 +101,6 @@ class ApiController
      * )
      */
     public function userAction()
-    {
-    }
-
-    /**
-     * @Route("/fosrest.{_format}", methods={"POST"})
-     * @QueryParam(name="foo", requirements=@Regex("/^\d+$/"))
-     * @RequestParam(name="bar", requirements="\d+")
-     * @RequestParam(name="baz", requirements=@IsTrue)
-     */
-    public function fosrestAction()
     {
     }
 

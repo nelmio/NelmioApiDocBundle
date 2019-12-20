@@ -126,37 +126,6 @@ class FunctionalTest extends WebTestCase
         $this->assertEmpty($parameter->getFormat());
     }
 
-    public function testFOSRestAction()
-    {
-        $operation = $this->getOperation('/api/fosrest', 'post');
-
-        $parameters = $operation->getParameters();
-        $this->assertTrue($parameters->has('foo', 'query'));
-        $this->assertTrue($parameters->has('body', 'body'));
-        $body = $parameters->get('body', 'body')->getSchema()->getProperties();
-
-        $this->assertTrue($body->has('bar'));
-        $this->assertTrue($body->has('baz'));
-
-        $fooParameter = $parameters->get('foo', 'query');
-        $this->assertNotNull($fooParameter->getPattern());
-        $this->assertEquals('\d+', $fooParameter->getPattern());
-        $this->assertNull($fooParameter->getFormat());
-
-        $barParameter = $body->get('bar');
-        $this->assertNotNull($barParameter->getPattern());
-        $this->assertEquals('\d+', $barParameter->getPattern());
-        $this->assertNull($barParameter->getFormat());
-
-        $bazParameter = $body->get('baz');
-        $this->assertNotNull($bazParameter->getFormat());
-        $this->assertEquals('IsTrue', $bazParameter->getFormat());
-        $this->assertNull($bazParameter->getPattern());
-
-        // The _format path attribute should be removed
-        $this->assertFalse($parameters->has('_format', 'path'));
-    }
-
     public function testDeprecatedAction()
     {
         $operation = $this->getOperation('/api/deprecated', 'get');
