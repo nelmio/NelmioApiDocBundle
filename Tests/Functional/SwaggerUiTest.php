@@ -59,6 +59,10 @@ class SwaggerUiTest extends WebTestCase
             '/test/test/' => ['get' => [
                 'responses' => ['200' => ['description' => 'Test']],
             ]],
+            '/test/test/{id}' => ['get' => [
+                'responses' => ['200' => ['description' => 'Test Ref']],
+                'parameters' => [['$ref' => '#/parameters/test']],
+            ]],
         ];
         $expected['definitions'] = [
             'Dummy' => $expected['definitions']['Dummy'],
