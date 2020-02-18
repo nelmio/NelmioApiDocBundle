@@ -13,6 +13,13 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 class JMSFunctionalTest extends WebTestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        static::createClient([], ['HTTP_HOST' => 'api.example.com']);
+    }
+
     public function testModelPictureDocumentation()
     {
         $this->assertEquals([

@@ -24,8 +24,6 @@ class WebTestCase extends BaseWebTestCase
 
     protected function getSwaggerDefinition($area = 'default')
     {
-        static::createClient([], ['HTTP_HOST' => 'api.example.com']);
-
         return static::$kernel->getContainer()->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }
 
