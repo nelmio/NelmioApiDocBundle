@@ -12,14 +12,21 @@
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 use EXSyst\Component\Swagger\Schema;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Symfony\Component\PropertyInfo\Type;
 
-class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
+class ObjectPropertyDescriber implements PropertyDescriberInterface
 {
-    use ModelRegistryAwareTrait;
+    /**
+     * @var ModelRegistry
+     */
+    private $modelRegistry;
+
+    public function __construct(ModelRegistry $modelRegistry)
+    {
+        $this->modelRegistry = $modelRegistry;
+    }
 
     public function describe(Type $type, Schema $property, array $groups = null)
     {
