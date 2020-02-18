@@ -12,10 +12,14 @@
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 use EXSyst\Component\Swagger\Schema;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Symfony\Component\PropertyInfo\Type;
 
-class ArrayPropertyDescriber implements PropertyDescriberInterface
+class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
+    use ModelRegistryAwareTrait;
+
     /** @var PropertyDescriberInterface[] */
     private $propertyDescribers;
 
@@ -35,6 +39,9 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface
         $property = $property->getItems();
 
         foreach ($this->propertyDescribers as $propertyDescriber) {
+            if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
+                $propertyDescriber->setModelRegistry($this->modelRegistry);
+            }
             if ($propertyDescriber->supports($type)) {
                 $propertyDescriber->describe($type, $property, $groups);
 

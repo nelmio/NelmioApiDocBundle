@@ -100,6 +100,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private function describeProperty(Type $type, Model $model, Schema $property, string $propertyName)
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
+            if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
+                $propertyDescriber->setModelRegistry($this->modelRegistry);
+            }
             if ($propertyDescriber->supports($type)) {
                 $propertyDescriber->describe($type, $property, $model->getGroups());
 
