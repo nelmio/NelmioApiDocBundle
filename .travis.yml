@@ -4,7 +4,7 @@ php:
   - 7.1
   - 7.2
   - 7.3
-  - 7.4snapshot
+  - 7.4
 
 sudo: false
 
@@ -24,8 +24,10 @@ matrix:
       env: SYMFONY_VERSION=^4.0
     - php: 7.3
       env: SYMFONY_VERSION=^5.0
-  allow_failures:
-    - php: 7.4snapshot
+    - php: 7.4
+      env: SYMFONY_VERSION=^4.0
+    - php: 7.4
+      env: SYMFONY_VERSION=^5.0
 
 before_install:
     - phpenv config-rm xdebug.ini || true
