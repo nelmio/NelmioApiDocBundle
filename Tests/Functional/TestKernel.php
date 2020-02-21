@@ -56,9 +56,12 @@ class TestKernel extends Kernel
             new SensioFrameworkExtraBundle(),
             new ApiPlatformBundle(),
             new NelmioApiDocBundle(),
-            new FOSRestBundle(),
             new TestBundle(),
         ];
+
+        if (class_exists(FOSRestBundle::class)) {
+            $bundles[] = new FOSRestBundle();
+        }
 
         if ($this->useJMS) {
             $bundles[] = new JMSSerializerBundle();
@@ -83,6 +86,10 @@ class TestKernel extends Kernel
         $routes->import('', '/api', 'api_platform');
         $routes->add('/docs/{area}', 'nelmio_api_doc.controller.swagger_ui')->setDefault('area', 'default');
         $routes->add('/docs.json', 'nelmio_api_doc.controller.swagger');
+
+        if (class_exists(FOSRestBundle::class)) {
+            $routes->import(__DIR__.'/Controller/FOSRestController.php', '/', 'annotation');
+        }
 
         if ($this->useJMS) {
             $routes->import(__DIR__.'/Controller/JMSController.php', '/', 'annotation');
@@ -134,16 +141,18 @@ class TestKernel extends Kernel
             'mapping' => ['paths' => ['%kernel.project_dir%/Tests/Functional/Entity']],
         ]);
 
-        $c->loadFromExtension('fos_rest', [
-            'format_listener' => [
-                'rules' => [
-                    [
-                        'path' => '^/',
-                        'fallback_format' => 'json',
+        if (class_exists(FOSRestBundle::class)) {
+            $c->loadFromExtension('fos_rest', [
+                'format_listener' => [
+                    'rules' => [
+                        [
+                            'path' => '^/',
+                            'fallback_format' => 'json',
+                        ],
                     ],
                 ],
-            ],
-        ]);
+            ]);
+        }
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [

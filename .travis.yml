@@ -31,6 +31,7 @@ matrix:
 
 before_install:
     - phpenv config-rm xdebug.ini || true
+    - if [ "$SYMFONY_VERSION" == "^5.0" ]; then composer remove friendsofsymfony/rest-bundle --dev; fi;
     - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --dev --no-update; fi;
 
 install: composer update --no-interaction $COMPOSER_FLAGS
