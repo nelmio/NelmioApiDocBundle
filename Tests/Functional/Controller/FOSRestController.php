@@ -25,7 +25,7 @@ class FOSRestController
     /**
      * @Route("/fosrest.{_format}", methods={"POST"})
      * @QueryParam(name="foo", requirements=@Regex("/^\d+$/"))
-     * @RequestParam(name="bar", requirements="\d+")
+     * @RequestParam(name="Barraa", key="bar", requirements="\d+")
      * @RequestParam(name="baz", requirements=@IsTrue)
      */
     public function fosrestAction()
