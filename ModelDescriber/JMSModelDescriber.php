@@ -183,7 +183,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     /**
      * @internal
-     * @return void
      */
     public function describeItem(array $type, $property, Context $context)
     {
