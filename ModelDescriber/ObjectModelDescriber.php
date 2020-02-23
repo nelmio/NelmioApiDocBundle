@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
+use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -24,17 +25,23 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 {
     use ModelRegistryAwareTrait;
 
+    /** @var PropertyInfoExtractorInterface */
     private $propertyInfo;
+    /** @var Reader */
     private $doctrineReader;
+    /** @var PropertyDescriberInterface[] */
+    private $propertyDescribers;
 
     private $swaggerDefinitionAnnotationReader;
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        Reader $reader
+        Reader $reader,
+        $propertyDescribers
     ) {
         $this->propertyInfo = $propertyInfo;
         $this->doctrineReader = $reader;
+        $this->propertyDescribers = $propertyDescribers;
     }
 
     public function describe(Model $model, Schema $schema)
@@ -86,40 +93,24 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             $type = $types[0];
-            if ($type->isCollection()) {
-                $type = $type->getCollectionValueType();
-                if (null === $type) {
-                    throw new \LogicException(sprintf('Property "%s:%s" is an array, but its items type isn\'t specified. You can specify that by using the type `string[]` for instance or `@SWG\Property(type="array", @SWG\Items(type="string"))`.', $class, $propertyName));
-                }
+            $this->describeProperty($type, $model, $property, $propertyName);
+        }
+    }
 
-                $property->setType('array');
-                $property = $property->getItems();
+    private function describeProperty(Type $type, Model $model, Schema $property, string $propertyName)
+    {
+        foreach ($this->propertyDescribers as $propertyDescriber) {
+            if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
+                $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
+            if ($propertyDescriber->supports($type)) {
+                $propertyDescriber->describe($type, $property, $model->getGroups());
 
-            if (Type::BUILTIN_TYPE_STRING === $type->getBuiltinType()) {
-                $property->setType('string');
-            } elseif (Type::BUILTIN_TYPE_BOOL === $type->getBuiltinType()) {
-                $property->setType('boolean');
-            } elseif (Type::BUILTIN_TYPE_INT === $type->getBuiltinType()) {
-                $property->setType('integer');
-            } elseif (Type::BUILTIN_TYPE_FLOAT === $type->getBuiltinType()) {
-                $property->setType('number');
-                $property->setFormat('float');
-            } elseif (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
-                if (is_a($type->getClassName(), \DateTimeInterface::class, true)) {
-                    $property->setType('string');
-                    $property->setFormat('date-time');
-                } else {
-                    $type = new Type($type->getBuiltinType(), false, $type->getClassName(), $type->isCollection(), $type->getCollectionKeyType(), $type->getCollectionValueType()); // ignore nullable field
-
-                    $property->setRef(
-                        $this->modelRegistry->register(new Model($type, $model->getGroups()))
-                    );
-                }
-            } else {
-                throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@SWG\Property(type="")` annotation to specify it manually.', $type->getBuiltinType(), $class, $propertyName));
+                return;
             }
         }
+
+        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@SWG\Property(type="")` annotation to specify it manually.', $type->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
     }
 
     public function supports(Model $model): bool
