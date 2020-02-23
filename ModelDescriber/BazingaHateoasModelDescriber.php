@@ -124,7 +124,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         foreach ($relation->getAttributes() as $attribute => $value) {
             $subSubProp = $subProperties->get($attribute);
             switch (gettype($value)) {
-                case 'integer' :
+                case 'integer':
                     $subSubProp->setType('integer');
                     $subSubProp->setDefault($value);
 
