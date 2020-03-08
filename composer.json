@@ -19,7 +19,7 @@
         "symfony/framework-bundle": "^3.4|^4.0",
         "symfony/options-resolver": "^3.4.4|^4.0",
         "symfony/property-info": "^3.4|^4.0",
-        "zircote/swagger-php": "^3.0.2",
+        "zircote/swagger-php": "^3.0.3",
         "phpdocumentor/reflection-docblock": "^3.1|^4.0"
     },
     "require-dev": {
@@ -40,11 +40,12 @@
         "doctrine/annotations": "^1.2",
         "doctrine/common": "^2.4",
 
-        "api-platform/core": "^2.4.2",
+        "api-platform/core": "^2.4.7",
         "friendsofsymfony/rest-bundle": "^2.0",
         "willdurand/hateoas-bundle": "^1.0",
         "jms/serializer": "^1.13",
-        "jms/serializer-bundle": "^2.0"
+        "jms/serializer-bundle": "^2.0",
+        "symfony/serializer": "^4.3"
     },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
