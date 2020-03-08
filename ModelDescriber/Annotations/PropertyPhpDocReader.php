@@ -45,7 +45,7 @@ class PropertyPhpDocReader
         if (!$title = $docBlock->getSummary()) {
             /** @var Var_ $var */
             foreach ($docBlock->getTagsByName('var') as $var) {
-                if (!$description = $var->getDescription()) {
+                if (!method_exists($var, 'getDescription') || !$description = $var->getDescription()) {
                     continue;
                 }
                 $title = $description->render();
