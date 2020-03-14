@@ -5,7 +5,7 @@
 
     <services>
         <service id="nelmio_api_doc.route_describers.php_doc" class="Nelmio\ApiDocBundle\RouteDescriber\PhpDocDescriber" public="false">
-            <tag name="nelmio_api_doc.route_describer" priority="-1000" />
+            <tag name="nelmio_api_doc.route_describer" priority="-275" />
         </service>
     </services>
 

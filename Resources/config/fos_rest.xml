@@ -7,7 +7,7 @@
         <service id="nelmio_api_doc.route_describers.fos_rest" class="Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber" public="false">
             <argument type="service" id="annotation_reader" />
 
-            <tag name="nelmio_api_doc.route_describer" priority="-300" />
+            <tag name="nelmio_api_doc.route_describer" priority="-250" />
         </service>
     </services>
 

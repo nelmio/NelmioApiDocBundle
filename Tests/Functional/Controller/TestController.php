@@ -29,4 +29,16 @@ class TestController
     public function testAction()
     {
     }
+
+    /**
+     * @SWG\Parameter(ref="#/parameters/test"),
+     * @SWG\Response(
+     *     response="200",
+     *     description="Test Ref"
+     * )
+     * @Route("/test/{id}", methods={"GET"})
+     */
+    public function testRefAction()
+    {
+    }
 }
