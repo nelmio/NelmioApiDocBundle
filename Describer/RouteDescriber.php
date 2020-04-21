@@ -53,7 +53,7 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
             // if able to resolve the controller
             $controller = $route->getDefault('_controller');
             if ($method = $this->controllerReflector->getReflectionMethod($controller)) {
-                // Extract as many informations as possible about this route
+                // Extract as many information as possible about this route
                 foreach ($this->routeDescribers as $describer) {
                     if ($describer instanceof ModelRegistryAwareInterface) {
                         $describer->setModelRegistry($this->modelRegistry);
