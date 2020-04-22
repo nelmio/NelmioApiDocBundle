@@ -27,7 +27,7 @@ class ModelRegisterTest extends TestCase
 {
     /**
      * @group legacy
-     * @expectedDeprecation Using `@Model` implicitely in a `@SWG\Schema`, `@SWG\Items` or `@SWG\Property` annotation in %s. Use `ref=@Model()` instead.
+     * @expectedDeprecation Using `@Model` implicitly in a `@SWG\Schema`, `@SWG\Items` or `@SWG\Property` annotation in %s. Use `ref=@Model()` instead.
      */
     public function testDeprecatedImplicitUseOfModel()
     {
