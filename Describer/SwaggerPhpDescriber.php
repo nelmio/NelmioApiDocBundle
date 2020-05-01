@@ -25,6 +25,9 @@ use Swagger\Annotations as SWG;
 use Swagger\Context;
 use Symfony\Component\Routing\RouteCollection;
 
+// Help opcache.preload discover Swagger\Annotations\Swagger
+class_exists(SWG\Swagger::class);
+
 final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
