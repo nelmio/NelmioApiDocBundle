@@ -11,10 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\SwaggerPhp;
 
-use Swagger\Analysis;
-use Swagger\Annotations\Info;
-use Swagger\Annotations\Swagger;
-use Swagger\Context;
+use OpenApi\Analysis;
+use OpenApi\Annotations as OA;
+use OpenApi\Context;
 
 /**
  * Add defaults to fix default warnings.
@@ -25,13 +24,13 @@ final class AddDefaults
 {
     public function __invoke(Analysis $analysis)
     {
-        if ($analysis->getAnnotationsOfType(Info::class)) {
+        if ($analysis->getAnnotationsOfType(OA\Info::class)) {
             return;
         }
-        if (($annotations = $analysis->getAnnotationsOfType(Swagger::class)) && null !== $annotations[0]->info) {
+        if (($annotations = $analysis->getAnnotationsOfType(OA\OpenApi::class)) && null !== $annotations[0]->info) {
             return;
         }
 
-        $analysis->addAnnotation(new Info(['title' => '', 'version' => '0.0.0', '_context' => new Context(['generated' => true])]), null);
+        $analysis->addAnnotation(new OA\Info(['title' => '', 'version' => '0.0.0', '_context' => new Context(['generated' => true])]), null);
     }
 }

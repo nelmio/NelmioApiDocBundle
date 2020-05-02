@@ -12,26 +12,26 @@
 namespace Nelmio\ApiDocBundle\Tests\Swagger;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use EXSyst\Component\Swagger\Schema;
-use EXSyst\Component\Swagger\Swagger;
+//use EXSyst\Component\Swagger\Schema;
+//use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
 use PHPUnit\Framework\TestCase;
-use  Swagger\Analysis;
-use Swagger\Annotations as SWG;
+use OpenApi\Analysis;
+use OpenApi\Annotations as OA;
 
 class ModelRegisterTest extends TestCase
 {
     /**
      * @group legacy
-     * @expectedDeprecation Using `@Model` implicitly in a `@SWG\Schema`, `@SWG\Items` or `@SWG\Property` annotation in %s. Use `ref=@Model()` instead.
+     * @expectedDeprecation Using `@Model` implicitly in a `@OA\Schema`, `@OA\Items` or `@OA\Property` annotation in %s. Use `ref=@Model()` instead.
      */
     public function testDeprecatedImplicitUseOfModel()
     {
-        $api = new Swagger();
+        $api = new OA\OpenApi([]);
         $registry = new ModelRegistry([new NullModelDescriber()], $api);
         $modelRegister = new ModelRegister($registry);
 
@@ -39,24 +39,24 @@ class ModelRegisterTest extends TestCase
 
         $modelRegister->__invoke(new Analysis([$annotation = $annotationsReader->getPropertyAnnotation(
             new \ReflectionProperty(Foo::class, 'bar'),
-            SWG\Property::class
+            OA\Property::class
         )]));
 
-        $this->assertEquals(['items' => ['$ref' => '#/definitions/Foo']], json_decode(json_encode($annotation), true));
+        $this->assertEquals(['items' => ['$ref' => '#/components/schemas/Foo']], json_decode(json_encode($annotation), true));
     }
 }
 
 class Foo
 {
     /**
-     * @SWG\Property(@ModelAnnotation(type=Foo::class))
+     * @OA\Property(@ModelAnnotation(type=Foo::class))
      */
     private $bar;
 }
 
 class NullModelDescriber implements ModelDescriberInterface
 {
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, OA\Schema $schema)
     {
     }
 

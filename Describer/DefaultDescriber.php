@@ -44,6 +44,7 @@ final class DefaultDescriber implements DescriberInterface
                     $response = Util::getIndexedCollectionItem($operation, OA\Response::class, 'default');
                     $response->description = '';
                 }
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ class ApiDocGeneratorTest extends TestCase
         $adapter = new ArrayAdapter();
         $generator = new ApiDocGenerator([new DefaultDescriber()], [], $adapter);
 
-        $this->assertEquals($generator->generate(), $adapter->getItem('swagger_doc')->get());
+        $this->assertEquals($generator->generate(), $adapter->getItem('openapi_doc')->get());
     }
 
     public function testCacheWithCustomId()
