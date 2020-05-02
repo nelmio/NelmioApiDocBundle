@@ -12,19 +12,17 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
-use Swagger\Analysis;
-use Swagger\Annotations\Definition as SwgDefinition;
-use Swagger\Annotations\Property as SwgProperty;
-use Swagger\Context;
+use OpenApi\Analysis;
+use OpenApi\Annotations as OA;
+use OpenApi\Context;
 
 /**
  * @internal
  */
-class SwgAnnotationsReader
+class OpenApiAnnotationsReader
 {
     private $annotationsReader;
     private $modelRegister;
@@ -35,36 +33,37 @@ class SwgAnnotationsReader
         $this->modelRegister = new ModelRegister($modelRegistry);
     }
 
-    public function updateDefinition(\ReflectionClass $reflectionClass, Schema $schema)
+    public function updateSchema(\ReflectionClass $reflectionClass, OA\Schema $schema): void
     {
-        /** @var SwgDefinition $swgDefinition */
-        if (!$swgDefinition = $this->annotationsReader->getClassAnnotation($reflectionClass, SwgDefinition::class)) {
+        /** @var OA\Schema $oaSchema */
+        if (!$oaSchema = $this->annotationsReader->getClassAnnotation($reflectionClass, OA\Schema::class)) {
             return;
         }
 
         // Read @Model annotations
-        $this->modelRegister->__invoke(new Analysis([$swgDefinition]));
+        $this->modelRegister->__invoke(new Analysis([$oaSchema]));
 
-        if (!$swgDefinition->validate()) {
+        if (!$oaSchema->validate()) {
             return;
         }
 
-        $schema->merge(json_decode(json_encode($swgDefinition)));
+        $schema->mergeProperties($oaSchema);
     }
 
     public function getPropertyName(\ReflectionProperty $reflectionProperty, string $default): string
     {
-        /** @var SwgProperty $swgProperty */
-        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class)) {
+        /** @var OA\Property $oaProperty */
+        if (!$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, OA\Property::class)) {
             return $default;
         }
 
-        return $swgProperty->property ?? $default;
+        return $oaProperty->property !== OA\UNDEFINED ? $oaProperty->property : $default;
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property, array $serializationGroups = null)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null): void
     {
-        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class)) {
+        /** @var OA\Property $oaProperty */
+        if (!$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, OA\Property::class)) {
             return;
         }
 
@@ -75,15 +74,15 @@ class SwgAnnotationsReader
             'property' => $reflectionProperty->name,
             'filename' => $declaringClass->getFileName(),
         ]);
-        $swgProperty->_context = $context;
+        $oaProperty->_context = $context;
 
         // Read @Model annotations
-        $this->modelRegister->__invoke(new Analysis([$swgProperty]), $serializationGroups);
+        $this->modelRegister->__invoke(new Analysis([$oaProperty]), $serializationGroups);
 
-        if (!$swgProperty->validate()) {
+        if (!$oaProperty->validate()) {
             return;
         }
 
-        $property->merge(json_decode(json_encode($swgProperty)));
+        $property->mergeProperties($oaProperty);
     }
 }

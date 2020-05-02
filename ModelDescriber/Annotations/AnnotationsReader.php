@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
+use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 
 /**
@@ -24,7 +24,7 @@ class AnnotationsReader
     private $modelRegistry;
 
     private $phpDocReader;
-    private $swgAnnotationsReader;
+    private $openApiAnnotationsReader;
     private $symfonyConstraintAnnotationReader;
 
     public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry)
@@ -33,25 +33,25 @@ class AnnotationsReader
         $this->modelRegistry = $modelRegistry;
 
         $this->phpDocReader = new PropertyPhpDocReader();
-        $this->swgAnnotationsReader = new SwgAnnotationsReader($annotationsReader, $modelRegistry);
+        $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($annotationsReader, $modelRegistry);
         $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($annotationsReader);
     }
 
-    public function updateDefinition(\ReflectionClass $reflectionClass, Schema $schema)
+    public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema): void
     {
-        $this->swgAnnotationsReader->updateDefinition($reflectionClass, $schema);
+        $this->openApiAnnotationsReader->updateSchema($reflectionClass, $schema);
         $this->symfonyConstraintAnnotationReader->setSchema($schema);
     }
 
     public function getPropertyName(\ReflectionProperty $reflectionProperty, string $default): string
     {
-        return $this->swgAnnotationsReader->getPropertyName($reflectionProperty, $default);
+        return $this->openApiAnnotationsReader->getPropertyName($reflectionProperty, $default);
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property, array $serializationGroups = null)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null): void
     {
         $this->phpDocReader->updateProperty($reflectionProperty, $property);
-        $this->swgAnnotationsReader->updateProperty($reflectionProperty, $property, $serializationGroups);
+        $this->openApiAnnotationsReader->updateProperty($reflectionProperty, $property, $serializationGroups);
         $this->symfonyConstraintAnnotationReader->updateProperty($reflectionProperty, $property);
     }
 }
