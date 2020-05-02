@@ -219,8 +219,8 @@ class UtilTest extends TestCase
         foreach ($asserts as $collection => $items) {
             foreach ($items as $assert) {
                 $setupCollection = empty($assert['components']) ?
-                    $setup[$collection] ?? [] :
-                    $setup['components']->{$collection} ?? [];
+                    ($setup[$collection] ?? []) :
+                    ($setup['components']->{$collection} !== OA\UNDEFINED ? $setup['components']->{$collection} : []);
 
                 // get the indexing correct within haystack preparation
                 $properties = array_fill(0, \count($setupCollection), null);
@@ -309,16 +309,6 @@ class UtilTest extends TestCase
                         'class' => OA\PathItem::class,
                         'key' => 'path',
                         'value' => 'path 1',
-                    ],
-                ],
-                // not contained in setup
-                'schemas' => [
-                    [
-                        'index' => 0,
-                        'class' => OA\Schema::class,
-                        'key' => 'schema',
-                        'value' => 'schema 0',
-                        'components' => true,
                     ],
                 ],
                 // search indexes out of order followed by dynamically created
