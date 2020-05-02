@@ -12,6 +12,8 @@
 namespace Nelmio\ApiDocBundle\Controller;
 
 use Nelmio\ApiDocBundle\ApiDocGenerator;
+use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\Server;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,13 +62,18 @@ final class SwaggerUiController
             throw new BadRequestHttpException(sprintf('Area "%s" is not supported as it isn\'t defined in config.%s', $area, $advice));
         }
 
-        $spec = $this->generatorLocator->get($area)->generate()->toArray();
+        /** @var OpenApi $spec */
+        $spec = $this->generatorLocator->get($area)->generate();
+
         if ('' !== $request->getBaseUrl()) {
-            $spec['basePath'] = $request->getBaseUrl();
+            $spec->servers = [new Server(['url' => $request->getHost() . $request->getBaseUrl()])];
         }
 
         return new Response(
-            $this->twig->render('@NelmioApiDoc/SwaggerUi/index.html.twig', ['swagger_data' => ['spec' => $spec]]),
+            $this->twig->render(
+                '@NelmioApiDoc/SwaggerUi/index.html.twig',
+                ['swagger_data' => ['spec' => json_decode($spec->toJson(), true)]]
+            ),
             Response::HTTP_OK,
             ['Content-Type' => 'text/html']
         );

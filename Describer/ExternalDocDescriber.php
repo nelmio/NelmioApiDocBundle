@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
 use OpenApi\Annotations as OA;
 
 class ExternalDocDescriber implements DescriberInterface
@@ -32,7 +33,10 @@ class ExternalDocDescriber implements DescriberInterface
     public function describe(OA\OpenApi $api)
     {
         $externalDoc = $this->getExternalDoc();
-        $api->merge($externalDoc, $this->overwrite);
+
+        if (!empty($externalDoc)) {
+            Util::merge($api, $externalDoc, $this->overwrite);
+        }
     }
 
     private function getExternalDoc()

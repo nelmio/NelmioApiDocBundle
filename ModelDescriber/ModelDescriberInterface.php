@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use EXSyst\Component\Swagger\Schema;
+use OpenApi\Annotations\Schema;
 use Nelmio\ApiDocBundle\Model\Model;
 
 interface ModelDescriberInterface

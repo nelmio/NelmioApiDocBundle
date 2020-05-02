@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Describer;
 
-use EXSyst\Component\Swagger\Swagger;
+use OpenApi\Annotations\OpenApi;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
@@ -32,7 +32,7 @@ class RouteDescriberTest extends AbstractDescriberTest
         $this->routeDescriber->expects($this->never())
             ->method('describe');
 
-        $this->assertEquals((new Swagger())->toArray(), $this->getSwaggerDoc()->toArray());
+        $this->assertEquals((new OpenApi([]))->toJson(), $this->getOpenApiDoc()->toJson());
     }
 
     protected function setUp()
