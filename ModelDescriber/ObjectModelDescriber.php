@@ -12,7 +12,8 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
@@ -44,10 +45,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $this->propertyDescribers = $propertyDescribers;
     }
 
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, OA\Schema $schema)
     {
-        $schema->setType('object');
-        $properties = $schema->getProperties();
+        $schema->type = 'object';
 
         $class = $model->getType()->getClassName();
         $context = [];
@@ -67,7 +67,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             // read property options from Swagger Property annotation if it exists
             if (property_exists($class, $propertyName)) {
                 $reflectionProperty = new \ReflectionProperty($class, $propertyName);
-                $property = $properties->get($annotationsReader->getPropertyName($reflectionProperty, $propertyName));
+                $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflectionProperty, $propertyName));
 
                 $groups = $model->getGroups();
                 if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
@@ -76,11 +76,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
                 $annotationsReader->updateProperty($reflectionProperty, $property, $groups);
             } else {
-                $property = $properties->get($propertyName);
+                $property = Util::getProperty($schema, $propertyName);
             }
 
             // If type manually defined
-            if (null !== $property->getType() || null !== $property->getRef()) {
+            if (OA\UNDEFINED !== $property->type || OA\UNDEFINED !== $property->ref) {
                 continue;
             }
 
@@ -97,7 +97,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
     }
 
-    private function describeProperty(Type $type, Model $model, Schema $property, string $propertyName)
+    private function describeProperty(Type $type, Model $model, OA\Schema $property, string $propertyName)
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {

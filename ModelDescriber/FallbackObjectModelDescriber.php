@@ -11,13 +11,13 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use EXSyst\Component\Swagger\Schema;
+use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Model\Model;
 use Symfony\Component\PropertyInfo\Type;
 
 class FallbackObjectModelDescriber implements ModelDescriberInterface
 {
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, OA\Schema $schema)
     {
     }
 
