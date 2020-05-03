@@ -107,7 +107,7 @@ class BazingaFunctionalTest extends WebTestCase
                     'properties' => [
                         'typed_bazinga_users' => [
                             'items' => [
-                                '$ref' => '#/definitions/BazingaUser',
+                                '$ref' => '#/components/schemas/BazingaUser',
                             ],
                             'type' => 'array',
                         ],

@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle;
 
-use EXSyst\Component\Swagger\Swagger;
 use OpenApi\Annotations\OpenApi;
 use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;

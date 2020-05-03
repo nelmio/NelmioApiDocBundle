@@ -51,7 +51,7 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'members' => [
                     'items' => [
-                        '$ref' => '#/definitions/JMSChatUser',
+                        '$ref' => '#/components/schemas/JMSChatUser',
                     ],
                     'type' => 'array',
                 ],
@@ -62,7 +62,7 @@ class JMSFunctionalTest extends WebTestCase
             'type' => 'object',
             'properties' => [
                 'picture' => [
-                    '$ref' => '#/definitions/JMSPicture',
+                    '$ref' => '#/components/schemas/JMSPicture',
                 ],
             ],
         ], $this->getModel('JMSChatUser')->toArray());
@@ -106,13 +106,13 @@ class JMSFunctionalTest extends WebTestCase
                 'friends' => [
                     'type' => 'array',
                     'items' => [
-                        '$ref' => '#/definitions/User',
+                        '$ref' => '#/components/schemas/User',
                     ],
                 ],
                 'indexed_friends' => [
                     'type' => 'object',
                     'additionalProperties' => [
-                        '$ref' => '#/definitions/User',
+                        '$ref' => '#/components/schemas/User',
                     ],
                 ],
                 'favorite_dates' => [
@@ -127,7 +127,7 @@ class JMSFunctionalTest extends WebTestCase
                     'format' => 'date-time',
                 ],
                 'best_friend' => [
-                    '$ref' => '#/definitions/User',
+                    '$ref' => '#/components/schemas/User',
                 ],
                 'status' => [
                     'type' => 'string',
@@ -136,10 +136,10 @@ class JMSFunctionalTest extends WebTestCase
                     'enum' => ['disabled', 'enabled'],
                 ],
                 'virtual_type1' => [
-                    '$ref' => '#/definitions/VirtualTypeClassDoesNotExistsHandlerDefined',
+                    '$ref' => '#/components/schemas/VirtualTypeClassDoesNotExistsHandlerDefined',
                 ],
                 'virtual_type2' => [
-                    '$ref' => '#/definitions/VirtualTypeClassDoesNotExistsHandlerNotDefined',
+                    '$ref' => '#/components/schemas/VirtualTypeClassDoesNotExistsHandlerNotDefined',
                 ],
                 'last_update' => [
                     'type' => 'date',
@@ -217,10 +217,10 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'integer',
                 ],
                 'complex' => [
-                    '$ref' => '#/definitions/JMSComplex2',
+                    '$ref' => '#/components/schemas/JMSComplex2',
                 ],
                 'user' => [
-                    '$ref' => '#/definitions/JMSUser',
+                    '$ref' => '#/components/schemas/JMSUser',
                 ],
             ],
         ], $this->getModel('JMSDualComplex')->toArray());
@@ -231,8 +231,8 @@ class JMSFunctionalTest extends WebTestCase
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
-                'living' => ['$ref' => '#/definitions/JMSChatLivingRoom'],
-                'dining' => ['$ref' => '#/definitions/JMSChatRoom'],
+                'living' => ['$ref' => '#/components/schemas/JMSChatLivingRoom'],
+                'dining' => ['$ref' => '#/components/schemas/JMSChatRoom'],
             ],
         ], $this->getModel('JMSChatFriend')->toArray());
 
@@ -251,9 +251,9 @@ class JMSFunctionalTest extends WebTestCase
             'type' => 'object',
             'properties' => [
                 'id' => ['type' => 'integer'],
-                'user' => ['$ref' => '#/definitions/JMSUser'],
+                'user' => ['$ref' => '#/components/schemas/JMSUser'],
                 'name' => ['type' => 'string'],
-                'virtual' => ['$ref' => '#/definitions/JMSUser'],
+                'virtual' => ['$ref' => '#/components/schemas/JMSUser'],
             ],
             'required' => [
                 'id',

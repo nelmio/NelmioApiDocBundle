@@ -11,9 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use EXSyst\Component\Swagger\Operation;
-use EXSyst\Component\Swagger\Parameter;
-use EXSyst\Component\Swagger\Swagger;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use OpenApi\Annotations as OA;
 use LogicException;
 use Symfony\Component\Routing\Route;
 
@@ -24,7 +23,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         foreach ($this->getOperations($api, $route) as $operation) {
             $operation->merge(['schemes' => $route->getSchemes()]);
@@ -40,24 +39,27 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 }
 
                 $paramId = $pathVariable.'/path';
+                /** @var OA\Parameter $parameter */
                 $parameter = $existingParams[$paramId] ?? null;
                 if (null !== $parameter) {
-                    if (!$parameter->getRequired()) {
+                    if (!$parameter->required || $parameter->required === OA\UNDEFINED) {
                         throw new LogicException(\sprintf('Global parameter "%s" is used as part of route "%s" and must be set as "required"', $pathVariable, $route->getPath()));
                     }
 
                     continue;
                 }
 
-                $parameter = $operation->getParameters()->get($pathVariable, 'path');
-                $parameter->setRequired(true);
+                $parameter = Util::getOperationParameter($operation, $pathVariable, 'path');
+                $parameter->required = true;
 
-                if (null === $parameter->getType()) {
-                    $parameter->setType('string');
+                $parameter->schema = Util::getChild($parameter, OA\Schema::class);
+
+                if (OA\UNDEFINED === $parameter->schema->type) {
+                    $parameter->schema->type = 'string';
                 }
 
-                if (isset($requirements[$pathVariable]) && null === $parameter->getPattern()) {
-                    $parameter->setPattern($requirements[$pathVariable]);
+                if (isset($requirements[$pathVariable]) && OA\UNDEFINED === $parameter->schema->pattern) {
+                    $parameter->schema->pattern = $requirements[$pathVariable];
                 }
             }
         }
@@ -66,22 +68,24 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     /**
      * The '$ref' parameters need special handling, since their objects are missing 'name' and 'in'.
      *
-     * @return Parameter[] existing $ref parameters
+     * @return OA\Parameter[] existing $ref parameters
      */
-    private function getRefParams(Swagger $api, Operation $operation): array
+    private function getRefParams(OA\OpenApi $api, OA\Operation $operation): array
     {
-        /** @var Parameter[] $globalParams */
-        $globalParams = $api->getParameters();
+        /** @var OA\Parameter[] $globalParams */
+        $globalParams = $api->components->parameters !== OA\UNDEFINED ? $api->components->parameters : [];
         $existingParams = [];
 
-        foreach ($operation->getParameters() as $id => $parameter) {
-            $ref = $parameter->getRef();
-            if (null === $ref) {
+        $operationParameters = $operation->parameters !== OA\UNDEFINED ? $operation->parameters : [];
+        /** @var OA\Parameter $parameter */
+        foreach ($operationParameters as $id => $parameter) {
+            $ref = $parameter->ref;
+            if (OA\UNDEFINED === $ref) {
                 // we only concern ourselves with '$ref' parameters, so continue the loop
                 continue;
             }
 
-            $ref = \mb_substr($ref, 13); // trim the '#/parameters/' part of ref
+            $ref = \mb_substr($ref, 24); // trim the '#/components/parameters/' part of ref
             if (!isset($globalParams[$ref])) {
                 // this shouldn't happen during proper configs, but in case of bad config, just ignore it here
                 continue;
@@ -90,7 +94,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
             $refParameter = $globalParams[$ref];
 
             // param ids are in form {name}/{in}
-            $existingParams[\sprintf('%s/%s', $refParameter->getName(), $refParameter->getIn())] = $refParameter;
+            $existingParams[\sprintf('%s/%s', $refParameter->name, $refParameter->in)] = $refParameter;
         }
 
         return $existingParams;

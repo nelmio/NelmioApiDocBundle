@@ -27,7 +27,7 @@ use Symfony\Component\Routing\RouteCollection;
 // Help opcache.preload discover Swagger\Annotations\Swagger
 class_exists(OA\OpenApi::class);
 
-final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
+final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
@@ -49,7 +49,6 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
     public function describe(OA\OpenApi $api)
     {
         $analysis = $this->getAnnotations($api);
-
         $analysis->process($this->getProcessors());
         $analysis->validate();
 
@@ -83,7 +82,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
              */
             public function ref($ref)
             {
-                /** @var OA\Components $components */#/definitions/
+                /** @var OA\Components $components */
                 $components = Util::getChild($this->api, OA\Components::class);
 
                 if (0 === strpos($ref, '#/components/schemas/')
@@ -108,16 +107,6 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 parent::ref($ref);
             }
         }, null);
-
-        $operationAnnotations = [
-            'get' => OA\Get::class,
-            'post' => OA\Post::class,
-            'put' => OA\Put::class,
-            'patch' => OA\Patch::class,
-            'delete' => OA\Delete::class,
-            'options' => OA\Options::class,
-            'head' => OA\Head::class,
-        ];
 
         $classAnnotations = [];
 

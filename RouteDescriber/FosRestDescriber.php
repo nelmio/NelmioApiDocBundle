@@ -12,7 +12,8 @@
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Swagger;
+use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use OpenApi\Annotations as OA;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Symfony\Component\Routing\Route;
@@ -30,10 +31,10 @@ final class FosRestDescriber implements RouteDescriberInterface
         $this->annotationReader = $annotationReader;
     }
 
-    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         $annotations = $this->annotationReader->getMethodAnnotations($reflectionMethod);
-        $annotations = array_filter($annotations, function ($value) {
+        $annotations = array_filter($annotations, static function ($value) {
             return $value instanceof RequestParam || $value instanceof QueryParam;
         });
 
@@ -43,48 +44,52 @@ final class FosRestDescriber implements RouteDescriberInterface
 
                 if ($annotation instanceof QueryParam) {
                     $name = $parameterName.($annotation->map ? '[]' : '');
-                    $parameter = $operation->getParameters()->get($name, 'query');
-                    $parameter->setAllowEmptyValue($annotation->nullable && $annotation->allowBlank);
+                    $parameter = Util::getOperationParameter($operation, $name, 'query');
+                    $parameter->allowEmptyValue = $annotation->nullable && $annotation->allowBlank;
 
-                    $parameter->setRequired(!$annotation->nullable && $annotation->strict);
+                    $parameter->required = !$annotation->nullable && $annotation->strict;
                 } else {
-                    $body = $operation->getParameters()->get('body', 'body')->getSchema();
-                    $body->setType('object');
-                    $parameter = $body->getProperties()->get($parameterName);
+                    $bodyParameter = Util::getOperationParameter($operation, 'body', 'body');
+                    /** @var OA\Schema $body */
+                    $body = Util::getChild($bodyParameter, OA\Schema::class);
+                    $body->type = 'object';
+                    $parameter = Util::getProperty($body, $annotation->getName());
 
                     if (!$annotation->nullable && $annotation->strict) {
-                        $requiredParameters = $body->getRequired();
-                        $requiredParameters[] = $parameterName;
+                        $requiredParameters = is_array($body->required) ? $body->required : [];
+                        $requiredParameters[] = $annotation->getName();
 
-                        $body->setRequired(array_values(array_unique($requiredParameters)));
+                        $body->required = array_values(array_unique($requiredParameters));
                     }
                 }
 
-                $parameter->setDefault($annotation->getDefault());
-                if (null !== $parameter->getType()) {
-                    continue;
+                $parameter->schema = Util::createChild($parameter, OA\Schema::class);
+                $parameter->schema->default = $annotation->getDefault();
+
+                if (OA\UNDEFINED === $parameter->schema->type) {
+                    $parameter->schema->type = $annotation->map ? 'array' : 'string';
                 }
 
-                if (null === $parameter->getDescription()) {
-                    $parameter->setDescription($annotation->description);
+                if (OA\UNDEFINED === $parameter->description) {
+                    $parameter->description = $annotation->description;
                 }
 
                 if ($annotation->map) {
-                    $parameter->setType('array');
-                    $parameter->setCollectionFormat('multi');
-                    $parameter = $parameter->getItems();
+                    $parameter->type = 'array';
+                    $parameter->collectionFormat = 'multi';
+                    $parameter->items = Util::getChild($parameter, OA\Items::class);
                 }
 
-                $parameter->setType('string');
+                $parameter->type = 'string';
 
                 $pattern = $this->getPattern($annotation->requirements);
                 if (null !== $pattern) {
-                    $parameter->setPattern($pattern);
+                    $parameter->pattern = $pattern;
                 }
 
                 $format = $this->getFormat($annotation->requirements);
                 if (null !== $format) {
-                    $parameter->setFormat($format);
+                    $parameter->format = $format;
                 }
             }
         }

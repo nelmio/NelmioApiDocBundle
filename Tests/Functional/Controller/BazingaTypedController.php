@@ -13,7 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\BazingaUserTyped;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -21,15 +21,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class BazingaTypedController
 {
-    /**
-     * @Route("/api/bazinga_typed", methods={"GET"})
-     * @SWG\Response(
-     *     response=200,
-     *     description="Success",
-     *     @Model(type=BazingaUserTyped::class)
-     * )
-     */
-    public function userTypedAction()
-    {
-    }
+//    /**
+//     * @Route("/api/bazinga_typed", methods={"GET"})
+//     * @OA\Response(
+//     *     response=200,
+//     *     description="Success",
+//     *     @Model(type=BazingaUserTyped::class)
+//     * )
+//     */
+//    public function userTypedAction()
+//    {
+//    }
 }

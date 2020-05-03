@@ -27,6 +27,7 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
@@ -160,21 +161,23 @@ class TestKernel extends Kernel
                 'info' => [
                     'title' => 'My Default App',
                 ],
-                'definitions' => [
-                    'Test' => [
-                        'type' => 'string',
+                'components' => [
+                    'schemas' => [
+                        'Test' => [
+                            'type' => 'string',
+                        ],
                     ],
-                ],
-                'parameters' => [
-                    'test' => [
-                        'name' => 'id',
-                        'in' => 'path',
-                        'required' => true,
+                    'parameters' => [
+                        'test' => [
+                            'name' => 'id',
+                            'in' => 'path',
+                            'required' => true,
+                        ],
                     ],
-                ],
-                'responses' => [
-                    '201' => [
-                        'description' => 'Awesome description',
+                    'responses' => [
+                        '201' => [
+                            'description' => 'Awesome description',
+                        ],
                     ],
                 ],
             ],

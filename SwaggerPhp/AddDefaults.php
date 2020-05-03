@@ -27,7 +27,7 @@ final class AddDefaults
         if ($analysis->getAnnotationsOfType(OA\Info::class)) {
             return;
         }
-        if (($annotations = $analysis->getAnnotationsOfType(OA\OpenApi::class)) && null !== $annotations[0]->info) {
+        if (($annotations = $analysis->getAnnotationsOfType(OA\OpenApi::class)) && OA\UNDEFINED !== $annotations[0]->info) {
             return;
         }
 

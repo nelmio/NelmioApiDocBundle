@@ -11,8 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use EXSyst\Component\Swagger\Operation;
-use EXSyst\Component\Swagger\Schema;
+use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 
 class WebTestCase extends BaseWebTestCase
@@ -22,29 +21,43 @@ class WebTestCase extends BaseWebTestCase
         return new TestKernel();
     }
 
-    protected function getSwaggerDefinition($area = 'default')
+    protected function getOpenApiDefinition($area = 'default'): OA\OpenApi
     {
         return static::$kernel->getContainer()->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }
 
-    protected function getModel($name): Schema
+    protected function getModel($name): OA\Schema
     {
-        $definitions = $this->getSwaggerDefinition()->getDefinitions();
-        $this->assertTrue($definitions->has($name));
+        $api = $this->getOpenApiDefinition();
+        $key = array_search($name, array_column($api->components->schemas, 'schema'), true);
+        static::assertNotFalse($key, sprintf('Model "%s" does not exist.', $name));
 
-        return $definitions->get($name);
+        return $api->components->schemas[$key];
     }
 
-    protected function getOperation($path, $method): Operation
+    protected function getOperation($path, $method): OA\Operation
     {
-        $api = $this->getSwaggerDefinition();
-        $paths = $api->getPaths();
+        $path = $this->getPath($path);
 
-        $this->assertTrue($paths->has($path), sprintf('Path "%s" does not exist.', $path));
-        $action = $paths->get($path);
+        $this->assertInstanceOf(
+            OA\Operation::class,
+            $path->{$method},
+            sprintf('Operation "%s" for path "%s" does not exist', $method, $path->path)
+        );
 
-        $this->assertTrue($action->hasOperation($method), sprintf('Operation "%s" for path "%s" does not exist', $path, $method));
+        return $path->{$method};
+    }
 
-        return $action->getOperation($method);
+    protected function getPath($path): OA\PathItem
+    {
+        $api = $this->getOpenApiDefinition();
+        $paths = array_column($api->paths !== OA\UNDEFINED ? $api->paths : [], 'path');
+        static::assertContains(
+            $path,
+            $paths,
+            sprintf('Failed asserting that path "%s" does exist.', $path)
+        );
+
+        return $api->paths[array_search($path, array_column($api->paths, 'path'), true)];
     }
 }

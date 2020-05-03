@@ -35,8 +35,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
 
-        $expected = $this->getSwaggerDefinition()->toArray();
-        $expected['basePath'] = '/app_dev.php';
+        $expected = json_decode($this->getOpenApiDefinition()->toJson(), true);
 
         $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
@@ -49,8 +48,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
 
-        $expected = $this->getSwaggerDefinition()->toArray();
-        $expected['basePath'] = '/app_dev.php';
+        $expected = json_decode($this->getOpenApiDefinition()->toJson(), true);
         $expected['info']['title'] = 'My Test App';
         $expected['paths'] = [
             '/api/dummies' => $expected['paths']['/api/dummies'],
@@ -64,8 +62,8 @@ class SwaggerUiTest extends WebTestCase
                 'parameters' => [['$ref' => '#/parameters/test']],
             ]],
         ];
-        $expected['definitions'] = [
-            'Dummy' => $expected['definitions']['Dummy'],
+        $expected['components']['schemas'] = [
+            'Dummy' => $expected['components']['schemas']['Dummy'],
             'Test' => ['type' => 'string'],
             'JMSPicture_mini' => ['type' => 'object'],
             'BazingaUser_grouped' => ['type' => 'object'],
@@ -82,7 +80,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
 
-        $expected = $this->getSwaggerDefinition()->toArray();
+        $expected = json_decode($this->getOpenApiDefinition()->toJson(), true);
         $expected['basePath'] = '/app_dev.php';
         $expected['host'] = 'api.example.com';
 

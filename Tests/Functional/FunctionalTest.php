@@ -24,13 +24,13 @@ class FunctionalTest extends WebTestCase
 
     public function testConfiguredDocumentation()
     {
-        $this->assertEquals('My Default App', $this->getSwaggerDefinition()->getInfo()->getTitle());
-        $this->assertEquals('My Test App', $this->getSwaggerDefinition('test')->getInfo()->getTitle());
+        $this->assertEquals('My Default App', $this->getOpenApiDefinition()->info->title);
+        $this->assertEquals('My Test App', $this->getOpenApiDefinition('test')->info->title);
     }
 
     public function testUndocumentedAction()
     {
-        $paths = $this->getSwaggerDefinition()->getPaths();
+        $paths = $this->getOpenApiDefinition()->getPaths();
         $this->assertFalse($paths->has('/undocumented'));
         $this->assertFalse($paths->has('/api/admin'));
     }
@@ -41,20 +41,20 @@ class FunctionalTest extends WebTestCase
 
         $responses = $operation->getResponses();
         $this->assertTrue($responses->has('200'));
-        $this->assertEquals('#/definitions/Article', $responses->get('200')->getSchema()->getRef());
+        $this->assertEquals('#/components/schemas/Article', $responses->get('200')->getSchema()->getRef());
 
         // Ensure that groups are supported
         $modelProperties = $this->getModel('Article')->getProperties();
         $this->assertCount(1, $modelProperties);
         $this->assertTrue($modelProperties->has('author'));
-        $this->assertSame('#/definitions/User2', $modelProperties->get('author')->getRef());
+        $this->assertSame('#/components/schemas/User2', $modelProperties->get('author')->getRef());
 
         $this->assertFalse($modelProperties->has('content'));
     }
 
     public function testFilteredAction()
     {
-        $paths = $this->getSwaggerDefinition()->getPaths();
+        $paths = $this->getOpenApiDefinition()->getPaths();
 
         $this->assertFalse($paths->has('/filtered'));
     }
@@ -91,14 +91,14 @@ class FunctionalTest extends WebTestCase
         $this->assertTrue($responses->has('201'));
         $response = $responses->get('201');
         $this->assertEquals('Operation automatically detected', $response->getDescription());
-        $this->assertEquals('#/definitions/User', $response->getSchema()->getRef());
+        $this->assertEquals('#/components/schemas/User', $response->getSchema()->getRef());
 
         $parameters = $operation->getParameters();
         $this->assertTrue($parameters->has('foo', 'body'));
         $parameter = $parameters->get('foo', 'body');
 
         $this->assertEquals('This is a parameter', $parameter->getDescription());
-        $this->assertEquals('#/definitions/User', $parameter->getSchema()->getItems()->getRef());
+        $this->assertEquals('#/components/schemas/User', $parameter->getSchema()->getItems()->getRef());
     }
 
     public function implicitSwaggerActionMethodsProvider()
@@ -182,15 +182,15 @@ class FunctionalTest extends WebTestCase
                     ],
                     'users' => [
                         'items' => [
-                            '$ref' => '#/definitions/User',
+                            '$ref' => '#/components/schemas/User',
                         ],
                         'type' => 'array',
                     ],
                     'friend' => [
-                        '$ref' => '#/definitions/User',
+                        '$ref' => '#/components/schemas/User',
                     ],
                     'dummy' => [
-                        '$ref' => '#/definitions/Dummy2',
+                        '$ref' => '#/components/schemas/Dummy2',
                     ],
                     'status' => [
                         'type' => 'string',
@@ -215,13 +215,13 @@ class FunctionalTest extends WebTestCase
                     'items' => ['type' => 'string'],
                     'type' => 'array',
                 ],
-                'dummy' => ['$ref' => '#/definitions/DummyType'],
+                'dummy' => ['$ref' => '#/components/schemas/DummyType'],
                 'dummies' => [
-                    'items' => ['$ref' => '#/definitions/DummyType'],
+                    'items' => ['$ref' => '#/components/schemas/DummyType'],
                     'type' => 'array',
                 ],
                 'empty_dummies' => [
-                    'items' => ['$ref' => '#/definitions/DummyEmptyType'],
+                    'items' => ['$ref' => '#/components/schemas/DummyEmptyType'],
                     'type' => 'array',
                 ],
                 'quz' => [
@@ -388,7 +388,7 @@ class FunctionalTest extends WebTestCase
     public function testConfigReference()
     {
         $operation = $this->getOperation('/api/configReference', 'get');
-        $this->assertEquals('#/definitions/Test', $operation->getResponses()->get('200')->getSchema()->getRef());
+        $this->assertEquals('#/components/schemas/Test', $operation->getResponses()->get('200')->getSchema()->getRef());
         $this->assertEquals('#/responses/201', $operation->getResponses()->get('201')->getRef());
     }
 

@@ -16,7 +16,7 @@ use JMS\Serializer\Visitor\SerializationVisitorInterface;
 use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Describer\ExternalDocDescriber;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
-use Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber;
+use Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
@@ -82,7 +82,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -400]);
 
-            $container->register(sprintf('nelmio_api_doc.describers.swagger_php.%s', $area), SwaggerPhpDescriber::class)
+            $container->register(sprintf('nelmio_api_doc.describers.openapi_php.%s', $area), OpenApiPhpDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
                     new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
