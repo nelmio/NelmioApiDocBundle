@@ -60,124 +60,124 @@ class ApiController
      * ),
      * @OA\RequestBody(
      *    description="This is a request body",
-     *    ref=@Model(type=User::class, collection=true)
+     *    @OA\JsonContent(
+     *      @OA\Schema(
+     *          @OA\Items(ref=@Model(type=User::class))
+     *      )
+     *    )
      * )
      * @OA\Tag(name="implicit")
      */
     public function implicitSwaggerAction()
     {
     }
-//
-//    /**
-//     * @Route("/test/users/{user}", methods={"POST"}, schemes={"https"}, requirements={"user"="/foo/"})
-//     * @OA\Response(
-//     *    response="201",
-//     *    description="Operation automatically detected",
-//     *    ref=@Model(type=User::class)
-//     * ),
-//     * @OA\Parameter(
-//     *    name="foo",
-//     *    in="body",
-//     *    description="This is a parameter",
-//     *    ref=@Model(type=UserType::class, options={"bar": "baz"})
-//     * )
-//     */
-//    public function submitUserTypeAction()
-//    {
-//    }
-//
-//    /**
-//     * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="/foo/"})
-//     * @OA\Response(response=200, description="sucessful")
-//     */
-//    public function userAction()
-//    {
-//    }
-//
-//    /**
-//     * This action is deprecated.
-//     *
-//     * Please do not use this action.
-//     *
-//     * @Route("/deprecated", methods={"GET"})
-//     *
-//     * @deprecated
-//     */
-//    public function deprecatedAction()
-//    {
-//    }
-//
-//    /**
-//     * This action is not documented. It is excluded by the config.
-//     *
-//     * @Route("/admin", methods={"GET"})
-//     */
-//    public function adminAction()
-//    {
-//    }
-//
-//    /**
-//     * @OA\Get(
-//     *     path="/filtered",
-//     *     @OA\Response(response="201", description="")
-//     * )
-//     */
-//    public function filteredAction()
-//    {
-//    }
-//
-//    /**
-//     * @Route("/form", methods={"POST"})
-//     * @OA\Parameter(
-//     *    name="form",
-//     *    in="body",
-//     *    description="Request content",
-//     *    @OA\Schema(ref=@Model(type=DummyType::class))
-//     * ),
-//     * @OA\Response(response="201", description="")
-//     */
-//    public function formAction()
-//    {
-//    }
-//
-//    /**
-//     * @Route("/security")
-//     * @OA\Response(response="201", description="")
-//     * @Security(name="api_key")
-//     * @Security(name="basic")
-//     */
-//    public function securityAction()
-//    {
-//    }
-//
-//    /**
-//     * @Route("/swagger/symfonyConstraints", methods={"GET"})
-//     * @OA\Response(
-//     *    response="201",
-//     *    description="Used for symfony constraints test",
-//     *    ref=@Model(type=SymfonyConstraints::class)
-//     * )
-//     */
-//    public function symfonyConstraintsAction()
-//    {
-//    }
 
-//    /**
-//     *  @OA\Response(
-//     *     response="200",
-//     *     description="Success",
-//     *     ref="#/components/schemas/Test"
-//     *  ),
-//     *  @OA\Response(
-//     *     response="201",
-//     *     ref="#/responses/201"
-//     *  )
-//     * @Route("/configReference", methods={"GET"})
-//     */
-//    public function configReferenceAction()
-//    {
-//    }
-//
+    /**
+     * @Route("/test/users/{user}", methods={"POST"}, schemes={"https"}, requirements={"user"="/foo/"})
+     * @OA\Response(
+     *    response="201",
+     *    description="Operation automatically detected",
+     *    ref=@Model(type=User::class)
+     * ),
+     * @OA\RequestBody(
+     *    description="This is a request body",
+     *    ref=@Model(type=User::class, options={"bar": "baz"}))
+     * )
+     */
+    public function submitUserTypeAction()
+    {
+    }
+
+    /**
+     * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="/foo/"})
+     * @OA\Response(response=200, description="sucessful")
+     */
+    public function userAction()
+    {
+    }
+
+    /**
+     * This action is deprecated.
+     *
+     * Please do not use this action.
+     *
+     * @Route("/deprecated", methods={"GET"})
+     *
+     * @deprecated
+     */
+    public function deprecatedAction()
+    {
+    }
+
+    /**
+     * This action is not documented. It is excluded by the config.
+     *
+     * @Route("/admin", methods={"GET"})
+     */
+    public function adminAction()
+    {
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/filtered",
+     *     @OA\Response(response="201", description="")
+     * )
+     */
+    public function filteredAction()
+    {
+    }
+
+    /**
+     * @Route("/form", methods={"POST"})
+     * @OA\RequestBody(
+     *    description="Request content",
+     *    ref=@Model(type=DummyType::class))
+     * )
+     * @OA\Response(response="201", description="")
+     */
+    public function formAction()
+    {
+    }
+
+    /**
+     * @Route("/security")
+     * @OA\Response(response="201", description="")
+     * @Security(name="api_key")
+     * @Security(name="basic")
+     */
+    public function securityAction()
+    {
+    }
+
+    /**
+     * @Route("/swagger/symfonyConstraints", methods={"GET"})
+     * @OA\Response(
+     *    response="201",
+     *    description="Used for symfony constraints test",
+     *    ref=@Model(type=SymfonyConstraints::class)
+     * )
+     */
+    public function symfonyConstraintsAction()
+    {
+    }
+
+    /**
+     *  @OA\Response(
+     *     response="200",
+     *     description="Success",
+     *     ref="#/components/schemas/Test"
+     *  ),
+     *  @OA\Response(
+     *     response="201",
+     *     ref="#/components/responses/201"
+     *  )
+     * @Route("/configReference", methods={"GET"})
+     */
+    public function configReferenceAction()
+    {
+    }
+
     /**
      * @Route("/multi-annotations", methods={"GET", "POST"})
      * @OA\Get(description="This is the get operation")

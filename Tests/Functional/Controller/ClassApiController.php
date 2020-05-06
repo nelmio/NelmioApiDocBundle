@@ -22,13 +22,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ClassApiController
 {
-//    /**
-//     * @Route("/security/class")
-//     * @Operation(
-//     *  @OA\Response(response="201", description="")
-//     * )
-//     */
-//    public function securityAction()
-//    {
-//    }
+    /**
+     * @Route("/security/class")
+     * @Operation(
+     *  @OA\Response(response="201", description="")
+     * )
+     */
+    public function securityAction()
+    {
+    }
 }

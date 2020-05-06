@@ -140,6 +140,13 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
                     throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', get_class($annotation), $method->getDeclaringClass()->name, $method->name));
                 }
 
+                foreach ($annotation->_unmerged as $unmergedAnnotation) {
+                    if (!$unmergedAnnotation instanceof OA\JsonContent && !$unmergedAnnotation instanceof OA\XmlContent) {
+                        continue;
+                    }
+                    $unmergedAnnotation->_context->nested = $annotation;
+                }
+
                 $implicitAnnotations[] = $annotation;
             }
 

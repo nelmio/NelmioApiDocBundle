@@ -111,7 +111,7 @@ class SymfonyConstraintAnnotationReader
         if (null === $newPattern) {
             return;
         }
-        if (null !== $property->pattern || $property->pattern !== OA\UNDEFINED) {
+        if ($property->pattern !== OA\UNDEFINED) {
             $property->pattern = sprintf('%s, %s', $property->pattern, $newPattern);
         } else {
             $property->pattern = $newPattern;
