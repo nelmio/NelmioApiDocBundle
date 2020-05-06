@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
@@ -50,6 +50,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $schema->type = 'object';
 
         $class = $model->getType()->getClassName();
+        $schema->_context->class = $class;
+
         $context = [];
         if (null !== $model->getGroups()) {
             $context = ['serializer_groups' => array_filter($model->getGroups(), 'is_string')];
@@ -110,7 +112,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
         }
 
-        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@SWG\Property(type="")` annotation to specify it manually.', $type->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
+        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $type->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
     }
 
     public function supports(Model $model): bool

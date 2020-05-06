@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
-use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;

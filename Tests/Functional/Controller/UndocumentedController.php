@@ -18,12 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UndocumentedController
 {
-//    /**
-//     * This path is excluded by the config (only /api allowed).
-//     *
-//     * @Route("/undocumented", methods={"GET"})
-//     */
-//    public function undocumentedAction()
-//    {
-//    }
+    /**
+     * This path is excluded by the config (only /api allowed).
+     *
+     * @Route("/undocumented", methods={"GET"})
+     */
+    public function undocumentedAction()
+    {
+    }
 }

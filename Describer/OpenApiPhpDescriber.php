@@ -12,13 +12,13 @@
 namespace Nelmio\ApiDocBundle\Describer;
 
 use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Analysis;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
-use Nelmio\ApiDocBundle\SwaggerPhp\AddDefaults;
-use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
+use Nelmio\ApiDocBundle\OpenApiPhp\AddDefaults;
+use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Route;
@@ -51,8 +51,6 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
         $analysis = $this->getAnnotations($api);
         $analysis->process($this->getProcessors());
         $analysis->validate();
-
-        $api->merge(json_decode(json_encode($analysis->openapi), true), $this->overwrite);
     }
 
     private function getProcessors(): array
@@ -68,45 +66,7 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
     private function getAnnotations(OA\OpenApi $api): Analysis
     {
         $analysis = new Analysis();
-        $analysis->addAnnotation(new class($api) extends OA\OpenApi {
-            private $api;
-
-            public function __construct(OA\OpenApi $api)
-            {
-                $this->api = $api;
-                parent::__construct([]);
-            }
-
-            /**
-             * Support definitions from the config and reference to models.
-             */
-            public function ref($ref)
-            {
-                /** @var OA\Components $components */
-                $components = Util::getChild($this->api, OA\Components::class);
-
-                if (0 === strpos($ref, '#/components/schemas/')
-                    && $components->schemas !== OA\UNDEFINED
-                    && isset($components->schemas[substr($ref, 21)])
-                ) {
-                    return;
-                }
-                if (0 === strpos($ref, '#/components/parameters/')
-                    && $components->parameters !== OA\UNDEFINED
-                    && isset($components->parameters[substr($ref, 24)])
-                ) {
-                    return;
-                }
-                if (0 === strpos($ref, '#/components/responses/')
-                    && $components->responses !== OA\UNDEFINED
-                    && isset($components->parameters[substr($ref, 23)])
-                ) {
-                    return;
-                }
-
-                parent::ref($ref);
-            }
-        }, null);
+        $analysis->openapi = $api;
 
         $classAnnotations = [];
 

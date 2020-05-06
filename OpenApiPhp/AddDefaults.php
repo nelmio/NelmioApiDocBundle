@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SwaggerPhp;
+namespace Nelmio\ApiDocBundle\OpenApiPhp;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
@@ -28,6 +28,9 @@ final class AddDefaults
             return;
         }
         if (($annotations = $analysis->getAnnotationsOfType(OA\OpenApi::class)) && OA\UNDEFINED !== $annotations[0]->info) {
+            return;
+        }
+        if (OA\UNDEFINED !== $analysis->openapi->info) {
             return;
         }
 

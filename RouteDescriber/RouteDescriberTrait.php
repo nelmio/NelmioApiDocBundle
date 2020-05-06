@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Route;

@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
-use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
+use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;

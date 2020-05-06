@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Hateoas\Configuration\Metadata\ClassMetadata;
 use Hateoas\Configuration\Relation;

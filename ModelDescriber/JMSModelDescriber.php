@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use JMS\Serializer\Context;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;

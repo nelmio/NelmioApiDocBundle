@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SwaggerPhp;
+namespace Nelmio\ApiDocBundle\OpenApiPhp;
 
 use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
@@ -25,16 +25,23 @@ use Symfony\Component\PropertyInfo\Type;
  */
 final class ModelRegister
 {
+    /** @var ModelRegistry */
     private $modelRegistry;
 
-    public function __construct(ModelRegistry $modelRegistry)
+    /** @var string */
+    private $mediaType;
+
+    public function __construct(ModelRegistry $modelRegistry, string $mediaType = 'json')
     {
+        if (!in_array($mediaType, ['json', 'xml'])) {
+            throw new \InvalidArgumentException('Default media type can be either json or xml.');
+        }
         $this->modelRegistry = $modelRegistry;
+        $this->mediaType = $mediaType;
     }
 
     public function __invoke(Analysis $analysis, array $parentGroups = null)
     {
-        $modelsRegistered = [];
         foreach ($analysis->annotations as $annotation) {
             // @Model using the ref field
             if ($annotation instanceof OA\Schema && $annotation->ref instanceof ModelAnnotation) {
@@ -48,41 +55,52 @@ final class ModelRegister
                 continue;
             }
 
+            if (($annotation instanceof OA\Response || $annotation instanceof OA\RequestBody) && $annotation->ref instanceof ModelAnnotation) {
+                $model = $annotation->ref;
+                $annotation->ref = OA\UNDEFINED;
+                $properties = [
+                    '_context' => Util::createContext(['nested' => $annotation], $annotation->_context),
+                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type, $model->collection), $this->getGroups($model, $parentGroups), $model->options))
+                ];
+
+                switch ($this->mediaType) {
+                    case 'json':
+                        $modelAnnotation = new OA\JsonContent($properties);
+                        break;
+                    case 'xml':
+                        $modelAnnotation = new OA\XmlContent($properties);
+                        break;
+                    default:
+                        throw new \InvalidArgumentException('Unsupported media type');
+                }
+
+                $annotation->merge([$modelAnnotation]);
+                $analysis->addAnnotation($modelAnnotation, null);
+
+                $this->detach($model, $annotation, $analysis);
+
+                continue;
+            }
+
             // Implicit usages
-            if ($annotation instanceof OA\Response) {
-                $annotationClass = OA\Schema::class;
-            } elseif ($annotation instanceof OA\Parameter) {
+            if ($annotation instanceof OA\Parameter) {
                 if ($annotation->schema instanceof OA\Schema && 'array' === $annotation->schema->type) {
                     $annotationClass = OA\Items::class;
                 } else {
                     $annotationClass = OA\Schema::class;
                 }
-            } elseif ($annotation instanceof OA\Schema) {
-                $annotationClass = OA\Items::class;
             } else {
                 continue;
             }
 
-            $model = null;
-            foreach ($annotation->_unmerged as $unmerged) {
-                if ($unmerged instanceof ModelAnnotation) {
-                    $model = $unmerged;
-
-                    break;
-                }
-            }
-
-            if (null === $model || !$model instanceof ModelAnnotation) {
+            $model = $this->getModel($annotation);
+            if (null === $model) {
                 continue;
             }
 
             if (!is_string($model->type)) {
                 // Ignore invalid annotations, they are validated later
                 continue;
-            }
-
-            if ($annotation instanceof OA\Schema) {
-                @trigger_error(sprintf('Using `@Model` implicitly in a `@OA\Schema`, `@OA\Items` or `@OA\Property` annotation in %s is deprecated since version 3.2 and won\'t be supported in 4.0. Use `ref=@Model()` instead.', $annotation->_context->getDebugLocation()), E_USER_DEPRECATED);
             }
 
             $annotation->merge([new $annotationClass([
@@ -115,12 +133,26 @@ final class ModelRegister
         $analysis->annotations->detach($model);
     }
 
-    private function createType(string $type): Type
+    private function createType(string $type, bool $collection = false): Type
     {
         if ('[]' === substr($type, -2)) {
             return new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true, null, $this->createType(substr($type, 0, -2)));
         }
 
+        if ($collection) {
+            return new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true, null, $this->createType($type));
+        }
+
         return new Type(Type::BUILTIN_TYPE_OBJECT, false, $type);
+    }
+
+    private function getModel(OA\AbstractAnnotation $annotation): ?ModelAnnotation
+    {
+        foreach ($annotation->_unmerged as $unmerged) {
+            if ($unmerged instanceof ModelAnnotation) {
+                return $unmerged;
+            }
+        }
+        return null;
     }
 }

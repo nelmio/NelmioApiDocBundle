@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use EXSyst\Component\Swagger\Tag;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 
 class FunctionalTest extends WebTestCase
 {
@@ -30,26 +31,26 @@ class FunctionalTest extends WebTestCase
 
     public function testUndocumentedAction()
     {
-        $paths = $this->getOpenApiDefinition()->getPaths();
-        $this->assertFalse($paths->has('/undocumented'));
-        $this->assertFalse($paths->has('/api/admin'));
+        $api = $this->getOpenApiDefinition();
+
+        $this->assertNotHasPath('/undocumented', $api);
+        $this->assertNotHasPath('/api/admin', $api);
     }
 
     public function testFetchArticleAction()
     {
         $operation = $this->getOperation('/api/article/{id}', 'get');
 
-        $responses = $operation->getResponses();
-        $this->assertTrue($responses->has('200'));
-        $this->assertEquals('#/components/schemas/Article', $responses->get('200')->getSchema()->getRef());
+        $this->assertHasResponse('200', $operation);
+        $response = $this->getOperationResponse($operation, '200');
+        $this->assertEquals('#/components/schemas/Article', $response->content['application/json']->schema->ref);
 
         // Ensure that groups are supported
-        $modelProperties = $this->getModel('Article')->getProperties();
-        $this->assertCount(1, $modelProperties);
-        $this->assertTrue($modelProperties->has('author'));
-        $this->assertSame('#/components/schemas/User2', $modelProperties->get('author')->getRef());
-
-        $this->assertFalse($modelProperties->has('content'));
+        $articleModel = $this->getModel('Article');
+        $this->assertCount(1, $articleModel->properties);
+        $this->assertHasProperty('author', $articleModel);
+        $this->assertSame('#/components/schemas/User2', Util::getProperty($articleModel, 'author')->ref);
+        $this->assertNotHasProperty('author', $articleModel);
     }
 
     public function testFilteredAction()

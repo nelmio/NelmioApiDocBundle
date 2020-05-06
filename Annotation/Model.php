@@ -25,13 +25,13 @@ final class Model extends AbstractAnnotation
         'type' => 'string',
         'groups' => '[string]',
         'options' => '[mixed]',
+        'collection' => 'boolean'
     ];
 
     public static $_required = ['type'];
 
     public static $_parents = [
-        Parameter::class,
-        Response::class,
+        Parameter::class
     ];
 
     /**
@@ -48,4 +48,9 @@ final class Model extends AbstractAnnotation
      * @var mixed[]
      */
     public $options;
+
+    /**
+     * @var boolean
+     */
+    public $collection = false;
 }

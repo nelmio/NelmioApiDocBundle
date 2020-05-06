@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber;
 
-use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;

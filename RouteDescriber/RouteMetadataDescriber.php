@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use LogicException;
 use Symfony\Component\Routing\Route;
@@ -26,7 +26,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         foreach ($this->getOperations($api, $route) as $operation) {
-            $operation->merge(['schemes' => $route->getSchemes()]);
+            Util::merge($operation, ['security' => $route->getSchemes()]);
 
             $requirements = $route->getRequirements();
             $compiledRoute = $route->compile();

@@ -18,7 +18,7 @@ use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
-use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
+use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use PHPUnit\Framework\TestCase;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;

@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\SwaggerPhp;
 
-use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use const OpenApi\UNDEFINED;
@@ -20,24 +20,24 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class UtilTest.
  *
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::getOperation
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::getOperationParameter
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::getChild
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::getCollectionItem
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::getIndexedCollectionItem
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::searchCollectionItem
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::searchIndexedCollectionItem
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::createCollectionItem
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::createChild
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::createContext
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::merge
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::mergeFromArray
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::mergeChild
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::mergeCollection
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::mergeTyped
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::mergeProperty
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::getNestingIndexes
- * @covers \Nelmio\ApiDocBundle\SwaggerPhp\Util::getNesting
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getOperation
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getOperationParameter
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getChild
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getCollectionItem
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getIndexedCollectionItem
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::searchCollectionItem
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::searchIndexedCollectionItem
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::createCollectionItem
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::createChild
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::createContext
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::merge
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::mergeFromArray
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::mergeChild
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::mergeCollection
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::mergeTyped
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::mergeProperty
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getNestingIndexes
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getNesting
  */
 class UtilTest extends TestCase
 {

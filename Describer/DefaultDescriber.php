@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 
 /**

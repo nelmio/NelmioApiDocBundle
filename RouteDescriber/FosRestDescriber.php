@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\SwaggerPhp\Util;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;

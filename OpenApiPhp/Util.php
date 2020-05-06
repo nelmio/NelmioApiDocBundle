@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SwaggerPhp;
+namespace Nelmio\ApiDocBundle\OpenApiPhp;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
@@ -26,26 +26,26 @@ use const OpenApi\UNDEFINED;
  * of swagger Annotation classes with the following convenience methods
  * to get or create the respective Annotation instances if not found
  *
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getPath()
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getSchema()
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getProperty()
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getOperation()
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getOperationParameter()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getPath()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getSchema()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getProperty()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getOperation()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getOperationParameter()
  *
  * which in turn get or create the Annotation instances through the following more general methods
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getChild()
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getCollectionItem()
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::getIndexedCollectionItem()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getChild()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getCollectionItem()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getIndexedCollectionItem()
  *
  * which then searches for an existing Annotation through
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::searchCollectionItem()
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::searchIndexedCollectionItem()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::searchCollectionItem()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::searchIndexedCollectionItem()
  *
  * and if not found the Annotation creates it through
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::createCollectionItem()
- * @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::createContext()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createCollectionItem()
+ * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createContext()
  *
- * The merge method @see \Nelmio\ApiDocBundle\SwaggerPhp\Util::merge() has the main purpose to be able
+ * The merge method @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::merge() has the main purpose to be able
  * to merge properties from an deeply nested array of Annotation properties in the structure of a
  * generated swagger json decoded array.
  */
