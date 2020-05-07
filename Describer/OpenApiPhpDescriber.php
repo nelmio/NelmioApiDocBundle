@@ -184,6 +184,7 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
                 $this->logger->warning('None of the HTTP methods specified for path {path} are supported by swagger-ui, skipping this path', [
                     'path' => $path,
                 ]);
+
                 continue;
             }
             yield $reflectedMethod => [$path, $supportedHttpMethods];
@@ -194,6 +195,7 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
     {
         $allMethods = Util::$operations;
         $methods = array_map('strtolower', $route->getMethods());
+
         return array_intersect($methods ?: $allMethods, $allMethods);
     }
 

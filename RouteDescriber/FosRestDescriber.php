@@ -132,9 +132,11 @@ final class FosRestDescriber implements RouteDescriberInterface
         switch ($this->mediaType) {
             case 'json':
                 $contentType = 'application\json';
+
                 break;
             case 'xml':
                 $contentType = 'application\xml';
+
                 break;
             default:
                 throw new \InvalidArgumentException('Unsupported media type');
@@ -152,6 +154,7 @@ final class FosRestDescriber implements RouteDescriberInterface
             );
             $schema->type = 'object';
         }
+
         return Util::getChild(
             $requestBody->content[$contentType],
             OA\Schema::class

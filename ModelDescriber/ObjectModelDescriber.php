@@ -16,10 +16,10 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
-use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
-use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
 use OpenApi\Annotations as OA;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface

@@ -198,6 +198,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 if ('array' === $nestedType['name'] && !isset($nestedType['params'][0])) {
                     // in the case of a virtual property, set it as free object type
                     $property->additionalProperties = true;
+
                     return;
                 }
 

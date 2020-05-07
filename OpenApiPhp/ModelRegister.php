@@ -155,6 +155,7 @@ final class ModelRegister
                 return $unmerged;
             }
         }
+
         return null;
     }
 }

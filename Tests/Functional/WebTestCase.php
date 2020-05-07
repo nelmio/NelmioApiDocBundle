@@ -52,6 +52,7 @@ class WebTestCase extends BaseWebTestCase
     {
         $this->assertHasResponse($response, $operation);
         $key = array_search($response, array_column($operation->responses, 'response'));
+
         return $operation->responses[$key];
     }
 

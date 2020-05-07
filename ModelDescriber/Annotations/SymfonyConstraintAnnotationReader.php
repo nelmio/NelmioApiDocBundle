@@ -100,6 +100,7 @@ class SymfonyConstraintAnnotationReader
                 return OA\UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
             }
         }
+
         return null;
     }
 

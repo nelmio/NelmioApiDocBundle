@@ -119,6 +119,7 @@ final class ModelRegistry
             ++$i;
             $name = $base.$i;
         }
+
         return $name;
     }
 

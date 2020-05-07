@@ -220,7 +220,7 @@ class UtilTest extends TestCase
             foreach ($items as $assert) {
                 $setupCollection = empty($assert['components']) ?
                     ($setup[$collection] ?? []) :
-                    ($setup['components']->{$collection} !== OA\UNDEFINED ? $setup['components']->{$collection} : []);
+                    (OA\UNDEFINED  !== $setup['components']->{$collection}? $setup['components']->{$collection} : []);
 
                 // get the indexing correct within haystack preparation
                 $properties = array_fill(0, \count($setupCollection), null);
@@ -257,7 +257,9 @@ class UtilTest extends TestCase
                 $itemParent = empty($assert['components']) ? $parent : $parent->components;
 
                 $child = Util::getIndexedCollectionItem(
-                    $itemParent, $assert['class'], $assert['value']
+                    $itemParent,
+                    $assert['class'],
+                    $assert['value']
                 );
 
                 $this->assertInstanceOf($assert['class'], $child);
