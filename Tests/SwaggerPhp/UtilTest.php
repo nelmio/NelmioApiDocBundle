@@ -220,7 +220,7 @@ class UtilTest extends TestCase
             foreach ($items as $assert) {
                 $setupCollection = empty($assert['components']) ?
                     ($setup[$collection] ?? []) :
-                    (OA\UNDEFINED  !== $setup['components']->{$collection}? $setup['components']->{$collection} : []);
+                    (OA\UNDEFINED !== $setup['components']->{$collection}? $setup['components']->{$collection} : []);
 
                 // get the indexing correct within haystack preparation
                 $properties = array_fill(0, \count($setupCollection), null);
