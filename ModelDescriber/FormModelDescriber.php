@@ -11,11 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigInterface;
@@ -68,7 +68,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             $property = Util::getProperty($schema, $name);
 
             if ($config->getRequired()) {
-                $required = $schema->required !== OA\UNDEFINED ? $schema->required : [];
+                $required = OA\UNDEFINED !== $schema->required ? $schema->required : [];
                 $required[] = $name;
 
                 $schema->required = $required;

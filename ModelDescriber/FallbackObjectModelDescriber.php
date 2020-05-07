@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Model\Model;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
 class FallbackObjectModelDescriber implements ModelDescriberInterface

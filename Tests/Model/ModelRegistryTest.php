@@ -11,9 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Model;
 
-use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use OpenApi\Annotations as OA;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type;
 

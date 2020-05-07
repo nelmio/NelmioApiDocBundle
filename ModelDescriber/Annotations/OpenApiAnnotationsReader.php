@@ -57,7 +57,7 @@ class OpenApiAnnotationsReader
             return $default;
         }
 
-        return $oaProperty->property !== OA\UNDEFINED ? $oaProperty->property : $default;
+        return OA\UNDEFINED !== $oaProperty->property ? $oaProperty->property : $default;
     }
 
     public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null): void

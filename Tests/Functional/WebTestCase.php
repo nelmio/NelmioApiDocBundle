@@ -84,7 +84,7 @@ class WebTestCase extends BaseWebTestCase
 
     public function assertHasPath($path, OA\OpenApi $api)
     {
-        $paths = array_column($api->paths !== OA\UNDEFINED ? $api->paths : [], 'path');
+        $paths = array_column(OA\UNDEFINED !== $api->paths ? $api->paths : [], 'path');
         static::assertContains(
             $path,
             $paths,
@@ -94,7 +94,7 @@ class WebTestCase extends BaseWebTestCase
 
     public function assertNotHasPath($path, OA\OpenApi $api)
     {
-        $paths = array_column($api->paths !== OA\UNDEFINED ? $api->paths : [], 'path');
+        $paths = array_column(OA\UNDEFINED !== $api->paths ? $api->paths : [], 'path');
         static::assertNotContains(
             $path,
             $paths,
@@ -104,7 +104,7 @@ class WebTestCase extends BaseWebTestCase
 
     public function assertHasResponse($responseCode, OA\Operation $operation)
     {
-        $responses = array_column($operation->responses !== OA\UNDEFINED ? $operation->responses : [], 'response');
+        $responses = array_column(OA\UNDEFINED !== $operation->responses ? $operation->responses : [], 'response');
         static::assertContains(
             $responseCode,
             $responses,
@@ -115,7 +115,7 @@ class WebTestCase extends BaseWebTestCase
     public function assertHasParameter($name, $in, OA\AbstractAnnotation $annotation)
     {
         /* @var OA\Operation|OA\OpenApi $annotation */
-        $parameters = array_column($annotation->parameters !== OA\UNDEFINED ? $annotation->parameters : [], 'name', 'in');
+        $parameters = array_column(OA\UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], 'name', 'in');
         static::assertContains(
             $name,
             $parameters[$in] ?? [],
@@ -126,7 +126,7 @@ class WebTestCase extends BaseWebTestCase
     public function assertNotHasParameter($name, $in, OA\AbstractAnnotation $annotation)
     {
         /* @var OA\Operation|OA\OpenApi $annotation */
-        $parameters = array_column($annotation->parameters !== OA\UNDEFINED ? $annotation->parameters : [], 'name', 'in');
+        $parameters = array_column(OA\UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], 'name', 'in');
         static::assertNotContains(
             $name,
             $parameters[$in] ?? [],
@@ -137,7 +137,7 @@ class WebTestCase extends BaseWebTestCase
     public function assertHasProperty($property, OA\AbstractAnnotation $annotation)
     {
         /* @var OA\Schema|OA\Property|OA\Items $annotation */
-        $properties = array_column($annotation->properties !== OA\UNDEFINED ? $annotation->properties : [], 'property');
+        $properties = array_column(OA\UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
         static::assertContains(
             $property,
             $properties,
@@ -148,7 +148,7 @@ class WebTestCase extends BaseWebTestCase
     public function assertNotHasProperty($property, OA\AbstractAnnotation $annotation)
     {
         /* @var OA\Schema|OA\Property|OA\Items $annotation */
-        $properties = array_column($annotation->properties !== OA\UNDEFINED ? $annotation->properties : [], 'property');
+        $properties = array_column(OA\UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
         static::assertNotContains(
             $property,
             $properties,

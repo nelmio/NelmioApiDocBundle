@@ -12,8 +12,8 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
-use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use OpenApi\Annotations as OA;
 
 /**
  * @internal

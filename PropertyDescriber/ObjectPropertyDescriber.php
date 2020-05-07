@@ -11,10 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
-use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
 class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface

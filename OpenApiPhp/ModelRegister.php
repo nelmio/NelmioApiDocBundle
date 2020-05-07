@@ -60,15 +60,17 @@ final class ModelRegister
                 $annotation->ref = OA\UNDEFINED;
                 $properties = [
                     '_context' => Util::createContext(['nested' => $annotation], $annotation->_context),
-                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type, $model->collection), $this->getGroups($model, $parentGroups), $model->options))
+                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type, $model->collection), $this->getGroups($model, $parentGroups), $model->options)),
                 ];
 
                 switch ($this->mediaType) {
                     case 'json':
                         $modelAnnotation = new OA\JsonContent($properties);
+
                         break;
                     case 'xml':
                         $modelAnnotation = new OA\XmlContent($properties);
+
                         break;
                     default:
                         throw new \InvalidArgumentException('Unsupported media type');

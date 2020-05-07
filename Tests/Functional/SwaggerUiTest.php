@@ -50,7 +50,7 @@ class SwaggerUiTest extends WebTestCase
 
         $expected = json_decode($this->getOpenApiDefinition('test')->toJson(), true);
         $expected['servers'] = [
-            ['url' => 'http://api.example.com/app_dev.php']
+            ['url' => 'http://api.example.com/app_dev.php'],
         ];
         $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
@@ -65,7 +65,7 @@ class SwaggerUiTest extends WebTestCase
 
         $expected = json_decode($this->getOpenApiDefinition()->toJson(), true);
         $expected['servers'] = [
-            ['url' => 'http://api.example.com/app_dev.php']
+            ['url' => 'http://api.example.com/app_dev.php'],
         ];
 
         $this->assertEquals($expected, json_decode($response->getContent(), true));

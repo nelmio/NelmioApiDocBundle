@@ -11,12 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Model;
 
-use EXSyst\Component\Swagger\Schema;
-use EXSyst\Component\Swagger\Swagger;
-use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
 final class ModelRegistry
@@ -47,7 +45,7 @@ final class ModelRegistry
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
             $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
             $this->names[$model->getHash()] = $alternativeName;
-            Util::getSchema($this->api,$alternativeName);
+            Util::getSchema($this->api, $alternativeName);
         }
     }
 

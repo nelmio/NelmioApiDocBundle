@@ -11,11 +11,11 @@
 
 namespace Nelmio\ApiDocBundle;
 
-use OpenApi\Annotations\OpenApi;
 use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use OpenApi\Annotations\OpenApi;
 use Psr\Cache\CacheItemPoolInterface;
 
 final class ApiDocGenerator
@@ -26,10 +26,10 @@ final class ApiDocGenerator
     /** @var iterable|DescriberInterface[] */
     private $describers;
 
-    /** @var iterable|ModelDescriberInterface[]  */
+    /** @var iterable|ModelDescriberInterface[] */
     private $modelDescribers;
 
-    /** @var CacheItemPoolInterface|null  */
+    /** @var CacheItemPoolInterface|null */
     private $cacheItemPool;
 
     /** @var string|null */

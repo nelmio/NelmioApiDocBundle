@@ -12,14 +12,14 @@
 namespace Nelmio\ApiDocBundle\Describer;
 
 use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use OpenApi\Annotations as OA;
-use OpenApi\Analysis;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\OpenApiPhp\AddDefaults;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
+use OpenApi\Analysis;
+use OpenApi\Annotations as OA;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;

@@ -11,10 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber;
 
-use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
 class VirtualTypeClassDoesNotExistsHandlerDefinedDescriber implements ModelDescriberInterface

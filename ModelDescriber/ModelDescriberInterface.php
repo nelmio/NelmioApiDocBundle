@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use OpenApi\Annotations\Schema;
 use Nelmio\ApiDocBundle\Model\Model;
+use OpenApi\Annotations\Schema;
 
 interface ModelDescriberInterface
 {

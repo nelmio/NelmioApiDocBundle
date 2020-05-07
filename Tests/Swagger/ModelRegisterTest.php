@@ -12,16 +12,14 @@
 namespace Nelmio\ApiDocBundle\Tests\Swagger;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-//use EXSyst\Component\Swagger\Schema;
-//use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
-use PHPUnit\Framework\TestCase;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use PHPUnit\Framework\TestCase;
 
 class ModelRegisterTest extends TestCase
 {

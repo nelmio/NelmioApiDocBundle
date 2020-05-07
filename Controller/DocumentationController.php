@@ -53,7 +53,7 @@ final class DocumentationController
         $spec = $this->generatorLocator->get($area)->generate();
 
         if ('' !== $request->getBaseUrl()) {
-            $spec->servers = [new Server(['url' => $request->getSchemeAndHttpHost() . $request->getBaseUrl()])];
+            $spec->servers = [new Server(['url' => $request->getSchemeAndHttpHost().$request->getBaseUrl()])];
         }
 
         return new JsonResponse($spec);

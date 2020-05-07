@@ -12,10 +12,10 @@
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use OpenApi\Annotations as OA;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -128,7 +128,7 @@ final class FosRestDescriber implements RouteDescriberInterface
 
     private function getContentSchema(OA\RequestBody $requestBody): OA\Schema
     {
-        $requestBody->content = $requestBody->content !== OA\UNDEFINED ? $requestBody->content : [];
+        $requestBody->content = OA\UNDEFINED !== $requestBody->content ? $requestBody->content : [];
         switch ($this->mediaType) {
             case 'json':
                 $contentType = 'application\json';
@@ -142,7 +142,7 @@ final class FosRestDescriber implements RouteDescriberInterface
         if (!isset($requestBody->content[$contentType])) {
             $requestBody->content[$contentType] = new OA\MediaType(
                 [
-                    'mediaType' => $contentType
+                    'mediaType' => $contentType,
                 ]
             );
             /** @var OA\Schema $schema */

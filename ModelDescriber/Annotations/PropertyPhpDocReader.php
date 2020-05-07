@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use OpenApi\Annotations as OA;
-use Nelmio\ApiDocBundle\Model\Model;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
 

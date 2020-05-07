@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\Annotation;
 
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Parameter;
-use OpenApi\Annotations\Response;
 
 /**
  * @Annotation
@@ -30,7 +29,7 @@ final class Model extends AbstractAnnotation
     public static $_required = ['type'];
 
     public static $_parents = [
-        Parameter::class
+        Parameter::class,
     ];
 
     /**

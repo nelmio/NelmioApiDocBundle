@@ -11,9 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
+use LogicException;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use LogicException;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -42,7 +42,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 /** @var OA\Parameter $parameter */
                 $parameter = $existingParams[$paramId] ?? null;
                 if (null !== $parameter) {
-                    if (!$parameter->required || $parameter->required === OA\UNDEFINED) {
+                    if (!$parameter->required || OA\UNDEFINED === $parameter->required) {
                         throw new LogicException(\sprintf('Global parameter "%s" is used as part of route "%s" and must be set as "required"', $pathVariable, $route->getPath()));
                     }
 
@@ -73,10 +73,10 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     private function getRefParams(OA\OpenApi $api, OA\Operation $operation): array
     {
         /** @var OA\Parameter[] $globalParams */
-        $globalParams = $api->components->parameters !== OA\UNDEFINED ? $api->components->parameters : [];
+        $globalParams = OA\UNDEFINED !== $api->components->parameters ? $api->components->parameters : [];
         $existingParams = [];
 
-        $operationParameters = $operation->parameters !== OA\UNDEFINED ? $operation->parameters : [];
+        $operationParameters = OA\UNDEFINED !== $operation->parameters ? $operation->parameters : [];
         /** @var OA\Parameter $parameter */
         foreach ($operationParameters as $id => $parameter) {
             $ref = $parameter->ref;

@@ -54,7 +54,7 @@ class SymfonyConstraintAnnotationReader
                     continue;
                 }
 
-                $existingRequiredFields = $this->schema->required !== OA\UNDEFINED ? $this->schema->required : [];
+                $existingRequiredFields =  OA\UNDEFINED !== $this->schema->required ? $this->schema->required : [];
                 $existingRequiredFields[] = $propertyName;
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
@@ -97,7 +97,7 @@ class SymfonyConstraintAnnotationReader
         }
         foreach ($this->schema->properties as $schemaProperty) {
             if ($schemaProperty === $property) {
-                return $schemaProperty->property !== OA\UNDEFINED ? $schemaProperty->property : null;
+                return OA\UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
             }
         }
         return null;
@@ -111,7 +111,7 @@ class SymfonyConstraintAnnotationReader
         if (null === $newPattern) {
             return;
         }
-        if ($property->pattern !== OA\UNDEFINED) {
+        if (OA\UNDEFINED !== $property->pattern) {
             $property->pattern = sprintf('%s, %s', $property->pattern, $newPattern);
         } else {
             $property->pattern = $newPattern;

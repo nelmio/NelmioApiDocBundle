@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 
 class FunctionalTest extends WebTestCase
 {
@@ -157,7 +157,7 @@ class FunctionalTest extends WebTestCase
                         'readOnly' => true,
                         'title' => 'userid',
                         'example' => 1,
-                        'default' => null
+                        'default' => null,
                     ],
                     'email' => [
                         'type' => 'string',

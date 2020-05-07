@@ -11,10 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
-use Symfony\Component\Routing\Route;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\RouteCollection;
 
 final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInterface
