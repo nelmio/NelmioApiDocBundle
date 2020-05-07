@@ -24,11 +24,16 @@ final class FosRestDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
+    /** @var Reader */
     private $annotationReader;
 
-    public function __construct(Reader $annotationReader)
+    /** @var string */
+    private $mediaType;
+
+    public function __construct(Reader $annotationReader, string $mediaType = 'json')
     {
         $this->annotationReader = $annotationReader;
+        $this->mediaType = $mediaType;
     }
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
@@ -48,48 +53,46 @@ final class FosRestDescriber implements RouteDescriberInterface
                     $parameter->allowEmptyValue = $annotation->nullable && $annotation->allowBlank;
 
                     $parameter->required = !$annotation->nullable && $annotation->strict;
+
+                    if (OA\UNDEFINED === $parameter->description) {
+                        $parameter->description = $annotation->description;
+                    }
+
+                    $schema = Util::getChild($parameter, OA\Schema::class);
                 } else {
-                    $bodyParameter = Util::getOperationParameter($operation, 'body', 'body');
-                    /** @var OA\Schema $body */
-                    $body = Util::getChild($bodyParameter, OA\Schema::class);
-                    $body->type = 'object';
-                    $parameter = Util::getProperty($body, $annotation->getName());
+                    /** @var OA\RequestBody $requestBody */
+                    $requestBody = Util::getChild($operation, OA\RequestBody::class);
+                    $contentSchema = $this->getContentSchema($requestBody);
+                    $schema = Util::getProperty($contentSchema, $parameterName);
 
                     if (!$annotation->nullable && $annotation->strict) {
-                        $requiredParameters = is_array($body->required) ? $body->required : [];
-                        $requiredParameters[] = $annotation->getName();
+                        $requiredParameters = is_array($contentSchema->required) ? $contentSchema->required : [];
+                        $requiredParameters[] = $parameterName;
 
-                        $body->required = array_values(array_unique($requiredParameters));
+                        $contentSchema->required = array_values(array_unique($requiredParameters));
                     }
                 }
 
-                $parameter->schema = Util::createChild($parameter, OA\Schema::class);
-                $parameter->schema->default = $annotation->getDefault();
+                $schema->default = $annotation->getDefault();
 
-                if (OA\UNDEFINED === $parameter->schema->type) {
-                    $parameter->schema->type = $annotation->map ? 'array' : 'string';
-                }
-
-                if (OA\UNDEFINED === $parameter->description) {
-                    $parameter->description = $annotation->description;
+                if (OA\UNDEFINED === $schema->type) {
+                    $schema->type = $annotation->map ? 'array' : 'string';
                 }
 
                 if ($annotation->map) {
-                    $parameter->type = 'array';
-                    $parameter->collectionFormat = 'multi';
-                    $parameter->items = Util::getChild($parameter, OA\Items::class);
+                    $schema->type = 'array';
+                    $schema->collectionFormat = 'multi';
+                    $schema->items = Util::getChild($schema, OA\Items::class);
                 }
-
-                $parameter->type = 'string';
 
                 $pattern = $this->getPattern($annotation->requirements);
                 if (null !== $pattern) {
-                    $parameter->pattern = $pattern;
+                    $schema->pattern = $pattern;
                 }
 
                 $format = $this->getFormat($annotation->requirements);
                 if (null !== $format) {
-                    $parameter->format = $format;
+                    $schema->format = $format;
                 }
             }
         }
@@ -121,5 +124,37 @@ final class FosRestDescriber implements RouteDescriberInterface
         }
 
         return null;
+    }
+
+    private function getContentSchema(OA\RequestBody $requestBody): OA\Schema
+    {
+        $requestBody->content = $requestBody->content !== OA\UNDEFINED ? $requestBody->content : [];
+        switch ($this->mediaType) {
+            case 'json':
+                $contentType = 'application\json';
+                break;
+            case 'xml':
+                $contentType = 'application\xml';
+                break;
+            default:
+                throw new \InvalidArgumentException('Unsupported media type');
+        }
+        if (!isset($requestBody->content[$contentType])) {
+            $requestBody->content[$contentType] = new OA\MediaType(
+                [
+                    'mediaType' => $contentType
+                ]
+            );
+            /** @var OA\Schema $schema */
+            $schema = Util::getChild(
+                $requestBody->content[$contentType],
+                OA\Schema::class
+            );
+            $schema->type = 'object';
+        }
+        return Util::getChild(
+            $requestBody->content[$contentType],
+            OA\Schema::class
+        );
     }
 }
