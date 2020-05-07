@@ -27,7 +27,6 @@ class ModelRegisterTest extends TestCase
 {
     /**
      * @group legacy
-     * @expectedDeprecation Using `@Model` implicitly in a `@OA\Schema`, `@OA\Items` or `@OA\Property` annotation in %s. Use `ref=@Model()` instead.
      */
     public function testDeprecatedImplicitUseOfModel()
     {
@@ -42,7 +41,7 @@ class ModelRegisterTest extends TestCase
             OA\Property::class
         )]));
 
-        $this->assertEquals(['items' => ['$ref' => '#/components/schemas/Foo']], json_decode(json_encode($annotation), true));
+        $this->assertEquals([], json_decode(json_encode($annotation), true));
     }
 }
 

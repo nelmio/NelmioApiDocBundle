@@ -48,27 +48,10 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
 
-        $expected = json_decode($this->getOpenApiDefinition()->toJson(), true);
-        $expected['info']['title'] = 'My Test App';
-        $expected['paths'] = [
-            '/api/dummies' => $expected['paths']['/api/dummies'],
-            '/api/foo' => $expected['paths']['/api/foo'],
-            '/api/dummies/{id}' => $expected['paths']['/api/dummies/{id}'],
-            '/test/test/' => ['get' => [
-                'responses' => ['200' => ['description' => 'Test']],
-            ]],
-            '/test/test/{id}' => ['get' => [
-                'responses' => ['200' => ['description' => 'Test Ref']],
-                'parameters' => [['$ref' => '#/parameters/test']],
-            ]],
+        $expected = json_decode($this->getOpenApiDefinition('test')->toJson(), true);
+        $expected['servers'] = [
+            ['url' => 'http://api.example.com/app_dev.php']
         ];
-        $expected['components']['schemas'] = [
-            'Dummy' => $expected['components']['schemas']['Dummy'],
-            'Test' => ['type' => 'string'],
-            'JMSPicture_mini' => ['type' => 'object'],
-            'BazingaUser_grouped' => ['type' => 'object'],
-        ];
-
         $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
 
@@ -81,8 +64,9 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
 
         $expected = json_decode($this->getOpenApiDefinition()->toJson(), true);
-        $expected['basePath'] = '/app_dev.php';
-        $expected['host'] = 'api.example.com';
+        $expected['servers'] = [
+            ['url' => 'http://api.example.com/app_dev.php']
+        ];
 
         $this->assertEquals($expected, json_decode($response->getContent(), true));
     }
