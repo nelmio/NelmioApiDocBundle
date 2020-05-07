@@ -25,7 +25,6 @@ final class Model extends AbstractAnnotation
         'type' => 'string',
         'groups' => '[string]',
         'options' => '[mixed]',
-        'collection' => 'boolean'
     ];
 
     public static $_required = ['type'];
@@ -48,9 +47,4 @@ final class Model extends AbstractAnnotation
      * @var mixed[]
      */
     public $options;
-
-    /**
-     * @var boolean
-     */
-    public $collection = false;
 }
