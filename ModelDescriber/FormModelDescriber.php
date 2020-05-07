@@ -75,7 +75,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             }
 
             if ($config->hasOption('documentation')) {
-                $property->merge($config->getOption('documentation'));
+                $property->mergeProperties($config->getOption('documentation'));
             }
 
             if (OA\UNDEFINED !== $property->type) {
@@ -91,7 +91,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
      *
      * Returns true if a native OpenAPi type was found, false otherwise
      */
-    private function findFormType(FormConfigInterface $config, OA\Property $property)
+    private function findFormType(FormConfigInterface $config, OA\Schema $property)
     {
         $type = $config->getType();
 

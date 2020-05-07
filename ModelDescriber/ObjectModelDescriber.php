@@ -66,7 +66,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         foreach ($propertyInfoProperties as $propertyName) {
-            // read property options from Swagger Property annotation if it exists
+            // read property options from OpenApi Property annotation if it exists
             if (property_exists($class, $propertyName)) {
                 $reflectionProperty = new \ReflectionProperty($class, $propertyName);
                 $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflectionProperty, $propertyName));

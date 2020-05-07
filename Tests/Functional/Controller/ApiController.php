@@ -61,9 +61,8 @@ class ApiController
      * @OA\RequestBody(
      *    description="This is a request body",
      *    @OA\JsonContent(
-     *      @OA\Schema(
-     *          @OA\Items(ref=@Model(type=User::class))
-     *      )
+     *      type="array",
+     *      @OA\Items(ref=@Model(type=User::class))
      *    )
      * )
      * @OA\Tag(name="implicit")
@@ -81,7 +80,7 @@ class ApiController
      * ),
      * @OA\RequestBody(
      *    description="This is a request body",
-     *    ref=@Model(type=User::class, options={"bar": "baz"}))
+     *    ref=@Model(type=UserType::class, options={"bar": "baz"}))
      * )
      */
     public function submitUserTypeAction()

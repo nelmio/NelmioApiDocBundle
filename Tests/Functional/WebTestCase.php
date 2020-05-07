@@ -29,7 +29,7 @@ class WebTestCase extends BaseWebTestCase
     protected function getModel($name): OA\Schema
     {
         $api = $this->getOpenApiDefinition();
-        $key = array_search($name, array_column($api->components->schemas, 'schema'), true);
+        $key = array_search($name, array_column($api->components->schemas, 'schema'));
         static::assertNotFalse($key, sprintf('Model "%s" does not exist.', $name));
 
         return $api->components->schemas[$key];
@@ -51,15 +51,14 @@ class WebTestCase extends BaseWebTestCase
     protected function getOperationResponse(OA\Operation $operation, $response): OA\Response
     {
         $this->assertHasResponse($response, $operation);
-        $key = array_search($response, array_column($operation->responses, 'response'), true);
-
+        $key = array_search($response, array_column($operation->responses, 'response'));
         return $operation->responses[$key];
     }
 
     protected function getProperty(OA\Schema $annotation, $property): OA\Property
     {
         $this->assertHasProperty($property, $annotation);
-        $key = array_search($property, array_column($annotation->properties, 'property'), true);
+        $key = array_search($property, array_column($annotation->properties, 'property'));
 
         return $annotation->properties[$key];
     }
@@ -80,7 +79,7 @@ class WebTestCase extends BaseWebTestCase
         $api = $this->getOpenApiDefinition();
         self::assertHasPath($path, $api);
 
-        return $api->paths[array_search($path, array_column($api->paths, 'path'), true)];
+        return $api->paths[array_search($path, array_column($api->paths, 'path'))];
     }
 
     public function assertHasPath($path, OA\OpenApi $api)

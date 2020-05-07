@@ -95,7 +95,6 @@ class FunctionalTest extends WebTestCase
 
         $this->assertInstanceOf(OA\RequestBody::class, $operation->requestBody);
         $requestBody = $operation->requestBody;
-        var_dump($requestBody->content);
         $this->assertEquals('This is a request body', $requestBody->description);
         $this->assertEquals('array', $requestBody->content['application/json']->schema->type);
         $this->assertEquals('#/components/schemas/User', $requestBody->content['application/json']->schema->items->ref);
@@ -158,6 +157,7 @@ class FunctionalTest extends WebTestCase
                         'readOnly' => true,
                         'title' => 'userid',
                         'example' => 1,
+                        'default' => null
                     ],
                     'email' => [
                         'type' => 'string',
@@ -199,6 +199,7 @@ class FunctionalTest extends WebTestCase
                         'format' => 'date-time',
                     ],
                 ],
+                'schema' => 'User',
             ],
             json_decode($this->getModel('User')->toJson(), true)
         );
@@ -252,6 +253,7 @@ class FunctionalTest extends WebTestCase
                 ],
             ],
             'required' => ['dummy', 'dummies', 'entity', 'entities', 'document', 'documents', 'extended_builtin'],
+            'schema' => 'UserType',
         ], json_decode($this->getModel('UserType')->toJson(), true));
 
         $this->assertEquals([
@@ -297,6 +299,7 @@ class FunctionalTest extends WebTestCase
                 ],
             ],
             'required' => ['foo', 'foz', 'password'],
+            'schema' => 'DummyType',
         ], json_decode($this->getModel('DummyType')->toJson(), true));
     }
 
@@ -380,14 +383,15 @@ class FunctionalTest extends WebTestCase
                 ],
             ],
             'type' => 'object',
+            'schema' => 'SymfonyConstraints',
         ], json_decode($this->getModel('SymfonyConstraints')->toJson(), true));
     }
 
     public function testConfigReference()
     {
         $operation = $this->getOperation('/api/configReference', 'get');
-        $this->assertEquals('#/components/schemas/Test', $this->getOperationResponse($operation, 200)->content['application/json']->schema->ref);
-        $this->assertEquals('#/responses/201', $this->getOperationResponse($operation, 201)->ref);
+        $this->assertEquals('#/components/schemas/Test', $this->getOperationResponse($operation, '200')->ref);
+        $this->assertEquals('#/components/responses/201', $this->getOperationResponse($operation, '201')->ref);
     }
 
     public function testOperationsWithOtherAnnotationsAction()

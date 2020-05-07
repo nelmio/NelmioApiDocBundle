@@ -19,26 +19,26 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class TestController
 {
-//    /**
-//     * @OA\Response(
-//     *     response="200",
-//     *     description="Test"
-//     * )
-//     * @Route("/test/", methods={"GET"})
-//     */
-//    public function testAction()
-//    {
-//    }
-//
-//    /**
-//     * @OA\Parameter(ref="#/parameters/test"),
-//     * @OA\Response(
-//     *     response="200",
-//     *     description="Test Ref"
-//     * )
-//     * @Route("/test/{id}", methods={"GET"})
-//     */
-//    public function testRefAction()
-//    {
-//    }
+    /**
+     * @OA\Response(
+     *     response="200",
+     *     description="Test"
+     * )
+     * @Route("/test/", methods={"GET"})
+     */
+    public function testAction()
+    {
+    }
+
+    /**
+     * @OA\Parameter(ref="#/components/parameters/test"),
+     * @OA\Response(
+     *     response="200",
+     *     description="Test Ref"
+     * )
+     * @Route("/test/{id}", methods={"GET"})
+     */
+    public function testRefAction()
+    {
+    }
 }
