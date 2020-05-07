@@ -60,7 +60,7 @@ final class ModelRegister
                 $annotation->ref = OA\UNDEFINED;
                 $properties = [
                     '_context' => Util::createContext(['nested' => $annotation], $annotation->_context),
-                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type, $model->collection), $this->getGroups($model, $parentGroups), $model->options)),
+                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options)),
                 ];
 
                 switch ($this->mediaType) {
@@ -135,14 +135,10 @@ final class ModelRegister
         $analysis->annotations->detach($model);
     }
 
-    private function createType(string $type, bool $collection = false): Type
+    private function createType(string $type): Type
     {
         if ('[]' === substr($type, -2)) {
             return new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true, null, $this->createType(substr($type, 0, -2)));
-        }
-
-        if ($collection) {
-            return new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true, null, $this->createType($type));
         }
 
         return new Type(Type::BUILTIN_TYPE_OBJECT, false, $type);
