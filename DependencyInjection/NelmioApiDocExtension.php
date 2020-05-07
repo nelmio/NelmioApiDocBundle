@@ -159,8 +159,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setPublic(false)
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
-                    $jmsNamingStrategy,
                     new Reference('annotation_reader'),
+                    $jmsNamingStrategy,
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
 

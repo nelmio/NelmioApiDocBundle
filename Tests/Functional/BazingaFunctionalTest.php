@@ -72,7 +72,8 @@ class BazingaFunctionalTest extends WebTestCase
                     ],
                 ],
             ],
-        ], $this->getModel('BazingaUser')->toArray());
+            'schema' => 'BazingaUser',
+        ], json_decode($this->getModel('BazingaUser')->toJson(), true));
     }
 
     public function testWithGroup()
@@ -89,7 +90,8 @@ class BazingaFunctionalTest extends WebTestCase
                     ],
                 ],
             ],
-        ], $this->getModel('BazingaUser_grouped')->toArray());
+            'schema' => 'BazingaUser_grouped',
+        ], json_decode($this->getModel('BazingaUser_grouped')->toJson(), true));
     }
 
     public function testWithType()
@@ -117,7 +119,8 @@ class BazingaFunctionalTest extends WebTestCase
                     ],
                 ],
             ],
-        ], $this->getModel('BazingaUserTyped')->toArray());
+            'schema' => 'BazingaUserTyped',
+        ], json_decode($this->getModel('BazingaUserTyped')->toJson(), true));
     }
 
     protected static function createKernel(array $options = [])

@@ -49,8 +49,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function __construct(
         MetadataFactoryInterface $factory,
-        PropertyNamingStrategyInterface $namingStrategy,
-        Reader $reader
+        Reader $reader,
+        ?PropertyNamingStrategyInterface $namingStrategy = null
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;

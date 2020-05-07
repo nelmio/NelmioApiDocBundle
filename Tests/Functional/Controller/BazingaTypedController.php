@@ -21,15 +21,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class BazingaTypedController
 {
-//    /**
-//     * @Route("/api/bazinga_typed", methods={"GET"})
-//     * @OA\Response(
-//     *     response=200,
-//     *     description="Success",
-//     *     @Model(type=BazingaUserTyped::class)
-//     * )
-//     */
-//    public function userTypedAction()
-//    {
-//    }
+    /**
+     * @Route("/api/bazinga_typed", methods={"GET"})
+     * @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     ref=@Model(type=BazingaUserTyped::class)
+     * )
+     */
+    public function userTypedAction()
+    {
+    }
 }

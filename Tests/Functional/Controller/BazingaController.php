@@ -21,27 +21,27 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class BazingaController
 {
-//    /**
-//     * @Route("/api/bazinga", methods={"GET"})
-//     * @OA\Response(
-//     *     response=200,
-//     *     description="Success",
-//     *     @Model(type=BazingaUser::class)
-//     * )
-//     */
-//    public function userAction()
-//    {
-//    }
-//
-//    /**
-//     * @Route("/api/bazinga_foo", methods={"GET"})
-//     * @OA\Response(
-//     *     response=200,
-//     *     description="Success",
-//     *     @Model(type=BazingaUser::class, groups={"foo"})
-//     * )
-//     */
-//    public function userGroupAction()
-//    {
-//    }
+    /**
+     * @Route("/api/bazinga", methods={"GET"})
+     * @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     ref=@Model(type=BazingaUser::class)
+     * )
+     */
+    public function userAction()
+    {
+    }
+
+    /**
+     * @Route("/api/bazinga_foo", methods={"GET"})
+     * @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     ref=@Model(type=BazingaUser::class, groups={"foo"})
+     * )
+     */
+    public function userGroupAction()
+    {
+    }
 }
