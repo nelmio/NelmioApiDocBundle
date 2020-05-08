@@ -73,7 +73,7 @@ final class ModelRegister
 
                         break;
                     default:
-                        throw new \InvalidArgumentException('Unsupported media type');
+                        throw new \InvalidArgumentException(sprintf("@Model annotation is not compatible with the media type '%s'. It must be one of 'json' or 'xml'.", $this->mediaType));
                 }
 
                 $annotation->merge([$modelAnnotation]);

@@ -193,7 +193,7 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
 
     private function getSupportedHttpMethods(Route $route): array
     {
-        $allMethods = Util::$operations;
+        $allMethods = Util::OPERATIONS;
         $methods = array_map('strtolower', $route->getMethods());
 
         return array_intersect($methods ?: $allMethods, $allMethods);

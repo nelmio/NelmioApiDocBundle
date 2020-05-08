@@ -36,7 +36,7 @@ final class DefaultDescriber implements DescriberInterface
         // Paths
         $paths = OA\UNDEFINED === $api->paths ? [] : $api->paths;
         foreach ($paths as $path) {
-            foreach (Util::$operations as $method) {
+            foreach (Util::OPERATIONS as $method) {
                 /** @var OA\Operation $operation */
                 $operation = $path->{$method};
                 if (OA\UNDEFINED !== $operation && null !== $operation && empty($operation->responses ?? [])) {

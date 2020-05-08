@@ -24,9 +24,7 @@ class ClassApiController
 {
     /**
      * @Route("/security/class")
-     * @Operation(
-     *  @OA\Response(response="201", description="")
-     * )
+     * @OA\Response(response="201", description="")
      */
     public function securityAction()
     {

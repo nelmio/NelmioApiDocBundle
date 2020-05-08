@@ -30,10 +30,10 @@ trait RouteDescriberTrait
     {
         $operations = [];
         $path = Util::getPath($api, $this->normalizePath($route->getPath()));
-        $methods = $route->getMethods() ?: Util::$operations;
+        $methods = $route->getMethods() ?: Util::OPERATIONS;
         foreach ($methods as $method) {
             $method = strtolower($method);
-            if (!in_array($method, Util::$operations)) {
+            if (!in_array($method, Util::OPERATIONS)) {
                 continue;
             }
 

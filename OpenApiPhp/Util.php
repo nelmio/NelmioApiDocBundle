@@ -49,14 +49,14 @@ use const OpenApi\UNDEFINED;
  * to merge properties from an deeply nested array of Annotation properties in the structure of a
  * generated swagger json decoded array.
  */
-class Util
+final class Util
 {
     /**
      * All http method verbs as known by swagger.
      *
      * @var array
      */
-    public static $operations = ['get', 'post', 'put', 'patch', 'delete', 'options', 'head'];
+    public const OPERATIONS = ['get', 'post', 'put', 'patch', 'delete', 'options', 'head', 'trace'];
 
     /**
      * Return an existing PathItem object from $api->paths[] having its member path set to $path.

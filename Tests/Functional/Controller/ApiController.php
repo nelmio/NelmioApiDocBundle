@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
@@ -28,12 +29,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiController
 {
     /**
-     * @OA\Parameter(ref="#/components/parameters/test"),
      * @OA\Response(
      *   response="200",
      *   description="Success",
      *   ref=@Model(type=Article::class, groups={"light"}))
      * )
+     * @OA\Parameter(ref="#/components/parameters/test")
      * @Route("/article/{id}", methods={"GET"})
      */
     public function fetchArticleAction()
@@ -45,7 +46,9 @@ class ApiController
      *
      * @Route("/swagger", methods={"GET", "LINK"})
      * @Route("/swagger2", methods={"GET"})
-     * @OA\Response(response="201", description="An example resource")
+     * @Operation(
+     *     @OA\Response(response="201", description="An example resource")
+     * )
      */
     public function swaggerAction()
     {
