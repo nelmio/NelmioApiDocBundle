@@ -192,6 +192,12 @@ class JMSFunctionalTest extends WebTestCase
                         ],
                     ],
                 ],
+                'long' => [
+                    'type' => 'string',
+                ],
+                'short' => [
+                    'type' => 'integer',
+                ],
             ],
         ], $this->getModel('JMSUser')->toArray());
 
