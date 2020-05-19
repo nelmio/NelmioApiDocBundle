@@ -180,6 +180,13 @@ class JMSUser
      */
     private $deepFreeFormObjectCollection;
 
+    /**
+     * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSNote")
+     * @Serializer\Inline()
+     * @Serializer\Expose
+     */
+    private $notes;
+
     public function setRoles($roles)
     {
     }

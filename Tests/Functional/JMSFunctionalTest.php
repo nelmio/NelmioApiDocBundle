@@ -199,6 +199,12 @@ class JMSFunctionalTest extends WebTestCase
                         ],
                     ],
                 ],
+                'long' => [
+                    'type' => 'string',
+                ],
+                'short' => [
+                    'type' => 'integer',
+                ],
             ],
             'schema' => 'JMSUser',
         ], json_decode($this->getModel('JMSUser')->toJson(), true));

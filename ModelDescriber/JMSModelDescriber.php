@@ -93,8 +93,20 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                     $reflection = new \ReflectionProperty($item->class, $item->name);
                 }
 
-                $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflection, $name));
                 $groups = $this->computeGroups($context, $item->type);
+
+                if (true === $item->inline && isset($item->type['name'])) {
+                    // currently array types can not be documented :-/
+                    if (!in_array($item->type['name'], ['array', 'ArrayCollection'], true)) {
+                        $inlineModel = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $item->type['name']), $groups);
+                        $this->describe($inlineModel, $schema);
+                    }
+                    $context->popPropertyMetadata();
+
+                    continue;
+                }
+
+                $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflection, $name));
                 $annotationsReader->updateProperty($reflection, $property, $groups);
             } catch (\ReflectionException $e) {
                 $property = Util::getProperty($schema, $name);
