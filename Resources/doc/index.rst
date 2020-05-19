@@ -99,28 +99,31 @@ Using the bundle
 ----------------
 
 You can configure global information in the bundle configuration ``documentation.info`` section (take a look at
-`the OpenAPI 2.0 specification (formerly Swagger)`_ to know the available fields):
+`the OpenAPI 3.0 specification (formerly Swagger)`_ to know the available fields):
 
 .. code-block:: yaml
 
     nelmio_api_doc:
         documentation:
-            host: api.example.com
-            schemes: [http, https]
+            servers:
+              - url: http://api.example.com/unsafe
+                description: API over HTTP
+              - url: https://api.example.com/secured
+                description: API over HTTPS
             info:
                 title: My App
                 description: This is an awesome app!
                 version: 1.0.0
-            securityDefinitions:
-                Bearer:
-                    type: apiKey
-                    description: 'Value: Bearer {jwt}'
-                    name: Authorization
-                    in: header
+            components:
+                securitySchemes:
+                    Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
             security:
                 - Bearer: []
 
-.. _`the OpenAPI 2.0 specification (formerly Swagger)`: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
+.. _`the OpenAPI 3.0 specification (formerly Swagger)`: https://swagger.io/docs/specification
 
 .. note::
 
@@ -135,7 +138,7 @@ To document your routes, you can use the SwaggerPHP annotations and the
     use AppBundle\Entity\Reward;
     use Nelmio\ApiDocBundle\Annotation\Model;
     use Nelmio\ApiDocBundle\Annotation\Security;
-    use Swagger\Annotations as SWG;
+    use OpenApi\Annotations as OA;
     use Symfony\Component\Routing\Annotation\Route;
 
     class UserController
@@ -146,21 +149,23 @@ To document your routes, you can use the SwaggerPHP annotations and the
          * This call takes into account all confirmed awards, but not pending or refused awards.
          *
          * @Route("/api/{user}/rewards", methods={"GET"})
-         * @SWG\Response(
+         * @OA\Response(
          *     response=200,
          *     description="Returns the rewards of an user",
-         *     @SWG\Schema(
-         *         type="array",
-         *         @SWG\Items(ref=@Model(type=Reward::class, groups={"full"}))
+         *     @OA\JsonContent(
+         *        @OA\Schema(
+         *             type="array",
+         *             @OA\Items(ref=@Model(type=Reward::class, groups={"full"}))
+         *        )
          *     )
          * )
-         * @SWG\Parameter(
+         * @OA\Parameter(
          *     name="order",
          *     in="query",
          *     type="string",
          *     description="The field used to order rewards"
          * )
-         * @SWG\Tag(name="rewards")
+         * @OA\Tag(name="rewards")
          * @Security(name="Bearer")
          */
         public function fetchUserRewardsAction(User $user)
@@ -186,7 +191,7 @@ This annotation has two options:
 * ``type`` to specify your model's type::
 
     /**
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     @Model(type=User::class)
      * )
@@ -195,7 +200,7 @@ This annotation has two options:
 * ``groups`` to specify the serialization groups used to (de)serialize your model::
 
     /**
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     @Model(type=User::class, groups={"non_sensitive_data"})
      * )
@@ -203,23 +208,25 @@ This annotation has two options:
 
  .. tip::
 
-     When used at the root of ``@SWG\Response`` and ``@SWG\Parameter``, ``@Model`` is automatically nested
-     in a ``@SWG\Schema``.
+     When used at the root of ``@OA\Response`` and ``@OA\Parameter``, ``@Model`` is automatically nested
+     in a ``@OA\Schema``.
 
-     To use ``@Model`` directly within a ``@SWG\Schema``, ``@SWG\Items`` or ``@SWG\Property``, you have to use the ``$ref`` field::
+     The media type defaults to ``application/json``.
+
+     To use ``@Model`` directly within a ``@OA\Schema``, ``@OA\Items`` or ``@OA\Property``, you have to use the ``$ref`` field::
 
          /**
-          * @SWG\Response(
-          *     @SWG\Schema(ref=@Model(type=User::class))
+          * @OA\Response(
+          *     @OA\JsonContent(ref=@Model(type=User::class))
           * )
           *
           * or
           *
-          * @SWG\Response(
-          *     @SWG\Schema(type="object",
-          *         @SWG\Property(property="foo", ref=@Model(type=FooClass::class))
+          * @OA\Response(@OA\XmlContent(
+          *     @OA\Schema(type="object",
+          *         @OA\Property(property="foo", ref=@Model(type=FooClass::class))
           *     )
-          * )
+          * ))
           */
 
 Symfony Form types
@@ -234,9 +241,9 @@ You can customize the documentation of a form field using the ``documentation`` 
         ],
     ]);
 
-See the `OpenAPI 2.0 specification`__ to see all the available fields of the ``documentation`` option.
+See the `OpenAPI 3.0 specification`__ to see all the available fields of the ``documentation`` option.
 
-__ https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject
+__ https://swagger.io/specification/
 
 
 General PHP objects
@@ -267,30 +274,30 @@ General PHP objects
 If you want to customize the documentation of an object's property, you can use ``@SWG\Property``::
 
     use Nelmio\ApiDocBundle\Annotation\Model;
-    use Swagger\Annotations as SWG;
+    use OpenApi\Annotations as OA;
 
     class User
     {
         /**
          * @var int
-         * @SWG\Property(description="The unique identifier of the user.")
+         * @OA\Property(description="The unique identifier of the user.")
          */
         public $id;
 
         /**
-         * @SWG\Property(type="string", maxLength=255)
+         * @OA\Property(type="string", maxLength=255)
          */
         public $username;
 
         /**
-         * @SWG\Property(ref=@Model(type=User::class))
+         * @OA\Property(ref=@Model(type=User::class))
          */
         public $friend;
     }
 
-See the `OpenAPI 2.0 specification`__ to see all the available fields of ``@SWG\Property``.
+See the `OpenAPI 3.0 specification`__ to see all the available fields of ``@SWG\Property``.
 
-__ https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject
+__ https://swagger.io/specification/
 
 Learn more
 ----------
