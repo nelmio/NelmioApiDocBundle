@@ -1,10 +1,14 @@
 CHANGELOG
 =========
 
-3.3.0 (unreleased)
-------------------
+4.0.0
+-----
+* Added support of OpenAPI 3.0. The internals were completely reworked and this version introduces BC breaks.
 
-* Usage of Google Fonts was removed. System fonts `serif` / `sans` will be used instead. 
+3.3.0
+-----
+
+* Usage of Google Fonts was removed. System fonts `serif` / `sans` will be used instead.
   This can lead to a different look on different operating systems.
   You can [re-add Google Fonts again manually by overriding the template](https://symfony.com/doc/current/bundles/NelmioApiDocBundle/faq.html#re-add-google-fonts).
 
