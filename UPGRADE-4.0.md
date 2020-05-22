@@ -1,8 +1,11 @@
 Upgrading From 3.x To 4.0
 =========================
 
-Version 4.0 introduced OpenAPI 3.0 support which brings a set of new interesting features.
-However it required to rework a big part of the bundle, and it introduced BC breaks.
+Version 4 is a major change introducing OpenAPI 3.0 support, the rebranded swagger specification, which brings a set of new interesting features. Unfortunately this required a rework to a large part of the bundle, and introduces BC breaks.
+
+The Visual guide to "[What's new in 3.0 spec](https://blog.readme.com/an-example-filled-guide-to-swagger-3-2/)" gives more information on OpenApi 3.0.
+
+Version 4 does not support older versions of the specification. If you need to output swagger v2 documentation, you will need to use the latest 3.x release.
 
 The Upgrade to Swagger 3.0
 --------------------------
