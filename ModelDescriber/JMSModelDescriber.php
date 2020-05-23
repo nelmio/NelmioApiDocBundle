@@ -42,6 +42,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     private $metadataStacks = [];
 
+    private $mediaTypes;
+
     /**
      * @var array
      */
@@ -50,11 +52,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     public function __construct(
         MetadataFactoryInterface $factory,
         Reader $reader,
+        array $mediaTypes,
         ?PropertyNamingStrategyInterface $namingStrategy = null
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->doctrineReader = $reader;
+        $this->mediaTypes = $mediaTypes;
     }
 
     /**
@@ -69,7 +73,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
 
         $schema->type = 'object';
-        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
+        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
         $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
 
         $isJmsV1 = null !== $this->namingStrategy;

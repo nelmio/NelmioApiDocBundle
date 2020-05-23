@@ -30,7 +30,7 @@ class ModelRegisterTest extends TestCase
     {
         $api = new OA\OpenApi([]);
         $registry = new ModelRegistry([new NullModelDescriber()], $api);
-        $modelRegister = new ModelRegister($registry);
+        $modelRegister = new ModelRegister($registry, ['json']);
 
         $annotationsReader = new AnnotationReader();
 

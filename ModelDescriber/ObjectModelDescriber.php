@@ -32,17 +32,21 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private $doctrineReader;
     /** @var PropertyDescriberInterface[] */
     private $propertyDescribers;
+    /** @var string[] */
+    private $mediaTypes;
 
     private $swaggerDefinitionAnnotationReader;
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
         Reader $reader,
-        $propertyDescribers
+        $propertyDescribers,
+        array $mediaTypes
     ) {
         $this->propertyInfo = $propertyInfo;
         $this->doctrineReader = $reader;
         $this->propertyDescribers = $propertyDescribers;
+        $this->mediaTypes = $mediaTypes;
     }
 
     public function describe(Model $model, OA\Schema $schema)
@@ -57,7 +61,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             $context = ['serializer_groups' => array_filter($model->getGroups(), 'is_string')];
         }
 
-        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
+        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
         $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);

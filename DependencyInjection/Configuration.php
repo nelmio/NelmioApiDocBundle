@@ -53,6 +53,11 @@ final class Configuration implements ConfigurationInterface
                     ->example(['info' => ['title' => 'My App']])
                     ->prototype('variable')->end()
                 ->end()
+                ->arrayNode('media_types')
+                    ->info('List of enabled Media Types')
+                    ->defaultValue(['json'])
+                    ->prototype('scalar')->end()
+                ->end()
                 ->arrayNode('areas')
                     ->info('Filter the routes that are documented')
                     ->defaultValue(

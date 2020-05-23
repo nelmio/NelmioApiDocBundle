@@ -35,14 +35,16 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
     private $controllerReflector;
     private $annotationReader;
     private $logger;
+    private $mediaTypes;
     private $overwrite;
 
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, LoggerInterface $logger, array $mediaTypes, bool $overwrite = false)
     {
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
         $this->annotationReader = $annotationReader;
         $this->logger = $logger;
+        $this->mediaTypes = $mediaTypes;
         $this->overwrite = $overwrite;
     }
 
@@ -57,7 +59,7 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
     {
         $processors = [
             new AddDefaults(),
-            new ModelRegister($this->modelRegistry),
+            new ModelRegister($this->modelRegistry, $this->mediaTypes),
         ];
 
         return array_merge($processors, Analysis::processors());

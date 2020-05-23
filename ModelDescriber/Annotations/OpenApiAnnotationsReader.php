@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use OpenApi\Analysis;
@@ -27,10 +26,10 @@ class OpenApiAnnotationsReader
     private $annotationsReader;
     private $modelRegister;
 
-    public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry)
+    public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
     {
         $this->annotationsReader = $annotationsReader;
-        $this->modelRegister = new ModelRegister($modelRegistry);
+        $this->modelRegister = new ModelRegister($modelRegistry, $mediaTypes);
     }
 
     public function updateSchema(\ReflectionClass $reflectionClass, OA\Schema $schema): void

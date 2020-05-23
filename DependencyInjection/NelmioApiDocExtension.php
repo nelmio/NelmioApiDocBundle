@@ -19,6 +19,7 @@ use Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
@@ -89,6 +90,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference('nelmio_api_doc.controller_reflector'),
                     new Reference('annotation_reader'),
                     new Reference('logger'),
+                    $config['media_types']
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
 
@@ -135,12 +137,19 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 array_map(function ($area) { return new Reference(sprintf('nelmio_api_doc.generator.%s', $area)); }, array_keys($config['areas']))
             ));
 
+        $container->getDefinition('nelmio_api_doc.model_describers.object')
+            ->setArgument(3, $config['media_types']);
+
         // Import services needed for each library
         $loader->load('php_doc.xml');
 
         if (interface_exists(ParamInterface::class)) {
             $loader->load('fos_rest.xml');
+            $container->getDefinition('nelmio_api_doc.route_describers.fos_rest')
+                ->setArgument(1, $config['media_types']);
+
         }
+
 
         // ApiPlatform support
         $bundles = $container->getParameter('kernel.bundles');
@@ -160,6 +169,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
                     new Reference('annotation_reader'),
+                    $config['media_types'],
                     $jmsNamingStrategy,
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);

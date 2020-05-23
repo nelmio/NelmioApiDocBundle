@@ -28,16 +28,13 @@ final class ModelRegister
     /** @var ModelRegistry */
     private $modelRegistry;
 
-    /** @var string */
-    private $mediaType;
+    /** @var string[] */
+    private $mediaTypes;
 
-    public function __construct(ModelRegistry $modelRegistry, string $mediaType = 'json')
+    public function __construct(ModelRegistry $modelRegistry, array $mediaTypes)
     {
-        if (!in_array($mediaType, ['json', 'xml'])) {
-            throw new \InvalidArgumentException('Default media type can be either json or xml.');
-        }
         $this->modelRegistry = $modelRegistry;
-        $this->mediaType = $mediaType;
+        $this->mediaTypes = $mediaTypes;
     }
 
     public function __invoke(Analysis $analysis, array $parentGroups = null)
@@ -63,22 +60,9 @@ final class ModelRegister
                     'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options)),
                 ];
 
-                switch ($this->mediaType) {
-                    case 'json':
-                        $modelAnnotation = new OA\JsonContent($properties);
-
-                        break;
-                    case 'xml':
-                        $modelAnnotation = new OA\XmlContent($properties);
-
-                        break;
-                    default:
-                        throw new \InvalidArgumentException(sprintf("@Model annotation is not compatible with the media type '%s'. It must be one of 'json' or 'xml'.", $this->mediaType));
+                foreach ($this->mediaTypes as $mediaType) {
+                    $this->createContentForMediaType($mediaType, $properties, $annotation, $analysis);
                 }
-
-                $annotation->merge([$modelAnnotation]);
-                $analysis->addAnnotation($modelAnnotation, null);
-
                 $this->detach($model, $annotation, $analysis);
 
                 continue;
@@ -153,5 +137,28 @@ final class ModelRegister
         }
 
         return null;
+    }
+
+    private function createContentForMediaType(
+        string $type,
+        array $properties,
+        OA\AbstractAnnotation $annotation,
+        Analysis $analysis
+    ) {
+        switch ($type) {
+            case 'json':
+                $modelAnnotation = new OA\JsonContent($properties);
+
+                break;
+            case 'xml':
+                $modelAnnotation = new OA\XmlContent($properties);
+
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf("@Model annotation is not compatible with the media type '%s'. It must be one of 'json' or 'xml'.", $this->mediaType));
+        }
+
+        $annotation->merge([$modelAnnotation]);
+        $analysis->addAnnotation($modelAnnotation, null);
     }
 }

@@ -27,13 +27,13 @@ class AnnotationsReader
     private $openApiAnnotationsReader;
     private $symfonyConstraintAnnotationReader;
 
-    public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry)
+    public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
     {
         $this->annotationsReader = $annotationsReader;
         $this->modelRegistry = $modelRegistry;
 
         $this->phpDocReader = new PropertyPhpDocReader();
-        $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($annotationsReader, $modelRegistry);
+        $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($annotationsReader, $modelRegistry, $mediaTypes);
         $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($annotationsReader);
     }
 

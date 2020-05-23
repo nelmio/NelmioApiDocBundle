@@ -27,13 +27,13 @@ final class FosRestDescriber implements RouteDescriberInterface
     /** @var Reader */
     private $annotationReader;
 
-    /** @var string */
-    private $mediaType;
+    /** @var string[] */
+    private $mediaTypes;
 
-    public function __construct(Reader $annotationReader, string $mediaType = 'json')
+    public function __construct(Reader $annotationReader, array $mediaTypes)
     {
         $this->annotationReader = $annotationReader;
-        $this->mediaType = $mediaType;
+        $this->mediaTypes = $mediaTypes;
     }
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
@@ -59,40 +59,22 @@ final class FosRestDescriber implements RouteDescriberInterface
                     }
 
                     $schema = Util::getChild($parameter, OA\Schema::class);
+                    $this->describeCommonSchemaFromAnnotation($schema, $annotation);
                 } else {
                     /** @var OA\RequestBody $requestBody */
                     $requestBody = Util::getChild($operation, OA\RequestBody::class);
-                    $contentSchema = $this->getContentSchema($requestBody);
-                    $schema = Util::getProperty($contentSchema, $parameterName);
+                    foreach ($this->mediaTypes as $mediaType) {
+                        $contentSchema = $this->getContentSchemaForType($requestBody, $mediaType);
+                        $schema = Util::getProperty($contentSchema, $parameterName);
 
-                    if (!$annotation->nullable && $annotation->strict) {
-                        $requiredParameters = is_array($contentSchema->required) ? $contentSchema->required : [];
-                        $requiredParameters[] = $parameterName;
+                        if (!$annotation->nullable && $annotation->strict) {
+                            $requiredParameters = is_array($contentSchema->required) ? $contentSchema->required : [];
+                            $requiredParameters[] = $parameterName;
 
-                        $contentSchema->required = array_values(array_unique($requiredParameters));
+                            $contentSchema->required = array_values(array_unique($requiredParameters));
+                        }
+                        $this->describeCommonSchemaFromAnnotation($schema, $annotation);
                     }
-                }
-
-                $schema->default = $annotation->getDefault();
-
-                if (OA\UNDEFINED === $schema->type) {
-                    $schema->type = $annotation->map ? 'array' : 'string';
-                }
-
-                if ($annotation->map) {
-                    $schema->type = 'array';
-                    $schema->collectionFormat = 'multi';
-                    $schema->items = Util::getChild($schema, OA\Items::class);
-                }
-
-                $pattern = $this->getPattern($annotation->requirements);
-                if (null !== $pattern) {
-                    $schema->pattern = $pattern;
-                }
-
-                $format = $this->getFormat($annotation->requirements);
-                if (null !== $format) {
-                    $schema->format = $format;
                 }
             }
         }
@@ -126,10 +108,10 @@ final class FosRestDescriber implements RouteDescriberInterface
         return null;
     }
 
-    private function getContentSchema(OA\RequestBody $requestBody): OA\Schema
+    private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
         $requestBody->content = OA\UNDEFINED !== $requestBody->content ? $requestBody->content : [];
-        switch ($this->mediaType) {
+        switch ($type) {
             case 'json':
                 $contentType = 'application\json';
 
@@ -159,5 +141,30 @@ final class FosRestDescriber implements RouteDescriberInterface
             $requestBody->content[$contentType],
             OA\Schema::class
         );
+    }
+
+    private function describeCommonSchemaFromAnnotation(OA\Schema $schema, $annotation)
+    {
+        $schema->default = $annotation->getDefault();
+
+        if (OA\UNDEFINED === $schema->type) {
+            $schema->type = $annotation->map ? 'array' : 'string';
+        }
+
+        if ($annotation->map) {
+            $schema->type = 'array';
+            $schema->collectionFormat = 'multi';
+            $schema->items = Util::getChild($schema, OA\Items::class);
+        }
+
+        $pattern = $this->getPattern($annotation->requirements);
+        if (null !== $pattern) {
+            $schema->pattern = $pattern;
+        }
+
+        $format = $this->getFormat($annotation->requirements);
+        if (null !== $format) {
+            $schema->format = $format;
+        }
     }
 }
