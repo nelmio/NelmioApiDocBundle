@@ -11,21 +11,30 @@
 
 namespace Nelmio\ApiDocBundle\Command;
 
-use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ServiceLocator;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class DumpCommand extends Command
 {
+    /**
+     * @var string command name
+     */
     protected static $defaultName = 'app:doc:dump';
 
+    /**
+     * @var ContainerInterface
+     */
     private $generatorLocator;
 
+    /**
+     * DumpCommand constructor.
+     *
+     * @param ContainerInterface $generatorLocator
+     */
     public function __construct(ContainerInterface $generatorLocator)
     {
         $this->generatorLocator = $generatorLocator;
@@ -33,21 +42,32 @@ class DumpCommand extends Command
         parent::__construct();
     }
 
+    /**
+     * Configures the dump command.
+     */
     protected function configure()
     {
         $this
-            ->setDescription('Dumps API documentation in Swagger JSON format')
+            ->setDescription('Dumps documentation in OpenAPI JSON format')
             ->addOption('area', '', InputOption::VALUE_OPTIONAL, '', 'default')
             ->addOption('--no-pretty', '', InputOption::VALUE_NONE, 'Do not pretty format output')
         ;
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @throws InvalidArgumentException If the area to dump is not valid
+     *
+     * @return int|void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $area = $input->getOption('area');
 
         if (!$this->generatorLocator->has($area)) {
-            throw new BadRequestHttpException(sprintf('Area "%s" is not supported.', $area));
+            throw new InvalidArgumentException(sprintf('Area "%s" is not supported.', $area));
         }
 
         $spec = $this->generatorLocator->get($area)->generate()->toArray();
