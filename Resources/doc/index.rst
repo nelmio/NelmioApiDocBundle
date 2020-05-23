@@ -271,7 +271,7 @@ General PHP objects
     When using the JMS serializer combined with `willdurand/Hateoas`_ (and the `BazingaHateoasBundle`_),
     HATEOAS metadata are automatically extracted
 
-If you want to customize the documentation of an object's property, you can use ``@SWG\Property``::
+If you want to customize the documentation of an object's property, you can use ``@OA\Property``::
 
     use Nelmio\ApiDocBundle\Annotation\Model;
     use OpenApi\Annotations as OA;
@@ -295,7 +295,7 @@ If you want to customize the documentation of an object's property, you can use 
         public $friend;
     }
 
-See the `OpenAPI 3.0 specification`__ to see all the available fields of ``@SWG\Property``.
+See the `OpenAPI 3.0 specification`__ to see all the available fields of ``@OA\Property``.
 
 __ https://swagger.io/specification/
 
