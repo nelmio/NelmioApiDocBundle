@@ -19,7 +19,6 @@ use Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
-use Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
@@ -90,7 +89,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference('nelmio_api_doc.controller_reflector'),
                     new Reference('annotation_reader'),
                     new Reference('logger'),
-                    $config['media_types']
+                    $config['media_types'],
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
 
@@ -147,9 +146,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $loader->load('fos_rest.xml');
             $container->getDefinition('nelmio_api_doc.route_describers.fos_rest')
                 ->setArgument(1, $config['media_types']);
-
         }
-
 
         // ApiPlatform support
         $bundles = $container->getParameter('kernel.bundles');
