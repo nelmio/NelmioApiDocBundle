@@ -21,11 +21,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DumpCommand extends Command
 {
     /**
-     * @var string command name
-     */
-    protected static $defaultName = 'app:doc:dump';
-
-    /**
      * @var ContainerInterface
      */
     private $generatorLocator;
@@ -77,5 +72,7 @@ class DumpCommand extends Command
         } else {
             $output->writeln(json_encode($spec, JSON_PRETTY_PRINT));
         }
+
+        return 0;
     }
 }
