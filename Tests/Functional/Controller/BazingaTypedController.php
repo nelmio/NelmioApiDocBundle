@@ -26,7 +26,7 @@ class BazingaTypedController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=BazingaUserTyped::class)
+     *     @Model(type=BazingaUserTyped::class)
      * )
      */
     public function userTypedAction()

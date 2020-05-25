@@ -10,6 +10,12 @@ Version](https://poser.pugx.org/nelmio/api-doc-bundle/v/stable)](https://packagi
 The **NelmioApiDocBundle** bundle allows you to generate a decent documentation
 for your APIs.
 
+## Migrate from 3.x to 4.0
+
+[To migrate from 3.x to 4.0, follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-4.0.md)
+
+Version 4.0 brings OpenAPI 3.0 support. If you want to stick to Swagger 2.0, you should use the version 3 of this bundle.
+
 ## Migrate from 2.x to 3.0
 
 [To migrate from 2.x to 3.0, follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-3.0.md)

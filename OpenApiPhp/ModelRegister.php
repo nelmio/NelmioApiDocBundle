@@ -52,9 +52,22 @@ final class ModelRegister
                 continue;
             }
 
+            // Misusage of ::$ref
             if (($annotation instanceof OA\Response || $annotation instanceof OA\RequestBody) && $annotation->ref instanceof ModelAnnotation) {
-                $model = $annotation->ref;
-                $annotation->ref = OA\UNDEFINED;
+              throw new \InvalidArgumentException(sprintf('Using @Model inside @%s::$ref is not allowed. You should use ::$ref with @Property, @Parameter, @Schema, @Items but within @Response or @RequestBody you should put @Model directly at the root of the annotation : `@Response(..., @Model(...))`.', get_class($annotation)));
+            }
+
+            // Implicit usages
+
+            // We don't use $ref for @Responses, @RequestBody and @Parameter to respect semantics
+            // We don't replace these objects with the @Model found (we inject it in a subfield) whereas we do for @Schemas
+
+            $model = $this->getModel($annotation); // We check whether there is a @Model annotation nested
+            if (null === $model) {
+                continue;
+            }
+
+            if ($annotation instanceof OA\Response || $annotation instanceof OA\RequestBody) {
                 $properties = [
                     '_context' => Util::createContext(['nested' => $annotation], $annotation->_context),
                     'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options)),
@@ -68,20 +81,14 @@ final class ModelRegister
                 continue;
             }
 
-            // Implicit usages
-            if ($annotation instanceof OA\Parameter) {
-                if ($annotation->schema instanceof OA\Schema && 'array' === $annotation->schema->type) {
-                    $annotationClass = OA\Items::class;
-                } else {
-                    $annotationClass = OA\Schema::class;
-                }
-            } else {
-                continue;
+            if (!$annotation instanceof OA\Parameter) {
+                throw new \InvalidArgumentException(sprintf("@Model annotation can't be nested with an annotation of type @%s.", get_class($annotation)));
             }
 
-            $model = $this->getModel($annotation);
-            if (null === $model) {
-                continue;
+            if ($annotation->schema instanceof OA\Schema && 'array' === $annotation->schema->type) {
+                $annotationClass = OA\Items::class;
+            } else {
+                $annotationClass = OA\Schema::class;
             }
 
             if (!is_string($model->type)) {

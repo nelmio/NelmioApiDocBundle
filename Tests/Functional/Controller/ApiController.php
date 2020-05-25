@@ -32,7 +32,7 @@ class ApiController
      * @OA\Response(
      *   response="200",
      *   description="Success",
-     *   ref=@Model(type=Article::class, groups={"light"}))
+     *   @Model(type=Article::class, groups={"light"}))
      * )
      * @OA\Parameter(ref="#/components/parameters/test")
      * @Route("/article/{id}", methods={"GET"})
@@ -59,7 +59,7 @@ class ApiController
      * @OA\Response(
      *    response="201",
      *    description="Operation automatically detected",
-     *    ref=@Model(type=User::class)
+     *    @Model(type=User::class)
      * ),
      * @OA\RequestBody(
      *    description="This is a request body",
@@ -79,11 +79,11 @@ class ApiController
      * @OA\Response(
      *    response="201",
      *    description="Operation automatically detected",
-     *    ref=@Model(type=User::class)
+     *    @Model(type=User::class)
      * ),
      * @OA\RequestBody(
      *    description="This is a request body",
-     *    ref=@Model(type=UserType::class, options={"bar": "baz"}))
+     *    @Model(type=UserType::class, options={"bar": "baz"}))
      * )
      */
     public function submitUserTypeAction()
@@ -134,7 +134,7 @@ class ApiController
      * @Route("/form", methods={"POST"})
      * @OA\RequestBody(
      *    description="Request content",
-     *    ref=@Model(type=DummyType::class))
+     *    @Model(type=DummyType::class))
      * )
      * @OA\Response(response="201", description="")
      */
@@ -157,7 +157,7 @@ class ApiController
      * @OA\Response(
      *    response="201",
      *    description="Used for symfony constraints test",
-     *    ref=@Model(type=SymfonyConstraints::class)
+     *    @Model(type=SymfonyConstraints::class)
      * )
      */
     public function symfonyConstraintsAction()
@@ -185,7 +185,7 @@ class ApiController
      * @OA\Get(description="This is the get operation")
      * @OA\Post(description="This is post")
      *
-     * @OA\Response(response=200, description="Worked well!", ref=@Model(type=DummyType::class))
+     * @OA\Response(response=200, description="Worked well!", @Model(type=DummyType::class))
      */
     public function operationsWithOtherAnnotations()
     {

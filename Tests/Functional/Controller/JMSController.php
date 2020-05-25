@@ -34,7 +34,7 @@ class JMSController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=JMSUser::class)
+     *     @Model(type=JMSUser::class)
      * )
      */
     public function userAction()
@@ -46,7 +46,7 @@ class JMSController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=VirtualProperty::class)
+     *     @Model(type=VirtualProperty::class)
      * )
      */
     public function yamlAction()
@@ -58,7 +58,7 @@ class JMSController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=JMSComplex::class, groups={"list", "details", "User" : {"list"}})
+     *     @Model(type=JMSComplex::class, groups={"list", "details", "User" : {"list"}})
      * )
      */
     public function complexAction()
@@ -70,7 +70,7 @@ class JMSController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=JMSDualComplex::class, groups={"Default", "complex" : {"User" : {"details"}}})
+     *     @Model(type=JMSDualComplex::class, groups={"Default", "complex" : {"User" : {"details"}}})
      * )
      */
     public function complexDualAction()
@@ -82,7 +82,7 @@ class JMSController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=JMSNamingStrategyConstraints::class, groups={"Default"})
+     *     @Model(type=JMSNamingStrategyConstraints::class, groups={"Default"})
      * )
      */
     public function namingStrategyConstraintsAction()
@@ -94,7 +94,7 @@ class JMSController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=JMSChat::class, groups={"Default", "members" : {"mini"}})
+     *     @Model(type=JMSChat::class, groups={"Default", "members" : {"mini"}})
      * )
      */
     public function chatAction()
@@ -106,7 +106,7 @@ class JMSController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=JMSPicture::class, groups={"mini"})
+     *     @Model(type=JMSPicture::class, groups={"mini"})
      * )
      */
     public function pictureAction()
@@ -118,7 +118,7 @@ class JMSController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=JMSChatUser::class, groups={"mini"})
+     *     @Model(type=JMSChatUser::class, groups={"mini"})
      * )
      */
     public function minUserAction()
@@ -130,7 +130,7 @@ class JMSController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=JMSChatRoomUser::class, groups={"mini", "friend": {"living":{"Default"}}})
+     *     @Model(type=JMSChatRoomUser::class, groups={"mini", "friend": {"living":{"Default"}}})
      * )
      */
     public function minUserNestedAction()

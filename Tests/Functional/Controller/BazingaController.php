@@ -26,7 +26,7 @@ class BazingaController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=BazingaUser::class)
+     *     @Model(type=BazingaUser::class)
      * )
      */
     public function userAction()
@@ -38,7 +38,7 @@ class BazingaController
      * @OA\Response(
      *     response=200,
      *     description="Success",
-     *     ref=@Model(type=BazingaUser::class, groups={"foo"})
+     *     @Model(type=BazingaUser::class, groups={"foo"})
      * )
      */
     public function userGroupAction()
