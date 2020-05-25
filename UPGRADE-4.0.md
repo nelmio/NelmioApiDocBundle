@@ -22,7 +22,7 @@ Here are some additional advices that are more likely to apply to NelmioApiDocBu
 
 - Update your config in case you used inlined swagger docummentation (the field ``nelmio_api_doc.documentation``). [A tool](https://openapi-converter.herokuapp.com/) is available to help you convert it.
 
-- In case you use ``@OA\Response(..., @OA\Schema(...))``, you should wrap ``@Schema`` in an annotation to explicit the media type:
-  ``@OA\Response(..., @OA\JsonContent(@OA\Schema(...)))`` or ``@OA\Response(..., @OA\XmlContent(@OA\Schema(...)))``.
+- In case you used ``@OA\Response(..., @OA\Schema(...))``, you should explicit your media type by using the annotation ``@OA\JsonContent`` or ``@Oa\XmlContent`` instead of ``@OA\Schema``:
+  ``@OA\Response(..., @OA\JsonContent(...))`` or ``@OA\Response(..., @OA\XmlContent(...))``.
 
   When you use ``@Model`` directly (``@OA\Response(..., @Model(...)))``), the media type is set by default to ``json``.
