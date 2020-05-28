@@ -33,7 +33,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
     {
         $type = $type->getCollectionValueType();
         if (null === $type) {
-            throw new \LogicException(sprintf('Property "%s" is an array, but its items type isn\'t specified. You can specify that by using the type `string[]` for instance or `@SWG\Property(type="array", @SWG\Items(type="string"))`.', $property->getTitle()));
+            throw new \LogicException(sprintf('Property "%s" is an array, but its items type isn\'t specified. You can specify that by using the type `string[]` for instance or `@SWG\Property(type="array", @SWG\Items(type="string"))`.', $property->title));
         }
 
         $property->type = 'array';
