@@ -11,17 +11,19 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber;
 
-use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
 class VirtualTypeClassDoesNotExistsHandlerDefinedDescriber implements ModelDescriberInterface
 {
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, OA\Schema $schema)
     {
-        $schema->setType('object');
-        $schema->getProperties()->get('custom_prop')->setType('string');
+        $schema->type = 'object';
+        $property = Util::getProperty($schema, 'custom_prop');
+        $property->type = 'string';
     }
 
     public function supports(Model $model): bool

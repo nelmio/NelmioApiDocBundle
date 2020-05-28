@@ -11,15 +11,15 @@
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
-use EXSyst\Component\Swagger\Schema;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
 class FloatPropertyDescriber implements PropertyDescriberInterface
 {
-    public function describe(Type $type, Schema $property, array $groups = null)
+    public function describe(Type $type, OA\Schema $property, array $groups = null)
     {
-        $property->setType('number');
-        $property->setFormat('float');
+        $property->type = 'number';
+        $property->format = 'float';
     }
 
     public function supports(Type $type): bool

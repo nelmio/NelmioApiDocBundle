@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Security;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -23,7 +23,7 @@ class ClassApiController
 {
     /**
      * @Route("/security/class")
-     * @SWG\Response(response="201", description="")
+     * @OA\Response(response="201", description="")
      */
     public function securityAction()
     {

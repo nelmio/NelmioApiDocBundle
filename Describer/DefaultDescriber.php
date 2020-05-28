@@ -11,7 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use EXSyst\Component\Swagger\Swagger;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 
 /**
  * Makes the swagger documentation valid even if there are missing fields.
@@ -20,27 +21,28 @@ use EXSyst\Component\Swagger\Swagger;
  */
 final class DefaultDescriber implements DescriberInterface
 {
-    public function describe(Swagger $api)
+    public function describe(OA\OpenApi $api)
     {
         // Info
-        $info = $api->getInfo();
-        if (null === $info->getTitle()) {
-            $info->setTitle('');
+        /** @var OA\Info $info */
+        $info = Util::getChild($api, OA\Info::class);
+        if (OA\UNDEFINED === $info->title) {
+            $info->title = '';
         }
-        if (null === $info->getVersion()) {
-            $info->setVersion('0.0.0');
+        if (OA\UNDEFINED === $info->version) {
+            $info->version = '0.0.0';
         }
 
         // Paths
-        $paths = $api->getPaths();
-        foreach ($paths as $uri => $path) {
-            foreach ($path->getMethods() as $method) {
-                $operation = $path->getOperation($method);
-
-                // Default Response
-                if (0 === iterator_count($operation->getResponses())) {
-                    $defaultResponse = $operation->getResponses()->get('default');
-                    $defaultResponse->setDescription('');
+        $paths = OA\UNDEFINED === $api->paths ? [] : $api->paths;
+        foreach ($paths as $path) {
+            foreach (Util::OPERATIONS as $method) {
+                /** @var OA\Operation $operation */
+                $operation = $path->{$method};
+                if (OA\UNDEFINED !== $operation && null !== $operation && empty($operation->responses ?? [])) {
+                    /** @var OA\Response $response */
+                    $response = Util::getIndexedCollectionItem($operation, OA\Response::class, 'default');
+                    $response->description = '';
                 }
             }
         }

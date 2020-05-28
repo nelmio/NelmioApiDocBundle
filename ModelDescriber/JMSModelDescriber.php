@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
 use JMS\Serializer\Context;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
@@ -22,6 +21,8 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -41,6 +42,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     private $metadataStacks = [];
 
+    private $mediaTypes;
+
     /**
      * @var array
      */
@@ -48,18 +51,20 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function __construct(
         MetadataFactoryInterface $factory,
-        PropertyNamingStrategyInterface $namingStrategy = null,
-        Reader $reader
+        Reader $reader,
+        array $mediaTypes,
+        ?PropertyNamingStrategyInterface $namingStrategy = null
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->doctrineReader = $reader;
+        $this->mediaTypes = $mediaTypes;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, OA\Schema $schema)
     {
         $className = $model->getType()->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
@@ -67,12 +72,11 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
         }
 
-        $schema->setType('object');
-        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
+        $schema->type = 'object';
+        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
         $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
 
         $isJmsV1 = null !== $this->namingStrategy;
-        $properties = $schema->getProperties();
 
         $context = $this->getSerializationContext($model);
         $context->pushClassMetadata($metadata);
@@ -106,25 +110,26 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                     continue;
                 }
 
-                $property = $properties->get($annotationsReader->getPropertyName($reflection, $name));
+                $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflection, $name));
                 $annotationsReader->updateProperty($reflection, $property, $groups);
             } catch (\ReflectionException $e) {
-                $property = $properties->get($name);
+                $property = Util::getProperty($schema, $name);
             }
 
-            if (null !== $property->getType() || null !== $property->getRef()) {
+            if (OA\UNDEFINED !== $property->type || OA\UNDEFINED !== $property->ref) {
                 $context->popPropertyMetadata();
 
                 continue;
             }
             if (null === $item->type) {
-                $properties->remove($name);
+                $key = Util::searchIndexedCollectionItem($schema->properties, 'property', $name);
+                unset($schema->properties[$key]);
                 $context->popPropertyMetadata();
 
                 continue;
             }
 
-            $this->describeItem($item->type, $property, $context, $item);
+            $this->describeItem($item->type, $property, $context);
             $context->popPropertyMetadata();
         }
         $context->popClassMetadata();
@@ -196,48 +201,51 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     /**
      * @internal
      */
-    public function describeItem(array $type, $property, Context $context)
+    public function describeItem(array $type, OA\Schema $property, Context $context)
     {
         $nestedTypeInfo = $this->getNestedTypeInArray($type);
         if (null !== $nestedTypeInfo) {
             list($nestedType, $isHash) = $nestedTypeInfo;
             if ($isHash) {
-                $property->setType('object');
-                // in the case of a virtual property, set it as free object type
-                $property->merge(['additionalProperties' => []]);
+                $property->type = 'object';
+                $property->additionalProperties = Util::createChild($property, OA\Property::class);
 
                 // this is a free form object (as nested array)
                 if ('array' === $nestedType['name'] && !isset($nestedType['params'][0])) {
+                    // in the case of a virtual property, set it as free object type
+                    $property->additionalProperties = true;
+
                     return;
                 }
 
-                $this->describeItem($nestedType, $property->getAdditionalProperties(), $context);
+                $this->describeItem($nestedType, $property->additionalProperties, $context);
 
                 return;
             }
 
-            $property->setType('array');
-            $this->describeItem($nestedType, $property->getItems(), $context);
+            $property->type = 'array';
+            $property->items = Util::createChild($property, OA\Items::class);
+            $this->describeItem($nestedType, $property->items, $context);
         } elseif ('array' === $type['name']) {
-            $property->setType('object');
-            $property->merge(['additionalProperties' => []]);
+            $property->type = 'object';
+            $property->additionalProperties = true;
         } elseif ('string' === $type['name']) {
-            $property->setType('string');
+            $property->type = 'string';
         } elseif (in_array($type['name'], ['bool', 'boolean'], true)) {
-            $property->setType('boolean');
+            $property->type = 'boolean';
         } elseif (in_array($type['name'], ['int', 'integer'], true)) {
-            $property->setType('integer');
+            $property->type = 'integer';
         } elseif (in_array($type['name'], ['double', 'float'], true)) {
-            $property->setType('number');
-            $property->setFormat($type['name']);
+            $property->type = 'number';
+            $property->format = $type['name'];
         } elseif (is_subclass_of($type['name'], \DateTimeInterface::class)) {
-            $property->setType('string');
-            $property->setFormat('date-time');
+            $property->type = 'string';
+            $property->format = 'date-time';
         } else {
             $groups = $this->computeGroups($context, $type);
 
             $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups);
-            $property->setRef($this->modelRegistry->register($model));
+            $property->ref = $this->modelRegistry->register($model);
 
             $this->contexts[$model->getHash()] = $context;
             $this->metadataStacks[$model->getHash()] = clone $context->getMetadataStack();

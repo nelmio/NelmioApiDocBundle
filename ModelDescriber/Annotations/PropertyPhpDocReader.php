@@ -11,8 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
-use EXSyst\Component\Swagger\Schema;
-use Nelmio\ApiDocBundle\Model\Model;
+use OpenApi\Annotations as OA;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
 
@@ -33,7 +32,7 @@ class PropertyPhpDocReader
     /**
      * Update the Swagger information with information from the DocBlock comment.
      */
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property): void
     {
         try {
             $docBlock = $this->docBlockFactory->create($reflectionProperty);
@@ -54,11 +53,11 @@ class PropertyPhpDocReader
                 }
             }
         }
-        if (null === $property->getTitle() && $title) {
-            $property->setTitle($title);
+        if (OA\UNDEFINED === $property->title && $title) {
+            $property->title = $title;
         }
-        if (null === $property->getDescription() && $docBlock->getDescription() && $docBlock->getDescription()->render()) {
-            $property->setDescription($docBlock->getDescription()->render());
+        if (OA\UNDEFINED === $property->description && $docBlock->getDescription() && $docBlock->getDescription()->render()) {
+            $property->description = $docBlock->getDescription()->render();
         }
     }
 }

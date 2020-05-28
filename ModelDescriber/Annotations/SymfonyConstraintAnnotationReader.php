@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,7 +26,7 @@ class SymfonyConstraintAnnotationReader
     private $annotationsReader;
 
     /**
-     * @var Schema
+     * @var OA\Schema
      */
     private $schema;
 
@@ -38,7 +38,7 @@ class SymfonyConstraintAnnotationReader
     /**
      * Update the given property and schema with defined Symfony constraints.
      */
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
+    public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property): void
     {
         $annotations = $this->annotationsReader->getPropertyAnnotations($reflectionProperty);
 
@@ -54,35 +54,35 @@ class SymfonyConstraintAnnotationReader
                     continue;
                 }
 
-                $existingRequiredFields = $this->schema->getRequired() ?? [];
+                $existingRequiredFields =  OA\UNDEFINED !== $this->schema->required ? $this->schema->required : [];
                 $existingRequiredFields[] = $propertyName;
 
-                $this->schema->setRequired(array_values(array_unique($existingRequiredFields)));
+                $this->schema->required = array_values(array_unique($existingRequiredFields));
             } elseif ($annotation instanceof Assert\Length) {
-                $property->setMinLength($annotation->min);
-                $property->setMaxLength($annotation->max);
+                $property->minLength = $annotation->min;
+                $property->maxLength = $annotation->max;
             } elseif ($annotation instanceof Assert\Regex) {
                 $this->appendPattern($property, $annotation->getHtmlPattern());
             } elseif ($annotation instanceof Assert\Count) {
-                $property->setMinItems($annotation->min);
-                $property->setMaxItems($annotation->max);
+                $property->minItems = $annotation->min;
+                $property->maxItems = $annotation->max;
             } elseif ($annotation instanceof Assert\Choice) {
                 $values = $annotation->callback ? call_user_func(is_array($annotation->callback) ? $annotation->callback : [$reflectionProperty->class, $annotation->callback]) : $annotation->choices;
-                $property->setEnum(array_values($values));
+                $property->enum = array_values($values);
             } elseif ($annotation instanceof Assert\Expression) {
                 $this->appendPattern($property, $annotation->message);
             } elseif ($annotation instanceof Assert\Range) {
-                $property->setMinimum($annotation->min);
-                $property->setMaximum($annotation->max);
+                $property->minimum = $annotation->min;
+                $property->maximum = $annotation->max;
             } elseif ($annotation instanceof Assert\LessThan) {
-                $property->setExclusiveMaximum($annotation->value);
+                $property->exclusiveMaximum= $annotation->value;
             } elseif ($annotation instanceof Assert\LessThanOrEqual) {
-                $property->setMaximum($annotation->value);
+                $property->maximum = $annotation->value;
             }
         }
     }
 
-    public function setSchema($schema)
+    public function setSchema($schema): void
     {
         $this->schema = $schema;
     }
@@ -90,15 +90,14 @@ class SymfonyConstraintAnnotationReader
     /**
      * Get assigned property name for property schema.
      */
-    private function getSchemaPropertyName(Schema $property)
+    private function getSchemaPropertyName(OA\Schema $property): ?string
     {
         if (null === $this->schema) {
             return null;
         }
-
-        foreach ($this->schema->getProperties() as $name => $schemaProperty) {
+        foreach ($this->schema->properties as $schemaProperty) {
             if ($schemaProperty === $property) {
-                return $name;
+                return OA\UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
             }
         }
 
@@ -108,16 +107,15 @@ class SymfonyConstraintAnnotationReader
     /**
      * Append the pattern from the constraint to the existing pattern.
      */
-    private function appendPattern(Schema $property, $newPattern)
+    private function appendPattern(OA\Schema $property, $newPattern): void
     {
         if (null === $newPattern) {
             return;
         }
-
-        if (null !== $property->getPattern()) {
-            $property->setPattern(sprintf('%s, %s', $property->getPattern(), $newPattern));
+        if (OA\UNDEFINED !== $property->pattern) {
+            $property->pattern = sprintf('%s, %s', $property->pattern, $newPattern);
         } else {
-            $property->setPattern($newPattern);
+            $property->pattern = $newPattern;
         }
     }
 }

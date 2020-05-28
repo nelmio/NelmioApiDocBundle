@@ -12,12 +12,13 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -31,31 +32,36 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private $doctrineReader;
     /** @var PropertyDescriberInterface[] */
     private $propertyDescribers;
+    /** @var string[] */
+    private $mediaTypes;
 
     private $swaggerDefinitionAnnotationReader;
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
         Reader $reader,
-        $propertyDescribers
+        $propertyDescribers,
+        array $mediaTypes
     ) {
         $this->propertyInfo = $propertyInfo;
         $this->doctrineReader = $reader;
         $this->propertyDescribers = $propertyDescribers;
+        $this->mediaTypes = $mediaTypes;
     }
 
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, OA\Schema $schema)
     {
-        $schema->setType('object');
-        $properties = $schema->getProperties();
+        $schema->type = 'object';
 
         $class = $model->getType()->getClassName();
+        $schema->_context->class = $class;
+
         $context = [];
         if (null !== $model->getGroups()) {
             $context = ['serializer_groups' => array_filter($model->getGroups(), 'is_string')];
         }
 
-        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
+        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
         $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);
@@ -64,10 +70,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         foreach ($propertyInfoProperties as $propertyName) {
-            // read property options from Swagger Property annotation if it exists
+            // read property options from OpenApi Property annotation if it exists
             if (property_exists($class, $propertyName)) {
                 $reflectionProperty = new \ReflectionProperty($class, $propertyName);
-                $property = $properties->get($annotationsReader->getPropertyName($reflectionProperty, $propertyName));
+                $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflectionProperty, $propertyName));
 
                 $groups = $model->getGroups();
                 if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
@@ -76,11 +82,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
                 $annotationsReader->updateProperty($reflectionProperty, $property, $groups);
             } else {
-                $property = $properties->get($propertyName);
+                $property = Util::getProperty($schema, $propertyName);
             }
 
             // If type manually defined
-            if (null !== $property->getType() || null !== $property->getRef()) {
+            if (OA\UNDEFINED !== $property->type || OA\UNDEFINED !== $property->ref) {
                 continue;
             }
 
@@ -97,7 +103,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
     }
 
-    private function describeProperty(Type $type, Model $model, Schema $property, string $propertyName)
+    private function describeProperty(Type $type, Model $model, OA\Schema $property, string $propertyName)
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
@@ -110,7 +116,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
         }
 
-        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@SWG\Property(type="")` annotation to specify it manually.', $type->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
+        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $type->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
     }
 
     public function supports(Model $model): bool

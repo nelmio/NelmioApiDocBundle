@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
-use EXSyst\Component\Swagger\Schema;
+use OpenApi\Annotations\Schema;
 use Symfony\Component\PropertyInfo\Type;
 
 interface PropertyDescriberInterface

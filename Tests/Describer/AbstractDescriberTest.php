@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Describer;
 
-use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Describer\DescriberInterface;
+use OpenApi\Annotations\OpenApi;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractDescriberTest extends TestCase
@@ -20,9 +20,9 @@ abstract class AbstractDescriberTest extends TestCase
     /** @var DescriberInterface */
     protected $describer;
 
-    protected function getSwaggerDoc(): Swagger
+    protected function getOpenApiDoc(): OpenApi
     {
-        $api = new Swagger();
+        $api = new OpenApi([]);
         $this->describer->describe($api);
 
         return $api;

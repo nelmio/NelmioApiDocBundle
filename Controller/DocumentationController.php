@@ -12,6 +12,8 @@
 namespace Nelmio\ApiDocBundle\Controller;
 
 use Nelmio\ApiDocBundle\ApiDocGenerator;
+use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\Server;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -47,14 +49,11 @@ final class DocumentationController
             throw new BadRequestHttpException(sprintf('Area "%s" is not supported as it isn\'t defined in config.', $area));
         }
 
-        $spec = $this->generatorLocator->get($area)->generate()->toArray();
+        /** @var OpenApi $spec */
+        $spec = $this->generatorLocator->get($area)->generate();
 
         if ('' !== $request->getBaseUrl()) {
-            $spec['basePath'] = $request->getBaseUrl();
-        }
-
-        if (empty($spec['host'])) {
-            $spec['host'] = $request->getHost();
+            $spec->servers = [new Server(['url' => $request->getSchemeAndHttpHost().$request->getBaseUrl()])];
         }
 
         return new JsonResponse($spec);

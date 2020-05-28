@@ -15,8 +15,8 @@ use FOS\RestBundle\Controller\Annotations\ParamInterface;
 use JMS\Serializer\Visitor\SerializationVisitorInterface;
 use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Describer\ExternalDocDescriber;
+use Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
-use Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
@@ -82,13 +82,14 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -400]);
 
-            $container->register(sprintf('nelmio_api_doc.describers.swagger_php.%s', $area), SwaggerPhpDescriber::class)
+            $container->register(sprintf('nelmio_api_doc.describers.openapi_php.%s', $area), OpenApiPhpDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
                     new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
                     new Reference('annotation_reader'),
                     new Reference('logger'),
+                    $config['media_types'],
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
 
@@ -135,11 +136,16 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 array_map(function ($area) { return new Reference(sprintf('nelmio_api_doc.generator.%s', $area)); }, array_keys($config['areas']))
             ));
 
+        $container->getDefinition('nelmio_api_doc.model_describers.object')
+            ->setArgument(3, $config['media_types']);
+
         // Import services needed for each library
         $loader->load('php_doc.xml');
 
         if (interface_exists(ParamInterface::class)) {
             $loader->load('fos_rest.xml');
+            $container->getDefinition('nelmio_api_doc.route_describers.fos_rest')
+                ->setArgument(1, $config['media_types']);
         }
 
         // ApiPlatform support
@@ -159,8 +165,9 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setPublic(false)
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
-                    $jmsNamingStrategy,
                     new Reference('annotation_reader'),
+                    $config['media_types'],
+                    $jmsNamingStrategy,
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
 

@@ -11,14 +11,14 @@
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
-use EXSyst\Component\Swagger\Schema;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
 class StringPropertyDescriber implements PropertyDescriberInterface
 {
-    public function describe(Type $type, Schema $property, array $groups = null)
+    public function describe(Type $type, OA\Schema $property, array $groups = null)
     {
-        $property->setType('string');
+        $property->type = 'string';
     }
 
     public function supports(Type $type): bool

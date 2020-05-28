@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use EXSyst\Component\Swagger\Schema;
 use Hateoas\Configuration\Metadata\ClassMetadata;
 use Hateoas\Configuration\Relation;
 use Hateoas\Serializer\Metadata\RelationPropertyMetadata;
@@ -20,6 +19,8 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 
 class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
@@ -43,7 +44,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
     /**
      * {@inheritdoc}
      */
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, OA\Schema $schema): void
     {
         $this->JMSModelDescriber->describe($model, $schema);
 
@@ -55,9 +56,10 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
             return;
         }
 
-        $schema->setType('object');
+        $schema->type = 'object';
         $context = $this->JMSModelDescriber->getSerializationContext($model);
 
+        /** @var Relation $relation */
         foreach ($metadata->getRelations() as $relation) {
             if (!$relation->getEmbedded() && !$relation->getHref()) {
                 continue;
@@ -71,26 +73,19 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
             $context->pushPropertyMetadata($item);
 
             $embedded = $relation->getEmbedded();
-            $relationSchema = $schema->getProperties()->get($embedded ? '_embedded' : '_links');
+            $relationSchema = Util::getProperty($schema, $relation->getEmbedded() ? '_embedded' : '_links');
+            $relationSchema->readOnly = true;
 
-            $properties = $relationSchema->getProperties();
-            $relationSchema->setReadOnly(true);
-
-            $name = $relation->getName();
-            $property = $properties->get($name);
-
+            $property = Util::getProperty($relationSchema, $relation->getName());
             if ($embedded && method_exists($embedded, 'getType') && $embedded->getType()) {
                 $this->JMSModelDescriber->describeItem($embedded->getType(), $property, $context);
             } else {
-                $property->setType('object');
+                $property->type = 'object';
             }
             if ($relation->getHref()) {
-                $subProperties = $property->getProperties();
-
-                $hrefProp = $subProperties->get('href');
-                $hrefProp->setType('string');
-
-                $this->setAttributeProperties($relation, $subProperties);
+                $hrefProp = Util::getProperty($property, 'href');
+                $hrefProp->type = 'string';
+                $this->setAttributeProperties($relation, $property);
             }
 
             $context->popPropertyMetadata();
@@ -119,30 +114,30 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         return $this->JMSModelDescriber->supports($model) || null !== $this->getHateoasMetadata($model);
     }
 
-    private function setAttributeProperties(Relation $relation, $subProperties)
+    private function setAttributeProperties(Relation $relation, OA\Property $subProperty): void
     {
         foreach ($relation->getAttributes() as $attribute => $value) {
-            $subSubProp = $subProperties->get($attribute);
+            $subSubProp = Util::getProperty($subProperty, $attribute);
             switch (gettype($value)) {
                 case 'integer':
-                    $subSubProp->setType('integer');
-                    $subSubProp->setDefault($value);
+                    $subSubProp->type = 'integer';
+                    $subSubProp->default = $value;
 
                     break;
                 case 'double':
                 case 'float':
-                    $subSubProp->setType('number');
-                    $subSubProp->setDefault($value);
+                    $subSubProp->type = 'number';
+                    $subSubProp->default = $value;
 
                     break;
                 case 'boolean':
-                    $subSubProp->setType('boolean');
-                    $subSubProp->setDefault($value);
+                    $subSubProp->type = 'boolean';
+                    $subSubProp->default = $value;
 
                     break;
                 case 'string':
-                    $subSubProp->setType('string');
-                    $subSubProp->setDefault($value);
+                    $subSubProp->type = 'string';
+                    $subSubProp->default = $value;
 
                     break;
             }

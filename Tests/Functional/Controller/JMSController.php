@@ -21,7 +21,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoomUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\VirtualProperty;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -31,7 +31,7 @@ class JMSController
 {
     /**
      * @Route("/api/jms", methods={"GET"})
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSUser::class)
@@ -43,7 +43,7 @@ class JMSController
 
     /**
      * @Route("/api/yaml", methods={"GET"})
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=VirtualProperty::class)
@@ -55,7 +55,7 @@ class JMSController
 
     /**
      * @Route("/api/jms_complex", methods={"GET"})
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSComplex::class, groups={"list", "details", "User" : {"list"}})
@@ -67,7 +67,7 @@ class JMSController
 
     /**
      * @Route("/api/jms_complex_dual", methods={"GET"})
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSDualComplex::class, groups={"Default", "complex" : {"User" : {"details"}}})
@@ -79,7 +79,7 @@ class JMSController
 
     /**
      * @Route("/api/jms_naming_strategy", methods={"GET"})
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSNamingStrategyConstraints::class, groups={"Default"})
@@ -91,7 +91,7 @@ class JMSController
 
     /**
      * @Route("/api/jms_chat", methods={"GET"})
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSChat::class, groups={"Default", "members" : {"mini"}})
@@ -103,7 +103,7 @@ class JMSController
 
     /**
      * @Route("/api/jms_picture", methods={"GET"})
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSPicture::class, groups={"mini"})
@@ -115,7 +115,7 @@ class JMSController
 
     /**
      * @Route("/api/jms_mini_user", methods={"GET"})
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSChatUser::class, groups={"mini"})
@@ -127,7 +127,7 @@ class JMSController
 
     /**
      * @Route("/api/jms_mini_user_nested", methods={"GET"})
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSChatRoomUser::class, groups={"mini", "friend": {"living":{"Default"}}})

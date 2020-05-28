@@ -11,10 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
-use Symfony\Component\Routing\Route;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\RouteCollection;
 
 final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInterface
@@ -39,7 +38,7 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
         $this->routeDescribers = $routeDescribers;
     }
 
-    public function describe(Swagger $api)
+    public function describe(OA\OpenApi $api)
     {
         if (0 === count($this->routeDescribers)) {
             return;
