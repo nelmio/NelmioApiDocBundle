@@ -11,16 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\RouteDescriber;
 
-use Nelmio\ApiDocBundle\Describer\RouteDescriber;
-use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteMetadataDescriber;
-use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\OpenApi;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Routing\Route;
 
 class RouteMetadataDescriberTest extends TestCase
 {
