@@ -5,7 +5,7 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 
-window.onload = () => {
+window.onload = function() {
   const data = JSON.parse(document.getElementById('swagger-data').innerText);
   const ui = SwaggerUIBundle({
     spec: data.spec,
