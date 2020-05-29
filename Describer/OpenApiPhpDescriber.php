@@ -21,7 +21,6 @@ use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Analyser;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Context;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
