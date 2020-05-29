@@ -50,7 +50,7 @@ final class ApiDocGenerator
         $this->cacheItemId = $cacheItemId;
     }
 
-    public function setAlternativeNames(array $alternativeNames)
+    public function setAlternativeNames(array $alternativeNames): void
     {
         $this->alternativeNames = $alternativeNames;
     }

@@ -21,7 +21,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 {
     use ModelRegistryAwareTrait;
 
-    public function describe(Type $type, OA\Schema $property, array $groups = null)
+    public function describe(Type $type, OA\Schema $property, array $groups = null): void
     {
         $type = new Type($type->getBuiltinType(), false, $type->getClassName(), $type->isCollection(), $type->getCollectionKeyType(), $type->getCollectionValueType()); // ignore nullable field
 

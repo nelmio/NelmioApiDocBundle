@@ -23,7 +23,7 @@ class ApiPlatformDescriberTest extends AbstractDescriberTest
 
     private $normalizer;
 
-    public function testDescribe()
+    public function testDescribe(): void
     {
         $this->normalizer->expects($this->once())
             ->method('normalize')
@@ -34,7 +34,7 @@ class ApiPlatformDescriberTest extends AbstractDescriberTest
         $this->assertEquals($expectedApi->toJson(), $this->getOpenApiDoc()->toJson());
     }
 
-    public function testDescribeRemovesBasePathAfterNormalization()
+    public function testDescribeRemovesBasePathAfterNormalization(): void
     {
         $this->normalizer->expects($this->once())
             ->method('normalize')
@@ -45,7 +45,7 @@ class ApiPlatformDescriberTest extends AbstractDescriberTest
         $this->assertEquals($expectedApi->toJson(), $this->getOpenApiDoc()->toJson());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->documentation = new Documentation(new ResourceNameCollection(['dummy' => 'dummy']));
 

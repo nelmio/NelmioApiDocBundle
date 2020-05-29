@@ -16,7 +16,7 @@ use Symfony\Component\PropertyInfo\Type;
 
 interface PropertyDescriberInterface
 {
-    public function describe(Type $type, Schema $property, array $groups = null);
+    public function describe(Type $type, Schema $property, array $groups = null): void;
 
     public function supports(Type $type): bool;
 }

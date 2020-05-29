@@ -31,10 +31,7 @@ final class Model
         $this->options = $options;
     }
 
-    /**
-     * @return Type
-     */
-    public function getType()
+    public function getType(): Type
     {
         return $this->type;
     }
@@ -42,7 +39,7 @@ final class Model
     /**
      * @return string[]|null
      */
-    public function getGroups()
+    public function getGroups(): ?array
     {
         return $this->groups;
     }
@@ -55,7 +52,7 @@ final class Model
     /**
      * @return mixed[]|null
      */
-    public function getOptions()
+    public function getOptions(): ?array
     {
         return $this->options;
     }

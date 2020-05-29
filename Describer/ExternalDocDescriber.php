@@ -30,7 +30,7 @@ class ExternalDocDescriber implements DescriberInterface
         $this->overwrite = $overwrite;
     }
 
-    public function describe(OA\OpenApi $api)
+    public function describe(OA\OpenApi $api): void
     {
         $externalDoc = $this->getExternalDoc();
 

@@ -42,11 +42,11 @@ class ControllerReflector
      *
      * @return \ReflectionMethod|null
      */
-    public function getReflectionMethod(string $controller)
+    public function getReflectionMethod(string $controller): ?\ReflectionMethod
     {
         $callable = $this->getClassAndMethod($controller);
         if (null === $callable) {
-            return;
+            return null;
         }
 
         list($class, $method) = $callable;

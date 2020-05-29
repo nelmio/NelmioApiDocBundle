@@ -482,7 +482,7 @@ final class Util
         ));
     }
 
-    private static function getNesting($class)
+    private static function getNesting($class): ?array
     {
         switch ($class) {
             case OA\OpenApi::class:

@@ -16,7 +16,7 @@ use OpenApi\Annotations\Schema;
 
 interface ModelDescriberInterface
 {
-    public function describe(Model $model, Schema $schema);
+    public function describe(Model $model, Schema $schema): void;
 
     public function supports(Model $model): bool;
 }

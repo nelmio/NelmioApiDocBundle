@@ -35,7 +35,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         $this->JMSModelDescriber = $JMSModelDescriber;
     }
 
-    public function setModelRegistry(ModelRegistry $modelRegistry)
+    public function setModelRegistry(ModelRegistry $modelRegistry): void
     {
         $this->modelRegistry = $modelRegistry;
         $this->JMSModelDescriber->setModelRegistry($modelRegistry);

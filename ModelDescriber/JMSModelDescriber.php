@@ -64,7 +64,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     /**
      * {@inheritdoc}
      */
-    public function describe(Model $model, OA\Schema $schema)
+    public function describe(Model $model, OA\Schema $schema): void
     {
         $className = $model->getType()->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
@@ -269,12 +269,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return null;
     }
 
-    /**
-     * @param array $type
-     *
-     * @return bool|null
-     */
-    private function propertyTypeUsesGroups(array $type)
+    private function propertyTypeUsesGroups(array $type): ?bool
     {
         if (array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
             return $this->propertyTypeUseGroupsCache[$type['name']];

@@ -49,7 +49,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $this->mediaTypes = $mediaTypes;
     }
 
-    public function describe(Model $model, OA\Schema $schema)
+    public function describe(Model $model, OA\Schema $schema): void
     {
         $schema->type = 'object';
 
