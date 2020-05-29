@@ -21,6 +21,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use OpenApi\Annotations as OA;
+use OpenApi\Analyser;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -36,6 +37,8 @@ class ApiController
      * )
      * @OA\Parameter(ref="#/components/parameters/test")
      * @Route("/article/{id}", methods={"GET"})
+     * @OA\Parameter(name="Accept-Version", in="header", @OA\Schema(type="string"))
+     * @OA\Parameter(name="Application-Name", in="header", @OA\Schema(type="string"))
      */
     public function fetchArticleAction()
     {
