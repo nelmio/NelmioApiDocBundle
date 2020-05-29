@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\AddDefaults;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
+use OpenApi\Analyser;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use Psr\Log\LoggerInterface;
@@ -75,6 +76,15 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
         /** @var \ReflectionMethod $method */
         foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods)) {
             $declaringClass = $method->getDeclaringClass();
+
+            $path = Util::getPath($api, $path);
+
+            Analyser::$context = Util::createContext(['nested' => $path], $path->_context);
+            Analyser::$context->namespace = $method->getNamespaceName();
+            Analyser::$context->class = $declaringClass->getShortName();
+            Analyser::$context->method = $method->name;
+            Analyser::$context->filename = $method->getFileName();
+
             if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
                 $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
                     return $v instanceof OA\AbstractAnnotation;
@@ -90,19 +100,10 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
                 continue;
             }
 
-            $path = Util::getPath($api, $path);
-            $path->_context->namespace = $method->getNamespaceName();
-            $path->_context->class = $declaringClass->getShortName();
-            $path->_context->method = $method->name;
-            $path->_context->filename = $method->getFileName();
-
-            $nestedContext = Util::createContext(['nested' => $path], $path->_context);
             $implicitAnnotations = [];
             $mergeProperties = new \stdClass();
 
             foreach (array_merge($annotations, $classAnnotations[$declaringClass->getName()]) as $annotation) {
-                $annotation->_context = $nestedContext;
-
                 if ($annotation instanceof Operation) {
                     foreach ($httpMethods as $httpMethod) {
                         $operation = Util::getOperation($path, $httpMethod);
@@ -142,13 +143,6 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
                     throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', get_class($annotation), $method->getDeclaringClass()->name, $method->name));
                 }
 
-                foreach ($annotation->_unmerged as $unmergedAnnotation) {
-                    if (!$unmergedAnnotation instanceof OA\JsonContent && !$unmergedAnnotation instanceof OA\XmlContent) {
-                        continue;
-                    }
-                    $unmergedAnnotation->_context->nested = $annotation;
-                }
-
                 $implicitAnnotations[] = $annotation;
             }
 
@@ -165,6 +159,9 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
                 $operation->mergeProperties($mergeProperties);
             }
         }
+
+        // Reset the Analyser after the parsing
+        Analyser::$context = null;
 
         return $analysis;
     }

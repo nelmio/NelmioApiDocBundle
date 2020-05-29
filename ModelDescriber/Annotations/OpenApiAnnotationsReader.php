@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
+use OpenApi\Analyser;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
@@ -61,19 +62,20 @@ class OpenApiAnnotationsReader
 
     public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null): void
     {
-        /** @var OA\Property $oaProperty */
-        if (!$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, OA\Property::class)) {
-            return;
-        }
-
+        // In order to have nicer errors
         $declaringClass = $reflectionProperty->getDeclaringClass();
-        $context = new Context([
+        Analyser::$context = new Context([
             'namespace' => $declaringClass->getNamespaceName(),
             'class' => $declaringClass->getShortName(),
             'property' => $reflectionProperty->name,
             'filename' => $declaringClass->getFileName(),
         ]);
-        $oaProperty->_context = $context;
+
+        /** @var OA\Property $oaProperty */
+        if (!$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, OA\Property::class)) {
+            return;
+        }
+        Analyser::$context = null;
 
         // Read @Model annotations
         $this->modelRegister->__invoke(new Analysis([$oaProperty]), $serializationGroups);

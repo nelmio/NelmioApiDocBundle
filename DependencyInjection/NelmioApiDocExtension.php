@@ -87,7 +87,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArguments([
                     new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
-                    new Reference('annotation_reader'),
+                    new Reference('annotations.reader'), // We cannot use the cached version of the annotation reader since the construction of the annotations is context dependant...
                     new Reference('logger'),
                     $config['media_types'],
                 ])
@@ -116,7 +116,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                         (new Definition(FilteredRouteCollectionBuilder::class))
                             ->setArguments(
                                 [
-                                    new Reference('annotation_reader'),
+                                    new Reference('annotation_reader'), // Here we use the cached version as we don't deal with @OA annotations in this service
                                     new Reference('nelmio_api_doc.controller_reflector'),
                                     $area,
                                     $areaConfig,
@@ -165,7 +165,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setPublic(false)
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
-                    new Reference('annotation_reader'),
+                    new Reference('annotations.reader'),
                     $config['media_types'],
                     $jmsNamingStrategy,
                 ])

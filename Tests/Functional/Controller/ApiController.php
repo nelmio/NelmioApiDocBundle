@@ -36,6 +36,8 @@ class ApiController
      * )
      * @OA\Parameter(ref="#/components/parameters/test")
      * @Route("/article/{id}", methods={"GET"})
+     * @OA\Parameter(name="Accept-Version", in="header", @OA\Schema(type="string"))
+     * @OA\Parameter(name="Application-Name", in="header", @OA\Schema(type="string"))
      */
     public function fetchArticleAction()
     {
