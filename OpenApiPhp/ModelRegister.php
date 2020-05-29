@@ -105,7 +105,7 @@ final class ModelRegister
         }
     }
 
-    private function getGroups(ModelAnnotation $model, array $parentGroups = null)
+    private function getGroups(ModelAnnotation $model, array $parentGroups = null): ?array
     {
         if (null === $model->groups) {
             return $parentGroups;
@@ -114,7 +114,7 @@ final class ModelRegister
         return array_merge($parentGroups ?? [], $model->groups);
     }
 
-    private function detach(ModelAnnotation $model, OA\AbstractAnnotation $annotation, Analysis $analysis)
+    private function detach(ModelAnnotation $model, OA\AbstractAnnotation $annotation, Analysis $analysis): void
     {
         foreach ($annotation->_unmerged as $key => $unmerged) {
             if ($unmerged === $model) {
@@ -162,7 +162,7 @@ final class ModelRegister
 
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf("@Model annotation is not compatible with the media type '%s'. It must be one of 'json' or 'xml'.", $this->mediaType));
+                throw new \InvalidArgumentException(sprintf("@Model annotation is not compatible with the media types '%s'. It must be one of 'json' or 'xml'.", implode(',', $this->mediaTypes)));
         }
 
         $annotation->merge([$modelAnnotation]);
