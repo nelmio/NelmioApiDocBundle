@@ -74,8 +74,6 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
 
         $classAnnotations = [];
 
-        Analyser::$context = Context::detect(1);
-
         /** @var \ReflectionMethod $method */
         foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods)) {
             $declaringClass = $method->getDeclaringClass();
@@ -162,6 +160,9 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
                 $operation->mergeProperties($mergeProperties);
             }
         }
+
+        // Reset the Analyser after the parsing
+        Analyser::$context = null;
 
         return $analysis;
     }
