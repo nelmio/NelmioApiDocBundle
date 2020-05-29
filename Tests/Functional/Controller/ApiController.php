@@ -21,7 +21,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use OpenApi\Annotations as OA;
-use OpenApi\Analyser;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
