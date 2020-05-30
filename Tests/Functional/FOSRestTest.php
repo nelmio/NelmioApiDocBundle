@@ -11,8 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use FOS\RestBundle\FOSRestBundle;
-
 class FOSRestTest extends WebTestCase
 {
     protected function setUp()
