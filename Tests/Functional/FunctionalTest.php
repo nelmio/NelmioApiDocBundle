@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class FunctionalTest extends WebTestCase
 {
@@ -408,5 +409,21 @@ class FunctionalTest extends WebTestCase
     public function testNoDuplicatedParameters()
     {
         $this->assertNotHasParameter('name', 'path', $this->getOperation('/api/article/{id}', 'get'));
+    }
+
+    public function testSerializedNameAction()
+    {
+      if (!class_exists(SerializedName::class)) {
+            $this->markTestSkipped('Annotation @SerializedName doesn\'t exist.');
+        }
+
+        $model = $this->getModel('SerializedNameEnt');
+        $this->assertCount(2, $model->properties);
+
+        $this->assertNotHasProperty('foo', $model);
+        $this->assertHasProperty('notfoo', $model);
+
+        $this->assertNotHasProperty('bar', $model);
+        $this->assertHasProperty('notwhatyouthink', $model);
     }
 }

@@ -21,6 +21,7 @@ use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
@@ -34,6 +35,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private $propertyDescribers;
     /** @var string[] */
     private $mediaTypes;
+    /** @var NameConverterInterface[] */
+    private $nameConverter;
 
     private $swaggerDefinitionAnnotationReader;
 
@@ -41,12 +44,14 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         PropertyInfoExtractorInterface $propertyInfo,
         Reader $reader,
         $propertyDescribers,
-        array $mediaTypes
+        array $mediaTypes,
+        NameConverterInterface $nameConverter = null
     ) {
         $this->propertyInfo = $propertyInfo;
         $this->doctrineReader = $reader;
         $this->propertyDescribers = $propertyDescribers;
         $this->mediaTypes = $mediaTypes;
+        $this->nameConverter = $nameConverter;
     }
 
     public function describe(Model $model, OA\Schema $schema)
@@ -70,10 +75,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         foreach ($propertyInfoProperties as $propertyName) {
+            $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, null !== $model->getGroups() ? ['groups' => $model->getGroups()] : []) : $propertyName;
+
             // read property options from OpenApi Property annotation if it exists
             if (property_exists($class, $propertyName)) {
                 $reflectionProperty = new \ReflectionProperty($class, $propertyName);
-                $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflectionProperty, $propertyName));
+                $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflectionProperty, $serializedName));
 
                 $groups = $model->getGroups();
                 if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
@@ -82,7 +89,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
                 $annotationsReader->updateProperty($reflectionProperty, $property, $groups);
             } else {
-                $property = Util::getProperty($schema, $propertyName);
+                $property = Util::getProperty($schema, $serializedName);
             }
 
             // If type manually defined

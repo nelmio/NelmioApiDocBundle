@@ -43,6 +43,7 @@
             <argument type="service" id="annotation_reader" />
             <argument type="tagged" tag="nelmio_api_doc.object_model.property_describer" />
             <argument />
+            <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore" />
 
             <tag name="nelmio_api_doc.model_describer" />
         </service>

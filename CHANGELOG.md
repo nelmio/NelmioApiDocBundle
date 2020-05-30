@@ -5,6 +5,11 @@ CHANGELOG
 -----
 * Added support of OpenAPI 3.0. The internals were completely reworked and this version introduces BC breaks.
 
+3.7.0
+-----
+
+* Added `@SerializedName` annotation support and name converters when using Symfony >= 4.2.
+
 3.3.0
 -----
 

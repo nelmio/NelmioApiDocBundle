@@ -29,6 +29,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class TestKernel extends Kernel
 {
@@ -86,6 +87,10 @@ class TestKernel extends Kernel
         $routes->import('', '/api', 'api_platform');
         $routes->add('/docs/{area}', 'nelmio_api_doc.controller.swagger_ui')->setDefault('area', 'default');
         $routes->add('/docs.json', 'nelmio_api_doc.controller.swagger');
+
+        if (class_exists(SerializedName::class)) {
+            $routes->import(__DIR__.'/Controller/SerializedNameController.php', '/', 'annotation');
+        }
 
         if (class_exists(FOSRestBundle::class)) {
             $routes->import(__DIR__.'/Controller/FOSRestController.php', '/', 'annotation');
