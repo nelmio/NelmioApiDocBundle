@@ -46,7 +46,7 @@ class UtilTest extends TestCase
     /** @var OA\OpenApi */
     public $rootAnnotation;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

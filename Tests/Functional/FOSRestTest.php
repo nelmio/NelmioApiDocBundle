@@ -16,7 +16,7 @@ use OpenApi\Annotations as OA;
 
 class FOSRestTest extends WebTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
