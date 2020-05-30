@@ -65,7 +65,7 @@ class DumpCommand extends Command
             throw new InvalidArgumentException(sprintf('Area "%s" is not supported.', $area));
         }
 
-        $spec = $this->generatorLocator->get($area)->generate()->toArray();
+        $spec = $this->generatorLocator->get($area)->generate();
 
         if ($input->hasParameterOption(['--no-pretty'])) {
             $output->writeln(json_encode($spec));
