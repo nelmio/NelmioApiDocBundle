@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
+namespace Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
@@ -20,6 +20,7 @@ class SerializedNameEnt
 {
     /**
      * @SerializedName("notfoo")
+     *
      * @var string
      */
     public $foo;
