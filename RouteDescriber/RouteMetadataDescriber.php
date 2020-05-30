@@ -73,7 +73,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     private function getRefParams(OA\OpenApi $api, OA\Operation $operation): array
     {
         /** @var OA\Parameter[] $globalParams */
-        $globalParams = OA\UNDEFINED !== $api->components->parameters ? $api->components->parameters : [];
+        $globalParams = OA\UNDEFINED !== $api->components && OA\UNDEFINED !== $api->components->parameters ? $api->components->parameters : [];
         $existingParams = [];
 
         $operationParameters = OA\UNDEFINED !== $operation->parameters ? $operation->parameters : [];
