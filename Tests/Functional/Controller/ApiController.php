@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SerializedNameEnt;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
@@ -205,6 +206,18 @@ class ApiController
      * @Areas({"area", "area2"})
      */
     public function newAreaAction()
+    {
+    }
+
+    /**
+     * @SWG\Response(
+     *     response="200",
+     *     description="success",
+     *     @Model(type=SerializedNameEnt::class)
+     * )
+     * @Route("/serializename", methods={"GET"})
+     */
+    public function serializedNameAction()
     {
     }
 }

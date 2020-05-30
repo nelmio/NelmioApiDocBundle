@@ -407,4 +407,13 @@ class FunctionalTest extends WebTestCase
     {
         $this->assertFalse($this->getOperation('/api/article/{id}', 'get')->getParameters()->has('id', 'path'));
     }
+
+    public function testSerializedNameAction()
+    {
+        $modelProperties = $this->getModel('SerializedNameEnt')->getProperties();
+        $this->assertCount(1, $modelProperties);
+
+        $this->assertFalse($modelProperties->has('bar'));
+        $this->assertTrue($modelProperties->has('notwhatyouthink'));
+    }
 }
