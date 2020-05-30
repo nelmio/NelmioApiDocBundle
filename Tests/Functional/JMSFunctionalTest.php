@@ -105,7 +105,7 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'location' => [
                     'type' => 'string',
-                    'title' => 'User Location',
+                    'title' => 'User Location.',
                 ],
                 'friendsNumber' => [
                     'type' => 'string',

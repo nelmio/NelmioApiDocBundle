@@ -31,7 +31,7 @@ class User
     private $email;
 
     /**
-     * User Roles Comment
+     * User Roles Comment.
      *
      * @var string[]
      *
@@ -45,7 +45,7 @@ class User
     private $roles;
 
     /**
-     * User Location
+     * User Location.
      *
      * @OA\Property(type = "string")
      */
@@ -119,6 +119,10 @@ class User
     public function setRoles(array $roles)
     {
         $this->roles = $roles;
+    }
+
+    public function setLocation(string $location)
+    {
     }
 
     /**
