@@ -31,6 +31,8 @@ class User
     private $email;
 
     /**
+     * User Roles Comment
+     *
      * @var string[]
      *
      * @OA\Property(
@@ -41,6 +43,13 @@ class User
      * )
      */
     private $roles;
+
+    /**
+     * User Location
+     *
+     * @OA\Property(type = "string")
+     */
+    private $location;
 
     /**
      * @var int
