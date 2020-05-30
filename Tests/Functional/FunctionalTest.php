@@ -411,7 +411,10 @@ class FunctionalTest extends WebTestCase
     public function testSerializedNameAction()
     {
         $modelProperties = $this->getModel('SerializedNameEnt')->getProperties();
-        $this->assertCount(1, $modelProperties);
+        $this->assertCount(2, $modelProperties);
+
+        $this->assertFalse($modelProperties->has('foo'));
+        $this->assertTrue($modelProperties->has('notfoo'));
 
         $this->assertFalse($modelProperties->has('bar'));
         $this->assertTrue($modelProperties->has('notwhatyouthink'));

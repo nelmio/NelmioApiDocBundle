@@ -19,6 +19,12 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 class SerializedNameEnt
 {
     /**
+     * @SerializedName("notfoo")
+     * @var string
+     */
+    public $foo;
+
+    /**
      * Tests serialized name feature.
      *
      * @SerializedName("notwhatyouthink")
