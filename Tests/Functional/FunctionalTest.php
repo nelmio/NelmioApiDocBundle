@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use EXSyst\Component\Swagger\Tag;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class FunctionalTest extends WebTestCase
 {
@@ -410,6 +411,10 @@ class FunctionalTest extends WebTestCase
 
     public function testSerializedNameAction()
     {
+      if (!class_exists(SerializedName::class)) {
+            $this->markTestSkipped('Annotation @SerializedName doesn\'t exist.');
+        }
+
         $modelProperties = $this->getModel('SerializedNameEnt')->getProperties();
         $this->assertCount(2, $modelProperties);
 

@@ -208,16 +208,4 @@ class ApiController
     public function newAreaAction()
     {
     }
-
-    /**
-     * @SWG\Response(
-     *     response="200",
-     *     description="success",
-     *     @Model(type=SerializedNameEnt::class)
-     * )
-     * @Route("/serializename", methods={"GET"})
-     */
-    public function serializedNameAction()
-    {
-    }
 }
