@@ -20,6 +20,7 @@ use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
@@ -31,17 +32,21 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private $doctrineReader;
     /** @var PropertyDescriberInterface[] */
     private $propertyDescribers;
+    /** @var NameConverterInterface[] */
+    private $nameConverter;
 
     private $swaggerDefinitionAnnotationReader;
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
         Reader $reader,
-        $propertyDescribers
+        $propertyDescribers,
+        NameConverterInterface $nameConverter = null
     ) {
         $this->propertyInfo = $propertyInfo;
         $this->doctrineReader = $reader;
         $this->propertyDescribers = $propertyDescribers;
+        $this->nameConverter = $nameConverter;
     }
 
     public function describe(Model $model, Schema $schema)
@@ -64,10 +69,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         foreach ($propertyInfoProperties as $propertyName) {
+            $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, null !== $model->getGroups() ? ['groups' => $model->getGroups()] : []) : $propertyName;
+
             // read property options from Swagger Property annotation if it exists
             if (property_exists($class, $propertyName)) {
                 $reflectionProperty = new \ReflectionProperty($class, $propertyName);
-                $property = $properties->get($annotationsReader->getPropertyName($reflectionProperty, $propertyName));
+                $property = $properties->get($annotationsReader->getPropertyName($reflectionProperty, $serializedName));
 
                 $groups = $model->getGroups();
                 if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
@@ -76,7 +83,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
                 $annotationsReader->updateProperty($reflectionProperty, $property, $groups);
             } else {
-                $property = $properties->get($propertyName);
+                $property = $properties->get($serializedName);
             }
 
             // If type manually defined

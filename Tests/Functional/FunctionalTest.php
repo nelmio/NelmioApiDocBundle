@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use EXSyst\Component\Swagger\Tag;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class FunctionalTest extends WebTestCase
 {
@@ -406,5 +407,21 @@ class FunctionalTest extends WebTestCase
     public function testNoDuplicatedParameters()
     {
         $this->assertFalse($this->getOperation('/api/article/{id}', 'get')->getParameters()->has('id', 'path'));
+    }
+
+    public function testSerializedNameAction()
+    {
+      if (!class_exists(SerializedName::class)) {
+            $this->markTestSkipped('Annotation @SerializedName doesn\'t exist.');
+        }
+
+        $modelProperties = $this->getModel('SerializedNameEnt')->getProperties();
+        $this->assertCount(2, $modelProperties);
+
+        $this->assertFalse($modelProperties->has('foo'));
+        $this->assertTrue($modelProperties->has('notfoo'));
+
+        $this->assertFalse($modelProperties->has('bar'));
+        $this->assertTrue($modelProperties->has('notwhatyouthink'));
     }
 }
