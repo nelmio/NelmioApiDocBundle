@@ -128,6 +128,7 @@ class TestKernel extends Kernel
 
         $c->loadFromExtension('twig', [
             'strict_variables' => '%kernel.debug%',
+            'exception_controller' => null,
         ]);
 
         $c->loadFromExtension('sensio_framework_extra', [
@@ -149,6 +150,13 @@ class TestKernel extends Kernel
                     ],
                 ],
             ],
+            'routing_loader' => false,
+            'exception' => [
+                'enabled' => false,
+                'exception_listener' => false,
+                'serialize_exceptions' => false,
+            ],
+            'body_listener' => false,
         ]);
 
         // Filter routes
