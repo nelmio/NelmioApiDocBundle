@@ -22,7 +22,7 @@ class DumpCommandTest extends WebTestCase
         $kernel = static::bootKernel();
         $application = new Application($kernel);
 
-        $command = $application->find('api:doc:dump');
+        $command = $application->find('nelmio:apidoc:dump');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             '--area' => 'test',
