@@ -150,14 +150,20 @@ class TestKernel extends Kernel
                     ],
                 ],
             ],
-            'routing_loader' => false,
-            'exception' => [
-                'enabled' => false,
-                'exception_listener' => false,
-                'serialize_exceptions' => false,
-            ],
-            'body_listener' => false,
         ]);
+
+        // If FOSRestBundle 2.8
+        if (class_exists(\FOS\RestBundle\EventListener\ResponseStatusCodeListener::class)) {
+            $c->loadFromExtension('fos_rest', [
+                'exception' => [
+                    'enabled' => false,
+                    'exception_listener' => false,
+                    'serialize_exceptions' => false,
+                ],
+                'body_listener' => false,
+                'routing_loader' => false,
+            ]);
+        }
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
