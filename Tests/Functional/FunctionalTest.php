@@ -430,4 +430,19 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasProperty('bar', $model);
         $this->assertHasProperty('notwhatyouthink', $model);
     }
+
+    public function testDoctrineProperties()
+    {
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'arrayProperty' => [
+                    'items' => ['type' => 'string'],
+                    'type' => 'array',
+                ],
+                'objectProperty' => ['$ref' => '#/components/schemas/DummyType'],
+            ],
+            'schema' => 'DoctrineEntity',
+        ], json_decode($this->getModel('DoctrineEntity')->toJson(), true));
+    }
 }

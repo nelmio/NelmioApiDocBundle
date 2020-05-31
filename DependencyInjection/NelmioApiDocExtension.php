@@ -139,6 +139,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $container->getDefinition('nelmio_api_doc.model_describers.object')
             ->setArgument(3, $config['media_types']);
 
+        // Make PhpDoc Property Type Extractor take precedence over Doctrine
+        $container->getDefinition('property_info.php_doc_extractor')
+            ->addTag('property_info.type_extractor', ['priority' => -998]);
+
         // Import services needed for each library
         $loader->load('php_doc.xml');
 
