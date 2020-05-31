@@ -18,12 +18,14 @@ class DoctrineEntity
 {
     /**
      * @ORM\Column(type="array")
+     *
      * @var string[]
      */
     public $arrayProperty;
 
     /**
      * @ORM\Column(type="object")
+     *
      * @var Dummy
      */
     public $objectProperty;
