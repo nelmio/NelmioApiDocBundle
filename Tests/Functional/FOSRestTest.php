@@ -11,8 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use FOS\RestBundle\FOSRestBundle;
-
 class FOSRestTest extends WebTestCase
 {
     protected function setUp()
@@ -24,10 +22,6 @@ class FOSRestTest extends WebTestCase
 
     public function testFOSRestAction()
     {
-        if (!class_exists(FOSRestBundle::class)) {
-            $this->markTestSkipped('FOSRestBundle is not installed.');
-        }
-
         $operation = $this->getOperation('/api/fosrest', 'post');
 
         $parameters = $operation->getParameters();
