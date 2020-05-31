@@ -4,6 +4,12 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <!-- Commands -->
+        <service id="nelmio_api_doc.command.dump" class="Nelmio\ApiDocBundle\Command\DumpCommand" public="true">
+            <argument type="service" id="nelmio_api_doc.generator_locator" />
+            <tag name="console.command" command="nelmio:apidoc:dump" />
+        </service>
+
         <!-- Controllers -->
         <service id="nelmio_api_doc.controller.swagger_ui" class="Nelmio\ApiDocBundle\Controller\SwaggerUiController" public="true">
             <argument type="service" id="nelmio_api_doc.generator_locator" />
