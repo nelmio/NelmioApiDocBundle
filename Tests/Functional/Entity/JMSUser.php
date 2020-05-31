@@ -48,6 +48,8 @@ class JMSUser
     private $email;
 
     /**
+     * User Roles Comment.
+     *
      * @Serializer\Type("array<string>")
      * @Serializer\Accessor(getter="getRoles", setter="setRoles")
      * @Serializer\Expose
@@ -55,6 +57,14 @@ class JMSUser
      * @OA\Property(default = {"user"}, description = "Roles list", example="[""ADMIN"",""SUPERUSER""]", title="roles")
      */
     private $roles;
+
+    /**
+     * User Location.
+     *
+     * @Serializer\Type("string")
+     * @Serializer\Expose
+     */
+    private $location;
 
     /**
      * @Serializer\Type("string")

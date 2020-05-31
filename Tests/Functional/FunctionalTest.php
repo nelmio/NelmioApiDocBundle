@@ -172,6 +172,10 @@ class FunctionalTest extends WebTestCase
                         'items' => ['type' => 'string'],
                         'default' => ['user'],
                     ],
+                    'location' => [
+                        'title' => 'User Location.',
+                        'type' => 'string',
+                    ],
                     'friendsNumber' => [
                         'type' => 'string',
                     ],

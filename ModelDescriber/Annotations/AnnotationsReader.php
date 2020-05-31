@@ -50,8 +50,8 @@ class AnnotationsReader
 
     public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null): void
     {
-        $this->phpDocReader->updateProperty($reflectionProperty, $property);
         $this->openApiAnnotationsReader->updateProperty($reflectionProperty, $property, $serializationGroups);
+        $this->phpDocReader->updateProperty($reflectionProperty, $property);
         $this->symfonyConstraintAnnotationReader->updateProperty($reflectionProperty, $property);
     }
 }

@@ -103,6 +103,10 @@ class JMSFunctionalTest extends WebTestCase
                     'default' => ['user'],
                     'description' => 'Roles list',
                 ],
+                'location' => [
+                    'type' => 'string',
+                    'title' => 'User Location.',
+                ],
                 'friendsNumber' => [
                     'type' => 'string',
                     'maxLength' => 100,
