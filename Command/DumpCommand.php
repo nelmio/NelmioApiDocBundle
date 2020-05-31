@@ -45,7 +45,7 @@ class DumpCommand extends Command
         $this
             ->setDescription('Dumps documentation in OpenAPI JSON format')
             ->addOption('area', '', InputOption::VALUE_OPTIONAL, '', 'default')
-            ->addOption('--no-pretty', '', InputOption::VALUE_NONE, 'Do not pretty format output')
+            ->addOption('no-pretty', '', InputOption::VALUE_NONE, 'Do not pretty format output')
         ;
     }
 
