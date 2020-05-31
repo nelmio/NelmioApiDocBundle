@@ -27,24 +27,10 @@ final class SwaggerUiController
 
     private $twig;
 
-    /**
-     * @param ContainerInterface $generatorLocator
-     */
-    public function __construct($generatorLocator, $twig)
+    public function __construct(ContainerInterface $generatorLocator, $twig)
     {
         if (!$twig instanceof \Twig_Environment && !$twig instanceof Environment) {
             throw new \InvalidArgumentException(sprintf('Providing an instance of "%s" as twig is not supported.', get_class($twig)));
-        }
-
-        if (!$generatorLocator instanceof ContainerInterface) {
-            if (!$generatorLocator instanceof ApiDocGenerator) {
-                throw new \InvalidArgumentException(sprintf('Providing an instance of "%s" to "%s" is not supported.', get_class($generatorLocator), __METHOD__));
-            }
-
-            @trigger_error(sprintf('Providing an instance of "%s" to "%s()" is deprecated since version 3.1. Provide it an instance of "%s" instead.', ApiDocGenerator::class, __METHOD__, ContainerInterface::class), E_USER_DEPRECATED);
-            $generatorLocator = new ServiceLocator(['default' => function () use ($generatorLocator): ApiDocGenerator {
-                return $generatorLocator;
-            }]);
         }
 
         $this->generatorLocator = $generatorLocator;

@@ -144,39 +144,4 @@ class ConfigurationTest extends TestCase
             ],
         ], $config['models']['names']);
     }
-
-    /**
-     * @group legacy
-     */
-    public function testBothAreasAndRoutes()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('You must not use both `nelmio_api_doc.areas` and `nelmio_api_doc.routes` config options. Please update your config to only use `nelmio_api_doc.areas`.');
-
-        $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), [['areas' => [], 'routes' => []]]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation The `nelmio_api_doc.routes` config option is deprecated. Please use `nelmio_api_doc.areas` instead (just replace `routes` by `areas` in your config).
-     */
-    public function testDefaultConfig()
-    {
-        $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), [['routes' => ['path_patterns' => ['/foo']]]]);
-
-        $this->assertSame(
-            [
-                'default' => [
-                    'path_patterns' => ['/foo'],
-                    'host_patterns' => [],
-                    'name_patterns' => [],
-                    'with_annotation' => false,
-                    'documentation' => [],
-                ],
-            ],
-            $config['areas']
-        );
-    }
 }
