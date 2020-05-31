@@ -11,11 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\Controller;
 
-use Nelmio\ApiDocBundle\ApiDocGenerator;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Server;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
