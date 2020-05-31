@@ -147,11 +147,12 @@ class ConfigurationTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage You must not use both `nelmio_api_doc.areas` and `nelmio_api_doc.routes` config options. Please update your config to only use `nelmio_api_doc.areas`.
      */
     public function testBothAreasAndRoutes()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('You must not use both `nelmio_api_doc.areas` and `nelmio_api_doc.routes` config options. Please update your config to only use `nelmio_api_doc.areas`.');
+
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => [], 'routes' => []]]);
     }

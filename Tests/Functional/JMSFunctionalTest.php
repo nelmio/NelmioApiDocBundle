@@ -13,7 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 class JMSFunctionalTest extends WebTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -19,6 +19,7 @@ use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -84,12 +85,12 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\InvalidArgumentException
-     *
      * @dataProvider getInvalidOptions
      */
     public function testFilterWithInvalidOption(array $options)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new FilteredRouteCollectionBuilder(
             new AnnotationReader(),
             $this->createControllerReflector(),

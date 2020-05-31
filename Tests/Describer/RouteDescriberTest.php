@@ -35,7 +35,7 @@ class RouteDescriberTest extends AbstractDescriberTest
         $this->assertEquals((new OpenApi([]))->toJson(), $this->getOpenApiDoc()->toJson());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->routeDescriber = $this->createMock(RouteDescriberInterface::class);
         $this->routes = new RouteCollection();
