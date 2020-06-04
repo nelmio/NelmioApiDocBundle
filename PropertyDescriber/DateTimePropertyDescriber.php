@@ -16,15 +16,16 @@ use Symfony\Component\PropertyInfo\Type;
 
 class DateTimePropertyDescriber implements PropertyDescriberInterface
 {
-    public function describe(Type $type, OA\Schema $property, array $groups = null)
+    public function describe(array $types, OA\Schema $property, array $groups = null)
     {
         $property->type = 'string';
         $property->format = 'date-time';
     }
 
-    public function supports(Type $type): bool
+    public function supports(array $types): bool
     {
-        return Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()
-            && is_a($type->getClassName(), \DateTimeInterface::class, true);
+        return count($types) === 1
+            && $types[0]->getBuiltinType() === Type::BUILTIN_TYPE_OBJECT
+            && is_a($types[0]->getClassName(), \DateTimeInterface::class, true);
     }
 }

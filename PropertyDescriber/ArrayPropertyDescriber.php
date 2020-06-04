@@ -29,9 +29,9 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         $this->propertyDescribers = $propertyDescribers;
     }
 
-    public function describe(Type $type, OA\Schema $property, array $groups = null)
+    public function describe(array $types, OA\Schema $property, array $groups = null)
     {
-        $type = $type->getCollectionValueType();
+        $type = $types[0]->getCollectionValueType();
         if (null === $type) {
             throw new \LogicException(sprintf('Property "%s" is an array, but its items type isn\'t specified. You can specify that by using the type `string[]` for instance or `@SWG\Property(type="array", @SWG\Items(type="string"))`.', $property->title));
         }
@@ -51,8 +51,8 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         }
     }
 
-    public function supports(Type $type): bool
+    public function supports(array $types): bool
     {
-        return $type->isCollection();
+        return count($types) === 1 && $types[0]->isCollection();
     }
 }
