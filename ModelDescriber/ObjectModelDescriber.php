@@ -43,7 +43,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
         Reader $reader,
-        $propertyDescribers,
+        iterable $propertyDescribers,
         array $mediaTypes,
         NameConverterInterface $nameConverter = null
     ) {
@@ -99,7 +99,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
             $types = $this->propertyInfo->getTypes($class, $propertyName);
             if (null === $types || 0 === count($types)) {
-                throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@SWG\Property(type="")` to make its type explicit.', $class, $propertyName));
+                throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
             }
 
             $this->describeProperty($types, $model, $property, $propertyName);

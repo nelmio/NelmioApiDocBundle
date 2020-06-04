@@ -22,44 +22,35 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
 {
     use ModelRegistryAwareTrait;
 
+    /** @var PropertyDescriberInterface[] */
+    private $propertyDescribers;
+
+    public function __construct(iterable $propertyDescribers)
+    {
+        $this->propertyDescribers = $propertyDescribers;
+    }
+
     public function describe(array $types, OA\Schema $property, array $groups = null)
     {
-        if (Type::BUILTIN_TYPE_ARRAY === $types[0]->getBuiltinType()) {
-            $property->type = 'array';
-            $property = Util::getChild($property, OA\Items::class);
-        }
-
         $property->oneOf = OA\UNDEFINED !== $property->oneOf ? $property->oneOf : [];
 
         foreach ($types as $type) {
-            $ref = $this->modelRegistry->register(new Model(
-                new Type($types[0]->getBuiltinType(), false, $type->getClassName(), $type->isCollection(), $type->getCollectionKeyType(), $type->getCollectionValueType()),
-                $groups
-            ));
+            $property->oneOf[] = $schema = Util::createChild($property, OA\Schema::class, []);
+            foreach ($this->propertyDescribers as $propertyDescriber) {
+                if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
+                    $propertyDescriber->setModelRegistry($this->modelRegistry);
+                }
+                if ($propertyDescriber->supports([$type])) {
+                    $propertyDescriber->describe([$type], $schema, $groups);
 
-            $property->oneOf[] = ['$ref' => $ref];
+                    break;
+                }
+            }
         }
     }
 
     public function supports(array $types): bool
     {
-        if (2 < count($types)) {
-            return false;
-        }
-
-        $onlyArrays = false;
-        $onlyObjects = false;
-        /** @var Type $type */
-        foreach ($types as $type) {
-            if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
-                $onlyObjects = true;
-            } elseif (Type::BUILTIN_TYPE_ARRAY === $type->getBuiltinType() && Type::BUILTIN_TYPE_OBJECT === $type->getCollectionValueType()) {
-                $onlyArrays = true;
-            } else {
-                return false;
-            }
-        }
-
-        return ($onlyArrays && !$onlyObjects) || (!$onlyArrays && $onlyObjects);
+        return count($types) >= 2;
     }
 }
