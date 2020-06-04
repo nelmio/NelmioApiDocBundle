@@ -62,6 +62,4 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
 
         return ($onlyArrays && !$onlyObjects) || (!$onlyArrays && $onlyObjects);
     }
-
-
 }
