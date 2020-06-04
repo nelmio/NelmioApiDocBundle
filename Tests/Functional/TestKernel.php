@@ -176,6 +176,17 @@ class TestKernel extends Kernel
                         'Test' => [
                             'type' => 'string',
                         ],
+
+                        // Ensures https://github.com/nelmio/NelmioApiDocBundle/issues/1650 is working
+                        'Pet' => [
+                            'type' => 'object',
+                        ],
+                        'Cat' => [
+                            'allOf' => [
+                                ['$ref' => '#/components/schemas/Pet'],
+                                ['type' => 'object'],
+                            ]
+                        ],
                     ],
                     'parameters' => [
                         'test' => [

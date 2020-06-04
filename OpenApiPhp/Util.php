@@ -455,11 +455,27 @@ final class Util
     private static function mergeTyped(OA\AbstractAnnotation $annotation, $propertyName, $type, array $properties, array $defaults, bool $overwrite)
     {
         if (\is_string($type) && 0 === strpos($type, '[')) {
-            /* type is declared as array in @see OA\AbstractAnnotation::$_types */
-            $annotation->{$propertyName} = array_unique(array_merge(
-                $annotation->{$propertyName} && UNDEFINED !== $annotation->{$propertyName} ? $annotation->{$propertyName} : [],
-                $properties[$propertyName]
-            ));
+            $innerType = substr($type, 1, -1);
+
+            if (!$annotation->{$propertyName} || UNDEFINED === $annotation->{$propertyName}) {
+                $annotation->{$propertyName} = [];
+            }
+
+            if (!class_exists($innerType)) {
+                /* type is declared as array in @see OA\AbstractAnnotation::$_types */
+                $annotation->{$propertyName} = array_unique(array_merge(
+                    $annotation->{$propertyName},
+                    $properties[$propertyName]
+                ));
+
+                return;
+            }
+
+            // $type == [Schema] for instance
+            foreach ($properties[$propertyName] as $child) {
+                $annotation->{$propertyName}[] = $annot = self::createChild($annotation, $innerType, []);
+                self::merge($annot, $child, $overwrite);
+            }
         } else {
             self::mergeProperty($annotation, $propertyName, $properties[$propertyName], $defaults[$propertyName], $overwrite);
         }
