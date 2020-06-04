@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 use OpenApi\Annotations as OA;
-use Symfony\Component\PropertyInfo\Type;
 
 class BooleanPropertyDescriber implements PropertyDescriberInterface
 {
@@ -23,6 +22,6 @@ class BooleanPropertyDescriber implements PropertyDescriberInterface
 
     public function supports(array $types): bool
     {
-        return count($types) === 1 && $types[0]->getBuiltinType();
+        return 1 === count($types) && $types[0]->getBuiltinType();
     }
 }

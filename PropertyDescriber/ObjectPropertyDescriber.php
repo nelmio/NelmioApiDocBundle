@@ -30,6 +30,6 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
     public function supports(array $types): bool
     {
-        return count($types) === 1 && $types[0]->getBuiltinType() === Type::BUILTIN_TYPE_OBJECT;
+        return 1 === count($types) && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
     }
 }

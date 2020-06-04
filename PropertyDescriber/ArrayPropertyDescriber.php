@@ -15,7 +15,6 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use Symfony\Component\PropertyInfo\Type;
 
 class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
@@ -43,8 +42,8 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
-            if ($propertyDescriber->supports($type)) {
-                $propertyDescriber->describe($type, $property, $groups);
+            if ($propertyDescriber->supports([$type])) {
+                $propertyDescriber->describe([$type], $property, $groups);
 
                 break;
             }
@@ -53,6 +52,6 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
 
     public function supports(array $types): bool
     {
-        return count($types) === 1 && $types[0]->isCollection();
+        return 1 === count($types) && $types[0]->isCollection();
     }
 }

@@ -1,8 +1,15 @@
 <?php
 
+/*
+ * This file is part of the NelmioApiDocBundle package.
+ *
+ * (c) Nelmio
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
-
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
@@ -17,7 +24,7 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
 
     public function describe(array $types, OA\Schema $property, array $groups = null)
     {
-        if ($types[0]->getBuiltinType() === Type::BUILTIN_TYPE_ARRAY) {
+        if (Type::BUILTIN_TYPE_ARRAY === $types[0]->getBuiltinType()) {
             $property->type = 'array';
             $property = Util::getChild($property, OA\Items::class);
         }
@@ -36,7 +43,7 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
 
     public function supports(array $types): bool
     {
-        if (count($types) < 2) {
+        if (2 < count($types)) {
             return false;
         }
 
@@ -44,9 +51,9 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
         $onlyObjects = false;
         /** @var Type $type */
         foreach ($types as $type) {
-            if ($type->getBuiltinType() === Type::BUILTIN_TYPE_OBJECT) {
+            if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
                 $onlyObjects = true;
-            } elseif ($type->getBuiltinType() === Type::BUILTIN_TYPE_ARRAY && $type->getCollectionValueType() === Type::BUILTIN_TYPE_OBJECT) {
+            } elseif (Type::BUILTIN_TYPE_ARRAY === $type->getBuiltinType() && Type::BUILTIN_TYPE_OBJECT === $type->getCollectionValueType()) {
                 $onlyArrays = true;
             } else {
                 return false;

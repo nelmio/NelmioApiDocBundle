@@ -23,6 +23,6 @@ class StringPropertyDescriber implements PropertyDescriberInterface
 
     public function supports(array $types): bool
     {
-        return count($types) === 1 && $types[0]->getBuiltinType() === Type::BUILTIN_TYPE_STRING;
+        return 1 === count($types) && Type::BUILTIN_TYPE_STRING === $types[0]->getBuiltinType();
     }
 }
