@@ -29,7 +29,7 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
             $property = Util::getChild($property, OA\Items::class);
         }
 
-        $property->oneOf = $property->oneOf !== OA\UNDEFINED ? $property->oneOf : [];
+        $property->oneOf = OA\UNDEFINED !== $property->oneOf ? $property->oneOf : [];
 
         foreach ($types as $type) {
             $ref = $this->modelRegistry->register(new Model(
