@@ -26,3 +26,12 @@ Here are some additional advices that are more likely to apply to NelmioApiDocBu
   ``@OA\Response(..., @OA\JsonContent(...))`` or ``@OA\Response(..., @OA\XmlContent(...))``.
 
   When you use ``@Model`` directly (``@OA\Response(..., @Model(...)))``), the media type is set by default to ``json``.
+
+BC Breaks
+---------
+
+There are also BC breaks that were introduced in 4.0:
+
+- We migrated from `EXSyst\Component\Swagger\Swagger` to `OpenApi\Annotations\OpenApi` to describe the api in all our describers signature (`DescriberInterface`, `RouteDescriberInterface`, `ModelDescriberInterface`, `PropertyDescriberInterface`).
+
+- `PropertyDescriberInterface` now takes several types as input to leverage compound types support in OpenApi 3.0 (`int|string` for instance).
