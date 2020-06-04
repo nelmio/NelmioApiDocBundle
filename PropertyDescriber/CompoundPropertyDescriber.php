@@ -13,10 +13,8 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use Symfony\Component\PropertyInfo\Type;
 
 class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
