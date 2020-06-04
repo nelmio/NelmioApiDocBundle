@@ -185,7 +185,7 @@ class TestKernel extends Kernel
                             'allOf' => [
                                 ['$ref' => '#/components/schemas/Pet'],
                                 ['type' => 'object'],
-                            ]
+                            ],
                         ],
                     ],
                     'parameters' => [
