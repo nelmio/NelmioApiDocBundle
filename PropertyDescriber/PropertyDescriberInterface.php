@@ -18,15 +18,11 @@ interface PropertyDescriberInterface
 {
     /**
      * @param Type[] $types
-     *
-     * @return bool
      */
     public function describe(array $types, Schema $property, array $groups = null);
 
     /**
      * @param Type[] $types
-     *
-     * @return bool
      */
     public function supports(array $types): bool;
 }
