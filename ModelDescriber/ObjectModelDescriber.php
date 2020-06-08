@@ -121,6 +121,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 if (1 === count($types) && $types[0]->isNullable()) {
                     $property->nullable = true;
                 }
+
                 return;
             }
         }
