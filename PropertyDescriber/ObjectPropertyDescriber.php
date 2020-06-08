@@ -23,9 +23,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
     public function describe(array $types, OA\Schema $property, array $groups = null)
     {
-        $type = new Type($types[0]->getBuiltinType(), false, $types[0]->getClassName(), $types[0]->isCollection(), $types[0]->getCollectionKeyType(), $types[0]->getCollectionValueType()); // ignore nullable field
-
-        $property->ref = $this->modelRegistry->register(new Model($type, $groups));
+        $property->ref = $this->modelRegistry->register(new Model($types[0], $groups));
     }
 
     public function supports(array $types): bool
