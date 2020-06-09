@@ -16,9 +16,11 @@ use Symfony\Component\PropertyInfo\Type;
 
 class StringPropertyDescriber implements PropertyDescriberInterface
 {
+    use NullablePropertyTrait;
     public function describe(array $types, OA\Schema $property, array $groups = null)
     {
         $property->type = 'string';
+        $this->setNullableProperty($types[0], $property);
     }
 
     public function supports(array $types): bool

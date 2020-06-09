@@ -122,10 +122,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             if ($propertyDescriber->supports($types)) {
                 $propertyDescriber->describe($types, $property, $model->getGroups());
 
-                if (1 === count($types) && $types[0]->isNullable() && Type::BUILTIN_TYPE_OBJECT !== $types[0]->getBuiltinType()) {
-                    $property->nullable = true;
-                }
-
                 return;
             }
         }

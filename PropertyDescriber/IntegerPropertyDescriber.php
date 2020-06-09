@@ -16,9 +16,12 @@ use Symfony\Component\PropertyInfo\Type;
 
 class IntegerPropertyDescriber implements PropertyDescriberInterface
 {
+    use NullablePropertyTrait;
+
     public function describe(array $types, OA\Schema $property, array $groups = null)
     {
         $property->type = 'integer';
+        $this->setNullableProperty($types[0], $property);
     }
 
     public function supports(array $types): bool

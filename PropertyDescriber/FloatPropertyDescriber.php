@@ -16,10 +16,13 @@ use Symfony\Component\PropertyInfo\Type;
 
 class FloatPropertyDescriber implements PropertyDescriberInterface
 {
+    use NullablePropertyTrait;
+
     public function describe(array $types, OA\Schema $property, array $groups = null)
     {
         $property->type = 'number';
         $property->format = 'float';
+        $this->setNullableProperty($types[0], $property);
     }
 
     public function supports(array $types): bool
