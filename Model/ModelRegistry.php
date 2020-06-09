@@ -43,7 +43,7 @@ final class ModelRegistry
         $this->alternativeNames = []; // last rule wins
 
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
-            $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
+            $this->alternativeNames[] = $model = new Model(new Type('object', $criteria['nullable'] ?? false, $criteria['type']), $criteria['groups']);
             $this->names[$model->getHash()] = $alternativeName;
             Util::getSchema($this->api, $alternativeName);
         }
