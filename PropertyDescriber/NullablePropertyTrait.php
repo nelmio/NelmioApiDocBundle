@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
-use Symfony\Component\PropertyInfo\Type;
 use OpenApi\Annotations as OA;
+use Symfony\Component\PropertyInfo\Type;
 
 trait NullablePropertyTrait
 {
