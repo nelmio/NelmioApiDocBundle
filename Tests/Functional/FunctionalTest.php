@@ -371,7 +371,7 @@ class FunctionalTest extends WebTestCase
                 ],
                 'propertyExpression' => [
                     'type' => 'integer',
-                    'pattern' => 'If this is a tech post, the category should be either php or symfony!',
+                    'pattern' => 'this.getCategory() in [\'php\', \'symfony\'] or !this.isTechnicalPost()',
                 ],
                 'propertyRange' => [
                     'type' => 'integer',

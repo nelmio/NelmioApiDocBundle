@@ -70,7 +70,7 @@ class SymfonyConstraintAnnotationReader
                 $values = $annotation->callback ? call_user_func(is_array($annotation->callback) ? $annotation->callback : [$reflectionProperty->class, $annotation->callback]) : $annotation->choices;
                 $property->enum = array_values($values);
             } elseif ($annotation instanceof Assert\Expression) {
-                $this->appendPattern($property, $annotation->message);
+                $this->appendPattern($property, $annotation->expression);
             } elseif ($annotation instanceof Assert\Range) {
                 $property->minimum = $annotation->min;
                 $property->maximum = $annotation->max;
