@@ -27,7 +27,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
         if ($types[0]->isNullable()) {
             $property->nullable = true;
-            $property->anyOf = [['$ref' => $this->modelRegistry->register(new Model($type, $groups))]];
+            $property->allOf = [['$ref' => $this->modelRegistry->register(new Model($type, $groups))]];
 
             return;
         }
