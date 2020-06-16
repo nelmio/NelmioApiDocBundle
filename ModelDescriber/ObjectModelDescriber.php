@@ -58,10 +58,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     {
         $schema->type = 'object';
 
-        if ($model->getType()->isNullable()) {
-            $schema->nullable = true;
-        }
-
         $class = $model->getType()->getClassName();
         $schema->_context->class = $class;
 
