@@ -190,7 +190,7 @@ class FunctionalTest extends WebTestCase
                         'type' => 'array',
                     ],
                     'friend' => [
-                        '$ref' => '#/components/schemas/User3',
+                        '$ref' => '#/components/schemas/User',
                     ],
                     'dummy' => [
                         '$ref' => '#/components/schemas/Dummy2',
