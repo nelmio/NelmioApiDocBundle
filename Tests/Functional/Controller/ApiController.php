@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
@@ -199,6 +200,15 @@ class ApiController
      * @Areas({"area", "area2"})
      */
     public function newAreaAction()
+    {
+    }
+
+    /**
+     * @Route("/compound", methods={"GET", "POST"})
+     *
+     * @OA\Response(response=200, description="Worked well!", @Model(type=CompoundEntity::class))
+     */
+    public function compoundEntityAction()
     {
     }
 }

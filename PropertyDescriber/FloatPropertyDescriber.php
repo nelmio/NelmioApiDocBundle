@@ -16,14 +16,17 @@ use Symfony\Component\PropertyInfo\Type;
 
 class FloatPropertyDescriber implements PropertyDescriberInterface
 {
-    public function describe(Type $type, OA\Schema $property, array $groups = null)
+    use NullablePropertyTrait;
+
+    public function describe(array $types, OA\Schema $property, array $groups = null)
     {
         $property->type = 'number';
         $property->format = 'float';
+        $this->setNullableProperty($types[0], $property);
     }
 
-    public function supports(Type $type): bool
+    public function supports(array $types): bool
     {
-        return Type::BUILTIN_TYPE_FLOAT === $type->getBuiltinType();
+        return 1 === count($types) && Type::BUILTIN_TYPE_FLOAT === $types[0]->getBuiltinType();
     }
 }

@@ -40,7 +40,6 @@ final class ModelRegistry
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
-        $this->alternativeNames = []; // last rule wins
 
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
             $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);

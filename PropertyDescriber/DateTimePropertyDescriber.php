@@ -16,15 +16,19 @@ use Symfony\Component\PropertyInfo\Type;
 
 class DateTimePropertyDescriber implements PropertyDescriberInterface
 {
-    public function describe(Type $type, OA\Schema $property, array $groups = null)
+    use NullablePropertyTrait;
+
+    public function describe(array $types, OA\Schema $property, array $groups = null)
     {
         $property->type = 'string';
         $property->format = 'date-time';
+        $this->setNullableProperty($types[0], $property);
     }
 
-    public function supports(Type $type): bool
+    public function supports(array $types): bool
     {
-        return Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()
-            && is_a($type->getClassName(), \DateTimeInterface::class, true);
+        return 1 === count($types)
+            && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType()
+            && is_a($types[0]->getClassName(), \DateTimeInterface::class, true);
     }
 }

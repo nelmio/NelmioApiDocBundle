@@ -190,7 +190,10 @@ class FunctionalTest extends WebTestCase
                         'type' => 'array',
                     ],
                     'friend' => [
-                        '$ref' => '#/components/schemas/User',
+                        'nullable' => true,
+                        'allOf' => [
+                            ['$ref' => '#/components/schemas/User'],
+                        ],
                     ],
                     'dummy' => [
                         '$ref' => '#/components/schemas/Dummy2',
@@ -429,5 +432,20 @@ class FunctionalTest extends WebTestCase
 
         $this->assertNotHasProperty('bar', $model);
         $this->assertHasProperty('notwhatyouthink', $model);
+    }
+
+    public function testCompoundEntityAction()
+    {
+        $model = $this->getModel('CompoundEntity');
+        $this->assertCount(1, $model->properties);
+
+        $this->assertHasProperty('complex', $model);
+
+        $property = $model->properties[0];
+        $this->assertCount(2, $property->oneOf);
+
+        $this->assertSame('integer', $property->oneOf[0]->type);
+        $this->assertSame('array', $property->oneOf[1]->type);
+        $this->assertSame('#/components/schemas/CompoundEntity', $property->oneOf[1]->items->ref);
     }
 }

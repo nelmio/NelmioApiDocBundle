@@ -11,18 +11,15 @@
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
-use OpenApi\Annotations\Schema;
+use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
-interface PropertyDescriberInterface
+trait NullablePropertyTrait
 {
-    /**
-     * @param Type[] $types
-     */
-    public function describe(array $types, Schema $property, array $groups = null);
-
-    /**
-     * @param Type[] $types
-     */
-    public function supports(array $types): bool;
+    protected function setNullableProperty(Type $type, OA\Schema $property): void
+    {
+        if ($type->isNullable()) {
+            $property->nullable = true;
+        }
+    }
 }

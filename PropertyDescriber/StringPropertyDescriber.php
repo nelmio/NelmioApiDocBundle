@@ -16,13 +16,16 @@ use Symfony\Component\PropertyInfo\Type;
 
 class StringPropertyDescriber implements PropertyDescriberInterface
 {
-    public function describe(Type $type, OA\Schema $property, array $groups = null)
+    use NullablePropertyTrait;
+
+    public function describe(array $types, OA\Schema $property, array $groups = null)
     {
         $property->type = 'string';
+        $this->setNullableProperty($types[0], $property);
     }
 
-    public function supports(Type $type): bool
+    public function supports(array $types): bool
     {
-        return Type::BUILTIN_TYPE_STRING === $type->getBuiltinType();
+        return 1 === count($types) && Type::BUILTIN_TYPE_STRING === $types[0]->getBuiltinType();
     }
 }

@@ -15,7 +15,6 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use Symfony\Component\PropertyInfo\Type;
 
 class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
@@ -29,11 +28,11 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         $this->propertyDescribers = $propertyDescribers;
     }
 
-    public function describe(Type $type, OA\Schema $property, array $groups = null)
+    public function describe(array $types, OA\Schema $property, array $groups = null)
     {
-        $type = $type->getCollectionValueType();
+        $type = $types[0]->getCollectionValueType();
         if (null === $type) {
-            throw new \LogicException(sprintf('Property "%s" is an array, but its items type isn\'t specified. You can specify that by using the type `string[]` for instance or `@SWG\Property(type="array", @SWG\Items(type="string"))`.', $property->title));
+            throw new \LogicException(sprintf('Property "%s" is an array, but its items type isn\'t specified. You can specify that by using the type `string[]` for instance or `@OA\Property(type="array", @OA\Items(type="string"))`.', $property->title));
         }
 
         $property->type = 'array';
@@ -43,16 +42,16 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
-            if ($propertyDescriber->supports($type)) {
-                $propertyDescriber->describe($type, $property, $groups);
+            if ($propertyDescriber->supports([$type])) {
+                $propertyDescriber->describe([$type], $property, $groups);
 
                 break;
             }
         }
     }
 
-    public function supports(Type $type): bool
+    public function supports(array $types): bool
     {
-        return $type->isCollection();
+        return 1 === count($types) && $types[0]->isCollection();
     }
 }
