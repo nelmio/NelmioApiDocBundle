@@ -55,7 +55,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $properties = $schema->getProperties();
 
         $class = $model->getType()->getClassName();
-        $context = ['serializer_groups' => null]; // Use the SerializerExtractor with not groups check (sf >= 5.1)
+        $context = ['serializer_groups' => null]; // Use the SerializerExtractor with no groups check (sf >= 5.1)
         if (null !== $model->getGroups()) {
             $context['serializer_groups'] = array_filter($model->getGroups(), 'is_string');
         }
