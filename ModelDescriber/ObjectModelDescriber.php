@@ -61,9 +61,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $class = $model->getType()->getClassName();
         $schema->_context->class = $class;
 
-        $context = [];
+        $context = ['serializer_groups' => null]; // Use the SerializerExtractor with not groups check (sf >= 5.1)
         if (null !== $model->getGroups()) {
-            $context = ['serializer_groups' => array_filter($model->getGroups(), 'is_string')];
+            $context['serializer_groups'] = array_filter($model->getGroups(), 'is_string');
         }
 
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
