@@ -59,25 +59,26 @@ class SymfonyConstraintAnnotationReader
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
             } elseif ($annotation instanceof Assert\Length) {
-                $property->minLength = $annotation->min;
-                $property->maxLength = $annotation->max;
+                $property->minLength = (int) $annotation->min;
+                $property->maxLength = (int) $annotation->max;
             } elseif ($annotation instanceof Assert\Regex) {
                 $this->appendPattern($property, $annotation->getHtmlPattern());
             } elseif ($annotation instanceof Assert\Count) {
-                $property->minItems = $annotation->min;
-                $property->maxItems = $annotation->max;
+                $property->minItems = (int) $annotation->min;
+                $property->maxItems = (int) $annotation->max;
             } elseif ($annotation instanceof Assert\Choice) {
                 $values = $annotation->callback ? call_user_func(is_array($annotation->callback) ? $annotation->callback : [$reflectionProperty->class, $annotation->callback]) : $annotation->choices;
                 $property->enum = array_values($values);
             } elseif ($annotation instanceof Assert\Expression) {
                 $this->appendPattern($property, $annotation->message);
             } elseif ($annotation instanceof Assert\Range) {
-                $property->minimum = $annotation->min;
-                $property->maximum = $annotation->max;
+                $property->minimum = (int) $annotation->min;
+                $property->maximum = (int) $annotation->max;
             } elseif ($annotation instanceof Assert\LessThan) {
-                $property->exclusiveMaximum= $annotation->value;
+                $property->exclusiveMaximum = true;
+                $property->maximum = (int) $annotation->value;
             } elseif ($annotation instanceof Assert\LessThanOrEqual) {
-                $property->maximum = $annotation->value;
+                $property->maximum = (int) $annotation->value;
             }
         }
     }

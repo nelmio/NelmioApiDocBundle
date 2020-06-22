@@ -34,12 +34,14 @@ final class DefaultDescriber implements DescriberInterface
         }
 
         // Paths
-        $paths = OA\UNDEFINED === $api->paths ? [] : $api->paths;
-        foreach ($paths as $path) {
+        if (OA\UNDEFINED === $api->paths) {
+            $api->paths = [];
+        }
+        foreach ($api->paths as $path) {
             foreach (Util::OPERATIONS as $method) {
                 /** @var OA\Operation $operation */
                 $operation = $path->{$method};
-                if (OA\UNDEFINED !== $operation && null !== $operation && empty($operation->responses ?? [])) {
+                if (OA\UNDEFINED !== $operation && null !== $operation && (OA\UNDEFINED === $operation->responses || empty($operation->responses))) {
                     /** @var OA\Response $response */
                     $response = Util::getIndexedCollectionItem($operation, OA\Response::class, 'default');
                     $response->description = '';

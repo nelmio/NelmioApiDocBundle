@@ -15,6 +15,8 @@ use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
+use OpenApi\Analysis;
 use OpenApi\Annotations\OpenApi;
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -38,6 +40,9 @@ final class ApiDocGenerator
     /** @var string[] */
     private $alternativeNames = [];
 
+    /** @var string[] */
+    private $mediaTypes = ['json'];
+
     /**
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
@@ -53,6 +58,11 @@ final class ApiDocGenerator
     public function setAlternativeNames(array $alternativeNames)
     {
         $this->alternativeNames = $alternativeNames;
+    }
+
+    public function setMediaTypes(array $mediaTypes)
+    {
+        $this->mediaTypes = $mediaTypes;
     }
 
     public function generate(): OpenApi
@@ -77,7 +87,19 @@ final class ApiDocGenerator
 
             $describer->describe($this->openApi);
         }
+
+        $analysis = new Analysis();
+        $analysis->addAnnotation($this->openApi, null);
+
+        // Register model annotations
+        $modelRegister = new ModelRegister($modelRegistry, $this->mediaTypes);
+        $modelRegister($analysis);
+
+        // Calculate the associated schemas
         $modelRegistry->registerSchemas();
+
+        $analysis->process();
+        $analysis->validate();
 
         if (isset($item)) {
             $this->cacheItemPool->save($item->set($this->openApi));
