@@ -108,6 +108,10 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
                     foreach ($httpMethods as $httpMethod) {
                         $operation = Util::getOperation($path, $httpMethod);
                         $operation->mergeProperties($annotation);
+
+                        // Register inner annotations
+                        $analysis->addAnnotation($annotation, null);
+                        $analysis->annotations->detach($annotation);
                     }
 
                     continue;
@@ -116,6 +120,10 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
                 if ($annotation instanceof OA\Operation) {
                     $operation = Util::getOperation($path, $annotation->method);
                     $operation->mergeProperties($annotation);
+
+                    // Register inner annotations
+                    $analysis->addAnnotation($annotation, null);
+                    $analysis->annotations->detach($annotation);
 
                     continue;
                 }
