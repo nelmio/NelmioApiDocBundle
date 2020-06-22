@@ -45,7 +45,7 @@ class ApiPlatformDescriberTest extends AbstractDescriberTest
         $this->assertEquals($expectedApi->toArray(), $this->getSwaggerDoc()->toArray());
     }
 
-    protected function setUp()
+    protected function setUp():void
     {
         $this->documentation = new Documentation(new ResourceNameCollection(['dummy' => 'dummy']));
 
