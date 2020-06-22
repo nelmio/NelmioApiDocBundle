@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+3.8.0 
+------
+
+* remove pattern added from the Expression Violation message. 
+
 3.7.0 (unreleased)
 ------------------
 
