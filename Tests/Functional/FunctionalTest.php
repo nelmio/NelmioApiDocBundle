@@ -424,4 +424,10 @@ class FunctionalTest extends WebTestCase
         $this->assertFalse($modelProperties->has('bar'));
         $this->assertTrue($modelProperties->has('notwhatyouthink'));
     }
+
+    public function testInvokableController()
+    {
+        $operation = $this->getOperation('/api/invoke', 'get');
+        $this->assertSame('Invokable!', $operation->getResponses()->get(200)->getDescription());
+    }
 }
