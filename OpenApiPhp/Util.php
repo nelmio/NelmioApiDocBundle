@@ -360,6 +360,8 @@ final class Util
      */
     public static function createContext(array $properties = [], Context $parent = null): Context
     {
+        $properties['comment'] = ''; // TODO: remove this when https://github.com/zircote/swagger-php/commit/708a25208797ca05ebeae572bbccad8b13de14d8 is released
+
         return new Context($properties, $parent);
     }
 
