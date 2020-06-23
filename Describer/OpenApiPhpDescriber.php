@@ -25,10 +25,8 @@ use Symfony\Component\Routing\RouteCollection;
 // Help opcache.preload discover Swagger\Annotations\Swagger
 class_exists(OA\OpenApi::class);
 
-final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
+final class OpenApiPhpDescriber
 {
-    use ModelRegistryAwareTrait;
-
     private $routeCollection;
     private $controllerReflector;
     private $annotationReader;
