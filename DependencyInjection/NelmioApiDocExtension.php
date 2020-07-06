@@ -68,6 +68,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
                 ->setPublic(true)
                 ->addMethodCall('setAlternativeNames', [$nameAliases])
+                ->addMethodCall('setMediaTypes', [$config['media_types']])
                 ->setArguments([
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
@@ -89,7 +90,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference('nelmio_api_doc.controller_reflector'),
                     new Reference('annotations.reader'), // We cannot use the cached version of the annotation reader since the construction of the annotations is context dependant...
                     new Reference('logger'),
-                    $config['media_types'],
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
 

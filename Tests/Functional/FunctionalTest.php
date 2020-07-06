@@ -383,7 +383,8 @@ class FunctionalTest extends WebTestCase
                 ],
                 'propertyLessThan' => [
                     'type' => 'integer',
-                    'exclusiveMaximum' => 42,
+                    'exclusiveMaximum' => true,
+                    'maximum' => 42,
                 ],
                 'propertyLessThanOrEqual' => [
                     'type' => 'integer',

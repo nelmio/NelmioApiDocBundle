@@ -30,10 +30,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiController
 {
     /**
-     * @OA\Response(
+     * @OA\Get(
+     *  @OA\Response(
      *   response="200",
      *   description="Success",
      *   @Model(type=Article::class, groups={"light"}))
+     *  )
      * )
      * @OA\Parameter(ref="#/components/parameters/test")
      * @Route("/article/{id}", methods={"GET"})

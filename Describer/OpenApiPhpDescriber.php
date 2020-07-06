@@ -14,12 +14,9 @@ namespace Nelmio\ApiDocBundle\Describer;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
-use Nelmio\ApiDocBundle\OpenApiPhp\AddDefaults;
-use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Analyser;
-use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Route;
@@ -28,49 +25,25 @@ use Symfony\Component\Routing\RouteCollection;
 // Help opcache.preload discover Swagger\Annotations\Swagger
 class_exists(OA\OpenApi::class);
 
-final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
+final class OpenApiPhpDescriber
 {
-    use ModelRegistryAwareTrait;
-
     private $routeCollection;
     private $controllerReflector;
     private $annotationReader;
     private $logger;
-    private $mediaTypes;
     private $overwrite;
 
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, LoggerInterface $logger, array $mediaTypes, bool $overwrite = false)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
     {
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
         $this->annotationReader = $annotationReader;
         $this->logger = $logger;
-        $this->mediaTypes = $mediaTypes;
         $this->overwrite = $overwrite;
     }
 
     public function describe(OA\OpenApi $api)
     {
-        $analysis = $this->getAnnotations($api);
-        $analysis->process($this->getProcessors());
-        $analysis->validate();
-    }
-
-    private function getProcessors(): array
-    {
-        $processors = [
-            new AddDefaults(),
-            new ModelRegister($this->modelRegistry, $this->mediaTypes),
-        ];
-
-        return array_merge($processors, Analysis::processors());
-    }
-
-    private function getAnnotations(OA\OpenApi $api): Analysis
-    {
-        $analysis = new Analysis();
-        $analysis->openapi = $api;
-
         $classAnnotations = [];
 
         /** @var \ReflectionMethod $method */
@@ -150,9 +123,6 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
                 continue;
             }
 
-            // Registers new annotations
-            $analysis->addAnnotations($implicitAnnotations, null);
-
             foreach ($httpMethods as $httpMethod) {
                 $operation = Util::getOperation($path, $httpMethod);
                 $operation->merge($implicitAnnotations);
@@ -162,8 +132,6 @@ final class OpenApiPhpDescriber implements ModelRegistryAwareInterface
 
         // Reset the Analyser after the parsing
         Analyser::$context = null;
-
-        return $analysis;
     }
 
     private function getMethodsToParse(): \Generator
