@@ -123,7 +123,7 @@ final class SwaggerPhpDescriber implements ModelRegistryAwareInterface
                 return $v instanceof SWG\AbstractAnnotation;
             });
 
-            if (0 === count($annotations)) {
+            if (0 === count($annotations) && 0 === count($classAnnotations[$declaringClass->getName()])) {
                 continue;
             }
 
