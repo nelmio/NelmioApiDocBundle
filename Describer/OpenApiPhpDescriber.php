@@ -69,7 +69,7 @@ final class OpenApiPhpDescriber
                 return $v instanceof OA\AbstractAnnotation;
             });
 
-            if (0 === count($annotations)) {
+            if (0 === count($annotations) && 0 === count($classAnnotations[$declaringClass->getName()])) {
                 continue;
             }
 

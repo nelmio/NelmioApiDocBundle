@@ -374,7 +374,6 @@ class FunctionalTest extends WebTestCase
                 ],
                 'propertyExpression' => [
                     'type' => 'integer',
-                    'pattern' => 'If this is a tech post, the category should be either php or symfony!',
                 ],
                 'propertyRange' => [
                     'type' => 'integer',
@@ -448,5 +447,11 @@ class FunctionalTest extends WebTestCase
         $this->assertSame('integer', $property->oneOf[0]->type);
         $this->assertSame('array', $property->oneOf[1]->type);
         $this->assertSame('#/components/schemas/CompoundEntity', $property->oneOf[1]->items->ref);
+    }
+
+    public function testInvokableController()
+    {
+        $operation = $this->getOperation('/api/invoke', 'get');
+        $this->assertSame('Invokable!', $this->getOperationResponse($operation, 200)->description);
     }
 }
