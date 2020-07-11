@@ -1,15 +1,11 @@
 CHANGELOG
 =========
 
-3.8.0 
-------
-
-* remove pattern added from the Expression Violation message. 
-
 3.7.0 (unreleased)
 ------------------
 
 * Added `@SerializedName` annotation support and name converters when using Symfony >= 4.2.
+* remove pattern added from the Expression Violation message. 
 
 3.3.0
 -----
