@@ -17,12 +17,12 @@ This bundle supports *Symfony* route requirements, PHP annotations, `Swagger-Php
 For models, it supports the `Symfony serializer`_ , the `JMS serializer`_ and the `willdurand/Hateoas`_ library.
 It does also support `Symfony form`_ types.
 
-Migrate from 2.x to 3.0
+Migrate from 3.x to 4.0
 -----------------------
 
-`To migrate from 2.x to 3.0, just follow our guide.`__
+`To migrate from 3.x to 4.0, follow our guide.`__
 
-__ https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-3.0.md
+__ https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-4.0.md
 
 Installation
 ------------
@@ -241,7 +241,7 @@ You can customize the documentation of a form field using the ``documentation`` 
         ],
     ]);
 
-See the `OpenAPI 3.0 specification`__ to see all the available fields of the ``documentation`` option.
+See the `OpenAPI 3.0 specification`__ to see all the available fields of the ``documentation`` option (it accepts the same fields as the OpenApi ``Property`` object).
 
 __ https://swagger.io/specification/
 
@@ -293,6 +293,13 @@ If you want to customize the documentation of an object's property, you can use 
          * @OA\Property(ref=@Model(type=User::class))
          */
         public $friend;
+
+        /**
+         * @OA\Property(description="This is my coworker!")
+         */
+        public setCoworker(User $coworker) {
+            // ...
+        }
     }
 
 See the `OpenAPI 3.0 specification`__ to see all the available fields of ``@OA\Property``.
