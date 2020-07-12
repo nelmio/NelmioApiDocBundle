@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Describer\ExternalDocDescriber;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
+use Nelmio\ApiDocBundle\ModelDescriber\FallbackObjectModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -163,6 +164,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference('annotation_reader'),
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
+
+            $container->register('nelmio_api_doc.model_describers.object_fallback', FallbackObjectModelDescriber::class)
+                ->setPublic(false)
+                ->addTag('nelmio_api_doc.model_describer', ['priority' => -1000]);
 
             // Bazinga Hateoas metadata support
             if (isset($bundles['BazingaHateoasBundle'])) {

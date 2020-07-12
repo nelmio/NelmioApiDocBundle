@@ -47,10 +47,6 @@
             <tag name="nelmio_api_doc.model_describer" />
         </service>
 
-        <service id="nelmio_api_doc.model_describers.object_fallback" class="Nelmio\ApiDocBundle\ModelDescriber\FallbackObjectModelDescriber" public="false">
-            <tag name="nelmio_api_doc.model_describer" priority="-1000" />
-        </service>
-
         <!-- Property Describers -->
         <service id="nelmio_api_doc.object_model.property_describers.array" class="Nelmio\ApiDocBundle\PropertyDescriber\ArrayPropertyDescriber" public="false">
             <argument type="tagged" tag="nelmio_api_doc.object_model.property_describer" />
