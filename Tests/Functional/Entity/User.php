@@ -21,7 +21,7 @@ class User
     /**
      * @var int
      *
-     * @SWG\Property(description = "User id", readOnly = true, title = "userid", example=1, default = null)
+     * @SWG\Property(description = "User id", readOnly = true, title = "userid", default = null)
      */
     private $id;
 
@@ -93,6 +93,7 @@ class User
 
     /**
      * @param int $id
+     * @SWG\Property(example=1)
      */
     public function setId(int $id)
     {
