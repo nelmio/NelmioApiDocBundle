@@ -46,7 +46,6 @@ class SymfonyConstraintAnnotationReader
             $annotations = $this->annotationsReader->getMethodAnnotations($reflection);
         }
 
-
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
                 // The field is required

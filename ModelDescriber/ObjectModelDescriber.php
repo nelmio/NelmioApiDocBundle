@@ -112,7 +112,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /**
      * @return \ReflectionProperty[]|\ReflectionMethod[]
      */
-    private function getReflections(\ReflectionClass $reflClass, string $propertyName) : array
+    private function getReflections(\ReflectionClass $reflClass, string $propertyName): array
     {
         $reflections = [];
         if ($reflClass->hasProperty($propertyName)) {
