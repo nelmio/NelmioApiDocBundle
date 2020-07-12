@@ -52,27 +52,35 @@ class SwgAnnotationsReader
         $schema->merge(json_decode(json_encode($swgDefinition)));
     }
 
-    public function getPropertyName(\ReflectionProperty $reflectionProperty, string $default): string
+    public function getPropertyName($reflection, string $default): string
     {
         /** @var SwgProperty $swgProperty */
-        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class)) {
+        if ($reflection instanceof \ReflectionProperty && !$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflection, SwgProperty::class)) {
+            return $default;
+        } elseif ($reflection instanceof \ReflectionMethod && !$swgProperty = $this->annotationsReader->getMethodAnnotation($reflection, SwgProperty::class)) {
             return $default;
         }
 
         return $swgProperty->property ?? $default;
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property, array $serializationGroups = null)
+    public function updateProperty($reflection, Schema $property, array $serializationGroups = null)
     {
-        if (!$swgProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, SwgProperty::class)) {
+        if ($reflection instanceof \ReflectionProperty) {
+            $swgProperty = $this->annotationsReader->getPropertyAnnotation($reflection, SwgProperty::class);
+        } else {
+            $swgProperty = $this->annotationsReader->getMethodAnnotation($reflection, SwgProperty::class);
+        }
+
+        if (!$swgProperty) {
             return;
         }
 
-        $declaringClass = $reflectionProperty->getDeclaringClass();
+        $declaringClass = $reflection->getDeclaringClass();
         $context = new Context([
             'namespace' => $declaringClass->getNamespaceName(),
             'class' => $declaringClass->getShortName(),
-            'property' => $reflectionProperty->name,
+            'property' => $reflection->name,
             'filename' => $declaringClass->getFileName(),
         ]);
         $swgProperty->_context = $context;

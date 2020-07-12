@@ -43,15 +43,15 @@ class AnnotationsReader
         $this->symfonyConstraintAnnotationReader->setSchema($schema);
     }
 
-    public function getPropertyName(\ReflectionProperty $reflectionProperty, string $default): string
+    public function getPropertyName($reflection, string $default): string
     {
-        return $this->swgAnnotationsReader->getPropertyName($reflectionProperty, $default);
+        return $this->swgAnnotationsReader->getPropertyName($reflection, $default);
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property, array $serializationGroups = null)
+    public function updateProperty($reflection, Schema $property, array $serializationGroups = null)
     {
-        $this->phpDocReader->updateProperty($reflectionProperty, $property);
-        $this->swgAnnotationsReader->updateProperty($reflectionProperty, $property, $serializationGroups);
-        $this->symfonyConstraintAnnotationReader->updateProperty($reflectionProperty, $property);
+        $this->phpDocReader->updateProperty($reflection, $property);
+        $this->swgAnnotationsReader->updateProperty($reflection, $property, $serializationGroups);
+        $this->symfonyConstraintAnnotationReader->updateProperty($reflection, $property);
     }
 }

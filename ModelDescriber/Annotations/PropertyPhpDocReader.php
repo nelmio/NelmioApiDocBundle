@@ -33,10 +33,10 @@ class PropertyPhpDocReader
     /**
      * Update the Swagger information with information from the DocBlock comment.
      */
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
+    public function updateProperty($reflection, Schema $property)
     {
         try {
-            $docBlock = $this->docBlockFactory->create($reflectionProperty);
+            $docBlock = $this->docBlockFactory->create($reflection);
         } catch (\Exception $e) {
             // ignore
             return;
