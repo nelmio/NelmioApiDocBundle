@@ -21,7 +21,7 @@ class User
     /**
      * @var int
      *
-     * @OA\Property(description = "User id", readOnly = true, title = "userid", example=1, default = null)
+     * @OA\Property(description = "User id", readOnly = true, title = "userid", default = null)
      */
     private $id;
 
@@ -102,6 +102,7 @@ class User
 
     /**
      * @param int $id
+     * @OA\Property(example=1)
      */
     public function setId(int $id)
     {

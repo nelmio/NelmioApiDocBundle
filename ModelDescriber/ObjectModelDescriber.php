@@ -66,8 +66,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             $context['serializer_groups'] = array_filter($model->getGroups(), 'is_string');
         }
 
+        $reflClass = new \ReflectionClass($class);
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
-        $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
+        $annotationsReader->updateDefinition($reflClass, $schema);
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);
         if (null === $propertyInfoProperties) {
@@ -77,19 +78,22 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         foreach ($propertyInfoProperties as $propertyName) {
             $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, null !== $model->getGroups() ? ['groups' => $model->getGroups()] : []) : $propertyName;
 
-            // read property options from OpenApi Property annotation if it exists
-            if (property_exists($class, $propertyName)) {
-                $reflectionProperty = new \ReflectionProperty($class, $propertyName);
-                $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflectionProperty, $serializedName));
+            $reflections = $this->getReflections($reflClass, $propertyName);
 
-                $groups = $model->getGroups();
-                if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
-                    $groups = $model->getGroups()[$propertyName];
-                }
+            // Check if a custom name is set
+            foreach ($reflections as $reflection) {
+                $serializedName = $annotationsReader->getPropertyName($reflection, $serializedName);
+            }
 
-                $annotationsReader->updateProperty($reflectionProperty, $property, $groups);
-            } else {
-                $property = Util::getProperty($schema, $serializedName);
+          $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflection, $serializedName));
+
+            // Interpret additional options
+            $groups = $model->getGroups();
+            if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
+                $groups = $model->getGroups()[$propertyName];
+            }
+            foreach ($reflections as $reflection) {
+                $annotationsReader->updateProperty($reflection, $property, $groups);
             }
 
             // If type manually defined
@@ -104,6 +108,34 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
             $this->describeProperty($types, $model, $property, $propertyName);
         }
+    }
+
+    /**
+     * @return \ReflectionProperty[]|\ReflectionMethod[]
+     */
+    private function getReflections(\ReflectionClass $reflClass, string $propertyName): array
+    {
+        $reflections = [];
+        if ($reflClass->hasProperty($propertyName)) {
+            $reflections[] = $reflClass->getProperty($propertyName);
+        }
+
+        $camelProp = $this->camelize($propertyName);
+        foreach (['', 'get', 'is', 'has', 'can', 'add', 'remove', 'set'] as $prefix) {
+            if ($reflClass->hasMethod($prefix.$camelProp)) {
+                $reflections[] = $reflClass->getMethod($prefix.$camelProp);
+            }
+        }
+
+        return $reflections;
+    }
+
+    /**
+     * Camelizes a given string.
+     */
+    private function camelize(string $string): string
+    {
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
     }
 
     /**

@@ -50,29 +50,33 @@ class OpenApiAnnotationsReader
         $schema->mergeProperties($oaSchema);
     }
 
-    public function getPropertyName(\ReflectionProperty $reflectionProperty, string $default): string
+    public function getPropertyName($reflection, string $default): string
     {
         /** @var OA\Property $oaProperty */
-        if (!$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, OA\Property::class)) {
+        if ($reflection instanceof \ReflectionProperty && !$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflection, OA\Property::class)) {
+            return $default;
+        } elseif ($reflection instanceof \ReflectionMethod && !$oaProperty = $this->annotationsReader->getMethodAnnotation($reflection, OA\Property::class)) {
             return $default;
         }
 
         return OA\UNDEFINED !== $oaProperty->property ? $oaProperty->property : $default;
     }
 
-    public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property, array $serializationGroups = null): void
+    public function updateProperty($reflection, OA\Property $property, array $serializationGroups = null): void
     {
         // In order to have nicer errors
-        $declaringClass = $reflectionProperty->getDeclaringClass();
+        $declaringClass = $reflection->getDeclaringClass();
         Analyser::$context = new Context([
             'namespace' => $declaringClass->getNamespaceName(),
             'class' => $declaringClass->getShortName(),
-            'property' => $reflectionProperty->name,
+            'property' => $reflection->name,
             'filename' => $declaringClass->getFileName(),
         ]);
 
         /** @var OA\Property $oaProperty */
-        if (!$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflectionProperty, OA\Property::class)) {
+        if ($reflection instanceof \ReflectionProperty && !$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflection, OA\Property::class)) {
+            return;
+        } elseif ($reflection instanceof \ReflectionMethod && !$oaProperty = $this->annotationsReader->getMethodAnnotation($reflection, OA\Property::class)) {
             return;
         }
         Analyser::$context = null;

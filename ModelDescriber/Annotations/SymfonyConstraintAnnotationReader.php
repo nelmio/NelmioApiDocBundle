@@ -38,9 +38,13 @@ class SymfonyConstraintAnnotationReader
     /**
      * Update the given property and schema with defined Symfony constraints.
      */
-    public function updateProperty(\ReflectionProperty $reflectionProperty, OA\Property $property): void
+    public function updateProperty($reflection, OA\Property $property): void
     {
-        $annotations = $this->annotationsReader->getPropertyAnnotations($reflectionProperty);
+        if ($reflection instanceof \ReflectionProperty) {
+            $annotations = $this->annotationsReader->getPropertyAnnotations($reflection);
+        } else {
+            $annotations = $this->annotationsReader->getMethodAnnotations($reflection);
+        }
 
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
@@ -67,7 +71,7 @@ class SymfonyConstraintAnnotationReader
                 $property->minItems = (int) $annotation->min;
                 $property->maxItems = (int) $annotation->max;
             } elseif ($annotation instanceof Assert\Choice) {
-                $values = $annotation->callback ? call_user_func(is_array($annotation->callback) ? $annotation->callback : [$reflectionProperty->class, $annotation->callback]) : $annotation->choices;
+                $values = $annotation->callback ? call_user_func(is_array($annotation->callback) ? $annotation->callback : [$reflection->class, $annotation->callback]) : $annotation->choices;
                 $property->enum = array_values($values);
             } elseif ($annotation instanceof Assert\Range) {
                 $property->minimum = (int) $annotation->min;
