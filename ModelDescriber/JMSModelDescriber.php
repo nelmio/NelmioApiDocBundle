@@ -90,30 +90,42 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             $name = true === $isJmsV1 ? $this->namingStrategy->translateName($item) : $item->serializedName;
             // read property options from Swagger Property annotation if it exists
-            try {
-                if (true === $isJmsV1 && property_exists($item, 'reflection') && null !== $item->reflection) {
-                    $reflection = $item->reflection;
-                } else {
-                    $reflection = new \ReflectionProperty($item->class, $item->name);
+
+            $reflections = [];
+            if (true === $isJmsV1 && property_exists($item, 'reflection') && null !== $item->reflection) {
+                $reflections[] = $item->reflection;
+            } elseif (\property_exists($item->class, $item->name)) {
+                $reflections[] = new \ReflectionProperty($item->class, $item->name);
+            }
+
+            if (null !== $item->getter) {
+                $reflections[] = new \ReflectionMethod($item->class, $item->getter);
+            }
+            if (null !== $item->setter) {
+                $reflections[] = new \ReflectionMethod($item->class, $item->setter);
+            }
+
+            $groups = $this->computeGroups($context, $item->type);
+
+            if (true === $item->inline && isset($item->type['name'])) {
+                // currently array types can not be documented :-/
+                if (!in_array($item->type['name'], ['array', 'ArrayCollection'], true)) {
+                    $inlineModel = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $item->type['name']), $groups);
+                    $this->describe($inlineModel, $schema);
                 }
+                $context->popPropertyMetadata();
 
-                $groups = $this->computeGroups($context, $item->type);
+                continue;
+            }
 
-                if (true === $item->inline && isset($item->type['name'])) {
-                    // currently array types can not be documented :-/
-                    if (!in_array($item->type['name'], ['array', 'ArrayCollection'], true)) {
-                        $inlineModel = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $item->type['name']), $groups);
-                        $this->describe($inlineModel, $schema);
-                    }
-                    $context->popPropertyMetadata();
+            foreach ($reflections as $reflection) {
+                $name = $annotationsReader->getPropertyName($reflection, $name);
+            }
 
-                    continue;
-                }
+            $property = Util::getProperty($schema, $name);
 
-                $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflection, $name));
+            foreach ($reflections as $reflection) {
                 $annotationsReader->updateProperty($reflection, $property, $groups);
-            } catch (\ReflectionException $e) {
-                $property = Util::getProperty($schema, $name);
             }
 
             if (OA\UNDEFINED !== $property->type || OA\UNDEFINED !== $property->ref) {
