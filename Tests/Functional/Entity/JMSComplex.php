@@ -45,4 +45,14 @@ class JMSComplex
      * @Serializer\Groups({"list"})
      */
     private $name;
+
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\Expose
+     * @Serializer\Groups({"list"})
+     * @SWG\Property(ref=@Model(type=JMSUser::class))
+     */
+    public function getVirtualFriend()
+    {
+    }
 }

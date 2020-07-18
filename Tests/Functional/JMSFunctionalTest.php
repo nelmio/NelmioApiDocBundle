@@ -260,6 +260,7 @@ class JMSFunctionalTest extends WebTestCase
                 'user' => ['$ref' => '#/definitions/JMSUser'],
                 'name' => ['type' => 'string'],
                 'virtual' => ['$ref' => '#/definitions/JMSUser'],
+                'virtual_friend' => ['$ref' => '#/definitions/JMSUser'],
             ],
             'required' => [
                 'id',
