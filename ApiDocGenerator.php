@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use Nelmio\ApiDocBundle\OpenApiPhp\DefaultOperationId;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use OpenApi\Analysis;
 use OpenApi\Annotations\OpenApi;
@@ -97,6 +98,9 @@ final class ApiDocGenerator
 
         // Calculate the associated schemas
         $modelRegistry->registerSchemas();
+
+        $defaultOperationIdProcessor = new DefaultOperationId();
+        $defaultOperationIdProcessor($analysis);
 
         $analysis->process();
         $analysis->validate();

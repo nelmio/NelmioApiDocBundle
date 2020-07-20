@@ -456,4 +456,11 @@ class FunctionalTest extends WebTestCase
         $operation = $this->getOperation('/api/invoke', 'get');
         $this->assertSame('Invokable!', $this->getOperationResponse($operation, 200)->description);
     }
+
+    public function testDefaultOperationId()
+    {
+        $operation = $this->getOperation('/api/article/{id}', 'get');
+        var_dump($operation->operationId);
+        $this->assertNull($operation->operationId);
+    }
 }
