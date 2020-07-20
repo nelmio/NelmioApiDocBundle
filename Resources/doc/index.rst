@@ -153,10 +153,8 @@ To document your routes, you can use the SwaggerPHP annotations and the
          *     response=200,
          *     description="Returns the rewards of an user",
          *     @OA\JsonContent(
-         *        @OA\Schema(
-         *             type="array",
-         *             @OA\Items(ref=@Model(type=Reward::class, groups={"full"}))
-         *        )
+         *        type="array",
+         *        @OA\Items(ref=@Model(type=Reward::class, groups={"full"}))
          *     )
          * )
          * @OA\Parameter(
