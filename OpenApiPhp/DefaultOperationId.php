@@ -27,7 +27,7 @@ final class DefaultOperationId
         $allOperations = $analysis->getAnnotationsOfType(OA\Operation::class);
 
         foreach ($allOperations as $operation) {
-            if ($operation->operationId === OA\UNDEFINED) {
+            if (OA\UNDEFINED === $operation->operationId) {
                 $operation->operationId = null;
             }
         }
