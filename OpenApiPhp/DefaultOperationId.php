@@ -11,12 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\OpenApiPhp;
 
-use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
-use Nelmio\ApiDocBundle\Model\Model;
-use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use Symfony\Component\PropertyInfo\Type;
 
 /**
  * Disable the OperationId processor from zircote/swagger-php as it breaks our documentation by setting non-unique operation ids.
