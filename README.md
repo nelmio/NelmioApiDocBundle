@@ -13,14 +13,14 @@ for your APIs.
 Documentation
 -------------
 
-[Read the documentation on symfony.com](https://symfony.com/doc/current/bundles/NelmioApiDocBundle/index.html)
+[Read the documentation on symfony.com](https://symfony.com/doc/2.x/bundles/NelmioApiDocBundle/index.html)
 
 
 Contributing
 ------------
 
 See
-[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/2.x/CONTRIBUTING.md)
 file.
 
 
