@@ -12,7 +12,7 @@ for your APIs.
 
 ## Migrate from 2.x to 3.0
 
-[To migrate from 2.x to 3.0, follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-3.0.md)
+[To migrate from 2.x to 3.0, follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/3.x/UPGRADE-3.0.md)
 
 ## Installation
 
@@ -24,12 +24,12 @@ composer require nelmio/api-doc-bundle
 
 ## Documentation
 
-[Read the documentation on symfony.com](https://symfony.com/doc/current/bundles/NelmioApiDocBundle/index.html)
+[Read the documentation on symfony.com](https://symfony.com/doc/3.x/bundles/NelmioApiDocBundle/index.html)
 
 ## Contributing
 
 See
-[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/3.x/CONTRIBUTING.md)
 file.
 
 ## Running the Tests
@@ -38,6 +38,7 @@ Install the [Composer](http://getcomposer.org/) dependencies:
 
     git clone https://github.com/nelmio/NelmioApiDocBundle.git
     cd NelmioApiDocBundle
+    git checkout 3.x
     composer update
 
 Then run the test suite:
