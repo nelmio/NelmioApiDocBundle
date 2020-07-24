@@ -2,7 +2,7 @@ NelmioApiDocBundle
 ==================
 
 The **NelmioApiDocBundle** bundle allows you to generate documentation in the
-OpenAPI (Swagger) format and provides a sandbox to interactively experiment with the API.
+OpenAPI version 2 (Swagger) format and provides a sandbox to interactively experiment with the API.
 
 What's supported?
 -----------------
@@ -20,7 +20,7 @@ It does also support `Symfony form`_ types.
 Migrate from 2.x to 3.0
 -----------------------
 
-`To migrate from 2.x to 3.0, just follow our guide.`__
+`To migrate from 2.x to 3.0, follow our guide.`__
 
 __ https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-3.0.md
 
@@ -31,7 +31,7 @@ Open a command console, enter your project directory and execute the following c
 
 .. code-block:: bash
 
-    $ composer require nelmio/api-doc-bundle
+    $ composer require nelmio/api-doc-bundle:^3.0
 
 .. note::
 
