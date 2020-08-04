@@ -169,6 +169,12 @@ class TestKernel extends Kernel
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
             'documentation' => [
+                'servers' => [ // from https://github.com/nelmio/NelmioApiDocBundle/issues/1691
+                    [
+                        'url' => 'https://api.example.com/secured/{version}',
+                        'variables' => ['version' => ['default' => 'v1']]
+                    ],
+                ],
                 'info' => [
                     'title' => 'My Default App',
                 ],

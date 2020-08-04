@@ -496,42 +496,7 @@ final class Util
             function ($value) {
                 return \is_array($value) ? $value[0] : $value;
             },
-            self::getNesting($class) ?? []
+            $class::$_nested
         ));
-    }
-
-    private static function getNesting($class)
-    {
-        switch ($class) {
-            case OA\OpenApi::class:
-                return OA\OpenApi::$_nested;
-            case OA\Info::class:
-                return OA\Info::$_nested;
-            case OA\PathItem::class:
-                return OA\PathItem::$_nested;
-            case OA\Get::class:
-            case OA\Post::class:
-            case OA\Put::class:
-            case OA\Delete::class:
-            case OA\Patch::class:
-            case OA\Head::class:
-            case OA\Options::class:
-                return OA\Operation::$_nested;
-            case OA\Parameter::class:
-                return OA\Parameter::$_nested;
-            case OA\Items::class:
-                return OA\Items::$_nested;
-            case OA\Property::class:
-            case OA\Schema::class:
-                return OA\Schema::$_nested;
-            case OA\Tag::class:
-                return OA\Tag::$_nested;
-            case OA\Response::class:
-                return OA\Response::$_nested;
-            case OA\Header::class:
-                return OA\Header::$_nested;
-            default:
-                return null;
-        }
     }
 }
