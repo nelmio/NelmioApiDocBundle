@@ -65,10 +65,7 @@ final class Util
      * @see OA\OpenApi::$paths
      * @see OA\PathItem::path
      *
-     * @param OA\OpenApi $api
-     * @param string     $path
-     *
-     * @return OA\PathItem
+     * @param string $path
      */
     public static function getPath(OA\OpenApi $api, $path): OA\PathItem
     {
@@ -79,10 +76,7 @@ final class Util
      * Return an existing Schema object from $api->components->schemas[] having its member schema set to $schema.
      * Create, add to $api->components->schemas[] and return this new Schema object and set the property if none found.
      *
-     * @param OA\OpenApi $api
-     * @param string     $schema
-     *
-     * @return OA\Schema
+     * @param string $schema
      *
      * @see OA\Schema::$schema
      * @see OA\Components::$schemas
@@ -106,10 +100,7 @@ final class Util
      * @see OA\Schema::$properties
      * @see OA\Property::$property
      *
-     * @param OA\Schema $schema
-     * @param string    $property
-     *
-     * @return OA\Property
+     * @param string $property
      */
     public static function getProperty(OA\Schema $schema, $property): OA\Property
     {
@@ -128,10 +119,7 @@ final class Util
      * @see OA\PathItem::$options
      * @see OA\PathItem::$head
      *
-     * @param OA\PathItem $path
-     * @param string      $method
-     *
-     * @return OA\Operation
+     * @param string $method
      */
     public static function getOperation(OA\PathItem $path, $method): OA\Operation
     {
@@ -151,11 +139,8 @@ final class Util
      * @see OA\Parameter::$name
      * @see OA\Parameter::$in
      *
-     * @param OA\Operation $operation
-     * @param string       $name
-     * @param string       $in
-     *
-     * @return OA\Parameter
+     * @param string $name
+     * @param string $in
      */
     public static function getOperationParameter(OA\Operation $operation, $name, $in): OA\Parameter
     {
@@ -171,11 +156,7 @@ final class Util
      *
      * @see OA\AbstractAnnotation::$_nested
      *
-     * @param OA\AbstractAnnotation $parent
      * @param $class
-     * @param array $properties
-     *
-     * @return OA\AbstractAnnotation
      */
     public static function getChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
     {
@@ -201,11 +182,7 @@ final class Util
      *
      * @see OA\AbstractAnnotation::$_nested
      *
-     * @param OA\AbstractAnnotation $parent
-     * @param string                $class
-     * @param array                 $properties
-     *
-     * @return OA\AbstractAnnotation
+     * @param string $class
      */
     public static function getCollectionItem(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
     {
@@ -238,11 +215,8 @@ final class Util
      *
      * @see OA\AbstractAnnotation::$_nested
      *
-     * @param OA\AbstractAnnotation $parent
-     * @param string                $class
-     * @param mixed                 $value
-     *
-     * @return OA\AbstractAnnotation
+     * @param string $class
+     * @param mixed  $value
      */
     public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, $class, $value): OA\AbstractAnnotation
     {
@@ -266,9 +240,6 @@ final class Util
      * Search for an Annotation within $collection that has all members set
      * to the respective values in the associative array $properties.
      *
-     * @param array $collection
-     * @param array $properties
-     *
      * @return int|string|null
      */
     public static function searchCollectionItem(array $collection, array $properties)
@@ -289,7 +260,6 @@ final class Util
     /**
      * Search for an Annotation within the $collection that has its member $index set to $value.
      *
-     * @param array  $collection
      * @param string $member
      * @param mixed  $value
      *
@@ -304,12 +274,8 @@ final class Util
      * Create a new Object of $class with members $properties within $parent->{$collection}[]
      * and return the created index.
      *
-     * @param OA\AbstractAnnotation $parent
-     * @param string                $collection
-     * @param string                $class
-     * @param array                 $properties
-     *
-     * @return int
+     * @param string $collection
+     * @param string $class
      */
     public static function createCollectionItem(OA\AbstractAnnotation $parent, $collection, $class, array $properties = []): int
     {
@@ -326,14 +292,9 @@ final class Util
     /**
      * Create a new Object of $class with members $properties and set the context parent to be $parent.
      *
-     *
-     * @param OA\AbstractAnnotation $parent
-     * @param string                $class
-     * @param array                 $properties
+     * @param string $class
      *
      * @throws \InvalidArgumentException at an attempt to pass in properties that are found in $parent::$_nested
-     *
-     * @return OA\AbstractAnnotation
      */
     public static function createChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
     {
@@ -352,11 +313,6 @@ final class Util
      * Create a new Context with members $properties and parent context $parent.
      *
      * @see Context
-     *
-     * @param array        $properties
-     * @param Context|null $parent
-     *
-     * @return Context
      */
     public static function createContext(array $properties = [], Context $parent = null): Context
     {
@@ -371,9 +327,7 @@ final class Util
      * The main purpose is to create a Swagger Object from array config values
      * in the structure of a json serialized Swagger object.
      *
-     * @param OA\AbstractAnnotation                    $annotation
      * @param array|\ArrayObject|OA\AbstractAnnotation $from
-     * @param bool                                     $overwrite
      */
     public static function merge(OA\AbstractAnnotation $annotation, $from, bool $overwrite = false)
     {

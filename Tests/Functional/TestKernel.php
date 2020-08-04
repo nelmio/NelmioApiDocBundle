@@ -172,7 +172,7 @@ class TestKernel extends Kernel
                 'servers' => [ // from https://github.com/nelmio/NelmioApiDocBundle/issues/1691
                     [
                         'url' => 'https://api.example.com/secured/{version}',
-                        'variables' => ['version' => ['default' => 'v1']]
+                        'variables' => ['version' => ['default' => 'v1']],
                     ],
                 ],
                 'info' => [
