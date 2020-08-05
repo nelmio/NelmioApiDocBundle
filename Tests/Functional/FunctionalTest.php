@@ -195,6 +195,13 @@ class FunctionalTest extends WebTestCase
                             ['$ref' => '#/components/schemas/User'],
                         ],
                     ],
+                    'friends' => [
+                        'nullable' => true,
+                        'items' => [
+                            '$ref' => '#/components/schemas/User',
+                        ],
+                        'type' => 'array',
+                    ],
                     'dummy' => [
                         '$ref' => '#/components/schemas/Dummy2',
                     ],

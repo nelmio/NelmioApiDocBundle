@@ -81,6 +81,11 @@ class User
     private $friend;
 
     /**
+     * @var User[]|null
+     */
+    private $friends;
+
+    /**
      * @var string
      *
      * @OA\Property(enum = {"disabled", "enabled"})

@@ -19,6 +19,7 @@ use OpenApi\Annotations as OA;
 class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
+    use NullablePropertyTrait;
 
     /** @var PropertyDescriberInterface[] */
     private $propertyDescribers;
@@ -37,6 +38,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
 
         $property->type = 'array';
         $property = Util::getChild($property, OA\Items::class);
+        $this->setNullableProperty($types[0], $property);
 
         foreach ($this->propertyDescribers as $propertyDescriber) {
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
