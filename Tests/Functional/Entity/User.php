@@ -151,6 +151,10 @@ class User
     {
     }
 
+    public function setFriends(array $friends = [])
+    {
+    }
+
     public function setDummy(Dummy $dummy)
     {
     }
