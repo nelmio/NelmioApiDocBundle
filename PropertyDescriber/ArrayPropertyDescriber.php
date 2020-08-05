@@ -37,8 +37,8 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         }
 
         $property->type = 'array';
-        $property = Util::getChild($property, OA\Items::class);
         $this->setNullableProperty($types[0], $property);
+        $property = Util::getChild($property, OA\Items::class);
 
         foreach ($this->propertyDescribers as $propertyDescriber) {
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
