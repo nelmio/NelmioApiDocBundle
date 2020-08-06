@@ -54,7 +54,7 @@ final class ModelRegister
 
             // Misusage of ::$ref
             if (($annotation instanceof OA\Response || $annotation instanceof OA\RequestBody) && $annotation->ref instanceof ModelAnnotation) {
-              throw new \InvalidArgumentException(sprintf('Using @Model inside @%s::$ref is not allowed. You should use ::$ref with @Property, @Parameter, @Schema, @Items but within @Response or @RequestBody you should put @Model directly at the root of the annotation : `@Response(..., @Model(...))`.', get_class($annotation)));
+                throw new \InvalidArgumentException(sprintf('Using @Model inside @%s::$ref is not allowed. You should use ::$ref with @Property, @Parameter, @Schema, @Items but within @Response or @RequestBody you should put @Model directly at the root of the annotation : `@Response(..., @Model(...))`.', get_class($annotation)));
             }
 
             // Implicit usages

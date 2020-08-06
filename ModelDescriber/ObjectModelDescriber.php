@@ -85,7 +85,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 $serializedName = $annotationsReader->getPropertyName($reflection, $serializedName);
             }
 
-          $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflection, $serializedName));
+            $property = Util::getProperty($schema, $annotationsReader->getPropertyName($reflection, $serializedName));
 
             // Interpret additional options
             $groups = $model->getGroups();
