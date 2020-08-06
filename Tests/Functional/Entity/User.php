@@ -83,16 +83,12 @@ class User
      */
     private $dateAsInterface;
 
-    /**
-     * @param float $money
-     */
     public function setMoney(float $money)
     {
         $this->money = $money;
     }
 
     /**
-     * @param int $id
      * @SWG\Property(example=1)
      */
     public function setId(int $id)
@@ -113,9 +109,6 @@ class User
         $this->roles = $roles;
     }
 
-    /**
-     * @param int $friendsNumber
-     */
     public function setFriendsNumber(int $friendsNumber)
     {
         $this->friendsNumber = $friendsNumber;
@@ -141,17 +134,11 @@ class User
     {
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
     public function getDateAsInterface(): \DateTimeInterface
     {
         return $this->dateAsInterface;
     }
 
-    /**
-     * @param \DateTimeInterface $dateAsInterface
-     */
     public function setDateAsInterface(\DateTimeInterface $dateAsInterface)
     {
         $this->dateAsInterface = $dateAsInterface;

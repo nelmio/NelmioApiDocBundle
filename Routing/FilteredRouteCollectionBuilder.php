@@ -127,7 +127,7 @@ final class FilteredRouteCollectionBuilder
             return false;
         }
 
-        /** @var null|Areas $areas */
+        /** @var Areas|null $areas */
         $areas = $this->annotationReader->getMethodAnnotation(
             $method,
             Areas::class

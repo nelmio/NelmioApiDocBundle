@@ -92,8 +92,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
      *
      * Returns true if a native Swagger type was found, false otherwise
      *
-     * @param FormConfigBuilderInterface $config
-     * @param                            $property
+     * @param $property
      */
     private function findFormType(FormConfigBuilderInterface $config, $property)
     {
@@ -232,8 +231,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     }
 
     /**
-     * @param array $array
-     *
      * @return bool true if $array contains only numbers, false otherwise
      */
     private function isNumbersArray(array $array): bool
@@ -248,8 +245,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     }
 
     /**
-     * @param array $array
-     *
      * @return bool true if $array contains only booleans, false otherwise
      */
     private function isBooleansArray(array $array): bool
@@ -264,8 +259,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     }
 
     /**
-     * @param ResolvedFormTypeInterface $type
-     *
      * @return ResolvedFormTypeInterface|null
      */
     private function getBuiltinFormType(ResolvedFormTypeInterface $type)
