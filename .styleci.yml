@@ -1,11 +1,7 @@
 preset: symfony
 
 enabled:
-  - newline_after_open_tag
   - ordered_use
-  - short_array_syntax
 
 disabled:
   - unalign_equals
-  - braces
-  - property_separation

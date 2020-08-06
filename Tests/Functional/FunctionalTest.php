@@ -429,7 +429,7 @@ class FunctionalTest extends WebTestCase
 
     public function testSerializedNameAction()
     {
-      if (!class_exists(SerializedName::class)) {
+        if (!class_exists(SerializedName::class)) {
             $this->markTestSkipped('Annotation @SerializedName doesn\'t exist.');
         }
 

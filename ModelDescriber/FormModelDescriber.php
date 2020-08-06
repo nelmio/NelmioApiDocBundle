@@ -229,8 +229,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     }
 
     /**
-     * @param array $array
-     *
      * @return bool true if $array contains only numbers, false otherwise
      */
     private function isNumbersArray(array $array): bool
@@ -245,8 +243,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     }
 
     /**
-     * @param array $array
-     *
      * @return bool true if $array contains only booleans, false otherwise
      */
     private function isBooleansArray(array $array): bool
@@ -261,8 +257,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     }
 
     /**
-     * @param ResolvedFormTypeInterface $type
-     *
      * @return ResolvedFormTypeInterface|null
      */
     private function getBuiltinFormType(ResolvedFormTypeInterface $type)

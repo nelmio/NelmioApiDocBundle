@@ -38,8 +38,6 @@ class ControllerReflector
     /**
      * Returns the ReflectionMethod for the given controller string.
      *
-     * @param string $controller
-     *
      * @return \ReflectionMethod|null
      */
     public function getReflectionMethod(string $controller)

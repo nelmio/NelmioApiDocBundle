@@ -282,8 +282,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     }
 
     /**
-     * @param array $type
-     *
      * @return bool|null
      */
     private function propertyTypeUsesGroups(array $type)
