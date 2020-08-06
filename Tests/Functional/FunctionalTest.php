@@ -195,6 +195,13 @@ class FunctionalTest extends WebTestCase
                             ['$ref' => '#/components/schemas/User'],
                         ],
                     ],
+                    'friends' => [
+                        'nullable' => true,
+                        'items' => [
+                            '$ref' => '#/components/schemas/User',
+                        ],
+                        'type' => 'array',
+                    ],
                     'dummy' => [
                         '$ref' => '#/components/schemas/Dummy2',
                     ],
@@ -460,7 +467,6 @@ class FunctionalTest extends WebTestCase
     public function testDefaultOperationId()
     {
         $operation = $this->getOperation('/api/article/{id}', 'get');
-        var_dump($operation->operationId);
         $this->assertNull($operation->operationId);
     }
 }

@@ -81,6 +81,11 @@ class User
     private $friend;
 
     /**
+     * @var User[]|null
+     */
+    private $friends;
+
+    /**
      * @var string
      *
      * @OA\Property(enum = {"disabled", "enabled"})
@@ -143,6 +148,10 @@ class User
     }
 
     public function setFriend(self $friend = null)
+    {
+    }
+
+    public function setFriends(array $friends = [])
     {
     }
 
