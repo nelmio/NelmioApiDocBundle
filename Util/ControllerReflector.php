@@ -40,21 +40,31 @@ class ControllerReflector
      *
      * @return \ReflectionMethod|null
      */
-    public function getReflectionMethod(string $controller)
+    public function getReflectionMethod($controller)
     {
-        $callable = $this->getClassAndMethod($controller);
-        if (null === $callable) {
-            return;
+        if (is_string($controller)) {
+            $controller = $this->getClassAndMethod($controller);
+            if (null === $controller) {
+                return null;
+            }
         }
 
-        list($class, $method) = $callable;
+        return $this->geReflectionMethodByClassNameAndMethodName(...$controller);
+    }
 
+    /**
+     * @return \ReflectionMethod|null
+     */
+    public function geReflectionMethodByClassNameAndMethodName(string $class, string $method)
+    {
         try {
             return new \ReflectionMethod($class, $method);
         } catch (\ReflectionException $e) {
             // In case we can't reflect the controller, we just
             // ignore the route
         }
+
+        return null;
     }
 
     private function getClassAndMethod(string $controller)
