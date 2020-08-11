@@ -27,8 +27,6 @@ class DumpCommand extends Command
 
     /**
      * DumpCommand constructor.
-     *
-     * @param ContainerInterface $generatorLocator
      */
     public function __construct(ContainerInterface $generatorLocator)
     {
@@ -50,9 +48,6 @@ class DumpCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
      * @throws InvalidArgumentException If the area to dump is not valid
      *
      * @return int|void
