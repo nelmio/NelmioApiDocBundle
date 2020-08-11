@@ -26,8 +26,6 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         foreach ($this->getOperations($api, $route) as $operation) {
-            Util::merge($operation, ['security' => $route->getSchemes()]);
-
             $requirements = $route->getRequirements();
             $compiledRoute = $route->compile();
             $existingParams = $this->getRefParams($api, $operation);

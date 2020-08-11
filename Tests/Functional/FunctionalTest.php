@@ -110,7 +110,7 @@ class FunctionalTest extends WebTestCase
     {
         $operation = $this->getOperation('/api/test/{user}', 'get');
 
-        $this->assertEquals(['https'], $operation->security);
+        $this->assertEquals(OA\UNDEFINED, $operation->security);
         $this->assertEquals(OA\UNDEFINED, $operation->summary);
         $this->assertEquals(OA\UNDEFINED, $operation->description);
         $this->assertEquals(OA\UNDEFINED, $operation->deprecated);
