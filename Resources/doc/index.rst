@@ -117,9 +117,9 @@ You can configure global information in the bundle configuration ``documentation
             components:
                 securitySchemes:
                     Bearer:
-                    type: http
-                    scheme: bearer
-                    bearerFormat: JWT
+                        type: http
+                        scheme: bearer
+                        bearerFormat: JWT
             security:
                 - Bearer: []
 
