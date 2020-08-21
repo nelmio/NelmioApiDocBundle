@@ -160,8 +160,8 @@ To document your routes, you can use the SwaggerPHP annotations and the
          * @OA\Parameter(
          *     name="order",
          *     in="query",
-         *     type="string",
-         *     description="The field used to order rewards"
+         *     description="The field used to order rewards",
+         *     @OA\Schema(type="string")
          * )
          * @OA\Tag(name="rewards")
          * @Security(name="Bearer")
