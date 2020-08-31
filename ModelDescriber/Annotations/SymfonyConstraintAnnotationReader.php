@@ -48,6 +48,11 @@ class SymfonyConstraintAnnotationReader
 
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
+                if ($annotation instanceof Assert\NotBlank && $annotation->allowNull) {
+                    // The field is optional
+                    continue;
+                }
+
                 // The field is required
                 if (null === $this->schema) {
                     continue;

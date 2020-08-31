@@ -47,6 +47,34 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertEquals($schema->required, ['property1', 'property2']);
     }
 
+    public function testOptionalProperty()
+    {
+        $entity = new class() {
+            /**
+             * @Assert\NotBlank(allowNull = true)
+             * @Assert\Length(min = 1)
+             */
+            private $property1;
+            /**
+             * @Assert\NotBlank()
+             */
+            private $property2;
+        };
+
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $schema->merge([new OA\Property(['property' => 'property2'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->properties[1]);
+
+        // expect required to be numeric array with sequential keys (not [0 => ..., 2 => ...])
+        $this->assertEquals($schema->required, ['property2']);
+    }
+
     public function testAssertChoiceResultsInNumericArray()
     {
         define('TEST_ASSERT_CHOICE_STATUSES', [
