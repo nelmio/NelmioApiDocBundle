@@ -113,11 +113,11 @@ final class FosRestDescriber implements RouteDescriberInterface
         $requestBody->content = OA\UNDEFINED !== $requestBody->content ? $requestBody->content : [];
         switch ($type) {
             case 'json':
-                $contentType = 'application\json';
+                $contentType = 'application/json';
 
                 break;
             case 'xml':
-                $contentType = 'application\xml';
+                $contentType = 'application/xml';
 
                 break;
             default:

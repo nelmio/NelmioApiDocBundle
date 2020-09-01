@@ -29,7 +29,7 @@ class FOSRestTest extends WebTestCase
         $this->assertHasParameter('foo', 'query', $operation);
         $this->assertInstanceOf(OA\RequestBody::class, $operation->requestBody);
 
-        $bodySchema = $operation->requestBody->content['application\json']->schema;
+        $bodySchema = $operation->requestBody->content['application/json']->schema;
 
         $this->assertHasProperty('bar', $bodySchema);
         $this->assertHasProperty('baz', $bodySchema);
