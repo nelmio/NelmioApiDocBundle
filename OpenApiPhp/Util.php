@@ -375,7 +375,7 @@ final class Util
             }
             if (!\in_array($propertyName, $done, true)) {
                 // Specification Extensions using custom tags (starting with `x-`)
-                if (substr($propertyName, 0, 2) === 'x_') {
+                if (2 < strlen($propertyName) && 'x_' === substr($propertyName, 0, 2)) {
                     $value = [substr($propertyName, 2) => $value];
                     $propertyName = 'x';
                 }
