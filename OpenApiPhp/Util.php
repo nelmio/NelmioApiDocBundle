@@ -374,6 +374,12 @@ final class Util
                 $propertyName = 'ref';
             }
             if (!\in_array($propertyName, $done, true)) {
+                // Specification Extensions using custom tags (starting with `x-`)
+                if (substr($propertyName, 0, 2) === 'x_') {
+                    $value = [substr($propertyName, 2) => $value];
+                    $propertyName = 'x';
+                }
+
                 self::mergeProperty($annotation, $propertyName, $value, $defaults[$propertyName], $overwrite);
             }
         }
