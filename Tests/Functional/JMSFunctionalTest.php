@@ -280,6 +280,9 @@ class JMSFunctionalTest extends WebTestCase
                 'email' => [
                     'type' => 'string',
                 ],
+                'virtualprop' => [
+                    'type' => 'string',
+                ],
             ],
         ], $this->getModel('VirtualProperty')->toArray());
     }

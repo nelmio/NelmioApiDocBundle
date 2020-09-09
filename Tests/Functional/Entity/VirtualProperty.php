@@ -40,6 +40,7 @@ class VirtualProperty
     /**
      * @Serializer\Accessor(getter="getFoo", setter="setFoo")
      * @Serializer\Type("string")
+     * @Serializer\Expose
      *
      * Ensures https://github.com/nelmio/NelmioApiDocBundle/issues/1708 is fixed.
      */

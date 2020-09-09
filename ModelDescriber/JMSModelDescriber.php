@@ -93,14 +93,17 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $reflections[] = new \ReflectionProperty($item->class, $item->name);
             }
 
-            try {
-                if (null !== $item->getter) {
+            if (null !== $item->getter) {
+                try {
                     $reflections[] = new \ReflectionMethod($item->class, $item->getter);
+                } catch (\ReflectionException $ignored) {
                 }
-                if (null !== $item->setter) {
+            }
+            if (null !== $item->setter) {
+                try {
                     $reflections[] = new \ReflectionMethod($item->class, $item->setter);
+                } catch (\ReflectionException $ignored) {
                 }
-            } catch (\ReflectionExceptions $ignored) {
             }
 
             $groups = $this->computeGroups($context, $item->type);
