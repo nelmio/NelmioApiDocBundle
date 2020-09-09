@@ -61,18 +61,18 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             private $property2;
         };
 
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
-        $schema->merge([new OA\Property(['property' => 'property2'])]);
+        $schema = new Schema();
+        $schema->getProperties()->set('property1', new Schema());
+        $schema->getProperties()->set('property2', new Schema());
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->properties[1]);
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->getProperties()->get('property1'));
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->getProperties()->get('property2'));
 
         // expect required to be numeric array with sequential keys (not [0 => ..., 2 => ...])
-        $this->assertEquals($schema->required, ['property2']);
+        $this->assertEquals($schema->getRequired(), ['property2']);
     }
 
     public function testAssertChoiceResultsInNumericArray()
