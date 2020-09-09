@@ -51,10 +51,10 @@ class VirtualProperty
         $this->user->setEmail('dummy@test.com');
     }
 
-    public function __call(string $name , array $arguments)
+    public function __call(string $name, array $arguments)
     {
         if ('getFoo' === $name || 'setFoo' === $name) {
-          return 'Success';
+            return 'Success';
         }
 
         throw new \LogicException(sprintf('%s::__call does not implement this function.', __CLASS__));
