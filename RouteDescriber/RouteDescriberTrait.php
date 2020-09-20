@@ -16,9 +16,6 @@ use OpenApi\Annotations as OA;
 use OpenApi\Annotations\OpenApi;
 use Symfony\Component\Routing\Route;
 
-/**
- * @internal
- */
 trait RouteDescriberTrait
 {
     /**
