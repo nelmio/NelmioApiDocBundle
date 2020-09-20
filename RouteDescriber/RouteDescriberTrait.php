@@ -15,9 +15,6 @@ use EXSyst\Component\Swagger\Operation;
 use EXSyst\Component\Swagger\Swagger;
 use Symfony\Component\Routing\Route;
 
-/**
- * @internal
- */
 trait RouteDescriberTrait
 {
     /**
