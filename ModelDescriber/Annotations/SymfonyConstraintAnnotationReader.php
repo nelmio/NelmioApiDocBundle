@@ -48,7 +48,8 @@ class SymfonyConstraintAnnotationReader
 
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
-                if ($annotation instanceof Assert\NotBlank && $annotation->allowNull) {
+                // To support symfony/validator < 4.3
+                if ($annotation instanceof Assert\NotBlank && \method_exists($annotation, 'allowNull') && $annotation->allowNull) {
                     // The field is optional
                     continue;
                 }
