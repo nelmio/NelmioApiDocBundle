@@ -263,7 +263,15 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $groups = $this->computeGroups($context, $type);
 
             $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups);
-            $property->ref = $this->modelRegistry->register($model);
+            $modelRef = $this->modelRegistry->register($model);
+
+            $customFields = (array) $property->jsonSerialize();
+            unset($customFields['property']);
+            if (empty($customFields)) { // no custom fields
+                $property->ref = $modelRef;
+            } else {
+                $property->allOf = [new OA\Schema(['ref' => $modelRef])];
+            }
 
             $this->contexts[$model->getHash()] = $context;
             $this->metadataStacks[$model->getHash()] = clone $context->getMetadataStack();

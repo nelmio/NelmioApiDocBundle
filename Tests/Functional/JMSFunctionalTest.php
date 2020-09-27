@@ -146,11 +146,11 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'virtual_type1' => [
                     'title' => 'JMS custom types handled via Custom Type Handlers.',
-                    '$ref' => '#/components/schemas/VirtualTypeClassDoesNotExistsHandlerDefined',
+                    'allOf' => [['$ref' => '#/components/schemas/VirtualTypeClassDoesNotExistsHandlerDefined']],
                 ],
                 'virtual_type2' => [
                     'title' => 'JMS custom types handled via Custom Type Handlers.',
-                    '$ref' => '#/components/schemas/VirtualTypeClassDoesNotExistsHandlerNotDefined',
+                    'allOf' => [['$ref' => '#/components/schemas/VirtualTypeClassDoesNotExistsHandlerNotDefined']],
                 ],
                 'last_update' => [
                     'type' => 'date',
