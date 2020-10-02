@@ -65,10 +65,12 @@ final class SwaggerUiController
             $spec['basePath'] = $request->getBaseUrl();
         }
 
-        return new Response(
+        $response = new Response(
             $this->twig->render('@NelmioApiDoc/SwaggerUi/index.html.twig', ['swagger_data' => ['spec' => $spec]]),
             Response::HTTP_OK,
             ['Content-Type' => 'text/html']
         );
+
+        return $response->setCharset('UTF-8');
     }
 }
