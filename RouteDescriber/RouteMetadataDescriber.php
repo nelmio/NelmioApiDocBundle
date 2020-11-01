@@ -72,6 +72,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     {
         /** @var OA\Parameter[] $globalParams */
         $globalParams = OA\UNDEFINED !== $api->components && OA\UNDEFINED !== $api->components->parameters ? $api->components->parameters : [];
+        $globalParams = array_column($globalParams, null, 'parameter'); // update the indexes of the array with the reference names actually used
         $existingParams = [];
 
         $operationParameters = OA\UNDEFINED !== $operation->parameters ? $operation->parameters : [];

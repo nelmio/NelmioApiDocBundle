@@ -29,16 +29,4 @@ class TestController
     public function testAction()
     {
     }
-
-    /**
-     * @OA\Parameter(ref="#/components/parameters/test"),
-     * @OA\Response(
-     *     response="200",
-     *     description="Test Ref"
-     * )
-     * @Route("/test/{id}", methods={"GET"})
-     */
-    public function testRefAction()
-    {
-    }
 }
