@@ -153,7 +153,6 @@ final class FosRestDescriber implements RouteDescriberInterface
 
         if ($annotation->map) {
             $schema->type = 'array';
-            $schema->collectionFormat = 'multi';
             $schema->items = Util::getChild($schema, OA\Items::class);
         }
 
