@@ -3,12 +3,11 @@ Customization
 
 The look and feel of the Swagger UI can be customized.
 
-
 Overwrite Twig Template
 -----------------------
 
 If you want to customize parts of the template, you can create your own Twig template.
-This allows to change the title, the header, add additional or replace existing styles or scripts.
+This allows to change Swagger UI configuration, page title, page header, add additional or replace existing styles or scripts.
 
 Take a look at the Twig documentation `how to extend templates <https://twig.symfony.com/doc/2.x/tags/extends.html>`_.
 
@@ -25,11 +24,27 @@ Just create a file ``templates/bundles/NelmioApiDocBundle/SwaggerUi/index.html.t
     #}
     {% extends '@!NelmioApiDoc/SwaggerUi/index.html.twig' %}
 
+    {#
+        Change swagger UI configuration
+        All parameters are explained on Swagger UI website:
+        https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/
+    #}
+    {% block swagger_initialization %}
+        <script type="text/javascript">
+            window.onload = loadSwaggerUI({
+                defaultModelsExpandDepth: -1,
+                deepLinking: true,
+            });
+        </script>
+    {% endblock %}
+
+    {# Import your own stylesheet #}
     {% block stylesheets %}
         {{ parent() }}
         <link rel="stylesheet" href="{{ asset('css/custom-swagger-styles.css') }}">
     {% endblock stylesheets %}
 
+    {# Import your own script #}
     {% block javascripts %}
         {{ parent() }}
         <script type="text/javascript" src="{{ asset('js/custom-request-signer.js') }}"></script>

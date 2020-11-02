@@ -49,4 +49,4 @@ function loadSwaggerUI(userOptions = {}) {
   };
 
   window.ui = ui;
-};
+}
