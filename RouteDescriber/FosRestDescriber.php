@@ -58,6 +58,10 @@ final class FosRestDescriber implements RouteDescriberInterface
                         $parameter->description = $annotation->description;
                     }
 
+                    if ($annotation->map) {
+                        $parameter->explode = true;
+                    }
+
                     $schema = Util::getChild($parameter, OA\Schema::class);
                     $this->describeCommonSchemaFromAnnotation($schema, $annotation);
                 } else {
@@ -153,7 +157,6 @@ final class FosRestDescriber implements RouteDescriberInterface
 
         if ($annotation->map) {
             $schema->type = 'array';
-            $schema->collectionFormat = 'multi';
             $schema->items = Util::getChild($schema, OA\Items::class);
         }
 
