@@ -5,9 +5,9 @@
 // For the full copyright and license information, please view the LICENSE
 // file that was distributed with this source code.
 
-window.onload = function() {
+function loadSwaggerUI(userOptions = {}) {
   const data = JSON.parse(document.getElementById('swagger-data').innerText);
-  const ui = SwaggerUIBundle({
+  const defaultOptions = {
     spec: data.spec,
     dom_id: '#swagger-ui',
     validatorUrl: null,
@@ -19,7 +19,9 @@ window.onload = function() {
       SwaggerUIBundle.plugins.DownloadUrl
     ],
     layout: 'StandaloneLayout'
-  });
+  };
+  const options = Object.assign({}, defaultOptions, userOptions);
+  const ui = SwaggerUIBundle(options);
 
   const storageKey = 'nelmio_api_auth';
 
@@ -47,4 +49,4 @@ window.onload = function() {
   };
 
   window.ui = ui;
-};
+}
