@@ -116,10 +116,12 @@ class WebTestCase extends BaseWebTestCase
     public function assertHasParameter($name, $in, OA\AbstractAnnotation $annotation)
     {
         /* @var OA\Operation|OA\OpenApi $annotation */
-        $parameters = array_column(OA\UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], 'name', 'in');
-        static::assertContains(
-            $name,
-            $parameters[$in] ?? [],
+        $parameters = array_filter(OA\UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], function (OA\Parameter $parameter) use ($name, $in) {
+            return $parameter->name === $name && $parameter->in === $in;
+        });
+
+        static::assertNotEmpty(
+            $parameters,
             sprintf('Failed asserting that parameter "%s" in "%s" does exist.', $name, $in)
         );
     }

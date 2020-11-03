@@ -39,6 +39,9 @@ class FOSRestTest extends WebTestCase
         $this->assertEquals('\d+', $fooParameter->schema->pattern);
         $this->assertEquals(OA\UNDEFINED, $fooParameter->schema->format);
 
+        $mappedParameter = $this->getParameter($operation, 'mapped[]', 'query');
+        $this->assertTrue($mappedParameter->explode);
+
         $barProperty = $this->getProperty($bodySchema, 'bar');
         $this->assertEquals('\d+', $barProperty->pattern);
         $this->assertEquals(OA\UNDEFINED, $barProperty->format);
