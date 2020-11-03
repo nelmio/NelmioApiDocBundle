@@ -424,7 +424,8 @@ class FunctionalTest extends WebTestCase
 
     public function testNoDuplicatedParameters()
     {
-        $this->assertNotHasParameter('name', 'path', $this->getOperation('/api/article/{id}', 'get'));
+        $this->assertHasPath('/api/article/{id}', $this->getOpenApiDefinition());
+        $this->assertNotHasParameter('id', 'path', $this->getOperation('/api/article/{id}', 'get'));
     }
 
     public function testSerializedNameAction()
