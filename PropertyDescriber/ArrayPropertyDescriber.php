@@ -51,7 +51,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
                         throw $e; // This exception is already complete
                     }
 
-                    throw new UndocumentedArrayItemsException(null, sprintf("%s[]", $e->getPath()));
+                    throw new UndocumentedArrayItemsException(null, sprintf('%s[]', $e->getPath()));
                 }
 
                 break;

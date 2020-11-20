@@ -152,7 +152,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                         throw $e; // This exception is already complete
                     }
 
-                    throw new UndocumentedArrayItemsException($model->getType()->getClassName(), sprintf("%s%s", $propertyName, $e->getPath()));
+                    throw new UndocumentedArrayItemsException($model->getType()->getClassName(), sprintf('%s%s', $propertyName, $e->getPath()));
                 }
 
                 return;

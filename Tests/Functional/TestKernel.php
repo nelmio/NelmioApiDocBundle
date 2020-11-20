@@ -66,7 +66,7 @@ class TestKernel extends Kernel
         if ($this->flags & self::USE_JMS) {
             $bundles[] = new JMSSerializerBundle();
 
-            if ($this->flags & self::USE_BAZINGA)  {
+            if ($this->flags & self::USE_BAZINGA) {
                 $bundles[] = new BazingaHateoasBundle();
             }
         }

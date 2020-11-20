@@ -11,8 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError;
 
-use Symfony\Component\Serializer\Annotation\Groups;
-
 /**
  * @author Guilhem N. <guilhem@gniot.fr>
  */
