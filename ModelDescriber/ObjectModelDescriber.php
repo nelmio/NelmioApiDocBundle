@@ -15,6 +15,7 @@ use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
+use Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
@@ -144,7 +145,15 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
             if ($propertyDescriber->supports($type)) {
-                $propertyDescriber->describe($type, $property, $model->getGroups());
+                try {
+                    $propertyDescriber->describe($type, $property, $model->getGroups());
+                } catch (UndocumentedArrayItemsException $e) {
+                    if (null !== $e->getClass()) {
+                        throw $e; // This exception is already complete
+                    }
+
+                    throw new UndocumentedArrayItemsException($model->getType()->getClassName(), sprintf("%s%s", $propertyName, $e->getPath()));
+                }
 
                 return;
             }
