@@ -29,7 +29,7 @@ matrix:
     - php: 7.4
       env: SYMFONY_VERSION=^5.0
     - php: nightly
-    #  env: COMPOSER_FLAGS="--ignore-platform-reqs" SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
+      env: COMPOSER_FLAGS="--ignore-platform-reqs"
 
 before_install:
     - phpenv config-rm xdebug.ini || true
