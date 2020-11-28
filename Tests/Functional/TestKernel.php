@@ -174,14 +174,14 @@ class TestKernel extends Kernel
 
         // Filter routes
         $models = [];
-        if ($this->useJMS) {
+        if ($this->flags & self::USE_JMS) {
             $models[] = [
                 'alias' => 'JMSPicture_mini',
                 'type' => JMSPicture::class,
                 'groups' => ['mini'],
             ];
         }
-        if ($this->useBazinga) {
+        if ($this->flags & self::USE_BAZINGA) {
             $models[] = [
                 'alias' => 'BazingaUser_grouped',
                 'type' => BazingaUser::class,
