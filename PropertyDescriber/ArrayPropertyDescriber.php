@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
+use Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException;
 use Symfony\Component\PropertyInfo\Type;
 
 class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
@@ -32,7 +33,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
     {
         $type = $type->getCollectionValueType();
         if (null === $type) {
-            throw new \LogicException(sprintf('Property "%s" is an array, but its items type isn\'t specified. You can specify that by using the type `string[]` for instance or `@SWG\Property(type="array", @SWG\Items(type="string"))`.', $property->getTitle()));
+            throw new UndocumentedArrayItemsException();
         }
 
         $property->setType('array');
@@ -43,7 +44,15 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
             if ($propertyDescriber->supports($type)) {
-                $propertyDescriber->describe($type, $property, $groups);
+                try {
+                    $propertyDescriber->describe($type, $property, $groups);
+                } catch (UndocumentedArrayItemsException $e) {
+                    if (null !== $e->getClass()) {
+                        throw $e; // This exception is already complete
+                    }
+
+                    throw new UndocumentedArrayItemsException(null, sprintf('%s[]', $e->getPath()));
+                }
 
                 break;
             }
