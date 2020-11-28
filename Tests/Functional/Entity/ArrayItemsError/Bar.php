@@ -16,8 +16,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError;
  */
 class Bar
 {
-    /**
-     * @var array[]
-     */
     public $things;
+
+    public function addThing(array $thing) { }
 }
