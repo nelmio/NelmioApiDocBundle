@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
+use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\BazingaUser;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Routing\Annotation\Route;
 

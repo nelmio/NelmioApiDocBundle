@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
+namespace Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded;
 
 use Hateoas\Configuration\Annotation as Hateoas;
 

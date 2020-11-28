@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use Hateoas\Configuration\Embedded;
 
 class BazingaFunctionalTest extends WebTestCase
@@ -18,6 +19,10 @@ class BazingaFunctionalTest extends WebTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        if (!class_exists(BazingaHateoasBundle::class)) {
+            $this->markTestSkipped('Bundle BazingaHateoasBundle is not installed.');
+        }
 
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }

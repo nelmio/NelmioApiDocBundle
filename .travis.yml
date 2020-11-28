@@ -28,12 +28,13 @@ matrix:
       env: SYMFONY_VERSION=^4.0
     - php: 7.4
       env: SYMFONY_VERSION=^5.0
-    - php: nightly
+    - php: 8.0snapshot
       env: COMPOSER_FLAGS="--ignore-platform-reqs"
 
 before_install:
     - phpenv config-rm xdebug.ini || true
     - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --dev --no-update; fi;
+    - if [[ $PHP = 8.* ]]; then composer remove willdurand/hateoas-bundle --no-update --dev; fi
 
 install: composer update --no-interaction $COMPOSER_FLAGS
 
