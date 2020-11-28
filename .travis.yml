@@ -37,4 +37,4 @@ before_install:
 
 install: composer update --no-interaction $COMPOSER_FLAGS
 
-script: ./phpunit
+script: vendor/bin/simple-phpunit -v

@@ -13,7 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 class FOSRestTest extends WebTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
