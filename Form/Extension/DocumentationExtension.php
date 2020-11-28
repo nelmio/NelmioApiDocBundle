@@ -29,7 +29,7 @@ class DocumentationExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(['documentation' => []])
-            ->setAllowedTypes('documentation', ['array']);
+            ->setAllowedTypes('documentation', ['array', 'bool']);
     }
 
     public function getExtendedType()

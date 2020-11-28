@@ -48,6 +48,7 @@ class UserType extends AbstractType
             ->add('document', DocumentType::class, ['class' => 'Document'])
             ->add('documents', DocumentType::class, ['class' => 'Document', 'multiple' => true])
             ->add('extended_builtin', ExtendedBuiltinType::class, ['required_option' => 'foo'])
+            ->add('hidden', DummyType::class, ['documentation' => false])
             ->add('save', SubmitType::class);
     }
 
