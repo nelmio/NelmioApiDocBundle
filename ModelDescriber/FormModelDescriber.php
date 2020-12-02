@@ -11,10 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
+use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigBuilderInterface;
@@ -32,10 +34,15 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     use ModelRegistryAwareTrait;
 
     private $formFactory;
+    private $doctrineReader;
 
-    public function __construct(FormFactoryInterface $formFactory = null)
+    public function __construct(FormFactoryInterface $formFactory = null, Reader $reader = null)
     {
         $this->formFactory = $formFactory;
+        $this->doctrineReader = $reader;
+        if (null === $reader) {
+            @trigger_error(sprintf('Not passing a doctrine reader to the constructor of %s is deprecated since version 3.8 and won\'t be allowed in version 5.', self::class), E_USER_DEPRECATED);
+        }
     }
 
     public function describe(Model $model, Schema $schema)
@@ -50,6 +57,11 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         $schema->setType('object');
 
         $class = $model->getType()->getClassName();
+
+        if (null !== $this->doctrineReader) {
+            $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry);
+            $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
+        }
 
         $form = $this->formFactory->create($class, null, $model->getOptions() ?? []);
         $this->parseForm($schema, $form);
@@ -66,6 +78,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
+
+            // This field must not be documented
+            if ($config->hasOption('documentation') && false === $config->getOption('documentation')) {
+                continue;
+            }
+
             $property = $properties->get($name);
 
             if ($config->getRequired()) {
@@ -75,7 +93,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $schema->setRequired($required);
             }
 
-            if ($config->hasOption('documentation')) {
+            if ($config->hasOption('documentation') && is_array($config->getOption('documentation'))) {
                 $property->merge($config->getOption('documentation'));
             }
 

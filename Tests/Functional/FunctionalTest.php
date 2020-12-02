@@ -211,6 +211,7 @@ class FunctionalTest extends WebTestCase
     {
         $this->assertEquals([
             'type' => 'object',
+            'description' => 'this is the description of an user',
             'properties' => [
                 'strings' => [
                     'items' => ['type' => 'string'],
