@@ -64,4 +64,4 @@ jobs:
       - name: "Run PHPUnit"
         env:
           SYMFONY_DEPRECATIONS_HELPER: "${{ matrix.symfony-deprecations }}"
-        run: "vendor/bin/simple-phpunit -v"
+        run: "./phpunit -v"

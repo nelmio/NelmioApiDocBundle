@@ -17,7 +17,7 @@ use FOS\RestBundle\FOSRestBundle;
 use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
-use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\BazingaUser;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
@@ -173,21 +173,6 @@ class TestKernel extends Kernel
         }
 
         // Filter routes
-        $models = [];
-        if ($this->flags & self::USE_JMS) {
-            $models[] = [
-                'alias' => 'JMSPicture_mini',
-                'type' => JMSPicture::class,
-                'groups' => ['mini'],
-            ];
-        }
-        if ($this->flags & self::USE_BAZINGA) {
-            $models[] = [
-                'alias' => 'BazingaUser_grouped',
-                'type' => BazingaUser::class,
-                'groups' => ['foo'],
-            ];
-        }
         $c->loadFromExtension('nelmio_api_doc', [
             'documentation' => [
                 'info' => [
@@ -227,7 +212,18 @@ class TestKernel extends Kernel
                ],
             ],
             'models' => [
-                'names' => $models,
+                'names' => [
+                    [
+                        'alias' => 'JMSPicture_mini',
+                        'type' => JMSPicture::class,
+                        'groups' => ['mini'],
+                    ],
+                    [
+                        'alias' => 'BazingaUser_grouped',
+                        'type' => BazingaUser::class,
+                        'groups' => ['foo'],
+                    ],
+                ],
             ],
         ]);
 
