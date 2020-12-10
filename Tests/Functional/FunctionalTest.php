@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class FunctionalTest extends WebTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

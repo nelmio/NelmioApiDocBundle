@@ -15,7 +15,7 @@ use Hateoas\Configuration\Embedded;
 
 class BazingaFunctionalTest extends WebTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

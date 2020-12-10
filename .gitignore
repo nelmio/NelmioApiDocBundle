@@ -6,5 +6,6 @@
 /.php_cs
 /phpunit.xml
 /.phpunit
+/.phpunit.result.cache
 /Tests/Functional/cache
 /Tests/Functional/logs

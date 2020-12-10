@@ -35,7 +35,7 @@ class RouteDescriberTest extends AbstractDescriberTest
         $this->assertEquals((new Swagger())->toArray(), $this->getSwaggerDoc()->toArray());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->routeDescriber = $this->createMock(RouteDescriberInterface::class);
         $this->routes = new RouteCollection();

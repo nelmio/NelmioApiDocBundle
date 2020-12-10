@@ -84,12 +84,12 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\InvalidArgumentException
-     *
      * @dataProvider getInvalidOptions
      */
     public function testFilterWithInvalidOption(array $options)
     {
+        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidArgumentException::class);
+
         new FilteredRouteCollectionBuilder(
             new AnnotationReader(),
             $this->createControllerReflector(),
