@@ -18,7 +18,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
  *     name="typed_bazinga_users",
  *     embedded=@Hateoas\Embedded(
  *      "expr(service('zz'))",
- *      type="array<Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\BazingaUser>"
+ *      type="array<Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser>"
  *     )
  * )
  * @Hateoas\Relation(
