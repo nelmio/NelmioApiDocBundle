@@ -20,7 +20,7 @@ use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
 use PHPUnit\Framework\TestCase;
-use  Swagger\Analysis;
+use Swagger\Analysis;
 use Swagger\Annotations as SWG;
 
 class ModelRegisterTest extends TestCase

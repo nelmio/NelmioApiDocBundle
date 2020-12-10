@@ -111,7 +111,7 @@ final class FilteredRouteCollectionBuilder
             }
         }
 
-        return  0 === count($this->options['name_patterns']);
+        return 0 === count($this->options['name_patterns']);
     }
 
     private function matchAnnotation(Route $route): bool

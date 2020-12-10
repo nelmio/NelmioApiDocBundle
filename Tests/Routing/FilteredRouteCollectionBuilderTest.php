@@ -254,6 +254,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             );
         }
 
-        return  new ControllerReflector(new Container());
+        return new ControllerReflector(new Container());
     }
 }
