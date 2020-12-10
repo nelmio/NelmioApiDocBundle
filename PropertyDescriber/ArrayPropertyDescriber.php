@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
+use Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 
@@ -33,7 +34,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
     {
         $type = $types[0]->getCollectionValueType();
         if (null === $type) {
-            throw new \LogicException(sprintf('Property "%s" is an array, but its items type isn\'t specified. You can specify that by using the type `string[]` for instance or `@OA\Property(type="array", @OA\Items(type="string"))`.', $property->property));
+            throw new UndocumentedArrayItemsException();
         }
 
         $property->type = 'array';
@@ -45,7 +46,15 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
             if ($propertyDescriber->supports([$type])) {
-                $propertyDescriber->describe([$type], $property, $groups);
+                try {
+                    $propertyDescriber->describe([$type], $property, $groups);
+                } catch (UndocumentedArrayItemsException $e) {
+                    if (null !== $e->getClass()) {
+                        throw $e; // This exception is already complete
+                    }
+
+                    throw new UndocumentedArrayItemsException(null, sprintf('%s[]', $e->getPath()));
+                }
 
                 break;
             }

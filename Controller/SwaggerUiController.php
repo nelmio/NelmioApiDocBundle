@@ -61,5 +61,7 @@ final class SwaggerUiController
             Response::HTTP_OK,
             ['Content-Type' => 'text/html']
         );
+
+        return $response->setCharset('UTF-8');
     }
 }

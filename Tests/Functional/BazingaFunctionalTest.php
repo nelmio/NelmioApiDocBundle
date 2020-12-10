@@ -125,6 +125,6 @@ class BazingaFunctionalTest extends WebTestCase
 
     protected static function createKernel(array $options = [])
     {
-        return new TestKernel(true, true);
+        return new TestKernel(TestKernel::USE_JMS | TestKernel::USE_BAZINGA);
     }
 }

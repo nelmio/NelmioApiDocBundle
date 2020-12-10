@@ -33,17 +33,19 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class TestKernel extends Kernel
 {
+    const USE_JMS = 1;
+    const USE_BAZINGA = 2;
+    const ERROR_ARRAY_ITEMS = 4;
+
     use MicroKernelTrait;
 
-    private $useJMS;
-    private $useBazinga;
+    private $flags;
 
-    public function __construct(bool $useJMS = false, bool $useBazinga = false)
+    public function __construct(int $flags = 0)
     {
-        parent::__construct('test'.(int) $useJMS.(int) $useBazinga, true);
+        parent::__construct('test'.$flags, true);
 
-        $this->useJMS = $useJMS;
-        $this->useBazinga = $useBazinga;
+        $this->flags = $flags;
     }
 
     /**
@@ -61,10 +63,10 @@ class TestKernel extends Kernel
             new FOSRestBundle(),
         ];
 
-        if ($this->useJMS) {
+        if ($this->flags & self::USE_JMS) {
             $bundles[] = new JMSSerializerBundle();
 
-            if ($this->useBazinga) {
+            if ($this->flags & self::USE_BAZINGA) {
                 $bundles[] = new BazingaHateoasBundle();
             }
         }
@@ -91,11 +93,11 @@ class TestKernel extends Kernel
             $routes->import(__DIR__.'/Controller/SerializedNameController.php', '/', 'annotation');
         }
 
-        if ($this->useJMS) {
+        if ($this->flags & self::USE_JMS) {
             $routes->import(__DIR__.'/Controller/JMSController.php', '/', 'annotation');
         }
 
-        if ($this->useBazinga) {
+        if ($this->flags & self::USE_BAZINGA) {
             $routes->import(__DIR__.'/Controller/BazingaController.php', '/', 'annotation');
 
             try {
@@ -103,6 +105,10 @@ class TestKernel extends Kernel
                 $routes->import(__DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
             } catch (\ReflectionException $e) {
             }
+        }
+
+        if ($this->flags & self::ERROR_ARRAY_ITEMS) {
+            $routes->import(__DIR__.'/Controller/ArrayItemsErrorController.php', '/', 'annotation');
         }
     }
 
@@ -250,7 +256,7 @@ class TestKernel extends Kernel
      */
     public function getCacheDir()
     {
-        return parent::getCacheDir().'/'.(int) $this->useJMS;
+        return parent::getCacheDir().'/'.$this->flags;
     }
 
     /**
@@ -258,7 +264,7 @@ class TestKernel extends Kernel
      */
     public function getLogDir()
     {
-        return parent::getLogDir().'/'.(int) $this->useJMS;
+        return parent::getLogDir().'/'.$this->flags;
     }
 
     public function serialize()

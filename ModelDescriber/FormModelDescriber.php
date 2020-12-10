@@ -11,9 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
+use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Form\AbstractType;
@@ -33,10 +35,22 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     use ModelRegistryAwareTrait;
 
     private $formFactory;
+    private $doctrineReader;
+    private $mediaTypes;
 
-    public function __construct(FormFactoryInterface $formFactory = null)
+    public function __construct(FormFactoryInterface $formFactory = null, Reader $reader = null, array $mediaTypes = null)
     {
         $this->formFactory = $formFactory;
+        $this->doctrineReader = $reader;
+        if (null === $reader) {
+            @trigger_error(sprintf('Not passing a doctrine reader to the constructor of %s is deprecated since version 3.8 and won\'t be allowed in version 5.', self::class), E_USER_DEPRECATED);
+        }
+
+        if (null === $mediaTypes) {
+            $mediaTypes = ['json'];
+            @trigger_error(sprintf('Not passing media types to the constructor of %s is deprecated since version 4.1 and won\'t be allowed in version 5.', self::class), E_USER_DEPRECATED);
+        }
+        $this->mediaTypes = $mediaTypes;
     }
 
     public function describe(Model $model, OA\Schema $schema)
@@ -52,6 +66,9 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
         $class = $model->getType()->getClassName();
 
+        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
+        $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
+
         $form = $this->formFactory->create($class, null, $model->getOptions() ?? []);
         $this->parseForm($schema, $form);
     }
@@ -65,6 +82,11 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     {
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
+
+            // This field must not be documented
+            if ($config->hasOption('documentation') && false === $config->getOption('documentation')) {
+                continue;
+            }
             $property = Util::getProperty($schema, $name);
 
             if ($config->getRequired()) {

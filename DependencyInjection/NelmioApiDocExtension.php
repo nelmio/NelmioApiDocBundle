@@ -62,6 +62,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ->setFactory([new Reference('router'), 'getRouteCollection']);
 
         $container->setParameter('nelmio_api_doc.areas', array_keys($config['areas']));
+        $container->setParameter('nelmio_api_doc.media_types', $config['media_types']);
         foreach ($config['areas'] as $area => $areaConfig) {
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
 

@@ -324,6 +324,6 @@ class JMSFunctionalTest extends WebTestCase
 
     protected static function createKernel(array $options = [])
     {
-        return new TestKernel(true);
+        return new TestKernel(TestKernel::USE_JMS);
     }
 }

@@ -33,6 +33,7 @@ class SwaggerUiTest extends WebTestCase
 
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('UTF-8', $response->getCharset());
         $this->assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
 
         $expected = json_decode($this->getOpenApiDefinition()->toJson(), true);
