@@ -18,5 +18,7 @@ class Bar
 {
     public $things;
 
-    public function addThing(array $thing) { }
+    public function addThing(array $thing)
+    {
+    }
 }
