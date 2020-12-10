@@ -33,7 +33,6 @@ jobs:
             symfony-require: "^5.0"
           - php-version: 8.0
             composer-flags: "--ignore-platform-reqs"
-            symfony-deprecations: "max[self]=0"
 
     steps:
       - name: "Checkout"
@@ -62,6 +61,4 @@ jobs:
           composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
 
       - name: "Run PHPUnit"
-        env:
-          SYMFONY_DEPRECATIONS_HELPER: "${{ matrix.symfony-deprecations }}"
-        run: "./phpunit -v"
+        run: "./phpunit"
