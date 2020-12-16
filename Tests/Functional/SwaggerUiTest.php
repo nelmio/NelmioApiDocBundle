@@ -53,6 +53,7 @@ class SwaggerUiTest extends WebTestCase
         $expected['servers'] = [
             ['url' => 'http://api.example.com/app_dev.php'],
         ];
+
         $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
 
