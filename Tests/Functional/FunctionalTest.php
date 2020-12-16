@@ -432,4 +432,19 @@ class FunctionalTest extends WebTestCase
         $operation = $this->getOperation('/api/invoke', 'get');
         $this->assertSame('Invokable!', $operation->getResponses()->get(200)->getDescription());
     }
+
+    /**
+     * Related to https://github.com/nelmio/NelmioApiDocBundle/issues/1756
+     * Ensures private/protected properties are not exposed, just like the symfony serializer does.
+     */
+    public function testPrivateProtectedExposure()
+    {
+        // Ensure that groups are supported
+        $modelProperties = $this->getModel('PrivateProtectedExposure')->getProperties();
+        $this->assertCount(1, $modelProperties);
+        $this->assertTrue($modelProperties->has('publicField'));
+        $this->assertFalse($modelProperties->has('privateField'));
+        $this->assertFalse($modelProperties->has('protectedField'));
+        $this->assertFalse($modelProperties->has('protected'));
+    }
 }

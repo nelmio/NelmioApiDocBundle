@@ -67,9 +67,14 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $annotationsReader->updateDefinition($reflClass, $schema);
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);
+
         if (null === $propertyInfoProperties) {
             return;
         }
+
+        // Fix for https://github.com/nelmio/NelmioApiDocBundle/issues/1756
+        // The SerializerExtractor does expose private/protected properties for some reason, so we eliminate them here
+        $propertyInfoProperties = array_intersect($propertyInfoProperties, $this->propertyInfo->getProperties($class, []) ?? []);
 
         foreach ($propertyInfoProperties as $propertyName) {
             $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, null !== $model->getGroups() ? ['groups' => $model->getGroups()] : []) : $propertyName;

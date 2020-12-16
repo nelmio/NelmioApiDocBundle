@@ -70,6 +70,7 @@ class SwaggerUiTest extends WebTestCase
             'Test' => ['type' => 'string'],
             'JMSPicture_mini' => ['type' => 'object'],
             'BazingaUser_grouped' => ['type' => 'object'],
+            'PrivateProtectedExposure' => $expected['definitions']['PrivateProtectedExposure'],
         ];
 
         $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
