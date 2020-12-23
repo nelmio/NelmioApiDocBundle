@@ -1,68 +1,79 @@
-# from doctrine/instantiator:
-# https://github.com/doctrine/instantiator/blob/97aa11bb71ad6259a8c5a1161b4de2d6cdcc5501/.github/workflows/continuous-integration.yml
-
-name: "CI"
+name: LiipImagineBundle CI
 
 on:
   pull_request:
-    branches:
-      - "*.x"
-      - master
   push:
-    branches:
-      - "*.x"
-      - master
-
-env:
-  fail-fast: true
-  COMPOSER_ROOT_VERSION: "1.4"
 
 jobs:
   phpunit:
-    name: "PHPUnit"
-    runs-on: "ubuntu-20.04"
-
+    name: "PHPUnit (PHP ${{ matrix.php }} + ${{ matrix.dependencies }} dependencies + Symfony ${{ matrix.symfony }})"
+    runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
+        php: ['7.1', '7.2', '7.3', '7.4']
+        dependencies: [highest]
+        symfony: ['*']
         include:
-          - php-version: 7.1
-            composer-flags: "--prefer-lowest"
-          - php-version: 7.2
-            symfony-require: "^4.0"
-          - php-version: 7.3
-            symfony-require: "^5.0"
-          - php-version: 7.4
-            symfony-require: "^4.0"
-          - php-version: 7.3
-            symfony-require: "^5.0"
-          - php-version: 8.0
-            composer-flags: "--ignore-platform-reqs"
+          # Minimum supported dependencies with the oldest supported PHP version
+          - php: '7.1'
+            dependencies: lowest
+            symfony: '*'
 
+          # Minimum supported dependencies with the latest supported PHP version
+          - php: '7.4'
+            dependencies: lowest
+            symfony: '*'
+
+          # Test each supported Symfony version with lowest supported PHP version
+          - php: '7.1'
+            dependencies: highest
+            symfony: '3.4.*'
+
+          - php: '7.1'
+            dependencies: highest
+            symfony: '4.4.*'
+
+          - php: '7.2'
+            dependencies: highest
+            symfony: '5.1.*'
+
+          - php: '7.2'
+            dependencies: highest
+            symfony: '5.2.*'
     steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v2"
-        with:
-          fetch-depth: 2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      - name: "Install PHP without coverage"
-        uses: "shivammathur/setup-php@v2"
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: "${{ matrix.php-version }}"
-          coverage: "none"
+          php-version: ${{ matrix.php }}
+          coverage: none
+          extensions: gd, imagick
+          ini-values: disable_functions=imagewebp
 
-      - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v2"
-        with:
-          path: "~/.composer/cache"
-          key: "php-${{ matrix.php-version }}-composer-locked-${{ hashFiles('composer.lock') }}"
-          restore-keys: "php-${{ matrix.php-version }}-composer-locked-"
-
-      - name: "Install dependencies with composer"
-        env:
-          SYMFONY_REQUIRE: "${{ matrix.symfony-require }}"
+      - name: Require Symfony version
+        if: matrix.symfony != '*'
         run: |
-          composer global require --no-progress --no-scripts --no-plugins symfony/flex
-          composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
+          composer global require --no-interaction --no-progress symfony/flex:^1.11
+          composer config extra.symfony.require ${{ matrix.symfony }}
 
-      - name: "Run PHPUnit"
-        run: "./phpunit"
+      - name: Update project dependencies
+        uses: ramsey/composer-install@v1
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - name: Cache PHPUnit
+        uses: actions/cache@v2
+        with:
+          path: vendor/bin/.phpunit
+          key: ${{ runner.os }}-phpunit-${{ matrix.php }}
+
+      - name: Install PHPUnit
+        run: vendor/bin/simple-phpunit install
+
+      - name: Run PHPUnit tests
+        env:
+          SYMFONY_DEPRECATIONS_HELPER: max[self]=0
+        run: vendor/bin/simple-phpunit -v
