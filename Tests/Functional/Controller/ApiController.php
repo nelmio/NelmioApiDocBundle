@@ -54,6 +54,14 @@ class ApiController
      * @Operation(
      *     @OA\Response(response="201", description="An example resource")
      * )
+     * @OA\Get(
+     *     path="/api/swagger2",
+     *     @OA\Parameter(name="Accept-Version", in="header", @OA\Schema(type="string"))
+     * )
+     * @OA\Post(
+     *     path="/api/swagger2",
+     *     @OA\Response(response="203", description="but 203 is not actually allowed (wrong method)")
+     * )
      */
     public function swaggerAction()
     {

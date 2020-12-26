@@ -80,6 +80,18 @@ class FunctionalTest extends WebTestCase
         return [['/api/swagger'], ['/api/swagger2']];
     }
 
+    public function testAnnotationWithManualPath()
+    {
+        $path = $this->getPath('/api/swagger2');
+        $this->assertSame(OA\UNDEFINED, $path->post);
+
+        $operation = $this->getOperation('/api/swagger', 'get');
+        $this->assertNotHasParameter('Accept-Version', 'header', $operation);
+
+        $operation = $this->getOperation('/api/swagger2', 'get');
+        $this->assertHasParameter('Accept-Version', 'header', $operation);
+    }
+
     /**
      * @dataProvider implicitSwaggerActionMethodsProvider
      */

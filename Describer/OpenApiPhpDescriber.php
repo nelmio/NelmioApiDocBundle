@@ -87,6 +87,13 @@ final class OpenApiPhpDescriber
                 }
 
                 if ($annotation instanceof OA\Operation) {
+                    if (!in_array($annotation->method, $httpMethods, true)) {
+                        continue;
+                    }
+                    if (OA\UNDEFINED !== $annotation->path && $path->path !== $annotation->path) {
+                        continue;
+                    }
+
                     $operation = Util::getOperation($path, $annotation->method);
                     $operation->mergeProperties($annotation);
 
