@@ -87,7 +87,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArguments([
                     new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
-                    new Reference('annotation_reader'),
+                    new Reference('annotations.reader'),
                     new Reference('logger'),
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
@@ -160,7 +160,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
                     $jmsNamingStrategy,
-                    new Reference('annotation_reader'),
+                    new Reference('annotations.reader'),
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
 

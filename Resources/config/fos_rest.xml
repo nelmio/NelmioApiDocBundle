@@ -5,7 +5,7 @@
 
     <services>
         <service id="nelmio_api_doc.route_describers.fos_rest" class="Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber" public="false">
-            <argument type="service" id="annotation_reader" />
+            <argument type="service" id="annotation_reader" /> <!-- we don't deal with @OA annotations in this describer so we can use the cached reader -->
 
             <tag name="nelmio_api_doc.route_describer" priority="-250" />
         </service>
