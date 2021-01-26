@@ -160,6 +160,7 @@ class ApiController
      * @OA\Response(response="201", description="")
      * @Security(name="api_key")
      * @Security(name="basic")
+     * @Security(name="oauth2", scopes={"scope_1"})
      */
     public function securityAction()
     {

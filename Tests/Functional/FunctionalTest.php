@@ -338,6 +338,7 @@ class FunctionalTest extends WebTestCase
         $expected = [
             ['api_key' => []],
             ['basic' => []],
+            ['oauth2' => ['scope_1']],
         ];
         $this->assertEquals($expected, $operation->security);
     }
