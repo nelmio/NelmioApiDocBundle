@@ -11,13 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Tests\ModelDescriber;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ApplyOpenApiDiscriminatorTrait;
 use OpenApi\Annotations as OA;
-use Symfony\Component\PropertyInfo\Type;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\PropertyInfo\Type;
 
 class ApplyOpenApiDiscriminatorTraitTest extends TestCase
 {
@@ -70,14 +69,14 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
         );
     }
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->schema = new OA\Schema([]);
         $this->model = $this->createModel(__CLASS__);
         $this->modelRegistry = new ModelRegistry([], new OA\OpenApi([]));
     }
 
-    private function createModel(string $className) : Model
+    private function createModel(string $className): Model
     {
         return new Model(
             new Type(Type::BUILTIN_TYPE_OBJECT, false, $className),

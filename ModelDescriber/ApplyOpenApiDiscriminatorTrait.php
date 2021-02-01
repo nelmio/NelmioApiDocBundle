@@ -21,18 +21,19 @@ use Symfony\Component\PropertyInfo\Type;
  * Open API schemas to support poly morphism.
  *
  * @see https://swagger.io/docs/specification/data-models/inheritance-and-polymorphism/
+ *
  * @internal
  */
 trait ApplyOpenApiDiscriminatorTrait
 {
     /**
-     * @param Model $model the model that's being described, This is used to pass groups and config
-     *        down to the children models in `oneOf`
-     * @param OA\Schema $schema The Open API schema to which `oneOf` and `discriminator` properties
-     *        will be added
-     * @param string $discriminatorProperty The property that determine which model will be unsierailized
-     * @param array<string, string> $typeMap the map of $discriminatorProperty values to their
-     *        types
+     * @param Model                 $model                 the model that's being described, This is used to pass groups and config
+     *                                                     down to the children models in `oneOf`
+     * @param OA\Schema             $schema                The Open API schema to which `oneOf` and `discriminator` properties
+     *                                                     will be added
+     * @param string                $discriminatorProperty The property that determine which model will be unsierailized
+     * @param array<string, string> $typeMap               the map of $discriminatorProperty values to their
+     *                                                     types
      */
     protected function applyOpenApiDiscriminator(
         Model $model,
@@ -40,7 +41,7 @@ trait ApplyOpenApiDiscriminatorTrait
         ModelRegistry $modelRegistry,
         string $discriminatorProperty,
         array $typeMap
-    ) : void {
+    ): void {
         $schema->oneOf = [];
         $schema->discriminator = new OA\Discriminator([]);
         $schema->discriminator->propertyName = $discriminatorProperty;
@@ -54,7 +55,6 @@ trait ApplyOpenApiDiscriminatorTrait
             ));
             $schema->oneOf[] = $oneOfSchema;
             $schema->discriminator->mapping[$propertyValue] = clone $oneOfSchema;
-
         }
     }
 }

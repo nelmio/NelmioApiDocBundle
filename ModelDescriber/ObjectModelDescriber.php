@@ -74,7 +74,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $annotationsReader->updateDefinition($reflClass, $schema);
 
         $discriminatorMap = $this->doctrineReader->getClassAnnotation($reflClass, DiscriminatorMap::class);
-        if ($discriminatorMap && $schema->discriminator === OA\UNDEFINED) {
+        if ($discriminatorMap && OA\UNDEFINED === $schema->discriminator) {
             $this->applyOpenApiDiscriminator(
                 $model,
                 $schema,
