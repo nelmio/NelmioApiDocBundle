@@ -498,4 +498,24 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasProperty('protectedField', $model);
         $this->assertNotHasProperty('protected', $model);
     }
+
+    public function testModelsWithDiscriminatorMapAreLoadedWithOpenApiPolymorphism()
+    {
+        $model = $this->getModel('SymfonyDiscriminator');
+
+        $this->assertInstanceOf(OA\Discriminator::class, $model->discriminator);
+        $this->assertSame('type', $model->discriminator->propertyName);
+        $this->assertCount(2, $model->discriminator->mapping);
+        $this->assertArrayHasKey('one', $model->discriminator->mapping);
+        $this->assertArrayHasKey('two', $model->discriminator->mapping);
+        $this->assertNotSame(OA\UNDEFINED, $model->oneOf);
+        $this->assertCount(2, $model->oneOf);
+    }
+
+    public function testDiscriminatorMapLoadsChildrenModels()
+    {
+        // get model does its own assertions
+        $this->getModel('SymfonyDiscriminatorOne');
+        $this->getModel('SymfonyDiscriminatorTwo');
+    }
 }
