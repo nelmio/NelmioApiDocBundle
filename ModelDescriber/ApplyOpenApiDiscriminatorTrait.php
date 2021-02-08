@@ -54,7 +54,7 @@ trait ApplyOpenApiDiscriminatorTrait
                 $model->getOptions()
             ));
             $schema->oneOf[] = $oneOfSchema;
-            $schema->discriminator->mapping[$propertyValue] = clone $oneOfSchema;
+            $schema->discriminator->mapping[$propertyValue] = $oneOfSchema->ref;
         }
     }
 }

@@ -41,12 +41,12 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
         $this->assertArrayHasKey('one', $this->schema->discriminator->mapping);
         $this->assertSame(
             $this->modelRegistry->register($this->createModel('FirstType')),
-            $this->schema->discriminator->mapping['one']->ref
+            $this->schema->discriminator->mapping['one']
         );
         $this->assertArrayHasKey('two', $this->schema->discriminator->mapping);
         $this->assertSame(
             $this->modelRegistry->register($this->createModel('SecondType')),
-            $this->schema->discriminator->mapping['two']->ref
+            $this->schema->discriminator->mapping['two']
         );
     }
 
