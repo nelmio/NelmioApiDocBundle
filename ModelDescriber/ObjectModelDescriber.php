@@ -22,11 +22,13 @@ use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
+    use ApplyOpenApiDiscriminatorTrait;
 
     /** @var PropertyInfoExtractorInterface */
     private $propertyInfo;
@@ -70,6 +72,17 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $reflClass = new \ReflectionClass($class);
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
         $annotationsReader->updateDefinition($reflClass, $schema);
+
+        $discriminatorMap = $this->doctrineReader->getClassAnnotation($reflClass, DiscriminatorMap::class);
+        if ($discriminatorMap && OA\UNDEFINED === $schema->discriminator) {
+            $this->applyOpenApiDiscriminator(
+                $model,
+                $schema,
+                $this->modelRegistry,
+                $discriminatorMap->getTypeProperty(),
+                $discriminatorMap->getMapping()
+            );
+        }
 
         $propertyInfoProperties = $this->propertyInfo->getProperties($class, $context);
 

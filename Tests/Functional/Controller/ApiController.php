@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
@@ -220,6 +221,15 @@ class ApiController
      * @OA\Response(response=200, description="Worked well!", @Model(type=CompoundEntity::class))
      */
     public function compoundEntityAction()
+    {
+    }
+
+    /**
+     * @Route("/discriminator-mapping", methods={"GET", "POST"})
+     *
+     * @OA\Response(response=200, description="Worked well!", @Model(type=SymfonyDiscriminator::class))
+     */
+    public function discriminatorMappingAction()
     {
     }
 }
