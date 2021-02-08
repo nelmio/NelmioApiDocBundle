@@ -102,7 +102,7 @@ final class OpenApiPhpDescriber
 
                 if ($annotation instanceof Security) {
                     $annotation->validate();
-                    $mergeProperties->security[] = [$annotation->name => []];
+                    $mergeProperties->security[] = [$annotation->name => $annotation->scopes];
 
                     continue;
                 }
