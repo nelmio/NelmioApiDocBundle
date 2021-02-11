@@ -11,11 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
-use LogicException;
 use Doctrine\Common\Annotations\Reader;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
-use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 
 /**
  * @internal
@@ -130,9 +129,9 @@ class SymfonyConstraintAnnotationReader
     }
 
     /**
-     * @var ReflectionProperty|ReflectionClass $reflection
+     * @var ReflectionProperty|ReflectionClass
      */
-    private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection) : void
+    private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection): void
     {
         if ($choice->callback) {
             $enumValues = call_user_func(is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);

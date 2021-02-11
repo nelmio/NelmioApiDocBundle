@@ -152,7 +152,7 @@ class SymfonyConstraints
         $this->propertyChoiceWithCallbackWithoutClass = $propertyChoiceWithCallbackWithoutClass;
     }
 
-    public function setPropertyChoiceWithMultiple(array $propertyChoiceWithMultiple) : void
+    public function setPropertyChoiceWithMultiple(array $propertyChoiceWithMultiple): void
     {
         $this->propertyChoiceWithMultiple = $propertyChoiceWithMultiple;
     }
