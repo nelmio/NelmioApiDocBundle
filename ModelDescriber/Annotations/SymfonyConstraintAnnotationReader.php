@@ -11,9 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
+use LogicException;
 use Doctrine\Common\Annotations\Reader;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 
 /**
  * @internal
@@ -77,8 +79,7 @@ class SymfonyConstraintAnnotationReader
                 $property->minItems = (int) $annotation->min;
                 $property->maxItems = (int) $annotation->max;
             } elseif ($annotation instanceof Assert\Choice) {
-                $values = $annotation->callback ? call_user_func(is_array($annotation->callback) ? $annotation->callback : [$reflection->class, $annotation->callback]) : $annotation->choices;
-                $property->enum = array_values($values);
+                $this->applyEnumFromChoiceConstraint($property, $annotation, $reflection);
             } elseif ($annotation instanceof Assert\Range) {
                 $property->minimum = (int) $annotation->min;
                 $property->maximum = (int) $annotation->max;
@@ -126,5 +127,24 @@ class SymfonyConstraintAnnotationReader
         } else {
             $property->pattern = $newPattern;
         }
+    }
+
+    /**
+     * @var ReflectionProperty|ReflectionClass $reflection
+     */
+    private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection) : void
+    {
+        if ($choice->callback) {
+            $enumValues = call_user_func(is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);
+        } else {
+            $enumValues = $choice->choices;
+        }
+
+        $setEnumOnThis = $property;
+        if ($choice->multiple) {
+            $setEnumOnThis = Util::getChild($property, OA\Items::class);
+        }
+
+        $setEnumOnThis->enum = array_values($enumValues);
     }
 }

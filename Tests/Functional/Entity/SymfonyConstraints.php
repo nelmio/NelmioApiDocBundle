@@ -72,6 +72,13 @@ class SymfonyConstraints
     private $propertyChoiceWithCallbackWithoutClass;
 
     /**
+     * @var string[]
+     *
+     * @Assert\Choice(multiple=true, choices={"choice1", "choice2"})
+     */
+    private $propertyChoiceWithMultiple;
+
+    /**
      * @var int
      *
      * @Assert\Expression(
@@ -143,6 +150,11 @@ class SymfonyConstraints
     public function setPropertyChoiceWithCallbackWithoutClass(int $propertyChoiceWithCallbackWithoutClass): void
     {
         $this->propertyChoiceWithCallbackWithoutClass = $propertyChoiceWithCallbackWithoutClass;
+    }
+
+    public function setPropertyChoiceWithMultiple(array $propertyChoiceWithMultiple) : void
+    {
+        $this->propertyChoiceWithMultiple = $propertyChoiceWithMultiple;
     }
 
     public function setPropertyExpression(int $propertyExpression): void
