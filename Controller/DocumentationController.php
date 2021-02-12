@@ -29,6 +29,11 @@ final class DocumentationController
 
     public function __invoke(Request $request, $area = 'default')
     {
+        return new JsonResponse($this->generate($request, $area));
+    }
+
+    public function generate(Request $request, $area = 'default')
+    {
         if (!$this->generatorLocator->has($area)) {
             throw new BadRequestHttpException(sprintf('Area "%s" is not supported as it isn\'t defined in config.', $area));
         }
@@ -40,6 +45,6 @@ final class DocumentationController
             $spec->servers = [new Server(['url' => $request->getSchemeAndHttpHost().$request->getBaseUrl()])];
         }
 
-        return new JsonResponse($spec);
+        return $spec;
     }
 }
