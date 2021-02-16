@@ -16,7 +16,13 @@
             <argument type="service" id="twig" />
         </service>
 
-        <service id="nelmio_api_doc.controller.swagger" class="Nelmio\ApiDocBundle\Controller\DocumentationController" public="true">
+        <service id="nelmio_api_doc.controller.swagger" alias="nelmio_api_doc.controller.swagger_json" public="true" />
+
+        <service id="nelmio_api_doc.controller.swagger_json" class="Nelmio\ApiDocBundle\Controller\DocumentationController" public="true">
+            <argument type="service" id="nelmio_api_doc.generator_locator" />
+        </service>
+
+        <service id="nelmio_api_doc.controller.swagger_yaml" class="Nelmio\ApiDocBundle\Controller\YamlDocumentationController" public="true">
             <argument type="service" id="nelmio_api_doc.generator_locator" />
         </service>
 
