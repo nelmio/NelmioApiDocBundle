@@ -105,4 +105,52 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         // expect enum to be numeric array with sequential keys (not [1 => "active", 2 => "active"])
         $this->assertEquals($schema->properties[0]->enum, ['active', 'blocked']);
     }
+
+    /**
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
+     */
+    public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet()
+    {
+        $entity = new class() {
+            /**
+             * @Assert\Length(min = 1)
+             */
+            private $property1;
+        };
+
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maxLength);
+        $this->assertSame(1, $schema->properties[0]->minLength);
+    }
+
+    /**
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
+     */
+    public function testLengthConstraintDoesNotSetMinLengthIfMinIsNotSet()
+    {
+        $entity = new class() {
+            /**
+             * @Assert\Length(max = 100)
+             */
+            private $property1;
+        };
+
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minLength);
+        $this->assertSame(100, $schema->properties[0]->maxLength);
+    }
 }

@@ -69,8 +69,12 @@ class SymfonyConstraintAnnotationReader
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
             } elseif ($annotation instanceof Assert\Length) {
-                $property->minLength = (int) $annotation->min;
-                $property->maxLength = (int) $annotation->max;
+                if (isset($annotation->min)) {
+                    $property->minLength = (int) $annotation->min;
+                }
+                if (isset($annotation->max)) {
+                    $property->maxLength = (int) $annotation->max;
+                }
             } elseif ($annotation instanceof Assert\Regex) {
                 $this->appendPattern($property, $annotation->getHtmlPattern());
             } elseif ($annotation instanceof Assert\Count) {
