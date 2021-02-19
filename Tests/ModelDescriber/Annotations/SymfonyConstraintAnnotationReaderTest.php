@@ -125,7 +125,6 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $this->asertInstanceOf(OA\Items::class, $schema->properties[0]->items);
         $this->assertEquals($schema->properties[0]->items->enum, ['one', 'two']);
-
     }
 
     /**
@@ -174,6 +173,5 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minLength);
         $this->assertSame(100, $schema->properties[0]->maxLength);
-
     }
 }
