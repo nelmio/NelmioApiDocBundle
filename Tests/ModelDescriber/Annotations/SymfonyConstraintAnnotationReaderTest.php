@@ -106,7 +106,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertEquals($schema->properties[0]->enum, ['active', 'blocked']);
     }
 
-    public function testMultieChoiceConstraintsApplyEnumToItems()
+    public function testMultipleChoiceConstraintsApplyEnumToItems()
     {
         $entity = new class() {
             /**
@@ -123,7 +123,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->asertInstanceOf(OA\Items::class, $schema->properties[0]->items);
+        $this->assertInstanceOf(OA\Items::class, $schema->properties[0]->items);
         $this->assertEquals($schema->properties[0]->items->enum, ['one', 'two']);
     }
 
