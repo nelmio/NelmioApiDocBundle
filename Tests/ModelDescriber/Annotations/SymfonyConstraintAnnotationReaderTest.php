@@ -106,7 +106,6 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertEquals($schema->properties[0]->enum, ['active', 'blocked']);
     }
 
-
     public function testMultieChoiceConstraintsApplyEnumToItems()
     {
         $entity = new class() {
@@ -124,12 +123,11 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-
         $this->asertInstanceOf(OA\Items::class, $schema->properties[0]->items);
         $this->assertEquals($schema->properties[0]->items->enum, ['one', 'two']);
 
     }
-  
+
     /**
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
      */
@@ -138,7 +136,6 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $entity = new class() {
             /**
              * @Assert\Length(min = 1)
-
              */
             private $property1;
         };
@@ -150,9 +147,6 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
-
-
-
 
         $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maxLength);
         $this->assertSame(1, $schema->properties[0]->minLength);
