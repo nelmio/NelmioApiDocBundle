@@ -106,6 +106,27 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertEquals($schema->properties[0]->enum, ['active', 'blocked']);
     }
 
+    public function testMultipleChoiceConstraintsApplyEnumToItems()
+    {
+        $entity = new class() {
+            /**
+             * @Assert\Choice(choices={"one", "two"}, multiple=true)
+             */
+            private $property1;
+        };
+
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+        $this->assertInstanceOf(OA\Items::class, $schema->properties[0]->items);
+        $this->assertEquals($schema->properties[0]->items->enum, ['one', 'two']);
+    }
+
     /**
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
      */

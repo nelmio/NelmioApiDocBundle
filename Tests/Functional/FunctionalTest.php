@@ -395,6 +395,13 @@ class FunctionalTest extends WebTestCase
                     'type' => 'integer',
                     'enum' => ['choice1', 'choice2'],
                 ],
+                'propertyChoiceWithMultiple' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'string',
+                        'enum' => ['choice1', 'choice2'],
+                    ],
+                ],
                 'propertyExpression' => [
                     'type' => 'integer',
                 ],
