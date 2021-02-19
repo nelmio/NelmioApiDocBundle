@@ -87,7 +87,8 @@ class TestKernel extends Kernel
         $routes->import(__DIR__.'/Controller/InvokableController.php', '/', 'annotation');
         $routes->import('', '/api', 'api_platform');
         $routes->add('/docs/{area}', 'nelmio_api_doc.controller.swagger_ui')->setDefault('area', 'default');
-        $routes->add('/docs.json', 'nelmio_api_doc.controller.swagger');
+        $routes->add('/docs.json', 'nelmio_api_doc.controller.swagger_json');
+        $routes->add('/docs.yaml', 'nelmio_api_doc.controller.swagger_yaml');
         $routes->import(__DIR__.'/Controller/FOSRestController.php', '/', 'annotation');
 
         if (class_exists(SerializedName::class)) {

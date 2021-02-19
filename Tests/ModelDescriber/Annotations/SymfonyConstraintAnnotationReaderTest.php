@@ -106,7 +106,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertEquals($schema->properties[0]->enum, ['active', 'blocked']);
     }
 
-    public function testMultipleChoiceConstraintsApplyEnumToItems()
+
+    public function testMultieChoiceConstraintsApplyEnumToItems()
     {
         $entity = new class() {
             /**
@@ -123,7 +124,62 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertInstanceOf(OA\Items::class, $schema->properties[0]->items);
+
+        $this->asertInstanceOf(OA\Items::class, $schema->properties[0]->items);
         $this->assertEquals($schema->properties[0]->items->enum, ['one', 'two']);
+
+    }
+  
+    /**
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
+     */
+    public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet()
+    {
+        $entity = new class() {
+            /**
+             * @Assert\Length(min = 1)
+
+             */
+            private $property1;
+        };
+
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+
+
+
+        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maxLength);
+        $this->assertSame(1, $schema->properties[0]->minLength);
+    }
+
+    /**
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
+     */
+    public function testLengthConstraintDoesNotSetMinLengthIfMinIsNotSet()
+    {
+        $entity = new class() {
+            /**
+             * @Assert\Length(max = 100)
+             */
+            private $property1;
+        };
+
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minLength);
+        $this->assertSame(100, $schema->properties[0]->maxLength);
+
     }
 }
