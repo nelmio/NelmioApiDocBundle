@@ -15,36 +15,37 @@
         }
     ],
     "require": {
-        "php": "^7.0",
-        "symfony/framework-bundle": "^3.4|^4.0",
-        "symfony/options-resolver": "^3.4.4|^4.0",
-        "symfony/property-info": "^3.4|^4.0",
-        "exsyst/swagger": "^0.4.1",
-        "zircote/swagger-php": "^2.0.9",
-        "phpdocumentor/reflection-docblock": "^3.1|^4.0"
+        "php": ">=7.1.3",
+        "ext-json": "*",
+        "symfony/framework-bundle": "^4.4|^5.0",
+        "symfony/options-resolver": "^4.4|^5.0",
+        "symfony/property-info": "^4.4|^5.0",
+        "zircote/swagger-php": "^3.0",
+        "phpdocumentor/reflection-docblock": "^3.1|^4.4|^5.0"
     },
     "require-dev": {
-        "symfony/templating": "^3.4|^4.0",
-        "symfony/twig-bundle": "^3.4|^4.0",
-        "symfony/asset": "^3.4|^4.0",
-        "symfony/console": "^3.4|^4.0",
-        "symfony/config": "^3.4|^4.0",
-        "symfony/validator": "^3.4|^4.0",
-        "symfony/property-access": "^3.4|^4.0",
-        "symfony/form": "^3.4|^4.0",
-        "symfony/dom-crawler": "^3.4|^4.0",
-        "symfony/browser-kit": "^3.4|^4.0",
-        "symfony/cache": "^3.4|^4.0",
-        "symfony/phpunit-bridge": "^3.4.24|^4.0",
-        "symfony/stopwatch": "^3.4|^4.0",
-        "sensio/framework-extra-bundle": "^3.0",
-        "doctrine/annotations": "^1.2",
+        "symfony/templating": "^4.4|^5.0",
+        "symfony/twig-bundle": "^4.4|^5.0",
+        "symfony/asset": "^4.4|^5.0",
+        "symfony/console": "^4.4|^5.0",
+        "symfony/config": "^4.4|^5.0",
+        "symfony/validator": "^4.4|^5.0",
+        "symfony/property-access": "^4.4|^5.0",
+        "symfony/form": "^4.4|^5.0",
+        "symfony/dom-crawler": "^4.4|^5.0",
+        "symfony/browser-kit": "^4.4|^5.0",
+        "symfony/cache": "^4.4|^5.0",
+        "symfony/phpunit-bridge": "^5.2",
+        "symfony/stopwatch": "^4.4|^5.0",
+        "symfony/routing": "^4.4|^5.0",
+        "sensio/framework-extra-bundle": "^4.4|^5.0",
+        "doctrine/annotations": "^1.11",
         "doctrine/common": "^2.4",
 
-        "api-platform/core": "^2.1.0",
-        "friendsofsymfony/rest-bundle": "^2.0",
+        "api-platform/core": "^2.4",
+        "friendsofsymfony/rest-bundle": "^2.8|^3.0",
         "willdurand/hateoas-bundle": "^1.0|^2.0",
-        "jms/serializer-bundle": "^2.0|^3.0",
+        "jms/serializer-bundle": "^2.3|^3.0",
         "jms/serializer": "^1.14|^3.0"
     },
     "suggest": {
@@ -57,11 +58,14 @@
     "autoload": {
         "psr-4": {
             "Nelmio\\ApiDocBundle\\": ""
-        }
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.2.x-dev"
+            "dev-master": "4.0.x-dev"
         }
     }
 }

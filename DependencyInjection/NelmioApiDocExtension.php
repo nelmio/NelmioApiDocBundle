@@ -15,8 +15,8 @@ use FOS\RestBundle\Controller\Annotations\ParamInterface;
 use JMS\Serializer\Visitor\SerializationVisitorInterface;
 use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Describer\ExternalDocDescriber;
+use Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
-use Nelmio\ApiDocBundle\Describer\SwaggerPhpDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
@@ -62,12 +62,14 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ->setFactory([new Reference('router'), 'getRouteCollection']);
 
         $container->setParameter('nelmio_api_doc.areas', array_keys($config['areas']));
+        $container->setParameter('nelmio_api_doc.media_types', $config['media_types']);
         foreach ($config['areas'] as $area => $areaConfig) {
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
 
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
                 ->setPublic(true)
                 ->addMethodCall('setAlternativeNames', [$nameAliases])
+                ->addMethodCall('setMediaTypes', [$config['media_types']])
                 ->setArguments([
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
@@ -82,12 +84,12 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -400]);
 
-            $container->register(sprintf('nelmio_api_doc.describers.swagger_php.%s', $area), SwaggerPhpDescriber::class)
+            $container->register(sprintf('nelmio_api_doc.describers.openapi_php.%s', $area), OpenApiPhpDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
                     new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
-                    new Reference('annotation_reader'),
+                    new Reference('annotations.reader'), // We cannot use the cached version of the annotation reader since the construction of the annotations is context dependant...
                     new Reference('logger'),
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
@@ -115,7 +117,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                         (new Definition(FilteredRouteCollectionBuilder::class))
                             ->setArguments(
                                 [
-                                    new Reference('annotation_reader'),
+                                    new Reference('annotation_reader'), // Here we use the cached version as we don't deal with @OA annotations in this service
                                     new Reference('nelmio_api_doc.controller_reflector'),
                                     $area,
                                     $areaConfig,
@@ -135,11 +137,16 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 array_map(function ($area) { return new Reference(sprintf('nelmio_api_doc.generator.%s', $area)); }, array_keys($config['areas']))
             ));
 
+        $container->getDefinition('nelmio_api_doc.model_describers.object')
+            ->setArgument(3, $config['media_types']);
+
         // Import services needed for each library
         $loader->load('php_doc.xml');
 
         if (interface_exists(ParamInterface::class)) {
             $loader->load('fos_rest.xml');
+            $container->getDefinition('nelmio_api_doc.route_describers.fos_rest')
+                ->setArgument(1, $config['media_types']);
         }
 
         // ApiPlatform support
@@ -159,8 +166,9 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setPublic(false)
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
+                    new Reference('annotations.reader'),
+                    $config['media_types'],
                     $jmsNamingStrategy,
-                    new Reference('annotation_reader'),
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
 
@@ -180,6 +188,18 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // Import the base configuration
         $container->getDefinition('nelmio_api_doc.describers.config')->replaceArgument(0, $config['documentation']);
+
+        // Compatibility Symfony
+        $controllerNameConverter = null;
+        if ($container->hasDefinition('.legacy_controller_name_converter')) { // 4.4
+            $controllerNameConverter = $container->getDefinition('.legacy_controller_name_converter');
+        } elseif ($container->hasDefinition('controller_name_converter')) { // < 4.4
+            $controllerNameConverter = $container->getDefinition('controller_name_converter');
+        }
+
+        if (null !== $controllerNameConverter) {
+            $container->getDefinition('nelmio_api_doc.controller_reflector')->setArgument(1, $controllerNameConverter);
+        }
     }
 
     private function findNameAliases(array $names, string $area): array

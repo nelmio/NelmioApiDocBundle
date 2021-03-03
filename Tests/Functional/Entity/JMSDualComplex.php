@@ -13,7 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 class JMSDualComplex
 {
@@ -23,12 +23,12 @@ class JMSDualComplex
     private $id;
 
     /**
-     * @SWG\Property(ref=@Model(type=JMSComplex::class))
+     * @OA\Property(ref=@Model(type=JMSComplex::class))
      */
     private $complex;
 
     /**
-     * @SWG\Property(ref=@Model(type=JMSUser::class))
+     * @OA\Property(ref=@Model(type=JMSUser::class))
      */
     private $user;
 }

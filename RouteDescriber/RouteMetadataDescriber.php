@@ -11,20 +11,24 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use EXSyst\Component\Swagger\Swagger;
+use LogicException;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Route;
 
+/**
+ * Should be last route describer executed to make sure all params are set.
+ */
 final class RouteMetadataDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         foreach ($this->getOperations($api, $route) as $operation) {
-            $operation->merge(['schemes' => $route->getSchemes()]);
-
             $requirements = $route->getRequirements();
             $compiledRoute = $route->compile();
+            $existingParams = $this->getRefParams($api, $operation);
 
             // Don't include host requirements
             foreach ($compiledRoute->getPathVariables() as $pathVariable) {
@@ -32,17 +36,66 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                     continue;
                 }
 
-                $parameter = $operation->getParameters()->get($pathVariable, 'path');
-                $parameter->setRequired(true);
+                $paramId = $pathVariable.'/path';
+                /** @var OA\Parameter $parameter */
+                $parameter = $existingParams[$paramId] ?? null;
+                if (null !== $parameter) {
+                    if (!$parameter->required || OA\UNDEFINED === $parameter->required) {
+                        throw new LogicException(\sprintf('Global parameter "%s" is used as part of route "%s" and must be set as "required"', $pathVariable, $route->getPath()));
+                    }
 
-                if (null === $parameter->getType()) {
-                    $parameter->setType('string');
+                    continue;
                 }
 
-                if (isset($requirements[$pathVariable])) {
-                    $parameter->setPattern($requirements[$pathVariable]);
+                $parameter = Util::getOperationParameter($operation, $pathVariable, 'path');
+                $parameter->required = true;
+
+                $parameter->schema = Util::getChild($parameter, OA\Schema::class);
+
+                if (OA\UNDEFINED === $parameter->schema->type) {
+                    $parameter->schema->type = 'string';
+                }
+
+                if (isset($requirements[$pathVariable]) && OA\UNDEFINED === $parameter->schema->pattern) {
+                    $parameter->schema->pattern = $requirements[$pathVariable];
                 }
             }
         }
+    }
+
+    /**
+     * The '$ref' parameters need special handling, since their objects are missing 'name' and 'in'.
+     *
+     * @return OA\Parameter[] existing $ref parameters
+     */
+    private function getRefParams(OA\OpenApi $api, OA\Operation $operation): array
+    {
+        /** @var OA\Parameter[] $globalParams */
+        $globalParams = OA\UNDEFINED !== $api->components && OA\UNDEFINED !== $api->components->parameters ? $api->components->parameters : [];
+        $globalParams = array_column($globalParams, null, 'parameter'); // update the indexes of the array with the reference names actually used
+        $existingParams = [];
+
+        $operationParameters = OA\UNDEFINED !== $operation->parameters ? $operation->parameters : [];
+        /** @var OA\Parameter $parameter */
+        foreach ($operationParameters as $id => $parameter) {
+            $ref = $parameter->ref;
+            if (OA\UNDEFINED === $ref) {
+                // we only concern ourselves with '$ref' parameters, so continue the loop
+                continue;
+            }
+
+            $ref = \mb_substr($ref, 24); // trim the '#/components/parameters/' part of ref
+            if (!isset($globalParams[$ref])) {
+                // this shouldn't happen during proper configs, but in case of bad config, just ignore it here
+                continue;
+            }
+
+            $refParameter = $globalParams[$ref];
+
+            // param ids are in form {name}/{in}
+            $existingParams[\sprintf('%s/%s', $refParameter->name, $refParameter->in)] = $refParameter;
+        }
+
+        return $existingParams;
     }
 }

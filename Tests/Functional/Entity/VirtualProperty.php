@@ -37,9 +37,27 @@ class VirtualProperty
      */
     private $user;
 
+    /**
+     * @Serializer\Accessor(getter="getFoo", setter="setFoo")
+     * @Serializer\Type("string")
+     * @Serializer\Expose
+     *
+     * Ensures https://github.com/nelmio/NelmioApiDocBundle/issues/1708 is fixed.
+     */
+    private $virtualprop;
+
     public function __construct()
     {
         $this->user = new User();
         $this->user->setEmail('dummy@test.com');
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        if ('getFoo' === $name || 'setFoo' === $name) {
+            return 'Success';
+        }
+
+        throw new \LogicException(sprintf('%s::__call does not implement this function.', __CLASS__));
     }
 }

@@ -11,68 +11,81 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use OpenApi\Annotations\Server;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+
 class SwaggerUiTest extends WebTestCase
 {
-    protected static function createClient(array $options = [], array $server = [])
+    /**
+     * @var KernelBrowser
+     */
+    private $client;
+
+    protected function setUp(): void
     {
-        return parent::createClient([], $server + ['HTTP_HOST' => 'api.example.com', 'PHP_SELF' => '/app_dev.php/docs', 'SCRIPT_FILENAME' => '/var/www/app/web/app_dev.php']);
+        parent::setUp();
+
+        $this->client = static::createClient([], ['HTTP_HOST' => 'api.example.com', 'PHP_SELF' => '/app_dev.php/docs', 'SCRIPT_FILENAME' => '/var/www/app/web/app_dev.php']);
     }
 
-    /**
-     * @dataProvider areaProvider
-     */
-    public function testSwaggerUi($url, $area, $expected)
+    public function testSwaggerUi()
     {
-        $client = self::createClient();
-        $crawler = $client->request('GET', '/app_dev.php'.$url);
+        $crawler = $this->client->request('GET', '/app_dev.php/docs');
 
-        $response = $client->getResponse();
+        $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('UTF-8', $response->getCharset());
         $this->assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
+
+        $expected = json_decode($this->getOpenApiDefinition()->toJson(), true);
 
         $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
 
-    public function areaProvider()
+    public function testApiPlatformSwaggerUi()
     {
-        $expected = $this->getSwaggerDefinition()->toArray();
-        $expected['basePath'] = '/app_dev.php';
+        $crawler = $this->client->request('GET', '/app_dev.php/docs/test');
 
-        yield ['/docs', 'default', $expected];
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
 
-        // Api-platform documentation
-        $expected['info']['title'] = 'My Test App';
-        $expected['paths'] = [
-            '/api/dummies' => $expected['paths']['/api/dummies'],
-            '/api/foo' => $expected['paths']['/api/foo'],
-            '/api/dummies/{id}' => $expected['paths']['/api/dummies/{id}'],
-            '/test/test/' => ['get' => [
-                'responses' => ['200' => ['description' => 'Test']],
-            ]],
-        ];
-        $expected['definitions'] = [
-            'Dummy' => $expected['definitions']['Dummy'],
-            'Test' => ['type' => 'string'],
-            'JMSPicture_mini' => ['type' => 'object'],
-            'BazingaUser_grouped' => ['type' => 'object'],
+        $expected = json_decode($this->getOpenApiDefinition('test')->toJson(), true);
+        $expected['servers'] = [
+            ['url' => 'http://api.example.com/app_dev.php'],
         ];
 
-        yield ['/docs/test', 'test', $expected];
+        $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
 
     public function testJsonDocs()
     {
-        $client = self::createClient();
-        $client->request('GET', '/app_dev.php/docs.json');
+        $this->client->request('GET', '/app_dev.php/docs.json');
 
-        $response = $client->getResponse();
+        $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
 
-        $expected = $this->getSwaggerDefinition()->toArray();
-        $expected['basePath'] = '/app_dev.php';
-        $expected['host'] = 'api.example.com';
+        $expected = json_decode($this->getOpenApiDefinition()->toJson(), true);
+        $expected['servers'] = [
+            ['url' => 'http://api.example.com/app_dev.php'],
+        ];
 
         $this->assertEquals($expected, json_decode($response->getContent(), true));
+    }
+
+    public function testYamlDocs()
+    {
+        $this->client->request('GET', '/app_dev.php/docs.yaml');
+
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('text/x-yaml; charset=UTF-8', $response->headers->get('Content-Type'));
+
+        $spec = $this->getOpenApiDefinition();
+        $spec->servers = [new Server(['url' => 'http://api.example.com/app_dev.php'])];
+        $expected = $spec->toYaml();
+
+        $this->assertEquals($expected, $response->getContent());
     }
 }

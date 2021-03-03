@@ -23,7 +23,7 @@ class ApiDocGeneratorTest extends TestCase
         $adapter = new ArrayAdapter();
         $generator = new ApiDocGenerator([new DefaultDescriber()], [], $adapter);
 
-        $this->assertEquals($generator->generate(), $adapter->getItem('swagger_doc')->get());
+        $this->assertEquals(json_encode($generator->generate()), json_encode($adapter->getItem('openapi_doc')->get()));
     }
 
     public function testCacheWithCustomId()
@@ -31,6 +31,6 @@ class ApiDocGeneratorTest extends TestCase
         $adapter = new ArrayAdapter();
         $generator = new ApiDocGenerator([new DefaultDescriber()], [], $adapter, 'custom_id');
 
-        $this->assertEquals($generator->generate(), $adapter->getItem('custom_id')->get());
+        $this->assertEquals(json_encode($generator->generate()), json_encode($adapter->getItem('custom_id')->get()));
     }
 }

@@ -11,21 +11,19 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Swagger\Annotations as SWG;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Regex;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/api", host="api.example.com")
@@ -33,13 +31,17 @@ use Symfony\Component\Validator\Constraints\Regex;
 class ApiController
 {
     /**
-     * @SWG\Response(
-     *     response="200",
-     *     description="Success",
-     *     @SWG\Schema(ref=@Model(type=Article::class, groups={"light"}))
+     * @OA\Get(
+     *  @OA\Response(
+     *   response="200",
+     *   description="Success",
+     *   @Model(type=Article::class, groups={"light"}))
+     *  )
      * )
-     * @SWG\Parameter(ref="#/parameters/test")
+     * @OA\Parameter(ref="#/components/parameters/test")
      * @Route("/article/{id}", methods={"GET"})
+     * @OA\Parameter(name="Accept-Version", in="header", @OA\Schema(type="string"))
+     * @OA\Parameter(name="Application-Name", in="header", @OA\Schema(type="string"))
      */
     public function fetchArticleAction()
     {
@@ -51,7 +53,15 @@ class ApiController
      * @Route("/swagger", methods={"GET", "LINK"})
      * @Route("/swagger2", methods={"GET"})
      * @Operation(
-     *     @SWG\Response(response="201", description="An example resource")
+     *     @OA\Response(response="201", description="An example resource")
+     * )
+     * @OA\Get(
+     *     path="/api/swagger2",
+     *     @OA\Parameter(name="Accept-Version", in="header", @OA\Schema(type="string"))
+     * )
+     * @OA\Post(
+     *     path="/api/swagger2",
+     *     @OA\Response(response="203", description="but 203 is not actually allowed (wrong method)")
      * )
      */
     public function swaggerAction()
@@ -60,21 +70,19 @@ class ApiController
 
     /**
      * @Route("/swagger/implicit", methods={"GET", "POST"})
-     * @SWG\Response(
-     *     response="201",
-     *     description="Operation automatically detected",
-     *     @Model(type=User::class)
+     * @OA\Response(
+     *    response="201",
+     *    description="Operation automatically detected",
+     *    @Model(type=User::class)
+     * ),
+     * @OA\RequestBody(
+     *    description="This is a request body",
+     *    @OA\JsonContent(
+     *      type="array",
+     *      @OA\Items(ref=@Model(type=User::class))
+     *    )
      * )
-     * @SWG\Parameter(
-     *     name="foo",
-     *     in="body",
-     *     description="This is a parameter",
-     *     @SWG\Schema(
-     *         type="array",
-     *         @SWG\Items(ref=@Model(type=User::class))
-     *     )
-     * )
-     * @SWG\Tag(name="implicit")
+     * @OA\Tag(name="implicit")
      */
     public function implicitSwaggerAction()
     {
@@ -82,16 +90,14 @@ class ApiController
 
     /**
      * @Route("/test/users/{user}", methods={"POST"}, schemes={"https"}, requirements={"user"="/foo/"})
-     * @SWG\Response(
-     *     response="201",
-     *     description="Operation automatically detected",
-     *     @Model(type=User::class)
-     * )
-     * @SWG\Parameter(
-     *     name="foo",
-     *     in="body",
-     *     description="This is a parameter",
-     *     @SWG\Schema(ref=@Model(type=UserType::class, options={"bar": "baz"}))
+     * @OA\Response(
+     *    response="201",
+     *    description="Operation automatically detected",
+     *    @Model(type=User::class)
+     * ),
+     * @OA\RequestBody(
+     *    description="This is a request body",
+     *    @Model(type=UserType::class, options={"bar": "baz"}))
      * )
      */
     public function submitUserTypeAction()
@@ -100,21 +106,9 @@ class ApiController
 
     /**
      * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="/foo/"})
-     * @Operation(
-     *     @SWG\Response(response=200, description="sucessful")
-     * )
+     * @OA\Response(response=200, description="sucessful")
      */
     public function userAction()
-    {
-    }
-
-    /**
-     * @Route("/fosrest.{_format}", methods={"POST"})
-     * @QueryParam(name="foo", requirements=@Regex("/^\d+$/"))
-     * @RequestParam(name="bar", requirements="\d+")
-     * @RequestParam(name="baz", requirements=@IsTrue)
-     */
-    public function fosrestAction()
     {
     }
 
@@ -141,9 +135,9 @@ class ApiController
     }
 
     /**
-     * @SWG\Get(
+     * @OA\Get(
      *     path="/filtered",
-     *     @SWG\Response(response="201", description="")
+     *     @OA\Response(response="201", description="")
      * )
      */
     public function filteredAction()
@@ -152,13 +146,11 @@ class ApiController
 
     /**
      * @Route("/form", methods={"POST"})
-     * @SWG\Parameter(
-     *     name="form",
-     *     in="body",
-     *     description="Request content",
-     *     @SWG\Schema(ref=@Model(type=DummyType::class))
+     * @OA\RequestBody(
+     *    description="Request content",
+     *    @Model(type=DummyType::class))
      * )
-     * @SWG\Response(response="201", description="")
+     * @OA\Response(response="201", description="")
      */
     public function formAction()
     {
@@ -166,9 +158,10 @@ class ApiController
 
     /**
      * @Route("/security")
-     * @SWG\Response(response="201", description="")
+     * @OA\Response(response="201", description="")
      * @Security(name="api_key")
      * @Security(name="basic")
+     * @Security(name="oauth2", scopes={"scope_1"})
      */
     public function securityAction()
     {
@@ -176,10 +169,10 @@ class ApiController
 
     /**
      * @Route("/swagger/symfonyConstraints", methods={"GET"})
-     * @SWG\Response(
-     *     response="201",
-     *     description="Used for symfony constraints test",
-     *     @SWG\Schema(ref=@Model(type=SymfonyConstraints::class))
+     * @OA\Response(
+     *    response="201",
+     *    description="Used for symfony constraints test",
+     *    @Model(type=SymfonyConstraints::class)
      * )
      */
     public function symfonyConstraintsAction()
@@ -187,15 +180,15 @@ class ApiController
     }
 
     /**
-     * @SWG\Response(
+     *  @OA\Response(
      *     response="200",
      *     description="Success",
-     *     @SWG\Schema(ref="#/definitions/Test")
-     * )
-     * @SWG\Response(
+     *     ref="#/components/schemas/Test"
+     *  ),
+     *  @OA\Response(
      *     response="201",
-     *     ref="#/responses/201"
-     * )
+     *     ref="#/components/responses/201"
+     *  )
      * @Route("/configReference", methods={"GET"})
      */
     public function configReferenceAction()
@@ -204,10 +197,10 @@ class ApiController
 
     /**
      * @Route("/multi-annotations", methods={"GET", "POST"})
-     * @SWG\Get(description="This is the get operation")
-     * @SWG\Post(description="This is post")
+     * @OA\Get(description="This is the get operation")
+     * @OA\Post(description="This is post")
      *
-     * @SWG\Response(response=200, description="Worked well!", @Model(type=DummyType::class))
+     * @OA\Response(response=200, description="Worked well!", @Model(type=DummyType::class))
      */
     public function operationsWithOtherAnnotations()
     {
@@ -219,6 +212,24 @@ class ApiController
      * @Areas({"area", "area2"})
      */
     public function newAreaAction()
+    {
+    }
+
+    /**
+     * @Route("/compound", methods={"GET", "POST"})
+     *
+     * @OA\Response(response=200, description="Worked well!", @Model(type=CompoundEntity::class))
+     */
+    public function compoundEntityAction()
+    {
+    }
+
+    /**
+     * @Route("/discriminator-mapping", methods={"GET", "POST"})
+     *
+     * @OA\Response(response=200, description="Worked well!", @Model(type=SymfonyDiscriminator::class))
+     */
+    public function discriminatorMappingAction()
     {
     }
 }

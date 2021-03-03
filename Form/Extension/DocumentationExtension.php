@@ -29,7 +29,7 @@ class DocumentationExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(['documentation' => []])
-            ->setAllowedTypes('documentation', ['array']);
+            ->setAllowedTypes('documentation', ['array', 'bool']);
     }
 
     public function getExtendedType()
@@ -37,7 +37,7 @@ class DocumentationExtension extends AbstractTypeExtension
         return self::getExtendedTypes()[0];
     }
 
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [FormType::class];
     }

@@ -11,9 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Model;
 
-use EXSyst\Component\Swagger\Swagger;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use OpenApi\Annotations as OA;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -27,10 +27,10 @@ class ModelRegistryTest extends TestCase
                 'groups' => ['group1'],
             ],
         ];
-        $registry = new ModelRegistry([], new Swagger(), $alternativeNames);
+        $registry = new ModelRegistry([], new OA\OpenApi([]), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true);
 
-        $this->assertEquals('#/definitions/array', $registry->register(new Model($type, ['group1'])));
+        $this->assertEquals('#/components/schemas/array', $registry->register(new Model($type, ['group1'])));
     }
 
     /**
@@ -40,7 +40,7 @@ class ModelRegistryTest extends TestCase
      */
     public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames)
     {
-        $registry = new ModelRegistry([], new Swagger(), $alternativeNames);
+        $registry = new ModelRegistry([], new OA\OpenApi([]), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
 
         $this->assertEquals($expected, $registry->register(new Model($type, $groups)));
@@ -50,7 +50,7 @@ class ModelRegistryTest extends TestCase
     {
         return [
             [
-                '#/definitions/ModelRegistryTest',
+                '#/components/schemas/ModelRegistryTest',
                 null,
                 [
                     'Foo1' => [
@@ -60,7 +60,7 @@ class ModelRegistryTest extends TestCase
                 ],
             ],
             [
-                '#/definitions/Foo1',
+                '#/components/schemas/Foo1',
                 ['group1'],
                 [
                     'Foo1' => [
@@ -70,7 +70,7 @@ class ModelRegistryTest extends TestCase
                 ],
             ],
             [
-                '#/definitions/Foo1',
+                '#/components/schemas/Foo1',
                 ['group1', 'group2'],
                 [
                     'Foo1' => [
@@ -80,7 +80,7 @@ class ModelRegistryTest extends TestCase
                 ],
             ],
             [
-                '#/definitions/ModelRegistryTest',
+                '#/components/schemas/ModelRegistryTest',
                 null,
                 [
                     'Foo1' => [
@@ -90,7 +90,7 @@ class ModelRegistryTest extends TestCase
                 ],
             ],
             [
-                '#/definitions/Foo1',
+                '#/components/schemas/Foo1',
                 [],
                 [
                     'Foo1' => [
@@ -110,9 +110,9 @@ class ModelRegistryTest extends TestCase
         $this->expectException('\LogicException');
         $this->expectExceptionMessage(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $stringType));
 
-        $registry = new ModelRegistry([], new Swagger());
+        $registry = new ModelRegistry([], new OA\OpenApi([]));
         $registry->register(new Model($type));
-        $registry->registerDefinitions();
+        $registry->registerSchemas();
     }
 
     public function unsupportedTypesProvider()

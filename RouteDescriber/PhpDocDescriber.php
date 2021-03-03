@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use EXSyst\Component\Swagger\Swagger;
+use OpenApi\Annotations as OA;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Symfony\Component\Routing\Route;
@@ -30,7 +30,7 @@ final class PhpDocDescriber implements RouteDescriberInterface
         $this->docBlockFactory = $docBlockFactory;
     }
 
-    public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         $classDocBlock = null;
         $docBlock = null;
@@ -47,19 +47,19 @@ final class PhpDocDescriber implements RouteDescriberInterface
 
         foreach ($this->getOperations($api, $route) as $operation) {
             if (null !== $docBlock) {
-                if (null === $operation->getSummary() && '' !== $docBlock->getSummary()) {
-                    $operation->setSummary($docBlock->getSummary());
+                if (OA\UNDEFINED === $operation->summary && '' !== $docBlock->getSummary()) {
+                    $operation->summary = $docBlock->getSummary();
                 }
-                if (null === $operation->getDescription() && '' !== (string) $docBlock->getDescription()) {
-                    $operation->setDescription((string) $docBlock->getDescription());
+                if (OA\UNDEFINED === $operation->description && '' !== (string) $docBlock->getDescription()) {
+                    $operation->description = (string) $docBlock->getDescription();
                 }
                 if ($docBlock->hasTag('deprecated')) {
-                    $operation->setDeprecated(true);
+                    $operation->deprecated = true;
                 }
             }
             if (null !== $classDocBlock) {
                 if ($classDocBlock->hasTag('deprecated')) {
-                    $operation->setDeprecated(true);
+                    $operation->deprecated = true;
                 }
             }
         }

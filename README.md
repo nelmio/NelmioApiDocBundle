@@ -1,14 +1,19 @@
 NelmioApiDocBundle
 ==================
 
-[![Build
-Status](https://travis-ci.org/nelmio/NelmioApiDocBundle.svg?branch=master)](http://travis-ci.org/nelmio/NelmioApiDocBundle)
+[![Build Status](https://img.shields.io/github/workflow/status/nelmio/NelmioApiDocBundle/CI?style=flat-square)](https://github.com/nelmio/NelmioApiDocBundle/actions?query=workflow:CI) 
 [![Total Downloads](https://poser.pugx.org/nelmio/api-doc-bundle/downloads)](https://packagist.org/packages/nelmio/api-doc-bundle)
 [![Latest Stable
 Version](https://poser.pugx.org/nelmio/api-doc-bundle/v/stable)](https://packagist.org/packages/nelmio/api-doc-bundle)
 
 The **NelmioApiDocBundle** bundle allows you to generate a decent documentation
 for your APIs.
+
+## Migrate from 3.x to 4.0
+
+[To migrate from 3.x to 4.0, follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-4.0.md)
+
+Version 4.0 brings OpenAPI 3.0 support. If you want to stick to Swagger 2.0, you should use the version 3 of this bundle.
 
 ## Migrate from 2.x to 3.0
 

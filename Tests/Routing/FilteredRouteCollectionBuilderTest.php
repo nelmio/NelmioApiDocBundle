@@ -19,6 +19,7 @@ use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -47,10 +48,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
             new AnnotationReader(),
-            new ControllerReflector(
-                new Container(),
-                $this->createMock(ControllerNameParser::class)
-            ),
+            $this->createControllerReflector(),
             'areaName',
             $options
         );
@@ -77,10 +75,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
             new AnnotationReader(),
-            new ControllerReflector(
-                new Container(),
-                $this->createMock(ControllerNameParser::class)
-            ),
+            $this->createControllerReflector(),
             'areaName',
             $pathPattern
         );
@@ -90,18 +85,15 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\InvalidArgumentException
-     *
      * @dataProvider getInvalidOptions
      */
     public function testFilterWithInvalidOption(array $options)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new FilteredRouteCollectionBuilder(
             new AnnotationReader(),
-            new ControllerReflector(
-                new Container(),
-                $this->createMock(ControllerNameParser::class)
-            ),
+            $this->createControllerReflector(),
             'areaName',
             $options
         );
@@ -154,10 +146,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
             new AnnotationReader(),
-            new ControllerReflector(
-                new Container(),
-                $this->createMock(ControllerNameParser::class)
-            ),
+            $this->createControllerReflector(),
             'area',
             $options
         );
@@ -237,10 +226,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
             new AnnotationReader(),
-            new ControllerReflector(
-                new Container(),
-                $this->createMock(ControllerNameParser::class)
-            ),
+            $this->createControllerReflector(),
             'areaName',
             $options
         );
@@ -259,5 +245,17 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             ['r5_non_matching_path_and_matching_host', new Route('/admin/bar/action1', [], [], [], 'api.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.']]],
             ['r6_non_matching_path_and_non_matching_host', new Route('/admin/bar/action1', [], [], [], 'www.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.ex']]],
         ];
+    }
+
+    private function createControllerReflector(): ControllerReflector
+    {
+        if (class_exists(ControllerNameParser::class)) {
+            return new ControllerReflector(
+                new Container(),
+                $this->createMock(ControllerNameParser::class)
+            );
+        }
+
+        return new ControllerReflector(new Container());
     }
 }

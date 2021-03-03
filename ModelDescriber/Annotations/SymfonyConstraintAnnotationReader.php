@@ -12,7 +12,8 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
-use EXSyst\Component\Swagger\Schema;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,7 +27,7 @@ class SymfonyConstraintAnnotationReader
     private $annotationsReader;
 
     /**
-     * @var Schema
+     * @var OA\Schema
      */
     private $schema;
 
@@ -38,12 +39,22 @@ class SymfonyConstraintAnnotationReader
     /**
      * Update the given property and schema with defined Symfony constraints.
      */
-    public function updateProperty(\ReflectionProperty $reflectionProperty, Schema $property)
+    public function updateProperty($reflection, OA\Property $property): void
     {
-        $annotations = $this->annotationsReader->getPropertyAnnotations($reflectionProperty);
+        if ($reflection instanceof \ReflectionProperty) {
+            $annotations = $this->annotationsReader->getPropertyAnnotations($reflection);
+        } else {
+            $annotations = $this->annotationsReader->getMethodAnnotations($reflection);
+        }
 
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
+                // To support symfony/validator < 4.3
+                if ($annotation instanceof Assert\NotBlank && \property_exists($annotation, 'allowNull') && $annotation->allowNull) {
+                    // The field is optional
+                    continue;
+                }
+
                 // The field is required
                 if (null === $this->schema) {
                     continue;
@@ -54,34 +65,37 @@ class SymfonyConstraintAnnotationReader
                     continue;
                 }
 
-                $existingRequiredFields = $this->schema->getRequired() ?? [];
+                $existingRequiredFields =  OA\UNDEFINED !== $this->schema->required ? $this->schema->required : [];
                 $existingRequiredFields[] = $propertyName;
 
-                $this->schema->setRequired(array_values(array_unique($existingRequiredFields)));
+                $this->schema->required = array_values(array_unique($existingRequiredFields));
             } elseif ($annotation instanceof Assert\Length) {
-                $property->setMinLength($annotation->min);
-                $property->setMaxLength($annotation->max);
+                if (isset($annotation->min)) {
+                    $property->minLength = (int) $annotation->min;
+                }
+                if (isset($annotation->max)) {
+                    $property->maxLength = (int) $annotation->max;
+                }
             } elseif ($annotation instanceof Assert\Regex) {
                 $this->appendPattern($property, $annotation->getHtmlPattern());
             } elseif ($annotation instanceof Assert\Count) {
-                $property->setMinItems($annotation->min);
-                $property->setMaxItems($annotation->max);
+                $property->minItems = (int) $annotation->min;
+                $property->maxItems = (int) $annotation->max;
             } elseif ($annotation instanceof Assert\Choice) {
-                $property->setEnum($annotation->callback ? call_user_func(is_array($annotation->callback) ? $annotation->callback : [$reflectionProperty->class, $annotation->callback]) : $annotation->choices);
-            } elseif ($annotation instanceof Assert\Expression) {
-                $this->appendPattern($property, $annotation->message);
+                $this->applyEnumFromChoiceConstraint($property, $annotation, $reflection);
             } elseif ($annotation instanceof Assert\Range) {
-                $property->setMinimum($annotation->min);
-                $property->setMaximum($annotation->max);
+                $property->minimum = (int) $annotation->min;
+                $property->maximum = (int) $annotation->max;
             } elseif ($annotation instanceof Assert\LessThan) {
-                $property->setExclusiveMaximum($annotation->value);
+                $property->exclusiveMaximum = true;
+                $property->maximum = (int) $annotation->value;
             } elseif ($annotation instanceof Assert\LessThanOrEqual) {
-                $property->setMaximum($annotation->value);
+                $property->maximum = (int) $annotation->value;
             }
         }
     }
 
-    public function setSchema($schema)
+    public function setSchema($schema): void
     {
         $this->schema = $schema;
     }
@@ -89,15 +103,14 @@ class SymfonyConstraintAnnotationReader
     /**
      * Get assigned property name for property schema.
      */
-    private function getSchemaPropertyName(Schema $property)
+    private function getSchemaPropertyName(OA\Schema $property): ?string
     {
         if (null === $this->schema) {
             return null;
         }
-
-        foreach ($this->schema->getProperties() as $name => $schemaProperty) {
+        foreach ($this->schema->properties as $schemaProperty) {
             if ($schemaProperty === $property) {
-                return $name;
+                return OA\UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
             }
         }
 
@@ -107,16 +120,34 @@ class SymfonyConstraintAnnotationReader
     /**
      * Append the pattern from the constraint to the existing pattern.
      */
-    private function appendPattern(Schema $property, $newPattern)
+    private function appendPattern(OA\Schema $property, $newPattern): void
     {
         if (null === $newPattern) {
             return;
         }
-
-        if (null !== $property->getPattern()) {
-            $property->setPattern(sprintf('%s, %s', $property->getPattern(), $newPattern));
+        if (OA\UNDEFINED !== $property->pattern) {
+            $property->pattern = sprintf('%s, %s', $property->pattern, $newPattern);
         } else {
-            $property->setPattern($newPattern);
+            $property->pattern = $newPattern;
         }
+    }
+
+    /**
+     * @var ReflectionProperty|ReflectionClass
+     */
+    private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection): void
+    {
+        if ($choice->callback) {
+            $enumValues = call_user_func(is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);
+        } else {
+            $enumValues = $choice->choices;
+        }
+
+        $setEnumOnThis = $property;
+        if ($choice->multiple) {
+            $setEnumOnThis = Util::getChild($property, OA\Items::class);
+        }
+
+        $setEnumOnThis->enum = array_values($enumValues);
     }
 }

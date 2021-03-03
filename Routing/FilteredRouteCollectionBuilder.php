@@ -111,7 +111,7 @@ final class FilteredRouteCollectionBuilder
             }
         }
 
-        return  0 === count($this->options['name_patterns']);
+        return 0 === count($this->options['name_patterns']);
     }
 
     private function matchAnnotation(Route $route): bool
@@ -128,7 +128,7 @@ final class FilteredRouteCollectionBuilder
 
         list($class, $method) = $classAndMethod;
 
-        /** @var null|Areas $areas */
+        /** @var Areas|null $areas */
         $areas = $this->annotationReader->getMethodAnnotation(
             $method,
             Areas::class

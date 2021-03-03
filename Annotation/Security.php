@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Annotation;
 
-use Swagger\Annotations\AbstractAnnotation;
+use OpenApi\Annotations\AbstractAnnotation;
 
 /**
  * @Annotation
@@ -21,6 +21,7 @@ class Security extends AbstractAnnotation
     /** {@inheritdoc} */
     public static $_types = [
         'name' => 'string',
+        'scopes' => '[string]',
     ];
 
     public static $_required = ['name'];
@@ -29,4 +30,9 @@ class Security extends AbstractAnnotation
      * @var string
      */
     public $name;
+
+    /**
+     * @var string[]
+     */
+    public $scopes = [];
 }

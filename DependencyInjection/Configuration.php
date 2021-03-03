@@ -28,30 +28,17 @@ final class Configuration implements ConfigurationInterface
         }
 
         $rootNode
-            ->beforeNormalization()
-                ->ifTrue(function ($v) {
-                    return !isset($v['areas']) && isset($v['routes']);
-                })
-                ->then(function ($v) {
-                    $v['areas'] = $v['routes'];
-                    unset($v['routes']);
-                    @trigger_error('The `nelmio_api_doc.routes` config option is deprecated. Please use `nelmio_api_doc.areas` instead (just replace `routes` by `areas` in your config).', E_USER_DEPRECATED);
-
-                    return $v;
-                })
-            ->end()
-            ->beforeNormalization()
-                ->ifTrue(function ($v) {
-                    return isset($v['routes']);
-                })
-                ->thenInvalid('You must not use both `nelmio_api_doc.areas` and `nelmio_api_doc.routes` config options. Please update your config to only use `nelmio_api_doc.areas`.')
-            ->end()
             ->children()
                 ->arrayNode('documentation')
                     ->useAttributeAsKey('key')
                     ->info('The documentation used as base')
                     ->example(['info' => ['title' => 'My App']])
                     ->prototype('variable')->end()
+                ->end()
+                ->arrayNode('media_types')
+                    ->info('List of enabled Media Types')
+                    ->defaultValue(['json'])
+                    ->prototype('scalar')->end()
                 ->end()
                 ->arrayNode('areas')
                     ->info('Filter the routes that are documented')

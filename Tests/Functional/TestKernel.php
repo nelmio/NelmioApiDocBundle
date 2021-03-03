@@ -19,6 +19,7 @@ use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -29,20 +30,23 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class TestKernel extends Kernel
 {
+    const USE_JMS = 1;
+    const USE_BAZINGA = 2;
+    const ERROR_ARRAY_ITEMS = 4;
+
     use MicroKernelTrait;
 
-    private $useJMS;
-    private $useBazinga;
+    private $flags;
 
-    public function __construct(bool $useJMS = false, bool $useBazinga = false)
+    public function __construct(int $flags = 0)
     {
-        parent::__construct('test'.(int) $useJMS.(int) $useBazinga, true);
+        parent::__construct('test'.$flags, true);
 
-        $this->useJMS = $useJMS;
-        $this->useBazinga = $useBazinga;
+        $this->flags = $flags;
     }
 
     /**
@@ -56,14 +60,14 @@ class TestKernel extends Kernel
             new SensioFrameworkExtraBundle(),
             new ApiPlatformBundle(),
             new NelmioApiDocBundle(),
-            new FOSRestBundle(),
             new TestBundle(),
+            new FOSRestBundle(),
         ];
 
-        if ($this->useJMS) {
+        if ($this->flags & self::USE_JMS) {
             $bundles[] = new JMSSerializerBundle();
 
-            if ($this->useBazinga) {
+            if ($this->flags & self::USE_BAZINGA) {
                 $bundles[] = new BazingaHateoasBundle();
             }
         }
@@ -80,15 +84,22 @@ class TestKernel extends Kernel
         $routes->import(__DIR__.'/Controller/ApiController.php', '/', 'annotation');
         $routes->import(__DIR__.'/Controller/ClassApiController.php', '/', 'annotation');
         $routes->import(__DIR__.'/Controller/UndocumentedController.php', '/', 'annotation');
+        $routes->import(__DIR__.'/Controller/InvokableController.php', '/', 'annotation');
         $routes->import('', '/api', 'api_platform');
         $routes->add('/docs/{area}', 'nelmio_api_doc.controller.swagger_ui')->setDefault('area', 'default');
-        $routes->add('/docs.json', 'nelmio_api_doc.controller.swagger');
+        $routes->add('/docs.json', 'nelmio_api_doc.controller.swagger_json');
+        $routes->add('/docs.yaml', 'nelmio_api_doc.controller.swagger_yaml');
+        $routes->import(__DIR__.'/Controller/FOSRestController.php', '/', 'annotation');
 
-        if ($this->useJMS) {
+        if (class_exists(SerializedName::class)) {
+            $routes->import(__DIR__.'/Controller/SerializedNameController.php', '/', 'annotation');
+        }
+
+        if ($this->flags & self::USE_JMS) {
             $routes->import(__DIR__.'/Controller/JMSController.php', '/', 'annotation');
         }
 
-        if ($this->useBazinga) {
+        if ($this->flags & self::USE_BAZINGA) {
             $routes->import(__DIR__.'/Controller/BazingaController.php', '/', 'annotation');
 
             try {
@@ -97,6 +108,10 @@ class TestKernel extends Kernel
             } catch (\ReflectionException $e) {
             }
         }
+
+        if ($this->flags & self::ERROR_ARRAY_ITEMS) {
+            $routes->import(__DIR__.'/Controller/ArrayItemsErrorController.php', '/', 'annotation');
+        }
     }
 
     /**
@@ -104,19 +119,31 @@ class TestKernel extends Kernel
      */
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
     {
-        $c->loadFromExtension('framework', [
+        $framework = [
+            'assets' => true,
             'secret' => 'MySecretKey',
             'test' => null,
             'validation' => null,
             'form' => null,
-            'templating' => [
-                'engines' => ['twig'],
-            ],
             'serializer' => ['enable_annotations' => true],
-        ]);
+        ];
+
+        // templating is deprecated
+        if (Kernel::VERSION_ID <= 40300) {
+            $framework['templating'] = ['engines' => ['twig']];
+        }
+
+        $c->loadFromExtension('framework', $framework);
 
         $c->loadFromExtension('twig', [
             'strict_variables' => '%kernel.debug%',
+            'exception_controller' => null,
+        ]);
+
+        $c->loadFromExtension('sensio_framework_extra', [
+            'router' => [
+                'annotations' => false,
+            ],
         ]);
 
         $c->loadFromExtension('api_platform', [
@@ -134,27 +161,59 @@ class TestKernel extends Kernel
             ],
         ]);
 
+        // If FOSRestBundle 2.8
+        if (class_exists(\FOS\RestBundle\EventListener\ResponseStatusCodeListener::class)) {
+            $c->loadFromExtension('fos_rest', [
+                'exception' => [
+                    'enabled' => false,
+                    'exception_listener' => false,
+                    'serialize_exceptions' => false,
+                ],
+                'body_listener' => false,
+                'routing_loader' => false,
+            ]);
+        }
+
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
             'documentation' => [
+                'servers' => [ // from https://github.com/nelmio/NelmioApiDocBundle/issues/1691
+                    [
+                        'url' => 'https://api.example.com/secured/{version}',
+                        'variables' => ['version' => ['default' => 'v1']],
+                    ],
+                ],
                 'info' => [
                     'title' => 'My Default App',
                 ],
-                'definitions' => [
-                    'Test' => [
-                        'type' => 'string',
+                'components' => [
+                    'schemas' => [
+                        'Test' => [
+                            'type' => 'string',
+                        ],
+
+                        // Ensures https://github.com/nelmio/NelmioApiDocBundle/issues/1650 is working
+                        'Pet' => [
+                            'type' => 'object',
+                        ],
+                        'Cat' => [
+                            'allOf' => [
+                                ['$ref' => '#/components/schemas/Pet'],
+                                ['type' => 'object'],
+                            ],
+                        ],
                     ],
-                ],
-                'parameters' => [
-                    'test' => [
-                        'name' => 'id',
-                        'in' => 'path',
-                        'required' => true,
+                    'parameters' => [
+                        'test' => [
+                            'name' => 'id',
+                            'in' => 'path',
+                            'required' => true,
+                        ],
                     ],
-                ],
-                'responses' => [
-                    '201' => [
-                        'description' => 'Awesome description',
+                    'responses' => [
+                        '201' => [
+                            'description' => 'Awesome description',
+                        ],
                     ],
                 ],
             ],
@@ -175,6 +234,10 @@ class TestKernel extends Kernel
             ],
             'models' => [
                 'names' => [
+                    [
+                        'alias' => 'PrivateProtectedExposure',
+                        'type' => PrivateProtectedExposure::class,
+                    ],
                     [
                         'alias' => 'JMSPicture_mini',
                         'type' => JMSPicture::class,
@@ -199,7 +262,7 @@ class TestKernel extends Kernel
      */
     public function getCacheDir()
     {
-        return parent::getCacheDir().'/'.(int) $this->useJMS;
+        return parent::getCacheDir().'/'.$this->flags;
     }
 
     /**
@@ -207,7 +270,7 @@ class TestKernel extends Kernel
      */
     public function getLogDir()
     {
-        return parent::getLogDir().'/'.(int) $this->useJMS;
+        return parent::getLogDir().'/'.$this->flags;
     }
 
     public function serialize()

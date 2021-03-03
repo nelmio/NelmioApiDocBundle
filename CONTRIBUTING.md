@@ -11,7 +11,7 @@ You MUST follow the [PSR-1](http://www.php-fig.org/psr/psr-1/) and
 should really read the recommendations. Can't wait? Use the [PHP-CS-Fixer
 tool](http://cs.sensiolabs.org/).
 
-You MUST run the test suite.
+You MUST run the test suite (run `composer update`, and then execute `vendor/bin/simple-phpunit`).
 
 You MUST write (or update) unit tests.
 

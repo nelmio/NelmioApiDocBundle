@@ -72,6 +72,13 @@ class SymfonyConstraints
     private $propertyChoiceWithCallbackWithoutClass;
 
     /**
+     * @var string[]
+     *
+     * @Assert\Choice(multiple=true, choices={"choice1", "choice2"})
+     */
+    private $propertyChoiceWithMultiple;
+
+    /**
      * @var int
      *
      * @Assert\Expression(
@@ -103,96 +110,68 @@ class SymfonyConstraints
     private $propertyLessThanOrEqual;
 
     /**
-     * @param int $propertyNotBlank
+     * @Assert\Count(min="0", max="10")
      */
     public function setPropertyNotBlank(int $propertyNotBlank): void
     {
         $this->propertyNotBlank = $propertyNotBlank;
     }
 
-    /**
-     * @param int $propertyNotNull
-     */
     public function setPropertyNotNull(int $propertyNotNull): void
     {
         $this->propertyNotNull = $propertyNotNull;
     }
 
-    /**
-     * @param int $propertyAssertLength
-     */
     public function setPropertyAssertLength(int $propertyAssertLength): void
     {
         $this->propertyAssertLength = $propertyAssertLength;
     }
 
-    /**
-     * @param int $propertyRegex
-     */
     public function setPropertyRegex(int $propertyRegex): void
     {
         $this->propertyRegex = $propertyRegex;
     }
 
-    /**
-     * @param int $propertyCount
-     */
     public function setPropertyCount(int $propertyCount): void
     {
         $this->propertyCount = $propertyCount;
     }
 
-    /**
-     * @param int $propertyChoice
-     */
     public function setPropertyChoice(int $propertyChoice): void
     {
         $this->propertyChoice = $propertyChoice;
     }
 
-    /**
-     * @param int $propertyChoiceWithCallback
-     */
     public function setPropertyChoiceWithCallback(int $propertyChoiceWithCallback): void
     {
         $this->propertyChoiceWithCallback = $propertyChoiceWithCallback;
     }
 
-    /**
-     * @param int $propertyChoiceWithCallbackWithoutClass
-     */
     public function setPropertyChoiceWithCallbackWithoutClass(int $propertyChoiceWithCallbackWithoutClass): void
     {
         $this->propertyChoiceWithCallbackWithoutClass = $propertyChoiceWithCallbackWithoutClass;
     }
 
-    /**
-     * @param int $propertyExpression
-     */
+    public function setPropertyChoiceWithMultiple(array $propertyChoiceWithMultiple): void
+    {
+        $this->propertyChoiceWithMultiple = $propertyChoiceWithMultiple;
+    }
+
     public function setPropertyExpression(int $propertyExpression): void
     {
         $this->propertyExpression = $propertyExpression;
     }
 
-    /**
-     * @param int $propertyRange
-     */
     public function setPropertyRange(int $propertyRange): void
     {
         $this->propertyRange = $propertyRange;
     }
 
-    /**
-     * @param int $propertyLessThan
-     */
     public function setPropertyLessThan(int $propertyLessThan): void
     {
         $this->propertyLessThan = $propertyLessThan;
     }
 
-    /**
-     * @param int $propertyLessThanOrEqual
-     */
     public function setPropertyLessThanOrEqual(int $propertyLessThanOrEqual): void
     {
         $this->propertyLessThanOrEqual = $propertyLessThanOrEqual;

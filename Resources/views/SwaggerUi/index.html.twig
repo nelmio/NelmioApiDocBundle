@@ -66,8 +66,11 @@ file that was distributed with this source code. #}
         <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/swagger-ui-standalone-preset.js') }}"></script>
     {% endblock javascripts %}
 
+    <script src="{{ asset('bundles/nelmioapidoc/init-swagger-ui.js') }}"></script>
     {% block swagger_initialization %}
-        <script src="{{ asset('bundles/nelmioapidoc/init-swagger-ui.js') }}"></script>
+        <script type="text/javascript">
+            window.onload = loadSwaggerUI();
+        </script>
     {% endblock swagger_initialization %}
 </body>
 </html>

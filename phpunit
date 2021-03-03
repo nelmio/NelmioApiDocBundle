@@ -5,5 +5,4 @@ if (!file_exists(__DIR__.'/vendor/symfony/phpunit-bridge/bin/simple-phpunit')) {
     exit(1);
 }
 putenv('SYMFONY_PHPUNIT_DIR='.__DIR__.'/.phpunit');
-putenv('SYMFONY_PHPUNIT_VERSION=6.5');
 require __DIR__.'/vendor/symfony/phpunit-bridge/bin/simple-phpunit';
