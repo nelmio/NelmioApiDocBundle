@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -38,16 +39,12 @@ class SymfonyConstraintAnnotationReader
 
     /**
      * Update the given property and schema with defined Symfony constraints.
+     *
+     * @param \ReflectionProperty|\ReflectionMethod $reflection
      */
     public function updateProperty($reflection, OA\Property $property): void
     {
-        if ($reflection instanceof \ReflectionProperty) {
-            $annotations = $this->annotationsReader->getPropertyAnnotations($reflection);
-        } else {
-            $annotations = $this->annotationsReader->getMethodAnnotations($reflection);
-        }
-
-        foreach ($annotations as $annotation) {
+        foreach ($this->getAnnotations($reflection) as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
                 // To support symfony/validator < 4.3
                 if ($annotation instanceof Assert\NotBlank && \property_exists($annotation, 'allowNull') && $annotation->allowNull) {
@@ -133,7 +130,7 @@ class SymfonyConstraintAnnotationReader
     }
 
     /**
-     * @var ReflectionProperty|ReflectionClass
+     * @param \ReflectionProperty|\ReflectionMethod $reflection
      */
     private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection): void
     {
@@ -149,5 +146,23 @@ class SymfonyConstraintAnnotationReader
         }
 
         $setEnumOnThis->enum = array_values($enumValues);
+    }
+
+    /**
+     * @param \ReflectionProperty|\ReflectionMethod $reflection
+     */
+    private function getAnnotations($reflection): \Traversable
+    {
+        if (\PHP_VERSION_ID >= 80000) {
+            foreach ($reflection->getAttributes(Constraint::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
+                yield $attribute->newInstance();
+            }
+        }
+
+        if ($reflection instanceof \ReflectionProperty) {
+            yield from $this->annotationsReader->getPropertyAnnotations($reflection);
+        } elseif ($reflection instanceof \ReflectionMethod) {
+            yield from $this->annotationsReader->getMethodAnnotations($reflection);
+        }
     }
 }

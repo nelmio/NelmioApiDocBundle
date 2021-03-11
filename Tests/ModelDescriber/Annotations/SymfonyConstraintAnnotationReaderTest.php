@@ -47,23 +47,15 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertEquals($schema->required, ['property1', 'property2']);
     }
 
-    public function testOptionalProperty()
+    /**
+     * @param object $entity
+     * @dataProvider provideOptionalProperty
+     */
+    public function testOptionalProperty($entity)
     {
         if (!\property_exists(Assert\NotBlank::class, 'allowNull')) {
             $this->markTestSkipped('NotBlank::allowNull was added in symfony/validator 4.3.');
         }
-
-        $entity = new class() {
-            /**
-             * @Assert\NotBlank(allowNull = true)
-             * @Assert\Length(min = 1)
-             */
-            private $property1;
-            /**
-             * @Assert\NotBlank()
-             */
-            private $property2;
-        };
 
         $schema = new OA\Schema([]);
         $schema->merge([new OA\Property(['property' => 'property1'])]);
@@ -79,21 +71,37 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertEquals($schema->required, ['property2']);
     }
 
-    public function testAssertChoiceResultsInNumericArray()
+    public function provideOptionalProperty(): iterable
     {
-        define('TEST_ASSERT_CHOICE_STATUSES', [
-            1 => 'active',
-            2 => 'blocked',
-        ]);
-
-        $entity = new class() {
+        yield 'Annotations' => [new class() {
             /**
+             * @Assert\NotBlank(allowNull = true)
              * @Assert\Length(min = 1)
-             * @Assert\Choice(choices=TEST_ASSERT_CHOICE_STATUSES)
              */
             private $property1;
-        };
+            /**
+             * @Assert\NotBlank()
+             */
+            private $property2;
+        }];
 
+        if (\PHP_VERSION_ID >= 80000) {
+            yield 'Attributes' => [new class() {
+                #[Assert\NotBlank(allowNull: true)]
+                #[Assert\Length(min: 1)]
+                private $property1;
+                #[Assert\NotBlank]
+                private $property2;
+            }];
+        }
+    }
+
+    /**
+     * @param object $entity
+     * @dataProvider provideAssertChoiceResultsInNumericArray
+     */
+    public function testAssertChoiceResultsInNumericArray($entity)
+    {
         $schema = new OA\Schema([]);
         $schema->merge([new OA\Property(['property' => 'property1'])]);
 
@@ -106,15 +114,36 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertEquals($schema->properties[0]->enum, ['active', 'blocked']);
     }
 
-    public function testMultipleChoiceConstraintsApplyEnumToItems()
+    public function provideAssertChoiceResultsInNumericArray(): iterable
     {
-        $entity = new class() {
+        define('TEST_ASSERT_CHOICE_STATUSES', [
+            1 => 'active',
+            2 => 'blocked',
+        ]);
+
+        yield 'Annotations' => [new class() {
             /**
-             * @Assert\Choice(choices={"one", "two"}, multiple=true)
+             * @Assert\Length(min = 1)
+             * @Assert\Choice(choices=TEST_ASSERT_CHOICE_STATUSES)
              */
             private $property1;
-        };
+        }];
 
+        if (\PHP_VERSION_ID >= 80000) {
+            yield 'Attributes' => [new class() {
+                #[Assert\Length(min: 1)]
+                #[Assert\Choice(choices: TEST_ASSERT_CHOICE_STATUSES)]
+                private $property1;
+            }];
+        }
+    }
+
+    /**
+     * @param object $entity
+     * @dataProvider provideMultipleChoiceConstraintsApplyEnumToItems
+     */
+    public function testMultipleChoiceConstraintsApplyEnumToItems($entity)
+    {
         $schema = new OA\Schema([]);
         $schema->merge([new OA\Property(['property' => 'property1'])]);
 
@@ -127,18 +156,30 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertEquals($schema->properties[0]->items->enum, ['one', 'two']);
     }
 
-    /**
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
-     */
-    public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet()
+    public function provideMultipleChoiceConstraintsApplyEnumToItems(): iterable
     {
-        $entity = new class() {
+        yield 'Annotations' => [new class() {
             /**
-             * @Assert\Length(min = 1)
+             * @Assert\Choice(choices={"one", "two"}, multiple=true)
              */
             private $property1;
-        };
+        }];
 
+        if (\PHP_VERSION_ID >= 80000) {
+            yield 'Attributes' => [new class() {
+                #[Assert\Choice(choices: ['one', 'two'], multiple: true)]
+                private $property1;
+            }];
+        }
+    }
+
+    /**
+     * @param object $entity
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
+     * @dataProvider provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet
+     */
+    public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet($entity)
+    {
         $schema = new OA\Schema([]);
         $schema->merge([new OA\Property(['property' => 'property1'])]);
 
@@ -151,18 +192,30 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertSame(1, $schema->properties[0]->minLength);
     }
 
-    /**
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
-     */
-    public function testLengthConstraintDoesNotSetMinLengthIfMinIsNotSet()
+    public function provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet(): iterable
     {
-        $entity = new class() {
+        yield 'Annotations' => [new class() {
             /**
-             * @Assert\Length(max = 100)
+             * @Assert\Length(min = 1)
              */
             private $property1;
-        };
+        }];
 
+        if (\PHP_VERSION_ID >= 80000) {
+            yield 'Attributes' => [new class() {
+                #[Assert\Length(min: 1)]
+                private $property1;
+            }];
+        }
+    }
+
+    /**
+     * @param object $entity
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
+     * @dataProvider provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet
+     */
+    public function testLengthConstraintDoesNotSetMinLengthIfMinIsNotSet($entity)
+    {
         $schema = new OA\Schema([]);
         $schema->merge([new OA\Property(['property' => 'property1'])]);
 
@@ -173,5 +226,22 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minLength);
         $this->assertSame(100, $schema->properties[0]->maxLength);
+    }
+
+    public function provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet(): iterable
+    {
+        yield 'Annotations' => [new class() {
+            /**
+             * @Assert\Length(max = 100)
+             */
+            private $property1;
+        }];
+
+        if (\PHP_VERSION_ID >= 80000) {
+            yield 'Attributes' => [new class() {
+                #[Assert\Length(max: 100)]
+                private $property1;
+            }];
+        }
     }
 }
