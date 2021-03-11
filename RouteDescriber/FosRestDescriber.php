@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Regex;
 
 final class FosRestDescriber implements RouteDescriberInterface
@@ -104,6 +105,11 @@ final class FosRestDescriber implements RouteDescriberInterface
     private function getFormat($requirements)
     {
         if ($requirements instanceof Constraint && !$requirements instanceof Regex) {
+            
+            if ($requirements instanceof DateTime) {
+                return 'date-time';
+            }
+            
             $reflectionClass = new \ReflectionClass($requirements);
 
             return $reflectionClass->getShortName();
