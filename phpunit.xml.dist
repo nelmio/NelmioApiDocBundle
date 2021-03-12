@@ -11,7 +11,7 @@
         <env name="SHELL_VERBOSITY" value="-1" />
         <ini name="error_reporting" value="-1" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
-        <env name="SYMFONY_PHPUNIT_VERSION" value="8.5" />
+        <env name="SYMFONY_PHPUNIT_VERSION" value="8.3" />
     </php>
 
     <testsuites>
