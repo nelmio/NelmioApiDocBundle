@@ -128,11 +128,6 @@ class TestKernel extends Kernel
             'serializer' => ['enable_annotations' => true],
         ];
 
-        // templating is deprecated
-        if (Kernel::VERSION_ID <= 40300) {
-            $framework['templating'] = ['engines' => ['twig']];
-        }
-
         $c->loadFromExtension('framework', $framework);
 
         $c->loadFromExtension('twig', [
