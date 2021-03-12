@@ -177,10 +177,9 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes->add($name, $route);
         $area = 'area';
 
-        $reflectionClassStub = $this->createMock(\ReflectionClass::class);
         $reflectionMethodStub = $this->createMock(\ReflectionMethod::class);
         $controllerReflectorStub = $this->createMock(ControllerReflector::class);
-        $controllerReflectorStub->method('getReflectionClassAndMethod')->willReturn([$reflectionClassStub, $reflectionMethodStub]);
+        $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethodStub);
 
         $annotationReader = $this->createMock(Reader::class);
         $annotationReader

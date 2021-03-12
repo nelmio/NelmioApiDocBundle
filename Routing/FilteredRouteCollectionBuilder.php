@@ -120,22 +120,20 @@ final class FilteredRouteCollectionBuilder
             return true;
         }
 
-        $classAndMethod = $this->controllerReflector->getReflectionClassAndMethod($route->getDefault('_controller'));
+        $reflectionMethod = $this->controllerReflector->getReflectionMethod($route->getDefault('_controller'));
 
-        if (null === $classAndMethod) {
+        if (null === $reflectionMethod) {
             return false;
         }
 
-        list($class, $method) = $classAndMethod;
-
         /** @var Areas|null $areas */
         $areas = $this->annotationReader->getMethodAnnotation(
-            $method,
+            $reflectionMethod,
             Areas::class
         );
 
         if (null === $areas) {
-            $areas = $this->annotationReader->getClassAnnotation($class, Areas::class);
+            $areas = $this->annotationReader->getClassAnnotation($reflectionMethod->getDeclaringClass(), Areas::class);
         }
 
         return (null !== $areas) ? $areas->has($this->area) : false;
