@@ -47,23 +47,15 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertEquals($schema->getRequired(), ['property1', 'property2']);
     }
 
-    public function testOptionalProperty()
+    /**
+     * @param object $entity
+     * @dataProvider provideOptionalProperty
+     */
+    public function testOptionalProperty($entity)
     {
         if (!\property_exists(Assert\NotBlank::class, 'allowNull')) {
             $this->markTestSkipped('NotBlank::allowNull was added in symfony/validator 4.3.');
         }
-
-        $entity = new class() {
-            /**
-             * @Assert\NotBlank(allowNull = true)
-             * @Assert\Length(min = 1)
-             */
-            private $property1;
-            /**
-             * @Assert\NotBlank()
-             */
-            private $property2;
-        };
 
         $schema = new Schema();
         $schema->getProperties()->set('property1', new Schema());
@@ -79,21 +71,37 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertEquals($schema->getRequired(), ['property2']);
     }
 
-    public function testAssertChoiceResultsInNumericArray()
+    public function provideOptionalProperty(): iterable
     {
-        define('TEST_ASSERT_CHOICE_STATUSES', [
-            1 => 'active',
-            2 => 'blocked',
-        ]);
-
-        $entity = new class() {
+        yield 'Annotations' => [new class() {
             /**
+             * @Assert\NotBlank(allowNull = true)
              * @Assert\Length(min = 1)
-             * @Assert\Choice(choices=TEST_ASSERT_CHOICE_STATUSES)
              */
             private $property1;
-        };
+            /**
+             * @Assert\NotBlank()
+             */
+            private $property2;
+        }];
 
+        if (\PHP_VERSION_ID >= 80000) {
+            yield 'Attributes' => [new class() {
+                #[Assert\NotBlank(allowNull: true)]
+                #[Assert\Length(min: 1)]
+                private $property1;
+                #[Assert\NotBlank]
+                private $property2;
+            }];
+        }
+    }
+
+    /**
+     * @param object $entity
+     * @dataProvider provideAssertChoiceResultsInNumericArray
+     */
+    public function testAssertChoiceResultsInNumericArray($entity)
+    {
         $schema = new Schema();
         $schema->getProperties()->set('property1', new Schema());
 
@@ -104,5 +112,29 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         // expect enum to be numeric array with sequential keys (not [1 => "active", 2 => "active"])
         $this->assertEquals($schema->getProperties()->get('property1')->getEnum(), ['active', 'blocked']);
+    }
+
+    public function provideAssertChoiceResultsInNumericArray(): iterable
+    {
+        define('TEST_ASSERT_CHOICE_STATUSES', [
+            1 => 'active',
+            2 => 'blocked',
+        ]);
+
+        yield 'Annotations' => [new class() {
+            /**
+             * @Assert\Length(min = 1)
+             * @Assert\Choice(choices=TEST_ASSERT_CHOICE_STATUSES)
+             */
+            private $property1;
+        }];
+
+        if (\PHP_VERSION_ID >= 80000) {
+            yield 'Attributes' => [new class() {
+                #[Assert\Length(min: 1)]
+                #[Assert\Choice(choices: TEST_ASSERT_CHOICE_STATUSES)]
+                private $property1;
+            }];
+        }
     }
 }

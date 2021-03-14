@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Schema;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -37,16 +38,12 @@ class SymfonyConstraintAnnotationReader
 
     /**
      * Update the given property and schema with defined Symfony constraints.
+     *
+     * @param \ReflectionProperty|\ReflectionMethod $reflection
      */
     public function updateProperty($reflection, Schema $property)
     {
-        if ($reflection instanceof \ReflectionProperty) {
-            $annotations = $this->annotationsReader->getPropertyAnnotations($reflection);
-        } else {
-            $annotations = $this->annotationsReader->getMethodAnnotations($reflection);
-        }
-
-        foreach ($annotations as $annotation) {
+        foreach ($this->getAnnotations($reflection) as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
                 // To support symfony/validator < 4.3
                 if ($annotation instanceof Assert\NotBlank && \property_exists($annotation, 'allowNull') && $annotation->allowNull) {
@@ -126,6 +123,24 @@ class SymfonyConstraintAnnotationReader
             $property->setPattern(sprintf('%s, %s', $property->getPattern(), $newPattern));
         } else {
             $property->setPattern($newPattern);
+        }
+    }
+
+    /**
+     * @param \ReflectionProperty|\ReflectionMethod $reflection
+     */
+    private function getAnnotations($reflection): \Traversable
+    {
+        if (\PHP_VERSION_ID >= 80000) {
+            foreach ($reflection->getAttributes(Constraint::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
+                yield $attribute->newInstance();
+            }
+        }
+
+        if ($reflection instanceof \ReflectionProperty) {
+            yield from $this->annotationsReader->getPropertyAnnotations($reflection);
+        } elseif ($reflection instanceof \ReflectionMethod) {
+            yield from $this->annotationsReader->getMethodAnnotations($reflection);
         }
     }
 }
