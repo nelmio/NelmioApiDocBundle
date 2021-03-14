@@ -76,8 +76,13 @@
             "Nelmio\\ApiDocBundle\\": ""
         },
         "exclude-from-classmap": [
-            "/Tests/"
+            "Tests/"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Nelmio\\ApiDocBundle\\Tests\\": "Tests/"
+        }
     },
     "extra": {
         "branch-alias": {
