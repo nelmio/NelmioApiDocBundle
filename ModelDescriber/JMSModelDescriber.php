@@ -314,6 +314,16 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                     return true;
                 }
             }
+
+            foreach ($metadata->discriminatorMap as $childTypeName) {
+                $subType = ['name' => $childTypeName, 'params' => []];
+                if ($this->propertyTypeUsesGroups($subType)) {
+                    $this->propertyTypeUseGroupsCache[$type['name']] = true;
+
+                    return true;
+                }
+            }
+
             $this->propertyTypeUseGroupsCache[$type['name']] = false;
 
             return false;
