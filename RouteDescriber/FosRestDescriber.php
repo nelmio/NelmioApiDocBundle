@@ -107,7 +107,12 @@ final class FosRestDescriber implements RouteDescriberInterface
         if ($requirements instanceof Constraint && !$requirements instanceof Regex) {
             
             if ($requirements instanceof DateTime) {
-                return 'date-time';
+                // As defined per RFC3339
+                if ($requirements->format === 'Y-m-d\TH:i:s') {
+                    return 'date-time';
+                } else if ($requirements->format === 'Y-m-d') {
+                    return 'date';
+                }
             }
             
             $reflectionClass = new \ReflectionClass($requirements);

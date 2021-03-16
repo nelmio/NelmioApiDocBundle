@@ -50,6 +50,12 @@ class FOSRestTest extends WebTestCase
         $this->assertEquals(OA\UNDEFINED, $bazProperty->pattern);
         $this->assertEquals('IsTrue', $bazProperty->format);
 
+        $barProperty = $this->getProperty($bodySchema, 'datetime');
+        $this->assertEquals('date-time', $barProperty->format);
+
+        $barProperty = $this->getProperty($bodySchema, 'date');
+        $this->assertEquals('date', $barProperty->format);
+
         // The _format path attribute should be removed
         $this->assertNotHasParameter('_format', 'path', $operation);
     }
