@@ -30,6 +30,7 @@ class FOSRestController
      * @RequestParam(name="Barraa", key="bar", requirements="\d+")
      * @RequestParam(name="baz", requirements=@IsTrue)
      * @RequestParam(name="datetime", requirements=@DateTime("Y-m-d\TH:i:s"))
+     * @RequestParam(name="datetimeAlt", requirements=@DateTime("c"))
      * @RequestParam(name="date", requirements=@DateTime("Y-m-d"))
      */
     public function fosrestAction()

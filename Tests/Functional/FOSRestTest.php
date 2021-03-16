@@ -53,6 +53,9 @@ class FOSRestTest extends WebTestCase
         $dateTimeProperty = $this->getProperty($bodySchema, 'datetime');
         $this->assertEquals('date-time', $dateTimeProperty->format);
 
+        $dateTimeAltProperty = $this->getProperty($bodySchema, 'datetimeAlt');
+        $this->assertEquals('date-time', $dateTimeAltProperty->format);
+
         $dateProperty = $this->getProperty($bodySchema, 'date');
         $this->assertEquals('date', $dateProperty->format);
 
