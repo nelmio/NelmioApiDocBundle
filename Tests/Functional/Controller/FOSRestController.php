@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Regex;
 
@@ -28,6 +29,10 @@ class FOSRestController
      * @QueryParam(name="mapped", map=true)
      * @RequestParam(name="Barraa", key="bar", requirements="\d+")
      * @RequestParam(name="baz", requirements=@IsTrue)
+     * @RequestParam(name="datetime", requirements=@DateTime("Y-m-d\TH:i:sP"))
+     * @RequestParam(name="datetimeAlt", requirements=@DateTime("c"))
+     * @RequestParam(name="datetimeNoFormat", requirements=@DateTime())
+     * @RequestParam(name="date", requirements=@DateTime("Y-m-d"))
      */
     public function fosrestAction()
     {
