@@ -27,6 +27,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -127,7 +128,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             }
         }
 
-        $container->register('nelmio_api_doc.generator_locator')
+        $container->register('nelmio_api_doc.generator_locator', ServiceLocator::class)
             ->setPublic(false)
             ->addTag('container.service_locator')
             ->addArgument(array_combine(
