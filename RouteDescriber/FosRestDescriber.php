@@ -110,7 +110,7 @@ final class FosRestDescriber implements RouteDescriberInterface
                 if (\DateTime::RFC3339 === $requirements->format || 'c' === $requirements->format) {
                     return 'date-time';
                 }
-                
+
                 if ('Y-m-d' === $requirements->format) {
                     return 'date';
                 }
