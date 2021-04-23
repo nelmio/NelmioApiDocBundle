@@ -72,7 +72,7 @@ Open a command console, enter your project directory and execute the following c
             defaults: { _controller: nelmio_api_doc.controller.swagger }
 
     As you just installed the bundle, you'll likely see routes you don't want in
-    your documentation such as `/_profiler/`. To fix this, you can filter the
+    your documentation such as ``/_profiler/``. To fix this, you can filter the
     routes that are documented by configuring the bundle:
 
     .. code-block:: yaml
@@ -143,8 +143,8 @@ To document your routes, you can use the SwaggerPHP annotations and the
 
     class UserController
     {
-        /**
-         * List the rewards of the specified user.
+        /**
+         * List the rewards of the specified user.
          *
          * This call takes into account all confirmed awards, but not pending or refused awards.
          *
@@ -182,27 +182,27 @@ Use it instead of a definition reference and the bundle will deduce your model p
 
 .. note::
 
-    A model can be a Symfony form type, a Doctrine ORM entity or a general PHP object.
+    A model can be a Symfony form type, a Doctrine ORM entity or a general PHP object.
 
 This annotation has two options:
 
 * ``type`` to specify your model's type::
 
     /**
-     * @OA\Response(
-     *     response=200,
-     *     @Model(type=User::class)
-     * )
-     */
+     * @OA\Response(
+     *     response=200,
+     *     @Model(type=User::class)
+     * )
+     */
 
 * ``groups`` to specify the serialization groups used to (de)serialize your model::
 
-    /**
-     * @OA\Response(
-     *     response=200,
-     *     @Model(type=User::class, groups={"non_sensitive_data"})
-     * )
-     */
+     /**
+     * @OA\Response(
+     *     response=200,
+     *     @Model(type=User::class, groups={"non_sensitive_data"})
+     * )
+     */
 
  .. tip::
 
