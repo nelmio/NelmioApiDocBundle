@@ -29,6 +29,9 @@ You can define areas which will each generates a different documentation:
                 path_patterns: [ ^/internal ]
             commercial:
                 path_patterns: [ ^/commercial ]
+            store:
+                # Includes routes with names containing 'store'
+                name_patterns: [ store ]
 
 Your main documentation is under the ``default`` area. It's the one shown when accessing ``/api/doc``.
 
@@ -48,4 +51,4 @@ Then update your routing to be able to access your different documentations:
     #    methods: GET
     #    defaults: { _controller: nelmio_api_doc.controller.swagger }
 
-That's all! You can now access ``/api/doc/internal`` and ``/api/doc/commercial``.
+That's all! You can now access ``/api/doc/internal``, ``/api/doc/commercial`` and ``/api/doc/store``.
