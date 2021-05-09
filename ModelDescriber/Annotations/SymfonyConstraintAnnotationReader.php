@@ -83,6 +83,10 @@ class SymfonyConstraintAnnotationReader
                 $property->setExclusiveMaximum($annotation->value);
             } elseif ($annotation instanceof Assert\LessThanOrEqual) {
                 $property->setMaximum($annotation->value);
+            } elseif ($annotation instanceof Assert\GreaterThan) {
+                $property->setExclusiveMinimum($annotation->value);
+            } elseif ($annotation instanceof Assert\GreaterThanOrEqual) {
+                $property->setMinimum($annotation->value);
             }
         }
     }
