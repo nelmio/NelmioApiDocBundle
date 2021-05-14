@@ -357,6 +357,7 @@ class FunctionalTest extends WebTestCase
     {
         $this->assertEquals([
             'required' => [
+                'propertyWithCompoundValidationRule',
                 'propertyNotBlank',
                 'propertyNotNull',
             ],
@@ -418,6 +419,13 @@ class FunctionalTest extends WebTestCase
                 'propertyLessThanOrEqual' => [
                     'type' => 'integer',
                     'maximum' => 23,
+                ],
+                'propertyWithCompoundValidationRule' => [
+                    'type' => 'integer',
+                    'maximum' => 5,
+                    'exclusiveMaximum' => true,
+                    'minimum' => 0,
+                    'exclusiveMinimum' => true,
                 ],
             ],
             'type' => 'object',

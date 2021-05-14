@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationRe
 use OpenApi\Annotations as OA;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints as Assert;
+use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 
 class SymfonyConstraintAnnotationReaderTest extends TestCase
 {
@@ -243,5 +244,30 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                 private $property1;
             }];
         }
+    }
+
+    public function testCompoundValidationRules()
+    {
+        $entity = new class() {
+            /**
+             * @CustomAssert\CompoundValidationRule()
+             */
+            private $property1;
+        };
+        $propertyName = 'property1';
+
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => $propertyName])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, $propertyName), $schema->properties[0]);
+
+        $this->assertSame([$propertyName], $schema->required);
+        $this->assertSame(0, $schema->properties[0]->minimum);
+        $this->assertTrue($schema->properties[0]->exclusiveMinimum);
+        $this->assertSame(5, $schema->properties[0]->maximum);
+        $this->assertTrue($schema->properties[0]->exclusiveMaximum);
     }
 }
