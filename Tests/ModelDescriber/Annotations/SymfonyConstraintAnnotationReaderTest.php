@@ -14,10 +14,10 @@ namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader;
 use Nelmio\ApiDocBundle\Tests\Helper;
+use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use OpenApi\Annotations as OA;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints as Assert;
-use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 
 class SymfonyConstraintAnnotationReaderTest extends TestCase
 {
