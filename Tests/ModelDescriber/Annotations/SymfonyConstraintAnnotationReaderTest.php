@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader;
+use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OA;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -264,10 +265,18 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, $propertyName), $schema->properties[0]);
 
-        $this->assertSame([$propertyName], $schema->required);
-        $this->assertSame(0, $schema->properties[0]->minimum);
-        $this->assertTrue($schema->properties[0]->exclusiveMinimum);
-        $this->assertSame(5, $schema->properties[0]->maximum);
-        $this->assertTrue($schema->properties[0]->exclusiveMaximum);
+        if (Helper::isCompoundValidatorConstraintSupported()) {
+            $this->assertSame([$propertyName], $schema->required);
+            $this->assertSame(0, $schema->properties[0]->minimum);
+            $this->assertTrue($schema->properties[0]->exclusiveMinimum);
+            $this->assertSame(5, $schema->properties[0]->maximum);
+            $this->assertTrue($schema->properties[0]->exclusiveMaximum);
+        } else {
+            $this->assertSame(OA\UNDEFINED, $schema->required);
+            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minimum);
+            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->exclusiveMinimum);
+            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maximum);
+            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->exclusiveMaximum);
+        }
     }
 }

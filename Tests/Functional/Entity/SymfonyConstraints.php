@@ -19,13 +19,6 @@ class SymfonyConstraints
     /**
      * @var int
      *
-     * @CustomAssert\CompoundValidationRule()
-     */
-    private $propertyWithCompoundValidationRule;
-
-    /**
-     * @var int
-     *
      * @Assert\NotBlank()
      */
     private $propertyNotBlank;
@@ -116,6 +109,13 @@ class SymfonyConstraints
      * @Assert\LessThanOrEqual(23)
      */
     private $propertyLessThanOrEqual;
+
+    /**
+     * @var int
+     *
+     * @CustomAssert\CompoundValidationRule()
+     */
+    private $propertyWithCompoundValidationRule;
 
     public function setPropertyWithCompoundValidationRule(int $propertyWithCompoundValidationRule): void
     {

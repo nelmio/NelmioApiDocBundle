@@ -7,6 +7,10 @@ namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
 
+if (!class_exists(Compound::class)) {
+    class_alias(CompoundStub::class, Compound::class);
+}
+
 /**
  * @Annotation
  */

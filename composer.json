@@ -52,7 +52,8 @@
         "friendsofsymfony/rest-bundle": "^2.8|^3.0",
         "willdurand/hateoas-bundle": "^1.0|^2.0",
         "jms/serializer-bundle": "^2.3|^3.0",
-        "jms/serializer": "^1.14|^3.0"
+        "jms/serializer": "^1.14|^3.0",
+        "ocramius/package-versions": "^2.1"
     },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
