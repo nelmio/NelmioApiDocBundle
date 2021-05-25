@@ -244,4 +244,76 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             }];
         }
     }
+
+    /**
+     * @param object $entity
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1821
+     * @dataProvider provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet
+     */
+    public function testCountConstraintDoesNotSetMinItemsIfMinIsNotSet($entity)
+    {
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minItems);
+        $this->assertSame(10, $schema->properties[0]->maxItems);
+    }
+
+    public function provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet(): iterable
+    {
+        yield 'Annotations' => [new class() {
+            /**
+             * @Assert\Count(max = 10)
+             */
+            private $property1;
+        }];
+
+        if (\PHP_VERSION_ID >= 80000) {
+            yield 'Attributes' => [new class() {
+                #[Assert\Count(max: 10)]
+                private $property1;
+            }];
+        }
+    }
+
+    /**
+     * @param object $entity
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1821
+     * @dataProvider provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet
+     */
+    public function testCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet($entity)
+    {
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maxItems);
+        $this->assertSame(10, $schema->properties[0]->minItems);
+    }
+
+    public function provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet(): iterable
+    {
+        yield 'Annotations' => [new class() {
+            /**
+             * @Assert\Count(min = 10)
+             */
+            private $property1;
+        }];
+
+        if (\PHP_VERSION_ID >= 80000) {
+            yield 'Attributes' => [new class() {
+                #[Assert\Count(min: 10)]
+                private $property1;
+            }];
+        }
+    }
 }
