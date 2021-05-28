@@ -80,21 +80,21 @@ class SymfonyConstraintAnnotationReader
                     }
                 } elseif ($innerAnnotation instanceof Assert\Regex) {
                     $this->appendPattern($property, $innerAnnotation->getHtmlPattern());
-                } elseif ($annotation instanceof Assert\Count) {
-                    if (isset($annotation->min)) {
-                        $property->minItems = (int) $annotation->min;
+                } elseif ($innerAnnotation instanceof Assert\Count) {
+                    if (isset($innerAnnotation->min)) {
+                        $property->minItems = (int) $innerAnnotation->min;
                     }
-                    if (isset($annotation->max)) {
-                        $property->maxItems = (int) $annotation->max;
+                    if (isset($innerAnnotation->max)) {
+                        $property->maxItems = (int) $innerAnnotation->max;
                     }
                 } elseif ($innerAnnotation instanceof Assert\Choice) {
                     $this->applyEnumFromChoiceConstraint($property, $innerAnnotation, $reflection);
-                } elseif ($annotation instanceof Assert\Range) {
-                    if (isset($annotation->min)) {
-                        $property->minimum = (int) $annotation->min;
+                } elseif ($innerAnnotation instanceof Assert\Range) {
+                    if (isset($innerAnnotation->min)) {
+                        $property->minimum = (int) $innerAnnotation->min;
                     }
-                    if (isset($annotation->max)) {
-                        $property->maximum = (int) $annotation->max;
+                    if (isset($innerAnnotation->max)) {
+                        $property->maximum = (int) $innerAnnotation->max;
                     }
                 } elseif ($innerAnnotation instanceof Assert\LessThan) {
                     $property->exclusiveMaximum = true;
