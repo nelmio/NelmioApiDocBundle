@@ -298,25 +298,6 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minItems);
         $this->assertSame(10, $schema->properties[0]->maxItems);
     }
-  
-    /**
-     * @param object $entity
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1821
-     * @dataProvider provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet
-     */
-    public function testCountConstraintDoesNotSetMinItemsIfMinIsNotSet($entity)
-    {
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
-
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
-        $symfonyConstraintAnnotationReader->setSchema($schema);
-
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
-
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minItems);
-        $this->assertSame(10, $schema->properties[0]->maxItems);
-    }
 
     public function provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet(): iterable
     {
