@@ -125,6 +125,7 @@ class TestKernel extends Kernel
             'validation' => null,
             'form' => null,
             'serializer' => ['enable_annotations' => true],
+            'property_access' => true,
         ];
 
         // templating is deprecated
