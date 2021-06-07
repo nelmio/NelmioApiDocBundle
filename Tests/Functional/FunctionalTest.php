@@ -526,4 +526,11 @@ class FunctionalTest extends WebTestCase
         $this->getModel('SymfonyDiscriminatorOne');
         $this->getModel('SymfonyDiscriminatorTwo');
     }
+
+    public function testNoAdditionalPropertiesSupport()
+    {
+        $model = $this->getModel('AddProp');
+
+        $this->assertFalse($model->additionalProperties);
+    }
 }

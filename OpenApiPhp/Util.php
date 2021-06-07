@@ -346,10 +346,17 @@ final class Util
     {
         $done = [];
 
+        $defaults = \get_class_vars(\get_class($annotation));
+
         foreach ($annotation::$_nested as $className => $propertyName) {
             if (\is_string($propertyName)) {
                 if (array_key_exists($propertyName, $properties)) {
-                    self::mergeChild($annotation, $className, $properties[$propertyName], $overwrite);
+                    if (!is_bool($properties[$propertyName])) {
+                        self::mergeChild($annotation, $className, $properties[$propertyName], $overwrite);
+                    } elseif ($overwrite || $annotation->{$propertyName} === $defaults[$propertyName]) {
+                        // Support for boolean values (for instance for additionalProperties)
+                        $annotation->{$propertyName} = $properties[$propertyName];
+                    }
                     $done[] = $propertyName;
                 }
             } elseif (\array_key_exists($propertyName[0], $properties)) {
@@ -359,8 +366,6 @@ final class Util
                 $done[] = $collection;
             }
         }
-
-        $defaults = \get_class_vars(\get_class($annotation));
 
         foreach ($annotation::$_types as $propertyName => $type) {
             if (array_key_exists($propertyName, $properties)) {
