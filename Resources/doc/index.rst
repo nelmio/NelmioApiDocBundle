@@ -256,6 +256,28 @@ General PHP objects
     **If you're using the JMS Serializer**, the metadata of the JMS serializer are used by default to describe your
     models. Additional information is extracted from the PHP doc block comment,
     but the property types must be specified in the JMS annotations.
+    
+    NOTE: If you are using serialization contexts (e.g. Groups) each permutation will be treated as a separate Path. For example if you have the following two variations defined in different places in your code:
+    
+    .. code-block:: php
+        /**
+         * A nested serializer property with no context group
+         *
+         * @JMS\VirtualProperty
+         * @JMS\Type("ArrayCollection<App\Response\ItemResponse>")
+         * @JMS\Since("1.0")
+         *
+         * @return Collection|ItemResponse[]
+         */
+        public function getItems(): Collection|array
+        {
+            return $this->items;
+        }
+
+    .. code-block
+       @OA\Schema(ref=@Model(type="App\Response\ItemResponse", groups=["Default"])),
+
+    It will generate two different component schemas (ItemResponse, ItemResponse2), even though Default and blank are the same. This is by design.
 
     In case you prefer using the `Symfony PropertyInfo component`_ (you
     won't be able to use JMS serialization groups), you can disable JMS serializer
