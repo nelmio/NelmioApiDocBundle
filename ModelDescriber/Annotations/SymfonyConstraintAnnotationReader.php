@@ -166,7 +166,7 @@ class SymfonyConstraintAnnotationReader
      */
     private function getAnnotations($reflection): \Traversable
     {
-        if (\PHP_VERSION_ID >= 80000) {
+        if (\PHP_VERSION_ID >= 80000 && class_exists(Constraint::class)) {
             foreach ($reflection->getAttributes(Constraint::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
                 yield $attribute->newInstance();
             }
