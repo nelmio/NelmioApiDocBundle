@@ -119,9 +119,15 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
         if (!$builtinFormType = $this->getBuiltinFormType($type)) {
             // if form type is not builtin in Form component.
+            $class = get_class($type->getInnerType());
+            $groups = null;
+            if ($property->ref instanceof \Nelmio\ApiDocBundle\Annotation\Model) {
+                $class = $property->ref->type;
+                $groups = property_exists($property->ref, "groups") ? $property->ref->groups : null;
+            }
             $model = new Model(
-                new Type(Type::BUILTIN_TYPE_OBJECT, false, get_class($type->getInnerType())),
-                null,
+                new Type(Type::BUILTIN_TYPE_OBJECT, false, $class),
+                $groups,
                 $config->getOptions()
             );
 
