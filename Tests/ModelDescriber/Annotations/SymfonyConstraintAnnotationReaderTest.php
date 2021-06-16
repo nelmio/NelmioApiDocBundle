@@ -279,7 +279,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             $this->assertSame(OA\UNDEFINED, $schema->properties[0]->exclusiveMaximum);
         }
     }
-  
+
     /**
      * @param object $entity
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1821
@@ -409,8 +409,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet(): iterable
     {
-        yield 'Annotations' => [new class()
-        {
+        yield 'Annotations' => [new class() {
             /**
              * @Assert\Range(max = 10)
              */
@@ -418,8 +417,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }];
 
         if (\PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class()
-            {
+            yield 'Attributes' => [new class() {
                 #[Assert\Range(max: 10)]
                 private $property1;
             }];
