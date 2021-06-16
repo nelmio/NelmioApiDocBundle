@@ -13,6 +13,8 @@ namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader;
+use Nelmio\ApiDocBundle\Tests\Helper;
+use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use OpenApi\Annotations as OA;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -242,6 +244,39 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                 #[Assert\Length(max: 100)]
                 private $property1;
             }];
+        }
+    }
+
+    public function testCompoundValidationRules()
+    {
+        $entity = new class() {
+            /**
+             * @CustomAssert\CompoundValidationRule()
+             */
+            private $property1;
+        };
+        $propertyName = 'property1';
+
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => $propertyName])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, $propertyName), $schema->properties[0]);
+
+        if (Helper::isCompoundValidatorConstraintSupported()) {
+            $this->assertSame([$propertyName], $schema->required);
+            $this->assertSame(0, $schema->properties[0]->minimum);
+            $this->assertTrue($schema->properties[0]->exclusiveMinimum);
+            $this->assertSame(5, $schema->properties[0]->maximum);
+            $this->assertTrue($schema->properties[0]->exclusiveMaximum);
+        } else {
+            $this->assertSame(OA\UNDEFINED, $schema->required);
+            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minimum);
+            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->exclusiveMinimum);
+            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maximum);
+            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->exclusiveMaximum);
         }
     }
 

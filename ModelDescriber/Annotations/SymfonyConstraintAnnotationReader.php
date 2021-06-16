@@ -44,22 +44,33 @@ class SymfonyConstraintAnnotationReader
      */
     public function updateProperty($reflection, OA\Property $property): void
     {
-        foreach ($this->getAnnotations($reflection) as $annotation) {
+        foreach ($this->getAnnotations($reflection) as $outerAnnotation) {
+            $innerAnnotations = $outerAnnotation instanceof Assert\Compound
+                ? $outerAnnotation->constraints
+                : [$outerAnnotation];
+
+            $this->processPropertyAnnotations($reflection, $property, $innerAnnotations);
+        }
+    }
+
+    private function processPropertyAnnotations($reflection, OA\Property $property, $annotations)
+    {
+        foreach ($annotations as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
                 // To support symfony/validator < 4.3
                 if ($annotation instanceof Assert\NotBlank && \property_exists($annotation, 'allowNull') && $annotation->allowNull) {
                     // The field is optional
-                    continue;
+                    return;
                 }
 
                 // The field is required
                 if (null === $this->schema) {
-                    continue;
+                    return;
                 }
 
                 $propertyName = $this->getSchemaPropertyName($property);
                 if (null === $propertyName) {
-                    continue;
+                    return;
                 }
 
                 $existingRequiredFields =  OA\UNDEFINED !== $this->schema->required ? $this->schema->required : [];

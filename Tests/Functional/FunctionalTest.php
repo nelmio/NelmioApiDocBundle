@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
@@ -355,7 +356,7 @@ class FunctionalTest extends WebTestCase
 
     public function testSymfonyConstraintDocumentation()
     {
-        $this->assertEquals([
+        $expected = [
             'required' => [
                 'propertyNotBlank',
                 'propertyNotNull',
@@ -419,10 +420,26 @@ class FunctionalTest extends WebTestCase
                     'type' => 'integer',
                     'maximum' => 23,
                 ],
+                'propertyWithCompoundValidationRule' => [
+                    'type' => 'integer',
+                ],
             ],
             'type' => 'object',
             'schema' => 'SymfonyConstraints',
-        ], json_decode($this->getModel('SymfonyConstraints')->toJson(), true));
+        ];
+
+        if (Helper::isCompoundValidatorConstraintSupported()) {
+            $expected['required'][] = 'propertyWithCompoundValidationRule';
+            $expected['properties']['propertyWithCompoundValidationRule'] = [
+                'type' => 'integer',
+                'maximum' => 5,
+                'exclusiveMaximum' => true,
+                'minimum' => 0,
+                'exclusiveMinimum' => true,
+            ];
+        }
+
+        $this->assertEquals($expected, json_decode($this->getModel('SymfonyConstraints')->toJson(), true));
     }
 
     public function testConfigReference()
