@@ -50,64 +50,70 @@ class SymfonyConstraintAnnotationReader
                 : [$outerAnnotation];
 
             foreach ($innerAnnotations as $innerAnnotation) {
-                if ($innerAnnotation instanceof Assert\NotBlank || $innerAnnotation instanceof Assert\NotNull) {
-                    // To support symfony/validator < 4.3
-                    if ($innerAnnotation instanceof Assert\NotBlank && \property_exists($innerAnnotation, 'allowNull') && $innerAnnotation->allowNull) {
-                        // The field is optional
-                        continue;
-                    }
-
-                    // The field is required
-                    if (null === $this->schema) {
-                        continue;
-                    }
-
-                    $propertyName = $this->getSchemaPropertyName($property);
-                    if (null === $propertyName) {
-                        continue;
-                    }
-
-                    $existingRequiredFields =  OA\UNDEFINED !== $this->schema->required ? $this->schema->required : [];
-                    $existingRequiredFields[] = $propertyName;
-
-                    $this->schema->required = array_values(array_unique($existingRequiredFields));
-                } elseif ($innerAnnotation instanceof Assert\Length) {
-                    if (isset($innerAnnotation->min)) {
-                        $property->minLength = (int) $innerAnnotation->min;
-                    }
-                    if (isset($innerAnnotation->max)) {
-                        $property->maxLength = (int) $innerAnnotation->max;
-                    }
-                } elseif ($innerAnnotation instanceof Assert\Regex) {
-                    $this->appendPattern($property, $innerAnnotation->getHtmlPattern());
-                } elseif ($innerAnnotation instanceof Assert\Count) {
-                    if (isset($innerAnnotation->min)) {
-                        $property->minItems = (int) $innerAnnotation->min;
-                    }
-                    if (isset($innerAnnotation->max)) {
-                        $property->maxItems = (int) $innerAnnotation->max;
-                    }
-                } elseif ($innerAnnotation instanceof Assert\Choice) {
-                    $this->applyEnumFromChoiceConstraint($property, $innerAnnotation, $reflection);
-                } elseif ($innerAnnotation instanceof Assert\Range) {
-                    if (isset($innerAnnotation->min)) {
-                        $property->minimum = (int) $innerAnnotation->min;
-                    }
-                    if (isset($innerAnnotation->max)) {
-                        $property->maximum = (int) $innerAnnotation->max;
-                    }
-                } elseif ($innerAnnotation instanceof Assert\LessThan) {
-                    $property->exclusiveMaximum = true;
-                    $property->maximum = (int) $innerAnnotation->value;
-                } elseif ($innerAnnotation instanceof Assert\LessThanOrEqual) {
-                    $property->maximum = (int) $innerAnnotation->value;
-                } elseif ($innerAnnotation instanceof Assert\GreaterThan) {
-                    $property->exclusiveMinimum = true;
-                    $property->minimum = (int) $innerAnnotation->value;
-                } elseif ($innerAnnotation instanceof Assert\GreaterThanOrEqual) {
-                    $property->minimum = (int) $innerAnnotation->value;
-                }
+                $this->processPropertyAnnotation($reflection, $property, $innerAnnotation);
             }
+        }
+    }
+
+    private function processPropertyAnnotation($reflection, OA\Property $property, $annotation)
+    {
+
+        if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
+            // To support symfony/validator < 4.3
+            if ($annotation instanceof Assert\NotBlank && \property_exists($annotation, 'allowNull') && $annotation->allowNull) {
+                // The field is optional
+                return;
+            }
+
+            // The field is required
+            if (null === $this->schema) {
+                return;
+            }
+
+            $propertyName = $this->getSchemaPropertyName($property);
+            if (null === $propertyName) {
+                return;
+            }
+
+            $existingRequiredFields =  OA\UNDEFINED !== $this->schema->required ? $this->schema->required : [];
+            $existingRequiredFields[] = $propertyName;
+
+            $this->schema->required = array_values(array_unique($existingRequiredFields));
+        } elseif ($annotation instanceof Assert\Length) {
+            if (isset($annotation->min)) {
+                $property->minLength = (int) $annotation->min;
+            }
+            if (isset($annotation->max)) {
+                $property->maxLength = (int) $annotation->max;
+            }
+        } elseif ($annotation instanceof Assert\Regex) {
+            $this->appendPattern($property, $annotation->getHtmlPattern());
+        } elseif ($annotation instanceof Assert\Count) {
+            if (isset($annotation->min)) {
+                $property->minItems = (int) $annotation->min;
+            }
+            if (isset($annotation->max)) {
+                $property->maxItems = (int) $annotation->max;
+            }
+        } elseif ($annotation instanceof Assert\Choice) {
+            $this->applyEnumFromChoiceConstraint($property, $annotation, $reflection);
+        } elseif ($annotation instanceof Assert\Range) {
+            if (isset($annotation->min)) {
+                $property->minimum = (int) $annotation->min;
+            }
+            if (isset($annotation->max)) {
+                $property->maximum = (int) $annotation->max;
+            }
+        } elseif ($annotation instanceof Assert\LessThan) {
+            $property->exclusiveMaximum = true;
+            $property->maximum = (int) $annotation->value;
+        } elseif ($annotation instanceof Assert\LessThanOrEqual) {
+            $property->maximum = (int) $annotation->value;
+        } elseif ($annotation instanceof Assert\GreaterThan) {
+            $property->exclusiveMinimum = true;
+            $property->minimum = (int) $annotation->value;
+        } elseif ($annotation instanceof Assert\GreaterThanOrEqual) {
+            $property->minimum = (int) $annotation->value;
         }
     }
 
