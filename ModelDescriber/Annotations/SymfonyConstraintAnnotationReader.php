@@ -49,70 +49,70 @@ class SymfonyConstraintAnnotationReader
                 ? $outerAnnotation->constraints
                 : [$outerAnnotation];
 
-            foreach ($innerAnnotations as $innerAnnotation) {
-                $this->processPropertyAnnotation($reflection, $property, $innerAnnotation);
-            }
+            $this->processPropertyAnnotations($reflection, $property, $innerAnnotations);
         }
     }
 
-    private function processPropertyAnnotation($reflection, OA\Property $property, $annotation)
+    private function processPropertyAnnotations($reflection, OA\Property $property, $annotations)
     {
-        if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
-            // To support symfony/validator < 4.3
-            if ($annotation instanceof Assert\NotBlank && \property_exists($annotation, 'allowNull') && $annotation->allowNull) {
-                // The field is optional
-                return;
-            }
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
+                // To support symfony/validator < 4.3
+                if ($annotation instanceof Assert\NotBlank && \property_exists($annotation, 'allowNull') && $annotation->allowNull) {
+                    // The field is optional
+                    return;
+                }
 
-            // The field is required
-            if (null === $this->schema) {
-                return;
-            }
+                // The field is required
+                if (null === $this->schema) {
+                    return;
+                }
 
-            $propertyName = $this->getSchemaPropertyName($property);
-            if (null === $propertyName) {
-                return;
-            }
+                $propertyName = $this->getSchemaPropertyName($property);
+                if (null === $propertyName) {
+                    return;
+                }
 
-            $existingRequiredFields =  OA\UNDEFINED !== $this->schema->required ? $this->schema->required : [];
-            $existingRequiredFields[] = $propertyName;
+                $existingRequiredFields =  OA\UNDEFINED !== $this->schema->required ? $this->schema->required : [];
+                $existingRequiredFields[] = $propertyName;
 
-            $this->schema->required = array_values(array_unique($existingRequiredFields));
-        } elseif ($annotation instanceof Assert\Length) {
-            if (isset($annotation->min)) {
-                $property->minLength = (int) $annotation->min;
+                $this->schema->required = array_values(array_unique($existingRequiredFields));
+            } elseif ($annotation instanceof Assert\Length) {
+                if (isset($annotation->min)) {
+                    $property->minLength = (int) $annotation->min;
+                }
+                if (isset($annotation->max)) {
+                    $property->maxLength = (int) $annotation->max;
+                }
+            } elseif ($annotation instanceof Assert\Regex) {
+                $this->appendPattern($property, $annotation->getHtmlPattern());
+            } elseif ($annotation instanceof Assert\Count) {
+                if (isset($annotation->min)) {
+                    $property->minItems = (int) $annotation->min;
+                }
+                if (isset($annotation->max)) {
+                    $property->maxItems = (int) $annotation->max;
+                }
+            } elseif ($annotation instanceof Assert\Choice) {
+                $this->applyEnumFromChoiceConstraint($property, $annotation, $reflection);
+            } elseif ($annotation instanceof Assert\Range) {
+                if (isset($annotation->min)) {
+                    $property->minimum = (int) $annotation->min;
+                }
+                if (isset($annotation->max)) {
+                    $property->maximum = (int) $annotation->max;
+                }
+            } elseif ($annotation instanceof Assert\LessThan) {
+                $property->exclusiveMaximum = true;
+                $property->maximum = (int) $annotation->value;
+            } elseif ($annotation instanceof Assert\LessThanOrEqual) {
+                $property->maximum = (int) $annotation->value;
+            } elseif ($annotation instanceof Assert\GreaterThan) {
+                $property->exclusiveMinimum = true;
+                $property->minimum = (int) $annotation->value;
+            } elseif ($annotation instanceof Assert\GreaterThanOrEqual) {
+                $property->minimum = (int) $annotation->value;
             }
-            if (isset($annotation->max)) {
-                $property->maxLength = (int) $annotation->max;
-            }
-        } elseif ($annotation instanceof Assert\Regex) {
-            $this->appendPattern($property, $annotation->getHtmlPattern());
-        } elseif ($annotation instanceof Assert\Count) {
-            if (isset($annotation->min)) {
-                $property->minItems = (int) $annotation->min;
-            }
-            if (isset($annotation->max)) {
-                $property->maxItems = (int) $annotation->max;
-            }
-        } elseif ($annotation instanceof Assert\Choice) {
-            $this->applyEnumFromChoiceConstraint($property, $annotation, $reflection);
-        } elseif ($annotation instanceof Assert\Range) {
-            if (isset($annotation->min)) {
-                $property->minimum = (int) $annotation->min;
-            }
-            if (isset($annotation->max)) {
-                $property->maximum = (int) $annotation->max;
-            }
-        } elseif ($annotation instanceof Assert\LessThan) {
-            $property->exclusiveMaximum = true;
-            $property->maximum = (int) $annotation->value;
-        } elseif ($annotation instanceof Assert\LessThanOrEqual) {
-            $property->maximum = (int) $annotation->value;
-        } elseif ($annotation instanceof Assert\GreaterThan) {
-            $property->exclusiveMinimum = true;
-            $property->minimum = (int) $annotation->value;
-        } elseif ($annotation instanceof Assert\GreaterThanOrEqual) {
-            $property->minimum = (int) $annotation->value;
         }
     }
 
