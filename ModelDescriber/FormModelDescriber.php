@@ -100,7 +100,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $property->mergeProperties($config->getOption('documentation'));
             }
 
-            if (OA\UNDEFINED !== $property->type) {
+            if (OA\UNDEFINED !== $property->type || OA\UNDEFINED !== $property->ref) {
                 continue; // Type manually defined
             }
 
