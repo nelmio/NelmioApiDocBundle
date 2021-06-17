@@ -257,9 +257,10 @@ General PHP objects
     models. Additional information is extracted from the PHP doc block comment,
     but the property types must be specified in the JMS annotations.
     
-    NOTE: If you are using serialization contexts (e.g. Groups) each permutation will be treated as a separate Path. For example if you have the following two variations defined in different places in your code:
+    **If you are using serialization contexts (e.g. Groups)**, each permutation will be treated as a separate Path. For example if you have the following two variations defined in different places in your code:
     
     .. code-block:: php
+
         /**
          * A nested serializer property with no context group
          *
@@ -274,8 +275,9 @@ General PHP objects
             return $this->items;
         }
 
-    .. code-block
-       @OA\Schema(ref=@Model(type="App\Response\ItemResponse", groups=["Default"])),
+    .. code-block::
+
+        @OA\Schema(ref=@Model(type="App\Response\ItemResponse", groups=["Default"])),
 
     It will generate two different component schemas (ItemResponse, ItemResponse2), even though Default and blank are the same. This is by design.
 
