@@ -34,6 +34,11 @@ class RenderOpenApi
         }
     }
 
+    public function getAvailableFormats(): array
+    {
+        return array_keys($this->openApiRenderers);
+    }
+
     /**
      * @throws InvalidArgumentException If the area to dump is not valid
      */
