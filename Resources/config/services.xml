@@ -6,14 +6,13 @@
     <services>
         <!-- Commands -->
         <service id="nelmio_api_doc.command.dump" class="Nelmio\ApiDocBundle\Command\DumpCommand" public="true">
-            <argument type="service" id="nelmio_api_doc.generator_locator" />
+            <argument type="service" id="nelmio_api_doc.render_docs" />
             <tag name="console.command" command="nelmio:apidoc:dump" />
         </service>
 
         <!-- Controllers -->
         <service id="nelmio_api_doc.controller.swagger_ui" class="Nelmio\ApiDocBundle\Controller\SwaggerUiController" public="true">
-            <argument type="service" id="nelmio_api_doc.generator_locator" />
-            <argument type="service" id="twig" />
+            <argument type="service" id="nelmio_api_doc.render_docs" />
         </service>
 
         <service id="nelmio_api_doc.controller.swagger" alias="nelmio_api_doc.controller.swagger_json" public="true" />
@@ -24,6 +23,18 @@
 
         <service id="nelmio_api_doc.controller.swagger_yaml" class="Nelmio\ApiDocBundle\Controller\YamlDocumentationController" public="true">
             <argument type="service" id="nelmio_api_doc.generator_locator" />
+        </service>
+
+        <!-- Render -->
+        <service id="nelmio_api_doc.render_docs" class="Nelmio\ApiDocBundle\Render\RenderOpenApi" public="true">
+            <argument type="service" id="nelmio_api_doc.generator_locator" />
+            <argument type="service" id="nelmio_api_doc.render_docs.html" />
+            <argument type="service" id="nelmio_api_doc.render_docs.json" />
+        </service>
+        <service id="nelmio_api_doc.render_docs.html" class="Nelmio\ApiDocBundle\Render\Html\HtmlOpenApiRenderer" public="false">
+            <argument type="service" id="twig" />
+        </service>
+        <service id="nelmio_api_doc.render_docs.json" class="Nelmio\ApiDocBundle\Render\Json\JsonOpenApiRenderer" public="false">
         </service>
 
         <!-- Swagger Spec Generator -->

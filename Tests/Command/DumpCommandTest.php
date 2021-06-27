@@ -17,20 +17,35 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class DumpCommandTest extends WebTestCase
 {
-    public function testExecute()
+    /** @dataProvider provideJsonMode */
+    public function testJson(array $jsonOptions, int $expectedJsonFlags)
+    {
+        $output = $this->executeDumpCommand($jsonOptions + [
+            '--area' => 'test',
+        ]);
+        $this->assertEquals(
+            json_encode($this->getOpenApiDefinition('test'), $expectedJsonFlags)."\n",
+            $output
+        );
+    }
+
+    public function provideJsonMode()
+    {
+        return [
+            'pretty print' => [[], JSON_PRETTY_PRINT],
+            'one line' => [['--no-pretty'], 0],
+        ];
+    }
+
+    private function executeDumpCommand(array $options)
     {
         $kernel = static::bootKernel();
         $application = new Application($kernel);
 
         $command = $application->find('nelmio:apidoc:dump');
         $commandTester = new CommandTester($command);
-        $commandTester->execute([
-            '--area' => 'test',
-            '--no-pretty' => '',
-        ]);
+        $commandTester->execute($options);
 
-        // the output of the command in the console
-        $output = $commandTester->getDisplay();
-        $this->assertEquals(json_encode($this->getOpenApiDefinition('test'))."\n", $output);
+        return $commandTester->getDisplay();
     }
 }
