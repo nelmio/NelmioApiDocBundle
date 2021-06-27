@@ -11,9 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Command;
 
-use Psr\Container\ContainerInterface;
+use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,16 +20,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DumpCommand extends Command
 {
     /**
-     * @var ContainerInterface
+     * @var RenderOpenApi
      */
-    private $generatorLocator;
+    private $renderOpenApi;
 
-    /**
-     * DumpCommand constructor.
-     */
-    public function __construct(ContainerInterface $generatorLocator)
+    public function __construct(RenderOpenApi $renderOpenApi)
     {
-        $this->generatorLocator = $generatorLocator;
+        $this->renderOpenApi = $renderOpenApi;
 
         parent::__construct();
     }
@@ -48,25 +44,17 @@ class DumpCommand extends Command
     }
 
     /**
-     * @throws InvalidArgumentException If the area to dump is not valid
-     *
      * @return int|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $area = $input->getOption('area');
 
-        if (!$this->generatorLocator->has($area)) {
-            throw new InvalidArgumentException(sprintf('Area "%s" is not supported.', $area));
-        }
-
-        $spec = $this->generatorLocator->get($area)->generate();
-
-        if ($input->hasParameterOption(['--no-pretty'])) {
-            $output->writeln(json_encode($spec));
-        } else {
-            $output->writeln(json_encode($spec, JSON_PRETTY_PRINT));
-        }
+        $options = [
+            'no-pretty' => $input->hasParameterOption(['--no-pretty']),
+        ];
+        $docs = $this->renderOpenApi->render(RenderOpenApi::JSON, $area, $options);
+        $output->writeln($docs, OutputInterface::OUTPUT_RAW);
 
         return 0;
     }
