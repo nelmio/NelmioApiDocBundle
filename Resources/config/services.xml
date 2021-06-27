@@ -33,6 +33,7 @@
         </service>
         <service id="nelmio_api_doc.render_docs.html" class="Nelmio\ApiDocBundle\Render\Html\HtmlOpenApiRenderer" public="false">
             <argument type="service" id="twig" />
+            <argument type="service" id="twig.extension.assets" />
         </service>
         <service id="nelmio_api_doc.render_docs.json" class="Nelmio\ApiDocBundle\Render\Json\JsonOpenApiRenderer" public="false">
         </service>

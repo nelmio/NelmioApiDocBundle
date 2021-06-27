@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Controller;
 
 use InvalidArgumentException;
+use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +36,7 @@ final class SwaggerUiController
             $response = new Response(
                 $this->renderOpenApi->render(RenderOpenApi::HTML, $area, [
                     'server_url' => '' !== $request->getBaseUrl() ? $request->getSchemeAndHttpHost().$request->getBaseUrl() : null,
+                    'assets_mode' => AssetsMode::BUNDLE,
                 ]),
                 Response::HTTP_OK,
                 ['Content-Type' => 'text/html']
