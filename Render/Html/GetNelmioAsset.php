@@ -12,30 +12,82 @@
 namespace Nelmio\ApiDocBundle\Render\Html;
 
 use Symfony\Bridge\Twig\Extension\AssetExtension;
+use Twig\TwigFunction;
 
 class GetNelmioAsset
 {
     private $assetExtension;
-    private $defaultAssetsMode;
+    private $resourcesDir;
+    private $cdnUrl;
+    private $assetsMode = AssetsMode::BUNDLE;
 
-    public function __construct(AssetExtension $assetExtension, $defaultAssetsMode)
+    public function __construct(AssetExtension $assetExtension)
     {
         $this->assetExtension = $assetExtension;
-        $this->defaultAssetsMode = $defaultAssetsMode;
+        $this->cdnUrl = 'https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public';
+        $this->resourcesDir = __DIR__.'/../../Resources/public';
     }
 
-    public function __invoke($asset, $forcedMode = null)
+    public function toTwigFunction($assetsMode): TwigFunction
     {
-        $mode = $forcedMode ?: $this->defaultAssetsMode;
-        if (AssetsMode::CDN === $mode) {
-            return sprintf(
-                'https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle@4.1/Resources/public/%s',
-                $asset
-            );
-        } elseif (AssetsMode::OFFLINE === $mode) {
-            return file_get_contents(__DIR__.sprintf('/../../Resources/public/%s', $asset));
+        $this->assetsMode = $assetsMode;
+
+        return new TwigFunction('nelmioAsset', $this, ['is_safe' => ['html']]);
+    }
+
+    public function __invoke($asset)
+    {
+        [$extension, $mode] = $this->getExtension($asset);
+        [$resource, $isInline] = $this->getResource($asset, $mode);
+        if ('js' == $extension) {
+            return $this->renderJavascript($resource, $isInline);
+        } elseif ('css' == $extension) {
+            return $this->renderCss($resource, $isInline);
         } else {
-            return $this->assetExtension->getAssetUrl(sprintf('bundles/nelmioapidoc/%s', $asset));
+            return $resource;
+        }
+    }
+
+    private function getExtension($asset)
+    {
+        $extension = mb_substr($asset, -3, 3, 'utf-8');
+        if ('.js' === $extension) {
+            return ['js', $this->assetsMode];
+        } elseif ('png' === $extension) {
+            return ['png', AssetsMode::OFFLINE == $this->assetsMode ? AssetsMode::CDN : $this->assetsMode];
+        } else {
+            return ['css', $this->assetsMode];
+        }
+    }
+
+    private function getResource($asset, $mode)
+    {
+        if (filter_var($asset, FILTER_VALIDATE_URL)) {
+            return [$asset, false];
+        } elseif (AssetsMode::OFFLINE === $mode) {
+            return [file_get_contents($this->resourcesDir.'/'.$asset), true];
+        } elseif (AssetsMode::CDN === $mode) {
+            return [$this->cdnUrl.'/'.$asset, false];
+        } else {
+            return [$this->assetExtension->getAssetUrl(sprintf('bundles/nelmioapidoc/%s', $asset)), false];
+        }
+    }
+
+    private function renderJavascript(string $script, bool $isInline)
+    {
+        if ($isInline) {
+            return sprintf('<script>%s</script>', $script);
+        } else {
+            return sprintf('<script src="%s"></script>', $script);
+        }
+    }
+
+    private function renderCss(string $stylesheet, bool $isInline)
+    {
+        if ($isInline) {
+            return sprintf('<style>%s</style>', $stylesheet);
+        } else {
+            return sprintf('<link rel="stylesheet" href="%s">', $stylesheet);
         }
     }
 }
