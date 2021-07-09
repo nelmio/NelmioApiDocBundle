@@ -274,7 +274,7 @@ General PHP objects
             return $this->items;
         }
 
-    .. code-block
+    .. code-block::
        @OA\Schema(ref=@Model(type="App\Response\ItemResponse", groups=["Default"])),
 
     It will generate two different component schemas (ItemResponse, ItemResponse2), even though Default and blank are the same. This is by design.
