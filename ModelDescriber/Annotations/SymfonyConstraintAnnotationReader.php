@@ -44,6 +44,10 @@ class SymfonyConstraintAnnotationReader
      */
     public function updateProperty($reflection, OA\Property $property): void
     {
+        if (null === $this->schema) {
+            throw new \InvalidArgumentException(__CLASS__ . ' working without schema impossible.');
+        }
+
         foreach ($this->getAnnotations($reflection) as $outerAnnotation) {
             $innerAnnotations = $outerAnnotation instanceof Assert\Compound
                 ? $outerAnnotation->constraints
@@ -63,11 +67,6 @@ class SymfonyConstraintAnnotationReader
                     return;
                 }
 
-                // The field is required
-                if (null === $this->schema) {
-                    return;
-                }
-
                 $propertyName = $this->getSchemaPropertyName($property);
                 if (null === $propertyName) {
                     return;
@@ -77,6 +76,8 @@ class SymfonyConstraintAnnotationReader
                 $existingRequiredFields[] = $propertyName;
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
+            } elseif ($annotation instanceof Assert\Type) {
+                $property->type = $annotation->type;
             } elseif ($annotation instanceof Assert\Length) {
                 if (isset($annotation->min)) {
                     $property->minLength = (int) $annotation->min;
@@ -116,7 +117,7 @@ class SymfonyConstraintAnnotationReader
         }
     }
 
-    public function setSchema($schema): void
+    public function setSchema(OA\Schema $schema): void
     {
         $this->schema = $schema;
     }

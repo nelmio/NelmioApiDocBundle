@@ -19,7 +19,7 @@ final class CompoundValidationRule extends Compound
     protected function getConstraints(array $options): array
     {
         return [
-            new Assert\Type('numeric'),
+            new Assert\Type(['numeric', 'string']),
             new Assert\NotBlank(),
             new Assert\Positive(),
             new Assert\LessThan(5),
