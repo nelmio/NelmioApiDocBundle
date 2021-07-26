@@ -41,8 +41,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /** @var NameConverterInterface[] */
     private $nameConverter;
 
-    private $swaggerDefinitionAnnotationReader;
-
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
         Reader $reader,
