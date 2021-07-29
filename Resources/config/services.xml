@@ -22,7 +22,7 @@
         </service>
 
         <service id="nelmio_api_doc.controller.swagger_yaml" class="Nelmio\ApiDocBundle\Controller\YamlDocumentationController" public="true">
-            <argument type="service" id="nelmio_api_doc.generator_locator" />
+            <argument type="service" id="nelmio_api_doc.render_docs" />
         </service>
 
         <!-- Render -->
@@ -30,6 +30,7 @@
             <argument type="service" id="nelmio_api_doc.generator_locator" />
             <argument type="service" id="nelmio_api_doc.render_docs.html" />
             <argument type="service" id="nelmio_api_doc.render_docs.json" />
+            <argument type="service" id="nelmio_api_doc.render_docs.yaml" />
         </service>
         <service id="nelmio_api_doc.render_docs.html" class="Nelmio\ApiDocBundle\Render\Html\HtmlOpenApiRenderer" public="false">
             <argument type="service" id="twig" />
@@ -39,6 +40,8 @@
             <argument type="service" id="twig.extension.assets" />
         </service>
         <service id="nelmio_api_doc.render_docs.json" class="Nelmio\ApiDocBundle\Render\Json\JsonOpenApiRenderer" public="false">
+        </service>
+        <service id="nelmio_api_doc.render_docs.yaml" class="Nelmio\ApiDocBundle\Render\Yaml\YamlOpenApiRenderer" public="false">
         </service>
 
         <!-- Swagger Spec Generator -->

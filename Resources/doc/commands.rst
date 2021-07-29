@@ -1,7 +1,7 @@
 Commands
 ========
 
-A command is provided in order to dump the documentation in ``json`` or ``html``.
+A command is provided in order to dump the documentation in ``json``, ``yaml`` or ``html``.
 
 .. code-block:: bash
 

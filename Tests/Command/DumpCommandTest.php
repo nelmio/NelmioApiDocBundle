@@ -38,6 +38,14 @@ class DumpCommandTest extends WebTestCase
         ];
     }
 
+    public function testYaml()
+    {
+        $output = $this->executeDumpCommand([
+            '--format' => 'yaml',
+        ]);
+        self::assertStringContainsString($this->getOpenApiDefinition()->toYaml(), $output);
+    }
+
     /** @dataProvider provideAssetsMode */
     public function testHtml($htmlConfig, string $expectedHtml)
     {

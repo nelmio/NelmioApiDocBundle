@@ -19,6 +19,7 @@ class RenderOpenApi
 {
     public const HTML = 'html';
     public const JSON = 'json';
+    public const YAML = 'yaml';
 
     /** @var ContainerInterface */
     private $generatorLocator;
