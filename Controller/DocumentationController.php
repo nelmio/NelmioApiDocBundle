@@ -32,9 +32,7 @@ final class DocumentationController
     {
         try {
             return JsonResponse::fromJsonString(
-                $this->renderOpenApi->render(RenderOpenApi::JSON, $area, [
-                    'server_url' => '' !== $request->getBaseUrl() ? $request->getSchemeAndHttpHost().$request->getBaseUrl() : null,
-                ])
+                $this->renderOpenApi->renderFromRequest($request, RenderOpenApi::JSON, $area)
             );
         } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException(sprintf('Area "%s" is not supported as it isn\'t defined in config.', $area));

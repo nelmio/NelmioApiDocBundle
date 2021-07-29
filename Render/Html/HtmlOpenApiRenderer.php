@@ -15,7 +15,6 @@ use InvalidArgumentException;
 use Nelmio\ApiDocBundle\Render\OpenApiRenderer;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use OpenApi\Annotations\OpenApi;
-use OpenApi\Annotations\Server;
 use Twig\Environment;
 
 class HtmlOpenApiRenderer implements OpenApiRenderer
@@ -43,7 +42,6 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
     public function render(OpenApi $spec, array $options = []): string
     {
         $options += [
-            'server_url' => null,
             'assets_mode' => AssetsMode::CDN,
             'swagger_ui_config' => [],
         ];
@@ -53,19 +51,10 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
         return $this->twig->render(
             '@NelmioApiDoc/SwaggerUi/index.html.twig',
             [
-                'swagger_data' => ['spec' => $this->createJsonSpec($spec, $options['server_url'])],
+                'swagger_data' => ['spec' => json_decode($spec->toJson(), true)],
                 'assets_mode' => $options['assets_mode'],
                 'swagger_ui_config' => $options['swagger_ui_config'],
             ]
         );
-    }
-
-    private function createJsonSpec(OpenApi $spec, $serverUrl)
-    {
-        if ($serverUrl) {
-            $spec->servers = [new Server(['url' => $serverUrl])];
-        }
-
-        return json_decode($spec->toJson(), true);
     }
 }

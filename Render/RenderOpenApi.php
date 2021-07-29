@@ -13,7 +13,9 @@ namespace Nelmio\ApiDocBundle\Render;
 
 use InvalidArgumentException;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\Server;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class RenderOpenApi
 {
@@ -40,6 +42,19 @@ class RenderOpenApi
         return array_keys($this->openApiRenderers);
     }
 
+    public function renderFromRequest(Request $request, string $format, $area, array $extraOptions = [])
+    {
+        $options = [];
+        if ('' !== $request->getBaseUrl()) {
+            $options += [
+                'server_url' => $request->getSchemeAndHttpHost().$request->getBaseUrl(),
+            ];
+        }
+        $options += $extraOptions;
+
+        return $this->render($format, $area, $options);
+    }
+
     /**
      * @throws InvalidArgumentException If the area to dump is not valid
      */
@@ -53,6 +68,10 @@ class RenderOpenApi
 
         /** @var OpenApi $spec */
         $spec = $this->generatorLocator->get($area)->generate();
+
+        if (array_key_exists('server_url', $options) && $options['server_url']) {
+            $spec->servers = [new Server(['url' => $options['server_url']])];
+        }
 
         return $this->openApiRenderers[$format]->render($spec, $options);
     }
