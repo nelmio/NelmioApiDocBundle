@@ -42,8 +42,14 @@ class DumpCommandTest extends WebTestCase
     {
         $output = $this->executeDumpCommand([
             '--format' => 'yaml',
+            '--server-url' => 'http://example.com/api',
         ]);
-        self::assertStringContainsString($this->getOpenApiDefinition()->toYaml(), $output);
+        $expectedYaml = <<<YAML
+servers:
+  -
+    url: 'http://example.com/api'
+YAML;
+        self::assertStringContainsString($expectedYaml, $output);
     }
 
     /** @dataProvider provideAssetsMode */

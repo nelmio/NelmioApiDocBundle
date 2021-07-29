@@ -17,6 +17,12 @@ without whitespace, use the ``--no-pretty`` option.
     $ php app/console api:doc:dump --format=json > json-pretty-formatted.json
     $ php app/console api:doc:dump --format=json --no-pretty > json-no-pretty.json
 
+Every format can override API url. Useful if static documentation is not hosted on API url:
+
+.. code-block:: bash
+
+    $ php app/console api:doc:dump --format=yaml --server-url "http://example.com/api" > api.yaml
+
 For example to generate a static version of your documentation you can use:
 
 .. code-block:: bash

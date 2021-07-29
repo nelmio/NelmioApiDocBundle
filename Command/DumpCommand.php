@@ -31,7 +31,6 @@ class DumpCommand extends Command
     private $defaultHtmlConfig = [
         'assets_mode' => AssetsMode::CDN,
         'swagger_ui_config' => [],
-        'server_url' => null,
     ];
 
     public function __construct(RenderOpenApi $renderOpenApi)
@@ -57,8 +56,9 @@ class DumpCommand extends Command
                 'Output format like: '.implode(', ', $availableFormats),
                 RenderOpenApi::JSON
             )
+            ->addOption('server-url', '', InputOption::VALUE_REQUIRED, 'URL where live api doc is served')
             ->addOption('html-config', '', InputOption::VALUE_REQUIRED, '', json_encode($this->defaultHtmlConfig))
-            ->addOption('no-pretty', '', InputOption::VALUE_NONE, 'Do not pretty format output')
+            ->addOption('no-pretty', '', InputOption::VALUE_NONE, 'Do not pretty format JSON output')
         ;
     }
 
@@ -78,6 +78,10 @@ class DumpCommand extends Command
             $options = [
                 'no-pretty' => $input->hasParameterOption(['--no-pretty']),
             ];
+        }
+
+        if ($input->getOption('server-url')) {
+            $options['server_url'] = $input->getOption('server-url');
         }
 
         $docs = $this->renderOpenApi->render($format, $area, $options);
