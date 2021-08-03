@@ -198,6 +198,10 @@ class TestKernel extends Kernel
                                 ['type' => 'object'],
                             ],
                         ],
+                        'AddProp' => [
+                            'type' => 'object',
+                            'additionalProperties' => false,
+                        ],
                     ],
                     'parameters' => [
                         'test' => [
