@@ -166,6 +166,6 @@ final class ModelRegister
         }
 
         $annotation->merge([$modelAnnotation]);
-        $analysis->addAnnotation($modelAnnotation, null);
+        $analysis->addAnnotation($modelAnnotation, $properties['_context']);
     }
 }

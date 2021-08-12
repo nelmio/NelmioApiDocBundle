@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Analyser;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
@@ -41,7 +42,7 @@ class OpenApiAnnotationsReader
         }
 
         // Read @Model annotations
-        $this->modelRegister->__invoke(new Analysis([$oaSchema]));
+        $this->modelRegister->__invoke(new Analysis([$oaSchema], Util::createContext()));
 
         if (!$oaSchema->validate()) {
             return;
@@ -82,7 +83,7 @@ class OpenApiAnnotationsReader
         Analyser::$context = null;
 
         // Read @Model annotations
-        $this->modelRegister->__invoke(new Analysis([$oaProperty]), $serializationGroups);
+        $this->modelRegister->__invoke(new Analysis([$oaProperty], Util::createContext()), $serializationGroups);
 
         if (!$oaProperty->validate()) {
             return;
