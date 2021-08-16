@@ -237,7 +237,7 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'integer',
                 ],
                 'complex' => [
-                    '$ref' => '#/components/schemas/JMSComplex2',
+                    '$ref' => '#/components/schemas/JMSComplexDefault',
                 ],
                 'user' => [
                     '$ref' => '#/components/schemas/JMSUser',
@@ -304,6 +304,17 @@ class JMSFunctionalTest extends WebTestCase
             ],
             'schema' => 'VirtualProperty',
         ], json_decode($this->getModel('VirtualProperty')->toJson(), true));
+    }
+
+    public function testNoCollisionsAreGenerated()
+    {
+        self::assertFalse($this->hasModel('JMSComplex2'));
+        self::assertFalse($this->hasModel('JMSUser2'));
+        self::assertFalse($this->hasModel('JMSChatRoom2'));
+        self::assertFalse($this->hasModel('JMSChatRoomUser2'));
+        self::assertFalse($this->hasModel('JMSChatLivingRoom2'));
+
+        self::assertFalse($this->hasModel('JMSPicture2'));
     }
 
     public function testNamingStrategyWithConstraints()

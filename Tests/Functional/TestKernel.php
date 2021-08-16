@@ -18,6 +18,7 @@ use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
@@ -247,6 +248,20 @@ class TestKernel extends Kernel
                         'alias' => 'BazingaUser_grouped',
                         'type' => BazingaUser::class,
                         'groups' => ['foo'],
+                    ],
+                    [
+                        'alias' => 'JMSComplex',
+                        'type' => JMSComplex::class,
+                        'groups' => [
+                            'list',
+                            'details',
+                            'User' => ['list'],
+                        ],
+                    ],
+                    [
+                        'alias' => 'JMSComplexDefault',
+                        'type' => JMSComplex::class,
+                        'groups' => null,
                     ],
                 ],
             ],
