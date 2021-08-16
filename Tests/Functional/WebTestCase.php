@@ -26,6 +26,14 @@ class WebTestCase extends BaseWebTestCase
         return static::$kernel->getContainer()->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }
 
+    public function hasModel(string $name): bool
+    {
+        $api = $this->getOpenApiDefinition();
+        $key = array_search($name, array_column($api->components->schemas, 'schema'));
+
+        return false !== $key;
+    }
+
     protected function getModel($name): OA\Schema
     {
         $api = $this->getOpenApiDefinition();
