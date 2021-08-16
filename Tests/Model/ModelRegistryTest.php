@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use OpenApi\Annotations as OA;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 class ModelRegistryTest extends TestCase
@@ -31,6 +32,96 @@ class ModelRegistryTest extends TestCase
         $type = new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true);
 
         $this->assertEquals('#/components/schemas/array', $registry->register(new Model($type, ['group1'])));
+    }
+
+    public function testNameCollisionsAreLogged()
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger
+            ->expects(self::once())
+            ->method('info')
+            ->with(
+                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.', [
+                'model' => [
+                    'type' => [
+                        'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+                        'built_in_type' => 'object',
+                        'nullable' => false,
+                        'collection' => false,
+                        'collection_key_types' => null,
+                        'collection_value_types' => null,
+                    ],
+                    'options' => null,
+                    'groups' => ['group2'],
+                ],
+                'taken_by' => [
+                    'type' => [
+                        'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+                        'built_in_type' => 'object',
+                        'nullable' => false,
+                        'collection' => false,
+                        'collection_key_types' => null,
+                        'collection_value_types' => null,
+                    ],
+                    'options' => null,
+                    'groups' => ['group1'],
+                ],
+            ]);
+
+        $registry = new ModelRegistry([], new OA\OpenApi([]), []);
+        $registry->setLogger($logger);
+
+        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
+        $registry->register(new Model($type, ['group1']));
+        $registry->register(new Model($type, ['group2']));
+    }
+
+    public function testNameCollisionsAreLoggedWithAlternativeNames()
+    {
+        $ref = new \ReflectionClass(self::class);
+        $alternativeNames = [
+            $ref->getShortName() => [
+                'type' => $ref->getName(),
+                'groups' => ['group1'],
+            ],
+        ];
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger
+            ->expects(self::once())
+            ->method('info')
+            ->with(
+                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.', [
+                'model' => [
+                    'type' => [
+                        'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+                        'built_in_type' => 'object',
+                        'nullable' => false,
+                        'collection' => false,
+                        'collection_key_types' => null,
+                        'collection_value_types' => null,
+                    ],
+                    'options' => null,
+                    'groups' => ['group2'],
+                ],
+                'taken_by' => [
+                    'type' => [
+                        'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+                        'built_in_type' => 'object',
+                        'nullable' => false,
+                        'collection' => false,
+                        'collection_key_types' => null,
+                        'collection_value_types' => null,
+                    ],
+                    'options' => null,
+                    'groups' => ['group1'],
+                ],
+            ]);
+
+        $registry = new ModelRegistry([], new OA\OpenApi([]), $alternativeNames);
+        $registry->setLogger($logger);
+
+        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
+        $registry->register(new Model($type, ['group2']));
     }
 
     /**

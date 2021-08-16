@@ -15,10 +15,16 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use Symfony\Component\PropertyInfo\Type;
 
 final class ModelRegistry
 {
+    use LoggerAwareTrait;
+
+    private $registeredModelNames = [];
+
     private $alternativeNames = [];
 
     private $unregistered = [];
@@ -40,10 +46,11 @@ final class ModelRegistry
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
-
+        $this->logger = new NullLogger();
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
             $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
             $this->names[$model->getHash()] = $alternativeName;
+            $this->registeredModelNames[$alternativeName] = $model;
             Util::getSchema($this->api, $alternativeName);
         }
     }
@@ -57,6 +64,7 @@ final class ModelRegistry
         }
         if (!isset($this->names[$hash])) {
             $this->names[$hash] = $this->generateModelName($model);
+            $this->registeredModelNames[$this->names[$hash]] = $model;
         }
 
         // Reserve the name
@@ -115,11 +123,37 @@ final class ModelRegistry
         );
         $i = 1;
         while (\in_array($name, $names, true)) {
+            if (isset($this->registeredModelNames[$name])) {
+                $this->logger->info(sprintf('Can not assign a name for the model, the name "%s" has already been taken.', $name), [
+                    'model' => $this->modelToArray($model),
+                    'taken_by' => $this->modelToArray($this->registeredModelNames[$name]),
+                ]);
+            }
             ++$i;
             $name = $base.$i;
         }
 
         return $name;
+    }
+
+    private function modelToArray(Model $model): array
+    {
+        $getType = function (Type $type) use (&$getType) {
+            return [
+                'class' => $type->getClassName(),
+                'built_in_type' => $type->getBuiltinType(),
+                'nullable' => $type->isNullable(),
+                'collection' => $type->isCollection(),
+                'collection_key_types' => $type->isCollection() ? array_map($getType, $type->getCollectionKeyTypes()) : null,
+                'collection_value_types' => $type->isCollection() ? array_map($getType, $type->getCollectionValueTypes()) : null,
+            ];
+        };
+
+        return [
+            'type' => $getType($model->getType()),
+            'options' => $model->getOptions(),
+            'groups' => $model->getGroups(),
+        ];
     }
 
     private function getTypeShortName(Type $type): string
