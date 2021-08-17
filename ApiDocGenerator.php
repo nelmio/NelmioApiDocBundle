@@ -20,9 +20,12 @@ use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use OpenApi\Analysis;
 use OpenApi\Annotations\OpenApi;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Log\LoggerAwareTrait;
 
 final class ApiDocGenerator
 {
+    use LoggerAwareTrait;
+
     /** @var OpenApi */
     private $openApi;
 
@@ -81,6 +84,9 @@ final class ApiDocGenerator
 
         $this->openApi = new OpenApi([]);
         $modelRegistry = new ModelRegistry($this->modelDescribers, $this->openApi, $this->alternativeNames);
+        if (null !== $this->logger) {
+            $modelRegistry->setLogger($this->logger);
+        }
         foreach ($this->describers as $describer) {
             if ($describer instanceof ModelRegistryAwareInterface) {
                 $describer->setModelRegistry($modelRegistry);
