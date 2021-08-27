@@ -158,8 +158,8 @@ final class ModelRegistry
 
     private function getTypeShortName(Type $type): string
     {
-        if (null !== $type->getCollectionValueType()) {
-            return $this->getTypeShortName($type->getCollectionValueType()).'[]';
+        if (null !== $collectionType = $this->getCollectionValueType($type)) {
+            return $this->getTypeShortName($collectionType).'[]';
         }
 
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
@@ -176,13 +176,23 @@ final class ModelRegistry
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
             return $type->getClassName();
         } elseif ($type->isCollection()) {
-            if (null !== $type->getCollectionValueType()) {
-                return $this->typeToString($type->getCollectionValueType()).'[]';
+            if (null !== $collectionType = $this->getCollectionValueType($type)) {
+                return $this->typeToString($collectionType).'[]';
             } else {
                 return 'mixed[]';
             }
         } else {
             return $type->getBuiltinType();
         }
+    }
+
+    private function getCollectionValueType(Type $type): ?Type
+    {
+        // BC layer, this condition should be removed after removing support for symfony < 5.3
+        if (!method_exists($type, 'getCollectionValueTypes')) {
+            return $type->getCollectionValueType();
+        }
+
+        return $type->getCollectionValueTypes()[0] ?? null;
     }
 }
