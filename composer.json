@@ -28,6 +28,7 @@
         "symfony/http-foundation": "^4.4|^5.0",
         "symfony/http-kernel": "^4.4|^5.0",
         "symfony/options-resolver": "^4.4|^5.0",
+        "symfony/property-info": "^4.4|^5.0",
         "symfony/routing": "^4.4|^5.0",
         "zircote/swagger-php": "^3.0",
         "phpdocumentor/reflection-docblock": "^3.1|^4.4|^5.0"
@@ -41,7 +42,6 @@
         "symfony/form": "^4.4|^5.0",
         "symfony/phpunit-bridge": "^5.2",
         "symfony/property-access": "^4.4|^5.0",
-        "symfony/property-info": "^4.4|^5.0",
         "symfony/serializer": "^4.4|^5.0",
         "symfony/stopwatch": "^4.4|^5.0",
         "symfony/templating": "^4.4|^5.0",
@@ -63,7 +63,6 @@
         "symfony/cache": "For using a PSR-6 compatible cache implementation with the API doc generator.",
         "symfony/form": "For describing your form type models.",
         "symfony/monolog-bundle": "For using a PSR-3 compatible logger implementation with the API PHP describer.",
-        "symfony/property-info": "For describing your models.",
         "symfony/serializer": "For describing your models.",
         "symfony/validator": "For describing the validation constraints in your models.",
         "twig/twig-bundle": "For using the Swagger UI.",
