@@ -14,6 +14,9 @@ namespace Nelmio\ApiDocBundle\Render\Html;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Twig\TwigFunction;
 
+/**
+ * @internal
+ */
 class GetNelmioAsset
 {
     private $assetExtension;

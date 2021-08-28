@@ -13,6 +13,9 @@ namespace Nelmio\ApiDocBundle\Render;
 
 use OpenApi\Annotations\OpenApi;
 
+/**
+ * @internal
+ */
 interface OpenApiRenderer
 {
     public function getFormat(): string;

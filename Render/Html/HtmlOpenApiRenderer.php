@@ -17,6 +17,9 @@ use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use OpenApi\Annotations\OpenApi;
 use Twig\Environment;
 
+/**
+ * @internal
+ */
 class HtmlOpenApiRenderer implements OpenApiRenderer
 {
     /** @var Environment|\Twig_Environment */

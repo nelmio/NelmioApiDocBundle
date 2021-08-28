@@ -15,6 +15,9 @@ use Nelmio\ApiDocBundle\Render\OpenApiRenderer;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use OpenApi\Annotations\OpenApi;
 
+/**
+ * @internal
+ */
 class YamlOpenApiRenderer implements OpenApiRenderer
 {
     public function getFormat(): string
