@@ -74,14 +74,16 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
                 ]);
 
-            $container->register(sprintf('nelmio_api_doc.describers.route.%s', $area), RouteDescriber::class)
-                ->setPublic(false)
-                ->setArguments([
-                    new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
-                    new Reference('nelmio_api_doc.controller_reflector'),
-                    new TaggedIteratorArgument('nelmio_api_doc.route_describer'),
-                ])
-                ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -400]);
+            if (!array_key_exists('disable_default_routes', $areaConfig) || true !== $areaConfig['disable_default_routes']) {
+                $container->register(sprintf('nelmio_api_doc.describers.route.%s', $area), RouteDescriber::class)
+                    ->setPublic(false)
+                    ->setArguments([
+                        new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
+                        new Reference('nelmio_api_doc.controller_reflector'),
+                        new TaggedIteratorArgument('nelmio_api_doc.route_describer'),
+                    ])
+                    ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -400]);
+            }
 
             $container->register(sprintf('nelmio_api_doc.describers.swagger_php.%s', $area), SwaggerPhpDescriber::class)
                 ->setPublic(false)
