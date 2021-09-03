@@ -14,8 +14,8 @@ file that was distributed with this source code. #}
     <title>{% block title %}{{ swagger_data.spec.info.title }}{% endblock title %}</title>
 
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('bundles/nelmioapidoc/swagger-ui/swagger-ui.css') }}">
-        <link rel="stylesheet" href="{{ asset('bundles/nelmioapidoc/style.css') }}">
+        {{ nelmioAsset('swagger-ui/swagger-ui.css') }}
+        {{ nelmioAsset('style.css') }}
     {% endblock stylesheets %}
 
     {% block swagger_data %}
@@ -53,7 +53,9 @@ file that was distributed with this source code. #}
     {% endblock svg_icons %}
     <header>
         {% block header %}
-            <a id="logo" href="https://github.com/nelmio/NelmioApiDocBundle"><img src="{{ asset('bundles/nelmioapidoc/logo.png') }}" alt="NelmioApiDocBundle"></a>
+            <a id="logo" href="https://github.com/nelmio/NelmioApiDocBundle">
+                <img src="{{ nelmioAsset('logo.png') }}" alt="NelmioApiDocBundle">
+            </a>
         {% endblock header %}
     </header>
 
@@ -62,14 +64,18 @@ file that was distributed with this source code. #}
     {% endblock %}
 
     {% block javascripts %}
-        <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/swagger-ui-bundle.js') }}"></script>
-        <script src="{{ asset('bundles/nelmioapidoc/swagger-ui/swagger-ui-standalone-preset.js') }}"></script>
+        {{ nelmioAsset('swagger-ui/swagger-ui-bundle.js') }}
+        {{ nelmioAsset('swagger-ui/swagger-ui-standalone-preset.js') }}
     {% endblock javascripts %}
 
-    <script src="{{ asset('bundles/nelmioapidoc/init-swagger-ui.js') }}"></script>
+    {{ nelmioAsset('init-swagger-ui.js') }}
+
     {% block swagger_initialization %}
         <script type="text/javascript">
-            window.onload = loadSwaggerUI();
+            (function () {
+                var swaggerUI = {{ swagger_ui_config|json_encode(65)|raw }};
+                window.onload = loadSwaggerUI(swaggerUI);
+            })();
         </script>
     {% endblock swagger_initialization %}
 </body>

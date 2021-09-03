@@ -11,26 +11,104 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Command;
 
+use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase; // for the creation of the kernel
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class DumpCommandTest extends WebTestCase
 {
-    public function testExecute()
+    /** @dataProvider provideJsonMode */
+    public function testJson(array $jsonOptions, int $expectedJsonFlags)
+    {
+        $output = $this->executeDumpCommand($jsonOptions + [
+            '--area' => 'test',
+        ]);
+        $this->assertEquals(
+            json_encode($this->getOpenApiDefinition('test'), $expectedJsonFlags)."\n",
+            $output
+        );
+    }
+
+    public function provideJsonMode()
+    {
+        return [
+            'pretty print' => [[], JSON_PRETTY_PRINT],
+            'one line' => [['--no-pretty'], 0],
+        ];
+    }
+
+    public function testYaml()
+    {
+        $output = $this->executeDumpCommand([
+            '--format' => 'yaml',
+            '--server-url' => 'http://example.com/api',
+        ]);
+        $expectedYaml = <<<YAML
+servers:
+  -
+    url: 'http://example.com/api'
+YAML;
+        self::assertStringContainsString($expectedYaml, $output);
+    }
+
+    /** @dataProvider provideAssetsMode */
+    public function testHtml($htmlConfig, string $expectedHtml)
+    {
+        $output = $this->executeDumpCommand([
+            '--area' => 'test',
+            '--format' => 'html',
+            '--html-config' => json_encode($htmlConfig),
+        ]);
+        self::assertStringContainsString('<body>', $output);
+        self::assertStringContainsString($expectedHtml, $output);
+    }
+
+    public function provideAssetsMode()
+    {
+        return [
+            'default mode is cdn' => [
+                null,
+                'https://cdn.jsdelivr.net',
+            ],
+            'invalid mode fallbacks to cdn' => [
+                'invalid',
+                'https://cdn.jsdelivr.net',
+            ],
+            'select cdn mode' => [
+                ['assets_mode' => AssetsMode::CDN],
+                'https://cdn.jsdelivr.net',
+            ],
+            'select offline mode' => [
+                ['assets_mode' => AssetsMode::OFFLINE],
+                '<style>',
+            ],
+            'configure swagger ui' => [
+                [
+                    'swagger_ui_config' => [
+                        'supportedSubmitMethods' => ['get'],
+                    ],
+                ],
+                '"supportedSubmitMethods":["get"]',
+            ],
+            'configure server url' => [
+                [
+                    'server_url' => 'http://example.com/api',
+                ],
+                '[{"url":"http://example.com/api"}]',
+            ],
+        ];
+    }
+
+    private function executeDumpCommand(array $options)
     {
         $kernel = static::bootKernel();
         $application = new Application($kernel);
 
         $command = $application->find('nelmio:apidoc:dump');
         $commandTester = new CommandTester($command);
-        $commandTester->execute([
-            '--area' => 'test',
-            '--no-pretty' => '',
-        ]);
+        $commandTester->execute($options);
 
-        // the output of the command in the console
-        $output = $commandTester->getDisplay();
-        $this->assertEquals(json_encode($this->getOpenApiDefinition('test'))."\n", $output);
+        return $commandTester->getDisplay();
     }
 }

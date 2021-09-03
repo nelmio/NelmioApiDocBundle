@@ -11,33 +11,38 @@
 
 namespace Nelmio\ApiDocBundle\Controller;
 
-use OpenApi\Annotations\OpenApi;
-use OpenApi\Annotations\Server;
-use Psr\Container\ContainerInterface;
+use InvalidArgumentException;
+use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
+use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Twig\Environment;
 
 final class SwaggerUiController
 {
-    private $generatorLocator;
+    /**
+     * @var RenderOpenApi
+     */
+    private $renderOpenApi;
 
-    private $twig;
-
-    public function __construct(ContainerInterface $generatorLocator, $twig)
+    public function __construct(RenderOpenApi $renderOpenApi)
     {
-        if (!$twig instanceof \Twig_Environment && !$twig instanceof Environment) {
-            throw new \InvalidArgumentException(sprintf('Providing an instance of "%s" as twig is not supported.', get_class($twig)));
-        }
-
-        $this->generatorLocator = $generatorLocator;
-        $this->twig = $twig;
+        $this->renderOpenApi = $renderOpenApi;
     }
 
     public function __invoke(Request $request, $area = 'default')
     {
-        if (!$this->generatorLocator->has($area)) {
+        try {
+            $response = new Response(
+                $this->renderOpenApi->renderFromRequest($request, RenderOpenApi::HTML, $area, [
+                    'assets_mode' => AssetsMode::BUNDLE,
+                ]),
+                Response::HTTP_OK,
+                ['Content-Type' => 'text/html']
+            );
+
+            return $response->setCharset('UTF-8');
+        } catch (InvalidArgumentException $e) {
             $advice = '';
             if (false !== strpos($area, '.json')) {
                 $advice = ' Since the area provided contains `.json`, the issue is likely caused by route priorities. Try switching the Swagger UI / the json documentation routes order.';
@@ -45,23 +50,5 @@ final class SwaggerUiController
 
             throw new BadRequestHttpException(sprintf('Area "%s" is not supported as it isn\'t defined in config.%s', $area, $advice));
         }
-
-        /** @var OpenApi $spec */
-        $spec = $this->generatorLocator->get($area)->generate();
-
-        if ('' !== $request->getBaseUrl()) {
-            $spec->servers = [new Server(['url' => $request->getSchemeAndHttpHost().$request->getBaseUrl()])];
-        }
-
-        return new Response(
-            $this->twig->render(
-                '@NelmioApiDoc/SwaggerUi/index.html.twig',
-                ['swagger_data' => ['spec' => json_decode($spec->toJson(), true)]]
-            ),
-            Response::HTTP_OK,
-            ['Content-Type' => 'text/html']
-        );
-
-        return $response->setCharset('UTF-8');
     }
 }
