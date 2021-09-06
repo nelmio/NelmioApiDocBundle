@@ -249,6 +249,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     /**
      * @dataProvider getMatchingRoutesWithDisabledDefaultRoutes
+     *
      * @param array<Operation|Parameter> $annotations
      * @param array<string|boolean>      $options
      */
