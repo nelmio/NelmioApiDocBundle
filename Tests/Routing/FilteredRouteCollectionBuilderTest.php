@@ -248,7 +248,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     }
 
     /**
-     * @dataProvider getMatchingRoutesWithDisabledDefaultRoutes
+     * @dataProvider getRoutesWithDisabledDefaultRoutes
      *
      * @param array<Operation|Parameter> $annotations
      * @param array<string|boolean>      $options
@@ -288,7 +288,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     /**
      * @return array<string,array>
      */
-    public function getMatchingRoutesWithDisabledDefaultRoutes(): array
+    public function getRoutesWithDisabledDefaultRoutes(): array
     {
         return [
             'non matching route without Annotation' => [
