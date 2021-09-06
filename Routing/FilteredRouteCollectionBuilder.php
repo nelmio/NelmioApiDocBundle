@@ -75,7 +75,7 @@ final class FilteredRouteCollectionBuilder
                 && $this->matchHost($route)
                 && $this->matchAnnotation($route)
                 && $this->matchName($name)
-                && $this->matchDefaultRoute($route)
+                && $this->defaultRouteDisabled($route)
             ) {
                 $filteredRoutes->add($name, $route);
             }
@@ -139,7 +139,7 @@ final class FilteredRouteCollectionBuilder
         return (null !== $areas) ? $areas->has($this->area) : false;
     }
 
-    private function matchDefaultRoute(Route $route): bool
+    private function defaultRouteDisabled(Route $route): bool
     {
         if (false === $this->options['disable_default_routes']) {
             return true;
