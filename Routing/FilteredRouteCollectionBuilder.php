@@ -75,6 +75,7 @@ final class FilteredRouteCollectionBuilder
                 && $this->matchHost($route)
                 && $this->matchAnnotation($route)
                 && $this->matchName($name)
+                && $this->matchDefaultRoute($route)
             ) {
                 $filteredRoutes->add($name, $route);
             }
@@ -136,5 +137,32 @@ final class FilteredRouteCollectionBuilder
         );
 
         return (null !== $areas) ? $areas->has($this->area) : false;
+    }
+
+    private function matchDefaultRoute(Route $route): bool
+    {
+        if (false === $this->options['disable_default_routes']) {
+            return true;
+        }
+
+        $method = $this->controllerReflector->getReflectionMethod(
+            $route->getDefault('_controller') ?? ''
+        );
+
+        if (null === $method) {
+            return false;
+        }
+
+        $annotations = $this->annotationReader->getMethodAnnotations($method);
+
+        foreach ($annotations as $annotation) {
+            if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')
+                || false !== strpos(get_class($annotation), 'Swagger\\Annotations')
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
