@@ -28,13 +28,12 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
     /** @var GetNelmioAsset */
     private $getNelmioAsset;
 
-    public function __construct($twig, GetNelmioAsset $getNelmioAsset)
+    public function __construct($twig)
     {
         if (!$twig instanceof \Twig_Environment && !$twig instanceof Environment) {
             throw new InvalidArgumentException(sprintf('Providing an instance of "%s" as twig is not supported.', get_class($twig)));
         }
         $this->twig = $twig;
-        $this->getNelmioAsset = $getNelmioAsset;
     }
 
     public function getFormat(): string
@@ -48,8 +47,6 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
             'assets_mode' => AssetsMode::CDN,
             'swagger_ui_config' => [],
         ];
-
-        $this->twig->addFunction($this->getNelmioAsset->toTwigFunction($options['assets_mode']));
 
         return $this->twig->render(
             '@NelmioApiDoc/SwaggerUi/index.html.twig',
