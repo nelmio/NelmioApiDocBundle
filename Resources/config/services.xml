@@ -28,9 +28,9 @@
         <!-- Render -->
         <service id="nelmio_api_doc.render_docs" class="Nelmio\ApiDocBundle\Render\RenderOpenApi" public="true">
             <argument type="service" id="nelmio_api_doc.generator_locator" />
-            <argument type="service" id="nelmio_api_doc.render_docs.html" />
             <argument type="service" id="nelmio_api_doc.render_docs.json" />
             <argument type="service" id="nelmio_api_doc.render_docs.yaml" />
+            <argument type="service" id="nelmio_api_doc.render_docs.html" on-invalid="ignore" />
         </service>
         <service id="nelmio_api_doc.render_docs.html" class="Nelmio\ApiDocBundle\Render\Html\HtmlOpenApiRenderer" public="false">
             <argument type="service" id="twig" />

@@ -155,6 +155,9 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $bundles = $container->getParameter('kernel.bundles');
         if (!isset($bundles['TwigBundle'])) {
             $container->removeDefinition('nelmio_api_doc.controller.swagger_ui');
+
+            $container->removeDefinition('nelmio_api_doc.render_docs.html');
+            $container->removeDefinition('nelmio_api_doc.render_docs.html.asset');
         }
         if (isset($bundles['ApiPlatformBundle']) && class_exists('ApiPlatform\Core\Documentation\Documentation')) {
             $loader->load('api_platform.xml');
