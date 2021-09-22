@@ -12,17 +12,17 @@
 namespace Nelmio\ApiDocBundle\Render\Html;
 
 use Symfony\Bridge\Twig\Extension\AssetExtension;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
  * @internal
  */
-class GetNelmioAsset
+class GetNelmioAsset extends AbstractExtension
 {
     private $assetExtension;
     private $resourcesDir;
     private $cdnUrl;
-    private $assetsMode = AssetsMode::BUNDLE;
 
     public function __construct(AssetExtension $assetExtension)
     {
@@ -31,16 +31,16 @@ class GetNelmioAsset
         $this->resourcesDir = __DIR__.'/../../Resources/public';
     }
 
-    public function toTwigFunction($assetsMode): TwigFunction
+    public function getFunctions()
     {
-        $this->assetsMode = $assetsMode;
-
-        return new TwigFunction('nelmioAsset', $this, ['is_safe' => ['html']]);
+        return [
+            new TwigFunction('nelmioAsset', $this, ['is_safe' => ['html']]),
+        ];
     }
 
-    public function __invoke($asset)
+    public function __invoke($defaultAssetsMode, $asset)
     {
-        [$extension, $mode] = $this->getExtension($asset);
+        [$extension, $mode] = $this->getExtension($defaultAssetsMode, $asset);
         [$resource, $isInline] = $this->getResource($asset, $mode);
         if ('js' == $extension) {
             return $this->renderJavascript($resource, $isInline);
@@ -51,15 +51,15 @@ class GetNelmioAsset
         }
     }
 
-    private function getExtension($asset)
+    private function getExtension($assetsMode, $asset)
     {
         $extension = mb_substr($asset, -3, 3, 'utf-8');
         if ('.js' === $extension) {
-            return ['js', $this->assetsMode];
+            return ['js', $assetsMode];
         } elseif ('png' === $extension) {
-            return ['png', AssetsMode::OFFLINE == $this->assetsMode ? AssetsMode::CDN : $this->assetsMode];
+            return ['png', AssetsMode::OFFLINE == $assetsMode ? AssetsMode::CDN : $assetsMode];
         } else {
-            return ['css', $this->assetsMode];
+            return ['css', $assetsMode];
         }
     }
 

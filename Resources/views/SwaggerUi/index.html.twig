@@ -14,8 +14,8 @@ file that was distributed with this source code. #}
     <title>{% block title %}{{ swagger_data.spec.info.title }}{% endblock title %}</title>
 
     {% block stylesheets %}
-        {{ nelmioAsset('swagger-ui/swagger-ui.css') }}
-        {{ nelmioAsset('style.css') }}
+        {{ nelmioAsset(assets_mode, 'swagger-ui/swagger-ui.css') }}
+        {{ nelmioAsset(assets_mode, 'style.css') }}
     {% endblock stylesheets %}
 
     {% block swagger_data %}
@@ -54,7 +54,7 @@ file that was distributed with this source code. #}
     <header>
         {% block header %}
             <a id="logo" href="https://github.com/nelmio/NelmioApiDocBundle">
-                <img src="{{ nelmioAsset('logo.png') }}" alt="NelmioApiDocBundle">
+                <img src="{{ nelmioAsset(assets_mode, 'logo.png') }}" alt="NelmioApiDocBundle">
             </a>
         {% endblock header %}
     </header>
@@ -64,11 +64,11 @@ file that was distributed with this source code. #}
     {% endblock %}
 
     {% block javascripts %}
-        {{ nelmioAsset('swagger-ui/swagger-ui-bundle.js') }}
-        {{ nelmioAsset('swagger-ui/swagger-ui-standalone-preset.js') }}
+        {{ nelmioAsset(assets_mode, 'swagger-ui/swagger-ui-bundle.js') }}
+        {{ nelmioAsset(assets_mode, 'swagger-ui/swagger-ui-standalone-preset.js') }}
     {% endblock javascripts %}
 
-    {{ nelmioAsset('init-swagger-ui.js') }}
+    {{ nelmioAsset(assets_mode, 'init-swagger-ui.js') }}
 
     {% block swagger_initialization %}
         <script type="text/javascript">

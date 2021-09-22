@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Render\Html;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Render\Html\GetNelmioAsset;
 use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase;
+use Twig\TwigFunction;
 
 class GetNelmioAssetTest extends WebTestCase
 {
@@ -23,8 +24,9 @@ class GetNelmioAssetTest extends WebTestCase
         static::bootKernel();
         /** @var GetNelmioAsset $getNelmioAsset */
         $getNelmioAsset = static::$container->get('nelmio_api_doc.render_docs.html.asset');
-        $twigFunction = $getNelmioAsset->toTwigFunction($mode);
-        self::assertSame($expectedContent, $twigFunction->getCallable()->__invoke($asset, $mode));
+        /** @var TwigFunction */
+        $twigFunction = $getNelmioAsset->getFunctions()[0];
+        self::assertSame($expectedContent, $twigFunction->getCallable()->__invoke($mode, $asset));
     }
 
     public function provideAsset()

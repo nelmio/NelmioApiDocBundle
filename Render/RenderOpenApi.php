@@ -33,6 +33,10 @@ class RenderOpenApi
     {
         $this->generatorLocator = $generatorLocator;
         foreach ($openApiRenderers as $openApiRenderer) {
+            if (null === $openApiRenderer) {
+                continue;
+            }
+
             $this->openApiRenderers[$openApiRenderer->getFormat()] = $openApiRenderer;
         }
     }
