@@ -48,6 +48,19 @@ class RenderOpenApiTest extends TestCase
         $this->renderOpenApi();
     }
 
+    public function testNullFormat()
+    {
+        $openApiRenderer = $this->createMock(OpenApiRenderer::class);
+        $openApiRenderer->method('getFormat')->willReturn($this->format);
+        $openApiRenderer->expects($this->once())->method('render');
+
+        $availableOpenApiRenderers = [
+            $openApiRenderer,
+            null,
+        ];
+        $this->renderOpenApi(...$availableOpenApiRenderers);
+    }
+
     private function renderOpenApi(...$openApiRenderer): void
     {
         $spec = $this->createMock(OpenApi::class);
