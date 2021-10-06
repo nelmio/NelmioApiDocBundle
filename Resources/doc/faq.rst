@@ -136,7 +136,7 @@ A: We removed the google fonts in 3.3 to avoid the external request for GDPR rea
 
 .. code-block:: twig
 
-    {# templates/bundles/NelmioApiDocBundle/SwaggerUI/index.html.twig #}
+    {# templates/bundles/NelmioApiDocBundle/SwaggerUi/index.html.twig #}
 
     {#
        To avoid a "reached nested level" error an exclamation mark `!` has to be added
