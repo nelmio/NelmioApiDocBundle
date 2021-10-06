@@ -197,3 +197,17 @@ A: Use ``@SWG\Tag`` annotation.
     {
         //...
     }
+
+Disable Default Section
+-----------------------
+
+Q: I don't want to render the "default" section, how do I do that?
+
+A: Use ``disable_default_routes`` config in your area.
+
+.. code-block:: yaml
+
+    nelmio_api_doc:
+        areas:
+            default:
+                disable_default_routes: true
