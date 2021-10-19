@@ -23,7 +23,19 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
     public function describe(Type $type, Schema $property, array $groups = null)
     {
-        $type = new Type($type->getBuiltinType(), false, $type->getClassName(), $type->isCollection(), $type->getCollectionKeyType(), $type->getCollectionValueType()); // ignore nullable field
+        $type = new Type(
+            $type->getBuiltinType(),
+            false,
+            $type->getClassName(),
+            $type->isCollection(),
+            method_exists($type, 'getCollectionKeyTypes') ?
+                ($type->getCollectionKeyTypes()[0] ?? null) :
+                $type->getCollectionKeyType(),
+            // BC layer for symfony < 5.3
+            method_exists($type, 'getCollectionValueTypes') ?
+                ($type->getCollectionValueTypes()[0] ?? null) :
+                $type->getCollectionValueType()
+        ); // ignore nullable field
 
         $property->setRef(
             $this->modelRegistry->register(new Model($type, $groups))
