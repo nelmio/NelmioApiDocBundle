@@ -35,14 +35,36 @@ window.onload = function() {
   // hook into authorize to store the auth in local storage when user performs authorization
   const currentAuthorize = ui.authActions.authorize;
   ui.authActions.authorize = function (payload) {
-    sessionStorage.setItem(storageKey, JSON.stringify(payload));
-    return currentAuthorize(payload);
+    var value = {};
+    try {
+      value = JSON.parse(sessionStorage.getItem(storageKey));
+    } catch (ignored) {}
+
+    Object.assign(value, payload);
+
+    sessionStorage.setItem(
+      storageKey,
+      JSON.stringify(value)
+    );
+
+    return currentAuthorize(value);
   };
 
   // hook into logout to clear auth from storage if user logs out
   const currentLogout = ui.authActions.logout;
   ui.authActions.logout = function (payload) {
-    sessionStorage.removeItem(storageKey);
+    var value = {};
+    try {
+      value = JSON.parse(sessionStorage.getItem(storageKey));
+    } catch (ignored) {}
+
+    payload.forEach((key) => delete value[key]);
+
+    sessionStorage.setItem(
+      storageKey,
+      JSON.stringify(value)
+    );
+
     return currentLogout(payload);
   };
 
