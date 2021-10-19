@@ -8,7 +8,7 @@ based on ``@ApiDoc`` annotations, which can be used for consumption by
 Annotation options
 ------------------
 
-A couple of properties has been added to ``@ApiDoc``:
+Several properties have been added to ``@ApiDoc`` to provide this feature:
 
 To define a **resource description**::
 
@@ -49,9 +49,9 @@ Multiple response models
 ------------------------
 
 Swagger provides you the ability to specify alternate output models for
-different status codes. Example, ``200`` would return your default resource object
-in JSON form, but ``400`` may return a custom validation error list object. This
-can be specified through the ``responseMap`` property::
+different status codes. For example: ``200`` would return your default resource object
+in JSON form, while ``400`` may return a custom validation error list object. This
+can be specified using the ``responseMap`` property::
 
     /**
      * @ApiDoc(
@@ -79,7 +79,7 @@ when this endpoint returns a ``400 Validation failed.`` HTTP response.
 .. note::
 
     You can omit the ``200`` entry in the ``responseMap`` property and specify
-    the default ``output`` property instead. That will result on the same thing.
+    the default ``output`` property instead. That will result in the same response.
 
 Integration with ``swagger-api/swagger-ui``
 -------------------------------------------
@@ -93,7 +93,7 @@ You could import the routes for use with `swagger-ui`_.
         resource: "@NelmioApiDocBundle/Resources/config/swagger_routing.yml"
         prefix: /api-docs
 
-Et voila!, simply specify http://yourdomain.com/api-docs in your ``swagger-ui``
+Et voila!  Simply specify http://yourdomain.com/api-docs in your ``swagger-ui``
 instance and you are good to go.
 
 .. note::
@@ -118,7 +118,7 @@ To dump just the resource list:
 
     $ php app/console api:swagger:dump --list-only
 
-To dump just the API definition the ``users`` resource:
+To dump just the API definition of the ``users`` resource:
 
 .. code-block:: bash
 
