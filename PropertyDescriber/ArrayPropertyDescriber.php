@@ -31,7 +31,10 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
 
     public function describe(Type $type, Schema $property, array $groups = null)
     {
-        $type = $type->getCollectionValueType();
+        // BC layer for symfony < 5.3
+        $type = method_exists($type, 'getCollectionValueTypes') ?
+            ($type->getCollectionValueTypes()[0] ?? null) :
+            $type->getCollectionValueType();
         if (null === $type) {
             throw new UndocumentedArrayItemsException();
         }
