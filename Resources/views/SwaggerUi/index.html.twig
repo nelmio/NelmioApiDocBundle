@@ -51,13 +51,16 @@ file that was distributed with this source code. #}
             </defs>
         </svg>
     {% endblock svg_icons %}
-    <header>
-        {% block header %}
-            <a id="logo" href="https://github.com/nelmio/NelmioApiDocBundle">
-                <img src="{{ nelmioAsset(assets_mode, 'logo.png') }}" alt="NelmioApiDocBundle">
-            </a>
-        {% endblock header %}
-    </header>
+    
+    {% block header_block %}
+        <header>
+            {% block header %}
+                <a id="logo" href="https://github.com/nelmio/NelmioApiDocBundle">
+                    <img src="{{ nelmioAsset(assets_mode, 'logo.png') }}" alt="NelmioApiDocBundle">
+                </a>
+            {% endblock header %}
+        </header>
+    {% endblock header_block %}
 
     {% block swagger_ui %}
         <div id="swagger-ui" class="api-platform"></div>
