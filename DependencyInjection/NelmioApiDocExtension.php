@@ -109,6 +109,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 && 0 === count($areaConfig['host_patterns'])
                 && 0 === count($areaConfig['name_patterns'])
                 && false === $areaConfig['with_annotation']
+                && false === $areaConfig['disable_default_routes']
             ) {
                 $container->setDefinition(sprintf('nelmio_api_doc.routes.%s', $area), $routesDefinition)
                     ->setPublic(false);
