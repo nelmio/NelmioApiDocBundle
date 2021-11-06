@@ -19,7 +19,7 @@ class SymfonyConstraints
     /**
      * @var int
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"test"})
      */
     private $propertyNotBlank;
 

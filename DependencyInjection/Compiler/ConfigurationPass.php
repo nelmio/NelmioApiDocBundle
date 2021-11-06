@@ -31,6 +31,7 @@ final class ConfigurationPass implements CompilerPassInterface
                 ->addArgument(new Reference('form.factory'))
                 ->addArgument(new Reference('annotations.reader'))
                 ->addArgument($container->getParameter('nelmio_api_doc.media_types'))
+                ->addArgument($container->getParameter('nelmio_api_doc.use_validation_groups'))
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 100]);
         }
 

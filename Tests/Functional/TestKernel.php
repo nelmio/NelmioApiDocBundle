@@ -19,6 +19,7 @@ use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
@@ -32,12 +33,14 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraint;
 
 class TestKernel extends Kernel
 {
     const USE_JMS = 1;
     const USE_BAZINGA = 2;
     const ERROR_ARRAY_ITEMS = 4;
+    const USE_VALIDATION_GROUPS = 8;
 
     use MicroKernelTrait;
 
@@ -173,6 +176,7 @@ class TestKernel extends Kernel
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
+            'use_validation_groups' => boolval($this->flags & self::USE_VALIDATION_GROUPS),
             'documentation' => [
                 'servers' => [ // from https://github.com/nelmio/NelmioApiDocBundle/issues/1691
                     [
@@ -261,6 +265,16 @@ class TestKernel extends Kernel
                     [
                         'alias' => 'JMSComplexDefault',
                         'type' => JMSComplex::class,
+                        'groups' => null,
+                    ],
+                    [
+                        'alias' => 'SymfonyConstraintsTestGroup',
+                        'type' => SymfonyConstraintsWithValidationGroups::class,
+                        'groups' => ['test'],
+                    ],
+                    [
+                        'alias' => 'SymfonyConstraintsDefaultGroup',
+                        'type' => SymfonyConstraintsWithValidationGroups::class,
                         'groups' => null,
                     ],
                 ],

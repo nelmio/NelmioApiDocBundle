@@ -64,6 +64,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         $container->setParameter('nelmio_api_doc.areas', array_keys($config['areas']));
         $container->setParameter('nelmio_api_doc.media_types', $config['media_types']);
+        $container->setParameter('nelmio_api_doc.use_validation_groups', $config['use_validation_groups']);
         foreach ($config['areas'] as $area => $areaConfig) {
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
@@ -175,6 +176,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference('annotations.reader'),
                     $config['media_types'],
                     $jmsNamingStrategy,
+                    $container->getParameter('nelmio_api_doc.use_validation_groups')
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
 

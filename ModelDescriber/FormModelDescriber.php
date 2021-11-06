@@ -37,9 +37,14 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     private $formFactory;
     private $doctrineReader;
     private $mediaTypes;
+    private $useValidationGroups;
 
-    public function __construct(FormFactoryInterface $formFactory = null, Reader $reader = null, array $mediaTypes = null)
-    {
+    public function __construct(
+        FormFactoryInterface $formFactory = null,
+        Reader $reader = null,
+        array $mediaTypes = null,
+        bool $useValidationGroups = false
+    ) {
         $this->formFactory = $formFactory;
         $this->doctrineReader = $reader;
         if (null === $reader) {
@@ -51,6 +56,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             @trigger_error(sprintf('Not passing media types to the constructor of %s is deprecated since version 4.1 and won\'t be allowed in version 5.', self::class), E_USER_DEPRECATED);
         }
         $this->mediaTypes = $mediaTypes;
+        $this->useValidationGroups = $useValidationGroups;
     }
 
     public function describe(Model $model, OA\Schema $schema)
@@ -66,7 +72,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
         $class = $model->getType()->getClassName();
 
-        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
+        $annotationsReader = new AnnotationsReader(
+            $this->doctrineReader,
+            $this->modelRegistry,
+            $this->mediaTypes,
+            $this->useValidationGroups
+        );
         $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
 
         $form = $this->formFactory->create($class, null, $model->getOptions() ?? []);

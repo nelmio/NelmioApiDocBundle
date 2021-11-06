@@ -27,14 +27,21 @@ class AnnotationsReader
     private $openApiAnnotationsReader;
     private $symfonyConstraintAnnotationReader;
 
-    public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
-    {
+    public function __construct(
+        Reader $annotationsReader,
+        ModelRegistry $modelRegistry,
+        array $mediaTypes,
+        bool $useValidationGroups = false
+    ) {
         $this->annotationsReader = $annotationsReader;
         $this->modelRegistry = $modelRegistry;
 
         $this->phpDocReader = new PropertyPhpDocReader();
         $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($annotationsReader, $modelRegistry, $mediaTypes);
-        $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($annotationsReader);
+        $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(
+            $annotationsReader,
+            $useValidationGroups
+        );
     }
 
     public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema): void

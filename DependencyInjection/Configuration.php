@@ -29,6 +29,10 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->booleanNode('use_validation_groups')
+                    ->info('If true, `groups` passed to @Model annotations will be used to limit validation constraints')
+                    ->defaultFalse()
+                ->end()
                 ->arrayNode('documentation')
                     ->useAttributeAsKey('key')
                     ->info('The documentation used as base')

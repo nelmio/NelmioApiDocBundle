@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
@@ -176,6 +177,18 @@ class ApiController
      * )
      */
     public function symfonyConstraintsAction()
+    {
+    }
+
+    /**
+     * @Route("/swagger/symfonyConstraintsWithValidationGroups", methods={"GET"})
+     * @OA\Response(
+     *    response="201",
+     *    description="Used for symfony constraints with validation groups test",
+     *    @Model(type=SymfonyConstraintsWithValidationGroups::class, groups={"test"})
+     * )
+     */
+    public function symfonyConstraintsWithGroupsAction()
     {
     }
 
