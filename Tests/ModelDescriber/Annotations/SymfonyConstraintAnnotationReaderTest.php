@@ -488,7 +488,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $reader->updateProperty(
             new \ReflectionProperty($entity, 'property1'),
             $schema->properties[0],
-            ['other'],
+            ['other']
         );
 
         $this->assertSame(OA\UNDEFINED, $schema->required, 'should not have read constraint in default group');
@@ -512,7 +512,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $reader->updateProperty(
             new \ReflectionProperty($entity, 'property1'),
             $schema->properties[0],
-            ['other', Constraint::DEFAULT_GROUP],
+            ['other', Constraint::DEFAULT_GROUP]
         );
 
         $this->assertSame(['property1'], $schema->required, 'should have read constraint in default group');
