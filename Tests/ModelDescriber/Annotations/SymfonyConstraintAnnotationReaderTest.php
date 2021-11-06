@@ -532,7 +532,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\NotBlank()]
-                #[Assert\Range(min: 1, group: ['other'])]
+                #[Assert\Range(min: 1, groups: ['other'])]
                 private $property1;
             }];
         }
