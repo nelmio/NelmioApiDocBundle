@@ -176,7 +176,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference('annotations.reader'),
                     $config['media_types'],
                     $jmsNamingStrategy,
-                    $container->getParameter('nelmio_api_doc.use_validation_groups')
+                    $container->getParameter('nelmio_api_doc.use_validation_groups'),
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
 

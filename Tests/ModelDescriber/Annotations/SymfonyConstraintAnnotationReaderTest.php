@@ -12,12 +12,12 @@
 namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Symfony\Component\Validator\Constraint;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader;
 use Nelmio\ApiDocBundle\Tests\Helper;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use OpenApi\Annotations as OA;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SymfonyConstraintAnnotationReaderTest extends TestCase
@@ -488,7 +488,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $reader->updateProperty(
             new \ReflectionProperty($entity, 'property1'),
             $schema->properties[0],
-            ["other"],
+            ['other'],
         );
 
         $this->assertSame(OA\UNDEFINED, $schema->required, 'should not have read constraint in default group');
@@ -512,7 +512,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $reader->updateProperty(
             new \ReflectionProperty($entity, 'property1'),
             $schema->properties[0],
-            ["other", Constraint::DEFAULT_GROUP],
+            ['other', Constraint::DEFAULT_GROUP],
         );
 
         $this->assertSame(['property1'], $schema->required, 'should have read constraint in default group');
@@ -532,13 +532,13 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\NotBlank()]
-                #[Assert\Range(min: 1, group: ["other"])]
+                #[Assert\Range(min: 1, group: ['other'])]
                 private $property1;
             }];
         }
     }
 
-    private function createConstraintReaderWithValidationGroupsEnabled() : SymfonyConstraintAnnotationReader
+    private function createConstraintReaderWithValidationGroupsEnabled(): SymfonyConstraintAnnotationReader
     {
         return new SymfonyConstraintAnnotationReader(
             new AnnotationReader(),

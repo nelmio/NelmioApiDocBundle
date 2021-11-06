@@ -184,11 +184,11 @@ class SymfonyConstraintAnnotationReader
     private function getAnnotations($reflection, ?array $validationGroups): iterable
     {
         foreach ($this->locateAnnotations($reflection) as $annotation) {
-            if (! $annotation instanceof Constraint) {
+            if (!$annotation instanceof Constraint) {
                 continue;
             }
 
-            if (! $this->useValidationGroups || $this->isConstraintInGroup($annotation, $validationGroups)) {
+            if (!$this->useValidationGroups || $this->isConstraintInGroup($annotation, $validationGroups)) {
                 yield $annotation;
             }
         }
@@ -220,7 +220,7 @@ class SymfonyConstraintAnnotationReader
      * default group. So even with a null $validationGroups passed here there still
      * has to be a check on the default group.
      */
-    private function isConstraintInGroup(Constraint $annotation, ?array $validationGroups) : bool
+    private function isConstraintInGroup(Constraint $annotation, ?array $validationGroups): bool
     {
         return count(array_intersect(
             $validationGroups ?: [Constraint::DEFAULT_GROUP],
