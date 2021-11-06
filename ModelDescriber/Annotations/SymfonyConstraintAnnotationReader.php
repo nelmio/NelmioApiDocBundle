@@ -32,9 +32,15 @@ class SymfonyConstraintAnnotationReader
      */
     private $schema;
 
-    public function __construct(Reader $annotationsReader)
+    /**
+     * @var bool
+     */
+    private $useValidationGroups;
+
+    public function __construct(Reader $annotationsReader, bool $useValidationGroups=false)
     {
         $this->annotationsReader = $annotationsReader;
+        $this->useValidationGroups = $useValidationGroups;
     }
 
     /**
@@ -42,9 +48,9 @@ class SymfonyConstraintAnnotationReader
      *
      * @param \ReflectionProperty|\ReflectionMethod $reflection
      */
-    public function updateProperty($reflection, OA\Property $property): void
+    public function updateProperty($reflection, OA\Property $property, ?array $validationGroups = null): void
     {
-        foreach ($this->getAnnotations($reflection) as $outerAnnotation) {
+        foreach ($this->getAnnotations($reflection, $validationGroups) as $outerAnnotation) {
             $innerAnnotations = $outerAnnotation instanceof Assert\Compound
                 ? $outerAnnotation->constraints
                 : [$outerAnnotation];
@@ -175,7 +181,23 @@ class SymfonyConstraintAnnotationReader
     /**
      * @param \ReflectionProperty|\ReflectionMethod $reflection
      */
-    private function getAnnotations($reflection): \Traversable
+    private function getAnnotations($reflection, ?array $validationGroups): iterable
+    {
+        foreach ($this->locateAnnotations($reflection) as $annotation) {
+            if (! $annotation instanceof Constraint) {
+                continue;
+            }
+
+            if (! $this->useValidationGroups || $this->isConstraintInGroup($annotation, $validationGroups)) {
+                yield $annotation;
+            }
+        }
+    }
+
+    /**
+     * @param \ReflectionProperty|\ReflectionMethod $reflection
+     */
+    private function locateAnnotations($reflection): \Traversable
     {
         if (\PHP_VERSION_ID >= 80000 && class_exists(Constraint::class)) {
             foreach ($reflection->getAttributes(Constraint::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
@@ -188,5 +210,21 @@ class SymfonyConstraintAnnotationReader
         } elseif ($reflection instanceof \ReflectionMethod) {
             yield from $this->annotationsReader->getMethodAnnotations($reflection);
         }
+    }
+
+    /**
+     * Check to see if the given constraint is in the provided serialization groups.
+     *
+     * If no groups are provided the validator would run in the Constraint::DEFAULT_GROUP,
+     * and constraints without any `groups` passed to them would be in that same
+     * default group. So even with a null $validationGroups passed here there still
+     * has to be a check on the default group.
+     */
+    private function isConstraintInGroup(Constraint $annotation, ?array $validationGroups) : bool
+    {
+        return count(array_intersect(
+            $validationGroups ?: [Constraint::DEFAULT_GROUP],
+            $annotation->groups
+        )) > 0;
     }
 }

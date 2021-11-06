@@ -52,6 +52,6 @@ class AnnotationsReader
     {
         $this->openApiAnnotationsReader->updateProperty($reflection, $property, $serializationGroups);
         $this->phpDocReader->updateProperty($reflection, $property);
-        $this->symfonyConstraintAnnotationReader->updateProperty($reflection, $property);
+        $this->symfonyConstraintAnnotationReader->updateProperty($reflection, $property, $serializationGroups);
     }
 }
