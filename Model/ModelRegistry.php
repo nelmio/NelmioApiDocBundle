@@ -98,6 +98,11 @@ final class ModelRegistry
 
                 $this->api->getDefinitions()->set($name, $schema);
             }
+            
+            if(++$i >= 2)
+            {
+                break;
+            }
         }
 
         if (empty($this->unregistered) && !empty($this->alternativeNames)) {
