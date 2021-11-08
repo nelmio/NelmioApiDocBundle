@@ -71,6 +71,7 @@ final class ModelRegistry
      */
     public function registerDefinitions()
     {
+        $i = 0;
         while (count($this->unregistered)) {
             $tmp = [];
             foreach ($this->unregistered as $hash) {
