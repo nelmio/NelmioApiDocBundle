@@ -50,4 +50,4 @@ Just create a file ``templates/bundles/NelmioApiDocBundle/SwaggerUi/index.html.t
         <script type="text/javascript" src="{{ asset('js/custom-request-signer.js') }}"></script>
     {% endblock javascripts %}
 
-You can have a look at the original template to see which blocks can be overridden.
+You can have a look at the `original template <https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/views/SwaggerUi/index.html.twig>`_, in ``/Resources/views/SwaggerUi/index.html.twig``, to see which blocks can be overridden.

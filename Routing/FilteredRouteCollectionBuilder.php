@@ -45,11 +45,13 @@ final class FilteredRouteCollectionBuilder
                 'host_patterns' => [],
                 'name_patterns' => [],
                 'with_annotation' => false,
+                'disable_default_routes' => false,
             ])
             ->setAllowedTypes('path_patterns', 'string[]')
             ->setAllowedTypes('host_patterns', 'string[]')
             ->setAllowedTypes('name_patterns', 'string[]')
             ->setAllowedTypes('with_annotation', 'boolean')
+            ->setAllowedTypes('disable_default_routes', 'boolean')
         ;
 
         if (array_key_exists(0, $options)) {
@@ -73,6 +75,7 @@ final class FilteredRouteCollectionBuilder
                 && $this->matchHost($route)
                 && $this->matchAnnotation($route)
                 && $this->matchName($name)
+                && $this->defaultRouteDisabled($route)
             ) {
                 $filteredRoutes->add($name, $route);
             }
@@ -137,5 +140,32 @@ final class FilteredRouteCollectionBuilder
         }
 
         return (null !== $areas) ? $areas->has($this->area) : false;
+    }
+
+    private function defaultRouteDisabled(Route $route): bool
+    {
+        if (false === $this->options['disable_default_routes']) {
+            return true;
+        }
+
+        $method = $this->controllerReflector->getReflectionMethod(
+            $route->getDefault('_controller') ?? ''
+        );
+
+        if (null === $method) {
+            return false;
+        }
+
+        $annotations = $this->annotationReader->getMethodAnnotations($method);
+
+        foreach ($annotations as $annotation) {
+            if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')
+                || false !== strpos(get_class($annotation), 'OpenApi\\Annotations')
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

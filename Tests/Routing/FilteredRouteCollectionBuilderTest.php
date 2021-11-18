@@ -14,8 +14,10 @@ namespace Nelmio\ApiDocBundle\Tests\Routing;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\Areas;
+use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
+use OpenApi\Annotations\Parameter;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\Container;
@@ -243,6 +245,74 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             ['r4_matching_path_and_non_matching_host', new Route('/api/bar/action1', [], [], [], 'www.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.']]],
             ['r5_non_matching_path_and_matching_host', new Route('/admin/bar/action1', [], [], [], 'api.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.']]],
             ['r6_non_matching_path_and_non_matching_host', new Route('/admin/bar/action1', [], [], [], 'www.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.ex']]],
+        ];
+    }
+
+    /**
+     * @dataProvider getRoutesWithDisabledDefaultRoutes
+     *
+     * @param array<Operation|Parameter> $annotations
+     * @param array<string|boolean>      $options
+     */
+    public function testRoutesWithDisabledDefaultRoutes(
+        string $name,
+        Route $route,
+        array $annotations,
+        array $options,
+        int $expectedRoutesCount
+    ): void {
+        $routes = new RouteCollection();
+        $routes->add($name, $route);
+        $area = 'area';
+
+        $reflectionMethodStub = $this->createMock(\ReflectionMethod::class);
+        $controllerReflectorStub = $this->createMock(ControllerReflector::class);
+        $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethodStub);
+
+        $annotationReader = $this->createMock(Reader::class);
+        $annotationReader
+            ->method('getMethodAnnotations')
+            ->willReturn($annotations)
+        ;
+
+        $routeBuilder = new FilteredRouteCollectionBuilder(
+            $annotationReader,
+            $controllerReflectorStub,
+            $area,
+            $options
+        );
+        $filteredRoutes = $routeBuilder->filter($routes);
+
+        $this->assertCount($expectedRoutesCount, $filteredRoutes);
+    }
+
+    /**
+     * @return array<string,array>
+     */
+    public function getRoutesWithDisabledDefaultRoutes(): array
+    {
+        return [
+            'non matching route without Annotation' => [
+                'r10',
+                new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+                [],
+                ['disable_default_routes' => true],
+                0,
+            ],
+            'matching route with Nelmio Annotation' => [
+                'r10',
+                new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+                [new Operation([])],
+                ['disable_default_routes' => true],
+                1,
+            ],
+            'matching route with Swagger Annotation' => [
+                'r10',
+                new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+                [new Parameter([])],
+                ['disable_default_routes' => true],
+                1,
+            ],
         ];
     }
 
