@@ -506,7 +506,25 @@ class FunctionalTest extends WebTestCase
     public function testDefaultOperationId()
     {
         $operation = $this->getOperation('/api/article/{id}', 'get');
-        $this->assertNull($operation->operationId);
+        $this->assertEquals('get_api_nelmio_apidoc_tests_functional_api_fetcharticle', $operation->operationId);
+    }
+
+    public function testNamedRouteOperationId()
+    {
+        $operation = $this->getOperation('/api/named_route-operation-id', 'get');
+        $this->assertEquals('get_api_named_route_operation_id', $operation->operationId);
+
+        $operation = $this->getOperation('/api/named_route-operation-id', 'post');
+        $this->assertEquals('post_api_named_route_operation_id', $operation->operationId);
+    }
+
+    public function testCustomOperationId()
+    {
+        $operation = $this->getOperation('/api/custom-operation-id', 'get');
+        $this->assertEquals('custom-operation-id', $operation->operationId);
+
+        $operation = $this->getOperation('/api/custom-operation-id', 'post');
+        $this->assertEquals('custom-operation-id', $operation->operationId);
     }
 
     /**
