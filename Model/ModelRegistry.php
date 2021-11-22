@@ -190,7 +190,7 @@ final class ModelRegistry
     {
         // BC layer, this condition should be removed after removing support for symfony < 5.3
         if (!method_exists($type, 'getCollectionKeyTypes')) {
-            return $type->getCollectionKeyType() !== null ? [$type->getCollectionKeyType()] : [];
+            return null !== $type->getCollectionKeyType() ? [$type->getCollectionKeyType()] : [];
         }
 
         return $type->getCollectionKeyTypes();
@@ -200,7 +200,7 @@ final class ModelRegistry
     {
         // BC layer, this condition should be removed after removing support for symfony < 5.3
         if (!method_exists($type, 'getCollectionValueTypes')) {
-            return $type->getCollectionValueType() !== null ? [$type->getCollectionValueType()] : [];
+            return null !== $type->getCollectionValueType() ? [$type->getCollectionValueType()] : [];
         }
 
         return $type->getCollectionValueTypes();
