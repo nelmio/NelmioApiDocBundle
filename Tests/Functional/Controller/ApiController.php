@@ -26,7 +26,7 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api", host="api.example.com")
+ * @Route("/api", name="api_", host="api.example.com")
  */
 class ApiController
 {
@@ -230,6 +230,25 @@ class ApiController
      * @OA\Response(response=200, description="Worked well!", @Model(type=SymfonyDiscriminator::class))
      */
     public function discriminatorMappingAction()
+    {
+    }
+
+    /**
+     * @Route("/named_route-operation-id", name="named_route_operation_id", methods={"GET", "POST"})
+     *
+     * @OA\Response(response=200, description="success")
+     */
+    public function namedRouteOperationIdAction()
+    {
+    }
+
+    /**
+     * @Route("/custom-operation-id", methods={"GET", "POST"})
+     *
+     * @Operation(operationId="custom-operation-id")
+     * @OA\Response(response=200, description="success")
+     */
+    public function customOperationIdAction()
     {
     }
 }

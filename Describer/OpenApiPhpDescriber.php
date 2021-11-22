@@ -47,7 +47,7 @@ final class OpenApiPhpDescriber
         $classAnnotations = [];
 
         /** @var \ReflectionMethod $method */
-        foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods)) {
+        foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods, $routeName)) {
             $declaringClass = $method->getDeclaringClass();
 
             $path = Util::getPath($api, $path);
@@ -134,6 +134,10 @@ final class OpenApiPhpDescriber
                 $operation = Util::getOperation($path, $httpMethod);
                 $operation->merge($implicitAnnotations);
                 $operation->mergeProperties($mergeProperties);
+
+                if (OA\UNDEFINED === $operation->operationId) {
+                    $operation->operationId = $httpMethod.'_'.$routeName;
+                }
             }
         }
 
@@ -143,7 +147,7 @@ final class OpenApiPhpDescriber
 
     private function getMethodsToParse(): \Generator
     {
-        foreach ($this->routeCollection->all() as $route) {
+        foreach ($this->routeCollection->all() as $routeName => $route) {
             if (!$route->hasDefault('_controller')) {
                 continue;
             }
@@ -161,7 +165,7 @@ final class OpenApiPhpDescriber
 
                 continue;
             }
-            yield $reflectedMethod => [$path, $supportedHttpMethods];
+            yield $reflectedMethod => [$path, $supportedHttpMethods, $routeName];
         }
     }
 
