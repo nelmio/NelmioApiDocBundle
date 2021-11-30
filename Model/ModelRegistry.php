@@ -144,8 +144,8 @@ final class ModelRegistry
                 'built_in_type' => $type->getBuiltinType(),
                 'nullable' => $type->isNullable(),
                 'collection' => $type->isCollection(),
-                'collection_key_types' => $type->isCollection() ? array_map($getType, $type->getCollectionKeyTypes()) : null,
-                'collection_value_types' => $type->isCollection() ? array_map($getType, $type->getCollectionValueTypes()) : null,
+                'collection_key_types' => $type->isCollection() ? array_map($getType, $this->getCollectionKeyTypes($type)) : null,
+                'collection_value_types' => $type->isCollection() ? array_map($getType, $this->getCollectionValueTypes($type)) : null,
             ];
         };
 
@@ -184,6 +184,26 @@ final class ModelRegistry
         } else {
             return $type->getBuiltinType();
         }
+    }
+
+    private function getCollectionKeyTypes(Type $type): array
+    {
+        // BC layer, this condition should be removed after removing support for symfony < 5.3
+        if (!method_exists($type, 'getCollectionKeyTypes')) {
+            return null !== $type->getCollectionKeyType() ? [$type->getCollectionKeyType()] : [];
+        }
+
+        return $type->getCollectionKeyTypes();
+    }
+
+    private function getCollectionValueTypes(Type $type): array
+    {
+        // BC layer, this condition should be removed after removing support for symfony < 5.3
+        if (!method_exists($type, 'getCollectionValueTypes')) {
+            return null !== $type->getCollectionValueType() ? [$type->getCollectionValueType()] : [];
+        }
+
+        return $type->getCollectionValueTypes();
     }
 
     private function getCollectionValueType(Type $type): ?Type
