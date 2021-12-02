@@ -15,6 +15,7 @@ use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
@@ -25,6 +26,8 @@ use OpenApi\Generator;
  */
 class OpenApiAnnotationsReader
 {
+    use SetsContextTrait;
+
     private $annotationsReader;
     private $modelRegister;
 
@@ -67,12 +70,13 @@ class OpenApiAnnotationsReader
     {
         // In order to have nicer errors
         $declaringClass = $reflection->getDeclaringClass();
-        Generator::$context = new Context([
+
+        $this->setContext(new Context([
             'namespace' => $declaringClass->getNamespaceName(),
             'class' => $declaringClass->getShortName(),
             'property' => $reflection->name,
             'filename' => $declaringClass->getFileName(),
-        ]);
+        ]));
 
         /** @var OA\Property $oaProperty */
         if ($reflection instanceof \ReflectionProperty && !$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflection, OA\Property::class)) {
@@ -80,7 +84,7 @@ class OpenApiAnnotationsReader
         } elseif ($reflection instanceof \ReflectionMethod && !$oaProperty = $this->annotationsReader->getMethodAnnotation($reflection, OA\Property::class)) {
             return;
         }
-        Generator::$context = null;
+        $this->setContext(null);
 
         // Read @Model annotations
         $this->modelRegister->__invoke(new Analysis([$oaProperty], Util::createContext()), $serializationGroups);

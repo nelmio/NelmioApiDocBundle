@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
+use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Psr\Log\LoggerInterface;
@@ -27,6 +28,8 @@ class_exists(OA\OpenApi::class);
 
 final class OpenApiPhpDescriber
 {
+    use SetsContextTrait;
+
     private $routeCollection;
     private $controllerReflector;
     private $annotationReader;
@@ -52,11 +55,13 @@ final class OpenApiPhpDescriber
 
             $path = Util::getPath($api, $path);
 
-            Generator::$context = Util::createContext(['nested' => $path], $path->_context);
-            Generator::$context->namespace = $method->getNamespaceName();
-            Generator::$context->class = $declaringClass->getShortName();
-            Generator::$context->method = $method->name;
-            Generator::$context->filename = $method->getFileName();
+            $context = Util::createContext(['nested' => $path], $path->_context);
+            $context->namespace = $method->getNamespaceName();
+            $context->class = $declaringClass->getShortName();
+            $context->method = $method->name;
+            $context->filename = $method->getFileName();
+
+            $this->setContext($context);
 
             if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
                 $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
@@ -142,7 +147,7 @@ final class OpenApiPhpDescriber
         }
 
         // Reset the Generator after the parsing
-        Generator::$context = null;
+        $this->setContext(null);
     }
 
     private function getMethodsToParse(): \Generator
