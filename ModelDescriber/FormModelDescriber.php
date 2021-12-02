@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigInterface;
@@ -90,7 +91,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             $property = Util::getProperty($schema, $name);
 
             if ($config->getRequired()) {
-                $required = OA\UNDEFINED !== $schema->required ? $schema->required : [];
+                $required = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
                 $required[] = $name;
 
                 $schema->required = $required;
@@ -100,7 +101,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $property->mergeProperties($config->getOption('documentation'));
             }
 
-            if (OA\UNDEFINED !== $property->type) {
+            if (Generator::UNDEFINED !== $property->type) {
                 continue; // Type manually defined
             }
 

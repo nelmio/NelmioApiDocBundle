@@ -15,10 +15,10 @@ use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use OpenApi\Analyser;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
+use OpenApi\Generator;
 
 /**
  * @internal
@@ -60,14 +60,14 @@ class OpenApiAnnotationsReader
             return $default;
         }
 
-        return OA\UNDEFINED !== $oaProperty->property ? $oaProperty->property : $default;
+        return Generator::UNDEFINED !== $oaProperty->property ? $oaProperty->property : $default;
     }
 
     public function updateProperty($reflection, OA\Property $property, array $serializationGroups = null): void
     {
         // In order to have nicer errors
         $declaringClass = $reflection->getDeclaringClass();
-        Analyser::$context = new Context([
+        Generator::$context = new Context([
             'namespace' => $declaringClass->getNamespaceName(),
             'class' => $declaringClass->getShortName(),
             'property' => $reflection->name,
@@ -80,7 +80,7 @@ class OpenApiAnnotationsReader
         } elseif ($reflection instanceof \ReflectionMethod && !$oaProperty = $this->annotationsReader->getMethodAnnotation($reflection, OA\Property::class)) {
             return;
         }
-        Analyser::$context = null;
+        Generator::$context = null;
 
         // Read @Model annotations
         $this->modelRegister->__invoke(new Analysis([$oaProperty], Util::createContext()), $serializationGroups);

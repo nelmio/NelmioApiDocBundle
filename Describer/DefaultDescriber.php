@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Describer;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 
 /**
  * Makes the swagger documentation valid even if there are missing fields.
@@ -26,22 +27,22 @@ final class DefaultDescriber implements DescriberInterface
         // Info
         /** @var OA\Info $info */
         $info = Util::getChild($api, OA\Info::class);
-        if (OA\UNDEFINED === $info->title) {
+        if (Generator::UNDEFINED === $info->title) {
             $info->title = '';
         }
-        if (OA\UNDEFINED === $info->version) {
+        if (Generator::UNDEFINED === $info->version) {
             $info->version = '0.0.0';
         }
 
         // Paths
-        if (OA\UNDEFINED === $api->paths) {
+        if (Generator::UNDEFINED === $api->paths) {
             $api->paths = [];
         }
         foreach ($api->paths as $path) {
             foreach (Util::OPERATIONS as $method) {
                 /** @var OA\Operation $operation */
                 $operation = $path->{$method};
-                if (OA\UNDEFINED !== $operation && null !== $operation && (OA\UNDEFINED === $operation->responses || empty($operation->responses))) {
+                if (Generator::UNDEFINED !== $operation && null !== $operation && (Generator::UNDEFINED === $operation->responses || empty($operation->responses))) {
                     /** @var OA\Response $response */
                     $response = Util::getIndexedCollectionItem($operation, OA\Response::class, 'default');
                     $response->description = '';

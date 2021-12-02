@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\RouteDescriber;
 use LogicException;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -40,7 +41,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 /** @var OA\Parameter $parameter */
                 $parameter = $existingParams[$paramId] ?? null;
                 if (null !== $parameter) {
-                    if (!$parameter->required || OA\UNDEFINED === $parameter->required) {
+                    if (!$parameter->required || Generator::UNDEFINED === $parameter->required) {
                         throw new LogicException(\sprintf('Global parameter "%s" is used as part of route "%s" and must be set as "required"', $pathVariable, $route->getPath()));
                     }
 
@@ -52,11 +53,11 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
 
                 $parameter->schema = Util::getChild($parameter, OA\Schema::class);
 
-                if (OA\UNDEFINED === $parameter->schema->type) {
+                if (Generator::UNDEFINED === $parameter->schema->type) {
                     $parameter->schema->type = 'string';
                 }
 
-                if (isset($requirements[$pathVariable]) && OA\UNDEFINED === $parameter->schema->pattern) {
+                if (isset($requirements[$pathVariable]) && Generator::UNDEFINED === $parameter->schema->pattern) {
                     $parameter->schema->pattern = $requirements[$pathVariable];
                 }
             }
@@ -71,15 +72,15 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     private function getRefParams(OA\OpenApi $api, OA\Operation $operation): array
     {
         /** @var OA\Parameter[] $globalParams */
-        $globalParams = OA\UNDEFINED !== $api->components && OA\UNDEFINED !== $api->components->parameters ? $api->components->parameters : [];
+        $globalParams = Generator::UNDEFINED !== $api->components && Generator::UNDEFINED !== $api->components->parameters ? $api->components->parameters : [];
         $globalParams = array_column($globalParams, null, 'parameter'); // update the indexes of the array with the reference names actually used
         $existingParams = [];
 
-        $operationParameters = OA\UNDEFINED !== $operation->parameters ? $operation->parameters : [];
+        $operationParameters = Generator::UNDEFINED !== $operation->parameters ? $operation->parameters : [];
         /** @var OA\Parameter $parameter */
         foreach ($operationParameters as $id => $parameter) {
             $ref = $parameter->ref;
-            if (OA\UNDEFINED === $ref) {
+            if (Generator::UNDEFINED === $ref) {
                 // we only concern ourselves with '$ref' parameters, so continue the loop
                 continue;
             }

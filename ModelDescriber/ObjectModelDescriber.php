@@ -20,6 +20,7 @@ use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
@@ -72,7 +73,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $annotationsReader->updateDefinition($reflClass, $schema);
 
         $discriminatorMap = $this->doctrineReader->getClassAnnotation($reflClass, DiscriminatorMap::class);
-        if ($discriminatorMap && OA\UNDEFINED === $schema->discriminator) {
+        if ($discriminatorMap && Generator::UNDEFINED === $schema->discriminator) {
             $this->applyOpenApiDiscriminator(
                 $model,
                 $schema,
@@ -114,7 +115,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             // If type manually defined
-            if (OA\UNDEFINED !== $property->type || OA\UNDEFINED !== $property->ref) {
+            if (Generator::UNDEFINED !== $property->type || Generator::UNDEFINED !== $property->ref) {
                 continue;
             }
 
