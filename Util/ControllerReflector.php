@@ -42,15 +42,12 @@ class ControllerReflector
      */
     public function getReflectionMethod($controller)
     {
-        if (null === $controller) {
-            return null;
-        }
-
         if (is_string($controller)) {
             $controller = $this->getClassAndMethod($controller);
-            if (null === $controller) {
-                return null;
-            }
+        }
+
+        if (null === $controller) {
+            return null;
         }
 
         return $this->geReflectionMethodByClassNameAndMethodName(...$controller);
