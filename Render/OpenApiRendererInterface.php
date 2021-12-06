@@ -12,13 +12,11 @@
 namespace Nelmio\ApiDocBundle\Render;
 
 use OpenApi\Annotations\OpenApi;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @internal
- */
-interface OpenApiRenderer
+interface OpenApiRendererInterface
 {
-    public function getFormat(): string;
+    public static function getFormat(): string;
 
-    public function render(OpenApi $spec, array $options = []): string;
+    public function __invoke(OpenApi $spec, array $options = []): Response;
 }

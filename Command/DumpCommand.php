@@ -17,6 +17,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class DumpCommand extends Command
 {
@@ -84,8 +85,9 @@ class DumpCommand extends Command
             $options['server_url'] = $input->getOption('server-url');
         }
 
+        /** @var Response $docs */
         $docs = $this->renderOpenApi->render($format, $area, $options);
-        $output->writeln($docs, OutputInterface::OUTPUT_RAW);
+        $output->writeln($docs->getContent(), OutputInterface::OUTPUT_RAW);
 
         return 0;
     }

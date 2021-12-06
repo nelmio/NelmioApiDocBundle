@@ -12,8 +12,8 @@
 namespace Nelmio\ApiDocBundle\Controller;
 
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class DocumentationController
@@ -28,13 +28,13 @@ final class DocumentationController
         $this->renderOpenApi = $renderOpenApi;
     }
 
-    public function __invoke(Request $request, $area = 'default')
+    public function __invoke(Request $request, $area = 'default'): Response
     {
         try {
-            return JsonResponse::fromJsonString(
-                $this->renderOpenApi->renderFromRequest($request, RenderOpenApi::JSON, $area)
-            );
-        } catch (InvalidArgumentException $e) {
+            $format = $request->attributes->get('format', RenderOpenApi::JSON);
+
+            return $this->renderOpenApi->renderFromRequest($request, $format, $area);
+        } catch (\InvalidArgumentException $e) {
             throw new BadRequestHttpException(sprintf('Area "%s" is not supported as it isn\'t defined in config.', $area));
         }
     }

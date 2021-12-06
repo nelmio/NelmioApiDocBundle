@@ -16,6 +16,7 @@ use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Server;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class RenderOpenApi
 {
@@ -26,18 +27,18 @@ class RenderOpenApi
     /** @var ContainerInterface */
     private $generatorLocator;
 
-    /** @var array<string, OpenApiRenderer|null> */
+    /** @var array<string, OpenApiRendererInterface|null> */
     private $openApiRenderers = [];
 
-    public function __construct(ContainerInterface $generatorLocator, ?OpenApiRenderer ...$openApiRenderers)
+    public function __construct(ContainerInterface $generatorLocator, iterable $openApiRenderers)
     {
         $this->generatorLocator = $generatorLocator;
-        foreach ($openApiRenderers as $openApiRenderer) {
+        foreach ($openApiRenderers as $format => $openApiRenderer) {
             if (null === $openApiRenderer) {
                 continue;
             }
 
-            $this->openApiRenderers[$openApiRenderer->getFormat()] = $openApiRenderer;
+            $this->openApiRenderers[$format] = $openApiRenderer;
         }
     }
 
@@ -46,7 +47,7 @@ class RenderOpenApi
         return array_keys($this->openApiRenderers);
     }
 
-    public function renderFromRequest(Request $request, string $format, $area, array $extraOptions = [])
+    public function renderFromRequest(Request $request, string $format, $area, array $extraOptions = []): Response
     {
         $options = [];
         if ('' !== $request->getBaseUrl()) {
@@ -62,7 +63,7 @@ class RenderOpenApi
     /**
      * @throws InvalidArgumentException If the area to dump is not valid
      */
-    public function render(string $format, string $area, array $options = []): string
+    public function render(string $format, string $area, array $options = []): Response
     {
         if (!$this->generatorLocator->has($area)) {
             throw new InvalidArgumentException(sprintf('Area "%s" is not supported.', $area));
@@ -77,6 +78,6 @@ class RenderOpenApi
             $spec->servers = [new Server(['url' => $options['server_url']])];
         }
 
-        return $this->openApiRenderers[$format]->render($spec, $options);
+        return ($this->openApiRenderers[$format])($spec, $options);
     }
 }

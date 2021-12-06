@@ -12,21 +12,19 @@
 namespace Nelmio\ApiDocBundle\Render\Html;
 
 use InvalidArgumentException;
-use Nelmio\ApiDocBundle\Render\OpenApiRenderer;
+use Nelmio\ApiDocBundle\Render\OpenApiRendererInterface;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use OpenApi\Annotations\OpenApi;
+use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 /**
  * @internal
  */
-class HtmlOpenApiRenderer implements OpenApiRenderer
+class HtmlOpenApiRenderer implements OpenApiRendererInterface
 {
     /** @var Environment|\Twig_Environment */
     private $twig;
-
-    /** @var GetNelmioAsset */
-    private $getNelmioAsset;
 
     public function __construct($twig)
     {
@@ -36,25 +34,25 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
         $this->twig = $twig;
     }
 
-    public function getFormat(): string
+    public static function getFormat(): string
     {
         return RenderOpenApi::HTML;
     }
 
-    public function render(OpenApi $spec, array $options = []): string
+    public function __invoke(OpenApi $spec, array $options = []): Response
     {
         $options += [
             'assets_mode' => AssetsMode::CDN,
             'swagger_ui_config' => [],
         ];
 
-        return $this->twig->render(
+        return new Response($this->twig->render(
             '@NelmioApiDoc/SwaggerUi/index.html.twig',
             [
                 'swagger_data' => ['spec' => json_decode($spec->toJson(), true)],
                 'assets_mode' => $options['assets_mode'],
                 'swagger_ui_config' => $options['swagger_ui_config'],
             ]
-        );
+        ));
     }
 }

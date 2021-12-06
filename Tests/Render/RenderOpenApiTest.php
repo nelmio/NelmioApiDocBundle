@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Render;
 
 use InvalidArgumentException;
-use Nelmio\ApiDocBundle\Render\OpenApiRenderer;
+use Nelmio\ApiDocBundle\Render\OpenApiRendererInterface;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use OpenApi\Annotations\OpenApi;
 use PHPUnit\Framework\TestCase;
@@ -26,10 +26,10 @@ class RenderOpenApiTest extends TestCase
 
     public function testRender()
     {
-        $openApiRenderer = $this->createMock(OpenApiRenderer::class);
-        $openApiRenderer->method('getFormat')->willReturn($this->format);
-        $openApiRenderer->expects($this->once())->method('render');
-        $this->renderOpenApi($openApiRenderer);
+        $openApiRenderer = $this->createMock(OpenApiRendererInterface::class);
+        $openApiRenderer->expects($this->once())->method('__invoke');
+
+        $this->renderOpenApi([$this->format => $openApiRenderer]);
     }
 
     public function testUnknownFormat()
@@ -37,7 +37,7 @@ class RenderOpenApiTest extends TestCase
         $availableOpenApiRenderers = [];
         $this->expectException(InvalidArgumentException::class);
         $this->expectErrorMessage(sprintf('Format "%s" is not supported.', $this->format));
-        $this->renderOpenApi(...$availableOpenApiRenderers);
+        $this->renderOpenApi($availableOpenApiRenderers);
     }
 
     public function testUnknownArea()
@@ -45,23 +45,22 @@ class RenderOpenApiTest extends TestCase
         $this->hasArea = false;
         $this->expectException(InvalidArgumentException::class);
         $this->expectErrorMessage(sprintf('Area "%s" is not supported.', $this->area));
-        $this->renderOpenApi();
+        $this->renderOpenApi([]);
     }
 
     public function testNullFormat()
     {
-        $openApiRenderer = $this->createMock(OpenApiRenderer::class);
-        $openApiRenderer->method('getFormat')->willReturn($this->format);
-        $openApiRenderer->expects($this->once())->method('render');
+        $openApiRenderer = $this->createMock(OpenApiRendererInterface::class);
+        $openApiRenderer->expects($this->once())->method('__invoke');
 
         $availableOpenApiRenderers = [
-            $openApiRenderer,
-            null,
+            $this->format => $openApiRenderer,
+            'html' => null,
         ];
-        $this->renderOpenApi(...$availableOpenApiRenderers);
+        $this->renderOpenApi($availableOpenApiRenderers);
     }
 
-    private function renderOpenApi(...$openApiRenderer): void
+    private function renderOpenApi($openApiRenderer): void
     {
         $spec = $this->createMock(OpenApi::class);
         $generator = new class($spec) {
@@ -82,7 +81,7 @@ class RenderOpenApiTest extends TestCase
         $generatorLocator->method('has')->willReturn($this->hasArea);
         $generatorLocator->method('get')->willReturn($generator);
 
-        $renderOpenApi = new RenderOpenApi($generatorLocator, ...$openApiRenderer);
+        $renderOpenApi = new RenderOpenApi($generatorLocator, $openApiRenderer);
         $renderOpenApi->render($this->format, $this->area, []);
     }
 }

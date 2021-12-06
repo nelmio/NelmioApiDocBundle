@@ -11,27 +11,29 @@
 
 namespace Nelmio\ApiDocBundle\Render\Json;
 
-use Nelmio\ApiDocBundle\Render\OpenApiRenderer;
+use Nelmio\ApiDocBundle\Render\OpenApiRendererInterface;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use OpenApi\Annotations\OpenApi;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @internal
  */
-class JsonOpenApiRenderer implements OpenApiRenderer
+class JsonOpenApiRenderer implements OpenApiRendererInterface
 {
-    public function getFormat(): string
+    public static function getFormat(): string
     {
         return RenderOpenApi::JSON;
     }
 
-    public function render(OpenApi $spec, array $options = []): string
+    public function __invoke(OpenApi $spec, array $options = []): Response
     {
         $options += [
             'no-pretty' => false,
         ];
         $flags = $options['no-pretty'] ? 0 : JSON_PRETTY_PRINT;
 
-        return json_encode($spec, $flags);
+        return JsonResponse::fromJsonString(\json_encode($spec, $flags));
     }
 }

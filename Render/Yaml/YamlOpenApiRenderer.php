@@ -11,22 +11,29 @@
 
 namespace Nelmio\ApiDocBundle\Render\Yaml;
 
-use Nelmio\ApiDocBundle\Render\OpenApiRenderer;
+use Nelmio\ApiDocBundle\Render\OpenApiRendererInterface;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use OpenApi\Annotations\OpenApi;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @internal
  */
-class YamlOpenApiRenderer implements OpenApiRenderer
+class YamlOpenApiRenderer implements OpenApiRendererInterface
 {
-    public function getFormat(): string
+    public static function getFormat(): string
     {
         return RenderOpenApi::YAML;
     }
 
-    public function render(OpenApi $spec, array $options = []): string
+    public function __invoke(OpenApi $spec, array $options = []): Response
     {
-        return $spec->toYaml();
+        $response = new Response(
+            $spec->toYaml(),
+            Response::HTTP_OK,
+            ['Content-Type' => 'text/x-yaml']
+        );
+
+        return $response->setCharset('UTF-8');
     }
 }
