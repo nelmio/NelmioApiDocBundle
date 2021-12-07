@@ -31,6 +31,9 @@ class GetNelmioAsset extends AbstractExtension
         $this->resourcesDir = __DIR__.'/../../Resources/public';
     }
 
+    /**
+     * @return array
+     */
     public function getFunctions()
     {
         return [
