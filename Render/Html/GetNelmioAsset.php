@@ -31,10 +31,7 @@ class GetNelmioAsset extends AbstractExtension
         $this->resourcesDir = __DIR__.'/../../Resources/public';
     }
 
-    /**
-     * @return array
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('nelmioAsset', $this, ['is_safe' => ['html']]),
