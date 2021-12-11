@@ -152,14 +152,15 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArgument(1, $config['media_types']);
         }
 
-        // ApiPlatform support
         $bundles = $container->getParameter('kernel.bundles');
-        if (!isset($bundles['TwigBundle'])) {
+        if (!isset($bundles['TwigBundle']) || !class_exists('Symfony\Component\Asset\Packages')) {
             $container->removeDefinition('nelmio_api_doc.controller.swagger_ui');
 
             $container->removeDefinition('nelmio_api_doc.render_docs.html');
             $container->removeDefinition('nelmio_api_doc.render_docs.html.asset');
         }
+
+        // ApiPlatform support
         if (isset($bundles['ApiPlatformBundle']) && class_exists('ApiPlatform\Core\Documentation\Documentation')) {
             $loader->load('api_platform.xml');
         }
