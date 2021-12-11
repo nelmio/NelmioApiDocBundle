@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Hateoas\Configuration\Embedded;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class BazingaFunctionalTest extends WebTestCase
 {
@@ -120,7 +121,7 @@ class BazingaFunctionalTest extends WebTestCase
         ], $this->getModel('BazingaUserTyped')->toArray());
     }
 
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_JMS | TestKernel::USE_BAZINGA);
     }

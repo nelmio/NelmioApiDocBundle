@@ -39,7 +39,7 @@ Open a command console, enter your project directory and execute the following c
 
         class AppKernel extends Kernel
         {
-            public function registerBundles()
+            public function registerBundles(): iterable
             {
                 $bundles = [
                     // ...

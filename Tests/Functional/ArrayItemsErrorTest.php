@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class ArrayItemsErrorTest extends WebTestCase
 {
@@ -30,7 +31,7 @@ class ArrayItemsErrorTest extends WebTestCase
         $this->getSwaggerDefinition();
     }
 
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::ERROR_ARRAY_ITEMS);
     }
