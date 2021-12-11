@@ -4,6 +4,9 @@ namespace Nelmio\ApiDocBundle\Util;
 
 use OpenApi\Context;
 
+/**
+ * @internal
+ */
 trait SetsContextTrait
 {
     private function setContext(?Context $context): void
