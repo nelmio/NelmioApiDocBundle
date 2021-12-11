@@ -23,6 +23,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -134,7 +135,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $annotationsReader->updateProperty($reflection, $property, $groups);
             }
 
-            if (OA\UNDEFINED !== $property->type || OA\UNDEFINED !== $property->ref) {
+            if (Generator::UNDEFINED !== $property->type || Generator::UNDEFINED !== $property->ref) {
                 $context->popPropertyMetadata();
 
                 continue;

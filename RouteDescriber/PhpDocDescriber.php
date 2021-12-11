@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Symfony\Component\Routing\Route;
@@ -47,10 +48,10 @@ final class PhpDocDescriber implements RouteDescriberInterface
 
         foreach ($this->getOperations($api, $route) as $operation) {
             if (null !== $docBlock) {
-                if (OA\UNDEFINED === $operation->summary && '' !== $docBlock->getSummary()) {
+                if (Generator::UNDEFINED === $operation->summary && '' !== $docBlock->getSummary()) {
                     $operation->summary = $docBlock->getSummary();
                 }
-                if (OA\UNDEFINED === $operation->description && '' !== (string) $docBlock->getDescription()) {
+                if (Generator::UNDEFINED === $operation->description && '' !== (string) $docBlock->getDescription()) {
                     $operation->description = (string) $docBlock->getDescription();
                 }
                 if ($docBlock->hasTag('deprecated')) {

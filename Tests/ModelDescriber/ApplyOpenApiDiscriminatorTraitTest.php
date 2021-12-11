@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ApplyOpenApiDiscriminatorTrait;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -57,7 +58,7 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
             'two' => 'SecondType',
         ]);
 
-        $this->assertNotSame(OA\UNDEFINED, $this->schema->oneOf);
+        $this->assertNotSame(Generator::UNDEFINED, $this->schema->oneOf);
         $this->assertCount(2, $this->schema->oneOf);
         $this->assertSame(
             $this->modelRegistry->register($this->createModel('FirstType')),

@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -73,7 +74,7 @@ class SymfonyConstraintAnnotationReader
                     return;
                 }
 
-                $existingRequiredFields =  OA\UNDEFINED !== $this->schema->required ? $this->schema->required : [];
+                $existingRequiredFields =  Generator::UNDEFINED !== $this->schema->required ? $this->schema->required : [];
                 $existingRequiredFields[] = $propertyName;
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
@@ -131,7 +132,7 @@ class SymfonyConstraintAnnotationReader
         }
         foreach ($this->schema->properties as $schemaProperty) {
             if ($schemaProperty === $property) {
-                return OA\UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
+                return Generator::UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
             }
         }
 
@@ -146,7 +147,7 @@ class SymfonyConstraintAnnotationReader
         if (null === $newPattern) {
             return;
         }
-        if (OA\UNDEFINED !== $property->pattern) {
+        if (Generator::UNDEFINED !== $property->pattern) {
             $property->pattern = sprintf('%s, %s', $property->pattern, $newPattern);
         } else {
             $property->pattern = $newPattern;

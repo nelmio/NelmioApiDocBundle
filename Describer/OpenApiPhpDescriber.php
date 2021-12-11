@@ -16,8 +16,9 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
-use OpenApi\Analyser;
+use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -27,6 +28,8 @@ class_exists(OA\OpenApi::class);
 
 final class OpenApiPhpDescriber
 {
+    use SetsContextTrait;
+
     private $routeCollection;
     private $controllerReflector;
     private $annotationReader;
@@ -52,11 +55,13 @@ final class OpenApiPhpDescriber
 
             $path = Util::getPath($api, $path);
 
-            Analyser::$context = Util::createContext(['nested' => $path], $path->_context);
-            Analyser::$context->namespace = $method->getNamespaceName();
-            Analyser::$context->class = $declaringClass->getShortName();
-            Analyser::$context->method = $method->name;
-            Analyser::$context->filename = $method->getFileName();
+            $context = Util::createContext(['nested' => $path], $path->_context);
+            $context->namespace = $method->getNamespaceName();
+            $context->class = $declaringClass->getShortName();
+            $context->method = $method->name;
+            $context->filename = $method->getFileName();
+
+            $this->setContext($context);
 
             if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
                 $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
@@ -90,7 +95,7 @@ final class OpenApiPhpDescriber
                     if (!in_array($annotation->method, $httpMethods, true)) {
                         continue;
                     }
-                    if (OA\UNDEFINED !== $annotation->path && $path->path !== $annotation->path) {
+                    if (Generator::UNDEFINED !== $annotation->path && $path->path !== $annotation->path) {
                         continue;
                     }
 
@@ -135,14 +140,14 @@ final class OpenApiPhpDescriber
                 $operation->merge($implicitAnnotations);
                 $operation->mergeProperties($mergeProperties);
 
-                if (OA\UNDEFINED === $operation->operationId) {
+                if (Generator::UNDEFINED === $operation->operationId) {
                     $operation->operationId = $httpMethod.'_'.$routeName;
                 }
             }
         }
 
-        // Reset the Analyser after the parsing
-        Analyser::$context = null;
+        // Reset the Generator after the parsing
+        $this->setContext(null);
     }
 
     private function getMethodsToParse(): \Generator
