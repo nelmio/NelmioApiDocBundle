@@ -19,7 +19,7 @@ class ControllerReflectorTest extends TestCase
         );
         $this->assertEquals(
             ReflectionMethod::class,
-            get_class($controllerReflector->getReflectionMethod(BazingaController::class . '::userAction'))
+            get_class($controllerReflector->getReflectionMethod(BazingaController::class.'::userAction'))
         );
         $this->assertNull(
             $controllerReflector->getReflectionMethod('UnknownController::userAction')
