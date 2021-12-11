@@ -24,6 +24,6 @@ class ControllerReflectorTest extends TestCase
         $this->assertNull(
             $controllerReflector->getReflectionMethod('UnknownController::userAction')
         );
-        $this->assertNull( $controllerReflector->getReflectionMethod(null));
+        $this->assertNull($controllerReflector->getReflectionMethod(null));
     }
 }
