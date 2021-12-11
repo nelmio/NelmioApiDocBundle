@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - php-version: 7.1
+          - php-version: 7.2
             composer-flags: "--prefer-lowest"
           - php-version: 7.2
             symfony-require: "^4.0"
