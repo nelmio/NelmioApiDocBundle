@@ -11,6 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+
 class JMSFunctionalTest extends WebTestCase
 {
     protected function setUp(): void
@@ -333,7 +335,7 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSNamingStrategyConstraints')->toJson(), true));
     }
 
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_JMS);
     }
