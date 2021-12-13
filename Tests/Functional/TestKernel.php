@@ -106,7 +106,7 @@ class TestKernel extends Kernel
             try {
                 new \ReflectionMethod(Embedded::class, 'getType');
                 $routes->import(__DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
-            } catch (\ReflectionException $e) {
+            } catch (\ReflectionException) {
             }
         }
 

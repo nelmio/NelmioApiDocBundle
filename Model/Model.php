@@ -15,26 +15,14 @@ use Symfony\Component\PropertyInfo\Type;
 
 final class Model
 {
-    private $type;
-
-    private $groups;
-
-    private $options;
-
     /**
      * @param string[]|null $groups
      */
-    public function __construct(Type $type, array $groups = null, array $options = null)
+    public function __construct(private Type $type, private ?array $groups = null, private ?array $options = null)
     {
-        $this->type = $type;
-        $this->groups = $groups;
-        $this->options = $options;
     }
 
-    /**
-     * @return Type
-     */
-    public function getType()
+    public function getType(): Type
     {
         return $this->type;
     }
@@ -42,7 +30,7 @@ final class Model
     /**
      * @return string[]|null
      */
-    public function getGroups()
+    public function getGroups(): ?array
     {
         return $this->groups;
     }
@@ -52,10 +40,7 @@ final class Model
         return md5(serialize([$this->type, $this->groups]));
     }
 
-    /**
-     * @return mixed[]|null
-     */
-    public function getOptions()
+    public function getOptions(): ?array
     {
         return $this->options;
     }

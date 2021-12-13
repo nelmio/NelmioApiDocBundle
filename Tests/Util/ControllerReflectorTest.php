@@ -15,11 +15,11 @@ class ControllerReflectorTest extends TestCase
         $controllerReflector = new ControllerReflector(new Container());
         $this->assertEquals(
             ReflectionMethod::class,
-            get_class($controllerReflector->getReflectionMethod([BazingaController::class, 'userAction']))
+            $controllerReflector->getReflectionMethod([BazingaController::class, 'userAction'])::class
         );
         $this->assertEquals(
             ReflectionMethod::class,
-            get_class($controllerReflector->getReflectionMethod(BazingaController::class.'::userAction'))
+            $controllerReflector->getReflectionMethod(BazingaController::class.'::userAction')::class
         );
         $this->assertNull(
             $controllerReflector->getReflectionMethod('UnknownController::userAction')

@@ -25,14 +25,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function testUpdatePropertyFix1283()
     {
         $entity = new class() {
-            /**
-             * @Assert\NotBlank()
-             * @Assert\Length(min = 1)
-             */
+            #[Assert\NotBlank]
+            #[Assert\Length(min: 1)]
             private $property1;
-            /**
-             * @Assert\NotBlank()
-             */
+            #[Assert\NotBlank]
             private $property2;
         };
 
@@ -77,14 +73,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function provideOptionalProperty(): iterable
     {
         yield 'Annotations' => [new class() {
-            /**
-             * @Assert\NotBlank(allowNull = true)
-             * @Assert\Length(min = 1)
-             */
+            #[Assert\NotBlank(allowNull: true)]
+            #[Assert\Length(min: 1)]
             private $property1;
-            /**
-             * @Assert\NotBlank()
-             */
+            #[Assert\NotBlank]
             private $property2;
         }];
 
@@ -125,10 +117,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         ]);
 
         yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Length(min = 1)
-             * @Assert\Choice(choices=TEST_ASSERT_CHOICE_STATUSES)
-             */
+            #[Assert\Length(min: 1)]
+            #[Assert\Choice(choices: 'TEST_ASSERT_CHOICE_STATUSES')]
             private $property1;
         }];
 
@@ -162,9 +152,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function provideMultipleChoiceConstraintsApplyEnumToItems(): iterable
     {
         yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Choice(choices={"one", "two"}, multiple=true)
-             */
+            #[Assert\Choice(choices: ['one', 'two'], multiple: true)]
             private $property1;
         }];
 
@@ -198,9 +186,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet(): iterable
     {
         yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Length(min = 1)
-             */
+            #[Assert\Length(min: 1)]
             private $property1;
         }];
 
@@ -234,9 +220,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet(): iterable
     {
         yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Length(max = 100)
-             */
+            #[Assert\Length(max: 100)]
             private $property1;
         }];
 
@@ -303,9 +287,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet(): iterable
     {
         yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Count(max = 10)
-             */
+            #[Assert\Count(max: 10)]
             private $property1;
         }];
 
@@ -339,9 +321,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet(): iterable
     {
         yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Count(min = 10)
-             */
+            #[Assert\Count(min: 10)]
             private $property1;
         }];
 
@@ -375,9 +355,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet(): iterable
     {
         yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Range(min = 10)
-             */
+            #[Assert\Range(min: 10)]
             private $property1;
         }];
 
@@ -411,9 +389,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet(): iterable
     {
         yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Range(max = 10)
-             */
+            #[Assert\Range(max: 10)]
             private $property1;
         }];
 

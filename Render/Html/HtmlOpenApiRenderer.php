@@ -16,22 +16,21 @@ use Nelmio\ApiDocBundle\Render\OpenApiRenderer;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use OpenApi\Annotations\OpenApi;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * @internal
  */
 class HtmlOpenApiRenderer implements OpenApiRenderer
 {
-    /** @var Environment|\Twig_Environment */
-    private $twig;
-
-    /** @var GetNelmioAsset */
-    private $getNelmioAsset;
+    private \Twig_Environment|Environment $twig;
 
     public function __construct($twig)
     {
         if (!$twig instanceof \Twig_Environment && !$twig instanceof Environment) {
-            throw new InvalidArgumentException(sprintf('Providing an instance of "%s" as twig is not supported.', get_class($twig)));
+            throw new InvalidArgumentException(sprintf('Providing an instance of "%s" as twig is not supported.', $twig::class));
         }
         $this->twig = $twig;
     }
@@ -41,6 +40,11 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
         return RenderOpenApi::HTML;
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     public function render(OpenApi $spec, array $options = []): string
     {
         $options += [

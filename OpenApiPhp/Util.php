@@ -46,7 +46,7 @@ use OpenApi\Generator;
  * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createContext()
  *
  * The merge method @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::merge() has the main purpose to be able
- * to merge properties from an deeply nested array of Annotation properties in the structure of a
+ * to merge properties from a deeply nested array of Annotation properties in the structure of a
  * generated swagger json decoded array.
  */
 final class Util
@@ -62,12 +62,10 @@ final class Util
      * Return an existing PathItem object from $api->paths[] having its member path set to $path.
      * Create, add to $api->paths[] and return this new PathItem object and set the property if none found.
      *
-     * @see OA\OpenApi::$paths
      * @see OA\PathItem::path
-     *
-     * @param string $path
+     * @see OA\OpenApi::$paths
      */
-    public static function getPath(OA\OpenApi $api, $path): OA\PathItem
+    public static function getPath(OA\OpenApi $api, string $path): OA\PathItem
     {
         return self::getIndexedCollectionItem($api, OA\PathItem::class, $path);
     }
@@ -76,12 +74,10 @@ final class Util
      * Return an existing Schema object from $api->components->schemas[] having its member schema set to $schema.
      * Create, add to $api->components->schemas[] and return this new Schema object and set the property if none found.
      *
-     * @param string $schema
-     *
      * @see OA\Schema::$schema
      * @see OA\Components::$schemas
      */
-    public static function getSchema(OA\OpenApi $api, $schema): OA\Schema
+    public static function getSchema(OA\OpenApi $api, string $schema): OA\Schema
     {
         if (!$api->components instanceof OA\Components) {
             $api->components = new OA\Components([]);
@@ -97,12 +93,10 @@ final class Util
      * Create, add to $schema->properties[] and return this new Property object
      * and set the property if none found.
      *
-     * @see OA\Schema::$properties
      * @see OA\Property::$property
-     *
-     * @param string $property
+     * @see OA\Schema::$properties
      */
-    public static function getProperty(OA\Schema $schema, $property): OA\Property
+    public static function getProperty(OA\Schema $schema, string $property): OA\Property
     {
         return self::getIndexedCollectionItem($schema, OA\Property::class, $property);
     }
@@ -111,17 +105,15 @@ final class Util
      * Return an existing Operation from $path->{$method}
      * or create, set $path->{$method} and return this new Operation object.
      *
-     * @see OA\PathItem::$get
      * @see OA\PathItem::$post
      * @see OA\PathItem::$put
      * @see OA\PathItem::$patch
      * @see OA\PathItem::$delete
      * @see OA\PathItem::$options
      * @see OA\PathItem::$head
-     *
-     * @param string $method
+     * @see OA\PathItem::$get
      */
-    public static function getOperation(OA\PathItem $path, $method): OA\Operation
+    public static function getOperation(OA\PathItem $path, string $method): OA\Operation
     {
         $class = array_keys($path::$_nested, \strtolower($method), true)[0];
 
@@ -138,11 +130,8 @@ final class Util
      * @see OA\Operation::$parameters
      * @see OA\Parameter::$name
      * @see OA\Parameter::$in
-     *
-     * @param string $name
-     * @param string $in
      */
-    public static function getOperationParameter(OA\Operation $operation, $name, $in): OA\Parameter
+    public static function getOperationParameter(OA\Operation $operation, string $name, string $in): OA\Parameter
     {
         return self::getCollectionItem($operation, OA\Parameter::class, ['name' => $name, 'in' => $in]);
     }
@@ -155,11 +144,12 @@ final class Util
      * it is expected to be a string nested property.
      *
      * @see OA\AbstractAnnotation::$_nested
-     *
-     * @param $class
      */
-    public static function getChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
-    {
+    public static function getChild(
+        OA\AbstractAnnotation $parent,
+        string $class,
+        array $properties = []
+    ): OA\AbstractAnnotation {
         $nested = $parent::$_nested;
         $property = $nested[$class];
 
@@ -181,11 +171,12 @@ final class Util
      * it is expected to be a single value array nested Annotation.
      *
      * @see OA\AbstractAnnotation::$_nested
-     *
-     * @param string $class
      */
-    public static function getCollectionItem(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
-    {
+    public static function getCollectionItem(
+        OA\AbstractAnnotation $parent,
+        string $class,
+        array $properties = []
+    ): OA\AbstractAnnotation {
         $key = null;
         $nested = $parent::$_nested;
         $collection = $nested[$class][0];
@@ -214,12 +205,12 @@ final class Util
      * with the second value being the mapping index $property.
      *
      * @see OA\AbstractAnnotation::$_nested
-     *
-     * @param string $class
-     * @param mixed  $value
      */
-    public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, $class, $value): OA\AbstractAnnotation
-    {
+    public static function getIndexedCollectionItem(
+        OA\AbstractAnnotation $parent,
+        string $class,
+        mixed $value
+    ): OA\AbstractAnnotation {
         $nested = $parent::$_nested;
         [$collection, $property] = $nested[$class];
 
@@ -239,10 +230,8 @@ final class Util
     /**
      * Search for an Annotation within $collection that has all members set
      * to the respective values in the associative array $properties.
-     *
-     * @return int|string|null
      */
-    public static function searchCollectionItem(array $collection, array $properties)
+    public static function searchCollectionItem(array $collection, array $properties): int|string|null
     {
         foreach ($collection ?: [] as $i => $child) {
             foreach ($properties as $k => $prop) {
@@ -259,13 +248,8 @@ final class Util
 
     /**
      * Search for an Annotation within the $collection that has its member $index set to $value.
-     *
-     * @param string $member
-     * @param mixed  $value
-     *
-     * @return false|int|string
      */
-    public static function searchIndexedCollectionItem(array $collection, $member, $value)
+    public static function searchIndexedCollectionItem(array $collection, string $member, mixed $value): int|string|false
     {
         return array_search($value, array_column($collection, $member), true);
     }
@@ -273,12 +257,13 @@ final class Util
     /**
      * Create a new Object of $class with members $properties within $parent->{$collection}[]
      * and return the created index.
-     *
-     * @param string $collection
-     * @param string $class
      */
-    public static function createCollectionItem(OA\AbstractAnnotation $parent, $collection, $class, array $properties = []): int
-    {
+    public static function createCollectionItem(
+        OA\AbstractAnnotation $parent,
+        string $collection,
+        string $class,
+        array $properties = []
+    ): int {
         if (Generator::UNDEFINED === $parent->{$collection}) {
             $parent->{$collection} = [];
         }
@@ -292,12 +277,13 @@ final class Util
     /**
      * Create a new Object of $class with members $properties and set the context parent to be $parent.
      *
-     * @param string $class
-     *
      * @throws \InvalidArgumentException at an attempt to pass in properties that are found in $parent::$_nested
      */
-    public static function createChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
-    {
+    public static function createChild(
+        OA\AbstractAnnotation $parent,
+        string $class,
+        array $properties = []
+    ): OA\AbstractAnnotation {
         $nesting = self::getNestingIndexes($class);
 
         if (!empty(array_intersect(array_keys($properties), $nesting))) {
@@ -316,8 +302,6 @@ final class Util
      */
     public static function createContext(array $properties = [], Context $parent = null): Context
     {
-        $properties['comment'] = ''; // TODO: remove this when https://github.com/zircote/swagger-php/commit/708a25208797ca05ebeae572bbccad8b13de14d8 is released
-
         return new Context($properties, $parent);
     }
 
@@ -329,8 +313,11 @@ final class Util
      *
      * @param array|\ArrayObject|OA\AbstractAnnotation $from
      */
-    public static function merge(OA\AbstractAnnotation $annotation, $from, bool $overwrite = false)
-    {
+    public static function merge(
+        OA\AbstractAnnotation $annotation,
+        array|\ArrayObject|OA\AbstractAnnotation $from,
+        bool $overwrite = false
+    ) {
         if (\is_array($from)) {
             self::mergeFromArray($annotation, $from, $overwrite);
         } elseif (\is_a($from, OA\AbstractAnnotation::class)) {
@@ -346,7 +333,7 @@ final class Util
     {
         $done = [];
 
-        $defaults = \get_class_vars(\get_class($annotation));
+        $defaults = \get_class_vars($annotation::class);
 
         foreach ($annotation::$_nested as $className => $propertyName) {
             if (\is_string($propertyName)) {
@@ -362,7 +349,7 @@ final class Util
             } elseif (\array_key_exists($propertyName[0], $properties)) {
                 $collection = $propertyName[0];
                 $property = $propertyName[1] ?? null;
-                self::mergeCollection($annotation, $className, $collection, $property, $properties[$collection], $overwrite);
+                self::mergeCollection($annotation, $className, $property, $properties[$collection], $overwrite);
                 $done[] = $collection;
             }
         }
@@ -389,7 +376,7 @@ final class Util
         self::merge(self::getChild($annotation, $className), $value, $overwrite);
     }
 
-    private static function mergeCollection(OA\AbstractAnnotation $annotation, $className, $collection, $property, $items, bool $overwrite)
+    private static function mergeCollection(OA\AbstractAnnotation $annotation, $className, $property, $items, bool $overwrite)
     {
         if (null !== $property) {
             foreach ($items as $prop => $value) {
@@ -415,7 +402,7 @@ final class Util
 
     private static function mergeTyped(OA\AbstractAnnotation $annotation, $propertyName, $type, array $properties, array $defaults, bool $overwrite)
     {
-        if (\is_string($type) && 0 === strpos($type, '[')) {
+        if (\is_string($type) && str_starts_with($type, '[')) {
             $innerType = substr($type, 1, -1);
 
             if (!$annotation->{$propertyName} || Generator::UNDEFINED === $annotation->{$propertyName}) {

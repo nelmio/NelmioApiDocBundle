@@ -65,11 +65,8 @@ class RenderOpenApiTest extends TestCase
     {
         $spec = $this->createMock(OpenApi::class);
         $generator = new class($spec) {
-            private $spec;
-
-            public function __construct($spec)
+            public function __construct(private $spec)
             {
-                $this->spec = $spec;
             }
 
             public function generate()

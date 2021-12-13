@@ -104,7 +104,7 @@ class UtilTest extends TestCase
         $info = Util::createChild($this->rootAnnotation, OA\Info::class, $properties);
 
         $properties = array_filter(get_object_vars($info), function ($key) {
-            return 0 !== strpos($key, '_');
+            return !str_starts_with($key, '_');
         }, ARRAY_FILTER_USE_KEY);
 
         $this->assertEquals([Generator::UNDEFINED], array_unique(array_values($properties)));
@@ -829,10 +829,10 @@ class UtilTest extends TestCase
     private function getNonDefaultProperties($object)
     {
         $objectVars = \get_object_vars($object);
-        $classVars = \get_class_vars(\get_class($object));
+        $classVars = \get_class_vars($object::class);
         $props = [];
         foreach ($objectVars as $key => $value) {
-            if ($value !== $classVars[$key] && 0 !== \strpos($key, '_')) {
+            if ($value !== $classVars[$key] && !str_starts_with($key, '_')) {
                 $props[$key] = $value;
             }
         }

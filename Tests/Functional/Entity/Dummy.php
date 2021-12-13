@@ -37,9 +37,9 @@ class Dummy
     /**
      * @var string
      *
-     * @Assert\NotBlank
      * @ApiProperty(iri="http://schema.org/name")
      */
+    #[Assert\NotBlank]
     private $name;
 
     public function getId(): int

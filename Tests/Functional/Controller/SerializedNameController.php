@@ -18,9 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * This controller is only loaded when SerializedName exists (sf >= 4.2).
- *
- * @Route("/api", host="api.example.com")
  */
+#[Route(path: '/api', host: 'api.example.com')]
 class SerializedNameController
 {
     /**
@@ -29,8 +28,8 @@ class SerializedNameController
      *     description="success",
      *     @Model(type=SerializedNameEnt::class)
      * )
-     * @Route("/serializename", methods={"GET"})
      */
+    #[Route(path: '/serializename', methods: ['GET'])]
     public function serializedNameAction()
     {
     }

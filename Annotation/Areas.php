@@ -17,7 +17,7 @@ namespace Nelmio\ApiDocBundle\Annotation;
 final class Areas
 {
     /** @var string[] */
-    private $areas;
+    private array $areas;
 
     public function __construct(array $properties)
     {

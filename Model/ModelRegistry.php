@@ -23,29 +23,22 @@ final class ModelRegistry
 {
     use LoggerAwareTrait;
 
-    private $registeredModelNames = [];
-
-    private $alternativeNames = [];
-
-    private $unregistered = [];
-
-    private $models = [];
-
-    private $names = [];
-
-    private $modelDescribers = [];
-
-    private $api;
+    private array $registeredModelNames = [];
+    private array $alternativeNames = [];
+    private array $unregistered = [];
+    private array $models = [];
+    private array $names = [];
 
     /**
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      *
      * @internal
      */
-    public function __construct($modelDescribers, OA\OpenApi $api, array $alternativeNames = [])
-    {
-        $this->modelDescribers = $modelDescribers;
-        $this->api = $api;
+    public function __construct(
+        private iterable $modelDescribers,
+        private OA\OpenApi $api,
+        array $alternativeNames = []
+    ) {
         $this->logger = new NullLogger();
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
             $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
@@ -188,31 +181,16 @@ final class ModelRegistry
 
     private function getCollectionKeyTypes(Type $type): array
     {
-        // BC layer, this condition should be removed after removing support for symfony < 5.3
-        if (!method_exists($type, 'getCollectionKeyTypes')) {
-            return null !== $type->getCollectionKeyType() ? [$type->getCollectionKeyType()] : [];
-        }
-
         return $type->getCollectionKeyTypes();
     }
 
     private function getCollectionValueTypes(Type $type): array
     {
-        // BC layer, this condition should be removed after removing support for symfony < 5.3
-        if (!method_exists($type, 'getCollectionValueTypes')) {
-            return null !== $type->getCollectionValueType() ? [$type->getCollectionValueType()] : [];
-        }
-
         return $type->getCollectionValueTypes();
     }
 
     private function getCollectionValueType(Type $type): ?Type
     {
-        // BC layer, this condition should be removed after removing support for symfony < 5.3
-        if (!method_exists($type, 'getCollectionValueTypes')) {
-            return $type->getCollectionValueType();
-        }
-
         return $type->getCollectionValueTypes()[0] ?? null;
     }
 }

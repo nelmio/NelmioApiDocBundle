@@ -14,11 +14,15 @@ namespace Nelmio\ApiDocBundle\Tests;
 use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Describer\DefaultDescriber;
 use PHPUnit\Framework\TestCase;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 class ApiDocGeneratorTest extends TestCase
 {
-    public function testCache()
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function testCache(): void
     {
         $adapter = new ArrayAdapter();
         $generator = new ApiDocGenerator([new DefaultDescriber()], [], $adapter);
@@ -26,7 +30,10 @@ class ApiDocGeneratorTest extends TestCase
         $this->assertEquals(json_encode($generator->generate()), json_encode($adapter->getItem('openapi_doc')->get()));
     }
 
-    public function testCacheWithCustomId()
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function testCacheWithCustomId(): void
     {
         $adapter = new ArrayAdapter();
         $generator = new ApiDocGenerator([new DefaultDescriber()], [], $adapter, 'custom_id');

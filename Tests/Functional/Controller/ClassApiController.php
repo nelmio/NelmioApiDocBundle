@@ -16,15 +16,15 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api", host="api.example.com")
  * @Security(name="basic")
  */
+#[Route(path: '/api', host: 'api.example.com')]
 class ClassApiController
 {
     /**
-     * @Route("/security/class")
      * @OA\Response(response="201", description="")
      */
+    #[Route(path: '/security/class')]
     public function securityAction()
     {
     }

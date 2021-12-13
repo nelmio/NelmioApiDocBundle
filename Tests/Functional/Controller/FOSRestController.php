@@ -18,13 +18,10 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Regex;
 
-/**
- * @Route("/api", host="api.example.com")
- */
+#[Route(path: '/api', host: 'api.example.com')]
 class FOSRestController
 {
     /**
-     * @Route("/fosrest.{_format}", methods={"POST"})
      * @QueryParam(name="foo", requirements=@Regex("/^\d+$/"))
      * @QueryParam(name="mapped", map=true)
      * @RequestParam(name="Barraa", key="bar", requirements="\d+")
@@ -34,6 +31,7 @@ class FOSRestController
      * @RequestParam(name="datetimeNoFormat", requirements=@DateTime())
      * @RequestParam(name="date", requirements=@DateTime("Y-m-d"))
      */
+    #[Route(path: '/fosrest.{_format}', methods: ['POST'])]
     public function fosrestAction()
     {
     }

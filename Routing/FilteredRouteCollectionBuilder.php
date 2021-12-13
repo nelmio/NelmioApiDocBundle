@@ -20,23 +20,11 @@ use Symfony\Component\Routing\RouteCollection;
 
 final class FilteredRouteCollectionBuilder
 {
-    /** @var Reader */
-    private $annotationReader;
-
-    /** @var ControllerReflector */
-    private $controllerReflector;
-
-    /** @var string */
-    private $area;
-
-    /** @var array */
-    private $options;
-
     public function __construct(
-        Reader $annotationReader,
-        ControllerReflector $controllerReflector,
-        string $area,
-        array $options = []
+        private Reader $annotationReader,
+        private ControllerReflector $controllerReflector,
+        private string $area,
+        private array $options = []
     ) {
         $resolver = new OptionsResolver();
         $resolver
@@ -60,10 +48,6 @@ final class FilteredRouteCollectionBuilder
             $normalizedOptions = ['path_patterns' => $options];
             $options = $normalizedOptions;
         }
-
-        $this->annotationReader = $annotationReader;
-        $this->controllerReflector = $controllerReflector;
-        $this->area = $area;
         $this->options = $resolver->resolve($options);
     }
 
@@ -159,8 +143,8 @@ final class FilteredRouteCollectionBuilder
         $annotations = $this->annotationReader->getMethodAnnotations($method);
 
         foreach ($annotations as $annotation) {
-            if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')
-                || false !== strpos(get_class($annotation), 'OpenApi\\Annotations')
+            if (str_contains($annotation::class, 'Nelmio\\ApiDocBundle\\Annotation')
+                || str_contains($annotation::class, 'OpenApi\\Annotations')
             ) {
                 return true;
             }

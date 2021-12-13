@@ -30,21 +30,18 @@ final class OpenApiPhpDescriber
 {
     use SetsContextTrait;
 
-    private $routeCollection;
-    private $controllerReflector;
-    private $annotationReader;
-    private $logger;
-    private $overwrite;
-
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
-    {
-        $this->routeCollection = $routeCollection;
-        $this->controllerReflector = $controllerReflector;
-        $this->annotationReader = $annotationReader;
-        $this->logger = $logger;
-        $this->overwrite = $overwrite;
+    public function __construct(
+        private RouteCollection $routeCollection,
+        private ControllerReflector $controllerReflector,
+        private Reader $annotationReader,
+        private LoggerInterface $logger,
+        private bool $overwrite = false
+    ){
     }
 
+    /**
+     * @throws \Exception
+     */
     public function describe(OA\OpenApi $api)
     {
         $classAnnotations = [];
@@ -125,7 +122,7 @@ final class OpenApiPhpDescriber
                     !$annotation instanceof OA\Parameter &&
                     !$annotation instanceof OA\ExternalDocumentation
                 ) {
-                    throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', get_class($annotation), $method->getDeclaringClass()->name, $method->name));
+                    throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', $annotation::class, $method->getDeclaringClass()->name, $method->name));
                 }
 
                 $implicitAnnotations[] = $annotation;
@@ -184,7 +181,7 @@ final class OpenApiPhpDescriber
 
     private function normalizePath(string $path): string
     {
-        if ('.{_format}' === substr($path, -10)) {
+        if (str_ends_with($path, '.{_format}')) {
             $path = substr($path, 0, -10);
         }
 

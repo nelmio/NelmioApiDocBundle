@@ -14,6 +14,8 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 use Hateoas\Configuration\Metadata\ClassMetadata;
 use Hateoas\Configuration\Relation;
 use Hateoas\Serializer\Metadata\RelationPropertyMetadata;
+use Metadata\ClassHierarchyMetadata;
+use Metadata\MergeableClassMetadata;
 use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
@@ -26,13 +28,8 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 {
     use ModelRegistryAwareTrait;
 
-    private $factory;
-    private $JMSModelDescriber;
-
-    public function __construct(MetadataFactoryInterface $factory, JMSModelDescriber $JMSModelDescriber)
+    public function __construct(private MetadataFactoryInterface $factory, private JMSModelDescriber $JMSModelDescriber)
     {
-        $this->factory = $factory;
-        $this->JMSModelDescriber = $JMSModelDescriber;
     }
 
     public function setModelRegistry(ModelRegistry $modelRegistry)
@@ -92,7 +89,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         }
     }
 
-    private function getHateoasMetadata(Model $model)
+    private function getHateoasMetadata(Model $model): MergeableClassMetadata|ClassHierarchyMetadata|null
     {
         $className = $model->getType()->getClassName();
 
@@ -100,7 +97,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
             if ($metadata = $this->factory->getMetadataForClass($className)) {
                 return $metadata;
             }
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
         }
 
         return null;

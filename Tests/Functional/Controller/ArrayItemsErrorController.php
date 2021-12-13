@@ -16,19 +16,17 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError\Foo;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(host="api.example.com")
- */
+#[Route(host: 'api.example.com')]
 class ArrayItemsErrorController
 {
     /**
-     * @Route("/api/error", methods={"GET"})
      * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=Foo::class)
      * )
      */
+    #[Route(path: '/api/error', methods: ['GET'])]
     public function errorAction()
     {
     }

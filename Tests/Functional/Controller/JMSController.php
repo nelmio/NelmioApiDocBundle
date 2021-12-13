@@ -24,115 +24,105 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\VirtualProperty;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(host="api.example.com")
- */
+#[Route(host: 'api.example.com')]
 class JMSController
 {
     /**
-     * @Route("/api/jms", methods={"GET"})
      * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSUser::class)
      * )
      */
+    #[Route(path: '/api/jms', methods: ['GET'])]
     public function userAction()
     {
     }
-
     /**
-     * @Route("/api/yaml", methods={"GET"})
      * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=VirtualProperty::class)
      * )
      */
+    #[Route(path: '/api/yaml', methods: ['GET'])]
     public function yamlAction()
     {
     }
-
     /**
-     * @Route("/api/jms_complex", methods={"GET"})
      * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSComplex::class, groups={"list", "details", "User" : {"list"}})
      * )
      */
+    #[Route(path: '/api/jms_complex', methods: ['GET'])]
     public function complexAction()
     {
     }
-
     /**
-     * @Route("/api/jms_complex_dual", methods={"GET"})
      * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSDualComplex::class, groups={"Default", "complex" : {"User" : {"details"}}})
      * )
      */
+    #[Route(path: '/api/jms_complex_dual', methods: ['GET'])]
     public function complexDualAction()
     {
     }
-
     /**
-     * @Route("/api/jms_naming_strategy", methods={"GET"})
      * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSNamingStrategyConstraints::class, groups={"Default"})
      * )
      */
+    #[Route(path: '/api/jms_naming_strategy', methods: ['GET'])]
     public function namingStrategyConstraintsAction()
     {
     }
-
     /**
-     * @Route("/api/jms_chat", methods={"GET"})
      * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSChat::class, groups={"Default", "members" : {"mini"}})
      * )
      */
+    #[Route(path: '/api/jms_chat', methods: ['GET'])]
     public function chatAction()
     {
     }
-
     /**
-     * @Route("/api/jms_picture", methods={"GET"})
      * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSPicture::class, groups={"mini"})
      * )
      */
+    #[Route(path: '/api/jms_picture', methods: ['GET'])]
     public function pictureAction()
     {
     }
-
     /**
-     * @Route("/api/jms_mini_user", methods={"GET"})
      * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSChatUser::class, groups={"mini"})
      * )
      */
+    #[Route(path: '/api/jms_mini_user', methods: ['GET'])]
     public function minUserAction()
     {
     }
-
     /**
-     * @Route("/api/jms_mini_user_nested", methods={"GET"})
      * @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=JMSChatRoomUser::class, groups={"mini", "friend": {"living":{"Default"}}})
      * )
      */
+    #[Route(path: '/api/jms_mini_user_nested', methods: ['GET'])]
     public function minUserNestedAction()
     {
     }

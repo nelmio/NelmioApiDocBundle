@@ -22,9 +22,8 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RouteDescriberTest extends AbstractDescriberTest
 {
-    private $routes;
-
-    private $routeDescriber;
+    private RouteCollection $routes;
+    private RouteDescriberInterface $routeDescriber;
 
     public function testIgnoreWhenNoController()
     {

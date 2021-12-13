@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
+use DateTimeInterface;
 use Doctrine\Common\Annotations\Reader;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
@@ -26,16 +27,8 @@ final class FosRestDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    /** @var Reader */
-    private $annotationReader;
-
-    /** @var string[] */
-    private $mediaTypes;
-
-    public function __construct(Reader $annotationReader, array $mediaTypes)
+    public function __construct(private Reader $annotationReader, private array $mediaTypes)
     {
-        $this->annotationReader = $annotationReader;
-        $this->mediaTypes = $mediaTypes;
     }
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
@@ -64,6 +57,7 @@ final class FosRestDescriber implements RouteDescriberInterface
                         $parameter->explode = true;
                     }
 
+                    /** @var OA\Schema $schema */
                     $schema = Util::getChild($parameter, OA\Schema::class);
                     $this->describeCommonSchemaFromAnnotation($schema, $annotation);
                 } else {
@@ -86,7 +80,7 @@ final class FosRestDescriber implements RouteDescriberInterface
         }
     }
 
-    private function getPattern($requirements)
+    private function getPattern($requirements): ?string
     {
         if (is_array($requirements) && isset($requirements['rule'])) {
             return (string) $requirements['rule'];
@@ -103,12 +97,12 @@ final class FosRestDescriber implements RouteDescriberInterface
         return null;
     }
 
-    private function getFormat($requirements)
+    private function getFormat($requirements): ?string
     {
         if ($requirements instanceof Constraint && !$requirements instanceof Regex) {
             if ($requirements instanceof DateTime) {
                 // As defined per RFC3339
-                if (\DateTime::RFC3339 === $requirements->format || 'c' === $requirements->format) {
+                if (DateTimeInterface::RFC3339 === $requirements->format || 'c' === $requirements->format) {
                     return 'date-time';
                 }
 
@@ -130,18 +124,11 @@ final class FosRestDescriber implements RouteDescriberInterface
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
         $requestBody->content = Generator::UNDEFINED !== $requestBody->content ? $requestBody->content : [];
-        switch ($type) {
-            case 'json':
-                $contentType = 'application/json';
-
-                break;
-            case 'xml':
-                $contentType = 'application/xml';
-
-                break;
-            default:
-                throw new \InvalidArgumentException('Unsupported media type');
-        }
+        $contentType = match ($type) {
+            'json' => 'application/json',
+            'xml' => 'application/xml',
+            default => throw new \InvalidArgumentException('Unsupported media type'),
+        };
         if (!isset($requestBody->content[$contentType])) {
             $requestBody->content[$contentType] = new OA\MediaType(
                 [

@@ -21,7 +21,7 @@ final class PhpDocDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    private $docBlockFactory;
+    private DocBlockFactory|null|DocBlockFactoryInterface $docBlockFactory;
 
     public function __construct(DocBlockFactoryInterface $docBlockFactory = null)
     {
@@ -38,12 +38,12 @@ final class PhpDocDescriber implements RouteDescriberInterface
 
         try {
             $classDocBlock = $this->docBlockFactory->create($reflectionMethod->getDeclaringClass());
-        } catch (\Exception $e) {
+        } catch (\Exception) {
         }
 
         try {
             $docBlock = $this->docBlockFactory->create($reflectionMethod);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
         }
 
         foreach ($this->getOperations($api, $route) as $operation) {

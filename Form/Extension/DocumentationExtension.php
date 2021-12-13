@@ -32,7 +32,7 @@ class DocumentationExtension extends AbstractTypeExtension
             ->setAllowedTypes('documentation', ['array', 'bool']);
     }
 
-    public function getExtendedType()
+    public function getExtendedType(): FormType
     {
         return self::getExtendedTypes()[0];
     }

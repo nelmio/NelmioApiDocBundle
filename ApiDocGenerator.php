@@ -22,43 +22,31 @@ use OpenApi\Analysis;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerAwareTrait;
 
 final class ApiDocGenerator
 {
     use LoggerAwareTrait;
 
-    /** @var OpenApi */
-    private $openApi;
-
-    /** @var iterable|DescriberInterface[] */
-    private $describers;
-
-    /** @var iterable|ModelDescriberInterface[] */
-    private $modelDescribers;
-
-    /** @var CacheItemPoolInterface|null */
-    private $cacheItemPool;
-
-    /** @var string|null */
-    private $cacheItemId;
+    private ?OpenApi $openApi = null;
 
     /** @var string[] */
-    private $alternativeNames = [];
+    private array $alternativeNames = [];
 
     /** @var string[] */
-    private $mediaTypes = ['json'];
+    private array $mediaTypes = ['json'];
 
     /**
-     * @param DescriberInterface[]|iterable      $describers
+     * @param iterable|DescriberInterface[] $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null)
-    {
-        $this->describers = $describers;
-        $this->modelDescribers = $modelDescribers;
-        $this->cacheItemPool = $cacheItemPool;
-        $this->cacheItemId = $cacheItemId;
+    public function __construct(
+        private iterable $describers,
+        private iterable $modelDescribers,
+        private ?CacheItemPoolInterface $cacheItemPool = null,
+        private ?string $cacheItemId = null
+    ) {
     }
 
     public function setAlternativeNames(array $alternativeNames)
@@ -71,6 +59,9 @@ final class ApiDocGenerator
         $this->mediaTypes = $mediaTypes;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function generate(): OpenApi
     {
         if (null !== $this->openApi) {

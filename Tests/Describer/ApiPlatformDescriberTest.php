@@ -19,9 +19,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ApiPlatformDescriberTest extends AbstractDescriberTest
 {
-    private $documentation;
-
-    private $normalizer;
+    private Documentation $documentation;
+    private NormalizerInterface $normalizer;
 
     public function testDescribe()
     {

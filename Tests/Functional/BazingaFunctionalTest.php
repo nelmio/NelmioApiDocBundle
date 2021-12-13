@@ -99,7 +99,7 @@ class BazingaFunctionalTest extends WebTestCase
     {
         try {
             new \ReflectionMethod(Embedded::class, 'getType');
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             $this->markTestSkipped('Typed embedded properties require at least willdurand/hateoas 3.0');
         }
         $this->assertEquals([

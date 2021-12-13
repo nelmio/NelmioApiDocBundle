@@ -21,12 +21,8 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
 {
     use ModelRegistryAwareTrait;
 
-    /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
-
-    public function __construct(iterable $propertyDescribers)
+    public function __construct(private iterable $propertyDescribers)
     {
-        $this->propertyDescribers = $propertyDescribers;
     }
 
     public function describe(array $types, OA\Schema $property, array $groups = null)

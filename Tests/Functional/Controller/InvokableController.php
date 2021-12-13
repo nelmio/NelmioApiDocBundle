@@ -17,12 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Prevents a regression (see https://github.com/nelmio/NelmioApiDocBundle/issues/1559).
  *
- * @Route("/api/invoke", host="api.example.com", name="invokable", methods={"GET"})
  * @OA\Response(
  *    response=200,
  *    description="Invokable!"
  * )
  */
+#[Route(path: '/api/invoke', host: 'api.example.com', name: 'invokable', methods: ['GET'])]
 class InvokableController
 {
     public function __invoke()

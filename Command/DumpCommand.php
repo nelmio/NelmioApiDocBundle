@@ -20,23 +20,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DumpCommand extends Command
 {
-    /**
-     * @var RenderOpenApi
-     */
-    private $renderOpenApi;
-
-    /**
-     * @var mixed[]
-     */
-    private $defaultHtmlConfig = [
+    private array $defaultHtmlConfig = [
         'assets_mode' => AssetsMode::CDN,
         'swagger_ui_config' => [],
     ];
 
-    public function __construct(RenderOpenApi $renderOpenApi)
+    public function __construct(private RenderOpenApi $renderOpenApi)
     {
-        $this->renderOpenApi = $renderOpenApi;
-
         parent::__construct();
     }
 
@@ -62,10 +52,7 @@ class DumpCommand extends Command
         ;
     }
 
-    /**
-     * @return int|void
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $area = $input->getOption('area');
         $format = $input->getOption('format');

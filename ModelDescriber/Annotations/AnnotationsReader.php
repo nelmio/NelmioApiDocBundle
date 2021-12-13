@@ -20,18 +20,12 @@ use OpenApi\Annotations as OA;
  */
 class AnnotationsReader
 {
-    private $annotationsReader;
-    private $modelRegistry;
-
-    private $phpDocReader;
-    private $openApiAnnotationsReader;
-    private $symfonyConstraintAnnotationReader;
+    private PropertyPhpDocReader $phpDocReader;
+    private OpenApiAnnotationsReader $openApiAnnotationsReader;
+    private SymfonyConstraintAnnotationReader $symfonyConstraintAnnotationReader;
 
     public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
     {
-        $this->annotationsReader = $annotationsReader;
-        $this->modelRegistry = $modelRegistry;
-
         $this->phpDocReader = new PropertyPhpDocReader();
         $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($annotationsReader, $modelRegistry, $mediaTypes);
         $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($annotationsReader);

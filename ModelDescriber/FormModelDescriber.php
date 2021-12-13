@@ -35,15 +35,14 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 {
     use ModelRegistryAwareTrait;
 
-    private $formFactory;
-    private $doctrineReader;
-    private $mediaTypes;
+    private ?array $mediaTypes;
 
-    public function __construct(FormFactoryInterface $formFactory = null, Reader $reader = null, array $mediaTypes = null)
-    {
-        $this->formFactory = $formFactory;
-        $this->doctrineReader = $reader;
-        if (null === $reader) {
+    public function __construct(
+        private ?FormFactoryInterface $formFactory = null,
+        private ?Reader $doctrineReader = null,
+        array $mediaTypes = null
+    ) {
+        if (null === $doctrineReader) {
             @trigger_error(sprintf('Not passing a doctrine reader to the constructor of %s is deprecated since version 3.8 and won\'t be allowed in version 5.', self::class), E_USER_DEPRECATED);
         }
 
@@ -54,6 +53,9 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         $this->mediaTypes = $mediaTypes;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function describe(Model $model, OA\Schema $schema)
     {
         if (method_exists(AbstractType::class, 'setDefaultOptions')) {
@@ -121,7 +123,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         if (!$builtinFormType = $this->getBuiltinFormType($type)) {
             // if form type is not builtin in Form component.
             $model = new Model(
-                new Type(Type::BUILTIN_TYPE_OBJECT, false, get_class($type->getInnerType())),
+                new Type(Type::BUILTIN_TYPE_OBJECT, false, $type->getInnerType()::class),
                 null,
                 $config->getOptions()
             );
@@ -286,13 +288,10 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         return true;
     }
 
-    /**
-     * @return ResolvedFormTypeInterface|null
-     */
-    private function getBuiltinFormType(ResolvedFormTypeInterface $type)
+    private function getBuiltinFormType(ResolvedFormTypeInterface $type): ?ResolvedFormTypeInterface
     {
         do {
-            $class = get_class($type->getInnerType());
+            $class = $type->getInnerType()::class;
 
             if (FormType::class === $class) {
                 return null;
@@ -302,7 +301,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 return $type;
             }
 
-            if (0 === strpos($class, 'Symfony\Component\Form\Extension\Core\Type\\')) {
+            if (str_starts_with($class, 'Symfony\Component\Form\Extension\Core\Type\\')) {
                 return $type;
             }
         } while ($type = $type->getParent());

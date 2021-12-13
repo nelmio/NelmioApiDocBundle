@@ -30,7 +30,7 @@ class DumpCommandTest extends WebTestCase
         );
     }
 
-    public function provideJsonMode()
+    public function provideJsonMode(): array
     {
         return [
             'pretty print' => [[], JSON_PRETTY_PRINT],
@@ -64,7 +64,7 @@ YAML;
         self::assertStringContainsString($expectedHtml, $output);
     }
 
-    public function provideAssetsMode()
+    public function provideAssetsMode(): array
     {
         return [
             'default mode is cdn' => [
@@ -100,7 +100,7 @@ YAML;
         ];
     }
 
-    private function executeDumpCommand(array $options)
+    private function executeDumpCommand(array $options): string
     {
         $kernel = static::bootKernel();
         $application = new Application($kernel);

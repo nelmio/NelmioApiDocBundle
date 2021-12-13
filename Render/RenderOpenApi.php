@@ -23,15 +23,11 @@ class RenderOpenApi
     public const JSON = 'json';
     public const YAML = 'yaml';
 
-    /** @var ContainerInterface */
-    private $generatorLocator;
-
     /** @var array<string, OpenApiRenderer|null> */
-    private $openApiRenderers = [];
+    private array $openApiRenderers = [];
 
-    public function __construct(ContainerInterface $generatorLocator, ?OpenApiRenderer ...$openApiRenderers)
+    public function __construct(private ContainerInterface $generatorLocator, ?OpenApiRenderer ...$openApiRenderers)
     {
-        $this->generatorLocator = $generatorLocator;
         foreach ($openApiRenderers as $openApiRenderer) {
             if (null === $openApiRenderer) {
                 continue;
@@ -46,7 +42,7 @@ class RenderOpenApi
         return array_keys($this->openApiRenderers);
     }
 
-    public function renderFromRequest(Request $request, string $format, $area, array $extraOptions = [])
+    public function renderFromRequest(Request $request, string $format, $area, array $extraOptions = []): string
     {
         $options = [];
         if ('' !== $request->getBaseUrl()) {

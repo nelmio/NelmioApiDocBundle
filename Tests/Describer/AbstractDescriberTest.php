@@ -17,8 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractDescriberTest extends TestCase
 {
-    /** @var DescriberInterface */
-    protected $describer;
+    protected DescriberInterface $describer;
 
     protected function getOpenApiDoc(): OpenApi
     {

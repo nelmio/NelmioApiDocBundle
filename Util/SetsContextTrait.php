@@ -2,7 +2,9 @@
 
 namespace Nelmio\ApiDocBundle\Util;
 
+use OpenApi\Analyser;
 use OpenApi\Context;
+use OpenApi\Generator;
 
 /**
  * @internal
@@ -11,12 +13,12 @@ trait SetsContextTrait
 {
     private function setContext(?Context $context): void
     {
-        if (class_exists(\OpenApi\Analyser::class)) {
+        if (class_exists(Analyser::class)) {
             // zircote/swagger-php ^3.2
-            \OpenApi\Analyser::$context = $context;
+            Analyser::$context = $context;
         } else {
             /// zircote/swagger-php ^4.0
-            \OpenApi\Generator::$context = $context;
+            Generator::$context = $context;
         }
     }
 }

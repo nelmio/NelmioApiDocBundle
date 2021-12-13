@@ -18,96 +18,80 @@ class SymfonyConstraints
 {
     /**
      * @var int
-     *
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $propertyNotBlank;
 
     /**
      * @var int
-     *
-     * @Assert\NotNull()
      */
+    #[Assert\NotNull]
     private $propertyNotNull;
 
     /**
      * @var int
-     *
-     * @Assert\Length(min="0", max="50")
      */
+    #[Assert\Length(min: 0, max: 50)]
     private $propertyAssertLength;
 
     /**
      * @var int
-     *
-     * @Assert\Regex(pattern="/[a-z]{2}/")
      */
+    #[Assert\Regex(pattern: '/[a-z]{2}/')]
     private $propertyRegex;
 
     /**
      * @var int
-     *
-     * @Assert\Count(min="0", max="10")
      */
+    #[Assert\Count(min: 0, max: 10)]
     private $propertyCount;
 
     /**
      * @var int
-     *
-     * @Assert\Choice(choices={"choice1", "choice2"})
      */
+    #[Assert\Choice(choices: ['choice1', 'choice2'])]
     private $propertyChoice;
 
     /**
      * @var int
-     *
-     * @Assert\Choice(callback={SymfonyConstraints::class,"fetchAllowedChoices"})
      */
+    #[Assert\Choice(callback: [SymfonyConstraints::class, 'fetchAllowedChoices'])]
     private $propertyChoiceWithCallback;
 
     /**
      * @var int
-     *
-     * @Assert\Choice(callback="fetchAllowedChoices")
      */
+    #[Assert\Choice(callback: 'fetchAllowedChoices')]
     private $propertyChoiceWithCallbackWithoutClass;
 
     /**
      * @var string[]
-     *
-     * @Assert\Choice(multiple=true, choices={"choice1", "choice2"})
      */
+    #[Assert\Choice(multiple: true, choices: ['choice1', 'choice2'])]
     private $propertyChoiceWithMultiple;
 
     /**
      * @var int
-     *
-     * @Assert\Expression(
-     *     "this.getCategory() in ['php', 'symfony'] or !this.isTechnicalPost()",
-     *     message="If this is a tech post, the category should be either php or symfony!"
-     * )
      */
+    #[Assert\Expression(expression: "this.getCategory() in ['php', 'symfony'] or !this.isTechnicalPost()", message: 'If this is a tech post, the category should be either php or symfony!')]
     private $propertyExpression;
 
     /**
      * @var int
-     *
-     * @Assert\Range(min=1, max=5)
      */
+    #[Assert\Range(min: 1, max: 5)]
     private $propertyRange;
 
     /**
      * @var int
-     *
-     * @Assert\LessThan(42)
      */
+    #[Assert\LessThan(value: 42)]
     private $propertyLessThan;
 
     /**
      * @var int
-     *
-     * @Assert\LessThanOrEqual(23)
      */
+    #[Assert\LessThanOrEqual(value: 23)]
     private $propertyLessThanOrEqual;
 
     /**
@@ -122,10 +106,8 @@ class SymfonyConstraints
         $this->propertyWithCompoundValidationRule = $propertyWithCompoundValidationRule;
     }
 
-    /**
-     * @Assert\Count(min="0", max="10")
-     */
-    public function setPropertyNotBlank(int $propertyNotBlank): void
+    #[Assert\Count(min: 0, max: 10)]
+    public function setPropertyNotBlank(int $propertyNotBlank) : void
     {
         $this->propertyNotBlank = $propertyNotBlank;
     }

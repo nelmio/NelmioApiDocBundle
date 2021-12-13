@@ -13,14 +13,8 @@ namespace Nelmio\ApiDocBundle\Exception;
 
 class UndocumentedArrayItemsException extends \LogicException
 {
-    private $class;
-    private $path;
-
-    public function __construct(string $class = null, string $path = '')
+    public function __construct(private ?string $class = null, private string $path = '')
     {
-        $this->class = $class;
-        $this->path = $path;
-
         $propertyName = '';
         if (null !== $class) {
             $propertyName = $class.'::';
@@ -30,12 +24,12 @@ class UndocumentedArrayItemsException extends \LogicException
         parent::__construct(sprintf('Property "%s" is an array, but its items type isn\'t specified. You can specify that by using the type `string[]` for instance or `@OA\Property(type="array", @OA\Items(type="string"))`.', $propertyName));
     }
 
-    public function getClass()
+    public function getClass(): ?string
     {
         return $this->class;
     }
 
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }

@@ -18,23 +18,17 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class DocumentationController
 {
-    /**
-     * @var RenderOpenApi
-     */
-    private $renderOpenApi;
-
-    public function __construct(RenderOpenApi $renderOpenApi)
+    public function __construct(private RenderOpenApi $renderOpenApi)
     {
-        $this->renderOpenApi = $renderOpenApi;
     }
 
-    public function __invoke(Request $request, $area = 'default')
+    public function __invoke(Request $request, $area = 'default'): JsonResponse
     {
         try {
             return JsonResponse::fromJsonString(
                 $this->renderOpenApi->renderFromRequest($request, RenderOpenApi::JSON, $area)
             );
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             throw new BadRequestHttpException(sprintf('Area "%s" is not supported as it isn\'t defined in config.', $area));
         }
     }

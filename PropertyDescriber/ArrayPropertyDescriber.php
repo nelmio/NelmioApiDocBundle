@@ -22,20 +22,17 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
     use ModelRegistryAwareTrait;
     use NullablePropertyTrait;
 
-    /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
-
-    public function __construct(iterable $propertyDescribers = [])
+    /**
+     * @param PropertyDescriberInterface[] $propertyDescribers
+     */
+    public function __construct(private iterable $propertyDescribers = [])
     {
-        $this->propertyDescribers = $propertyDescribers;
     }
 
     public function describe(array $types, OA\Schema $property, array $groups = null)
     {
-        // BC layer for symfony < 5.3
-        $type = method_exists($types[0], 'getCollectionValueTypes') ?
-            ($types[0]->getCollectionValueTypes()[0] ?? null) :
-            $types[0]->getCollectionValueType();
+        $type = $types[0]->getCollectionValueTypes()[0] ?? null;
+
         if (null === $type) {
             throw new UndocumentedArrayItemsException();
         }

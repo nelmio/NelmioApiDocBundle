@@ -14,6 +14,8 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 use Doctrine\Common\Annotations\Reader;
 use JMS\Serializer\Context;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
+use JMS\Serializer\Metadata\ClassMetadata;
+use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
@@ -33,33 +35,18 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 {
     use ModelRegistryAwareTrait;
 
-    private $factory;
+    private array $contexts = [];
 
-    private $namingStrategy;
+    private array $metadataStacks = [];
 
-    private $doctrineReader;
-
-    private $contexts = [];
-
-    private $metadataStacks = [];
-
-    private $mediaTypes;
-
-    /**
-     * @var array
-     */
-    private $propertyTypeUseGroupsCache = [];
+    private array $propertyTypeUseGroupsCache = [];
 
     public function __construct(
-        MetadataFactoryInterface $factory,
-        Reader $reader,
-        array $mediaTypes,
-        ?PropertyNamingStrategyInterface $namingStrategy = null
+        private MetadataFactoryInterface $factory,
+        private Reader $doctrineReader,
+        private array $mediaTypes,
+        private ?PropertyNamingStrategyInterface $namingStrategy = null
     ) {
-        $this->factory = $factory;
-        $this->namingStrategy = $namingStrategy;
-        $this->doctrineReader = $reader;
-        $this->mediaTypes = $mediaTypes;
     }
 
     /**
@@ -68,7 +55,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     public function describe(Model $model, OA\Schema $schema)
     {
         $className = $model->getType()->getClassName();
+
+        /** @var ?ClassMetadata $metadata */
         $metadata = $this->factory->getMetadataForClass($className);
+
         if (null === $metadata) {
             throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
         }
@@ -81,6 +71,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
         $context = $this->getSerializationContext($model);
         $context->pushClassMetadata($metadata);
+
+        /** @var PropertyMetadata $item */
         foreach ($metadata->propertyMetadata as $item) {
             // filter groups
             if (null !== $context->getExclusionStrategy() && $context->getExclusionStrategy()->shouldSkipProperty($item, $context)) {
@@ -102,13 +94,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if (null !== $item->getter) {
                 try {
                     $reflections[] = new \ReflectionMethod($item->class, $item->getter);
-                } catch (\ReflectionException $ignored) {
+                } catch (\ReflectionException) {
                 }
             }
             if (null !== $item->setter) {
                 try {
                     $reflections[] = new \ReflectionMethod($item->class, $item->setter);
-                } catch (\ReflectionException $ignored) {
+                } catch (\ReflectionException) {
                 }
             }
 
@@ -181,7 +173,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return $context;
     }
 
-    private function computeGroups(Context $context, array $type = null)
+    private function computeGroups(Context $context, array $type = null): ?array
     {
         if (null === $type || true !== $this->propertyTypeUsesGroups($type)) {
             return null;
@@ -211,7 +203,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if ($this->factory->getMetadataForClass($className)) {
                 return true;
             }
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
         }
 
         return false;
@@ -279,7 +271,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
     }
 
-    private function getNestedTypeInArray(array $type)
+    private function getNestedTypeInArray(array $type): ?array
     {
         if ('array' !== $type['name'] && 'ArrayCollection' !== $type['name']) {
             return null;
@@ -296,10 +288,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return null;
     }
 
-    /**
-     * @return bool|null
-     */
-    private function propertyTypeUsesGroups(array $type)
+    private function propertyTypeUsesGroups(array $type): ?bool
     {
         if (array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
             return $this->propertyTypeUseGroupsCache[$type['name']];
@@ -318,7 +307,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $this->propertyTypeUseGroupsCache[$type['name']] = false;
 
             return false;
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             $this->propertyTypeUseGroupsCache[$type['name']] = null;
 
             return null;

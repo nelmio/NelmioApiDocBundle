@@ -20,13 +20,11 @@ use Twig\TwigFunction;
  */
 class GetNelmioAsset extends AbstractExtension
 {
-    private $assetExtension;
-    private $resourcesDir;
-    private $cdnUrl;
+    private string $resourcesDir;
+    private string $cdnUrl;
 
-    public function __construct(AssetExtension $assetExtension)
+    public function __construct(private AssetExtension $assetExtension)
     {
-        $this->assetExtension = $assetExtension;
         $this->cdnUrl = 'https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public';
         $this->resourcesDir = __DIR__.'/../../Resources/public';
     }
@@ -51,7 +49,7 @@ class GetNelmioAsset extends AbstractExtension
         }
     }
 
-    private function getExtension($assetsMode, $asset)
+    private function getExtension($assetsMode, $asset): array
     {
         $extension = mb_substr($asset, -3, 3, 'utf-8');
         if ('.js' === $extension) {
@@ -63,7 +61,7 @@ class GetNelmioAsset extends AbstractExtension
         }
     }
 
-    private function getResource($asset, $mode)
+    private function getResource($asset, $mode): array
     {
         if (filter_var($asset, FILTER_VALIDATE_URL)) {
             return [$asset, false];
@@ -76,7 +74,7 @@ class GetNelmioAsset extends AbstractExtension
         }
     }
 
-    private function renderJavascript(string $script, bool $isInline)
+    private function renderJavascript(string $script, bool $isInline): string
     {
         if ($isInline) {
             return sprintf('<script>%s</script>', $script);
@@ -85,7 +83,7 @@ class GetNelmioAsset extends AbstractExtension
         }
     }
 
-    private function renderCss(string $stylesheet, bool $isInline)
+    private function renderCss(string $stylesheet, bool $isInline): string
     {
         if ($isInline) {
             return sprintf('<style>%s</style>', $stylesheet);

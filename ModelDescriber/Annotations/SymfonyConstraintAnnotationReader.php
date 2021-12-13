@@ -23,27 +23,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SymfonyConstraintAnnotationReader
 {
-    /**
-     * @var Reader
-     */
-    private $annotationsReader;
+    private OA\Schema $schema;
 
-    /**
-     * @var OA\Schema
-     */
-    private $schema;
-
-    public function __construct(Reader $annotationsReader)
+    public function __construct(private Reader $annotationsReader)
     {
-        $this->annotationsReader = $annotationsReader;
     }
 
     /**
      * Update the given property and schema with defined Symfony constraints.
-     *
-     * @param \ReflectionProperty|\ReflectionMethod $reflection
      */
-    public function updateProperty($reflection, OA\Property $property): void
+    public function updateProperty(\ReflectionMethod|\ReflectionProperty $reflection, OA\Property $property): void
     {
         foreach ($this->getAnnotations($reflection) as $outerAnnotation) {
             $innerAnnotations = $outerAnnotation instanceof Assert\Compound
@@ -154,10 +143,7 @@ class SymfonyConstraintAnnotationReader
         }
     }
 
-    /**
-     * @param \ReflectionProperty|\ReflectionMethod $reflection
-     */
-    private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection): void
+    private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, \ReflectionMethod|\ReflectionProperty $reflection): void
     {
         if ($choice->callback) {
             $enumValues = call_user_func(is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);
@@ -173,10 +159,7 @@ class SymfonyConstraintAnnotationReader
         $setEnumOnThis->enum = array_values($enumValues);
     }
 
-    /**
-     * @param \ReflectionProperty|\ReflectionMethod $reflection
-     */
-    private function getAnnotations($reflection): \Traversable
+    private function getAnnotations(\ReflectionMethod|\ReflectionProperty $reflection): \Traversable
     {
         if (\PHP_VERSION_ID >= 80000 && class_exists(Constraint::class)) {
             foreach ($reflection->getAttributes(Constraint::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {

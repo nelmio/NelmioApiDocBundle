@@ -18,7 +18,6 @@ use Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
@@ -31,31 +30,18 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     use ModelRegistryAwareTrait;
     use ApplyOpenApiDiscriminatorTrait;
 
-    /** @var PropertyInfoExtractorInterface */
-    private $propertyInfo;
-    /** @var Reader */
-    private $doctrineReader;
-    /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
-    /** @var string[] */
-    private $mediaTypes;
-    /** @var NameConverterInterface[] */
-    private $nameConverter;
-
     public function __construct(
-        PropertyInfoExtractorInterface $propertyInfo,
-        Reader $reader,
-        iterable $propertyDescribers,
-        array $mediaTypes,
-        NameConverterInterface $nameConverter = null
+        private PropertyInfoExtractorInterface $propertyInfo,
+        private Reader $doctrineReader,
+        private iterable $propertyDescribers,
+        private array $mediaTypes,
+        private ?NameConverterInterface $nameConverter = null
     ) {
-        $this->propertyInfo = $propertyInfo;
-        $this->doctrineReader = $reader;
-        $this->propertyDescribers = $propertyDescribers;
-        $this->mediaTypes = $mediaTypes;
-        $this->nameConverter = $nameConverter;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function describe(Model $model, OA\Schema $schema)
     {
         $schema->type = 'object';
@@ -158,6 +144,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     /**
      * @param Type[] $types
+     * @throws \Exception
      */
     private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName)
     {

@@ -25,9 +25,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/api", name="api_", host="api.example.com")
- */
+#[Route(path: '/api', name: 'api_', host: 'api.example.com')]
 class ApiController
 {
     /**
@@ -46,12 +44,9 @@ class ApiController
     public function fetchArticleAction()
     {
     }
-
     /**
      * The method LINK is not supported by OpenAPI so the method will be ignored.
      *
-     * @Route("/swagger", methods={"GET", "LINK"})
-     * @Route("/swagger2", methods={"GET"})
      * @Operation(
      *     @OA\Response(response="201", description="An example resource")
      * )
@@ -64,12 +59,12 @@ class ApiController
      *     @OA\Response(response="203", description="but 203 is not actually allowed (wrong method)")
      * )
      */
+    #[Route(path: '/swagger', methods: ['GET', 'LINK'])]
+    #[Route(path: '/swagger2', methods: ['GET'])]
     public function swaggerAction()
     {
     }
-
     /**
-     * @Route("/swagger/implicit", methods={"GET", "POST"})
      * @OA\Response(
      *    response="201",
      *    description="Operation automatically detected",
@@ -84,12 +79,11 @@ class ApiController
      * )
      * @OA\Tag(name="implicit")
      */
+    #[Route(path: '/swagger/implicit', methods: ['GET', 'POST'])]
     public function implicitSwaggerAction()
     {
     }
-
     /**
-     * @Route("/test/users/{user}", methods={"POST"}, schemes={"https"}, requirements={"user"="/foo/"})
      * @OA\Response(
      *    response="201",
      *    description="Operation automatically detected",
@@ -100,40 +94,36 @@ class ApiController
      *    @Model(type=UserType::class, options={"bar": "baz"}))
      * )
      */
+    #[Route(path: '/test/users/{user}', methods: ['POST'], schemes: ['https'], requirements: ['user' => '/foo/'])]
     public function submitUserTypeAction()
     {
     }
-
     /**
-     * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="/foo/"})
      * @OA\Response(response=200, description="sucessful")
      */
+    #[Route(path: '/test/{user}', methods: ['GET'], schemes: ['https'], requirements: ['user' => '/foo/'])]
     public function userAction()
     {
     }
-
     /**
      * This action is deprecated.
      *
      * Please do not use this action.
      *
-     * @Route("/deprecated", methods={"GET"})
      *
      * @deprecated
      */
+    #[Route(path: '/deprecated', methods: ['GET'])]
     public function deprecatedAction()
     {
     }
-
     /**
      * This action is not documented. It is excluded by the config.
-     *
-     * @Route("/admin", methods={"GET"})
      */
+    #[Route(path: '/admin', methods: ['GET'])]
     public function adminAction()
     {
     }
-
     /**
      * @OA\Get(
      *     path="/filtered",
@@ -143,42 +133,38 @@ class ApiController
     public function filteredAction()
     {
     }
-
     /**
-     * @Route("/form", methods={"POST"})
      * @OA\RequestBody(
      *    description="Request content",
      *    @Model(type=DummyType::class))
      * )
      * @OA\Response(response="201", description="")
      */
+    #[Route(path: '/form', methods: ['POST'])]
     public function formAction()
     {
     }
-
     /**
-     * @Route("/security")
      * @OA\Response(response="201", description="")
      * @Security(name="api_key")
      * @Security(name="basic")
      * @Security(name="oauth2", scopes={"scope_1"})
      */
+    #[Route(path: '/security')]
     public function securityAction()
     {
     }
-
     /**
-     * @Route("/swagger/symfonyConstraints", methods={"GET"})
      * @OA\Response(
      *    response="201",
      *    description="Used for symfony constraints test",
      *    @Model(type=SymfonyConstraints::class)
      * )
      */
+    #[Route(path: '/swagger/symfonyConstraints', methods: ['GET'])]
     public function symfonyConstraintsAction()
     {
     }
-
     /**
      *  @OA\Response(
      *     response="200",
@@ -189,65 +175,54 @@ class ApiController
      *     response="201",
      *     ref="#/components/responses/201"
      *  )
-     * @Route("/configReference", methods={"GET"})
      */
+    #[Route(path: '/configReference', methods: ['GET'])]
     public function configReferenceAction()
     {
     }
-
     /**
-     * @Route("/multi-annotations", methods={"GET", "POST"})
      * @OA\Get(description="This is the get operation")
      * @OA\Post(description="This is post")
-     *
      * @OA\Response(response=200, description="Worked well!", @Model(type=DummyType::class))
      */
+    #[Route(path: '/multi-annotations', methods: ['GET', 'POST'])]
     public function operationsWithOtherAnnotations()
     {
     }
-
     /**
-     * @Route("/areas/new", methods={"GET", "POST"})
-     *
      * @Areas({"area", "area2"})
      */
+    #[Route(path: '/areas/new', methods: ['GET', 'POST'])]
     public function newAreaAction()
     {
     }
-
     /**
-     * @Route("/compound", methods={"GET", "POST"})
-     *
      * @OA\Response(response=200, description="Worked well!", @Model(type=CompoundEntity::class))
      */
+    #[Route(path: '/compound', methods: ['GET', 'POST'])]
     public function compoundEntityAction()
     {
     }
-
     /**
-     * @Route("/discriminator-mapping", methods={"GET", "POST"})
-     *
      * @OA\Response(response=200, description="Worked well!", @Model(type=SymfonyDiscriminator::class))
      */
+    #[Route(path: '/discriminator-mapping', methods: ['GET', 'POST'])]
     public function discriminatorMappingAction()
     {
     }
-
     /**
-     * @Route("/named_route-operation-id", name="named_route_operation_id", methods={"GET", "POST"})
-     *
      * @OA\Response(response=200, description="success")
      */
+    #[Route(path: '/named_route-operation-id', name: 'named_route_operation_id', methods: ['GET', 'POST'])]
     public function namedRouteOperationIdAction()
     {
     }
-
     /**
-     * @Route("/custom-operation-id", methods={"GET", "POST"})
      *
      * @Operation(operationId="custom-operation-id")
      * @OA\Response(response=200, description="success")
      */
+    #[Route(path: '/custom-operation-id', methods: ['GET', 'POST'])]
     public function customOperationIdAction()
     {
     }

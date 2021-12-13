@@ -20,7 +20,7 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
     public function __construct(Documentation $documentation, NormalizerInterface $normalizer)
     {
         if (!$normalizer->supportsNormalization($documentation, 'json')) {
-            throw new \InvalidArgumentException(sprintf('Argument 2 passed to %s() must implement %s and support normalization of %s. The normalizer provided is an instance of %s.', __METHOD__, NormalizerInterface::class, Documentation::class, get_class($normalizer)));
+            throw new \InvalidArgumentException(sprintf('Argument 2 passed to %s() must implement %s and support normalization of %s. The normalizer provided is an instance of %s.', __METHOD__, NormalizerInterface::class, Documentation::class, $normalizer::class));
         }
 
         parent::__construct(function () use ($documentation, $normalizer) {

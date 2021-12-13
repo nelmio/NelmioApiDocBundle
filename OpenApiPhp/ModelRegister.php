@@ -25,16 +25,8 @@ use Symfony\Component\PropertyInfo\Type;
  */
 final class ModelRegister
 {
-    /** @var ModelRegistry */
-    private $modelRegistry;
-
-    /** @var string[] */
-    private $mediaTypes;
-
-    public function __construct(ModelRegistry $modelRegistry, array $mediaTypes)
+    public function __construct(private ModelRegistry $modelRegistry, private array $mediaTypes)
     {
-        $this->modelRegistry = $modelRegistry;
-        $this->mediaTypes = $mediaTypes;
     }
 
     public function __invoke(Analysis $analysis, array $parentGroups = null)
@@ -54,7 +46,7 @@ final class ModelRegister
 
             // Misusage of ::$ref
             if (($annotation instanceof OA\Response || $annotation instanceof OA\RequestBody) && $annotation->ref instanceof ModelAnnotation) {
-                throw new \InvalidArgumentException(sprintf('Using @Model inside @%s::$ref is not allowed. You should use ::$ref with @Property, @Parameter, @Schema, @Items but within @Response or @RequestBody you should put @Model directly at the root of the annotation : `@Response(..., @Model(...))`.', get_class($annotation)));
+                throw new \InvalidArgumentException(sprintf('Using @Model inside @%s::$ref is not allowed. You should use ::$ref with @Property, @Parameter, @Schema, @Items but within @Response or @RequestBody you should put @Model directly at the root of the annotation : `@Response(..., @Model(...))`.', $annotation::class));
             }
 
             // Implicit usages
@@ -82,7 +74,7 @@ final class ModelRegister
             }
 
             if (!$annotation instanceof OA\Parameter) {
-                throw new \InvalidArgumentException(sprintf("@Model annotation can't be nested with an annotation of type @%s.", get_class($annotation)));
+                throw new \InvalidArgumentException(sprintf("@Model annotation can't be nested with an annotation of type @%s.", $annotation::class));
             }
 
             if ($annotation->schema instanceof OA\Schema && 'array' === $annotation->schema->type) {
@@ -128,7 +120,7 @@ final class ModelRegister
 
     private function createType(string $type): Type
     {
-        if ('[]' === substr($type, -2)) {
+        if (str_ends_with($type, '[]')) {
             return new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true, null, $this->createType(substr($type, 0, -2)));
         }
 
@@ -152,18 +144,11 @@ final class ModelRegister
         OA\AbstractAnnotation $annotation,
         Analysis $analysis
     ) {
-        switch ($type) {
-            case 'json':
-                $modelAnnotation = new OA\JsonContent($properties);
-
-                break;
-            case 'xml':
-                $modelAnnotation = new OA\XmlContent($properties);
-
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf("@Model annotation is not compatible with the media types '%s'. It must be one of 'json' or 'xml'.", implode(',', $this->mediaTypes)));
-        }
+        $modelAnnotation = match ($type) {
+            'json' => new OA\JsonContent($properties),
+            'xml' => new OA\XmlContent($properties),
+            default => throw new \InvalidArgumentException(sprintf("@Model annotation is not compatible with the media types '%s'. It must be one of 'json' or 'xml'.", implode(',', $this->mediaTypes))),
+        };
 
         $annotation->merge([$modelAnnotation]);
         $analysis->addAnnotation($modelAnnotation, $properties['_context']);

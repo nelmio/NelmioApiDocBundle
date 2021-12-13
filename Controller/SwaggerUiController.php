@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Controller;
 
-use InvalidArgumentException;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,17 +19,11 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class SwaggerUiController
 {
-    /**
-     * @var RenderOpenApi
-     */
-    private $renderOpenApi;
-
-    public function __construct(RenderOpenApi $renderOpenApi)
+    public function __construct(private RenderOpenApi $renderOpenApi)
     {
-        $this->renderOpenApi = $renderOpenApi;
     }
 
-    public function __invoke(Request $request, $area = 'default')
+    public function __invoke(Request $request, $area = 'default'): Response
     {
         try {
             $response = new Response(
@@ -42,9 +35,9 @@ final class SwaggerUiController
             );
 
             return $response->setCharset('UTF-8');
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             $advice = '';
-            if (false !== strpos($area, '.json')) {
+            if (str_contains($area, '.json')) {
                 $advice = ' Since the area provided contains `.json`, the issue is likely caused by route priorities. Try switching the Swagger UI / the json documentation routes order.';
             }
 
