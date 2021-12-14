@@ -30,6 +30,7 @@ class BazingaController
     public function userAction()
     {
     }
+
     /**
      * @OA\Response(
      *     response=200,

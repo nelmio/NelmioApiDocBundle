@@ -38,6 +38,7 @@ class JMSController
     public function userAction()
     {
     }
+
     /**
      * @OA\Response(
      *     response=200,
@@ -49,6 +50,7 @@ class JMSController
     public function yamlAction()
     {
     }
+
     /**
      * @OA\Response(
      *     response=200,
@@ -60,6 +62,7 @@ class JMSController
     public function complexAction()
     {
     }
+
     /**
      * @OA\Response(
      *     response=200,
@@ -71,6 +74,7 @@ class JMSController
     public function complexDualAction()
     {
     }
+
     /**
      * @OA\Response(
      *     response=200,
@@ -82,6 +86,7 @@ class JMSController
     public function namingStrategyConstraintsAction()
     {
     }
+
     /**
      * @OA\Response(
      *     response=200,
@@ -93,6 +98,7 @@ class JMSController
     public function chatAction()
     {
     }
+
     /**
      * @OA\Response(
      *     response=200,
@@ -104,6 +110,7 @@ class JMSController
     public function pictureAction()
     {
     }
+
     /**
      * @OA\Response(
      *     response=200,
@@ -115,6 +122,7 @@ class JMSController
     public function minUserAction()
     {
     }
+
     /**
      * @OA\Response(
      *     response=200,

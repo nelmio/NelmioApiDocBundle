@@ -44,6 +44,7 @@ class ApiController
     public function fetchArticleAction()
     {
     }
+
     /**
      * The method LINK is not supported by OpenAPI so the method will be ignored.
      *
@@ -64,6 +65,7 @@ class ApiController
     public function swaggerAction()
     {
     }
+
     /**
      * @OA\Response(
      *    response="201",
@@ -83,6 +85,7 @@ class ApiController
     public function implicitSwaggerAction()
     {
     }
+
     /**
      * @OA\Response(
      *    response="201",
@@ -98,6 +101,7 @@ class ApiController
     public function submitUserTypeAction()
     {
     }
+
     /**
      * @OA\Response(response=200, description="sucessful")
      */
@@ -105,11 +109,11 @@ class ApiController
     public function userAction()
     {
     }
+
     /**
      * This action is deprecated.
      *
      * Please do not use this action.
-     *
      *
      * @deprecated
      */
@@ -117,6 +121,7 @@ class ApiController
     public function deprecatedAction()
     {
     }
+
     /**
      * This action is not documented. It is excluded by the config.
      */
@@ -124,6 +129,7 @@ class ApiController
     public function adminAction()
     {
     }
+
     /**
      * @OA\Get(
      *     path="/filtered",
@@ -133,6 +139,7 @@ class ApiController
     public function filteredAction()
     {
     }
+
     /**
      * @OA\RequestBody(
      *    description="Request content",
@@ -144,6 +151,7 @@ class ApiController
     public function formAction()
     {
     }
+
     /**
      * @OA\Response(response="201", description="")
      * @Security(name="api_key")
@@ -154,6 +162,7 @@ class ApiController
     public function securityAction()
     {
     }
+
     /**
      * @OA\Response(
      *    response="201",
@@ -165,6 +174,7 @@ class ApiController
     public function symfonyConstraintsAction()
     {
     }
+
     /**
      *  @OA\Response(
      *     response="200",
@@ -180,6 +190,7 @@ class ApiController
     public function configReferenceAction()
     {
     }
+
     /**
      * @OA\Get(description="This is the get operation")
      * @OA\Post(description="This is post")
@@ -189,6 +200,7 @@ class ApiController
     public function operationsWithOtherAnnotations()
     {
     }
+
     /**
      * @Areas({"area", "area2"})
      */
@@ -196,6 +208,7 @@ class ApiController
     public function newAreaAction()
     {
     }
+
     /**
      * @OA\Response(response=200, description="Worked well!", @Model(type=CompoundEntity::class))
      */
@@ -203,6 +216,7 @@ class ApiController
     public function compoundEntityAction()
     {
     }
+
     /**
      * @OA\Response(response=200, description="Worked well!", @Model(type=SymfonyDiscriminator::class))
      */
@@ -210,6 +224,7 @@ class ApiController
     public function discriminatorMappingAction()
     {
     }
+
     /**
      * @OA\Response(response=200, description="success")
      */
@@ -217,8 +232,8 @@ class ApiController
     public function namedRouteOperationIdAction()
     {
     }
+
     /**
-     *
      * @Operation(operationId="custom-operation-id")
      * @OA\Response(response=200, description="success")
      */

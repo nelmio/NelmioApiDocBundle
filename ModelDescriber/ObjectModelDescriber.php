@@ -144,6 +144,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     /**
      * @param Type[] $types
+     *
      * @throws \Exception
      */
     private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName)

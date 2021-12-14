@@ -36,7 +36,7 @@ final class OpenApiPhpDescriber
         private Reader $annotationReader,
         private LoggerInterface $logger,
         private bool $overwrite = false
-    ){
+    ) {
     }
 
     /**

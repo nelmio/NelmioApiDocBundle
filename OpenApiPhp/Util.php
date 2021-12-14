@@ -310,8 +310,6 @@ final class Util
      *
      * The main purpose is to create a Swagger Object from array config values
      * in the structure of a json serialized Swagger object.
-     *
-     * @param array|\ArrayObject|OA\AbstractAnnotation $from
      */
     public static function merge(
         OA\AbstractAnnotation $annotation,

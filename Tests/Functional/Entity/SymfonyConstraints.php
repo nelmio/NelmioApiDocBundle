@@ -107,7 +107,7 @@ class SymfonyConstraints
     }
 
     #[Assert\Count(min: 0, max: 10)]
-    public function setPropertyNotBlank(int $propertyNotBlank) : void
+    public function setPropertyNotBlank(int $propertyNotBlank): void
     {
         $this->propertyNotBlank = $propertyNotBlank;
     }

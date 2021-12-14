@@ -38,7 +38,7 @@ final class ApiDocGenerator
     private array $mediaTypes = ['json'];
 
     /**
-     * @param iterable|DescriberInterface[] $describers
+     * @param iterable|DescriberInterface[]      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
     public function __construct(
