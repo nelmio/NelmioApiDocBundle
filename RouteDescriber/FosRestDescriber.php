@@ -16,6 +16,7 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -55,7 +56,7 @@ final class FosRestDescriber implements RouteDescriberInterface
 
                     $parameter->required = !$annotation->nullable && $annotation->strict;
 
-                    if (OA\UNDEFINED === $parameter->description) {
+                    if (Generator::UNDEFINED === $parameter->description) {
                         $parameter->description = $annotation->description;
                     }
 
@@ -128,7 +129,7 @@ final class FosRestDescriber implements RouteDescriberInterface
 
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
-        $requestBody->content = OA\UNDEFINED !== $requestBody->content ? $requestBody->content : [];
+        $requestBody->content = Generator::UNDEFINED !== $requestBody->content ? $requestBody->content : [];
         switch ($type) {
             case 'json':
                 $contentType = 'application/json';
@@ -165,7 +166,7 @@ final class FosRestDescriber implements RouteDescriberInterface
     {
         $schema->default = $annotation->getDefault();
 
-        if (OA\UNDEFINED === $schema->type) {
+        if (Generator::UNDEFINED === $schema->type) {
             $schema->type = $annotation->map ? 'array' : 'string';
         }
 

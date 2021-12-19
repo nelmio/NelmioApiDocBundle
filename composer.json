@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": ">=7.1.3",
+        "php": ">=7.2",
         "ext-json": "*",
         "doctrine/annotations": "^1.11",
         "psr/cache": "^1.0|^2.0|^3.0",
@@ -30,7 +30,7 @@
         "symfony/options-resolver": "^4.4|^5.0",
         "symfony/property-info": "^4.4|^5.0",
         "symfony/routing": "^4.4|^5.0",
-        "zircote/swagger-php": "^3.0",
+        "zircote/swagger-php": "^3.2|^4.0",
         "phpdocumentor/reflection-docblock": "^3.1|^4.4|^5.0"
     },
     "require-dev": {

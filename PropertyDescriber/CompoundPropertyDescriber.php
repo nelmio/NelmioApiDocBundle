@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 
 class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
@@ -30,7 +31,7 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
 
     public function describe(array $types, OA\Schema $property, array $groups = null)
     {
-        $property->oneOf = OA\UNDEFINED !== $property->oneOf ? $property->oneOf : [];
+        $property->oneOf = Generator::UNDEFINED !== $property->oneOf ? $property->oneOf : [];
 
         foreach ($types as $type) {
             $property->oneOf[] = $schema = Util::createChild($property, OA\Schema::class, []);

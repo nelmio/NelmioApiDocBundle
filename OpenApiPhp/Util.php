@@ -13,7 +13,7 @@ namespace Nelmio\ApiDocBundle\OpenApiPhp;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use const OpenApi\UNDEFINED;
+use OpenApi\Generator;
 
 /**
  * Class Util.
@@ -163,7 +163,7 @@ final class Util
         $nested = $parent::$_nested;
         $property = $nested[$class];
 
-        if (null === $parent->{$property} || UNDEFINED === $parent->{$property}) {
+        if (null === $parent->{$property} || Generator::UNDEFINED === $parent->{$property}) {
             $parent->{$property} = self::createChild($parent, $class, $properties);
         }
 
@@ -192,7 +192,7 @@ final class Util
 
         if (!empty($properties)) {
             $key = self::searchCollectionItem(
-                $parent->{$collection} && UNDEFINED !== $parent->{$collection} ? $parent->{$collection} : [],
+                $parent->{$collection} && Generator::UNDEFINED !== $parent->{$collection} ? $parent->{$collection} : [],
                 $properties
             );
         }
@@ -224,7 +224,7 @@ final class Util
         [$collection, $property] = $nested[$class];
 
         $key = self::searchIndexedCollectionItem(
-            $parent->{$collection} && UNDEFINED !== $parent->{$collection} ? $parent->{$collection} : [],
+            $parent->{$collection} && Generator::UNDEFINED !== $parent->{$collection} ? $parent->{$collection} : [],
             $property,
             $value
         );
@@ -279,7 +279,7 @@ final class Util
      */
     public static function createCollectionItem(OA\AbstractAnnotation $parent, $collection, $class, array $properties = []): int
     {
-        if (UNDEFINED === $parent->{$collection}) {
+        if (Generator::UNDEFINED === $parent->{$collection}) {
             $parent->{$collection} = [];
         }
 
@@ -418,7 +418,7 @@ final class Util
         if (\is_string($type) && 0 === strpos($type, '[')) {
             $innerType = substr($type, 1, -1);
 
-            if (!$annotation->{$propertyName} || UNDEFINED === $annotation->{$propertyName}) {
+            if (!$annotation->{$propertyName} || Generator::UNDEFINED === $annotation->{$propertyName}) {
                 $annotation->{$propertyName} = [];
             }
 

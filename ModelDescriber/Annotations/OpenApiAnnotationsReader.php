@@ -15,16 +15,19 @@ use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use OpenApi\Analyser;
+use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
+use OpenApi\Generator;
 
 /**
  * @internal
  */
 class OpenApiAnnotationsReader
 {
+    use SetsContextTrait;
+
     private $annotationsReader;
     private $modelRegister;
 
@@ -60,19 +63,20 @@ class OpenApiAnnotationsReader
             return $default;
         }
 
-        return OA\UNDEFINED !== $oaProperty->property ? $oaProperty->property : $default;
+        return Generator::UNDEFINED !== $oaProperty->property ? $oaProperty->property : $default;
     }
 
     public function updateProperty($reflection, OA\Property $property, array $serializationGroups = null): void
     {
         // In order to have nicer errors
         $declaringClass = $reflection->getDeclaringClass();
-        Analyser::$context = new Context([
+
+        $this->setContext(new Context([
             'namespace' => $declaringClass->getNamespaceName(),
             'class' => $declaringClass->getShortName(),
             'property' => $reflection->name,
             'filename' => $declaringClass->getFileName(),
-        ]);
+        ]));
 
         /** @var OA\Property $oaProperty */
         if ($reflection instanceof \ReflectionProperty && !$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflection, OA\Property::class)) {
@@ -80,7 +84,7 @@ class OpenApiAnnotationsReader
         } elseif ($reflection instanceof \ReflectionMethod && !$oaProperty = $this->annotationsReader->getMethodAnnotation($reflection, OA\Property::class)) {
             return;
         }
-        Analyser::$context = null;
+        $this->setContext(null);
 
         // Read @Model annotations
         $this->modelRegister->__invoke(new Analysis([$oaProperty], Util::createContext()), $serializationGroups);

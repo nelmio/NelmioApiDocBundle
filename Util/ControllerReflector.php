@@ -38,15 +38,16 @@ class ControllerReflector
     /**
      * Returns the ReflectionMethod for the given controller string.
      *
-     * @return \ReflectionMethod|null
+     * @return \ReflectionMethod|null
      */
     public function getReflectionMethod($controller)
     {
         if (is_string($controller)) {
             $controller = $this->getClassAndMethod($controller);
-            if (null === $controller) {
-                return null;
-            }
+        }
+
+        if (null === $controller) {
+            return null;
         }
 
         return $this->geReflectionMethodByClassNameAndMethodName(...$controller);
@@ -122,7 +123,7 @@ class ControllerReflector
         if (!isset($class) || !isset($method)) {
             $this->controllers[$controller] = null;
 
-            return;
+            return null;
         }
 
         return $this->controllers[$controller] = [$class, $method];

@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationRe
 use Nelmio\ApiDocBundle\Tests\Helper;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -191,7 +192,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maxLength);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maxLength);
         $this->assertSame(1, $schema->properties[0]->minLength);
     }
 
@@ -227,7 +228,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minLength);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minLength);
         $this->assertSame(100, $schema->properties[0]->maxLength);
     }
 
@@ -273,11 +274,11 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             $this->assertSame(5, $schema->properties[0]->maximum);
             $this->assertTrue($schema->properties[0]->exclusiveMaximum);
         } else {
-            $this->assertSame(OA\UNDEFINED, $schema->required);
-            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minimum);
-            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->exclusiveMinimum);
-            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maximum);
-            $this->assertSame(OA\UNDEFINED, $schema->properties[0]->exclusiveMaximum);
+            $this->assertSame(Generator::UNDEFINED, $schema->required);
+            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum);
+            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMinimum);
+            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maximum);
+            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMaximum);
         }
     }
 
@@ -296,7 +297,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minItems);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minItems);
         $this->assertSame(10, $schema->properties[0]->maxItems);
     }
 
@@ -332,7 +333,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maxItems);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maxItems);
         $this->assertSame(10, $schema->properties[0]->minItems);
     }
 
@@ -368,7 +369,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maximum);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maximum);
         $this->assertSame(10, $schema->properties[0]->minimum);
     }
 
@@ -404,7 +405,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minimum);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum);
         $this->assertSame(10, $schema->properties[0]->maximum);
     }
 

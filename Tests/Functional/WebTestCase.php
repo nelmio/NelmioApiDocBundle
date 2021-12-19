@@ -12,11 +12,13 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class WebTestCase extends BaseWebTestCase
 {
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel();
     }
@@ -93,7 +95,7 @@ class WebTestCase extends BaseWebTestCase
 
     public function assertHasPath($path, OA\OpenApi $api)
     {
-        $paths = array_column(OA\UNDEFINED !== $api->paths ? $api->paths : [], 'path');
+        $paths = array_column(Generator::UNDEFINED !== $api->paths ? $api->paths : [], 'path');
         static::assertContains(
             $path,
             $paths,
@@ -103,7 +105,7 @@ class WebTestCase extends BaseWebTestCase
 
     public function assertNotHasPath($path, OA\OpenApi $api)
     {
-        $paths = array_column(OA\UNDEFINED !== $api->paths ? $api->paths : [], 'path');
+        $paths = array_column(Generator::UNDEFINED !== $api->paths ? $api->paths : [], 'path');
         static::assertNotContains(
             $path,
             $paths,
@@ -113,7 +115,7 @@ class WebTestCase extends BaseWebTestCase
 
     public function assertHasResponse($responseCode, OA\Operation $operation)
     {
-        $responses = array_column(OA\UNDEFINED !== $operation->responses ? $operation->responses : [], 'response');
+        $responses = array_column(Generator::UNDEFINED !== $operation->responses ? $operation->responses : [], 'response');
         static::assertContains(
             $responseCode,
             $responses,
@@ -124,7 +126,7 @@ class WebTestCase extends BaseWebTestCase
     public function assertHasParameter($name, $in, OA\AbstractAnnotation $annotation)
     {
         /* @var OA\Operation|OA\OpenApi $annotation */
-        $parameters = array_filter(OA\UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], function (OA\Parameter $parameter) use ($name, $in) {
+        $parameters = array_filter(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], function (OA\Parameter $parameter) use ($name, $in) {
             return $parameter->name === $name && $parameter->in === $in;
         });
 
@@ -137,7 +139,7 @@ class WebTestCase extends BaseWebTestCase
     public function assertNotHasParameter($name, $in, OA\AbstractAnnotation $annotation)
     {
         /* @var OA\Operation|OA\OpenApi $annotation */
-        $parameters = array_column(OA\UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], 'name', 'in');
+        $parameters = array_column(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], 'name', 'in');
         static::assertNotContains(
             $name,
             $parameters[$in] ?? [],
@@ -148,7 +150,7 @@ class WebTestCase extends BaseWebTestCase
     public function assertHasProperty($property, OA\AbstractAnnotation $annotation)
     {
         /* @var OA\Schema|OA\Property|OA\Items $annotation */
-        $properties = array_column(OA\UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
+        $properties = array_column(Generator::UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
         static::assertContains(
             $property,
             $properties,
@@ -159,7 +161,7 @@ class WebTestCase extends BaseWebTestCase
     public function assertNotHasProperty($property, OA\AbstractAnnotation $annotation)
     {
         /* @var OA\Schema|OA\Property|OA\Items $annotation */
-        $properties = array_column(OA\UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
+        $properties = array_column(Generator::UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
         static::assertNotContains(
             $property,
             $properties,

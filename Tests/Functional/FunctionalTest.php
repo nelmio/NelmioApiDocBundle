@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class FunctionalTest extends WebTestCase
@@ -84,7 +85,7 @@ class FunctionalTest extends WebTestCase
     public function testAnnotationWithManualPath()
     {
         $path = $this->getPath('/api/swagger2');
-        $this->assertSame(OA\UNDEFINED, $path->post);
+        $this->assertSame(Generator::UNDEFINED, $path->post);
 
         $operation = $this->getOperation('/api/swagger', 'get');
         $this->assertNotHasParameter('Accept-Version', 'header', $operation);
@@ -123,10 +124,10 @@ class FunctionalTest extends WebTestCase
     {
         $operation = $this->getOperation('/api/test/{user}', 'get');
 
-        $this->assertEquals(OA\UNDEFINED, $operation->security);
-        $this->assertEquals(OA\UNDEFINED, $operation->summary);
-        $this->assertEquals(OA\UNDEFINED, $operation->description);
-        $this->assertEquals(OA\UNDEFINED, $operation->deprecated);
+        $this->assertEquals(Generator::UNDEFINED, $operation->security);
+        $this->assertEquals(Generator::UNDEFINED, $operation->summary);
+        $this->assertEquals(Generator::UNDEFINED, $operation->description);
+        $this->assertEquals(Generator::UNDEFINED, $operation->deprecated);
         $this->assertHasResponse(200, $operation);
 
         $this->assertHasParameter('user', 'path', $operation);
@@ -134,7 +135,7 @@ class FunctionalTest extends WebTestCase
         $this->assertTrue($parameter->required);
         $this->assertEquals('string', $parameter->schema->type);
         $this->assertEquals('/foo/', $parameter->schema->pattern);
-        $this->assertEquals(OA\UNDEFINED, $parameter->schema->format);
+        $this->assertEquals(Generator::UNDEFINED, $parameter->schema->format);
     }
 
     public function testDeprecatedAction()
@@ -506,7 +507,25 @@ class FunctionalTest extends WebTestCase
     public function testDefaultOperationId()
     {
         $operation = $this->getOperation('/api/article/{id}', 'get');
-        $this->assertNull($operation->operationId);
+        $this->assertEquals('get_api_nelmio_apidoc_tests_functional_api_fetcharticle', $operation->operationId);
+    }
+
+    public function testNamedRouteOperationId()
+    {
+        $operation = $this->getOperation('/api/named_route-operation-id', 'get');
+        $this->assertEquals('get_api_named_route_operation_id', $operation->operationId);
+
+        $operation = $this->getOperation('/api/named_route-operation-id', 'post');
+        $this->assertEquals('post_api_named_route_operation_id', $operation->operationId);
+    }
+
+    public function testCustomOperationId()
+    {
+        $operation = $this->getOperation('/api/custom-operation-id', 'get');
+        $this->assertEquals('custom-operation-id', $operation->operationId);
+
+        $operation = $this->getOperation('/api/custom-operation-id', 'post');
+        $this->assertEquals('custom-operation-id', $operation->operationId);
     }
 
     /**
@@ -533,7 +552,7 @@ class FunctionalTest extends WebTestCase
         $this->assertCount(2, $model->discriminator->mapping);
         $this->assertArrayHasKey('one', $model->discriminator->mapping);
         $this->assertArrayHasKey('two', $model->discriminator->mapping);
-        $this->assertNotSame(OA\UNDEFINED, $model->oneOf);
+        $this->assertNotSame(Generator::UNDEFINED, $model->oneOf);
         $this->assertCount(2, $model->oneOf);
     }
 

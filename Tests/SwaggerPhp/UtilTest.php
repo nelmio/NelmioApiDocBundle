@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\SwaggerPhp;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use const OpenApi\UNDEFINED;
+use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -107,7 +107,7 @@ class UtilTest extends TestCase
             return 0 !== strpos($key, '_');
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->assertEquals([UNDEFINED], array_unique(array_values($properties)));
+        $this->assertEquals([Generator::UNDEFINED], array_unique(array_values($properties)));
 
         $this->assertIsNested($this->rootAnnotation, $info);
         $this->assertIsConnectedToRootContext($info);
@@ -220,7 +220,7 @@ class UtilTest extends TestCase
             foreach ($items as $assert) {
                 $setupCollection = empty($assert['components']) ?
                     ($setup[$collection] ?? []) :
-                    (OA\UNDEFINED !== $setup['components']->{$collection} ? $setup['components']->{$collection} : []);
+                    (Generator::UNDEFINED !== $setup['components']->{$collection} ? $setup['components']->{$collection} : []);
 
                 // get the indexing correct within haystack preparation
                 $properties = array_fill(0, \count($setupCollection), null);

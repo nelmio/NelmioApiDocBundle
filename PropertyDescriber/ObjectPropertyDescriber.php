@@ -29,10 +29,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
             $types[0]->getClassName(),
             $types[0]->isCollection(),
             // BC layer for symfony < 5.3
-            method_exists($types[0], 'getCollectionKeyTypes') ?
-                ($types[0]->getCollectionKeyTypes()[0] ?? null) :
-                $types[0]->getCollectionKeyType(),
-            // BC layer for symfony < 5.3
+            method_exists($types[0], 'getCollectionKeyTypes') ? $types[0]->getCollectionKeyTypes() : $types[0]->getCollectionKeyType(),
             method_exists($types[0], 'getCollectionValueTypes') ?
                 ($types[0]->getCollectionValueTypes()[0] ?? null) :
                 $types[0]->getCollectionValueType()

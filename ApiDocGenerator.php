@@ -20,6 +20,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Analysis;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Generator;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -110,7 +111,7 @@ final class ApiDocGenerator
         $defaultOperationIdProcessor = new DefaultOperationId();
         $defaultOperationIdProcessor($analysis);
 
-        $analysis->process();
+        $analysis->process((new Generator())->getProcessors());
         $analysis->validate();
 
         if (isset($item)) {

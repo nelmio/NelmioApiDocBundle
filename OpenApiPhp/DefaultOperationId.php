@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\OpenApiPhp;
 
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 
 /**
  * Disable the OperationId processor from zircote/swagger-php as it breaks our documentation by setting non-unique operation ids.
@@ -27,7 +28,7 @@ final class DefaultOperationId
         $allOperations = $analysis->getAnnotationsOfType(OA\Operation::class);
 
         foreach ($allOperations as $operation) {
-            if (OA\UNDEFINED === $operation->operationId) {
+            if (Generator::UNDEFINED === $operation->operationId) {
                 $operation->operationId = null;
             }
         }
