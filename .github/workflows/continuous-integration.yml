@@ -26,16 +26,14 @@ jobs:
         include:
           - php-version: 7.2
             composer-flags: "--prefer-lowest"
-          - php-version: 7.2
-            symfony-require: "^4.0"
           - php-version: 7.3
-            symfony-require: "^5.0"
+            symfony-require: "4.4.*"
           - php-version: 7.4
-            symfony-require: "^4.0"
-          - php-version: 7.3
-            symfony-require: "^5.0"
+            symfony-require: "5.3.*"
           - php-version: 8.0
-            composer-flags: "--ignore-platform-reqs"
+            symfony-require: "5.4.*"
+          - php-version: 8.1
+            symfony-require: "5.4.*"
 
     steps:
       - name: "Checkout"
