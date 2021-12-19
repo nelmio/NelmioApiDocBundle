@@ -11,9 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+
 class ValidationGroupsFunctionalTest extends WebTestCase
 {
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_VALIDATION_GROUPS);
     }
