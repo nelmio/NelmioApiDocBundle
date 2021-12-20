@@ -13,53 +13,30 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup;
 
 use JMS\Serializer\Annotation as Serializer;
 
-if (\PHP_VERSION_ID >= 80100) {
+/**
+ * User.
+ *
+ * @Serializer\ExclusionPolicy("all")
+ */
+class JMSChatRoom
+{
     /**
-     * User.
+     * @Serializer\Type("integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Default"})
      */
-    #[Serializer\ExclusionPolicy('all')]
-    class JMSChatRoom
-    {
-        #[Serializer\Type('integer')]
-        #[Serializer\Expose]
-        #[Serializer\Groups(['Default'])]
-        private $id1;
+    private $id1;
 
-        #[Serializer\Type('integer')]
-        #[Serializer\Expose]
-        #[Serializer\Groups(['mini'])]
-        private $id2;
-
-        #[Serializer\Type('integer')]
-        #[Serializer\Expose]
-        private $id3;
-    }
-} else {
     /**
-     * User.
-     *
-     * @Serializer\ExclusionPolicy("all")
+     * @Serializer\Type("integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"mini"})
      */
-    class JMSChatRoom
-    {
-        /**
-         * @Serializer\Type("integer")
-         * @Serializer\Expose
-         * @Serializer\Groups({"Default"})
-         */
-        private $id1;
+    private $id2;
 
-        /**
-         * @Serializer\Type("integer")
-         * @Serializer\Expose
-         * @Serializer\Groups({"mini"})
-         */
-        private $id2;
-
-        /**
-         * @Serializer\Type("integer")
-         * @Serializer\Expose
-         */
-        private $id3;
-    }
+    /**
+     * @Serializer\Type("integer")
+     * @Serializer\Expose
+     */
+    private $id3;
 }

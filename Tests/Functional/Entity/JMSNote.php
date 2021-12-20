@@ -13,39 +13,22 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 
-if (\PHP_VERSION_ID >= 80100) {
+/**
+ * JMSNote.
+ *
+ * @Serializer\ExclusionPolicy("all")
+ */
+class JMSNote
+{
     /**
-     * JMSNote.
+     * @Serializer\Type("string")
+     * @Serializer\Expose
      */
-    #[Serializer\ExclusionPolicy('all')]
-    class JMSNote
-    {
-        #[Serializer\Type('string')]
-        #[Serializer\Expose]
-        private $long;
+    private $long;
 
-        #[Serializer\Type('int')]
-        #[Serializer\Expose]
-        private $short;
-    }
-} else {
     /**
-     * JMSNote.
-     *
-     * @Serializer\ExclusionPolicy("all")
+     * @Serializer\Type("int")
+     * @Serializer\Expose
      */
-    class JMSNote
-    {
-        /**
-         * @Serializer\Type("string")
-         * @Serializer\Expose
-         */
-        private $long;
-
-        /**
-         * @Serializer\Type("int")
-         * @Serializer\Expose
-         */
-        private $short;
-    }
+    private $short;
 }

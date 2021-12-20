@@ -15,34 +15,20 @@ use JMS\Serializer\Annotation as Serializer;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 
-if (\PHP_VERSION_ID >= 80100) {
-    class JMSDualComplex
-    {
-        #[Serializer\Type('integer')]
-        private $id;
+class JMSDualComplex
+{
+    /**
+     * @Serializer\Type("integer")
+     */
+    private $id;
 
-        #[OA\Property(['ref' => new Model(type: JMSComplex::class)])]
-        private $complex;
+    /**
+     * @OA\Property(ref=@Model(type=JMSComplex::class))
+     */
+    private $complex;
 
-        #[OA\Property(['ref' => new Model(type: JMSUser::class)])]
-        private $user;
-    }
-} else {
-    class JMSDualComplex
-    {
-        /**
-         * @Serializer\Type("integer")
-         */
-        private $id;
-
-        /**
-         * @OA\Property(ref=@Model(type=JMSComplex::class))
-         */
-        private $complex;
-
-        /**
-         * @OA\Property(ref=@Model(type=JMSUser::class))
-         */
-        private $user;
-    }
+    /**
+     * @OA\Property(ref=@Model(type=JMSUser::class))
+     */
+    private $user;
 }

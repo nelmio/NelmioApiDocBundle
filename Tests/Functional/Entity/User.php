@@ -13,303 +13,156 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use OpenApi\Annotations as OA;
 
-if (\PHP_VERSION_ID >= 80100) {
+/**
+ * @author Guilhem N. <egetick@gmail.com>
+ */
+class User
+{
     /**
-     * @author Guilhem N. <egetick@gmail.com>
+     * @var int
+     *
+     * @OA\Property(description = "User id", readOnly = true, title = "userid", default = null)
      */
-    class User
+    private $id;
+
+    /**
+     * @OA\Property(type="string", readOnly = false)
+     */
+    private $email;
+
+    /**
+     * User Roles Comment.
+     *
+     * @var string[]
+     *
+     * @OA\Property(
+     *     description = "User roles",
+     *     title = "roles",
+     *     example="[""ADMIN"",""SUPERUSER""]",
+     *     default = {"user"},
+     * )
+     */
+    private $roles;
+
+    /**
+     * User Location.
+     *
+     * @OA\Property(type = "string")
+     */
+    private $location;
+
+    /**
+     * @var int
+     *
+     * @OA\Property(type = "string")
+     */
+    private $friendsNumber;
+
+    /**
+     * @var float
+     * @OA\Property(default = 0.0)
+     */
+    private $money;
+
+    /**
+     * @var \DateTime
+     * @OA\Property(property="creationDate")
+     */
+    private $createdAt;
+
+    /**
+     * @var User[]
+     */
+    private $users;
+
+    /**
+     * @var User|null
+     */
+    private $friend;
+
+    /**
+     * @var User[]|null
+     */
+    private $friends;
+
+    /**
+     * @var string
+     *
+     * @OA\Property(enum = {"disabled", "enabled"})
+     */
+    private $status;
+
+    /**
+     * @var \DateTimeInterface
+     */
+    private $dateAsInterface;
+
+    public function setMoney(float $money)
     {
-        /**
-         * @var int
-         */
-        #[OA\Property(description: 'User id', title: 'userid', properties: ['readOnly' => true, 'default' => null])]
-        private $id;
-
-        #[OA\Property(type: 'string', properties: ['readOnly' => false])]
-        private $email;
-
-        /**
-         * User Roles Comment.
-         *
-         * @var string[]
-         */
-        #[OA\Property(
-            description: 'User roles',
-            title: 'roles',
-            example: '["ADMIN","SUPERUSER"]',
-            properties: ['default' => ['user']],
-        )]
-        private $roles;
-
-        /**
-         * User Location.
-         */
-        #[OA\Property(type: 'string')]
-        private $location;
-
-        /**
-         * @var int
-         */
-        #[OA\Property(type: 'string')]
-        private $friendsNumber;
-
-        /**
-         * @var float
-         */
-        #[OA\Property(['default' => 0.0])]
-        private $money;
-
-        /**
-         * @var \DateTime
-         */
-        #[OA\Property(property: 'creationDate')]
-        private $createdAt;
-
-        /**
-         * @var User[]
-         */
-        private $users;
-
-        /**
-         * @var User|null
-         */
-        private $friend;
-
-        /**
-         * @var User[]|null
-         */
-        private $friends;
-
-        /**
-         * @var string
-         */
-        #[OA\Property(['enum' => ['disabled', 'enabled']])]
-        private $status;
-
-        /**
-         * @var \DateTimeInterface
-         */
-        private $dateAsInterface;
-
-        public function setMoney(float $money)
-        {
-            $this->money = $money;
-        }
-
-        #[OA\Property(example: 1)]
-        public function setId(int $id)
-        {
-            $this->id = $id;
-        }
-
-        public function setEmail($email)
-        {
-            $this->email = $email;
-        }
-
-        /**
-         * @param string[] $roles
-         */
-        public function setRoles(array $roles)
-        {
-            $this->roles = $roles;
-        }
-
-        public function setLocation(string $location)
-        {
-        }
-
-        public function setFriendsNumber(int $friendsNumber)
-        {
-            $this->friendsNumber = $friendsNumber;
-        }
-
-        public function setCreatedAt(\DateTime $createAt)
-        {
-        }
-
-        public function setUsers(array $users)
-        {
-        }
-
-        public function setFriend(self $friend = null)
-        {
-        }
-
-        public function setFriends(array $friends = [])
-        {
-        }
-
-        public function setDummy(Dummy $dummy)
-        {
-        }
-
-        public function setStatus(string $status)
-        {
-        }
-
-        public function getDateAsInterface(): \DateTimeInterface
-        {
-            return $this->dateAsInterface;
-        }
-
-        public function setDateAsInterface(\DateTimeInterface $dateAsInterface)
-        {
-            $this->dateAsInterface = $dateAsInterface;
-        }
+        $this->money = $money;
     }
-} else {
+
     /**
-     * @author Guilhem N. <egetick@gmail.com>
+     * @OA\Property(example=1)
      */
-    class User
+    public function setId(int $id)
     {
-        /**
-         * @var int
-         *
-         * @OA\Property(description = "User id", readOnly = true, title = "userid", default = null)
-         */
-        private $id;
+        $this->id = $id;
+    }
 
-        /**
-         * @OA\Property(type="string", readOnly = false)
-         */
-        private $email;
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
 
-        /**
-         * User Roles Comment.
-         *
-         * @var string[]
-         *
-         * @OA\Property(
-         *     description = "User roles",
-         *     title = "roles",
-         *     example="[""ADMIN"",""SUPERUSER""]",
-         *     default = {"user"},
-         * )
-         */
-        private $roles;
+    /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+    }
 
-        /**
-         * User Location.
-         *
-         * @OA\Property(type = "string")
-         */
-        private $location;
+    public function setLocation(string $location)
+    {
+    }
 
-        /**
-         * @var int
-         *
-         * @OA\Property(type = "string")
-         */
-        private $friendsNumber;
+    public function setFriendsNumber(int $friendsNumber)
+    {
+        $this->friendsNumber = $friendsNumber;
+    }
 
-        /**
-         * @var float
-         * @OA\Property(default = 0.0)
-         */
-        private $money;
+    public function setCreatedAt(\DateTime $createAt)
+    {
+    }
 
-        /**
-         * @var \DateTime
-         * @OA\Property(property="creationDate")
-         */
-        private $createdAt;
+    public function setUsers(array $users)
+    {
+    }
 
-        /**
-         * @var User[]
-         */
-        private $users;
+    public function setFriend(self $friend = null)
+    {
+    }
 
-        /**
-         * @var User|null
-         */
-        private $friend;
+    public function setFriends(array $friends = [])
+    {
+    }
 
-        /**
-         * @var User[]|null
-         */
-        private $friends;
+    public function setDummy(Dummy $dummy)
+    {
+    }
 
-        /**
-         * @var string
-         *
-         * @OA\Property(enum = {"disabled", "enabled"})
-         */
-        private $status;
+    public function setStatus(string $status)
+    {
+    }
 
-        /**
-         * @var \DateTimeInterface
-         */
-        private $dateAsInterface;
+    public function getDateAsInterface(): \DateTimeInterface
+    {
+        return $this->dateAsInterface;
+    }
 
-        public function setMoney(float $money)
-        {
-            $this->money = $money;
-        }
-
-        /**
-         * @OA\Property(example=1)
-         */
-        public function setId(int $id)
-        {
-            $this->id = $id;
-        }
-
-        public function setEmail($email)
-        {
-            $this->email = $email;
-        }
-
-        /**
-         * @param string[] $roles
-         */
-        public function setRoles(array $roles)
-        {
-            $this->roles = $roles;
-        }
-
-        public function setLocation(string $location)
-        {
-        }
-
-        public function setFriendsNumber(int $friendsNumber)
-        {
-            $this->friendsNumber = $friendsNumber;
-        }
-
-        public function setCreatedAt(\DateTime $createAt)
-        {
-        }
-
-        public function setUsers(array $users)
-        {
-        }
-
-        public function setFriend(self $friend = null)
-        {
-        }
-
-        public function setFriends(array $friends = [])
-        {
-        }
-
-        public function setDummy(Dummy $dummy)
-        {
-        }
-
-        public function setStatus(string $status)
-        {
-        }
-
-        public function getDateAsInterface(): \DateTimeInterface
-        {
-            return $this->dateAsInterface;
-        }
-
-        public function setDateAsInterface(\DateTimeInterface $dateAsInterface)
-        {
-            $this->dateAsInterface = $dateAsInterface;
-        }
+    public function setDateAsInterface(\DateTimeInterface $dateAsInterface)
+    {
+        $this->dateAsInterface = $dateAsInterface;
     }
 }

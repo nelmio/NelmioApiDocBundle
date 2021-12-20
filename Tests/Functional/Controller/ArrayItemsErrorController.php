@@ -16,36 +16,20 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError\Foo;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
-if (\PHP_VERSION_ID >= 80100) {
-    #[Route(host: 'api.example.com')]
-    class ArrayItemsErrorController
-    {
-        #[OA\Response(
-            response: 200,
-            description: 'Success',
-            properties: ['value' => new Model(type: Foo::class)],
-        )]
-        #[Route('/api/error', methods: ['GET'])]
-        public function errorAction()
-        {
-        }
-    }
-} else {
+/**
+ * @Route(host="api.example.com")
+ */
+class ArrayItemsErrorController
+{
     /**
-     * @Route(host="api.example.com")
+     * @Route("/api/error", methods={"GET"})
+     * @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=Foo::class)
+     * )
      */
-    class ArrayItemsErrorController
+    public function errorAction()
     {
-        /**
-         * @Route("/api/error", methods={"GET"})
-         * @OA\Response(
-         *     response=200,
-         *     description="Success",
-         *     @Model(type=Foo::class)
-         * )
-         */
-        public function errorAction()
-        {
-        }
     }
 }

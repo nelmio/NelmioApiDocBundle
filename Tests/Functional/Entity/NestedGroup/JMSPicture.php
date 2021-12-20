@@ -13,41 +13,23 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup;
 
 use JMS\Serializer\Annotation as Serializer;
 
-if (\PHP_VERSION_ID >= 80100) {
+/**
+ * User.
+ *
+ * @Serializer\ExclusionPolicy("all")
+ */
+class JMSPicture
+{
     /**
-     * User.
+     * @Serializer\Type("integer")
+     * @Serializer\Expose
      */
-    #[Serializer\ExclusionPolicy('all')]
-    class JMSPicture
-    {
-        #[Serializer\Type('integer')]
-        #[Serializer\Expose]
-        private $id;
+    private $id;
 
-        #[Serializer\Type('integer')]
-        #[Serializer\Expose]
-        #[Serializer\Groups(['mini'])]
-        private $onlyDirectPictureMini;
-    }
-} else {
     /**
-     * User.
-     *
-     * @Serializer\ExclusionPolicy("all")
+     * @Serializer\Type("integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"mini"})
      */
-    class JMSPicture
-    {
-        /**
-         * @Serializer\Type("integer")
-         * @Serializer\Expose
-         */
-        private $id;
-
-        /**
-         * @Serializer\Type("integer")
-         * @Serializer\Expose
-         * @Serializer\Groups({"mini"})
-         */
-        private $onlyDirectPictureMini;
-    }
+    private $onlyDirectPictureMini;
 }

@@ -13,51 +13,29 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup;
 
 use JMS\Serializer\Annotation as Serializer;
 
-if (\PHP_VERSION_ID >= 80100) {
+/**
+ * User.
+ *
+ * @Serializer\ExclusionPolicy("all")
+ */
+class JMSChatUser
+{
     /**
-     * User.
+     * @Serializer\Type("integer")
+     * @Serializer\Expose
      */
-    #[Serializer\ExclusionPolicy('all')]
-    class JMSChatUser
-    {
-        #[Serializer\Type('integer')]
-        #[Serializer\Expose]
-        private $id;
+    private $id;
 
-        #[Serializer\Type(\Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture::class)]
-        #[Serializer\Groups(['mini'])]
-        #[Serializer\Expose]
-        private $picture;
-
-        #[Serializer\Type('array<Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture>')]
-        #[Serializer\Expose]
-        private $allPictures;
-    }
-} else {
     /**
-     * User.
-     *
-     * @Serializer\ExclusionPolicy("all")
+     * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture")
+     * @Serializer\Groups({"mini"})
+     * @Serializer\Expose
      */
-    class JMSChatUser
-    {
-        /**
-         * @Serializer\Type("integer")
-         * @Serializer\Expose
-         */
-        private $id;
+    private $picture;
 
-        /**
-         * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture")
-         * @Serializer\Groups({"mini"})
-         * @Serializer\Expose
-         */
-        private $picture;
-
-        /**
-         * @Serializer\Type("array<Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture>")
-         * @Serializer\Expose
-         */
-        private $allPictures;
-    }
+    /**
+     * @Serializer\Type("array<Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture>")
+     * @Serializer\Expose
+     */
+    private $allPictures;
 }

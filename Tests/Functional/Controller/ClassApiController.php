@@ -15,30 +15,17 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
-if (\PHP_VERSION_ID >= 80100) {
-    #[Route('/api', host: 'api.example.com')]
-    #[Security(name: 'basic')]
-    class ClassApiController
-    {
-        #[Route('/security/class')]
-        #[OA\Response(response: '201', description: '')]
-        public function securityAction()
-        {
-        }
-    }
-} else {
+/**
+ * @Route("/api", host="api.example.com")
+ * @Security(name="basic")
+ */
+class ClassApiController
+{
     /**
-     * @Route("/api", host="api.example.com")
-     * @Security(name="basic")
+     * @Route("/security/class")
+     * @OA\Response(response="201", description="")
      */
-    class ClassApiController
+    public function securityAction()
     {
-        /**
-         * @Route("/security/class")
-         * @OA\Response(response="201", description="")
-         */
-        public function securityAction()
-        {
-        }
     }
 }

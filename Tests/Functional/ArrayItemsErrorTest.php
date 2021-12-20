@@ -25,8 +25,9 @@ class ArrayItemsErrorTest extends WebTestCase
 
     public function testModelPictureDocumentation()
     {
+        $suffix = \PHP_VERSION_ID >= 80100 ? 'Php81' : '';
         $this->expectException(UndocumentedArrayItemsException::class);
-        $this->expectExceptionMessage('Property "Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError\Bar::things[]" is an array, but its items type isn\'t specified.');
+        $this->expectExceptionMessage('Property "Nelmio\ApiDocBundle\Tests\Functional\Entity'.$suffix.'\ArrayItemsError\Bar::things[]" is an array, but its items type isn\'t specified.');
 
         $this->getOpenApiDefinition();
     }

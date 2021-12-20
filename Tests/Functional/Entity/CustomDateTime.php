@@ -13,28 +13,15 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 
-if (\PHP_VERSION_ID >= 80100) {
+/**
+ * @author Javier Spagnoletti <phansys@gmail.com>
+ */
+class CustomDateTime extends \DateTime
+{
     /**
-     * @author Javier Spagnoletti <phansys@gmail.com>
+     * @Serializer\Type("string")
+     * @Serializer\Expose
+     * @Serializer\SerializedName("format")
      */
-    class CustomDateTime extends \DateTime
-    {
-        #[Serializer\Type('string')]
-        #[Serializer\Expose]
-        #[Serializer\SerializedName('format')]
-        private $format;
-    }
-} else {
-    /**
-     * @author Javier Spagnoletti <phansys@gmail.com>
-     */
-    class CustomDateTime extends \DateTime
-    {
-        /**
-         * @Serializer\Type("string")
-         * @Serializer\Expose
-         * @Serializer\SerializedName("format")
-         */
-        private $format;
-    }
+    private $format;
 }

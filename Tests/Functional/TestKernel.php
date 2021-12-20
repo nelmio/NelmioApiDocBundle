@@ -17,10 +17,6 @@ use FOS\RestBundle\FOSRestBundle;
 use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -81,37 +77,39 @@ class TestKernel extends Kernel
      */
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        $routes->import(__DIR__.'/Controller/TestController.php', '/', 'annotation');
-        $routes->import(__DIR__.'/Controller/ApiController.php', '/', 'annotation');
-        $routes->import(__DIR__.'/Controller/ClassApiController.php', '/', 'annotation');
-        $routes->import(__DIR__.'/Controller/UndocumentedController.php', '/', 'annotation');
-        $routes->import(__DIR__.'/Controller/InvokableController.php', '/', 'annotation');
+        $controllerPath = __DIR__.'/Controller'.(\PHP_VERSION_ID >= 80100 ? 'Php81' : '');
+
+        $routes->import($controllerPath.'/TestController.php', '/', 'annotation');
+        $routes->import($controllerPath.'/ApiController.php', '/', 'annotation');
+        $routes->import($controllerPath.'/ClassApiController.php', '/', 'annotation');
+        $routes->import($controllerPath.'/UndocumentedController.php', '/', 'annotation');
+        $routes->import($controllerPath.'/InvokableController.php', '/', 'annotation');
         $routes->import('', '/api', 'api_platform');
         $routes->add('/docs/{area}', 'nelmio_api_doc.controller.swagger_ui')->setDefault('area', 'default');
         $routes->add('/docs.json', 'nelmio_api_doc.controller.swagger_json');
         $routes->add('/docs.yaml', 'nelmio_api_doc.controller.swagger_yaml');
-        $routes->import(__DIR__.'/Controller/FOSRestController.php', '/', 'annotation');
+        $routes->import($controllerPath.'/FOSRestController.php', '/', 'annotation');
 
         if (class_exists(SerializedName::class)) {
-            $routes->import(__DIR__.'/Controller/SerializedNameController.php', '/', 'annotation');
+            $routes->import($controllerPath.'/SerializedNameController.php', '/', 'annotation');
         }
 
         if ($this->flags & self::USE_JMS) {
-            $routes->import(__DIR__.'/Controller/JMSController.php', '/', 'annotation');
+            $routes->import($controllerPath.'/JMSController.php', '/', 'annotation');
         }
 
         if ($this->flags & self::USE_BAZINGA) {
-            $routes->import(__DIR__.'/Controller/BazingaController.php', '/', 'annotation');
+            $routes->import($controllerPath.'/BazingaController.php', '/', 'annotation');
 
             try {
                 new \ReflectionMethod(Embedded::class, 'getType');
-                $routes->import(__DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
+                $routes->import($controllerPath.'/BazingaTypedController.php', '/', 'annotation');
             } catch (\ReflectionException $e) {
             }
         }
 
         if ($this->flags & self::ERROR_ARRAY_ITEMS) {
-            $routes->import(__DIR__.'/Controller/ArrayItemsErrorController.php', '/', 'annotation');
+            $routes->import($controllerPath.'/ArrayItemsErrorController.php', '/', 'annotation');
         }
     }
 
@@ -144,7 +142,7 @@ class TestKernel extends Kernel
         ]);
 
         $c->loadFromExtension('api_platform', [
-            'mapping' => ['paths' => ['%kernel.project_dir%/Tests/Functional/Entity']],
+            'mapping' => ['paths' => ['%kernel.project_dir%/Tests/Functional/Entity'.(\PHP_VERSION_ID >= 80100 ? 'Php81' : '')]],
         ]);
 
         $c->loadFromExtension('fos_rest', [
@@ -169,6 +167,18 @@ class TestKernel extends Kernel
                 'body_listener' => false,
                 'routing_loader' => false,
             ]);
+        }
+
+        if (\PHP_VERSION_ID >= 80100) {
+            $privateProtectedExposureClass = \Nelmio\ApiDocBundle\Tests\Functional\EntityPhp81\PrivateProtectedExposure::class;
+            $jMSPictureClass = \Nelmio\ApiDocBundle\Tests\Functional\EntityPhp81\NestedGroup\JMSPicture::class;
+            $bazingaUserClass = \Nelmio\ApiDocBundle\Tests\Functional\EntityPhp81\BazingaUser::class;
+            $jMSComplexClass = \Nelmio\ApiDocBundle\Tests\Functional\EntityPhp81\JMSComplex::class;
+        } else {
+            $privateProtectedExposureClass = \Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure::class;
+            $jMSPictureClass = \Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture::class;
+            $bazingaUserClass = \Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser::class;
+            $jMSComplexClass = \Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex::class;
         }
 
         // Filter routes
@@ -237,21 +247,21 @@ class TestKernel extends Kernel
                 'names' => [
                     [
                         'alias' => 'PrivateProtectedExposure',
-                        'type' => PrivateProtectedExposure::class,
+                        'type' => $privateProtectedExposureClass,
                     ],
                     [
                         'alias' => 'JMSPicture_mini',
-                        'type' => JMSPicture::class,
+                        'type' => $jMSPictureClass,
                         'groups' => ['mini'],
                     ],
                     [
                         'alias' => 'BazingaUser_grouped',
-                        'type' => BazingaUser::class,
+                        'type' => $bazingaUserClass,
                         'groups' => ['foo'],
                     ],
                     [
                         'alias' => 'JMSComplex',
-                        'type' => JMSComplex::class,
+                        'type' => $jMSComplexClass,
                         'groups' => [
                             'list',
                             'details',
@@ -260,7 +270,7 @@ class TestKernel extends Kernel
                     ],
                     [
                         'alias' => 'JMSComplexDefault',
-                        'type' => JMSComplex::class,
+                        'type' => $jMSComplexClass,
                         'groups' => null,
                     ],
                 ],

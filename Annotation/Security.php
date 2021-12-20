@@ -47,7 +47,7 @@ if (\PHP_VERSION_ID >= 80100) {
         public function __construct(
             array $properties = [],
             string $name = null,
-            array $scopes = [],
+            array $scopes = []
         ) {
             parent::__construct($properties + [
                 'name' => $name,

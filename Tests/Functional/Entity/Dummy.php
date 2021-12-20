@@ -15,88 +15,45 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
 
-if (\PHP_VERSION_ID >= 80100) {
+/**
+ * @author Guilhem N. <egetick@gmail.com>
+ *
+ * @ApiResource(
+ *   collectionOperations={
+ *     "get"={"method"="GET"},
+ *     "custom2"={"path"="/foo", "method"="GET"},
+ *     "custom"={"path"="/foo", "method"="POST"},
+ *   },
+ *   itemOperations={"get"={"method"="GET"}})
+ * )
+ */
+class Dummy
+{
     /**
-     * @author Guilhem N. <egetick@gmail.com>
+     * @var int
      */
-    #[ApiResource(
-        collectionOperations: [
-            'get' => ['method' => 'GET'],
-            'custom2' => ['path' => '/foo', 'method' => 'GET'],
-            'custom' => ['path' => '/foo', 'method' => 'POST'],
-        ],
-        itemOperations: ['get' => ['method' => 'GET']]
-    )]
-    class Dummy
-    {
-        /**
-         * @var int
-         */
-        private $id;
+    private $id;
 
-        /**
-         * @var string
-         */
-        #[Assert\NotBlank]
-        #[ApiProperty(iri: 'http://schema.org/name')]
-        private $name;
-
-        public function getId(): int
-        {
-            return $this->id;
-        }
-
-        public function setName(string $name)
-        {
-            $this->name = $name;
-        }
-
-        public function getName(): string
-        {
-            return $this->name;
-        }
-    }
-} else {
     /**
-     * @author Guilhem N. <egetick@gmail.com>
+     * @var string
      *
-     * @ApiResource(
-     *   collectionOperations={
-     *     "get"={"method"="GET"},
-     *     "custom2"={"path"="/foo", "method"="GET"},
-     *     "custom"={"path"="/foo", "method"="POST"},
-     *   },
-     *   itemOperations={"get"={"method"="GET"}})
-     * )
+     * @Assert\NotBlank
+     * @ApiProperty(iri="http://schema.org/name")
      */
-    class Dummy
+    private $name;
+
+    public function getId(): int
     {
-        /**
-         * @var int
-         */
-        private $id;
+        return $this->id;
+    }
 
-        /**
-         * @var string
-         *
-         * @Assert\NotBlank
-         * @ApiProperty(iri="http://schema.org/name")
-         */
-        private $name;
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
 
-        public function getId(): int
-        {
-            return $this->id;
-        }
-
-        public function setName(string $name)
-        {
-            $this->name = $name;
-        }
-
-        public function getName(): string
-        {
-            return $this->name;
-        }
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

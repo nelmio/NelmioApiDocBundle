@@ -65,7 +65,7 @@ if (\PHP_VERSION_ID >= 80100) {
             array $properties = [],
             string $type = Generator::UNDEFINED,
             array $groups = null,
-            array $options = null,
+            array $options = null
         ) {
             parent::__construct($properties + [
                 'type' => $type,
