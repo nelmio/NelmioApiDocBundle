@@ -16,22 +16,41 @@ use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\SerializedNameEnt;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * This controller is only loaded when SerializedName exists (sf >= 4.2).
- *
- * @Route("/api", host="api.example.com")
- */
-class SerializedNameController
-{
+if (\PHP_VERSION_ID >= 80100) {
     /**
-     * @OA\Response(
-     *     response="200",
-     *     description="success",
-     *     @Model(type=SerializedNameEnt::class)
-     * )
-     * @Route("/serializename", methods={"GET"})
+     * This controller is only loaded when SerializedName exists (sf >= 4.2).
      */
-    public function serializedNameAction()
+    #[Route('/api', host: 'api.example.com')]
+    class SerializedNameController
     {
+        #[OA\Response(
+            response: '200',
+            description: 'success',
+            properties: ['value' => new Model(type: SerializedNameEnt::class)],
+        )]
+        #[Route('/serializename', methods: ['GET'])]
+        public function serializedNameAction()
+        {
+        }
+    }
+} else {
+    /**
+     * This controller is only loaded when SerializedName exists (sf >= 4.2).
+     *
+     * @Route("/api", host="api.example.com")
+     */
+    class SerializedNameController
+    {
+        /**
+         * @OA\Response(
+         *     response="200",
+         *     description="success",
+         *     @Model(type=SerializedNameEnt::class)
+         * )
+         * @Route("/serializename", methods={"GET"})
+         */
+        public function serializedNameAction()
+        {
+        }
     }
 }

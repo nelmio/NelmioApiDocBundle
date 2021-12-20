@@ -13,30 +13,53 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup;
 
 use JMS\Serializer\Annotation as Serializer;
 
-/**
- * User.
- *
- * @Serializer\ExclusionPolicy("all")
- */
-class JMSChatFriend
-{
+if (\PHP_VERSION_ID >= 80100) {
     /**
-     * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom")
-     * @Serializer\Expose
-     * @Serializer\Groups({"mini"})
+     * User.
      */
-    private $room;
+    #[Serializer\ExclusionPolicy('all')]
+    class JMSChatFriend
+    {
+        #[Serializer\Type(\Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom::class)]
+        #[Serializer\Expose]
+        #[Serializer\Groups(['mini'])]
+        private $room;
 
-    /**
-     * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatLivingRoom")
-     * @Serializer\Expose
-     * @Serializer\Groups({"Default", "mini"})
-     */
-    private $living;
+        #[Serializer\Type(\Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatLivingRoom::class)]
+        #[Serializer\Expose]
+        #[Serializer\Groups(['Default', 'mini'])]
+        private $living;
 
+        #[Serializer\Type(\Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom::class)]
+        #[Serializer\Expose]
+        private $dining;
+    }
+} else {
     /**
-     * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom")
-     * @Serializer\Expose
+     * User.
+     *
+     * @Serializer\ExclusionPolicy("all")
      */
-    private $dining;
+    class JMSChatFriend
+    {
+        /**
+         * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom")
+         * @Serializer\Expose
+         * @Serializer\Groups({"mini"})
+         */
+        private $room;
+
+        /**
+         * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatLivingRoom")
+         * @Serializer\Expose
+         * @Serializer\Groups({"Default", "mini"})
+         */
+        private $living;
+
+        /**
+         * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom")
+         * @Serializer\Expose
+         */
+        private $dining;
+    }
 }

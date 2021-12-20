@@ -13,22 +13,39 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup;
 
 use JMS\Serializer\Annotation as Serializer;
 
-/**
- * User.
- *
- * @Serializer\ExclusionPolicy("all")
- */
-class JMSChat
-{
+if (\PHP_VERSION_ID >= 80100) {
     /**
-     * @Serializer\Type("integer")
-     * @Serializer\Expose
+     * User.
      */
-    private $id;
+    #[Serializer\ExclusionPolicy('all')]
+    class JMSChat
+    {
+        #[Serializer\Type('integer')]
+        #[Serializer\Expose]
+        private $id;
 
+        #[Serializer\Type('array<Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatUser>')]
+        #[Serializer\Expose]
+        private $members;
+    }
+} else {
     /**
-     * @Serializer\Type("array<Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatUser>")
-     * @Serializer\Expose
+     * User.
+     *
+     * @Serializer\ExclusionPolicy("all")
      */
-    private $members;
+    class JMSChat
+    {
+        /**
+         * @Serializer\Type("integer")
+         * @Serializer\Expose
+         */
+        private $id;
+
+        /**
+         * @Serializer\Type("array<Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatUser>")
+         * @Serializer\Expose
+         */
+        private $members;
+    }
 }

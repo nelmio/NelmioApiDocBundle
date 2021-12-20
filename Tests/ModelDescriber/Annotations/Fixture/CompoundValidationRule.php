@@ -11,18 +11,37 @@ if (!class_exists(Compound::class)) {
     class_alias(CompoundStub::class, Compound::class);
 }
 
-/**
- * @Annotation
- */
-final class CompoundValidationRule extends Compound
-{
-    protected function getConstraints(array $options): array
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_PROPERTY)]
+    final class CompoundValidationRule extends Compound
     {
-        return [
-            new Assert\Type('numeric'),
-            new Assert\NotBlank(),
-            new Assert\Positive(),
-            new Assert\LessThan(5),
-        ];
+        protected function getConstraints(array $options): array
+        {
+            return [
+                new Assert\Type('numeric'),
+                new Assert\NotBlank(),
+                new Assert\Positive(),
+                new Assert\LessThan(5),
+            ];
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    final class CompoundValidationRule extends Compound
+    {
+        protected function getConstraints(array $options): array
+        {
+            return [
+                new Assert\Type('numeric'),
+                new Assert\NotBlank(),
+                new Assert\Positive(),
+                new Assert\LessThan(5),
+            ];
+        }
     }
 }

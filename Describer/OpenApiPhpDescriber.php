@@ -67,12 +67,14 @@ final class OpenApiPhpDescriber
                 $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
                     return $v instanceof OA\AbstractAnnotation;
                 });
+                $classAnnotations = array_merge($classAnnotations, $this->getAttributesAsAnnotation($declaringClass, OA\AbstractAnnotation::class));
                 $classAnnotations[$declaringClass->getName()] = $classAnnotations;
             }
 
             $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
                 return $v instanceof OA\AbstractAnnotation;
             });
+            $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($method, OA\AbstractAnnotation::class));
 
             if (0 === count($annotations) && 0 === count($classAnnotations[$declaringClass->getName()])) {
                 continue;
@@ -189,5 +191,24 @@ final class OpenApiPhpDescriber
         }
 
         return $path;
+    }
+
+    /**
+     * @param \ReflectionClass|\ReflectionMethod $reflection
+     *
+     * @return OA\AbstractAnnotation[]
+     */
+    private function getAttributesAsAnnotation($reflection, string $className): array
+    {
+        $annotations = [];
+        if (\PHP_VERSION_ID < 80100) {
+            return $annotations;
+        }
+
+        foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
+            $annotations[] = $attribute->newInstance();
+        }
+
+        return $annotations;
     }
 }

@@ -39,8 +39,8 @@ class OpenApiAnnotationsReader
 
     public function updateSchema(\ReflectionClass $reflectionClass, OA\Schema $schema): void
     {
-        /** @var OA\Schema $oaSchema */
-        if (!$oaSchema = $this->annotationsReader->getClassAnnotation($reflectionClass, OA\Schema::class)) {
+        /** @var OA\Schema|null $oaSchema */
+        if (!$oaSchema = $this->getAnnotation($reflectionClass, OA\Schema::class)) {
             return;
         }
 
@@ -56,10 +56,8 @@ class OpenApiAnnotationsReader
 
     public function getPropertyName($reflection, string $default): string
     {
-        /** @var OA\Property $oaProperty */
-        if ($reflection instanceof \ReflectionProperty && !$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflection, OA\Property::class)) {
-            return $default;
-        } elseif ($reflection instanceof \ReflectionMethod && !$oaProperty = $this->annotationsReader->getMethodAnnotation($reflection, OA\Property::class)) {
+        /** @var OA\Property|null $oaProperty */
+        if (!$oaProperty = $this->getAnnotation($reflection, OA\Property::class)) {
             return $default;
         }
 
@@ -78,10 +76,8 @@ class OpenApiAnnotationsReader
             'filename' => $declaringClass->getFileName(),
         ]));
 
-        /** @var OA\Property $oaProperty */
-        if ($reflection instanceof \ReflectionProperty && !$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflection, OA\Property::class)) {
-            return;
-        } elseif ($reflection instanceof \ReflectionMethod && !$oaProperty = $this->annotationsReader->getMethodAnnotation($reflection, OA\Property::class)) {
+        /** @var OA\Property|null $oaProperty */
+        if (!$oaProperty = $this->getAnnotation($reflection, OA\Property::class)) {
             return;
         }
         $this->setContext(null);
@@ -94,5 +90,29 @@ class OpenApiAnnotationsReader
         }
 
         $property->mergeProperties($oaProperty);
+    }
+
+    /**
+     * @param \ReflectionClass|\ReflectionProperty|\ReflectionMethod $reflection
+     *
+     * @return mixed
+     */
+    private function getAnnotation($reflection, string $className)
+    {
+        if (\PHP_VERSION_ID >= 80100) {
+            if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
+                return $attribute->newInstance();
+            }
+        }
+
+        if ($reflection instanceof \ReflectionClass) {
+            return $this->annotationsReader->getClassAnnotation($reflection, $className);
+        } elseif ($reflection instanceof \ReflectionProperty) {
+            return $this->annotationsReader->getPropertyAnnotation($reflection, $className);
+        } elseif ($reflection instanceof \ReflectionMethod) {
+            return $this->annotationsReader->getMethodAnnotation($reflection, $className);
+        }
+
+        return null;
     }
 }

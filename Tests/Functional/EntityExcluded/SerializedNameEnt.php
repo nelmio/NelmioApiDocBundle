@@ -13,24 +13,46 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-/**
- * @author Guilhem N. <guilhem.niot@gmail.com>
- */
-class SerializedNameEnt
-{
+if (\PHP_VERSION_ID >= 80100) {
     /**
-     * @SerializedName("notfoo")
-     *
-     * @var string
+     * @author Guilhem N. <guilhem.niot@gmail.com>
      */
-    public $foo;
-
-    /**
-     * Tests serialized name feature.
-     *
-     * @SerializedName("notwhatyouthink")
-     */
-    public function setBar(string $bar)
+    class SerializedNameEnt
     {
+        /**
+         * @var string
+         */
+        #[SerializedName('notfoo')]
+        public $foo;
+
+        /**
+         * Tests serialized name feature.
+         */
+        #[SerializedName('notwhatyouthink')]
+        public function setBar(string $bar)
+        {
+        }
+    }
+} else {
+    /**
+     * @author Guilhem N. <guilhem.niot@gmail.com>
+     */
+    class SerializedNameEnt
+    {
+        /**
+         * @SerializedName("notfoo")
+         *
+         * @var string
+         */
+        public $foo;
+
+        /**
+         * Tests serialized name feature.
+         *
+         * @SerializedName("notwhatyouthink")
+         */
+        public function setBar(string $bar)
+        {
+        }
     }
 }

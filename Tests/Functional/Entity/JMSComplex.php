@@ -15,44 +15,78 @@ use JMS\Serializer\Annotation as Serializer;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 
-/**
- * @Serializer\ExclusionPolicy("all")
- * @OA\Schema(
- *     required={"id", "user"},
- *     @OA\Property(property="virtual", ref=@Model(type=JMSUser::class))
- * )
- */
-class JMSComplex
-{
-    /**
-     * @Serializer\Type("integer")
-     * @Serializer\Expose
-     * @Serializer\Groups({"list"})
-     */
-    private $id;
-
-    /**
-     * @OA\Property(ref=@Model(type=JMSUser::class))
-     * @Serializer\Expose
-     * @Serializer\Groups({"details"})
-     * @Serializer\SerializedName("user")
-     */
-    private $User;
-
-    /**
-     * @Serializer\Type("string")
-     * @Serializer\Expose
-     * @Serializer\Groups({"list"})
-     */
-    private $name;
-
-    /**
-     * @Serializer\VirtualProperty
-     * @Serializer\Expose
-     * @Serializer\Groups({"list"})
-     * @OA\Property(ref=@Model(type=JMSUser::class))
-     */
-    public function getVirtualFriend()
+if (\PHP_VERSION_ID >= 80100) {
+    #[Serializer\ExclusionPolicy('all')]
+    #[OA\Schema([
+        'required' => ['id', 'user'],
+        'value' => new OA\Property(property: 'virtual', properties: ['ref' => new Model(type: JMSUser::class)]),
+    ])]
+    class JMSComplex
     {
+        #[Serializer\Type('integer')]
+        #[Serializer\Expose]
+        #[Serializer\Groups(['list'])]
+        private $id;
+
+        #[OA\Property(['ref' => new Model(type: JMSUser::class)])]
+        #[Serializer\Expose]
+        #[Serializer\Groups(['details'])]
+        #[Serializer\SerializedName('user')]
+        private $User;
+
+        #[Serializer\Type('string')]
+        #[Serializer\Expose]
+        #[Serializer\Groups(['list'])]
+        private $name;
+
+        #[Serializer\VirtualProperty]
+        #[Serializer\Expose]
+        #[Serializer\Groups(['list'])]
+        #[OA\Property(['ref' => new Model(type: JMSUser::class)])]
+        public function getVirtualFriend()
+        {
+        }
+    }
+} else {
+    /**
+     * @Serializer\ExclusionPolicy("all")
+     * @OA\Schema(
+     *     required={"id", "user"},
+     *     @OA\Property(property="virtual", ref=@Model(type=JMSUser::class))
+     * )
+     */
+    class JMSComplex
+    {
+        /**
+         * @Serializer\Type("integer")
+         * @Serializer\Expose
+         * @Serializer\Groups({"list"})
+         */
+        private $id;
+
+        /**
+         * @OA\Property(ref=@Model(type=JMSUser::class))
+         * @Serializer\Expose
+         * @Serializer\Groups({"details"})
+         * @Serializer\SerializedName("user")
+         */
+        private $User;
+
+        /**
+         * @Serializer\Type("string")
+         * @Serializer\Expose
+         * @Serializer\Groups({"list"})
+         */
+        private $name;
+
+        /**
+         * @Serializer\VirtualProperty
+         * @Serializer\Expose
+         * @Serializer\Groups({"list"})
+         * @OA\Property(ref=@Model(type=JMSUser::class))
+         */
+        public function getVirtualFriend()
+        {
+        }
     }
 }

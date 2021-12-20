@@ -16,20 +16,36 @@ use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\BazingaUserTyped;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(host="api.example.com")
- */
-class BazingaTypedController
-{
-    /**
-     * @Route("/api/bazinga_typed", methods={"GET"})
-     * @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @Model(type=BazingaUserTyped::class)
-     * )
-     */
-    public function userTypedAction()
+if (\PHP_VERSION_ID >= 80100) {
+    #[Route(host: 'api.example.com')]
+    class BazingaTypedController
     {
+        #[Route('/api/bazinga_typed', methods: ['GET'])]
+        #[OA\Response(
+            response: 200,
+            description: 'Success',
+            properties: ['value' => new Model(type: BazingaUserTyped::class)],
+        )]
+        public function userTypedAction()
+        {
+        }
+    }
+} else {
+    /**
+     * @Route(host="api.example.com")
+     */
+    class BazingaTypedController
+    {
+        /**
+         * @Route("/api/bazinga_typed", methods={"GET"})
+         * @OA\Response(
+         *     response=200,
+         *     description="Success",
+         *     @Model(type=BazingaUserTyped::class)
+         * )
+         */
+        public function userTypedAction()
+        {
+        }
     }
 }

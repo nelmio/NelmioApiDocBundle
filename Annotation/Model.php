@@ -13,11 +13,12 @@ namespace Nelmio\ApiDocBundle\Annotation;
 
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Parameter;
+use OpenApi\Generator;
 
 /**
  * @Annotation
  */
-final class Model extends AbstractAnnotation
+abstract class AbstractModel extends AbstractAnnotation
 {
     /** {@inheritdoc} */
     public static $_types = [
@@ -46,4 +47,38 @@ final class Model extends AbstractAnnotation
      * @var mixed[]
      */
     public $options;
+}
+
+if (\PHP_VERSION_ID >= 80100) {
+    /**
+     * @Annotation
+     */
+    #[\Attribute(\Attribute::TARGET_METHOD)]
+    final class Model extends AbstractModel
+    {
+        /**
+         * @param mixed[]  $properties
+         * @param string[] $groups
+         * @param mixed[]  $options
+         */
+        public function __construct(
+            array $properties = [],
+            string $type = Generator::UNDEFINED,
+            array $groups = null,
+            array $options = null,
+        ) {
+            parent::__construct($properties + [
+                'type' => $type,
+                'groups' => $groups,
+                'options' => $options,
+            ]);
+        }
+    }
+} else {
+    /**
+     * @Annotation
+     */
+    final class Model extends AbstractModel
+    {
+    }
 }

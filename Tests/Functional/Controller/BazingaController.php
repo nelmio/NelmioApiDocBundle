@@ -16,32 +16,58 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(host="api.example.com")
- */
-class BazingaController
-{
-    /**
-     * @Route("/api/bazinga", methods={"GET"})
-     * @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @Model(type=BazingaUser::class)
-     * )
-     */
-    public function userAction()
+if (\PHP_VERSION_ID >= 80100) {
+    #[Route(host: 'api.example.com')]
+    class BazingaController
     {
-    }
+        #[Route('/api/bazinga', methods: ['GET'])]
+        #[OA\Response(
+            response: 200,
+            description: 'Success',
+            properties: ['value' => new Model(type: BazingaUser::class)],
+        )]
+        public function userAction()
+        {
+        }
 
+        #[Route('/api/bazinga_foo', methods: ['GET'])]
+        #[OA\Response(
+            response: 200,
+            description: 'Success',
+            properties: ['value' => new Model(type: BazingaUser::class, groups: ['foo'])],
+        )]
+        public function userGroupAction()
+        {
+        }
+    }
+} else {
     /**
-     * @Route("/api/bazinga_foo", methods={"GET"})
-     * @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @Model(type=BazingaUser::class, groups={"foo"})
-     * )
+     * @Route(host="api.example.com")
      */
-    public function userGroupAction()
+    class BazingaController
     {
+        /**
+         * @Route("/api/bazinga", methods={"GET"})
+         * @OA\Response(
+         *     response=200,
+         *     description="Success",
+         *     @Model(type=BazingaUser::class)
+         * )
+         */
+        public function userAction()
+        {
+        }
+
+        /**
+         * @Route("/api/bazinga_foo", methods={"GET"})
+         * @OA\Response(
+         *     response=200,
+         *     description="Success",
+         *     @Model(type=BazingaUser::class, groups={"foo"})
+         * )
+         */
+        public function userGroupAction()
+        {
+        }
     }
 }

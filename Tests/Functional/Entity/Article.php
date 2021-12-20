@@ -13,19 +13,36 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @author Guilhem N. <guilhem.niot@gmail.com>
- */
-class Article
-{
+if (\PHP_VERSION_ID >= 80100) {
     /**
-     * @Groups({"light"})
+     * @author Guilhem N. <guilhem.niot@gmail.com>
      */
-    public function setAuthor(User $author)
+    class Article
     {
-    }
+        #[Groups(['light'])]
+        public function setAuthor(User $author)
+        {
+        }
 
-    public function setContent(string $content)
+        public function setContent(string $content)
+        {
+        }
+    }
+} else {
+    /**
+     * @author Guilhem N. <guilhem.niot@gmail.com>
+     */
+    class Article
     {
+        /**
+         * @Groups({"light"})
+         */
+        public function setAuthor(User $author)
+        {
+        }
+
+        public function setContent(string $content)
+        {
+        }
     }
 }

@@ -14,19 +14,34 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/test", host="api-test.example.com")
- */
-class TestController
-{
-    /**
-     * @OA\Response(
-     *     response="200",
-     *     description="Test"
-     * )
-     * @Route("/test/", methods={"GET"})
-     */
-    public function testAction()
+if (\PHP_VERSION_ID >= 80100) {
+    #[Route('/test', host: 'api-test.example.com')]
+    class TestController
     {
+        #[OA\Response(
+            response: '200',
+            description: 'Test',
+        )]
+        #[Route('/test/', methods: ['GET'])]
+        public function testAction()
+        {
+        }
+    }
+} else {
+    /**
+     * @Route("/test", host="api-test.example.com")
+     */
+    class TestController
+    {
+        /**
+         * @OA\Response(
+         *     response="200",
+         *     description="Test"
+         * )
+         * @Route("/test/", methods={"GET"})
+         */
+        public function testAction()
+        {
+        }
     }
 }
