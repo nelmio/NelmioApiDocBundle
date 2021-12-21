@@ -23,9 +23,12 @@ class FOSRestTest extends WebTestCase
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
 
-    public function testFOSRestAction()
+    /**
+     * @dataProvider provideRoute
+     */
+    public function testFOSRestAction(string $route)
     {
-        $operation = $this->getOperation('/api/fosrest', 'post');
+        $operation = $this->getOperation($route, 'post');
 
         $this->assertHasParameter('foo', 'query', $operation);
         $this->assertInstanceOf(OA\RequestBody::class, $operation->requestBody);
@@ -65,5 +68,14 @@ class FOSRestTest extends WebTestCase
 
         // The _format path attribute should be removed
         $this->assertNotHasParameter('_format', 'path', $operation);
+    }
+
+    public function provideRoute(): iterable
+    {
+        yield 'Annotations' => ['/api/fosrest'];
+
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'Attributes' => ['/api/fosrest_attributes'];
+        }
     }
 }
