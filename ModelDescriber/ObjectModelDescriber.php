@@ -72,7 +72,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
         $annotationsReader->updateDefinition($reflClass, $schema);
 
-        $discriminatorMap = $this->doctrineReader->getClassAnnotation($reflClass, DiscriminatorMap::class);
+        $discriminatorMap = $this->getAnnotation($reflClass, DiscriminatorMap::class);
         if ($discriminatorMap && Generator::UNDEFINED === $schema->discriminator) {
             $this->applyOpenApiDiscriminator(
                 $model,
@@ -181,6 +181,20 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $types[0]->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getAnnotation(\ReflectionClass $reflection, string $className)
+    {
+        if (\PHP_VERSION_ID >= 80000) {
+            if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
+                return $attribute->newInstance();
+            }
+        }
+
+        return $this->doctrineReader->getClassAnnotation($reflection, $className);
     }
 
     public function supports(Model $model): bool

@@ -130,13 +130,23 @@ final class FilteredRouteCollectionBuilder
         }
 
         /** @var Areas|null $areas */
-        $areas = $this->annotationReader->getMethodAnnotation(
-            $reflectionMethod,
-            Areas::class
-        );
+        $areas = $this->getAttributesAsAnnotation($reflectionMethod, Areas::class)[0] ?? null;
 
         if (null === $areas) {
-            $areas = $this->annotationReader->getClassAnnotation($reflectionMethod->getDeclaringClass(), Areas::class);
+            /** @var Areas|null $areas */
+            $areas = $this->getAttributesAsAnnotation($reflectionMethod->getDeclaringClass(), Areas::class)[0] ?? null;
+
+            if (null === $areas) {
+                /** @var Areas|null $areas */
+                $areas = $this->annotationReader->getMethodAnnotation(
+                    $reflectionMethod,
+                    Areas::class
+                );
+
+                if (null === $areas) {
+                    $areas = $this->annotationReader->getClassAnnotation($reflectionMethod->getDeclaringClass(), Areas::class);
+                }
+            }
         }
 
         return (null !== $areas) ? $areas->has($this->area) : false;
@@ -167,5 +177,24 @@ final class FilteredRouteCollectionBuilder
         }
 
         return false;
+    }
+
+    /**
+     * @param \ReflectionClass|\ReflectionMethod $reflection
+     *
+     * @return Areas[]
+     */
+    private function getAttributesAsAnnotation($reflection, string $className): array
+    {
+        $annotations = [];
+        if (\PHP_VERSION_ID < 80100) {
+            return $annotations;
+        }
+
+        foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
+            $annotations[] = $attribute->newInstance();
+        }
+
+        return $annotations;
     }
 }

@@ -44,6 +44,8 @@ final class FosRestDescriber implements RouteDescriberInterface
         $annotations = array_filter($annotations, static function ($value) {
             return $value instanceof RequestParam || $value instanceof QueryParam;
         });
+        $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($reflectionMethod, RequestParam::class));
+        $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($reflectionMethod, QueryParam::class));
 
         foreach ($this->getOperations($api, $route) as $operation) {
             foreach ($annotations as $annotation) {
@@ -184,5 +186,22 @@ final class FosRestDescriber implements RouteDescriberInterface
         if (null !== $format) {
             $schema->format = $format;
         }
+    }
+
+    /**
+     * @return OA\AbstractAnnotation[]
+     */
+    private function getAttributesAsAnnotation(\ReflectionMethod $reflection, string $className): array
+    {
+        $annotations = [];
+        if (\PHP_VERSION_ID < 80100) {
+            return $annotations;
+        }
+
+        foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
+            $annotations[] = $attribute->newInstance();
+        }
+
+        return $annotations;
     }
 }
