@@ -24,6 +24,11 @@ fos_rest:
     type: annotation
   
   
+api_platform:
+    resource: .
+    prefix: /api
+    type: api_platform
+
 # Controllers
 doc_area:
     path: /docs/{area}

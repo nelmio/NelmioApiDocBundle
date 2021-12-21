@@ -81,8 +81,6 @@ class TestKernel extends Kernel
      */
     protected function configureRoutes($routes)
     {
-        $this->import($routes, '', '/api', 'api_platform');
-
         $this->import($routes, __DIR__.'/Resources/routes.yaml', '/', 'yaml');
 
         if (class_exists(SerializedName::class)) {

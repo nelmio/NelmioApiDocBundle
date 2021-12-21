@@ -171,7 +171,7 @@ class WebTestCase extends BaseWebTestCase
     }
 
     /**
-     * BC symfony < 5.3
+     * BC symfony < 5.3.
      */
     protected static function getContainer(): ContainerInterface
     {
