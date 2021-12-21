@@ -23,7 +23,7 @@ class GetNelmioAssetTest extends WebTestCase
     {
         static::bootKernel();
         /** @var GetNelmioAsset $getNelmioAsset */
-        $getNelmioAsset = static::$container->get('nelmio_api_doc.render_docs.html.asset');
+        $getNelmioAsset = static::getContainer()->get('nelmio_api_doc.render_docs.html.asset');
         /** @var TwigFunction */
         $twigFunction = $getNelmioAsset->getFunctions()[0];
         self::assertSame($expectedContent, $twigFunction->getCallable()->__invoke($mode, $asset));
