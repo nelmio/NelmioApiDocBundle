@@ -18,7 +18,8 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class FOSRestController81 extends FOSRestController80 {
+class FOSRestController81 extends FOSRestController80
+{
     #[Route('/fosrest_attributes.{_format}', methods: ['POST'])]
     #[QueryParam(name: 'foo', requirements: new Regex('/^\d+$/'))]
     #[QueryParam(name: 'mapped', map: true)]

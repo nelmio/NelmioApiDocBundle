@@ -21,7 +21,6 @@ if (\PHP_VERSION_ID >= 80100) {
     {
     }
 } else {
-
     /**
      * @Route("/api", host="api.example.com")
      */
