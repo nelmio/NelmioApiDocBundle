@@ -40,9 +40,12 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasPath('/api/admin', $api);
     }
 
-    public function testFetchArticleAction()
+    /**
+     * @dataProvider provideArticleRoute
+     */
+    public function testFetchArticleAction(string $articleRoute)
     {
-        $operation = $this->getOperation('/api/article/{id}', 'get');
+        $operation = $this->getOperation($articleRoute, 'get');
 
         $this->assertHasResponse('200', $operation);
         $response = $this->getOperationResponse($operation, '200');
@@ -54,6 +57,15 @@ class FunctionalTest extends WebTestCase
         $this->assertHasProperty('author', $articleModel);
         $this->assertSame('#/components/schemas/User2', Util::getProperty($articleModel, 'author')->ref);
         $this->assertNotHasProperty('author', Util::getProperty($articleModel, 'author'));
+    }
+
+    public function provideArticleRoute(): iterable
+    {
+        yield 'Annotations' => ['/api/article/{id}'];
+
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'Attributes' => ['/api/article_attributes/{id}'];
+        }
     }
 
     public function testFilteredAction()
