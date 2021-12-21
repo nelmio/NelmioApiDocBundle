@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
+use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use OpenApi\Annotations as OA;
@@ -31,6 +32,12 @@ class ApiController81 extends ApiController80
     #[Route('/article_attributes/{id}', methods: ['GET'])]
     #[OA\Parameter(name: 'Accept-Version', in: 'header', properties: ['value' => new OA\Schema(type: 'string')])]
     public function fetchArticleActionWithAttributes()
+    {
+    }
+
+    #[Areas(["area", "area2"])]
+    #[Route('/areas_attributes/new', methods: ['GET', 'POST'])]
+    public function newAreaActionAttributes()
     {
     }
 }
