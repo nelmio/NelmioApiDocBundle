@@ -506,9 +506,8 @@ class FunctionalTest extends WebTestCase
 
     public function testDefaultOperationId()
     {
-        $suffix = \PHP_VERSION_ID >= 80100 ? '_controllerphp81' : '';
         $operation = $this->getOperation('/api/article/{id}', 'get');
-        $this->assertEquals('get_api_nelmio_apidoc_tests_functional'.$suffix.'_api_fetcharticle', $operation->operationId);
+        $this->assertEquals('get_api_nelmio_apidoc_tests_functional_api_fetcharticle', $operation->operationId);
     }
 
     public function testNamedRouteOperationId()

@@ -15,7 +15,7 @@ namespace Nelmio\ApiDocBundle\Annotation;
  * @Annotation
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
-class Areas
+final class Areas
 {
     /** @var string[] */
     private $areas;

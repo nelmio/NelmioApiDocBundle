@@ -19,7 +19,7 @@ use OpenApi\Generator;
  * @Annotation
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
-class Model extends AbstractAnnotation
+final class Model extends AbstractAnnotation
 {
     /** {@inheritdoc} */
     public static $_types = [
