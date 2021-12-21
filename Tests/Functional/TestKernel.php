@@ -31,7 +31,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Routing\RouteCollectionBuilder;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class TestKernel extends Kernel
@@ -112,7 +111,8 @@ class TestKernel extends Kernel
     /**
      * BC for sf < 5.1.
      */
-    private function import($routes, $resource, $prefix, $type) {
+    private function import($routes, $resource, $prefix, $type)
+    {
         if ($routes instanceof RoutingConfigurator) {
             $routes->withPath($prefix)->import($resource, $type);
         } else {
