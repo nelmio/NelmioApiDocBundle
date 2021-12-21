@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,9 +36,18 @@ class ApiController81 extends ApiController80
     {
     }
 
-    #[Areas(["area", "area2"])]
+    #[Areas(['area', 'area2'])]
     #[Route('/areas_attributes/new', methods: ['GET', 'POST'])]
     public function newAreaActionAttributes()
+    {
+    }
+
+    #[Route('/security_attributes')]
+    #[OA\Response(response: '201', description: '')]
+    #[Security(name: 'api_key')]
+    #[Security(name: 'basic')]
+    #[Security(name: 'oauth2', scopes: ['scope_1'])]
+    public function securityActionAttributes()
     {
     }
 }

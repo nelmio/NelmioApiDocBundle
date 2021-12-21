@@ -345,9 +345,12 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('DummyType')->toJson(), true));
     }
 
-    public function testSecurityAction()
+    /**
+     * @dataProvider provideSecurityRoute
+     */
+    public function testSecurityAction(string $route)
     {
-        $operation = $this->getOperation('/api/security', 'get');
+        $operation = $this->getOperation($route, 'get');
 
         $expected = [
             ['api_key' => []],
@@ -355,6 +358,15 @@ class FunctionalTest extends WebTestCase
             ['oauth2' => ['scope_1']],
         ];
         $this->assertEquals($expected, $operation->security);
+    }
+
+    public function provideSecurityRoute(): iterable
+    {
+        yield 'Annotations' => ['/api/security'];
+
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'Attributes' => ['/api/security_attributes'];
+        }
     }
 
     public function testClassSecurityAction()

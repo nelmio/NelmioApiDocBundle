@@ -222,12 +222,12 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
         if (\PHP_VERSION_ID < 80000) {
             yield from [
-                'with annotation only' => [
+                'with attribute only' => [
                     'r10',
                     new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
                     ['with_annotation' => true],
                 ],
-                'with annotation and path patterns' => [
+                'with attribute and path patterns' => [
                     'r10',
                     new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
                     ['path_patterns' => ['^/api'], 'with_annotation' => true],
