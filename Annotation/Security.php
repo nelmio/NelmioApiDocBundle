@@ -16,7 +16,8 @@ use OpenApi\Annotations\AbstractAnnotation;
 /**
  * @Annotation
  */
-abstract class AbstractSecurity extends AbstractAnnotation
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+class Security extends AbstractAnnotation
 {
     /** {@inheritdoc} */
     public static $_types = [
@@ -35,31 +36,15 @@ abstract class AbstractSecurity extends AbstractAnnotation
      * @var string[]
      */
     public $scopes = [];
-}
 
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-    final class Security extends AbstractSecurity
-    {
-        public function __construct(
-            array $properties = [],
-            string $name = null,
-            array $scopes = []
-        ) {
-            parent::__construct($properties + [
-                'name' => $name,
-                'scopes' => $scopes,
-            ]);
-        }
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    final class Security extends AbstractSecurity
-    {
+    public function __construct(
+        array $properties = [],
+        string $name = null,
+        array $scopes = []
+    ) {
+        parent::__construct($properties + [
+            'name' => $name,
+            'scopes' => $scopes,
+        ]);
     }
 }

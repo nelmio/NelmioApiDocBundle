@@ -14,7 +14,8 @@ namespace Nelmio\ApiDocBundle\Annotation;
 /**
  * @Annotation
  */
-abstract class AbstractAreas
+#[\Attribute(\Attribute::TARGET_METHOD)]
+class Areas
 {
     /** @var string[] */
     private $areas;
@@ -46,22 +47,5 @@ abstract class AbstractAreas
     public function has(string $area): bool
     {
         return in_array($area, $this->areas, true);
-    }
-}
-
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_METHOD)]
-    final class Areas extends AbstractAreas
-    {
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    final class Areas extends AbstractAreas
-    {
     }
 }

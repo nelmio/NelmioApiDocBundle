@@ -13,19 +13,10 @@ namespace Nelmio\ApiDocBundle\Annotation;
 
 use OpenApi\Annotations\Operation as BaseOperation;
 
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Annotation
-     */
-    #[\Attribute(\Attribute::TARGET_METHOD)]
-    final class Operation extends BaseOperation
-    {
-    }
-} else {
-    /**
-     * @Annotation
-     */
-    final class Operation extends BaseOperation
-    {
-    }
+/**
+ * @Annotation
+ */
+#[\Attribute(\Attribute::TARGET_METHOD)]
+final class Operation extends BaseOperation
+{
 }
