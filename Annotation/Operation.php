@@ -17,6 +17,6 @@ use OpenApi\Annotations\Operation as BaseOperation;
  * @Annotation
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
-final class Operation extends BaseOperation
+class Operation extends BaseOperation
 {
 }
