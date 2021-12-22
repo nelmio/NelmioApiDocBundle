@@ -46,7 +46,7 @@
         "api-platform/core": "^2.1.2",
         "friendsofsymfony/rest-bundle": "^2.0|^3.0",
         "willdurand/hateoas-bundle": "^1.0|^2.0",
-        "jms/serializer-bundle": "^2.3|^3.0",
+        "jms/serializer-bundle": "^2.3|^3.0|^4.0",
         "jms/serializer": "^1.14|^3.0"
     },
     "suggest": {
