@@ -188,6 +188,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
      */
     private function getAnnotation(\ReflectionClass $reflection, string $className)
     {
+        if (false === class_exists($className)) {
+            return null;
+        }
         if (\PHP_VERSION_ID >= 80000) {
             if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
                 return $attribute->newInstance();
