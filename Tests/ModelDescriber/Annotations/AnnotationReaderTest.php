@@ -15,6 +15,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\OpenApiAnnotationsReader;
 use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAattr;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 
@@ -57,9 +58,9 @@ class AnnotationReaderTest extends TestCase
 
         if (\PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => [new class() {
-                #[OA\Property(example: 1)]
+                #[OAattr\Property(example: 1)]
                 private $property1;
-                #[OA\Property(example: 'some example', description: 'some description')]
+                #[OAattr\Property(example: 'some example', description: 'some description')]
                 private $property2;
             }];
         }
