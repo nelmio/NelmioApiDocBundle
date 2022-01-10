@@ -58,7 +58,7 @@ class UtilTest extends TestCase
     {
         $context = Util::createContext([], $this->rootContext);
 
-        $this->assertSame($this->rootContext, $context->getRootContext());
+        $this->assertContextIsConnectedToRootContext($context);
     }
 
     public function testCreateContextWithProperties()
@@ -818,7 +818,20 @@ class UtilTest extends TestCase
 
     public function assertIsConnectedToRootContext(OA\AbstractAnnotation $annotation)
     {
-        $this->assertSame($this->rootContext, $annotation->_context->getRootContext());
+        $this->assertContextIsConnectedToRootContext($annotation->_context);
+    }
+
+    public function assertContextIsConnectedToRootContext(Context $context)
+    {
+        $getRootContext = \Closure::bind(function (Context $context) use (&$getRootContext) {
+            if (null !== $context->_parent) {
+                return $getRootContext($context->_parent);
+            }
+
+            return $context;
+        }, null, Context::class);
+
+        $this->assertSame($this->rootContext, $getRootContext($context));
     }
 
     private function getSetupPropertiesWithoutClass(array $setup)
