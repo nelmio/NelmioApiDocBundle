@@ -30,6 +30,9 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
                 [DocumentationNormalizer::SPEC_VERSION => 3]
             );
 
+            // TODO: remove this
+            // Temporary fix: zircote/swagger-php does no longer support 3.0.x with x > 0
+            unset($documentation['openapi']);
             unset($documentation['basePath']);
 
             return $documentation;
