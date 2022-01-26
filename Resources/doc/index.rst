@@ -341,6 +341,7 @@ If you need more complex features, take a look at:
     customization
     commands
     faq
+    security
 
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
 .. _`willdurand/Hateoas`: https://github.com/willdurand/Hateoas
