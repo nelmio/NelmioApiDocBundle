@@ -369,6 +369,24 @@ class FunctionalTest extends WebTestCase
         }
     }
 
+    /**
+     * @dataProvider provideSecurityOverrideRoute
+     */
+    public function testSecurityOverrideAction(string $route)
+    {
+        $operation = $this->getOperation($route, 'get');
+        $this->assertEquals([], $operation->security);
+    }
+
+    public function provideSecurityOverrideRoute(): iterable
+    {
+        yield 'Annotations' => ['/api/securityOverride'];
+
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'Attributes' => ['/api/security_override_attributes'];
+        }
+    }
+
     public function testClassSecurityAction()
     {
         $operation = $this->getOperation('/api/security/class', 'get');
