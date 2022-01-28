@@ -22,7 +22,7 @@ final class Areas
 
     public function __construct(array $properties)
     {
-        if ($properties === []) {
+        if ([] === $properties) {
             throw new \InvalidArgumentException('An array of areas was expected');
         }
 
