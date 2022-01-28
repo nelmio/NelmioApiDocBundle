@@ -22,12 +22,17 @@ final class Areas
 
     public function __construct(array $properties)
     {
+
+        if (!array_key_exists('value', $properties) || !is_array($properties['value'])) {
+            $properties = array_values($properties);
+        }
+
         if ([] === $properties) {
             throw new \InvalidArgumentException('An array of areas was expected');
         }
 
         $areas = [];
-        foreach ($properties as $area) {
+        foreach ($properties['value'] as $area) {
             if (!is_string($area)) {
                 throw new \InvalidArgumentException('An area must be given as a string');
             }
