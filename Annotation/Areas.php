@@ -22,7 +22,6 @@ final class Areas
 
     public function __construct(array $properties)
     {
-
         if (!array_key_exists('value', $properties) || !is_array($properties['value'])) {
             $properties = array_values($properties);
         }
