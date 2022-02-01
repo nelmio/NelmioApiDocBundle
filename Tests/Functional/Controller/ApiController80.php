@@ -165,6 +165,16 @@ class ApiController80
     }
 
     /**
+     * @Route("/securityOverride")
+     * @OA\Response(response="201", description="")
+     * @Security(name="api_key")
+     * @Security(name=null)
+     */
+    public function securityActionOverride()
+    {
+    }
+
+    /**
      * @Route("/swagger/symfonyConstraints", methods={"GET"})
      * @OA\Response(
      *    response="201",

@@ -50,4 +50,12 @@ class ApiController81 extends ApiController80
     public function securityActionAttributes()
     {
     }
+
+    #[Route('/security_override_attributes')]
+    #[OA\Response(response: '201', description: '')]
+    #[Security(name: 'api_key')]
+    #[Security(name: null)]
+    public function securityOverrideActionAttributes()
+    {
+    }
 }
