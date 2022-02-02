@@ -26,7 +26,7 @@ final class Areas
             $properties['value'] = array_values($properties);
         }
 
-        if ([] === $properties) {
+        if ([] === $properties['value']) {
             throw new \InvalidArgumentException('An array of areas was expected');
         }
 
