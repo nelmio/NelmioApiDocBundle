@@ -23,6 +23,10 @@ final class Areas
     public function __construct(array $properties)
     {
         if (!array_key_exists('value', $properties) || !is_array($properties['value'])) {
+            $properties['value'] = array_values($properties);
+        }
+
+        if ([] === $properties['value']) {
             throw new \InvalidArgumentException('An array of areas was expected');
         }
 
