@@ -13,7 +13,7 @@ The Upgrade to Swagger 3.0
 The biggest part of the upgrade will most likely be the upgrade of the library `zircote/swagger-php` to `3.0` which introduces new annotations in order to support OpenAPI 3.0 but also changes
 their namespace from ``Swagger`` to ``OpenApi``.
 
-They created a dedicated page to help you upgrade : https://zircote.github.io/swagger-php/Migrating-to-v3.html.
+They created a dedicated page to help you upgrade : https://github.com/zircote/swagger-php/blob/3.x/docs/Migrating-to-v3.md.
 
 Here are some additional advices that are more likely to apply to NelmioApiDocBundle users:
 
