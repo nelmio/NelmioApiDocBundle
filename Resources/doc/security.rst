@@ -8,14 +8,14 @@ A default security policy can be added in ``nelmio_api_doc.documentation.securit
     nelmio_api_doc:
         documentation:
             components:
-            securitySchemes:
-                Bearer:
-                    type: http
-                    scheme: bearer
-                ApiKeyAuth:
-                    type: apiKey
-                    in: header
-                    name: X-API-Key
+                securitySchemes:
+                    Bearer:
+                        type: http
+                        scheme: bearer
+                    ApiKeyAuth:
+                        type: apiKey
+                        in: header
+                        name: X-API-Key
             security:
                 Bearer: []
 
