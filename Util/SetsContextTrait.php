@@ -15,7 +15,7 @@ trait SetsContextTrait
             // zircote/swagger-php ^3.2
             \OpenApi\Analyser::$context = $context;
         } else {
-            /// zircote/swagger-php ^4.0
+            // zircote/swagger-php ^4.0
             \OpenApi\Generator::$context = $context;
         }
     }
