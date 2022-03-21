@@ -252,7 +252,8 @@ class ApiController80
     /**
      * @Route("/custom-operation-id", methods={"GET", "POST"})
      *
-     * @Operation(operationId="custom-operation-id")
+     * @OA\Get(operationId="get-custom-operation-id")
+     * @OA\Post(operationId="post-custom-operation-id")
      * @OA\Response(response=200, description="success")
      */
     public function customOperationIdAction()
