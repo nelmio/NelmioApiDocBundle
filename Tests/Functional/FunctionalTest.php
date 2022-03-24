@@ -564,10 +564,10 @@ class FunctionalTest extends WebTestCase
     public function testCustomOperationId()
     {
         $operation = $this->getOperation('/api/custom-operation-id', 'get');
-        $this->assertEquals('custom-operation-id', $operation->operationId);
+        $this->assertEquals('get-custom-operation-id', $operation->operationId);
 
         $operation = $this->getOperation('/api/custom-operation-id', 'post');
-        $this->assertEquals('custom-operation-id', $operation->operationId);
+        $this->assertEquals('post-custom-operation-id', $operation->operationId);
     }
 
     /**
