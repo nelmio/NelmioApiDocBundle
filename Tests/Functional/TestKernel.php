@@ -189,16 +189,16 @@ class TestKernel extends Kernel
                 'paths' => [
                     // Ensures we can define routes in Yaml without defining OperationIds
                     // See https://github.com/zircote/swagger-php/issues/1153
-                    '/api/test-from-yaml' => [ 'get' => [
+                    '/api/test-from-yaml' => ['get' => [
                         'responses' => [
                             200 => ['description' => 'success'],
-                        ]
-                    ] ],
-                    '/api/test-from-yaml2' => [ 'get' => [
+                        ],
+                    ]],
+                    '/api/test-from-yaml2' => ['get' => [
                         'responses' => [
                             200 => ['description' => 'success'],
-                        ]
-                    ] ],
+                        ],
+                    ]],
                 ],
                 'components' => [
                     'schemas' => [
