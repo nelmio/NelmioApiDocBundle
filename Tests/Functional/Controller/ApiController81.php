@@ -58,4 +58,12 @@ class ApiController81 extends ApiController80
     public function securityOverrideActionAttributes()
     {
     }
+
+    #[Route('/inline_path_parameters')]
+    #[OA\Response(response: '200', description: '')]
+    public function inlinePathParameters(
+        #[OA\PathParameter] string $product_id
+    )
+    {
+    }
 }
