@@ -63,7 +63,6 @@ class ApiController81 extends ApiController80
     #[OA\Response(response: '200', description: '')]
     public function inlinePathParameters(
         #[OA\PathParameter] string $product_id
-    )
-    {
+    ) {
     }
 }

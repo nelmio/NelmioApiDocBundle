@@ -396,8 +396,8 @@ class FunctionalTest extends WebTestCase
         $operation = $this->getOperation('/api/inline_path_parameters', 'get');
         $this->assertCount(1, $operation->parameters);
         $this->assertInstanceOf(OA\PathParameter::class, $operation->parameters[0]);
-        $this->assertSame($operation->parameters[0]->name, "product_id");
-        $this->assertSame($operation->parameters[0]->schema->type, "string");        
+        $this->assertSame($operation->parameters[0]->name, 'product_id');
+        $this->assertSame($operation->parameters[0]->schema->type, 'string');
     }
 
     public function testClassSecurityAction()
