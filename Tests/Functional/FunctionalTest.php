@@ -387,6 +387,19 @@ class FunctionalTest extends WebTestCase
         }
     }
 
+    public function testInlinePHP81Parameters()
+    {
+        if (\PHP_VERSION_ID < 80100) {
+            $this->markTestSkipped('Attributes require PHP 8.1');
+        }
+
+        $operation = $this->getOperation('/api/inline_path_parameters', 'get');
+        $this->assertCount(1, $operation->parameters);
+        $this->assertInstanceOf(OA\PathParameter::class, $operation->parameters[0]);
+        $this->assertSame($operation->parameters[0]->name, 'product_id');
+        $this->assertSame($operation->parameters[0]->schema->type, 'string');
+    }
+
     public function testClassSecurityAction()
     {
         $operation = $this->getOperation('/api/security/class', 'get');

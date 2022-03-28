@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
+use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Psr\Log\LoggerInterface;
@@ -67,14 +68,14 @@ final class OpenApiPhpDescriber
                 $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
                     return $v instanceof OA\AbstractAnnotation;
                 });
-                $classAnnotations = array_merge($classAnnotations, $this->getAttributesAsAnnotation($declaringClass, OA\AbstractAnnotation::class));
+                $classAnnotations = array_merge($classAnnotations, $this->getAttributesAsAnnotation($declaringClass, $context));
                 $classAnnotations[$declaringClass->getName()] = $classAnnotations;
             }
 
             $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
                 return $v instanceof OA\AbstractAnnotation;
             });
-            $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($method, OA\AbstractAnnotation::class));
+            $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($method, $context));
 
             if (0 === count($annotations) && 0 === count($classAnnotations[$declaringClass->getName()])) {
                 continue;
@@ -205,17 +206,18 @@ final class OpenApiPhpDescriber
      *
      * @return OA\AbstractAnnotation[]
      */
-    private function getAttributesAsAnnotation($reflection, string $className): array
+    private function getAttributesAsAnnotation($reflection, \OpenApi\Context $context): array
     {
-        $annotations = [];
-        if (\PHP_VERSION_ID < 80100) {
-            return $annotations;
+        // BC zircote/swagger-php < 4.0
+        if (!class_exists(AttributeAnnotationFactory::class)) {
+            return [];
         }
 
-        foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
-            $annotations[] = $attribute->newInstance();
-        }
+        $attributesFactory = new AttributeAnnotationFactory();
+        $attributes = $attributesFactory->build($reflection, $context);
+        // The attributes factory removes the context after executing so we need to set it back...
+        $this->setContext($context);
 
-        return $annotations;
+        return $attributes;
     }
 }
