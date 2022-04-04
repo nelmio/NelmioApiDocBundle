@@ -624,4 +624,15 @@ class FunctionalTest extends WebTestCase
 
         $this->assertFalse($model->additionalProperties);
     }
+
+    /**
+     * @requires PHP >= 8.1
+     */
+    public function testEnumSupport()
+    {
+        $model = $this->getModel('ArticleType81');
+
+        $this->assertSame('string', $model->type);
+        $this->assertCount(2, $model->enum);
+    }
 }
