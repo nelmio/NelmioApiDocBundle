@@ -73,9 +73,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
         }
 
-        $schema->type = 'object';
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
-        $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
+        $classResult = $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
+
+        if (!$classResult->shouldDescribeModelProperties()) {
+            return;
+        }
+        $schema->type = 'object';
 
         $isJmsV1 = null !== $this->namingStrategy;
 

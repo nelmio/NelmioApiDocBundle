@@ -17,10 +17,15 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithAlternateSchemaType;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithRefType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
@@ -257,6 +262,70 @@ class ApiController80
      * @OA\Response(response=200, description="success")
      */
     public function customOperationIdAction()
+    {
+    }
+
+    /**
+     * @Route("/alternate-entity-type", methods={"GET", "POST"})
+     *
+     * @OA\Get(operationId="alternate-entity-type")
+     * @OA\Response(response=200, description="success", @OA\JsonContent(
+     *      ref=@Model(type=EntityWithAlternateType::class),
+     * ))
+     */
+    public function alternateEntityType()
+    {
+    }
+
+    /**
+     * @Route("/entity-with-ref", methods={"GET", "POST"})
+     *
+     * @OA\Get(operationId="entity-with-ref")
+     * @OA\Response(response=200, description="success", @OA\JsonContent(
+     *      ref=@Model(type=EntityWithRef::class),
+     * ))
+     */
+    public function entityWithRef()
+    {
+    }
+
+    /**
+     * @Route("/entity-with-object-type", methods={"GET", "POST"})
+     *
+     * @OA\Get(operationId="entity-with-object-type")
+     * @OA\Response(response=200, description="success", @OA\JsonContent(
+     *      ref=@Model(type=EntityWithObjectType::class),
+     * ))
+     */
+    public function entityWithObjectType()
+    {
+    }
+
+    /**
+     * @Route("/form-with-alternate-type", methods={"POST"})
+     * @OA\Response(
+     *    response="204",
+     *    description="Operation automatically detected",
+     * ),
+     * @OA\RequestBody(
+     *    @Model(type=FormWithAlternateSchemaType::class))
+     * )
+     */
+    public function formWithAlternateSchemaType()
+    {
+    }
+
+    /**
+     * @Route("/form-with-ref-type", methods={"POST"})
+     * @OA\Response(
+     *    response="204",
+     *    description="Operation automatically detected",
+     * ),
+     * @OA\RequestBody(
+     *    @Model(type=FormWithRefType::class))
+     * )
+     */
+    public function formWithRefSchemaType()
     {
     }
 }
