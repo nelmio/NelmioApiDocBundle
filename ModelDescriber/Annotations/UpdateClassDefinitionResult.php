@@ -12,8 +12,10 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 /**
- * result object returned from `AnnotationReader::udpateDefinition` as a way
+ * result object returned from `AnnotationReader::updateDefinition` as a way
  * to pass back information about manually defined schema elements.
+ *
+ * @internal
  */
 final class UpdateClassDefinitionResult
 {
