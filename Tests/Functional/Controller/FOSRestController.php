@@ -11,30 +11,20 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\DateTime;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Regex;
 
-/**
- * @Route("/api", host="api.example.com")
- */
-class FOSRestController
-{
+if (\PHP_VERSION_ID >= 80100) {
     /**
-     * @Route("/fosrest.{_format}", methods={"POST"})
-     * @QueryParam(name="foo", requirements=@Regex("/^\d+$/"))
-     * @QueryParam(name="mapped", map=true)
-     * @RequestParam(name="Barraa", key="bar", requirements="\d+")
-     * @RequestParam(name="baz", requirements=@IsTrue)
-     * @RequestParam(name="datetime", requirements=@DateTime("Y-m-d\TH:i:sP"))
-     * @RequestParam(name="datetimeAlt", requirements=@DateTime("c"))
-     * @RequestParam(name="datetimeNoFormat", requirements=@DateTime())
-     * @RequestParam(name="date", requirements=@DateTime("Y-m-d"))
+     * @Route("/api", host="api.example.com")
      */
-    public function fosrestAction()
+    class FOSRestController extends FOSRestController81
+    {
+    }
+} else {
+    /**
+     * @Route("/api", host="api.example.com")
+     */
+    class FOSRestController extends FOSRestController80
     {
     }
 }

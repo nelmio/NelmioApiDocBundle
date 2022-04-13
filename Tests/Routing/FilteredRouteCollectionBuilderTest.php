@@ -157,9 +157,9 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $this->assertCount(1, $filteredRoutes);
     }
 
-    public function getMatchingRoutes(): array
+    public function getMatchingRoutes(): iterable
     {
-        return [
+        yield from [
             ['r1', new Route('/api/bar/action1')],
             ['r2', new Route('/api/foo/action1'), ['path_patterns' => ['^/api', 'i/fo', 'n1$']]],
             ['r3', new Route('/api/foo/action2'), ['path_patterns' => ['^/api/foo/action2$']]],
@@ -167,6 +167,10 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             ['r9', new Route('/api/bar/action1', [], [], [], 'api.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.ex']]],
             ['r10', new Route('/api/areas/new'), ['path_patterns' => ['^/api']]],
         ];
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield ['r10', new Route('/api/areas_attributes/new'), ['path_patterns' => ['^/api']]];
+        }
     }
 
     /**
@@ -201,9 +205,9 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $this->assertCount(1, $filteredRoutes);
     }
 
-    public function getMatchingRoutesWithAnnotation(): array
+    public function getMatchingRoutesWithAnnotation(): iterable
     {
-        return [
+        yield from [
             'with annotation only' => [
                 'r10',
                 new Route('/api/areas/new', ['_controller' => 'ApiController::newAreaAction']),
@@ -215,6 +219,21 @@ class FilteredRouteCollectionBuilderTest extends TestCase
                 ['path_patterns' => ['^/api'], 'with_annotation' => true],
             ],
         ];
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield from [
+                'with attribute only' => [
+                    'r10',
+                    new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
+                    ['with_annotation' => true],
+                ],
+                'with attribute and path patterns' => [
+                    'r10',
+                    new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
+                    ['path_patterns' => ['^/api'], 'with_annotation' => true],
+                ],
+            ];
+        }
     }
 
     /**

@@ -40,9 +40,12 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasPath('/api/admin', $api);
     }
 
-    public function testFetchArticleAction()
+    /**
+     * @dataProvider provideArticleRoute
+     */
+    public function testFetchArticleAction(string $articleRoute)
     {
-        $operation = $this->getOperation('/api/article/{id}', 'get');
+        $operation = $this->getOperation($articleRoute, 'get');
 
         $this->assertHasResponse('200', $operation);
         $response = $this->getOperationResponse($operation, '200');
@@ -54,6 +57,15 @@ class FunctionalTest extends WebTestCase
         $this->assertHasProperty('author', $articleModel);
         $this->assertSame('#/components/schemas/User2', Util::getProperty($articleModel, 'author')->ref);
         $this->assertNotHasProperty('author', Util::getProperty($articleModel, 'author'));
+    }
+
+    public function provideArticleRoute(): iterable
+    {
+        yield 'Annotations' => ['/api/article/{id}'];
+
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'Attributes' => ['/api/article_attributes/{id}'];
+        }
     }
 
     public function testFilteredAction()
@@ -333,9 +345,12 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('DummyType')->toJson(), true));
     }
 
-    public function testSecurityAction()
+    /**
+     * @dataProvider provideSecurityRoute
+     */
+    public function testSecurityAction(string $route)
     {
-        $operation = $this->getOperation('/api/security', 'get');
+        $operation = $this->getOperation($route, 'get');
 
         $expected = [
             ['api_key' => []],
@@ -343,6 +358,46 @@ class FunctionalTest extends WebTestCase
             ['oauth2' => ['scope_1']],
         ];
         $this->assertEquals($expected, $operation->security);
+    }
+
+    public function provideSecurityRoute(): iterable
+    {
+        yield 'Annotations' => ['/api/security'];
+
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'Attributes' => ['/api/security_attributes'];
+        }
+    }
+
+    /**
+     * @dataProvider provideSecurityOverrideRoute
+     */
+    public function testSecurityOverrideAction(string $route)
+    {
+        $operation = $this->getOperation($route, 'get');
+        $this->assertEquals([], $operation->security);
+    }
+
+    public function provideSecurityOverrideRoute(): iterable
+    {
+        yield 'Annotations' => ['/api/securityOverride'];
+
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'Attributes' => ['/api/security_override_attributes'];
+        }
+    }
+
+    public function testInlinePHP81Parameters()
+    {
+        if (\PHP_VERSION_ID < 80100) {
+            $this->markTestSkipped('Attributes require PHP 8.1');
+        }
+
+        $operation = $this->getOperation('/api/inline_path_parameters', 'get');
+        $this->assertCount(1, $operation->parameters);
+        $this->assertInstanceOf(OA\PathParameter::class, $operation->parameters[0]);
+        $this->assertSame($operation->parameters[0]->name, 'product_id');
+        $this->assertSame($operation->parameters[0]->schema->type, 'string');
     }
 
     public function testClassSecurityAction()
@@ -522,10 +577,10 @@ class FunctionalTest extends WebTestCase
     public function testCustomOperationId()
     {
         $operation = $this->getOperation('/api/custom-operation-id', 'get');
-        $this->assertEquals('custom-operation-id', $operation->operationId);
+        $this->assertEquals('get-custom-operation-id', $operation->operationId);
 
         $operation = $this->getOperation('/api/custom-operation-id', 'post');
-        $this->assertEquals('custom-operation-id', $operation->operationId);
+        $this->assertEquals('post-custom-operation-id', $operation->operationId);
     }
 
     /**

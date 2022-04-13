@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
+use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Psr\Log\LoggerInterface;
@@ -67,12 +68,14 @@ final class OpenApiPhpDescriber
                 $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
                     return $v instanceof OA\AbstractAnnotation;
                 });
+                $classAnnotations = array_merge($classAnnotations, $this->getAttributesAsAnnotation($declaringClass, $context));
                 $classAnnotations[$declaringClass->getName()] = $classAnnotations;
             }
 
             $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
                 return $v instanceof OA\AbstractAnnotation;
             });
+            $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($method, $context));
 
             if (0 === count($annotations) && 0 === count($classAnnotations[$declaringClass->getName()])) {
                 continue;
@@ -107,6 +110,13 @@ final class OpenApiPhpDescriber
 
                 if ($annotation instanceof Security) {
                     $annotation->validate();
+
+                    if (null === $annotation->name) {
+                        $mergeProperties->security = [];
+
+                        continue;
+                    }
+
                     $mergeProperties->security[] = [$annotation->name => $annotation->scopes];
 
                     continue;
@@ -189,5 +199,25 @@ final class OpenApiPhpDescriber
         }
 
         return $path;
+    }
+
+    /**
+     * @param \ReflectionClass|\ReflectionMethod $reflection
+     *
+     * @return OA\AbstractAnnotation[]
+     */
+    private function getAttributesAsAnnotation($reflection, \OpenApi\Context $context): array
+    {
+        // BC zircote/swagger-php < 4.0
+        if (!class_exists(AttributeAnnotationFactory::class)) {
+            return [];
+        }
+
+        $attributesFactory = new AttributeAnnotationFactory();
+        $attributes = $attributesFactory->build($reflection, $context);
+        // The attributes factory removes the context after executing so we need to set it back...
+        $this->setContext($context);
+
+        return $attributes;
     }
 }

@@ -469,7 +469,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         );
 
         $this->assertSame(['property1'], $schema->required, 'should have read constraint in default group');
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minimum, 'should not have read constraint in other group');
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum, 'should not have read constraint in other group');
     }
 
     /**
@@ -492,7 +492,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ['other']
         );
 
-        $this->assertSame(OA\UNDEFINED, $schema->required, 'should not have read constraint in default group');
+        $this->assertSame(Generator::UNDEFINED, $schema->required, 'should not have read constraint in default group');
         $this->assertSame(1, $schema->properties[0]->minimum, 'should have read constraint in other group');
     }
 

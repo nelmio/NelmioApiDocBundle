@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class WebTestCase extends BaseWebTestCase
@@ -167,5 +168,17 @@ class WebTestCase extends BaseWebTestCase
             $properties,
             sprintf('Failed asserting that property "%s" does not exist.', $property)
         );
+    }
+
+    /**
+     * BC symfony < 5.3.
+     */
+    protected static function getContainer(): ContainerInterface
+    {
+        if (method_exists(parent::class, 'getContainer')) {
+            return parent::getContainer();
+        }
+
+        return static::$container;
     }
 }

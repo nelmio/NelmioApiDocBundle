@@ -31,7 +31,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class TestKernel extends Kernel
@@ -81,39 +81,42 @@ class TestKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    protected function configureRoutes(RouteCollectionBuilder $routes)
+    protected function configureRoutes($routes)
     {
-        $routes->import(__DIR__.'/Controller/TestController.php', '/', 'annotation');
-        $routes->import(__DIR__.'/Controller/ApiController.php', '/', 'annotation');
-        $routes->import(__DIR__.'/Controller/ClassApiController.php', '/', 'annotation');
-        $routes->import(__DIR__.'/Controller/UndocumentedController.php', '/', 'annotation');
-        $routes->import(__DIR__.'/Controller/InvokableController.php', '/', 'annotation');
-        $routes->import('', '/api', 'api_platform');
-        $routes->add('/docs/{area}', 'nelmio_api_doc.controller.swagger_ui')->setDefault('area', 'default');
-        $routes->add('/docs.json', 'nelmio_api_doc.controller.swagger_json');
-        $routes->add('/docs.yaml', 'nelmio_api_doc.controller.swagger_yaml');
-        $routes->import(__DIR__.'/Controller/FOSRestController.php', '/', 'annotation');
+        $this->import($routes, __DIR__.'/Resources/routes.yaml', '/', 'yaml');
 
         if (class_exists(SerializedName::class)) {
-            $routes->import(__DIR__.'/Controller/SerializedNameController.php', '/', 'annotation');
+            $this->import($routes, __DIR__.'/Controller/SerializedNameController.php', '/', 'annotation');
         }
 
         if ($this->flags & self::USE_JMS) {
-            $routes->import(__DIR__.'/Controller/JMSController.php', '/', 'annotation');
+            $this->import($routes, __DIR__.'/Controller/JMSController.php', '/', 'annotation');
         }
 
         if ($this->flags & self::USE_BAZINGA) {
-            $routes->import(__DIR__.'/Controller/BazingaController.php', '/', 'annotation');
+            $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', 'annotation');
 
             try {
                 new \ReflectionMethod(Embedded::class, 'getType');
-                $routes->import(__DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
+                $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
             } catch (\ReflectionException $e) {
             }
         }
 
         if ($this->flags & self::ERROR_ARRAY_ITEMS) {
-            $routes->import(__DIR__.'/Controller/ArrayItemsErrorController.php', '/', 'annotation');
+            $this->import($routes, __DIR__.'/Controller/ArrayItemsErrorController.php', '/', 'annotation');
+        }
+    }
+
+    /**
+     * BC for sf < 5.1.
+     */
+    private function import($routes, $resource, $prefix, $type)
+    {
+        if ($routes instanceof RoutingConfigurator) {
+            $routes->withPath($prefix)->import($resource, $type);
+        } else {
+            $routes->import($resource, $prefix, $type);
         }
     }
 
@@ -185,6 +188,20 @@ class TestKernel extends Kernel
                 ],
                 'info' => [
                     'title' => 'My Default App',
+                ],
+                'paths' => [
+                    // Ensures we can define routes in Yaml without defining OperationIds
+                    // See https://github.com/zircote/swagger-php/issues/1153
+                    '/api/test-from-yaml' => ['get' => [
+                        'responses' => [
+                            200 => ['description' => 'success'],
+                        ],
+                    ]],
+                    '/api/test-from-yaml2' => ['get' => [
+                        'responses' => [
+                            200 => ['description' => 'success'],
+                        ],
+                    ]],
                 ],
                 'components' => [
                     'schemas' => [
