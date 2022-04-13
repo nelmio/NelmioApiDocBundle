@@ -100,7 +100,11 @@ final class ModelRegistry
                 }
 
                 if (null === $schema) {
-                    throw new \LogicException(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType())));
+                    $errorMessage = sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType()));
+                    if (Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType() && !class_exists($className = $model->getType()->getClassName())) {
+                        $errorMessage .= sprintf(' Class "\\%s" does not exist, did you forget a use statement, or typed it wrong?', $className);
+                    }
+                    throw new \LogicException($errorMessage);
                 }
             }
         }
@@ -174,7 +178,7 @@ final class ModelRegistry
     private function typeToString(Type $type): string
     {
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
-            return $type->getClassName();
+            return '\\'.$type->getClassName();
         } elseif ($type->isCollection()) {
             if (null !== $collectionType = $this->getCollectionValueType($type)) {
                 return $this->typeToString($collectionType).'[]';
