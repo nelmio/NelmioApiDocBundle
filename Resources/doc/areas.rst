@@ -54,12 +54,12 @@ Then update your routing to be able to access your different documentations:
 
 That's all! You can now access ``/api/doc/internal``, ``/api/doc/commercial`` and ``/api/doc/store``.
 
-Use annotations to define the area of your routes
---------------------------------------------
+Use annotations to filter documented routes in each area
+--------------------------------------------------------
 
 You can use the `@Areas` annotation inside your controllers to define your routes' areas.
 
-First, you need to define which area will use the`@Areas` annotations to filter 
+First, you need to define which areas will use the`@Areas` annotations to filter 
 the routes that should be documented:
 
 .. code-block:: yaml
