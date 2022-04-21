@@ -99,7 +99,7 @@ Using the bundle
 ----------------
 
 You can configure global information in the bundle configuration ``documentation.info`` section (take a look at
-`the OpenAPI 3.0 specification (formerly Swagger)`_ to know the available fields):
+`the OpenAPI 3.0 specification (formerly Swagger)`_ to know the available fields). 
 
 .. code-block:: yaml
 
@@ -127,7 +127,12 @@ You can configure global information in the bundle configuration ``documentation
 
 .. note::
 
-    If you're using Flex, this config is there by default. Don't forget to adapt it to your app!
+    If you're using Flex, this config is there by default under ``config/packages/nelmio_api_doc.yaml``. Don't forget to adapt it to your app!
+
+.. tip::
+
+    This configuration field can more generally be used to store your documentation as yaml. 
+    You may find in the ``.yaml`` files from `SwaggerPHP examples`_. 
 
 To document your routes, you can use the SwaggerPHP annotations and the
 ``Nelmio\ApiDocBundle\Annotation\Model`` annotation in your controllers::
@@ -173,6 +178,12 @@ To document your routes, you can use the SwaggerPHP annotations and the
     }
 
 The normal PHPdoc block on the controller method is used for the summary and description.
+
+.. tip::
+
+    Examples of using the annotations can be found in `SwaggerPHP examples`_.
+    However, unlike in those examples, when using this bundle you don't need to specify paths and you can easily document models as well as some
+    other properties described below as they can be automatically be documented using the Symfony integration. 
 
 Use models
 ----------
@@ -343,6 +354,7 @@ If you need more complex features, take a look at:
     faq
     security
 
+.. _`SwaggerPHP examples`: https://github.com/zircote/swagger-php/tree/master/Examples
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
 .. _`willdurand/Hateoas`: https://github.com/willdurand/Hateoas
 .. _`BazingaHateoasBundle`: https://github.com/willdurand/BazingaHateoasBundle
