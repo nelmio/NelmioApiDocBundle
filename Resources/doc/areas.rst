@@ -54,12 +54,13 @@ Then update your routing to be able to access your different documentations:
 
 That's all! You can now access ``/api/doc/internal``, ``/api/doc/commercial`` and ``/api/doc/store``.
 
-Using annotations
------------------
+Use annotations to define the area of your routes
+--------------------------------------------
 
-You can use the @Areas annotation inside your controllers to define your routes' areas.
+You can use the `@Areas` annotation inside your controllers to define your routes' areas.
 
-First, define which area will take in count annotations :
+First, you need to define which area will use the`@Areas` annotations to filter 
+the routes that should be documented:
 
 .. code-block:: yaml
 
@@ -70,7 +71,7 @@ First, define which area will take in count annotations :
             internal:
                 with_annotations: true
                 
-Then add the annotation before your controller or action ::
+Then add the annotation before your controller or action::
 
     use Nelmio\Annotations as Nelmio;
 
