@@ -191,7 +191,7 @@ To document your routes, you can use the SwaggerPHP annotations and the
         use AppBundle\Entity\Reward;
         use Nelmio\ApiDocBundle\Annotation\Model;
         use Nelmio\ApiDocBundle\Annotation\Security;
-        use OpenApi\Annotations as OA;
+        use OpenApi\Attributes as OA;
         use Symfony\Component\Routing\Annotation\Route;
 
         class UserController
@@ -445,7 +445,7 @@ If you want to customize the documentation of an object's property, you can use 
     .. code-block:: php-attributes
             
         use Nelmio\ApiDocBundle\Annotation\Model;
-        use OpenApi\Annotations as OA;
+        use OpenApi\Attributes as OA;
 
         class User
         {
