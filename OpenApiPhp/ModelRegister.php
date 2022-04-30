@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\OpenApiPhp;
 use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
@@ -154,11 +155,11 @@ final class ModelRegister
     ) {
         switch ($type) {
             case 'json':
-                $modelAnnotation = new OA\JsonContent($properties);
+                $modelAnnotation = Util::createChild($annotation, OA\JsonContent::class, $properties);
 
                 break;
             case 'xml':
-                $modelAnnotation = new OA\XmlContent($properties);
+                $modelAnnotation = Util::createChild($annotation, OA\XmlContent, $properties);
 
                 break;
             default:

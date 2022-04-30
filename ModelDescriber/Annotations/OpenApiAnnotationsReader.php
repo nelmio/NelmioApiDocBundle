@@ -39,10 +39,14 @@ class OpenApiAnnotationsReader
 
     public function updateSchema(\ReflectionClass $reflectionClass, OA\Schema $schema): void
     {
+        $this->setContext(Util::createContext([], $schema->_context));
+
         /** @var OA\Schema|null $oaSchema */
         if (!$oaSchema = $this->getAnnotation($reflectionClass, OA\Schema::class)) {
             return;
         }
+
+        $this->setContext(null);
 
         // Read @Model annotations
         $this->modelRegister->__invoke(new Analysis([$oaSchema], Util::createContext()));
@@ -69,12 +73,12 @@ class OpenApiAnnotationsReader
         // In order to have nicer errors
         $declaringClass = $reflection->getDeclaringClass();
 
-        $this->setContext(new Context([
+        $this->setContext(Util::createContext([
             'namespace' => $declaringClass->getNamespaceName(),
             'class' => $declaringClass->getShortName(),
             'property' => $reflection->name,
             'filename' => $declaringClass->getFileName(),
-        ]));
+        ], $property->_context));
 
         /** @var OA\Property|null $oaProperty */
         if (!$oaProperty = $this->getAnnotation($reflection, OA\Property::class)) {

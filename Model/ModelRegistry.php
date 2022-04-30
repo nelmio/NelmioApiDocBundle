@@ -68,7 +68,7 @@ final class ModelRegistry
         }
 
         // Reserve the name
-        Util::getSchema($this->api, $this->names[$hash]);
+        $s = Util::getSchema($this->api, $this->names[$hash]);
 
         return OA\Components::SCHEMA_REF.$this->names[$hash];
     }

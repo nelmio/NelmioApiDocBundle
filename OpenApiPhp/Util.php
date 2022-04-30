@@ -84,7 +84,7 @@ final class Util
     public static function getSchema(OA\OpenApi $api, $schema): OA\Schema
     {
         if (!$api->components instanceof OA\Components) {
-            $api->components = new OA\Components([]);
+            $api->components = self::createChild($api, OA\Components::class, []);
         }
 
         return self::getIndexedCollectionItem($api->components, OA\Schema::class, $schema);
