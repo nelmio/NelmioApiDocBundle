@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\OpenApiPhp;
 use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
-use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;

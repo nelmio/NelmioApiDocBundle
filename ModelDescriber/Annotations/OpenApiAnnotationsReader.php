@@ -18,7 +18,6 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Context;
 use OpenApi\Generator;
 
 /**
