@@ -823,6 +823,7 @@ class UtilTest extends TestCase
 
     public function assertContextIsConnectedToRootContext(Context $context)
     {
+        // zircote/swagger-php < 4.2 support
         $getRootContext = \Closure::bind(function (Context $context) use (&$getRootContext) {
             if (null !== $context->_parent) {
                 return $getRootContext($context->_parent);
