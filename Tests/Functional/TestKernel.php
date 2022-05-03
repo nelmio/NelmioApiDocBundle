@@ -185,6 +185,10 @@ class TestKernel extends Kernel
                 ],
                 'info' => [
                     'title' => 'My Default App',
+                    'license' => [
+                        'name' => 'Apache 2.0',
+                        'url' => 'https://www.apache.org/licenses/LICENSE-2.0.html',
+                    ],
                 ],
                 'paths' => [
                     // Ensures we can define routes in Yaml without defining OperationIds
