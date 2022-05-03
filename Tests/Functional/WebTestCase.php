@@ -19,6 +19,14 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class WebTestCase extends BaseWebTestCase
 {
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // Our tests produce big object circular objects, force their collection to avoid running out of memory
+        gc_collect_cycles();
+    }
+
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel();
