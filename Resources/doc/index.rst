@@ -288,7 +288,7 @@ This annotation has two options:
             content: new Model(type: User::class, groups: ['non_sensitive_data'])
         )]
 
- .. tip::
+.. tip::
 
      When used at the root of ``@OA\Response`` and ``@OA\Parameter``, ``@Model`` is automatically nested
      in a ``@OA\Schema``.
