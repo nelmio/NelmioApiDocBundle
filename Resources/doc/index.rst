@@ -233,7 +233,7 @@ The normal PHPdoc block on the controller method is used for the summary and des
     However, unlike in those examples, when using this bundle you don't need to specify paths and you can easily document models as well as some
     other properties described below as they can be automatically be documented using the Symfony integration. 
 
-Use models
+Use Models
 ----------
 
 As shown in the example above, the bundle provides the ``@Model`` annotation.
@@ -259,7 +259,7 @@ This annotation has two options:
          */
 
     .. code-block:: php-attributes
-    
+
         #[OA\Response(
             response: 200,
             description: 'Successful response',
@@ -287,6 +287,92 @@ This annotation has two options:
             description: 'Successful response',
             content: new Model(type: User::class, groups: ['non_sensitive_data'])
         )]
+
+* ``groups`` may also be used to specify the constraint validation groups used
+  (de)serialize your model, but this must be enabled in configuration::
+
+.. code-block:: yaml
+
+    nelmio_api_doc:
+        use_validation_groups: true
+        # ...
+
+With this enabled, groups set in the model will apply to both serializer
+properties and validator constraints. Take the model class below:
+
+.. configuration-block::
+
+    .. code-block:: php-annotations
+
+        use Symfony\Component\Serializer\Annotation\Group;
+        use Symfony\Component\Validator\Constraints as Assert;
+
+        class UserDto
+        {
+            /**
+             * @Group({"default", "create", "update"})
+             * @Assert\NotBlank(groups={"default", "create"})
+             */
+            public string $username;
+        }
+
+    .. code-block:: php-attributes
+
+        use Symfony\Component\Serializer\Annotation\Group;
+        use Symfony\Component\Validator\Constraints as Assert;
+
+        class UserDto
+        {
+             #[Group(["default", "create", "update"])
+             #[Assert\NotBlank(groups: ["default", "create"])
+            public string $username;
+        }
+
+The ``NotBlank`` constraint will apply only to the ``default`` and ``create``
+group, but not ``update``. In more practical terms: the `username` property
+would show as ``required`` for both model create and default, but not update.
+When using code generators to build API clients, this often translates into
+client side validation and types. ``NotBlank`` adding ``required`` will cause
+that property type to not be nullable, for example.
+
+.. configuration-block::
+
+    .. code-block:: php-annotations
+
+        use OpenApi\Annotations as OA;
+
+         /**
+          * shows `username` as `required` in the OpenAPI schema (not nullable)
+          * @OA\Response(
+          *     response=200,
+          *     @Model(type=UserDto::class, groups={"default"})
+          * )
+          */
+
+         /**
+          * Similarly, this will make the username `required` in the create
+          * schema
+          * @OA\RequestBody(@Model(type=UserDto::class, groups={"create"}))
+          */
+
+         /**
+          * But for updates, the `username` property will not be required
+          * @OA\RequestBody(@Model(type=UserDto::class, groups={"update"}))
+          */
+
+    .. code-block:: php-attributes
+
+        use OpenApi\Attributes as OA;
+
+        // shows `username` as `required` in the OpenAPI schema (not nullable)
+        #[OA\Response(response: 200, content: new Model(type: UserDto::class, groups: ["default"]))]
+
+        // Similarly, this will make the username `required` in the create  schema
+        #[OA\RequestBody(new Model(type: UserDto::class, groups: ["create"]))]
+
+        // But for updates, the `username` property will not be required
+        #[OA\RequestBody(new Model(type: UserDto::class, groups: ["update"]))]
+
 
 .. tip::
 
