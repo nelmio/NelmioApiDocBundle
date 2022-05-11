@@ -69,8 +69,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             throw new \LogicException('You need to enable forms in your application to use a form as a model.');
         }
 
-        $schema->type = 'object';
-
         $class = $model->getType()->getClassName();
 
         $annotationsReader = new AnnotationsReader(
@@ -79,7 +77,13 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             $this->mediaTypes,
             $this->useValidationGroups
         );
-        $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
+        $classResult = $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
+
+        if (!$classResult->shouldDescribeModelProperties()) {
+            return;
+        }
+
+        $schema->type = 'object';
 
         $form = $this->formFactory->create($class, null, $model->getOptions() ?? []);
         $this->parseForm($schema, $form);

@@ -62,8 +62,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function describe(Model $model, OA\Schema $schema)
     {
-        $schema->type = 'object';
-
         $class = $model->getType()->getClassName();
         $schema->_context->class = $class;
 
@@ -79,7 +77,13 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             $this->mediaTypes,
             $this->useValidationGroups
         );
-        $annotationsReader->updateDefinition($reflClass, $schema);
+        $classResult = $annotationsReader->updateDefinition($reflClass, $schema);
+
+        if (!$classResult->shouldDescribeModelProperties()) {
+            return;
+        }
+
+        $schema->type = 'object';
 
         $discriminatorMap = $this->getAnnotation($reflClass, DiscriminatorMap::class);
         if ($discriminatorMap && Generator::UNDEFINED === $schema->discriminator) {

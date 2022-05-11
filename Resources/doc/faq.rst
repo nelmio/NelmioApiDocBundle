@@ -210,3 +210,30 @@ A: Use ``disable_default_routes`` config in your area.
         areas:
             default:
                 disable_default_routes: true
+
+Overriding a Form or Plain PHP Object Schema Type
+-------------------------------------------------
+
+Q: I'd like to define a PHP object or form with a type other any ``object``, how
+do I do that?
+
+A: By using the ``@OA\Schema`` annotation or attribute with a ``type`` or ``ref``.
+Note, however, that a ``type="object"`` will still read all a models properties.
+
+.. code-block:: php
+
+    <?php
+    use OpenApi\Annotations as OA;
+    use Nelmio\ApiDocBundle\Annotation\Model;
+
+    /**
+     * @OA\Schema(type="array", @OA\Items(ref=@Model(type=SomeEntity::class)))
+     *
+     * or define a `ref`:
+     * @OA\Schema(ref="#/components/schemas/SomeRef")
+     */
+    class SomeCollection implements \IteratorAggregate
+    {
+        // ...
+    }
+

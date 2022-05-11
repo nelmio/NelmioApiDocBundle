@@ -234,7 +234,20 @@ class ModelRegistryTest extends TestCase
     {
         return [
             [new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true), 'mixed[]'],
-            [new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class), self::class],
+            [new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class), '\\'.self::class],
         ];
+    }
+
+    public function testUnsupportedTypeExceptionWithNonExistentClass()
+    {
+        $className = DoesNotExist::class;
+        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, $className);
+
+        $this->expectException('\LogicException');
+        $this->expectExceptionMessage(sprintf('Schema of type "\%s" can\'t be generated, no describer supports it. Class "\Nelmio\ApiDocBundle\Tests\Model\DoesNotExist" does not exist, did you forget a use statement, or typed it wrong?', $className));
+
+        $registry = new ModelRegistry([], new OA\OpenApi([]));
+        $registry->register(new Model($type));
+        $registry->registerSchemas();
     }
 }

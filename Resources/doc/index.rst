@@ -17,6 +17,8 @@ This bundle supports *Symfony* route requirements, PHP annotations, `Swagger-Php
 For models, it supports the `Symfony serializer`_ , the `JMS serializer`_ and the `willdurand/Hateoas`_ library.
 It does also support `Symfony form`_ types.
 
+Attributes are supported from version 4.7 and PHP 8.1.
+
 Migrate from 3.x to 4.0
 -----------------------
 
@@ -99,7 +101,7 @@ Using the bundle
 ----------------
 
 You can configure global information in the bundle configuration ``documentation.info`` section (take a look at
-`the OpenAPI 3.0 specification (formerly Swagger)`_ to know the available fields):
+`the OpenAPI 3.0 specification (formerly Swagger)`_ to know the available fields). 
 
 .. code-block:: yaml
 
@@ -127,52 +129,109 @@ You can configure global information in the bundle configuration ``documentation
 
 .. note::
 
-    If you're using Flex, this config is there by default. Don't forget to adapt it to your app!
+    If you're using Flex, this config is there by default under ``config/packages/nelmio_api_doc.yaml``. Don't forget to adapt it to your app!
+
+.. tip::
+
+    This configuration field can more generally be used to store your documentation as yaml. 
+    You may find in the ``.yaml`` files from `SwaggerPHP examples`_. 
 
 To document your routes, you can use the SwaggerPHP annotations and the
 ``Nelmio\ApiDocBundle\Annotation\Model`` annotation in your controllers::
 
-    namespace AppBundle\Controller;
+.. configuration-block::
 
-    use AppBundle\Entity\User;
-    use AppBundle\Entity\Reward;
-    use Nelmio\ApiDocBundle\Annotation\Model;
-    use Nelmio\ApiDocBundle\Annotation\Security;
-    use OpenApi\Annotations as OA;
-    use Symfony\Component\Routing\Annotation\Route;
+    .. code-block:: php-annotations
+    
+        namespace AppBundle\Controller;
 
-    class UserController
-    {
-        /**
-         * List the rewards of the specified user.
-         *
-         * This call takes into account all confirmed awards, but not pending or refused awards.
-         *
-         * @Route("/api/{user}/rewards", methods={"GET"})
-         * @OA\Response(
-         *     response=200,
-         *     description="Returns the rewards of an user",
-         *     @OA\JsonContent(
-         *        type="array",
-         *        @OA\Items(ref=@Model(type=Reward::class, groups={"full"}))
-         *     )
-         * )
-         * @OA\Parameter(
-         *     name="order",
-         *     in="query",
-         *     description="The field used to order rewards",
-         *     @OA\Schema(type="string")
-         * )
-         * @OA\Tag(name="rewards")
-         * @Security(name="Bearer")
-         */
-        public function fetchUserRewardsAction(User $user)
+        use AppBundle\Entity\User;
+        use AppBundle\Entity\Reward;
+        use Nelmio\ApiDocBundle\Annotation\Model;
+        use Nelmio\ApiDocBundle\Annotation\Security;
+        use OpenApi\Annotations as OA;
+        use Symfony\Component\Routing\Annotation\Route;
+
+        class UserController
         {
-            // ...
+            /**
+             * List the rewards of the specified user.
+             *
+             * This call takes into account all confirmed awards, but not pending or refused awards.
+             *
+             * @Route("/api/{user}/rewards", methods={"GET"})
+             * @OA\Response(
+             *     response=200,
+             *     description="Returns the rewards of an user",
+             *     @OA\JsonContent(
+             *        type="array",
+             *        @OA\Items(ref=@Model(type=Reward::class, groups={"full"}))
+             *     )
+             * )
+             * @OA\Parameter(
+             *     name="order",
+             *     in="query",
+             *     description="The field used to order rewards",
+             *     @OA\Schema(type="string")
+             * )
+             * @OA\Tag(name="rewards")
+             * @Security(name="Bearer")
+             */
+            public function fetchUserRewardsAction(User $user)
+            {
+                // ...
+            }
         }
-    }
+    
+    .. code-block:: php-attributes
+    
+        namespace AppBundle\Controller;
+
+        use AppBundle\Entity\User;
+        use AppBundle\Entity\Reward;
+        use Nelmio\ApiDocBundle\Annotation\Model;
+        use Nelmio\ApiDocBundle\Annotation\Security;
+        use OpenApi\Attributes as OA;
+        use Symfony\Component\Routing\Annotation\Route;
+
+        class UserController
+        {
+            /**
+             * List the rewards of the specified user.
+             *
+             * This call takes into account all confirmed awards, but not pending or refused awards.
+             */
+            #[Route('/api/{user}/rewards', methods=['GET'])]
+            #[OA\Response(
+                response: 200,
+                description: 'Returns the rewards of an user',
+                content: new OA\JsonContent(
+                    type: 'array', 
+                    items: new OA\Items(ref: new Model(type: AlbumDto::class, groups: ['full']))
+                )
+            )]
+            #[OA\Parameter(
+                name: 'order',
+                in: 'query',
+                description: 'The field used to order rewards',
+                schema: new OA\Schema(type: 'string')
+            )]
+            #[OA\Tag(name: 'rewards')]
+            #[Security(name: 'Bearer')]
+            public function fetchUserRewardsAction(User $user)
+            {
+                // ...
+            }
+        }
+    
 
 The normal PHPdoc block on the controller method is used for the summary and description.
+
+.. tip::
+
+    Examples of using the annotations can be found in `SwaggerPHP examples`_.
+    However, unlike in those examples, when using this bundle you don't need to specify paths and you can easily document models as well as some
+    other properties described below as they can be automatically be documented using the Symfony integration. 
 
 Use models
 ----------
@@ -188,23 +247,48 @@ This annotation has two options:
 
 * ``type`` to specify your model's type::
 
-    /**
-     * @OA\Response(
-     *     response=200,
-     *     @Model(type=User::class)
-     * )
-     */
+.. configuration-block::
+
+    .. code-block:: php-annotations
+    
+        /**
+         * @OA\Response(
+         *     response=200,
+         *     @Model(type=User::class)
+         * )
+         */
+
+    .. code-block:: php-attributes
+    
+        #[OA\Response(
+            response: 200,
+            description: 'Successful response',
+            content: new Model(type: User::class)
+        )]
 
 * ``groups`` to specify the serialization groups used to (de)serialize your model::
 
-     /**
-     * @OA\Response(
-     *     response=200,
-     *     @Model(type=User::class, groups={"non_sensitive_data"})
-     * )
-     */
 
- .. tip::
+.. configuration-block::
+
+    .. code-block:: php-annotations
+
+         /**
+         * @OA\Response(
+         *     response=200,
+         *     @Model(type=User::class, groups={"non_sensitive_data"})
+         * )
+         */
+
+    .. code-block:: php-attributes
+    
+        #[OA\Response(
+            response: 200,
+            description: 'Successful response',
+            content: new Model(type: User::class, groups: ['non_sensitive_data'])
+        )]
+
+.. tip::
 
      When used at the root of ``@OA\Response`` and ``@OA\Parameter``, ``@Model`` is automatically nested
      in a ``@OA\Schema``.
@@ -212,6 +296,10 @@ This annotation has two options:
      The media type defaults to ``application/json``.
 
      To use ``@Model`` directly within a ``@OA\Schema``, ``@OA\Items`` or ``@OA\Property``, you have to use the ``$ref`` field::
+
+.. configuration-block::
+
+    .. code-block:: php-annotations
 
          /**
           * @OA\Response(
@@ -226,6 +314,23 @@ This annotation has two options:
           *     )
           * ))
           */
+
+    .. code-block:: php-attributes
+
+        #[OA\Response(
+            content: new OA\JsonContent(ref: new Model(type: User::class))
+        )]
+         /**
+          * or
+          */
+        #[OA\Response(
+            content: new OA\XmlContent(example: new OA\Schema(
+                type: 'object',
+                properties: [
+                    new OA\Property(property: 'foo', ref: new Model(type: FooClass::class))
+                ]
+            ))
+        )]
 
 Symfony Form types
 ~~~~~~~~~~~~~~~~~~
@@ -277,7 +382,15 @@ General PHP objects
 
     .. code-block:: php
 
-       @OA\Schema(ref=@Model(type="App\Response\ItemResponse", groups=["Default"])),
+        .. configuration-block::
+
+            .. code-block:: php-annotations
+
+                @OA\Schema(ref=@Model(type="App\Response\ItemResponse", groups=["Default"])),
+
+            .. code-block:: php-attributes
+
+                #[OA\Schema(ref: new Model(type: App\Response\ItemResponse::class, groups: ['Default']))]
 
     It will generate two different component schemas (ItemResponse, ItemResponse2), even though Default and blank are the same. This is by design.
 
@@ -295,34 +408,64 @@ General PHP objects
 
 If you want to customize the documentation of an object's property, you can use ``@OA\Property``::
 
-    use Nelmio\ApiDocBundle\Annotation\Model;
-    use OpenApi\Annotations as OA;
 
-    class User
-    {
-        /**
-         * @var int
-         * @OA\Property(description="The unique identifier of the user.")
-         */
-        public $id;
+.. configuration-block::
 
-        /**
-         * @OA\Property(type="string", maxLength=255)
-         */
-        public $username;
+    .. code-block:: php-annotations
+            
+        use Nelmio\ApiDocBundle\Annotation\Model;
+        use OpenApi\Annotations as OA;
 
-        /**
-         * @OA\Property(ref=@Model(type=User::class))
-         */
-        public $friend;
+        class User
+        {
+            /**
+             * @var int
+             * @OA\Property(description="The unique identifier of the user.")
+             */
+            public $id;
 
-        /**
-         * @OA\Property(description="This is my coworker!")
-         */
-        public setCoworker(User $coworker) {
-            // ...
+            /**
+             * @OA\Property(type="string", maxLength=255)
+             */
+            public $username;
+
+            /**
+             * @OA\Property(ref=@Model(type=User::class))
+             */
+            public $friend;
+
+            /**
+             * @OA\Property(description="This is my coworker!")
+             */
+            public setCoworker(User $coworker) {
+                // ...
+            }
         }
-    }
+
+    .. code-block:: php-attributes
+            
+        use Nelmio\ApiDocBundle\Annotation\Model;
+        use OpenApi\Attributes as OA;
+
+        class User
+        {
+            /**
+             * @var int
+             */
+            #[OA\Property(description: 'The unique identifier of the user.')]
+            public $id;
+
+            #[OA\Property(type: 'string', maxLength: 255)]
+            public $username;
+
+            #[OA\Property(ref: new Model(type: User::class))]
+            public $friend;
+
+            #[OA\Property(description: 'This is my coworker!')]
+            public setCoworker(User $coworker) {
+                // ...
+            }
+        }
 
 See the `OpenAPI 3.0 specification`__ to see all the available fields of ``@OA\Property``.
 
@@ -343,6 +486,7 @@ If you need more complex features, take a look at:
     faq
     security
 
+.. _`SwaggerPHP examples`: https://github.com/zircote/swagger-php/tree/master/Examples
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
 .. _`willdurand/Hateoas`: https://github.com/willdurand/Hateoas
 .. _`BazingaHateoasBundle`: https://github.com/willdurand/BazingaHateoasBundle

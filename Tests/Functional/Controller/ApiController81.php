@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -64,5 +65,11 @@ class ApiController81 extends ApiController80
     public function inlinePathParameters(
         #[OA\PathParameter] string $product_id
     ) {
+    }
+
+    #[Route('/enum')]
+    #[OA\Response(response: '201', description: '', attachables: [new Model(type: Article81::class)])]
+    public function enum()
+    {
     }
 }

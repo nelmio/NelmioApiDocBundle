@@ -624,4 +624,60 @@ class FunctionalTest extends WebTestCase
 
         $this->assertFalse($model->additionalProperties);
     }
+
+    /**
+     * @requires PHP >= 8.1
+     */
+    public function testEnumSupport()
+    {
+        $model = $this->getModel('ArticleType81');
+
+        $this->assertSame('string', $model->type);
+        $this->assertCount(2, $model->enum);
+    }
+
+    public function testEntitiesWithOverriddenSchemaTypeDoNotReadOtherProperties()
+    {
+        $model = $this->getModel('EntityWithAlternateType');
+
+        $this->assertSame('array', $model->type);
+        $this->assertSame('string', $model->items->type);
+        $this->assertSame(Generator::UNDEFINED, $model->properties);
+    }
+
+    public function testEntitiesWithRefInSchemaDoNoReadOtherProperties()
+    {
+        $model = $this->getModel('EntityWithRef');
+
+        $this->assertSame(Generator::UNDEFINED, $model->type);
+        $this->assertSame('#/components/schemas/Test', $model->ref);
+        $this->assertSame(Generator::UNDEFINED, $model->properties);
+    }
+
+    public function testEntitiesWithObjectTypeStillReadProperties()
+    {
+        $model = $this->getModel('EntityWithObjectType');
+
+        $this->assertSame('object', $model->type);
+        $this->assertCount(1, $model->properties);
+        $property = Util::getProperty($model, 'notIgnored');
+        $this->assertSame('string', $property->type);
+    }
+
+    public function testFormsWithOverriddenSchemaTypeDoNotReadOtherProperties()
+    {
+        $model = $this->getModel('FormWithAlternateSchemaType');
+
+        $this->assertSame('string', $model->type);
+        $this->assertSame(Generator::UNDEFINED, $model->properties);
+    }
+
+    public function testFormWithRefInSchemaDoNoReadOtherProperties()
+    {
+        $model = $this->getModel('FormWithRefType');
+
+        $this->assertSame(Generator::UNDEFINED, $model->type);
+        $this->assertSame('#/components/schemas/Test', $model->ref);
+        $this->assertSame(Generator::UNDEFINED, $model->properties);
+    }
 }
