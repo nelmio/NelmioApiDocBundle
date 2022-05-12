@@ -10,7 +10,7 @@ A: You can configure ``schemas`` in the nelmio_api_doc configuration and then re
 
 .. code-block:: yaml
 
-    # config/nelmio_api_doc.yml
+    # config/nelmio_api_doc.yaml
     nelmio_api_doc:
         documentation:
             components:
@@ -125,7 +125,7 @@ If you have not set up this script, you can manually execute this command:
 
 .. code-block:: bash
 
-    $ bin/console assets:install --symlink
+    $ php bin/console assets:install --symlink
 
 Re-add Google Fonts
 -------------------
@@ -194,7 +194,7 @@ A: Use ``@OA\Tag`` annotation.
      */
     class BookmarkController extends AbstractFOSRestController implements ContextPresetInterface
     {
-        //...
+        // ...
     }
 
 Disable Default Section
