@@ -8,7 +8,7 @@ What's supported?
 -----------------
 
 This bundle supports *Symfony* route requirements, PHP annotations, `Swagger-Php`_ annotations,
-`FOSRestBundle`_ annotations and apps using `Api-Platform`_.
+`FOSRestBundle`_ annotations and applications using `Api-Platform`_.
 
 .. _`Swagger-Php`: https://github.com/zircote/swagger-php
 .. _`FOSRestBundle`: https://github.com/FriendsOfSymfony/FOSRestBundle
@@ -145,8 +145,8 @@ To document your routes, you can use the SwaggerPHP annotations and the
     
         namespace AppBundle\Controller;
 
-        use AppBundle\Entity\User;
         use AppBundle\Entity\Reward;
+        use AppBundle\Entity\User;
         use Nelmio\ApiDocBundle\Annotation\Model;
         use Nelmio\ApiDocBundle\Annotation\Security;
         use OpenApi\Annotations as OA;
@@ -187,8 +187,8 @@ To document your routes, you can use the SwaggerPHP annotations and the
     
         namespace AppBundle\Controller;
 
-        use AppBundle\Entity\User;
         use AppBundle\Entity\Reward;
+        use AppBundle\Entity\User;
         use Nelmio\ApiDocBundle\Annotation\Model;
         use Nelmio\ApiDocBundle\Annotation\Security;
         use OpenApi\Attributes as OA;
@@ -225,7 +225,7 @@ To document your routes, you can use the SwaggerPHP annotations and the
         }
     
 
-The normal PHPdoc block on the controller method is used for the summary and description.
+The normal PHPDoc block on the controller method is used for the summary and description.
 
 .. tip::
 
