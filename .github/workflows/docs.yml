@@ -1,0 +1,33 @@
+name: CI
+
+on:
+    push: ~
+    pull_request: ~
+
+jobs:
+    doctor-rst:
+        name: Lint (DOCtor-RST)
+
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: "Checkout"
+                uses: actions/checkout@v2
+
+            -   name: "Create cache dir"
+                run: mkdir .cache
+
+            -   name: "Extract base branch name"
+                run: echo "##[set-output name=branch;]$(echo ${GITHUB_BASE_REF:=${GITHUB_REF##*/}})"
+                id: extract_base_branch
+
+            -   name: "Cache DOCtor-RST"
+                uses: actions/cache@v2
+                with:
+                    path: .cache
+                    key: ${{ runner.os }}-doctor-rst-${{ steps.extract_base_branch.outputs.branch }}
+
+            -   name: "Run DOCtor-RST"
+                uses: docker://oskarstark/doctor-rst
+                with:
+                    args: --short --error-format=github --cache-file=/github/workspace/.cache/doctor-rst.cache

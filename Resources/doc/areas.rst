@@ -40,7 +40,7 @@ Then update your routing to be able to access your different documentations:
 
 .. code-block:: yaml
 
-    # app/config/routing.yml
+    # app/config/routing.yaml
     app.swagger_ui:
         path: /api/doc/{area}
         methods: GET
