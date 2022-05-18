@@ -69,7 +69,7 @@ the routes that should be documented:
             default:
                 path_patterns: [ ^/api ]
             internal:
-                with_annotations: true
+                with_annotation: true
                 
 Then add the annotation before your controller or action::
 
