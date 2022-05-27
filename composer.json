@@ -64,8 +64,8 @@
         "symfony/form": "For describing your form type models.",
         "symfony/monolog-bundle": "For using a PSR-3 compatible logger implementation with the API PHP describer.",
         "symfony/serializer": "For describing your models.",
+        "symfony/twig-bundle": "For using the Swagger UI.",
         "symfony/validator": "For describing the validation constraints in your models.",
-        "twig/twig-bundle": "For using the Swagger UI.",
         "willdurand/hateoas-bundle": "For extracting HATEOAS metadata."
     },
     "conflict": {
