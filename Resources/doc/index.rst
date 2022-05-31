@@ -380,17 +380,16 @@ General PHP objects
             return $this->items;
         }
 
-    .. code-block:: php
 
-        .. configuration-block::
+    .. configuration-block::
 
-            .. code-block:: php-annotations
+        .. code-block:: php-annotations
 
-                @OA\Schema(ref=@Model(type="App\Response\ItemResponse", groups=["Default"])),
+            @OA\Schema(ref=@Model(type="App\Response\ItemResponse", groups=["Default"])),
 
-            .. code-block:: php-attributes
+        .. code-block:: php-attributes
 
-                #[OA\Schema(ref: new Model(type: App\Response\ItemResponse::class, groups: ['Default']))]
+            #[OA\Schema(ref: new Model(type: App\Response\ItemResponse::class, groups: ['Default']))]
 
     It will generate two different component schemas (ItemResponse, ItemResponse2), even though Default and blank are the same. This is by design.
 
