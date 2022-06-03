@@ -35,6 +35,8 @@ Open a command console, enter your project directory and execute the following c
 
     $ composer require nelmio/api-doc-bundle
 
+By default, only routes under ``/api`` are documented. Update the regexp at ``nelmio_api_doc.areas.path_patterns`` in ``config/packages/nelmio_api_doc.yaml`` to change this policy.
+
 .. note::
 
     If you're not using Flex, then add the bundle to your kernel::
@@ -82,9 +84,9 @@ Open a command console, enter your project directory and execute the following c
         # config/packages/nelmio_api_doc.yaml
         nelmio_api_doc:
             areas:
-                path_patterns: # an array of regexps
+                path_patterns: # an array of regexps (document only routes under /api, expect /api/doc)
                     - ^/api(?!/doc$)
-                host_patterns:
+                host_patterns: # document only routes with a host of the form api.*
                     - ^api\.
 
 How does this bundle work?
