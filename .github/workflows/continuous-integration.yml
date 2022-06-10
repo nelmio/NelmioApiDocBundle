@@ -24,18 +24,19 @@ jobs:
     strategy:
       matrix:
         include:
-          - php-version: 7.1
-            composer-flags: "--prefer-lowest"
           - php-version: 7.2
-            symfony-require: "^4.0"
+            composer-flags: "--prefer-lowest"
           - php-version: 7.3
-            symfony-require: "^5.0"
+            symfony-require: "4.4.*"
           - php-version: 7.4
-            symfony-require: "^4.0"
-          - php-version: 7.3
-            symfony-require: "^5.0"
+            symfony-require: "5.3.*"
           - php-version: 8.0
-            composer-flags: "--ignore-platform-reqs"
+            symfony-require: "5.4.*"
+          - php-version: 8.1
+            symfony-require: "5.4.*"
+          - php-version: 8.1
+            symfony-require: "6.0.*"
+            api-platform: "early"
 
     steps:
       - name: "Checkout"
@@ -60,6 +61,14 @@ jobs:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
+      
+      - name: "Use an early version of Api-platform with symfony 6 support"
+        if: ${{ matrix.api-platform == 'early' }}
+        env:
+          SYMFONY_REQUIRE: "${{ matrix.symfony-require }}"
+        run: |
+          composer config repositories.api-platform git https://github.com/PierreRebeilleau/core.git
+          composer require api-platform/core:dev-test-compatibility --no-update --dev
 
       - name: "Install dependencies with composer"
         env:

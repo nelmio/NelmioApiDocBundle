@@ -11,37 +11,36 @@
 
 namespace Nelmio\ApiDocBundle\Controller;
 
-use OpenApi\Annotations\OpenApi;
-use OpenApi\Annotations\Server;
-use Psr\Container\ContainerInterface;
+use InvalidArgumentException;
+use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class YamlDocumentationController
 {
-    private $generatorLocator;
+    /**
+     * @var RenderOpenApi
+     */
+    private $renderOpenApi;
 
-    public function __construct(ContainerInterface $generatorLocator)
+    public function __construct(RenderOpenApi $renderOpenApi)
     {
-        $this->generatorLocator = $generatorLocator;
+        $this->renderOpenApi = $renderOpenApi;
     }
 
     public function __invoke(Request $request, $area = 'default')
     {
-        if (!$this->generatorLocator->has($area)) {
+        try {
+            $response = new Response(
+                $this->renderOpenApi->renderFromRequest($request, RenderOpenApi::YAML, $area),
+                Response::HTTP_OK,
+                ['Content-Type' => 'text/x-yaml']
+            );
+
+            return $response->setCharset('UTF-8');
+        } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException(sprintf('Area "%s" is not supported as it isn\'t defined in config.', $area));
         }
-
-        /** @var OpenApi $spec */
-        $spec = $this->generatorLocator->get($area)->generate();
-
-        if ('' !== $request->getBaseUrl()) {
-            $spec->servers = [new Server(['url' => $request->getSchemeAndHttpHost().$request->getBaseUrl()])];
-        }
-
-        return new Response($spec->toYaml(), 200, [
-            'Content-Type' => 'text/x-yaml',
-        ]);
     }
 }

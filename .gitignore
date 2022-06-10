@@ -9,3 +9,4 @@
 /.phpunit.result.cache
 /Tests/Functional/cache
 /Tests/Functional/logs
+.idea

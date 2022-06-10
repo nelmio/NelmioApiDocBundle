@@ -16,6 +16,7 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -43,6 +44,8 @@ final class FosRestDescriber implements RouteDescriberInterface
         $annotations = array_filter($annotations, static function ($value) {
             return $value instanceof RequestParam || $value instanceof QueryParam;
         });
+        $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($reflectionMethod, RequestParam::class));
+        $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($reflectionMethod, QueryParam::class));
 
         foreach ($this->getOperations($api, $route) as $operation) {
             foreach ($annotations as $annotation) {
@@ -55,7 +58,7 @@ final class FosRestDescriber implements RouteDescriberInterface
 
                     $parameter->required = !$annotation->nullable && $annotation->strict;
 
-                    if (OA\UNDEFINED === $parameter->description) {
+                    if (Generator::UNDEFINED === $parameter->description) {
                         $parameter->description = $annotation->description;
                     }
 
@@ -128,7 +131,7 @@ final class FosRestDescriber implements RouteDescriberInterface
 
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
-        $requestBody->content = OA\UNDEFINED !== $requestBody->content ? $requestBody->content : [];
+        $requestBody->content = Generator::UNDEFINED !== $requestBody->content ? $requestBody->content : [];
         switch ($type) {
             case 'json':
                 $contentType = 'application/json';
@@ -142,7 +145,7 @@ final class FosRestDescriber implements RouteDescriberInterface
                 throw new \InvalidArgumentException('Unsupported media type');
         }
         if (!isset($requestBody->content[$contentType])) {
-            $requestBody->content[$contentType] = new OA\MediaType(
+            $requestBody->content[$contentType] = Util::createChild($requestBody, OA\MediaType::class,
                 [
                     'mediaType' => $contentType,
                 ]
@@ -165,7 +168,7 @@ final class FosRestDescriber implements RouteDescriberInterface
     {
         $schema->default = $annotation->getDefault();
 
-        if (OA\UNDEFINED === $schema->type) {
+        if (Generator::UNDEFINED === $schema->type) {
             $schema->type = $annotation->map ? 'array' : 'string';
         }
 
@@ -183,5 +186,22 @@ final class FosRestDescriber implements RouteDescriberInterface
         if (null !== $format) {
             $schema->format = $format;
         }
+    }
+
+    /**
+     * @return OA\AbstractAnnotation[]
+     */
+    private function getAttributesAsAnnotation(\ReflectionMethod $reflection, string $className): array
+    {
+        $annotations = [];
+        if (\PHP_VERSION_ID < 80100) {
+            return $annotations;
+        }
+
+        foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
+            $annotations[] = $attribute->newInstance();
+        }
+
+        return $annotations;
     }
 }

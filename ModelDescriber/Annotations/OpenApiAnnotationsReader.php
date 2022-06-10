@@ -14,16 +14,19 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
-use OpenApi\Analyser;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
-use OpenApi\Context;
+use OpenApi\Generator;
 
 /**
  * @internal
  */
 class OpenApiAnnotationsReader
 {
+    use SetsContextTrait;
+
     private $annotationsReader;
     private $modelRegister;
 
@@ -35,13 +38,17 @@ class OpenApiAnnotationsReader
 
     public function updateSchema(\ReflectionClass $reflectionClass, OA\Schema $schema): void
     {
-        /** @var OA\Schema $oaSchema */
-        if (!$oaSchema = $this->annotationsReader->getClassAnnotation($reflectionClass, OA\Schema::class)) {
+        $this->setContext(Util::createContext([], $schema->_context));
+
+        /** @var OA\Schema|null $oaSchema */
+        if (!$oaSchema = $this->getAnnotation($reflectionClass, OA\Schema::class)) {
             return;
         }
 
+        $this->setContext(null);
+
         // Read @Model annotations
-        $this->modelRegister->__invoke(new Analysis([$oaSchema]));
+        $this->modelRegister->__invoke(new Analysis([$oaSchema], Util::createContext()));
 
         if (!$oaSchema->validate()) {
             return;
@@ -52,42 +59,63 @@ class OpenApiAnnotationsReader
 
     public function getPropertyName($reflection, string $default): string
     {
-        /** @var OA\Property $oaProperty */
-        if ($reflection instanceof \ReflectionProperty && !$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflection, OA\Property::class)) {
-            return $default;
-        } elseif ($reflection instanceof \ReflectionMethod && !$oaProperty = $this->annotationsReader->getMethodAnnotation($reflection, OA\Property::class)) {
+        /** @var OA\Property|null $oaProperty */
+        if (!$oaProperty = $this->getAnnotation($reflection, OA\Property::class)) {
             return $default;
         }
 
-        return OA\UNDEFINED !== $oaProperty->property ? $oaProperty->property : $default;
+        return Generator::UNDEFINED !== $oaProperty->property ? $oaProperty->property : $default;
     }
 
     public function updateProperty($reflection, OA\Property $property, array $serializationGroups = null): void
     {
         // In order to have nicer errors
         $declaringClass = $reflection->getDeclaringClass();
-        Analyser::$context = new Context([
+
+        $this->setContext(Util::createContext([
             'namespace' => $declaringClass->getNamespaceName(),
             'class' => $declaringClass->getShortName(),
             'property' => $reflection->name,
             'filename' => $declaringClass->getFileName(),
-        ]);
+        ], $property->_context));
 
-        /** @var OA\Property $oaProperty */
-        if ($reflection instanceof \ReflectionProperty && !$oaProperty = $this->annotationsReader->getPropertyAnnotation($reflection, OA\Property::class)) {
-            return;
-        } elseif ($reflection instanceof \ReflectionMethod && !$oaProperty = $this->annotationsReader->getMethodAnnotation($reflection, OA\Property::class)) {
+        /** @var OA\Property|null $oaProperty */
+        if (!$oaProperty = $this->getAnnotation($reflection, OA\Property::class)) {
             return;
         }
-        Analyser::$context = null;
+        $this->setContext(null);
 
         // Read @Model annotations
-        $this->modelRegister->__invoke(new Analysis([$oaProperty]), $serializationGroups);
+        $this->modelRegister->__invoke(new Analysis([$oaProperty], Util::createContext()), $serializationGroups);
 
         if (!$oaProperty->validate()) {
             return;
         }
 
         $property->mergeProperties($oaProperty);
+    }
+
+    /**
+     * @param \ReflectionClass|\ReflectionProperty|\ReflectionMethod $reflection
+     *
+     * @return mixed
+     */
+    private function getAnnotation($reflection, string $className)
+    {
+        if (\PHP_VERSION_ID >= 80100) {
+            if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
+                return $attribute->newInstance();
+            }
+        }
+
+        if ($reflection instanceof \ReflectionClass) {
+            return $this->annotationsReader->getClassAnnotation($reflection, $className);
+        } elseif ($reflection instanceof \ReflectionProperty) {
+            return $this->annotationsReader->getPropertyAnnotation($reflection, $className);
+        } elseif ($reflection instanceof \ReflectionMethod) {
+            return $this->annotationsReader->getMethodAnnotation($reflection, $className);
+        }
+
+        return null;
     }
 }

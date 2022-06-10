@@ -15,10 +15,16 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use Symfony\Component\PropertyInfo\Type;
 
 final class ModelRegistry
 {
+    use LoggerAwareTrait;
+
+    private $registeredModelNames = [];
+
     private $alternativeNames = [];
 
     private $unregistered = [];
@@ -40,10 +46,11 @@ final class ModelRegistry
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
-
+        $this->logger = new NullLogger();
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
             $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
             $this->names[$model->getHash()] = $alternativeName;
+            $this->registeredModelNames[$alternativeName] = $model;
             Util::getSchema($this->api, $alternativeName);
         }
     }
@@ -57,10 +64,11 @@ final class ModelRegistry
         }
         if (!isset($this->names[$hash])) {
             $this->names[$hash] = $this->generateModelName($model);
+            $this->registeredModelNames[$this->names[$hash]] = $model;
         }
 
         // Reserve the name
-        Util::getSchema($this->api, $this->names[$hash]);
+        $s = Util::getSchema($this->api, $this->names[$hash]);
 
         return OA\Components::SCHEMA_REF.$this->names[$hash];
     }
@@ -92,7 +100,11 @@ final class ModelRegistry
                 }
 
                 if (null === $schema) {
-                    throw new \LogicException(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType())));
+                    $errorMessage = sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType()));
+                    if (Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType() && !class_exists($className = $model->getType()->getClassName())) {
+                        $errorMessage .= sprintf(' Class "\\%s" does not exist, did you forget a use statement, or typed it wrong?', $className);
+                    }
+                    throw new \LogicException($errorMessage);
                 }
             }
         }
@@ -115,6 +127,12 @@ final class ModelRegistry
         );
         $i = 1;
         while (\in_array($name, $names, true)) {
+            if (isset($this->registeredModelNames[$name])) {
+                $this->logger->info(sprintf('Can not assign a name for the model, the name "%s" has already been taken.', $name), [
+                    'model' => $this->modelToArray($model),
+                    'taken_by' => $this->modelToArray($this->registeredModelNames[$name]),
+                ]);
+            }
             ++$i;
             $name = $base.$i;
         }
@@ -122,10 +140,30 @@ final class ModelRegistry
         return $name;
     }
 
+    private function modelToArray(Model $model): array
+    {
+        $getType = function (Type $type) use (&$getType) {
+            return [
+                'class' => $type->getClassName(),
+                'built_in_type' => $type->getBuiltinType(),
+                'nullable' => $type->isNullable(),
+                'collection' => $type->isCollection(),
+                'collection_key_types' => $type->isCollection() ? array_map($getType, $this->getCollectionKeyTypes($type)) : null,
+                'collection_value_types' => $type->isCollection() ? array_map($getType, $this->getCollectionValueTypes($type)) : null,
+            ];
+        };
+
+        return [
+            'type' => $getType($model->getType()),
+            'options' => $model->getOptions(),
+            'groups' => $model->getGroups(),
+        ];
+    }
+
     private function getTypeShortName(Type $type): string
     {
-        if (null !== $type->getCollectionValueType()) {
-            return $this->getTypeShortName($type->getCollectionValueType()).'[]';
+        if (null !== $collectionType = $this->getCollectionValueType($type)) {
+            return $this->getTypeShortName($collectionType).'[]';
         }
 
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
@@ -140,15 +178,45 @@ final class ModelRegistry
     private function typeToString(Type $type): string
     {
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
-            return $type->getClassName();
+            return '\\'.$type->getClassName();
         } elseif ($type->isCollection()) {
-            if (null !== $type->getCollectionValueType()) {
-                return $this->typeToString($type->getCollectionValueType()).'[]';
+            if (null !== $collectionType = $this->getCollectionValueType($type)) {
+                return $this->typeToString($collectionType).'[]';
             } else {
                 return 'mixed[]';
             }
         } else {
             return $type->getBuiltinType();
         }
+    }
+
+    private function getCollectionKeyTypes(Type $type): array
+    {
+        // BC layer, this condition should be removed after removing support for symfony < 5.3
+        if (!method_exists($type, 'getCollectionKeyTypes')) {
+            return null !== $type->getCollectionKeyType() ? [$type->getCollectionKeyType()] : [];
+        }
+
+        return $type->getCollectionKeyTypes();
+    }
+
+    private function getCollectionValueTypes(Type $type): array
+    {
+        // BC layer, this condition should be removed after removing support for symfony < 5.3
+        if (!method_exists($type, 'getCollectionValueTypes')) {
+            return null !== $type->getCollectionValueType() ? [$type->getCollectionValueType()] : [];
+        }
+
+        return $type->getCollectionValueTypes();
+    }
+
+    private function getCollectionValueType(Type $type): ?Type
+    {
+        // BC layer, this condition should be removed after removing support for symfony < 5.3
+        if (!method_exists($type, 'getCollectionValueTypes')) {
+            return $type->getCollectionValueType();
+        }
+
+        return $type->getCollectionValueTypes()[0] ?? null;
     }
 }

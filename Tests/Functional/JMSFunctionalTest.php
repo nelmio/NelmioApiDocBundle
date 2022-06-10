@@ -11,6 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+
 class JMSFunctionalTest extends WebTestCase
 {
     protected function setUp(): void
@@ -237,7 +239,7 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'integer',
                 ],
                 'complex' => [
-                    '$ref' => '#/components/schemas/JMSComplex2',
+                    '$ref' => '#/components/schemas/JMSComplexDefault',
                 ],
                 'user' => [
                     '$ref' => '#/components/schemas/JMSUser',
@@ -306,6 +308,17 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('VirtualProperty')->toJson(), true));
     }
 
+    public function testNoCollisionsAreGenerated()
+    {
+        self::assertFalse($this->hasModel('JMSComplex2'));
+        self::assertFalse($this->hasModel('JMSUser2'));
+        self::assertFalse($this->hasModel('JMSChatRoom2'));
+        self::assertFalse($this->hasModel('JMSChatRoomUser2'));
+        self::assertFalse($this->hasModel('JMSChatLivingRoom2'));
+
+        self::assertFalse($this->hasModel('JMSPicture2'));
+    }
+
     public function testNamingStrategyWithConstraints()
     {
         $this->assertEquals([
@@ -322,7 +335,7 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSNamingStrategyConstraints')->toJson(), true));
     }
 
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_JMS);
     }

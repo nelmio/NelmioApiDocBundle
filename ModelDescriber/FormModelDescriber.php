@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigInterface;
@@ -62,12 +63,16 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             throw new \LogicException('You need to enable forms in your application to use a form as a model.');
         }
 
-        $schema->type = 'object';
-
         $class = $model->getType()->getClassName();
 
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
-        $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
+        $classResult = $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
+
+        if (!$classResult->shouldDescribeModelProperties()) {
+            return;
+        }
+
+        $schema->type = 'object';
 
         $form = $this->formFactory->create($class, null, $model->getOptions() ?? []);
         $this->parseForm($schema, $form);
@@ -90,7 +95,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             $property = Util::getProperty($schema, $name);
 
             if ($config->getRequired()) {
-                $required = OA\UNDEFINED !== $schema->required ? $schema->required : [];
+                $required = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
                 $required[] = $name;
 
                 $schema->required = $required;
@@ -100,7 +105,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $property->mergeProperties($config->getOption('documentation'));
             }
 
-            if (OA\UNDEFINED !== $property->type || OA\UNDEFINED !== $property->ref) {
+            if (Generator::UNDEFINE !== $property->type || Generator::UNDEFINE !== $property->ref) {
                 continue; // Type manually defined
             }
 
@@ -124,7 +129,14 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 null,
                 $config->getOptions()
             );
-            $property->ref = $this->modelRegistry->register($model);
+
+            $ref = $this->modelRegistry->register($model);
+            // We need to use allOf for description and title to be displayed
+            if ($config->hasOption('documentation') && !empty($config->getOption('documentation'))) {
+                $property->allOf = [Util::createChild($property, OA\Schema::class, ['ref' => $ref])];
+            } else {
+                $property->ref = $ref;
+            }
 
             return;
         }

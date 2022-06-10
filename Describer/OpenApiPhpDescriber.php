@@ -16,8 +16,10 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
-use OpenApi\Analyser;
+use Nelmio\ApiDocBundle\Util\SetsContextTrait;
+use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -27,6 +29,8 @@ class_exists(OA\OpenApi::class);
 
 final class OpenApiPhpDescriber
 {
+    use SetsContextTrait;
+
     private $routeCollection;
     private $controllerReflector;
     private $annotationReader;
@@ -47,27 +51,31 @@ final class OpenApiPhpDescriber
         $classAnnotations = [];
 
         /** @var \ReflectionMethod $method */
-        foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods)) {
+        foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods, $routeName)) {
             $declaringClass = $method->getDeclaringClass();
 
             $path = Util::getPath($api, $path);
 
-            Analyser::$context = Util::createContext(['nested' => $path], $path->_context);
-            Analyser::$context->namespace = $method->getNamespaceName();
-            Analyser::$context->class = $declaringClass->getShortName();
-            Analyser::$context->method = $method->name;
-            Analyser::$context->filename = $method->getFileName();
+            $context = Util::createContext(['nested' => $path], $path->_context);
+            $context->namespace = $method->getNamespaceName();
+            $context->class = $declaringClass->getShortName();
+            $context->method = $method->name;
+            $context->filename = $method->getFileName();
+
+            $this->setContext($context);
 
             if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
                 $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
                     return $v instanceof OA\AbstractAnnotation;
                 });
+                $classAnnotations = array_merge($classAnnotations, $this->getAttributesAsAnnotation($declaringClass, $context));
                 $classAnnotations[$declaringClass->getName()] = $classAnnotations;
             }
 
             $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
                 return $v instanceof OA\AbstractAnnotation;
             });
+            $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($method, $context));
 
             if (0 === count($annotations) && 0 === count($classAnnotations[$declaringClass->getName()])) {
                 continue;
@@ -90,7 +98,7 @@ final class OpenApiPhpDescriber
                     if (!in_array($annotation->method, $httpMethods, true)) {
                         continue;
                     }
-                    if (OA\UNDEFINED !== $annotation->path && $path->path !== $annotation->path) {
+                    if (Generator::UNDEFINED !== $annotation->path && $path->path !== $annotation->path) {
                         continue;
                     }
 
@@ -102,6 +110,13 @@ final class OpenApiPhpDescriber
 
                 if ($annotation instanceof Security) {
                     $annotation->validate();
+
+                    if (null === $annotation->name) {
+                        $mergeProperties->security = [];
+
+                        continue;
+                    }
+
                     $mergeProperties->security[] = [$annotation->name => $annotation->scopes];
 
                     continue;
@@ -134,16 +149,20 @@ final class OpenApiPhpDescriber
                 $operation = Util::getOperation($path, $httpMethod);
                 $operation->merge($implicitAnnotations);
                 $operation->mergeProperties($mergeProperties);
+
+                if (Generator::UNDEFINED === $operation->operationId) {
+                    $operation->operationId = $httpMethod.'_'.$routeName;
+                }
             }
         }
 
-        // Reset the Analyser after the parsing
-        Analyser::$context = null;
+        // Reset the Generator after the parsing
+        $this->setContext(null);
     }
 
     private function getMethodsToParse(): \Generator
     {
-        foreach ($this->routeCollection->all() as $route) {
+        foreach ($this->routeCollection->all() as $routeName => $route) {
             if (!$route->hasDefault('_controller')) {
                 continue;
             }
@@ -161,7 +180,7 @@ final class OpenApiPhpDescriber
 
                 continue;
             }
-            yield $reflectedMethod => [$path, $supportedHttpMethods];
+            yield $reflectedMethod => [$path, $supportedHttpMethods, $routeName];
         }
     }
 
@@ -180,5 +199,25 @@ final class OpenApiPhpDescriber
         }
 
         return $path;
+    }
+
+    /**
+     * @param \ReflectionClass|\ReflectionMethod $reflection
+     *
+     * @return OA\AbstractAnnotation[]
+     */
+    private function getAttributesAsAnnotation($reflection, \OpenApi\Context $context): array
+    {
+        // BC zircote/swagger-php < 4.0
+        if (!class_exists(AttributeAnnotationFactory::class)) {
+            return [];
+        }
+
+        $attributesFactory = new AttributeAnnotationFactory();
+        $attributes = $attributesFactory->build($reflection, $context);
+        // The attributes factory removes the context after executing so we need to set it back...
+        $this->setContext($context);
+
+        return $attributes;
     }
 }

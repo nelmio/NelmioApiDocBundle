@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
 
@@ -53,10 +54,10 @@ class PropertyPhpDocReader
                 }
             }
         }
-        if (OA\UNDEFINED === $property->title && $title) {
+        if (Generator::UNDEFINED === $property->title && $title) {
             $property->title = $title;
         }
-        if (OA\UNDEFINED === $property->description && $docBlock->getDescription() && $docBlock->getDescription()->render()) {
+        if (Generator::UNDEFINED === $property->description && $docBlock->getDescription() && $docBlock->getDescription()->render()) {
             $property->description = $docBlock->getDescription()->render();
         }
     }

@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SymfonyConstraints
@@ -108,6 +109,18 @@ class SymfonyConstraints
      * @Assert\LessThanOrEqual(23)
      */
     private $propertyLessThanOrEqual;
+
+    /**
+     * @var int
+     *
+     * @CustomAssert\CompoundValidationRule()
+     */
+    private $propertyWithCompoundValidationRule;
+
+    public function setPropertyWithCompoundValidationRule(int $propertyWithCompoundValidationRule): void
+    {
+        $this->propertyWithCompoundValidationRule = $propertyWithCompoundValidationRule;
+    }
 
     /**
      * @Assert\Count(min="0", max="10")

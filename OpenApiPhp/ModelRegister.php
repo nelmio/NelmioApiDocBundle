@@ -154,11 +154,11 @@ final class ModelRegister
     ) {
         switch ($type) {
             case 'json':
-                $modelAnnotation = new OA\JsonContent($properties);
+                $modelAnnotation = Util::createChild($annotation, OA\JsonContent::class, $properties);
 
                 break;
             case 'xml':
-                $modelAnnotation = new OA\XmlContent($properties);
+                $modelAnnotation = Util::createChild($annotation, OA\XmlContent, $properties);
 
                 break;
             default:
@@ -166,6 +166,6 @@ final class ModelRegister
         }
 
         $annotation->merge([$modelAnnotation]);
-        $analysis->addAnnotation($modelAnnotation, null);
+        $analysis->addAnnotation($modelAnnotation, $properties['_context']);
     }
 }

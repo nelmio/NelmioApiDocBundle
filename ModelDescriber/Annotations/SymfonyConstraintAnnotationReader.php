@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -44,25 +45,36 @@ class SymfonyConstraintAnnotationReader
      */
     public function updateProperty($reflection, OA\Property $property): void
     {
-        foreach ($this->getAnnotations($reflection) as $annotation) {
+        foreach ($this->getAnnotations($reflection) as $outerAnnotation) {
+            $innerAnnotations = $outerAnnotation instanceof Assert\Compound
+                ? $outerAnnotation->constraints
+                : [$outerAnnotation];
+
+            $this->processPropertyAnnotations($reflection, $property, $innerAnnotations);
+        }
+    }
+
+    private function processPropertyAnnotations($reflection, OA\Property $property, $annotations)
+    {
+        foreach ($annotations as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
                 // To support symfony/validator < 4.3
                 if ($annotation instanceof Assert\NotBlank && \property_exists($annotation, 'allowNull') && $annotation->allowNull) {
                     // The field is optional
-                    continue;
+                    return;
                 }
 
                 // The field is required
                 if (null === $this->schema) {
-                    continue;
+                    return;
                 }
 
                 $propertyName = $this->getSchemaPropertyName($property);
                 if (null === $propertyName) {
-                    continue;
+                    return;
                 }
 
-                $existingRequiredFields =  OA\UNDEFINED !== $this->schema->required ? $this->schema->required : [];
+                $existingRequiredFields =  Generator::UNDEFINED !== $this->schema->required ? $this->schema->required : [];
                 $existingRequiredFields[] = $propertyName;
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
@@ -120,7 +132,7 @@ class SymfonyConstraintAnnotationReader
         }
         foreach ($this->schema->properties as $schemaProperty) {
             if ($schemaProperty === $property) {
-                return OA\UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
+                return Generator::UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
             }
         }
 
@@ -135,7 +147,7 @@ class SymfonyConstraintAnnotationReader
         if (null === $newPattern) {
             return;
         }
-        if (OA\UNDEFINED !== $property->pattern) {
+        if (Generator::UNDEFINED !== $property->pattern) {
             $property->pattern = sprintf('%s, %s', $property->pattern, $newPattern);
         } else {
             $property->pattern = $newPattern;

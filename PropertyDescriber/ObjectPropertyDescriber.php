@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -23,11 +24,21 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
     public function describe(array $types, OA\Schema $property, array $groups = null)
     {
-        $type = new Type($types[0]->getBuiltinType(), false, $types[0]->getClassName(), $types[0]->isCollection(), $types[0]->getCollectionKeyType(), $types[0]->getCollectionValueType()); // ignore nullable field
+        $type = new Type(
+            $types[0]->getBuiltinType(),
+            false,
+            $types[0]->getClassName(),
+            $types[0]->isCollection(),
+            // BC layer for symfony < 5.3
+            method_exists($types[0], 'getCollectionKeyTypes') ? $types[0]->getCollectionKeyTypes() : $types[0]->getCollectionKeyType(),
+            method_exists($types[0], 'getCollectionValueTypes') ?
+                ($types[0]->getCollectionValueTypes()[0] ?? null) :
+                $types[0]->getCollectionValueType()
+        ); // ignore nullable field
 
         if ($types[0]->isNullable()) {
             $property->nullable = true;
-            $property->allOf = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups))])];
+            $property->allOf = [Util::createChild($property, OA\Schema::class, ['ref' => $this->modelRegistry->register(new Model($type, $groups))])];
 
             return;
         }

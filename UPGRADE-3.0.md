@@ -230,7 +230,7 @@ class SwaggerDocblockConvertCommand extends ContainerAwareCommand
 Then open a command console, enter your project directory and run:
 
 ```
-bin/console api:doc:convert
+php bin/console api:doc:convert
 ```
 
 Your annotations should all be converted.

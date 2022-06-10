@@ -13,7 +13,10 @@ namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader;
+use Nelmio\ApiDocBundle\Tests\Helper;
+use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -188,7 +191,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maxLength);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maxLength);
         $this->assertSame(1, $schema->properties[0]->minLength);
     }
 
@@ -224,7 +227,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minLength);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minLength);
         $this->assertSame(100, $schema->properties[0]->maxLength);
     }
 
@@ -245,6 +248,39 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }
     }
 
+    public function testCompoundValidationRules()
+    {
+        $entity = new class() {
+            /**
+             * @CustomAssert\CompoundValidationRule()
+             */
+            private $property1;
+        };
+        $propertyName = 'property1';
+
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => $propertyName])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, $propertyName), $schema->properties[0]);
+
+        if (Helper::isCompoundValidatorConstraintSupported()) {
+            $this->assertSame([$propertyName], $schema->required);
+            $this->assertSame(0, $schema->properties[0]->minimum);
+            $this->assertTrue($schema->properties[0]->exclusiveMinimum);
+            $this->assertSame(5, $schema->properties[0]->maximum);
+            $this->assertTrue($schema->properties[0]->exclusiveMaximum);
+        } else {
+            $this->assertSame(Generator::UNDEFINED, $schema->required);
+            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum);
+            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMinimum);
+            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maximum);
+            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMaximum);
+        }
+    }
+
     /**
      * @param object $entity
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1821
@@ -260,7 +296,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minItems);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minItems);
         $this->assertSame(10, $schema->properties[0]->maxItems);
     }
 
@@ -296,7 +332,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maxItems);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maxItems);
         $this->assertSame(10, $schema->properties[0]->minItems);
     }
 
@@ -332,7 +368,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->maximum);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maximum);
         $this->assertSame(10, $schema->properties[0]->minimum);
     }
 
@@ -368,7 +404,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(OA\UNDEFINED, $schema->properties[0]->minimum);
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum);
         $this->assertSame(10, $schema->properties[0]->maximum);
     }
 

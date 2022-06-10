@@ -11,9 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\Command;
 
-use Psr\Container\ContainerInterface;
+use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
+use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,16 +21,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DumpCommand extends Command
 {
     /**
-     * @var ContainerInterface
+     * @var RenderOpenApi
      */
-    private $generatorLocator;
+    private $renderOpenApi;
 
     /**
-     * DumpCommand constructor.
+     * @var mixed[]
      */
-    public function __construct(ContainerInterface $generatorLocator)
+    private $defaultHtmlConfig = [
+        'assets_mode' => AssetsMode::CDN,
+        'swagger_ui_config' => [],
+    ];
+
+    public function __construct(RenderOpenApi $renderOpenApi)
     {
-        $this->generatorLocator = $generatorLocator;
+        $this->renderOpenApi = $renderOpenApi;
 
         parent::__construct();
     }
@@ -40,33 +45,47 @@ class DumpCommand extends Command
      */
     protected function configure()
     {
+        $availableFormats = $this->renderOpenApi->getAvailableFormats();
         $this
-            ->setDescription('Dumps documentation in OpenAPI JSON format')
+            ->setDescription('Dumps documentation in OpenAPI format to: '.implode(', ', $availableFormats))
             ->addOption('area', '', InputOption::VALUE_OPTIONAL, '', 'default')
-            ->addOption('no-pretty', '', InputOption::VALUE_NONE, 'Do not pretty format output')
+            ->addOption(
+                'format',
+                '',
+                InputOption::VALUE_REQUIRED,
+                'Output format like: '.implode(', ', $availableFormats),
+                RenderOpenApi::JSON
+            )
+            ->addOption('server-url', '', InputOption::VALUE_REQUIRED, 'URL where live api doc is served')
+            ->addOption('html-config', '', InputOption::VALUE_REQUIRED, '', json_encode($this->defaultHtmlConfig))
+            ->addOption('no-pretty', '', InputOption::VALUE_NONE, 'Do not pretty format JSON output')
         ;
     }
 
     /**
-     * @throws InvalidArgumentException If the area to dump is not valid
-     *
      * @return int|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $area = $input->getOption('area');
+        $format = $input->getOption('format');
 
-        if (!$this->generatorLocator->has($area)) {
-            throw new InvalidArgumentException(sprintf('Area "%s" is not supported.', $area));
+        $options = [];
+        if (RenderOpenApi::HTML === $format) {
+            $rawHtmlConfig = json_decode($input->getOption('html-config'), true);
+            $options = is_array($rawHtmlConfig) ? $rawHtmlConfig : $this->defaultHtmlConfig;
+        } elseif (RenderOpenApi::JSON === $format) {
+            $options = [
+                'no-pretty' => $input->hasParameterOption(['--no-pretty']),
+            ];
         }
 
-        $spec = $this->generatorLocator->get($area)->generate();
-
-        if ($input->hasParameterOption(['--no-pretty'])) {
-            $output->writeln(json_encode($spec));
-        } else {
-            $output->writeln(json_encode($spec, JSON_PRETTY_PRINT));
+        if ($input->getOption('server-url')) {
+            $options['server_url'] = $input->getOption('server-url');
         }
+
+        $docs = $this->renderOpenApi->render($format, $area, $options);
+        $output->writeln($docs, OutputInterface::OUTPUT_RAW);
 
         return 0;
     }

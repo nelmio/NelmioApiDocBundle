@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 
 class FOSRestTest extends WebTestCase
 {
@@ -22,9 +23,12 @@ class FOSRestTest extends WebTestCase
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
 
-    public function testFOSRestAction()
+    /**
+     * @dataProvider provideRoute
+     */
+    public function testFOSRestAction(string $route)
     {
-        $operation = $this->getOperation('/api/fosrest', 'post');
+        $operation = $this->getOperation($route, 'post');
 
         $this->assertHasParameter('foo', 'query', $operation);
         $this->assertInstanceOf(OA\RequestBody::class, $operation->requestBody);
@@ -37,17 +41,17 @@ class FOSRestTest extends WebTestCase
         $fooParameter = $this->getParameter($operation, 'foo', 'query');
         $this->assertInstanceOf(OA\Schema::class, $fooParameter->schema);
         $this->assertEquals('\d+', $fooParameter->schema->pattern);
-        $this->assertEquals(OA\UNDEFINED, $fooParameter->schema->format);
+        $this->assertEquals(Generator::UNDEFINED, $fooParameter->schema->format);
 
         $mappedParameter = $this->getParameter($operation, 'mapped[]', 'query');
         $this->assertTrue($mappedParameter->explode);
 
         $barProperty = $this->getProperty($bodySchema, 'bar');
         $this->assertEquals('\d+', $barProperty->pattern);
-        $this->assertEquals(OA\UNDEFINED, $barProperty->format);
+        $this->assertEquals(Generator::UNDEFINED, $barProperty->format);
 
         $bazProperty = $this->getProperty($bodySchema, 'baz');
-        $this->assertEquals(OA\UNDEFINED, $bazProperty->pattern);
+        $this->assertEquals(Generator::UNDEFINED, $bazProperty->pattern);
         $this->assertEquals('IsTrue', $bazProperty->format);
 
         $dateTimeProperty = $this->getProperty($bodySchema, 'datetime');
@@ -57,12 +61,21 @@ class FOSRestTest extends WebTestCase
         $this->assertEquals('date-time', $dateTimeAltProperty->format);
 
         $dateTimeNoFormatProperty = $this->getProperty($bodySchema, 'datetimeNoFormat');
-        $this->assertEquals(OA\UNDEFINED, $dateTimeNoFormatProperty->format);
+        $this->assertEquals(Generator::UNDEFINED, $dateTimeNoFormatProperty->format);
 
         $dateProperty = $this->getProperty($bodySchema, 'date');
         $this->assertEquals('date', $dateProperty->format);
 
         // The _format path attribute should be removed
         $this->assertNotHasParameter('_format', 'path', $operation);
+    }
+
+    public function provideRoute(): iterable
+    {
+        yield 'Annotations' => ['/api/fosrest'];
+
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'Attributes' => ['/api/fosrest_attributes'];
+        }
     }
 }

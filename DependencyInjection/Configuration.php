@@ -16,7 +16,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('nelmio_api_doc');
 
@@ -50,6 +50,7 @@ final class Configuration implements ConfigurationInterface
                                 'with_annotation' => false,
                                 'documentation' => [],
                                 'name_patterns' => [],
+                                'disable_default_routes' => false,
                             ],
                         ]
                     )
@@ -89,6 +90,10 @@ final class Configuration implements ConfigurationInterface
                             ->booleanNode('with_annotation')
                                 ->defaultFalse()
                                 ->info('whether to filter by annotation')
+                            ->end()
+                            ->booleanNode('disable_default_routes')
+                                ->defaultFalse()
+                                ->info('if set disables default routes without annotations')
                             ->end()
                             ->arrayNode('documentation')
                                 ->useAttributeAsKey('key')

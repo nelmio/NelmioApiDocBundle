@@ -13,14 +13,14 @@ The Upgrade to Swagger 3.0
 The biggest part of the upgrade will most likely be the upgrade of the library `zircote/swagger-php` to `3.0` which introduces new annotations in order to support OpenAPI 3.0 but also changes
 their namespace from ``Swagger`` to ``OpenApi``.
 
-They created a dedicated page to help you upgrade : https://zircote.github.io/swagger-php/Migrating-to-v3.html.
+They created a dedicated page to help you upgrade : https://github.com/zircote/swagger-php/blob/3.x/docs/Migrating-to-v3.md.
 
 Here are some additional advices that are more likely to apply to NelmioApiDocBundle users:
 
 - Upgrade all your ``use Swagger\Annotations as SWG`` statements to ``use OpenApi\Annotations as OA;`` (to simplify the upgrade you may also stick to the ``SWG`` aliasing).
   In case you changed ``SWG`` to ``OA``, upgrade all your annotations from ``@SWG\...`` to ``@OA\...``.
 
-- Update your config in case you used inlined swagger docummentation (the field ``nelmio_api_doc.documentation``). [A tool](https://openapi-converter.herokuapp.com/) is available to help you convert it.
+- Update your config in case you used inlined swagger documentation (the field ``nelmio_api_doc.documentation``). [A tool](https://openapi-converter.herokuapp.com/) is available to help you convert it.
 
 - In case you used ``@OA\Response(..., @OA\Schema(...))``, you should explicit your media type by using the annotation ``@OA\JsonContent`` or ``@OA\XmlContent`` instead of ``@OA\Schema``:
   ``@OA\Response(..., @OA\JsonContent(...))`` or ``@OA\Response(..., @OA\XmlContent(...))``.

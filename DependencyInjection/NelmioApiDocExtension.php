@@ -66,11 +66,12 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $container->setParameter('nelmio_api_doc.media_types', $config['media_types']);
         foreach ($config['areas'] as $area => $areaConfig) {
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
-
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
                 ->setPublic(true)
                 ->addMethodCall('setAlternativeNames', [$nameAliases])
                 ->addMethodCall('setMediaTypes', [$config['media_types']])
+                ->addMethodCall('setLogger', [new Reference('logger')])
+                ->addTag('monolog.logger', ['channel' => 'nelmio_api_doc'])
                 ->setArguments([
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
@@ -108,6 +109,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 && 0 === count($areaConfig['host_patterns'])
                 && 0 === count($areaConfig['name_patterns'])
                 && false === $areaConfig['with_annotation']
+                && false === $areaConfig['disable_default_routes']
             ) {
                 $container->setDefinition(sprintf('nelmio_api_doc.routes.%s', $area), $routesDefinition)
                     ->setPublic(false);
@@ -150,11 +152,15 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArgument(1, $config['media_types']);
         }
 
-        // ApiPlatform support
         $bundles = $container->getParameter('kernel.bundles');
-        if (!isset($bundles['TwigBundle'])) {
+        if (!isset($bundles['TwigBundle']) || !class_exists('Symfony\Component\Asset\Packages')) {
             $container->removeDefinition('nelmio_api_doc.controller.swagger_ui');
+
+            $container->removeDefinition('nelmio_api_doc.render_docs.html');
+            $container->removeDefinition('nelmio_api_doc.render_docs.html.asset');
         }
+
+        // ApiPlatform support
         if (isset($bundles['ApiPlatformBundle']) && class_exists('ApiPlatform\Core\Documentation\Documentation')) {
             $loader->load('api_platform.xml');
         }

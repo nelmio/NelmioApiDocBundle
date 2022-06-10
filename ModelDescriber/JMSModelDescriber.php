@@ -23,6 +23,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -72,9 +73,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
         }
 
-        $schema->type = 'object';
         $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
-        $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
+        $classResult = $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
+
+        if (!$classResult->shouldDescribeModelProperties()) {
+            return;
+        }
+        $schema->type = 'object';
 
         $isJmsV1 = null !== $this->namingStrategy;
 
@@ -134,7 +139,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $annotationsReader->updateProperty($reflection, $property, $groups);
             }
 
-            if (OA\UNDEFINED !== $property->type || OA\UNDEFINED !== $property->ref) {
+            if (Generator::UNDEFINED !== $property->type || Generator::UNDEFINED !== $property->ref) {
                 $context->popPropertyMetadata();
 
                 continue;
@@ -270,7 +275,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if (empty($customFields)) { // no custom fields
                 $property->ref = $modelRef;
             } else {
-                $property->allOf = [new OA\Schema(['ref' => $modelRef])];
+                $property->allOf = [Util::createChild($property, OA\Schema::class, ['ref' => $modelRef])];
             }
 
             $this->contexts[$model->getHash()] = $context;

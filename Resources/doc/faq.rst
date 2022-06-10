@@ -10,7 +10,7 @@ A: You can configure ``schemas`` in the nelmio_api_doc configuration and then re
 
 .. code-block:: yaml
 
-    # config/nelmio_api_doc.yml
+    # config/nelmio_api_doc.yaml
     nelmio_api_doc:
         documentation:
             components:
@@ -125,7 +125,7 @@ If you have not set up this script, you can manually execute this command:
 
 .. code-block:: bash
 
-    $ bin/console assets:install --symlink
+    $ php bin/console assets:install --symlink
 
 Re-add Google Fonts
 -------------------
@@ -136,8 +136,7 @@ A: We removed the google fonts in 3.3 to avoid the external request for GDPR rea
 
 .. code-block:: twig
 
-    {# templates/bundles/NelmioApiDocBundle/SwaggerUI/index.html.twig #}
-
+    {# templates/bundles/NelmioApiDocBundle/SwaggerUi/index.html.twig #}
     {#
        To avoid a "reached nested level" error an exclamation mark `!` has to be added
        See https://symfony.com/blog/new-in-symfony-3-4-improved-the-overriding-of-templates
@@ -195,5 +194,46 @@ A: Use ``@OA\Tag`` annotation.
      */
     class BookmarkController extends AbstractFOSRestController implements ContextPresetInterface
     {
-        //...
+        // ...
     }
+
+Disable Default Section
+-----------------------
+
+Q: I don't want to render the "default" section, how do I do that?
+
+A: Use ``disable_default_routes`` config in your area.
+
+.. code-block:: yaml
+
+    nelmio_api_doc:
+        areas:
+            default:
+                disable_default_routes: true
+
+Overriding a Form or Plain PHP Object Schema Type
+-------------------------------------------------
+
+Q: I'd like to define a PHP object or form with a type other any ``object``, how
+do I do that?
+
+A: By using the ``@OA\Schema`` annotation or attribute with a ``type`` or ``ref``.
+Note, however, that a ``type="object"`` will still read all a models properties.
+
+.. code-block:: php
+
+    <?php
+    use OpenApi\Annotations as OA;
+    use Nelmio\ApiDocBundle\Annotation\Model;
+
+    /**
+     * @OA\Schema(type="array", @OA\Items(ref=@Model(type=SomeEntity::class)))
+     *
+     * or define a `ref`:
+     * @OA\Schema(ref="#/components/schemas/SomeRef")
+     */
+    class SomeCollection implements \IteratorAggregate
+    {
+        // ...
+    }
+

@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\SwaggerPhp;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
-use const OpenApi\UNDEFINED;
+use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -58,7 +58,7 @@ class UtilTest extends TestCase
     {
         $context = Util::createContext([], $this->rootContext);
 
-        $this->assertSame($this->rootContext, $context->getRootContext());
+        $this->assertContextIsConnectedToRootContext($context);
     }
 
     public function testCreateContextWithProperties()
@@ -107,7 +107,7 @@ class UtilTest extends TestCase
             return 0 !== strpos($key, '_');
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->assertEquals([UNDEFINED], array_unique(array_values($properties)));
+        $this->assertEquals([Generator::UNDEFINED], array_unique(array_values($properties)));
 
         $this->assertIsNested($this->rootAnnotation, $info);
         $this->assertIsConnectedToRootContext($info);
@@ -220,7 +220,7 @@ class UtilTest extends TestCase
             foreach ($items as $assert) {
                 $setupCollection = empty($assert['components']) ?
                     ($setup[$collection] ?? []) :
-                    (OA\UNDEFINED !== $setup['components']->{$collection} ? $setup['components']->{$collection} : []);
+                    (Generator::UNDEFINED !== $setup['components']->{$collection} ? $setup['components']->{$collection} : []);
 
                 // get the indexing correct within haystack preparation
                 $properties = array_fill(0, \count($setupCollection), null);
@@ -818,7 +818,21 @@ class UtilTest extends TestCase
 
     public function assertIsConnectedToRootContext(OA\AbstractAnnotation $annotation)
     {
-        $this->assertSame($this->rootContext, $annotation->_context->getRootContext());
+        $this->assertContextIsConnectedToRootContext($annotation->_context);
+    }
+
+    public function assertContextIsConnectedToRootContext(Context $context)
+    {
+        // zircote/swagger-php < 4.2 support
+        $getRootContext = \Closure::bind(function (Context $context) use (&$getRootContext) {
+            if (null !== $context->_parent) {
+                return $getRootContext($context->_parent);
+            }
+
+            return $context;
+        }, null, Context::class);
+
+        $this->assertSame($this->rootContext, $getRootContext($context));
     }
 
     private function getSetupPropertiesWithoutClass(array $setup)

@@ -289,3 +289,9 @@ text-align:center;
 .swagger-ui .errors-wrapper hgroup h4 {
   font-family: sans-serif !important;
 }
+
+#swagger-ui-logos {
+  position: absolute;
+  width:0;
+  height:0;
+}
