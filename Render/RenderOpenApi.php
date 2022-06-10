@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Render;
 
-use InvalidArgumentException;
+use Nelmio\ApiDocBundle\Exception\RenderInvalidArgumentException;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Server;
 use Psr\Container\ContainerInterface;
@@ -65,9 +65,9 @@ class RenderOpenApi
     public function render(string $format, string $area, array $options = []): string
     {
         if (!$this->generatorLocator->has($area)) {
-            throw new InvalidArgumentException(sprintf('Area "%s" is not supported.', $area));
+            throw new RenderInvalidArgumentException(sprintf('Area "%s" is not supported.', $area));
         } elseif (!array_key_exists($format, $this->openApiRenderers)) {
-            throw new InvalidArgumentException(sprintf('Format "%s" is not supported.', $format));
+            throw new RenderInvalidArgumentException(sprintf('Format "%s" is not supported.', $format));
         }
 
         /** @var OpenApi $spec */
