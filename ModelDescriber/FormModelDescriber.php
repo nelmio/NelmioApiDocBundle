@@ -16,7 +16,9 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
+use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\Form\AbstractType;
@@ -103,9 +105,13 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
             if ($config->hasOption('documentation')) {
                 $property->mergeProperties($config->getOption('documentation'));
+
+                // Parse inner @Model annotations
+                $modelRegister = new ModelRegister($this->modelRegistry, $this->mediaTypes);
+                $modelRegister->__invoke(new Analysis([$property], Util::createContext()));
             }
 
-            if (Generator::UNDEFINED !== $property->type) {
+            if (Generator::UNDEFINED !== $property->type || Generator::UNDEFINED !== $property->ref) {
                 continue; // Type manually defined
             }
 

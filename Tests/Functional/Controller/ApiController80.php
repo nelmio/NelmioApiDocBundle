@@ -25,6 +25,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithAlternateSchemaType;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithRefType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use OpenApi\Annotations as OA;
@@ -155,6 +156,18 @@ class ApiController80
      * @OA\Response(response="201", description="")
      */
     public function formAction()
+    {
+    }
+
+    /**
+     * @Route("/form-model", methods={"POST"})
+     * @OA\RequestBody(
+     *    description="Request content",
+     *    @Model(type=FormWithModel::class))
+     * )
+     * @OA\Response(response="201", description="")
+     */
+    public function formWithModelAction()
     {
     }
 

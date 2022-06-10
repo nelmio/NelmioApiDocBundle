@@ -343,6 +343,17 @@ class FunctionalTest extends WebTestCase
             'required' => ['foo', 'foz', 'password'],
             'schema' => 'DummyType',
         ], json_decode($this->getModel('DummyType')->toJson(), true));
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'quz' => [
+                    '$ref' => '#/components/schemas/User',
+                ],
+            ],
+            'required' => ['quz'],
+            'schema' => 'FormWithModel',
+        ], json_decode($this->getModel('FormWithModel')->toJson(), true));
     }
 
     /**
