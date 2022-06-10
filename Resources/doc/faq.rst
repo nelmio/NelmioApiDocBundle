@@ -35,11 +35,9 @@ A: You can configure ``schemas`` in the nelmio_api_doc configuration and then re
      * @OA\Response(
      *     response=200,
      *     description="List of image definitions",
-     *     @OA\JsonContent(@OA\Schema(
-     *       type="object",
-     *       title="ListOperationsResponse",
-     *       additionalProperties={"$ref": "#/components/schemas/NelmioImageList"}
-     *     ))
+     *     @OA\JsonContent(
+     *       ref="#/components/schemas/NelmioImageList",
+     *     )
      */
 
 Optional Path Parameters
