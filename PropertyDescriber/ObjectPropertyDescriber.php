@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -37,7 +38,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
         if ($types[0]->isNullable()) {
             $property->nullable = true;
-            $property->allOf = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups))])];
+            $property->allOf = [Util::createChild($property, OA\Schema::class, ['ref' => $this->modelRegistry->register(new Model($type, $groups))])];
 
             return;
         }

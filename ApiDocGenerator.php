@@ -91,7 +91,14 @@ final class ApiDocGenerator
             return !$processor instanceof \OpenApi\Processors\OperationId;
         }));
 
-        $this->openApi = new OpenApi([]);
+        $context = Util::createContext(
+            // BC for for zircote/swagger-php < 4.2
+            method_exists($generator, 'getVersion')
+            ? ['version' => $generator->getVersion()]
+            : []
+        );
+
+        $this->openApi = new OpenApi(['_context' => $context]);
         $modelRegistry = new ModelRegistry($this->modelDescribers, $this->openApi, $this->alternativeNames);
         if (null !== $this->logger) {
             $modelRegistry->setLogger($this->logger);
@@ -103,13 +110,6 @@ final class ApiDocGenerator
 
             $describer->describe($this->openApi);
         }
-
-        $context = Util::createContext(
-            // BC for for zircote/swagger-php < 4.2
-            method_exists($generator, 'getVersion')
-            ? ['version' => $generator->getVersion()]
-            : []
-        );
         $analysis = new Analysis([], $context);
         $analysis->addAnnotation($this->openApi, $context);
 

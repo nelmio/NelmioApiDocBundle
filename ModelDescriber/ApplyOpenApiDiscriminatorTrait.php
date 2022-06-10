@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -43,18 +44,18 @@ trait ApplyOpenApiDiscriminatorTrait
         array $typeMap
     ): void {
         $schema->oneOf = [];
-        $schema->discriminator = new OA\Discriminator([]);
-        $schema->discriminator->propertyName = $discriminatorProperty;
-        $schema->discriminator->mapping = [];
+        $discriminator = Util::getChild($schema, OA\Discriminator::class);
+        $discriminator->propertyName = $discriminatorProperty;
+        $discriminator->mapping = [];
         foreach ($typeMap as $propertyValue => $className) {
-            $oneOfSchema = new OA\Schema([]);
+            $oneOfSchema = Util::createChild($schema, OA\Schema::class);
             $oneOfSchema->ref = $modelRegistry->register(new Model(
                 new Type(Type::BUILTIN_TYPE_OBJECT, false, $className),
                 $model->getGroups(),
                 $model->getOptions()
             ));
             $schema->oneOf[] = $oneOfSchema;
-            $schema->discriminator->mapping[$propertyValue] = $oneOfSchema->ref;
+            $discriminator->mapping[$propertyValue] = $oneOfSchema->ref;
         }
     }
 }
