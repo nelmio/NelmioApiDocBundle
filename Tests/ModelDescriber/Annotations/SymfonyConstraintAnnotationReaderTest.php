@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SymfonyConstraintAnnotationReaderTest extends TestCase
@@ -423,5 +424,126 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                 private $property1;
             }];
         }
+    }
+
+    /**
+     * re-using another provider here, since all constraints land in the default
+     * group when `group={"someGroup"}` is not set.
+     *
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
+     * @dataProvider provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet
+     */
+    public function testReaderWithValidationGroupsEnabledChecksForDefaultGroupWhenNoSerializationGroupsArePassed($entity)
+    {
+        $schema = new OA\Schema([]);
+        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
+        $reader->setSchema($schema);
+
+        // no serialization groups passed here
+        $reader->updateProperty(
+            new \ReflectionProperty($entity, 'property1'),
+            $schema->properties[0]
+        );
+
+        $this->assertSame(10, $schema->properties[0]->maximum, 'should have read constraints in the default group');
+    }
+
+    /**
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
+     * @dataProvider provideConstraintsWithGroups
+     */
+    public function testReaderWithValidationGroupsEnabledDoesNotReadAnnotationsWithoutDefaultGroupIfNoGroupsArePassed($entity)
+    {
+        $schema = new OA\Schema([]);
+        $schema->merge([
+            new OA\Property(['property' => 'property1']),
+        ]);
+        $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
+        $reader->setSchema($schema);
+
+        // no serialization groups passed here
+        $reader->updateProperty(
+            new \ReflectionProperty($entity, 'property1'),
+            $schema->properties[0]
+        );
+
+        $this->assertSame(['property1'], $schema->required, 'should have read constraint in default group');
+        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum, 'should not have read constraint in other group');
+    }
+
+    /**
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
+     * @dataProvider provideConstraintsWithGroups
+     */
+    public function testReaderWithValidationGroupsEnabledReadsOnlyConstraintsWithGroupsProvided($entity)
+    {
+        $schema = new OA\Schema([]);
+        $schema->merge([
+            new OA\Property(['property' => 'property1']),
+        ]);
+        $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
+        $reader->setSchema($schema);
+
+        // no serialization groups passed here
+        $reader->updateProperty(
+            new \ReflectionProperty($entity, 'property1'),
+            $schema->properties[0],
+            ['other']
+        );
+
+        $this->assertSame(Generator::UNDEFINED, $schema->required, 'should not have read constraint in default group');
+        $this->assertSame(1, $schema->properties[0]->minimum, 'should have read constraint in other group');
+    }
+
+    /**
+     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
+     * @dataProvider provideConstraintsWithGroups
+     */
+    public function testReaderWithValidationGroupsEnabledCanReadFromMultipleValidationGroups($entity)
+    {
+        $schema = new OA\Schema([]);
+        $schema->merge([
+            new OA\Property(['property' => 'property1']),
+        ]);
+        $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
+        $reader->setSchema($schema);
+
+        // no serialization groups passed here
+        $reader->updateProperty(
+            new \ReflectionProperty($entity, 'property1'),
+            $schema->properties[0],
+            ['other', Constraint::DEFAULT_GROUP]
+        );
+
+        $this->assertSame(['property1'], $schema->required, 'should have read constraint in default group');
+        $this->assertSame(1, $schema->properties[0]->minimum, 'should have read constraint in other group');
+    }
+
+    public function provideConstraintsWithGroups(): iterable
+    {
+        yield 'Annotations' => [new class() {
+            /**
+             * @Assert\NotBlank()
+             * @Assert\Range(min=1, groups={"other"})
+             */
+            private $property1;
+        }];
+
+        if (\PHP_VERSION_ID >= 80000) {
+            yield 'Attributes' => [new class() {
+                #[Assert\NotBlank()]
+                #[Assert\Range(min: 1, groups: ['other'])]
+                private $property1;
+            }];
+        }
+    }
+
+    private function createConstraintReaderWithValidationGroupsEnabled(): SymfonyConstraintAnnotationReader
+    {
+        return new SymfonyConstraintAnnotationReader(
+            new AnnotationReader(),
+            true
+        );
     }
 }

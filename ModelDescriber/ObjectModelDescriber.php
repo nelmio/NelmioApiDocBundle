@@ -41,19 +41,23 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private $mediaTypes;
     /** @var NameConverterInterface[] */
     private $nameConverter;
+    /** @var bool */
+    private $useValidationGroups;
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
         Reader $reader,
         iterable $propertyDescribers,
         array $mediaTypes,
-        NameConverterInterface $nameConverter = null
+        NameConverterInterface $nameConverter = null,
+        bool $useValidationGroups = false
     ) {
         $this->propertyInfo = $propertyInfo;
         $this->doctrineReader = $reader;
         $this->propertyDescribers = $propertyDescribers;
         $this->mediaTypes = $mediaTypes;
         $this->nameConverter = $nameConverter;
+        $this->useValidationGroups = $useValidationGroups;
     }
 
     public function describe(Model $model, OA\Schema $schema)
@@ -67,7 +71,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         $reflClass = new \ReflectionClass($class);
-        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
+        $annotationsReader = new AnnotationsReader(
+            $this->doctrineReader,
+            $this->modelRegistry,
+            $this->mediaTypes,
+            $this->useValidationGroups
+        );
         $classResult = $annotationsReader->updateDefinition($reflClass, $schema);
 
         if (!$classResult->shouldDescribeModelProperties()) {

@@ -431,8 +431,8 @@ class FunctionalTest extends WebTestCase
             'properties' => [
                 'propertyNotBlank' => [
                     'type' => 'integer',
-                    'maxItems' => '10',
-                    'minItems' => '0',
+                    'maxItems' => 10,
+                    'minItems' => 0,
                 ],
                 'propertyNotNull' => [
                     'type' => 'integer',

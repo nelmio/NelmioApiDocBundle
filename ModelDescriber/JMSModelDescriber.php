@@ -50,16 +50,23 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      */
     private $propertyTypeUseGroupsCache = [];
 
+    /**
+     * @var bool
+     */
+    private $useValidationGroups;
+
     public function __construct(
         MetadataFactoryInterface $factory,
         Reader $reader,
         array $mediaTypes,
-        ?PropertyNamingStrategyInterface $namingStrategy = null
+        ?PropertyNamingStrategyInterface $namingStrategy = null,
+        bool $useValidationGroups = false
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->doctrineReader = $reader;
         $this->mediaTypes = $mediaTypes;
+        $this->useValidationGroups = $useValidationGroups;
     }
 
     /**
@@ -73,7 +80,12 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
         }
 
-        $annotationsReader = new AnnotationsReader($this->doctrineReader, $this->modelRegistry, $this->mediaTypes);
+        $annotationsReader = new AnnotationsReader(
+            $this->doctrineReader,
+            $this->modelRegistry,
+            $this->mediaTypes,
+            $this->useValidationGroups
+        );
         $classResult = $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
 
         if (!$classResult->shouldDescribeModelProperties()) {
