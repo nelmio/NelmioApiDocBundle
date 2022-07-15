@@ -84,7 +84,7 @@ By default, only routes under ``/api`` are documented. Update the regexp at ``ne
         # config/packages/nelmio_api_doc.yaml
         nelmio_api_doc:
             areas:
-                path_patterns: # an array of regexps (document only routes under /api, expect /api/doc)
+                path_patterns: # an array of regexps (document only routes under /api, except /api/doc)
                     - ^/api(?!/doc$)
                 host_patterns: # document only routes with a host of the form api.*
                     - ^api\.
