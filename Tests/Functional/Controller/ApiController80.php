@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
+use Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
@@ -48,6 +49,23 @@ class ApiController80
      * @OA\Parameter(name="Application-Name", in="header", @OA\Schema(type="string"))
      */
     public function fetchArticleAction()
+    {
+    }
+
+    /**
+     * @OA\Get(
+     *  @OA\Response(
+     *   response="200",
+     *   description="Success",
+     *   @Model(type=ArticleInterface::class, groups={"light"}))
+     *  )
+     * )
+     * @OA\Parameter(ref="#/components/parameters/test")
+     * @Route("/article-interface/{id}", methods={"GET"})
+     * @OA\Parameter(name="Accept-Version", in="header", @OA\Schema(type="string"))
+     * @OA\Parameter(name="Application-Name", in="header", @OA\Schema(type="string"))
+     */
+    public function fetchArticleInterfaceAction()
     {
     }
 
