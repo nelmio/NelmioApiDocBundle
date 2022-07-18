@@ -167,10 +167,14 @@ final class FilteredRouteCollectionBuilder
         }
 
         $annotations = $this->annotationReader->getMethodAnnotations($method);
+        $annotations = array_merge($annotations, array_map(function (\ReflectionAttribute $attribute) {
+            return $attribute->newInstance();
+        }, $method->getAttributes()));
 
         foreach ($annotations as $annotation) {
             if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')
                 || false !== strpos(get_class($annotation), 'OpenApi\\Annotations')
+                || false !== strpos(get_class($annotation), 'OpenApi\\Attributes')
             ) {
                 return true;
             }
