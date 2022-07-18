@@ -19,6 +19,7 @@ use Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
+use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
@@ -143,6 +144,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         $container->getDefinition('nelmio_api_doc.model_describers.object')
             ->setArgument(3, $config['media_types']);
+
+        // Add autoconfiguration for model describer
+        $container->registerForAutoconfiguration(ModelDescriberInterface::class)
+            ->addTag('nelmio_api_doc.model_describer');
 
         // Import services needed for each library
         $loader->load('php_doc.xml');
