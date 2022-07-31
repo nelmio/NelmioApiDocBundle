@@ -306,13 +306,13 @@ properties and validator constraints. Take the model class below:
 
     .. code-block:: php-annotations
 
-        use Symfony\Component\Serializer\Annotation\Group;
+        use Symfony\Component\Serializer\Annotation\Groups;
         use Symfony\Component\Validator\Constraints as Assert;
 
         class UserDto
         {
             /**
-             * @Group({"default", "create", "update"})
+             * @Groups({"default", "create", "update"})
              * @Assert\NotBlank(groups={"default", "create"})
              */
             public string $username;
@@ -320,12 +320,12 @@ properties and validator constraints. Take the model class below:
 
     .. code-block:: php-attributes
 
-        use Symfony\Component\Serializer\Annotation\Group;
+        use Symfony\Component\Serializer\Annotation\Groups;
         use Symfony\Component\Validator\Constraints as Assert;
 
         class UserDto
         {
-             #[Group(["default", "create", "update"])
+             #[Groups(["default", "create", "update"])
              #[Assert\NotBlank(groups: ["default", "create"])
             public string $username;
         }
