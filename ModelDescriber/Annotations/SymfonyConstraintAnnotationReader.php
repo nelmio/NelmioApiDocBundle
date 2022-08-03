@@ -52,7 +52,7 @@ class SymfonyConstraintAnnotationReader
     public function updateProperty($reflection, OA\Property $property, ?array $validationGroups = null): void
     {
         foreach ($this->getAnnotations($reflection, $validationGroups) as $outerAnnotation) {
-            $innerAnnotations = $outerAnnotation instanceof Assert\Compound
+            $innerAnnotations = $outerAnnotation instanceof Assert\Compound || $outerAnnotation instanceof Assert\Sequentially
                 ? $outerAnnotation->constraints
                 : [$outerAnnotation];
 
