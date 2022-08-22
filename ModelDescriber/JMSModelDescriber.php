@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Doctrine\Common\Annotations\Reader;
 use JMS\Serializer\Context;
+use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
@@ -34,6 +35,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     use ModelRegistryAwareTrait;
 
     private $factory;
+
+    private $contextFactory;
 
     private $namingStrategy;
 
@@ -60,13 +63,15 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         Reader $reader,
         array $mediaTypes,
         ?PropertyNamingStrategyInterface $namingStrategy = null,
-        bool $useValidationGroups = false
+        bool $useValidationGroups = false,
+        ?SerializationContextFactoryInterface $contextFactory = null
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->doctrineReader = $reader;
         $this->mediaTypes = $mediaTypes;
         $this->useValidationGroups = $useValidationGroups;
+        $this->contextFactory = $contextFactory;
     }
 
     /**
@@ -187,7 +192,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $stack->unshift($metadataCopy);
             }
         } else {
-            $context = SerializationContext::create();
+            $context = $this->contextFactory ? $this->contextFactory->createSerializationContext() : SerializationContext::create();
 
             if (null !== $model->getGroups()) {
                 $context->addExclusionStrategy(new GroupsExclusionStrategy($model->getGroups()));
