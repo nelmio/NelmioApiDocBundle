@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
 use FOS\RestBundle\Controller\Annotations\ParamInterface;
+use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\Visitor\SerializationVisitorInterface;
 use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Describer\ExternalDocDescriber;
@@ -169,6 +170,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         // JMS metadata support
         if ($config['models']['use_jms']) {
             $jmsNamingStrategy = interface_exists(SerializationVisitorInterface::class) ? null : new Reference('jms_serializer.naming_strategy');
+            $contextFactory = interface_exists(SerializationContextFactoryInterface::class) ? new Reference('jms_serializer.serialization_context_factory') : null;
 
             $container->register('nelmio_api_doc.model_describers.jms', JMSModelDescriber::class)
                 ->setPublic(false)
@@ -178,6 +180,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     $config['media_types'],
                     $jmsNamingStrategy,
                     $container->getParameter('nelmio_api_doc.use_validation_groups'),
+                    $contextFactory,
                 ])
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
 
