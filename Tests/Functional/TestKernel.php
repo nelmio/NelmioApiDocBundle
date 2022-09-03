@@ -133,12 +133,17 @@ class TestKernel extends Kernel
             'form' => null,
             'serializer' => ['enable_annotations' => true],
             'property_access' => true,
-            'exceptions' => [
-                'Symfony\Component\HttpKernel\Exception\BadRequestHttpException' => [
-                    'log_level' => 'debug',
-                ],
-            ],
         ];
+        // Support symfony/framework-bundle < 5.4
+        if (method_exists(\Symfony\Bundle\FrameworkBundle\Command\CachePoolClearCommand::class, 'complete')) {
+            $framework += [
+                'exceptions' => [
+                    'Symfony\Component\HttpKernel\Exception\BadRequestHttpException' => [
+                        'log_level' => 'debug',
+                    ],
+                ],
+            ];
+        }
         $c->loadFromExtension('framework', $framework);
 
         $c->loadFromExtension('twig', [
