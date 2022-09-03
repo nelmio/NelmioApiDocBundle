@@ -79,4 +79,4 @@ jobs:
           composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
 
       - name: PHPUnit Tests
-        run: bin/phpunit --configuration phpunit.xml.dist --coverage-text
+        run: vendor/bin/simple-phpunit --configuration phpunit.xml.dist --coverage-text
