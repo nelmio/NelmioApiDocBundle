@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
@@ -116,13 +117,16 @@ final class ModelRegister
 
     private function detach(ModelAnnotation $model, OA\AbstractAnnotation $annotation, Analysis $analysis): void
     {
-        foreach ($annotation->_unmerged as $key => $unmerged) {
-            if ($unmerged === $model) {
-                unset($annotation->_unmerged[$key]);
+        if (Generator::UNDEFINED !== $annotation->attachables) {
+            foreach ($annotation->attachables as $key => $attachable) {
+                if ($attachable === $model) {
+                    unset($annotation->attachables[$key]);
 
-                break;
+                    break;
+                }
             }
         }
+
         $analysis->annotations->detach($model);
     }
 
@@ -137,9 +141,11 @@ final class ModelRegister
 
     private function getModel(OA\AbstractAnnotation $annotation): ?ModelAnnotation
     {
-        foreach ($annotation->_unmerged as $unmerged) {
-            if ($unmerged instanceof ModelAnnotation) {
-                return $unmerged;
+        if (Generator::UNDEFINED !== $annotation->attachables) {
+            foreach ($annotation->attachables as $attachable) {
+                if ($attachable instanceof ModelAnnotation) {
+                    return $attachable;
+                }
             }
         }
 

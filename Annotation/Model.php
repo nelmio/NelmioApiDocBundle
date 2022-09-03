@@ -11,15 +11,15 @@
 
 namespace Nelmio\ApiDocBundle\Annotation;
 
-use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Parameter;
+use OpenApi\Attributes\Attachable;
 use OpenApi\Generator;
 
 /**
  * @Annotation
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
-final class Model extends AbstractAnnotation
+final class Model extends Attachable
 {
     /** {@inheritdoc} */
     public static $_types = [
