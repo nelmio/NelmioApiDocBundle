@@ -91,12 +91,7 @@ final class ApiDocGenerator
             return !$processor instanceof \OpenApi\Processors\OperationId;
         }));
 
-        $context = Util::createContext(
-            // BC for for zircote/swagger-php < 4.2
-            method_exists($generator, 'getVersion')
-            ? ['version' => $generator->getVersion()]
-            : []
-        );
+        $context = Util::createContext(['version' => $generator->getVersion()]);
 
         $this->openApi = new OpenApi(['_context' => $context]);
         $modelRegistry = new ModelRegistry($this->modelDescribers, $this->openApi, $this->alternativeNames);

@@ -25,12 +25,12 @@ class SwaggerUiTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->client = static::createClient([], ['HTTP_HOST' => 'api.example.com', 'PHP_SELF' => '/app_dev.php/docs', 'SCRIPT_FILENAME' => '/var/www/app/web/app_dev.php']);
+        $this->client = static::createClient([], ['HTTP_HOST' => 'api.example.com', 'PHP_SELF' => '/app_dev.php/default/docs', 'SCRIPT_FILENAME' => '/var/www/app/web/app_dev.php']);
     }
 
     public function testSwaggerUi()
     {
-        $crawler = $this->client->request('GET', '/app_dev.php/docs');
+        $crawler = $this->client->request('GET', '/app_dev.php/default/docs');
 
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -44,7 +44,7 @@ class SwaggerUiTest extends WebTestCase
 
     public function testApiPlatformSwaggerUi()
     {
-        $crawler = $this->client->request('GET', '/app_dev.php/docs/test');
+        $crawler = $this->client->request('GET', '/app_dev.php/test/docs');
 
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -60,7 +60,7 @@ class SwaggerUiTest extends WebTestCase
 
     public function testJsonDocs()
     {
-        $this->client->request('GET', '/app_dev.php/docs.json');
+        $this->client->request('GET', '/app_dev.php/default/docs.json');
 
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -74,9 +74,17 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals($expected, json_decode($response->getContent(), true));
     }
 
+    public function testInvalidJsonArea()
+    {
+        $this->client->request('GET', '/app_dev.php/nonexistent/docs.json');
+
+        $response = $this->client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode());
+    }
+
     public function testYamlDocs()
     {
-        $this->client->request('GET', '/app_dev.php/docs.yaml');
+        $this->client->request('GET', '/app_dev.php/default/docs.yaml');
 
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
