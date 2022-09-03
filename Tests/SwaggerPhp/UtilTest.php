@@ -37,7 +37,6 @@ use PHPUnit\Framework\TestCase;
  * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::mergeTyped
  * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::mergeProperty
  * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getNestingIndexes
- * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getNesting
  */
 class UtilTest extends TestCase
 {
