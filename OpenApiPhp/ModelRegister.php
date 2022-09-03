@@ -117,7 +117,7 @@ final class ModelRegister
 
     private function detach(ModelAnnotation $model, OA\AbstractAnnotation $annotation, Analysis $analysis): void
     {
-        if ($annotation->attachables !== Generator::UNDEFINED) {
+        if (Generator::UNDEFINED !== $annotation->attachables) {
             foreach ($annotation->attachables as $key => $attachable) {
                 if ($attachable === $model) {
                     unset($annotation->attachables[$key]);
@@ -141,7 +141,7 @@ final class ModelRegister
 
     private function getModel(OA\AbstractAnnotation $annotation): ?ModelAnnotation
     {
-        if ($annotation->attachables !== Generator::UNDEFINED) {
+        if (Generator::UNDEFINED !== $annotation->attachables) {
             foreach ($annotation->attachables as $attachable) {
                 if ($attachable instanceof ModelAnnotation) {
                     return $attachable;
