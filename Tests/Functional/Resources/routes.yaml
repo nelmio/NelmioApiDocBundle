@@ -31,15 +31,15 @@ api_platform:
 
 # Controllers
 doc_area:
-    path: /docs/{area}
+    path: /{area}/docs
     controller: nelmio_api_doc.controller.swagger_ui
     defaults: 
         area: default
 
 doc_json:
-    path: /docs.json
+    path: /{area}/docs.json
     controller: nelmio_api_doc.controller.swagger_json
 
 doc_yaml:
-    path: /docs.yaml
+    path: /{area}/docs.yaml
     controller: nelmio_api_doc.controller.swagger_yaml

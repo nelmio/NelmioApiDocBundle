@@ -133,8 +133,12 @@ class TestKernel extends Kernel
             'form' => null,
             'serializer' => ['enable_annotations' => true],
             'property_access' => true,
+            'exceptions' => [
+                'Symfony\Component\HttpKernel\Exception\BadRequestHttpException' => [
+                    'log_level' => 'debug',
+                ]
+            ],
         ];
-
         $c->loadFromExtension('framework', $framework);
 
         $c->loadFromExtension('twig', [

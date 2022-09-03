@@ -208,11 +208,6 @@ final class OpenApiPhpDescriber
      */
     private function getAttributesAsAnnotation($reflection, \OpenApi\Context $context): array
     {
-        // BC zircote/swagger-php < 4.0
-        if (!class_exists(AttributeAnnotationFactory::class)) {
-            return [];
-        }
-
         $attributesFactory = new AttributeAnnotationFactory();
         $attributes = $attributesFactory->build($reflection, $context);
         // The attributes factory removes the context after executing so we need to set it back...
