@@ -206,8 +206,7 @@ A: Use ``disable_default_routes`` config in your area.
 
     nelmio_api_doc:
         areas:
-            default:
-                disable_default_routes: true
+            disable_default_routes: true
 
 Overriding a Form or Plain PHP Object Schema Type
 -------------------------------------------------
