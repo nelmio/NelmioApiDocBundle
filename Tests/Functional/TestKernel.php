@@ -136,7 +136,7 @@ class TestKernel extends Kernel
             'exceptions' => [
                 'Symfony\Component\HttpKernel\Exception\BadRequestHttpException' => [
                     'log_level' => 'debug',
-                ]
+                ],
             ],
         ];
         $c->loadFromExtension('framework', $framework);
