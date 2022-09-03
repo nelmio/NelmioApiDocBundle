@@ -11,12 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
-use Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;

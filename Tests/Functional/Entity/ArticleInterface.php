@@ -1,6 +1,6 @@
 <?php
 
-namespace Functional\Entity;
+namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 interface ArticleInterface
 {
