@@ -203,7 +203,7 @@ To document your routes, you can use the SwaggerPHP annotations and the
              *
              * This call takes into account all confirmed awards, but not pending or refused awards.
              */
-            #[Route('/api/{user}/rewards', methods=['GET'])]
+            #[Route('/api/{user}/rewards', methods: ['GET'])]
             #[OA\Response(
                 response: 200,
                 description: 'Returns the rewards of an user',
