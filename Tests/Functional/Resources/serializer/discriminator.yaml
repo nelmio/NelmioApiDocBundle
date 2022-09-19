@@ -1,0 +1,6 @@
+Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorFileMapping:
+    discriminator_map:
+        type_property: type
+        mapping:
+            one: Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorOne
+            two: Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorTwo

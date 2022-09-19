@@ -144,7 +144,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ));
 
         $container->getDefinition('nelmio_api_doc.model_describers.object')
-            ->setArgument(3, $config['media_types']);
+            ->setArgument(4, $config['media_types']);
 
         // Add autoconfiguration for model describer
         $container->registerForAutoconfiguration(ModelDescriberInterface::class)

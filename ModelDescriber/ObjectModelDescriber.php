@@ -23,7 +23,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
@@ -33,6 +33,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     /** @var PropertyInfoExtractorInterface */
     private $propertyInfo;
+    /** @var ClassMetadataFactoryInterface */
+    private $classMetadataFactory;
     /** @var Reader */
     private $doctrineReader;
     /** @var PropertyDescriberInterface[] */
@@ -46,6 +48,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
+        ClassMetadataFactoryInterface $classMetadataFactory,
         Reader $reader,
         iterable $propertyDescribers,
         array $mediaTypes,
@@ -53,6 +56,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         bool $useValidationGroups = false
     ) {
         $this->propertyInfo = $propertyInfo;
+        $this->classMetadataFactory = $classMetadataFactory;
         $this->doctrineReader = $reader;
         $this->propertyDescribers = $propertyDescribers;
         $this->mediaTypes = $mediaTypes;
@@ -85,14 +89,17 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
         $schema->type = 'object';
 
-        $discriminatorMap = $this->getAnnotation($reflClass, DiscriminatorMap::class);
-        if ($discriminatorMap && Generator::UNDEFINED === $schema->discriminator) {
+        $mapping = $this->classMetadataFactory
+            ->getMetadataFor($class)
+            ->getClassDiscriminatorMapping();
+
+        if ($mapping && Generator::UNDEFINED === $schema->discriminator) {
             $this->applyOpenApiDiscriminator(
                 $model,
                 $schema,
                 $this->modelRegistry,
-                $discriminatorMap->getTypeProperty(),
-                $discriminatorMap->getMapping()
+                $mapping->getTypeProperty(),
+                $mapping->getTypesMapping()
             );
         }
 
@@ -194,23 +201,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $types[0]->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
-    }
-
-    /**
-     * @return mixed
-     */
-    private function getAnnotation(\ReflectionClass $reflection, string $className)
-    {
-        if (false === class_exists($className)) {
-            return null;
-        }
-        if (\PHP_VERSION_ID >= 80000) {
-            if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
-                return $attribute->newInstance();
-            }
-        }
-
-        return $this->doctrineReader->getClassAnnotation($reflection, $className);
     }
 
     public function supports(Model $model): bool
