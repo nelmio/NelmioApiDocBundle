@@ -57,7 +57,7 @@ final class OpenApiPhpDescriber
             $path = Util::getPath($api, $path);
 
             $context = Util::createContext(['nested' => $path], $path->_context);
-            $context->namespace = $method->getNamespaceName();
+            $context->namespace = $declaringClass->getNamespaceName();
             $context->class = $declaringClass->getShortName();
             $context->method = $method->name;
             $context->filename = $method->getFileName();
