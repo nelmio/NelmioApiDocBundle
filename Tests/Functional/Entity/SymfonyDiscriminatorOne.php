@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-class SymfonyDiscriminatorOne extends SymfonyDiscriminator
+class SymfonyDiscriminatorOne extends SymfonyDiscriminator implements SymfonyDiscriminatorFileMapping
 {
     /**
      * @var string

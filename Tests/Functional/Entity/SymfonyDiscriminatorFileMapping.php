@@ -11,10 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-abstract class SymfonyDiscriminatorFileMapping
+interface SymfonyDiscriminatorFileMapping
 {
-    /**
-     * @var string
-     */
-    public $type;
 }
