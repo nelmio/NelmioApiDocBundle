@@ -131,7 +131,12 @@ class TestKernel extends Kernel
             'test' => null,
             'validation' => null,
             'form' => null,
-            'serializer' => ['enable_annotations' => true],
+            'serializer' => [
+                'enable_annotations' => true,
+                'mapping' => [
+                    'paths' => [__DIR__.'/Resources/serializer/'],
+                ],
+            ],
             'property_access' => true,
         ];
         // Support symfony/framework-bundle < 5.4

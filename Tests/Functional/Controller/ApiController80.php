@@ -24,6 +24,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorFileMapping;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithAlternateSchemaType;
@@ -274,6 +275,15 @@ class ApiController80
      * @OA\Response(response=200, description="Worked well!", @Model(type=SymfonyDiscriminator::class))
      */
     public function discriminatorMappingAction()
+    {
+    }
+
+    /**
+     * @Route("/discriminator-mapping-configured-with-file", methods={"GET", "POST"})
+     *
+     * @OA\Response(response=200, description="Worked well!", @Model(type=SymfonyDiscriminatorFileMapping::class))
+     */
+    public function discriminatorMappingConfiguredWithFileAction()
     {
     }
 
