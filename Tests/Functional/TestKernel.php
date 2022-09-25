@@ -167,7 +167,7 @@ class TestKernel extends Kernel
             'mapping' => ['paths' => [
                 !class_exists(ApiProperty::class)
                 ? '%kernel.project_dir%/Tests/Functional/EntityExcluded/ApiPlatform3'
-                : '%kernel.project_dir%/Tests/Functional/EntityExcluded/ApiPlatform2'
+                : '%kernel.project_dir%/Tests/Functional/EntityExcluded/ApiPlatform2',
             ]],
         ]);
 
