@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Analysis;
-use OpenApi\Context;
 
 class SwaggerPHPApiComplianceTest extends WebTestCase
 {
@@ -26,21 +25,12 @@ class SwaggerPHPApiComplianceTest extends WebTestCase
 
     public function testAllContextsHaveSameRoot()
     {
-        // zircote/swagger-php < 4.2 support
-        $getRootContext = \Closure::bind(function (Context $context) use (&$getRootContext) {
-            if (null !== $context->_parent) {
-                return $getRootContext($context->_parent);
-            }
-
-            return $context;
-        }, null, Context::class);
-
         $openApi = $this->getOpenApiDefinition();
         $root = $openApi->_context;
 
         $counter = 0;
         foreach ((new Analysis([$openApi], Util::createContext()))->annotations as $annotation) {
-            $this->assertSame($getRootContext($annotation->_context), $root);
+            $this->assertSame($annotation->_context->root(), $root);
         }
     }
 }
