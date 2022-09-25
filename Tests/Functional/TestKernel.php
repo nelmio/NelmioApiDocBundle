@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
+use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use FOS\RestBundle\FOSRestBundle;
 use Hateoas\Configuration\Embedded;

@@ -48,7 +48,7 @@
         "symfony/twig-bundle": "^4.4|^5.2|^6.0",
         "symfony/validator": "^4.4|^5.2|^6.0",
 
-        "api-platform/core": "^2.7.0",
+        "api-platform/core": "^2.7.0|^3@dev",
         "symfony/deprecation-contracts": "^2.1|^3",
 
         "friendsofsymfony/rest-bundle": "^2.8|^3.0",

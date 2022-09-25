@@ -5,18 +5,17 @@
 
     <services>
         <service id="nelmio_api_doc.describers.api_platform" class="Nelmio\ApiDocBundle\Describer\ApiPlatformDescriber" public="false">
-            <argument type="service" id="nelmio_api_doc.describers.api_platform.documentation" />
-            <argument type="service" id="api_platform.swagger.normalizer.documentation" />
+            <argument type="service" id="nelmio_api_doc.describers.api_platform.openapi" />
+            <argument type="service" id="api_platform.openapi.normalizer" />
 
             <tag name="nelmio_api_doc.describer" priority="-100" />
         </service>
 
-        <service id="nelmio_api_doc.describers.api_platform.documentation" class="ApiPlatform\Core\Documentation\Documentation" public="false">
-            <factory service="api_platform.action.documentation" method="__invoke" />
-            <argument type="service">
-                <service class="Symfony\Component\HttpFoundation\Request" />
-            </argument>
+        <service id="nelmio_api_doc.describers.api_platform.openapi" class="ApiPlatform\OpenApi\OpenApi" public="false">
+            <factory service="api_platform.openapi.factory" method="__invoke" />
         </service>
+        
+
     </services>
 
 </container>
