@@ -30,7 +30,7 @@
         "symfony/options-resolver": "^4.4|^5.0|^6.0",
         "symfony/property-info": "^4.4|^5.0|^6.0",
         "symfony/routing": "^4.4|^5.0|^6.0",
-        "zircote/swagger-php": "^4.2.0",
+        "zircote/swagger-php": "^4.2.15",
         "phpdocumentor/reflection-docblock": "^3.1|^4.0|^5.0"
     },
     "require-dev": {
