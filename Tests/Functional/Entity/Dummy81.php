@@ -23,11 +23,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[
     ApiResource(
-        shortName: "Dummy",
+        shortName: 'Dummy',
         operations: [
-            new Get(name: "get"),
-            new Get(name: "custom2", uriTemplate: "/foo"),
-            new Post(name: "custom", uriTemplate: "/foo"),
+            new Get(name: 'get'),
+            new Get(name: 'custom2', uriTemplate: '/foo'),
+            new Post(name: 'custom', uriTemplate: '/foo'),
             new GetCollection(),
         ],
     )
@@ -44,7 +44,7 @@ class Dummy81
      *
      * @Assert\NotBlank
      */
-    #[ApiProperty(iris: ["http://schema.org/name"])]
+    #[ApiProperty(iris: ['http://schema.org/name'])]
     private $name;
 
     public function getId(): int

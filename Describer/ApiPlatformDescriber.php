@@ -11,9 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use ApiPlatform\Documentation\DocumentationInterface;
 use ApiPlatform\Core\Swagger\Serializer\DocumentationNormalizer;
-use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
+use ApiPlatform\Documentation\DocumentationInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class ApiPlatformDescriber extends ExternalDocDescriber
