@@ -12,48 +12,13 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Component\Validator\Constraints as Assert;
+use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded;
 
-/**
- * @author Guilhem N. <egetick@gmail.com>
- *
- * @ApiResource(
- *   collectionOperations={
- *     "get"={"method"="GET"},
- *     "custom2"={"path"="/foo", "method"="GET"},
- *     "custom"={"path"="/foo", "method"="POST"},
- *   },
- *   itemOperations={"get"={"method"="GET"}})
- * )
- */
-class Dummy
-{
-    /**
-     * @var int
-     */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank
-     * @ApiProperty(iri="http://schema.org/name")
-     */
-    private $name;
-
-    public function getId(): int
+// BC Api-Platform < 3.x
+if (!class_exists(ApiProperty::class)) {
+    class Dummy extends EntityExcluded\ApiPlatform3\Dummy
     {
-        return $this->id;
     }
-
-    public function setName(string $name)
-    {
-        $this->name = $name;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
+} else {
+    class_alias(EntityExcluded\ApiPlatform2\Dummy::class, Dummy::class);
 }

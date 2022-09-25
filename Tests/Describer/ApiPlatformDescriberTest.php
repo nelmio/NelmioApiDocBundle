@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Describer;
 
-use ApiPlatform\Core\Documentation\Documentation;
+use ApiPlatform\Documentation\Documentation;
 use ApiPlatform\Metadata\Resource\ResourceNameCollection;
 use Nelmio\ApiDocBundle\Describer\ApiPlatformDescriber;
 use OpenApi\Annotations\OpenApi;

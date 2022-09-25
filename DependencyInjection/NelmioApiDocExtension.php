@@ -168,7 +168,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         }
 
         // ApiPlatform support
-        if (isset($bundles['ApiPlatformBundle']) && class_exists('ApiPlatform\Core\Documentation\Documentation')) {
+        if (isset($bundles['ApiPlatformBundle']) && class_exists('ApiPlatform\Documentation\Documentation')) {
             $loader->load('api_platform.xml');
         }
 
