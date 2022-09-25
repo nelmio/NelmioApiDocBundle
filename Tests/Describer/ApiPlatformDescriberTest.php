@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Describer;
 
 use ApiPlatform\Core\Documentation\Documentation;
-use ApiPlatform\Core\Metadata\Resource\ResourceNameCollection;
+use ApiPlatform\Metadata\Resource\ResourceNameCollection;
 use Nelmio\ApiDocBundle\Describer\ApiPlatformDescriber;
 use OpenApi\Annotations\OpenApi;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
