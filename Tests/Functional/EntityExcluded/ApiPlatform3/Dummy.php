@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
+namespace Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\ApiPlatform3;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[
     ApiResource(
-        shortName: 'Dummy',
         operations: [
             new Get(name: 'get'),
             new Get(name: 'custom2', uriTemplate: '/foo'),
@@ -32,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ],
     )
 ]
-class Dummy81
+class Dummy
 {
     /**
      * @var int

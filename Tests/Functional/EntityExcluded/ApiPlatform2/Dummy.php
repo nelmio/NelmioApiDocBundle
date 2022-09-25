@@ -9,17 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
+namespace Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\ApiPlatform2;
 
-use ApiPlatform\Metadata\ApiProperty;
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author Guilhem N. <egetick@gmail.com>
  *
  * @ApiResource(
- *   shortName="Dummy",
  *   collectionOperations={
  *     "get"={"method"="GET"},
  *     "custom2"={"path"="/foo", "method"="GET"},
@@ -28,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *   itemOperations={"get"={"method"="GET"}})
  * )
  */
-class Dummy71
+class Dummy
 {
     /**
      * @var int
