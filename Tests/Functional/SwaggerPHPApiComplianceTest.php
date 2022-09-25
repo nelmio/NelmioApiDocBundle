@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Analysis;
-use OpenApi\Context;
 
 class SwaggerPHPApiComplianceTest extends WebTestCase
 {
