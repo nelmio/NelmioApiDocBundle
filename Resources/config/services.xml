@@ -71,12 +71,12 @@
         <!-- Model Describers -->
         <service id="nelmio_api_doc.model_describers.object" class="Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber" public="false">
             <argument type="service" id="property_info" />
-            <argument type="service" id="serializer.mapping.class_metadata_factory" />
             <argument type="service" id="annotations.reader" />
             <argument type="tagged" tag="nelmio_api_doc.object_model.property_describer" />
             <argument />
             <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore" />
             <argument>%nelmio_api_doc.use_validation_groups%</argument>
+            <argument type="service" id="serializer.mapping.class_metadata_factory" on-invalid="ignore" />
 
             <tag name="nelmio_api_doc.model_describer" />
         </service>
