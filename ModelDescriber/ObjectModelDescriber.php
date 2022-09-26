@@ -33,7 +33,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     /** @var PropertyInfoExtractorInterface */
     private $propertyInfo;
-    /** @var ClassMetadataFactoryInterface */
+    /** @var ClassMetadataFactoryInterface|null */
     private $classMetadataFactory;
     /** @var Reader */
     private $doctrineReader;
@@ -41,27 +41,27 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private $propertyDescribers;
     /** @var string[] */
     private $mediaTypes;
-    /** @var NameConverterInterface[] */
+    /** @var NameConverterInterface|null */
     private $nameConverter;
     /** @var bool */
     private $useValidationGroups;
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        ClassMetadataFactoryInterface $classMetadataFactory,
         Reader $reader,
         iterable $propertyDescribers,
         array $mediaTypes,
         NameConverterInterface $nameConverter = null,
-        bool $useValidationGroups = false
+        bool $useValidationGroups = false,
+        ClassMetadataFactoryInterface $classMetadataFactory = null
     ) {
         $this->propertyInfo = $propertyInfo;
-        $this->classMetadataFactory = $classMetadataFactory;
         $this->doctrineReader = $reader;
         $this->propertyDescribers = $propertyDescribers;
         $this->mediaTypes = $mediaTypes;
         $this->nameConverter = $nameConverter;
         $this->useValidationGroups = $useValidationGroups;
+        $this->classMetadataFactory = $classMetadataFactory;
     }
 
     public function describe(Model $model, OA\Schema $schema)
@@ -89,9 +89,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
         $schema->type = 'object';
 
-        $mapping = $this->classMetadataFactory
-            ->getMetadataFor($class)
-            ->getClassDiscriminatorMapping();
+        $mapping = false;
+        if (null !== $this->classMetadataFactory) {
+            $mapping = $this->classMetadataFactory
+                ->getMetadataFor($class)
+                ->getClassDiscriminatorMapping();
+        }
 
         if ($mapping && Generator::UNDEFINED === $schema->discriminator) {
             $this->applyOpenApiDiscriminator(
