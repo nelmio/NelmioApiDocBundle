@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Context;
 use OpenApi\Generator;
 
 /**
@@ -38,14 +39,10 @@ class OpenApiAnnotationsReader
 
     public function updateSchema(\ReflectionClass $reflectionClass, OA\Schema $schema): void
     {
-        $this->setContext(Util::createContext([], $schema->_context));
-
         /** @var OA\Schema|null $oaSchema */
         if (!$oaSchema = $this->getAnnotation($reflectionClass, OA\Schema::class)) {
             return;
         }
-
-        $this->setContext(null);
 
         // Read @Model annotations
         $this->modelRegister->__invoke(new Analysis([$oaSchema], Util::createContext()));
@@ -72,12 +69,12 @@ class OpenApiAnnotationsReader
         // In order to have nicer errors
         $declaringClass = $reflection->getDeclaringClass();
 
-        $this->setContext(Util::createContext([
+        $this->setContext(new Context([
             'namespace' => $declaringClass->getNamespaceName(),
             'class' => $declaringClass->getShortName(),
             'property' => $reflection->name,
             'filename' => $declaringClass->getFileName(),
-        ], $property->_context));
+        ]));
 
         /** @var OA\Property|null $oaProperty */
         if (!$oaProperty = $this->getAnnotation($reflection, OA\Property::class)) {
