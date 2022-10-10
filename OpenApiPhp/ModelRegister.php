@@ -164,7 +164,7 @@ final class ModelRegister
 
                 break;
             case 'xml':
-                $modelAnnotation = Util::createChild($annotation, OA\XmlContent, $properties);
+                $modelAnnotation = Util::createChild($annotation, OA\XmlContent::class, $properties);
 
                 break;
             default:
