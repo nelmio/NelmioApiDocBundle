@@ -145,7 +145,7 @@ final class FosRestDescriber implements RouteDescriberInterface
                 throw new \InvalidArgumentException('Unsupported media type');
         }
         if (!isset($requestBody->content[$contentType])) {
-            $requestBody->content[$contentType] = Util::createChild($requestBody, OA\MediaType::class,
+            $requestBody->content[$contentType] = new OA\MediaType(
                 [
                     'mediaType' => $contentType,
                 ]

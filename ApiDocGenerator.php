@@ -105,6 +105,7 @@ final class ApiDocGenerator
 
             $describer->describe($this->openApi);
         }
+
         $analysis = new Analysis([], $context);
         $analysis->addAnnotation($this->openApi, $context);
 

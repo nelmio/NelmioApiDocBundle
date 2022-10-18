@@ -150,7 +150,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             $ref = $this->modelRegistry->register($model);
             // We need to use allOf for description and title to be displayed
             if ($config->hasOption('documentation') && !empty($config->getOption('documentation'))) {
-                $property->allOf = [Util::createChild($property, OA\Schema::class, ['ref' => $ref])];
+                $property->allOf = [new OA\Schema(['ref' => $ref])];
             } else {
                 $property->ref = $ref;
             }
