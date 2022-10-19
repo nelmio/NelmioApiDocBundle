@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,4 +32,12 @@ class SymfonyConstraintsWithValidationGroups
      * @Assert\Range(min=1, max=100)
      */
     public $propertyInDefaultGroup;
+
+    /**
+     * @var array
+     *
+     * @OA\Property(type="array", @OA\Items(type="string"))
+     * @Assert\Valid
+     */
+    public $propertyArray;
 }

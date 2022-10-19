@@ -225,7 +225,7 @@ class SymfonyConstraintAnnotationReader
     {
         return count(array_intersect(
             $validationGroups ?: [Constraint::DEFAULT_GROUP],
-            $annotation->groups
+            (array) $annotation->groups
         )) > 0;
     }
 }
