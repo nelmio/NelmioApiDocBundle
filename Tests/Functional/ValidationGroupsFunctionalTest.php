@@ -66,6 +66,12 @@ class ValidationGroupsFunctionalTest extends WebTestCase
                     'maximum' => 100,
                     'minimum' => 1,
                 ],
+                'propertyArray' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'string',
+                    ],
+                ],
             ],
             'type' => 'object',
             'schema' => 'SymfonyConstraintsDefaultGroup',
