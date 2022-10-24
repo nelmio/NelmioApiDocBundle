@@ -278,7 +278,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         } elseif (in_array($type['name'], ['double', 'float'], true)) {
             $property->type = 'number';
             $property->format = $type['name'];
-        } elseif (is_subclass_of($type['name'], \DateTimeInterface::class)) {
+        } elseif (is_a($type['name'], \DateTimeInterface::class, true)) {
             $property->type = 'string';
             $property->format = 'date-time';
         } else {
