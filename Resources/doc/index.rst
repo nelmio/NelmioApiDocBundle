@@ -89,7 +89,9 @@ By default, only routes under ``/api`` are documented. Update the regexp at ``ne
                 host_patterns: # document only routes with a host of the form api.*
 
                     - ^api\.
+
 .. tip::
+
      `Twig <https://symfony.com/components/Twig%20Bundle>`_ and `Assets <https://symfony.com/components/asset>`_ packages are needed to use swagger ui.
 
 How does this bundle work?
