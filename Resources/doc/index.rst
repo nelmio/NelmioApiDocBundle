@@ -89,6 +89,10 @@ By default, only routes under ``/api`` are documented. Update the regexp at ``ne
                 host_patterns: # document only routes with a host of the form api.*
                     - ^api\.
 
+.. tip::
+
+     `Twig <https://symfony.com/components/Twig%20Bundle>`_ and `Assets <https://symfony.com/components/asset>`_ packages are needed to use swagger ui.
+
 How does this bundle work?
 --------------------------
 
@@ -103,7 +107,7 @@ Using the bundle
 ----------------
 
 You can configure global information in the bundle configuration ``documentation.info`` section (take a look at
-`the OpenAPI 3.0 specification (formerly Swagger)`_ to know the available fields). 
+`the OpenAPI 3.0 specification (formerly Swagger)`_ to know the available fields).
 
 .. code-block:: yaml
 
@@ -135,8 +139,8 @@ You can configure global information in the bundle configuration ``documentation
 
 .. tip::
 
-    This configuration field can more generally be used to store your documentation as yaml. 
-    You may find in the ``.yaml`` files from `SwaggerPHP examples`_. 
+    This configuration field can more generally be used to store your documentation as yaml.
+    You may find in the ``.yaml`` files from `SwaggerPHP examples`_.
 
 To document your routes, you can use the SwaggerPHP annotations and the
 ``Nelmio\ApiDocBundle\Annotation\Model`` annotation in your controllers::
@@ -144,7 +148,7 @@ To document your routes, you can use the SwaggerPHP annotations and the
 .. configuration-block::
 
     .. code-block:: php-annotations
-    
+
         namespace AppBundle\Controller;
 
         use AppBundle\Entity\Reward;
@@ -184,9 +188,9 @@ To document your routes, you can use the SwaggerPHP annotations and the
                 // ...
             }
         }
-    
+
     .. code-block:: php-attributes
-    
+
         namespace AppBundle\Controller;
 
         use AppBundle\Entity\Reward;
@@ -208,7 +212,7 @@ To document your routes, you can use the SwaggerPHP annotations and the
                 response: 200,
                 description: 'Returns the rewards of an user',
                 content: new OA\JsonContent(
-                    type: 'array', 
+                    type: 'array',
                     items: new OA\Items(ref: new Model(type: AlbumDto::class, groups: ['full']))
                 )
             )]
@@ -225,7 +229,7 @@ To document your routes, you can use the SwaggerPHP annotations and the
                 // ...
             }
         }
-    
+
 
 The normal PHPDoc block on the controller method is used for the summary and description.
 
@@ -233,7 +237,7 @@ The normal PHPDoc block on the controller method is used for the summary and des
 
     Examples of using the annotations can be found in `SwaggerPHP examples`_.
     However, unlike in those examples, when using this bundle you don't need to specify paths and you can easily document models as well as some
-    other properties described below as they can be automatically be documented using the Symfony integration. 
+    other properties described below as they can be automatically be documented using the Symfony integration.
 
 Use Models
 ----------
@@ -252,7 +256,7 @@ This annotation has two options:
 .. configuration-block::
 
     .. code-block:: php-annotations
-    
+
         /**
          * @OA\Response(
          *     response=200,
@@ -283,7 +287,7 @@ This annotation has two options:
          */
 
     .. code-block:: php-attributes
-    
+
         #[OA\Response(
             response: 200,
             description: 'Successful response',
@@ -449,9 +453,9 @@ General PHP objects
     **If you're using the JMS Serializer**, the metadata of the JMS serializer are used by default to describe your
     models. Additional information is extracted from the PHP doc block comment,
     but the property types must be specified in the JMS annotations.
-    
+
     NOTE: If you are using serialization contexts (e.g. Groups) each permutation will be treated as a separate Path. For example if you have the following two variations defined in different places in your code:
-    
+
     .. code-block:: php
 
         /**
@@ -499,7 +503,7 @@ If you want to customize the documentation of an object's property, you can use 
 .. configuration-block::
 
     .. code-block:: php-annotations
-            
+
         use Nelmio\ApiDocBundle\Annotation\Model;
         use OpenApi\Annotations as OA;
 
@@ -530,7 +534,7 @@ If you want to customize the documentation of an object's property, you can use 
         }
 
     .. code-block:: php-attributes
-            
+
         use Nelmio\ApiDocBundle\Annotation\Model;
         use OpenApi\Attributes as OA;
 
