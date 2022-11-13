@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Routing;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
+use OpenApi\Context;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;

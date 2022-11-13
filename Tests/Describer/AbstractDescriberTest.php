@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Describer;
 
 use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractDescriberTest extends TestCase
@@ -22,7 +23,7 @@ abstract class AbstractDescriberTest extends TestCase
 
     protected function getOpenApiDoc(): OpenApi
     {
-        $api = new OpenApi([]);
+        $api = new OpenApi(['_context' => new Context()]);
         $this->describer->describe($api);
 
         return $api;

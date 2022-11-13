@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Context;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Route;
@@ -32,7 +33,7 @@ class RouteDescriberTest extends AbstractDescriberTest
         $this->routeDescriber->expects($this->never())
             ->method('describe');
 
-        $this->assertEquals((new OpenApi([]))->toJson(), $this->getOpenApiDoc()->toJson());
+        $this->assertEquals((new OpenApi(['_context' => new Context()]))->toJson(), $this->getOpenApiDoc()->toJson());
     }
 
     protected function setUp(): void

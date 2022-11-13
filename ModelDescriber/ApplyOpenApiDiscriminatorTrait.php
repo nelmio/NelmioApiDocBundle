@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -42,12 +43,14 @@ trait ApplyOpenApiDiscriminatorTrait
         string $discriminatorProperty,
         array $typeMap
     ): void {
+        $weakContext = Util::createWeakContext($schema->_context);
+
         $schema->oneOf = [];
-        $schema->discriminator = new OA\Discriminator([]);
+        $schema->discriminator = new OA\Discriminator(['_context' => $weakContext]);
         $schema->discriminator->propertyName = $discriminatorProperty;
         $schema->discriminator->mapping = [];
         foreach ($typeMap as $propertyValue => $className) {
-            $oneOfSchema = new OA\Schema([]);
+            $oneOfSchema = new OA\Schema(['_context' => $weakContext]);
             $oneOfSchema->ref = $modelRegistry->register(new Model(
                 new Type(Type::BUILTIN_TYPE_OBJECT, false, $className),
                 $model->getGroups(),

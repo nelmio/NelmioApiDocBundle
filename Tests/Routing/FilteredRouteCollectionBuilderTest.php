@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\Parameter;
+use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\Container;
@@ -321,14 +322,14 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             'matching route with Nelmio Annotation' => [
                 'r10',
                 new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
-                [new Operation([])],
+                [new Operation(['_context' => new Context()])],
                 ['disable_default_routes' => true],
                 1,
             ],
             'matching route with Swagger Annotation' => [
                 'r10',
                 new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
-                [new Parameter([])],
+                [new Parameter(['_context' => new Context()])],
                 ['disable_default_routes' => true],
                 1,
             ],
