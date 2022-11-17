@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle;
 
 use Nelmio\ApiDocBundle\DependencyInjection\Compiler\ConfigurationPass;
+use Nelmio\ApiDocBundle\DependencyInjection\Compiler\PhpDocExtractorPass;
 use Nelmio\ApiDocBundle\DependencyInjection\Compiler\TagDescribersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -25,5 +26,6 @@ final class NelmioApiDocBundle extends Bundle
     {
         $container->addCompilerPass(new ConfigurationPass());
         $container->addCompilerPass(new TagDescribersPass());
+        $container->addCompilerPass(new PhpDocExtractorPass());
     }
 }
