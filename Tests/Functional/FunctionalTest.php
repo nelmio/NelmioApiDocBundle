@@ -704,4 +704,29 @@ class FunctionalTest extends WebTestCase
         $this->assertSame('#/components/schemas/Test', $model->ref);
         $this->assertSame(Generator::UNDEFINED, $model->properties);
     }
+
+    public function testEntityWithNullableSchemaSet()
+    {
+        $model = $this->getModel('EntityWithNullableSchemaSet');
+
+        $this->assertCount(6, $model->properties);
+
+        // nullablePropertyNullableNotSet
+        $this->assertTrue($model->properties[0]->nullable);
+
+        // nullablePropertyNullableFalseSet
+        $this->assertSame(Generator::UNDEFINED, $model->properties[1]->nullable);
+
+        // nullablePropertyNullableTrueSet
+        $this->assertTrue($model->properties[2]->nullable);
+
+        // nonNullablePropertyNullableNotSet
+        $this->assertSame(Generator::UNDEFINED, $model->properties[3]->nullable);
+
+        // nonNullablePropertyNullableFalseSet
+        $this->assertSame(Generator::UNDEFINED, $model->properties[4]->nullable);
+
+        // nonNullablePropertyNullableTrueSet
+        $this->assertTrue($model->properties[5]->nullable);
+    }
 }
