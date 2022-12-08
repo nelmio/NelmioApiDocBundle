@@ -51,9 +51,6 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
 
         $expected = json_decode($this->getOpenApiDefinition('test')->toJson(), true);
-        $expected['servers'] = [
-            ['url' => 'http://api.example.com/app_dev.php'],
-        ];
 
         $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
@@ -67,9 +64,6 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
 
         $expected = json_decode($this->getOpenApiDefinition()->toJson(), true);
-        $expected['servers'] = [
-            ['url' => 'http://api.example.com/app_dev.php'],
-        ];
 
         $this->assertEquals($expected, json_decode($response->getContent(), true));
     }
@@ -90,9 +84,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('text/x-yaml; charset=UTF-8', $response->headers->get('Content-Type'));
 
-        $spec = $this->getOpenApiDefinition();
-        $spec->servers = [new Server(['url' => 'http://api.example.com/app_dev.php'])];
-        $expected = $spec->toYaml();
+        $expected = $this->getOpenApiDefinition()->toYaml();
 
         $this->assertEquals($expected, $response->getContent());
     }

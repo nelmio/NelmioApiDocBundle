@@ -33,7 +33,9 @@ final class YamlDocumentationController
     {
         try {
             $response = new Response(
-                $this->renderOpenApi->renderFromRequest($request, RenderOpenApi::YAML, $area),
+                $this->renderOpenApi->render(RenderOpenApi::YAML, $area, [
+                    'fallback_url' => $request->getSchemeAndHttpHost().$request->getBaseUrl()
+                ]),
                 Response::HTTP_OK,
                 ['Content-Type' => 'text/x-yaml']
             );
