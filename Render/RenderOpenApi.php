@@ -71,7 +71,7 @@ class RenderOpenApi
             return [new Server(['url' => $options['server_url']])];
         }
 
-        if ($spec->servers !== Generator::UNDEFINED) {
+        if (Generator::UNDEFINED !== $spec->servers) {
             return $spec->servers;
         }
 
