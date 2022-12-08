@@ -34,7 +34,7 @@ final class DocumentationController
         try {
             return JsonResponse::fromJsonString(
                 $this->renderOpenApi->render(RenderOpenApi::JSON, $area, [
-                    'fallback_url' => $request->getSchemeAndHttpHost().$request->getBaseUrl()
+                    'fallback_url' => $request->getSchemeAndHttpHost().$request->getBaseUrl(),
                 ])
             );
         } catch (RenderInvalidArgumentException $e) {

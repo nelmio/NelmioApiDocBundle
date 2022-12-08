@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use OpenApi\Annotations\Server;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class SwaggerUiTest extends WebTestCase

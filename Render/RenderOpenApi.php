@@ -15,7 +15,6 @@ use Nelmio\ApiDocBundle\Exception\RenderInvalidArgumentException;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Server;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class RenderOpenApi
 {
@@ -60,12 +59,12 @@ class RenderOpenApi
         /** @var OpenApi $spec */
         $spec = $this->generatorLocator->get($area)->generate();
 
-        $spec->servers = $this->getServersFromOptions($options, $spec);
+        $spec->servers = $this->getServersFromOptions($spec, $options);
 
         return $this->openApiRenderers[$format]->render($spec, $options);
     }
 
-    private function getServersFromOptions(array $options, OpenApi $spec): ?array
+    private function getServersFromOptions(OpenApi $spec, array $options): ?array
     {
         if (array_key_exists('server_url', $options) && $options['server_url']) {
             return [new Server(['url' => $options['server_url']])];
