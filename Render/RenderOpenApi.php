@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Render;
 use Nelmio\ApiDocBundle\Exception\RenderInvalidArgumentException;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Server;
+use OpenApi\Generator;
 use Psr\Container\ContainerInterface;
 
 class RenderOpenApi
@@ -70,7 +71,7 @@ class RenderOpenApi
             return [new Server(['url' => $options['server_url']])];
         }
 
-        if ($spec->servers) {
+        if ($spec->servers !== Generator::UNDEFINED) {
             return $spec->servers;
         }
 
