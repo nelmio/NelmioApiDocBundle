@@ -13,9 +13,9 @@ namespace Nelmio\ApiDocBundle\Tests\RouteDescriber;
 
 use Nelmio\ApiDocBundle\RouteDescriber\RouteMetadataDescriber;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
-use OpenApi\Generator;
 
 class RouteMetadataDescriberTest extends TestCase
 {
@@ -25,7 +25,6 @@ class RouteMetadataDescriberTest extends TestCase
 
         $this->assertNull($routeDescriber->describe(new OpenApi([]), new Route('foo'), new \ReflectionMethod(__CLASS__, 'testUndefinedCheck')));
     }
-
 
     public function testRouteRequirementsWithPattern()
     {
@@ -70,7 +69,6 @@ class RouteMetadataDescriberTest extends TestCase
         $this->assertEquals(explode('|', $req), $getPathParameter->schema->enum);
         $this->assertEquals($req, $getPathParameter->schema->pattern);
     }
-
 
     /**
      * @dataProvider provideInvalidEnumPattern

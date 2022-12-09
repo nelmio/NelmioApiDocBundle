@@ -113,8 +113,10 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
 
     /**
      * returns array of separated alphanumeric (including '-', '_', '.') strings from a simple OR regex requirement pattern.
-     * (routing parameters containing enums have already been resolved to that format at this time)
+     * (routing parameters containing enums have already been resolved to that format at this time).
+     *
      * @param string $reqPattern a requirement pattern to match, e.g. 'a.html|b.html'
+     *
      * @return array<string>
      */
     private function getPossibleEnumValues(string $reqPattern): array
@@ -123,7 +125,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
         if (str_contains($reqPattern, '|')) {
             $parts = explode('|', $reqPattern);
             foreach ($parts as $part) {
-                if ('' === $part || preg_match(self::ALPHANUM_EXPANDED_REGEX, $part) === 0) {
+                if ('' === $part || 0 === preg_match(self::ALPHANUM_EXPANDED_REGEX, $part)) {
                     // we check a complex regex expression containing | - abort in that case
                     return [];
                 } else {
