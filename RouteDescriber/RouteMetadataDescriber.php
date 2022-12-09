@@ -24,6 +24,8 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
+    private const ALPHANUM_EXPANDED_REGEX = '/^[-a-zA-Z0-9_.]*$/';
+
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         foreach ($this->getOperations($api, $route) as $operation) {
@@ -57,8 +59,17 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                     $parameter->schema->type = 'string';
                 }
 
-                if (isset($requirements[$pathVariable]) && Generator::UNDEFINED === $parameter->schema->pattern) {
-                    $parameter->schema->pattern = $requirements[$pathVariable];
+                // handle pattern and possible enum values
+                if (isset($requirements[$pathVariable])) {
+                    $req = $requirements[$pathVariable];
+                    $enumValues = $this->getPossibleEnumValues($req);
+                    if ($enumValues && Generator::UNDEFINED === $parameter->schema->pattern) {
+                        $parameter->schema->enum = $enumValues;
+                    }
+                    // add the pattern anyway
+                    if (Generator::UNDEFINED === $parameter->schema->pattern) {
+                        $parameter->schema->pattern = $requirements[$pathVariable];
+                    }
                 }
             }
         }
@@ -98,5 +109,29 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
         }
 
         return $existingParams;
+    }
+
+    /**
+     * returns array of separated alphanumeric (including '-', '_', '.') strings from a simple OR regex requirement pattern.
+     * (routing parameters containing enums have already been resolved to that format at this time)
+     * @param string $reqPattern a requirement pattern to match, e.g. 'a.html|b.html'
+     * @return array<string>
+     */
+    private function getPossibleEnumValues(string $reqPattern): array
+    {
+        $requirements = [];
+        if (str_contains($reqPattern, '|')) {
+            $parts = explode('|', $reqPattern);
+            foreach ($parts as $part) {
+                if ('' === $part || preg_match(self::ALPHANUM_EXPANDED_REGEX, $part) === 0) {
+                    // we check a complex regex expression containing | - abort in that case
+                    return [];
+                } else {
+                    $requirements[] = $part;
+                }
+            }
+        }
+
+        return $requirements;
     }
 }
