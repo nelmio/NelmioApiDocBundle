@@ -95,7 +95,6 @@ class RouteMetadataDescriberTest extends TestCase
         yield ['srf|rtr|rsi'];
         yield ['srf-1|srf-2'];
         yield ['srf-1|srf-2'];
-        yield ['a_1.html|b-2.html'];
     }
 
     public function provideInvalidEnumPattern()
@@ -106,5 +105,9 @@ class RouteMetadataDescriberTest extends TestCase
         yield ['srf||rtr'];
         yield ['1|2|'];
         yield ['/1|2/'];
+        yield ['\d|a'];
+        // dots have special meaning and should be skipped
+        yield ['a_1\.html|b-2\.html'];
+        yield ['a_1.html|b-2.html'];
     }
 }
