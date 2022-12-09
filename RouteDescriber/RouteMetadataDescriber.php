@@ -122,7 +122,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     private function getPossibleEnumValues(string $reqPattern): array
     {
         $requirements = [];
-        if (str_contains($reqPattern, '|')) {
+        if (false !== strpos($reqPattern, '|')) {
             $parts = explode('|', $reqPattern);
             foreach ($parts as $part) {
                 if ('' === $part || 0 === preg_match(self::ALPHANUM_EXPANDED_REGEX, $part)) {
