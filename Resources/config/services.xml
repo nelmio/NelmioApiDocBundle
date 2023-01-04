@@ -69,6 +69,10 @@
         </service>
 
         <!-- Model Describers -->
+        <service id="nelmio_api_doc.model_describers.self_describing" class="Nelmio\ApiDocBundle\ModelDescriber\SelfDescribingModelDescriber" public="false">
+            <tag name="nelmio_api_doc.model_describer" priority="1000" />
+        </service>
+
         <service id="nelmio_api_doc.model_describers.object" class="Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber" public="false">
             <argument type="service" id="property_info" />
             <argument type="service" id="annotations.reader" />
