@@ -34,9 +34,8 @@ final class SwaggerUiController
     {
         try {
             $response = new Response(
-                $this->renderOpenApi->render(RenderOpenApi::HTML, $area, [
+                $this->renderOpenApi->renderFromRequest($request, RenderOpenApi::HTML, $area, [
                     'assets_mode' => AssetsMode::BUNDLE,
-                    'fallback_url' => $request->getSchemeAndHttpHost().$request->getBaseUrl(),
                 ]),
                 Response::HTTP_OK,
                 ['Content-Type' => 'text/html']

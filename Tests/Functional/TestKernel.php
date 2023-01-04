@@ -199,12 +199,6 @@ class TestKernel extends Kernel
         $c->loadFromExtension('nelmio_api_doc', [
             'use_validation_groups' => boolval($this->flags & self::USE_VALIDATION_GROUPS),
             'documentation' => [
-                'servers' => [ // from https://github.com/nelmio/NelmioApiDocBundle/issues/1691
-                    [
-                        'url' => 'https://api.example.com/secured/{version}',
-                        'variables' => ['version' => ['default' => 'v1']],
-                    ],
-                ],
                 'info' => [
                     'title' => 'My Default App',
                 ],

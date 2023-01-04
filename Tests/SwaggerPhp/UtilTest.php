@@ -569,6 +569,25 @@ class UtilTest extends TestCase
                     'info' => ['title' => $yes, 'version' => $no],
                 ] + $assertDefaults,
         ], [
+            // Parse server url with variables, see https://github.com/nelmio/NelmioApiDocBundle/issues/1691
+            'setup' => $setupDefaults,
+            'merge' => [
+                'servers' => [
+                    [
+                        'url' => 'https://api.example.com/secured/{version}',
+                        'variables' => ['version' => ['default' => 'v1']],
+                    ],
+                ],
+            ],
+            'assert' => [
+                'servers' => [
+                    [
+                        'url' => 'https://api.example.com/secured/{version}',
+                        'variables' => ['version' => ['default' => 'v1']],
+                    ],
+                ],
+            ] + $assertDefaults,
+        ], [
             // indexed collection merge
             'setup' => [
                     'components' => new OA\Components([
