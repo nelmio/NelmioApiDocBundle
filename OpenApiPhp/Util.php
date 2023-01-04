@@ -84,7 +84,7 @@ final class Util
     public static function getSchema(OA\OpenApi $api, $schema): OA\Schema
     {
         if (!$api->components instanceof OA\Components) {
-            $api->components = new OA\Components([]);
+            $api->components = new OA\Components(['_context' => self::createWeakContext($api->_context)]);
         }
 
         return self::getIndexedCollectionItem($api->components, OA\Schema::class, $schema);
@@ -317,6 +317,38 @@ final class Util
     public static function createContext(array $properties = [], Context $parent = null): Context
     {
         return new Context($properties, $parent);
+    }
+
+    /**
+     * Create a new Context by copying the properties of the parent, but without a reference to the parent.
+     *
+     * @see Context
+     */
+    public static function createWeakContext(Context $parent = null, array $additionalProperties = []): Context
+    {
+        $propsToCopy = [
+            'version',
+            'line',
+            'character',
+            'namespace',
+            'class',
+            'interface',
+            'trait',
+            'method',
+            'property',
+            'logger',
+        ];
+        $filteredProps = [];
+        foreach ($propsToCopy as $prop) {
+            $value = $parent->{$prop} ?? null;
+            if (null === $value) {
+                continue;
+            }
+
+            $filteredProps[$prop] = $value;
+        }
+
+        return new Context(array_merge($filteredProps, $additionalProperties));
     }
 
     /**

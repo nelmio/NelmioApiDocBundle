@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -36,8 +37,9 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
         ); // ignore nullable field
 
         if ($types[0]->isNullable()) {
+            $weakContext = Util::createWeakContext($property->_context);
             $property->nullable = true;
-            $property->allOf = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups))])];
+            $property->allOf = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups)), '_context' => $weakContext])];
 
             return;
         }

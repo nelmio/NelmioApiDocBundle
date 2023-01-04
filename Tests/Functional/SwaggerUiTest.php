@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use OpenApi\Annotations\Server;
+use OpenApi\Context;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class SwaggerUiTest extends WebTestCase
@@ -91,7 +92,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals('text/x-yaml; charset=UTF-8', $response->headers->get('Content-Type'));
 
         $spec = $this->getOpenApiDefinition();
-        $spec->servers = [new Server(['url' => 'http://api.example.com/app_dev.php'])];
+        $spec->servers = [new Server(['url' => 'http://api.example.com/app_dev.php', '_context' => new Context()])];
         $expected = $spec->toYaml();
 
         $this->assertEquals($expected, $response->getContent());

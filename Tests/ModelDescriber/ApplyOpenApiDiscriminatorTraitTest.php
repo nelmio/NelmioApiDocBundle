@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ApplyOpenApiDiscriminatorTrait;
 use OpenApi\Annotations as OA;
+use OpenApi\Context;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type;
@@ -72,9 +73,9 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->schema = new OA\Schema([]);
+        $this->schema = new OA\Schema(['_context' => new Context()]);
         $this->model = $this->createModel(__CLASS__);
-        $this->modelRegistry = new ModelRegistry([], new OA\OpenApi([]));
+        $this->modelRegistry = new ModelRegistry([], new OA\OpenApi(['_context' => new Context()]));
     }
 
     private function createModel(string $className): Model
