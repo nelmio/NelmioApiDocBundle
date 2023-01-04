@@ -329,8 +329,8 @@ properties and validator constraints. Take the model class below:
 
         class UserDto
         {
-             #[Groups(["default", "create", "update"])
-             #[Assert\NotBlank(groups: ["default", "create"])
+             #[Groups(["default", "create", "update"])]
+             #[Assert\NotBlank(groups: ["default", "create"])]
             public string $username;
         }
 
