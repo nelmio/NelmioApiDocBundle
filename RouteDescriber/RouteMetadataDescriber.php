@@ -112,7 +112,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     }
 
     /**
-     * returns array of separated alphanumeric (including '-', '_', '.') strings from a simple OR regex requirement pattern.
+     * returns array of separated alphanumeric (including '-', '_') strings from a simple OR regex requirement pattern.
      * (routing parameters containing enums have already been resolved to that format at this time).
      *
      * @param string $reqPattern a requirement pattern to match, e.g. 'a.html|b.html'
