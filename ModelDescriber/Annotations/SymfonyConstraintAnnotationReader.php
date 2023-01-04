@@ -13,7 +13,9 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Annotations as OA;
+use OpenApi\Context;
 use OpenApi\Generator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,6 +25,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SymfonyConstraintAnnotationReader
 {
+    use SetsContextTrait;
+
     /**
      * @var Reader
      */
@@ -51,7 +55,7 @@ class SymfonyConstraintAnnotationReader
      */
     public function updateProperty($reflection, OA\Property $property, ?array $validationGroups = null): void
     {
-        foreach ($this->getAnnotations($reflection, $validationGroups) as $outerAnnotation) {
+        foreach ($this->getAnnotations($property->_context, $reflection, $validationGroups) as $outerAnnotation) {
             $innerAnnotations = $outerAnnotation instanceof Assert\Compound || $outerAnnotation instanceof Assert\Sequentially
                 ? $outerAnnotation->constraints
                 : [$outerAnnotation];
@@ -182,8 +186,11 @@ class SymfonyConstraintAnnotationReader
     /**
      * @param \ReflectionProperty|\ReflectionMethod $reflection
      */
-    private function getAnnotations($reflection, ?array $validationGroups): iterable
+    private function getAnnotations(Context $parentContext, $reflection, ?array $validationGroups): iterable
     {
+        // To correctly load OA annotations
+        $this->setContextFromReflection($parentContext, $reflection);
+
         foreach ($this->locateAnnotations($reflection) as $annotation) {
             if (!$annotation instanceof Constraint) {
                 continue;
@@ -193,6 +200,8 @@ class SymfonyConstraintAnnotationReader
                 yield $annotation;
             }
         }
+
+        $this->setContext(null);
     }
 
     /**

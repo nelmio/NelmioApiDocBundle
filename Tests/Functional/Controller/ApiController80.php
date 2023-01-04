@@ -19,6 +19,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
@@ -380,6 +381,18 @@ class ApiController80
      * )
      */
     public function formWithRefSchemaType()
+    {
+    }
+
+    /**
+     * @Route("/entity-with-nullable-property-set", methods={"GET"})
+     * @OA\Response(
+     *    response="201",
+     *    description="Operation automatically detected",
+     *    @Model(type=EntityWithNullableSchemaSet::class)
+     * )
+     */
+    public function entityWithNullableSchemaSet()
     {
     }
 }

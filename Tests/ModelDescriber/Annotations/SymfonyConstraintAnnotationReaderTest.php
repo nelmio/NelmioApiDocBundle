@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationRe
 use Nelmio\ApiDocBundle\Tests\Helper;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use OpenApi\Annotations as OA;
+use OpenApi\Context;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
@@ -37,9 +38,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             private $property2;
         };
 
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
-        $schema->merge([new OA\Property(['property' => 'property2'])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property2'])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
@@ -61,9 +62,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             $this->markTestSkipped('NotBlank::allowNull was added in symfony/validator 4.3.');
         }
 
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
-        $schema->merge([new OA\Property(['property' => 'property2'])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property2'])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
@@ -106,8 +107,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testAssertChoiceResultsInNumericArray($entity)
     {
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
@@ -148,8 +149,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testMultipleChoiceConstraintsApplyEnumToItems($entity)
     {
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
@@ -184,8 +185,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet($entity)
     {
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
@@ -220,8 +221,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testLengthConstraintDoesNotSetMinLengthIfMinIsNotSet($entity)
     {
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
@@ -259,8 +260,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         };
         $propertyName = 'property1';
 
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => $propertyName])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => $propertyName])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
@@ -289,8 +290,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testCountConstraintDoesNotSetMinItemsIfMinIsNotSet($entity)
     {
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
@@ -325,8 +326,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet($entity)
     {
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
@@ -361,8 +362,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testRangeConstraintDoesNotSetMaximumIfMaxIsNotSet($entity)
     {
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
@@ -397,8 +398,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testRangeConstraintDoesNotSetMinimumIfMinIsNotSet($entity)
     {
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(new AnnotationReader());
         $symfonyConstraintAnnotationReader->setSchema($schema);
@@ -435,8 +436,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testReaderWithValidationGroupsEnabledChecksForDefaultGroupWhenNoSerializationGroupsArePassed($entity)
     {
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
         $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
         $reader->setSchema($schema);
 
@@ -455,9 +456,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testReaderWithValidationGroupsEnabledDoesNotReadAnnotationsWithoutDefaultGroupIfNoGroupsArePassed($entity)
     {
-        $schema = new OA\Schema([]);
+        $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([
-            new OA\Property(['property' => 'property1']),
+            $this->createObj(OA\Property::class, ['property' => 'property1']),
         ]);
         $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
         $reader->setSchema($schema);
@@ -478,9 +479,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testReaderWithValidationGroupsEnabledReadsOnlyConstraintsWithGroupsProvided($entity)
     {
-        $schema = new OA\Schema([]);
+        $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([
-            new OA\Property(['property' => 'property1']),
+            $this->createObj(OA\Property::class, ['property' => 'property1']),
         ]);
         $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
         $reader->setSchema($schema);
@@ -502,9 +503,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testReaderWithValidationGroupsEnabledCanReadFromMultipleValidationGroups($entity)
     {
-        $schema = new OA\Schema([]);
+        $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([
-            new OA\Property(['property' => 'property1']),
+            $this->createObj(OA\Property::class, ['property' => 'property1']),
         ]);
         $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
         $reader->setSchema($schema);
@@ -545,5 +546,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             new AnnotationReader(),
             true
         );
+    }
+
+    private function createObj(string $className, array $props = [])
+    {
+        return new $className($props + ['_context' => new Context()]);
     }
 }

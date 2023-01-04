@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Model;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use OpenApi\Annotations as OA;
+use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyInfo\Type;
@@ -28,7 +29,7 @@ class ModelRegistryTest extends TestCase
                 'groups' => ['group1'],
             ],
         ];
-        $registry = new ModelRegistry([], new OA\OpenApi([]), $alternativeNames);
+        $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true);
 
         $this->assertEquals('#/components/schemas/array', $registry->register(new Model($type, ['group1'])));
@@ -57,7 +58,7 @@ class ModelRegistryTest extends TestCase
                 ],
             ]);
 
-        $registry = new ModelRegistry([], new OA\OpenApi([]), []);
+        $registry = new ModelRegistry([], $this->createOpenApi(), []);
         $registry->setLogger($logger);
 
         $registry->register(new Model($type, ['group1']));
@@ -141,7 +142,7 @@ class ModelRegistryTest extends TestCase
                 ],
             ]);
 
-        $registry = new ModelRegistry([], new OA\OpenApi([]), $alternativeNames);
+        $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $registry->setLogger($logger);
 
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
@@ -155,7 +156,7 @@ class ModelRegistryTest extends TestCase
      */
     public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames)
     {
-        $registry = new ModelRegistry([], new OA\OpenApi([]), $alternativeNames);
+        $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
 
         $this->assertEquals($expected, $registry->register(new Model($type, $groups)));
@@ -225,7 +226,7 @@ class ModelRegistryTest extends TestCase
         $this->expectException('\LogicException');
         $this->expectExceptionMessage(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $stringType));
 
-        $registry = new ModelRegistry([], new OA\OpenApi([]));
+        $registry = new ModelRegistry([], $this->createOpenApi());
         $registry->register(new Model($type));
         $registry->registerSchemas();
     }
@@ -246,8 +247,13 @@ class ModelRegistryTest extends TestCase
         $this->expectException('\LogicException');
         $this->expectExceptionMessage(sprintf('Schema of type "\%s" can\'t be generated, no describer supports it. Class "\Nelmio\ApiDocBundle\Tests\Model\DoesNotExist" does not exist, did you forget a use statement, or typed it wrong?', $className));
 
-        $registry = new ModelRegistry([], new OA\OpenApi([]));
+        $registry = new ModelRegistry([], $this->createOpenApi());
         $registry->register(new Model($type));
         $registry->registerSchemas();
+    }
+
+    private function createOpenApi()
+    {
+        return new OA\OpenApi(['_context' => new Context()]);
     }
 }
