@@ -15,6 +15,7 @@ use ApiPlatform\Documentation\Documentation;
 use ApiPlatform\Metadata\Resource\ResourceNameCollection;
 use Nelmio\ApiDocBundle\Describer\ApiPlatformDescriber;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Context;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ApiPlatformDescriberTest extends AbstractDescriberTest
@@ -30,7 +31,7 @@ class ApiPlatformDescriberTest extends AbstractDescriberTest
             ->with($this->documentation)
             ->willReturn(['info' => ['title' => 'My Test App']]);
 
-        $expectedApi = new OpenApi(['info' => ['title' => 'My Test App']]);
+        $expectedApi = new OpenApi(['info' => ['title' => 'My Test App'], '_context' => new Context()]);
         $this->assertEquals($expectedApi->toJson(), $this->getOpenApiDoc()->toJson());
     }
 
@@ -41,7 +42,7 @@ class ApiPlatformDescriberTest extends AbstractDescriberTest
             ->with($this->documentation)
             ->willReturn(['info' => ['title' => 'My Test App'], 'basePath' => '/foo']);
 
-        $expectedApi = new OpenApi(['info' => ['title' => 'My Test App']]);
+        $expectedApi = new OpenApi(['info' => ['title' => 'My Test App'], '_context' => new Context()]);
         $this->assertEquals($expectedApi->toJson(), $this->getOpenApiDoc()->toJson());
     }
 

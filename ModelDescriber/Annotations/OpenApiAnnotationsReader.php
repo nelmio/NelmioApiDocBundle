@@ -40,7 +40,7 @@ class OpenApiAnnotationsReader
     public function updateSchema(\ReflectionClass $reflectionClass, OA\Schema $schema): void
     {
         /** @var OA\Schema|null $oaSchema */
-        if (!$oaSchema = $this->getAnnotation($reflectionClass, OA\Schema::class)) {
+        if (!$oaSchema = $this->getAnnotation($schema->_context, $reflectionClass, OA\Schema::class)) {
             return;
         }
 
@@ -57,7 +57,7 @@ class OpenApiAnnotationsReader
     public function getPropertyName($reflection, string $default): string
     {
         /** @var OA\Property|null $oaProperty */
-        if (!$oaProperty = $this->getAnnotation($reflection, OA\Property::class)) {
+        if (!$oaProperty = $this->getAnnotation(new Context(), $reflection, OA\Property::class)) {
             return $default;
         }
 
@@ -66,21 +66,10 @@ class OpenApiAnnotationsReader
 
     public function updateProperty($reflection, OA\Property $property, array $serializationGroups = null): void
     {
-        // In order to have nicer errors
-        $declaringClass = $reflection->getDeclaringClass();
-
-        $this->setContext(new Context([
-            'namespace' => $declaringClass->getNamespaceName(),
-            'class' => $declaringClass->getShortName(),
-            'property' => $reflection->name,
-            'filename' => $declaringClass->getFileName(),
-        ]));
-
         /** @var OA\Property|null $oaProperty */
-        if (!$oaProperty = $this->getAnnotation($reflection, OA\Property::class)) {
+        if (!$oaProperty = $this->getAnnotation($property->_context, $reflection, OA\Property::class)) {
             return;
         }
-        $this->setContext(null);
 
         // Read @Model annotations
         $this->modelRegister->__invoke(new Analysis([$oaProperty], Util::createContext()), $serializationGroups);
@@ -97,20 +86,26 @@ class OpenApiAnnotationsReader
      *
      * @return mixed
      */
-    private function getAnnotation($reflection, string $className)
+    private function getAnnotation(Context $parentContext, $reflection, string $className)
     {
-        if (\PHP_VERSION_ID >= 80100) {
-            if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
-                return $attribute->newInstance();
-            }
-        }
+        $this->setContextFromReflection($parentContext, $reflection);
 
-        if ($reflection instanceof \ReflectionClass) {
-            return $this->annotationsReader->getClassAnnotation($reflection, $className);
-        } elseif ($reflection instanceof \ReflectionProperty) {
-            return $this->annotationsReader->getPropertyAnnotation($reflection, $className);
-        } elseif ($reflection instanceof \ReflectionMethod) {
-            return $this->annotationsReader->getMethodAnnotation($reflection, $className);
+        try {
+            if (\PHP_VERSION_ID >= 80100) {
+                if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
+                    return $attribute->newInstance();
+                }
+            }
+
+            if ($reflection instanceof \ReflectionClass) {
+                return $this->annotationsReader->getClassAnnotation($reflection, $className);
+            } elseif ($reflection instanceof \ReflectionProperty) {
+                return $this->annotationsReader->getPropertyAnnotation($reflection, $className);
+            } elseif ($reflection instanceof \ReflectionMethod) {
+                return $this->annotationsReader->getMethodAnnotation($reflection, $className);
+            }
+        } finally {
+            $this->setContext(null);
         }
 
         return null;

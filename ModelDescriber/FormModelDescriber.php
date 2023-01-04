@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
@@ -36,6 +37,7 @@ use Symfony\Component\PropertyInfo\Type;
 final class FormModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
+    use SetsContextTrait;
 
     private $formFactory;
     private $doctrineReader;
@@ -87,8 +89,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
         $schema->type = 'object';
 
+        $this->setContextFromReflection($schema->_context, new \ReflectionClass($class));
+
         $form = $this->formFactory->create($class, null, $model->getOptions() ?? []);
         $this->parseForm($schema, $form);
+
+        $this->setContext(null);
     }
 
     public function supports(Model $model): bool

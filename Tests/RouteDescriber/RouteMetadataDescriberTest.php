@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\RouteDescriber;
 
 use Nelmio\ApiDocBundle\RouteDescriber\RouteMetadataDescriber;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 
@@ -22,6 +23,6 @@ class RouteMetadataDescriberTest extends TestCase
     {
         $routeDescriber = new RouteMetadataDescriber();
 
-        $this->assertNull($routeDescriber->describe(new OpenApi([]), new Route('foo'), new \ReflectionMethod(__CLASS__, 'testUndefinedCheck')));
+        $this->assertNull($routeDescriber->describe(new OpenApi(['_context' => new Context()]), new Route('foo'), new \ReflectionMethod(__CLASS__, 'testUndefinedCheck')));
     }
 }

@@ -14,24 +14,30 @@ namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\OpenApiAnnotationsReader;
+use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAattr;
+use OpenApi\Context;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 
 class AnnotationReaderTest extends TestCase
 {
+    use SetsContextTrait;
+
     /**
      * @param object $entity
      * @dataProvider provideProperty
      */
     public function testProperty($entity)
     {
-        $schema = new OA\Schema([]);
-        $schema->merge([new OA\Property(['property' => 'property1'])]);
-        $schema->merge([new OA\Property(['property' => 'property2'])]);
+        $baseProps = ['_context' => new Context()];
 
-        $registry = new ModelRegistry([], new OA\OpenApi([]), []);
+        $schema = new OA\Schema($baseProps);
+        $schema->merge([new OA\Property(['property' => 'property1'] + $baseProps)]);
+        $schema->merge([new OA\Property(['property' => 'property2'] + $baseProps)]);
+
+        $registry = new ModelRegistry([], new OA\OpenApi($baseProps), []);
         $symfonyConstraintAnnotationReader = new OpenApiAnnotationsReader(new AnnotationReader(), $registry, ['json']);
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->properties[1]);
