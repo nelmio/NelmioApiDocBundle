@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Exception\RenderInvalidArgumentException;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Server;
 use OpenApi\Context;
+use OpenApi\Generator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -52,7 +53,7 @@ class RenderOpenApi
         $options = [];
         if ('' !== $request->getBaseUrl()) {
             $options += [
-                'server_url' => $request->getSchemeAndHttpHost().$request->getBaseUrl(),
+                'fallback_url' => $request->getSchemeAndHttpHost().$request->getBaseUrl(),
             ];
         }
         $options += $extraOptions;
@@ -73,11 +74,30 @@ class RenderOpenApi
 
         /** @var OpenApi $spec */
         $spec = $this->generatorLocator->get($area)->generate();
+        $tmpServers = $spec->servers;
+        try {
+            $spec->servers = $this->getServersFromOptions($spec, $options);
 
+            return $this->openApiRenderers[$format]->render($spec, $options);
+        } finally {
+            $spec->servers = $tmpServers; // Restore original value as we should not modify OpenApi object from the generator
+        }
+    }
+
+    private function getServersFromOptions(OpenApi $spec, array $options)
+    {
         if (array_key_exists('server_url', $options) && $options['server_url']) {
-            $spec->servers = [new Server(['url' => $options['server_url'], '_context' => new Context()])];
+            return [new Server(['url' => $options['server_url'], '_context' => new Context()])];
         }
 
-        return $this->openApiRenderers[$format]->render($spec, $options);
+        if (Generator::UNDEFINED !== $spec->servers) {
+            return $spec->servers;
+        }
+
+        if (array_key_exists('fallback_url', $options) && $options['fallback_url']) {
+            return [new Server(['url' => $options['fallback_url'], '_context' => new Context()])];
+        }
+
+        return Generator::UNDEFINED;
     }
 }
