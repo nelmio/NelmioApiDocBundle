@@ -341,7 +341,7 @@ final class Util
         $filteredProps = [];
         foreach ($propsToCopy as $prop) {
             $value = $parent->{$prop} ?? null;
-            if ($value === null) {
+            if (null === $value) {
                 continue;
             }
 

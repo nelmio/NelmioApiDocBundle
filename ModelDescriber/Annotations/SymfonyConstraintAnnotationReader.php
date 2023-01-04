@@ -190,7 +190,7 @@ class SymfonyConstraintAnnotationReader
     {
         // To correctly load OA annotations
         $this->setContextFromReflection($parentContext, $reflection);
-        
+
         foreach ($this->locateAnnotations($reflection) as $annotation) {
             if (!$annotation instanceof Constraint) {
                 continue;

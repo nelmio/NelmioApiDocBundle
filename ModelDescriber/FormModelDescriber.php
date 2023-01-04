@@ -36,7 +36,8 @@ use Symfony\Component\PropertyInfo\Type;
  */
 final class FormModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
-    use ModelRegistryAwareTrait, SetsContextTrait;
+    use ModelRegistryAwareTrait;
+    use SetsContextTrait;
 
     private $formFactory;
     private $doctrineReader;

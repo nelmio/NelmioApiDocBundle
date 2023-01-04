@@ -252,7 +252,8 @@ class ModelRegistryTest extends TestCase
         $registry->registerSchemas();
     }
 
-    private function createOpenApi() {
+    private function createOpenApi()
+    {
         return new OA\OpenApi(['_context' => new Context()]);
     }
 }
