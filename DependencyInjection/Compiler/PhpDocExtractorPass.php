@@ -15,7 +15,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Enables the `PhpDocExtractor` in case `nelmo/api-doc-bundle` required for dev environment only.
+ * Enables the `PhpDocExtractor` manually if Symfony did not. Covers the cases where the `phpdocumentor/reflection-docblock` dependency is considered
+ * dev only and not automatically enabled by Symfony because `nelmio/api-doc-bundle` (which requires it) is required for dev environment only.
  *
  * @see https://github.com/symfony/symfony/blob/6.1/src/Symfony/Bundle/FrameworkBundle/DependencyInjection/FrameworkExtension.php#L1889
  *
