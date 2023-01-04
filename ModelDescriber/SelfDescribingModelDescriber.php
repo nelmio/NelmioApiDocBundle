@@ -25,6 +25,6 @@ class SelfDescribingModelDescriber implements ModelDescriberInterface
     {
         return $model->getType()->getClassName()
             && class_exists($model->getType()->getClassName())
-            && in_array(SelfDescribingModelInterface::class, class_implements($model->getType()->getClassName()), true);
+            && is_a($model->getType()->getClassName(), SelfDescribingModelInterface::class, true);
     }
 }
