@@ -1,7 +1,7 @@
 NelmioApiDocBundle
 ==================
 
-[![Build Status](https://img.shields.io/github/workflow/status/nelmio/NelmioApiDocBundle/CI?style=flat-square)](https://github.com/nelmio/NelmioApiDocBundle/actions?query=workflow:CI) 
+[![Build Status](https://img.shields.io/github/actions/workflow/status/nelmio/NelmioApiDocBundle/continuous-integration.yml?branch=master&style=flat-square)](https://github.com/nelmio/NelmioApiDocBundle/actions?query=workflow:CI) 
 [![Total Downloads](https://poser.pugx.org/nelmio/api-doc-bundle/downloads)](https://packagist.org/packages/nelmio/api-doc-bundle)
 [![Latest Stable
 Version](https://poser.pugx.org/nelmio/api-doc-bundle/v/stable)](https://packagist.org/packages/nelmio/api-doc-bundle)
