@@ -18,7 +18,7 @@ class FosRestDescriberTest extends TestCase
 
         $readerMock = $this->createMock(Reader::class);
         $readerMock->method('getMethodAnnotations')->willReturn([
-            new QueryParam('my_parameter', null, new Choice([], $choices))
+            new QueryParam('my_parameter', null, new Choice($choices))
         ]);
 
         $fosRestDescriber = new FosRestDescriber($readerMock, []);
