@@ -13,7 +13,8 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Tests\Helper;
-use OpenApi\Annotations as OA;
+use OpenApi\Annotations as OAAnnotations;
+use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
@@ -120,7 +121,7 @@ class FunctionalTest extends WebTestCase
         $this->assertEquals('Operation automatically detected', $response->description);
         $this->assertEquals('#/components/schemas/User', $response->content['application/json']->schema->ref);
 
-        $this->assertInstanceOf(OA\RequestBody::class, $operation->requestBody);
+        $this->assertInstanceOf(OAAnnotations\RequestBody::class, $operation->requestBody);
         $requestBody = $operation->requestBody;
         $this->assertEquals('This is a request body', $requestBody->description);
         $this->assertEquals('array', $requestBody->content['application/json']->schema->type);
@@ -406,7 +407,7 @@ class FunctionalTest extends WebTestCase
 
         $operation = $this->getOperation('/api/inline_path_parameters', 'get');
         $this->assertCount(1, $operation->parameters);
-        $this->assertInstanceOf(OA\PathParameter::class, $operation->parameters[0]);
+        $this->assertInstanceOf(OAAttributes\PathParameter::class, $operation->parameters[0]);
         $this->assertSame($operation->parameters[0]->name, 'product_id');
         $this->assertSame($operation->parameters[0]->schema->type, 'string');
     }
@@ -613,7 +614,7 @@ class FunctionalTest extends WebTestCase
     {
         $model = $this->getModel('SymfonyDiscriminator');
 
-        $this->assertInstanceOf(OA\Discriminator::class, $model->discriminator);
+        $this->assertInstanceOf(OAAnnotations\Discriminator::class, $model->discriminator);
         $this->assertSame('type', $model->discriminator->propertyName);
         $this->assertCount(2, $model->discriminator->mapping);
         $this->assertArrayHasKey('one', $model->discriminator->mapping);
@@ -626,7 +627,7 @@ class FunctionalTest extends WebTestCase
     {
         $model = $this->getModel('SymfonyDiscriminatorFileMapping');
 
-        $this->assertInstanceOf(OA\Discriminator::class, $model->discriminator);
+        $this->assertInstanceOf(OAAnnotations\Discriminator::class, $model->discriminator);
         $this->assertSame('type', $model->discriminator->propertyName);
         $this->assertCount(2, $model->discriminator->mapping);
         $this->assertArrayHasKey('one', $model->discriminator->mapping);
