@@ -52,5 +52,3 @@ Then run the test suite:
 ## License
 
 This bundle is released under the MIT license.
-
-trigger automated tests
