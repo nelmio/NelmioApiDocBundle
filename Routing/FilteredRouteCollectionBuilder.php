@@ -168,9 +168,11 @@ final class FilteredRouteCollectionBuilder
         }
 
         $annotations = $this->annotationReader->getMethodAnnotations($method);
-        $annotations = array_merge($annotations, array_map(function (\ReflectionAttribute $attribute) {
-            return $attribute->newInstance();
-        }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF)));
+        if (method_exists(\ReflectionMethod::class, 'getAttributes')) {
+            $annotations = array_merge($annotations, array_map(function (\ReflectionAttribute $attribute) {
+                return $attribute->newInstance();
+            }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF)));
+        }
 
         foreach ($annotations as $annotation) {
             if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')
