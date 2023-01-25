@@ -19,6 +19,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Regex;
 
@@ -129,6 +130,15 @@ final class FosRestDescriber implements RouteDescriberInterface
         return null;
     }
 
+    private function getEnum($requirements)
+    {
+        if ($requirements instanceof Choice) {
+            return $requirements->choices;
+        }
+
+        return null;
+    }
+
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
         $requestBody->content = Generator::UNDEFINED !== $requestBody->content ? $requestBody->content : [];
@@ -187,6 +197,11 @@ final class FosRestDescriber implements RouteDescriberInterface
         $format = $this->getFormat($annotation->requirements);
         if (null !== $format) {
             $schema->format = $format;
+        }
+
+        $enum = $this->getEnum($annotation->requirements);
+        if (null !== $enum) {
+            $schema->enum = $enum;
         }
     }
 
