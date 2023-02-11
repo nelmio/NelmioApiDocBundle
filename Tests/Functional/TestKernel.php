@@ -348,6 +348,12 @@ class TestKernel extends Kernel
             ],
         ]);
 
+        if ($this->flags & self::USE_JMS && \PHP_VERSION_ID >= 80100) {
+            $c->loadFromExtension('jms_serializer', [
+                'enum_support' => true,
+            ]);
+        }
+
         $def = new Definition(VirtualTypeClassDoesNotExistsHandlerDefinedDescriber::class);
         $def->addTag('nelmio_api_doc.model_describer');
         $c->setDefinition('nelmio.test.jms.virtual_type.describer', $def);

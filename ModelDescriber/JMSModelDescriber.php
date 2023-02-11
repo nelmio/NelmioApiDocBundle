@@ -285,6 +285,15 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $property->type = 'string';
             $property->format = 'date-time';
         } else {
+            // See https://github.com/schmittjoh/serializer/blob/5a5a03a/src/Metadata/Driver/EnumPropertiesDriver.php#L51
+            if ('enum' === $type['name']
+                && isset($type['params'][0])
+                && function_exists('enum_exists')
+                && enum_exists($type['params'][0])
+            ) {
+                $type = ['name' => $type['params'][0]];
+            }
+
             $groups = $this->computeGroups($context, $type);
 
             $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups);
