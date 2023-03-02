@@ -44,7 +44,7 @@ class RouteMetadataDescriberTest extends TestCase
             $this->assertEquals('path', $getPathParameter->in);
             $this->assertEquals('foo', $getPathParameter->name);
             $this->assertEquals('string', $getPathParameter->schema->type);
-            $this->assertEquals('[0-9]|[a-z]', $getPathParameter->schema->pattern);
+            $this->assertEquals('^(?:[0-9]|[a-z])$', $getPathParameter->schema->pattern);
         }
     }
 
@@ -68,7 +68,7 @@ class RouteMetadataDescriberTest extends TestCase
         $this->assertEquals('foo', $getPathParameter->name);
         $this->assertEquals('string', $getPathParameter->schema->type);
         $this->assertEquals(explode('|', $req), $getPathParameter->schema->enum);
-        $this->assertEquals($req, $getPathParameter->schema->pattern);
+        $this->assertEquals('^(?:' . $req . ')$', $getPathParameter->schema->pattern);
     }
 
     /**
@@ -86,7 +86,7 @@ class RouteMetadataDescriberTest extends TestCase
         );
 
         $getPathParameter = $api->paths[0]->get->parameters[0];
-        $this->assertEquals($pattern, $getPathParameter->schema->pattern);
+        $this->assertEquals('^(?:' . $pattern . ')$', $getPathParameter->schema->pattern);
         $this->assertEquals(Generator::UNDEFINED, $getPathParameter->schema->enum);
     }
 

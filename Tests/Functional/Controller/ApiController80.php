@@ -113,7 +113,7 @@ class ApiController80
     }
 
     /**
-     * @Route("/test/users/{user}", methods={"POST"}, schemes={"https"}, requirements={"user"="/foo/"})
+     * @Route("/test/users/{user}", methods={"POST"}, schemes={"https"}, requirements={"user"="foo"})
      * @OA\Response(
      *    response="201",
      *    description="Operation automatically detected",
@@ -129,7 +129,7 @@ class ApiController80
     }
 
     /**
-     * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="/foo/"})
+     * @Route("/test/{user}", methods={"GET"}, schemes={"https"}, requirements={"user"="foo"})
      * @OA\Response(response=200, description="sucessful")
      */
     public function userAction()
