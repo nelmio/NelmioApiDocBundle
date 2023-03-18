@@ -16,14 +16,19 @@ use Nelmio\ApiDocBundle\ModelDescriber\EnumModelDescriber;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Fixtures\EnumModelBackedInt;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Fixtures\EnumModelBackedString;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Fixtures\EnumModelPure;
-use Nelmio\ApiDocBundle\Tests\ModelDescriber\Fixtures\SelfDescribingModel;
 use OpenApi\Annotations\Schema;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type;
-use function var_dump;
 
 class EnumModelDescriberTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (\PHP_VERSION_ID < 80100) {
+            $this->markTestSkipped('Enum require PHP 8.1');
+        }
+    }
+
     public function testSupports()
     {
         $describer = new EnumModelDescriber();
