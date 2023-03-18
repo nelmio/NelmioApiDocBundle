@@ -2,22 +2,33 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
+use BackedEnum;
 use Nelmio\ApiDocBundle\Model\Model;
 use OpenApi\Annotations\Schema;
 use Symfony\Component\PropertyInfo\Type;
+use UnitEnum;
 
 class EnumModelDescriber implements ModelDescriberInterface
 {
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, Schema $schema): void
     {
+        /** @var UnitEnum $enumClass */
         $enumClass = $model->getType()->getClassName();
 
         $enums = [];
-        foreach ($enumClass::cases() as $enumCase) {
-            $enums[] = $enumCase->value;
+        if (is_subclass_of($enumClass, BackedEnum::class)) {
+            foreach ($enumClass::cases() as $enumCase) {
+                $enums[] = $enumCase->value;
+            }
+            $type = isset($enums[0]) && is_int($enums[0]) ? 'integer' : 'string';
+        } else {
+            foreach ($enumClass::cases() as $enumCase) {
+                $enums[] = $enumCase->name;
+            }
+            $type = 'string';
         }
 
-        $schema->type = is_subclass_of($enumClass, \IntBackedEnum::class) ? 'int' : 'string';
+        $schema->type = $type;
         $schema->enum = $enums;
     }
 
@@ -29,6 +40,6 @@ class EnumModelDescriber implements ModelDescriberInterface
 
         return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
             && enum_exists($model->getType()->getClassName())
-            && is_subclass_of($model->getType()->getClassName(), \BackedEnum::class);
+            && is_subclass_of($model->getType()->getClassName(), UnitEnum::class);
     }
 }
