@@ -13,11 +13,12 @@ namespace Nelmio\ApiDocBundle\Describer;
 
 use ApiPlatform\Core\Swagger\Serializer\DocumentationNormalizer;
 use ApiPlatform\Documentation\DocumentationInterface;
+use ApiPlatform\OpenApi\OpenApi
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class ApiPlatformDescriber extends ExternalDocDescriber
 {
-    public function __construct(DocumentationInterface $documentation, NormalizerInterface $normalizer)
+    public function __construct(DocumentationInterface|OpenApi $documentation, NormalizerInterface $normalizer)
     {
         if (!$normalizer->supportsNormalization($documentation, 'json')) {
             throw new \InvalidArgumentException(sprintf('Argument 2 passed to %s() must implement %s and support normalization of %s. The normalizer provided is an instance of %s.', __METHOD__, NormalizerInterface::class, Documentation::class, get_class($normalizer)));
