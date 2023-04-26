@@ -133,6 +133,13 @@ final class FosRestDescriber implements RouteDescriberInterface
     private function getEnum($requirements)
     {
         if ($requirements instanceof Choice) {
+            if ($requirements->callback) {
+                if (!\is_callable($choices = $requirements->callback)) {
+                    return null;
+                }
+                return $choices();
+            }
+
             return $requirements->choices;
         }
 
