@@ -68,4 +68,29 @@ class FosRestDescriberTest extends TestCase
 
         $this->assertSame(["foo", "bar"], $api->paths[0]->get->parameters[0]->schema->enum);
     }
+
+    public function testQueryParamWithChoiceConstraintAsArray()
+    {
+        $choices = ['foo', 'bar'];
+
+        $queryParam = new QueryParam();
+        $queryParam->requirements = new Choice($choices, multiple: true);
+
+        $readerMock = $this->createMock(Reader::class);
+        $readerMock->method('getMethodAnnotations')->willReturn([
+            $queryParam,
+        ]);
+
+        $fosRestDescriber = new FosRestDescriber($readerMock, []);
+        $api = new OpenApi([]);
+
+        $fosRestDescriber->describe(
+            $api,
+            new Route('/'),
+            $this->createMock(\ReflectionMethod::class)
+        );
+
+        $this->assertEquals('array', $api->paths[0]->get->parameters[0]->schema->type);
+        $this->assertSame($choices, $api->paths[0]->get->parameters[0]->schema->items->enum);
+    }
 }
