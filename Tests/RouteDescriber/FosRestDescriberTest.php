@@ -48,7 +48,7 @@ class FosRestDescriberTest extends TestCase
     public function testQueryParamWithChoiceConstraintCallbackIsAddedAsEnum()
     {
         $queryParam = new QueryParam();
-        $queryParam->requirements = new Choice(callback: function () {
+        $queryParam->requirements = new Choice([], null, function () {
             return ['foo', 'bar'];
         });
 
