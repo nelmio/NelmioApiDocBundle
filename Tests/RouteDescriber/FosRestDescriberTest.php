@@ -49,7 +49,7 @@ class FosRestDescriberTest extends TestCase
     {
         $queryParam = new QueryParam();
         $queryParam->requirements = new Choice(callback: function () {
-            return ["foo", "bar"];
+            return ['foo', 'bar'];
         });
 
         $readerMock = $this->createMock(Reader::class);
@@ -66,7 +66,7 @@ class FosRestDescriberTest extends TestCase
             $this->createMock(\ReflectionMethod::class)
         );
 
-        $this->assertSame(["foo", "bar"], $api->paths[0]->get->parameters[0]->schema->enum);
+        $this->assertSame(['foo', 'bar'], $api->paths[0]->get->parameters[0]->schema->enum);
     }
 
     public function testQueryParamWithChoiceConstraintAsArray()
