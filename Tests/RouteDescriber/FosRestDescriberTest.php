@@ -74,7 +74,7 @@ class FosRestDescriberTest extends TestCase
         $choices = ['foo', 'bar'];
 
         $queryParam = new QueryParam();
-        $queryParam->requirements = new Choice($choices, multiple: true);
+        $queryParam->requirements = new Choice($choices, null, null, true);
 
         $readerMock = $this->createMock(Reader::class);
         $readerMock->method('getMethodAnnotations')->willReturn([
