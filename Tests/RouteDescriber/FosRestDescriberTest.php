@@ -48,10 +48,12 @@ class FosRestDescriberTest extends TestCase
     public function testQueryParamWithChoiceConstraintCallbackIsAddedAsEnum()
     {
         $queryParam = new QueryParam();
-        $queryParam->requirements = new Choice([], null, function () {
+        $choice = new Choice();
+        $choice->callback = function () {
             return ['foo', 'bar'];
-        });
+        };
 
+        $queryParam->requirements = $choice;
         $readerMock = $this->createMock(Reader::class);
         $readerMock->method('getMethodAnnotations')->willReturn([
             $queryParam,
@@ -74,7 +76,9 @@ class FosRestDescriberTest extends TestCase
         $choices = ['foo', 'bar'];
 
         $queryParam = new QueryParam();
-        $queryParam->requirements = new Choice($choices, null, null, true);
+        $choice = new Choice($choices);
+        $choice->multiple = true;
+        $queryParam->requirements = $choice;
 
         $readerMock = $this->createMock(Reader::class);
         $readerMock->method('getMethodAnnotations')->willReturn([
