@@ -32,19 +32,19 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     use ApplyOpenApiDiscriminatorTrait;
 
     /** @var PropertyInfoExtractorInterface */
-    private $propertyInfo;
+    protected $propertyInfo;
     /** @var ClassMetadataFactoryInterface|null */
-    private $classMetadataFactory;
+    protected $classMetadataFactory;
     /** @var Reader */
-    private $doctrineReader;
+    protected $doctrineReader;
     /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
+    protected $propertyDescribers;
     /** @var string[] */
-    private $mediaTypes;
+    protected $mediaTypes;
     /** @var NameConverterInterface|null */
-    private $nameConverter;
+    protected $nameConverter;
     /** @var bool */
-    private $useValidationGroups;
+    protected $useValidationGroups;
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
@@ -154,7 +154,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /**
      * @return \ReflectionProperty[]|\ReflectionMethod[]
      */
-    private function getReflections(\ReflectionClass $reflClass, string $propertyName): array
+    protected function getReflections(\ReflectionClass $reflClass, string $propertyName): array
     {
         $reflections = [];
         if ($reflClass->hasProperty($propertyName)) {
@@ -174,7 +174,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /**
      * Camelizes a given string.
      */
-    private function camelize(string $string): string
+    protected function camelize(string $string): string
     {
         return str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
     }
@@ -182,7 +182,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /**
      * @param Type[] $types
      */
-    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName)
+    protected function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName)
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {

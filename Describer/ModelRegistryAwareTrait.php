@@ -18,7 +18,7 @@ trait ModelRegistryAwareTrait
     /**
      * @var ModelRegistry
      */
-    private $modelRegistry;
+    protected $modelRegistry;
 
     public function setModelRegistry(ModelRegistry $modelRegistry)
     {
