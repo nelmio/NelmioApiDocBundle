@@ -53,7 +53,7 @@ final class FosRestDescriber implements RouteDescriberInterface
                 $parameterName = $annotation->key ?? $annotation->getName(); // the key used by fosrest
 
                 if ($annotation instanceof QueryParam) {
-                    $name = $parameterName . ($annotation->map ? '[]' : '');
+                    $name = $parameterName.($annotation->map ? '[]' : '');
                     $parameter = Util::getOperationParameter($operation, $name, 'query');
                     $parameter->allowEmptyValue = $annotation->nullable && $annotation->allowBlank;
 
