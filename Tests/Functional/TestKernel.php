@@ -92,6 +92,9 @@ class TestKernel extends Kernel
 
         if ($this->flags & self::USE_JMS) {
             $this->import($routes, __DIR__.'/Controller/JMSController.php', '/', 'annotation');
+            if (\PHP_VERSION_ID >= 70400) {
+                $this->import($routes, __DIR__.'/Controller/JMSController74.php', '/', 'annotation');
+            }
         }
 
         if ($this->flags & self::USE_BAZINGA) {
