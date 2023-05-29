@@ -199,7 +199,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 break;
             }
 
-            if ('enum' === $blockPrefix || $config->getType()->getInnerType()->getBlockPrefix() === 'enum') {
+            if ('enum' === $blockPrefix || 'enum' === $config->getType()->getInnerType()->getBlockPrefix()) {
                 $model = new Model(
                     new Type(Type::BUILTIN_TYPE_OBJECT, !$config->getOption('required'), $config->getOption('class')),
                     null,
