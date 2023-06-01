@@ -43,7 +43,7 @@ class DumpCommand extends Command
     /**
      * Configures the dump command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $availableFormats = $this->renderOpenApi->getAvailableFormats();
         $this
