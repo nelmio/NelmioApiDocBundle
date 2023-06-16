@@ -28,10 +28,7 @@ class ArrayItemsErrorTest extends WebTestCase
         $this->expectException(UndocumentedArrayItemsException::class);
         $this->expectExceptionMessage('Property "Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError\Bar::things[]" is an array, but its items type isn\'t specified.');
 
-        $openApi = $this->getOpenApiDefinition();
-        $articleModel = $this->getModel('Bar');
-
-        var_dump($articleModel);
+        $this->getOpenApiDefinition();
     }
 
     protected static function createKernel(array $options = []): KernelInterface
