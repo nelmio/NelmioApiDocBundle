@@ -27,7 +27,7 @@ jobs:
           - php-version: 7.2
             composer-flags: "--prefer-lowest"
           - php-version: 7.3
-            symfony-require: "5.3.*"
+            symfony-require: "5.4.*"
           - php-version: 8.0
             symfony-require: "5.4.*"
           - php-version: 8.1
