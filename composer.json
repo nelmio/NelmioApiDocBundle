@@ -40,7 +40,7 @@
         "symfony/browser-kit": "^5.4|^6.0",
         "symfony/cache": "^5.4|^6.0",
         "symfony/form": "^5.4|^6.0",
-        "symfony/phpunit-bridge": "^5.4",
+        "symfony/phpunit-bridge": "^5.4.23",
         "symfony/property-access": "^5.4|^6.0",
         "symfony/serializer": "^5.4|^6.0",
         "symfony/stopwatch": "^5.4|^6.0",
