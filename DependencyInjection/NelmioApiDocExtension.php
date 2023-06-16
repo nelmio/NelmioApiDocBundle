@@ -38,7 +38,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
     /**
      * {@inheritdoc}
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $container->prependExtensionConfig('framework', ['property_info' => ['enabled' => true]]);
 
@@ -53,7 +53,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -217,6 +217,15 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         if (null !== $controllerNameConverter) {
             $container->getDefinition('nelmio_api_doc.controller_reflector')->setArgument(1, $controllerNameConverter);
         }
+
+        // New parameter self-exclude has to be set to false for service nelmio_api_doc.object_model.property_describers.array
+        // BC compatibility with Symfony <6.3
+        $container->getDefinition('nelmio_api_doc.object_model.property_describers.array')
+            ->setArguments([
+                !method_exists(TaggedIteratorArgument::class, 'excludeSelf')
+                ? new TaggedIteratorArgument('nelmio_api_doc.object_model.property_describer')
+                : new TaggedIteratorArgument('nelmio_api_doc.object_model.property_describer', null, null, false, null, [], false),
+            ]);
     }
 
     private function findNameAliases(array $names, string $area): array
