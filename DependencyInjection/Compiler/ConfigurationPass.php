@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 final class ConfigurationPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if ($container->hasDefinition('form.factory')) {
             $container->register('nelmio_api_doc.model_describers.form', FormModelDescriber::class)

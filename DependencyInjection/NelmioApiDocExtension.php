@@ -38,7 +38,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
     /**
      * {@inheritdoc}
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $container->prependExtensionConfig('framework', ['property_info' => ['enabled' => true]]);
 
@@ -53,7 +53,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

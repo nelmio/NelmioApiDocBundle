@@ -22,7 +22,7 @@ final class NelmioApiDocBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new ConfigurationPass());
         $container->addCompilerPass(new TagDescribersPass());
