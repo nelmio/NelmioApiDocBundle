@@ -27,15 +27,13 @@ jobs:
           - php-version: 7.2
             composer-flags: "--prefer-lowest"
           - php-version: 7.3
-            symfony-require: "4.4.*"
-          - php-version: 7.4
             symfony-require: "5.3.*"
           - php-version: 8.0
             symfony-require: "5.4.*"
           - php-version: 8.1
             symfony-require: "5.4.*"
           - php-version: 8.1
-            symfony-require: "6.0.*"
+            symfony-require: "6.3.*"
 
     steps:
       - name: "Checkout"
