@@ -35,7 +35,8 @@ class SymfonyDescriberTest extends TestCase
      * @dataProvider provideMapRequestPayloadTestData
      *
      * @requires PHP >= 8
-     * @param string|string[] $expectedMediaTypes
+     *
+     * @param string[] $expectedMediaTypes
      */
     public function testMapRequestPayloadParamRegistersRequestBody(
         MapRequestPayload $mapRequestPayload,
