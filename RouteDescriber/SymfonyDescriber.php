@@ -40,7 +40,7 @@ final class SymfonyDescriber implements RouteDescriberInterface
                     /** @var OA\RequestBody $requestBody */
                     $requestBody = Util::getChild($operation, OA\RequestBody::class);
 
-                    if (! is_array($attribute->acceptFormat)) {
+                    if (!is_array($attribute->acceptFormat)) {
                         $contentSchema = $this->getContentSchemaForType($requestBody, $attribute->acceptFormat ?? 'json');
                         $contentSchema->ref = new Model(type: $parameter->getType()->getName());
 
@@ -64,12 +64,12 @@ final class SymfonyDescriber implements RouteDescriberInterface
                     $operationParameter->name = $attribute->name ?? $parameterName;
                     $operationParameter->allowEmptyValue = $parameter->allowsNull();
 
-                    $operationParameter->required = ! $parameter->isDefaultValueAvailable() && ! $parameter->allowsNull();
+                    $operationParameter->required = !$parameter->isDefaultValueAvailable() && ! $parameter->allowsNull();
 
                     /** @var OA\Schema $schema */
                     $schema = Util::getChild($operationParameter, OA\Schema::class);
 
-                    if ($attribute->filter === FILTER_VALIDATE_REGEXP) {
+                    if (FILTER_VALIDATE_REGEXP === $attribute->filter) {
                         $schema->pattern = $attribute->options['regexp'];
                     }
 
@@ -144,7 +144,7 @@ final class SymfonyDescriber implements RouteDescriberInterface
                 throw new InvalidArgumentException('Unsupported media type');
         }
 
-        if (! isset($requestBody->content[$contentType])) {
+        if (!isset($requestBody->content[$contentType])) {
             $weakContext = Util::createWeakContext($requestBody->_context);
             $requestBody->content[$contentType] = new OA\MediaType(
                 [
