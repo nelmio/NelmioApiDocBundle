@@ -22,14 +22,12 @@ use const PHP_VERSION_ID;
 
 final class SymfonyDescriber implements RouteDescriberInterface
 {
-    private const PHP_VERSION_ERROR = self::class.' can only be used in PHP 8 or above.';
-
     use RouteDescriberTrait;
 
     public function describe(OA\OpenApi $api, Route $route, ReflectionMethod $reflectionMethod): void
     {
         if (PHP_VERSION_ID < 80100) {
-            throw new RuntimeException(self::PHP_VERSION_ERROR);
+            throw new RuntimeException(self::class.' can only be used in PHP 8 or above.');
         }
 
         $parameters = $this->getMethodParameter($reflectionMethod, [MapRequestPayload::class, MapQueryParameter::class]);
@@ -76,10 +74,6 @@ final class SymfonyDescriber implements RouteDescriberInterface
      */
     private function getMethodParameter(ReflectionMethod $reflectionMethod, array $attributes): array
     {
-        if (PHP_VERSION_ID < 80100) {
-            throw new RuntimeException(self::PHP_VERSION_ERROR);
-        }
-
         $parameters = [];
 
         foreach ($reflectionMethod->getParameters() as $parameter) {
@@ -115,10 +109,6 @@ final class SymfonyDescriber implements RouteDescriberInterface
      */
     private function getAttribute(ReflectionParameter $parameter, string $attribute): ?object
     {
-        if (PHP_VERSION_ID < 80100) {
-            throw new RuntimeException(self::PHP_VERSION_ERROR);
-        }
-
         if ($attribute = $parameter->getAttributes($attribute, \ReflectionAttribute::IS_INSTANCEOF)) {
             return $attribute[0]->newInstance();
         }
