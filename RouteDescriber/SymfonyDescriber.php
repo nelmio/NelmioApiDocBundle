@@ -11,14 +11,12 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use ReflectionMethod;
 use ReflectionParameter;
-use RuntimeException;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Route;
 use function in_array;
 use function is_array;
 use const FILTER_VALIDATE_REGEXP;
-use const PHP_VERSION_ID;
 
 final class SymfonyDescriber implements RouteDescriberInterface
 {
@@ -26,10 +24,6 @@ final class SymfonyDescriber implements RouteDescriberInterface
 
     public function describe(OA\OpenApi $api, Route $route, ReflectionMethod $reflectionMethod): void
     {
-        if (PHP_VERSION_ID < 80100) {
-            throw new RuntimeException(self::class.' can only be used in PHP 8 or above.');
-        }
-
         $parameters = $this->getMethodParameter($reflectionMethod, [MapRequestPayload::class, MapQueryParameter::class]);
 
         foreach ($this->getOperations($api, $route) as $operation) {
