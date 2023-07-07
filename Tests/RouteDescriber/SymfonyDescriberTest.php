@@ -48,10 +48,11 @@ class SymfonyDescriberTest extends TestCase
     /**
      * @dataProvider provideMapRequestPayloadTestData
      *
+     * @param MapRequestPayload $mapRequestPayload
      * @param string[] $expectedMediaTypes
      */
     public function testMapRequestPayloadParamRegistersRequestBody(
-        MapRequestPayload $mapRequestPayload,
+        $mapRequestPayload,
         array $expectedMediaTypes
     ): void {
         $classType = stdClass::class;
