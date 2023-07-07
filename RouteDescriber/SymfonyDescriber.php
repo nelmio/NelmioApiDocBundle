@@ -49,9 +49,7 @@ final class SymfonyDescriber implements RouteDescriberInterface
                             $this->describeRequestBody($requestBody, $parameter, $format);
                         }
                     }
-                }
-
-                if ($attribute = $this->getAttribute($parameter, MapQueryParameter::class)) {
+                } elseif ($attribute = $this->getAttribute($parameter, MapQueryParameter::class)) {
                     $operationParameter = Util::getOperationParameter($operation, $parameterName, 'query');
                     $operationParameter->name = $attribute->name ?? $parameterName;
                     $operationParameter->allowEmptyValue = $parameter->allowsNull();
