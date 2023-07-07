@@ -19,6 +19,8 @@ use ReflectionAttribute;
 use ReflectionNamedType;
 use ReflectionParameter;
 use stdClass;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Route;
 
@@ -28,6 +30,14 @@ class SymfonyDescriberTest extends TestCase
 
     protected function setUp(): void
     {
+        if (
+            !class_exists(MapRequestPayload::class)
+            && !class_exists(MapQueryParameter::class)
+            && !class_exists(MapQueryString::class)
+        ) {
+            $this->markTestSkipped('Symfony 6.3 attributes not found');
+        }
+
         $this->symfonyDescriber = new SymfonyDescriber();
     }
 
