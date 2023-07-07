@@ -31,7 +31,7 @@ class SymfonyDescriberTest extends TestCase
     protected function setUp(): void
     {
         if (\PHP_VERSION_ID < 80100) {
-            $this->markTestSkipped('Attributes require PHP 8');
+            self::markTestSkipped('Attributes require PHP 8');
         }
 
         if (
@@ -39,20 +39,24 @@ class SymfonyDescriberTest extends TestCase
             && !class_exists(MapQueryParameter::class)
             && !class_exists(MapQueryString::class)
         ) {
-            $this->markTestSkipped('Symfony 6.3 attributes not found');
+            self::markTestSkipped('Symfony 6.3 attributes not found');
         }
 
         $this->symfonyDescriber = new SymfonyDescriber();
     }
 
+    public function testMapRequestPayload(): void
+    {
+        foreach (self::provideMapRequestPayloadTestData() as $testData) {
+            $this->testMapRequestPayloadParamRegistersRequestBody(...$testData);
+        }
+    }
+
     /**
-     * @dataProvider provideMapRequestPayloadTestData
-     *
-     * @param MapRequestPayload $mapRequestPayload
-     * @param string[]          $expectedMediaTypes
+     * @param string[] $expectedMediaTypes
      */
-    public function testMapRequestPayloadParamRegistersRequestBody(
-        $mapRequestPayload,
+    private function testMapRequestPayloadParamRegistersRequestBody(
+        MapRequestPayload $mapRequestPayload,
         array $expectedMediaTypes
     ): void {
         $classType = stdClass::class;
@@ -89,7 +93,7 @@ class SymfonyDescriberTest extends TestCase
         }
     }
 
-    public function provideMapRequestPayloadTestData(): Generator
+    public static function provideMapRequestPayloadTestData(): Generator
     {
         yield 'it sets default mediaType to json' => [
             new MapRequestPayload(),
