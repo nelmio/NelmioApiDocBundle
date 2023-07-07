@@ -64,7 +64,7 @@ final class SymfonyDescriber implements RouteDescriberInterface
                     $operationParameter->name = $attribute->name ?? $parameterName;
                     $operationParameter->allowEmptyValue = $parameter->allowsNull();
 
-                    $operationParameter->required = !$parameter->isDefaultValueAvailable() && ! $parameter->allowsNull();
+                    $operationParameter->required = !$parameter->isDefaultValueAvailable() && !$parameter->allowsNull();
 
                     /** @var OA\Schema $schema */
                     $schema = Util::getChild($operationParameter, OA\Schema::class);
