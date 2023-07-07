@@ -30,6 +30,10 @@ class SymfonyDescriberTest extends TestCase
 
     protected function setUp(): void
     {
+        if (\PHP_VERSION_ID < 80100) {
+            $this->markTestSkipped('Attributes require PHP 8');
+        }
+
         if (
             !class_exists(MapRequestPayload::class)
             && !class_exists(MapQueryParameter::class)
@@ -43,8 +47,6 @@ class SymfonyDescriberTest extends TestCase
 
     /**
      * @dataProvider provideMapRequestPayloadTestData
-     *
-     * @requires PHP >= 8
      *
      * @param string[] $expectedMediaTypes
      */
