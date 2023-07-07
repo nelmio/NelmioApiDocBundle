@@ -9,7 +9,6 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use ReflectionAttribute;
 use ReflectionMethod;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
@@ -86,6 +85,10 @@ final class SymfonyDescriber implements RouteDescriberInterface
      */
     private function getMethodParameter(ReflectionMethod $reflectionMethod, array $attributes): array
     {
+        if (PHP_VERSION_ID < 80100) {
+            return [];
+        }
+
         $parameters = [];
 
         foreach ($reflectionMethod->getParameters() as $parameter) {
@@ -121,7 +124,11 @@ final class SymfonyDescriber implements RouteDescriberInterface
      */
     private function getAttribute(ReflectionParameter $parameter, string $attribute): ?object
     {
-        if ($attribute = $parameter->getAttributes($attribute, ReflectionAttribute::IS_INSTANCEOF)) {
+        if (PHP_VERSION_ID < 80100) {
+            return null;
+        }
+
+        if ($attribute = $parameter->getAttributes($attribute, \ReflectionAttribute::IS_INSTANCEOF)) {
             return $attribute[0]->newInstance();
         }
 
