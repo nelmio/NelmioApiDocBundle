@@ -43,20 +43,10 @@ final class SymfonyDescriber implements RouteDescriberInterface
                     $requestBody = Util::getChild($operation, OA\RequestBody::class);
 
                     if (!is_array($attribute->acceptFormat)) {
-                        $contentSchema = $this->getContentSchemaForType($requestBody, $attribute->acceptFormat ?? 'json');
-                        $contentSchema->ref = new Model(type: $parameter->getType()->getName());
-
-                        $schema = Util::getProperty($contentSchema, $parameterName);
-
-                        $this->describeCommonSchemaFromParameter($schema, $parameter);
+                        $this->describeRequestBody($requestBody, $parameter, $attribute->acceptFormat ?? 'json');
                     } else {
                         foreach ($attribute->acceptFormat as $format) {
-                            $contentSchema = $this->getContentSchemaForType($requestBody, $format);
-                            $contentSchema->ref = new Model(type: $parameter->getType()->getName());
-
-                            $schema = Util::getProperty($contentSchema, $parameterName);
-
-                            $this->describeCommonSchemaFromParameter($schema, $parameter);
+                            $this->describeRequestBody($requestBody, $parameter, $format);
                         }
                     }
                 }
@@ -136,6 +126,17 @@ final class SymfonyDescriber implements RouteDescriberInterface
         }
 
         return null;
+    }
+
+    private function describeRequestBody(OA\RequestBody $requestBody, ReflectionParameter $parameter, string $format): void
+    {
+        $contentSchema = $this->getContentSchemaForType($requestBody, $format);
+        $contentSchema->ref = new Model(type: $parameter->getType()->getName());
+        $contentSchema->type = 'object';
+
+        $schema = Util::getProperty($contentSchema, $parameter->getName());
+
+        $this->describeCommonSchemaFromParameter($schema, $parameter);
     }
 
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
