@@ -22,7 +22,7 @@ use const PHP_VERSION_ID;
 
 final class SymfonyDescriber implements RouteDescriberInterface
 {
-    private const PHP_VERSION_ERROR = self::class . ' can only be used in PHP 8 or above.';
+    private const PHP_VERSION_ERROR = self::class.' can only be used in PHP 8 or above.';
 
     use RouteDescriberTrait;
 
