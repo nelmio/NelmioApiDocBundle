@@ -14,7 +14,6 @@ use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Route;
-use function in_array;
 use function is_array;
 use const FILTER_VALIDATE_REGEXP;
 
@@ -71,8 +70,8 @@ final class SymfonyDescriber implements RouteDescriberInterface
         $parameters = [];
 
         foreach ($reflectionMethod->getParameters() as $parameter) {
-            foreach ($parameter->getAttributes() as $attribute) {
-                if (in_array($attribute->getName(), $attributes, true)) {
+            foreach ($attributes as $attribute) {
+                if ($parameter->getAttributes($attribute, \ReflectionAttribute::IS_INSTANCEOF)) {
                     $parameters[] = $parameter;
                 }
             }
