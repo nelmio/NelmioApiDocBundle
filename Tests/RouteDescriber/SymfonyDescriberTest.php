@@ -139,7 +139,7 @@ class SymfonyDescriberTest extends TestCase
                 self::assertSame($parameter->getDefaultValue(), $schema->default);
             }
 
-            if ($mapQueryParameter->filter === FILTER_VALIDATE_REGEXP) {
+            if (FILTER_VALIDATE_REGEXP === $mapQueryParameter->filter) {
                 self::assertSame($mapQueryParameter->options['regexp'], $schema->pattern);
             }
         }
