@@ -45,7 +45,8 @@ class SymfonyDescriberTest extends TestCase
      *
      * @param string[] $expectedMediaTypes
      */
-    public function testMapRequestPayload(object $controllerClass, array $expectedMediaTypes): void {
+    public function testMapRequestPayload(object $controllerClass, array $expectedMediaTypes): void
+    {
         $api = new OpenApi([]);
 
         $controllerReflectionMethod = new \ReflectionMethod($controllerClass, 'route');
@@ -71,7 +72,8 @@ class SymfonyDescriberTest extends TestCase
             new class() {
                 public function route(
                     #[MapRequestPayload] stdClass $payload
-                ) { }
+                ) {
+                }
             },
             ['application/json'],
         ];
@@ -80,7 +82,8 @@ class SymfonyDescriberTest extends TestCase
             new class() {
                 public function route(
                     #[MapRequestPayload('json')] stdClass $payload
-                ) { }
+                ) {
+                }
             },
             ['application/json'],
         ];
@@ -89,7 +92,8 @@ class SymfonyDescriberTest extends TestCase
             new class() {
                 public function route(
                     #[MapRequestPayload('xml')] stdClass $payload
-                ) { }
+                ) {
+                }
             },
             ['application/xml'],
         ];
@@ -98,7 +102,8 @@ class SymfonyDescriberTest extends TestCase
             new class() {
                 public function route(
                     #[MapRequestPayload(['json', 'xml'])] stdClass $payload
-                ) { }
+                ) {
+                }
             },
             ['application/json', 'application/xml'],
         ];
@@ -146,35 +151,40 @@ class SymfonyDescriberTest extends TestCase
             public function route(
                 #[MapQueryParameter] int $parameter1,
                 #[MapQueryParameter] int $parameter2
-            ) { }
+            ) {
+            }
         }];
 
         yield 'it documents query parameters with default values' => [new class() {
             public function route(
                 #[MapQueryParameter] int $parameter1 = 123,
                 #[MapQueryParameter] int $parameter2 = 456
-            ) { }
+            ) {
+            }
         }];
 
         yield 'it documents query parameters with nullable types' => [new class() {
             public function route(
                 #[MapQueryParameter] ?int $parameter1,
                 #[MapQueryParameter] ?int $parameter2
-            ) { }
+            ) {
+            }
         }];
 
         yield 'it uses MapQueryParameter name argument as name' => [new class() {
             public function route(
                 #[MapQueryParameter('someOtherParameter1Name')] int $parameter1,
                 #[MapQueryParameter('someOtherParameter2Name')] int $parameter2
-            ) { }
+            ) {
+            }
         }];
 
         yield 'it uses documents regex pattern' => [new class() {
             public function route(
                 #[MapQueryParameter(filter: FILTER_VALIDATE_REGEXP, options: ['regexp' => '/^\d+$/'])] int $parameter1,
                 #[MapQueryParameter(filter: FILTER_VALIDATE_REGEXP, options: ['regexp' => '/^\d+$/'])] int $parameter2
-            ) { }
+            ) {
+            }
         }];
     }
 }
