@@ -7,7 +7,7 @@ OpenAPI (Swagger) format and provides a sandbox to interactively experiment with
 What's supported?
 -----------------
 
-This bundle supports *Symfony* route requirements, PHP annotations, `Swagger-Php`_ annotations,
+This bundle supports *Symfony* route requirements, *Symfony* request mapping (`Symfony MapQueryParameter`_, `Symfony MapRequestPayload`_), PHP annotations, `Swagger-Php`_ annotations,
 `FOSRestBundle`_ annotations and applications using `Api-Platform`_.
 
 .. _`Swagger-Php`: https://github.com/zircote/swagger-php
@@ -238,6 +238,17 @@ The normal PHPDoc block on the controller method is used for the summary and des
     Examples of using the annotations can be found in `SwaggerPHP examples`_.
     However, unlike in those examples, when using this bundle you don't need to specify paths and you can easily document models as well as some
     other properties described below as they can be automatically be documented using the Symfony integration.
+
+.. tip::
+
+    **NelmioApiDocBundle** understand **symfony's** `Symfony MapQueryParameter`_ & `Symfony MapRequestPayload`_.
+    Using these attributes inside your controller allows this bundle to automatically create the necessary documentation,
+    these will automatically be mapped to their respective `OA\Parameter` & `OA\RequestBody`.
+
+.. versionadded:: 6.3
+
+    The :class:`Symfony\\Component\\HttpKernel\\Attribute\\MapRequestPayload` and :class:`Symfony\\Component\\HttpKernel\\Attribute\\MapQueryParameter` attributes
+    were introduced in Symfony 6.3.
 
 Use Models
 ----------
@@ -584,3 +595,5 @@ If you need more complex features, take a look at:
 .. _`JMS serializer`: https://jmsyst.com/libs/serializer
 .. _`Symfony form`: https://symfony.com/doc/current/forms.html
 .. _`Symfony serializer`: https://symfony.com/doc/current/components/serializer.html
+.. _`Symfony MapRequestPayload`: https://symfony.com/doc/current/controller.html#mapping-request-payload
+.. _`Symfony MapQueryParameter`: https://symfony.com/doc/current/controller.html#mapping-query-parameters-individually
