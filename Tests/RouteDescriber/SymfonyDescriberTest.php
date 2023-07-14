@@ -15,8 +15,6 @@ use Nelmio\ApiDocBundle\RouteDescriber\SymfonyDescriber;
 use OpenApi\Annotations\OpenApi;
 use PHPUnit\Framework\TestCase;
 use ReflectionAttribute;
-use ReflectionNamedType;
-use ReflectionParameter;
 use stdClass;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
@@ -46,44 +44,18 @@ class SymfonyDescriberTest extends TestCase
 
     /**
      * @dataProvider provideMapRequestPayloadTestData
+     *
+     * @param string[] $expectedMediaTypes
      */
-    public function testMapRequestPayloadParamRegistersRequestBody(
-        MapRequestPayload $mapRequestPayload,
-        array $expectedMediaTypes
-    ): void {
-        $classType = stdClass::class;
-
-        $reflectionNamedType = $this->createStub(ReflectionNamedType::class);
-        $reflectionNamedType->method('getName')->willReturn($classType);
-
+    public function testMapRequestPayload(object $controllerClass, array $expectedMediaTypes): void {
         $api = new OpenApi([]);
 
-        $controllerMethodMock = $this->createStub(\ReflectionMethod::class);
-
-        $reflectionAttributeStub = $this->createStub(ReflectionAttribute::class);
-        $reflectionAttributeStub->method('getName')->willReturn(MapRequestPayload::class);
-        $reflectionAttributeStub->method('newInstance')->willReturn($mapRequestPayload);
-
-        $reflectionParameterStub = $this->createMock(ReflectionParameter::class);
-        $reflectionParameterStub->method('getType')->willReturn($reflectionNamedType);
-        $reflectionParameterStub
-            ->expects(self::atLeastOnce())
-            ->method('getAttributes')
-            ->willReturnCallback(static function (string $argument) use ($reflectionAttributeStub) {
-                if (MapRequestPayload::class === $argument) {
-                    return [$reflectionAttributeStub];
-                }
-
-                return [];
-            })
-        ;
-
-        $controllerMethodMock->method('getParameters')->willReturn([$reflectionParameterStub]);
+        $controllerReflectionMethod = new \ReflectionMethod($controllerClass, 'route');
 
         $this->symfonyDescriber->describe(
             $api,
             new Route('/'),
-            $controllerMethodMock
+            $controllerReflectionMethod
         );
 
         foreach ($expectedMediaTypes as $expectedMediaType) {
@@ -91,29 +63,45 @@ class SymfonyDescriberTest extends TestCase
 
             self::assertSame($expectedMediaType, $requestBodyContent->mediaType);
             self::assertSame('object', $requestBodyContent->schema->type);
-            self::assertSame($classType, $requestBodyContent->schema->ref->type);
+            self::assertSame(stdClass::class, $requestBodyContent->schema->ref->type);
         }
     }
 
     public static function provideMapRequestPayloadTestData(): iterable
     {
         yield 'it sets default mediaType to json' => [
-            new MapRequestPayload(),
+            new class() {
+                public function route(
+                    #[MapRequestPayload] stdClass $payload
+                ) { }
+            },
             ['application/json'],
         ];
 
-        yield 'it sets the mediaType to json' => [
-            new MapRequestPayload('json'),
+        yield 'it sets mediaType to json' => [
+            new class() {
+                public function route(
+                    #[MapRequestPayload('json')] stdClass $payload
+                ) { }
+            },
             ['application/json'],
         ];
 
-        yield 'it sets the mediaType to xml' => [
-            new MapRequestPayload('xml'),
+        yield 'it sets mediaType to xml' => [
+            new class() {
+                public function route(
+                    #[MapRequestPayload('xml')] stdClass $payload
+                ) { }
+            },
             ['application/xml'],
         ];
 
         yield 'it sets multiple mediaTypes' => [
-            new MapRequestPayload(['json', 'xml']),
+            new class() {
+                public function route(
+                    #[MapRequestPayload(['json', 'xml'])] stdClass $payload
+                ) { }
+            },
             ['application/json', 'application/xml'],
         ];
     }
