@@ -19,7 +19,7 @@
 
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>Tests/RouteDescriber</directory>
+            <directory>Tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>
