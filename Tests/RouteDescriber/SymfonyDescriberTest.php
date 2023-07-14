@@ -68,13 +68,23 @@ class SymfonyDescriberTest extends TestCase
 
         $controllerMethodMock = $this->createStub(\ReflectionMethod::class);
 
-        $reflectionAttributeMock = $this->createStub(ReflectionAttribute::class);
-        $reflectionAttributeMock->method('getName')->willReturn(MapRequestPayload::class);
-        $reflectionAttributeMock->method('newInstance')->willReturn($mapRequestPayload);
+        $reflectionAttributeStub = $this->createStub(ReflectionAttribute::class);
+        $reflectionAttributeStub->method('getName')->willReturn(MapRequestPayload::class);
+        $reflectionAttributeStub->method('newInstance')->willReturn($mapRequestPayload);
 
-        $reflectionParameterStub= $this->createStub(ReflectionParameter::class);
+        $reflectionParameterStub = $this->createMock(ReflectionParameter::class);
         $reflectionParameterStub->method('getType')->willReturn($reflectionNamedType);
-        $reflectionParameterStub->method('getAttributes')->willReturn([$reflectionAttributeMock]);
+        $reflectionParameterStub
+            ->expects(self::atLeastOnce())
+            ->method('getAttributes')
+            ->willReturnCallback(static function (mixed $argument) use ($reflectionAttributeStub) {
+                if ($argument === MapRequestPayload::class) {
+                    return [$reflectionAttributeStub];
+                }
+
+                return [];
+            })
+        ;
 
         $controllerMethodMock->method('getParameters')->willReturn([$reflectionParameterStub]);
 
