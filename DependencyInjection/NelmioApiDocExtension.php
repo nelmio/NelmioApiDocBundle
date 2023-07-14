@@ -31,7 +31,6 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Routing\RouteCollection;
@@ -166,7 +165,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             PHP_VERSION_ID > 80100
             && class_exists(MapRequestPayload::class)
             && class_exists(MapQueryParameter::class)
-            && class_exists(MapQueryString::class)
         ) {
             $loader->load('symfony.xml');
         }

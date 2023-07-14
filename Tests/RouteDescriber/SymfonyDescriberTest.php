@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use ReflectionAttribute;
 use stdClass;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Route;
 
@@ -34,7 +33,6 @@ class SymfonyDescriberTest extends TestCase
         if (
             !class_exists(MapRequestPayload::class)
             && !class_exists(MapQueryParameter::class)
-            && !class_exists(MapQueryString::class)
         ) {
             self::markTestSkipped('Symfony 6.3 attributes not found');
         }
