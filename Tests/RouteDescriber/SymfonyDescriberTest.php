@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\RouteDescriber;
 
-use Generator;
 use Nelmio\ApiDocBundle\RouteDescriber\SymfonyDescriber;
 use OpenApi\Annotations\OpenApi;
 use PHPUnit\Framework\TestCase;
@@ -45,17 +44,10 @@ class SymfonyDescriberTest extends TestCase
         $this->symfonyDescriber = new SymfonyDescriber();
     }
 
-    public function testMapRequestPayload(): void
-    {
-        foreach (self::provideMapRequestPayloadTestData() as $testData) {
-            $this->testMapRequestPayloadParamRegistersRequestBody(...$testData);
-        }
-    }
-
     /**
-     * @param string[] $expectedMediaTypes
+     * @dataProvider provideMapRequestPayloadTestData
      */
-    private function testMapRequestPayloadParamRegistersRequestBody(
+    public function testMapRequestPayloadParamRegistersRequestBody(
         MapRequestPayload $mapRequestPayload,
         array $expectedMediaTypes
     ): void {
@@ -103,7 +95,7 @@ class SymfonyDescriberTest extends TestCase
         }
     }
 
-    public static function provideMapRequestPayloadTestData(): Generator
+    public static function provideMapRequestPayloadTestData(): iterable
     {
         yield 'it sets default mediaType to json' => [
             new MapRequestPayload(),
@@ -126,17 +118,11 @@ class SymfonyDescriberTest extends TestCase
         ];
     }
 
-    public function testMapQueryParameter(): void
-    {
-        foreach (self::provideMapQueryParameterTestData() as $testData) {
-            $this->testMapQueryParameterParamRegistersParameter(...$testData);
-        }
-    }
-
     /**
+     * @dataProvider provideMapQueryParameterTestData
      * @param array<array{instance: MapQueryParameter, type: string, name: string, defaultValue?: mixed}> $mapQueryParameterDataCollection
      */
-    private function testMapQueryParameterParamRegistersParameter(array $mapQueryParameterDataCollection): void
+    public function testMapQueryParameterParamRegistersParameter(array $mapQueryParameterDataCollection): void
     {
         $api = new OpenApi([]);
 
@@ -200,7 +186,7 @@ class SymfonyDescriberTest extends TestCase
         }
     }
 
-    public static function provideMapQueryParameterTestData(): Generator
+    public static function provideMapQueryParameterTestData(): iterable
     {
         yield 'it sets a single query parameter' => [
             [
