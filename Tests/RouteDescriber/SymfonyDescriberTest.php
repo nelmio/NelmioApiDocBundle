@@ -77,8 +77,8 @@ class SymfonyDescriberTest extends TestCase
         $reflectionParameterStub
             ->expects(self::atLeastOnce())
             ->method('getAttributes')
-            ->willReturnCallback(static function (mixed $argument) use ($reflectionAttributeStub) {
-                if ($argument === MapRequestPayload::class) {
+            ->willReturnCallback(static function (string $argument) use ($reflectionAttributeStub) {
+                if (MapRequestPayload::class === $argument) {
                     return [$reflectionAttributeStub];
                 }
 
@@ -136,7 +136,8 @@ class SymfonyDescriberTest extends TestCase
     /**
      * @param array<array{instance: MapQueryParameter, type: string, name: string, defaultValue?: mixed}> $mapQueryParameterDataCollection
      */
-    private function testMapQueryParameterParamRegistersParameter(array $mapQueryParameterDataCollection): void {
+    private function testMapQueryParameterParamRegistersParameter(array $mapQueryParameterDataCollection): void
+    {
         $api = new OpenApi([]);
 
         $reflectionParameters = [];
@@ -155,8 +156,8 @@ class SymfonyDescriberTest extends TestCase
             $reflectionParameterStub
                 ->expects(self::atLeastOnce())
                 ->method('getAttributes')
-                ->willReturnCallback(static function (mixed $argument) use ($reflectionAttributeStub) {
-                    if ($argument === MapQueryParameter::class) {
+                ->willReturnCallback(static function (string $argument) use ($reflectionAttributeStub) {
+                    if (MapQueryParameter::class === $argument) {
                         return [$reflectionAttributeStub];
                     }
 
@@ -208,7 +209,7 @@ class SymfonyDescriberTest extends TestCase
                     'instance' => new MapQueryParameter(),
                     'type' => 'int',
                     'name' => 'parameter1',
-                ]
+                ],
             ],
         ];
 
@@ -223,7 +224,7 @@ class SymfonyDescriberTest extends TestCase
                     'instance' => new MapQueryParameter(),
                     'type' => 'int',
                     'name' => 'parameter2',
-                ]
+                ],
             ],
         ];
 
@@ -234,7 +235,7 @@ class SymfonyDescriberTest extends TestCase
                     'type' => 'string',
                     'name' => 'parameterDefault',
                     'defaultValue' => 'Some default value',
-                ]
+                ],
             ],
         ];
 
@@ -244,7 +245,7 @@ class SymfonyDescriberTest extends TestCase
                     'instance' => new MapQueryParameter('name'),
                     'type' => 'string',
                     'name' => 'parameter',
-                ]
+                ],
             ],
         ];
     }
