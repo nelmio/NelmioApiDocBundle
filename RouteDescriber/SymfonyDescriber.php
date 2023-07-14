@@ -27,8 +27,6 @@ final class SymfonyDescriber implements RouteDescriberInterface
 
         foreach ($this->getOperations($api, $route) as $operation) {
             foreach ($parameters as $parameter) {
-                $parameterName = $parameter->getName();
-
                 if ($attribute = $this->getAttribute($parameter, MapRequestPayload::class)) {
                     /** @var OA\RequestBody $requestBody */
                     $requestBody = Util::getChild($operation, OA\RequestBody::class);
@@ -40,9 +38,11 @@ final class SymfonyDescriber implements RouteDescriberInterface
                             $this->describeRequestBody($requestBody, $parameter, $format);
                         }
                     }
-                } elseif ($attribute = $this->getAttribute($parameter, MapQueryParameter::class)) {
-                    $operationParameter = Util::getOperationParameter($operation, $parameterName, 'query');
-                    $operationParameter->name = $attribute->name ?? $parameterName;
+                }
+
+                if ($attribute = $this->getAttribute($parameter, MapQueryParameter::class)) {
+                    $operationParameter = Util::getOperationParameter($operation, $parameter->getName(), 'query');
+                    $operationParameter->name = $attribute->name ?? $parameter->getName();
                     $operationParameter->allowEmptyValue = $parameter->allowsNull();
 
                     $operationParameter->required = !$parameter->isDefaultValueAvailable() && !$parameter->allowsNull();
