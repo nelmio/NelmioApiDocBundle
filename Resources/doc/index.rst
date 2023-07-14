@@ -243,7 +243,7 @@ The normal PHPDoc block on the controller method is used for the summary and des
 
     **NelmioApiDocBundle** understand **symfony's** `Symfony MapQueryParameter`_ & `Symfony MapRequestPayload`_.
     Using these attributes inside your controller allows this bundle to automatically create the necessary documentation,
-    these will automatically be mapped to their respective ``OA\Parameter`` & ``OA\RequestBody`` attribute.
+    these will automatically be mapped to their respective ``OA\Parameter`` & ``OA\RequestBody`` annotation/attribute.
 
 .. versionadded:: 6.3
 
