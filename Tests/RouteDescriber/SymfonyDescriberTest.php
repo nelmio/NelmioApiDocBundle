@@ -125,4 +125,127 @@ class SymfonyDescriberTest extends TestCase
             ['application/json', 'application/xml'],
         ];
     }
+
+    public function testMapQueryParameter(): void
+    {
+        foreach (self::provideMapQueryParameterTestData() as $testData) {
+            $this->testMapQueryParameterParamRegistersParameter(...$testData);
+        }
+    }
+
+    /**
+     * @param array<array{instance: MapQueryParameter, type: string, name: string, defaultValue?: mixed}> $mapQueryParameterDataCollection
+     */
+    private function testMapQueryParameterParamRegistersParameter(array $mapQueryParameterDataCollection): void {
+        $api = new OpenApi([]);
+
+        $reflectionParameters = [];
+        foreach ($mapQueryParameterDataCollection as $mapQueryParameterData) {
+            $reflectionNamedType = $this->createStub(ReflectionNamedType::class);
+            $reflectionNamedType->method('isBuiltin')->willReturn(true);
+            $reflectionNamedType->method('getName')->willReturn($mapQueryParameterData['type']);
+
+            $reflectionAttributeStub = $this->createStub(ReflectionAttribute::class);
+            $reflectionAttributeStub->method('getName')->willReturn($mapQueryParameterData['name']);
+            $reflectionAttributeStub->method('newInstance')->willReturn($mapQueryParameterData['instance']);
+
+            $reflectionParameterStub= $this->createStub(ReflectionParameter::class);
+            $reflectionParameterStub->method('getName')->willReturn($mapQueryParameterData['name']);
+            $reflectionParameterStub->method('getType')->willReturn($reflectionNamedType);
+            $reflectionParameterStub
+                ->expects(self::atLeastOnce())
+                ->method('getAttributes')
+                ->willReturnCallback(static function (mixed $argument) use ($reflectionAttributeStub) {
+                    if ($argument === MapQueryParameter::class) {
+                        return [$reflectionAttributeStub];
+                    }
+
+                    return [];
+                })
+            ;
+
+            if (isset($mapQueryParameterData['defaultValue'])) {
+                $reflectionParameterStub->method('isDefaultValueAvailable')->willReturn(true);
+                $reflectionParameterStub->method('getDefaultValue')->willReturn($mapQueryParameterData['defaultValue']);
+            } else {
+                $reflectionParameterStub->method('isDefaultValueAvailable')->willReturn(false);
+                $reflectionParameterStub->method('getDefaultValue')->willThrowException(new \ReflectionException());
+            }
+
+
+            $reflectionParameters[] = $reflectionParameterStub;
+        }
+
+        $controllerMethodMock = $this->createStub(\ReflectionMethod::class);
+        $controllerMethodMock->method('getParameters')->willReturn($reflectionParameters);
+
+        $this->symfonyDescriber->describe(
+            $api,
+            new Route('/'),
+            $controllerMethodMock
+        );
+
+        foreach ($mapQueryParameterDataCollection as $key => $mapQueryParameterData) {
+            $parameter = $api->paths[0]->get->parameters[$key];
+
+            self::assertSame($mapQueryParameterData['instance']->name ?? $mapQueryParameterData['name'], $parameter->name);
+            self::assertSame('query', $parameter->in);
+            self::assertSame(!$reflectionParameters[$key]->isDefaultValueAvailable() && !$reflectionParameters[$key]->allowsNull(), $parameter->required);
+
+            $schema = $parameter->schema;
+            self::assertSame($mapQueryParameterData['type'], $schema->type);
+            if (isset($mapQueryParameterData['defaultValue'])) {
+                self::assertSame($mapQueryParameterData['defaultValue'], $schema->default);
+            }
+        }
+    }
+
+    public static function provideMapQueryParameterTestData(): Generator
+    {
+        yield 'it sets a single query parameter' => [
+            [
+                [
+                    'instance' => new MapQueryParameter(),
+                    'type' => 'int',
+                    'name' => 'parameter1',
+                ]
+            ],
+        ];
+
+        yield 'it sets two query parameters' => [
+            [
+                [
+                    'instance' => new MapQueryParameter(),
+                    'type' => 'int',
+                    'name' => 'parameter1',
+                ],
+                [
+                    'instance' => new MapQueryParameter(),
+                    'type' => 'int',
+                    'name' => 'parameter2',
+                ]
+            ],
+        ];
+
+        yield 'it sets a single query parameter with default value' => [
+            [
+                [
+                    'instance' => new MapQueryParameter(),
+                    'type' => 'string',
+                    'name' => 'parameterDefault',
+                    'defaultValue' => 'Some default value',
+                ]
+            ],
+        ];
+
+        yield 'it uses MapQueryParameter manually defined name' => [
+            [
+                [
+                    'instance' => new MapQueryParameter('name'),
+                    'type' => 'string',
+                    'name' => 'parameter',
+                ]
+            ],
+        ];
+    }
 }
