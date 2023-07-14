@@ -173,7 +173,6 @@ class SymfonyDescriberTest extends TestCase
                 $reflectionParameterStub->method('getDefaultValue')->willThrowException(new \ReflectionException());
             }
 
-
             $reflectionParameters[] = $reflectionParameterStub;
         }
 
