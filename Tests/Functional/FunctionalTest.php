@@ -659,6 +659,17 @@ class FunctionalTest extends WebTestCase
 
         $this->assertSame('string', $model->type);
         $this->assertCount(2, $model->enum);
+
+        $model = $this->getModel('ArticleType81NotBacked');
+
+        $this->assertSame('string', $model->type);
+        $this->assertCount(2, $model->enum);
+
+
+        $model = $this->getModel('ArticleType81IntBacked');
+
+        $this->assertSame('integer', $model->type);
+        $this->assertCount(2, $model->enum);
     }
 
     public function testEntitiesWithOverriddenSchemaTypeDoNotReadOtherProperties()
