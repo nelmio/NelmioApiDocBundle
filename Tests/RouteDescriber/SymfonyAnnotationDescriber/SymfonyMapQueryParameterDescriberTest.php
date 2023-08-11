@@ -9,10 +9,9 @@ use Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyMapQuer
 use OpenApi\Annotations\OpenApi;
 use PHPUnit\Framework\TestCase;
 use ReflectionAttribute;
-use ReflectionMethod;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\Routing\Route;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
 class SymfonyMapQueryParameterDescriberTest extends TestCase
 {
@@ -20,6 +19,17 @@ class SymfonyMapQueryParameterDescriberTest extends TestCase
 
     protected function setUp(): void
     {
+        if (\PHP_VERSION_ID < 80100) {
+            self::markTestSkipped('Attributes require PHP 8');
+        }
+
+        if (
+            !class_exists(MapRequestPayload::class)
+            && !class_exists(MapQueryParameter::class)
+        ) {
+            self::markTestSkipped('Symfony 6.3 attributes not found');
+        }
+
         $this->symfonyMapQueryParameterDescriber = new SymfonyMapQueryParameterDescriber();
     }
 
@@ -28,20 +38,18 @@ class SymfonyMapQueryParameterDescriberTest extends TestCase
      */
     public function testMapQueryParameter(callable $function): void
     {
-        $api = new OpenApi([]);
-
         $parameter = new ReflectionParameter($function, 'parameter1');
 
         $this->symfonyMapQueryParameterDescriber->describe(
-            $api,
-            new Operation([]),
+            new OpenApi([]),
+            $operation = new Operation([]),
             $parameter
         );
 
         /** @var MapQueryParameter $mapQueryParameter */
         $mapQueryParameter = $parameter->getAttributes(MapQueryParameter::class, ReflectionAttribute::IS_INSTANCEOF)[0]->newInstance();
 
-        $documentationParameter = $api->paths[0]->get->parameters['parameter1'];
+        $documentationParameter = $operation->parameters[0];
         self::assertSame($mapQueryParameter->name ?? $parameter->getName(), $documentationParameter->name);
         self::assertSame('query', $documentationParameter->in);
         self::assertSame(!$parameter->isDefaultValueAvailable() && !$parameter->allowsNull(), $documentationParameter->required);
@@ -87,8 +95,7 @@ class SymfonyMapQueryParameterDescriberTest extends TestCase
             }
         ];
 
-
-        yield 'it uses documents regex pattern' => [
+        yield 'it documents regex pattern' => [
             function (
                 #[MapQueryParameter(filter: FILTER_VALIDATE_REGEXP, options: ['regexp' => '/^\d+$/'])] int $parameter1,
             ) {
