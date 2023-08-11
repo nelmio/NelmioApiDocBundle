@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
 use ReflectionAttribute;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
 class SymfonyMapQueryParameterDescriberTest extends TestCase
 {
@@ -23,11 +22,8 @@ class SymfonyMapQueryParameterDescriberTest extends TestCase
             self::markTestSkipped('Attributes require PHP 8');
         }
 
-        if (
-            !class_exists(MapRequestPayload::class)
-            && !class_exists(MapQueryParameter::class)
-        ) {
-            self::markTestSkipped('Symfony 6.3 attributes not found');
+        if (!class_exists(MapQueryParameter::class)) {
+            self::markTestSkipped('Symfony 6.3 MapRequestPayload attribute not found');
         }
 
         $this->symfonyMapQueryParameterDescriber = new SymfonyMapQueryParameterDescriber();

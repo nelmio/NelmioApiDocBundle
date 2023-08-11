@@ -13,9 +13,7 @@ use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use ReflectionParameter;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
 class SymfonyMapQueryStringDescriberTest extends TestCase
 {
@@ -28,11 +26,8 @@ class SymfonyMapQueryStringDescriberTest extends TestCase
             self::markTestSkipped('Attributes require PHP 8');
         }
 
-        if (
-            !class_exists(MapRequestPayload::class)
-            && !class_exists(MapQueryParameter::class)
-        ) {
-            self::markTestSkipped('Symfony 6.3 attributes not found');
+        if (!class_exists(MapQueryString::class)) {
+            self::markTestSkipped('Symfony 6.3 MapQueryString attribute not found');
         }
 
         $this->openApi = new OpenApi([]);

@@ -10,7 +10,6 @@ use OpenApi\Annotations\OpenApi;
 use PHPUnit\Framework\TestCase;
 use ReflectionParameter;
 use stdClass;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
 class SymfonyMapRequestPayloadDescriberTest extends TestCase
@@ -23,11 +22,8 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
             self::markTestSkipped('Attributes require PHP 8');
         }
 
-        if (
-            !class_exists(MapRequestPayload::class)
-            && !class_exists(MapQueryParameter::class)
-        ) {
-            self::markTestSkipped('Symfony 6.3 attributes not found');
+        if (!class_exists(MapRequestPayload::class)) {
+            self::markTestSkipped('Symfony 6.3 MapRequestPayload attribute not found');
         }
 
         $this->symfonyMapRequestPayloadDescriber = new SymfonyMapRequestPayloadDescriber();
