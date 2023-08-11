@@ -4,29 +4,15 @@ declare(strict_types=1);
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use InvalidArgumentException;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\Model\ModelRegistry;
-use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyAnnotationDescriber;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use ReflectionMethod;
 use ReflectionParameter;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Routing\Route;
-use function is_array;
-use const FILTER_VALIDATE_REGEXP;
 
-final class SymfonyDescriber implements RouteDescriberInterface, ModelRegistryAwareInterface
+final class SymfonyDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
-    use ModelRegistryAwareTrait;
 
     /**
      * @param SymfonyAnnotationDescriber[] $annotationDescribers
