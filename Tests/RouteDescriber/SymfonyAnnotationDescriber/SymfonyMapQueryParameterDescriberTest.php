@@ -23,7 +23,7 @@ class SymfonyMapQueryParameterDescriberTest extends TestCase
         }
 
         if (!class_exists(MapQueryParameter::class)) {
-            self::markTestSkipped('Symfony 6.3 MapRequestPayload attribute not found');
+            self::markTestSkipped('Symfony 6.3 MapQueryParameter attribute not found');
         }
 
         $this->symfonyMapQueryParameterDescriber = new SymfonyMapQueryParameterDescriber();
