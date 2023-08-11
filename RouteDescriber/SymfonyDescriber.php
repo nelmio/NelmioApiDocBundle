@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyAnnotationDescriber;
 use OpenApi\Annotations as OA;
 use ReflectionMethod;
 use ReflectionParameter;
 use Symfony\Component\Routing\Route;
 
-final class SymfonyDescriber implements RouteDescriberInterface
+final class SymfonyDescriber implements RouteDescriberInterface, ModelRegistryAwareInterface
 {
     use RouteDescriberTrait;
+    use ModelRegistryAwareTrait;
 
     /**
      * @param SymfonyAnnotationDescriber[] $annotationDescribers
@@ -29,6 +32,10 @@ final class SymfonyDescriber implements RouteDescriberInterface
         foreach ($this->getOperations($api, $route) as $operation) {
             foreach ($parameters as $parameter) {
                 foreach ($this->annotationDescribers as $annotationDescriber) {
+                    if ($annotationDescriber instanceof ModelRegistryAwareInterface) {
+                        $annotationDescriber->setModelRegistry($this->modelRegistry);
+                    }
+
                     if (! $annotationDescriber->supports($parameter)) {
                         continue;
                     }
