@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use OpenApi\Annotations as OA;
 
 final class SymfonyMapQueryParameterDescriber implements SymfonyAnnotationDescriber
 {

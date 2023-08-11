@@ -14,6 +14,7 @@ use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use const PHP_VERSION_ID;
 
 class SymfonyMapQueryStringDescriberTest extends TestCase
 {
@@ -22,7 +23,7 @@ class SymfonyMapQueryStringDescriberTest extends TestCase
 
     protected function setUp(): void
     {
-        if (\PHP_VERSION_ID < 80100) {
+        if (PHP_VERSION_ID < 80100) {
             self::markTestSkipped('Attributes require PHP 8');
         }
 
@@ -81,7 +82,7 @@ class SymfonyMapQueryStringDescriberTest extends TestCase
             function (
                 #[MapQueryString] SymfonyDescriberMapQueryStringClass $parameter1,
             ) {
-            }
+            },
         ];
     }
 }

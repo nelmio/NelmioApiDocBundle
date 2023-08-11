@@ -8,11 +8,11 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\PropertyInfo\Type;
-use OpenApi\Annotations as OA;
 
 final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber, ModelRegistryAwareInterface
 {
@@ -36,7 +36,7 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
         $nativeModelName = str_replace(OA\Components::SCHEMA_REF, '', $modelRef);
 
         $schemaModel = Util::getSchema($api, $nativeModelName);
-        if (Generator::UNDEFINED === $schemaModel->properties)                     {
+        if (Generator::UNDEFINED === $schemaModel->properties) {
             return;
         }
 
@@ -46,7 +46,7 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
             $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
             $operationParameter->name = $property->property;
 
-            $isQueryOptional = (Generator::UNDEFINED !== $property->nullable &&$property->nullable)
+            $isQueryOptional = (Generator::UNDEFINED !== $property->nullable && $property->nullable)
                 || Generator::UNDEFINED !== $property->default
                 || $isModelOptional;
 

@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionParameter;
 use stdClass;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use const PHP_VERSION_ID;
 
 class SymfonyMapRequestPayloadDescriberTest extends TestCase
 {
@@ -18,7 +19,7 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
 
     protected function setUp(): void
     {
-        if (\PHP_VERSION_ID < 80100) {
+        if (PHP_VERSION_ID < 80100) {
             self::markTestSkipped('Attributes require PHP 8');
         }
 
@@ -56,7 +57,7 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
     public static function provideMapRequestPayloadTestData(): iterable
     {
         yield 'it sets default mediaType to json' => [
-            function(
+            function (
                 #[MapRequestPayload] stdClass $payload
             ) {
             },
@@ -64,7 +65,7 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
         ];
 
         yield 'it sets mediaType to json' => [
-            function(
+            function (
                 #[MapRequestPayload('json')] stdClass $payload
             ) {
             },
@@ -80,7 +81,7 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
         ];
 
         yield 'it sets multiple mediaTypes' => [
-            function(
+            function (
                 #[MapRequestPayload(['json', 'xml'])] stdClass $payload
             ) {
             },

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber;
 
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use ReflectionParameter;
-use OpenApi\Annotations as OA;
 
 final class SymfonyAnnotationHelper
 {

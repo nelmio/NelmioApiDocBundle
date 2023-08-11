@@ -19,6 +19,7 @@ use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use const PHP_VERSION_ID;
 
 class SymfonyDescriberTest extends TestCase
 {
@@ -26,7 +27,7 @@ class SymfonyDescriberTest extends TestCase
 
     protected function setUp(): void
     {
-        if (\PHP_VERSION_ID < 80100) {
+        if (PHP_VERSION_ID < 80100) {
             self::markTestSkipped('Attributes require PHP 8');
         }
 

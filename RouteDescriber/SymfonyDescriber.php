@@ -36,7 +36,7 @@ final class SymfonyDescriber implements RouteDescriberInterface, ModelRegistryAw
                         $annotationDescriber->setModelRegistry($this->modelRegistry);
                     }
 
-                    if (! $annotationDescriber->supports($parameter)) {
+                    if (!$annotationDescriber->supports($parameter)) {
                         continue;
                     }
 
@@ -49,7 +49,7 @@ final class SymfonyDescriber implements RouteDescriberInterface, ModelRegistryAw
     /**
      * @return ReflectionParameter[]
      */
-    private function getMethodParameter(ReflectionMethod $reflectionMethod,): array
+    private function getMethodParameter(ReflectionMethod $reflectionMethod): array
     {
         $parameters = [];
 

@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionAttribute;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use const PHP_VERSION_ID;
 
 class SymfonyMapQueryParameterDescriberTest extends TestCase
 {
@@ -18,7 +19,7 @@ class SymfonyMapQueryParameterDescriberTest extends TestCase
 
     protected function setUp(): void
     {
-        if (\PHP_VERSION_ID < 80100) {
+        if (PHP_VERSION_ID < 80100) {
             self::markTestSkipped('Attributes require PHP 8');
         }
 
@@ -67,35 +68,35 @@ class SymfonyMapQueryParameterDescriberTest extends TestCase
             function (
                 #[MapQueryParameter] int $parameter1,
             ) {
-            }
+            },
         ];
 
         yield 'it documents query parameters with default values' => [
             function (
                 #[MapQueryParameter] int $parameter1 = 123,
             ) {
-            }
+            },
         ];
 
         yield 'it documents query parameters with nullable types' => [
             function (
                 #[MapQueryParameter] ?int $parameter1,
             ) {
-            }
+            },
         ];
 
         yield 'it uses MapQueryParameter name argument as name' => [
             function (
                 #[MapQueryParameter('someOtherParameter1Name')] int $parameter1,
             ) {
-            }
+            },
         ];
 
         yield 'it documents regex pattern' => [
             function (
                 #[MapQueryParameter(filter: FILTER_VALIDATE_REGEXP, options: ['regexp' => '/^\d+$/'])] int $parameter1,
             ) {
-            }
+            },
         ];
     }
 }

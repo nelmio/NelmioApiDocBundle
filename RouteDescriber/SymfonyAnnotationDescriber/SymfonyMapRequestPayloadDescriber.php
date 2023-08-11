@@ -6,10 +6,10 @@ namespace Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber;
 
 use InvalidArgumentException;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use OpenApi\Annotations as OA;
 
 final class SymfonyMapRequestPayloadDescriber implements SymfonyAnnotationDescriber
 {
