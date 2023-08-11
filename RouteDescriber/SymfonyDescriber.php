@@ -10,6 +10,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyAnnotationDescriber;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use ReflectionMethod;
@@ -27,169 +28,42 @@ final class SymfonyDescriber implements RouteDescriberInterface, ModelRegistryAw
     use RouteDescriberTrait;
     use ModelRegistryAwareTrait;
 
+    /**
+     * @param SymfonyAnnotationDescriber[] $annotationDescribers
+     */
+    public function __construct(
+        private iterable $annotationDescribers = [],
+    ) {
+    }
+
     public function describe(OA\OpenApi $api, Route $route, ReflectionMethod $reflectionMethod): void
     {
-        $parameters = $this->getMethodParameter($reflectionMethod, [MapRequestPayload::class, MapQueryParameter::class, MapQueryString::class]);
+        $parameters = $this->getMethodParameter($reflectionMethod);
 
         foreach ($this->getOperations($api, $route) as $operation) {
             foreach ($parameters as $parameter) {
-                if ($attribute = $this->getAttribute($parameter, MapRequestPayload::class)) {
-                    /** @var OA\RequestBody $requestBody */
-                    $requestBody = Util::getChild($operation, OA\RequestBody::class);
-
-                    if (!is_array($attribute->acceptFormat)) {
-                        $this->describeRequestBody($requestBody, $parameter, $attribute->acceptFormat ?? 'json');
-                    } else {
-                        foreach ($attribute->acceptFormat as $format) {
-                            $this->describeRequestBody($requestBody, $parameter, $format);
-                        }
-                    }
-                }
-
-                if ($attribute = $this->getAttribute($parameter, MapQueryParameter::class)) {
-                    $operationParameter = Util::getOperationParameter($operation, $parameter->getName(), 'query');
-                    $operationParameter->name = $attribute->name ?? $parameter->getName();
-                    $operationParameter->allowEmptyValue = $parameter->allowsNull();
-
-                    $operationParameter->required = !$parameter->isDefaultValueAvailable() && !$parameter->allowsNull();
-
-                    /** @var OA\Schema $schema */
-                    $schema = Util::getChild($operationParameter, OA\Schema::class);
-
-                    if (FILTER_VALIDATE_REGEXP === $attribute->filter) {
-                        $schema->pattern = $attribute->options['regexp'];
-                    }
-
-                    $this->describeCommonSchemaFromParameter($schema, $parameter);
-                }
-
-                if ($this->getAttribute($parameter, MapQueryString::class)) {
-                    $model = new \Nelmio\ApiDocBundle\Model\Model(new Type(Type::BUILTIN_TYPE_OBJECT, $parameter->allowsNull(), $parameter->getType()->getName()));
-                    $modelRef = $this->modelRegistry->register($model);
-                    $this->modelRegistry->registerSchemas();
-
-                    $nativeModelName = str_replace(OA\Components::SCHEMA_REF, '', $modelRef);
-
-                    $schemaModel = Util::getSchema($api, $nativeModelName);
-                    if (Generator::UNDEFINED === $schemaModel->properties)                     {
+                foreach ($this->annotationDescribers as $annotationDescriber) {
+                    if (! $annotationDescriber->supports($parameter)) {
                         continue;
                     }
 
-                    $isModelOptional = $parameter->isDefaultValueAvailable() || $parameter->allowsNull();
-
-                    foreach ($schemaModel->properties as $property) {
-                        $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
-                        $operationParameter->name = $property->property;
-
-                        $isQueryOptional = (Generator::UNDEFINED !== $property->nullable &&$property->nullable)
-                            || Generator::UNDEFINED !== $property->default
-                            || $isModelOptional;
-
-                        $operationParameter->allowEmptyValue = $isQueryOptional;
-                        $operationParameter->required = !$isQueryOptional;
-                        $operationParameter->example = $property->default;
-                    }
+                    $annotationDescriber->describe($api, $operation, $parameter);
                 }
             }
         }
     }
 
     /**
-     * @param class-string[] $attributes
-     *
      * @return ReflectionParameter[]
      */
-    private function getMethodParameter(ReflectionMethod $reflectionMethod, array $attributes): array
+    private function getMethodParameter(ReflectionMethod $reflectionMethod,): array
     {
         $parameters = [];
 
         foreach ($reflectionMethod->getParameters() as $parameter) {
-            foreach ($attributes as $attribute) {
-                if ($parameter->getAttributes($attribute, \ReflectionAttribute::IS_INSTANCEOF)) {
-                    $parameters[] = $parameter;
-                }
-            }
+            $parameters[] = $parameter;
         }
 
         return $parameters;
-    }
-
-    private function describeCommonSchemaFromParameter(OA\Schema $schema, ReflectionParameter $parameter): void
-    {
-        if ($parameter->isDefaultValueAvailable()) {
-            $schema->default = $parameter->getDefaultValue();
-        }
-
-        if (Generator::UNDEFINED === $schema->type) {
-            if ($parameter->getType()->isBuiltin()) {
-                $schema->type = $parameter->getType()->getName();
-            }
-        }
-    }
-
-    /**
-     * @param class-string<T> $attribute
-     *
-     * @return T|null
-     *
-     * @template T of object
-     */
-    private function getAttribute(ReflectionParameter $parameter, string $attribute): ?object
-    {
-        if ($attribute = $parameter->getAttributes($attribute, \ReflectionAttribute::IS_INSTANCEOF)) {
-            return $attribute[0]->newInstance();
-        }
-
-        return null;
-    }
-
-    private function describeRequestBody(OA\RequestBody $requestBody, ReflectionParameter $parameter, string $format): void
-    {
-        $contentSchema = $this->getContentSchemaForType($requestBody, $format);
-        $contentSchema->ref = new Model(type: $parameter->getType()->getName());
-        $contentSchema->type = 'object';
-
-        $schema = Util::getProperty($contentSchema, $parameter->getName());
-
-        $this->describeCommonSchemaFromParameter($schema, $parameter);
-    }
-
-    private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
-    {
-        $requestBody->content = Generator::UNDEFINED !== $requestBody->content ? $requestBody->content : [];
-        switch ($type) {
-            case 'json':
-                $contentType = 'application/json';
-
-                break;
-            case 'xml':
-                $contentType = 'application/xml';
-
-                break;
-            default:
-                throw new InvalidArgumentException('Unsupported media type');
-        }
-
-        if (!isset($requestBody->content[$contentType])) {
-            $weakContext = Util::createWeakContext($requestBody->_context);
-            $requestBody->content[$contentType] = new OA\MediaType(
-                [
-                    'mediaType' => $contentType,
-                    '_context' => $weakContext,
-                ]
-            );
-
-            /** @var OA\Schema $schema */
-            $schema = Util::getChild(
-                $requestBody->content[$contentType],
-                OA\Schema::class
-            );
-            $schema->type = 'object';
-        }
-
-        return Util::getChild(
-            $requestBody->content[$contentType],
-            OA\Schema::class
-        );
     }
 }
