@@ -8,7 +8,6 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use OpenApi\Annotations\Operation;
 use OpenApi\Generator;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
@@ -28,7 +27,7 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
         return $parameter->hasType();
     }
 
-    public function describe(OA\OpenApi $api, Operation $operation, ReflectionParameter $parameter): void
+    public function describe(OA\OpenApi $api, OA\Operation $operation, ReflectionParameter $parameter): void
     {
         $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, $parameter->allowsNull(), $parameter->getType()->getName()));
         $modelRef = $this->modelRegistry->register($model);

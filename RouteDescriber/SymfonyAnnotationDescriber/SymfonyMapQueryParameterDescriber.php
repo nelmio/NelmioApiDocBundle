@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber;
 
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use OpenApi\Annotations\Operation;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use OpenApi\Annotations as OA;
 
-final class SymfonyMapQueryParameterDescriber implements SymfonyAnnotationDescriber, ModelRegistryAwareInterface
+final class SymfonyMapQueryParameterDescriber implements SymfonyAnnotationDescriber
 {
-    use ModelRegistryAwareTrait;
-
     public function supports(ReflectionParameter $parameter): bool
     {
         if (!SymfonyAnnotationHelper::getAttribute($parameter, MapQueryParameter::class)) {
@@ -25,7 +20,7 @@ final class SymfonyMapQueryParameterDescriber implements SymfonyAnnotationDescri
         return $parameter->hasType();
     }
 
-    public function describe(OA\OpenApi $api, Operation $operation, ReflectionParameter $parameter): void
+    public function describe(OA\OpenApi $api, OA\Operation $operation, ReflectionParameter $parameter): void
     {
         $attribute = SymfonyAnnotationHelper::getAttribute($parameter, MapQueryParameter::class);
 
