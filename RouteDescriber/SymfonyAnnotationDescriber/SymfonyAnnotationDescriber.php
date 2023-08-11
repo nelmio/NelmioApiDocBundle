@@ -10,5 +10,6 @@ use ReflectionParameter;
 interface SymfonyAnnotationDescriber
 {
     public function supports(ReflectionParameter $parameter): bool;
+
     public function describe(OA\OpenApi $api, OA\Operation $operation, ReflectionParameter $parameter): void;
 }

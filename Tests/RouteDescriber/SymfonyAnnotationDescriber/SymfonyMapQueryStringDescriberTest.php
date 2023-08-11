@@ -73,7 +73,6 @@ class SymfonyMapQueryStringDescriberTest extends TestCase
             self::assertSame($isQueryOptional, $queryParameter->allowEmptyValue);
             self::assertSame(!$isQueryOptional, $queryParameter->required);
         }
-
     }
 
     public static function provideMapQueryStringTestData(): iterable
