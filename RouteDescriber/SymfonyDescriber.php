@@ -6,24 +6,30 @@ namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use InvalidArgumentException;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
+use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use ReflectionMethod;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Routing\Route;
 use function is_array;
 use const FILTER_VALIDATE_REGEXP;
 
-final class SymfonyDescriber implements RouteDescriberInterface
+final class SymfonyDescriber implements RouteDescriberInterface, ModelRegistryAwareInterface
 {
     use RouteDescriberTrait;
+    use ModelRegistryAwareTrait;
 
     public function describe(OA\OpenApi $api, Route $route, ReflectionMethod $reflectionMethod): void
     {
-        $parameters = $this->getMethodParameter($reflectionMethod, [MapRequestPayload::class, MapQueryParameter::class]);
+        $parameters = $this->getMethodParameter($reflectionMethod, [MapRequestPayload::class, MapQueryParameter::class, MapQueryString::class]);
 
         foreach ($this->getOperations($api, $route) as $operation) {
             foreach ($parameters as $parameter) {
@@ -55,6 +61,34 @@ final class SymfonyDescriber implements RouteDescriberInterface
                     }
 
                     $this->describeCommonSchemaFromParameter($schema, $parameter);
+                }
+
+                if ($this->getAttribute($parameter, MapQueryString::class)) {
+                    $model = new \Nelmio\ApiDocBundle\Model\Model(new Type(Type::BUILTIN_TYPE_OBJECT, $parameter->allowsNull(), $parameter->getType()->getName()));
+                    $modelRef = $this->modelRegistry->register($model);
+                    $this->modelRegistry->registerSchemas();
+
+                    $nativeModelName = str_replace(OA\Components::SCHEMA_REF, '', $modelRef);
+
+                    $schemaModel = Util::getSchema($api, $nativeModelName);
+                    if (Generator::UNDEFINED === $schemaModel->properties)                     {
+                        continue;
+                    }
+
+                    $isModelOptional = $parameter->isDefaultValueAvailable() || $parameter->allowsNull();
+
+                    foreach ($schemaModel->properties as $property) {
+                        $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
+                        $operationParameter->name = $property->property;
+
+                        $isQueryOptional = (Generator::UNDEFINED !== $property->nullable &&$property->nullable)
+                            || Generator::UNDEFINED !== $property->default
+                            || $isModelOptional;
+
+                        $operationParameter->allowEmptyValue = $isQueryOptional;
+                        $operationParameter->required = !$isQueryOptional;
+                        $operationParameter->example = $property->default;
+                    }
                 }
             }
         }
