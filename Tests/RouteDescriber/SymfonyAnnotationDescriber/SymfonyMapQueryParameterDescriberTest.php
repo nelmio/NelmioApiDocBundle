@@ -15,7 +15,10 @@ use const PHP_VERSION_ID;
 
 class SymfonyMapQueryParameterDescriberTest extends TestCase
 {
-    private SymfonyMapQueryParameterDescriber $symfonyMapQueryParameterDescriber;
+    /**
+     * @var SymfonyMapQueryParameterDescriber $symfonyMapQueryParameterDescriber
+     */
+    private $symfonyMapQueryParameterDescriber;
 
     protected function setUp(): void
     {
