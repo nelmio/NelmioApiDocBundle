@@ -66,6 +66,7 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
             }
         }
     }
+
     private function getConstructorReflectionParameterForProperty(ReflectionParameter $parameter, OA\Property $property): ?ReflectionParameter
     {
         $reflectionClass = new ReflectionClass($parameter->getType()->getName());
