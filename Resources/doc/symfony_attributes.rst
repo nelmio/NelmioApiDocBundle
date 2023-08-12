@@ -77,6 +77,7 @@ Customizing the documentation of the request body can be done by adding the ``#[
 
 Complete example
 ----------------------
+
     .. code-block:: php-attributes
 
         class UserQuery
