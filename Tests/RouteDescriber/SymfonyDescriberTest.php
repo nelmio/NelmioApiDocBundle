@@ -17,7 +17,6 @@ use Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyAnnotat
 use Nelmio\ApiDocBundle\RouteDescriber\SymfonyDescriber;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Operation;
-use OpenApi\Context;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
