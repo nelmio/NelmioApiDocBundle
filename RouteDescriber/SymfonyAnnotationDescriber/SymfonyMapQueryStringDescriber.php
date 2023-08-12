@@ -46,20 +46,22 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
         foreach ($schemaModel->properties as $property) {
             $constructorParameter = $this->getConstructorReflectionParameterForProperty($parameter, $property);
 
-            $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
-            $this->copyPropertyValuesToQuery($operationParameter, $property);
+            $newParameter = $this->createParameterFromProperty($property);
 
             $isQueryOptional = (Generator::UNDEFINED !== $property->nullable && $property->nullable)
                 || $constructorParameter?->isDefaultValueAvailable()
                 || $isModelOptional;
 
-            if (Generator::UNDEFINED === $operationParameter->required) {
-                $operationParameter->required = !$isQueryOptional;
+            if (Generator::UNDEFINED === $newParameter->required) {
+                $newParameter->required = !$isQueryOptional;
             }
 
-            if (Generator::UNDEFINED === $operationParameter->example && $constructorParameter?->isDefaultValueAvailable()) {
-                $operationParameter->example = $constructorParameter->getDefaultValue();
+            if (Generator::UNDEFINED === $newParameter->example && $constructorParameter?->isDefaultValueAvailable()) {
+                $newParameter->example = $constructorParameter->getDefaultValue();
             }
+
+            $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
+            $operationParameter->mergeProperties($newParameter);
         }
     }
 
@@ -80,8 +82,9 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
         return null;
     }
 
-    private function copyPropertyValuesToQuery(OA\Parameter $parameter, OA\Property $property): void
+    private function createParameterFromProperty(OA\Property $property): OA\Parameter
     {
+        $parameter = new OA\Parameter([]);
         $parameter->schema = Util::getChild($parameter, OA\Schema::class);
         $parameter->schema->ref = $property->ref;
         $parameter->schema->title = $property->title;
@@ -104,5 +107,7 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
         $parameter->required = $parameter->schema->required;
         $parameter->deprecated = $parameter->schema->deprecated;
         $parameter->example = $parameter->schema->example;
+
+        return $parameter;
     }
 }
