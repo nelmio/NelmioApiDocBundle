@@ -86,14 +86,14 @@ class SymfonyDescriberTest extends TestCase
             ->with(
                 $this->openApi,
                 self::isInstanceOf(Operation::class),
-                $reflectionParameter,
+                $reflectionParameter
             )
         ;
 
         $this->symfonyDescriber->describe(
             $this->openApi,
             new Route('/'),
-            $reflectionMethodStub,
+            $reflectionMethodStub
         );
     }
 
@@ -119,7 +119,7 @@ class SymfonyDescriberTest extends TestCase
         $this->symfonyDescriber->describe(
             $this->openApi,
             new Route('/'),
-            $reflectionMethodStub,
+            $reflectionMethodStub
         );
     }
 }
