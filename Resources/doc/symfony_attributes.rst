@@ -15,9 +15,9 @@ Using the `Symfony MapQueryString`_ attribute allows NelmioApiDocBundle to autom
 Modify generated documentation
 ~~~~~~~
 
-Modifying the generated documentation can easily by done in two ways, by::
-- Customizing the documentation of an object's property (``#[OA\Property]`` attribute)
-- Customizing the documentation of a query parameter (``#[OA\Parameter]`` attribute)
+Modifying the generated documentation can easily by done in two ways, by:
+* Customizing the documentation of an object's property (``#[OA\Property]`` attribute)
+* Customizing the documentation of a query parameter (``#[OA\Parameter]`` attribute)
 
 Customizing the documentation of a specific query parameter can be done by adding the ``#[OA\Parameter]`` attribute to your controller method.
 Make sure that the ``in`` property is set to ``'query'`` and that the ``name`` property is set to the object's property name which you want to customize.
@@ -78,6 +78,7 @@ Customizing the documentation of the request body can be done by adding the ``#[
 Complete example
 ----------------------
     .. code-block:: php-attributes
+
         class UserQuery
         {
             public int $userId;
@@ -99,10 +100,8 @@ Complete example
 
         namespace AppBundle\Controller;
 
-        use AppBundle\UserQuery;
         use AppBundle\UserDTO;
-        use Nelmio\ApiDocBundle\Annotation\Model;
-        use Nelmio\ApiDocBundle\Annotation\Security;
+        use AppBundle\UserQuery;
         use OpenApi\Attributes as OA;
         use Symfony\Component\Routing\Annotation\Route;
 
