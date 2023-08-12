@@ -71,9 +71,11 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
     {
         $reflectionClass = new ReflectionClass($parameter->getType()->getName());
 
-        $parameters = $reflectionClass->getConstructor()->getParameters();
+        if (!$contructor = $reflectionClass->getConstructor()) {
+            return null;
+        }
 
-        foreach ($parameters as $parameter) {
+        foreach ($contructor->getParameters() as $parameter) {
             if ($property->property === $parameter->getName()) {
                 return $parameter;
             }
@@ -86,6 +88,7 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
     {
         $parameter->schema = Util::getChild($parameter, OA\Schema::class);
         $parameter->schema->title = $property->title;
+        $parameter->schema->description = $property->description;
         $parameter->schema->type = $property->type;
         $parameter->schema->items = $property->items;
         $parameter->schema->example = $property->example;
@@ -103,5 +106,6 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
         $parameter->description = $parameter->schema->description;
         $parameter->required = $parameter->schema->required;
         $parameter->deprecated = $parameter->schema->deprecated;
+        $parameter->example = $parameter->schema->example;
     }
 }
