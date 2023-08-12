@@ -12,18 +12,39 @@
 namespace Nelmio\ApiDocBundle\Tests\RouteDescriber;
 
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
-use Nelmio\ApiDocBundle\ModelDescriber\SelfDescribingModelDescriber;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyAnnotationDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\SymfonyDescriber;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\Operation;
 use OpenApi\Context;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use ReflectionMethod;
+use ReflectionParameter;
+use Symfony\Component\Routing\Route;
 use const PHP_VERSION_ID;
 
 class SymfonyDescriberTest extends TestCase
 {
+    /**
+     * @var MockObject&SymfonyAnnotationDescriber
+     */
+    private $symfonyAnnotationDescriberMock;
+
+    /**
+     * @var SymfonyDescriber
+     */
     private $symfonyDescriber;
+
+    /**
+     * @var ModelRegistry
+     */
+    private $modelRegistry;
+    /**
+     * @var OpenApi
+     */
+    private $openApi;
 
     protected function setUp(): void
     {
@@ -31,21 +52,75 @@ class SymfonyDescriberTest extends TestCase
             self::markTestSkipped('Attributes require PHP 8');
         }
 
-        if (
-            !class_exists(MapRequestPayload::class)
-            && !class_exists(MapQueryParameter::class)
-        ) {
-            self::markTestSkipped('Symfony 6.3 attributes not found');
-        }
+        $this->symfonyAnnotationDescriberMock = $this->createMock(SymfonyAnnotationDescriber::class);
 
-        $registry = new ModelRegistry(
-            [new SelfDescribingModelDescriber()],
-            new OpenApi(['_context' => new Context()]),
+        $this->modelRegistry = new ModelRegistry(
+            [],
+            $this->openApi = new OpenApi([]),
             []
         );
 
-        $this->symfonyDescriber = new SymfonyDescriber();
+        $this->symfonyDescriber = new SymfonyDescriber(
+            [$this->symfonyAnnotationDescriberMock]
+        );
 
-        $this->symfonyDescriber->setModelRegistry($registry);
+        $this->symfonyDescriber->setModelRegistry($this->modelRegistry);
+    }
+
+    public function testDescribe(): void
+    {
+        $reflectionParameter = $this->createStub(ReflectionParameter::class);
+
+        $reflectionMethodStub = $this->createStub(ReflectionMethod::class);
+        $reflectionMethodStub->method('getParameters')->willReturn([$reflectionParameter]);
+
+        $this->symfonyAnnotationDescriberMock
+            ->expects(self::exactly(count(Util::OPERATIONS)))
+            ->method('supports')
+            ->with($reflectionParameter)
+            ->willReturn(true)
+        ;
+
+        $this->symfonyAnnotationDescriberMock
+            ->expects(self::exactly(count(Util::OPERATIONS)))
+            ->method('describe')
+            ->with(
+                $this->openApi,
+                self::isInstanceOf(Operation::class),
+                $reflectionParameter,
+            )
+        ;
+
+        $this->symfonyDescriber->describe(
+            $this->openApi,
+            new Route('/'),
+            $reflectionMethodStub,
+        );
+    }
+
+    public function testDescribeSkipsUnsupportedDescribers(): void
+    {
+        $reflectionParameter = $this->createStub(ReflectionParameter::class);
+
+        $reflectionMethodStub = $this->createStub(ReflectionMethod::class);
+        $reflectionMethodStub->method('getParameters')->willReturn([$reflectionParameter]);
+
+        $this->symfonyAnnotationDescriberMock
+            ->expects(self::exactly(count(Util::OPERATIONS)))
+            ->method('supports')
+            ->with($reflectionParameter)
+            ->willReturn(false)
+        ;
+
+        $this->symfonyAnnotationDescriberMock
+            ->expects(self::never())
+            ->method('describe')
+        ;
+
+        $this->symfonyDescriber->describe(
+            $this->openApi,
+            new Route('/'),
+            $reflectionMethodStub,
+        );
     }
 }
