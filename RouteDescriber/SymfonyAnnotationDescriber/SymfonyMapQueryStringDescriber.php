@@ -53,10 +53,6 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
                 || $constructorParameter?->isDefaultValueAvailable()
                 || $isModelOptional;
 
-            if (Generator::UNDEFINED === $operationParameter->allowEmptyValue) {
-                $operationParameter->allowEmptyValue = $isQueryOptional;
-            }
-
             if (Generator::UNDEFINED === $operationParameter->required) {
                 $operationParameter->required = !$isQueryOptional;
             }
