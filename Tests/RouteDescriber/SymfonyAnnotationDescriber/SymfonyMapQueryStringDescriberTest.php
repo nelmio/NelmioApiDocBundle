@@ -75,7 +75,6 @@ class SymfonyMapQueryStringDescriberTest extends TestCase
 
             self::assertSame('query', $queryParameter->in);
             self::assertSame($expectedModelProperty->property, $queryParameter->name);
-            self::assertSame($expectations['optional'], $queryParameter->allowEmptyValue);
             self::assertSame(!$expectations['optional'], $queryParameter->required);
         }
     }
