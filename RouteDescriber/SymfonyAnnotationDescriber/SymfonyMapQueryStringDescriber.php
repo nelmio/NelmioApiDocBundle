@@ -72,7 +72,7 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
 
         $parameters = $reflectionClass->getConstructor()->getParameters();
 
-        foreach ($parameters as $parameter)         {
+        foreach ($parameters as $parameter) {
             if ($property->property === $parameter->getName()) {
                 return $parameter;
             }
@@ -81,7 +81,7 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
         return null;
     }
 
-    private function copyPropertyValuesToQuery(OA\Parameter $parameter,  OA\Property $property): void
+    private function copyPropertyValuesToQuery(OA\Parameter $parameter, OA\Property $property): void
     {
         $parameter->schema = Util::getChild($parameter, OA\Schema::class);
         $parameter->schema->title = $property->title;
