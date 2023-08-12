@@ -87,6 +87,7 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
     private function copyPropertyValuesToQuery(OA\Parameter $parameter, OA\Property $property): void
     {
         $parameter->schema = Util::getChild($parameter, OA\Schema::class);
+        $parameter->schema->ref = $property->ref;
         $parameter->schema->title = $property->title;
         $parameter->schema->description = $property->description;
         $parameter->schema->type = $property->type;
