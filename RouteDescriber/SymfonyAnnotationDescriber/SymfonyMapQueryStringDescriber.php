@@ -10,6 +10,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
+use ReflectionClass;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\PropertyInfo\Type;
@@ -43,16 +44,63 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
         $isModelOptional = $parameter->isDefaultValueAvailable() || $parameter->allowsNull();
 
         foreach ($schemaModel->properties as $property) {
+            $constructorParameter = $this->getConstructorReflectionParameterForProperty($parameter, $property);
+
             $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
-            $operationParameter->name = $property->property;
+            $this->copyPropertyValuesToQuery($operationParameter, $property);
 
             $isQueryOptional = (Generator::UNDEFINED !== $property->nullable && $property->nullable)
-                || Generator::UNDEFINED !== $property->default
+                || $constructorParameter?->isDefaultValueAvailable()
                 || $isModelOptional;
 
-            $operationParameter->allowEmptyValue = $isQueryOptional;
-            $operationParameter->required = !$isQueryOptional;
-            $operationParameter->example = $property->default;
+            if (Generator::UNDEFINED === $operationParameter->allowEmptyValue) {
+                $operationParameter->allowEmptyValue = $isQueryOptional;
+            }
+
+            if (Generator::UNDEFINED === $operationParameter->required) {
+                $operationParameter->required = !$isQueryOptional;
+            }
+
+            if (Generator::UNDEFINED === $operationParameter->example && $constructorParameter?->isDefaultValueAvailable()) {
+                $operationParameter->example = $constructorParameter->getDefaultValue();
+            }
         }
+    }
+    private function getConstructorReflectionParameterForProperty(ReflectionParameter $parameter, OA\Property $property): ?ReflectionParameter
+    {
+        $reflectionClass = new ReflectionClass($parameter->getType()->getName());
+
+        $parameters = $reflectionClass->getConstructor()->getParameters();
+
+        foreach ($parameters as $parameter)         {
+            if ($property->property === $parameter->getName()) {
+                return $parameter;
+            }
+        }
+
+        return null;
+    }
+
+    private function copyPropertyValuesToQuery(OA\Parameter $parameter,  OA\Property $property): void
+    {
+        $parameter->schema = Util::getChild($parameter, OA\Schema::class);
+        $parameter->schema->title = $property->title;
+        $parameter->schema->type = $property->type;
+        $parameter->schema->items = $property->items;
+        $parameter->schema->example = $property->example;
+        $parameter->schema->nullable = $property->nullable;
+        $parameter->schema->enum = $property->enum;
+        $parameter->schema->default = $property->default;
+        $parameter->schema->minimum = $property->minimum;
+        $parameter->schema->exclusiveMinimum = $property->exclusiveMinimum;
+        $parameter->schema->maximum = $property->maximum;
+        $parameter->schema->exclusiveMaximum = $property->exclusiveMaximum;
+        $parameter->schema->required = $property->required;
+        $parameter->schema->deprecated = $property->deprecated;
+
+        $parameter->name = $property->property;
+        $parameter->description = $parameter->schema->description;
+        $parameter->required = $parameter->schema->required;
+        $parameter->deprecated = $parameter->schema->deprecated;
     }
 }
