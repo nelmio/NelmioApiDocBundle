@@ -16,7 +16,7 @@ use const PHP_VERSION_ID;
 class SymfonyMapRequestPayloadDescriberTest extends TestCase
 {
     /**
-     * @var SymfonyMapRequestPayloadDescriber $symfonyMapRequestPayloadDescriber
+     * @var SymfonyMapRequestPayloadDescriber
      */
     private $symfonyMapRequestPayloadDescriber;
 

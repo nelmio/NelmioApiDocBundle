@@ -19,11 +19,11 @@ use const PHP_VERSION_ID;
 class SymfonyMapQueryStringDescriberTest extends TestCase
 {
     /**
-     * @var OpenApi $openApi
+     * @var OpenApi
      */
     private $openApi;
     /**
-     * @var SymfonyMapQueryStringDescriber $symfonyMapQueryStringDescriber
+     * @var SymfonyMapQueryStringDescriber
      */
     private $symfonyMapQueryStringDescriber;
 
