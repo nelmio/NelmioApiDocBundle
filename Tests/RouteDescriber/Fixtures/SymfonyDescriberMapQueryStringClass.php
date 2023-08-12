@@ -8,7 +8,6 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\SelfDescribingModelInterface;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
-use Symfony\Component\PropertyInfo\Type;
 
 final class SymfonyDescriberMapQueryStringClass implements SelfDescribingModelInterface
 {
@@ -34,7 +33,7 @@ final class SymfonyDescriberMapQueryStringClass implements SelfDescribingModelIn
         return [
             new Property([
                 'property' => 'id',
-                'type' => Type::BUILTIN_TYPE_INT,
+                'type' => 'int',
                 'nullable' => false,
                 'default' => 123,
             ]),
