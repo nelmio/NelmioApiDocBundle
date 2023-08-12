@@ -8,9 +8,9 @@ use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\SelfDescribingModelDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyMapQueryStringDescriber;
+use Nelmio\ApiDocBundle\Tests\RouteDescriber\Fixtures\DTO;
 use Nelmio\ApiDocBundle\Tests\RouteDescriber\Fixtures\SymfonyDescriberMapQueryStringClass;
 use OpenApi\Annotations\OpenApi;
-use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
@@ -48,8 +48,10 @@ class SymfonyMapQueryStringDescriberTest extends TestCase
 
     /**
      * @dataProvider provideMapQueryStringTestData
+     *
+     * @param array{optional: bool} $expectations
      */
-    public function testMapQueryString(callable $function): void
+    public function testMapQueryString(callable $function, array $expectations): void
     {
         $parameter = new ReflectionParameter($function, 'parameter1');
 
@@ -73,11 +75,8 @@ class SymfonyMapQueryStringDescriberTest extends TestCase
 
             self::assertSame('query', $queryParameter->in);
             self::assertSame($expectedModelProperty->property, $queryParameter->name);
-            $isQueryOptional = (Generator::UNDEFINED !== $expectedModelProperty->nullable && $expectedModelProperty->nullable)
-                || Generator::UNDEFINED !== $expectedModelProperty->default;
-
-            self::assertSame($isQueryOptional, $queryParameter->allowEmptyValue);
-            self::assertSame(!$isQueryOptional, $queryParameter->required);
+            self::assertSame($expectations['optional'], $queryParameter->allowEmptyValue);
+            self::assertSame(!$expectations['optional'], $queryParameter->required);
         }
     }
 
@@ -88,6 +87,73 @@ class SymfonyMapQueryStringDescriberTest extends TestCase
                 #[MapQueryString] SymfonyDescriberMapQueryStringClass $parameter1,
             ) {
             },
+            [
+                'optional' => false,
+            ],
         ];
+
+        yield 'it documents a nullable type as optional' => [
+            function (
+                #[MapQueryString] ?SymfonyDescriberMapQueryStringClass $parameter1,
+            ) {
+            },
+            [
+                'optional' => true,
+            ],
+        ];
+
+        yield 'it documents a default value as optional' => [
+            function (
+                #[MapQueryString] ?SymfonyDescriberMapQueryStringClass $parameter1,
+            ) {
+            },
+            [
+                'optional' => true,
+            ],
+        ];
+    }
+
+    public function testItDescribesProperties(): void
+    {
+        $function = function (
+            #[MapQueryString] DTO $DTO,
+        ) {
+        };
+
+        $parameter = new ReflectionParameter($function, 'DTO');
+
+        $this->symfonyMapQueryStringDescriber->describe(
+            $this->openApi,
+            $operation = new Operation([]),
+            $parameter
+        );
+
+        // Test it registers the model
+        $modelSchema = $this->openApi->components->schemas[0];
+        $expectedModelProperties = DTO::getProperties();
+
+        self::assertEquals($expectedModelProperties, $modelSchema->properties);
+
+        self::assertSame('id', $operation->parameters[0]->name);
+        self::assertSame('int', $operation->parameters[0]->schema->type);
+
+        self::assertSame('name', $operation->parameters[1]->name);
+
+        self::assertSame('nullableName', $operation->parameters[2]->name);
+        self::assertSame('string', $operation->parameters[2]->schema->type);
+        self::assertSame(false, $operation->parameters[2]->required);
+        self::assertSame(true, $operation->parameters[2]->schema->nullable);
+
+        self::assertSame('nameWithExample', $operation->parameters[3]->name);
+        self::assertSame('string', $operation->parameters[3]->schema->type);
+        self::assertSame(true, $operation->parameters[3]->required);
+        self::assertSame(DTO::EXAMPLE_NAME, $operation->parameters[3]->schema->example);
+        self::assertSame(DTO::EXAMPLE_NAME, $operation->parameters[3]->example);
+
+        self::assertSame('nameWithDescription', $operation->parameters[4]->name);
+        self::assertSame('string', $operation->parameters[4]->schema->type);
+        self::assertSame(true, $operation->parameters[4]->required);
+        self::assertSame(DTO::DESCRIPTION, $operation->parameters[4]->schema->description);
+        self::assertSame(DTO::DESCRIPTION, $operation->parameters[4]->description);
     }
 }
