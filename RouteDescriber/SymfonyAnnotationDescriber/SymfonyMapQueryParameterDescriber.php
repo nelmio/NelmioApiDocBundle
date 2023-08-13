@@ -25,16 +25,15 @@ final class SymfonyMapQueryParameterDescriber implements SymfonyAnnotationDescri
         $attribute = SymfonyAnnotationHelper::getAttribute($parameter, MapQueryParameter::class);
 
         $operationParameter = Util::getOperationParameter($operation, $parameter->getName(), 'query');
-        $operationParameter->name = $attribute->name ?? $parameter->getName();
-        $operationParameter->allowEmptyValue = $parameter->allowsNull();
-
-        $operationParameter->required = !$parameter->isDefaultValueAvailable() && !$parameter->allowsNull();
+        SymfonyAnnotationHelper::modifyAnnotationValue($operationParameter, 'name', $attribute->name ?? $parameter->getName());
+        SymfonyAnnotationHelper::modifyAnnotationValue($operationParameter, 'allowEmptyValue', $parameter->allowsNull());
+        SymfonyAnnotationHelper::modifyAnnotationValue($operationParameter, 'required', !$parameter->isDefaultValueAvailable() && !$parameter->allowsNull());
 
         /** @var OA\Schema $schema */
         $schema = Util::getChild($operationParameter, OA\Schema::class);
 
         if (FILTER_VALIDATE_REGEXP === $attribute->filter) {
-            $schema->pattern = $attribute->options['regexp'];
+            SymfonyAnnotationHelper::modifyAnnotationValue($schema, 'pattern', $attribute->options['regexp']);
         }
 
         SymfonyAnnotationHelper::describeCommonSchemaFromParameter($schema, $parameter);

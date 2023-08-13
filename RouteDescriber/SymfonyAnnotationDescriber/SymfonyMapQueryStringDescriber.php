@@ -75,10 +75,10 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
                 || $constructorParameter?->isDefaultValueAvailable()
                 || $isModelOptional;
 
-            $this->overwriteParameterValue($operationParameter, 'required', !$isQueryOptional);
+            SymfonyAnnotationHelper::modifyAnnotationValue($operationParameter, 'required', !$isQueryOptional);
 
             if ($constructorParameter?->isDefaultValueAvailable()) {
-                $this->overwriteParameterValue($operationParameter, 'example', $constructorParameter->getDefaultValue());
+                SymfonyAnnotationHelper::modifyAnnotationValue($operationParameter, 'example', $constructorParameter->getDefaultValue());
             }
         }
     }
@@ -102,20 +102,11 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
 
     private function addParameterValuesFromProperty(OA\Parameter $parameter, OA\Property $property): void
     {
-        $this->overwriteParameterValue($parameter, 'schema', $property);
-        $this->overwriteParameterValue($parameter, 'name', $property->property);
-        $this->overwriteParameterValue($parameter, 'description', $property->description);
-        $this->overwriteParameterValue($parameter, 'required', $property->required);
-        $this->overwriteParameterValue($parameter, 'deprecated', $property->deprecated);
-        $this->overwriteParameterValue($parameter, 'example', $property->example);
-    }
-
-    private function overwriteParameterValue(OA\Parameter $parameter, string $property, $value): void
-    {
-        if (!Generator::isDefault($parameter->{$property})) {
-            return;
-        }
-
-        $parameter->{$property} = $value;
+        SymfonyAnnotationHelper::modifyAnnotationValue($parameter, 'schema', $property);
+        SymfonyAnnotationHelper::modifyAnnotationValue($parameter, 'name', $property->property);
+        SymfonyAnnotationHelper::modifyAnnotationValue($parameter, 'description', $property->description);
+        SymfonyAnnotationHelper::modifyAnnotationValue($parameter, 'required', $property->required);
+        SymfonyAnnotationHelper::modifyAnnotationValue($parameter, 'deprecated', $property->deprecated);
+        SymfonyAnnotationHelper::modifyAnnotationValue($parameter, 'example', $property->example);
     }
 }

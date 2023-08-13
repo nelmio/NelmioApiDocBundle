@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber;
 
 use InvalidArgumentException;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
@@ -41,8 +41,8 @@ final class SymfonyMapRequestPayloadDescriber implements SymfonyAnnotationDescri
     private function describeRequestBody(OA\RequestBody $requestBody, ReflectionParameter $parameter, string $format): void
     {
         $contentSchema = $this->getContentSchemaForType($requestBody, $format);
-        $contentSchema->ref = new \Nelmio\ApiDocBundle\Annotation\Model(type: $parameter->getType()->getName());
-        $contentSchema->type = 'object';
+        SymfonyAnnotationHelper::modifyAnnotationValue($contentSchema, 'ref', new Model(type: $parameter->getType()->getName()));
+        SymfonyAnnotationHelper::modifyAnnotationValue($contentSchema, 'type', 'object');
 
         $schema = Util::getProperty($contentSchema, $parameter->getName());
 
@@ -51,7 +51,7 @@ final class SymfonyMapRequestPayloadDescriber implements SymfonyAnnotationDescri
 
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
-        $requestBody->content = Generator::UNDEFINED !== $requestBody->content ? $requestBody->content : [];
+        SymfonyAnnotationHelper::modifyAnnotationValue($requestBody, 'content', []);
         switch ($type) {
             case 'json':
                 $contentType = 'application/json';
@@ -79,7 +79,7 @@ final class SymfonyMapRequestPayloadDescriber implements SymfonyAnnotationDescri
                 $requestBody->content[$contentType],
                 OA\Schema::class
             );
-            $schema->type = 'object';
+            SymfonyAnnotationHelper::modifyAnnotationValue($schema, 'type', 'object');
         }
 
         return Util::getChild(

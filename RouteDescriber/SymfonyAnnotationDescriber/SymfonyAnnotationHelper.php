@@ -29,13 +29,20 @@ final class SymfonyAnnotationHelper
     public static function describeCommonSchemaFromParameter(OA\Schema $schema, ReflectionParameter $parameter): void
     {
         if ($parameter->isDefaultValueAvailable()) {
-            $schema->default = $parameter->getDefaultValue();
+            self::modifyAnnotationValue($schema, 'default', $parameter->getDefaultValue());
         }
 
-        if (Generator::UNDEFINED === $schema->type) {
-            if ($parameter->getType()->isBuiltin()) {
-                $schema->type = $parameter->getType()->getName();
-            }
+        if ($parameter->getType()->isBuiltin()) {
+            self::modifyAnnotationValue($schema, 'type', $parameter->getType()->getName());
         }
+    }
+
+    public static function modifyAnnotationValue(OA\AbstractAnnotation $parameter, string $property, $value): void
+    {
+        if (!Generator::isDefault($parameter->{$property})) {
+            return;
+        }
+
+        $parameter->{$property} = $value;
     }
 }
