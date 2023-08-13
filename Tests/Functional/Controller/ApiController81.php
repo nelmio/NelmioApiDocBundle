@@ -16,7 +16,9 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyMapQueryString;
 use OpenApi\Attributes as OA;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController81 extends ApiController80
@@ -71,5 +73,46 @@ class ApiController81 extends ApiController80
     #[OA\Response(response: '201', description: '', attachables: [new Model(type: Article81::class)])]
     public function enum()
     {
+    }
+
+    #[Route('/article_map_query_string')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryString(
+        #[MapQueryString] SymfonyMapQueryString $article81Query
+    ) {
+    }
+
+    #[Route('/article_map_query_string_nullable')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryStringNullable(
+        #[MapQueryString] ?SymfonyMapQueryString $article81Query
+    ) {
+    }
+
+    #[Route('/article_map_query_string_overwrite_parameters')]
+    #[OA\Parameter(
+        name: 'id',
+        in: 'query',
+        description: 'Query parameter id description'
+    )]
+    #[OA\Parameter(
+        name: 'name',
+        in: 'query',
+        description: 'Query parameter name description'
+    )]
+    #[OA\Parameter(
+        name: 'nullableName',
+        in: 'query',
+        description: 'Query parameter nullableName description'
+    )]
+    #[OA\Parameter(
+        name: 'article81Enum',
+        in: 'query',
+        description: 'Query parameter article81Enum description'
+    )]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryStringOverwriteParameters(
+        #[MapQueryString] SymfonyMapQueryString $article81Query
+    ) {
     }
 }
