@@ -20,6 +20,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyMapQueryString;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController81 extends ApiController80
@@ -148,6 +149,30 @@ class ApiController81 extends ApiController80
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryParameterOverwriteParameters(
         #[MapQueryParameter] ?int $id,
+    ) {
+    }
+
+    #[Route('/article_map_request_payload', methods: ['POST'])]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayload(
+        #[MapRequestPayload] Article81 $article81,
+    ) {
+    }
+
+    #[Route('/article_map_request_payload_nullable', methods: ['POST'])]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayloadNullable(
+        #[MapRequestPayload] ?Article81 $article81,
+    ) {
+    }
+
+    #[Route('/article_map_request_payload_overwrite', methods: ['POST'])]
+    #[OA\RequestBody(
+        description: 'Request body description',
+    )]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayloadOverwrite(
+        #[MapRequestPayload] Article81 $article81,
     ) {
     }
 }
