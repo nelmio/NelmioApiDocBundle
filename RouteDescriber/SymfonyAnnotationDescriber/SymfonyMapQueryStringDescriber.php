@@ -68,22 +68,20 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
         foreach ($schemaModel->properties as $property) {
             $constructorParameter = $this->getConstructorReflectionParameterForProperty($parameter, $property);
 
-            $newParameter = $this->createParameterFromProperty($property);
+            $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
+            $this->addParameterValuesFromProperty($operationParameter, $property);
 
             $isQueryOptional = (Generator::UNDEFINED !== $property->nullable && $property->nullable)
                 || $constructorParameter?->isDefaultValueAvailable()
                 || $isModelOptional;
 
-            if (Generator::UNDEFINED === $newParameter->required) {
-                $newParameter->required = !$isQueryOptional;
+            if (Generator::UNDEFINED === $operationParameter->required) {
+                $operationParameter->required = !$isQueryOptional;
             }
 
-            if (Generator::UNDEFINED === $newParameter->example && $constructorParameter?->isDefaultValueAvailable()) {
-                $newParameter->example = $constructorParameter->getDefaultValue();
+            if (Generator::UNDEFINED === $operationParameter->example && $constructorParameter?->isDefaultValueAvailable()) {
+                $operationParameter->example = $constructorParameter->getDefaultValue();
             }
-
-            $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
-            $operationParameter->mergeProperties($newParameter);
         }
     }
 
@@ -104,32 +102,14 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
         return null;
     }
 
-    private function createParameterFromProperty(OA\Property $property): OA\Parameter
+    private function addParameterValuesFromProperty(OA\Parameter  $parameter, OA\Property $property): void
     {
-        $parameter = new OA\Parameter(['_context' => Util::createWeakContext($property->_context)]);
-        $parameter->schema = Util::getChild($parameter, OA\Schema::class);
-        $parameter->schema->ref = $property->ref;
-        $parameter->schema->title = $property->title;
-        $parameter->schema->description = $property->description;
-        $parameter->schema->type = $property->type;
-        $parameter->schema->items = $property->items;
-        $parameter->schema->example = $property->example;
-        $parameter->schema->nullable = $property->nullable;
-        $parameter->schema->enum = $property->enum;
-        $parameter->schema->default = $property->default;
-        $parameter->schema->minimum = $property->minimum;
-        $parameter->schema->exclusiveMinimum = $property->exclusiveMinimum;
-        $parameter->schema->maximum = $property->maximum;
-        $parameter->schema->exclusiveMaximum = $property->exclusiveMaximum;
-        $parameter->schema->required = $property->required;
-        $parameter->schema->deprecated = $property->deprecated;
+        $parameter->schema = $property;
 
         $parameter->name = $property->property;
-        $parameter->description = $parameter->schema->description;
-        $parameter->required = $parameter->schema->required;
-        $parameter->deprecated = $parameter->schema->deprecated;
-        $parameter->example = $parameter->schema->example;
-
-        return $parameter;
+        $parameter->description = $property->description;
+        $parameter->required = $property->required;
+        $parameter->deprecated = $property->deprecated;
+        $parameter->example = $property->example;
     }
 }
