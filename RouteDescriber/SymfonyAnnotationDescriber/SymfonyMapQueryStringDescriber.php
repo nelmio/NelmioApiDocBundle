@@ -75,12 +75,10 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
                 || $constructorParameter?->isDefaultValueAvailable()
                 || $isModelOptional;
 
-            if (Generator::UNDEFINED === $operationParameter->required) {
-                $operationParameter->required = !$isQueryOptional;
-            }
+            $this->overwriteParameterValue($operationParameter, 'required', !$isQueryOptional);
 
-            if (Generator::UNDEFINED === $operationParameter->example && $constructorParameter?->isDefaultValueAvailable()) {
-                $operationParameter->example = $constructorParameter->getDefaultValue();
+            if ($constructorParameter?->isDefaultValueAvailable()) {
+                $this->overwriteParameterValue($operationParameter, 'example', $constructorParameter->getDefaultValue());
             }
         }
     }
@@ -104,12 +102,20 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
 
     private function addParameterValuesFromProperty(OA\Parameter $parameter, OA\Property $property): void
     {
-        $parameter->schema = $property;
+        $this->overwriteParameterValue($parameter, 'schema', $property);
+        $this->overwriteParameterValue($parameter, 'name', $property->property);
+        $this->overwriteParameterValue($parameter, 'description', $property->description);
+        $this->overwriteParameterValue($parameter, 'required', $property->required);
+        $this->overwriteParameterValue($parameter, 'deprecated', $property->deprecated);
+        $this->overwriteParameterValue($parameter, 'example', $property->example);
+    }
 
-        $parameter->name = $property->property;
-        $parameter->description = $property->description;
-        $parameter->required = $property->required;
-        $parameter->deprecated = $property->deprecated;
-        $parameter->example = $property->example;
+    private function overwriteParameterValue(OA\Parameter $parameter, string $property, $value): void
+    {
+        if (!Generator::isDefault($parameter->{$property})) {
+            return;
+        }
+
+        $parameter->{$property} = $value;
     }
 }
