@@ -31,6 +31,11 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
 
     private $model;
 
+    /**
+     * @var ModelRegistry $modelRegistry
+     */
+    private $modelRegistry;
+
     public function testApplyAddsDiscriminatorProperty()
     {
         $this->applyOpenApiDiscriminator($this->model, $this->schema, $this->modelRegistry, 'type', [
