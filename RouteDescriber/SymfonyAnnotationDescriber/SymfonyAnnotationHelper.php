@@ -33,7 +33,13 @@ final class SymfonyAnnotationHelper
         }
 
         if ($parameter->getType()->isBuiltin()) {
-            self::modifyAnnotationValue($schema, 'type', $parameter->getType()->getName());
+            $type = $parameter->getType()->getName();
+
+            if (in_array($type, ['int', 'integer'], true)) {
+                $type = 'integer';
+            }
+
+            self::modifyAnnotationValue($schema, 'type', $type);
         }
     }
 
