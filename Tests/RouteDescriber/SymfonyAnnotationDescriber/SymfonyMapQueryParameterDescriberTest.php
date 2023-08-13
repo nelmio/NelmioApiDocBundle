@@ -55,7 +55,7 @@ class SymfonyMapQueryParameterDescriberTest extends TestCase
         self::assertSame(!$parameter->isDefaultValueAvailable() && !$parameter->allowsNull(), $documentationParameter->required);
 
         $schema = $documentationParameter->schema;
-        self::assertSame($parameter->getType()->getName(), $schema->type);
+        self::assertSame('integer', $schema->type);
         if ($parameter->isDefaultValueAvailable()) {
             self::assertSame($parameter->getDefaultValue(), $schema->default);
         }
