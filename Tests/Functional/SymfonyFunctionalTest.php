@@ -45,8 +45,8 @@ class SymfonyFunctionalTest extends WebTestCase
                     'type' => 'string',
                     'nullable' => true,
                 ],
-                'article81Enum' => [
-                    '$ref' => '#/components/schemas/Article81',
+                'articleType81' => [
+                    '$ref' => '#/components/schemas/ArticleType81',
                 ],
             ],
             'type' => 'object',
@@ -74,11 +74,11 @@ class SymfonyFunctionalTest extends WebTestCase
         $parameter = $this->getParameter($operation, 'nullableName', $in);
         $this->assertFalse($parameter->required);
 
-        $parameter = $this->getParameter($operation, 'article81Enum', $in);
+        $parameter = $this->getParameter($operation, 'articleType81', $in);
 
-        $property = $this->getProperty($this->getModel('SymfonyMapQueryString'), 'article81Enum');
+        $property = $this->getProperty($this->getModel('SymfonyMapQueryString'), 'articleType81');
         $this->assertTrue($parameter->required);
-        $this->assertSame($property, $parameter->schema);
+        $this->assertEquals($property, $parameter->schema);
     }
 
     public function testMapQueryStringParametersAreOptional(): void
@@ -100,7 +100,7 @@ class SymfonyFunctionalTest extends WebTestCase
         $parameter = $this->getParameter($operation, 'nullableName', $in);
         $this->assertFalse($parameter->required);
 
-        $parameter = $this->getParameter($operation, 'article81Enum', $in);
+        $parameter = $this->getParameter($operation, 'articleType81', $in);
         $this->assertFalse($parameter->required);
     }
 
@@ -112,7 +112,7 @@ class SymfonyFunctionalTest extends WebTestCase
 
         $operation = $this->getOperation('/api/article_map_query_string_overwrite_parameters', 'get');
 
-        foreach (['id', 'name', 'nullableName', 'article81Enum'] as $name) {
+        foreach (['id', 'name', 'nullableName', 'articleType81'] as $name) {
             $parameter = $this->getParameter($operation, $name, 'query');
             $this->assertSame($parameter->description, sprintf('Query parameter %s description', $name));
         }

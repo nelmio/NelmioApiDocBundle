@@ -10,7 +10,7 @@ class SymfonyMapQueryString
         public int $id,
         public string $name,
         public ?string $nullableName,
-        public Article81 $article81Enum,
+        public ArticleType81 $articleType81,
     ) {
     }
 }
