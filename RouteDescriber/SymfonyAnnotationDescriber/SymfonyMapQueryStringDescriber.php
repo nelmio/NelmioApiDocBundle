@@ -102,7 +102,7 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
         return null;
     }
 
-    private function addParameterValuesFromProperty(OA\Parameter  $parameter, OA\Property $property): void
+    private function addParameterValuesFromProperty(OA\Parameter $parameter, OA\Property $property): void
     {
         $parameter->schema = $property;
 
