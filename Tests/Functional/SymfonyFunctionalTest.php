@@ -195,7 +195,7 @@ class SymfonyFunctionalTest extends WebTestCase
         self::assertSame('application/json', $media->mediaType);
 
         $model = $this->getModel('Article81');
-        self::assertSame(Components::SCHEMA_REF . $model->schema, $media->schema->ref);
+        self::assertSame(Components::SCHEMA_REF.$model->schema, $media->schema->ref);
     }
 
     public function testMapRequestPayloadNullable(): void
@@ -219,6 +219,6 @@ class SymfonyFunctionalTest extends WebTestCase
         $operation = $this->getOperation('/api/article_map_request_payload_overwrite', 'post');
 
         $requestBody = $operation->requestBody;
-        self::assertSame( 'Request body description', $requestBody->description);
+        self::assertSame('Request body description', $requestBody->description);
     }
 }
