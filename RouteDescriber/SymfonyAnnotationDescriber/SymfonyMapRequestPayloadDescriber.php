@@ -28,6 +28,7 @@ final class SymfonyMapRequestPayloadDescriber implements SymfonyAnnotationDescri
 
         /** @var OA\RequestBody $requestBody */
         $requestBody = Util::getChild($operation, OA\RequestBody::class);
+        SymfonyAnnotationHelper::modifyAnnotationValue($requestBody, 'required', !($parameter->isDefaultValueAvailable() || $parameter->allowsNull()));
 
         if (!is_array($attribute->acceptFormat)) {
             $this->describeRequestBody($requestBody, $parameter, $attribute->acceptFormat ?? 'json');
