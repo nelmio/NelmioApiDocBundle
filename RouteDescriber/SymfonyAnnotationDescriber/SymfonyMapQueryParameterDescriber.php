@@ -26,7 +26,6 @@ final class SymfonyMapQueryParameterDescriber implements SymfonyAnnotationDescri
 
         $operationParameter = Util::getOperationParameter($operation, $attribute->name ?? $parameter->getName(), 'query');
 
-        SymfonyAnnotationHelper::modifyAnnotationValue($operationParameter, 'allowEmptyValue', $parameter->allowsNull());
         SymfonyAnnotationHelper::modifyAnnotationValue($operationParameter, 'required', !$parameter->isDefaultValueAvailable() && !$parameter->allowsNull());
 
         /** @var OA\Schema $schema */
