@@ -106,7 +106,7 @@ final class SymfonyMapQueryStringDescriber implements SymfonyAnnotationDescriber
 
     private function createParameterFromProperty(OA\Property $property): OA\Parameter
     {
-        $parameter = new OA\Parameter([]);
+        $parameter = new OA\Parameter(['_context' => Util::createWeakContext($property->_context)]);
         $parameter->schema = Util::getChild($parameter, OA\Schema::class);
         $parameter->schema->ref = $property->ref;
         $parameter->schema->title = $property->title;
