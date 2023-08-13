@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyMapQueryString;
 use OpenApi\Attributes as OA;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -106,13 +107,47 @@ class ApiController81 extends ApiController80
         description: 'Query parameter nullableName description'
     )]
     #[OA\Parameter(
-        name: 'article81Enum',
+        name: 'articleType81',
         in: 'query',
-        description: 'Query parameter article81Enum description'
+        description: 'Query parameter articleType81 description'
     )]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryStringOverwriteParameters(
         #[MapQueryString] SymfonyMapQueryString $article81Query
+    ) {
+    }
+
+    #[Route('/article_map_query_parameter')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryParameter(
+        #[MapQueryParameter] int $id,
+    ) {
+    }
+
+    #[Route('/article_map_query_parameter_nullable')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryParameterNullable(
+        #[MapQueryParameter] ?int $id,
+    ) {
+    }
+
+    #[Route('/article_map_query_parameter_default')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryParameterDefault(
+        #[MapQueryParameter] int $id = 123,
+    ) {
+    }
+
+    #[Route('/article_map_query_parameter_overwrite_parameters')]
+    #[OA\Parameter(
+        name: 'id',
+        in: 'query',
+        description: 'Query parameter id description',
+        example: 123,
+    )]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryParameterOverwriteParameters(
+        #[MapQueryParameter] ?int $id,
     ) {
     }
 }

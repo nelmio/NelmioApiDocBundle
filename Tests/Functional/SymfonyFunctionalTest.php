@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 
 class SymfonyFunctionalTest extends WebTestCase
@@ -116,5 +117,60 @@ class SymfonyFunctionalTest extends WebTestCase
             $parameter = $this->getParameter($operation, $name, 'query');
             $this->assertSame($parameter->description, sprintf('Query parameter %s description', $name));
         }
+    }
+
+    public function testMapQueryParameter(): void
+    {
+        if (!class_exists(MapQueryParameter::class)) {
+            self::markTestSkipped('Symfony 6.3 MapQueryParameter attribute not found');
+        }
+
+        $operation = $this->getOperation('/api/article_map_query_parameter', 'get');
+        $in = 'query';
+
+        $parameter = $this->getParameter($operation, 'id', $in);
+        $this->assertTrue($parameter->required);
+        $this->assertSame('integer', $parameter->schema->type);
+    }
+
+    public function testMapQueryParameterHandlesNullable(): void
+    {
+        if (!class_exists(MapQueryParameter::class)) {
+            self::markTestSkipped('Symfony 6.3 MapQueryParameter attribute not found');
+        }
+
+        $operation = $this->getOperation('/api/article_map_query_parameter_nullable', 'get');
+        $in = 'query';
+
+        $parameter = $this->getParameter($operation, 'id', $in);
+        $this->assertFalse($parameter->required);
+    }
+
+    public function testMapQueryParameterHandlesDefault(): void
+    {
+        if (!class_exists(MapQueryParameter::class)) {
+            self::markTestSkipped('Symfony 6.3 MapQueryParameter attribute not found');
+        }
+
+        $operation = $this->getOperation('/api/article_map_query_parameter_default', 'get');
+        $in = 'query';
+
+        $parameter = $this->getParameter($operation, 'id', $in);
+        $this->assertFalse($parameter->required);
+        $this->assertSame(123, $parameter->schema->default);
+    }
+
+    public function testMapQueryParameterOverwriteParameter(): void
+    {
+        if (!class_exists(MapQueryParameter::class)) {
+            self::markTestSkipped('Symfony 6.3 MapQueryParameter attribute not found');
+        }
+
+        $operation = $this->getOperation('/api/article_map_query_parameter_overwrite_parameters', 'get');
+        $in = 'query';
+
+        $parameter = $this->getParameter($operation, 'id', $in);
+        $this->assertSame(123, $parameter->example);
+        $this->assertSame('Query parameter id description', $parameter->description);
     }
 }
