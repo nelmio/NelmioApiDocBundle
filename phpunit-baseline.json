@@ -1,0 +1,27 @@
+[
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testSwaggerUi",
+        "message": "Since api-platform/core 2.7: Using \"api_platform.iri_converter.legacy\" is deprecated since API Platform 2.7. Use \"ApiPlatform\\Api\\IriConverterInterface\" instead.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testApiPlatformSwaggerUi",
+        "message": "Since api-platform/core 2.7: Using \"api_platform.iri_converter.legacy\" is deprecated since API Platform 2.7. Use \"ApiPlatform\\Api\\IriConverterInterface\" instead.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testJsonDocs",
+        "message": "Since api-platform/core 2.7: Using \"api_platform.iri_converter.legacy\" is deprecated since API Platform 2.7. Use \"ApiPlatform\\Api\\IriConverterInterface\" instead.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testInvalidJsonArea",
+        "message": "Since api-platform/core 2.7: Using \"api_platform.iri_converter.legacy\" is deprecated since API Platform 2.7. Use \"ApiPlatform\\Api\\IriConverterInterface\" instead.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testYamlDocs",
+        "message": "Since api-platform/core 2.7: Using \"api_platform.iri_converter.legacy\" is deprecated since API Platform 2.7. Use \"ApiPlatform\\Api\\IriConverterInterface\" instead.",
+        "count": 1
+    }
+]
