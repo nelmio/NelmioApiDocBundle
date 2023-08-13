@@ -32,7 +32,7 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
     private $model;
 
     /**
-     * @var ModelRegistry $modelRegistry
+     * @var ModelRegistry
      */
     private $modelRegistry;
 
