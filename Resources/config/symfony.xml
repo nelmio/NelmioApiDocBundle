@@ -8,7 +8,9 @@
             <tag name="nelmio_api_doc.symfony_annotation_describer" />
         </instanceof>
 
-        <service id="nelmio_api_doc.symfony_annotation_describer.map_query_string" class="Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyMapQueryStringDescriber" public="false" />
+        <service id="nelmio_api_doc.symfony_annotation_describer.map_query_string" class="Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyMapQueryStringDescriber" public="false" >
+            <argument type="tagged_iterator" tag="nelmio_api_doc.model_describer"/>
+        </service>
 
         <service id="nelmio_api_doc.symfony_annotation_describer.map_query_parameter" class="Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyMapQueryParameterDescriber" public="false" />
 

@@ -39,9 +39,9 @@ class SymfonyMapQueryStringDescriberTest extends TestCase
 
         $this->openApi = new OpenApi([]);
 
-        $this->symfonyMapQueryStringDescriber = new SymfonyMapQueryStringDescriber();
+        $this->symfonyMapQueryStringDescriber = new SymfonyMapQueryStringDescriber([new SelfDescribingModelDescriber()]);
 
-        $registry = new ModelRegistry([new SelfDescribingModelDescriber()], $this->openApi, []);
+        $registry = new ModelRegistry([], $this->openApi, []);
 
         $this->symfonyMapQueryStringDescriber->setModelRegistry($registry);
     }
