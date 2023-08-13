@@ -30,12 +30,13 @@ final class SymfonyMapRequestPayloadDescriber implements SymfonyAnnotationDescri
         $requestBody = Util::getChild($operation, OA\RequestBody::class);
         SymfonyAnnotationHelper::modifyAnnotationValue($requestBody, 'required', !($parameter->isDefaultValueAvailable() || $parameter->allowsNull()));
 
-        if (!is_array($attribute->acceptFormat)) {
-            $this->describeRequestBody($requestBody, $parameter, $attribute->acceptFormat ?? 'json');
-        } else {
-            foreach ($attribute->acceptFormat as $format) {
-                $this->describeRequestBody($requestBody, $parameter, $format);
-            }
+        $formats = $attribute->acceptFormat;
+        if (!is_array($formats)) {
+            $formats = [$attribute->acceptFormat ?? 'json'];
+        }
+
+        foreach ($formats as $format) {
+            $this->describeRequestBody($requestBody, $parameter, $format);
         }
     }
 
