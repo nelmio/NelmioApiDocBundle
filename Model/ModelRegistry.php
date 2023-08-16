@@ -48,7 +48,7 @@ final class ModelRegistry
         $this->api = $api;
         $this->logger = new NullLogger();
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
-            $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
+            $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups'], null, $criteria['versions']);
             $this->names[$model->getHash()] = $alternativeName;
             $this->registeredModelNames[$alternativeName] = $model;
             Util::getSchema($this->api, $alternativeName);
@@ -128,7 +128,7 @@ final class ModelRegistry
         $i = 1;
         while (\in_array($name, $names, true)) {
             if (isset($this->registeredModelNames[$name])) {
-                $this->logger->info(sprintf('Can not assign a name for the model, the name "%s" has already been taken.', $name), [
+                $this->logger->error(sprintf('Can not assign a name for the model, the name "%s" has already been taken.', $name), [
                     'model' => $this->modelToArray($model),
                     'taken_by' => $this->modelToArray($this->registeredModelNames[$name]),
                 ]);
@@ -157,6 +157,7 @@ final class ModelRegistry
             'type' => $getType($model->getType()),
             'options' => $model->getOptions(),
             'groups' => $model->getGroups(),
+            'versions' => $model->getVersions(),
         ];
     }
 
