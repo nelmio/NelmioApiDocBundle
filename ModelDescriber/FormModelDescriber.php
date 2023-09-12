@@ -135,6 +135,20 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
             $this->findFormType($config, $property);
         }
+
+        if ($form->getConfig()->getOption('csrf_protection', false)) {
+            $tokenFieldName = $form->getConfig()->getOption('csrf_field_name');
+
+            $property = Util::getProperty($schema, $tokenFieldName);
+            $property->type = 'string';
+            $property->description = 'CSRF token';
+
+            if (Generator::isDefault($schema->required)) {
+                $schema->required = [];
+            }
+
+            $schema->required[] = $tokenFieldName;
+        }
     }
 
     /**
