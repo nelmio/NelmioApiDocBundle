@@ -23,7 +23,6 @@ class EnumModelDescriber implements ModelDescriberInterface
         } else {
             $schema->type = 'string';
         }
-        $schema->type = is_subclass_of($enumClass, \IntBackedEnum::class) ? 'int' : 'string';
         $schema->enum = $enums;
     }
 
