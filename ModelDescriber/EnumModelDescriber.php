@@ -18,7 +18,7 @@ class EnumModelDescriber implements ModelDescriberInterface
         }
 
         $reflectionEnum = new \ReflectionEnum($enumClass);
-        if ($reflectionEnum->isBacked() && $reflectionEnum->getBackingType()->getName() === 'int') {
+        if ($reflectionEnum->isBacked() && 'int' === $reflectionEnum->getBackingType()->getName()) {
             $schema->type = 'integer';
         } else {
             $schema->type = 'string';
