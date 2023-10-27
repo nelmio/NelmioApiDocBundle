@@ -147,7 +147,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
             }
 
-            $this->describeProperty($types, $model, $property, $propertyName);
+            $this->describeProperty($types, $model, $property, $propertyName, $schema);
         }
     }
 
@@ -182,7 +182,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /**
      * @param Type[] $types
      */
-    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName)
+    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema)
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
@@ -190,7 +190,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
             if ($propertyDescriber->supports($types)) {
                 try {
-                    $propertyDescriber->describe($types, $property, $model->getGroups());
+                    $propertyDescriber->describe($types, $property, $model->getGroups(), $schema);
                 } catch (UndocumentedArrayItemsException $e) {
                     if (null !== $e->getClass()) {
                         throw $e; // This exception is already complete

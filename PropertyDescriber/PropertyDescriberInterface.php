@@ -19,7 +19,7 @@ interface PropertyDescriberInterface
     /**
      * @param Type[] $types
      */
-    public function describe(array $types, Schema $property, array $groups = null);
+    public function describe(array $types, Schema $property, array $groups = null, ?Schema $schema = null);
 
     /**
      * @param Type[] $types

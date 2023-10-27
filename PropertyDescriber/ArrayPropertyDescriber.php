@@ -30,7 +30,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         $this->propertyDescribers = $propertyDescribers;
     }
 
-    public function describe(array $types, OA\Schema $property, array $groups = null)
+    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null)
     {
         // BC layer for symfony < 5.3
         $type = method_exists($types[0], 'getCollectionValueTypes') ?
@@ -41,7 +41,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         }
 
         $property->type = 'array';
-        $this->setNullableProperty($types[0], $property);
+        $this->setNullableProperty($types[0], $property, $schema);
         $property = Util::getChild($property, OA\Items::class);
 
         foreach ($this->propertyDescribers as $propertyDescriber) {
@@ -50,7 +50,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
             }
             if ($propertyDescriber->supports([$type])) {
                 try {
-                    $propertyDescriber->describe([$type], $property, $groups);
+                    $propertyDescriber->describe([$type], $property, $groups, $schema);
                 } catch (UndocumentedArrayItemsException $e) {
                     if (null !== $e->getClass()) {
                         throw $e; // This exception is already complete
