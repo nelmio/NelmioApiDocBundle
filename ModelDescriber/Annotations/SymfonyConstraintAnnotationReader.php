@@ -79,7 +79,7 @@ class SymfonyConstraintAnnotationReader
                     return;
                 }
 
-                $propertyName = $this->getSchemaPropertyName($property);
+                $propertyName = Util::getSchemaPropertyName($this->schema, $property);
                 if (null === $propertyName) {
                     return;
                 }
@@ -130,23 +130,6 @@ class SymfonyConstraintAnnotationReader
     public function setSchema($schema): void
     {
         $this->schema = $schema;
-    }
-
-    /**
-     * Get assigned property name for property schema.
-     */
-    private function getSchemaPropertyName(OA\Schema $property): ?string
-    {
-        if (null === $this->schema) {
-            return null;
-        }
-        foreach ($this->schema->properties as $schemaProperty) {
-            if ($schemaProperty === $property) {
-                return Generator::UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
-            }
-        }
-
-        return null;
     }
 
     /**
