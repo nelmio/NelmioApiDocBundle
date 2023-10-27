@@ -250,6 +250,7 @@ class FunctionalTest extends WebTestCase
                     'users',
                     'status',
                     'dateAsInterface',
+                    'dummy',
                 ],
             ],
             json_decode($this->getModel('User')->toJson(), true)
