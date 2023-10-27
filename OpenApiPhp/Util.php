@@ -155,8 +155,6 @@ final class Util
      * it is expected to be a string nested property.
      *
      * @see OA\AbstractAnnotation::$_nested
-     *
-     * @param $class
      */
     public static function getChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
     {

@@ -242,6 +242,15 @@ class FunctionalTest extends WebTestCase
                     ],
                 ],
                 'schema' => 'User',
+                'required' => [
+                    'id',
+                    'roles',
+                    'money',
+                    'creationDate',
+                    'users',
+                    'status',
+                    'dateAsInterface',
+                ],
             ],
             json_decode($this->getModel('User')->toJson(), true)
         );
@@ -428,6 +437,17 @@ class FunctionalTest extends WebTestCase
             'required' => [
                 'propertyNotBlank',
                 'propertyNotNull',
+                'propertyAssertLength',
+                'propertyRegex',
+                'propertyCount',
+                'propertyChoice',
+                'propertyChoiceWithCallback',
+                'propertyChoiceWithCallbackWithoutClass',
+                'propertyChoiceWithMultiple',
+                'propertyExpression',
+                'propertyRange',
+                'propertyLessThan',
+                'propertyLessThanOrEqual',
             ],
             'properties' => [
                 'propertyNotBlank' => [
