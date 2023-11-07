@@ -19,7 +19,7 @@ env:
 jobs:
   phpunit:
     name: "PHPUnit"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-22.04"
 
     strategy:
       matrix:
@@ -34,10 +34,18 @@ jobs:
             symfony-require: "5.4.*"
           - php-version: 8.1
             symfony-require: "6.3.*"
+          - php-version: 8.2
+            symfony-require: "5.4.*"
+          - php-version: 8.2
+            symfony-require: "6.3.*"
+          - php-version: 8.3
+            symfony-require: "5.4.*"
+          - php-version: 8.3
+            symfony-require: "6.3.*"
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v4"
         with:
           fetch-depth: 2
 
@@ -45,7 +53,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          tools: composer
+          tools: "composer, flex"
           coverage: pcov
 
       - name: Get composer cache directory
@@ -53,7 +61,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
@@ -63,8 +71,6 @@ jobs:
         env:
           SYMFONY_REQUIRE: "${{ matrix.symfony-require }}"
         run: |
-          composer global config --no-plugins allow-plugins.symfony/flex true
-          composer global require --no-progress --no-scripts --no-plugins symfony/flex
           composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
 
       - name: PHPUnit Tests
