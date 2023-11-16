@@ -20,6 +20,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Analysis;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
+use OpenApi\Processors\ProcessorInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -47,6 +48,9 @@ final class ApiDocGenerator
 
     /** @var string[] */
     private $mediaTypes = ['json'];
+
+    /** @var array<ProcessorInterface|callable> */
+    private $processors = [];
 
     /**
      * @param DescriberInterface[]|iterable      $describers
@@ -84,12 +88,8 @@ final class ApiDocGenerator
         }
 
         $generator = new Generator();
-        // Remove OperationId processor as we use a lot of generated annotations which do not have enough information in their context
-        // to generate these ids properly.
-        // @see https://github.com/zircote/swagger-php/issues/1153
-        $generator->setProcessors(array_filter($generator->getProcessors(), function ($processor) {
-            return !$processor instanceof \OpenApi\Processors\OperationId;
-        }));
+
+        $generator->setProcessors($this->getProcessors($generator));
 
         $context = Util::createContext(['version' => $generator->getVersion()]);
 
@@ -124,5 +124,47 @@ final class ApiDocGenerator
         }
 
         return $this->openApi;
+    }
+
+    /**
+     * Get an array of processors that will be used to process the OpenApi object.
+     *
+     * @param Generator $generator The generator instance to get the standard processors from.
+     *
+     * @return array<ProcessorInterface|callable> The array of processors.
+     */
+    private function getProcessors(Generator $generator): array
+    {
+        // Get the standard processors from the generator.
+        $processors = $generator->getProcessors();
+
+        // Remove OperationId processor as we use a lot of generated annotations which do not have enough information in their context
+        // to generate these ids properly.
+        // @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createContext
+        foreach ($processors as $key => $processor) {
+            if ($processor instanceof \OpenApi\Processors\OperationId) {
+                unset($processors[$key]);
+            }
+        }
+
+        // Add our custom processors.
+        foreach ($this->processors as $processor) {
+            // Instantiate the processor.
+            $processors[] = new $processor();
+        }
+
+        return $processors;
+    }
+
+    /**
+     * Register a processor to be used to process the OpenApi object.
+     *
+     * @param ProcessorInterface|callable $processor The processor to register.
+     *
+     * @return void
+     */
+    public function registerProcessor($processor): void
+    {
+        $this->processors[] = $processor;
     }
 }
