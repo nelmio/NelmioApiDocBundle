@@ -34,6 +34,8 @@ jobs:
             symfony-require: "5.4.*"
           - php-version: 8.1
             symfony-require: "6.3.*"
+          - php-version: 8.2
+            symfony-require: "7.0.*"
 
     steps:
       - name: "Checkout"
