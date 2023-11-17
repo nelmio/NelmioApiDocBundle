@@ -34,7 +34,6 @@
         "phpdocumentor/reflection-docblock": "^3.1|^4.0|^5.0"
     },
     "require-dev": {
-        "sensio/framework-extra-bundle": "^5.4|^6.0",
         "symfony/asset": "^5.4|^6.0|^7.0",
         "symfony/dom-crawler": "^5.4|^6.0|^7.0",
         "symfony/browser-kit": "^5.4|^6.0|^7.0",

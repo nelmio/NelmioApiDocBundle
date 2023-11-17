@@ -24,7 +24,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
-use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -61,7 +60,6 @@ class TestKernel extends Kernel
         $bundles = [
             new FrameworkBundle(),
             new TwigBundle(),
-            new SensioFrameworkExtraBundle(),
             new ApiPlatformBundle(),
             new NelmioApiDocBundle(),
             new TestBundle(),
@@ -155,12 +153,6 @@ class TestKernel extends Kernel
         $c->loadFromExtension('twig', [
             'strict_variables' => '%kernel.debug%',
             'exception_controller' => null,
-        ]);
-
-        $c->loadFromExtension('sensio_framework_extra', [
-            'router' => [
-                'annotations' => false,
-            ],
         ]);
 
         $c->loadFromExtension('api_platform', [
