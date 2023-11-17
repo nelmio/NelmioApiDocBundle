@@ -55,7 +55,10 @@
         "willdurand/hateoas-bundle": "^1.0|^2.0",
         "jms/serializer-bundle": "^2.3|^3.0|^4.0|^5.0@beta",
         "jms/serializer": "^1.14|^3.0",
-        "composer/package-versions-deprecated": "1.11.99.1"
+        "composer/package-versions-deprecated": "1.11.99.1",
+
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^10.4"
     },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
@@ -89,6 +92,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "4.x-dev"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }
