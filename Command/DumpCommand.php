@@ -65,7 +65,7 @@ class DumpCommand extends Command
     /**
      * @return int|void
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $area = $input->getOption('area');
         $format = $input->getOption('format');
@@ -87,6 +87,6 @@ class DumpCommand extends Command
         $docs = $this->renderOpenApi->render($format, $area, $options);
         $output->writeln($docs, OutputInterface::OUTPUT_RAW);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
