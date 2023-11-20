@@ -42,19 +42,19 @@ final class CustomProcessorPass implements CompilerPassInterface
             $definitions[$id] = $definition;
         }
 
-        // If the ApiDocGenerator service is not defined, then there is nothing to do
-        if (!$container->has(ApiDocGenerator::class)) {
+        // If there are no definitions, we can stop here.
+        if (empty($definitions)) {
             return;
         }
 
-        $definition = $container->getDefinition(ApiDocGenerator::class);
-        $processors = [];
         foreach ($container->findTaggedServiceIds('swagger.processor') as $id => $tags) {
             $processors[] = $id;
         }
 
-        foreach($processors as $processor) {
-            $definition->addMethodCall('registerProcessor', [$processor]);
+        foreach( $definitions as $definition ) {
+            foreach($processors as $processor) {
+                $definition->addMethodCall('registerProcessor', [$processor]);
+            }
         }
     }
 }
