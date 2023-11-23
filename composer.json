@@ -17,7 +17,6 @@
     "require": {
         "php": ">=7.2",
         "ext-json": "*",
-        "doctrine/annotations": "^2.0",
         "psr/cache": "^1.0|^2.0|^3.0",
         "psr/container": "^1.0|^2.0",
         "psr/log": "^1.0|^2.0|^3.0",
@@ -34,6 +33,7 @@
         "phpdocumentor/reflection-docblock": "^3.1|^4.0|^5.0"
     },
     "require-dev": {
+        "doctrine/annotations": "^2.0",
         "sensio/framework-extra-bundle": "^5.4|^6.0",
         "symfony/asset": "^5.4|^6.0",
         "symfony/dom-crawler": "^5.4|^6.0",
@@ -59,6 +59,7 @@
     },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
+        "doctrine/annotations": "For using Doctrine Annotations",
         "friendsofsymfony/rest-bundle": "For using the parameters annotations.",
         "jms/serializer-bundle": "For describing your models.",
         "symfony/asset": "For using the Swagger UI.",

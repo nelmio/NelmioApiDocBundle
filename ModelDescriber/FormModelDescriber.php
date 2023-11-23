@@ -46,7 +46,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function __construct(
         FormFactoryInterface $formFactory = null,
-        Reader $reader = null,
+        ?Reader $reader = null,
         array $mediaTypes = null,
         bool $useValidationGroups = false
     ) {

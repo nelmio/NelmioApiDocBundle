@@ -31,7 +31,7 @@ class OpenApiAnnotationsReader
     private $annotationsReader;
     private $modelRegister;
 
-    public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
+    public function __construct(?Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
     {
         $this->annotationsReader = $annotationsReader;
         $this->modelRegister = new ModelRegister($modelRegistry, $mediaTypes);
@@ -95,6 +95,10 @@ class OpenApiAnnotationsReader
                 if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
                     return $attribute->newInstance();
                 }
+            }
+
+            if (null === $this->annotationsReader) {
+                return null;
             }
 
             if ($reflection instanceof \ReflectionClass) {

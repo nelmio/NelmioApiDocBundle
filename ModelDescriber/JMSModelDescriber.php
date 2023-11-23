@@ -60,7 +60,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function __construct(
         MetadataFactoryInterface $factory,
-        Reader $reader,
+        ?Reader $reader,
         array $mediaTypes,
         ?PropertyNamingStrategyInterface $namingStrategy = null,
         bool $useValidationGroups = false,

@@ -27,13 +27,13 @@ final class FosRestDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    /** @var Reader */
+    /** @var Reader|null */
     private $annotationReader;
 
     /** @var string[] */
     private $mediaTypes;
 
-    public function __construct(Reader $annotationReader, array $mediaTypes)
+    public function __construct(?Reader $annotationReader, array $mediaTypes)
     {
         $this->annotationReader = $annotationReader;
         $this->mediaTypes = $mediaTypes;
@@ -41,7 +41,9 @@ final class FosRestDescriber implements RouteDescriberInterface
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
-        $annotations = $this->annotationReader->getMethodAnnotations($reflectionMethod);
+        $annotations = null !== $this->annotationReader ?
+            $this->annotationReader->getMethodAnnotations($reflectionMethod) :
+            [];
         $annotations = array_filter($annotations, static function ($value) {
             return $value instanceof RequestParam || $value instanceof QueryParam;
         });

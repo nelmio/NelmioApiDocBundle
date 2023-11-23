@@ -37,7 +37,7 @@ final class OpenApiPhpDescriber
     private $logger;
     private $overwrite;
 
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, ?Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
     {
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
@@ -65,16 +65,20 @@ final class OpenApiPhpDescriber
             $this->setContext($context);
 
             if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
-                $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
-                    return $v instanceof OA\AbstractAnnotation;
-                });
+                $classAnnotations = null !== $this->annotationReader ?
+                    array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
+                        return $v instanceof OA\AbstractAnnotation;
+                    }) :
+                    [];
                 $classAnnotations = array_merge($classAnnotations, $this->getAttributesAsAnnotation($declaringClass, $context));
                 $classAnnotations[$declaringClass->getName()] = $classAnnotations;
             }
 
-            $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
-                return $v instanceof OA\AbstractAnnotation;
-            });
+            $annotations = null !== $this->annotationReader ?
+                array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
+                    return $v instanceof OA\AbstractAnnotation;
+                }) :
+                [];
             $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($method, $context));
 
             if (0 === count($annotations) && 0 === count($classAnnotations[$declaringClass->getName()])) {

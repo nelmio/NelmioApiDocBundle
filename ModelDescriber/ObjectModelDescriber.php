@@ -48,7 +48,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        Reader $reader,
+        ?Reader $reader,
         iterable $propertyDescribers,
         array $mediaTypes,
         NameConverterInterface $nameConverter = null,
