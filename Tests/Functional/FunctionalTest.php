@@ -218,7 +218,7 @@ class FunctionalTest extends WebTestCase
                     ],
                     'friend' => [
                         'nullable' => true,
-                        'allOf' => [
+                        'oneOf' => [
                             ['$ref' => '#/components/schemas/User'],
                         ],
                     ],
