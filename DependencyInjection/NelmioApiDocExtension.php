@@ -74,6 +74,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->addMethodCall('setAlternativeNames', [$nameAliases])
                 ->addMethodCall('setMediaTypes', [$config['media_types']])
                 ->addMethodCall('setLogger', [new Reference('logger')])
+                ->addMethodCall('setOpenApiVersion', [$config['documentation']['openapi'] ?? null])
                 ->addTag('monolog.logger', ['channel' => 'nelmio_api_doc'])
                 ->setArguments([
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
