@@ -52,11 +52,14 @@ final class ApiDocGenerator
     /** @var array<ProcessorInterface|callable> */
     private $processors = [];
 
+    /** @var Generator */
+    private $generator;
+
     /**
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null)
+    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null, Generator $generator = null)
     {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
@@ -87,11 +90,9 @@ final class ApiDocGenerator
             }
         }
 
-        $generator = new Generator();
+        $this->generator->setProcessors($this->getProcessors($this->generator));
 
-        $generator->setProcessors($this->getProcessors($generator));
-
-        $context = Util::createContext(['version' => $generator->getVersion()]);
+        $context = Util::createContext(['version' => $this->generator->getVersion()]);
 
         $this->openApi = new OpenApi(['_context' => $context]);
         $modelRegistry = new ModelRegistry($this->modelDescribers, $this->openApi, $this->alternativeNames);
