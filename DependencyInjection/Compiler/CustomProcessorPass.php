@@ -32,7 +32,7 @@ final class CustomProcessorPass implements CompilerPassInterface
         // Find the OpenAPI generator service.
         $definition = $container->findDefinition('nelmio_api_doc.open_api.generator');
 
-        foreach ($container->findTaggedServiceIds('swagger.processor') as $id => $tags) {
+        foreach ($container->findTaggedServiceIds('nelmio_api_doc.swagger.processor') as $id => $tags) {
             /**
              * Before which processor should this processor be run?
              *
