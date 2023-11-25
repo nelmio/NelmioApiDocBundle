@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Compiler Pass to identify and register custom processors.
@@ -46,7 +47,7 @@ final class CustomProcessorPass implements CompilerPassInterface
                 }
             }
 
-            $definition->addMethodCall('addProcessor', [$id, $before]);
+            $definition->addMethodCall('addProcessor', [new Reference($id), $before]);
         }
     }
 }
