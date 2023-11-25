@@ -22,6 +22,7 @@ use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
+use OpenApi\Generator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -67,6 +68,11 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $container->setParameter('nelmio_api_doc.areas', array_keys($config['areas']));
         $container->setParameter('nelmio_api_doc.media_types', $config['media_types']);
         $container->setParameter('nelmio_api_doc.use_validation_groups', $config['use_validation_groups']);
+
+        // Register the OpenAPI Generator as a service.
+        $container->register('nelmio_api_doc.open_api.generator', Generator::class)
+            ->setPublic(false);
+
         foreach ($config['areas'] as $area => $areaConfig) {
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
@@ -78,6 +84,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArguments([
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
+                    new Reference('nelmio_api_doc.open_api.generator'),
                 ]);
 
             $container->register(sprintf('nelmio_api_doc.describers.route.%s', $area), RouteDescriber::class)

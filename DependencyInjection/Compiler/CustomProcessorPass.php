@@ -31,30 +31,8 @@ final class CustomProcessorPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container): void
     {
-        $definitions = [];
-        // Find all registered generator services.
-        foreach($container->getDefinitions() as $id => $definition) {
-            // Check if the service-id contains the tag 'nelmio_api_doc.generator'
-            if (strpos($id, 'nelmio_api_doc.generator.') === false) {
-                continue;
-            }
-
-            $definitions[$id] = $definition;
-        }
-
-        // If there are no definitions, we can stop here.
-        if (empty($definitions)) {
-            return;
-        }
-
         foreach ($container->findTaggedServiceIds('swagger.processor') as $id => $tags) {
             $processors[] = $id;
-        }
-
-        foreach( $definitions as $definition ) {
-            foreach($processors as $processor) {
-                $definition->addMethodCall('registerProcessor', [$processor]);
-            }
         }
     }
 }

@@ -49,9 +49,6 @@ final class ApiDocGenerator
     /** @var string[] */
     private $mediaTypes = ['json'];
 
-    /** @var array<ProcessorInterface|callable> */
-    private $processors = [];
-
     /** @var Generator */
     private $generator;
 
@@ -59,12 +56,13 @@ final class ApiDocGenerator
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null, Generator $generator = null)
+    public function __construct($describers, $modelDescribers, Generator $generator, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null)
     {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
         $this->cacheItemPool = $cacheItemPool;
         $this->cacheItemId = $cacheItemId;
+        $this->generator = $generator;
     }
 
     public function setAlternativeNames(array $alternativeNames)
@@ -117,7 +115,7 @@ final class ApiDocGenerator
         // Calculate the associated schemas
         $modelRegistry->registerSchemas();
 
-        $analysis->process($generator->getProcessors());
+        $analysis->process($this->generator->getProcessors());
         $analysis->validate();
 
         if (isset($item)) {
@@ -148,24 +146,6 @@ final class ApiDocGenerator
             }
         }
 
-        // Add our custom processors.
-        foreach ($this->processors as $processor) {
-            // Instantiate the processor.
-            $processors[] = new $processor();
-        }
-
         return $processors;
-    }
-
-    /**
-     * Register a processor to be used to process the OpenApi object.
-     *
-     * @param ProcessorInterface|callable $processor The processor to register.
-     *
-     * @return void
-     */
-    public function registerProcessor($processor): void
-    {
-        $this->processors[] = $processor;
     }
 }
