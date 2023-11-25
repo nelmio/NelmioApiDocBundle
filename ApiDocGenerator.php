@@ -128,9 +128,9 @@ final class ApiDocGenerator
     /**
      * Get an array of processors that will be used to process the OpenApi object.
      *
-     * @param Generator $generator The generator instance to get the standard processors from.
+     * @param Generator $generator The generator instance to get the standard processors from
      *
-     * @return array<ProcessorInterface|callable> The array of processors.
+     * @return array<ProcessorInterface|callable> The array of processors
      */
     private function getProcessors(Generator $generator): array
     {

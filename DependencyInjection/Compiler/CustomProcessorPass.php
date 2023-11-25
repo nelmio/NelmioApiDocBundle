@@ -11,8 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\DependencyInjection\Compiler;
 
-use Nelmio\ApiDocBundle\ApiDocGenerator;
-use OpenApi\Generator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -27,8 +25,6 @@ final class CustomProcessorPass implements CompilerPassInterface
      * Process services tagged as 'swagger.processor'.
      *
      * @param ContainerBuilder $container The container builder
-     *
-     * @return void
      */
     public function process(ContainerBuilder $container): void
     {
