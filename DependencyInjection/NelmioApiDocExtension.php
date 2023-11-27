@@ -84,6 +84,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArguments([
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
+                    null,
+                    null,
                     new Reference('nelmio_api_doc.open_api.generator'),
                 ]);
 

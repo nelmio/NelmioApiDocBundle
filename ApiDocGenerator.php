@@ -56,7 +56,7 @@ final class ApiDocGenerator
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, Generator $generator, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null)
+    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null, Generator $generator = new Generator())
     {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
