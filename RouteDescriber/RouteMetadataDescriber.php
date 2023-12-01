@@ -68,7 +68,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                     }
                     // add the pattern anyway
                     if (Generator::UNDEFINED === $parameter->schema->pattern) {
-                        $parameter->schema->pattern = $requirements[$pathVariable];
+                        $parameter->schema->pattern = sprintf('^(?:%s)$', $requirements[$pathVariable]);
                     }
                 }
             }

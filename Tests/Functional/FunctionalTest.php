@@ -147,7 +147,7 @@ class FunctionalTest extends WebTestCase
         $parameter = Util::getOperationParameter($operation, 'user', 'path');
         $this->assertTrue($parameter->required);
         $this->assertEquals('string', $parameter->schema->type);
-        $this->assertEquals('/foo/', $parameter->schema->pattern);
+        $this->assertEquals('^(?:foo)$', $parameter->schema->pattern);
         $this->assertEquals(Generator::UNDEFINED, $parameter->schema->format);
     }
 
