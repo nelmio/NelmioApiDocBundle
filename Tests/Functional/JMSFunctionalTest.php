@@ -339,4 +339,26 @@ class JMSFunctionalTest extends WebTestCase
     {
         return new TestKernel(TestKernel::USE_JMS);
     }
+
+    public function testModelTypedDocumentation()
+    {
+        if (PHP_VERSION_ID < 70400) {
+            $this->markTestSkipped('PHP 7.4 required.');
+        }
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'integer'],
+                'user' => ['$ref' => '#/components/schemas/JMSUser'],
+                'name' => ['type' => 'string'],
+                'virtual_friend' => ['$ref' => '#/components/schemas/JMSUser'],
+            ],
+            'required' => [
+                'virtual_friend',
+                'id',
+                'user',
+            ],
+            'schema' => 'JMSTyped',
+        ], json_decode($this->getModel('JMSTyped')->toJson(), true));
+    }
 }
