@@ -14,22 +14,44 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 use ArrayIterator;
 use IteratorAggregate;
 use OpenApi\Annotations as OA;
+use OpenApi\Attributes\Items;
+use OpenApi\Attributes\Schema;
+use Symfony\Component\HttpKernel\Kernel;
 
-/**
- * @OA\Schema(type="array", @OA\Items(type="string"))
- */
-class EntityWithAlternateType implements IteratorAggregate
-{
+if (Kernel::MAJOR_VERSION < 7) {
     /**
-     * @var string
+     * @OA\Schema(type="array", @OA\Items(type="string"))
      */
-    public $ignored = 'this property should be ignored because of the annotation above';
-
-    public function getIterator(): ArrayIterator
+    class EntityWithAlternateType implements IteratorAggregate
     {
-        return new ArrayIterator([
-            'abc',
-            'def',
-        ]);
+        /**
+         * @var string
+         */
+        public $ignored = 'this property should be ignored because of the annotation above';
+
+        public function getIterator(): ArrayIterator
+        {
+            return new ArrayIterator([
+                'abc',
+                'def',
+            ]);
+        }
+    }
+} else {
+    #[Schema(type: 'array', items: new Items(type: 'string'))]
+    class EntityWithAlternateType implements IteratorAggregate
+    {
+        /**
+         * @var string
+         */
+        public $ignored = 'this property should be ignored because of the annotation above';
+
+        public function getIterator(): ArrayIterator
+        {
+            return new ArrayIterator([
+                'abc',
+                'def',
+            ]);
+        }
     }
 }

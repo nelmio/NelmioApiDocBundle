@@ -12,12 +12,17 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Hateoas\Configuration\Embedded;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class BazingaFunctionalTest extends WebTestCase
 {
     protected function setUp(): void
     {
+        if (Kernel::MAJOR_VERSION < 7) {
+            $this->markTestSkipped('Not supported in symfony 7');
+        }
+
         parent::setUp();
 
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);

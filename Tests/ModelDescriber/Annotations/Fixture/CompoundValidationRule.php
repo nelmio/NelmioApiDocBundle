@@ -14,6 +14,7 @@ if (!class_exists(Compound::class)) {
 /**
  * @Annotation
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 final class CompoundValidationRule extends Compound
 {
     protected function getConstraints(array $options): array

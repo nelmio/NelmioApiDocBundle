@@ -11,19 +11,36 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(host="api.example.com")
- */
-class UndocumentedController
-{
+
+if (Kernel::MAJOR_VERSION < 7) {
     /**
-     * This path is excluded by the config (only /api allowed).
-     *
-     * @Route("/undocumented", methods={"GET"})
+     * @Route(host="api.example.com")
      */
-    public function undocumentedAction()
+    class UndocumentedController
     {
+        /**
+         * This path is excluded by the config (only /api allowed).
+         *
+         * @Route("/undocumented", methods={"GET"})
+         */
+        public function undocumentedAction()
+        {
+        }
+    }
+} else {
+    #[Route(host: "api.example.com")]
+    class UndocumentedController
+    {
+        /**
+         * This path is excluded by the config (only /api allowed).
+         *
+         */
+        #[Route("/undocumented", methods: ["GET"])]
+        public function undocumentedAction()
+        {
+        }
     }
 }

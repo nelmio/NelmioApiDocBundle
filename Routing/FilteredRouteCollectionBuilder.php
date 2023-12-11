@@ -21,7 +21,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 final class FilteredRouteCollectionBuilder
 {
-    /** @var Reader */
+    /** @var Reader|null */
     private $annotationReader;
 
     /** @var ControllerReflector */
@@ -34,7 +34,7 @@ final class FilteredRouteCollectionBuilder
     private $options;
 
     public function __construct(
-        Reader $annotationReader,
+        ?Reader $annotationReader,
         ControllerReflector $controllerReflector,
         string $area,
         array $options = []
@@ -137,7 +137,7 @@ final class FilteredRouteCollectionBuilder
             /** @var Areas|null $areas */
             $areas = $this->getAttributesAsAnnotation($reflectionMethod->getDeclaringClass(), Areas::class)[0] ?? null;
 
-            if (null === $areas) {
+            if (null === $areas && null !== $this->annotationReader) {
                 /** @var Areas|null $areas */
                 $areas = $this->annotationReader->getMethodAnnotation(
                     $reflectionMethod,
@@ -167,7 +167,10 @@ final class FilteredRouteCollectionBuilder
             return false;
         }
 
-        $annotations = $this->annotationReader->getMethodAnnotations($method);
+        $annotations = null !== $this->annotationReader
+            ? $this->annotationReader->getMethodAnnotations($method)
+            : [];
+
         if (method_exists(\ReflectionMethod::class, 'getAttributes')) {
             $annotations = array_merge($annotations, array_map(function (\ReflectionAttribute $attribute) {
                 return $attribute->newInstance();

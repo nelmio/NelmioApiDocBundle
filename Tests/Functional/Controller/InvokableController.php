@@ -12,20 +12,36 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Attributes\Response;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Prevents a regression (see https://github.com/nelmio/NelmioApiDocBundle/issues/1559).
- *
- * @Route("/api/invoke", host="api.example.com", name="invokable", methods={"GET"})
- * @OA\Response(
- *    response=200,
- *    description="Invokable!"
- * )
- */
-class InvokableController
-{
-    public function __invoke()
+if (Kernel::MAJOR_VERSION < 7) {
+    /**
+     * Prevents a regression (see https://github.com/nelmio/NelmioApiDocBundle/issues/1559).
+     *
+     * @Route("/api/invoke", host="api.example.com", name="invokable", methods={"GET"})
+     * @OA\Response(
+     *    response=200,
+     *    description="Invokable!"
+     * )
+     */
+    class InvokableController
     {
+        public function __invoke()
+        {
+        }
+    }
+} else {
+    /**
+     * Prevents a regression (see https://github.com/nelmio/NelmioApiDocBundle/issues/1559).
+     */
+    #[Response(response: 200, description: 'Invokable!')]
+    #[Route("/api/invoke", host: "api.example.com", name: "invokable", methods: ["GET"])]
+    class InvokableController
+    {
+        public function __invoke()
+        {
+        }
     }
 }

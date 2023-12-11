@@ -11,11 +11,13 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class FunctionalTest extends WebTestCase
@@ -62,7 +64,9 @@ class FunctionalTest extends WebTestCase
 
     public function provideArticleRoute(): iterable
     {
-        yield 'Annotations' => ['/api/article/{id}'];
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            yield 'Annotations' => ['/api/article/{id}'];
+        }
 
         if (\PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => ['/api/article_attributes/{id}'];

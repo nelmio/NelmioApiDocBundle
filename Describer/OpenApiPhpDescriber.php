@@ -33,11 +33,15 @@ final class OpenApiPhpDescriber
 
     private $routeCollection;
     private $controllerReflector;
+
+    /**
+     * @var Reader|null
+     */
     private $annotationReader;
     private $logger;
     private $overwrite;
 
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, ?Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
     {
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
@@ -51,7 +55,7 @@ final class OpenApiPhpDescriber
         $classAnnotations = [];
 
         /** @var \ReflectionMethod $method */
-        foreach ($this->getMethodsToParse() as $method => list($path, $httpMethods, $routeName)) {
+        foreach ($this->getMethodsToParse() as $method => [$path, $httpMethods, $routeName]) {
             $declaringClass = $method->getDeclaringClass();
 
             $path = Util::getPath($api, $path);
@@ -65,16 +69,25 @@ final class OpenApiPhpDescriber
             $this->setContext($context);
 
             if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
-                $classAnnotations = array_filter($this->annotationReader->getClassAnnotations($declaringClass), function ($v) {
+                if (null !== $this->annotationReader) {
+                    $classAnnotations = $this->annotationReader->getClassAnnotations($declaringClass);
+                }
+
+                $classAnnotations = array_filter($classAnnotations, function ($v) {
                     return $v instanceof OA\AbstractAnnotation;
                 });
+
                 $classAnnotations = array_merge($classAnnotations, $this->getAttributesAsAnnotation($declaringClass, $context));
                 $classAnnotations[$declaringClass->getName()] = $classAnnotations;
             }
 
-            $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
-                return $v instanceof OA\AbstractAnnotation;
-            });
+            $annotations = [];
+            if (null !== $this->annotationReader) {
+                $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
+                    return $v instanceof OA\AbstractAnnotation;
+                });
+            }
+
             $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($method, $context));
 
             if (0 === count($annotations) && 0 === count($classAnnotations[$declaringClass->getName()])) {

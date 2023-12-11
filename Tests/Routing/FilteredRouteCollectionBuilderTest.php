@@ -31,6 +31,16 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class FilteredRouteCollectionBuilderTest extends TestCase
 {
+    /**
+     * @var AnnotationReader|null
+     */
+    private $doctrineAnnotations;
+
+    protected function setUp(): void
+    {
+        $this->doctrineAnnotations = class_exists(AnnotationReader::class) ? new AnnotationReader() : null;
+    }
+
     public function testFilter()
     {
         $options = [
@@ -50,7 +60,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         }
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
-            new AnnotationReader(),
+            $this->doctrineAnnotations,
             $this->createControllerReflector(),
             'areaName',
             $options
@@ -77,7 +87,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         }
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
-            new AnnotationReader(),
+            $this->doctrineAnnotations,
             $this->createControllerReflector(),
             'areaName',
             $pathPattern
@@ -95,7 +105,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         new FilteredRouteCollectionBuilder(
-            new AnnotationReader(),
+            $this->doctrineAnnotations,
             $this->createControllerReflector(),
             'areaName',
             $options
@@ -148,7 +158,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes->add($name, $route);
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
-            new AnnotationReader(),
+            $this->doctrineAnnotations,
             $this->createControllerReflector(),
             'area',
             $options
@@ -188,12 +198,15 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $controllerReflectorStub = $this->createMock(ControllerReflector::class);
         $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethodStub);
 
-        $annotationReader = $this->createMock(Reader::class);
-        $annotationReader
-            ->method('getMethodAnnotation')
-            ->with($reflectionMethodStub, Areas::class)
-            ->willReturn(new Areas(['value' => [$area]]))
-        ;
+        $annotationReader = null;
+        if (interface_exists(Reader::class)) {
+            $annotationReader = $this->createMock(Reader::class);
+            $annotationReader
+                ->method('getMethodAnnotation')
+                ->with($reflectionMethodStub, Areas::class)
+                ->willReturn(new Areas(['value' => [$area]]))
+            ;
+        }
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
             $annotationReader,
@@ -246,7 +259,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes->add($name, $route);
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
-            new AnnotationReader(),
+            $this->doctrineAnnotations,
             $this->createControllerReflector(),
             'areaName',
             $options
@@ -289,11 +302,14 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $controllerReflectorStub = $this->createMock(ControllerReflector::class);
         $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethodStub);
 
-        $annotationReader = $this->createMock(Reader::class);
-        $annotationReader
-            ->method('getMethodAnnotations')
-            ->willReturn($annotations)
-        ;
+        $annotationReader = null;
+        if (interface_exists(Reader::class)) {
+            $annotationReader = $this->createMock(Reader::class);
+            $annotationReader
+                ->method('getMethodAnnotations')
+                ->willReturn($annotations)
+            ;
+        }
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
             $annotationReader,

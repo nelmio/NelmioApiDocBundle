@@ -11,18 +11,33 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-/**
- * @DiscriminatorMap(typeProperty="type", mapping={
- *      "one": SymfonyDiscriminatorOne::class,
- *      "two": SymfonyDiscriminatorTwo::class,
- * })
- */
-abstract class SymfonyDiscriminator
-{
+if (Kernel::MAJOR_VERSION < 7) {
     /**
-     * @var string
+     * @DiscriminatorMap(typeProperty="type", mapping={
+     *      "one": SymfonyDiscriminatorOne::class,
+     *      "two": SymfonyDiscriminatorTwo::class,
+     * })
      */
-    public $type;
+    abstract class SymfonyDiscriminator
+    {
+        /**
+         * @var string
+         */
+        public $type;
+    }
+} else {
+    #[DiscriminatorMap(
+        typeProperty: 'type',
+        mapping: ['one' => SymfonyDiscriminatorOne::class, 'two' => SymfonyDiscriminatorTwo::class]
+    )]
+    abstract class SymfonyDiscriminator
+    {
+        /**
+         * @var string
+         */
+        public $type;
+    }
 }

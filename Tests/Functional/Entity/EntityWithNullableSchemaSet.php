@@ -12,48 +12,91 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Attributes\Property;
+use Symfony\Component\HttpKernel\Kernel;
 
-class EntityWithNullableSchemaSet
-{
-    /**
-     * @var ?string
-     *
-     * @OA\Property()
-     */
-    public $nullablePropertyNullableNotSet;
+if (Kernel::MAJOR_VERSION < 7) {
+    class EntityWithNullableSchemaSet
+    {
+        /**
+         * @var ?string
+         *
+         * @OA\Property()
+         */
+        public $nullablePropertyNullableNotSet;
 
-    /**
-     * @var ?string
-     *
-     * @OA\Property(nullable=false)
-     */
-    public $nullablePropertyNullableFalseSet;
+        /**
+         * @var ?string
+         *
+         * @OA\Property(nullable=false)
+         */
+        public $nullablePropertyNullableFalseSet;
 
-    /**
-     * @var ?string
-     *
-     * @OA\Property(nullable=true)
-     */
-    public $nullablePropertyNullableTrueSet;
+        /**
+         * @var ?string
+         *
+         * @OA\Property(nullable=true)
+         */
+        public $nullablePropertyNullableTrueSet;
 
-    /**
-     * @var string
-     *
-     * @OA\Property()
-     */
-    public $nonNullablePropertyNullableNotSet;
+        /**
+         * @var string
+         *
+         * @OA\Property()
+         */
+        public $nonNullablePropertyNullableNotSet;
 
-    /**
-     * @var string
-     *
-     * @OA\Property(nullable=false)
-     */
-    public $nonNullablePropertyNullableFalseSet;
+        /**
+         * @var string
+         *
+         * @OA\Property(nullable=false)
+         */
+        public $nonNullablePropertyNullableFalseSet;
 
-    /**
-     * @var string
-     *
-     * @OA\Property(nullable=true)
-     */
-    public $nonNullablePropertyNullableTrueSet;
+        /**
+         * @var string
+         *
+         * @OA\Property(nullable=true)
+         */
+        public $nonNullablePropertyNullableTrueSet;
+    }
+} else {
+    class EntityWithNullableSchemaSet
+    {
+        /**
+         * @var ?string
+         */
+        #[Property]
+        public $nullablePropertyNullableNotSet;
+
+        /**
+         * @var ?string
+         */
+        #[Property(nullable: false)]
+        public $nullablePropertyNullableFalseSet;
+
+        /**
+         * @var ?string
+         */
+        #[Property(nullable: true)]
+        public $nullablePropertyNullableTrueSet;
+
+        /**
+         * @var string
+         */
+        #[Property]
+        public $nonNullablePropertyNullableNotSet;
+
+        /**
+         * @var string
+         */
+        #[Property(nullable: false)]
+        public $nonNullablePropertyNullableFalseSet;
+
+        /**
+         * @var string
+         */
+        #[Property(nullable: true)]
+        public $nonNullablePropertyNullableTrueSet;
+    }
 }

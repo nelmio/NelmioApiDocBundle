@@ -32,7 +32,7 @@ class ApiController81 extends ApiController80
     ])]
     #[OA\Parameter(ref: '#/components/parameters/test')]
     #[Route('/article_attributes/{id}', methods: ['GET'])]
-    #[OA\Parameter(name: 'Accept-Version', in: 'header', attachables: [new OA\Schema(type: 'string')])]
+    #[OA\Parameter(name: 'Accept-Version', in: 'header', schema: new OA\Schema(type: 'string'))]
     public function fetchArticleActionWithAttributes()
     {
     }

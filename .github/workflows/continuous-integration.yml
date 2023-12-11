@@ -34,6 +34,8 @@ jobs:
             symfony-require: "5.4.*"
           - php-version: 8.1
             symfony-require: "6.3.*"
+          - php-version: 8.2
+            symfony-require: "7.0.*"
 
     steps:
       - name: "Checkout"
@@ -59,12 +61,18 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
 
+      - name: Remove packages not compatible symfony 7
+        if: matrix.symfony-require == '7.0'
+        run: |
+          composer remove friendsofsymfony/rest-bundle sensio/framework-extra-bundle jms/serializer-bundle willdurand/hateoas-bundle --no-update --dev
+
       - name: "Install dependencies with composer"
         env:
           SYMFONY_REQUIRE: "${{ matrix.symfony-require }}"
         run: |
           composer global config --no-plugins allow-plugins.symfony/flex true
           composer global require --no-progress --no-scripts --no-plugins symfony/flex
+          composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
           composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
 
       - name: PHPUnit Tests

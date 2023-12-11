@@ -38,7 +38,11 @@ class AnnotationReaderTest extends TestCase
         $schema->merge([new OA\Property(['property' => 'property2'] + $baseProps)]);
 
         $registry = new ModelRegistry([], new OA\OpenApi($baseProps), []);
-        $symfonyConstraintAnnotationReader = new OpenApiAnnotationsReader(new AnnotationReader(), $registry, ['json']);
+        $symfonyConstraintAnnotationReader = new OpenApiAnnotationsReader(
+            class_exists(AnnotationReader::class) ? new AnnotationReader() : null,
+            $registry,
+            ['json']
+        );
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->properties[1]);
 

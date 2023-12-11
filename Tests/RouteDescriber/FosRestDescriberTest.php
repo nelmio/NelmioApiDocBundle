@@ -16,6 +16,7 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber;
 use OpenApi\Annotations\OpenApi;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraints\Choice;
 
@@ -23,15 +24,22 @@ class FosRestDescriberTest extends TestCase
 {
     public function testQueryParamWithChoiceConstraintIsAddedAsEnum()
     {
+        if (Kernel::MAJOR_VERSION >= 7) {
+            $this->markTestSkipped('FosRest is not supported in symfony 7');
+        }
+
         $choices = ['foo', 'bar'];
 
         $queryParam = new QueryParam();
         $queryParam->requirements = new Choice($choices);
 
-        $readerMock = $this->createMock(Reader::class);
-        $readerMock->method('getMethodAnnotations')->willReturn([
-            $queryParam,
-        ]);
+        $readerMock = null;
+        if (interface_exists(Reader::class)) {
+            $readerMock = $this->createMock(Reader::class);
+            $readerMock->method('getMethodAnnotations')->willReturn([
+                $queryParam,
+            ]);
+        }
 
         $fosRestDescriber = new FosRestDescriber($readerMock, []);
         $api = new OpenApi([]);

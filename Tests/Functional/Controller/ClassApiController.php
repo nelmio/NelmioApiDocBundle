@@ -13,19 +13,34 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
+use OpenApi\Attributes\Response;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/api", host="api.example.com")
- * @Security(name="basic")
- */
-class ClassApiController
-{
+if (Kernel::MAJOR_VERSION < 7) {
     /**
-     * @Route("/security/class")
-     * @OA\Response(response="201", description="")
+     * @Route("/api", host="api.example.com")
+     * @Security(name="basic")
      */
-    public function securityAction()
+    class ClassApiController
     {
+        /**
+         * @Route("/security/class")
+         * @OA\Response(response="201", description="")
+         */
+        public function securityAction()
+        {
+        }
+    }
+} else {
+    #[Security(name: 'basic')]
+    #[Route("/api", host: "api.example.com")]
+    class ClassApiController
+    {
+        #[Response(response: 201, description: '')]
+        #[Route("/security/class")]
+        public function securityAction()
+        {
+        }
     }
 }

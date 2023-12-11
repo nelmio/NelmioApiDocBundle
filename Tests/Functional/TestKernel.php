@@ -46,6 +46,8 @@ class TestKernel extends Kernel
 
     private $flags;
 
+    private bool $supportsLegacyAnnotations;
+
     public function __construct(int $flags = 0)
     {
         parent::__construct('test'.$flags, true);
@@ -61,18 +63,21 @@ class TestKernel extends Kernel
         $bundles = [
             new FrameworkBundle(),
             new TwigBundle(),
-            new SensioFrameworkExtraBundle(),
             new ApiPlatformBundle(),
             new NelmioApiDocBundle(),
             new TestBundle(),
-            new FOSRestBundle(),
         ];
 
-        if ($this->flags & self::USE_JMS) {
-            $bundles[] = new JMSSerializerBundle();
+        if (self::MAJOR_VERSION < 7) {
+            $bundles[] = new SensioFrameworkExtraBundle();
+            $bundles[] = new FOSRestBundle();
 
-            if ($this->flags & self::USE_BAZINGA) {
-                $bundles[] = new BazingaHateoasBundle();
+            if ($this->flags & self::USE_JMS) {
+                $bundles[] = new JMSSerializerBundle();
+
+                if ($this->flags & self::USE_BAZINGA) {
+                    $bundles[] = new BazingaHateoasBundle();
+                }
             }
         }
 
@@ -84,28 +89,34 @@ class TestKernel extends Kernel
      */
     protected function configureRoutes($routes)
     {
-        $this->import($routes, __DIR__.'/Resources/routes.yaml', '/', 'yaml');
+        if (self::MAJOR_VERSION < 7) {
+            $this->import($routes, __DIR__.'/Resources/routes.yaml', '/', 'yaml');
+        } else {
+            $this->import($routes, __DIR__.'/Resources/routes-attributes.yaml', '/', 'yaml');
+        }
 
         if (class_exists(SerializedName::class)) {
-            $this->import($routes, __DIR__.'/Controller/SerializedNameController.php', '/', 'annotation');
+            $this->import($routes, __DIR__.'/Controller/SerializedNameController.php', '/', self::MAJOR_VERSION < 7 ? 'annotation' : 'attribute');
         }
 
-        if ($this->flags & self::USE_JMS) {
-            $this->import($routes, __DIR__.'/Controller/JMSController.php', '/', 'annotation');
-        }
-
-        if ($this->flags & self::USE_BAZINGA) {
-            $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', 'annotation');
-
-            try {
-                new \ReflectionMethod(Embedded::class, 'getType');
-                $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
-            } catch (\ReflectionException $e) {
+        if (self::MAJOR_VERSION < 7) {
+            if ($this->flags & self::USE_JMS) {
+                $this->import($routes, __DIR__.'/Controller/JMSController.php', '/', 'annotation');
             }
-        }
 
-        if ($this->flags & self::ERROR_ARRAY_ITEMS) {
-            $this->import($routes, __DIR__.'/Controller/ArrayItemsErrorController.php', '/', 'annotation');
+            if ($this->flags & self::USE_BAZINGA) {
+                $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', 'annotation');
+
+                try {
+                    new \ReflectionMethod(Embedded::class, 'getType');
+                    $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
+                } catch (\ReflectionException $e) {
+                }
+            }
+
+            if ($this->flags & self::ERROR_ARRAY_ITEMS) {
+                $this->import($routes, __DIR__.'/Controller/ArrayItemsErrorController.php', '/', 'annotation');
+            }
         }
     }
 
@@ -132,8 +143,7 @@ class TestKernel extends Kernel
             'test' => null,
             'validation' => null,
             'form' => null,
-            'serializer' => [
-                'enable_annotations' => true,
+            'serializer' => self::MAJOR_VERSION < 7 ? ['enable_annotations' => true] : [] + [
                 'mapping' => [
                     'paths' => [__DIR__.'/Resources/serializer/'],
                 ],
@@ -156,12 +166,15 @@ class TestKernel extends Kernel
             'strict_variables' => '%kernel.debug%',
             'exception_controller' => null,
         ]);
+        
+        if (self::MAJOR_VERSION < 7) {
+            $c->loadFromExtension('sensio_framework_extra', [
+                'router' => [
+                    'annotations' => false,
+                ],
+            ]);
+        }
 
-        $c->loadFromExtension('sensio_framework_extra', [
-            'router' => [
-                'annotations' => false,
-            ],
-        ]);
 
         $c->loadFromExtension('api_platform', [
             'mapping' => ['paths' => [
@@ -171,28 +184,77 @@ class TestKernel extends Kernel
             ]],
         ]);
 
-        $c->loadFromExtension('fos_rest', [
-            'format_listener' => [
-                'rules' => [
-                    [
-                        'path' => '^/',
-                        'fallback_format' => 'json',
+        if (self::MAJOR_VERSION < 7) {
+            $c->loadFromExtension('fos_rest', [
+                'format_listener' => [
+                    'rules' => [
+                        [
+                            'path' => '^/',
+                            'fallback_format' => 'json',
+                        ],
                     ],
                 ],
-            ],
-        ]);
-
-        // If FOSRestBundle 2.8
-        if (class_exists(\FOS\RestBundle\EventListener\ResponseStatusCodeListener::class)) {
-            $c->loadFromExtension('fos_rest', [
-                'exception' => [
-                    'enabled' => false,
-                    'exception_listener' => false,
-                    'serialize_exceptions' => false,
-                ],
-                'body_listener' => false,
-                'routing_loader' => false,
             ]);
+
+            // If FOSRestBundle 2.8
+            if (class_exists(\FOS\RestBundle\EventListener\ResponseStatusCodeListener::class)) {
+                $c->loadFromExtension('fos_rest', [
+                    'exception' => [
+                        'enabled' => false,
+                        'exception_listener' => false,
+                        'serialize_exceptions' => false,
+                    ],
+                    'body_listener' => false,
+                    'routing_loader' => false,
+                ]);
+            }
+        }
+
+        $models = [
+            [
+                'alias' => 'PrivateProtectedExposure',
+                'type' => PrivateProtectedExposure::class,
+            ],
+            [
+                'alias' => 'SymfonyConstraintsTestGroup',
+                'type' => SymfonyConstraintsWithValidationGroups::class,
+                'groups' => ['test'],
+            ],
+            [
+                'alias' => 'SymfonyConstraintsDefaultGroup',
+                'type' => SymfonyConstraintsWithValidationGroups::class,
+                'groups' => null,
+            ],
+        ];
+
+        if (self::MAJOR_VERSION < 7) {
+            $models = [
+                ...$models,
+                [
+                    'alias' => 'JMSPicture_mini',
+                    'type' => JMSPicture::class,
+                    'groups' => ['mini'],
+                ],
+                [
+                    'alias' => 'BazingaUser_grouped',
+                    'type' => BazingaUser::class,
+                    'groups' => ['foo'],
+                ],
+                [
+                    'alias' => 'JMSComplex',
+                    'type' => JMSComplex::class,
+                    'groups' => [
+                        'list',
+                        'details',
+                        'User' => ['list'],
+                    ],
+                ],
+                [
+                    'alias' => 'JMSComplexDefault',
+                    'type' => JMSComplex::class,
+                    'groups' => null,
+                ],
+            ];
         }
 
         // Filter routes
@@ -267,46 +329,7 @@ class TestKernel extends Kernel
                ],
             ],
             'models' => [
-                'names' => [
-                    [
-                        'alias' => 'PrivateProtectedExposure',
-                        'type' => PrivateProtectedExposure::class,
-                    ],
-                    [
-                        'alias' => 'JMSPicture_mini',
-                        'type' => JMSPicture::class,
-                        'groups' => ['mini'],
-                    ],
-                    [
-                        'alias' => 'BazingaUser_grouped',
-                        'type' => BazingaUser::class,
-                        'groups' => ['foo'],
-                    ],
-                    [
-                        'alias' => 'JMSComplex',
-                        'type' => JMSComplex::class,
-                        'groups' => [
-                            'list',
-                            'details',
-                            'User' => ['list'],
-                        ],
-                    ],
-                    [
-                        'alias' => 'JMSComplexDefault',
-                        'type' => JMSComplex::class,
-                        'groups' => null,
-                    ],
-                    [
-                        'alias' => 'SymfonyConstraintsTestGroup',
-                        'type' => SymfonyConstraintsWithValidationGroups::class,
-                        'groups' => ['test'],
-                    ],
-                    [
-                        'alias' => 'SymfonyConstraintsDefaultGroup',
-                        'type' => SymfonyConstraintsWithValidationGroups::class,
-                        'groups' => null,
-                    ],
-                ],
+                'names' => $models,
             ],
         ]);
 
