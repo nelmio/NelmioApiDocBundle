@@ -62,7 +62,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Remove packages not compatible symfony 7
-        if: matrix.symfony-require == '7.0'
+        if: matrix.symfony-require == '7.0.*'
         run: |
           composer remove friendsofsymfony/rest-bundle sensio/framework-extra-bundle jms/serializer-bundle willdurand/hateoas-bundle --no-update --dev
 
