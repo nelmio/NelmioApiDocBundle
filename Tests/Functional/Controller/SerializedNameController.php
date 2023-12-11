@@ -48,7 +48,7 @@ if (Kernel::MAJOR_VERSION < 7) {
     #[Route('/api', host: 'api.example.com')]
     class SerializedNameController
     {
-        #[OAT\Response(response: 200, description: 'success', attachables: [new Model(type: SerializedNameEntity::class)])]
+        #[OAT\Response(response: 200, description: 'success', content: new Model(type: SerializedNameEntity::class))]
         #[Route('/serializename', methods: ['GET'])]
         public function serializedNameAction()
         {
