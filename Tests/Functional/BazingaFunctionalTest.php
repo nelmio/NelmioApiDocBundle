@@ -19,7 +19,7 @@ class BazingaFunctionalTest extends WebTestCase
 {
     protected function setUp(): void
     {
-        if (Kernel::MAJOR_VERSION < 7) {
+        if (Kernel::MAJOR_VERSION >= 7) {
             $this->markTestSkipped('Not supported in symfony 7');
         }
 
