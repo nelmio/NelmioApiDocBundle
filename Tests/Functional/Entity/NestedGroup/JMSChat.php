@@ -22,12 +22,14 @@ class JMSChat
 {
     /**
      * @Serializer\Type("integer")
+     *
      * @Serializer\Expose
      */
     private $id;
 
     /**
      * @Serializer\Type("array<Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatUser>")
+     *
      * @Serializer\Expose
      */
     private $members;

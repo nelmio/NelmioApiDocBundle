@@ -151,8 +151,6 @@ class ModelRegistryTest extends TestCase
 
     /**
      * @dataProvider getNameAlternatives
-     *
-     * @param $expected
      */
     public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames)
     {

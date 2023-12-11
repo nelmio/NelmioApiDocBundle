@@ -31,8 +31,10 @@ if (Kernel::MAJOR_VERSION < 7) {
          * @OA\Response(
          *     response="200",
          *     description="success",
+         *
          *     @Model(type=SerializedNameEnt::class)
          * )
+         *
          * @Route("/serializename", methods={"GET"})
          */
         public function serializedNameAction()
@@ -43,11 +45,11 @@ if (Kernel::MAJOR_VERSION < 7) {
     /**
      * This controller is only loaded when SerializedName exists (sf >= 4.2).
      */
-    #[Route("/api", host: "api.example.com")]
+    #[Route('/api', host: 'api.example.com')]
     class SerializedNameController
     {
         #[Response(response: 200, description: 'success', attachables: [new Model(type: SerializedNameEntity::class)])]
-        #[Route("/serializename", methods: ["GET"])]
+        #[Route('/serializename', methods: ['GET'])]
         public function serializedNameAction()
         {
         }

@@ -22,13 +22,16 @@ class JMSPicture
 {
     /**
      * @Serializer\Type("integer")
+     *
      * @Serializer\Expose
      */
     private $id;
 
     /**
      * @Serializer\Type("integer")
+     *
      * @Serializer\Expose
+     *
      * @Serializer\Groups({"mini"})
      */
     private $onlyDirectPictureMini;

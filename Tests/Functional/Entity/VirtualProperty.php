@@ -17,6 +17,7 @@ use JMS\Serializer\Annotation as Serializer;
  * Class VirtualProperty.
  *
  * @Serializer\ExclusionPolicy("all")
+ *
  * @Serializer\VirtualProperty(
  *     "email",
  *     exp="object.user.email",
@@ -27,7 +28,9 @@ class VirtualProperty
 {
     /**
      * @var int
+     *
      * @Serializer\Type("integer")
+     *
      * @Serializer\Expose
      */
     private $id;
@@ -39,7 +42,9 @@ class VirtualProperty
 
     /**
      * @Serializer\Accessor(getter="getFoo", setter="setFoo")
+     *
      * @Serializer\Type("string")
+     *
      * @Serializer\Expose
      *
      * Ensures https://github.com/nelmio/NelmioApiDocBundle/issues/1708 is fixed.

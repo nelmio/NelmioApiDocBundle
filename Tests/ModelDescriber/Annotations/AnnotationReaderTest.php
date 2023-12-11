@@ -27,6 +27,7 @@ class AnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
+     *
      * @dataProvider provideProperty
      */
     public function testProperty($entity)

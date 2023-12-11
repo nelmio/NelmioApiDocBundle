@@ -15,7 +15,6 @@ use OpenApi\Annotations as OA;
 use OpenApi\Attributes\Schema;
 use Symfony\Component\HttpKernel\Kernel;
 
-
 if (Kernel::MAJOR_VERSION < 7) {
     /**
      * @OA\Schema(type="object")

@@ -23,9 +23,11 @@ class ArrayItemsErrorController
 {
     /**
      * @Route("/api/error", methods={"GET"})
+     *
      * @OA\Response(
      *     response=200,
      *     description="Success",
+     *
      *     @Model(type=Foo::class)
      * )
      */

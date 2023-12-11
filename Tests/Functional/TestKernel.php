@@ -37,12 +37,11 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class TestKernel extends Kernel
 {
-    const USE_JMS = 1;
-    const USE_BAZINGA = 2;
-    const ERROR_ARRAY_ITEMS = 4;
-    const USE_VALIDATION_GROUPS = 8;
-
     use MicroKernelTrait;
+    public const USE_JMS = 1;
+    public const USE_BAZINGA = 2;
+    public const ERROR_ARRAY_ITEMS = 4;
+    public const USE_VALIDATION_GROUPS = 8;
 
     private $flags;
 
@@ -55,9 +54,6 @@ class TestKernel extends Kernel
         $this->flags = $flags;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function registerBundles(): iterable
     {
         $bundles = [
@@ -84,9 +80,6 @@ class TestKernel extends Kernel
         return $bundles;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureRoutes($routes)
     {
         if (self::MAJOR_VERSION < 7) {
@@ -132,9 +125,6 @@ class TestKernel extends Kernel
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
     {
         $framework = [
@@ -166,7 +156,7 @@ class TestKernel extends Kernel
             'strict_variables' => '%kernel.debug%',
             'exception_controller' => null,
         ]);
-        
+
         if (self::MAJOR_VERSION < 7) {
             $c->loadFromExtension('sensio_framework_extra', [
                 'router' => [
@@ -174,7 +164,6 @@ class TestKernel extends Kernel
                 ],
             ]);
         }
-
 
         $c->loadFromExtension('api_platform', [
             'mapping' => ['paths' => [
@@ -338,17 +327,11 @@ class TestKernel extends Kernel
         $c->setDefinition('nelmio.test.jms.virtual_type.describer', $def);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCacheDir(): string
     {
         return parent::getCacheDir().'/'.$this->flags;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLogDir(): string
     {
         return parent::getLogDir().'/'.$this->flags;

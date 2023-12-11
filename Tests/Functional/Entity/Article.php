@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -35,7 +34,7 @@ if (Kernel::MAJOR_VERSION < 7) {
 } else {
     class Article
     {
-        #[Groups(["light"])]
+        #[Groups(['light'])]
         public function setAuthor(User $author)
         {
         }

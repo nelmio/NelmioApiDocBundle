@@ -25,7 +25,9 @@ if (Kernel::MAJOR_VERSION < 7) {
          * @var int
          *
          * @Groups("test")
+         *
          * @Assert\NotBlank(groups={"test"})
+         *
          * @Assert\Range(min=1, max=100)
          */
         public $property;
@@ -41,6 +43,7 @@ if (Kernel::MAJOR_VERSION < 7) {
          * @var array
          *
          * @OA\Property(type="array", @OA\Items(type="string"))
+         *
          * @Assert\Valid
          */
         public $propertyArray;
@@ -52,8 +55,8 @@ if (Kernel::MAJOR_VERSION < 7) {
          * @var int
          */
         #[Assert\Range(min: 1, max: 100)]
-        #[Assert\NotBlank(groups: ["test"])]
-        #[Groups("test")]
+        #[Assert\NotBlank(groups: ['test'])]
+        #[Groups('test')]
         public $property;
 
         /**

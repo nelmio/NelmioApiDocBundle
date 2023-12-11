@@ -27,6 +27,7 @@ if (Kernel::MAJOR_VERSION < 7) {
          *     response="200",
          *     description="Test"
          * )
+         *
          * @Route("/test/", methods={"GET"})
          */
         public function testAction()
@@ -38,7 +39,7 @@ if (Kernel::MAJOR_VERSION < 7) {
     class TestController
     {
         #[Response(response: 200, description: 'Test')]
-        #[Route("/test/", methods: ["GET"])]
+        #[Route('/test/', methods: ['GET'])]
         public function testAction()
         {
         }

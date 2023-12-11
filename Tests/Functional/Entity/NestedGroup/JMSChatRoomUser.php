@@ -22,13 +22,16 @@ class JMSChatRoomUser
 {
     /**
      * @Serializer\Type("integer")
+     *
      * @Serializer\Expose
      */
     private $id;
 
     /**
      * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatFriend")
+     *
      * @Serializer\Expose
+     *
      * @Serializer\Groups({"mini"})
      */
     private $friend;

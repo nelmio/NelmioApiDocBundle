@@ -72,6 +72,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     /**
      * @group legacy
+     *
      * @expectedDeprecation Passing an indexed array with a collection of path patterns as argument 1 for `Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder::__construct()` is deprecated since 3.2.0, expected structure is an array containing parameterized options.
      */
     public function testFilterWithDeprecatedArgument()
@@ -186,6 +187,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     /**
      * @group test
+     *
      * @dataProvider getMatchingRoutesWithAnnotation
      */
     public function testMatchingRoutesWithAnnotation(string $name, Route $route, array $options = [])

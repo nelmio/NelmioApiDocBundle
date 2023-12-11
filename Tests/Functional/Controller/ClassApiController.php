@@ -20,12 +20,14 @@ use Symfony\Component\Routing\Annotation\Route;
 if (Kernel::MAJOR_VERSION < 7) {
     /**
      * @Route("/api", host="api.example.com")
+     *
      * @Security(name="basic")
      */
     class ClassApiController
     {
         /**
          * @Route("/security/class")
+         *
          * @OA\Response(response="201", description="")
          */
         public function securityAction()
@@ -34,11 +36,11 @@ if (Kernel::MAJOR_VERSION < 7) {
     }
 } else {
     #[Security(name: 'basic')]
-    #[Route("/api", host: "api.example.com")]
+    #[Route('/api', host: 'api.example.com')]
     class ClassApiController
     {
         #[Response(response: 201, description: '')]
-        #[Route("/security/class")]
+        #[Route('/security/class')]
         public function securityAction()
         {
         }

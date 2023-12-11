@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 
 if (Kernel::MAJOR_VERSION >= 7) {
-    #[Route("/api", name: 'api_', host: 'api.example.com')]
+    #[Route('/api', name: 'api_', host: 'api.example.com')]
     class ApiController extends ApiController81
     {
     }

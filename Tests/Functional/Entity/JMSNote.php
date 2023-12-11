@@ -22,12 +22,14 @@ class JMSNote
 {
     /**
      * @Serializer\Type("string")
+     *
      * @Serializer\Expose
      */
     private $long;
 
     /**
      * @Serializer\Type("int")
+     *
      * @Serializer\Expose
      */
     private $short;

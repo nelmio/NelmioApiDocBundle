@@ -20,7 +20,9 @@ class CustomDateTime extends \DateTime
 {
     /**
      * @Serializer\Type("string")
+     *
      * @Serializer\Expose
+     *
      * @Serializer\SerializedName("format")
      */
     private $format;

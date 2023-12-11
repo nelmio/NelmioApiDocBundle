@@ -17,8 +17,10 @@ use OpenApi\Annotations as OA;
 
 /**
  * @Serializer\ExclusionPolicy("all")
+ *
  * @OA\Schema(
  *     required={"id", "user"},
+ *
  *     @OA\Property(property="virtual", ref=@Model(type=JMSUser::class))
  * )
  */
@@ -26,30 +28,40 @@ class JMSComplex
 {
     /**
      * @Serializer\Type("integer")
+     *
      * @Serializer\Expose
+     *
      * @Serializer\Groups({"list"})
      */
     private $id;
 
     /**
      * @OA\Property(ref=@Model(type=JMSUser::class))
+     *
      * @Serializer\Expose
+     *
      * @Serializer\Groups({"details"})
+     *
      * @Serializer\SerializedName("user")
      */
     private $User;
 
     /**
      * @Serializer\Type("string")
+     *
      * @Serializer\Expose
+     *
      * @Serializer\Groups({"list"})
      */
     private $name;
 
     /**
      * @Serializer\VirtualProperty
+     *
      * @Serializer\Expose
+     *
      * @Serializer\Groups({"list"})
+     *
      * @OA\Property(ref=@Model(type=JMSUser::class))
      */
     public function getVirtualFriend()

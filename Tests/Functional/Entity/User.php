@@ -63,12 +63,14 @@ if (Kernel::MAJOR_VERSION < 7) {
 
         /**
          * @var float
+         *
          * @OA\Property(default = 0.0)
          */
         private $money;
 
         /**
          * @var \DateTime
+         *
          * @OA\Property(property="creationDate")
          */
         private $createdAt;

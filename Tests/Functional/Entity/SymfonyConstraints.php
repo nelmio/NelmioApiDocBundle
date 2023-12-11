@@ -206,59 +206,55 @@ if (Kernel::MAJOR_VERSION < 7) {
         /**
          * @var int
          */
-        #[Assert\NotBlank(groups: ["test"])]
+        #[Assert\NotBlank(groups: ['test'])]
         private $propertyNotBlank;
 
         /**
          * @var int
-         *
          */
         #[Assert\NotNull()]
         private $propertyNotNull;
 
         /**
          * @var int
-         *
          */
-        #[Assert\Length(min: "0", max: "50")]
+        #[Assert\Length(min: '0', max: '50')]
         private $propertyAssertLength;
 
         /**
          * @var int
-         *
          */
-        #[Assert\Regex(pattern: "/[a-z]{2}/")]
+        #[Assert\Regex(pattern: '/[a-z]{2}/')]
         private $propertyRegex;
 
         /**
          * @var int
-         *
          */
-        #[Assert\Count(min: "0", max: "10")]
+        #[Assert\Count(min: '0', max: '10')]
         private $propertyCount;
 
         /**
          * @var int
          */
-        #[Assert\Choice(choices: ["choice1", "choice2"])]
+        #[Assert\Choice(choices: ['choice1', 'choice2'])]
         private $propertyChoice;
 
         /**
          * @var int
          */
-        #[Assert\Choice(callback: [self::class, "fetchAllowedChoices"])]
+        #[Assert\Choice(callback: [self::class, 'fetchAllowedChoices'])]
         private $propertyChoiceWithCallback;
 
         /**
          * @var int
          */
-        #[Assert\Choice(callback: "fetchAllowedChoices")]
+        #[Assert\Choice(callback: 'fetchAllowedChoices')]
         private $propertyChoiceWithCallbackWithoutClass;
 
         /**
          * @var string[]
          */
-        #[Assert\Choice(multiple: true, choices: ["choice1", "choice2"])]
+        #[Assert\Choice(multiple: true, choices: ['choice1', 'choice2'])]
         private $propertyChoiceWithMultiple;
 
         /**
@@ -266,7 +262,7 @@ if (Kernel::MAJOR_VERSION < 7) {
          */
         #[Assert\Expression(
             "this.getCategory() in ['php', 'symfony'] or !this.isTechnicalPost()",
-            message: "If this is a tech post, the category should be either php or symfony!"
+            message: 'If this is a tech post, the category should be either php or symfony!'
         )]
         private $propertyExpression;
 
@@ -299,7 +295,7 @@ if (Kernel::MAJOR_VERSION < 7) {
             $this->propertyWithCompoundValidationRule = $propertyWithCompoundValidationRule;
         }
 
-        #[Assert\Count(min: "0", max: "10")]
+        #[Assert\Count(min: '0', max: '10')]
         public function setPropertyNotBlank(int $propertyNotBlank): void
         {
             $this->propertyNotBlank = $propertyNotBlank;

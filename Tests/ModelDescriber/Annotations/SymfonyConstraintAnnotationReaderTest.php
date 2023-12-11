@@ -41,6 +41,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $entity = new class() {
             /**
              * @Assert\NotBlank()
+             *
              * @Assert\Length(min = 1)
              */
             private $property1;
@@ -66,6 +67,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
+     *
      * @dataProvider provideOptionalProperty
      */
     public function testOptionalProperty($entity)
@@ -93,6 +95,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         yield 'Annotations' => [new class() {
             /**
              * @Assert\NotBlank(allowNull = true)
+             *
              * @Assert\Length(min = 1)
              */
             private $property1;
@@ -115,6 +118,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
+     *
      * @dataProvider provideAssertChoiceResultsInNumericArray
      */
     public function testAssertChoiceResultsInNumericArray($entity)
@@ -141,6 +145,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         yield 'Annotations' => [new class() {
             /**
              * @Assert\Length(min = 1)
+             *
              * @Assert\Choice(choices=TEST_ASSERT_CHOICE_STATUSES)
              */
             private $property1;
@@ -157,6 +162,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
+     *
      * @dataProvider provideMultipleChoiceConstraintsApplyEnumToItems
      */
     public function testMultipleChoiceConstraintsApplyEnumToItems($entity)
@@ -192,7 +198,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
+     *
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
+     *
      * @dataProvider provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet
      */
     public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet($entity)
@@ -228,7 +236,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
+     *
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
+     *
      * @dataProvider provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet
      */
     public function testLengthConstraintDoesNotSetMinLengthIfMinIsNotSet($entity)
@@ -297,7 +307,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
+     *
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1821
+     *
      * @dataProvider provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet
      */
     public function testCountConstraintDoesNotSetMinItemsIfMinIsNotSet($entity)
@@ -333,7 +345,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
+     *
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1821
+     *
      * @dataProvider provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet
      */
     public function testCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet($entity)
@@ -369,7 +383,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
+     *
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1822
+     *
      * @dataProvider provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet
      */
     public function testRangeConstraintDoesNotSetMaximumIfMaxIsNotSet($entity)
@@ -405,7 +421,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
+     *
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1822
+     *
      * @dataProvider provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet
      */
     public function testRangeConstraintDoesNotSetMinimumIfMinIsNotSet($entity)
@@ -444,6 +462,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      * group when `group={"someGroup"}` is not set.
      *
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
+     *
      * @dataProvider provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet
      */
     public function testReaderWithValidationGroupsEnabledChecksForDefaultGroupWhenNoSerializationGroupsArePassed($entity)
@@ -464,6 +483,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
+     *
      * @dataProvider provideConstraintsWithGroups
      */
     public function testReaderWithValidationGroupsEnabledDoesNotReadAnnotationsWithoutDefaultGroupIfNoGroupsArePassed($entity)
@@ -487,6 +507,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
+     *
      * @dataProvider provideConstraintsWithGroups
      */
     public function testReaderWithValidationGroupsEnabledReadsOnlyConstraintsWithGroupsProvided($entity)
@@ -511,6 +532,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
+     *
      * @dataProvider provideConstraintsWithGroups
      */
     public function testReaderWithValidationGroupsEnabledCanReadFromMultipleValidationGroups($entity)
@@ -538,6 +560,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         yield 'Annotations' => [new class() {
             /**
              * @Assert\NotBlank()
+             *
              * @Assert\Range(min=1, groups={"other"})
              */
             private $property1;

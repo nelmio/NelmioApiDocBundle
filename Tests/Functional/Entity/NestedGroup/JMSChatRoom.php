@@ -22,20 +22,25 @@ class JMSChatRoom
 {
     /**
      * @Serializer\Type("integer")
+     *
      * @Serializer\Expose
+     *
      * @Serializer\Groups({"Default"})
      */
     private $id1;
 
     /**
      * @Serializer\Type("integer")
+     *
      * @Serializer\Expose
+     *
      * @Serializer\Groups({"mini"})
      */
     private $id2;
 
     /**
      * @Serializer\Type("integer")
+     *
      * @Serializer\Expose
      */
     private $id3;

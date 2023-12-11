@@ -22,20 +22,25 @@ class JMSChatFriend
 {
     /**
      * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom")
+     *
      * @Serializer\Expose
+     *
      * @Serializer\Groups({"mini"})
      */
     private $room;
 
     /**
      * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatLivingRoom")
+     *
      * @Serializer\Expose
+     *
      * @Serializer\Groups({"Default", "mini"})
      */
     private $living;
 
     /**
      * @Serializer\Type("Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom")
+     *
      * @Serializer\Expose
      */
     private $dining;

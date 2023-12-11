@@ -21,13 +21,13 @@ class SerializedNameEntity
     /**
      * @var string
      */
-    #[SerializedName("notfoo")]
+    #[SerializedName('notfoo')]
     public $foo;
 
     /**
      * Tests serialized name feature.
      */
-    #[SerializedName("notwhatyouthink")]
+    #[SerializedName('notwhatyouthink')]
     public function setBar(string $bar)
     {
     }
