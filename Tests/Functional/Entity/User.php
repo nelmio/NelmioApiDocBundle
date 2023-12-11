@@ -191,7 +191,7 @@ if (Kernel::MAJOR_VERSION < 7) {
          *
          * @var string[]
          */
-        #[OAT\Property(description: 'User roles', title: 'roles', example: ['ADMIN', 'SUPERUSER'], default: ['USER'])]
+        #[OAT\Property(description: 'User roles', title: 'roles', example: '["ADMIN","SUPERUSER"]', default: ['user'])]
         private $roles;
 
         /**
