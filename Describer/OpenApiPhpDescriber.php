@@ -69,6 +69,7 @@ final class OpenApiPhpDescriber
             $this->setContext($context);
 
             if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
+                $classAnnotations = [];
                 if (null !== $this->annotationReader) {
                     $classAnnotations = $this->annotationReader->getClassAnnotations($declaringClass);
                 }
