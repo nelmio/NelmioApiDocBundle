@@ -46,6 +46,7 @@
         "symfony/templating": "^5.4|^6.0|^7.0",
         "symfony/twig-bundle": "^5.4|^6.0|^7.0",
         "symfony/validator": "^5.4|^6.0|^7.0",
+        "symfony/expression-language": "^5.4|^6.0|^7.0",
 
         "api-platform/core": "^2.7.0|^3",
         "symfony/deprecation-contracts": "^2.1|^3",
