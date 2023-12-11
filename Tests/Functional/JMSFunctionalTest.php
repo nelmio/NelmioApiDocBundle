@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class JMSFunctionalTest extends WebTestCase
@@ -18,6 +19,10 @@ class JMSFunctionalTest extends WebTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        if (Kernel::MAJOR_VERSION >= 7) {
+            $this->markTestSkipped('JMS Serializer is not compatible with Symfony 7+');
+        }
 
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
