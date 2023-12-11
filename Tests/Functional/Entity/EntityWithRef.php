@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes\Schema;
+use OpenApi\Attributes as OAT;
 use Symfony\Component\HttpKernel\Kernel;
 
 if (Kernel::MAJOR_VERSION < 7) {
@@ -27,7 +27,7 @@ if (Kernel::MAJOR_VERSION < 7) {
         public $ignored = 'this property should be ignored because of the annotation above';
     }
 } else {
-    #[Schema(ref: '#/components/schemas/Test')]
+    #[OAT\Schema(ref: '#/components/schemas/Test')]
     class EntityWithRef
     {
         /**

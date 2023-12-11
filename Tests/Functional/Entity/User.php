@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes\Property;
+use OpenApi\Attributes as OAT;
 use Symfony\Component\HttpKernel\Kernel;
 
 if (Kernel::MAJOR_VERSION < 7) {
@@ -180,10 +180,10 @@ if (Kernel::MAJOR_VERSION < 7) {
         /**
          * @var int
          */
-        #[Property(description: 'User id', readOnly: true, title: 'userid', default: null)]
+        #[OAT\Property(description: 'User id', readOnly: true, title: 'userid', default: null)]
         private $id;
 
-        #[Property(type: 'string', readOnly: false)]
+        #[OAT\Property(type: 'string', readOnly: false)]
         private $email;
 
         /**
@@ -191,31 +191,31 @@ if (Kernel::MAJOR_VERSION < 7) {
          *
          * @var string[]
          */
-        #[Property(description: 'User roles', title: 'roles', example: ['ADMIN', 'SUPERUSER'], default: ['USER'])]
+        #[OAT\Property(description: 'User roles', title: 'roles', example: ['ADMIN', 'SUPERUSER'], default: ['USER'])]
         private $roles;
 
         /**
          * User Location.
          */
-        #[Property(type: 'string')]
+        #[OAT\Property(type: 'string')]
         private $location;
 
         /**
          * @var int
          */
-        #[Property(type: 'string')]
+        #[OAT\Property(type: 'string')]
         private $friendsNumber;
 
         /**
          * @var float
          */
-        #[Property(default: 0.0)]
+        #[OAT\Property(default: 0.0)]
         private $money;
 
         /**
          * @var \DateTime
          */
-        #[Property(property: 'creationDate')]
+        #[OAT\Property(property: 'creationDate')]
         private $createdAt;
 
         /**
@@ -236,7 +236,7 @@ if (Kernel::MAJOR_VERSION < 7) {
         /**
          * @var string
          */
-        #[Property(enum: ['disabled', 'enabled'])]
+        #[OAT\Property(enum: ['disabled', 'enabled'])]
         private $status;
 
         /**
@@ -249,7 +249,7 @@ if (Kernel::MAJOR_VERSION < 7) {
             $this->money = $money;
         }
 
-        #[Property(example: 1)]
+        #[OAT\Property(example: 1)]
         public function setId(int $id)
         {
             $this->id = $id;

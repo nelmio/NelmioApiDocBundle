@@ -12,8 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes\Items;
-use OpenApi\Attributes\Property;
+use OpenApi\Attributes as OAT;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -68,7 +67,7 @@ if (Kernel::MAJOR_VERSION < 7) {
         /**
          * @var array
          */
-        #[Property(type: 'array', items: new Items(type: 'string'))]
+        #[OAT\Property(type: 'array', items: new OAT\Items(type: 'string'))]
         #[Assert\Valid]
         public $propertyArray;
     }

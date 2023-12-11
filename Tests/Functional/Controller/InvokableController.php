@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes\Response;
+use OpenApi\Attributes as OAT;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -37,7 +37,7 @@ if (Kernel::MAJOR_VERSION < 7) {
     /**
      * Prevents a regression (see https://github.com/nelmio/NelmioApiDocBundle/issues/1559).
      */
-    #[Response(response: 200, description: 'Invokable!')]
+    #[OAT\Response(response: 200, description: 'Invokable!')]
     #[Route('/api/invoke', host: 'api.example.com', name: 'invokable', methods: ['GET'])]
     class InvokableController
     {

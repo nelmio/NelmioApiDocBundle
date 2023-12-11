@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes\Property;
+use OpenApi\Attributes as OAT;
 use Symfony\Component\HttpKernel\Kernel;
 
 if (Kernel::MAJOR_VERSION < 7) {
@@ -66,37 +66,37 @@ if (Kernel::MAJOR_VERSION < 7) {
         /**
          * @var ?string
          */
-        #[Property]
+        #[OAT\Property]
         public $nullablePropertyNullableNotSet;
 
         /**
          * @var ?string
          */
-        #[Property(nullable: false)]
+        #[OAT\Property(nullable: false)]
         public $nullablePropertyNullableFalseSet;
 
         /**
          * @var ?string
          */
-        #[Property(nullable: true)]
+        #[OAT\Property(nullable: true)]
         public $nullablePropertyNullableTrueSet;
 
         /**
          * @var string
          */
-        #[Property]
+        #[OAT\Property]
         public $nonNullablePropertyNullableNotSet;
 
         /**
          * @var string
          */
-        #[Property(nullable: false)]
+        #[OAT\Property(nullable: false)]
         public $nonNullablePropertyNullableFalseSet;
 
         /**
          * @var string
          */
-        #[Property(nullable: true)]
+        #[OAT\Property(nullable: true)]
         public $nonNullablePropertyNullableTrueSet;
     }
 }

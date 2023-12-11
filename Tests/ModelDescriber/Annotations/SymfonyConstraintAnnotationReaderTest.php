@@ -12,15 +12,15 @@
 namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader;
 use Nelmio\ApiDocBundle\Tests\Helper;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes\Property;
-use OpenApi\Attributes\Schema;
 use OpenApi\Context;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,18 +38,30 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function testUpdatePropertyFix1283()
     {
-        $entity = new class() {
-            /**
-             * @Assert\NotBlank()
-             *
-             * @Assert\Length(min = 1)
-             */
-            private $property1;
-            /**
-             * @Assert\NotBlank()
-             */
-            private $property2;
-        };
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            $entity = new class() {
+                /**
+                 * @Assert\NotBlank()
+                 *
+                 * @Assert\Length(min = 1)
+                 */
+                private $property1;
+
+                /**
+                 * @Assert\NotBlank()
+                 */
+                private $property2;
+            };
+        } else {
+            $entity = new class() {
+                #[Assert\Length(min: 1)]
+                #[Assert\NotBlank()]
+                private $property1;
+
+                #[Assert\NotBlank()]
+                private $property2;
+            };
+        }
 
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -92,18 +104,23 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function provideOptionalProperty(): iterable
     {
-        yield 'Annotations' => [new class() {
-            /**
-             * @Assert\NotBlank(allowNull = true)
-             *
-             * @Assert\Length(min = 1)
-             */
-            private $property1;
-            /**
-             * @Assert\NotBlank()
-             */
-            private $property2;
-        }];
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            yield 'Annotations' => [
+                new class() {
+                    /**
+                     * @Assert\NotBlank(allowNull = true)
+                     *
+                     * @Assert\Length(min = 1)
+                     */
+                    private $property1;
+
+                    /**
+                     * @Assert\NotBlank()
+                     */
+                    private $property2;
+                }
+            ];
+        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
@@ -142,14 +159,18 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             2 => 'blocked',
         ]);
 
-        yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Length(min = 1)
-             *
-             * @Assert\Choice(choices=TEST_ASSERT_CHOICE_STATUSES)
-             */
-            private $property1;
-        }];
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            yield 'Annotations' => [
+                new class() {
+                    /**
+                     * @Assert\Length(min = 1)
+                     *
+                     * @Assert\Choice(choices=TEST_ASSERT_CHOICE_STATUSES)
+                     */
+                    private $property1;
+                }
+            ];
+        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
@@ -181,12 +202,14 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function provideMultipleChoiceConstraintsApplyEnumToItems(): iterable
     {
-        yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Choice(choices={"one", "two"}, multiple=true)
-             */
-            private $property1;
-        }];
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            yield 'Annotations' => [new class() {
+                /**
+                 * @Assert\Choice(choices={"one", "two"}, multiple=true)
+                 */
+                private $property1;
+            }];
+        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
@@ -219,12 +242,16 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet(): iterable
     {
-        yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Length(min = 1)
-             */
-            private $property1;
-        }];
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            yield 'Annotations' => [
+                new class() {
+                    /**
+                     * @Assert\Length(min = 1)
+                     */
+                    private $property1;
+                }
+            ];
+        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
@@ -257,12 +284,16 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet(): iterable
     {
-        yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Length(max = 100)
-             */
-            private $property1;
-        }];
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            yield 'Annotations' => [
+                new class() {
+                    /**
+                     * @Assert\Length(max = 100)
+                     */
+                    private $property1;
+                }
+            ];
+        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
@@ -274,12 +305,19 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function testCompoundValidationRules()
     {
-        $entity = new class() {
-            /**
-             * @CustomAssert\CompoundValidationRule()
-             */
-            private $property1;
-        };
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            $entity = new class() {
+                /**
+                 * @CustomAssert\CompoundValidationRule()
+                 */
+                private $property1;
+            };
+        } else {
+            $entity = new class() {
+                #[CustomAssert\CompoundValidationRule()]
+                private $property1;
+            };
+        }
         $propertyName = 'property1';
 
         $schema = $this->createObj(OA\Schema::class, []);
@@ -328,12 +366,16 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet(): iterable
     {
-        yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Count(max = 10)
-             */
-            private $property1;
-        }];
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            yield 'Annotations' => [
+                new class() {
+                    /**
+                     * @Assert\Count(max = 10)
+                     */
+                    private $property1;
+                }
+            ];
+        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
@@ -366,12 +408,16 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet(): iterable
     {
-        yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Count(min = 10)
-             */
-            private $property1;
-        }];
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            yield 'Annotations' => [
+                new class() {
+                    /**
+                     * @Assert\Count(min = 10)
+                     */
+                    private $property1;
+                }
+            ];
+        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
@@ -404,12 +450,16 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet(): iterable
     {
-        yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Range(min = 10)
-             */
-            private $property1;
-        }];
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            yield 'Annotations' => [
+                new class() {
+                    /**
+                     * @Assert\Range(min = 10)
+                     */
+                    private $property1;
+                }
+            ];
+        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
@@ -442,12 +492,16 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet(): iterable
     {
-        yield 'Annotations' => [new class() {
-            /**
-             * @Assert\Range(max = 10)
-             */
-            private $property1;
-        }];
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            yield 'Annotations' => [
+                new class() {
+                    /**
+                     * @Assert\Range(max = 10)
+                     */
+                    private $property1;
+                }
+            ];
+        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
@@ -512,9 +566,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testReaderWithValidationGroupsEnabledReadsOnlyConstraintsWithGroupsProvided($entity)
     {
-        $schema = $this->createObj(Schema::class, []);
+        $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([
-            $this->createObj(Property::class, ['property' => 'property1']),
+            $this->createObj(OA\Property::class, ['property' => 'property1']),
         ]);
         $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
         $reader->setSchema($schema);
@@ -557,14 +611,16 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function provideConstraintsWithGroups(): iterable
     {
-        yield 'Annotations' => [new class() {
-            /**
-             * @Assert\NotBlank()
-             *
-             * @Assert\Range(min=1, groups={"other"})
-             */
-            private $property1;
-        }];
+        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+            yield 'Annotations' => [new class() {
+                /**
+                 * @Assert\NotBlank()
+                 *
+                 * @Assert\Range(min=1, groups={"other"})
+                 */
+                private $property1;
+            }];
+        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {

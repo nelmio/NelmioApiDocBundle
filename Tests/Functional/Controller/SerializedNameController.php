@@ -15,7 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\SerializedNameEnt;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedNameEntity;
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes\Response;
+use OpenApi\Attributes as OAT;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -48,7 +48,7 @@ if (Kernel::MAJOR_VERSION < 7) {
     #[Route('/api', host: 'api.example.com')]
     class SerializedNameController
     {
-        #[Response(response: 200, description: 'success', attachables: [new Model(type: SerializedNameEntity::class)])]
+        #[OAT\Response(response: 200, description: 'success', attachables: [new Model(type: SerializedNameEntity::class)])]
         #[Route('/serializename', methods: ['GET'])]
         public function serializedNameAction()
         {

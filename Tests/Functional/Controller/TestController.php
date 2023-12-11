@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes\Response;
+use OpenApi\Attributes as OAT;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -38,7 +38,7 @@ if (Kernel::MAJOR_VERSION < 7) {
     #[Route('/test', host: 'api-test.example.com')]
     class TestController
     {
-        #[Response(response: 200, description: 'Test')]
+        #[OAT\Response(response: 200, description: 'Test')]
         #[Route('/test/', methods: ['GET'])]
         public function testAction()
         {
