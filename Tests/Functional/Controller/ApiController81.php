@@ -315,15 +315,6 @@ class ApiController81
     {
     }
 
-    /**
-     * @Route("/entity-with-object-type", methods={"GET", "POST"})
-     *
-     * @OA\Get(operationId="entity-with-object-type")
-     *
-     * @OA\Response(response=200, description="success", @OA\JsonContent(
-     *      ref=@Model(type=EntityWithObjectType::class),
-     * ))
-     */
     #[Route('/entity-with-object-type', methods: ['GET', 'POST'])]
     #[OA\Get(operationId: 'entity-with-object-type')]
     #[OA\Response(
