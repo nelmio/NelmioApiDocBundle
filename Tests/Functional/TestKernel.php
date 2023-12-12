@@ -92,6 +92,10 @@ class TestKernel extends Kernel
             $this->import($routes, __DIR__.'/Controller/SerializedNameController.php', '/', self::MAJOR_VERSION < 7 ? 'annotation' : 'attribute');
         }
 
+        if ($this->flags & self::ERROR_ARRAY_ITEMS) {
+            $this->import($routes, __DIR__.'/Controller/ArrayItemsErrorController.php', '/', self::MAJOR_VERSION < 7 ? 'annotation' : 'attribute');
+        }
+
         if (self::MAJOR_VERSION < 7) {
             if ($this->flags & self::USE_JMS) {
                 $this->import($routes, __DIR__.'/Controller/JMSController.php', '/', 'annotation');
@@ -105,10 +109,6 @@ class TestKernel extends Kernel
                     $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
                 } catch (\ReflectionException $e) {
                 }
-            }
-
-            if ($this->flags & self::ERROR_ARRAY_ITEMS) {
-                $this->import($routes, __DIR__.'/Controller/ArrayItemsErrorController.php', '/', 'annotation');
             }
         }
     }
