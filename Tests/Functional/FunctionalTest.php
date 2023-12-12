@@ -544,7 +544,12 @@ class FunctionalTest extends WebTestCase
             $this->markTestSkipped('Annotation @SerializedName doesn\'t exist.');
         }
 
-        $model = $this->getModel('SerializedNameEnt');
+        if (Kernel::MAJOR_VERSION >= 7) {
+            $model = $this->getModel('SerializedNameEntity');
+        } else {
+            $model = $this->getModel('SerializedNameEnt');
+        }
+
         $this->assertCount(2, $model->properties);
 
         $this->assertNotHasProperty('foo', $model);
