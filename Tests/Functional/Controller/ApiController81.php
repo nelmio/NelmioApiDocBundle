@@ -38,15 +38,11 @@ use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 
 class ApiController81
 {
-    #[OA\Get(
-        responses: [
-            new OA\Response(
-                response: '200',
-                description: 'Success',
-                attachables: [
-                    new Model(type: Article::class, groups: ['light']),
-                ],
-            )
+    #[OA\Response(
+        response: '200',
+        description: 'Success',
+        attachables: [
+            new Model(type: Article::class, groups: ['light']),
         ],
     )]
     #[OA\Parameter(ref: '#/components/parameters/test')]
