@@ -6,8 +6,8 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityThroughNameConverter;
-use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Routing\Annotation\Route;
 
 class NameConverterController80
 {
