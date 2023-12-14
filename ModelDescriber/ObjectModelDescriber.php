@@ -117,7 +117,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $propertyInfoProperties = array_intersect($propertyInfoProperties, $this->propertyInfo->getProperties($class, []) ?? []);
 
         foreach ($propertyInfoProperties as $propertyName) {
-            $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, null !== $model->getGroups() ? ['groups' => $model->getGroups()] : []) : $propertyName;
+            $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, $model->getSerializationContext()) : $propertyName;
 
             $reflections = $this->getReflections($reflClass, $propertyName);
 
