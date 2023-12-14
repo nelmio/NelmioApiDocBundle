@@ -32,7 +32,6 @@ final class Model
         if (null !== $groups) {
             $this->serializationContext[AbstractNormalizer::GROUPS] = $groups;
         }
-
     }
 
     /**

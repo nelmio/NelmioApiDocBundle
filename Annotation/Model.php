@@ -55,9 +55,9 @@ final class Model extends Attachable
     public $serializationContext;
 
     /**
-     * @param mixed[]  $properties
-     * @param string[] $groups
-     * @param mixed[]  $options
+     * @param mixed[]              $properties
+     * @param string[]             $groups
+     * @param mixed[]              $options
      * @param array<string, mixed> $serializationContext
      */
     public function __construct(

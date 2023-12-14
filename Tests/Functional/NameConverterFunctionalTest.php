@@ -24,7 +24,7 @@ class NameConverterFunctionalTest extends WebTestCase
                     return $propertyName;
                 }
 
-                return 'name_converter_context_' . $propertyName;
+                return 'name_converter_context_'.$propertyName;
             }
 
             public function denormalize(string $propertyName, string $class = null, string $format = null, array $context = []): string
