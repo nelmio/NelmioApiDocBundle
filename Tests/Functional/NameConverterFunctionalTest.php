@@ -11,31 +11,13 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface;
-
 class NameConverterFunctionalTest extends WebTestCase
 {
     protected function setUp(): void
     {
-        $nameConverter = new class() implements AdvancedNameConverterInterface {
-            public function normalize(string $propertyName, string $class = null, string $format = null, array $context = []): string
-            {
-                if (!isset($context['secret_name_converter_value'])) {
-                    return $propertyName;
-                }
-
-                return 'name_converter_context_'.$propertyName;
-            }
-
-            public function denormalize(string $propertyName, string $class = null, string $format = null, array $context = []): string
-            {
-                throw new \RuntimeException('Was not expected to be called');
-            }
-        };
-
-        self::getContainer()->set('serializer.name_converter.metadata_aware', $nameConverter);
-
         parent::setUp();
+
+        static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
 
     public function testContextPassedToNameConverter()
