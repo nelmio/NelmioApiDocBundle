@@ -7,13 +7,15 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber;
 use Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface;
 use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 
-class NameConverter implements AdvancedNameConverterInterface {
+class NameConverter implements AdvancedNameConverterInterface
+{
     /**
      * @var MetadataAwareNameConverter
      */
     private $inner;
 
-    public function __construct(MetadataAwareNameConverter $inner) {
+    public function __construct(MetadataAwareNameConverter $inner)
+    {
         $this->inner = $inner;
     }
 
