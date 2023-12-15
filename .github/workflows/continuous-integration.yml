@@ -64,7 +64,7 @@ jobs:
       - name: Remove packages not compatible symfony 7
         if: matrix.symfony-require == '7.0.*'
         run: |
-          composer remove friendsofsymfony/rest-bundle sensio/framework-extra-bundle jms/serializer-bundle willdurand/hateoas-bundle --no-update --dev
+          composer remove friendsofsymfony/rest-bundle sensio/framework-extra-bundle --no-update --dev
 
       - name: "Install dependencies with composer"
         env:
