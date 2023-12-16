@@ -8,7 +8,7 @@ api:
     type: attribute
 
 class_api:
-    resource: ../Controller/ClassApiController.php
+    resource: ../Controller/ClassApiController81.php
     type: attribute
   
 undocumented:
@@ -16,7 +16,7 @@ undocumented:
     type: attribute
   
 invokable:
-    resource: ../Controller/InvokableController.php
+    resource: ../Controller/InvokableController81.php
     type: attribute
   
 api_platform:
