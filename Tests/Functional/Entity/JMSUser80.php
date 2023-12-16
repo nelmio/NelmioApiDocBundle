@@ -67,7 +67,7 @@ class JMSUser80
      *
      * @OA\Property(default = {"user"}, description = "Roles list", example="[""ADMIN"",""SUPERUSER""]", title="roles")
      */
-    private $roles;
+    protected $roles;
 
     /**
      * User Location.

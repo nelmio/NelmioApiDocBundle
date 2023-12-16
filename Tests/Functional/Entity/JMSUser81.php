@@ -47,7 +47,7 @@ class JMSUser81
     #[Serializer\Accessor(getter: "getRoles", setter: "setRoles")]
     #[Serializer\Expose]
     #[OA\Property(default: ["user"], description: "Roles list", example: '["ADMIN","SUPERUSER"]', title: "roles")]
-    private $roles;
+    protected $roles;
 
     /**
      * User Location.
