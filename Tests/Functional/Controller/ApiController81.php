@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
+use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedNameEntity;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Operation;
@@ -413,6 +414,12 @@ class ApiController81
     #[Route('/enum')]
     #[OA\Response(response: '201', description: '', attachables: [new Model(type: Article81::class)])]
     public function enum()
+    {
+    }
+
+    #[Route('/serializename', methods: ['GET'])]
+    #[OA\Response(response: 200, description: 'success', content: new Model(type: SerializedNameEntity::class))]
+    public function serializedNameAction()
     {
     }
 }

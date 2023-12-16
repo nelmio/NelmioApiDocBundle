@@ -27,6 +27,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidation
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorFileMapping;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
+use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\SerializedNameEnt;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithAlternateSchemaType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithModel;
@@ -451,6 +452,20 @@ class ApiController80
      * )
      */
     public function entityWithNullableSchemaSet()
+    {
+    }
+
+    /**
+     * @OA\Response(
+     *     response="200",
+     *     description="success",
+     *
+     *     @Model(type=SerializedNameEnt::class)
+     * )
+     *
+     * @Route("/serializename", methods={"GET"})
+     */
+    public function serializedNameAction()
     {
     }
 }

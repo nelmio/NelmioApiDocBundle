@@ -33,7 +33,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class TestKernel extends Kernel
 {
@@ -84,10 +83,6 @@ class TestKernel extends Kernel
             $this->import($routes, __DIR__.'/Resources/routes.yaml', '/', 'yaml');
         } else {
             $this->import($routes, __DIR__.'/Resources/routes-attributes.yaml', '/', 'yaml');
-        }
-
-        if (class_exists(SerializedName::class)) {
-            $this->import($routes, __DIR__.'/Controller/SerializedNameController.php', '/', self::MAJOR_VERSION < 7 ? 'annotation' : 'attribute');
         }
 
         if ($this->flags & self::ERROR_ARRAY_ITEMS) {
