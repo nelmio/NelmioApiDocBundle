@@ -14,9 +14,15 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class FOSRestTest extends WebTestCase
 {
+    protected static function createKernel(array $options = []): KernelInterface
+    {
+        return new TestKernel(TestKernel::USE_FOSREST);
+    }
+
     protected function setUp(): void
     {
         if (Kernel::MAJOR_VERSION >= 7) {

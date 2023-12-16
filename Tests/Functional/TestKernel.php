@@ -39,6 +39,7 @@ class TestKernel extends Kernel
     use MicroKernelTrait;
     const USE_JMS = 1;
     const USE_BAZINGA = 2;
+    const USE_FOSREST = 3;
     const ERROR_ARRAY_ITEMS = 4;
     const USE_VALIDATION_GROUPS = 8;
 
@@ -104,6 +105,10 @@ class TestKernel extends Kernel
                 $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
             } catch (\ReflectionException $e) {
             }
+        }
+
+        if ($this->flags & self::USE_FOSREST) {
+            $this->import($routes, __DIR__.'/Controller/FOSRestController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
         }
     }
 

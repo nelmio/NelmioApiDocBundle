@@ -19,11 +19,6 @@ invokable:
     resource: ../Controller/InvokableController80.php
     type: annotation
   
-fos_rest:
-    resource: ../Controller/FOSRestController.php
-    type: annotation
-  
-  
 api_platform:
     resource: .
     prefix: /api
