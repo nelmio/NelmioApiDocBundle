@@ -11,18 +11,19 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use Symfony\Component\Routing\Annotation\Route;
 
-if (\PHP_VERSION_ID >= 80100) {
-    #[Route("/api", host: "api.example.com")]
-    class FOSRestController extends FOSRestController81
-    {
-    }
-} else {
+if (TestKernel::isAnnotationsAvailable()) {
     /**
      * @Route("/api", host="api.example.com")
      */
     class FOSRestController extends FOSRestController80
+    {
+    }
+} else {
+    #[Route("/api", host: "api.example.com")]
+    class FOSRestController extends FOSRestController81
     {
     }
 }

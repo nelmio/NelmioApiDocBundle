@@ -64,7 +64,7 @@ class FunctionalTest extends WebTestCase
 
     public function provideArticleRoute(): iterable
     {
-        if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
+        if (interface_exists(Reader::class)) {
             yield 'Annotations' => ['/api/article/{id}'];
         }
 
@@ -544,10 +544,10 @@ class FunctionalTest extends WebTestCase
             $this->markTestSkipped('Annotation @SerializedName doesn\'t exist.');
         }
 
-        if (Kernel::MAJOR_VERSION >= 7) {
-            $model = $this->getModel('SerializedNameEntity');
-        } else {
+        if (TestKernel::isAnnotationsAvailable()) {
             $model = $this->getModel('SerializedNameEnt');
+        } else {
+            $model = $this->getModel('SerializedNameEntity');
         }
 
         $this->assertCount(2, $model->properties);

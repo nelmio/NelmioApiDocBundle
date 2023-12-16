@@ -80,7 +80,7 @@ class TestKernel extends Kernel
 
     protected function configureRoutes($routes)
     {
-        if (self::MAJOR_VERSION < 7) {
+        if (self::isAnnotationsAvailable()) {
             $this->import($routes, __DIR__.'/Resources/routes.yaml', '/', 'yaml');
         } else {
             $this->import($routes, __DIR__.'/Resources/routes-attributes.yaml', '/', 'yaml');
@@ -131,7 +131,7 @@ class TestKernel extends Kernel
             'test' => null,
             'validation' => null,
             'form' => null,
-            'serializer' => self::MAJOR_VERSION < 7 ? ['enable_annotations' => true] : [] + [
+            'serializer' => self::isAnnotationsAvailable() ? ['enable_annotations' => true] : [] + [
                 'mapping' => [
                     'paths' => [__DIR__.'/Resources/serializer/'],
                 ],
@@ -155,7 +155,7 @@ class TestKernel extends Kernel
             'exception_controller' => null,
         ]);
 
-        if (self::MAJOR_VERSION < 7) {
+        if (self::isAnnotationsAvailable()) {
             $c->loadFromExtension('sensio_framework_extra', [
                 'router' => [
                     'annotations' => false,
@@ -171,7 +171,7 @@ class TestKernel extends Kernel
             ]],
         ]);
 
-        if (self::MAJOR_VERSION < 7) {
+        if (self::isAnnotationsAvailable()) {
             $c->loadFromExtension('fos_rest', [
                 'format_listener' => [
                     'rules' => [
@@ -343,5 +343,14 @@ class TestKernel extends Kernel
     public function unserialize($str)
     {
         $this->__construct(unserialize($str));
+    }
+
+    public static function isAnnotationsAvailable(): bool
+    {
+        if (Kernel::MAJOR_VERSION < 7) {
+            return false;
+        }
+
+        return PHP_VERSION_ID < 80100;
     }
 }
