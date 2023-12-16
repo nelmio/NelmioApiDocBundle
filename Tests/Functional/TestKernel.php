@@ -335,7 +335,7 @@ class TestKernel extends Kernel
 
     public static function isAnnotationsAvailable(): bool
     {
-        if (Kernel::MAJOR_VERSION < 7) {
+        if (Kernel::MAJOR_VERSION >= 7) {
             return false;
         }
 
