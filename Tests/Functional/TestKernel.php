@@ -61,16 +61,19 @@ class TestKernel extends Kernel
             new TestBundle(),
         ];
 
-        if (self::MAJOR_VERSION < 7) {
+        if (class_exists(SensioFrameworkExtraBundle::class)) {
             $bundles[] = new SensioFrameworkExtraBundle();
+        }
+
+        if (class_exists(FOSRestBundle::class)) {
             $bundles[] = new FOSRestBundle();
+        }
 
-            if ($this->flags & self::USE_JMS) {
-                $bundles[] = new JMSSerializerBundle();
+        if ($this->flags & self::USE_JMS) {
+            $bundles[] = new JMSSerializerBundle();
 
-                if ($this->flags & self::USE_BAZINGA) {
-                    $bundles[] = new BazingaHateoasBundle();
-                }
+            if ($this->flags & self::USE_BAZINGA) {
+                $bundles[] = new BazingaHateoasBundle();
             }
         }
 
@@ -86,22 +89,20 @@ class TestKernel extends Kernel
         }
 
         if ($this->flags & self::ERROR_ARRAY_ITEMS) {
-            $this->import($routes, __DIR__.'/Controller/ArrayItemsErrorController.php', '/', self::MAJOR_VERSION < 7 ? 'annotation' : 'attribute');
+            $this->import($routes, __DIR__.'/Controller/ArrayItemsErrorController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
         }
 
-        if (self::MAJOR_VERSION < 7) {
-            if ($this->flags & self::USE_JMS) {
-                $this->import($routes, __DIR__.'/Controller/JMSController.php', '/', 'annotation');
-            }
+        if ($this->flags & self::USE_JMS) {
+            $this->import($routes, __DIR__.'/Controller/JMSController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
+        }
 
-            if ($this->flags & self::USE_BAZINGA) {
-                $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', 'annotation');
+        if ($this->flags & self::USE_BAZINGA) {
+            $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', 'annotation');
 
-                try {
-                    new \ReflectionMethod(Embedded::class, 'getType');
-                    $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
-                } catch (\ReflectionException $e) {
-                }
+            try {
+                new \ReflectionMethod(Embedded::class, 'getType');
+                $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
+            } catch (\ReflectionException $e) {
             }
         }
     }
@@ -192,53 +193,6 @@ class TestKernel extends Kernel
             }
         }
 
-        $models = [
-            [
-                'alias' => 'PrivateProtectedExposure',
-                'type' => PrivateProtectedExposure::class,
-            ],
-            [
-                'alias' => 'SymfonyConstraintsTestGroup',
-                'type' => SymfonyConstraintsWithValidationGroups::class,
-                'groups' => ['test'],
-            ],
-            [
-                'alias' => 'SymfonyConstraintsDefaultGroup',
-                'type' => SymfonyConstraintsWithValidationGroups::class,
-                'groups' => null,
-            ],
-        ];
-
-        if (self::MAJOR_VERSION < 7) {
-            $models = [
-                ...$models,
-                [
-                    'alias' => 'JMSPicture_mini',
-                    'type' => JMSPicture::class,
-                    'groups' => ['mini'],
-                ],
-                [
-                    'alias' => 'BazingaUser_grouped',
-                    'type' => BazingaUser::class,
-                    'groups' => ['foo'],
-                ],
-                [
-                    'alias' => 'JMSComplex',
-                    'type' => JMSComplex::class,
-                    'groups' => [
-                        'list',
-                        'details',
-                        'User' => ['list'],
-                    ],
-                ],
-                [
-                    'alias' => 'JMSComplexDefault',
-                    'type' => JMSComplex::class,
-                    'groups' => null,
-                ],
-            ];
-        }
-
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
             'use_validation_groups' => boolval($this->flags & self::USE_VALIDATION_GROUPS),
@@ -311,7 +265,46 @@ class TestKernel extends Kernel
                ],
             ],
             'models' => [
-                'names' => $models,
+                'names' => [
+                    [
+                        'alias' => 'PrivateProtectedExposure',
+                        'type' => PrivateProtectedExposure::class,
+                    ],
+                    [
+                        'alias' => 'JMSPicture_mini',
+                        'type' => JMSPicture::class,
+                        'groups' => ['mini'],
+                    ],
+                    [
+                        'alias' => 'BazingaUser_grouped',
+                        'type' => BazingaUser::class,
+                        'groups' => ['foo'],
+                    ],
+                    [
+                        'alias' => 'JMSComplex',
+                        'type' => JMSComplex::class,
+                        'groups' => [
+                            'list',
+                            'details',
+                            'User' => ['list'],
+                        ],
+                    ],
+                    [
+                        'alias' => 'JMSComplexDefault',
+                        'type' => JMSComplex::class,
+                        'groups' => null,
+                    ],
+                    [
+                        'alias' => 'SymfonyConstraintsTestGroup',
+                        'type' => SymfonyConstraintsWithValidationGroups::class,
+                        'groups' => ['test'],
+                    ],
+                    [
+                        'alias' => 'SymfonyConstraintsDefaultGroup',
+                        'type' => SymfonyConstraintsWithValidationGroups::class,
+                        'groups' => null,
+                    ],
+                ],
             ],
         ]);
 
