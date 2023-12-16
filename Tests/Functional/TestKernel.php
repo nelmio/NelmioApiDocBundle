@@ -45,8 +45,6 @@ class TestKernel extends Kernel
 
     private $flags;
 
-    private bool $supportsLegacyAnnotations;
-
     public function __construct(int $flags = 0)
     {
         parent::__construct('test'.$flags, true);
