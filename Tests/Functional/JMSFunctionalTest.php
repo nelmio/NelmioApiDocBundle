@@ -20,10 +20,6 @@ class JMSFunctionalTest extends WebTestCase
     {
         parent::setUp();
 
-        if (Kernel::MAJOR_VERSION >= 7) {
-            $this->markTestSkipped('JMS Serializer is not compatible with Symfony 7+');
-        }
-
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
 

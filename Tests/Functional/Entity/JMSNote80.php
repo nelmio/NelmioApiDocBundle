@@ -11,15 +11,26 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use JMS\Serializer\Annotation as Serializer;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class VirtualProperty extends VirtualProperty80
-    {
-    }
-} else {
-    class VirtualProperty extends VirtualProperty81
-    {
-    }
+/**
+ * JMSNote.
+ *
+ * @Serializer\ExclusionPolicy("all")
+ */
+class JMSNote80
+{
+    /**
+     * @Serializer\Type("string")
+     *
+     * @Serializer\Expose
+     */
+    private $long;
+
+    /**
+     * @Serializer\Type("int")
+     *
+     * @Serializer\Expose
+     */
+    private $short;
 }

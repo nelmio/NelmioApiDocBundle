@@ -13,58 +13,34 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Annotations as OA;
 
-/**
- * @Serializer\ExclusionPolicy("all")
- *
- * @OA\Schema(
- *     required={"id", "user"},
- *
- *     @OA\Property(property="virtual", ref=@Model(type=JMSUser::class))
- * )
- */
-class JMSComplex
-{
+if (TestKernel::isAnnotationsAvailable()) {
     /**
-     * @Serializer\Type("integer")
+     * @Serializer\ExclusionPolicy("all")
      *
-     * @Serializer\Expose
+     * @OA\Schema(
+     *     required={"id", "user"},
      *
-     * @Serializer\Groups({"list"})
+     *     @OA\Property(property="virtual", ref=@Model(type=JMSUser::class))
+     * )
      */
-    private $id;
-
-    /**
-     * @OA\Property(ref=@Model(type=JMSUser::class))
-     *
-     * @Serializer\Expose
-     *
-     * @Serializer\Groups({"details"})
-     *
-     * @Serializer\SerializedName("user")
-     */
-    private $User;
-
-    /**
-     * @Serializer\Type("string")
-     *
-     * @Serializer\Expose
-     *
-     * @Serializer\Groups({"list"})
-     */
-    private $name;
-
-    /**
-     * @Serializer\VirtualProperty
-     *
-     * @Serializer\Expose
-     *
-     * @Serializer\Groups({"list"})
-     *
-     * @OA\Property(ref=@Model(type=JMSUser::class))
-     */
-    public function getVirtualFriend()
+    class JMSComplex extends JMSComplex80
+    {
+    }
+} else {
+    #[Serializer\ExclusionPolicy("all")]
+    #[\OpenApi\Attributes\Schema(
+        required: ["id", "user"],
+        properties: [
+            new \OpenApi\Attributes\Property(
+                property: "virtual",
+                ref: new Model(type: JMSUser::class)
+            ),
+        ],
+    )]
+    class JMSComplex extends JMSComplex81
     {
     }
 }

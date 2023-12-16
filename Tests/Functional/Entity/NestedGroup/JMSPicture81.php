@@ -12,14 +12,19 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup;
 
 use JMS\Serializer\Annotation as Serializer;
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class JMSChatRoom extends JMSChatRoom80
-    {
-    }
-} else {
-    class JMSChatRoom extends JMSChatRoom81
-    {
-    }
+/**
+ * User.
+ */
+#[Serializer\ExclusionPolicy('all')]
+class JMSPicture81
+{
+    #[Serializer\Type('integer')]
+    #[Serializer\Expose]
+    private $id;
+
+    #[Serializer\Type('integer')]
+    #[Serializer\Expose]
+    #[Serializer\Groups(['mini'])]
+    private $onlyDirectPictureMini;
 }

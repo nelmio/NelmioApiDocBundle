@@ -37,10 +37,10 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 class TestKernel extends Kernel
 {
     use MicroKernelTrait;
-    public const USE_JMS = 1;
-    public const USE_BAZINGA = 2;
-    public const ERROR_ARRAY_ITEMS = 4;
-    public const USE_VALIDATION_GROUPS = 8;
+    const USE_JMS = 1;
+    const USE_BAZINGA = 2;
+    const ERROR_ARRAY_ITEMS = 4;
+    const USE_VALIDATION_GROUPS = 8;
 
     private $flags;
 
@@ -97,11 +97,11 @@ class TestKernel extends Kernel
         }
 
         if ($this->flags & self::USE_BAZINGA) {
-            $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', 'annotation');
+            $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
 
             try {
                 new \ReflectionMethod(Embedded::class, 'getType');
-                $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
+                $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
             } catch (\ReflectionException $e) {
             }
         }

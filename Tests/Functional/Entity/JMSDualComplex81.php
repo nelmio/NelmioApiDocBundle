@@ -11,15 +11,18 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use JMS\Serializer\Annotation as Serializer;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class VirtualProperty extends VirtualProperty80
-    {
-    }
-} else {
-    class VirtualProperty extends VirtualProperty81
-    {
-    }
+class JMSDualComplex81
+{
+    #[Serializer\Type('integer')]
+    private $id;
+
+    #[OA\Property(ref: new Model(type: JMSComplex::class))]
+    private $complex;
+
+    #[OA\Property(ref: new Model(type: JMSUser::class))]
+    private $user;
 }

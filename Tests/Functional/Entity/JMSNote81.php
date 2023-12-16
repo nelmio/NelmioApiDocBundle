@@ -11,14 +11,19 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
+use JMS\Serializer\Annotation as Serializer;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class JMSUser extends JMSUser80
-    {
-    }
-} else {
-    class JMSUser extends JMSUser81
-    {
-    }
+/**
+ * JMSNote.
+ */
+#[Serializer\ExclusionPolicy('all')]
+class JMSNote81
+{
+    #[Serializer\Type('string')]
+    #[Serializer\Expose]
+    private $long;
+
+    #[Serializer\Type('int')]
+    #[Serializer\Expose]
+    private $short;
 }
