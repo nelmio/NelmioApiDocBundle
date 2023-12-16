@@ -11,41 +11,19 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError\Foo;
-use OpenApi\Annotations as OA;
-use OpenApi\Attributes as OAT;
-use Symfony\Component\HttpKernel\Kernel;
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use Symfony\Component\Routing\Annotation\Route;
 
-if (Kernel::MAJOR_VERSION < 7) {
+if (TestKernel::isAnnotationsAvailable()) {
     /**
      * @Route(host="api.example.com")
      */
-    class ArrayItemsErrorController
+    class ArrayItemsErrorController extends ArrayItemsErrorController80
     {
-        /**
-         * @Route("/api/error", methods={"GET"})
-         *
-         * @OA\Response(
-         *     response=200,
-         *     description="Success",
-         *
-         *     @Model(type=Foo::class)
-         * )
-         */
-        public function errorAction()
-        {
-        }
     }
 } else {
     #[Route(host: 'api.example.com')]
-    class ArrayItemsErrorController
+    class ArrayItemsErrorController extends ArrayItemsErrorController81
     {
-        #[Route('/api/error', methods: ['GET'])]
-        #[OAT\Response(response: 200, description: 'Success', content: new Model(type: Foo::class))]
-        public function errorAction()
-        {
-        }
     }
 }
