@@ -198,6 +198,67 @@ class TestKernel extends Kernel
             }
         }
 
+        $models = [
+            [
+                'alias' => 'PrivateProtectedExposure',
+                'type' => PrivateProtectedExposure::class,
+            ],
+            [
+                'alias' => 'JMSPicture_mini',
+                'type' => JMSPicture::class,
+                'groups' => ['mini'],
+            ],
+            [
+                'alias' => 'BazingaUser_grouped',
+                'type' => BazingaUser::class,
+                'groups' => ['foo'],
+            ],
+            [
+                'alias' => 'JMSComplex',
+                'type' => JMSComplex80::class,
+                'groups' => [
+                    'list',
+                    'details',
+                    'User' => ['list'],
+                ],
+            ],
+            [
+                'alias' => 'JMSComplexDefault',
+                'type' => JMSComplex80::class,
+                'groups' => null,
+            ],
+            [
+                'alias' => 'SymfonyConstraintsTestGroup',
+                'type' => SymfonyConstraintsWithValidationGroups::class,
+                'groups' => ['test'],
+            ],
+            [
+                'alias' => 'SymfonyConstraintsDefaultGroup',
+                'type' => SymfonyConstraintsWithValidationGroups::class,
+                'groups' => null,
+            ],
+        ];
+
+        if (self::isAttributesAvailable()) {
+            $models = [
+                ...$models,
+                [
+                'alias' => 'JMSComplex',
+                'type' => \Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81::class,
+                'groups' => [
+                    'list',
+                    'details',
+                    'User' => ['list'],
+                ],
+            ],
+            [
+                'alias' => 'JMSComplexDefault',
+                'type' => \Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81::class,
+                'groups' => null,
+            ]
+            ];
+        }
+
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
             'use_validation_groups' => boolval($this->flags & self::USE_VALIDATION_GROUPS),
@@ -270,46 +331,7 @@ class TestKernel extends Kernel
                ],
             ],
             'models' => [
-                'names' => [
-                    [
-                        'alias' => 'PrivateProtectedExposure',
-                        'type' => PrivateProtectedExposure::class,
-                    ],
-                    [
-                        'alias' => 'JMSPicture_mini',
-                        'type' => JMSPicture::class,
-                        'groups' => ['mini'],
-                    ],
-                    [
-                        'alias' => 'BazingaUser_grouped',
-                        'type' => BazingaUser::class,
-                        'groups' => ['foo'],
-                    ],
-                    [
-                        'alias' => 'JMSComplex',
-                        'type' => JMSComplex80::class,
-                        'groups' => [
-                            'list',
-                            'details',
-                            'User' => ['list'],
-                        ],
-                    ],
-                    [
-                        'alias' => 'JMSComplexDefault',
-                        'type' => JMSComplex80::class,
-                        'groups' => null,
-                    ],
-                    [
-                        'alias' => 'SymfonyConstraintsTestGroup',
-                        'type' => SymfonyConstraintsWithValidationGroups::class,
-                        'groups' => ['test'],
-                    ],
-                    [
-                        'alias' => 'SymfonyConstraintsDefaultGroup',
-                        'type' => SymfonyConstraintsWithValidationGroups::class,
-                        'groups' => null,
-                    ],
-                ],
+                'names' => $models,
             ],
         ]);
 
