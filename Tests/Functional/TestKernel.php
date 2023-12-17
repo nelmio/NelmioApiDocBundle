@@ -19,7 +19,7 @@ use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
@@ -287,7 +287,7 @@ class TestKernel extends Kernel
                     ],
                     [
                         'alias' => 'JMSComplex',
-                        'type' => JMSComplex::class,
+                        'type' => JMSComplex80::class,
                         'groups' => [
                             'list',
                             'details',
@@ -296,7 +296,7 @@ class TestKernel extends Kernel
                     ],
                     [
                         'alias' => 'JMSComplexDefault',
-                        'type' => JMSComplex::class,
+                        'type' => JMSComplex80::class,
                         'groups' => null,
                     ],
                     [

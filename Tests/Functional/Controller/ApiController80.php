@@ -18,7 +18,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
@@ -374,7 +374,7 @@ class ApiController80
      * @OA\Get(operationId="alternate-entity-type")
      *
      * @OA\Response(response=200, description="success", @OA\JsonContent(
-     *      ref=@Model(type=EntityWithAlternateType::class),
+     *      ref=@Model(type=EntityWithAlternateType80::class),
      * ))
      */
     public function alternateEntityType()

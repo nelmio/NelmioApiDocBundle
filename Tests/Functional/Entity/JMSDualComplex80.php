@@ -23,7 +23,7 @@ class JMSDualComplex80
     private $id;
 
     /**
-     * @OA\Property(ref=@Model(type=JMSComplex::class))
+     * @OA\Property(ref=@Model(type=JMSComplex80::class))
      */
     private $complex;
 

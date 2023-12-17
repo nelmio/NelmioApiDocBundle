@@ -15,6 +15,15 @@ use JMS\Serializer\Annotation as Serializer;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
 
+/**
+ * @Serializer\ExclusionPolicy("all")
+ *
+ * @OA\Schema(
+ *     required={"id", "user"},
+ *
+ *     @OA\Property(property="virtual", ref=@Model(type=JMSUser::class))
+ * )
+ */
 class JMSComplex80
 {
     /**

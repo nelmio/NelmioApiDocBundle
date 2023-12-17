@@ -85,7 +85,7 @@ class FOSRestTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/fosrest'];
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (TestKernel::isAttributesAvailable()) {
             yield 'Attributes' => ['/api/fosrest_attributes'];
         }
     }

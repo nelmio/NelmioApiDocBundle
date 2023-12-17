@@ -20,7 +20,7 @@ class JMSDualComplex81
     #[Serializer\Type('integer')]
     private $id;
 
-    #[OA\Property(ref: new Model(type: JMSComplex::class))]
+    #[OA\Property(ref: new Model(type: JMSComplex81::class))]
     private $complex;
 
     #[OA\Property(ref: new Model(type: JMSUser::class))]

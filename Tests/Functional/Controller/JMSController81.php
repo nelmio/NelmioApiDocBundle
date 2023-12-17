@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSDualComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSNamingStrategyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSUser;
@@ -51,7 +51,7 @@ class JMSController81
         response: 200,
         description: "Success",
         content: new Model(
-            type: JMSComplex::class,
+            type: JMSComplex81::class,
             groups: ["list", "details", "User" => ["list"]])
     )]
     public function complexAction()

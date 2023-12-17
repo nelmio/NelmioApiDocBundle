@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
@@ -296,7 +296,7 @@ class ApiController81
         response: 200,
         description: 'success',
         content: new OA\JsonContent(
-            ref: new Model(type: EntityWithAlternateType::class),
+            ref: new Model(type: EntityWithAlternateType81::class),
         ),
     )]
     public function alternateEntityType()

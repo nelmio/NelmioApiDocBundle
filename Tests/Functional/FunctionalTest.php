@@ -543,10 +543,10 @@ class FunctionalTest extends WebTestCase
             $this->markTestSkipped('Annotation @SerializedName doesn\'t exist.');
         }
 
-        if (TestKernel::isAnnotationsAvailable()) {
-            $model = $this->getModel('SerializedNameEnt');
-        } else {
+        if (TestKernel::isAttributesAvailable()) {
             $model = $this->getModel('SerializedNameEntity');
+        } else {
+            $model = $this->getModel('SerializedNameEnt');
         }
 
         $this->assertCount(2, $model->properties);
@@ -671,7 +671,11 @@ class FunctionalTest extends WebTestCase
 
     public function testEntitiesWithOverriddenSchemaTypeDoNotReadOtherProperties()
     {
-        $model = $this->getModel('EntityWithAlternateType');
+        if (TestKernel::isAttributesAvailable()) {
+            $model = $this->getModel('EntityWithAlternateType81');
+        } else {
+            $model = $this->getModel('EntityWithAlternateType80');
+        }
 
         $this->assertSame('array', $model->type);
         $this->assertSame('string', $model->items->type);
