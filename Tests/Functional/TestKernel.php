@@ -350,4 +350,9 @@ class TestKernel extends Kernel
 
         return PHP_VERSION_ID < 80100;
     }
+
+    public static function isAttributesAvailable(): bool
+    {
+        return PHP_VERSION_ID >= 80100;
+    }
 }
