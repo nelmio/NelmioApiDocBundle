@@ -26,16 +26,22 @@ jobs:
         include:
           - php-version: 7.2
             composer-flags: "--prefer-lowest"
+            doctrine-annotations: true
           - php-version: 7.3
             symfony-require: "5.4.*"
+            doctrine-annotations: true
           - php-version: 8.0
             symfony-require: "5.4.*"
+            doctrine-annotations: true
           - php-version: 8.1
             symfony-require: "5.4.*"
+            doctrine-annotations: true
           - php-version: 8.1
             symfony-require: "6.3.*"
+            doctrine-annotations: true
           - php-version: 8.2
             symfony-require: "7.0.*"
+            doctrine-annotations: false
 
     steps:
       - name: "Checkout"
@@ -60,6 +66,11 @@ jobs:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install doctrine/annotations
+        if: matrix.doctrine-annotations == true
+        run: |
+          composer require doctrine/annotations --no-update
 
       - name: Remove packages not compatible symfony 7
         if: matrix.symfony-require == '7.0.*'
