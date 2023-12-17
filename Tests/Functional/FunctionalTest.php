@@ -17,7 +17,6 @@ use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class FunctionalTest extends WebTestCase
