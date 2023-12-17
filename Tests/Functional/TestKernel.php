@@ -132,7 +132,7 @@ class TestKernel extends Kernel
             'test' => null,
             'validation' => null,
             'form' => null,
-            'serializer' => PHP_VERSION_ID >= 80100 ? ['enable_annotations' => true] : [] + [
+            'serializer' => PHP_VERSION_ID >= 80100 && Kernel::MAJOR_VERSION < 7 ? ['enable_annotations' => true] : [] + [
                 'mapping' => [
                     'paths' => [__DIR__.'/Resources/serializer/'],
                 ],
