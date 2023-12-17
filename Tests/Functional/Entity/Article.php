@@ -11,10 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Symfony\Component\HttpKernel\Kernel;
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-if (Kernel::MAJOR_VERSION < 7) {
+if (TestKernel::isAnnotationsAvailable()) {
     /**
      * @author Guilhem N. <guilhem.niot@gmail.com>
      */

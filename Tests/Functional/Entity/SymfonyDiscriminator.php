@@ -11,10 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Symfony\Component\HttpKernel\Kernel;
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-if (Kernel::MAJOR_VERSION < 7) {
+if (TestKernel::isAnnotationsAvailable()) {
     /**
      * @DiscriminatorMap(typeProperty="type", mapping={
      *      "one": SymfonyDiscriminatorOne::class,

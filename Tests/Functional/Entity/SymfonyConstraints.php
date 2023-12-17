@@ -11,11 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Validator\Constraints as Assert;
 
-if (Kernel::MAJOR_VERSION < 7) {
+if (TestKernel::isAnnotationsAvailable()) {
     class SymfonyConstraints
     {
         /**

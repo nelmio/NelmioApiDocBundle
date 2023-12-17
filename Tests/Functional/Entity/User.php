@@ -11,11 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes as OAT;
-use Symfony\Component\HttpKernel\Kernel;
 
-if (Kernel::MAJOR_VERSION < 7) {
+if (TestKernel::isAnnotationsAvailable()) {
     /**
      * @author Guilhem N. <egetick@gmail.com>
      */
@@ -180,10 +179,10 @@ if (Kernel::MAJOR_VERSION < 7) {
         /**
          * @var int
          */
-        #[OAT\Property(description: 'User id', readOnly: true, title: 'userid', default: null)]
+        #[\OpenApi\Attributes\Property(description: 'User id', readOnly: true, title: 'userid', default: null)]
         private $id;
 
-        #[OAT\Property(type: 'string', readOnly: false)]
+        #[\OpenApi\Attributes\Property(type: 'string', readOnly: false)]
         private $email;
 
         /**
@@ -191,31 +190,31 @@ if (Kernel::MAJOR_VERSION < 7) {
          *
          * @var string[]
          */
-        #[OAT\Property(description: 'User roles', title: 'roles', example: '["ADMIN","SUPERUSER"]', default: ['user'])]
+        #[\OpenApi\Attributes\Property(description: 'User roles', title: 'roles', example: '["ADMIN","SUPERUSER"]', default: ['user'])]
         private $roles;
 
         /**
          * User Location.
          */
-        #[OAT\Property(type: 'string')]
+        #[\OpenApi\Attributes\Property(type: 'string')]
         private $location;
 
         /**
          * @var int
          */
-        #[OAT\Property(type: 'string')]
+        #[\OpenApi\Attributes\Property(type: 'string')]
         private $friendsNumber;
 
         /**
          * @var float
          */
-        #[OAT\Property(default: 0.0)]
+        #[\OpenApi\Attributes\Property(default: 0.0)]
         private $money;
 
         /**
          * @var \DateTime
          */
-        #[OAT\Property(property: 'creationDate')]
+        #[\OpenApi\Attributes\Property(property: 'creationDate')]
         private $createdAt;
 
         /**
@@ -236,7 +235,7 @@ if (Kernel::MAJOR_VERSION < 7) {
         /**
          * @var string
          */
-        #[OAT\Property(enum: ['disabled', 'enabled'])]
+        #[\OpenApi\Attributes\Property(enum: ['disabled', 'enabled'])]
         private $status;
 
         /**
@@ -249,7 +248,7 @@ if (Kernel::MAJOR_VERSION < 7) {
             $this->money = $money;
         }
 
-        #[OAT\Property(example: 1)]
+        #[\OpenApi\Attributes\Property(example: 1)]
         public function setId(int $id)
         {
             $this->id = $id;

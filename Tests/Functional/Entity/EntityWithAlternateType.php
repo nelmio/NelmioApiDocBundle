@@ -11,11 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes as OAT;
-use Symfony\Component\HttpKernel\Kernel;
 
-if (Kernel::MAJOR_VERSION < 7) {
+if (TestKernel::isAnnotationsAvailable()) {
     /**
      * @OA\Schema(type="array", @OA\Items(type="string"))
      */
@@ -35,7 +34,7 @@ if (Kernel::MAJOR_VERSION < 7) {
         }
     }
 } else {
-    #[OAT\Schema(type: 'array', items: new OAT\Items(type: 'string'))]
+    #[\OpenApi\Attributes\Schema(type: 'array', items: new \OpenApi\Attributes\Items(type: 'string'))]
     class EntityWithAlternateType implements \IteratorAggregate
     {
         /**

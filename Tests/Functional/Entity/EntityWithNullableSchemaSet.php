@@ -11,11 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes as OAT;
-use Symfony\Component\HttpKernel\Kernel;
 
-if (Kernel::MAJOR_VERSION < 7) {
+if (TestKernel::isAnnotationsAvailable()) {
     class EntityWithNullableSchemaSet
     {
         /**
@@ -66,37 +65,37 @@ if (Kernel::MAJOR_VERSION < 7) {
         /**
          * @var ?string
          */
-        #[OAT\Property]
+        #[\OpenApi\Attributes\Property]
         public $nullablePropertyNullableNotSet;
 
         /**
          * @var ?string
          */
-        #[OAT\Property(nullable: false)]
+        #[\OpenApi\Attributes\Property(nullable: false)]
         public $nullablePropertyNullableFalseSet;
 
         /**
          * @var ?string
          */
-        #[OAT\Property(nullable: true)]
+        #[\OpenApi\Attributes\Property(nullable: true)]
         public $nullablePropertyNullableTrueSet;
 
         /**
          * @var string
          */
-        #[OAT\Property]
+        #[\OpenApi\Attributes\Property]
         public $nonNullablePropertyNullableNotSet;
 
         /**
          * @var string
          */
-        #[OAT\Property(nullable: false)]
+        #[\OpenApi\Attributes\Property(nullable: false)]
         public $nonNullablePropertyNullableFalseSet;
 
         /**
          * @var string
          */
-        #[OAT\Property(nullable: true)]
+        #[\OpenApi\Attributes\Property(nullable: true)]
         public $nonNullablePropertyNullableTrueSet;
     }
 }

@@ -11,13 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes as OAT;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-if (Kernel::MAJOR_VERSION < 7) {
+if (TestKernel::isAnnotationsAvailable()) {
     class SymfonyConstraintsWithValidationGroups
     {
         /**
@@ -67,7 +66,7 @@ if (Kernel::MAJOR_VERSION < 7) {
         /**
          * @var array
          */
-        #[OAT\Property(type: 'array', items: new OAT\Items(type: 'string'))]
+        #[\OpenApi\Attributes\Property(type: 'array', items: new \OpenApi\Attributes\Items(type: 'string'))]
         #[Assert\Valid]
         public $propertyArray;
     }

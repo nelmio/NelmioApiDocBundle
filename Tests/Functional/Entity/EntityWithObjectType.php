@@ -11,11 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Annotations as OA;
-use OpenApi\Attributes as OAT;
-use Symfony\Component\HttpKernel\Kernel;
 
-if (Kernel::MAJOR_VERSION < 7) {
+if (TestKernel::isAnnotationsAvailable()) {
     /**
      * @OA\Schema(type="object")
      */
@@ -27,7 +26,7 @@ if (Kernel::MAJOR_VERSION < 7) {
         public $notIgnored = 'this should be read';
     }
 } else {
-    #[OAT\Schema(type: 'object')]
+    #[\OpenApi\Attributes\Schema(type: 'object')]
     class EntityWithObjectType
     {
         /**
