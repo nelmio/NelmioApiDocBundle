@@ -22,7 +22,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorFileMapping;
@@ -259,7 +259,7 @@ class ApiController80
      *    response="201",
      *    description="Used for symfony constraints test",
      *
-     *    @Model(type=SymfonyConstraints::class)
+     *    @Model(type=SymfonyConstraints80::class)
      * )
      */
     public function symfonyConstraintsAction()

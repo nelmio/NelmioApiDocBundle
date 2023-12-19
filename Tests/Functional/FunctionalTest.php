@@ -427,6 +427,12 @@ class FunctionalTest extends WebTestCase
 
     public function testSymfonyConstraintDocumentation()
     {
+        if (TestKernel::isAttributesAvailable()) {
+            $modelName = 'SymfonyConstraints81';
+        } else {
+            $modelName = 'SymfonyConstraints80';
+        }
+
         $expected = [
             'required' => [
                 'propertyNotBlank',
@@ -496,7 +502,7 @@ class FunctionalTest extends WebTestCase
                 ],
             ],
             'type' => 'object',
-            'schema' => 'SymfonyConstraints',
+            'schema' => $modelName,
         ];
 
         if (Helper::isCompoundValidatorConstraintSupported()) {
@@ -510,7 +516,7 @@ class FunctionalTest extends WebTestCase
             ];
         }
 
-        $this->assertEquals($expected, json_decode($this->getModel('SymfonyConstraints')->toJson(), true));
+        $this->assertEquals($expected, json_decode($this->getModel($modelName)->toJson(), true));
     }
 
     public function testConfigReference()
