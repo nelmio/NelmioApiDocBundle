@@ -126,19 +126,25 @@ class TestKernel extends Kernel
 
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
     {
+
         $framework = [
             'assets' => true,
             'secret' => 'MySecretKey',
             'test' => null,
             'validation' => null,
             'form' => null,
-            'serializer' => PHP_VERSION_ID >= 80100 && Kernel::MAJOR_VERSION < 7 ? ['enable_annotations' => true] : [] + [
+            'serializer' => (
+                PHP_VERSION_ID >= 80100 && Kernel::MAJOR_VERSION < 7
+                    ? ['enable_annotations' => true]
+                    : []
+                ) + [
                 'mapping' => [
                     'paths' => [__DIR__.'/Resources/serializer/'],
                 ],
             ],
             'property_access' => true,
         ];
+
         // Support symfony/framework-bundle < 5.4
         if (method_exists(\Symfony\Bundle\FrameworkBundle\Command\CachePoolClearCommand::class, 'complete')) {
             $framework += [
