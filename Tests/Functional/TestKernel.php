@@ -246,8 +246,7 @@ class TestKernel extends Kernel
         ];
 
         if (self::isAttributesAvailable()) {
-            $models = [
-                ...$models,
+            $models = array_merge($models, [
                 [
                 'alias' => 'JMSComplex',
                 'type' => \Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81::class,
@@ -256,13 +255,13 @@ class TestKernel extends Kernel
                     'details',
                     'User' => ['list'],
                 ],
-            ],
-            [
-                'alias' => 'JMSComplexDefault',
-                'type' => \Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81::class,
-                'groups' => null,
-            ]
-            ];
+                ],
+                [
+                    'alias' => 'JMSComplexDefault',
+                    'type' => \Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81::class,
+                    'groups' => null,
+                ]
+            ]);
         }
 
         // Filter routes
