@@ -14,7 +14,7 @@ on:
       - master
 
 env:
-  fail-fast: false
+  fail-fast: true
 
 jobs:
   phpunit:
