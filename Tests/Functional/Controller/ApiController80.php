@@ -24,7 +24,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorFileMapping;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\SerializedNameEnt;
@@ -317,7 +317,7 @@ class ApiController80
     /**
      * @Route("/discriminator-mapping", methods={"GET", "POST"})
      *
-     * @OA\Response(response=200, description="Worked well!", @Model(type=SymfonyDiscriminator::class))
+     * @OA\Response(response=200, description="Worked well!", @Model(type=SymfonyDiscriminator80::class))
      */
     public function discriminatorMappingAction()
     {

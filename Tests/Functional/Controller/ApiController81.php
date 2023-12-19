@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator81;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedNameEntity;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +29,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorFileMapping;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
@@ -255,7 +255,7 @@ class ApiController81
     }
 
     #[Route('/discriminator-mapping', methods: ['GET', 'POST'])]
-    #[OA\Response(response: 200, description: 'Worked well!', attachables: [new Model(type: SymfonyDiscriminator::class)])]
+    #[OA\Response(response: 200, description: 'Worked well!', attachables: [new Model(type: SymfonyDiscriminator81::class)])]
     public function discriminatorMappingAction()
     {
     }

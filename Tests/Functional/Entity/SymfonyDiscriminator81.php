@@ -17,10 +17,6 @@ use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
     typeProperty: 'type',
     mapping: ['one' => SymfonyDiscriminatorOne::class, 'two' => SymfonyDiscriminatorTwo::class]
 )]
-abstract class SymfonyDiscriminator81
+abstract class SymfonyDiscriminator81 extends SymfonyDiscriminator80
 {
-    /**
-     * @var string
-     */
-    public $type;
 }
