@@ -220,20 +220,6 @@ class TestKernel extends Kernel
                 'groups' => ['foo'],
             ],
             [
-                'alias' => 'JMSComplex',
-                'type' => JMSComplex80::class,
-                'groups' => [
-                    'list',
-                    'details',
-                    'User' => ['list'],
-                ],
-            ],
-            [
-                'alias' => 'JMSComplexDefault',
-                'type' => JMSComplex80::class,
-                'groups' => null,
-            ],
-            [
                 'alias' => 'SymfonyConstraintsTestGroup',
                 'type' => SymfonyConstraintsWithValidationGroups::class,
                 'groups' => ['test'],
@@ -245,7 +231,24 @@ class TestKernel extends Kernel
             ],
         ];
 
-        if (self::isAttributesAvailable()) {
+        if (self::isAnnotationsAvailable()) {
+            $models = array_merge($models, [
+                [
+                    'alias' => 'JMSComplex',
+                    'type' => JMSComplex80::class,
+                    'groups' => [
+                        'list',
+                        'details',
+                        'User' => ['list'],
+                    ],
+                ],
+                [
+                    'alias' => 'JMSComplexDefault',
+                    'type' => JMSComplex80::class,
+                    'groups' => null,
+                ],
+            ]);
+        } elseif (self::isAttributesAvailable()) {
             $models = array_merge($models, [
                 [
                 'alias' => 'JMSComplex',
