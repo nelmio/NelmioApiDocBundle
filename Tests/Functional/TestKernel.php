@@ -24,7 +24,10 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
+use ReflectionException;
+use ReflectionMethod;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
+use Symfony\Bundle\FrameworkBundle\Command\CachePoolClearCommand;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -101,9 +104,9 @@ class TestKernel extends Kernel
             $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
 
             try {
-                new \ReflectionMethod(Embedded::class, 'getType');
+                new ReflectionMethod(Embedded::class, 'getType');
                 $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
-            } catch (\ReflectionException $e) {
+            } catch (ReflectionException $e) {
             }
         }
 
@@ -146,7 +149,7 @@ class TestKernel extends Kernel
         ];
 
         // Support symfony/framework-bundle < 5.4
-        if (method_exists(\Symfony\Bundle\FrameworkBundle\Command\CachePoolClearCommand::class, 'complete')) {
+        if (method_exists(CachePoolClearCommand::class, 'complete')) {
             $framework += [
                 'exceptions' => [
                     'Symfony\Component\HttpKernel\Exception\BadRequestHttpException' => [

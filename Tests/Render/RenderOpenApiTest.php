@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Render;
 
+use InvalidArgumentException;
 use Nelmio\ApiDocBundle\Render\OpenApiRenderer;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use OpenApi\Annotations\OpenApi;
@@ -34,14 +35,14 @@ class RenderOpenApiTest extends TestCase
     public function testUnknownFormat()
     {
         $availableOpenApiRenderers = [];
-        $this->expectExceptionObject(new \InvalidArgumentException(sprintf('Format "%s" is not supported.', $this->format)));
+        $this->expectExceptionObject(new InvalidArgumentException(sprintf('Format "%s" is not supported.', $this->format)));
         $this->renderOpenApi(...$availableOpenApiRenderers);
     }
 
     public function testUnknownArea()
     {
         $this->hasArea = false;
-        $this->expectExceptionObject(new \InvalidArgumentException(sprintf('Area "%s" is not supported.', $this->area)));
+        $this->expectExceptionObject(new InvalidArgumentException(sprintf('Area "%s" is not supported.', $this->area)));
         $this->renderOpenApi();
     }
 

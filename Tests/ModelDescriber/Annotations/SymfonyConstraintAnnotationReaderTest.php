@@ -20,9 +20,12 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
+use function property_exists;
+use const PHP_VERSION_ID;
 
 class SymfonyConstraintAnnotationReaderTest extends TestCase
 {
@@ -70,8 +73,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->properties[1]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property2'), $schema->properties[1]);
 
         // expect required to be numeric array with sequential keys (not [0 => ..., 2 => ...])
         $this->assertEquals($schema->required, ['property1', 'property2']);
@@ -84,7 +87,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testOptionalProperty($entity)
     {
-        if (!\property_exists(Assert\NotBlank::class, 'allowNull')) {
+        if (!property_exists(Assert\NotBlank::class, 'allowNull')) {
             $this->markTestSkipped('NotBlank::allowNull was added in symfony/validator 4.3.');
         }
 
@@ -95,8 +98,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->properties[1]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property2'), $schema->properties[1]);
 
         // expect required to be numeric array with sequential keys (not [0 => ..., 2 => ...])
         $this->assertEquals($schema->required, ['property2']);
@@ -122,7 +125,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\NotBlank(allowNull: true)]
                 #[Assert\Length(min: 1)]
@@ -146,7 +149,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
         // expect enum to be numeric array with sequential keys (not [1 => "active", 2 => "active"])
         $this->assertEquals($schema->properties[0]->enum, ['active', 'blocked']);
@@ -172,7 +175,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Length(min: 1)]
                 #[Assert\Choice(choices: TEST_ASSERT_CHOICE_STATUSES)]
@@ -194,7 +197,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
         $this->assertInstanceOf(OA\Items::class, $schema->properties[0]->items);
         $this->assertEquals($schema->properties[0]->items->enum, ['one', 'two']);
@@ -211,7 +214,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             }];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Choice(choices: ['one', 'two'], multiple: true)]
                 private $property1;
@@ -234,7 +237,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
         $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maxLength);
         $this->assertSame(1, $schema->properties[0]->minLength);
@@ -253,7 +256,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Length(min: 1)]
                 private $property1;
@@ -276,7 +279,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
         $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minLength);
         $this->assertSame(100, $schema->properties[0]->maxLength);
@@ -295,7 +298,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Length(max: 100)]
                 private $property1;
@@ -326,7 +329,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, $propertyName), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, $propertyName), $schema->properties[0]);
 
         if (Helper::isCompoundValidatorConstraintSupported()) {
             $this->assertSame([$propertyName], $schema->required);
@@ -358,7 +361,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
         $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minItems);
         $this->assertSame(10, $schema->properties[0]->maxItems);
@@ -377,7 +380,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Count(max: 10)]
                 private $property1;
@@ -400,7 +403,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
         $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maxItems);
         $this->assertSame(10, $schema->properties[0]->minItems);
@@ -419,7 +422,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Count(min: 10)]
                 private $property1;
@@ -442,7 +445,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
         $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maximum);
         $this->assertSame(10, $schema->properties[0]->minimum);
@@ -461,7 +464,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Range(min: 10)]
                 private $property1;
@@ -484,7 +487,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
         $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum);
         $this->assertSame(10, $schema->properties[0]->maximum);
@@ -503,7 +506,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Range(max: 10)]
                 private $property1;
@@ -528,7 +531,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         // no serialization groups passed here
         $reader->updateProperty(
-            new \ReflectionProperty($entity, 'property1'),
+            new ReflectionProperty($entity, 'property1'),
             $schema->properties[0]
         );
 
@@ -551,7 +554,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         // no serialization groups passed here
         $reader->updateProperty(
-            new \ReflectionProperty($entity, 'property1'),
+            new ReflectionProperty($entity, 'property1'),
             $schema->properties[0]
         );
 
@@ -575,7 +578,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         // no serialization groups passed here
         $reader->updateProperty(
-            new \ReflectionProperty($entity, 'property1'),
+            new ReflectionProperty($entity, 'property1'),
             $schema->properties[0],
             ['other']
         );
@@ -600,7 +603,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         // no serialization groups passed here
         $reader->updateProperty(
-            new \ReflectionProperty($entity, 'property1'),
+            new ReflectionProperty($entity, 'property1'),
             $schema->properties[0],
             ['other', Constraint::DEFAULT_GROUP]
         );
@@ -622,7 +625,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             }];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
+        if (PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\NotBlank()]
                 #[Assert\Range(min: 1, groups: ['other'])]

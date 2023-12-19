@@ -12,6 +12,8 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Hateoas\Configuration\Embedded;
+use ReflectionException;
+use ReflectionMethod;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -103,8 +105,8 @@ class BazingaFunctionalTest extends WebTestCase
     public function testWithType()
     {
         try {
-            new \ReflectionMethod(Embedded::class, 'getType');
-        } catch (\ReflectionException $e) {
+            new ReflectionMethod(Embedded::class, 'getType');
+        } catch (ReflectionException $e) {
             $this->markTestSkipped('Typed embedded properties require at least willdurand/hateoas 3.0');
         }
         $this->assertEquals([

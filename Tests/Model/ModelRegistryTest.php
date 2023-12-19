@@ -17,6 +17,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use ReflectionClass;
 use Symfony\Component\PropertyInfo\Type;
 
 class ModelRegistryTest extends TestCase
@@ -103,7 +104,7 @@ class ModelRegistryTest extends TestCase
 
     public function testNameCollisionsAreLoggedWithAlternativeNames()
     {
-        $ref = new \ReflectionClass(self::class);
+        $ref = new ReflectionClass(self::class);
         $alternativeNames = [
             $ref->getShortName() => [
                 'type' => $ref->getName(),

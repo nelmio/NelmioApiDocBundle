@@ -16,6 +16,7 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber;
 use OpenApi\Annotations\OpenApi;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -47,7 +48,7 @@ class FosRestDescriberTest extends TestCase
         $fosRestDescriber->describe(
             $api,
             new Route('/'),
-            $this->createMock(\ReflectionMethod::class)
+            $this->createMock(ReflectionMethod::class)
         );
 
         $this->assertSame($choices, $api->paths[0]->get->parameters[0]->schema->enum);

@@ -18,6 +18,7 @@ use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use const PHP_VERSION_ID;
 
 class FunctionalTest extends WebTestCase
 {
@@ -67,7 +68,7 @@ class FunctionalTest extends WebTestCase
             yield 'Annotations' => ['/api/article/{id}'];
         }
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => ['/api/article_attributes/{id}'];
         }
     }
@@ -379,7 +380,7 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/security'];
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => ['/api/security_attributes'];
         }
     }
@@ -397,14 +398,14 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/securityOverride'];
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => ['/api/security_override_attributes'];
         }
     }
 
     public function testInlinePHP81Parameters()
     {
-        if (\PHP_VERSION_ID < 80100) {
+        if (PHP_VERSION_ID < 80100) {
             $this->markTestSkipped('Attributes require PHP 8.1');
         }
 
