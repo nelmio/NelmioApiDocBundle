@@ -22,9 +22,8 @@ if (TestKernel::isAnnotationsAvailable()) {
     {
     }
 } else {
-    #[Route(host: "api.example.com")]
+    #[Route(host: 'api.example.com')]
     class JMSController extends JMSController81
     {
     }
 }
-

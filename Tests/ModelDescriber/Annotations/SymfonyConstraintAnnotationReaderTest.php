@@ -121,7 +121,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                      * @Assert\NotBlank()
                      */
                     private $property2;
-                }
+                },
             ];
         }
 
@@ -171,7 +171,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                      * @Assert\Choice(choices=TEST_ASSERT_CHOICE_STATUSES)
                      */
                     private $property1;
-                }
+                },
             ];
         }
 
@@ -252,7 +252,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                      * @Assert\Length(min = 1)
                      */
                     private $property1;
-                }
+                },
             ];
         }
 
@@ -294,7 +294,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                      * @Assert\Length(max = 100)
                      */
                     private $property1;
-                }
+                },
             ];
         }
 
@@ -376,7 +376,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                      * @Assert\Count(max = 10)
                      */
                     private $property1;
-                }
+                },
             ];
         }
 
@@ -418,7 +418,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                      * @Assert\Count(min = 10)
                      */
                     private $property1;
-                }
+                },
             ];
         }
 
@@ -460,7 +460,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                      * @Assert\Range(min = 10)
                      */
                     private $property1;
-                }
+                },
             ];
         }
 
@@ -502,7 +502,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                      * @Assert\Range(max = 10)
                      */
                     private $property1;
-                }
+                },
             ];
         }
 

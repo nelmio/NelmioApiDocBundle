@@ -26,95 +26,95 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class JMSController81
 {
-    #[Route("/api/jms", methods: ["GET"])]
+    #[Route('/api/jms', methods: ['GET'])]
     #[OA\Response(
         response: 200,
-        description: "Success",
+        description: 'Success',
         content: new Model(type: JMSUser::class)
     )]
     public function userAction()
     {
     }
 
-    #[Route("/api/yaml", methods: ["GET"])]
+    #[Route('/api/yaml', methods: ['GET'])]
     #[OA\Response(
         response: 200,
-        description: "Success",
+        description: 'Success',
         content: new Model(type: VirtualProperty::class)
     )]
     public function yamlAction()
     {
     }
 
-    #[Route("/api/jms_complex", methods: ["GET"])]
+    #[Route('/api/jms_complex', methods: ['GET'])]
     #[OA\Response(
         response: 200,
-        description: "Success",
+        description: 'Success',
         content: new Model(
             type: JMSComplex81::class,
-            groups: ["list", "details", "User" => ["list"]])
+            groups: ['list', 'details', 'User' => ['list']])
     )]
     public function complexAction()
     {
     }
 
-    #[Route("/api/jms_complex_dual", methods: ["GET"])]
+    #[Route('/api/jms_complex_dual', methods: ['GET'])]
     #[OA\Response(
         response: 200,
-        description: "Success",
+        description: 'Success',
         content: new Model(
             type: JMSDualComplex::class,
-            groups: ["Default", "complex" => ["User" => ["details"]]])
+            groups: ['Default', 'complex' => ['User' => ['details']]])
     )]
     public function complexDualAction()
     {
     }
 
-    #[Route("/api/jms_naming_strategy", methods: ["GET"])]
+    #[Route('/api/jms_naming_strategy', methods: ['GET'])]
     #[OA\Response(
         response: 200,
-        description: "Success",
-        content: new Model(type: JMSNamingStrategyConstraints::class, groups: ["Default"])
+        description: 'Success',
+        content: new Model(type: JMSNamingStrategyConstraints::class, groups: ['Default'])
     )]
     public function namingStrategyConstraintsAction()
     {
     }
 
-    #[Route("/api/jms_chat", methods: ["GET"])]
+    #[Route('/api/jms_chat', methods: ['GET'])]
     #[OA\Response(
         response: 200,
-        description: "Success",
-        content: new Model(type: JMSChat::class, groups: ["Default", "members" => ["mini"]])
+        description: 'Success',
+        content: new Model(type: JMSChat::class, groups: ['Default', 'members' => ['mini']])
     )]
     public function chatAction()
     {
     }
 
-    #[Route("/api/jms_picture", methods: ["GET"])]
+    #[Route('/api/jms_picture', methods: ['GET'])]
     #[OA\Response(
         response: 200,
-        description: "Success",
-        content: new Model(type: JMSPicture::class, groups: ["mini"])
+        description: 'Success',
+        content: new Model(type: JMSPicture::class, groups: ['mini'])
     )]
     public function pictureAction()
     {
     }
 
-    #[Route("/api/jms_mini_user", methods: ["GET"])]
+    #[Route('/api/jms_mini_user', methods: ['GET'])]
     #[OA\Response(
         response: 200,
-        description: "Success",
-        content: new Model(type: JMSChatUser::class, groups: ["mini"])
+        description: 'Success',
+        content: new Model(type: JMSChatUser::class, groups: ['mini'])
     )]
     public function minUserAction()
     {
     }
 
-    #[Route("/api/jms_mini_user_nested", methods: ["GET"])]
+    #[Route('/api/jms_mini_user_nested', methods: ['GET'])]
     #[OA\Response(
         response: 200,
-        description: "Success",
-        content: new Model(type: JMSChatRoomUser::class, groups: ["mini", "friend" => ["living" => ["Default"]]])
+        description: 'Success',
+        content: new Model(type: JMSChatRoomUser::class, groups: ['mini', 'friend' => ['living' => ['Default']]])
     )]
     public function minUserNestedAction()
     {

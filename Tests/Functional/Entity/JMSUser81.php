@@ -17,25 +17,25 @@ use OpenApi\Attributes as OA;
 /**
  * User.
  */
-#[Serializer\ExclusionPolicy("all")]
+#[Serializer\ExclusionPolicy('all')]
 class JMSUser81
 {
-    #[Serializer\Type("integer")]
+    #[Serializer\Type('integer')]
     #[Serializer\Expose]
-    #[Serializer\Groups(["list"])]
-    #[OA\Property(description: "User id", readOnly: true, title: "userid", example: 1, default: null)]
+    #[Serializer\Groups(['list'])]
+    #[OA\Property(description: 'User id', readOnly: true, title: 'userid', example: 1, default: null)]
     private $id;
 
-    #[Serializer\Type("int")]
+    #[Serializer\Type('int')]
     #[Serializer\Expose]
-    #[Serializer\SerializedName("daysOnline")]
+    #[Serializer\SerializedName('daysOnline')]
     #[OA\Property(default: 0, minimum: 1, maximum: 300)]
     private $daysOnline;
 
-    #[Serializer\Type("string")]
+    #[Serializer\Type('string')]
     #[Serializer\Expose]
     #[OA\Property(readOnly: false)]
-    #[Serializer\Groups(["details"])]
+    #[Serializer\Groups(['details'])]
     private $email;
 
     /**
@@ -43,23 +43,23 @@ class JMSUser81
      *
      * @var string[]
      */
-    #[Serializer\Type("array<string>")]
-    #[Serializer\Accessor(getter: "getRoles", setter: "setRoles")]
+    #[Serializer\Type('array<string>')]
+    #[Serializer\Accessor(getter: 'getRoles', setter: 'setRoles')]
     #[Serializer\Expose]
-    #[OA\Property(default: ["user"], description: "Roles list", example: '["ADMIN","SUPERUSER"]', title: "roles")]
+    #[OA\Property(default: ['user'], description: 'Roles list', example: '["ADMIN","SUPERUSER"]', title: 'roles')]
     protected $roles;
 
     /**
      * User Location.
      */
-    #[Serializer\Type("string")]
+    #[Serializer\Type('string')]
     #[Serializer\Expose]
     private $location;
 
-    #[Serializer\Type("string")]
+    #[Serializer\Type('string')]
     private $password;
 
-    #[OA\Property(property: "last_update", type: "date")]
+    #[OA\Property(property: 'last_update', type: 'date')]
     #[Serializer\Expose]
     private $updatedAt;
 
@@ -77,7 +77,7 @@ class JMSUser81
     #[Serializer\Expose]
     private $indexedFriends;
 
-    #[Serializer\Type("array<string, DateTime>")]
+    #[Serializer\Type('array<string, DateTime>')]
     #[Serializer\Expose]
     private $favoriteDates;
 
@@ -85,10 +85,10 @@ class JMSUser81
     #[Serializer\Expose]
     private $customDate;
 
-    #[Serializer\Type("integer")]
+    #[Serializer\Type('integer')]
     #[Serializer\Expose]
-    #[Serializer\SerializedName("friendsNumber")]
-    #[OA\Property(type: "string", minLength: 1, maxLength: 100)]
+    #[Serializer\SerializedName('friendsNumber')]
+    #[OA\Property(type: 'string', minLength: 1, maxLength: 100)]
     private $friendsNumber;
 
     #[Serializer\Type(User::class)]
@@ -102,9 +102,9 @@ class JMSUser81
      *
      * @var string
      */
-    #[Serializer\Type("string")]
+    #[Serializer\Type('string')]
     #[Serializer\Expose]
-    #[OA\Property(enum: ["disabled", "enabled"])]
+    #[OA\Property(enum: ['disabled', 'enabled'])]
     private $status;
 
     /**
@@ -112,7 +112,7 @@ class JMSUser81
      *
      * @var string
      */
-    #[Serializer\Type("VirtualTypeClassDoesNotExistsHandlerDefined")]
+    #[Serializer\Type('VirtualTypeClassDoesNotExistsHandlerDefined')]
     #[Serializer\Expose]
     private $virtualType1;
 
@@ -121,31 +121,31 @@ class JMSUser81
      *
      * @var string
      */
-    #[Serializer\Type("VirtualTypeClassDoesNotExistsHandlerNotDefined")]
+    #[Serializer\Type('VirtualTypeClassDoesNotExistsHandlerNotDefined')]
     #[Serializer\Expose]
     private $virtualType2;
 
-    #[Serializer\Type("array<array<float>>")]
+    #[Serializer\Type('array<array<float>>')]
     #[Serializer\Expose]
     private $latLonHistory;
 
-    #[Serializer\Type("array<string, array>")]
+    #[Serializer\Type('array<string, array>')]
     #[Serializer\Expose]
     private $freeFormObject;
 
-    #[Serializer\Type("array")]
+    #[Serializer\Type('array')]
     #[Serializer\Expose]
     private $freeFormObjectWithoutType;
 
-    #[Serializer\Type("array<string, array<string, DateTime>>")]
+    #[Serializer\Type('array<string, array<string, DateTime>>')]
     #[Serializer\Expose]
     private $deepObject;
 
-    #[Serializer\Type("array<string, array<DateTime>>")]
+    #[Serializer\Type('array<string, array<DateTime>>')]
     #[Serializer\Expose]
     private $deepObjectWithItems;
 
-    #[Serializer\Type("array<array<array<string, array>>>")]
+    #[Serializer\Type('array<array<array<string, array>>>')]
     #[Serializer\Expose]
     private $deepFreeFormObjectCollection;
 

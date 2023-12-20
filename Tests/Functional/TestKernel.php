@@ -129,7 +129,6 @@ class TestKernel extends Kernel
 
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
     {
-
         $framework = [
             'assets' => true,
             'secret' => 'MySecretKey',
@@ -140,7 +139,7 @@ class TestKernel extends Kernel
                 PHP_VERSION_ID >= 80100 && Kernel::MAJOR_VERSION < 7
                     ? ['enable_annotations' => true]
                     : []
-                ) + [
+            ) + [
                 'mapping' => [
                     'paths' => [__DIR__.'/Resources/serializer/'],
                 ],
@@ -266,7 +265,7 @@ class TestKernel extends Kernel
                     'alias' => 'JMSComplexDefault',
                     'type' => \Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81::class,
                     'groups' => null,
-                ]
+                ],
             ]);
         }
 

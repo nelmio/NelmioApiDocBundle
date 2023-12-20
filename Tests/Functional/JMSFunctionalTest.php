@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class JMSFunctionalTest extends WebTestCase

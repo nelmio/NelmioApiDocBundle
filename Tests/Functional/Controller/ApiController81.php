@@ -13,14 +13,10 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator81;
-use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedNameEntity;
-use OpenApi\Attributes as OA;
-use Symfony\Component\Routing\Annotation\Route;
-use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType81;
@@ -29,13 +25,17 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorFileMapping;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
+use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedNameEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithAlternateSchemaType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithRefType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController81
 {
@@ -53,6 +53,7 @@ class ApiController81
     public function fetchArticleAction()
     {
     }
+
     #[OA\Get(
         responses: [
             new OA\Response(
@@ -61,7 +62,7 @@ class ApiController81
                 attachables: [
                     new Model(type: ArticleInterface::class, groups: ['light']),
                 ],
-            )
+            ),
         ],
     )]
     #[OA\Parameter(ref: '#/components/parameters/test')]

@@ -15,7 +15,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use Symfony\Component\Routing\Annotation\Route;
 
 if (TestKernel::isAttributesAvailable()) {
-    #[Route("/api", host: "api.example.com")]
+    #[Route('/api', host: 'api.example.com')]
     class FOSRestController extends FOSRestController81
     {
     }

@@ -16,7 +16,7 @@ use JMS\Serializer\Annotation as Serializer;
 /**
  * User.
  */
-#[Serializer\ExclusionPolicy("all")]
+#[Serializer\ExclusionPolicy('all')]
 class JMSChat81
 {
     #[Serializer\Type('integer')]

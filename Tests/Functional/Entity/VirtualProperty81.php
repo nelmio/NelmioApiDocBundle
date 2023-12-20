@@ -21,7 +21,7 @@ use LogicException;
 #[Serializer\VirtualProperty(
     name: 'email',
     exp: 'object.user.email',
-    options: [[Serializer\Type::class, ["string"]]]
+    options: [[Serializer\Type::class, ['string']]]
 )]
 class VirtualProperty81
 {

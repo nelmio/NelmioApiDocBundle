@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup;
 
-
 use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 
 if (TestKernel::isAnnotationsAvailable()) {

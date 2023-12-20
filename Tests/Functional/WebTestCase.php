@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class WebTestCase extends BaseWebTestCase
@@ -171,7 +170,7 @@ class WebTestCase extends BaseWebTestCase
     }
 
     /**
-     * BC symfony < 5.3 and symfony >= 7
+     * BC symfony < 5.3 and symfony >= 7.
      *
      * KernelTestCase::getContainer has a Container return type object in symfony 7
      * which is incompatible with the return type of previous versions or

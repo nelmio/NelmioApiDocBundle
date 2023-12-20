@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 

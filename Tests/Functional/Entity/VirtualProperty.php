@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
-use JMS\Serializer\Annotation as Serializer;
 
 if (TestKernel::isAnnotationsAvailable()) {
     class VirtualProperty extends VirtualProperty80

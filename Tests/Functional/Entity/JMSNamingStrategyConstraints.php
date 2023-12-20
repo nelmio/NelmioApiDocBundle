@@ -11,9 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use JMS\Serializer\Annotation as Serializer;
 use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
-use Symfony\Component\Validator\Constraints as Assert;
 
 if (TestKernel::isAnnotationsAvailable()) {
     class JMSNamingStrategyConstraints extends JMSNamingStrategyConstraints80

@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use ArrayIterator;
 use IteratorAggregate;
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(type: 'array', items: new OA\Items(type: 'string'))]
