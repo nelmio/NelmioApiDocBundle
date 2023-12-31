@@ -19,9 +19,10 @@ env:
 jobs:
   phpunit:
     name: "PHPUnit"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-22.04"
 
     strategy:
+      fail-fast: false
       matrix:
         include:
           - php-version: 7.2
@@ -45,23 +46,23 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v2"
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
       - name: "Install PHP without coverage"
-        uses: "shivammathur/setup-php@v2"
+        uses: shivammathur/setup-php@v2
         with:
           php-version: "${{ matrix.php-version }}"
-          tools: composer
+          tools: composer, flex
           coverage: pcov
 
-      - name: Get composer cache directory
+      - name: "Get composer cache directory"
         id: composercache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - name: Cache dependencies
-        uses: actions/cache@v2
+      - name: "Cache dependencies"
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
@@ -80,10 +81,7 @@ jobs:
       - name: "Install dependencies with composer"
         env:
           SYMFONY_REQUIRE: "${{ matrix.symfony-require }}"
-        run: |
-          composer global config --no-plugins allow-plugins.symfony/flex true
-          composer global require --no-progress --no-scripts --no-plugins symfony/flex
-          composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
+        run: composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
 
-      - name: PHPUnit Tests
-        run: vendor/bin/simple-phpunit --configuration phpunit.xml.dist --coverage-text
+      - name: "PHPUnit Tests"
+        run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text
