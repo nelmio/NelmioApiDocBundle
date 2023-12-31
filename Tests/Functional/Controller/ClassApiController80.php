@@ -11,21 +11,23 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
+use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Prevents a regression (see https://github.com/nelmio/NelmioApiDocBundle/issues/1559).
+ * @Route("/api", host="api.example.com")
  *
- * @Route("/api/invoke", host="api.example.com", name="invokable", methods={"GET"})
- * @OA\Response(
- *    response=200,
- *    description="Invokable!"
- * )
+ * @Security(name="basic")
  */
-class InvokableController
+class ClassApiController80
 {
-    public function __invoke()
+    /**
+     * @Route("/security/class")
+     *
+     * @OA\Response(response="201", description="")
+     */
+    public function securityAction()
     {
     }
 }
