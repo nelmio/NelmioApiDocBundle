@@ -296,7 +296,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $property->ref = $modelRef;
             } else {
                 $weakContext = Util::createWeakContext($property->_context);
-                $property->allOf = [new OA\Schema(['ref' => $modelRef, '_context' => $weakContext])];
+                $property->oneOf = [new OA\Schema(['ref' => $modelRef, '_context' => $weakContext])];
             }
 
             $this->contexts[$model->getHash()] = $context;
