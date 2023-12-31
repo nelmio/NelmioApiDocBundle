@@ -23,9 +23,11 @@ class BazingaTypedController
 {
     /**
      * @Route("/api/bazinga_typed", methods={"GET"})
+     *
      * @OA\Response(
      *     response=200,
      *     description="Success",
+     *
      *     @Model(type=BazingaUserTyped::class)
      * )
      */
