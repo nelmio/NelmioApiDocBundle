@@ -92,7 +92,7 @@ final class ApiDocGenerator
             }
         }
 
-        $generator = new Generator();
+        $generator = new Generator($this->logger);
         if ($this->openApiVersion) {
             $generator->setVersion($this->openApiVersion);
         }
