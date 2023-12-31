@@ -47,6 +47,10 @@ final class ApiDocGenerator
 
     /** @var string[] */
     private $mediaTypes = ['json'];
+    /**
+     * @var ?string
+     */
+    private $openApiVersion = null;
 
     /**
      * @param DescriberInterface[]|iterable      $describers
@@ -70,6 +74,11 @@ final class ApiDocGenerator
         $this->mediaTypes = $mediaTypes;
     }
 
+    public function setOpenApiVersion(?string $openApiVersion)
+    {
+        $this->openApiVersion = $openApiVersion;
+    }
+
     public function generate(): OpenApi
     {
         if (null !== $this->openApi) {
@@ -84,6 +93,10 @@ final class ApiDocGenerator
         }
 
         $generator = new Generator($this->logger);
+        if ($this->openApiVersion) {
+            $generator->setVersion($this->openApiVersion);
+        }
+
         // Remove OperationId processor as we use a lot of generated annotations which do not have enough information in their context
         // to generate these ids properly.
         // @see https://github.com/zircote/swagger-php/issues/1153
