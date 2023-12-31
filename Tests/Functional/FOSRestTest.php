@@ -13,11 +13,22 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class FOSRestTest extends WebTestCase
 {
+    protected static function createKernel(array $options = []): KernelInterface
+    {
+        return new TestKernel(TestKernel::USE_FOSREST);
+    }
+
     protected function setUp(): void
     {
+        if (Kernel::MAJOR_VERSION >= 7) {
+            $this->markTestSkipped('Not supported in symfony 7');
+        }
+
         parent::setUp();
 
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
@@ -74,7 +85,7 @@ class FOSRestTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/fosrest'];
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (TestKernel::isAttributesAvailable()) {
             yield 'Attributes' => ['/api/fosrest_attributes'];
         }
     }

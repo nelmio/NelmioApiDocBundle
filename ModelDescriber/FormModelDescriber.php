@@ -40,6 +40,10 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     use SetsContextTrait;
 
     private $formFactory;
+
+    /**
+     * @var Reader|null
+     */
     private $doctrineReader;
     private $mediaTypes;
     private $useValidationGroups;
@@ -52,9 +56,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     ) {
         $this->formFactory = $formFactory;
         $this->doctrineReader = $reader;
-        if (null === $reader) {
-            @trigger_error(sprintf('Not passing a doctrine reader to the constructor of %s is deprecated since version 3.8 and won\'t be allowed in version 5.', self::class), E_USER_DEPRECATED);
-        }
 
         if (null === $mediaTypes) {
             $mediaTypes = ['json'];
