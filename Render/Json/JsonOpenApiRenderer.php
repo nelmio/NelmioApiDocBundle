@@ -32,6 +32,6 @@ class JsonOpenApiRenderer implements OpenApiRenderer
         ];
         $flags = $options['no-pretty'] ? 0 : JSON_PRETTY_PRINT;
 
-        return json_encode($spec, $flags);
+        return json_encode($spec, $flags | JSON_UNESCAPED_SLASHES);
     }
 }
