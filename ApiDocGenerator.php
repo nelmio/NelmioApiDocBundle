@@ -83,7 +83,7 @@ final class ApiDocGenerator
             }
         }
 
-        $generator = new Generator();
+        $generator = new Generator($this->logger);
         // Remove OperationId processor as we use a lot of generated annotations which do not have enough information in their context
         // to generate these ids properly.
         // @see https://github.com/zircote/swagger-php/issues/1153
