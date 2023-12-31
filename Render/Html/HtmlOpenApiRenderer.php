@@ -25,9 +25,6 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
     /** @var Environment|\Twig_Environment */
     private $twig;
 
-    /** @var GetNelmioAsset */
-    private $getNelmioAsset;
-
     public function __construct($twig)
     {
         if (!$twig instanceof \Twig_Environment && !$twig instanceof Environment) {
