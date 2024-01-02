@@ -21,22 +21,16 @@ use OpenApi\Generator;
  */
 class AnnotationsReader
 {
-    private $annotationsReader;
-    private $modelRegistry;
-
     private $phpDocReader;
     private $openApiAnnotationsReader;
     private $symfonyConstraintAnnotationReader;
 
     public function __construct(
-        Reader $annotationsReader,
+        ?Reader $annotationsReader,
         ModelRegistry $modelRegistry,
         array $mediaTypes,
         bool $useValidationGroups = false
     ) {
-        $this->annotationsReader = $annotationsReader;
-        $this->modelRegistry = $modelRegistry;
-
         $this->phpDocReader = new PropertyPhpDocReader();
         $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($annotationsReader, $modelRegistry, $mediaTypes);
         $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(

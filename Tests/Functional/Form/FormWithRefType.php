@@ -12,20 +12,35 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Form;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\InputType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-/**
- * @OA\Schema(ref="#/components/schemas/Test")
- */
-class FormWithRefType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+if (PHP_VERSION_ID < 80100) {
+    /**
+     * @OA\Schema(ref="#/components/schemas/Test")
+     */
+    class FormWithRefType extends AbstractType
     {
-        $builder
-            ->add('ignored', InputType::class, [
-                'required' => false,
-            ]);
+        public function buildForm(FormBuilderInterface $builder, array $options): void
+        {
+            $builder
+                ->add('ignored', TextType::class, [
+                    'required' => false,
+                ]);
+        }
+    }
+} else {
+    #[OAT\Schema(ref: '#/components/schemas/Test')]
+    class FormWithRefType extends AbstractType
+    {
+        public function buildForm(FormBuilderInterface $builder, array $options): void
+        {
+            $builder
+                ->add('ignored', TextType::class, [
+                    'required' => false,
+                ]);
+        }
     }
 }

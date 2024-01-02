@@ -48,6 +48,10 @@ final class ApiDocGenerator
 
     /** @var string[] */
     private $mediaTypes = ['json'];
+    /**
+     * @var ?string
+     */
+    private $openApiVersion = null;
 
     /** @var Generator */
     private $generator;
@@ -62,7 +66,7 @@ final class ApiDocGenerator
         $this->modelDescribers = $modelDescribers;
         $this->cacheItemPool = $cacheItemPool;
         $this->cacheItemId = $cacheItemId;
-        $this->generator = $generator ?? new Generator();
+        $this->generator = $generator ?? new Generator($this->logger);
     }
 
     public function setAlternativeNames(array $alternativeNames)
@@ -73,6 +77,11 @@ final class ApiDocGenerator
     public function setMediaTypes(array $mediaTypes)
     {
         $this->mediaTypes = $mediaTypes;
+    }
+
+    public function setOpenApiVersion(?string $openApiVersion)
+    {
+        $this->openApiVersion = $openApiVersion;
     }
 
     public function generate(): OpenApi
@@ -88,6 +97,10 @@ final class ApiDocGenerator
             }
         }
 
+        if ($this->openApiVersion) {
+            $this->generator->setVersion($this->openApiVersion);
+        }
+  
         $this->generator->setProcessors($this->getProcessors($this->generator));
 
         $context = Util::createContext(['version' => $this->generator->getVersion()]);
