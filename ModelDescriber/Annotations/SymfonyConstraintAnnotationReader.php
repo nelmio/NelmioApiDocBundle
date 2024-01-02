@@ -42,7 +42,7 @@ class SymfonyConstraintAnnotationReader
      */
     private $useValidationGroups;
 
-    public function __construct(?Reader $annotationsReader, bool $useValidationGroups=false)
+    public function __construct(?Reader $annotationsReader, bool $useValidationGroups = false)
     {
         $this->annotationsReader = $annotationsReader;
         $this->useValidationGroups = $useValidationGroups;
@@ -84,7 +84,7 @@ class SymfonyConstraintAnnotationReader
                     return;
                 }
 
-                $existingRequiredFields =  Generator::UNDEFINED !== $this->schema->required ? $this->schema->required : [];
+                $existingRequiredFields = Generator::UNDEFINED !== $this->schema->required ? $this->schema->required : [];
                 $existingRequiredFields[] = $propertyName;
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));

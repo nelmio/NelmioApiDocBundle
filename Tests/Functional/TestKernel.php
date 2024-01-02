@@ -20,6 +20,7 @@ use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
@@ -254,7 +255,7 @@ class TestKernel extends Kernel
             $models = array_merge($models, [
                 [
                 'alias' => 'JMSComplex',
-                'type' => \Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81::class,
+                'type' => JMSComplex81::class,
                 'groups' => [
                     'list',
                     'details',
@@ -263,7 +264,7 @@ class TestKernel extends Kernel
                 ],
                 [
                     'alias' => 'JMSComplexDefault',
-                    'type' => \Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81::class,
+                    'type' => JMSComplex81::class,
                     'groups' => null,
                 ],
             ]);

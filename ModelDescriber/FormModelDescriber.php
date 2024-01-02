@@ -228,7 +228,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             }
 
             if ('checkbox' === $blockPrefix) {
-                $property->type= 'boolean';
+                $property->type = 'boolean';
 
                 break;
             }
