@@ -90,5 +90,11 @@
         "branch-alias": {
             "dev-master": "4.x-dev"
         }
+    },
+    "scripts-descriptions": {
+        "phpunit": "Run phpunit"
+    },
+    "scripts": {
+        "phpunit": "phpunit"
     }
 }
