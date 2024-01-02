@@ -20,7 +20,7 @@ final class SymfonyMapQueryParameterDescriber implements InlineParameterDescribe
             return false;
         }
 
-        return $argumentMetadata->getType() !== null;
+        return null !== $argumentMetadata->getType();
     }
 
     public function describe(OA\OpenApi $api, OA\Operation $operation, ArgumentMetadata $argumentMetadata): void
