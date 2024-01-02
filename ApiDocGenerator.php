@@ -100,7 +100,7 @@ final class ApiDocGenerator
         if ($this->openApiVersion) {
             $this->generator->setVersion($this->openApiVersion);
         }
-  
+
         $this->generator->setProcessors($this->getProcessors($this->generator));
 
         $context = Util::createContext(['version' => $this->generator->getVersion()]);
