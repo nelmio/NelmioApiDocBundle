@@ -70,8 +70,8 @@ final class Model extends Attachable
         parent::__construct($properties + [
             'type' => $type,
             'groups' => $groups,
-                'options' => $options,
-                'serializationContext' => $serializationContext,
+            'options' => $options,
+            'serializationContext' => $serializationContext,
         ]);
     }
 }
