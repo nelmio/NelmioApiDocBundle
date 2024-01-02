@@ -12,26 +12,23 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\SerializedNameEnt;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError\Foo;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * This controller is only loaded when SerializedName exists (sf >= 4.2).
- *
- * @Route("/api", host="api.example.com")
- */
-class SerializedNameController
+class ArrayItemsErrorController80
 {
     /**
+     * @Route("/api/error", methods={"GET"})
+     *
      * @OA\Response(
-     *     response="200",
-     *     description="success",
-     *     @Model(type=SerializedNameEnt::class)
+     *     response=200,
+     *     description="Success",
+     *
+     *     @Model(type=Foo::class)
      * )
-     * @Route("/serializename", methods={"GET"})
      */
-    public function serializedNameAction()
+    public function errorAction()
     {
     }
 }

@@ -28,7 +28,7 @@ class SymfonyConstraintAnnotationReader
     use SetsContextTrait;
 
     /**
-     * @var Reader
+     * @var Reader|null
      */
     private $annotationsReader;
 
@@ -42,7 +42,7 @@ class SymfonyConstraintAnnotationReader
      */
     private $useValidationGroups;
 
-    public function __construct(Reader $annotationsReader, bool $useValidationGroups=false)
+    public function __construct(?Reader $annotationsReader, bool $useValidationGroups = false)
     {
         $this->annotationsReader = $annotationsReader;
         $this->useValidationGroups = $useValidationGroups;
@@ -79,12 +79,12 @@ class SymfonyConstraintAnnotationReader
                     return;
                 }
 
-                $propertyName = $this->getSchemaPropertyName($property);
+                $propertyName = Util::getSchemaPropertyName($this->schema, $property);
                 if (null === $propertyName) {
                     return;
                 }
 
-                $existingRequiredFields =  Generator::UNDEFINED !== $this->schema->required ? $this->schema->required : [];
+                $existingRequiredFields = Generator::UNDEFINED !== $this->schema->required ? $this->schema->required : [];
                 $existingRequiredFields[] = $propertyName;
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
@@ -138,23 +138,6 @@ class SymfonyConstraintAnnotationReader
     public function setSchema($schema): void
     {
         $this->schema = $schema;
-    }
-
-    /**
-     * Get assigned property name for property schema.
-     */
-    private function getSchemaPropertyName(OA\Schema $property): ?string
-    {
-        if (null === $this->schema) {
-            return null;
-        }
-        foreach ($this->schema->properties as $schemaProperty) {
-            if ($schemaProperty === $property) {
-                return Generator::UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -223,10 +206,12 @@ class SymfonyConstraintAnnotationReader
             }
         }
 
-        if ($reflection instanceof \ReflectionProperty) {
-            yield from $this->annotationsReader->getPropertyAnnotations($reflection);
-        } elseif ($reflection instanceof \ReflectionMethod) {
-            yield from $this->annotationsReader->getMethodAnnotations($reflection);
+        if (null !== $this->annotationsReader) {
+            if ($reflection instanceof \ReflectionProperty) {
+                yield from $this->annotationsReader->getPropertyAnnotations($reflection);
+            } elseif ($reflection instanceof \ReflectionMethod) {
+                yield from $this->annotationsReader->getMethodAnnotations($reflection);
+            }
         }
     }
 

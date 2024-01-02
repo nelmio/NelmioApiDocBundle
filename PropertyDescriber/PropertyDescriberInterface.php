@@ -18,8 +18,9 @@ interface PropertyDescriberInterface
 {
     /**
      * @param Type[] $types
+     * @param Schema $schema Allows to make changes inside of the schema (e.g. adding required fields)
      */
-    public function describe(array $types, Schema $property, array $groups = null);
+    public function describe(array $types, Schema $property, array $groups = null /* , ?Schema $schema = null */);
 
     /**
      * @param Type[] $types

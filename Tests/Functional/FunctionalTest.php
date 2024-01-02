@@ -11,12 +11,14 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use const PHP_VERSION_ID;
 
 class FunctionalTest extends WebTestCase
 {
@@ -62,9 +64,11 @@ class FunctionalTest extends WebTestCase
 
     public function provideArticleRoute(): iterable
     {
-        yield 'Annotations' => ['/api/article/{id}'];
+        if (interface_exists(Reader::class)) {
+            yield 'Annotations' => ['/api/article/{id}'];
+        }
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => ['/api/article_attributes/{id}'];
         }
     }
@@ -218,7 +222,7 @@ class FunctionalTest extends WebTestCase
                     ],
                     'friend' => [
                         'nullable' => true,
-                        'allOf' => [
+                        'oneOf' => [
                             ['$ref' => '#/components/schemas/User'],
                         ],
                     ],
@@ -242,6 +246,16 @@ class FunctionalTest extends WebTestCase
                     ],
                 ],
                 'schema' => 'User',
+                'required' => [
+                    'id',
+                    'roles',
+                    'money',
+                    'creationDate',
+                    'users',
+                    'status',
+                    'dateAsInterface',
+                    'dummy',
+                ],
             ],
             json_decode($this->getModel('User')->toJson(), true)
         );
@@ -376,7 +390,7 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/security'];
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => ['/api/security_attributes'];
         }
     }
@@ -394,14 +408,14 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/securityOverride'];
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => ['/api/security_override_attributes'];
         }
     }
 
     public function testInlinePHP81Parameters()
     {
-        if (\PHP_VERSION_ID < 80100) {
+        if (PHP_VERSION_ID < 80100) {
             $this->markTestSkipped('Attributes require PHP 8.1');
         }
 
@@ -424,10 +438,27 @@ class FunctionalTest extends WebTestCase
 
     public function testSymfonyConstraintDocumentation()
     {
+        if (TestKernel::isAttributesAvailable()) {
+            $modelName = 'SymfonyConstraints81';
+        } else {
+            $modelName = 'SymfonyConstraints80';
+        }
+
         $expected = [
             'required' => [
                 'propertyNotBlank',
                 'propertyNotNull',
+                'propertyAssertLength',
+                'propertyRegex',
+                'propertyCount',
+                'propertyChoice',
+                'propertyChoiceWithCallback',
+                'propertyChoiceWithCallbackWithoutClass',
+                'propertyChoiceWithMultiple',
+                'propertyExpression',
+                'propertyRange',
+                'propertyLessThan',
+                'propertyLessThanOrEqual',
             ],
             'properties' => [
                 'propertyNotBlank' => [
@@ -493,7 +524,7 @@ class FunctionalTest extends WebTestCase
                 ],
             ],
             'type' => 'object',
-            'schema' => 'SymfonyConstraints',
+            'schema' => $modelName,
         ];
 
         if (Helper::isCompoundValidatorConstraintSupported()) {
@@ -507,7 +538,7 @@ class FunctionalTest extends WebTestCase
             ];
         }
 
-        $this->assertEquals($expected, json_decode($this->getModel('SymfonyConstraints')->toJson(), true));
+        $this->assertEquals($expected, json_decode($this->getModel($modelName)->toJson(), true));
     }
 
     public function testConfigReference()
@@ -540,7 +571,12 @@ class FunctionalTest extends WebTestCase
             $this->markTestSkipped('Annotation @SerializedName doesn\'t exist.');
         }
 
-        $model = $this->getModel('SerializedNameEnt');
+        if (TestKernel::isAttributesAvailable()) {
+            $model = $this->getModel('SerializedNameEntity');
+        } else {
+            $model = $this->getModel('SerializedNameEnt');
+        }
+
         $this->assertCount(2, $model->properties);
 
         $this->assertNotHasProperty('foo', $model);
@@ -612,7 +648,11 @@ class FunctionalTest extends WebTestCase
 
     public function testModelsWithDiscriminatorMapAreLoadedWithOpenApiPolymorphism()
     {
-        $model = $this->getModel('SymfonyDiscriminator');
+        if (TestKernel::isAttributesAvailable()) {
+            $model = $this->getModel('SymfonyDiscriminator81');
+        } else {
+            $model = $this->getModel('SymfonyDiscriminator80');
+        }
 
         $this->assertInstanceOf(OAAnnotations\Discriminator::class, $model->discriminator);
         $this->assertSame('type', $model->discriminator->propertyName);
@@ -659,11 +699,24 @@ class FunctionalTest extends WebTestCase
 
         $this->assertSame('string', $model->type);
         $this->assertCount(2, $model->enum);
+
+        $model = $this->getModel('ArticleType81NotBacked');
+
+        $this->assertSame('object', $model->type, 'Non backed enums cannot be described');
+
+        $model = $this->getModel('ArticleType81IntBacked');
+
+        $this->assertSame('integer', $model->type);
+        $this->assertCount(2, $model->enum);
     }
 
     public function testEntitiesWithOverriddenSchemaTypeDoNotReadOtherProperties()
     {
-        $model = $this->getModel('EntityWithAlternateType');
+        if (TestKernel::isAttributesAvailable()) {
+            $model = $this->getModel('EntityWithAlternateType81');
+        } else {
+            $model = $this->getModel('EntityWithAlternateType80');
+        }
 
         $this->assertSame('array', $model->type);
         $this->assertSame('string', $model->items->type);
@@ -729,5 +782,17 @@ class FunctionalTest extends WebTestCase
 
         // nonNullablePropertyNullableTrueSet
         $this->assertTrue($model->properties[5]->nullable);
+    }
+
+    public function testContextPassedToNameConverter()
+    {
+        $this->getOperation('/api/name_converter_context', 'get');
+
+        $model = $this->getModel('EntityThroughNameConverter');
+        $this->assertCount(2, $model->properties);
+        $this->assertNotHasProperty('id', $model);
+        $this->assertHasProperty('name_converter_context_id', $model);
+        $this->assertNotHasProperty('name', $model);
+        $this->assertHasProperty('name_converter_context_name', $model);
     }
 }
