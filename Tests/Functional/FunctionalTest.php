@@ -681,8 +681,7 @@ class FunctionalTest extends WebTestCase
 
         $model = $this->getModel('ArticleType81NotBacked');
 
-        $this->assertSame('string', $model->type);
-        $this->assertCount(2, $model->enum);
+        $this->assertSame('object', $model->type, 'Non backed enums cannot be described');
 
         $model = $this->getModel('ArticleType81IntBacked');
 
