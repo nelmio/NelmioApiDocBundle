@@ -2,33 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber;
+namespace Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber;
 
 use InvalidArgumentException;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-final class SymfonyMapRequestPayloadDescriber implements SymfonyAnnotationDescriber
+final class SymfonyMapRequestPayloadDescriber implements InlineParameterDescriberInterface
 {
-    public function supports(ReflectionParameter $parameter): bool
+    public function supports(ArgumentMetadata $argumentMetadata): bool
     {
-        if (!SymfonyAnnotationHelper::getAttribute($parameter, MapRequestPayload::class)) {
+        if (!$argumentMetadata->getAttributes(MapRequestPayload::class, ArgumentMetadata::IS_INSTANCEOF)) {
             return false;
         }
 
-        return $parameter->hasType();
+        return $argumentMetadata->getType() && class_exists($argumentMetadata->getType());
     }
 
-    public function describe(OA\OpenApi $api, OA\Operation $operation, ReflectionParameter $parameter): void
+    public function describe(OA\OpenApi $api, OA\Operation $operation, ArgumentMetadata $argumentMetadata): void
     {
-        $attribute = SymfonyAnnotationHelper::getAttribute($parameter, MapRequestPayload::class);
+        $attribute = $argumentMetadata->getAttributes(MapRequestPayload::class, ArgumentMetadata::IS_INSTANCEOF)[0];
 
         /** @var OA\RequestBody $requestBody */
         $requestBody = Util::getChild($operation, OA\RequestBody::class);
-        SymfonyAnnotationHelper::modifyAnnotationValue($requestBody, 'required', !($parameter->isDefaultValueAvailable() || $parameter->allowsNull()));
+        Util::modifyAnnotationValue($requestBody, 'required', !($argumentMetadata->hasDefaultValue() || $argumentMetadata->isNullable()));
 
         $formats = $attribute->acceptFormat;
         if (!is_array($formats)) {
@@ -36,24 +36,17 @@ final class SymfonyMapRequestPayloadDescriber implements SymfonyAnnotationDescri
         }
 
         foreach ($formats as $format) {
-            $this->describeRequestBody($requestBody, $parameter, $format);
+            $contentSchema = $this->getContentSchemaForType($requestBody, $format);
+            Util::modifyAnnotationValue($contentSchema, 'ref', new Model(type: $argumentMetadata->getType()));
+            Util::modifyAnnotationValue($contentSchema, 'type', 'object');
+
+            Util::getProperty($contentSchema, $argumentMetadata->getName());
         }
-    }
-
-    private function describeRequestBody(OA\RequestBody $requestBody, ReflectionParameter $parameter, string $format): void
-    {
-        $contentSchema = $this->getContentSchemaForType($requestBody, $format);
-        SymfonyAnnotationHelper::modifyAnnotationValue($contentSchema, 'ref', new Model(type: $parameter->getType()->getName()));
-        SymfonyAnnotationHelper::modifyAnnotationValue($contentSchema, 'type', 'object');
-
-        $schema = Util::getProperty($contentSchema, $parameter->getName());
-
-        SymfonyAnnotationHelper::describeCommonSchemaFromParameter($schema, $parameter);
     }
 
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
-        SymfonyAnnotationHelper::modifyAnnotationValue($requestBody, 'content', []);
+        Util::modifyAnnotationValue($requestBody, 'content', []);
         switch ($type) {
             case 'json':
                 $contentType = 'application/json';
@@ -81,7 +74,7 @@ final class SymfonyMapRequestPayloadDescriber implements SymfonyAnnotationDescri
                 $requestBody->content[$contentType],
                 OA\Schema::class
             );
-            SymfonyAnnotationHelper::modifyAnnotationValue($schema, 'type', 'object');
+            Util::modifyAnnotationValue($schema, 'type', 'object');
         }
 
         return Util::getChild(

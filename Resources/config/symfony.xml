@@ -4,21 +4,22 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <instanceof id="Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyAnnotationDescriber">
-            <tag name="nelmio_api_doc.symfony_annotation_describer" />
+        <instanceof id="Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\InlineParameterDescriberInterface" >
+            <tag name="nelmio_api_doc.inline_parameter_describer" />
         </instanceof>
 
-        <service id="nelmio_api_doc.symfony_annotation_describer.map_query_string" class="Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyMapQueryStringDescriber" public="false" >
+        <service id="nelmio_api_doc.inline_parameter_describer.map_query_string" class="Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\SymfonyMapQueryStringDescriber" public="false" >
             <argument type="tagged_iterator" tag="nelmio_api_doc.model_describer"/>
         </service>
 
-        <service id="nelmio_api_doc.symfony_annotation_describer.map_query_parameter" class="Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyMapQueryParameterDescriber" public="false" />
+        <service id="nelmio_api_doc.inline_parameter_describer.map_query_parameter" class="Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\SymfonyMapQueryParameterDescriber" public="false" />
 
-        <service id="nelmio_api_doc.symfony_annotation_describer.map_request_payload" class="Nelmio\ApiDocBundle\RouteDescriber\SymfonyAnnotationDescriber\SymfonyMapRequestPayloadDescriber" public="false" />
+        <service id="nelmio_api_doc.inline_parameter_describer.map_request_payload" class="Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\SymfonyMapRequestPayloadDescriber" public="false" />
 
-        <service id="nelmio_api_doc.route_describers.symfony" class="Nelmio\ApiDocBundle\RouteDescriber\SymfonyDescriber" public="false">
+        <service id="nelmio_api_doc.route_describers.inline_parameter" class="Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber" public="false">
             <tag name="nelmio_api_doc.route_describer" priority="-225" />
-            <argument type="tagged_iterator" tag="nelmio_api_doc.symfony_annotation_describer"/>
+            <argument type="service" id="argument_metadata_factory" />
+            <argument type="tagged_iterator" tag="nelmio_api_doc.inline_parameter_describer"/>
         </service>
     </services>
 </container>
