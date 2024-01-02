@@ -22,8 +22,10 @@ class FOSRestController80
 {
     /**
      * @Route("/fosrest.{_format}", methods={"POST"})
+     *
      * @QueryParam(name="foo", requirements=@Regex("/^\d+$/"))
      * @QueryParam(name="mapped", map=true)
+     *
      * @RequestParam(name="Barraa", key="bar", requirements="\d+")
      * @RequestParam(name="baz", requirements=@IsTrue)
      * @RequestParam(name="datetime", requirements=@DateTime("Y-m-d\TH:i:sP"))

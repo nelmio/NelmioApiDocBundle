@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class WebTestCase extends BaseWebTestCase
@@ -171,14 +170,19 @@ class WebTestCase extends BaseWebTestCase
     }
 
     /**
-     * BC symfony < 5.3.
+     * BC symfony < 5.3 and symfony >= 7.
+     *
+     * KernelTestCase::getContainer has a Container return type object in symfony 7
+     * which is incompatible with the return type of previous versions or
+     * at least the return type of overridden method (which was added for BC compatibility),
+     * hence moving it to the magic method.
      */
-    protected static function getContainer(): ContainerInterface
+    public static function __callStatic(string $name, array $arguments)
     {
-        if (method_exists(parent::class, 'getContainer')) {
-            return parent::getContainer();
+        if ('getContainer' === $name) {
+            return static::$container;
         }
 
-        return static::$container;
+        return null;
     }
 }

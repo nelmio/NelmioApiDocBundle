@@ -40,7 +40,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
         if ($types[0]->isNullable()) {
             $weakContext = Util::createWeakContext($property->_context);
             $property->nullable = true;
-            $property->allOf = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups)), '_context' => $weakContext])];
+            $property->oneOf = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups)), '_context' => $weakContext])];
 
             return;
         }
