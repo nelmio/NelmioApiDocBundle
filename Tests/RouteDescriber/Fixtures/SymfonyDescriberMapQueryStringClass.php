@@ -22,6 +22,9 @@ final class SymfonyDescriberMapQueryStringClass implements SelfDescribingModelIn
         $schema->description = $model->getType()->getClassName();
         $schema->type = self::TYPE;
 
+        $schema->required = [
+            'id',
+        ];
         $schema->properties = self::getProperties();
     }
 

@@ -16,23 +16,38 @@ class DTO implements SelfDescribingModelInterface
     public const DESCRIPTION = 'some description';
 
     public function __construct(
-        private int $id,
-        private string $name,
-        private ?string $nullableName,
+        public int $id,
+        public string $name,
+        public ?string $nullableName,
         #[OA\Property(
             example: self::EXAMPLE_NAME,
         )]
-        private string $nameWithExample,
+        public string $nameWithExample,
         #[OA\Property(
             description: self::DESCRIPTION,
         )]
-        private string $nameWithDescription,
+        public string $nameWithDescription,
     ) {
     }
 
     public static function describe(Schema $schema, Model $model): void
     {
+        $schema->type = 'object';
+        $schema->required = self::getRequired();
         $schema->properties = self::getProperties();
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getRequired(): array
+    {
+        return [
+            'id',
+            'name',
+            'nameWithExample',
+            'nameWithDescription',
+        ];
     }
 
     /**
