@@ -39,7 +39,7 @@ trait NullablePropertyTrait
                 return;
             }
 
-            $existingRequiredFields =  Generator::UNDEFINED !== $schema->required ? $schema->required : [];
+            $existingRequiredFields = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
             $existingRequiredFields[] = $propertyName;
 
             $schema->required = array_values(array_unique($existingRequiredFields));
