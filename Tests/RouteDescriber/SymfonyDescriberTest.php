@@ -106,7 +106,7 @@ class SymfonyDescriberTest extends TestCase
 
         $this->inlineParameterDescriber->describe(
             $this->openApi,
-            new Route('/', defaults: ['_controller' => 'foo']),
+            new Route('/', ['_controller' => 'foo']),
             $reflectionMethodStub
         );
     }
@@ -138,7 +138,7 @@ class SymfonyDescriberTest extends TestCase
 
         $this->inlineParameterDescriber->describe(
             $this->openApi,
-            new Route('/', defaults: ['_controller' => 'foo']),
+            new Route('/', ['_controller' => 'foo']),
             $reflectionMethodStub
         );
     }
