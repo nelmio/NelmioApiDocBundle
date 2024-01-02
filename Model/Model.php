@@ -22,9 +22,9 @@ final class Model
      */
     private ?array $options;
     /**
-     * @var array<string, mixed>|null
+     * @var array<string, mixed>
      */
-    private ?array $serializationContext;
+    private array $serializationContext;
 
     /**
      * @param string[]|null $groups

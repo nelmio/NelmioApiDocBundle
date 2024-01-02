@@ -61,7 +61,7 @@ final class ModelRegistry
      *
      * @internal
      */
-    public function __construct($modelDescribers, OA\OpenApi $api, array $alternativeNames = [])
+    public function __construct(iterable $modelDescribers, OA\OpenApi $api, array $alternativeNames = [])
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;

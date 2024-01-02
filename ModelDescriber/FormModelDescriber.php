@@ -39,7 +39,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     use ModelRegistryAwareTrait;
     use SetsContextTrait;
 
-    private FormFactoryInterface $formFactory;
+    private ?FormFactoryInterface $formFactory;
 
     private ?Reader $doctrineReader;
 

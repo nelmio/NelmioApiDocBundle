@@ -32,7 +32,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     use ApplyOpenApiDiscriminatorTrait;
 
     private PropertyInfoExtractorInterface $propertyInfo;
-    private ClassMetadataFactoryInterface $classMetadataFactory;
+    private ?ClassMetadataFactoryInterface $classMetadataFactory;
     private ?Reader $doctrineReader;
     /** @var PropertyDescriberInterface[] */
     private iterable $propertyDescribers;

@@ -27,7 +27,7 @@ class RenderOpenApi
 
     private ContainerInterface $generatorLocator;
 
-    /** @var array<string, OpenApiRenderer|null> */
+    /** @var array<string, OpenApiRenderer> */
     private array $openApiRenderers = [];
 
     public function __construct(ContainerInterface $generatorLocator, ?OpenApiRenderer ...$openApiRenderers)

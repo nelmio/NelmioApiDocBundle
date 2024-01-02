@@ -27,12 +27,12 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
     /**
      * @var iterable|RouteDescriberInterface[]
      */
-    private $routeDescribers;
+    private iterable $routeDescribers;
 
     /**
      * @param RouteDescriberInterface[]|iterable $routeDescribers
      */
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, $routeDescribers)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, iterable $routeDescribers)
     {
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
