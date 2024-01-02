@@ -45,7 +45,7 @@ final class ModelRegister
             if ($annotation instanceof OA\Schema && $annotation->ref instanceof ModelAnnotation) {
                 $model = $annotation->ref;
 
-                $annotation->ref = $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options));
+                $annotation->ref = $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->versions));
 
                 // It is no longer an unmerged annotation
                 $this->detach($model, $annotation, $analysis);
@@ -71,7 +71,7 @@ final class ModelRegister
             if ($annotation instanceof OA\Response || $annotation instanceof OA\RequestBody) {
                 $properties = [
                     '_context' => Util::createContext(['nested' => $annotation], $annotation->_context),
-                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options)),
+                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->versions)),
                 ];
 
                 foreach ($this->mediaTypes as $mediaType) {
@@ -98,7 +98,7 @@ final class ModelRegister
             }
 
             $annotation->merge([new $annotationClass([
-                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options)),
+                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->versions)),
             ])]);
 
             // It is no longer an unmerged annotation

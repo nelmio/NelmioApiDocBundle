@@ -15,6 +15,7 @@ use Doctrine\Common\Annotations\Reader;
 use JMS\Serializer\Context;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
+use JMS\Serializer\Exclusion\VersionExclusionStrategy;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
@@ -199,6 +200,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             if (null !== $model->getGroups()) {
                 $context->addExclusionStrategy(new GroupsExclusionStrategy($model->getGroups()));
+            }
+            if (null !== $model->getVersions()) {
+                $context->addExclusionStrategy(new VersionExclusionStrategy($model->getVersions()[0]));
             }
         }
 

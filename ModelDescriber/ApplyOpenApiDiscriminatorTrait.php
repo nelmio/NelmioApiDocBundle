@@ -54,7 +54,8 @@ trait ApplyOpenApiDiscriminatorTrait
             $oneOfSchema->ref = $modelRegistry->register(new Model(
                 new Type(Type::BUILTIN_TYPE_OBJECT, false, $className),
                 $model->getGroups(),
-                $model->getOptions()
+                $model->getOptions(),
+                $model->getVersions()
             ));
             $schema->oneOf[] = $oneOfSchema;
             $schema->discriminator->mapping[$propertyValue] = $oneOfSchema->ref;

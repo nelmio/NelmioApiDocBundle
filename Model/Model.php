@@ -21,14 +21,18 @@ final class Model
 
     private $options;
 
+    private $versions;
+
     /**
      * @param string[]|null $groups
+     * @param string[]|null $versions
      */
-    public function __construct(Type $type, array $groups = null, array $options = null)
+    public function __construct(Type $type, array $groups = null, array $options = null, array $versions = null)
     {
         $this->type = $type;
         $this->groups = $groups;
         $this->options = $options;
+        $this->versions = $versions;
     }
 
     /**
@@ -42,6 +46,14 @@ final class Model
     /**
      * @return string[]|null
      */
+    public function getVersions()
+    {
+        return $this->versions;
+    }
+
+    /**
+     * @return string[]|null
+     */
     public function getGroups()
     {
         return $this->groups;
@@ -49,7 +61,7 @@ final class Model
 
     public function getHash(): string
     {
-        return md5(serialize([$this->type, $this->groups]));
+        return md5(serialize([$this->type, $this->groups, $this->versions ?: null]));
     }
 
     /**

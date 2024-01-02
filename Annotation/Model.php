@@ -50,6 +50,11 @@ final class Model extends Attachable
     public $options;
 
     /**
+     * @var string[]
+     */
+    public $versions;
+
+    /**
      * @param mixed[]  $properties
      * @param string[] $groups
      * @param mixed[]  $options
@@ -58,12 +63,14 @@ final class Model extends Attachable
         array $properties = [],
         string $type = Generator::UNDEFINED,
         array $groups = null,
-        array $options = null
+        array $options = null,
+        array $versions = null
     ) {
         parent::__construct($properties + [
             'type' => $type,
             'groups' => $groups,
             'options' => $options,
+            'versions' => $versions,
         ]);
     }
 }
