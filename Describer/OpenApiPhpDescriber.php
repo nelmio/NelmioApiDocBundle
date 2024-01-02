@@ -31,15 +31,12 @@ final class OpenApiPhpDescriber
 {
     use SetsContextTrait;
 
-    private $routeCollection;
-    private $controllerReflector;
+    private RouteCollection $routeCollection;
+    private ControllerReflector $controllerReflector;
 
-    /**
-     * @var Reader|null
-     */
-    private $annotationReader;
-    private $logger;
-    private $overwrite;
+    private ?Reader $annotationReader;
+    private LoggerInterface $logger;
+    private bool $overwrite;
 
     public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, ?Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
     {

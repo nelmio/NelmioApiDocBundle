@@ -16,9 +16,12 @@ use OpenApi\Annotations as OA;
 
 class ExternalDocDescriber implements DescriberInterface
 {
+    /**
+     * @var array|callable
+     */
     private $externalDoc;
 
-    private $overwrite;
+    private bool $overwrite;
 
     /**
      * @param array|callable $externalDoc

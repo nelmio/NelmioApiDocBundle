@@ -20,15 +20,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DumpCommand extends Command
 {
-    /**
-     * @var RenderOpenApi
-     */
-    private $renderOpenApi;
+    private RenderOpenApi $renderOpenApi;
 
     /**
      * @var mixed[]
      */
-    private $defaultHtmlConfig = [
+    private array $defaultHtmlConfig = [
         'assets_mode' => AssetsMode::CDN,
         'swagger_ui_config' => [],
     ];

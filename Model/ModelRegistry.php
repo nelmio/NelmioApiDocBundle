@@ -23,22 +23,41 @@ final class ModelRegistry
 {
     use LoggerAwareTrait;
 
-    private $registeredModelNames = [];
+    /**
+     * @var array<string, Model>
+     */
+    private array $registeredModelNames = [];
 
-    private $alternativeNames = [];
+    /**
+     * @var Model[]
+     */
+    private array $alternativeNames = [];
 
-    private $unregistered = [];
+    /**
+     * @var string[]
+     */
+    private array $unregistered = [];
 
-    private $models = [];
+    /**
+     * @var array<string, Model>
+     */
+    private array $models = [];
 
-    private $names = [];
+    /**
+     * @var array<string, string>
+     */
+    private array $names = [];
 
-    private $modelDescribers = [];
+    /**
+     * @var ModelDescriberInterface[]|iterable
+     */
+    private array $modelDescribers = [];
 
-    private $api;
+    private OA\OpenApi $api;
 
     /**
      * @param ModelDescriberInterface[]|iterable $modelDescribers
+     * @param array<string, array{type: string, groups: string[]|null}> $alternativeNames
      *
      * @internal
      */

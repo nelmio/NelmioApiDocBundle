@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\DocBlockFactory;
  */
 class PropertyPhpDocReader
 {
-    private $docBlockFactory;
+    private DocBlockFactory $docBlockFactory;
 
     public function __construct()
     {

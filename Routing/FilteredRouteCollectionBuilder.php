@@ -21,17 +21,13 @@ use Symfony\Component\Routing\RouteCollection;
 
 final class FilteredRouteCollectionBuilder
 {
-    /** @var Reader|null */
-    private $annotationReader;
+    private ?Reader $annotationReader;
 
-    /** @var ControllerReflector */
-    private $controllerReflector;
+    private ControllerReflector $controllerReflector;
 
-    /** @var string */
-    private $area;
+    private string $area;
 
-    /** @var array */
-    private $options;
+    private array $options;
 
     public function __construct(
         ?Reader $annotationReader,

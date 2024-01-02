@@ -27,11 +27,10 @@ final class FosRestDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    /** @var Reader|null */
-    private $annotationReader;
+    private ?Reader $annotationReader;
 
     /** @var string[] */
-    private $mediaTypes;
+    private array $mediaTypes;
 
     public function __construct(?Reader $annotationReader, array $mediaTypes)
     {

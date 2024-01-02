@@ -26,11 +26,10 @@ use Symfony\Component\PropertyInfo\Type;
  */
 final class ModelRegister
 {
-    /** @var ModelRegistry */
-    private $modelRegistry;
+    private ModelRegistry $modelRegistry;
 
     /** @var string[] */
-    private $mediaTypes;
+    private array $mediaTypes;
 
     public function __construct(ModelRegistry $modelRegistry, array $mediaTypes)
     {

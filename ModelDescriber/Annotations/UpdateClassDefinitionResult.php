@@ -27,7 +27,7 @@ final class UpdateClassDefinitionResult
      * model describers should _probably_ not describe any additional properties or try
      * to merge in properties.
      */
-    private $shouldDescribeModelProperties;
+    private bool $shouldDescribeModelProperties;
 
     public function __construct(bool $shouldDescribeModelProperties)
     {

@@ -20,10 +20,13 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
 {
     use ModelRegistryAwareTrait;
 
-    private $routeCollection;
+    private RouteCollection $routeCollection;
 
-    private $controllerReflector;
+    private ControllerReflector $controllerReflector;
 
+    /**
+     * @var iterable|RouteDescriberInterface[]
+     */
     private $routeDescribers;
 
     /**

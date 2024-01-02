@@ -34,22 +34,28 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 {
     use ModelRegistryAwareTrait;
 
-    private $factory;
+    private MetadataFactoryInterface $factory;
 
-    private $contextFactory;
+    private ?SerializationContextFactoryInterface $contextFactory;
 
-    private $namingStrategy;
+    private ?PropertyNamingStrategyInterface $namingStrategy;
+
+    private ?Reader $doctrineReader;
 
     /**
-     * @var Reader|null
+     * @var array<string, Context>
      */
-    private $doctrineReader;
-
     private $contexts = [];
 
+    /**
+     * @var array<string, \SplStack>
+     */
     private $metadataStacks = [];
 
-    private $mediaTypes;
+    /**
+     * @var string[]
+     */
+    private array $mediaTypes;
 
     /**
      * @var array
@@ -248,7 +254,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     {
         $nestedTypeInfo = $this->getNestedTypeInArray($type);
         if (null !== $nestedTypeInfo) {
-            list($nestedType, $isHash) = $nestedTypeInfo;
+            [$nestedType, $isHash] = $nestedTypeInfo;
             if ($isHash) {
                 $property->type = 'object';
                 $property->additionalProperties = Util::createChild($property, OA\Property::class);

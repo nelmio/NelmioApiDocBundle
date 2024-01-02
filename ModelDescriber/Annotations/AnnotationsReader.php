@@ -21,9 +21,9 @@ use OpenApi\Generator;
  */
 class AnnotationsReader
 {
-    private $phpDocReader;
-    private $openApiAnnotationsReader;
-    private $symfonyConstraintAnnotationReader;
+    private PropertyPhpDocReader $phpDocReader;
+    private OpenApiAnnotationsReader $openApiAnnotationsReader;
+    private SymfonyConstraintAnnotationReader $symfonyConstraintAnnotationReader;
 
     public function __construct(
         ?Reader $annotationsReader,

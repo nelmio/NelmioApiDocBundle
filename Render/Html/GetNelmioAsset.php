@@ -20,9 +20,9 @@ use Twig\TwigFunction;
  */
 class GetNelmioAsset extends AbstractExtension
 {
-    private $assetExtension;
-    private $resourcesDir;
-    private $cdnUrl;
+    private AssetExtension $assetExtension;
+    private string $resourcesDir;
+    private string $cdnUrl;
 
     public function __construct(AssetExtension $assetExtension)
     {

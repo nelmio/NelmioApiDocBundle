@@ -23,7 +23,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
     use NullablePropertyTrait;
 
     /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
+    private iterable $propertyDescribers;
 
     public function __construct(iterable $propertyDescribers = [])
     {

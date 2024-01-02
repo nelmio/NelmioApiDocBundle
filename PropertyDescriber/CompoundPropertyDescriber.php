@@ -22,7 +22,7 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
     use ModelRegistryAwareTrait;
 
     /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
+    private iterable $propertyDescribers;
 
     public function __construct(iterable $propertyDescribers)
     {

@@ -28,11 +28,8 @@ class OpenApiAnnotationsReader
 {
     use SetsContextTrait;
 
-    /**
-     * @var Reader|null
-     */
-    private $annotationsReader;
-    private $modelRegister;
+    private ?Reader $annotationsReader;
+    private ModelRegister $modelRegister;
 
     public function __construct(?Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
     {

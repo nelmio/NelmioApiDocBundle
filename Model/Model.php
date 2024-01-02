@@ -16,10 +16,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 final class Model
 {
-    private $type;
+    private Type $type;
 
-    private $options;
-    private $serializationContext;
+    private array $options;
+    private array $serializationContext;
 
     /**
      * @param string[]|null $groups
@@ -34,10 +34,7 @@ final class Model
         }
     }
 
-    /**
-     * @return Type
-     */
-    public function getType()
+    public function getType(): Type
     {
         return $this->type;
     }

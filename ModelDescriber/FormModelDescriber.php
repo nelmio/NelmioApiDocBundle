@@ -39,14 +39,15 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     use ModelRegistryAwareTrait;
     use SetsContextTrait;
 
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
+
+    private ?Reader $doctrineReader;
 
     /**
-     * @var Reader|null
+     * @var string[]
      */
-    private $doctrineReader;
-    private $mediaTypes;
-    private $useValidationGroups;
+    private array $mediaTypes;
+    private bool $useValidationGroups;
 
     public function __construct(
         FormFactoryInterface $formFactory = null,
