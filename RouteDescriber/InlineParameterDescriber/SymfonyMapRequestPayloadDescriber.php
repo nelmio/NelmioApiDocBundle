@@ -15,6 +15,10 @@ final class SymfonyMapRequestPayloadDescriber implements InlineParameterDescribe
 {
     public function supports(ArgumentMetadata $argumentMetadata): bool
     {
+        if (!class_exists(MapRequestPayload::class)) {
+            return false;
+        }
+
         if (!$argumentMetadata->getAttributes(MapRequestPayload::class, ArgumentMetadata::IS_INSTANCEOF)) {
             return false;
         }

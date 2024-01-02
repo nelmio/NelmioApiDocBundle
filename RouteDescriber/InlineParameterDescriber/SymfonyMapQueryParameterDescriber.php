@@ -16,6 +16,10 @@ final class SymfonyMapQueryParameterDescriber implements InlineParameterDescribe
 
     public function supports(ArgumentMetadata $argumentMetadata): bool
     {
+        if (!class_exists(MapQueryParameter::class)) {
+            return false;
+        }
+
         if (!$argumentMetadata->getAttributes(MapQueryParameter::class, ArgumentMetadata::IS_INSTANCEOF)) {
             return false;
         }
