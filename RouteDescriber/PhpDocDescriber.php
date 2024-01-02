@@ -25,10 +25,7 @@ final class PhpDocDescriber implements RouteDescriberInterface
 
     public function __construct(?DocBlockFactoryInterface $docBlockFactory = null)
     {
-        if (null === $docBlockFactory) {
-            $docBlockFactory = DocBlockFactory::createInstance();
-        }
-        $this->docBlockFactory = $docBlockFactory;
+        $this->docBlockFactory = $docBlockFactory ?? DocBlockFactory::createInstance();
     }
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)

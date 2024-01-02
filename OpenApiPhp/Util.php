@@ -194,9 +194,8 @@ final class Util
                 $properties
             );
         }
-        if (null === $key) {
-            $key = self::createCollectionItem($parent, $collection, $class, $properties);
-        }
+
+        $key ??= self::createCollectionItem($parent, $collection, $class, $properties);
 
         return $parent->{$collection}[$key];
     }
