@@ -37,6 +37,11 @@ class SymfonyFunctionalTest extends WebTestCase
 
         $expected = [
             'schema' => 'SymfonyMapQueryString',
+            'required' => [
+                'id',
+                'name',
+                'articleType81',
+            ],
             'properties' => [
                 'id' => [
                     'type' => 'integer',
