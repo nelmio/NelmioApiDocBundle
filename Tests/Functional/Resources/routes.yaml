@@ -7,10 +7,6 @@ api:
     resource: ../Controller/ApiController.php
     type: annotation
 
-name_converter:
-    resource: ../Controller/NameConverterController.php
-    type: annotation
-
 class_api:
     resource: ../Controller/ClassApiController80.php
     type: annotation
