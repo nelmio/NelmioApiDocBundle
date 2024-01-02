@@ -107,22 +107,30 @@ class SymfonyConstraintAnnotationReader
             } elseif ($annotation instanceof Assert\Choice) {
                 $this->applyEnumFromChoiceConstraint($property, $annotation, $reflection);
             } elseif ($annotation instanceof Assert\Range) {
-                if (isset($annotation->min)) {
-                    $property->minimum = (int) $annotation->min;
+                if (\is_int($annotation->min)) {
+                    $property->minimum = $annotation->min;
                 }
-                if (isset($annotation->max)) {
-                    $property->maximum = (int) $annotation->max;
+                if (\is_int($annotation->max)) {
+                    $property->maximum = $annotation->max;
                 }
             } elseif ($annotation instanceof Assert\LessThan) {
-                $property->exclusiveMaximum = true;
-                $property->maximum = (int) $annotation->value;
+                if (\is_int($annotation->value)) {
+                    $property->exclusiveMaximum = true;
+                    $property->maximum = $annotation->value;
+                }
             } elseif ($annotation instanceof Assert\LessThanOrEqual) {
-                $property->maximum = (int) $annotation->value;
+                if (\is_int($annotation->value)) {
+                    $property->maximum = $annotation->value;
+                }
             } elseif ($annotation instanceof Assert\GreaterThan) {
-                $property->exclusiveMinimum = true;
-                $property->minimum = (int) $annotation->value;
+                if (\is_int($annotation->value)) {
+                    $property->exclusiveMinimum = true;
+                    $property->minimum = $annotation->value;
+                }
             } elseif ($annotation instanceof Assert\GreaterThanOrEqual) {
-                $property->minimum = (int) $annotation->value;
+                if (\is_int($annotation->value)) {
+                    $property->minimum = $annotation->value;
+                }
             }
         }
     }
