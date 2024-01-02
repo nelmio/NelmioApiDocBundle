@@ -3,6 +3,7 @@
 /composer.phar
 /composer.lock
 /.php_cs.cache
+/.php-cs-fixer.cache
 /.php_cs
 /phpunit.xml
 /.phpunit
