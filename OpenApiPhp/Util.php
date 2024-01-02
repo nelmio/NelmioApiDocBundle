@@ -370,6 +370,24 @@ final class Util
         }
     }
 
+    /**
+     * Get assigned property name for property schema.
+     */
+    public static function getSchemaPropertyName(OA\Schema $schema, OA\Schema $property): ?string
+    {
+        if (Generator::UNDEFINED === $schema->properties) {
+            return null;
+        }
+
+        foreach ($schema->properties as $schemaProperty) {
+            if ($schemaProperty === $property) {
+                return Generator::UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
+            }
+        }
+
+        return null;
+    }
+
     private static function mergeFromArray(OA\AbstractAnnotation $annotation, array $properties, bool $overwrite)
     {
         $done = [];

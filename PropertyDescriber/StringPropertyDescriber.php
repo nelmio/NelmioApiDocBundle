@@ -18,10 +18,10 @@ class StringPropertyDescriber implements PropertyDescriberInterface
 {
     use NullablePropertyTrait;
 
-    public function describe(array $types, OA\Schema $property, array $groups = null)
+    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null)
     {
         $property->type = 'string';
-        $this->setNullableProperty($types[0], $property);
+        $this->setNullableProperty($types[0], $property, $schema);
     }
 
     public function supports(array $types): bool

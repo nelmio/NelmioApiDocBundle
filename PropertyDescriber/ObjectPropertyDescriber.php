@@ -16,13 +16,14 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\Type;
 
 class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
-    public function describe(array $types, OA\Schema $property, array $groups = null)
+    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null)
     {
         $type = new Type(
             $types[0]->getBuiltinType(),
@@ -45,6 +46,18 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
         }
 
         $property->ref = $this->modelRegistry->register(new Model($type, $groups));
+
+        if (!$type->isNullable() && null !== $schema) {
+            $propertyName = Util::getSchemaPropertyName($schema, $property);
+            if (null === $propertyName) {
+                return;
+            }
+
+            $existingRequiredFields = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
+            $existingRequiredFields[] = $propertyName;
+
+            $schema->required = array_values(array_unique($existingRequiredFields));
+        }
     }
 
     public function supports(array $types): bool
