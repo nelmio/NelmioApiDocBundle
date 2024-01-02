@@ -86,16 +86,58 @@ class SymfonyConstraints81
     private $propertyRange;
 
     /**
+     * @var \DateTimeImmutable
+     */
+    #[Assert\Range(min: 'now', max: '+5 hours')]
+    public $propertyRangeDate;
+
+    /**
      * @var int
      */
     #[Assert\LessThan(42)]
     private $propertyLessThan;
 
     /**
+     * @var \DateTimeImmutable
+     */
+    #[Assert\LessThan('now')]
+    public $propertyLessThanDate;
+
+    /**
      * @var int
      */
     #[Assert\LessThanOrEqual(23)]
     private $propertyLessThanOrEqual;
+
+    /**
+     * @var \DateTimeImmutable
+     */
+    #[Assert\LessThanOrEqual('now')]
+    public $propertyLessThanOrEqualDate;
+
+    /**
+     * @var int
+     */
+    #[Assert\GreaterThan(42)]
+    public $propertyGreaterThan;
+
+    /**
+     * @var \DateTimeImmutable
+     */
+    #[Assert\GreaterThan('now')]
+    public $propertyGreaterThanDate;
+
+    /**
+     * @var int
+     */
+    #[Assert\GreaterThanOrEqual(23)]
+    public $propertyGreaterThanOrEqual;
+
+    /**
+     * @var \DateTimeImmutable
+     */
+    #[Assert\GreaterThanOrEqual('now')]
+    public $propertyGreaterThanOrEqualDate;
 
     /**
      * @var int

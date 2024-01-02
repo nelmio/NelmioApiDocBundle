@@ -457,8 +457,15 @@ class FunctionalTest extends WebTestCase
                 'propertyChoiceWithMultiple',
                 'propertyExpression',
                 'propertyRange',
+                'propertyRangeDate',
                 'propertyLessThan',
+                'propertyLessThanDate',
                 'propertyLessThanOrEqual',
+                'propertyLessThanOrEqualDate',
+                'propertyGreaterThan',
+                'propertyGreaterThanDate',
+                'propertyGreaterThanOrEqual',
+                'propertyGreaterThanOrEqualDate',
             ],
             'properties' => [
                 'propertyNotBlank' => [
@@ -510,17 +517,46 @@ class FunctionalTest extends WebTestCase
                     'maximum' => 5,
                     'minimum' => 1,
                 ],
+                'propertyRangeDate' => [
+                    'type' => 'string',
+                    'format' => 'date-time',
+                ],
                 'propertyLessThan' => [
                     'type' => 'integer',
                     'exclusiveMaximum' => true,
                     'maximum' => 42,
                 ],
+                'propertyLessThanDate' => [
+                    'type' => 'string',
+                    'format' => 'date-time',
+                ],
                 'propertyLessThanOrEqual' => [
                     'type' => 'integer',
                     'maximum' => 23,
                 ],
+                'propertyLessThanOrEqualDate' => [
+                    'type' => 'string',
+                    'format' => 'date-time',
+                ],
                 'propertyWithCompoundValidationRule' => [
                     'type' => 'integer',
+                ],
+                'propertyGreaterThan' => [
+                    'type' => 'integer',
+                    'exclusiveMinimum' => true,
+                    'minimum' => 42,
+                ],
+                'propertyGreaterThanDate' => [
+                    'type' => 'string',
+                    'format' => 'date-time',
+                ],
+                'propertyGreaterThanOrEqual' => [
+                    'type' => 'integer',
+                    'minimum' => 23,
+                ],
+                'propertyGreaterThanOrEqualDate' => [
+                    'type' => 'string',
+                    'format' => 'date-time',
                 ],
             ],
             'type' => 'object',
