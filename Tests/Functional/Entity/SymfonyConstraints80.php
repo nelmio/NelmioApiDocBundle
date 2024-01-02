@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class SymfonyConstraints
+class SymfonyConstraints80
 {
     /**
      * @var int
@@ -61,7 +61,7 @@ class SymfonyConstraints
     /**
      * @var int
      *
-     * @Assert\Choice(callback={SymfonyConstraints::class,"fetchAllowedChoices"})
+     * @Assert\Choice(callback={SymfonyConstraints80::class,"fetchAllowedChoices"})
      */
     private $propertyChoiceWithCallback;
 

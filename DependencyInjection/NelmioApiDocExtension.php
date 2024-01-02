@@ -22,9 +22,11 @@ use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
+use OpenApi\Generator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -67,6 +69,11 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $container->setParameter('nelmio_api_doc.areas', array_keys($config['areas']));
         $container->setParameter('nelmio_api_doc.media_types', $config['media_types']);
         $container->setParameter('nelmio_api_doc.use_validation_groups', $config['use_validation_groups']);
+
+        // Register the OpenAPI Generator as a service.
+        $container->register('nelmio_api_doc.open_api.generator', Generator::class)
+            ->setPublic(false);
+
         foreach ($config['areas'] as $area => $areaConfig) {
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
@@ -74,10 +81,14 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->addMethodCall('setAlternativeNames', [$nameAliases])
                 ->addMethodCall('setMediaTypes', [$config['media_types']])
                 ->addMethodCall('setLogger', [new Reference('logger')])
+                ->addMethodCall('setOpenApiVersion', [$config['documentation']['openapi'] ?? null])
                 ->addTag('monolog.logger', ['channel' => 'nelmio_api_doc'])
                 ->setArguments([
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
+                    null,
+                    null,
+                    new Reference('nelmio_api_doc.open_api.generator'),
                 ]);
 
             $container->register(sprintf('nelmio_api_doc.describers.route.%s', $area), RouteDescriber::class)
@@ -94,7 +105,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArguments([
                     new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
-                    new Reference('annotations.reader'), // We cannot use the cached version of the annotation reader since the construction of the annotations is context dependant...
+                    new Reference('annotations.reader', ContainerInterface::NULL_ON_INVALID_REFERENCE), // We cannot use the cached version of the annotation reader since the construction of the annotations is context dependant...
                     new Reference('logger'),
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
@@ -123,7 +134,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                         (new Definition(FilteredRouteCollectionBuilder::class))
                             ->setArguments(
                                 [
-                                    new Reference('annotation_reader'), // Here we use the cached version as we don't deal with @OA annotations in this service
+                                    new Reference('annotation_reader', ContainerInterface::NULL_ON_INVALID_REFERENCE), // Here we use the cached version as we don't deal with @OA annotations in this service
                                     new Reference('nelmio_api_doc.controller_reflector'),
                                     $area,
                                     $areaConfig,
@@ -181,7 +192,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setPublic(false)
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
-                    new Reference('annotations.reader'),
+                    new Reference('annotations.reader', ContainerInterface::NULL_ON_INVALID_REFERENCE),
                     $config['media_types'],
                     $jmsNamingStrategy,
                     $container->getParameter('nelmio_api_doc.use_validation_groups'),

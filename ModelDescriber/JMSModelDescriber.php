@@ -40,6 +40,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     private $namingStrategy;
 
+    /**
+     * @var Reader|null
+     */
     private $doctrineReader;
 
     private $contexts = [];
@@ -60,7 +63,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function __construct(
         MetadataFactoryInterface $factory,
-        Reader $reader,
+        ?Reader $reader,
         array $mediaTypes,
         ?PropertyNamingStrategyInterface $namingStrategy = null,
         bool $useValidationGroups = false,
@@ -293,7 +296,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 $property->ref = $modelRef;
             } else {
                 $weakContext = Util::createWeakContext($property->_context);
-                $property->allOf = [new OA\Schema(['ref' => $modelRef, '_context' => $weakContext])];
+                $property->oneOf = [new OA\Schema(['ref' => $modelRef, '_context' => $weakContext])];
             }
 
             $this->contexts[$model->getHash()] = $context;

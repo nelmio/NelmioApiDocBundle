@@ -35,7 +35,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private $propertyInfo;
     /** @var ClassMetadataFactoryInterface|null */
     private $classMetadataFactory;
-    /** @var Reader */
+    /** @var Reader|null */
     private $doctrineReader;
     /** @var PropertyDescriberInterface[] */
     private $propertyDescribers;
@@ -48,7 +48,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        Reader $reader,
+        ?Reader $reader,
         iterable $propertyDescribers,
         array $mediaTypes,
         NameConverterInterface $nameConverter = null,

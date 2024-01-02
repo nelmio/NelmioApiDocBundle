@@ -19,13 +19,17 @@ use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\NameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
+use ReflectionException;
+use ReflectionMethod;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
+use Symfony\Bundle\FrameworkBundle\Command\CachePoolClearCommand;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -35,16 +39,15 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class TestKernel extends Kernel
 {
+    use MicroKernelTrait;
     const USE_JMS = 1;
     const USE_BAZINGA = 2;
+    const USE_FOSREST = 3;
     const ERROR_ARRAY_ITEMS = 4;
     const USE_VALIDATION_GROUPS = 8;
-
-    use MicroKernelTrait;
 
     private $flags;
 
@@ -55,20 +58,23 @@ class TestKernel extends Kernel
         $this->flags = $flags;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function registerBundles(): iterable
     {
         $bundles = [
             new FrameworkBundle(),
             new TwigBundle(),
-            new SensioFrameworkExtraBundle(),
             new ApiPlatformBundle(),
             new NelmioApiDocBundle(),
             new TestBundle(),
-            new FOSRestBundle(),
         ];
+
+        if (class_exists(SensioFrameworkExtraBundle::class)) {
+            $bundles[] = new SensioFrameworkExtraBundle();
+        }
+
+        if (class_exists(FOSRestBundle::class)) {
+            $bundles[] = new FOSRestBundle();
+        }
 
         if ($this->flags & self::USE_JMS) {
             $bundles[] = new JMSSerializerBundle();
@@ -81,33 +87,34 @@ class TestKernel extends Kernel
         return $bundles;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureRoutes($routes)
     {
-        $this->import($routes, __DIR__.'/Resources/routes.yaml', '/', 'yaml');
-
-        if (class_exists(SerializedName::class)) {
-            $this->import($routes, __DIR__.'/Controller/SerializedNameController.php', '/', 'annotation');
-        }
-
-        if ($this->flags & self::USE_JMS) {
-            $this->import($routes, __DIR__.'/Controller/JMSController.php', '/', 'annotation');
-        }
-
-        if ($this->flags & self::USE_BAZINGA) {
-            $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', 'annotation');
-
-            try {
-                new \ReflectionMethod(Embedded::class, 'getType');
-                $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', 'annotation');
-            } catch (\ReflectionException $e) {
-            }
+        if (self::isAnnotationsAvailable()) {
+            $this->import($routes, __DIR__.'/Resources/routes.yaml', '/', 'yaml');
+        } else {
+            $this->import($routes, __DIR__.'/Resources/routes-attributes.yaml', '/', 'yaml');
         }
 
         if ($this->flags & self::ERROR_ARRAY_ITEMS) {
-            $this->import($routes, __DIR__.'/Controller/ArrayItemsErrorController.php', '/', 'annotation');
+            $this->import($routes, __DIR__.'/Controller/ArrayItemsErrorController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
+        }
+
+        if ($this->flags & self::USE_JMS) {
+            $this->import($routes, __DIR__.'/Controller/JMSController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
+        }
+
+        if ($this->flags & self::USE_BAZINGA) {
+            $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
+
+            try {
+                new ReflectionMethod(Embedded::class, 'getType');
+                $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
+            } catch (ReflectionException $e) {
+            }
+        }
+
+        if ($this->flags & self::USE_FOSREST) {
+            $this->import($routes, __DIR__.'/Controller/FOSRestController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
         }
     }
 
@@ -123,9 +130,6 @@ class TestKernel extends Kernel
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
     {
         $framework = [
@@ -134,16 +138,20 @@ class TestKernel extends Kernel
             'test' => null,
             'validation' => null,
             'form' => null,
-            'serializer' => [
-                'enable_annotations' => true,
+            'serializer' => (
+                PHP_VERSION_ID >= 80100 && Kernel::MAJOR_VERSION < 7
+                    ? ['enable_annotations' => true]
+                    : []
+            ) + [
                 'mapping' => [
                     'paths' => [__DIR__.'/Resources/serializer/'],
                 ],
             ],
             'property_access' => true,
         ];
+
         // Support symfony/framework-bundle < 5.4
-        if (method_exists(\Symfony\Bundle\FrameworkBundle\Command\CachePoolClearCommand::class, 'complete')) {
+        if (method_exists(CachePoolClearCommand::class, 'complete')) {
             $framework += [
                 'exceptions' => [
                     'Symfony\Component\HttpKernel\Exception\BadRequestHttpException' => [
@@ -159,11 +167,13 @@ class TestKernel extends Kernel
             'exception_controller' => null,
         ]);
 
-        $c->loadFromExtension('sensio_framework_extra', [
-            'router' => [
-                'annotations' => false,
-            ],
-        ]);
+        if (self::isAnnotationsAvailable()) {
+            $c->loadFromExtension('sensio_framework_extra', [
+                'router' => [
+                    'annotations' => false,
+                ],
+            ]);
+        }
 
         $c->loadFromExtension('api_platform', [
             'mapping' => ['paths' => [
@@ -173,27 +183,92 @@ class TestKernel extends Kernel
             ]],
         ]);
 
-        $c->loadFromExtension('fos_rest', [
-            'format_listener' => [
-                'rules' => [
-                    [
-                        'path' => '^/',
-                        'fallback_format' => 'json',
+        if (self::isAnnotationsAvailable()) {
+            $c->loadFromExtension('fos_rest', [
+                'format_listener' => [
+                    'rules' => [
+                        [
+                            'path' => '^/',
+                            'fallback_format' => 'json',
+                        ],
                     ],
                 ],
-            ],
-        ]);
+            ]);
 
-        // If FOSRestBundle 2.8
-        if (class_exists(\FOS\RestBundle\EventListener\ResponseStatusCodeListener::class)) {
-            $c->loadFromExtension('fos_rest', [
-                'exception' => [
-                    'enabled' => false,
-                    'exception_listener' => false,
-                    'serialize_exceptions' => false,
+            // If FOSRestBundle 2.8
+            if (class_exists(\FOS\RestBundle\EventListener\ResponseStatusCodeListener::class)) {
+                $c->loadFromExtension('fos_rest', [
+                    'exception' => [
+                        'enabled' => false,
+                        'exception_listener' => false,
+                        'serialize_exceptions' => false,
+                    ],
+                    'body_listener' => false,
+                    'routing_loader' => false,
+                ]);
+            }
+        }
+
+        $models = [
+            [
+                'alias' => 'PrivateProtectedExposure',
+                'type' => PrivateProtectedExposure::class,
+            ],
+            [
+                'alias' => 'JMSPicture_mini',
+                'type' => JMSPicture::class,
+                'groups' => ['mini'],
+            ],
+            [
+                'alias' => 'BazingaUser_grouped',
+                'type' => BazingaUser::class,
+                'groups' => ['foo'],
+            ],
+            [
+                'alias' => 'SymfonyConstraintsTestGroup',
+                'type' => SymfonyConstraintsWithValidationGroups::class,
+                'groups' => ['test'],
+            ],
+            [
+                'alias' => 'SymfonyConstraintsDefaultGroup',
+                'type' => SymfonyConstraintsWithValidationGroups::class,
+                'groups' => null,
+            ],
+        ];
+
+        if (self::isAnnotationsAvailable()) {
+            $models = array_merge($models, [
+                [
+                    'alias' => 'JMSComplex',
+                    'type' => JMSComplex80::class,
+                    'groups' => [
+                        'list',
+                        'details',
+                        'User' => ['list'],
+                    ],
                 ],
-                'body_listener' => false,
-                'routing_loader' => false,
+                [
+                    'alias' => 'JMSComplexDefault',
+                    'type' => JMSComplex80::class,
+                    'groups' => null,
+                ],
+            ]);
+        } elseif (self::isAttributesAvailable()) {
+            $models = array_merge($models, [
+                [
+                'alias' => 'JMSComplex',
+                'type' => JMSComplex81::class,
+                'groups' => [
+                    'list',
+                    'details',
+                    'User' => ['list'],
+                ],
+                ],
+                [
+                    'alias' => 'JMSComplexDefault',
+                    'type' => JMSComplex81::class,
+                    'groups' => null,
+                ],
             ]);
         }
 
@@ -269,46 +344,7 @@ class TestKernel extends Kernel
                ],
             ],
             'models' => [
-                'names' => [
-                    [
-                        'alias' => 'PrivateProtectedExposure',
-                        'type' => PrivateProtectedExposure::class,
-                    ],
-                    [
-                        'alias' => 'JMSPicture_mini',
-                        'type' => JMSPicture::class,
-                        'groups' => ['mini'],
-                    ],
-                    [
-                        'alias' => 'BazingaUser_grouped',
-                        'type' => BazingaUser::class,
-                        'groups' => ['foo'],
-                    ],
-                    [
-                        'alias' => 'JMSComplex',
-                        'type' => JMSComplex::class,
-                        'groups' => [
-                            'list',
-                            'details',
-                            'User' => ['list'],
-                        ],
-                    ],
-                    [
-                        'alias' => 'JMSComplexDefault',
-                        'type' => JMSComplex::class,
-                        'groups' => null,
-                    ],
-                    [
-                        'alias' => 'SymfonyConstraintsTestGroup',
-                        'type' => SymfonyConstraintsWithValidationGroups::class,
-                        'groups' => ['test'],
-                    ],
-                    [
-                        'alias' => 'SymfonyConstraintsDefaultGroup',
-                        'type' => SymfonyConstraintsWithValidationGroups::class,
-                        'groups' => null,
-                    ],
-                ],
+                'names' => $models,
             ],
         ]);
 
@@ -321,17 +357,11 @@ class TestKernel extends Kernel
             ->addArgument(new Reference('serializer.name_converter.custom.inner'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCacheDir(): string
     {
         return parent::getCacheDir().'/'.$this->flags;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLogDir(): string
     {
         return parent::getLogDir().'/'.$this->flags;
@@ -345,5 +375,23 @@ class TestKernel extends Kernel
     public function unserialize($str)
     {
         $this->__construct(unserialize($str));
+    }
+
+    public static function isAnnotationsAvailable(): bool
+    {
+        if (Kernel::MAJOR_VERSION <= 5) {
+            return true;
+        }
+
+        if (Kernel::MAJOR_VERSION >= 7) {
+            return false;
+        }
+
+        return PHP_VERSION_ID < 80100;
+    }
+
+    public static function isAttributesAvailable(): bool
+    {
+        return PHP_VERSION_ID >= 80100;
     }
 }

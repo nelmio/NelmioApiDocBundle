@@ -28,7 +28,7 @@ final class Model
     {
         $this->type = $type;
         $this->options = $options;
-        $this->serializationContext= $serializationContext;
+        $this->serializationContext = $serializationContext;
         if (null !== $groups) {
             $this->serializationContext[AbstractNormalizer::GROUPS] = $groups;
         }

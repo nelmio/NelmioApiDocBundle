@@ -38,6 +38,7 @@ class Dummy
      * @var string
      *
      * @Assert\NotBlank
+     *
      * @ApiProperty(iri="http://schema.org/name")
      */
     private $name;
