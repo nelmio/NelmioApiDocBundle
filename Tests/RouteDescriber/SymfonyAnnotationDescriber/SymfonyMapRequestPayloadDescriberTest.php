@@ -6,15 +6,10 @@ namespace Nelmio\ApiDocBundle\Tests\RouteDescriber\SymfonyAnnotationDescriber;
 
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\SymfonyMapRequestPayloadDescriber;
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase;
 use OpenApi\Annotations\OpenApi;
-use PHPUnit\Framework\TestCase;
-use ReflectionParameter;
 use stdClass;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactoryInterface;
 use const PHP_VERSION_ID;
 

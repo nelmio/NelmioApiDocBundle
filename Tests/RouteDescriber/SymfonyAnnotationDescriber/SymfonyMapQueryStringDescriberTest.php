@@ -12,9 +12,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase;
 use Nelmio\ApiDocBundle\Tests\RouteDescriber\Fixtures\DTO;
 use Nelmio\ApiDocBundle\Tests\RouteDescriber\Fixtures\SymfonyDescriberMapQueryStringClass;
 use OpenApi\Annotations\OpenApi;
-use PHPUnit\Framework\TestCase;
-use ReflectionParameter;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactoryInterface;
 use const PHP_VERSION_ID;
@@ -94,7 +91,7 @@ class SymfonyMapQueryStringDescriberTest extends WebTestCase
                 #[MapQueryString] SymfonyDescriberMapQueryStringClass $parameter1,
             ) {
             },
-            true
+            true,
         ];
 
         yield 'it documents a nullable type as optional' => [
@@ -102,7 +99,7 @@ class SymfonyMapQueryStringDescriberTest extends WebTestCase
                 #[MapQueryString] ?SymfonyDescriberMapQueryStringClass $parameter1,
             ) {
             },
-            false
+            false,
         ];
 
         yield 'it documents a default value as optional' => [
@@ -110,7 +107,7 @@ class SymfonyMapQueryStringDescriberTest extends WebTestCase
                 #[MapQueryString] ?SymfonyDescriberMapQueryStringClass $parameter1,
             ) {
             },
-            false
+            false,
         ];
     }
 
