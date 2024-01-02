@@ -7,6 +7,7 @@ namespace Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
@@ -17,6 +18,14 @@ use Symfony\Component\PropertyInfo\Type;
 final class SymfonyMapQueryStringDescriber implements InlineParameterDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
+
+    /**
+     * @param ModelDescriberInterface[] $modelDescribers
+     */
+    public function __construct(
+        private iterable $modelDescribers
+    ) {
+    }
 
     public function supports(ArgumentMetadata $argumentMetadata): bool
     {
@@ -32,11 +41,22 @@ final class SymfonyMapQueryStringDescriber implements InlineParameterDescriberIn
         $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, $argumentMetadata->isNullable(), $argumentMetadata->getType()));
 
         $modelRef = $this->modelRegistry->register($model);
-        $this->modelRegistry->registerSchemas($model->getHash());
 
         $nativeModelName = str_replace(OA\Components::SCHEMA_REF, '', $modelRef);
 
         $schemaModel = Util::getSchema($api, $nativeModelName);
+
+        foreach ($this->modelDescribers as $modelDescriber) {
+            if ($modelDescriber instanceof ModelRegistryAwareInterface) {
+                $modelDescriber->setModelRegistry($this->modelRegistry);
+            }
+
+            if ($modelDescriber->supports($model)) {
+                $modelDescriber->describe($model, $schemaModel);
+
+                break;
+            }
+        }
 
         // There are no properties to map to query parameters
         if (Generator::UNDEFINED === $schemaModel->properties) {
