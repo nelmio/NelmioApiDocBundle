@@ -762,4 +762,16 @@ class FunctionalTest extends WebTestCase
         // nonNullablePropertyNullableTrueSet
         $this->assertTrue($model->properties[5]->nullable);
     }
+
+    public function testContextPassedToNameConverter()
+    {
+        $this->getOperation('/api/name_converter_context', 'get');
+
+        $model = $this->getModel('EntityThroughNameConverter');
+        $this->assertCount(2, $model->properties);
+        $this->assertNotHasProperty('id', $model);
+        $this->assertHasProperty('name_converter_context_id', $model);
+        $this->assertNotHasProperty('name', $model);
+        $this->assertHasProperty('name_converter_context_name', $model);
+    }
 }

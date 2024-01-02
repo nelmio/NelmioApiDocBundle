@@ -24,6 +24,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
+use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\NameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
 use ReflectionException;
 use ReflectionMethod;
@@ -35,6 +36,7 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
@@ -349,6 +351,10 @@ class TestKernel extends Kernel
         $def = new Definition(VirtualTypeClassDoesNotExistsHandlerDefinedDescriber::class);
         $def->addTag('nelmio_api_doc.model_describer');
         $c->setDefinition('nelmio.test.jms.virtual_type.describer', $def);
+
+        $c->register('serializer.name_converter.custom', NameConverter::class)
+            ->setDecoratedService('serializer.name_converter.metadata_aware')
+            ->addArgument(new Reference('serializer.name_converter.custom.inner'));
     }
 
     public function getCacheDir(): string

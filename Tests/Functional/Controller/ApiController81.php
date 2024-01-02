@@ -19,6 +19,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityThroughNameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
@@ -421,6 +422,12 @@ class ApiController81
     #[Route('/serializename', methods: ['GET'])]
     #[OA\Response(response: 200, description: 'success', content: new Model(type: SerializedNameEntity::class))]
     public function serializedNameAction()
+    {
+    }
+
+    #[Route('/name_converter_context', methods: ['GET'])]
+    #[OA\Response(response: '200', description: '', content: new Model(type: EntityThroughNameConverter::class, serializationContext: ['secret_name_converter_value' => true]))]
+    public function nameConverterContext()
     {
     }
 }
