@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
  *      "two": SymfonyDiscriminatorTwo::class,
  * })
  */
-abstract class SymfonyDiscriminator
+abstract class SymfonyDiscriminator80
 {
     /**
      * @var string

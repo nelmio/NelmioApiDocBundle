@@ -75,6 +75,10 @@ class ValidationGroupsFunctionalTest extends WebTestCase
             ],
             'type' => 'object',
             'schema' => 'SymfonyConstraintsDefaultGroup',
+            'required' => [
+                'property',
+                'propertyInDefaultGroup',
+            ],
         ];
 
         $this->assertEquals(

@@ -14,107 +14,135 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class SymfonyConstraints
+class SymfonyConstraints81
 {
     /**
      * @var int
-     *
-     * @Assert\NotBlank(groups={"test"})
      */
+    #[Assert\NotBlank(groups: ['test'])]
     private $propertyNotBlank;
 
     /**
      * @var int
-     *
-     * @Assert\NotNull()
      */
+    #[Assert\NotNull()]
     private $propertyNotNull;
 
     /**
      * @var int
-     *
-     * @Assert\Length(min="0", max="50")
      */
+    #[Assert\Length(min: '0', max: '50')]
     private $propertyAssertLength;
 
     /**
      * @var int
-     *
-     * @Assert\Regex(pattern="/[a-z]{2}/")
      */
+    #[Assert\Regex(pattern: '/[a-z]{2}/')]
     private $propertyRegex;
 
     /**
      * @var int
-     *
-     * @Assert\Count(min="0", max="10")
      */
+    #[Assert\Count(min: '0', max: '10')]
     private $propertyCount;
 
     /**
      * @var int
-     *
-     * @Assert\Choice(choices={"choice1", "choice2"})
      */
+    #[Assert\Choice(choices: ['choice1', 'choice2'])]
     private $propertyChoice;
 
     /**
      * @var int
-     *
-     * @Assert\Choice(callback={SymfonyConstraints::class,"fetchAllowedChoices"})
      */
+    #[Assert\Choice(callback: [self::class, 'fetchAllowedChoices'])]
     private $propertyChoiceWithCallback;
 
     /**
      * @var int
-     *
-     * @Assert\Choice(callback="fetchAllowedChoices")
      */
+    #[Assert\Choice(callback: 'fetchAllowedChoices')]
     private $propertyChoiceWithCallbackWithoutClass;
 
     /**
      * @var string[]
-     *
-     * @Assert\Choice(multiple=true, choices={"choice1", "choice2"})
      */
+    #[Assert\Choice(multiple: true, choices: ['choice1', 'choice2'])]
     private $propertyChoiceWithMultiple;
 
     /**
      * @var int
-     *
-     * @Assert\Expression(
-     *     "this.getCategory() in ['php', 'symfony'] or !this.isTechnicalPost()",
-     *     message="If this is a tech post, the category should be either php or symfony!"
-     * )
      */
+    #[Assert\Expression(
+        "this.getCategory() in ['php', 'symfony'] or !this.isTechnicalPost()",
+        message: 'If this is a tech post, the category should be either php or symfony!'
+    )]
     private $propertyExpression;
 
     /**
      * @var int
-     *
-     * @Assert\Range(min=1, max=5)
      */
+    #[Assert\Range(min: 1, max: 5)]
     private $propertyRange;
 
     /**
-     * @var int
-     *
-     * @Assert\LessThan(42)
+     * @var \DateTimeImmutable
      */
+    #[Assert\Range(min: 'now', max: '+5 hours')]
+    public $propertyRangeDate;
+
+    /**
+     * @var int
+     */
+    #[Assert\LessThan(42)]
     private $propertyLessThan;
 
     /**
-     * @var int
-     *
-     * @Assert\LessThanOrEqual(23)
+     * @var \DateTimeImmutable
      */
-    private $propertyLessThanOrEqual;
+    #[Assert\LessThan('now')]
+    public $propertyLessThanDate;
 
     /**
      * @var int
-     *
-     * @CustomAssert\CompoundValidationRule()
      */
+    #[Assert\LessThanOrEqual(23)]
+    private $propertyLessThanOrEqual;
+
+    /**
+     * @var \DateTimeImmutable
+     */
+    #[Assert\LessThanOrEqual('now')]
+    public $propertyLessThanOrEqualDate;
+
+    /**
+     * @var int
+     */
+    #[Assert\GreaterThan(42)]
+    public $propertyGreaterThan;
+
+    /**
+     * @var \DateTimeImmutable
+     */
+    #[Assert\GreaterThan('now')]
+    public $propertyGreaterThanDate;
+
+    /**
+     * @var int
+     */
+    #[Assert\GreaterThanOrEqual(23)]
+    public $propertyGreaterThanOrEqual;
+
+    /**
+     * @var \DateTimeImmutable
+     */
+    #[Assert\GreaterThanOrEqual('now')]
+    public $propertyGreaterThanOrEqualDate;
+
+    /**
+     * @var int
+     */
+    #[CustomAssert\CompoundValidationRule]
     private $propertyWithCompoundValidationRule;
 
     public function setPropertyWithCompoundValidationRule(int $propertyWithCompoundValidationRule): void
@@ -122,9 +150,7 @@ class SymfonyConstraints
         $this->propertyWithCompoundValidationRule = $propertyWithCompoundValidationRule;
     }
 
-    /**
-     * @Assert\Count(min="0", max="10")
-     */
+    #[Assert\Count(min: '0', max: '10')]
     public function setPropertyNotBlank(int $propertyNotBlank): void
     {
         $this->propertyNotBlank = $propertyNotBlank;
