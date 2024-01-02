@@ -9,8 +9,6 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
-        'ordered_imports' => true,
-        'phpdoc_order' => true,
         'nullable_type_declaration_for_default_null_value' => true,
         'header_comment' => [
             'header' => <<<HEADER
