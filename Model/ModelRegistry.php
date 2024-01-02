@@ -51,7 +51,7 @@ final class ModelRegistry
     /**
      * @var ModelDescriberInterface[]|iterable
      */
-    private array $modelDescribers = [];
+    private iterable $modelDescribers = [];
 
     private OA\OpenApi $api;
 
