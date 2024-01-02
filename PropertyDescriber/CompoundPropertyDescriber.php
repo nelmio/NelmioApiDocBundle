@@ -29,7 +29,7 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
         $this->propertyDescribers = $propertyDescribers;
     }
 
-    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null)
+    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null)
     {
         $property->oneOf = Generator::UNDEFINED !== $property->oneOf ? $property->oneOf : [];
 

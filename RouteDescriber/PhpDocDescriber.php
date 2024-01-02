@@ -23,7 +23,7 @@ final class PhpDocDescriber implements RouteDescriberInterface
 
     private DocBlockFactoryInterface $docBlockFactory;
 
-    public function __construct(DocBlockFactoryInterface $docBlockFactory = null)
+    public function __construct(?DocBlockFactoryInterface $docBlockFactory = null)
     {
         if (null === $docBlockFactory) {
             $docBlockFactory = DocBlockFactory::createInstance();

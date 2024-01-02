@@ -20,14 +20,11 @@ use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
-use ReflectionMethod;
-use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use const PHP_VERSION_ID;
 
 /**
  * Tests for FilteredRouteCollectionBuilder class.
@@ -124,7 +121,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             [['invalid_option' => []]],
             [['path_patterns' => [22]]],
             [['path_patterns' => [null]]],
-            [['path_patterns' => [new stdClass()]]],
+            [['path_patterns' => [new \stdClass()]]],
             [['path_patterns' => ['^/foo$', 1]]],
             [['with_annotation' => ['an array']]],
             [['path_patterns' => 'a string']],
@@ -133,7 +130,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             [['name_patterns' => 'a string']],
             [['name_patterns' => [22]]],
             [['name_patterns' => [null]]],
-            [['name_patterns' => [new stdClass()]]],
+            [['name_patterns' => [new \stdClass()]]],
         ];
     }
 
@@ -183,7 +180,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             ['r10', new Route('/api/areas/new'), ['path_patterns' => ['^/api']]],
         ];
 
-        if (PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 80000) {
             yield ['r10', new Route('/api/areas_attributes/new'), ['path_patterns' => ['^/api']]];
         }
     }
@@ -199,7 +196,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes->add($name, $route);
         $area = 'area';
 
-        $reflectionMethodStub = $this->createMock(ReflectionMethod::class);
+        $reflectionMethodStub = $this->createMock(\ReflectionMethod::class);
         $controllerReflectorStub = $this->createMock(ControllerReflector::class);
         $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethodStub);
 
@@ -239,7 +236,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             ],
         ];
 
-        if (PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 80000) {
             yield from [
                 'with attribute only' => [
                     'r10',
@@ -303,7 +300,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes->add($name, $route);
         $area = 'area';
 
-        $reflectionMethodStub = $this->createMock(ReflectionMethod::class);
+        $reflectionMethodStub = $this->createMock(\ReflectionMethod::class);
         $controllerReflectorStub = $this->createMock(ControllerReflector::class);
         $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethodStub);
 

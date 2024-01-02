@@ -21,7 +21,6 @@ use OpenApi\Generator;
 #[\Attribute(\Attribute::TARGET_METHOD)]
 final class Model extends Attachable
 {
-    /** {@inheritdoc} */
     public static $_types = [
         'type' => 'string',
         'groups' => '[string]',
@@ -60,8 +59,8 @@ final class Model extends Attachable
     public function __construct(
         array $properties = [],
         string $type = Generator::UNDEFINED,
-        array $groups = null,
-        array $options = null,
+        ?array $groups = null,
+        ?array $options = null,
         array $serializationContext = []
     ) {
         parent::__construct($properties + [

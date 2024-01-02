@@ -56,7 +56,7 @@ final class ModelRegistry
     private OA\OpenApi $api;
 
     /**
-     * @param ModelDescriberInterface[]|iterable $modelDescribers
+     * @param ModelDescriberInterface[]|iterable                        $modelDescribers
      * @param array<string, array{type: string, groups: string[]|null}> $alternativeNames
      *
      * @internal

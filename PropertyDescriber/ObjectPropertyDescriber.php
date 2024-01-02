@@ -23,7 +23,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 {
     use ModelRegistryAwareTrait;
 
-    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null)
+    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null)
     {
         $type = new Type(
             $types[0]->getBuiltinType(),

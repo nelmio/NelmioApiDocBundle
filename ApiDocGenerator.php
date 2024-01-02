@@ -51,7 +51,7 @@ final class ApiDocGenerator
     /**
      * @var ?string
      */
-    private $openApiVersion = null;
+    private $openApiVersion;
 
     /** @var Generator */
     private $generator;
@@ -60,7 +60,7 @@ final class ApiDocGenerator
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null, Generator $generator = null)
+    public function __construct($describers, $modelDescribers, ?CacheItemPoolInterface $cacheItemPool = null, ?string $cacheItemId = null, ?Generator $generator = null)
     {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;

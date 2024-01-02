@@ -16,7 +16,6 @@ use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
-use ReflectionMethod;
 use Symfony\Component\Routing\Route;
 
 class RouteMetadataDescriberTest extends TestCase
@@ -25,7 +24,7 @@ class RouteMetadataDescriberTest extends TestCase
     {
         $routeDescriber = new RouteMetadataDescriber();
 
-        $this->assertNull($routeDescriber->describe(new OpenApi(['_context' => new Context()]), new Route('foo'), new ReflectionMethod(__CLASS__, 'testUndefinedCheck')));
+        $this->assertNull($routeDescriber->describe(new OpenApi(['_context' => new Context()]), new Route('foo'), new \ReflectionMethod(__CLASS__, 'testUndefinedCheck')));
     }
 
     public function testRouteRequirementsWithPattern()
@@ -36,7 +35,7 @@ class RouteMetadataDescriberTest extends TestCase
         $routeDescriber->describe(
             $api,
             $route,
-            new ReflectionMethod(__CLASS__, 'testRouteRequirementsWithPattern')
+            new \ReflectionMethod(__CLASS__, 'testRouteRequirementsWithPattern')
         );
 
         $this->assertEquals('/index/{bar}/{foo}.html', $api->paths[0]->path);
@@ -60,7 +59,7 @@ class RouteMetadataDescriberTest extends TestCase
         $routeDescriber->describe(
             $api,
             $route,
-            new ReflectionMethod(__CLASS__, 'testSimpleOrRequirementsAreHandledAsEnums')
+            new \ReflectionMethod(__CLASS__, 'testSimpleOrRequirementsAreHandledAsEnums')
         );
 
         $this->assertEquals('/index/{bar}/{foo}.html', $api->paths[0]->path);
@@ -83,7 +82,7 @@ class RouteMetadataDescriberTest extends TestCase
         $routeDescriber->describe(
             $api,
             $route,
-            new ReflectionMethod(__CLASS__, 'testNonEnumPatterns')
+            new \ReflectionMethod(__CLASS__, 'testNonEnumPatterns')
         );
 
         $getPathParameter = $api->paths[0]->get->parameters[0];

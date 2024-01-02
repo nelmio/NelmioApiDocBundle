@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
-use LogicException;
 
 /**
  * Class VirtualProperty.
@@ -64,6 +63,6 @@ class VirtualProperty80
             return 'Success';
         }
 
-        throw new LogicException(sprintf('%s::__call does not implement this function.', __CLASS__));
+        throw new \LogicException(sprintf('%s::__call does not implement this function.', __CLASS__));
     }
 }

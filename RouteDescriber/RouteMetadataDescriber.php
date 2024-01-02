@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use LogicException;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
@@ -44,7 +43,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 $parameter = $existingParams[$paramId] ?? null;
                 if (null !== $parameter) {
                     if (!$parameter->required || Generator::UNDEFINED === $parameter->required) {
-                        throw new LogicException(\sprintf('Global parameter "%s" is used as part of route "%s" and must be set as "required"', $pathVariable, $route->getPath()));
+                        throw new \LogicException(\sprintf('Global parameter "%s" is used as part of route "%s" and must be set as "required"', $pathVariable, $route->getPath()));
                     }
 
                     continue;

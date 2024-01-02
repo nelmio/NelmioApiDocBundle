@@ -64,7 +64,7 @@ class OpenApiAnnotationsReader
         return Generator::UNDEFINED !== $oaProperty->property ? $oaProperty->property : $default;
     }
 
-    public function updateProperty($reflection, OA\Property $property, array $serializationGroups = null): void
+    public function updateProperty($reflection, OA\Property $property, ?array $serializationGroups = null): void
     {
         /** @var OA\Property|null $oaProperty */
         if (!$oaProperty = $this->getAnnotation($property->_context, $reflection, OA\Property::class)) {
@@ -83,8 +83,6 @@ class OpenApiAnnotationsReader
 
     /**
      * @param \ReflectionClass|\ReflectionProperty|\ReflectionMethod $reflection
-     *
-     * @return mixed
      */
     private function getAnnotation(Context $parentContext, $reflection, string $className)
     {

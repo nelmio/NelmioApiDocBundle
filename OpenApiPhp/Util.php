@@ -26,26 +26,26 @@ use OpenApi\Generator;
  * of swagger Annotation classes with the following convenience methods
  * to get or create the respective Annotation instances if not found
  *
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getPath()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getSchema()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getProperty()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getOperation()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getOperationParameter()
+ * @see Util::getPath()
+ * @see Util::getSchema()
+ * @see Util::getProperty()
+ * @see Util::getOperation()
+ * @see Util::getOperationParameter()
  *
  * which in turn get or create the Annotation instances through the following more general methods
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getChild()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getCollectionItem()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getIndexedCollectionItem()
+ * @see Util::getChild()
+ * @see Util::getCollectionItem()
+ * @see Util::getIndexedCollectionItem()
  *
  * which then searches for an existing Annotation through
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::searchCollectionItem()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::searchIndexedCollectionItem()
+ * @see Util::searchCollectionItem()
+ * @see Util::searchIndexedCollectionItem()
  *
  * and if not found the Annotation creates it through
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createCollectionItem()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createContext()
+ * @see Util::createCollectionItem()
+ * @see Util::createContext()
  *
- * The merge method @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::merge() has the main purpose to be able
+ * The merge method @see Util::merge() has the main purpose to be able
  * to merge properties from an deeply nested array of Annotation properties in the structure of a
  * generated swagger json decoded array.
  */
@@ -214,7 +214,6 @@ final class Util
      * @see OA\AbstractAnnotation::$_nested
      *
      * @param string $class
-     * @param mixed  $value
      */
     public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, $class, $value): OA\AbstractAnnotation
     {
@@ -259,7 +258,6 @@ final class Util
      * Search for an Annotation within the $collection that has its member $index set to $value.
      *
      * @param string $member
-     * @param mixed  $value
      *
      * @return false|int|string
      */
@@ -312,7 +310,7 @@ final class Util
      *
      * @see Context
      */
-    public static function createContext(array $properties = [], Context $parent = null): Context
+    public static function createContext(array $properties = [], ?Context $parent = null): Context
     {
         return new Context($properties, $parent);
     }
@@ -322,7 +320,7 @@ final class Util
      *
      * @see Context
      */
-    public static function createWeakContext(Context $parent = null, array $additionalProperties = []): Context
+    public static function createWeakContext(?Context $parent = null, array $additionalProperties = []): Context
     {
         $propsToCopy = [
             'version',

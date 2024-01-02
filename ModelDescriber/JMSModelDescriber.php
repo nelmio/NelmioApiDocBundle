@@ -83,9 +83,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $this->contextFactory = $contextFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function describe(Model $model, OA\Schema $schema)
     {
         $className = $model->getType()->getClassName();
@@ -211,7 +208,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return $context;
     }
 
-    private function computeGroups(Context $context, array $type = null)
+    private function computeGroups(Context $context, ?array $type = null)
     {
         if (null === $type || true !== $this->propertyTypeUsesGroups($type)) {
             return null;
@@ -230,9 +227,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return $groups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(Model $model): bool
     {
         $className = $model->getType()->getClassName();

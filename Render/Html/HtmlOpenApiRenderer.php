@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Render\Html;
 
-use InvalidArgumentException;
 use Nelmio\ApiDocBundle\Render\OpenApiRenderer;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use OpenApi\Annotations\OpenApi;
@@ -28,7 +27,7 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
     public function __construct($twig)
     {
         if (!$twig instanceof \Twig_Environment && !$twig instanceof Environment) {
-            throw new InvalidArgumentException(sprintf('Providing an instance of "%s" as twig is not supported.', get_class($twig)));
+            throw new \InvalidArgumentException(sprintf('Providing an instance of "%s" as twig is not supported.', get_class($twig)));
         }
         $this->twig = $twig;
     }

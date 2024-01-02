@@ -26,8 +26,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\NameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
-use ReflectionException;
-use ReflectionMethod;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\Command\CachePoolClearCommand;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -43,11 +41,11 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 class TestKernel extends Kernel
 {
     use MicroKernelTrait;
-    const USE_JMS = 1;
-    const USE_BAZINGA = 2;
-    const USE_FOSREST = 3;
-    const ERROR_ARRAY_ITEMS = 4;
-    const USE_VALIDATION_GROUPS = 8;
+    public const USE_JMS = 1;
+    public const USE_BAZINGA = 2;
+    public const USE_FOSREST = 3;
+    public const ERROR_ARRAY_ITEMS = 4;
+    public const USE_VALIDATION_GROUPS = 8;
 
     private $flags;
 
@@ -107,9 +105,9 @@ class TestKernel extends Kernel
             $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
 
             try {
-                new ReflectionMethod(Embedded::class, 'getType');
+                new \ReflectionMethod(Embedded::class, 'getType');
                 $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
-            } catch (ReflectionException $e) {
+            } catch (\ReflectionException $e) {
             }
         }
 

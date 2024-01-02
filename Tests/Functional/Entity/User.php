@@ -144,7 +144,7 @@ if (TestKernel::isAnnotationsAvailable()) {
         {
         }
 
-        public function setFriend(self $friend = null)
+        public function setFriend(?self $friend = null)
         {
         }
 
@@ -284,7 +284,7 @@ if (TestKernel::isAnnotationsAvailable()) {
         {
         }
 
-        public function setFriend(self $friend = null)
+        public function setFriend(?self $friend = null)
         {
         }
 

@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Controller;
 
-use InvalidArgumentException;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +35,7 @@ final class YamlDocumentationController
             );
 
             return $response->setCharset('UTF-8');
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             throw new BadRequestHttpException(sprintf('Area "%s" is not supported as it isn\'t defined in config.', $area));
         }
     }

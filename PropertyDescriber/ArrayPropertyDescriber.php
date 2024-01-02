@@ -30,7 +30,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         $this->propertyDescribers = $propertyDescribers;
     }
 
-    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null)
+    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null)
     {
         // BC layer for symfony < 5.3
         $type = method_exists($types[0], 'getCollectionValueTypes') ?

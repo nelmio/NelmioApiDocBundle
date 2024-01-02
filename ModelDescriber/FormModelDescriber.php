@@ -50,9 +50,9 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     private bool $useValidationGroups;
 
     public function __construct(
-        FormFactoryInterface $formFactory = null,
-        Reader $reader = null,
-        array $mediaTypes = null,
+        ?FormFactoryInterface $formFactory = null,
+        ?Reader $reader = null,
+        ?array $mediaTypes = null,
         bool $useValidationGroups = false
     ) {
         $this->formFactory = $formFactory;

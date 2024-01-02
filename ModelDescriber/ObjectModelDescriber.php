@@ -49,9 +49,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         ?Reader $reader,
         iterable $propertyDescribers,
         array $mediaTypes,
-        NameConverterInterface $nameConverter = null,
+        ?NameConverterInterface $nameConverter = null,
         bool $useValidationGroups = false,
-        ClassMetadataFactoryInterface $classMetadataFactory = null
+        ?ClassMetadataFactoryInterface $classMetadataFactory = null
     ) {
         $this->propertyInfo = $propertyInfo;
         $this->doctrineReader = $reader;
