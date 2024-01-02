@@ -26,7 +26,7 @@ class Security extends AbstractAnnotation
 
     public static $_required = ['name'];
 
-    public string $name;
+    public ?string $name;
 
     /**
      * @var string[]

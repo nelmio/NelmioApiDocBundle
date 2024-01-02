@@ -36,14 +36,14 @@ final class Model extends Attachable
     public string $type;
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    public array $groups;
+    public ?array $groups;
 
     /**
-     * @var mixed[]
+     * @var mixed[]|null
      */
-    public array $options;
+    public ?array $options;
 
     /**
      * @var array<string, mixed>

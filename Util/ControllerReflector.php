@@ -22,7 +22,7 @@ class ControllerReflector
 {
     private ContainerInterface $container;
 
-    private ControllerNameParser $controllerNameParser;
+    private ?ControllerNameParser $controllerNameParser = null;
 
     private array $controllers = [];
 

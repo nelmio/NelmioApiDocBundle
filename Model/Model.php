@@ -17,9 +17,14 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 final class Model
 {
     private Type $type;
-
-    private array $options;
-    private array $serializationContext;
+    /**
+     * @var mixed[]|null
+     */
+    private ?array $options;
+    /**
+     * @var array<string, mixed>|null
+     */
+    private ?array $serializationContext;
 
     /**
      * @param string[]|null $groups
