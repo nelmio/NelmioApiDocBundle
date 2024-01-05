@@ -538,4 +538,17 @@ class ApiController81
         #[MapRequestPayload] Article81 $article81,
     ) {
     }
+
+    #[Route('/article_map_request_payload_handles_already_set_content', methods: ['POST'])]
+    #[OA\RequestBody(
+        description: 'Request body description',
+        content: new OA\JsonContent(
+            ref: new Model(type: Article81::class)
+        ),
+    )]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayloadHandlesAlreadySetContent(
+        #[MapRequestPayload] Article81 $article81,
+    ) {
+    }
 }

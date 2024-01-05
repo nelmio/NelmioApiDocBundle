@@ -449,4 +449,31 @@ class SymfonyFunctionalTest extends WebTestCase
             ],
         ], json_decode($this->getOperation('/api/article_map_request_payload_overwrite', 'post')->toJson(), true));
     }
+
+    public function testMapRequestPayloadHandlesAlreadySetContent(): void
+    {
+        if (!class_exists(MapRequestPayload::class)) {
+            self::markTestSkipped('Symfony 6.3 MapRequestPayload attribute not found');
+        }
+
+        self::assertEquals([
+            'operationId' => 'post_api_nelmio_apidoc_tests_functional_api_createarticlefrommaprequestpayloadhandlesalreadysetcontent',
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+            'requestBody' => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            '$ref' => '#/components/schemas/Article81',
+                        ],
+                    ],
+                ],
+                'required' => true,
+                'description' => 'Request body description',
+            ],
+        ], json_decode($this->getOperation('/api/article_map_request_payload_handles_already_set_content', 'post')->toJson(), true));
+    }
 }

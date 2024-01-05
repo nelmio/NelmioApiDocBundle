@@ -14,8 +14,8 @@ use Symfony\Component\PropertyInfo\Type;
 
 final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInterface, ModelRegistryAwareInterface
 {
-    public const CONTEXT_ARGUMENT_METADATA = 'nelmio_api_doc_bundle.map_query_string.argument_metadata';
-    public const CONTEXT_MODEL_REF = 'nelmio_api_doc_bundle.map_query_string.model_ref';
+    public const CONTEXT_ARGUMENT_METADATA = 'nelmio_api_doc_bundle.argument_metadata.'.self::class;
+    public const CONTEXT_MODEL_REF = 'nelmio_api_doc_bundle.model_ref.'.self::class;
 
     use ModelRegistryAwareTrait;
 

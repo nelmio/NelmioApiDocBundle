@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  * A processor that adds query parameters to operations that have a MapQueryString attribute.
  * A processor is used to ensure that a Model is created.
  *
- * @see \Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryStringDescriber
+ * @see SymfonyMapQueryStringDescriber
  */
 final class MapQueryStringProcessor implements ProcessorInterface
 {
@@ -32,7 +32,7 @@ final class MapQueryStringProcessor implements ProcessorInterface
 
             $argumentMetaData = $operation->_context->{SymfonyMapQueryStringDescriber::CONTEXT_ARGUMENT_METADATA};
             if (!$argumentMetaData instanceof ArgumentMetadata) {
-                continue;
+                throw new \LogicException(sprintf('MapQueryString ArgumentMetaData not found for operation "%s"', $operation->operationId));
             }
 
             $modelRef = $operation->_context->{SymfonyMapQueryStringDescriber::CONTEXT_MODEL_REF};

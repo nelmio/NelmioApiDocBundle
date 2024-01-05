@@ -22,6 +22,7 @@ use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\Processors\MapQueryStringProcessor;
+use Nelmio\ApiDocBundle\Processors\MapRequestPayloadProcessor;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\RouteArgumentDescriberInterface;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryParameterDescriber;
@@ -207,6 +208,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 $container->register('nelmio_api_doc.route_argument_describer.map_request_payload', SymfonyMapRequestPayloadDescriber::class)
                     ->setPublic(false)
                     ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
+
+                $container->register('nelmio_api_doc.swagger.processor.map_request_payload', MapRequestPayloadProcessor::class)
+                    ->setPublic(false)
+                    ->addTag('nelmio_api_doc.swagger.processor', ['priority' => 0]);
             }
 
             if (class_exists(MapQueryParameter::class)) {
