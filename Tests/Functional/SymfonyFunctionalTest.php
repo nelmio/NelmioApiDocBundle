@@ -440,7 +440,7 @@ class SymfonyFunctionalTest extends WebTestCase
                 'content' => [
                     'application/json' => [
                         'schema' => [
-                            '$ref' => '#/components/schemas/Article81',
+                            '$ref' => '#/components/schemas/EntityWithNullableSchemaSet',
                         ],
                     ],
                 ],

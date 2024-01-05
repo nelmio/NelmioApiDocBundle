@@ -532,6 +532,7 @@ class ApiController81
     #[Route('/article_map_request_payload_overwrite', methods: ['POST'])]
     #[OA\RequestBody(
         description: 'Request body description',
+        content: new Model(type: EntityWithNullableSchemaSet::class),
     )]
     #[OA\Response(response: '200', description: '')]
     public function createArticleFromMapRequestPayloadOverwrite(
