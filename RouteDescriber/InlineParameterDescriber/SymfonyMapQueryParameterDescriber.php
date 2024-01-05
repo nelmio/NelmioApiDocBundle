@@ -37,5 +37,9 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
         }
 
         $this->mapNativeType($schema, $argumentMetadata->getType());
+
+        if ($argumentMetadata->isNullable()) {
+            $schema->nullable = true;
+        }
     }
 }

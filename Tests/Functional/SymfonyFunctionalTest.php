@@ -342,7 +342,6 @@ class SymfonyFunctionalTest extends WebTestCase
                     'required' => false,
                     'schema' => [
                         'type' => 'integer',
-                        'nullable' => true,
                         'default' => 123,
                     ],
                 ],

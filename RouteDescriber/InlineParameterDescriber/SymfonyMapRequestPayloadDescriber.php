@@ -41,6 +41,10 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
         foreach ($formats as $format) {
             $contentSchema = $this->getContentSchemaForType($requestBody, $format);
             Util::modifyAnnotationValue($contentSchema, 'ref', $model);
+
+            if ($argumentMetadata->isNullable()) {
+                $contentSchema->nullable = true;
+            }
         }
     }
 
@@ -68,13 +72,6 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
                     '_context' => $weakContext,
                 ]
             );
-
-            /** @var OA\Schema $schema */
-            $schema = Util::getChild(
-                $requestBody->content[$contentType],
-                OA\Schema::class
-            );
-            Util::modifyAnnotationValue($schema, 'type', 'object');
         }
 
         return Util::getChild(
