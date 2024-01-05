@@ -25,7 +25,7 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
         }
 
         $model = $this->modelRegistry->register(new Model(
-            new Type(Type::BUILTIN_TYPE_OBJECT, $argumentMetadata->isNullable(), $argumentMetadata->getType()),
+            new Type(Type::BUILTIN_TYPE_OBJECT, false, $argumentMetadata->getType()),
             serializationContext: $attribute->serializationContext,
         ));
 
