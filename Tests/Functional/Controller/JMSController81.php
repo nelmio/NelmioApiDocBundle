@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSDualComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSNamingStrategyConstraints;
@@ -117,6 +118,16 @@ class JMSController81
         content: new Model(type: JMSChatRoomUser::class, groups: ['mini', 'friend' => ['living' => ['Default']]])
     )]
     public function minUserNestedAction()
+    {
+    }
+
+    #[Route('/api/jms_enum', methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Success',
+        content: new Model(type: Article81::class))
+    ]
+    public function enum()
     {
     }
 }

@@ -335,6 +335,40 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSNamingStrategyConstraints')->toJson(), true));
     }
 
+    /**
+     * @requires PHP >= 8.1
+     */
+    public function testEnumSupport()
+    {
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                ],
+                'type' => [
+                    '$ref' => '#/components/schemas/ArticleType81',
+                ],
+                'int_backed_type' => [
+                    '$ref' => '#/components/schemas/ArticleType81IntBacked',
+                ],
+                'not_backed_type' => [
+                    '$ref' => '#/components/schemas/ArticleType81NotBacked',
+                ],
+            ],
+            'schema' => 'Article81',
+        ], json_decode($this->getModel('Article81')->toJson(), true));
+
+        $this->assertEquals([
+            'schema' => 'ArticleType81',
+            'type' => 'string',
+            'enum' => [
+                'draft',
+                'final',
+            ],
+        ], json_decode($this->getModel('ArticleType81')->toJson(), true));
+    }
+
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_JMS);
