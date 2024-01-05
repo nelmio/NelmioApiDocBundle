@@ -764,7 +764,7 @@ class FunctionalTest extends WebTestCase
                     'nullable' => true,
                     'allOf' => [
                         ['$ref' => '#/components/schemas/ArticleType81'],
-                    ]
+                    ],
                 ],
             ],
             'required' => ['id', 'type', 'intBackedType', 'notBackedType'],
