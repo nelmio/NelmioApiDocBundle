@@ -6,6 +6,7 @@ namespace Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use OpenApi\Processors\Concerns\TypesTrait;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -36,10 +37,12 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
             Util::modifyAnnotationValue($schema, 'default', $argumentMetadata->getDefaultValue());
         }
 
-        $this->mapNativeType($schema, $argumentMetadata->getType());
+        if (Generator::UNDEFINED === $schema->type) {
+            $this->mapNativeType($schema, $argumentMetadata->getType());
+        }
 
-        if ($argumentMetadata->isNullable()) {
-            $schema->nullable = true;
+        if (Generator::UNDEFINED === $schema->nullable && $argumentMetadata->isNullable()) {
+            Util::modifyAnnotationValue($schema, 'nullable', true);
         }
     }
 }

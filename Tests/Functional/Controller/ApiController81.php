@@ -453,6 +453,7 @@ class ApiController81
     #[OA\Parameter(
         name: 'id',
         in: 'query',
+        schema: new OA\Schema(type: 'string', nullable: true),
         description: 'Query parameter id description'
     )]
     #[OA\Parameter(
@@ -509,9 +510,17 @@ class ApiController81
         description: 'Query parameter id description',
         example: 123,
     )]
+    #[OA\Parameter(
+        name: 'changedType',
+        in: 'query',
+        schema: new OA\Schema(type: 'int', nullable: false),
+        description: 'Incorrectly described query parameter',
+        example: 123,
+    )]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryParameterOverwriteParameters(
         #[MapQueryParameter] ?int $id,
+        #[MapQueryParameter] ?string $changedType,
     ) {
     }
 

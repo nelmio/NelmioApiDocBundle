@@ -206,7 +206,8 @@ class SymfonyFunctionalTest extends WebTestCase
                     'in' => 'query',
                     'required' => true,
                     'schema' => [
-                        'type' => 'integer',
+                        'type' => 'string',
+                        'nullable' => true,
                     ],
                     'description' => 'Query parameter id description',
                 ],
@@ -357,6 +358,17 @@ class SymfonyFunctionalTest extends WebTestCase
                         'nullable' => true,
                     ],
                     'description' => 'Query parameter id description',
+                    'example' => 123,
+                ],
+                [
+                    'name' => 'changedType',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'type' => 'int',
+                        'nullable' => false,
+                    ],
+                    'description' => 'Incorrectly described query parameter',
                     'example' => 123,
                 ],
             ],

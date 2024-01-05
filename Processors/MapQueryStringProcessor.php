@@ -60,7 +60,7 @@ final class MapQueryStringProcessor implements ProcessorInterface
 
                 $schema = new OA\Schema($propertyVars);
 
-                $operationParameter->schema = $schema;
+                Util::modifyAnnotationValue($operationParameter, 'schema', $schema);
                 Util::modifyAnnotationValue($operationParameter, 'name', $property->property);
                 Util::modifyAnnotationValue($operationParameter, 'description', $schema->description);
                 Util::modifyAnnotationValue($operationParameter, 'required', $schema->required);
