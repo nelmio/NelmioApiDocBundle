@@ -6,7 +6,7 @@ namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\RouteArgumentDescriberInterface;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\RouteArgumentDescriberInterface;
 use OpenApi\Annotations as OA;
 use ReflectionMethod;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactoryInterface;

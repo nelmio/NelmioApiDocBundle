@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Nelmio\ApiDocBundle\Processors;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\SymfonyMapQueryStringDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryStringDescriber;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  * A processor that adds query parameters to operations that have a MapQueryString attribute.
  * A processor is used to ensure that a Model is created.
  *
- * @see \Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\SymfonyMapQueryStringDescriber
+ * @see \Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryStringDescriber
  */
 final class MapQueryStringProcessor implements ProcessorInterface
 {

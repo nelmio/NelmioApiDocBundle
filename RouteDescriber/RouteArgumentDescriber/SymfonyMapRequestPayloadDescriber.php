@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber;
+namespace Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
