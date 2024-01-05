@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber;
 
-use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
+use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;

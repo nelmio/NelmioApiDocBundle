@@ -189,7 +189,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->addTag('nelmio_api_doc.route_describer', ['priority' => -225])
                 ->setArguments([
                     new Reference('argument_metadata_factory'),
-                    new TaggedIteratorArgument('nelmio_api_doc.route_argument_describer')
+                    new TaggedIteratorArgument('nelmio_api_doc.route_argument_describer'),
                 ])
             ;
 
