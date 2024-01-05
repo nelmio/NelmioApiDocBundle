@@ -744,6 +744,32 @@ class FunctionalTest extends WebTestCase
 
         $this->assertSame('integer', $model->type);
         $this->assertCount(2, $model->enum);
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                ],
+                'type' => [
+                    '$ref' => '#/components/schemas/ArticleType81',
+                ],
+                'intBackedType' => [
+                    '$ref' => '#/components/schemas/ArticleType81IntBacked',
+                ],
+                'notBackedType' => [
+                    '$ref' => '#/components/schemas/ArticleType81NotBacked',
+                ],
+                'nullableType' => [
+                    'nullable' => true,
+                    'allOf' => [
+                        ['$ref' => '#/components/schemas/ArticleType81'],
+                    ]
+                ],
+            ],
+            'required' => ['id', 'type', 'intBackedType', 'notBackedType'],
+            'schema' => 'Article81',
+        ], json_decode($this->getModel('Article81')->toJson(), true));
     }
 
     public function testEntitiesWithOverriddenSchemaTypeDoNotReadOtherProperties()
