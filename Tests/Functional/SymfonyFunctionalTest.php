@@ -58,7 +58,7 @@ class SymfonyFunctionalTest extends WebTestCase
                 'nullableArticleType81' => [
                     'nullable' => true,
                     'allOf' => [
-                        ['$ref' => '#/components/schemas/ArticleType81']
+                        ['$ref' => '#/components/schemas/ArticleType81'],
                     ],
                 ],
             ],
@@ -121,7 +121,7 @@ class SymfonyFunctionalTest extends WebTestCase
                     'schema' => [
                         'nullable' => true,
                         'allOf' => [
-                            ['$ref' => '#/components/schemas/ArticleType81']
+                            ['$ref' => '#/components/schemas/ArticleType81'],
                         ],
                         'property' => 'nullableArticleType81',
                     ],
@@ -188,7 +188,7 @@ class SymfonyFunctionalTest extends WebTestCase
                     'schema' => [
                         'nullable' => true,
                         'allOf' => [
-                            ['$ref' => '#/components/schemas/ArticleType81']
+                            ['$ref' => '#/components/schemas/ArticleType81'],
                         ],
                         'property' => 'nullableArticleType81',
                     ],
@@ -259,7 +259,7 @@ class SymfonyFunctionalTest extends WebTestCase
                     'schema' => [
                         'nullable' => true,
                         'allOf' => [
-                            ['$ref' => '#/components/schemas/ArticleType81']
+                            ['$ref' => '#/components/schemas/ArticleType81'],
                         ],
                         'property' => 'nullableArticleType81',
                     ],
