@@ -355,6 +355,9 @@ class JMSFunctionalTest extends WebTestCase
                 'not_backed_type' => [
                     '$ref' => '#/components/schemas/ArticleType81NotBacked',
                 ],
+                'nullable_type' => [
+                    '$ref' => '#/components/schemas/ArticleType81',
+                ],
             ],
             'schema' => 'Article81',
         ], json_decode($this->getModel('Article81')->toJson(), true));
