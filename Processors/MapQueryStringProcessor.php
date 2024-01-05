@@ -53,12 +53,19 @@ final class MapQueryStringProcessor implements ProcessorInterface
 
             foreach ($schemaModel->properties as $property) {
                 $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
-                Util::modifyAnnotationValue($operationParameter, 'schema', $property);
+
+                // Remove incompatible properties
+                $propertyVars = get_object_vars($property);
+                unset($propertyVars['property']);
+
+                $schema = new OA\Schema($propertyVars);
+
+                $operationParameter->schema = $schema;
                 Util::modifyAnnotationValue($operationParameter, 'name', $property->property);
-                Util::modifyAnnotationValue($operationParameter, 'description', $property->description);
-                Util::modifyAnnotationValue($operationParameter, 'required', $property->required);
-                Util::modifyAnnotationValue($operationParameter, 'deprecated', $property->deprecated);
-                Util::modifyAnnotationValue($operationParameter, 'example', $property->example);
+                Util::modifyAnnotationValue($operationParameter, 'description', $schema->description);
+                Util::modifyAnnotationValue($operationParameter, 'required', $schema->required);
+                Util::modifyAnnotationValue($operationParameter, 'deprecated', $schema->deprecated);
+                Util::modifyAnnotationValue($operationParameter, 'example', $schema->example);
 
                 if ($isModelOptional) {
                     Util::modifyAnnotationValue($operationParameter, 'required', false);
@@ -68,6 +75,7 @@ final class MapQueryStringProcessor implements ProcessorInterface
                     Util::modifyAnnotationValue($operationParameter, 'required', false);
                 }
             }
+
         }
     }
 }
