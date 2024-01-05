@@ -75,7 +75,6 @@ final class MapQueryStringProcessor implements ProcessorInterface
                     Util::modifyAnnotationValue($operationParameter, 'required', false);
                 }
             }
-
         }
     }
 }
