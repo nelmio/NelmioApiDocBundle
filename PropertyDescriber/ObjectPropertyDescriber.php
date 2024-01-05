@@ -43,7 +43,6 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
             $weakContext = Util::createWeakContext($property->_context);
             $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups)), '_context' => $weakContext])];
 
-            // All of is needed for enums to make sure
             if (function_exists('enum_exists') && enum_exists($type->getClassName())) {
                 $property->allOf = $schemas;
             } else {
