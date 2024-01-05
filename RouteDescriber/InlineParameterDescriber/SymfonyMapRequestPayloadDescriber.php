@@ -4,27 +4,30 @@ declare(strict_types=1);
 
 namespace Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber;
 
-use InvalidArgumentException;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Symfony\Component\PropertyInfo\Type;
 
-final class SymfonyMapRequestPayloadDescriber implements InlineParameterDescriberInterface
+final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberInterface, ModelRegistryAwareInterface
 {
-    public function supports(ArgumentMetadata $argumentMetadata): bool
+    use ModelRegistryAwareTrait;
+
+    public function describe(ArgumentMetadata $argumentMetadata, OA\Operation $operation): void
     {
-        if (!$argumentMetadata->getAttributes(MapRequestPayload::class, ArgumentMetadata::IS_INSTANCEOF)) {
-            return false;
+        /** @var MapRequestPayload $attribute */
+        if (!$attribute = $argumentMetadata->getAttributes(MapRequestPayload::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? null) {
+            return;
         }
 
-        return $argumentMetadata->getType() && class_exists($argumentMetadata->getType());
-    }
-
-    public function describe(OA\OpenApi $api, OA\Operation $operation, ArgumentMetadata $argumentMetadata): void
-    {
-        $attribute = $argumentMetadata->getAttributes(MapRequestPayload::class, ArgumentMetadata::IS_INSTANCEOF)[0];
+        $model = $this->modelRegistry->register(new Model(
+            new Type(Type::BUILTIN_TYPE_OBJECT, $argumentMetadata->isNullable(), $argumentMetadata->getType()),
+            serializationContext: $attribute->serializationContext,
+        ));
 
         /** @var OA\RequestBody $requestBody */
         $requestBody = Util::getChild($operation, OA\RequestBody::class);
@@ -37,10 +40,7 @@ final class SymfonyMapRequestPayloadDescriber implements InlineParameterDescribe
 
         foreach ($formats as $format) {
             $contentSchema = $this->getContentSchemaForType($requestBody, $format);
-            Util::modifyAnnotationValue($contentSchema, 'ref', new Model(type: $argumentMetadata->getType()));
-            Util::modifyAnnotationValue($contentSchema, 'type', 'object');
-
-            Util::getProperty($contentSchema, $argumentMetadata->getName());
+            Util::modifyAnnotationValue($contentSchema, 'ref', $model);
         }
     }
 
@@ -57,7 +57,7 @@ final class SymfonyMapRequestPayloadDescriber implements InlineParameterDescribe
 
                 break;
             default:
-                throw new InvalidArgumentException('Unsupported media type');
+                throw new \InvalidArgumentException('Unsupported media type');
         }
 
         if (!isset($requestBody->content[$contentType])) {

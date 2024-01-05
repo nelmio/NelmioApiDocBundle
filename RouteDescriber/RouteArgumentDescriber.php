@@ -6,19 +6,19 @@ namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\InlineParameterDescriberInterface;
+use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\RouteArgumentDescriberInterface;
 use OpenApi\Annotations as OA;
 use ReflectionMethod;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactoryInterface;
 use Symfony\Component\Routing\Route;
 
-final class InlineParameterDescriber implements RouteDescriberInterface, ModelRegistryAwareInterface
+final class RouteArgumentDescriber implements RouteDescriberInterface, ModelRegistryAwareInterface
 {
     use RouteDescriberTrait;
     use ModelRegistryAwareTrait;
 
     /**
-     * @param InlineParameterDescriberInterface[] $inlineParameterDescribers
+     * @param RouteArgumentDescriberInterface[] $inlineParameterDescribers
      */
     public function __construct(
         private ArgumentMetadataFactoryInterface $argumentMetadataFactory,
@@ -43,11 +43,7 @@ final class InlineParameterDescriber implements RouteDescriberInterface, ModelRe
                         $inlineParameterDescriber->setModelRegistry($this->modelRegistry);
                     }
 
-                    if (!$inlineParameterDescriber->supports($argumentMetadata)) {
-                        continue;
-                    }
-
-                    $inlineParameterDescriber->describe($api, $operation, $argumentMetadata);
+                    $inlineParameterDescriber->describe($argumentMetadata, $operation);
                 }
             }
         }

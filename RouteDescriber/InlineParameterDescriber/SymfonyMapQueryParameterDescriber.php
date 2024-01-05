@@ -10,22 +10,16 @@ use OpenApi\Processors\Concerns\TypesTrait;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-final class SymfonyMapQueryParameterDescriber implements InlineParameterDescriberInterface
+final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberInterface
 {
     use TypesTrait;
 
-    public function supports(ArgumentMetadata $argumentMetadata): bool
+    public function describe(ArgumentMetadata $argumentMetadata, OA\Operation $operation): void
     {
-        if (!$argumentMetadata->getAttributes(MapQueryParameter::class, ArgumentMetadata::IS_INSTANCEOF)) {
-            return false;
+        /** @var MapQueryParameter $attribute */
+        if (!$attribute = $argumentMetadata->getAttributes(MapQueryParameter::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? null) {
+            return;
         }
-
-        return null !== $argumentMetadata->getType();
-    }
-
-    public function describe(OA\OpenApi $api, OA\Operation $operation, ArgumentMetadata $argumentMetadata): void
-    {
-        $attribute = $argumentMetadata->getAttributes(MapQueryParameter::class, ArgumentMetadata::IS_INSTANCEOF)[0];
 
         $operationParameter = Util::getOperationParameter($operation, $attribute->name ?? $argumentMetadata->getName(), 'query');
 

@@ -21,7 +21,12 @@ use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
-use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\InlineParameterDescriberInterface;
+use Nelmio\ApiDocBundle\Processors\MapQueryStringProcessor;
+use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\RouteArgumentDescriberInterface;
+use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\SymfonyMapQueryParameterDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\SymfonyMapQueryStringDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\SymfonyMapRequestPayloadDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use OpenApi\Generator;
 use Symfony\Component\Config\FileLocator;
@@ -174,17 +179,41 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArgument(1, $config['media_types']);
         }
 
-        if (
-            PHP_VERSION_ID > 80100
-            && class_exists(MapRequestPayload::class)
-            && class_exists(MapQueryParameter::class)
-            && class_exists(MapQueryString::class)
-        ) {
-            $loader->load('symfony.xml');
-
+        if (PHP_VERSION_ID > 80100) {
             // Add autoconfiguration for inline parameter describer
-            $container->registerForAutoconfiguration(InlineParameterDescriberInterface::class)
-                ->addTag('nelmio_api_doc.inline_parameter_describer');
+            $container->registerForAutoconfiguration(RouteArgumentDescriberInterface::class)
+                ->addTag('nelmio_api_doc.route_argument_describer');
+
+            $container->register('nelmio_api_doc.route_describers.route_argument', RouteArgumentDescriber::class)
+                ->setPublic(false)
+                ->addTag('nelmio_api_doc.route_describer', ['priority' => -225])
+                ->setArguments([
+                    new Reference('argument_metadata_factory'),
+                    new TaggedIteratorArgument('nelmio_api_doc.route_argument_describer')
+                ])
+            ;
+
+            if (class_exists(MapQueryString::class)) {
+                $container->register('nelmio_api_doc.route_argument_describer.map_query_string', SymfonyMapQueryStringDescriber::class)
+                    ->setPublic(false)
+                    ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
+
+                $container->register('nelmio_api_doc.swagger.processor.map_query_string', MapQueryStringProcessor::class)
+                    ->setPublic(false)
+                    ->addTag('nelmio_api_doc.swagger.processor', ['priority' => 0]);
+            }
+
+            if (class_exists(MapRequestPayload::class)) {
+                $container->register('nelmio_api_doc.route_argument_describer.map_request_payload', SymfonyMapRequestPayloadDescriber::class)
+                    ->setPublic(false)
+                    ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
+            }
+
+            if (class_exists(MapQueryParameter::class)) {
+                $container->register('nelmio_api_doc.route_argument_describer.map_query_parameter', SymfonyMapQueryParameterDescriber::class)
+                    ->setPublic(false)
+                    ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
+            }
         }
 
         $bundles = $container->getParameter('kernel.bundles');

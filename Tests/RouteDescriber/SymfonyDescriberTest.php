@@ -13,8 +13,8 @@ namespace Nelmio\ApiDocBundle\Tests\RouteDescriber;
 
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber;
-use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\InlineParameterDescriberInterface;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\InlineParameterDescriber\RouteArgumentDescriberInterface;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Operation;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -33,12 +33,12 @@ class SymfonyDescriberTest extends TestCase
     private $argumentMetadataFactoryInterface;
 
     /**
-     * @var MockObject&InlineParameterDescriberInterface
+     * @var MockObject&RouteArgumentDescriberInterface
      */
     private $inlineParameterDescriberInterfaceMock;
 
     /**
-     * @var InlineParameterDescriber
+     * @var RouteArgumentDescriber
      */
     private $inlineParameterDescriber;
 
@@ -58,7 +58,7 @@ class SymfonyDescriberTest extends TestCase
         }
 
         $this->argumentMetadataFactoryInterface = $this->createMock(ArgumentMetadataFactoryInterface::class);
-        $this->inlineParameterDescriberInterfaceMock = $this->createMock(InlineParameterDescriberInterface::class);
+        $this->inlineParameterDescriberInterfaceMock = $this->createMock(RouteArgumentDescriberInterface::class);
 
         $this->modelRegistry = new ModelRegistry(
             [],
@@ -66,7 +66,7 @@ class SymfonyDescriberTest extends TestCase
             []
         );
 
-        $this->inlineParameterDescriber = new InlineParameterDescriber(
+        $this->inlineParameterDescriber = new RouteArgumentDescriber(
             $this->argumentMetadataFactoryInterface,
             [$this->inlineParameterDescriberInterfaceMock]
         );
