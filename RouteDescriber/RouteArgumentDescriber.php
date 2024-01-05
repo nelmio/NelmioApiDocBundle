@@ -30,7 +30,11 @@ final class RouteArgumentDescriber implements RouteDescriberInterface, ModelRegi
     {
         $controller = $route->getDefault('_controller');
 
-        $argumentMetaDataList = $this->argumentMetadataFactory->createArgumentMetadata($controller, $reflectionMethod);
+        try {
+            $argumentMetaDataList = $this->argumentMetadataFactory->createArgumentMetadata($controller, $reflectionMethod);
+        } catch (\ReflectionException) {
+            return;
+        }
 
         if (!$argumentMetaDataList) {
             return;
