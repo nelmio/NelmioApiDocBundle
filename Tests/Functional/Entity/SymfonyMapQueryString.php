@@ -11,6 +11,7 @@ class SymfonyMapQueryString
         public string $name,
         public ?string $nullableName,
         public ArticleType81 $articleType81,
+        public ?ArticleType81 $nullableArticleType81,
     ) {
     }
 }

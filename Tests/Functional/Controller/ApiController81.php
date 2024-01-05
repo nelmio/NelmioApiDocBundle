@@ -470,6 +470,11 @@ class ApiController81
         in: 'query',
         description: 'Query parameter articleType81 description'
     )]
+    #[OA\Parameter(
+        name: 'nullableArticleType81',
+        in: 'query',
+        description: 'Query parameter nullableArticleType81 description'
+    )]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryStringOverwriteParameters(
         #[MapQueryString] SymfonyMapQueryString $article81Query

@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use OpenApi\Annotations\Components;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -56,6 +55,12 @@ class SymfonyFunctionalTest extends WebTestCase
                 'articleType81' => [
                     '$ref' => '#/components/schemas/ArticleType81',
                 ],
+                'nullableArticleType81' => [
+                    'nullable' => true,
+                    'allOf' => [
+                        ['$ref' => '#/components/schemas/ArticleType81']
+                    ],
+                ],
             ],
             'type' => 'object',
         ];
@@ -69,24 +74,65 @@ class SymfonyFunctionalTest extends WebTestCase
             self::markTestSkipped('Symfony 6.3 MapQueryString attribute not found');
         }
 
-        $operation = $this->getOperation('/api/article_map_query_string', 'get');
-
-        $in = 'query';
-
-        $parameter = $this->getParameter($operation, 'id', $in);
-        self::assertTrue($parameter->required);
-
-        $parameter = $this->getParameter($operation, 'name', $in);
-        self::assertTrue($parameter->required);
-
-        $parameter = $this->getParameter($operation, 'nullableName', $in);
-        self::assertFalse($parameter->required);
-
-        $parameter = $this->getParameter($operation, 'articleType81', $in);
-
-        $property = $this->getProperty($this->getModel('SymfonyMapQueryString'), 'articleType81');
-        self::assertTrue($parameter->required);
-        self::assertEquals($property, $parameter->schema);
+        self::assertEquals([
+            'operationId' => 'get_api_nelmio_apidoc_tests_functional_api_fetcharticlefrommapquerystring',
+            'parameters' => [
+                [
+                    'name' => 'id',
+                    'in' => 'query',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'integer',
+                        'property' => 'id',
+                    ],
+                ],
+                [
+                    'name' => 'name',
+                    'in' => 'query',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'string',
+                        'property' => 'name',
+                    ],
+                ],
+                [
+                    'name' => 'nullableName',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'type' => 'string',
+                        'nullable' => true,
+                        'property' => 'nullableName',
+                    ],
+                ],
+                [
+                    'name' => 'articleType81',
+                    'in' => 'query',
+                    'required' => true,
+                    'schema' => [
+                        '$ref' => '#/components/schemas/ArticleType81',
+                        'property' => 'articleType81',
+                    ],
+                ],
+                [
+                    'name' => 'nullableArticleType81',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'nullable' => true,
+                        'allOf' => [
+                            ['$ref' => '#/components/schemas/ArticleType81']
+                        ],
+                        'property' => 'nullableArticleType81',
+                    ],
+                ],
+            ],
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_string', 'get')->toJson(), true));
     }
 
     public function testMapQueryStringParametersAreOptional(): void
@@ -95,21 +141,65 @@ class SymfonyFunctionalTest extends WebTestCase
             self::markTestSkipped('Symfony 6.3 MapQueryString attribute not found');
         }
 
-        $operation = $this->getOperation('/api/article_map_query_string_nullable', 'get');
-
-        $in = 'query';
-
-        $parameter = $this->getParameter($operation, 'id', $in);
-        self::assertFalse($parameter->required);
-
-        $parameter = $this->getParameter($operation, 'name', $in);
-        self::assertFalse($parameter->required);
-
-        $parameter = $this->getParameter($operation, 'nullableName', $in);
-        self::assertFalse($parameter->required);
-
-        $parameter = $this->getParameter($operation, 'articleType81', $in);
-        self::assertFalse($parameter->required);
+        self::assertEquals([
+            'operationId' => 'get_api_nelmio_apidoc_tests_functional_api_fetcharticlefrommapquerystringnullable',
+            'parameters' => [
+                [
+                    'name' => 'id',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'type' => 'integer',
+                        'property' => 'id',
+                    ],
+                ],
+                [
+                    'name' => 'name',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'type' => 'string',
+                        'property' => 'name',
+                    ],
+                ],
+                [
+                    'name' => 'nullableName',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'type' => 'string',
+                        'nullable' => true,
+                        'property' => 'nullableName',
+                    ],
+                ],
+                [
+                    'name' => 'articleType81',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        '$ref' => '#/components/schemas/ArticleType81',
+                        'property' => 'articleType81',
+                    ],
+                ],
+                [
+                    'name' => 'nullableArticleType81',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'nullable' => true,
+                        'allOf' => [
+                            ['$ref' => '#/components/schemas/ArticleType81']
+                        ],
+                        'property' => 'nullableArticleType81',
+                    ],
+                ],
+            ],
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_string_nullable', 'get')->toJson(), true));
     }
 
     public function testMapQueryStringParametersOverwriteParameters(): void
@@ -118,12 +208,70 @@ class SymfonyFunctionalTest extends WebTestCase
             self::markTestSkipped('Symfony 6.3 MapQueryString attribute not found');
         }
 
-        $operation = $this->getOperation('/api/article_map_query_string_overwrite_parameters', 'get');
-
-        foreach (['id', 'name', 'nullableName', 'articleType81'] as $name) {
-            $parameter = $this->getParameter($operation, $name, 'query');
-            self::assertSame($parameter->description, sprintf('Query parameter %s description', $name));
-        }
+        self::assertEquals([
+            'operationId' => 'get_api_nelmio_apidoc_tests_functional_api_fetcharticlefrommapquerystringoverwriteparameters',
+            'parameters' => [
+                [
+                    'name' => 'id',
+                    'in' => 'query',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'integer',
+                        'property' => 'id',
+                    ],
+                    'description' => 'Query parameter id description',
+                ],
+                [
+                    'name' => 'name',
+                    'in' => 'query',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'string',
+                        'property' => 'name',
+                    ],
+                    'description' => 'Query parameter name description',
+                ],
+                [
+                    'name' => 'nullableName',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'type' => 'string',
+                        'nullable' => true,
+                        'property' => 'nullableName',
+                    ],
+                    'description' => 'Query parameter nullableName description',
+                ],
+                [
+                    'name' => 'articleType81',
+                    'in' => 'query',
+                    'required' => true,
+                    'schema' => [
+                        '$ref' => '#/components/schemas/ArticleType81',
+                        'property' => 'articleType81',
+                    ],
+                    'description' => 'Query parameter articleType81 description',
+                ],
+                [
+                    'name' => 'nullableArticleType81',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'nullable' => true,
+                        'allOf' => [
+                            ['$ref' => '#/components/schemas/ArticleType81']
+                        ],
+                        'property' => 'nullableArticleType81',
+                    ],
+                    'description' => 'Query parameter nullableArticleType81 description',
+                ],
+            ],
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_string_overwrite_parameters', 'get')->toJson(), true));
     }
 
     public function testMapQueryParameter(): void
@@ -132,12 +280,24 @@ class SymfonyFunctionalTest extends WebTestCase
             self::markTestSkipped('Symfony 6.3 MapQueryParameter attribute not found');
         }
 
-        $operation = $this->getOperation('/api/article_map_query_parameter', 'get');
-        $in = 'query';
-
-        $parameter = $this->getParameter($operation, 'id', $in);
-        self::assertTrue($parameter->required);
-        self::assertSame('integer', $parameter->schema->type);
+        self::assertEquals([
+            'operationId' => 'get_api_nelmio_apidoc_tests_functional_api_fetcharticlefrommapqueryparameter',
+            'parameters' => [
+                [
+                    'name' => 'id',
+                    'in' => 'query',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'integer',
+                    ],
+                ],
+            ],
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_parameter', 'get')->toJson(), true));
     }
 
     public function testMapQueryParameterHandlesNullable(): void
@@ -146,11 +306,25 @@ class SymfonyFunctionalTest extends WebTestCase
             self::markTestSkipped('Symfony 6.3 MapQueryParameter attribute not found');
         }
 
-        $operation = $this->getOperation('/api/article_map_query_parameter_nullable', 'get');
-        $in = 'query';
-
-        $parameter = $this->getParameter($operation, 'id', $in);
-        self::assertFalse($parameter->required);
+        self::assertEquals([
+            'operationId' => 'get_api_nelmio_apidoc_tests_functional_api_fetcharticlefrommapqueryparameternullable',
+            'parameters' => [
+                [
+                    'name' => 'id',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'type' => 'integer',
+                        'nullable' => true,
+                    ],
+                ],
+            ],
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_parameter_nullable', 'get')->toJson(), true));
     }
 
     public function testMapQueryParameterHandlesDefault(): void
@@ -159,12 +333,26 @@ class SymfonyFunctionalTest extends WebTestCase
             self::markTestSkipped('Symfony 6.3 MapQueryParameter attribute not found');
         }
 
-        $operation = $this->getOperation('/api/article_map_query_parameter_default', 'get');
-        $in = 'query';
-
-        $parameter = $this->getParameter($operation, 'id', $in);
-        self::assertFalse($parameter->required);
-        self::assertSame(123, $parameter->schema->default);
+        self::assertEquals([
+            'operationId' => 'get_api_nelmio_apidoc_tests_functional_api_fetcharticlefrommapqueryparameterdefault',
+            'parameters' => [
+                [
+                    'name' => 'id',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'type' => 'integer',
+                        'nullable' => true,
+                        'default' => 123,
+                    ],
+                ],
+            ],
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_parameter_default', 'get')->toJson(), true));
     }
 
     public function testMapQueryParameterOverwriteParameter(): void
@@ -173,12 +361,27 @@ class SymfonyFunctionalTest extends WebTestCase
             self::markTestSkipped('Symfony 6.3 MapQueryParameter attribute not found');
         }
 
-        $operation = $this->getOperation('/api/article_map_query_parameter_overwrite_parameters', 'get');
-        $in = 'query';
-
-        $parameter = $this->getParameter($operation, 'id', $in);
-        self::assertSame(123, $parameter->example);
-        self::assertSame('Query parameter id description', $parameter->description);
+        self::assertEquals([
+            'operationId' => 'get_api_nelmio_apidoc_tests_functional_api_fetcharticlefrommapqueryparameteroverwriteparameters',
+            'parameters' => [
+                [
+                    'name' => 'id',
+                    'in' => 'query',
+                    'required' => false,
+                    'schema' => [
+                        'type' => 'integer',
+                        'nullable' => true,
+                    ],
+                    'description' => 'Query parameter id description',
+                    'example' => 123,
+                ],
+            ],
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_parameter_overwrite_parameters', 'get')->toJson(), true));
     }
 
     public function testMapRequestPayload(): void
@@ -187,20 +390,24 @@ class SymfonyFunctionalTest extends WebTestCase
             self::markTestSkipped('Symfony 6.3 MapRequestPayload attribute not found');
         }
 
-        $operation = $this->getOperation('/api/article_map_request_payload', 'post');
-
-        $requestBody = $operation->requestBody;
-        self::assertTrue($requestBody->required);
-
-        self::assertCount(1, $requestBody->content);
-        self::assertArrayHasKey('application/json', $requestBody->content);
-
-        $media = $requestBody->content['application/json'];
-
-        self::assertSame('application/json', $media->mediaType);
-
-        $model = $this->getModel('Article81');
-        self::assertSame(Components::SCHEMA_REF.$model->schema, $media->schema->ref);
+        self::assertEquals([
+            'operationId' => 'post_api_nelmio_apidoc_tests_functional_api_createarticlefrommaprequestpayload',
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+            'requestBody' => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            '$ref' => '#/components/schemas/Article81',
+                        ],
+                    ],
+                ],
+                'required' => true,
+            ],
+        ], json_decode($this->getOperation('/api/article_map_request_payload', 'post')->toJson(), true));
     }
 
     public function testMapRequestPayloadNullable(): void
@@ -209,10 +416,27 @@ class SymfonyFunctionalTest extends WebTestCase
             self::markTestSkipped('Symfony 6.3 MapRequestPayload attribute not found');
         }
 
-        $operation = $this->getOperation('/api/article_map_request_payload_nullable', 'post');
-
-        $requestBody = $operation->requestBody;
-        self::assertFalse($requestBody->required);
+        self::assertEquals([
+            'operationId' => 'post_api_nelmio_apidoc_tests_functional_api_createarticlefrommaprequestpayloadnullable',
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+            'requestBody' => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            'nullable' => true,
+                            'oneOf' => [
+                                ['$ref' => '#/components/schemas/Article81'],
+                            ],
+                        ],
+                    ],
+                ],
+                'required' => false,
+            ],
+        ], json_decode($this->getOperation('/api/article_map_request_payload_nullable', 'post')->toJson(), true));
     }
 
     public function testMapRequestPayloadOverwriteRequestBody(): void
@@ -221,9 +445,24 @@ class SymfonyFunctionalTest extends WebTestCase
             self::markTestSkipped('Symfony 6.3 MapRequestPayload attribute not found');
         }
 
-        $operation = $this->getOperation('/api/article_map_request_payload_overwrite', 'post');
-
-        $requestBody = $operation->requestBody;
-        self::assertSame('Request body description', $requestBody->description);
+        self::assertEquals([
+            'operationId' => 'post_api_nelmio_apidoc_tests_functional_api_createarticlefrommaprequestpayloadoverwrite',
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+            'requestBody' => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            '$ref' => '#/components/schemas/Article81',
+                        ],
+                    ],
+                ],
+                'required' => true,
+                'description' => 'Request body description',
+            ],
+        ], json_decode($this->getOperation('/api/article_map_request_payload_overwrite', 'post')->toJson(), true));
     }
 }
