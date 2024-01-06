@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Model;
 
-use JetBrains\PhpStorm\Deprecated;
 use Symfony\Component\PropertyInfo\Type;
 
 final class Model
@@ -22,12 +21,10 @@ final class Model
     private $serializationContext;
 
     /**
-     * @param string[]|null $groups deprecated since 4.17
+     * @param string[]|null $groups
      */
-    public function __construct(Type $type, #[Deprecated] array $groups = null, array $options = null, array $serializationContext = [])
+    public function __construct(Type $type, array $groups = null, array $options = null, array $serializationContext = [])
     {
-        if ()
-
         $this->type = $type;
         $this->options = $options;
         $this->serializationContext = $serializationContext;
@@ -46,8 +43,6 @@ final class Model
 
     /**
      * @return string[]|null
-     * @deprecated since 4.17 use getSerializationContext()['groups'] instead
-     * @see getSerializationContext()
      */
     public function getGroups()
     {
