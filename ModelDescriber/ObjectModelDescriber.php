@@ -190,7 +190,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
             if ($propertyDescriber->supports($types)) {
                 try {
-                    $propertyDescriber->describe($types, $property, $model->getGroups(), $schema);
+                    $propertyDescriber->describe($types, $property, $model->getGroups(), $schema, $model->getSerializationContext());
                 } catch (UndocumentedArrayItemsException $e) {
                     if (null !== $e->getClass()) {
                         throw $e; // This exception is already complete

@@ -18,7 +18,7 @@ use Symfony\Component\PropertyInfo\Type;
 
 trait NullablePropertyTrait
 {
-    protected function setNullableProperty(Type $type, OA\Schema $property, ?OA\Schema $schema): void
+    protected function setNullableProperty(Type $type, OA\Schema $property, ?OA\Schema $schema, array $context = []): void
     {
         if (Generator::UNDEFINED !== $property->nullable) {
             if (!$property->nullable) {
