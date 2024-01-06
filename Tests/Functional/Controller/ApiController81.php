@@ -426,7 +426,16 @@ class ApiController81
     }
 
     #[Route('/name_converter_context', methods: ['GET'])]
-    #[OA\Response(response: '200', description: '', content: new Model(type: EntityThroughNameConverter::class, serializationContext: ['secret_name_converter_value' => true]))]
+    #[OA\Response(
+        response: '200',
+        description: '',
+        content: new Model(type: EntityThroughNameConverter::class, serializationContext: ['secret_name_converter_value' => true])
+    )]
+    #[OA\Response(
+        response: '201',
+        description: 'Same class without context',
+        content: new Model(type: EntityThroughNameConverter::class)
+    )]
     public function nameConverterContext()
     {
     }
