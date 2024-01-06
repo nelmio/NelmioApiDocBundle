@@ -59,7 +59,7 @@ final class Model
 
     public function getHash(): string
     {
-        return md5(serialize([$this->type, $this->getGroups()]));
+        return md5(serialize([$this->type, $this->getSerializationContext()]));
     }
 
     /**

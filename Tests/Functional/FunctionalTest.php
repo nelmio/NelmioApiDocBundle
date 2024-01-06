@@ -848,7 +848,18 @@ class FunctionalTest extends WebTestCase
 
     public function testContextPassedToNameConverter()
     {
-        $this->getOperation('/api/name_converter_context', 'get');
+        $operation = $this->getOperation('/api/name_converter_context', 'get');
+
+        $response = $this->getOperationResponse($operation, '200');
+        self::assertEquals([
+            'response' => '200',
+            'description' => '',
+            'content' => [
+                'application/json' => [
+                    'schema' => ['$ref' => '#/components/schemas/EntityThroughNameConverter'],
+                ],
+            ],
+        ], json_decode($response->toJson(), true));
 
         $model = $this->getModel('EntityThroughNameConverter');
         $this->assertCount(2, $model->properties);
@@ -856,5 +867,23 @@ class FunctionalTest extends WebTestCase
         $this->assertHasProperty('name_converter_context_id', $model);
         $this->assertNotHasProperty('name', $model);
         $this->assertHasProperty('name_converter_context_name', $model);
+
+        $response = $this->getOperationResponse($operation, '201');
+        self::assertEquals([
+            'response' => '201',
+            'description' => 'Same class without context',
+            'content' => [
+                'application/json' => [
+                    'schema' => ['$ref' => '#/components/schemas/EntityThroughNameConverter2'],
+                ],
+            ],
+        ], json_decode($response->toJson(), true));
+
+        $model = $this->getModel('EntityThroughNameConverter2');
+        $this->assertCount(2, $model->properties);
+        $this->assertNotHasProperty('name_converter_context_id', $model);
+        $this->assertHasProperty('id', $model);
+        $this->assertNotHasProperty('name_converter_context_name', $model);
+        $this->assertHasProperty('name', $model);
     }
 }

@@ -479,6 +479,13 @@ class ApiController80
      *
      *    @Model(type=EntityThroughNameConverter::class, serializationContext={"secret_name_converter_value"=true})
      * )
+     *
+     * @OA\Response(
+     *     response="201",
+     *     description="Same class without context",
+     *
+     *     @Model(type=EntityThroughNameConverter::class)
+     *  )
      */
     public function nameConverterContext()
     {
