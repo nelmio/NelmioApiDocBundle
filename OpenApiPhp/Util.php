@@ -424,7 +424,7 @@ final class Util
             if ('$ref' === $propertyName) {
                 $propertyName = 'ref';
             }
-	        if (($defaults[$propertyName] ?? null) && !\in_array($propertyName, $done, true)) {
+			if (($defaults[$propertyName] ?? null) && !\in_array($propertyName, $done, true)) {
                 self::mergeProperty($annotation, $propertyName, $value, $defaults[$propertyName], $overwrite);
             }
         }
