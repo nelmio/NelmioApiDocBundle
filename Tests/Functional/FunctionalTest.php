@@ -857,8 +857,8 @@ class FunctionalTest extends WebTestCase
             'content' => [
                 'application/json' => [
                     'schema' => ['$ref' => '#/components/schemas/EntityThroughNameConverter'],
-                ]
-            ]
+                ],
+            ],
         ], json_decode($response->toJson(), true));
 
         $model = $this->getModel('EntityThroughNameConverter');
@@ -868,7 +868,6 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasProperty('name', $model);
         $this->assertHasProperty('name_converter_context_name', $model);
 
-
         $response = $this->getOperationResponse($operation, '201');
         self::assertEquals([
             'response' => '201',
@@ -876,8 +875,8 @@ class FunctionalTest extends WebTestCase
             'content' => [
                 'application/json' => [
                     'schema' => ['$ref' => '#/components/schemas/EntityThroughNameConverter2'],
-                ]
-            ]
+                ],
+            ],
         ], json_decode($response->toJson(), true));
 
         $model = $this->getModel('EntityThroughNameConverter2');
