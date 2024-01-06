@@ -181,7 +181,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         }
 
         if (PHP_VERSION_ID > 80100) {
-            // Add autoconfiguration for inline parameter describer
+            // Add autoconfiguration for route argument describer
             $container->registerForAutoconfiguration(RouteArgumentDescriberInterface::class)
                 ->addTag('nelmio_api_doc.route_argument_describer');
 

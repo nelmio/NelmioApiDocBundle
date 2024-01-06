@@ -149,11 +149,52 @@ Complete example
             }
         }
 
+Customization
+----------------------
+
+Imagine you want to add, modify, or remove some documentation for a route argument. For that you will have to create your own describer which implements the :class:`RouteArgumentDescriberInterface`_ interface.
+
+Register your route argument describer
+~~~~~~~
+
+Before you can use your custom describer you must register it in your route argument describer as a service and tag it with ``nelmio_api_doc.route_argument_describer``.
+Services implementing the :class:`RouteArgumentDescriberInterface`_ interface are automatically detected and used by NelmioApiDocBundle.
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/services.yaml
+        services:
+            App\Describer\CustomRouteArgumentDescriber:
+                tags:
+                    - { name: nelmio_api_doc.route_argument_describer }
+
+    .. code-block:: xml
+
+        <!-- config/services.xml -->
+        <service id="App\Describer\CustomRouteArgumentDescriber">
+            <tag name="nelmio_api_doc.route_argument_describer"/>
+        </service>
+
+    .. code-block:: php
+
+        // config/services.php
+        use App\Describer\CustomRouteArgumentDescriber;
+
+        return function (ContainerConfigurator $container) {
+            $container->services()
+                ->set(CustomRouteArgumentDescriber::class)
+                ->tag('nelmio_api_doc.route_argument_describer')
+            ;
+        };
+
 Disclaimer
 ----------------------
 
-Make sure to use at least php 8 (annotations) to make use of this functionality
+Make sure to use at least php 8.1 (attribute support) to make use of this functionality.
 
 .. _`Symfony MapQueryString`: https://symfony.com/doc/current/controller.html#mapping-the-whole-query-string
 .. _`Symfony MapQueryParameter`: https://symfony.com/doc/current/controller.html#mapping-query-parameters-individually
 .. _`Symfony MapRequestPayload`: https://symfony.com/doc/current/controller.html#mapping-request-payload
+.. _`RouteArgumentDescriberInterface`: https://github.com/DjordyKoert/NelmioApiDocBundle/blob/master/RouteDescriber/RouteArgumentDescriber/SymfonyMapQueryParameterDescriber.php

@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
  * A processor that adds query parameters to operations that have a MapQueryString attribute.
- * A processor is used to ensure that a Model is created.
+ * A processor is used to ensure that a Model has been created.
  *
  * @see SymfonyMapQueryStringDescriber
  */
