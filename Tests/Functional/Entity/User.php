@@ -65,7 +65,7 @@ if (TestKernel::isAnnotationsAvailable()) {
          *
          * @OA\Property(default = 0.0)
          */
-        private $money;
+        private $money = 0.0;
 
         /**
          * @var \DateTime
@@ -209,7 +209,7 @@ if (TestKernel::isAnnotationsAvailable()) {
          * @var float
          */
         #[\OpenApi\Attributes\Property(default: 0.0)]
-        private $money;
+        private $money = 0.0;
 
         /**
          * @var \DateTime
