@@ -37,8 +37,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private $classMetadataFactory;
     /** @var Reader|null */
     private $doctrineReader;
-    /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
+    /** @var PropertyDescriberInterface|PropertyDescriberInterface[] */
+    private $propertyDescriber;
     /** @var string[] */
     private $mediaTypes;
     /** @var NameConverterInterface|null */
@@ -46,18 +46,29 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /** @var bool */
     private $useValidationGroups;
 
+    /**
+     * @param PropertyDescriberInterface|PropertyDescriberInterface[] $propertyDescribers
+     */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
         ?Reader $reader,
-        iterable $propertyDescribers,
+        $propertyDescribers,
         array $mediaTypes,
         NameConverterInterface $nameConverter = null,
         bool $useValidationGroups = false,
         ClassMetadataFactoryInterface $classMetadataFactory = null
     ) {
+        if (is_array($propertyDescribers)) {
+            trigger_deprecation('nelmio/api-doc-bundle', '4.17', 'Passing an array of PropertyDescriberInterface to %s() is deprecated. Pass a single PropertyDescriberInterface instead.', __METHOD__);
+        } else {
+            if (!$propertyDescribers instanceof PropertyDescriberInterface) {
+                throw new \InvalidArgumentException(sprintf('Argument 3 passed to %s() must be an array of %s or a single %s.', __METHOD__, PropertyDescriberInterface::class, PropertyDescriberInterface::class));
+            }
+        }
+
         $this->propertyInfo = $propertyInfo;
         $this->doctrineReader = $reader;
-        $this->propertyDescribers = $propertyDescribers;
+        $this->propertyDescriber = $propertyDescribers;
         $this->mediaTypes = $mediaTypes;
         $this->nameConverter = $nameConverter;
         $this->useValidationGroups = $useValidationGroups;
@@ -184,7 +195,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
      */
     private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema)
     {
-        foreach ($this->propertyDescribers as $propertyDescriber) {
+        $propertyDescribers = is_array($this->propertyDescriber) ? $this->propertyDescriber : [$this->propertyDescriber];
+
+        foreach ($propertyDescribers as $propertyDescriber) {
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }

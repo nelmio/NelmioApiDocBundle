@@ -37,9 +37,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
                 $types[0]->getCollectionValueType()
         ); // ignore nullable field
 
-        if ($types[0]->isNullable()) {
-            $property->nullable = true;
-
+        if ($types[0]->isNullable() === true) {
             $weakContext = Util::createWeakContext($property->_context);
             $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups)), '_context' => $weakContext])];
 
@@ -53,22 +51,11 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
         }
 
         $property->ref = $this->modelRegistry->register(new Model($type, $groups));
-
-        if (!$type->isNullable() && null !== $schema) {
-            $propertyName = Util::getSchemaPropertyName($schema, $property);
-            if (null === $propertyName) {
-                return;
-            }
-
-            $existingRequiredFields = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
-            $existingRequiredFields[] = $propertyName;
-
-            $schema->required = array_values(array_unique($existingRequiredFields));
-        }
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
-        return 1 === count($types) && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
+        return 1 === count($types)
+            && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
     }
 }

@@ -20,7 +20,6 @@ use OpenApi\Annotations as OA;
 class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
-    use NullablePropertyTrait;
 
     /** @var PropertyDescriberInterface */
     private $propertyDescriber;
@@ -41,7 +40,6 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         }
 
         $property->type = 'array';
-        $this->setNullableProperty($types[0], $property, $schema);
         $property = Util::getChild($property, OA\Items::class);
 
         try {
@@ -55,7 +53,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         }
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
         return 1 === count($types) && $types[0]->isCollection();
     }

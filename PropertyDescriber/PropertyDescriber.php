@@ -24,25 +24,29 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = []): void
     {
         if (!$normalizer = $this->getPropertyDescriber($types, $context)) {
-            throw new \LogicException(sprintf('No property describer supports the given type "%s".', implode(', ', $types)));
+            return;
         }
 
         $normalizer->describe($types, $property, $groups, $schema, $context);
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
-        return null !== $this->getPropertyDescriber($types);
+        return null !== $this->getPropertyDescriber($types, $context);
     }
 
-    private function getPropertyDescriber(array $types): ?PropertyDescriberInterface
+    private function getPropertyDescriber(array $types, array $context): ?PropertyDescriberInterface
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
 
-            if ($propertyDescriber->supports($types)) {
+            if ($propertyDescriber instanceof PropertyDescriberAwareInterface) {
+                $propertyDescriber->setPropertyDescriber($this);
+            }
+
+            if ($propertyDescriber->supports($types, $context)) {
                 return $propertyDescriber;
             }
         }

@@ -76,7 +76,7 @@
         <service id="nelmio_api_doc.model_describers.object" class="Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber" public="false">
             <argument type="service" id="property_info" />
             <argument type="service" id="annotations.reader" on-invalid="null"/>
-            <argument type="tagged" tag="nelmio_api_doc.object_model.property_describer" />
+            <argument type="service" id="nelmio_api_doc.object_model.property_describer" />
             <argument />
             <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore" />
             <argument>%nelmio_api_doc.use_validation_groups%</argument>
@@ -103,32 +103,40 @@
         <service id="nelmio_api_doc.object_model.property_describer" class="Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriber" public="false">
             <argument type="tagged" tag="nelmio_api_doc.object_model.property_describer" />
 
-            <tag name="nelmio_api_doc.object_model.property_describer" />
+            <tag name="nelmio_api_doc.object_model.property_describer" priority="100" />
         </service>
 
         <service id="nelmio_api_doc.object_model.property_describers.array" class="Nelmio\ApiDocBundle\PropertyDescriber\ArrayPropertyDescriber" public="false">
             <argument type="service" id="nelmio_api_doc.object_model.property_describer" />
 
-            <tag name="nelmio_api_doc.object_model.property_describer" />
+            <tag name="nelmio_api_doc.object_model.property_describer" priority="-1000" />
         </service>
 
         <service id="nelmio_api_doc.object_model.property_describers.boolean" class="Nelmio\ApiDocBundle\PropertyDescriber\BooleanPropertyDescriber" public="false">
-            <tag name="nelmio_api_doc.object_model.property_describer" />
+            <tag name="nelmio_api_doc.object_model.property_describer" priority="-1000" />
         </service>
 
         <service id="nelmio_api_doc.object_model.property_describers.float" class="Nelmio\ApiDocBundle\PropertyDescriber\FloatPropertyDescriber" public="false">
-            <tag name="nelmio_api_doc.object_model.property_describer" />
+            <tag name="nelmio_api_doc.object_model.property_describer" priority="-1000" />
         </service>
 
         <service id="nelmio_api_doc.object_model.property_describers.integer" class="Nelmio\ApiDocBundle\PropertyDescriber\IntegerPropertyDescriber" public="false">
-            <tag name="nelmio_api_doc.object_model.property_describer" />
+            <tag name="nelmio_api_doc.object_model.property_describer" priority="-1000" />
         </service>
 
         <service id="nelmio_api_doc.object_model.property_describers.string" class="Nelmio\ApiDocBundle\PropertyDescriber\StringPropertyDescriber" public="false">
-            <tag name="nelmio_api_doc.object_model.property_describer" />
+            <tag name="nelmio_api_doc.object_model.property_describer" priority="-1000" />
         </service>
 
         <service id="nelmio_api_doc.object_model.property_describers.date_time" class="Nelmio\ApiDocBundle\PropertyDescriber\DateTimePropertyDescriber" public="false">
+            <tag name="nelmio_api_doc.object_model.property_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.object_model.property_describers.nullable" class="Nelmio\ApiDocBundle\PropertyDescriber\NullablePropertyDescriber" public="false">
+            <tag name="nelmio_api_doc.object_model.property_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.object_model.property_describers.required" class="Nelmio\ApiDocBundle\PropertyDescriber\RequiredPropertyDescriber" public="false">
             <tag name="nelmio_api_doc.object_model.property_describer" />
         </service>
 
@@ -137,15 +145,20 @@
         </service>
 
         <service id="nelmio_api_doc.object_model.property_describers.compound" class="Nelmio\ApiDocBundle\PropertyDescriber\CompoundPropertyDescriber" public="false">
-            <argument type="service" id="nelmio_api_doc.object_model.property_describer" />
+            <argument type="service" id="nelmio_api_doc.object_model.property_describer"  />
 
-            <tag name="nelmio_api_doc.object_model.property_describer" priority="-1001" />
+            <tag name="nelmio_api_doc.object_model.property_describer" priority="-1000" />
         </service>
 
         <!-- Form Type Extensions -->
 
         <service id="nelmio_api_doc.form.documentation_extension" class="Nelmio\ApiDocBundle\Form\Extension\DocumentationExtension">
             <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType"/>
+        </service>
+
+        <!-- Swagger processors -->
+        <service id="nelmio_api_doc.swagger.processor.nullable_property" class="Nelmio\ApiDocBundle\Processor\NullablePropertyProcessor">
+            <tag name="nelmio_api_doc.swagger.processor" />
         </service>
     </services>
 
