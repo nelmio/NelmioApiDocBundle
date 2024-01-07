@@ -94,8 +94,20 @@
         </service>
 
         <!-- Property Describers -->
+        <instanceof id="Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface">
+            <tag name="nelmio_api_doc.object_model.property_describer"/>
+        </instanceof>
+
+        <service id="Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface" alias="nelmio_api_doc.object_model.property_describer"/>
+
+        <service id="nelmio_api_doc.object_model.property_describer" class="Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriber" public="false">
+            <argument type="tagged" tag="nelmio_api_doc.object_model.property_describer" />
+
+            <tag name="nelmio_api_doc.object_model.property_describer" />
+        </service>
+
         <service id="nelmio_api_doc.object_model.property_describers.array" class="Nelmio\ApiDocBundle\PropertyDescriber\ArrayPropertyDescriber" public="false">
-            <!-- <argument type="tagged" tag="nelmio_api_doc.object_model.property_describer" exclude-self="false" /> -->
+            <argument type="service" id="nelmio_api_doc.object_model.property_describer" />
 
             <tag name="nelmio_api_doc.object_model.property_describer" />
         </service>
@@ -125,7 +137,7 @@
         </service>
 
         <service id="nelmio_api_doc.object_model.property_describers.compound" class="Nelmio\ApiDocBundle\PropertyDescriber\CompoundPropertyDescriber" public="false">
-            <argument type="tagged" tag="nelmio_api_doc.object_model.property_describer" />
+            <argument type="service" id="nelmio_api_doc.object_model.property_describer" />
 
             <tag name="nelmio_api_doc.object_model.property_describer" priority="-1001" />
         </service>

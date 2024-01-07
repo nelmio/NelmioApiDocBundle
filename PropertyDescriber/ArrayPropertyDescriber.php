@@ -22,12 +22,12 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
     use ModelRegistryAwareTrait;
     use NullablePropertyTrait;
 
-    /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
+    /** @var PropertyDescriberInterface */
+    private $propertyDescriber;
 
-    public function __construct(iterable $propertyDescribers = [])
+    public function __construct(PropertyDescriberInterface $propertyDescriber)
     {
-        $this->propertyDescribers = $propertyDescribers;
+        $this->propertyDescriber = $propertyDescriber;
     }
 
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
@@ -44,23 +44,14 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         $this->setNullableProperty($types[0], $property, $schema);
         $property = Util::getChild($property, OA\Items::class);
 
-        foreach ($this->propertyDescribers as $propertyDescriber) {
-            if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
-                $propertyDescriber->setModelRegistry($this->modelRegistry);
+        try {
+            $this->propertyDescriber->describe([$type], $property, $groups, $schema, $context);
+        } catch (UndocumentedArrayItemsException $e) {
+            if (null !== $e->getClass()) {
+                throw $e; // This exception is already complete
             }
-            if ($propertyDescriber->supports([$type])) {
-                try {
-                    $propertyDescriber->describe([$type], $property, $groups, $schema, $context);
-                } catch (UndocumentedArrayItemsException $e) {
-                    if (null !== $e->getClass()) {
-                        throw $e; // This exception is already complete
-                    }
 
-                    throw new UndocumentedArrayItemsException(null, sprintf('%s[]', $e->getPath()));
-                }
-
-                break;
-            }
+            throw new UndocumentedArrayItemsException(null, sprintf('%s[]', $e->getPath()));
         }
     }
 

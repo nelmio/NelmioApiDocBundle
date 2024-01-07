@@ -21,12 +21,12 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
 {
     use ModelRegistryAwareTrait;
 
-    /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
+    /** @var PropertyDescriberInterface */
+    private $propertyDescriber;
 
-    public function __construct(iterable $propertyDescribers)
+    public function __construct(PropertyDescriberInterface $propertyDescriber)
     {
-        $this->propertyDescribers = $propertyDescribers;
+        $this->propertyDescriber = $propertyDescriber;
     }
 
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
@@ -35,20 +35,12 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
 
         foreach ($types as $type) {
             $property->oneOf[] = $schema = Util::createChild($property, OA\Schema::class, []);
-            foreach ($this->propertyDescribers as $propertyDescriber) {
-                if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
-                    $propertyDescriber->setModelRegistry($this->modelRegistry);
-                }
-                if ($propertyDescriber->supports([$type])) {
-                    $propertyDescriber->describe([$type], $schema, $groups, $schema, $context);
 
-                    break;
-                }
-            }
+            $this->propertyDescriber->describe([$type], $schema, $groups, $schema, $context);
         }
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
         return count($types) >= 2;
     }
