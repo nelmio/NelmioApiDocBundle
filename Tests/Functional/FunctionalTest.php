@@ -624,17 +624,26 @@ class FunctionalTest extends WebTestCase
 
     public function testCompoundEntityAction()
     {
-        $model = $this->getModel('CompoundEntity');
-        $this->assertCount(1, $model->properties);
-
-        $this->assertHasProperty('complex', $model);
-
-        $property = $model->properties[0];
-        $this->assertCount(2, $property->oneOf);
-
-        $this->assertSame('integer', $property->oneOf[0]->type);
-        $this->assertSame('array', $property->oneOf[1]->type);
-        $this->assertSame('#/components/schemas/CompoundEntity', $property->oneOf[1]->items->ref);
+        self::assertEquals([
+            'schema' => 'CompoundEntity',
+            'type' => 'object',
+            'required' => ['complex'],
+            'properties' => [
+                'complex' => [
+                    'oneOf' => [
+                        [
+                            'type' => 'integer',
+                        ],
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntity',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], json_decode($this->getModel('CompoundEntity')->toJson(), true));
     }
 
     public function testInvokableController()
