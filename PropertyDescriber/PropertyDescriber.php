@@ -23,16 +23,16 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = []): void
     {
-        if (!$normalizer = $this->getPropertyDescriber($types, $context)) {
+        if (!$normalizer = $this->getPropertyDescriber($types)) {
             return;
         }
 
         $normalizer->describe($types, $property, $groups, $schema, $context);
     }
 
-    public function supports(array $types, array $context = []): bool
+    public function supports(array $types): bool
     {
-        return null !== $this->getPropertyDescriber($types, $context);
+        return null !== $this->getPropertyDescriber($types);
     }
 
     private function getPropertyDescriber(array $types, array $context): ?PropertyDescriberInterface
@@ -51,7 +51,7 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
                 $propertyDescriber->setPropertyDescriber($this);
             }
 
-            if ($propertyDescriber->supports($types, $context)) {
+            if ($propertyDescriber->supports($types)) {
                 return $propertyDescriber;
             }
         }

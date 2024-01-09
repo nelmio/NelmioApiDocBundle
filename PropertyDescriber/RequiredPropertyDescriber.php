@@ -44,7 +44,7 @@ final class RequiredPropertyDescriber implements PropertyDescriberInterface, Pro
         }
     }
 
-    public function supports(array $types, array $context = []): bool
+    public function supports(array $types): bool
     {
         if ($this->isCalled) {
             return false;

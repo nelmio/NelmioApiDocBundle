@@ -22,7 +22,7 @@ class DateTimePropertyDescriber implements PropertyDescriberInterface
         $property->format = 'date-time';
     }
 
-    public function supports(array $types, array $context = []): bool
+    public function supports(array $types): bool
     {
         return 1 === count($types)
             && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType()

@@ -46,7 +46,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         }
     }
 
-    public function supports(array $types, array $context = []): bool
+    public function supports(array $types): bool
     {
         return 1 === count($types) && $types[0]->isCollection();
     }
