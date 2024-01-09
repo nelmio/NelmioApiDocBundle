@@ -6,10 +6,8 @@ use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\FormModelDescriber;
-use Nelmio\ApiDocBundle\Tests\ModelDescriber\Fixtures\CsrfEnablingFormType;
 use OpenApi\Annotations\Property;
 use OpenApi\Attributes\OpenApi;
-use OpenApi\Attributes\Schema;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -54,7 +52,6 @@ class FormModelDescriberTest extends TestCase
         $describer->setModelRegistry($modelRegistry);
 
         $describer->describe($model, $schema);
-
 
         if ($expectProperty) {
             $filteredProperties = array_filter($schema->properties, function (Property $property) use ($tokenName) {

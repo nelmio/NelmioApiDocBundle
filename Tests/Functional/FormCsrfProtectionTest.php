@@ -2,8 +2,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class FormCsrfProtectionTest extends WebTestCase
