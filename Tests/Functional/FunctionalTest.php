@@ -642,6 +642,20 @@ class FunctionalTest extends WebTestCase
                         ],
                     ],
                 ],
+                'nullableComplex' => [
+                    'nullable' => true,
+                    'oneOf' => [
+                        [
+                            'type' => 'integer',
+                        ],
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntity',
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ], json_decode($this->getModel('CompoundEntity')->toJson(), true));
     }

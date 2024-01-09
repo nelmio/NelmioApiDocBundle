@@ -17,4 +17,9 @@ class CompoundEntity
      * @var int|CompoundEntity[]
      */
     public $complex;
+
+    /**
+     * @var int|CompoundEntity[]|null
+     */
+    public $nullableComplex;
 }

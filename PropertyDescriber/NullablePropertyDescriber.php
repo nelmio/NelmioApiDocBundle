@@ -34,8 +34,16 @@ final class NullablePropertyDescriber implements PropertyDescriberInterface, Pro
 
     public function supports(array $types, array $context = []): bool
     {
-        return 1 === count($types)
-            && $types[0]->isNullable()
-            && !array_key_exists(self::RECURSIVE, $context);
+        if (array_key_exists(self::RECURSIVE, $context)) {
+            return false;
+        }
+
+        foreach ($types as $type) {
+            if ($type->isNullable()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
