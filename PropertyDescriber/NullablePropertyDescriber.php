@@ -18,7 +18,10 @@ final class NullablePropertyDescriber implements PropertyDescriberInterface, Pro
 {
     use PropertyDescriberAwareTrait;
 
-    private const RECURSIVE = self::class.'::RECURSIVE';
+    /**
+     * @var bool
+     */
+    private $isCalled = false;
 
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
@@ -28,13 +31,14 @@ final class NullablePropertyDescriber implements PropertyDescriberInterface, Pro
 
         $property->nullable = true;
 
-        $context[self::RECURSIVE] = true;
+        $this->isCalled = true;
         $this->propertyDescriber->describe($types, $property, $groups, $schema, $context);
+        $this->isCalled = false;
     }
 
     public function supports(array $types, array $context = []): bool
     {
-        if (array_key_exists(self::RECURSIVE, $context)) {
+        if ($this->isCalled) {
             return false;
         }
 

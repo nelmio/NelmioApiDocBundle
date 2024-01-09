@@ -21,12 +21,16 @@ final class RequiredPropertyDescriber implements PropertyDescriberInterface, Pro
 {
     use PropertyDescriberAwareTrait;
 
-    private const RECURSIVE = self::class.'::RECURSIVE';
+    /**
+     * @var bool
+     */
+    private $isCalled = false;
 
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
-        $context[self::RECURSIVE] = true;
+        $this->isCalled = true;
         $this->propertyDescriber->describe($types, $property, $groups, $schema, $context);
+        $this->isCalled = false;
 
         if (!$property instanceof OA\Property) {
             return;
@@ -42,6 +46,10 @@ final class RequiredPropertyDescriber implements PropertyDescriberInterface, Pro
 
     public function supports(array $types, array $context = []): bool
     {
-        return !array_key_exists(self::RECURSIVE, $context);
+        if ($this->isCalled) {
+            return false;
+        }
+
+        return true;
     }
 }
