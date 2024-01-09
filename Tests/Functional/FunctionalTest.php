@@ -884,12 +884,44 @@ class FunctionalTest extends WebTestCase
             ],
         ], json_decode($response->toJson(), true));
 
-        $model = $this->getModel('EntityThroughNameConverter');
-        $this->assertCount(2, $model->properties);
-        $this->assertNotHasProperty('id', $model);
-        $this->assertHasProperty('name_converter_context_id', $model);
-        $this->assertNotHasProperty('name', $model);
-        $this->assertHasProperty('name_converter_context_name', $model);
+        self::assertEquals([
+            'schema' => 'EntityThroughNameConverter',
+            'type' => 'object',
+            'required' => [
+                'name_converter_context_id',
+                'name_converter_context_name',
+                'name_converter_context_nested',
+            ],
+            'properties' => [
+                'name_converter_context_id' => [
+                    'type' => 'integer',
+                ],
+                'name_converter_context_name' => [
+                    'type' => 'string',
+                ],
+                'name_converter_context_nested' => [
+                    '$ref' => '#/components/schemas/EntityThroughNameConverterNested',
+                ],
+            ],
+        ], json_decode($this->getModel('EntityThroughNameConverter')->toJson(), true));
+
+
+        self::assertEquals([
+            'schema' => 'EntityThroughNameConverterNested',
+            'type' => 'object',
+            'required' => [
+                'name_converter_context_someNestedId',
+                'name_converter_context_someNestedName',
+            ],
+            'properties' => [
+                'name_converter_context_someNestedId' => [
+                    'type' => 'integer',
+                ],
+                'name_converter_context_someNestedName' => [
+                    'type' => 'string',
+                ],
+            ],
+        ], json_decode($this->getModel('EntityThroughNameConverterNested')->toJson(), true));
 
         $response = $this->getOperationResponse($operation, '201');
         self::assertEquals([
@@ -902,11 +934,42 @@ class FunctionalTest extends WebTestCase
             ],
         ], json_decode($response->toJson(), true));
 
-        $model = $this->getModel('EntityThroughNameConverter2');
-        $this->assertCount(2, $model->properties);
-        $this->assertNotHasProperty('name_converter_context_id', $model);
-        $this->assertHasProperty('id', $model);
-        $this->assertNotHasProperty('name_converter_context_name', $model);
-        $this->assertHasProperty('name', $model);
+        self::assertEquals([
+            'schema' => 'EntityThroughNameConverter2',
+            'type' => 'object',
+            'required' => [
+                'id',
+                'name',
+                'nested',
+            ],
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                ],
+                'name' => [
+                    'type' => 'string',
+                ],
+                'nested' => [
+                    '$ref' => '#/components/schemas/EntityThroughNameConverterNested2',
+                ],
+            ],
+        ], json_decode($this->getModel('EntityThroughNameConverter2')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'EntityThroughNameConverterNested2',
+            'type' => 'object',
+            'required' => [
+                'someNestedId',
+                'someNestedName',
+            ],
+            'properties' => [
+                'someNestedId' => [
+                    'type' => 'integer',
+                ],
+                'someNestedName' => [
+                    'type' => 'string',
+                ],
+            ],
+        ], json_decode($this->getModel('EntityThroughNameConverterNested2')->toJson(), true));
     }
 }
