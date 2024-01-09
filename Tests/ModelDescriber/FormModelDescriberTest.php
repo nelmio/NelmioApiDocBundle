@@ -47,7 +47,7 @@ class FormModelDescriberTest extends TestCase
 
         $api = new OpenApi();
         $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, FormType::class));
-        $schema = new Schema();
+        $schema = $this->initSchema();
         $modelRegistry = new ModelRegistry([], $api);
 
         $describer = new FormModelDescriber($formFactoryMock, $annotationReader, []);
@@ -74,5 +74,14 @@ class FormModelDescriberTest extends TestCase
             [true, '_another_token', true],
             [false, '_token', false],
         ];
+    }
+
+    private function initSchema(): \OpenApi\Annotations\Schema
+    {
+        if (PHP_VERSION_ID < 80000) {
+            return new \OpenApi\Annotations\Schema([]);
+        }
+
+        return new \OpenApi\Attributes\Schema(); // union types, used in schema attribute require PHP >= 8.0.0
     }
 }
