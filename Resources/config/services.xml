@@ -143,7 +143,7 @@
         </service>
 
         <service id="nelmio_api_doc.object_model.property_describers.compound" class="Nelmio\ApiDocBundle\PropertyDescriber\CompoundPropertyDescriber" public="false">
-            <argument type="service" id="nelmio_api_doc.object_model.property_describer"  />
+            <argument type="service" id="nelmio_api_doc.object_model.property_describer" />
 
             <tag name="nelmio_api_doc.object_model.property_describer" priority="-1000" />
         </service>
