@@ -32,7 +32,7 @@ final class RequiredPropertyDescriber implements PropertyDescriberInterface, Pro
             return;
         }
 
-        if ($property->nullable !== true) {
+        if (true !== $property->nullable) {
             $existingRequiredFields = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
             $existingRequiredFields[] = $property->property;
 

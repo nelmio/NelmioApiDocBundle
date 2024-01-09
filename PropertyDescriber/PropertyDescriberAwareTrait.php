@@ -11,11 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
-use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use OpenApi\Annotations as OA;
-use OpenApi\Generator;
-use Symfony\Component\PropertyInfo\Type;
-
 trait PropertyDescriberAwareTrait
 {
     /**

@@ -16,7 +16,6 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\Type;
 
 class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
@@ -37,7 +36,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
                 $types[0]->getCollectionValueType()
         ); // ignore nullable field
 
-        if ($types[0]->isNullable() === true) {
+        if ($types[0]->isNullable()) {
             $weakContext = Util::createWeakContext($property->_context);
             $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups)), '_context' => $weakContext])];
 
