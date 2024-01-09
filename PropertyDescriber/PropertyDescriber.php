@@ -38,6 +38,11 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
     private function getPropertyDescriber(array $types, array $context): ?PropertyDescriberInterface
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
+            /** BC layer for Symfony < 6.3 @see https://symfony.com/doc/6.3/service_container/tags.html#reference-tagged-services */
+            if ($propertyDescriber instanceof self) {
+                continue;
+            }
+
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
