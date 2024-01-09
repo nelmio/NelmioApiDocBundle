@@ -13,5 +13,5 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 interface PropertyDescriberAwareInterface
 {
-    public function setPropertyDescriber(PropertyDescriberInterface $propertyDescriber);
+    public function setPropertyDescriber(PropertyDescriberInterface $propertyDescriber): void;
 }

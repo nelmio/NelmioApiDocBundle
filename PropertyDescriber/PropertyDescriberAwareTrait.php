@@ -18,7 +18,7 @@ trait PropertyDescriberAwareTrait
      */
     protected $propertyDescriber;
 
-    public function setPropertyDescriber(PropertyDescriberInterface $propertyDescriber)
+    public function setPropertyDescriber(PropertyDescriberInterface $propertyDescriber): void
     {
         $this->propertyDescriber = $propertyDescriber;
     }
