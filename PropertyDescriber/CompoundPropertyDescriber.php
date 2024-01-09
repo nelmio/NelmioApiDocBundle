@@ -17,17 +17,10 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
-class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
+class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface, PropertyDescriberAwareInterface
 {
     use ModelRegistryAwareTrait;
-
-    /** @var PropertyDescriberInterface */
-    private $propertyDescriber;
-
-    public function __construct(PropertyDescriberInterface $propertyDescriber)
-    {
-        $this->propertyDescriber = $propertyDescriber;
-    }
+    use PropertyDescriberAwareTrait;
 
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
