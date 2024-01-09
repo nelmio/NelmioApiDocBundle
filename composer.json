@@ -47,6 +47,7 @@
         "symfony/twig-bundle": "^5.4|^6.0|^7.0",
         "symfony/validator": "^5.4|^6.0|^7.0",
         "symfony/expression-language": "^5.4|^6.0|^7.0",
+        "symfony/security-csrf": "^5.4|^6.0|^7.0",
 
         "api-platform/core": "^2.7.0|^3",
         "symfony/deprecation-contracts": "^2.1|^3",
@@ -67,6 +68,7 @@
         "symfony/asset": "For using the Swagger UI.",
         "symfony/cache": "For using a PSR-6 compatible cache implementation with the API doc generator.",
         "symfony/form": "For describing your form type models.",
+        "symfony/security-csrf": "For using csrf protection tokens in forms.",
         "symfony/monolog-bundle": "For using a PSR-3 compatible logger implementation with the API PHP describer.",
         "symfony/serializer": "For describing your models.",
         "symfony/twig-bundle": "For using the Swagger UI.",
