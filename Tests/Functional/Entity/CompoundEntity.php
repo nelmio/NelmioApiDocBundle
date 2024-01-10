@@ -24,7 +24,7 @@ class CompoundEntity
     public $nullableComplex;
 
     /**
-     * @var CompoundEntityNested[]|null|string
+     * @var CompoundEntityNested[]|string|null
      */
     public $complexNested;
 }
