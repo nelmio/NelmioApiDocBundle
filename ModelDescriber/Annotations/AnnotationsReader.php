@@ -70,6 +70,10 @@ class AnnotationsReader
             return;
         }
 
+        if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+            return;
+        }
+
         if (!$reflection->hasDefaultValue()) {
             return;
         }
