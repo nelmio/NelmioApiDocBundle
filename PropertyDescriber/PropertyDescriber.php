@@ -26,12 +26,12 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = []): void
     {
-        if (!$normalizer = $this->getPropertyDescriber($types)) {
+        if (!$propertyDescriber = $this->getPropertyDescriber($types)) {
             return;
         }
 
-        $this->called[] = $normalizer;
-        $normalizer->describe($types, $property, $groups, $schema, $context);
+        $this->called[] = $propertyDescriber;
+        $propertyDescriber->describe($types, $property, $groups, $schema, $context);
         $this->called = []; // Reset recursion helper
     }
 
