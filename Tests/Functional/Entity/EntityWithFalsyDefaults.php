@@ -13,18 +13,21 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 class EntityWithFalsyDefaults
 {
-    public int $zero = 0;
+    /** @var int */
+    public $zero = 0;
 
-    public float $float = 0.0;
+    /** @var float */
+    public $float = 0.0;
 
-    public string $empty = '';
+    /** @var string */
+    public $empty = '';
 
-    public bool $false = false;
+    /** @var bool */
+    public $false = false;
 
-    public null|string $null = null;
+    /** @var string|null */
+    public $null = null;
 
-    /**
-     * @var string[]
-     */
-    public array $array = [];
+    /** @var string[] */
+    public $array = [];
 }
