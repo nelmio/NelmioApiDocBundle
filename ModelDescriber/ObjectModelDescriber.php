@@ -126,6 +126,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         // The SerializerExtractor does expose private/protected properties for some reason, so we eliminate them here
         $propertyInfoProperties = array_intersect($propertyInfoProperties, $this->propertyInfo->getProperties($class, []) ?? []);
 
+        $defaultValues = array_filter($reflClass->getDefaultProperties(), static function ($value) {
+            return null !== $value;
+        });
+
         foreach ($propertyInfoProperties as $propertyName) {
             $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, $model->getSerializationContext()) : $propertyName;
 
@@ -150,6 +154,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             // If type manually defined
             if (Generator::UNDEFINED !== $property->type || Generator::UNDEFINED !== $property->ref) {
                 continue;
+            }
+
+            if (Generator::UNDEFINED === $property->default && array_key_exists($propertyName, $defaultValues)) {
+                $property->default = $defaultValues[$propertyName];
             }
 
             $types = $this->propertyInfo->getTypes($class, $propertyName);

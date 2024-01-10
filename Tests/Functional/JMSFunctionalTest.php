@@ -321,9 +321,6 @@ class JMSFunctionalTest extends WebTestCase
 
     public function testNamingStrategyWithConstraints()
     {
-        if (version_compare(PHP_VERSION, '8.0.0', '<')) {
-            $this->markTestSkipped('This test does not work below PHP8');
-        }
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
@@ -331,7 +328,6 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'string',
                     'maxLength' => 10,
                     'minLength' => 3,
-                    'default' => 'default',
                 ],
             ],
             'required' => ['beautifulName'],

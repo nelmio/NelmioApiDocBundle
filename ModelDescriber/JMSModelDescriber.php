@@ -164,6 +164,11 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
                 continue;
             }
+
+            if (Generator::UNDEFINED === $property->default && $item->hasDefault) {
+                $property->default = $item->defaultValue;
+            }
+
             if (null === $item->type) {
                 $key = Util::searchIndexedCollectionItem($schema->properties, 'property', $name);
                 unset($schema->properties[$key]);
@@ -248,7 +253,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     {
         $nestedTypeInfo = $this->getNestedTypeInArray($type);
         if (null !== $nestedTypeInfo) {
-            list($nestedType, $isHash) = $nestedTypeInfo;
+            [$nestedType, $isHash] = $nestedTypeInfo;
             if ($isHash) {
                 $property->type = 'object';
                 $property->additionalProperties = Util::createChild($property, OA\Property::class);

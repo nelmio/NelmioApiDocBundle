@@ -24,7 +24,6 @@ class AnnotationsReader
     private $phpDocReader;
     private $openApiAnnotationsReader;
     private $symfonyConstraintAnnotationReader;
-    private $reflectionReader;
 
     public function __construct(
         ?Reader $annotationsReader,
@@ -38,7 +37,6 @@ class AnnotationsReader
             $annotationsReader,
             $useValidationGroups
         );
-        $this->reflectionReader = new ReflectionReader();
     }
 
     public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema): UpdateClassDefinitionResult
@@ -61,7 +59,6 @@ class AnnotationsReader
         $this->openApiAnnotationsReader->updateProperty($reflection, $property, $serializationGroups);
         $this->phpDocReader->updateProperty($reflection, $property);
         $this->symfonyConstraintAnnotationReader->updateProperty($reflection, $property, $serializationGroups);
-        $this->reflectionReader->updateProperty($reflection, $property);
     }
 
     /**
