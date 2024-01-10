@@ -31,8 +31,8 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\SerializedNameEnt;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithAlternateSchemaType;
-use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithCsrfProtectionEnabledType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithCsrfProtectionDisabledType;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithCsrfProtectionEnabledType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithRefType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
@@ -453,6 +453,7 @@ class ApiController80
      * ),
      *
      * @OA\RequestBody(
+     *
      *    @Model(type=FormWithCsrfProtectionEnabledType::class)
      * )
      */
@@ -469,6 +470,7 @@ class ApiController80
      * ),
      *
      * @OA\RequestBody(
+     *
      *    @Model(type=FormWithCsrfProtectionDisabledType::class)
      * )
      */
