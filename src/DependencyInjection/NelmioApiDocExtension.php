@@ -173,7 +173,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ->addTag('nelmio_api_doc.model_describer');
 
         // Remove UUID describer if none of the supported libraries exists
-        if (class_exists(\Symfony\Component\Uid\Uuid::class) || class_exists(\Ramsey\Uuid\UuidInterface::class)) {
+        if (class_exists(\Symfony\Component\Uid\Uuid::class)) {
             $container->register('nelmio_api_doc.object_model.property_describers.uuid', UuidPropertyDescriber::class)
                 ->setPublic(false)
                 ->addTag('nelmio_api_doc.object_model.property_describer');

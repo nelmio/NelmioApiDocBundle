@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 use OpenApi\Annotations as OA;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Uid\AbstractUid;
 
@@ -32,7 +31,6 @@ class UuidPropertyDescriber implements PropertyDescriberInterface
     {
         return 1 === count($types)
             && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType()
-            && (is_a($types[0]->getClassName(), AbstractUid::class, true)
-                || is_a($types[0]->getClassName(), UuidInterface::class, true));
+            && is_a($types[0]->getClassName(), AbstractUid::class, true);
     }
 }
