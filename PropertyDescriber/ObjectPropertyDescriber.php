@@ -16,14 +16,13 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\Type;
 
 class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
-    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null)
+    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
         $type = new Type(
             $types[0]->getBuiltinType(),
@@ -38,10 +37,8 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
         ); // ignore nullable field
 
         if ($types[0]->isNullable()) {
-            $property->nullable = true;
-
             $weakContext = Util::createWeakContext($property->_context);
-            $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups)), '_context' => $weakContext])];
+            $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups, null, $context)), '_context' => $weakContext])];
 
             if (function_exists('enum_exists') && enum_exists($type->getClassName())) {
                 $property->allOf = $schemas;
@@ -52,27 +49,12 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
             return;
         }
 
-        $property->ref = $this->modelRegistry->register(new Model($type, $groups));
-
-        if (!$type->isNullable() && Generator::UNDEFINED !== $property->default) {
-            return;
-        }
-
-        if (!$type->isNullable() && null !== $schema) {
-            $propertyName = Util::getSchemaPropertyName($schema, $property);
-            if (null === $propertyName) {
-                return;
-            }
-
-            $existingRequiredFields = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
-            $existingRequiredFields[] = $propertyName;
-
-            $schema->required = array_values(array_unique($existingRequiredFields));
-        }
+        $property->ref = $this->modelRegistry->register(new Model($type, $groups, null, $context));
     }
 
     public function supports(array $types): bool
     {
-        return 1 === count($types) && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
+        return 1 === count($types)
+            && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
     }
 }

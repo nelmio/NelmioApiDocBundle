@@ -11,6 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\Exception;
 
+/**
+ * @deprecated since 4.17, this exception is not used anymore
+ */
 class UndocumentedArrayItemsException extends \LogicException
 {
     private $class;

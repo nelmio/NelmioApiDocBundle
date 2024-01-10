@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError;
+namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems;
 
 /**
  * @author Guilhem N. <guilhem@gniot.fr>

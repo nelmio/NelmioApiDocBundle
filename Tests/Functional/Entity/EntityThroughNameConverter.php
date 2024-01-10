@@ -13,4 +13,9 @@ class EntityThroughNameConverter
      * @var string
      */
     public $name;
+
+    /**
+     * @var EntityThroughNameConverterNested
+     */
+    public $nested;
 }

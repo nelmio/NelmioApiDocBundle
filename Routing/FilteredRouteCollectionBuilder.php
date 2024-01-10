@@ -56,7 +56,7 @@ final class FilteredRouteCollectionBuilder
         ;
 
         if (array_key_exists(0, $options)) {
-            @trigger_error(sprintf('Passing an indexed array with a collection of path patterns as argument 1 for `%s()` is deprecated since 3.2.0, expected structure is an array containing parameterized options.', __METHOD__), E_USER_DEPRECATED);
+            trigger_deprecation('nelmio/api-doc-bundle', '3.2', 'Passing an indexed array with a collection of path patterns as argument 1 for `%s()` is deprecated since 3.2.0, expected structure is an array containing parameterized options.', __METHOD__);
 
             $normalizedOptions = ['path_patterns' => $options];
             $options = $normalizedOptions;
