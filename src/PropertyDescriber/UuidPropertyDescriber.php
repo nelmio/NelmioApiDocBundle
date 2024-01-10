@@ -23,7 +23,6 @@ class UuidPropertyDescriber implements PropertyDescriberInterface
     {
         $property->type = 'string';
         $property->format = 'uuid';
-        $property->pattern = '^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$';
         $this->setNullableProperty($types[0], $property, $schema);
     }
 
