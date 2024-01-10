@@ -12,6 +12,9 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
 {
     use ModelRegistryAwareTrait;
 
+    /** @var PropertyDescriberInterface[] Recursion helper */
+    private $called = [];
+
     /** @var PropertyDescriberInterface[] */
     private $propertyDescribers;
 
@@ -27,7 +30,9 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
             return;
         }
 
+        $this->called[] = $normalizer;
         $normalizer->describe($types, $property, $groups, $schema, $context);
+        $this->called = []; // Reset recursion helper
     }
 
     public function supports(array $types): bool
@@ -35,11 +40,16 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
         return null !== $this->getPropertyDescriber($types);
     }
 
-    private function getPropertyDescriber(array $types, array $context): ?PropertyDescriberInterface
+    private function getPropertyDescriber(array $types): ?PropertyDescriberInterface
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
             /* BC layer for Symfony < 6.3 @see https://symfony.com/doc/6.3/service_container/tags.html#reference-tagged-services */
             if ($propertyDescriber instanceof self) {
+                continue;
+            }
+
+            // Prevent infinite recursion
+            if (in_array($propertyDescriber, $this->called, true)) {
                 continue;
             }
 

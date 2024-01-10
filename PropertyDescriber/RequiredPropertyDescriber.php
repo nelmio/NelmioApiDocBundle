@@ -21,16 +21,9 @@ final class RequiredPropertyDescriber implements PropertyDescriberInterface, Pro
 {
     use PropertyDescriberAwareTrait;
 
-    /**
-     * @var bool
-     */
-    private $isCalled = false;
-
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
-        $this->isCalled = true;
         $this->propertyDescriber->describe($types, $property, $groups, $schema, $context);
-        $this->isCalled = false;
 
         if (!$property instanceof OA\Property) {
             return;
@@ -46,10 +39,6 @@ final class RequiredPropertyDescriber implements PropertyDescriberInterface, Pro
 
     public function supports(array $types): bool
     {
-        if ($this->isCalled) {
-            return false;
-        }
-
         return true;
     }
 }

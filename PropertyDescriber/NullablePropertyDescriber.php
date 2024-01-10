@@ -18,30 +18,21 @@ final class NullablePropertyDescriber implements PropertyDescriberInterface, Pro
 {
     use PropertyDescriberAwareTrait;
 
-    /**
-     * @var bool
-     */
-    private $isCalled = false;
-
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
         if (Generator::UNDEFINED !== $property->nullable) {
+            $this->propertyDescriber->describe($types, $property, $groups, $schema, $context);
+
             return;
         }
 
         $property->nullable = true;
 
-        $this->isCalled = true;
         $this->propertyDescriber->describe($types, $property, $groups, $schema, $context);
-        $this->isCalled = false;
     }
 
     public function supports(array $types): bool
     {
-        if ($this->isCalled) {
-            return false;
-        }
-
         foreach ($types as $type) {
             if ($type->isNullable()) {
                 return true;
