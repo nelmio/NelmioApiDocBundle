@@ -23,7 +23,7 @@ final class ReflectionReader
     {
         // Make sure that a possibly set default value for a property is used, when not overwritten by an annotation
         // or attribute.
-        if (Generator::UNDEFINED !== $property->default) {
+        if (!Generator::isDefault($property->default)) {
             return;
         }
 
