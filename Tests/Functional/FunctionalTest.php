@@ -654,7 +654,7 @@ class FunctionalTest extends WebTestCase
                                 'items' => [
                                     '$ref' => '#/components/schemas/CompoundEntity',
                                 ],
-                                'nullable' => true,
+                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
                             ],
                         ],
                     ],
@@ -669,7 +669,7 @@ class FunctionalTest extends WebTestCase
                             ],
                             [
                                 'type' => 'string',
-                                'nullable' => true,
+                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
                             ],
                         ],
                     ],
@@ -705,7 +705,7 @@ class FunctionalTest extends WebTestCase
                                 'items' => [
                                     '$ref' => '#/components/schemas/CompoundEntity',
                                 ],
-                                'nullable' => true,
+                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
                             ],
                         ],
                     ],
@@ -720,7 +720,7 @@ class FunctionalTest extends WebTestCase
                             ],
                             [
                                 'type' => 'string',
-                                'nullable' => true,
+                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
                             ],
                         ],
                     ],
