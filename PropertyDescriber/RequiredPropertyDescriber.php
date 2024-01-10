@@ -33,7 +33,7 @@ final class RequiredPropertyDescriber implements PropertyDescriberInterface, Pro
             return;
         }
 
-        if (true === $property->nullable && !Generator::isDefault($property->default)) {
+        if (true === $property->nullable || !Generator::isDefault($property->default)) {
             return;
         }
 
