@@ -624,6 +624,112 @@ class FunctionalTest extends WebTestCase
 
     public function testCompoundEntityAction()
     {
+        if (PHP_VERSION_ID < 70400) {
+            self::assertEquals([
+                'schema' => 'CompoundEntity',
+                'type' => 'object',
+                'required' => ['complex'],
+                'properties' => [
+                    'complex' => [
+                        'oneOf' => [
+                            [
+                                'type' => 'integer',
+                            ],
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntity',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'nullableComplex' => [
+                        'nullable' => true,
+                        'oneOf' => [
+                            [
+                                'type' => 'integer',
+                            ],
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntity',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'complexNested' => [
+                        'nullable' => true,
+                        'oneOf' => [
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntityNested',
+                                ],
+                                'nullable' => true, // For some reason this gets added only in PHP < 7.4
+                            ],
+                            [
+                                'type' => 'string',
+                                'nullable' => true, // For some reason this gets added only in PHP < 7.4
+                            ],
+                        ],
+                    ],
+                ],
+            ], json_decode($this->getModel('CompoundEntity')->toJson(), true));
+
+            self::assertEquals([
+                'schema' => 'CompoundEntityNested',
+                'type' => 'object',
+                'required' => ['complex'],
+                'properties' => [
+                    'complex' => [
+                        'oneOf' => [
+                            [
+                                'type' => 'integer',
+                            ],
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntity',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'nullableComplex' => [
+                        'nullable' => true,
+                        'oneOf' => [
+                            [
+                                'type' => 'integer',
+                            ],
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntity',
+                                ],
+                                'nullable' => true, // For some reason this gets added only in PHP < 7.4
+                            ],
+                        ],
+                    ],
+                    'complexNested' => [
+                        'nullable' => true,
+                        'oneOf' => [
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntityNested',
+                                ],
+                            ],
+                            [
+                                'type' => 'string',
+                                'nullable' => true, // For some reason this gets added only in PHP < 7.4
+                            ],
+                        ],
+                    ],
+                ],
+            ], json_decode($this->getModel('CompoundEntityNested')->toJson(), true));
+
+            return;
+        }
+
         self::assertEquals([
             'schema' => 'CompoundEntity',
             'type' => 'object',
