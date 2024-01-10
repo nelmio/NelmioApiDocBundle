@@ -886,4 +886,25 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasProperty('name_converter_context_name', $model);
         $this->assertHasProperty('name', $model);
     }
+
+    public function testEntityWithFalsyDefaults()
+    {
+        $model = $this->getModel('EntityWithFalsyDefaults');
+
+        $this->assertCount(3, $model->properties);
+
+        $this->assertSame(0, $model->properties[0]->default);
+
+        $this->assertSame(0.0, $model->properties[1]->default);
+
+        $this->assertSame('', $model->properties[2]->default);
+
+        $this->assertfalse($model->properties[3]->default);
+
+        $this->assertNull($model->properties[4]->default);
+
+        $this->assertEmpty($model->properties[5]->default);
+
+        $this->assertEmpty($model->required);
+    }
 }
