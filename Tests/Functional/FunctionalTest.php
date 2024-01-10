@@ -821,6 +821,19 @@ class FunctionalTest extends WebTestCase
         $this->assertSame(Generator::UNDEFINED, $model->properties);
     }
 
+    public function testFormCsrfIsOnlyDetectedIfCsrfExtensionIsEnabled(): void
+    {
+        // Make sure that test precondition is correct.
+        $isCsrfFormExtensionEnabled = self::getContainer()->getParameter('form.type_extension.csrf.enabled');
+        $this->assertFalse($isCsrfFormExtensionEnabled, 'The test needs the csrf form extension to be disabled.');
+
+        $model = $this->getModel('FormWithCsrfProtectionEnabledType');
+
+        // Make sure that no token property was added
+        $this->assertCount(1, $model->properties);
+        $this->assertHasProperty('name', $model);
+    }
+
     public function testEntityWithNullableSchemaSet()
     {
         $model = $this->getModel('EntityWithNullableSchemaSet');

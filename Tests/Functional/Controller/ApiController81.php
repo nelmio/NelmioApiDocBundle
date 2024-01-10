@@ -32,6 +32,8 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedNameEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithAlternateSchemaType;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithCsrfProtectionDisabledType;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithCsrfProtectionEnabledType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithRefType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
@@ -352,6 +354,30 @@ class ApiController81
         content: new Model(type: FormWithRefType::class),
     )]
     public function formWithRefSchemaType()
+    {
+    }
+
+    #[Route('/form-with-csrf-protection-enabled-type', methods: ['POST'])]
+    #[OA\Response(
+        response: 204,
+        description: 'Operation automatically detected',
+    )]
+    #[OA\RequestBody(
+        content: new Model(type: FormWithCsrfProtectionEnabledType::class),
+    )]
+    public function formWithCsrfProtectionEnabledType()
+    {
+    }
+
+    #[Route('/form-with-csrf-protection-disabled-type', methods: ['POST'])]
+    #[OA\Response(
+        response: 204,
+        description: 'Operation automatically detected',
+    )]
+    #[OA\RequestBody(
+        content: new Model(type: FormWithCsrfProtectionDisabledType::class),
+    )]
+    public function formWithCsrfProtectionDisabledType()
     {
     }
 
