@@ -47,12 +47,14 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     private $doctrineReader;
     private $mediaTypes;
     private $useValidationGroups;
+    private $isFormCsrfExtensionEnabled;
 
     public function __construct(
         FormFactoryInterface $formFactory = null,
         Reader $reader = null,
         array $mediaTypes = null,
-        bool $useValidationGroups = false
+        bool $useValidationGroups = false,
+        bool $isFormCsrfExtensionEnabled = false
     ) {
         $this->formFactory = $formFactory;
         $this->doctrineReader = $reader;
@@ -63,6 +65,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         }
         $this->mediaTypes = $mediaTypes;
         $this->useValidationGroups = $useValidationGroups;
+        $this->isFormCsrfExtensionEnabled = $isFormCsrfExtensionEnabled;
     }
 
     public function describe(Model $model, OA\Schema $schema)
@@ -136,7 +139,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             $this->findFormType($config, $property);
         }
 
-        if ($form->getConfig()->getOption('csrf_protection', false)) {
+        if ($this->isFormCsrfExtensionEnabled && $form->getConfig()->getOption('csrf_protection', false)) {
             $tokenFieldName = $form->getConfig()->getOption('csrf_field_name');
 
             $property = Util::getProperty($schema, $tokenFieldName);

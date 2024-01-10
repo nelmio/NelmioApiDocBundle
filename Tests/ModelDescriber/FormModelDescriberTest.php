@@ -48,7 +48,7 @@ class FormModelDescriberTest extends TestCase
         $schema = $this->initSchema();
         $modelRegistry = new ModelRegistry([], $api);
 
-        $describer = new FormModelDescriber($formFactoryMock, $annotationReader, []);
+        $describer = new FormModelDescriber($formFactoryMock, $annotationReader, [], false, true);
         $describer->setModelRegistry($modelRegistry);
 
         $describer->describe($model, $schema);
