@@ -21,7 +21,6 @@ use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
-use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use OpenApi\Generator;
 use Symfony\Component\Config\FileLocator;
@@ -229,10 +228,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         if (null !== $controllerNameConverter) {
             $container->getDefinition('nelmio_api_doc.controller_reflector')->setArgument(1, $controllerNameConverter);
         }
-
-        // Add autoconfiguration for property describer
-        $container->registerForAutoconfiguration(PropertyDescriberInterface::class)
-            ->addTag('nelmio_api_doc.object_model.property_describer');
     }
 
     private function findNameAliases(array $names, string $area): array

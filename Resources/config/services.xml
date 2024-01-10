@@ -94,10 +94,6 @@
         </service>
 
         <!-- Property Describers -->
-        <instanceof id="Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface">
-            <tag name="nelmio_api_doc.object_model.property_describer"/>
-        </instanceof>
-
         <service id="nelmio_api_doc.object_model.property_describer" class="Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriber" public="false">
             <argument type="tagged" tag="nelmio_api_doc.object_model.property_describer" />
 
