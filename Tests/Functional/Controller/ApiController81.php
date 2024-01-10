@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems\Foo;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
@@ -437,6 +438,12 @@ class ApiController81
         content: new Model(type: EntityThroughNameConverter::class)
     )]
     public function nameConverterContext()
+    {
+    }
+
+    #[Route('/arbitrary_array', methods: ['GET'])]
+    #[OA\Response(response: 200, description: 'Success', content: new Model(type: Foo::class))]
+    public function arbitraryArray()
     {
     }
 }
