@@ -665,11 +665,11 @@ class FunctionalTest extends WebTestCase
                                 'items' => [
                                     '$ref' => '#/components/schemas/CompoundEntityNested',
                                 ],
-                                'nullable' => true, // For some reason this gets added only in PHP < 7.4
+                                'nullable' => true,
                             ],
                             [
                                 'type' => 'string',
-                                'nullable' => true, // For some reason this gets added only in PHP < 7.4
+                                'nullable' => true,
                             ],
                         ],
                     ],
@@ -705,7 +705,7 @@ class FunctionalTest extends WebTestCase
                                 'items' => [
                                     '$ref' => '#/components/schemas/CompoundEntity',
                                 ],
-                                'nullable' => true, // For some reason this gets added only in PHP < 7.4
+                                'nullable' => true,
                             ],
                         ],
                     ],
@@ -720,7 +720,7 @@ class FunctionalTest extends WebTestCase
                             ],
                             [
                                 'type' => 'string',
-                                'nullable' => true, // For some reason this gets added only in PHP < 7.4
+                                'nullable' => true,
                             ],
                         ],
                     ],
