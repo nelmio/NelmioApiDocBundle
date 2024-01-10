@@ -905,7 +905,6 @@ class FunctionalTest extends WebTestCase
             ],
         ], json_decode($this->getModel('EntityThroughNameConverter')->toJson(), true));
 
-
         self::assertEquals([
             'schema' => 'EntityThroughNameConverterNested',
             'type' => 'object',

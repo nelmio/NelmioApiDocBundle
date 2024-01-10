@@ -25,7 +25,7 @@ interface PropertyDescriberInterface
     public function describe(array $types, Schema $property, array $groups = null /* , ?Schema $schema = null */ /* , array $context = [] */);
 
     /**
-     * @param Type[]               $types
+     * @param Type[] $types
      */
     public function supports(array $types): bool;
 }
