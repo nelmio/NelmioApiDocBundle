@@ -20,13 +20,9 @@ final class NullablePropertyDescriber implements PropertyDescriberInterface, Pro
 
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
-        if (Generator::UNDEFINED !== $property->nullable) {
-            $this->propertyDescriber->describe($types, $property, $groups, $schema, $context);
-
-            return;
+        if (Generator::UNDEFINED === $property->nullable) {
+            $property->nullable = true;
         }
-
-        $property->nullable = true;
 
         $this->propertyDescriber->describe($types, $property, $groups, $schema, $context);
     }
