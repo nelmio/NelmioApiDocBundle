@@ -15,7 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError\Foo;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems\Foo;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;

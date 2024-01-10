@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError;
+namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems;
 
 /**
  * @author Guilhem N. <guilhem@gniot.fr>
  */
-class Bar
+class Foo
 {
-    public $things;
     /**
-     * @var array
+     * @var string
      */
-    public $moreThings;
+    public $articles;
 
-    public function addThing(array $thing)
-    {
-    }
+    /**
+     * @var Bar[]
+     */
+    public $bars;
 }
