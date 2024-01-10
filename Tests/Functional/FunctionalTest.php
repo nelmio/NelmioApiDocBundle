@@ -174,10 +174,6 @@ class FunctionalTest extends WebTestCase
 
     public function testUserModel()
     {
-        if (version_compare(PHP_VERSION, '8.0.0', '<')) {
-            $this->markTestSkipped('This test does not work below PHP8');
-        }
-
         $this->assertEquals(
             [
                 'type' => 'object',
