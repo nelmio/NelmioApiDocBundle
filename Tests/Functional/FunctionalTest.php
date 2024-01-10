@@ -1182,21 +1182,41 @@ class FunctionalTest extends WebTestCase
     {
         $model = $this->getModel('EntityWithFalsyDefaults');
 
-        $this->assertCount(6, $model->properties);
-
         $this->assertSame(Generator::UNDEFINED, $model->required);
 
-        $this->assertSame(0, $model->properties[0]->default);
-
-        $this->assertSame(0.0, $model->properties[1]->default);
-
-        $this->assertSame('', $model->properties[2]->default);
-
-        $this->assertfalse($model->properties[3]->default);
-
-        // NULL values as default values are not accepted
-        $this->assertSame(Generator::UNDEFINED, $model->properties[4]->default);
-
-        $this->assertEmpty($model->properties[5]->default);
+        self::assertEquals([
+            'schema' => 'EntityWithFalsyDefaults',
+            'type' => 'object',
+            'properties' => [
+                'zero' => [
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
+                'float' => [
+                    'type' => 'number',
+                    'format' => 'float',
+                    'default' => 0.0,
+                ],
+                'empty' => [
+                    'type' => 'string',
+                    'default' => '',
+                ],
+                'false' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'nullString' => [
+                    'nullable' => true,
+                    'type' => 'string',
+                ],
+                'array' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'string',
+                    ],
+                    'default' => [],
+                ],
+            ],
+        ], json_decode($model->toJson(), true));
     }
 }
