@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
@@ -202,15 +201,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
             if ($propertyDescriber->supports($types)) {
-                try {
-                    $propertyDescriber->describe($types, $property, $model->getGroups(), $schema, $model->getSerializationContext());
-                } catch (UndocumentedArrayItemsException $e) {
-                    if (null !== $e->getClass()) {
-                        throw $e; // This exception is already complete
-                    }
-
-                    throw new UndocumentedArrayItemsException($model->getType()->getClassName(), sprintf('%s%s', $propertyName, $e->getPath()));
-                }
+                $propertyDescriber->describe($types, $property, $model->getGroups(), $schema, $model->getSerializationContext());
 
                 return;
             }

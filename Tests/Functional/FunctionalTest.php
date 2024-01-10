@@ -972,4 +972,40 @@ class FunctionalTest extends WebTestCase
             ],
         ], json_decode($this->getModel('EntityThroughNameConverterNested2')->toJson(), true));
     }
+
+    public function testArbitraryArrayModel()
+    {
+        $this->getOperation('/api/arbitrary_array', 'get');
+
+        self::assertEquals([
+            'schema' => 'Foo',
+            'required' => ['articles', 'bars'],
+            'properties' => [
+                'articles' => [
+                    'type' => 'string',
+                ],
+                'bars' => [
+                    'type' => 'array',
+                    'items' => ['$ref' => '#/components/schemas/Bar'],
+                ],
+            ],
+            'type' => 'object',
+        ], json_decode($this->getModel('Foo')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'Bar',
+            'required' => ['things', 'moreThings'],
+            'properties' => [
+                'things' => [
+                    'type' => 'array',
+                    'items' => [],
+                ],
+                'moreThings' => [
+                    'type' => 'array',
+                    'items' => [],
+                ],
+            ],
+            'type' => 'object',
+        ], json_decode($this->getModel('Bar')->toJson(), true));
+    }
 }

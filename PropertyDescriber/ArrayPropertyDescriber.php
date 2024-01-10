@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 
@@ -24,26 +23,18 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
 
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
+        $property->type = 'array';
+        $property = Util::getChild($property, OA\Items::class);
+
         // BC layer for symfony < 5.3
         $type = method_exists($types[0], 'getCollectionValueTypes') ?
             ($types[0]->getCollectionValueTypes()[0] ?? null) :
             $types[0]->getCollectionValueType();
         if (null === $type) {
-            throw new UndocumentedArrayItemsException();
+            return;
         }
 
-        $property->type = 'array';
-        $property = Util::getChild($property, OA\Items::class);
-
-        try {
-            $this->propertyDescriber->describe([$type], $property, $groups, $schema, $context);
-        } catch (UndocumentedArrayItemsException $e) {
-            if (null !== $e->getClass()) {
-                throw $e; // This exception is already complete
-            }
-
-            throw new UndocumentedArrayItemsException(null, sprintf('%s[]', $e->getPath()));
-        }
+        $this->propertyDescriber->describe([$type], $property, $groups, $schema, $context);
     }
 
     public function supports(array $types): bool
