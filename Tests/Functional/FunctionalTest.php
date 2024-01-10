@@ -656,8 +656,71 @@ class FunctionalTest extends WebTestCase
                         ],
                     ],
                 ],
+                'complexNested' => [
+                    'nullable' => true,
+                    'oneOf' => [
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntityNested',
+                            ],
+                        ],
+                        [
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
             ],
         ], json_decode($this->getModel('CompoundEntity')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'CompoundEntityNested',
+            'type' => 'object',
+            'required' => ['complex'],
+            'properties' => [
+                'complex' => [
+                    'oneOf' => [
+                        [
+                            'type' => 'integer',
+                        ],
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntity',
+                            ],
+                        ],
+                    ],
+                ],
+                'nullableComplex' => [
+                    'nullable' => true,
+                    'oneOf' => [
+                        [
+                            'type' => 'integer',
+                        ],
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntity',
+                            ],
+                        ],
+                    ],
+                ],
+                'complexNested' => [
+                    'nullable' => true,
+                    'oneOf' => [
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntityNested',
+                            ],
+                        ],
+                        [
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
+            ],
+        ], json_decode($this->getModel('CompoundEntityNested')->toJson(), true));
     }
 
     public function testInvokableController()

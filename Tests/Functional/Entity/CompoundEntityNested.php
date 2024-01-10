@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-class CompoundEntity
+class CompoundEntityNested
 {
     /**
      * @var int|CompoundEntity[]
