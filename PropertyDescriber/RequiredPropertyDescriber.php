@@ -29,12 +29,18 @@ final class RequiredPropertyDescriber implements PropertyDescriberInterface, Pro
             return;
         }
 
-        if (true !== $property->nullable) {
-            $existingRequiredFields = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
-            $existingRequiredFields[] = $property->property;
-
-            $schema->required = array_values(array_unique($existingRequiredFields));
+        if (null === $schema) {
+            return;
         }
+
+        if (true === $property->nullable && !Generator::isDefault($property->default)) {
+            return;
+        }
+
+        $existingRequiredFields = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
+        $existingRequiredFields[] = $property->property;
+
+        $schema->required = array_values(array_unique($existingRequiredFields));
     }
 
     public function supports(array $types): bool
