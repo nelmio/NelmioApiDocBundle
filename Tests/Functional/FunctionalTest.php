@@ -654,6 +654,7 @@ class FunctionalTest extends WebTestCase
                                 'items' => [
                                     '$ref' => '#/components/schemas/CompoundEntity',
                                 ],
+                                'nullable' => true,
                             ],
                         ],
                     ],
@@ -665,7 +666,6 @@ class FunctionalTest extends WebTestCase
                                 'items' => [
                                     '$ref' => '#/components/schemas/CompoundEntityNested',
                                 ],
-                                'nullable' => true,
                             ],
                             [
                                 'type' => 'string',
