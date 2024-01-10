@@ -59,6 +59,27 @@ class AnnotationsReader
         $this->openApiAnnotationsReader->updateProperty($reflection, $property, $serializationGroups);
         $this->phpDocReader->updateProperty($reflection, $property);
         $this->symfonyConstraintAnnotationReader->updateProperty($reflection, $property, $serializationGroups);
+
+        // Make sure that a possibly set default value for a property is used, when not overwritten by an annotation
+        // or attribute.
+        if (Generator::UNDEFINED !== $property->default) {
+            return;
+        }
+
+        if (!$reflection instanceof \ReflectionProperty) {
+            return;
+        }
+
+        if (!$reflection->hasDefaultValue()) {
+            return;
+        }
+
+        $default = $reflection->getDefaultValue();
+        if (null === $default) {
+            return;
+        }
+
+        $property->default = $reflection->getDefaultValue();
     }
 
     /**

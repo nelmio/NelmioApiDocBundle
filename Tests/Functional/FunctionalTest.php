@@ -247,9 +247,6 @@ class FunctionalTest extends WebTestCase
                 ],
                 'schema' => 'User',
                 'required' => [
-                    'id',
-                    'roles',
-                    'money',
                     'creationDate',
                     'users',
                     'status',
@@ -891,7 +888,9 @@ class FunctionalTest extends WebTestCase
     {
         $model = $this->getModel('EntityWithFalsyDefaults');
 
-        $this->assertCount(3, $model->properties);
+        $this->assertCount(6, $model->properties);
+
+        $this->assertSame(Generator::UNDEFINED, $model->required);
 
         $this->assertSame(0, $model->properties[0]->default);
 
@@ -901,10 +900,9 @@ class FunctionalTest extends WebTestCase
 
         $this->assertfalse($model->properties[3]->default);
 
-        $this->assertNull($model->properties[4]->default);
+        // NULL values as default values are not accepted
+        $this->assertSame(Generator::UNDEFINED, $model->properties[4]->default);
 
         $this->assertEmpty($model->properties[5]->default);
-
-        $this->assertEmpty($model->required);
     }
 }
