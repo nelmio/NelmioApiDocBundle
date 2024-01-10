@@ -24,6 +24,7 @@ class AnnotationsReader
     private $phpDocReader;
     private $openApiAnnotationsReader;
     private $symfonyConstraintAnnotationReader;
+    private $reflectionReader;
 
     public function __construct(
         ?Reader $annotationsReader,
@@ -37,6 +38,7 @@ class AnnotationsReader
             $annotationsReader,
             $useValidationGroups
         );
+        $this->reflectionReader = new ReflectionReader();
     }
 
     public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema): UpdateClassDefinitionResult
@@ -59,31 +61,7 @@ class AnnotationsReader
         $this->openApiAnnotationsReader->updateProperty($reflection, $property, $serializationGroups);
         $this->phpDocReader->updateProperty($reflection, $property);
         $this->symfonyConstraintAnnotationReader->updateProperty($reflection, $property, $serializationGroups);
-
-        // Make sure that a possibly set default value for a property is used, when not overwritten by an annotation
-        // or attribute.
-        if (Generator::UNDEFINED !== $property->default) {
-            return;
-        }
-
-        if (!$reflection instanceof \ReflectionProperty) {
-            return;
-        }
-
-        if (version_compare(PHP_VERSION, '8.0.0', '<')) {
-            return;
-        }
-
-        if (!$reflection->hasDefaultValue()) {
-            return;
-        }
-
-        $default = $reflection->getDefaultValue();
-        if (null === $default) {
-            return;
-        }
-
-        $property->default = $reflection->getDefaultValue();
+        $this->reflectionReader->updateProperty($reflection, $property);
     }
 
     /**
