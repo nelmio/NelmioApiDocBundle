@@ -16,6 +16,10 @@ final class NullablePropertyProcessor implements ProcessorInterface
 {
     public function __invoke(Analysis $analysis): void
     {
+        if (Generator::isDefault($analysis->openapi->components) || Generator::isDefault($analysis->openapi->components->schemas)) {
+            return;
+        }
+        
         /** @var OA\Schema[] $schemas */
         $schemas = $analysis->openapi->components->schemas;
 
