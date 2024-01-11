@@ -247,9 +247,6 @@ class FunctionalTest extends WebTestCase
                 ],
                 'schema' => 'User',
                 'required' => [
-                    'id',
-                    'roles',
-                    'money',
                     'creationDate',
                     'users',
                     'status',
@@ -1175,5 +1172,47 @@ class FunctionalTest extends WebTestCase
             ],
             'type' => 'object',
         ], json_decode($this->getModel('Bar')->toJson(), true));
+    }
+
+    public function testEntityWithFalsyDefaults()
+    {
+        $model = $this->getModel('EntityWithFalsyDefaults');
+
+        $this->assertSame(Generator::UNDEFINED, $model->required);
+
+        self::assertEquals([
+            'schema' => 'EntityWithFalsyDefaults',
+            'type' => 'object',
+            'properties' => [
+                'zero' => [
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
+                'float' => [
+                    'type' => 'number',
+                    'format' => 'float',
+                    'default' => 0.0,
+                ],
+                'empty' => [
+                    'type' => 'string',
+                    'default' => '',
+                ],
+                'false' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'nullString' => [
+                    'nullable' => true,
+                    'type' => 'string',
+                ],
+                'array' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'string',
+                    ],
+                    'default' => [],
+                ],
+            ],
+        ], json_decode($model->toJson(), true));
     }
 }

@@ -36,6 +36,10 @@ trait NullablePropertyTrait
             $property->nullable = true;
         }
 
+        if (!$type->isNullable() && Generator::UNDEFINED !== $property->default) {
+            return;
+        }
+
         if (!$type->isNullable() && null !== $schema) {
             $propertyName = Util::getSchemaPropertyName($schema, $property);
             if (null === $propertyName) {

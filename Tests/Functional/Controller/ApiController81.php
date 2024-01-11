@@ -22,6 +22,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityThroughNameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType81;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
@@ -365,6 +366,18 @@ class ApiController81
         ],
     )]
     public function entityWithNullableSchemaSet()
+    {
+    }
+
+    #[Route('/entity-with-falsy-defaults', methods: ['GET'])]
+    #[OA\Response(
+        response: 204,
+        description: 'Operation automatically detected',
+    )]
+    #[OA\RequestBody(
+        content: new Model(type: EntityWithFalsyDefaults::class),
+    )]
+    public function entityWithFalsyDefaults()
     {
     }
 

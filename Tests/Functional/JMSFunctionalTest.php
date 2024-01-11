@@ -326,8 +326,8 @@ class JMSFunctionalTest extends WebTestCase
             'properties' => [
                 'beautifulName' => [
                     'type' => 'string',
-                    'maxLength' => '10',
-                    'minLength' => '3',
+                    'maxLength' => 10,
+                    'minLength' => 3,
                 ],
             ],
             'required' => ['beautifulName'],
