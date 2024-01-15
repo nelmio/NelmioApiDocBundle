@@ -488,4 +488,58 @@ class SymfonyFunctionalTest extends WebTestCase
             ],
         ], json_decode($this->getOperation('/api/article_map_request_payload_handles_already_set_content', 'post')->toJson(), true));
     }
+
+    public function testMapRequestPayloadPassesValidationGroups(): void
+    {
+        if (!class_exists(MapRequestPayload::class)) {
+            self::markTestSkipped('Symfony 6.3 MapRequestPayload attribute not found');
+        }
+
+        self::assertEquals([
+            'operationId' => 'post_api_nelmio_apidoc_tests_functional_api_createarticlefrommaprequestpayloadpassedvalidationgroups',
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+            'requestBody' => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            '$ref' => '#/components/schemas/SymfonyConstraintsTestGroup',
+                        ],
+                    ],
+                ],
+                'required' => true,
+            ],
+        ], json_decode($this->getOperation('/api/article_map_request_payload_validation_groups', 'post')->toJson(), true));
+    }
+
+    public function testMapQueryStringPassesValidationGroups(): void
+    {
+        if (!class_exists(MapQueryString::class)) {
+            self::markTestSkipped('Symfony 6.3 MapQueryString attribute not found');
+        }
+
+        self::assertEquals([
+            'operationId' => 'post_api_nelmio_apidoc_tests_functional_api_fetcharticlefrommapquerystringhandlesvalidationgroups',
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+            'parameters' => [
+                [
+                    'name' => 'property',
+                    'in' => 'query',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'integer',
+                        'maximum' => 100,
+                        'minimum' => 1,
+                    ],
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_string_passes_validation_groups', 'post')->toJson(), true));
+    }
 }
