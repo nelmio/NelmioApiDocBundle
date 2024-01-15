@@ -15,11 +15,13 @@ use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems\Foo;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityThroughNameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType80;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
@@ -457,6 +459,22 @@ class ApiController80
     }
 
     /**
+     * @Route("/entity-with-falsy-defaults", methods={"POST"})
+     *
+     * @OA\Response(
+     *     response="204",
+     *     description="Operation automatically detected",
+     *  ),
+     *
+     * @OA\RequestBody(
+     *
+     *     @Model(type=EntityWithFalsyDefaults::class))
+     *  )*/
+    public function entityWithFalsyDefaults()
+    {
+    }
+
+    /**
      * @OA\Response(
      *     response="200",
      *     description="success",
@@ -479,8 +497,29 @@ class ApiController80
      *
      *    @Model(type=EntityThroughNameConverter::class, serializationContext={"secret_name_converter_value"=true})
      * )
+     *
+     * @OA\Response(
+     *     response="201",
+     *     description="Same class without context",
+     *
+     *     @Model(type=EntityThroughNameConverter::class)
+     *  )
      */
     public function nameConverterContext()
+    {
+    }
+
+    /**
+     * @Route("/arbitrary_array", methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *
+     *     @Model(type=Foo::class)
+     * )
+     */
+    public function arbitraryArray()
     {
     }
 }

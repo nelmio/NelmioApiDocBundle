@@ -46,7 +46,6 @@ class TestKernel extends Kernel
     const USE_JMS = 1;
     const USE_BAZINGA = 2;
     const USE_FOSREST = 3;
-    const ERROR_ARRAY_ITEMS = 4;
     const USE_VALIDATION_GROUPS = 8;
 
     private $flags;
@@ -93,10 +92,6 @@ class TestKernel extends Kernel
             $this->import($routes, __DIR__.'/Resources/routes.yaml', '/', 'yaml');
         } else {
             $this->import($routes, __DIR__.'/Resources/routes-attributes.yaml', '/', 'yaml');
-        }
-
-        if ($this->flags & self::ERROR_ARRAY_ITEMS) {
-            $this->import($routes, __DIR__.'/Controller/ArrayItemsErrorController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
         }
 
         if ($this->flags & self::USE_JMS) {
@@ -347,6 +342,12 @@ class TestKernel extends Kernel
                 'names' => $models,
             ],
         ]);
+
+        if ($this->flags & self::USE_JMS && \PHP_VERSION_ID >= 80100) {
+            $c->loadFromExtension('jms_serializer', [
+                'enum_support' => true,
+            ]);
+        }
 
         $def = new Definition(VirtualTypeClassDoesNotExistsHandlerDefinedDescriber::class);
         $def->addTag('nelmio_api_doc.model_describer');
