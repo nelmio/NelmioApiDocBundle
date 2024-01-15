@@ -478,6 +478,13 @@ class ApiController81
     ) {
     }
 
+    #[Route('/article_map_query_string_passes_validation_groups')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryStringHandlesValidationGroups(
+        #[MapQueryString(validationGroups: ['test'])] SymfonyConstraintsWithValidationGroups $symfonyConstraintsWithValidationGroups,
+    ) {
+    }
+
     #[Route('/article_map_query_string_overwrite_parameters')]
     #[OA\Parameter(
         name: 'id',
@@ -588,6 +595,13 @@ class ApiController81
     #[OA\Response(response: '200', description: '')]
     public function createArticleFromMapRequestPayloadHandlesAlreadySetContent(
         #[MapRequestPayload] Article81 $article81,
+    ) {
+    }
+
+    #[Route('/article_map_request_payload_validation_groups', methods: ['POST'])]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayloadPassedValidationGroups(
+        #[MapRequestPayload(validationGroups: ['test'])] SymfonyConstraintsWithValidationGroups $symfonyConstraintsWithValidationGroups,
     ) {
     }
 }
