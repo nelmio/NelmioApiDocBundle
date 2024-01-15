@@ -6963,5 +6963,185 @@
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testEntityWithFalsyDefaults",
         "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
         "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryStringModelGetsCreated",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryStringModelGetsCreated",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryStringModelGetsCreated",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryString",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryString",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryString",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryStringParametersAreOptional",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryStringParametersAreOptional",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryStringParametersAreOptional",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryStringParametersOverwriteParameters",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryStringParametersOverwriteParameters",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryStringParametersOverwriteParameters",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameter",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameter",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameter",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameterHandlesNullable",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameterHandlesNullable",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameterHandlesNullable",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameterHandlesDefault",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameterHandlesDefault",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameterHandlesDefault",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameterOverwriteParameter",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameterOverwriteParameter",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameterOverwriteParameter",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayload",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayload",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayload",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayloadNullable",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayloadNullable",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayloadNullable",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayloadOverwriteRequestBody",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayloadOverwriteRequestBody",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayloadOverwriteRequestBody",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayloadHandlesAlreadySetContent",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayloadHandlesAlreadySetContent",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapRequestPayloadHandlesAlreadySetContent",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
     }
 ]

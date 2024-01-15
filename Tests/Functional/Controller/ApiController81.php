@@ -30,6 +30,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorFileMapping;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyMapQueryString;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedNameEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
@@ -38,6 +39,9 @@ use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithRefType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use OpenApi\Attributes as OA;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController81
@@ -458,5 +462,132 @@ class ApiController81
     #[OA\Response(response: 200, description: 'Success', content: new Model(type: Foo::class))]
     public function arbitraryArray()
     {
+    }
+
+    #[Route('/article_map_query_string')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryString(
+        #[MapQueryString] SymfonyMapQueryString $article81Query
+    ) {
+    }
+
+    #[Route('/article_map_query_string_nullable')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryStringNullable(
+        #[MapQueryString] ?SymfonyMapQueryString $article81Query
+    ) {
+    }
+
+    #[Route('/article_map_query_string_overwrite_parameters')]
+    #[OA\Parameter(
+        name: 'id',
+        in: 'query',
+        schema: new OA\Schema(type: 'string', nullable: true),
+        description: 'Query parameter id description'
+    )]
+    #[OA\Parameter(
+        name: 'name',
+        in: 'query',
+        description: 'Query parameter name description'
+    )]
+    #[OA\Parameter(
+        name: 'nullableName',
+        in: 'query',
+        description: 'Query parameter nullableName description'
+    )]
+    #[OA\Parameter(
+        name: 'articleType81',
+        in: 'query',
+        description: 'Query parameter articleType81 description'
+    )]
+    #[OA\Parameter(
+        name: 'nullableArticleType81',
+        in: 'query',
+        description: 'Query parameter nullableArticleType81 description'
+    )]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryStringOverwriteParameters(
+        #[MapQueryString] SymfonyMapQueryString $article81Query
+    ) {
+    }
+
+    #[Route('/article_map_query_parameter')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryParameter(
+        #[MapQueryParameter] int $id,
+    ) {
+    }
+
+    #[Route('/article_map_query_parameter_nullable')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryParameterNullable(
+        #[MapQueryParameter] ?int $id,
+    ) {
+    }
+
+    #[Route('/article_map_query_parameter_default')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryParameterDefault(
+        #[MapQueryParameter] int $id = 123,
+    ) {
+    }
+
+    #[Route('/article_map_query_parameter_overwrite_parameters')]
+    #[OA\Parameter(
+        name: 'id',
+        in: 'query',
+        description: 'Query parameter id description',
+        example: 123,
+    )]
+    #[OA\Parameter(
+        name: 'changedType',
+        in: 'query',
+        schema: new OA\Schema(type: 'int', nullable: false),
+        description: 'Incorrectly described query parameter',
+        example: 123,
+    )]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryParameterOverwriteParameters(
+        #[MapQueryParameter] ?int $id,
+        #[MapQueryParameter] ?string $changedType,
+    ) {
+    }
+
+    #[Route('/article_map_request_payload', methods: ['POST'])]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayload(
+        #[MapRequestPayload] Article81 $article81,
+    ) {
+    }
+
+    #[Route('/article_map_request_payload_nullable', methods: ['POST'])]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayloadNullable(
+        #[MapRequestPayload] ?Article81 $article81,
+    ) {
+    }
+
+    #[Route('/article_map_request_payload_overwrite', methods: ['POST'])]
+    #[OA\RequestBody(
+        description: 'Request body description',
+        content: new Model(type: EntityWithNullableSchemaSet::class),
+    )]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayloadOverwrite(
+        #[MapRequestPayload] Article81 $article81,
+    ) {
+    }
+
+    #[Route('/article_map_request_payload_handles_already_set_content', methods: ['POST'])]
+    #[OA\RequestBody(
+        description: 'Request body description',
+        content: new OA\JsonContent(
+            ref: new Model(type: Article81::class)
+        ),
+    )]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayloadHandlesAlreadySetContent(
+        #[MapRequestPayload] Article81 $article81,
+    ) {
     }
 }

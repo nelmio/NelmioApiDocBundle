@@ -21,6 +21,13 @@ use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use Nelmio\ApiDocBundle\Processors\MapQueryStringProcessor;
+use Nelmio\ApiDocBundle\Processors\MapRequestPayloadProcessor;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\RouteArgumentDescriberInterface;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryParameterDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryStringDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapRequestPayloadDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use OpenApi\Generator;
 use Symfony\Component\Config\FileLocator;
@@ -32,6 +39,9 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -168,6 +178,47 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $loader->load('fos_rest.xml');
             $container->getDefinition('nelmio_api_doc.route_describers.fos_rest')
                 ->setArgument(1, $config['media_types']);
+        }
+
+        if (PHP_VERSION_ID > 80100) {
+            // Add autoconfiguration for route argument describer
+            $container->registerForAutoconfiguration(RouteArgumentDescriberInterface::class)
+                ->addTag('nelmio_api_doc.route_argument_describer');
+
+            $container->register('nelmio_api_doc.route_describers.route_argument', RouteArgumentDescriber::class)
+                ->setPublic(false)
+                ->addTag('nelmio_api_doc.route_describer', ['priority' => -225])
+                ->setArguments([
+                    new Reference('argument_metadata_factory'),
+                    new TaggedIteratorArgument('nelmio_api_doc.route_argument_describer'),
+                ])
+            ;
+
+            if (class_exists(MapQueryString::class)) {
+                $container->register('nelmio_api_doc.route_argument_describer.map_query_string', SymfonyMapQueryStringDescriber::class)
+                    ->setPublic(false)
+                    ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
+
+                $container->register('nelmio_api_doc.swagger.processor.map_query_string', MapQueryStringProcessor::class)
+                    ->setPublic(false)
+                    ->addTag('nelmio_api_doc.swagger.processor', ['priority' => 0]);
+            }
+
+            if (class_exists(MapRequestPayload::class)) {
+                $container->register('nelmio_api_doc.route_argument_describer.map_request_payload', SymfonyMapRequestPayloadDescriber::class)
+                    ->setPublic(false)
+                    ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
+
+                $container->register('nelmio_api_doc.swagger.processor.map_request_payload', MapRequestPayloadProcessor::class)
+                    ->setPublic(false)
+                    ->addTag('nelmio_api_doc.swagger.processor', ['priority' => 0]);
+            }
+
+            if (class_exists(MapQueryParameter::class)) {
+                $container->register('nelmio_api_doc.route_argument_describer.map_query_parameter', SymfonyMapQueryParameterDescriber::class)
+                    ->setPublic(false)
+                    ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
+            }
         }
 
         $bundles = $container->getParameter('kernel.bundles');
