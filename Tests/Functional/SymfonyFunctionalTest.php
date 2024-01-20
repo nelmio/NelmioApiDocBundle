@@ -601,7 +601,6 @@ class SymfonyFunctionalTest extends WebTestCase
                 'required' => false,
                 'schema' => [
                     '$ref' => '#/components/schemas/SortEnum',
-                    'default' => 'asc',
                 ],
             ],
         ], json_decode($this->getOperation('/api/article_map_query_string_many_parameters', 'get')->toJson(), true)['parameters']);
@@ -665,7 +664,6 @@ class SymfonyFunctionalTest extends WebTestCase
                 'required' => false,
                 'schema' => [
                     '$ref' => '#/components/schemas/SortEnum',
-                    'default' => 'asc',
                 ],
             ],
         ], json_decode($this->getOperation('/api/article_map_query_string_many_parameters_optional', 'get')->toJson(), true)['parameters']);
