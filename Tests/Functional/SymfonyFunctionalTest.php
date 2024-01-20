@@ -566,7 +566,7 @@ class SymfonyFunctionalTest extends WebTestCase
                 'in' => 'query',
                 'required' => true,
                 'schema' => [
-                    'type' => 'string'
+                    'type' => 'string',
                 ],
             ],
             [
@@ -592,7 +592,7 @@ class SymfonyFunctionalTest extends WebTestCase
                 'in' => 'query',
                 'required' => true,
                 'schema' => [
-                    'type' => 'string'
+                    'type' => 'string',
                 ],
             ],
             [
@@ -629,7 +629,7 @@ class SymfonyFunctionalTest extends WebTestCase
                 'in' => 'query',
                 'required' => false,
                 'schema' => [
-                    'type' => 'string'
+                    'type' => 'string',
                 ],
             ],
             [
@@ -655,7 +655,7 @@ class SymfonyFunctionalTest extends WebTestCase
                 'in' => 'query',
                 'required' => false,
                 'schema' => [
-                    'type' => 'string'
+                    'type' => 'string',
                 ],
             ],
             [

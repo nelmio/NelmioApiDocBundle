@@ -25,7 +25,6 @@ final class MapQueryStringProcessor implements ProcessorInterface
         /** @var OA\Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
 
-
         foreach ($operations as $operation) {
             if (!isset($operation->_context->{SymfonyMapQueryStringDescriber::CONTEXT_KEY})) {
                 continue;
