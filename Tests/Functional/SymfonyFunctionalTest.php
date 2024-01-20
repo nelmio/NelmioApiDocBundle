@@ -267,23 +267,49 @@ class SymfonyFunctionalTest extends WebTestCase
         }
 
         self::assertEquals([
-            'operationId' => 'get_api_nelmio_apidoc_tests_functional_api_fetcharticlefrommapqueryparameter',
-            'parameters' => [
-                [
-                    'name' => 'id',
-                    'in' => 'query',
-                    'required' => true,
-                    'schema' => [
-                        'type' => 'integer',
-                    ],
+            [
+                'name' => 'someInt',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'integer',
                 ],
             ],
-            'responses' => [
-                '200' => [
-                    'description' => '',
+            [
+                'name' => 'someFloat',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'number',
+                    'format' => 'float',
                 ],
             ],
-        ], json_decode($this->getOperation('/api/article_map_query_parameter', 'get')->toJson(), true));
+            [
+                'name' => 'someBool',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'boolean',
+                ],
+            ],
+            [
+                'name' => 'someString',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'string',
+                ],
+            ],
+            [
+                'name' => 'someArray',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'array',
+                    'items' => [],
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_parameter', 'get')->toJson(), true)['parameters']);
     }
 
     public function testMapQueryParameterHandlesNullable(): void

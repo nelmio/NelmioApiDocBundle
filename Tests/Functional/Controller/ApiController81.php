@@ -542,7 +542,11 @@ class ApiController81
     #[Route('/article_map_query_parameter')]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryParameter(
-        #[MapQueryParameter] int $id,
+        #[MapQueryParameter] int $someInt,
+        #[MapQueryParameter] float $someFloat,
+        #[MapQueryParameter] bool $someBool,
+        #[MapQueryParameter] string $someString,
+        #[MapQueryParameter] array $someArray,
     ) {
     }
 
