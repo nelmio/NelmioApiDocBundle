@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints\GroupSequence;
 
 final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInterface, ModelRegistryAwareInterface
 {
+
+    public const CONTEXT_KEY = 'nelmio_api_doc_bundle.map_query_string.'.self::class;
     public const CONTEXT_ARGUMENT_METADATA = 'nelmio_api_doc_bundle.argument_metadata.'.self::class;
     public const CONTEXT_MODEL_REF = 'nelmio_api_doc_bundle.model_ref.'.self::class;
 
@@ -33,8 +35,16 @@ final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInte
             serializationContext: $attribute->serializationContext,
         ));
 
-        $operation->_context->{self::CONTEXT_ARGUMENT_METADATA} = $argumentMetadata;
-        $operation->_context->{self::CONTEXT_MODEL_REF} = $modelRef;
+        if (!isset($operation->_context->{self::CONTEXT_KEY})) {
+            $operation->_context->{self::CONTEXT_KEY} = [];
+        }
+
+        $data = [
+            self::CONTEXT_ARGUMENT_METADATA => $argumentMetadata,
+            self::CONTEXT_MODEL_REF => $modelRef,
+        ];
+
+        $operation->_context->{self::CONTEXT_KEY}[] = $data;
     }
 
     /**

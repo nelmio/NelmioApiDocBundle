@@ -542,4 +542,132 @@ class SymfonyFunctionalTest extends WebTestCase
             ],
         ], json_decode($this->getOperation('/api/article_map_query_string_passes_validation_groups', 'post')->toJson(), true));
     }
+
+    public function testMapQueryStringHandlesManyParameters(): void
+    {
+        if (!class_exists(MapQueryString::class)) {
+            self::markTestSkipped('Symfony 6.3 MapQueryString attribute not found');
+        }
+
+        self::assertEquals([
+            [
+                'name' => 'filter',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'oneOf' => [
+                        ['type' => 'string'],
+                        ['type' => 'integer'],
+                    ],
+                ],
+            ],
+            [
+                'name' => 'filterBy',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'string'
+                ],
+            ],
+            [
+                'name' => 'offset',
+                'in' => 'query',
+                'required' => false,
+                'schema' => [
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
+            ],
+            [
+                'name' => 'limit',
+                'in' => 'query',
+                'required' => false,
+                'schema' => [
+                    'type' => 'integer',
+                    'default' => 10,
+                ],
+            ],
+            [
+                'name' => 'sortBy',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'string'
+                ],
+            ],
+            [
+                'name' => 'orderBy',
+                'in' => 'query',
+                'required' => false,
+                'schema' => [
+                    '$ref' => '#/components/schemas/SortEnum',
+                    'default' => 'asc',
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_string_many_parameters', 'get')->toJson(), true)['parameters']);
+    }
+
+    public function testMapQueryStringHandlesManyParametersOptional(): void
+    {
+        if (!class_exists(MapQueryString::class)) {
+            self::markTestSkipped('Symfony 6.3 MapQueryString attribute not found');
+        }
+
+        self::assertEquals([
+            [
+                'name' => 'filter',
+                'in' => 'query',
+                'required' => false,
+                'schema' => [
+                    'oneOf' => [
+                        ['type' => 'string'],
+                        ['type' => 'integer'],
+                    ],
+                ],
+            ],
+            [
+                'name' => 'filterBy',
+                'in' => 'query',
+                'required' => false,
+                'schema' => [
+                    'type' => 'string'
+                ],
+            ],
+            [
+                'name' => 'offset',
+                'in' => 'query',
+                'required' => false,
+                'schema' => [
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
+            ],
+            [
+                'name' => 'limit',
+                'in' => 'query',
+                'required' => false,
+                'schema' => [
+                    'type' => 'integer',
+                    'default' => 10,
+                ],
+            ],
+            [
+                'name' => 'sortBy',
+                'in' => 'query',
+                'required' => false,
+                'schema' => [
+                    'type' => 'string'
+                ],
+            ],
+            [
+                'name' => 'orderBy',
+                'in' => 'query',
+                'required' => false,
+                'schema' => [
+                    '$ref' => '#/components/schemas/SortEnum',
+                    'default' => 'asc',
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_string_many_parameters_optional', 'get')->toJson(), true)['parameters']);
+    }
 }

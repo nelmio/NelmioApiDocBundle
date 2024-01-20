@@ -25,55 +25,68 @@ final class MapQueryStringProcessor implements ProcessorInterface
         /** @var OA\Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
 
+
         foreach ($operations as $operation) {
-            if (!isset($operation->_context->{SymfonyMapQueryStringDescriber::CONTEXT_ARGUMENT_METADATA})) {
+            if (!isset($operation->_context->{SymfonyMapQueryStringDescriber::CONTEXT_KEY})) {
                 continue;
             }
 
-            $argumentMetaData = $operation->_context->{SymfonyMapQueryStringDescriber::CONTEXT_ARGUMENT_METADATA};
-            if (!$argumentMetaData instanceof ArgumentMetadata) {
-                throw new \LogicException(sprintf('MapQueryString ArgumentMetaData not found for operation "%s"', $operation->operationId));
+            $mapQueryStringContexts = $operation->_context->{SymfonyMapQueryStringDescriber::CONTEXT_KEY};
+            if (!is_array($mapQueryStringContexts)) {
+                throw new \LogicException(sprintf('MapQueryString contexts not found for operation "%s"', $operation->operationId));
             }
 
-            $modelRef = $operation->_context->{SymfonyMapQueryStringDescriber::CONTEXT_MODEL_REF};
-            if (!isset($modelRef)) {
-                throw new \LogicException(sprintf('MapQueryString Model reference not found for operation "%s"', $operation->operationId));
+            foreach ($mapQueryStringContexts as $mapQueryStringContext) {
+                $this->addQueryParameters($analysis, $operation, $mapQueryStringContext);
             }
+        }
+    }
 
-            $nativeModelName = str_replace(OA\Components::SCHEMA_REF, '', $modelRef);
+    private function addQueryParameters(Analysis $analysis, OA\Operation $operation, array $mapQueryStringContext): void
+    {
+        $argumentMetaData = $mapQueryStringContext[SymfonyMapQueryStringDescriber::CONTEXT_ARGUMENT_METADATA];
+        if (!$argumentMetaData instanceof ArgumentMetadata) {
+            throw new \LogicException(sprintf('MapQueryString ArgumentMetaData not found for operation "%s"', $operation->operationId));
+        }
 
-            $schemaModel = Util::getSchema($analysis->openapi, $nativeModelName);
+        $modelRef = $mapQueryStringContext[SymfonyMapQueryStringDescriber::CONTEXT_MODEL_REF];
+        if (!isset($modelRef)) {
+            throw new \LogicException(sprintf('MapQueryString Model reference not found for operation "%s"', $operation->operationId));
+        }
 
-            // There are no properties to map to query parameters
-            if (Generator::UNDEFINED === $schemaModel->properties) {
-                return;
-            }
+        $nativeModelName = str_replace(OA\Components::SCHEMA_REF, '', $modelRef);
 
-            $isModelOptional = $argumentMetaData->hasDefaultValue() || $argumentMetaData->isNullable();
+        $schemaModel = Util::getSchema($analysis->openapi, $nativeModelName);
 
-            foreach ($schemaModel->properties as $property) {
-                $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
+        // There are no properties to map to query parameters
+        if (Generator::UNDEFINED === $schemaModel->properties) {
+            return;
+        }
 
-                // Remove incompatible properties
-                $propertyVars = get_object_vars($property);
-                unset($propertyVars['property']);
+        $isModelOptional = $argumentMetaData->hasDefaultValue() || $argumentMetaData->isNullable();
 
-                $schema = new OA\Schema($propertyVars);
+        foreach ($schemaModel->properties as $property) {
+            $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
 
-                Util::modifyAnnotationValue($operationParameter, 'schema', $schema);
-                Util::modifyAnnotationValue($operationParameter, 'name', $property->property);
-                Util::modifyAnnotationValue($operationParameter, 'description', $schema->description);
-                Util::modifyAnnotationValue($operationParameter, 'required', $schema->required);
-                Util::modifyAnnotationValue($operationParameter, 'deprecated', $schema->deprecated);
-                Util::modifyAnnotationValue($operationParameter, 'example', $schema->example);
+            // Remove incompatible properties
+            $propertyVars = get_object_vars($property);
+            unset($propertyVars['property']);
 
-                if ($isModelOptional) {
-                    Util::modifyAnnotationValue($operationParameter, 'required', false);
-                } elseif (is_array($schemaModel->required) && in_array($property->property, $schemaModel->required, true)) {
-                    Util::modifyAnnotationValue($operationParameter, 'required', true);
-                } else {
-                    Util::modifyAnnotationValue($operationParameter, 'required', false);
-                }
+            $schema = new OA\Schema($propertyVars);
+
+            Util::modifyAnnotationValue($operationParameter, 'schema', $schema);
+            Util::modifyAnnotationValue($operationParameter, 'name', $property->property);
+            Util::modifyAnnotationValue($operationParameter, 'description', $schema->description);
+            Util::modifyAnnotationValue($operationParameter, 'required', $schema->required);
+            Util::modifyAnnotationValue($operationParameter, 'deprecated', $schema->deprecated);
+            Util::modifyAnnotationValue($operationParameter, 'example', $schema->example);
+
+            if ($isModelOptional) {
+                Util::modifyAnnotationValue($operationParameter, 'required', false);
+            } elseif (is_array($schemaModel->required) && in_array($property->property, $schemaModel->required, true)) {
+                Util::modifyAnnotationValue($operationParameter, 'required', true);
+            } else {
+                Util::modifyAnnotationValue($operationParameter, 'required', false);
             }
         }
     }
