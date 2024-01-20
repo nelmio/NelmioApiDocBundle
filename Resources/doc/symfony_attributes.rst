@@ -152,13 +152,13 @@ Complete example
 Customization
 ----------------------
 
-Imagine you want to add, modify, or remove some documentation for a route argument. For that you will have to create your own describer which implements the :class:`RouteArgumentDescriberInterface`_ interface.
+Imagine you want to add, modify, or remove some documentation for a route argument. For that you will have to create your own describer which implements the `RouteArgumentDescriberInterface`_ interface.
 
 Register your route argument describer
 ~~~~~~~
 
 Before you can use your custom describer you must register it in your route argument describer as a service and tag it with ``nelmio_api_doc.route_argument_describer``.
-Services implementing the :class:`RouteArgumentDescriberInterface`_ interface are automatically detected and used by NelmioApiDocBundle.
+Services implementing the `RouteArgumentDescriberInterface`_ interface are automatically detected and used by NelmioApiDocBundle.
 
 .. configuration-block::
 
