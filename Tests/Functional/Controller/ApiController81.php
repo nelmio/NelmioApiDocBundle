@@ -550,6 +550,21 @@ class ApiController81
     ) {
     }
 
+    #[Route('/article_map_query_parameter_validate_filters')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleFromMapQueryParameterValidateFilters(
+        #[MapQueryParameter(options: ['min_range' => 2, 'max_range' => 1234])] int $minMaxInt,
+        #[MapQueryParameter(filter: FILTER_VALIDATE_DOMAIN)] string $domain,
+        #[MapQueryParameter(filter: FILTER_VALIDATE_EMAIL)] string $email,
+        #[MapQueryParameter(filter: FILTER_VALIDATE_IP)] string $ip,
+        #[MapQueryParameter(filter: FILTER_VALIDATE_IP, flags: FILTER_FLAG_IPV4)] string $ipv4,
+        #[MapQueryParameter(filter: FILTER_VALIDATE_IP, flags: FILTER_FLAG_IPV6)] string $ipv6,
+        #[MapQueryParameter(filter: FILTER_VALIDATE_MAC)] string $macAddress,
+        #[MapQueryParameter(filter: FILTER_VALIDATE_REGEXP, options: ['regexp' => '/^test/'])] string $regexp,
+        #[MapQueryParameter(filter: FILTER_VALIDATE_URL)] string $url,
+    ) {
+    }
+
     #[Route('/article_map_query_parameter_nullable')]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryParameterNullable(

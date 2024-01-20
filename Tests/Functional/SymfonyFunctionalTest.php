@@ -694,4 +694,96 @@ class SymfonyFunctionalTest extends WebTestCase
             ],
         ], json_decode($this->getOperation('/api/article_map_query_string_many_parameters_optional', 'get')->toJson(), true)['parameters']);
     }
+
+    public function testMapQueryParameterHandlesValidateFilters(): void
+    {
+        if (!class_exists(MapQueryParameter::class)) {
+            self::markTestSkipped('Symfony 6.3 MapQueryParameter attribute not found');
+        }
+
+        self::assertEquals([
+            [
+                'name' => 'minMaxInt',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'integer',
+                    'minimum' => 2,
+                    'maximum' => 1234,
+                ],
+            ],
+            [
+                'name' => 'domain',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'string',
+                    'format' => 'hostname',
+                ],
+            ],
+            [
+                'name' => 'email',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'string',
+                    'format' => 'email',
+                ],
+            ],
+            [
+                'name' => 'ip',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'string',
+                    'format' => 'ip',
+                ],
+            ],
+            [
+                'name' => 'ipv4',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'string',
+                    'format' => 'ipv4',
+                ],
+            ],
+            [
+                'name' => 'ipv6',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'string',
+                    'format' => 'ipv6',
+                ],
+            ],
+            [
+                'name' => 'macAddress',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'string',
+                    'format' => 'mac',
+                ],
+            ],
+            [
+                'name' => 'regexp',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'string',
+                    'pattern' => '/^test/',
+                ],
+            ],
+            [
+                'name' => 'url',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'string',
+                    'format' => 'uri',
+                ],
+            ],
+        ], json_decode($this->getOperation('/api/article_map_query_parameter_validate_filters', 'get')->toJson(), true)['parameters']);
+    }
 }

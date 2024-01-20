@@ -29,34 +29,33 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
         /** @var OA\Schema $schema */
         $schema = Util::getChild($operationParameter, OA\Schema::class);
 
-        if (FILTER_VALIDATE_REGEXP === $attribute->filter) {
-            Util::modifyAnnotationValue($schema, 'pattern', $attribute->options['regexp']);
-        }
-
         if ($argumentMetadata->hasDefaultValue()) {
             Util::modifyAnnotationValue($schema, 'default', $argumentMetadata->getDefaultValue());
-        }
-
-        if (Generator::UNDEFINED === $schema->type) {
-            $this->mapNativeType($schema, $argumentMetadata->getType());
         }
 
         if (Generator::UNDEFINED === $schema->nullable && $argumentMetadata->isNullable()) {
             Util::modifyAnnotationValue($schema, 'nullable', true);
         }
 
-        if ('array' === $schema->type) {
-            $this->augmentArrayType($schema, $attribute);
+        $defaultFilter = match ($argumentMetadata->getType()) {
+            'array' => null,
+            'string' => \FILTER_DEFAULT,
+            'int' => \FILTER_VALIDATE_INT,
+            'float' => \FILTER_VALIDATE_FLOAT,
+            'bool' => \FILTER_VALIDATE_BOOL,
+            default => null,
+        };
+
+        $properties = $this->describeValidateFilter($attribute->filter ?? $defaultFilter, $attribute->flags, $attribute->options);
+
+        if ($argumentMetadata->getType() === 'array') {
+            $schema->type = 'array';
+            Util::getChild($schema, OA\Items::class, $properties);
         } else {
-            $properties = $this->describeValidateFilter($attribute->filter, $attribute->flags, $attribute->options);
+            foreach ($properties as $key => $value) {
+                Util::modifyAnnotationValue($schema, $key, $value);
+            }
         }
-    }
-
-    private function augmentArrayType(OA\Schema $schema, MapQueryParameter $attribute): void
-    {
-        $properties = $this->describeValidateFilter($attribute->filter, $attribute->flags, $attribute->options);
-
-        Util::getChild($schema, OA\Items::class, $properties);
     }
 
     /**
@@ -64,35 +63,40 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
      */
     private function describeValidateFilter(?int $filter, int $flags, array $options): array
     {
-        if ($filter & FILTER_VALIDATE_BOOLEAN) {
+        if (null === $filter) {
+            return [];
+        }
+
+        if ($filter === FILTER_VALIDATE_BOOLEAN) {
             return ['type' => 'boolean'];
         }
 
-        if ($filter & FILTER_VALIDATE_DOMAIN) {
+        if ($filter === FILTER_VALIDATE_DOMAIN) {
             return ['type' => 'string', 'format' => 'hostname'];
         }
 
-        if ($filter & FILTER_VALIDATE_EMAIL) {
+        if ($filter === FILTER_VALIDATE_EMAIL) {
             return ['type' => 'string', 'format' => 'email'];
         }
 
-        if ($filter & FILTER_VALIDATE_FLOAT) {
+        if ($filter === FILTER_VALIDATE_FLOAT) {
             return ['type' => 'number', 'format' => 'float'];
         }
 
-        if ($filter & FILTER_VALIDATE_INT) {
+        if ($filter === FILTER_VALIDATE_INT) {
+            $props = [];
             if ($options['min_range'] ?? false) {
-                $props = ['minimum' => $options['min_range']];
+                $props['minimum'] = $options['min_range'];
             }
 
             if ($options['max_range'] ?? false) {
-                $props = ['maximum' => $options['max_range']];
+                $props['maximum'] = $options['max_range'];
             }
 
-            return ['type' => 'integer', ...$props ?? []];
+            return ['type' => 'integer', ...$props];
         }
 
-        if ($filter & FILTER_VALIDATE_IP) {
+        if ($filter === FILTER_VALIDATE_IP) {
             $format = match ($flags) {
                 FILTER_FLAG_IPV4 => 'ipv4',
                 FILTER_FLAG_IPV6 => 'ipv6',
@@ -102,16 +106,20 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
             return ['type' => 'string', 'format' => $format];
         }
 
-        if ($filter & FILTER_VALIDATE_MAC) {
+        if ($filter === FILTER_VALIDATE_MAC) {
             return ['type' => 'string', 'format' => 'mac'];
         }
 
-        if ($filter & FILTER_VALIDATE_REGEXP) {
+        if ($filter === FILTER_VALIDATE_REGEXP) {
             return ['type' => 'string', 'pattern' => $options['regexp']];
         }
 
-        if ($filter & FILTER_VALIDATE_URL) {
+        if ($filter === FILTER_VALIDATE_URL) {
             return ['type' => 'string', 'format' => 'uri'];
+        }
+
+        if ($filter === FILTER_DEFAULT) {
+            return ['type' => 'string'];
         }
 
         return [];
