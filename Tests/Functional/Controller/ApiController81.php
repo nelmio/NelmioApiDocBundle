@@ -26,6 +26,9 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\FilterQueryModel;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\PaginationQueryModel;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\SortQueryModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator81;
@@ -515,6 +518,24 @@ class ApiController81
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryStringOverwriteParameters(
         #[MapQueryString] SymfonyMapQueryString $article81Query
+    ) {
+    }
+
+    #[Route('/article_map_query_string_many_parameters')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleWithManyParameters(
+        #[MapQueryString] FilterQueryModel $filterQuery,
+        #[MapQueryString] PaginationQueryModel $paginationQuery,
+        #[MapQueryString] SortQueryModel $sortQuery,
+    ) {
+    }
+
+    #[Route('/article_map_query_string_many_parameters_optional')]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleWithManyOptionalParameters(
+        #[MapQueryString] ?FilterQueryModel $filterQuery,
+        #[MapQueryString] ?PaginationQueryModel $paginationQuery,
+        #[MapQueryString] ?SortQueryModel $sortQuery,
     ) {
     }
 
