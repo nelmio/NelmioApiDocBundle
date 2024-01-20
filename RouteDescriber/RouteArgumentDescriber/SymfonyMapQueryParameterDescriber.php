@@ -48,7 +48,7 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
 
         $properties = $this->describeValidateFilter($attribute->filter ?? $defaultFilter, $attribute->flags, $attribute->options);
 
-        if ($argumentMetadata->getType() === 'array') {
+        if ('array' === $argumentMetadata->getType()) {
             $schema->type = 'array';
             Util::getChild($schema, OA\Items::class, $properties);
         } else {
@@ -67,23 +67,23 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
             return [];
         }
 
-        if ($filter === FILTER_VALIDATE_BOOLEAN) {
+        if (FILTER_VALIDATE_BOOLEAN === $filter) {
             return ['type' => 'boolean'];
         }
 
-        if ($filter === FILTER_VALIDATE_DOMAIN) {
+        if (FILTER_VALIDATE_DOMAIN === $filter) {
             return ['type' => 'string', 'format' => 'hostname'];
         }
 
-        if ($filter === FILTER_VALIDATE_EMAIL) {
+        if (FILTER_VALIDATE_EMAIL === $filter) {
             return ['type' => 'string', 'format' => 'email'];
         }
 
-        if ($filter === FILTER_VALIDATE_FLOAT) {
+        if (FILTER_VALIDATE_FLOAT === $filter) {
             return ['type' => 'number', 'format' => 'float'];
         }
 
-        if ($filter === FILTER_VALIDATE_INT) {
+        if (FILTER_VALIDATE_INT === $filter) {
             $props = [];
             if ($options['min_range'] ?? false) {
                 $props['minimum'] = $options['min_range'];
@@ -96,7 +96,7 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
             return ['type' => 'integer', ...$props];
         }
 
-        if ($filter === FILTER_VALIDATE_IP) {
+        if (FILTER_VALIDATE_IP === $filter) {
             $format = match ($flags) {
                 FILTER_FLAG_IPV4 => 'ipv4',
                 FILTER_FLAG_IPV6 => 'ipv6',
@@ -106,19 +106,19 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
             return ['type' => 'string', 'format' => $format];
         }
 
-        if ($filter === FILTER_VALIDATE_MAC) {
+        if (FILTER_VALIDATE_MAC === $filter) {
             return ['type' => 'string', 'format' => 'mac'];
         }
 
-        if ($filter === FILTER_VALIDATE_REGEXP) {
+        if (FILTER_VALIDATE_REGEXP === $filter) {
             return ['type' => 'string', 'pattern' => $options['regexp']];
         }
 
-        if ($filter === FILTER_VALIDATE_URL) {
+        if (FILTER_VALIDATE_URL === $filter) {
             return ['type' => 'string', 'format' => 'uri'];
         }
 
-        if ($filter === FILTER_DEFAULT) {
+        if (FILTER_DEFAULT === $filter) {
             return ['type' => 'string'];
         }
 
