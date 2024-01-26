@@ -504,4 +504,16 @@ final class Util
             $class::$_nested
         ));
     }
+
+    /**
+     * Helper method to modify an annotation value only if its value has not yet been set.
+     */
+    public static function modifyAnnotationValue(OA\AbstractAnnotation $parameter, string $property, $value): void
+    {
+        if (!Generator::isDefault($parameter->{$property})) {
+            return;
+        }
+
+        $parameter->{$property} = $value;
+    }
 }

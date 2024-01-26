@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-class CompoundEntity
+class CompoundEntityNested
 {
     /**
      * @var int|CompoundEntity[]
@@ -27,9 +27,4 @@ class CompoundEntity
      * @var CompoundEntityNested[]|string|null
      */
     public $complexNested;
-
-    /**
-     * @var array<CompoundEntityNested>|array<array<CompoundEntityNested>>
-     */
-    public $arrayOfArrayComplex;
 }

@@ -61,7 +61,8 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
         if (null === $mediaTypes) {
             $mediaTypes = ['json'];
-            @trigger_error(sprintf('Not passing media types to the constructor of %s is deprecated since version 4.1 and won\'t be allowed in version 5.', self::class), E_USER_DEPRECATED);
+
+            trigger_deprecation('nelmio/api-doc-bundle', '4.1', 'Not passing media types to the constructor of %s is deprecated and won\'t be allowed in version 5.', self::class);
         }
         $this->mediaTypes = $mediaTypes;
         $this->useValidationGroups = $useValidationGroups;

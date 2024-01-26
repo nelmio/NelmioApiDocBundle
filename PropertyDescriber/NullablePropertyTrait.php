@@ -16,9 +16,12 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\Type;
 
+/**
+ * @deprecated Since 4.17, {@see NullablePropertyDescriber} instead.
+ */
 trait NullablePropertyTrait
 {
-    protected function setNullableProperty(Type $type, OA\Schema $property, ?OA\Schema $schema): void
+    protected function setNullableProperty(Type $type, OA\Schema $property, ?OA\Schema $schema, array $context = []): void
     {
         if (Generator::UNDEFINED !== $property->nullable) {
             if (!$property->nullable) {
@@ -31,6 +34,10 @@ trait NullablePropertyTrait
 
         if ($type->isNullable()) {
             $property->nullable = true;
+        }
+
+        if (!$type->isNullable() && Generator::UNDEFINED !== $property->default) {
+            return;
         }
 
         if (!$type->isNullable() && null !== $schema) {
