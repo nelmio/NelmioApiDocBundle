@@ -47,6 +47,7 @@ class TestKernel extends Kernel
     const USE_BAZINGA = 2;
     const USE_FOSREST = 3;
     const USE_VALIDATION_GROUPS = 8;
+    const USE_FORM_CSRF = 16;
 
     private $flags;
 
@@ -144,6 +145,12 @@ class TestKernel extends Kernel
             ],
             'property_access' => true,
         ];
+
+        if ($this->flags & self::USE_FORM_CSRF) {
+            $framework['csrf_protection']['enabled'] = true;
+            $framework['session']['storage_factory_id'] = 'session.storage.factory.mock_file';
+            $framework['form'] = ['csrf_protection' => true];
+        }
 
         // Support symfony/framework-bundle < 5.4
         if (method_exists(CachePoolClearCommand::class, 'complete')) {
