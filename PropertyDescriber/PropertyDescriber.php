@@ -12,7 +12,7 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
 {
     use ModelRegistryAwareTrait;
 
-    /** @var PropertyDescriberInterface[] Recursion helper */
+    /** @var array<string, PropertyDescriberInterface[]> Recursion helper */
     private $called = [];
 
     /** @var PropertyDescriberInterface[] */
@@ -30,7 +30,7 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
             return;
         }
 
-        $this->called[] = $propertyDescriber;
+        $this->called[$this->getHash($types)][] = $propertyDescriber;
         $propertyDescriber->describe($types, $property, $groups, $schema, $context);
         $this->called = []; // Reset recursion helper
     }
@@ -38,6 +38,11 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
     public function supports(array $types): bool
     {
         return null !== $this->getPropertyDescriber($types);
+    }
+
+    private function getHash(array $types): string
+    {
+        return md5(serialize($types));
     }
 
     private function getPropertyDescriber(array $types): ?PropertyDescriberInterface
@@ -49,8 +54,10 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
             }
 
             // Prevent infinite recursion
-            if (in_array($propertyDescriber, $this->called, true)) {
-                continue;
+            if (key_exists($this->getHash($types), $this->called)) {
+                if (in_array($propertyDescriber, $this->called[$this->getHash($types)], true)) {
+                    continue;
+                }
             }
 
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
