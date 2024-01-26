@@ -730,7 +730,7 @@ class FunctionalTest extends WebTestCase
         self::assertEquals([
             'schema' => 'CompoundEntity',
             'type' => 'object',
-            'required' => ['complex'],
+            'required' => ['complex', 'arrayOfArrayComplex'],
             'properties' => [
                 'complex' => [
                     'oneOf' => [
@@ -750,6 +750,7 @@ class FunctionalTest extends WebTestCase
                     'oneOf' => [
                         [
                             'type' => 'integer',
+                            'nullable' => true,
                         ],
                         [
                             'type' => 'array',
@@ -767,9 +768,29 @@ class FunctionalTest extends WebTestCase
                             'items' => [
                                 '$ref' => '#/components/schemas/CompoundEntityNested',
                             ],
+                            'nullable' => true,
                         ],
                         [
                             'type' => 'string',
+                        ],
+                    ],
+                ],
+                'arrayOfArrayComplex' => [
+                    'oneOf' => [
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntityNested',
+                            ],
+                        ],
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntityNested',
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -799,6 +820,7 @@ class FunctionalTest extends WebTestCase
                     'oneOf' => [
                         [
                             'type' => 'integer',
+                            'nullable' => true,
                         ],
                         [
                             'type' => 'array',
@@ -816,6 +838,7 @@ class FunctionalTest extends WebTestCase
                             'items' => [
                                 '$ref' => '#/components/schemas/CompoundEntityNested',
                             ],
+                            'nullable' => true,
                         ],
                         [
                             'type' => 'string',

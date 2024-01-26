@@ -26,19 +26,20 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         $property->type = 'array';
         $property = Util::getChild($property, OA\Items::class);
 
-        // BC layer for symfony < 5.3
-        $type = method_exists($types[0], 'getCollectionValueTypes') ?
-            ($types[0]->getCollectionValueTypes()[0] ?? null) :
-            $types[0]->getCollectionValueType();
-        if (null === $type) {
-            return;
-        }
+        foreach ($types[0]->getCollectionValueTypes() as $type) {
+            // Handle list pseudo type
+            // https://symfony.com/doc/current/components/property_info.html#type-getcollectionkeytypes-type-getcollectionvaluetypes
+            if ($this->supports([$type]) && empty($type->getCollectionValueTypes())) {
+                continue;
+            }
 
-        $this->propertyDescriber->describe([$type], $property, $groups, $schema, $context);
+            $this->propertyDescriber->describe([$type], $property, $groups, $schema, $context);
+        }
     }
 
     public function supports(array $types): bool
     {
-        return 1 === count($types) && $types[0]->isCollection();
+        return 1 === count($types)
+            && $types[0]->isCollection();
     }
 }
