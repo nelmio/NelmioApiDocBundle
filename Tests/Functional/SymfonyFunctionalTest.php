@@ -301,7 +301,7 @@ class SymfonyFunctionalTest extends WebTestCase
                 ],
             ],
             [
-                'name' => 'someArray',
+                'name' => 'someArray[]',
                 'in' => 'query',
                 'required' => true,
                 'schema' => [
@@ -629,6 +629,28 @@ class SymfonyFunctionalTest extends WebTestCase
                     '$ref' => '#/components/schemas/SortEnum',
                 ],
             ],
+            [
+                'name' => 'ids[]',
+                'in' => 'query',
+                'required' => true,
+                'schema' => [
+                    'type' => 'array',
+                    'items' => [],
+                ],
+            ],
+            [
+                'name' => 'productIds[]',
+                'in' => 'query',
+                'required' => false,
+                'description' => 'List of product ids',
+                'schema' => [
+                    'type' => 'array',
+                    'description' => 'List of product ids',
+                    'items' => [
+                        'type' => 'integer',
+                    ],
+                ],
+            ],
         ], json_decode($this->getOperation('/api/article_map_query_string_many_parameters', 'get')->toJson(), true)['parameters']);
     }
 
@@ -690,6 +712,28 @@ class SymfonyFunctionalTest extends WebTestCase
                 'required' => false,
                 'schema' => [
                     '$ref' => '#/components/schemas/SortEnum',
+                ],
+            ],
+            [
+                'name' => 'ids[]',
+                'in' => 'query',
+                'required' => false,
+                'schema' => [
+                    'type' => 'array',
+                    'items' => [],
+                ],
+            ],
+            [
+                'name' => 'productIds[]',
+                'in' => 'query',
+                'required' => false,
+                'description' => 'List of product ids',
+                'schema' => [
+                    'type' => 'array',
+                    'description' => 'List of product ids',
+                    'items' => [
+                        'type' => 'integer',
+                    ],
                 ],
             ],
         ], json_decode($this->getOperation('/api/article_map_query_string_many_parameters_optional', 'get')->toJson(), true)['parameters']);
