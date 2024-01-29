@@ -65,7 +65,7 @@ final class MapQueryStringProcessor implements ProcessorInterface
         $isModelOptional = $argumentMetaData->hasDefaultValue() || $argumentMetaData->isNullable();
 
         foreach ($schemaModel->properties as $property) {
-            $name = $property->type === 'array'
+            $name = 'array' === $property->type
                 ? $property->property.'[]'
                 : $property->property;
 

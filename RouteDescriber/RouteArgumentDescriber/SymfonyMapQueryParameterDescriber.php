@@ -23,7 +23,7 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
         }
 
         $name = $attribute->name ?? $argumentMetadata->getName();
-        $name = $argumentMetadata->getType() === 'array'
+        $name = 'array' === $argumentMetadata->getType()
             ? $name.'[]'
             : $name;
 
