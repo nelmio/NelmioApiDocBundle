@@ -26,6 +26,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\ArrayQueryModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\FilterQueryModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\PaginationQueryModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\SortQueryModel;
@@ -553,6 +554,7 @@ class ApiController81
         #[MapQueryString] FilterQueryModel $filterQuery,
         #[MapQueryString] PaginationQueryModel $paginationQuery,
         #[MapQueryString] SortQueryModel $sortQuery,
+        #[MapQueryString] ArrayQueryModel $arrayQuery,
     ) {
     }
 
@@ -562,6 +564,7 @@ class ApiController81
         #[MapQueryString] ?FilterQueryModel $filterQuery,
         #[MapQueryString] ?PaginationQueryModel $paginationQuery,
         #[MapQueryString] ?SortQueryModel $sortQuery,
+        #[MapQueryString] ?ArrayQueryModel $arrayQuery,
     ) {
     }
 

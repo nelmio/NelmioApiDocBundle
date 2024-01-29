@@ -65,7 +65,11 @@ final class MapQueryStringProcessor implements ProcessorInterface
         $isModelOptional = $argumentMetaData->hasDefaultValue() || $argumentMetaData->isNullable();
 
         foreach ($schemaModel->properties as $property) {
-            $operationParameter = Util::getOperationParameter($operation, $property->property, 'query');
+            $name = $property->type === 'array'
+                ? $property->property.'[]'
+                : $property->property;
+
+            $operationParameter = Util::getOperationParameter($operation, $name, 'query');
 
             // Remove incompatible properties
             $propertyVars = get_object_vars($property);
