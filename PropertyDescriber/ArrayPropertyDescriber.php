@@ -50,6 +50,6 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         }
 
         return 1 === count($types[0]->getCollectionKeyTypes())
-            && $types[0]->getCollectionKeyTypes()[0]->getBuiltinType() === Type::BUILTIN_TYPE_INT;
+            && Type::BUILTIN_TYPE_INT === $types[0]->getCollectionKeyTypes()[0]->getBuiltinType();
     }
 }

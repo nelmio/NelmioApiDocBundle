@@ -1255,8 +1255,8 @@ class FunctionalTest extends WebTestCase
                             ],
                             [
                                 'type' => 'integer',
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                 ],
                 'nestedCompoundOptions' => [
@@ -1271,7 +1271,7 @@ class FunctionalTest extends WebTestCase
                                 [
                                     'type' => 'integer',
                                 ],
-                            ]
+                            ],
                         ],
                     ],
                 ],

@@ -31,12 +31,12 @@ final class DictionaryPropertyDescriber implements PropertyDescriberInterface, M
         $this->propertyDescriber->describe($types[0]->getCollectionValueTypes(), $additionalProperties, $groups, $schema, $context);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function supports(array $types): bool
     {
         return 1 === count($types)
             && $types[0]->isCollection()
             && 1 === count($types[0]->getCollectionKeyTypes())
-            && $types[0]->getCollectionKeyTypes()[0]->getBuiltinType() === Type::BUILTIN_TYPE_STRING;
+            && Type::BUILTIN_TYPE_STRING === $types[0]->getCollectionKeyTypes()[0]->getBuiltinType();
     }
 }
