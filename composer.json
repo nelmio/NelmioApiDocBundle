@@ -6,10 +6,6 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Nelmio",
-            "homepage": "http://nelm.io"
-        },
-        {
             "name": "Symfony Community",
             "homepage": "https://github.com/nelmio/NelmioApiDocBundle/contributors"
         }
