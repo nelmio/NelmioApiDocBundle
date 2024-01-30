@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Nelmio\ApiDocBundle\Processors;
+namespace Nelmio\ApiDocBundle\Processor;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapRequestPayloadDescriber;
