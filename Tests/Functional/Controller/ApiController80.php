@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems\Dictionary;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems\Foo;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
@@ -556,6 +557,20 @@ class ApiController80
      * )
      */
     public function arbitraryArray()
+    {
+    }
+
+    /**
+     * @Route("/dictionary", methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *
+     *     @Model(type=Dictionary::class)
+     * )
+     */
+    public function dictionary()
     {
     }
 }

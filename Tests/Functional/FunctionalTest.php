@@ -1233,6 +1233,87 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('Bar')->toJson(), true));
     }
 
+    public function testDictionaryModel()
+    {
+        $this->getOperation('/api/dictionary', 'get');
+        self::assertEquals([
+            'schema' => 'Dictionary',
+            'required' => ['options', 'compoundOptions', 'nestedCompoundOptions', 'modelOptions', 'listOptions', 'arrayOrDictOptions', 'integerOptions'],
+            'properties' => [
+                'options' => [
+                    'type' => 'object',
+                    'additionalProperties' => [
+                        'type' => 'string',
+                    ],
+                ],
+                'compoundOptions' => [
+                    'type' => 'object',
+                    'additionalProperties' => [
+                        'oneOf' => [
+                            [
+                                'type' => 'string',
+                            ],
+                            [
+                                'type' => 'integer',
+                            ]
+                        ]
+                    ],
+                ],
+                'nestedCompoundOptions' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'object',
+                        'additionalProperties' => [
+                            'oneOf' => [
+                                [
+                                    'type' => 'string',
+                                ],
+                                [
+                                    'type' => 'integer',
+                                ],
+                            ]
+                        ],
+                    ],
+                ],
+                'modelOptions' => [
+                    'type' => 'object',
+                    'additionalProperties' => [
+                        '$ref' => '#/components/schemas/Foo',
+                    ],
+                ],
+                'listOptions' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'string',
+                    ],
+                ],
+                'arrayOrDictOptions' => [
+                    'oneOf' => [
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                'type' => 'string',
+                            ],
+                        ],
+                        [
+                            'type' => 'object',
+                            'additionalProperties' => [
+                                'type' => 'string',
+                            ],
+                        ],
+                    ],
+                ],
+                'integerOptions' => [
+                    'type' => 'object',
+                    'additionalProperties' => [
+                        'type' => 'integer',
+                    ],
+                ],
+            ],
+            'type' => 'object',
+        ], json_decode($this->getModel('Dictionary')->toJson(), true));
+    }
+
     public function testEntityWithFalsyDefaults()
     {
         $model = $this->getModel('EntityWithFalsyDefaults');
