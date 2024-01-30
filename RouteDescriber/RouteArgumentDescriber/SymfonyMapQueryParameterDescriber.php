@@ -22,7 +22,12 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
             return;
         }
 
-        $operationParameter = Util::getOperationParameter($operation, $attribute->name ?? $argumentMetadata->getName(), 'query');
+        $name = $attribute->name ?? $argumentMetadata->getName();
+        $name = 'array' === $argumentMetadata->getType()
+            ? $name.'[]'
+            : $name;
+
+        $operationParameter = Util::getOperationParameter($operation, $name, 'query');
 
         Util::modifyAnnotationValue($operationParameter, 'required', !($argumentMetadata->hasDefaultValue() || $argumentMetadata->isNullable()));
 
