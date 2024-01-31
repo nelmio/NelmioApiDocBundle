@@ -1233,6 +1233,9 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('Bar')->toJson(), true));
     }
 
+    /**
+     * @requires PHP >= 7.3
+     */
     public function testDictionaryModel()
     {
         $this->getOperation('/api/dictionary', 'get');
