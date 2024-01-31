@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems;
 
-use OpenApi\Annotations as OA;
-
 // PHP 7.2 is not able to guess these types
 if (PHP_VERSION_ID < 70300) {
     class Dictionary
