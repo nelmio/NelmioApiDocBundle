@@ -25,7 +25,7 @@
         "symfony/options-resolver": "^5.4|^6.0|^7.0",
         "symfony/property-info": "^5.4|^6.0|^7.0",
         "symfony/routing": "^5.4|^6.0|^7.0",
-        "zircote/swagger-php": "^4.2.15",
+        "zircote/swagger-php": "^4.6.1",
         "phpdocumentor/reflection-docblock": "^3.1|^4.0|^5.0",
         "symfony/deprecation-contracts": "^2.1|^3"
     },
