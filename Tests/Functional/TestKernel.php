@@ -46,6 +46,7 @@ class TestKernel extends Kernel
     public const USE_FOSREST = 3;
     public const ERROR_ARRAY_ITEMS = 4;
     public const USE_VALIDATION_GROUPS = 8;
+    public const USE_FORM_CSRF = 16;
 
     private $flags;
 
@@ -91,10 +92,6 @@ class TestKernel extends Kernel
             $this->import($routes, __DIR__.'/Resources/routes.yaml', '/', 'yaml');
         } else {
             $this->import($routes, __DIR__.'/Resources/routes-attributes.yaml', '/', 'yaml');
-        }
-
-        if ($this->flags & self::ERROR_ARRAY_ITEMS) {
-            $this->import($routes, __DIR__.'/Controller/ArrayItemsErrorController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
         }
 
         if ($this->flags & self::USE_JMS) {
@@ -147,6 +144,12 @@ class TestKernel extends Kernel
             ],
             'property_access' => true,
         ];
+
+        if ($this->flags & self::USE_FORM_CSRF) {
+            $framework['csrf_protection']['enabled'] = true;
+            $framework['session']['storage_factory_id'] = 'session.storage.factory.mock_file';
+            $framework['form'] = ['csrf_protection' => true];
+        }
 
         // Support symfony/framework-bundle < 5.4
         if (method_exists(CachePoolClearCommand::class, 'complete')) {
@@ -345,6 +348,12 @@ class TestKernel extends Kernel
                 'names' => $models,
             ],
         ]);
+
+        if ($this->flags & self::USE_JMS && \PHP_VERSION_ID >= 80100) {
+            $c->loadFromExtension('jms_serializer', [
+                'enum_support' => true,
+            ]);
+        }
 
         $def = new Definition(VirtualTypeClassDoesNotExistsHandlerDefinedDescriber::class);
         $def->addTag('nelmio_api_doc.model_describer');

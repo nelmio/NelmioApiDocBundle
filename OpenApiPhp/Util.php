@@ -421,7 +421,7 @@ final class Util
             if ('$ref' === $propertyName) {
                 $propertyName = 'ref';
             }
-            if (!\in_array($propertyName, $done, true)) {
+            if (array_key_exists($propertyName, $defaults) && !\in_array($propertyName, $done, true)) {
                 self::mergeProperty($annotation, $propertyName, $value, $defaults[$propertyName], $overwrite);
             }
         }
@@ -500,5 +500,17 @@ final class Util
             },
             $class::$_nested
         ));
+    }
+
+    /**
+     * Helper method to modify an annotation value only if its value has not yet been set.
+     */
+    public static function modifyAnnotationValue(OA\AbstractAnnotation $parameter, string $property, $value): void
+    {
+        if (!Generator::isDefault($parameter->{$property})) {
+            return;
+        }
+
+        $parameter->{$property} = $value;
     }
 }

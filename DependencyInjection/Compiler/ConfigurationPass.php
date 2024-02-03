@@ -33,6 +33,7 @@ final class ConfigurationPass implements CompilerPassInterface
                 ->addArgument(new Reference('annotations.reader', ContainerInterface::NULL_ON_INVALID_REFERENCE))
                 ->addArgument($container->getParameter('nelmio_api_doc.media_types'))
                 ->addArgument($container->getParameter('nelmio_api_doc.use_validation_groups'))
+                ->addArgument($container->getParameter('form.type_extension.csrf.enabled'))
                 ->addTag('nelmio_api_doc.model_describer', ['priority' => 100]);
         }
 

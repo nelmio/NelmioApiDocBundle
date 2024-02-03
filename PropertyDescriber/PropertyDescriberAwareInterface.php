@@ -9,16 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItemsError;
+namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
-/**
- * @author Guilhem N. <guilhem@gniot.fr>
- */
-class Bar
+interface PropertyDescriberAwareInterface
 {
-    public $things;
-
-    public function addThing(array $thing)
-    {
-    }
+    public function setPropertyDescriber(PropertyDescriberInterface $propertyDescriber): void;
 }

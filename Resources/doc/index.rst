@@ -7,7 +7,7 @@ OpenAPI (Swagger) format and provides a sandbox to interactively experiment with
 What's supported?
 -----------------
 
-This bundle supports *Symfony* route requirements, PHP annotations, `Swagger-Php`_ annotations,
+This bundle supports *Symfony* route requirements, *Symfony* request mapping (:doc:`symfony_attributes`), PHP annotations, `Swagger-Php`_ annotations,
 `FOSRestBundle`_ annotations and applications using `Api-Platform`_.
 
 .. _`Swagger-Php`: https://github.com/zircote/swagger-php
@@ -238,6 +238,12 @@ The normal PHPDoc block on the controller method is used for the summary and des
     Examples of using the annotations can be found in `SwaggerPHP examples`_.
     However, unlike in those examples, when using this bundle you don't need to specify paths and you can easily document models as well as some
     other properties described below as they can be automatically be documented using the Symfony integration.
+
+.. tip::
+
+    **NelmioApiDocBundle** understands **symfony's** controller attributes.
+    Using these attributes inside your controller allows this bundle to automatically create the necessary documentation.
+    More information can be found here: :doc:`symfony_attributes`.
 
 Use Models
 ----------
@@ -576,6 +582,7 @@ If you need more complex features, take a look at:
     commands
     faq
     security
+    symfony_attributes
 
 .. _`SwaggerPHP examples`: https://github.com/zircote/swagger-php/tree/master/Examples
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html

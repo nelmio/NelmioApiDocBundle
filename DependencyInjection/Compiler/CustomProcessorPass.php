@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -22,6 +23,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 final class CustomProcessorPass implements CompilerPassInterface
 {
+    use PriorityTaggedServiceTrait;
+
     /**
      * Process services tagged as 'swagger.processor'.
      *
@@ -32,7 +35,10 @@ final class CustomProcessorPass implements CompilerPassInterface
         // Find the OpenAPI generator service.
         $definition = $container->findDefinition('nelmio_api_doc.open_api.generator');
 
-        foreach ($container->findTaggedServiceIds('nelmio_api_doc.swagger.processor') as $id => $tags) {
+        foreach ($this->findAndSortTaggedServices('nelmio_api_doc.swagger.processor', $container) as $reference) {
+            $id = (string) $reference;
+            $tags = $container->findDefinition($id)->getTags();
+
             /**
              * Before which processor should this processor be run?
              *

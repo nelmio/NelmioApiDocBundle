@@ -15,11 +15,13 @@ use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems\Foo;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityThroughNameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType80;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
@@ -31,6 +33,8 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\SerializedNameEnt;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithAlternateSchemaType;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithCsrfProtectionDisabledType;
+use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithCsrfProtectionEnabledType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithRefType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
@@ -443,6 +447,40 @@ class ApiController80
     }
 
     /**
+     * @Route("/form-with-csrf-protection-enabled-type", methods={"POST"})
+     *
+     * @OA\Response(
+     *    response="204",
+     *    description="Operation automatically detected",
+     * ),
+     *
+     * @OA\RequestBody(
+     *
+     *    @Model(type=FormWithCsrfProtectionEnabledType::class)
+     * )
+     */
+    public function formWithCsrfProtectionEnabledType()
+    {
+    }
+
+    /**
+     * @Route("/form-with-csrf-protection-disabled-type", methods={"POST"})
+     *
+     * @OA\Response(
+     *    response="204",
+     *    description="Operation automatically detected",
+     * ),
+     *
+     * @OA\RequestBody(
+     *
+     *    @Model(type=FormWithCsrfProtectionDisabledType::class)
+     * )
+     */
+    public function formWithCsrfProtectionDisabledType()
+    {
+    }
+
+    /**
      * @Route("/entity-with-nullable-property-set", methods={"GET"})
      *
      * @OA\Response(
@@ -453,6 +491,22 @@ class ApiController80
      * )
      */
     public function entityWithNullableSchemaSet()
+    {
+    }
+
+    /**
+     * @Route("/entity-with-falsy-defaults", methods={"POST"})
+     *
+     * @OA\Response(
+     *     response="204",
+     *     description="Operation automatically detected",
+     *  ),
+     *
+     * @OA\RequestBody(
+     *
+     *     @Model(type=EntityWithFalsyDefaults::class))
+     *  )*/
+    public function entityWithFalsyDefaults()
     {
     }
 
@@ -479,8 +533,29 @@ class ApiController80
      *
      *    @Model(type=EntityThroughNameConverter::class, serializationContext={"secret_name_converter_value"=true})
      * )
+     *
+     * @OA\Response(
+     *     response="201",
+     *     description="Same class without context",
+     *
+     *     @Model(type=EntityThroughNameConverter::class)
+     *  )
      */
     public function nameConverterContext()
+    {
+    }
+
+    /**
+     * @Route("/arbitrary_array", methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *
+     *     @Model(type=Foo::class)
+     * )
+     */
+    public function arbitraryArray()
     {
     }
 }

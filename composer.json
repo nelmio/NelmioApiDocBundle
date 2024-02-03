@@ -6,10 +6,6 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Nelmio",
-            "homepage": "http://nelm.io"
-        },
-        {
             "name": "Symfony Community",
             "homepage": "https://github.com/nelmio/NelmioApiDocBundle/contributors"
         }
@@ -30,7 +26,8 @@
         "symfony/property-info": "^5.4|^6.0|^7.0",
         "symfony/routing": "^5.4|^6.0|^7.0",
         "zircote/swagger-php": "^4.2.15",
-        "phpdocumentor/reflection-docblock": "^3.1|^4.0|^5.0"
+        "phpdocumentor/reflection-docblock": "^3.1|^4.0|^5.0",
+        "symfony/deprecation-contracts": "^2.1|^3"
     },
     "require-dev": {
         "sensio/framework-extra-bundle": "^5.4|^6.0",
@@ -47,9 +44,9 @@
         "symfony/twig-bundle": "^5.4|^6.0|^7.0",
         "symfony/validator": "^5.4|^6.0|^7.0",
         "symfony/expression-language": "^5.4|^6.0|^7.0",
+        "symfony/security-csrf": "^5.4|^6.0|^7.0",
 
         "api-platform/core": "^2.7.0|^3",
-        "symfony/deprecation-contracts": "^2.1|^3",
         "friendsofsymfony/rest-bundle": "^2.8|^3.0",
         "willdurand/hateoas-bundle": "^1.0|^2.0",
         "jms/serializer-bundle": "^2.3|^3.0|^4.0|^5.0",
@@ -68,6 +65,7 @@
         "symfony/asset": "For using the Swagger UI.",
         "symfony/cache": "For using a PSR-6 compatible cache implementation with the API doc generator.",
         "symfony/form": "For describing your form type models.",
+        "symfony/security-csrf": "For using csrf protection tokens in forms.",
         "symfony/monolog-bundle": "For using a PSR-3 compatible logger implementation with the API PHP describer.",
         "symfony/serializer": "For describing your models.",
         "symfony/twig-bundle": "For using the Swagger UI.",

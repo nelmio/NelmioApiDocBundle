@@ -176,6 +176,7 @@ final class ModelRegistry
             'type' => $getType($model->getType()),
             'options' => $model->getOptions(),
             'groups' => $model->getGroups(),
+            'serialization_context' => $model->getSerializationContext(),
         ];
     }
 

@@ -17,34 +17,19 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
-class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
+class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface, PropertyDescriberAwareInterface
 {
     use ModelRegistryAwareTrait;
+    use PropertyDescriberAwareTrait;
 
-    /** @var PropertyDescriberInterface[] */
-    private iterable $propertyDescribers;
-
-    public function __construct(iterable $propertyDescribers)
-    {
-        $this->propertyDescribers = $propertyDescribers;
-    }
-
-    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null)
+    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
         $property->oneOf = Generator::UNDEFINED !== $property->oneOf ? $property->oneOf : [];
 
         foreach ($types as $type) {
             $property->oneOf[] = $schema = Util::createChild($property, OA\Schema::class, []);
-            foreach ($this->propertyDescribers as $propertyDescriber) {
-                if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
-                    $propertyDescriber->setModelRegistry($this->modelRegistry);
-                }
-                if ($propertyDescriber->supports([$type])) {
-                    $propertyDescriber->describe([$type], $schema, $groups, $schema);
 
-                    break;
-                }
-            }
+            $this->propertyDescriber->describe([$type], $schema, $groups, $schema, $context);
         }
     }
 

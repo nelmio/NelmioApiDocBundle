@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\Model;
 
 use Symfony\Component\PropertyInfo\Type;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 final class Model
 {
@@ -35,7 +34,7 @@ final class Model
         $this->options = $options;
         $this->serializationContext = $serializationContext;
         if (null !== $groups) {
-            $this->serializationContext[AbstractNormalizer::GROUPS] = $groups;
+            $this->serializationContext['groups'] = $groups;
         }
     }
 
@@ -49,7 +48,7 @@ final class Model
      */
     public function getGroups()
     {
-        return $this->serializationContext[AbstractNormalizer::GROUPS] ?? null;
+        return $this->serializationContext['groups'] ?? null;
     }
 
     /**
@@ -62,7 +61,7 @@ final class Model
 
     public function getHash(): string
     {
-        return md5(serialize([$this->type, $this->getGroups()]));
+        return md5(serialize([$this->type, $this->getSerializationContext()]));
     }
 
     /**
