@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Hateoas\Configuration\Embedded;
+use OpenApi\Generator;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -30,6 +31,12 @@ class BazingaFunctionalTest extends WebTestCase
 
     public function testModelComplexDocumentationBazinga()
     {
+        $model = $this->getModel('BazingaUser');
+
+        if (Generator::UNDEFINED === $model->properties) {
+            $this->markTestSkipped('Typed embedded properties require at least willdurand/hateoas 3.0');
+        }
+
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
@@ -79,11 +86,17 @@ class BazingaFunctionalTest extends WebTestCase
                 ],
             ],
             'schema' => 'BazingaUser',
-        ], json_decode($this->getModel('BazingaUser')->toJson(), true));
+        ], json_decode($model->toJson(), true));
     }
 
     public function testWithGroup()
     {
+        $model = $this->getModel('BazingaUser_grouped');
+
+        if (Generator::UNDEFINED === $model->properties) {
+            $this->markTestSkipped('Typed embedded properties require at least willdurand/hateoas 3.0');
+        }
+
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
@@ -97,7 +110,7 @@ class BazingaFunctionalTest extends WebTestCase
                 ],
             ],
             'schema' => 'BazingaUser_grouped',
-        ], json_decode($this->getModel('BazingaUser_grouped')->toJson(), true));
+        ], json_decode($model->toJson(), true));
     }
 
     public function testWithType()
@@ -107,6 +120,13 @@ class BazingaFunctionalTest extends WebTestCase
         } catch (\ReflectionException $e) {
             $this->markTestSkipped('Typed embedded properties require at least willdurand/hateoas 3.0');
         }
+
+        $model = $this->getModel('BazingaUserTyped');
+
+        if (Generator::UNDEFINED === $model->properties) {
+            $this->markTestSkipped('Typed embedded properties require at least willdurand/hateoas 3.0');
+        }
+
         $this->assertEquals([
             'type' => 'object',
             'properties' => [
@@ -126,7 +146,7 @@ class BazingaFunctionalTest extends WebTestCase
                 ],
             ],
             'schema' => 'BazingaUserTyped',
-        ], json_decode($this->getModel('BazingaUserTyped')->toJson(), true));
+        ], json_decode($model->toJson(), true));
     }
 
     protected static function createKernel(array $options = []): KernelInterface
