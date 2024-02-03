@@ -28,40 +28,39 @@ final class ApiDocGenerator
 {
     use LoggerAwareTrait;
 
-    /** @var OpenApi */
-    private $openApi;
+    private ?OpenApi $openApi = null;
 
     /** @var iterable|DescriberInterface[] */
-    private $describers;
+    private iterable $describers;
 
     /** @var iterable|ModelDescriberInterface[] */
-    private $modelDescribers;
+    private iterable $modelDescribers;
 
-    /** @var CacheItemPoolInterface|null */
-    private $cacheItemPool;
+    private ?CacheItemPoolInterface $cacheItemPool;
 
-    /** @var string|null */
-    private $cacheItemId;
+    private ?string $cacheItemId;
 
     /** @var string[] */
-    private $alternativeNames = [];
+    private array $alternativeNames = [];
 
     /** @var string[] */
-    private $mediaTypes = ['json'];
-    /**
-     * @var ?string
-     */
-    private $openApiVersion;
+    private array $mediaTypes = ['json'];
 
-    /** @var Generator */
-    private $generator;
+    private ?string $openApiVersion = null;
+
+    private Generator $generator;
 
     /**
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, ?CacheItemPoolInterface $cacheItemPool = null, ?string $cacheItemId = null, ?Generator $generator = null)
-    {
+    public function __construct(
+        iterable $describers,
+        iterable $modelDescribers,
+        ?CacheItemPoolInterface $cacheItemPool = null,
+        ?string $cacheItemId = null,
+        ?Generator $generator = null
+    ) {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
         $this->cacheItemPool = $cacheItemPool;
