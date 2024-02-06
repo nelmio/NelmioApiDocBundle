@@ -155,8 +155,6 @@ final class Util
      * it is expected to be a string nested property.
      *
      * @see OA\AbstractAnnotation::$_nested
-     *
-     * @param $class
      */
     public static function getChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
     {
@@ -372,6 +370,24 @@ final class Util
         }
     }
 
+    /**
+     * Get assigned property name for property schema.
+     */
+    public static function getSchemaPropertyName(OA\Schema $schema, OA\Schema $property): ?string
+    {
+        if (Generator::UNDEFINED === $schema->properties) {
+            return null;
+        }
+
+        foreach ($schema->properties as $schemaProperty) {
+            if ($schemaProperty === $property) {
+                return Generator::UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
+            }
+        }
+
+        return null;
+    }
+
     private static function mergeFromArray(OA\AbstractAnnotation $annotation, array $properties, bool $overwrite)
     {
         $done = [];
@@ -408,7 +424,7 @@ final class Util
             if ('$ref' === $propertyName) {
                 $propertyName = 'ref';
             }
-            if (!\in_array($propertyName, $done, true)) {
+            if (array_key_exists($propertyName, $defaults) && !\in_array($propertyName, $done, true)) {
                 self::mergeProperty($annotation, $propertyName, $value, $defaults[$propertyName], $overwrite);
             }
         }
@@ -487,5 +503,17 @@ final class Util
             },
             $class::$_nested
         ));
+    }
+
+    /**
+     * Helper method to modify an annotation value only if its value has not yet been set.
+     */
+    public static function modifyAnnotationValue(OA\AbstractAnnotation $parameter, string $property, $value): void
+    {
+        if (!Generator::isDefault($parameter->{$property})) {
+            return;
+        }
+
+        $parameter->{$property} = $value;
     }
 }

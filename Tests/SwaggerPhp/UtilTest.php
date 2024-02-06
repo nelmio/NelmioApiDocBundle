@@ -11,11 +11,22 @@
 
 namespace Nelmio\ApiDocBundle\Tests\SwaggerPhp;
 
+use ArrayObject;
+use Exception;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
+use stdClass;
+use function array_key_exists;
+use function array_slice;
+use function count;
+use function get_class;
+use function get_class_vars;
+use function get_object_vars;
+use function in_array;
+use function strpos;
 
 /**
  * Class UtilTest.
@@ -114,7 +125,7 @@ class UtilTest extends TestCase
 
     public function testCreateChildWithProperties()
     {
-        $properties = ['title' => 'testing', 'version' => '999', 'x' => new \stdClass()];
+        $properties = ['title' => 'testing', 'version' => '999', 'x' => new stdClass()];
         /** @var OA\Info $info */
         $info = Util::createChild($this->rootAnnotation, OA\Info::class, $properties);
 
@@ -174,12 +185,12 @@ class UtilTest extends TestCase
 
     public function testSearchCollectionItem()
     {
-        $item1 = new \stdClass();
+        $item1 = new stdClass();
         $item1->prop1 = 'item 1 prop 1';
         $item1->prop2 = 'item 1 prop 2';
         $item1->prop3 = 'item 1 prop 3';
 
-        $item2 = new \stdClass();
+        $item2 = new stdClass();
         $item2->prop1 = 'item 2 prop 1';
         $item2->prop2 = 'item 2 prop 2';
         $item2->prop3 = 'item 2 prop 3';
@@ -202,7 +213,7 @@ class UtilTest extends TestCase
 
         try {
             Util::searchCollectionItem($collection, array_merge(get_object_vars($item2), $search));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
 
@@ -222,7 +233,7 @@ class UtilTest extends TestCase
                     (Generator::UNDEFINED !== $setup['components']->{$collection} ? $setup['components']->{$collection} : []);
 
                 // get the indexing correct within haystack preparation
-                $properties = array_fill(0, \count($setupCollection), null);
+                $properties = array_fill(0, count($setupCollection), null);
 
                 // prepare the haystack array
                 foreach ($items as $assertItem) {
@@ -273,7 +284,7 @@ class UtilTest extends TestCase
                     $setup['components']->{$collection} ?? [];
 
                 // the children created within provider are not connected
-                if (!\in_array($child, $setupHaystack, true)) {
+                if (!in_array($child, $setupHaystack, true)) {
                     $this->assertIsNested($itemParent, $child);
                     $this->assertIsConnectedToRootContext($child);
                 }
@@ -386,7 +397,7 @@ class UtilTest extends TestCase
             $this->assertInstanceOf($assert['class'], $child);
             $this->assertSame($child, $parent->{$key});
 
-            if (\array_key_exists($key, $setup)) {
+            if (array_key_exists($key, $setup)) {
                 $this->assertSame($setup[$key], $parent->{$key});
             }
 
@@ -696,25 +707,25 @@ class UtilTest extends TestCase
                 'assert' => array_merge(
                     $assertDefaults,
                     $merge,
-                    ['tags' => \array_slice($merge['tags'], 0, 2, true)]
+                    ['tags' => array_slice($merge['tags'], 0, 2, true)]
                 ),
             ], [
                 // heavy nested merge array object
                 'setup' => $setupDefaults,
-                'merge' => new \ArrayObject([
+                'merge' => new ArrayObject([
                     'servers' => [
                         ['url' => 'http'],
                         ['url' => 'https'],
                     ],
                     'paths' => [
                         '/path/to/resource' => [
-                            'get' => new \ArrayObject([
+                            'get' => new ArrayObject([
                                 'responses' => [
                                     '200' => [
                                         '$ref' => '#/components/responses/default',
                                     ],
                                 ],
-                                'requestBody' => new \ArrayObject([
+                                'requestBody' => new ArrayObject([
                                     'description' => 'request foo',
                                     'content' => [
                                         'foo-request' => [
@@ -728,22 +739,22 @@ class UtilTest extends TestCase
                             ]),
                         ],
                     ],
-                    'tags' => new \ArrayObject([
+                    'tags' => new ArrayObject([
                         ['name' => 'baz'],
                         ['name' => 'foo'],
-                        new \ArrayObject(['name' => 'baz']),
+                        new ArrayObject(['name' => 'baz']),
                         ['name' => 'foo'],
                         ['name' => 'foo'],
                     ]),
-                    'components' => new \ArrayObject([
+                    'components' => new ArrayObject([
                         'responses' => [
                             'default' => [
                                 'description' => 'default response',
-                                'headers' => new \ArrayObject([
-                                    'foo-header' => new \ArrayObject([
-                                        'schema' => new \ArrayObject([
+                                'headers' => new ArrayObject([
+                                    'foo-header' => new ArrayObject([
+                                        'schema' => new ArrayObject([
                                             'type' => 'array',
-                                            'items' => new \ArrayObject([
+                                            'items' => new ArrayObject([
                                                 'type' => 'string',
                                                 'enum' => ['foo', 'bar', 'baz'],
                                             ]),
@@ -757,7 +768,7 @@ class UtilTest extends TestCase
                 'assert' => array_merge(
                     $assertDefaults,
                     $merge,
-                    ['tags' => \array_slice($merge['tags'], 0, 2, true)]
+                    ['tags' => array_slice($merge['tags'], 0, 2, true)]
                 ),
             ], [
                 // heavy nested merge swagger instance
@@ -823,7 +834,7 @@ class UtilTest extends TestCase
                 'assert' => array_merge(
                     $assertDefaults,
                     $merge,
-                    ['tags' => \array_slice($merge['tags'], 0, 2, true)]
+                    ['tags' => array_slice($merge['tags'], 0, 2, true)]
                 ),
             ], ];
     }
@@ -851,11 +862,11 @@ class UtilTest extends TestCase
 
     private function getNonDefaultProperties($object)
     {
-        $objectVars = \get_object_vars($object);
-        $classVars = \get_class_vars(\get_class($object));
+        $objectVars = get_object_vars($object);
+        $classVars = get_class_vars(get_class($object));
         $props = [];
         foreach ($objectVars as $key => $value) {
-            if ($value !== $classVars[$key] && 0 !== \strpos($key, '_')) {
+            if ($value !== $classVars[$key] && 0 !== strpos($key, '_')) {
                 $props[$key] = $value;
             }
         }

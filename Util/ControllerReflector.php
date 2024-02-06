@@ -80,7 +80,7 @@ class ControllerReflector
             try {
                 $controller = $this->controllerNameParser->parse($controller);
 
-                @trigger_error(sprintf('Referencing controllers with %s is deprecated since Symfony 4.1, use "%s" instead.', $deprecatedNotation, $controller), E_USER_DEPRECATED);
+                trigger_deprecation('nelmio/api-doc-bundle', '3.6', 'Referencing controllers with %s is deprecated since Symfony 4.1, use "%s" instead.', $deprecatedNotation, $controller);
             } catch (\InvalidArgumentException $e) {
                 // unable to optimize unknown notation
             }

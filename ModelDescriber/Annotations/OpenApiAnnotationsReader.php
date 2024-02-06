@@ -28,10 +28,13 @@ class OpenApiAnnotationsReader
 {
     use SetsContextTrait;
 
+    /**
+     * @var Reader|null
+     */
     private $annotationsReader;
     private $modelRegister;
 
-    public function __construct(Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
+    public function __construct(?Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
     {
         $this->annotationsReader = $annotationsReader;
         $this->modelRegister = new ModelRegister($modelRegistry, $mediaTypes);
@@ -97,12 +100,14 @@ class OpenApiAnnotationsReader
                 }
             }
 
-            if ($reflection instanceof \ReflectionClass) {
-                return $this->annotationsReader->getClassAnnotation($reflection, $className);
-            } elseif ($reflection instanceof \ReflectionProperty) {
-                return $this->annotationsReader->getPropertyAnnotation($reflection, $className);
-            } elseif ($reflection instanceof \ReflectionMethod) {
-                return $this->annotationsReader->getMethodAnnotation($reflection, $className);
+            if (null !== $this->annotationsReader) {
+                if ($reflection instanceof \ReflectionClass) {
+                    return $this->annotationsReader->getClassAnnotation($reflection, $className);
+                } elseif ($reflection instanceof \ReflectionProperty) {
+                    return $this->annotationsReader->getPropertyAnnotation($reflection, $className);
+                } elseif ($reflection instanceof \ReflectionMethod) {
+                    return $this->annotationsReader->getMethodAnnotation($reflection, $className);
+                }
             }
         } finally {
             $this->setContext(null);

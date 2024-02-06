@@ -11,12 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use Symfony\Component\Routing\Annotation\Route;
 
-if (\PHP_VERSION_ID >= 80100) {
-    /**
-     * @Route("/api", name="api_", host="api.example.com")
-     */
+if (TestKernel::isAttributesAvailable()) {
+    #[Route('/api', name: 'api_', host: 'api.example.com')]
     class ApiController extends ApiController81
     {
     }

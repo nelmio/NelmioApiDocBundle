@@ -20,6 +20,8 @@ use OpenApi\Attributes as OAattr;
 use OpenApi\Context;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
+use const PHP_VERSION_ID;
 
 class AnnotationReaderTest extends TestCase
 {
@@ -27,6 +29,7 @@ class AnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
+     *
      * @dataProvider provideProperty
      */
     public function testProperty($entity)
@@ -38,9 +41,13 @@ class AnnotationReaderTest extends TestCase
         $schema->merge([new OA\Property(['property' => 'property2'] + $baseProps)]);
 
         $registry = new ModelRegistry([], new OA\OpenApi($baseProps), []);
-        $symfonyConstraintAnnotationReader = new OpenApiAnnotationsReader(new AnnotationReader(), $registry, ['json']);
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
-        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->properties[1]);
+        $symfonyConstraintAnnotationReader = new OpenApiAnnotationsReader(
+            class_exists(AnnotationReader::class) ? new AnnotationReader() : null,
+            $registry,
+            ['json']
+        );
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+        $symfonyConstraintAnnotationReader->updateProperty(new ReflectionProperty($entity, 'property2'), $schema->properties[1]);
 
         $this->assertEquals($schema->properties[0]->example, 1);
         $this->assertEquals($schema->properties[0]->description, Generator::UNDEFINED);
@@ -62,7 +69,7 @@ class AnnotationReaderTest extends TestCase
             private $property2;
         }];
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => [new class() {
                 #[OAattr\Property(example: 1)]
                 private $property1;
