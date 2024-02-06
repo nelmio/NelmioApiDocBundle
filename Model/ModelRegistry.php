@@ -139,6 +139,7 @@ final class ModelRegistry
                 ]);
             }
         }
+
         return $name;
     }
 
