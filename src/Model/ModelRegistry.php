@@ -146,16 +146,16 @@ final class ModelRegistry
         );
         $i = 1;
         while (\in_array($name, $names, true)) {
-            if (isset($this->registeredModelNames[$name])) {
-                $this->logger->info(sprintf('Can not assign a name for the model, the name "%s" has already been taken.', $name), [
-                    'model' => $this->modelToArray($model),
-                    'taken_by' => $this->modelToArray($this->registeredModelNames[$name]),
-                ]);
-            }
-            ++$i;
+            $i++;
             $name = $base.$i;
         }
 
+        if($i > 1) {
+            $this->logger->info(sprintf('Can not assign a name for the model, the name "%s" is now being used %s times', $base, $i), [
+                'model' => $this->modelToArray($model),
+                'taken_by' => $this->modelToArray($this->registeredModelNames[$base]),
+            ]);
+        }
         return $name;
     }
 
