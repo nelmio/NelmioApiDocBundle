@@ -11,16 +11,19 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use DateTime;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
-class CustomDateTime extends \DateTime
+class CustomDateTime extends DateTime
 {
     /**
      * @Serializer\Type("string")
+     *
      * @Serializer\Expose
+     *
      * @Serializer\SerializedName("format")
      */
     private $format;

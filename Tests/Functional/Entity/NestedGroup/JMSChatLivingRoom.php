@@ -22,6 +22,7 @@ class JMSChatLivingRoom
 {
     /**
      * @Serializer\Type("integer")
+     *
      * @Serializer\Expose
      */
     private $id;

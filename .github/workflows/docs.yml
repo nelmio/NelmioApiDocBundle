@@ -12,17 +12,17 @@ jobs:
 
         steps:
             -   name: "Checkout"
-                uses: actions/checkout@v2
+                uses: actions/checkout@v4
 
             -   name: "Create cache dir"
                 run: mkdir .cache
 
             -   name: "Extract base branch name"
-                run: echo "##[set-output name=branch;]$(echo ${GITHUB_BASE_REF:=${GITHUB_REF##*/}})"
+                run: echo "branch=$(echo ${GITHUB_BASE_REF:=${GITHUB_REF##*/}})" >> $GITHUB_OUTPUT
                 id: extract_base_branch
 
             -   name: "Cache DOCtor-RST"
-                uses: actions/cache@v2
+                uses: actions/cache@v3
                 with:
                     path: .cache
                     key: ${{ runner.os }}-doctor-rst-${{ steps.extract_base_branch.outputs.branch }}

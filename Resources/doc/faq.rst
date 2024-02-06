@@ -30,7 +30,6 @@ A: You can configure ``schemas`` in the nelmio_api_doc configuration and then re
 .. code-block:: php
 
     // src/App/Controller/NelmioController.php
-
     /**
      * @OA\Response(
      *     response=200,

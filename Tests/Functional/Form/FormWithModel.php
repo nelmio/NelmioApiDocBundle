@@ -20,13 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormWithModel extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('quz', TextType::class, ['documentation' => ['ref' => new Model(['type' => User::class])]]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
     }
 }

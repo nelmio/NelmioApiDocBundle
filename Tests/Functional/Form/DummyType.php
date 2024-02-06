@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class DummyType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('bar', TextType::class, ['required' => false]);
         $builder->add('foo', ChoiceType::class, ['choices' => ['male', 'female']]);

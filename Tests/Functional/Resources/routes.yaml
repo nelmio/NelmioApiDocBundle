@@ -8,7 +8,7 @@ api:
     type: annotation
 
 class_api:
-    resource: ../Controller/ClassApiController.php
+    resource: ../Controller/ClassApiController80.php
     type: annotation
   
 undocumented:
@@ -16,13 +16,8 @@ undocumented:
     type: annotation
   
 invokable:
-    resource: ../Controller/InvokableController.php
+    resource: ../Controller/InvokableController80.php
     type: annotation
-  
-fos_rest:
-    resource: ../Controller/FOSRestController.php
-    type: annotation
-  
   
 api_platform:
     resource: .

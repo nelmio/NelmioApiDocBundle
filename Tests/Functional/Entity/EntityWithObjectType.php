@@ -11,15 +11,27 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Annotations as OA;
 
-/**
- * @OA\Schema(type="object")
- */
-class EntityWithObjectType
-{
+if (TestKernel::isAnnotationsAvailable()) {
     /**
-     * @var string
+     * @OA\Schema(type="object")
      */
-    public $notIgnored = 'this should be read';
+    class EntityWithObjectType
+    {
+        /**
+         * @var string
+         */
+        public $notIgnored = 'this should be read';
+    }
+} else {
+    #[\OpenApi\Attributes\Schema(type: 'object')]
+    class EntityWithObjectType
+    {
+        /**
+         * @var string
+         */
+        public $notIgnored = 'this should be read';
+    }
 }

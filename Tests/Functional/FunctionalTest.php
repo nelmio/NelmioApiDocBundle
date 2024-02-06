@@ -11,12 +11,14 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use const PHP_VERSION_ID;
 
 class FunctionalTest extends WebTestCase
 {
@@ -62,9 +64,11 @@ class FunctionalTest extends WebTestCase
 
     public function provideArticleRoute(): iterable
     {
-        yield 'Annotations' => ['/api/article/{id}'];
+        if (interface_exists(Reader::class)) {
+            yield 'Annotations' => ['/api/article/{id}'];
+        }
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => ['/api/article_attributes/{id}'];
         }
     }
@@ -218,7 +222,7 @@ class FunctionalTest extends WebTestCase
                     ],
                     'friend' => [
                         'nullable' => true,
-                        'allOf' => [
+                        'oneOf' => [
                             ['$ref' => '#/components/schemas/User'],
                         ],
                     ],
@@ -242,6 +246,13 @@ class FunctionalTest extends WebTestCase
                     ],
                 ],
                 'schema' => 'User',
+                'required' => [
+                    'creationDate',
+                    'users',
+                    'status',
+                    'dateAsInterface',
+                    'dummy',
+                ],
             ],
             json_decode($this->getModel('User')->toJson(), true)
         );
@@ -376,7 +387,7 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/security'];
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => ['/api/security_attributes'];
         }
     }
@@ -394,14 +405,14 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/securityOverride'];
 
-        if (\PHP_VERSION_ID >= 80100) {
+        if (PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => ['/api/security_override_attributes'];
         }
     }
 
     public function testInlinePHP81Parameters()
     {
-        if (\PHP_VERSION_ID < 80100) {
+        if (PHP_VERSION_ID < 80100) {
             $this->markTestSkipped('Attributes require PHP 8.1');
         }
 
@@ -424,10 +435,34 @@ class FunctionalTest extends WebTestCase
 
     public function testSymfonyConstraintDocumentation()
     {
+        if (TestKernel::isAttributesAvailable()) {
+            $modelName = 'SymfonyConstraints81';
+        } else {
+            $modelName = 'SymfonyConstraints80';
+        }
+
         $expected = [
             'required' => [
                 'propertyNotBlank',
                 'propertyNotNull',
+                'propertyAssertLength',
+                'propertyRegex',
+                'propertyCount',
+                'propertyChoice',
+                'propertyChoiceWithCallback',
+                'propertyChoiceWithCallbackWithoutClass',
+                'propertyChoiceWithMultiple',
+                'propertyExpression',
+                'propertyRange',
+                'propertyRangeDate',
+                'propertyLessThan',
+                'propertyLessThanDate',
+                'propertyLessThanOrEqual',
+                'propertyLessThanOrEqualDate',
+                'propertyGreaterThan',
+                'propertyGreaterThanDate',
+                'propertyGreaterThanOrEqual',
+                'propertyGreaterThanOrEqualDate',
             ],
             'properties' => [
                 'propertyNotBlank' => [
@@ -479,21 +514,50 @@ class FunctionalTest extends WebTestCase
                     'maximum' => 5,
                     'minimum' => 1,
                 ],
+                'propertyRangeDate' => [
+                    'type' => 'string',
+                    'format' => 'date-time',
+                ],
                 'propertyLessThan' => [
                     'type' => 'integer',
                     'exclusiveMaximum' => true,
                     'maximum' => 42,
                 ],
+                'propertyLessThanDate' => [
+                    'type' => 'string',
+                    'format' => 'date-time',
+                ],
                 'propertyLessThanOrEqual' => [
                     'type' => 'integer',
                     'maximum' => 23,
                 ],
+                'propertyLessThanOrEqualDate' => [
+                    'type' => 'string',
+                    'format' => 'date-time',
+                ],
                 'propertyWithCompoundValidationRule' => [
                     'type' => 'integer',
                 ],
+                'propertyGreaterThan' => [
+                    'type' => 'integer',
+                    'exclusiveMinimum' => true,
+                    'minimum' => 42,
+                ],
+                'propertyGreaterThanDate' => [
+                    'type' => 'string',
+                    'format' => 'date-time',
+                ],
+                'propertyGreaterThanOrEqual' => [
+                    'type' => 'integer',
+                    'minimum' => 23,
+                ],
+                'propertyGreaterThanOrEqualDate' => [
+                    'type' => 'string',
+                    'format' => 'date-time',
+                ],
             ],
             'type' => 'object',
-            'schema' => 'SymfonyConstraints',
+            'schema' => $modelName,
         ];
 
         if (Helper::isCompoundValidatorConstraintSupported()) {
@@ -507,7 +571,7 @@ class FunctionalTest extends WebTestCase
             ];
         }
 
-        $this->assertEquals($expected, json_decode($this->getModel('SymfonyConstraints')->toJson(), true));
+        $this->assertEquals($expected, json_decode($this->getModel($modelName)->toJson(), true));
     }
 
     public function testConfigReference()
@@ -540,7 +604,12 @@ class FunctionalTest extends WebTestCase
             $this->markTestSkipped('Annotation @SerializedName doesn\'t exist.');
         }
 
-        $model = $this->getModel('SerializedNameEnt');
+        if (TestKernel::isAttributesAvailable()) {
+            $model = $this->getModel('SerializedNameEntity');
+        } else {
+            $model = $this->getModel('SerializedNameEnt');
+        }
+
         $this->assertCount(2, $model->properties);
 
         $this->assertNotHasProperty('foo', $model);
@@ -552,17 +621,255 @@ class FunctionalTest extends WebTestCase
 
     public function testCompoundEntityAction()
     {
-        $model = $this->getModel('CompoundEntity');
-        $this->assertCount(1, $model->properties);
+        if (PHP_VERSION_ID < 70400) {
+            self::assertEquals([
+                'schema' => 'CompoundEntity',
+                'type' => 'object',
+                'required' => ['complex', 'arrayOfArrayComplex'],
+                'properties' => [
+                    'complex' => [
+                        'oneOf' => [
+                            [
+                                'type' => 'integer',
+                            ],
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntity',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'nullableComplex' => [
+                        'nullable' => true,
+                        'oneOf' => [
+                            [
+                                'type' => 'integer',
+                                'nullable' => true,
+                            ],
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntity',
+                                ],
+                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
+                            ],
+                        ],
+                    ],
+                    'complexNested' => [
+                        'nullable' => true,
+                        'oneOf' => [
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntityNested',
+                                ],
+                                'nullable' => true,
+                            ],
+                            [
+                                'type' => 'string',
+                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
+                            ],
+                        ],
+                    ],
+                    'arrayOfArrayComplex' => [
+                        'oneOf' => [
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntityNested',
+                                ],
+                            ],
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    'type' => 'array',
+                                    'items' => [
+                                        '$ref' => '#/components/schemas/CompoundEntityNested',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ], json_decode($this->getModel('CompoundEntity')->toJson(), true));
 
-        $this->assertHasProperty('complex', $model);
+            self::assertEquals([
+                'schema' => 'CompoundEntityNested',
+                'type' => 'object',
+                'required' => ['complex'],
+                'properties' => [
+                    'complex' => [
+                        'oneOf' => [
+                            [
+                                'type' => 'integer',
+                            ],
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntity',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'nullableComplex' => [
+                        'nullable' => true,
+                        'oneOf' => [
+                            [
+                                'type' => 'integer',
+                                'nullable' => true,
+                            ],
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntity',
+                                ],
+                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
+                            ],
+                        ],
+                    ],
+                    'complexNested' => [
+                        'nullable' => true,
+                        'oneOf' => [
+                            [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntityNested',
+                                ],
+                                'nullable' => true,
+                            ],
+                            [
+                                'type' => 'string',
+                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
+                            ],
+                        ],
+                    ],
+                ],
+            ], json_decode($this->getModel('CompoundEntityNested')->toJson(), true));
 
-        $property = $model->properties[0];
-        $this->assertCount(2, $property->oneOf);
+            return;
+        }
 
-        $this->assertSame('integer', $property->oneOf[0]->type);
-        $this->assertSame('array', $property->oneOf[1]->type);
-        $this->assertSame('#/components/schemas/CompoundEntity', $property->oneOf[1]->items->ref);
+        self::assertEquals([
+            'schema' => 'CompoundEntity',
+            'type' => 'object',
+            'required' => ['complex', 'arrayOfArrayComplex'],
+            'properties' => [
+                'complex' => [
+                    'oneOf' => [
+                        [
+                            'type' => 'integer',
+                        ],
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntity',
+                            ],
+                        ],
+                    ],
+                ],
+                'nullableComplex' => [
+                    'nullable' => true,
+                    'oneOf' => [
+                        [
+                            'type' => 'integer',
+                            'nullable' => true,
+                        ],
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntity',
+                            ],
+                        ],
+                    ],
+                ],
+                'complexNested' => [
+                    'nullable' => true,
+                    'oneOf' => [
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntityNested',
+                            ],
+                            'nullable' => true,
+                        ],
+                        [
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
+                'arrayOfArrayComplex' => [
+                    'oneOf' => [
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntityNested',
+                            ],
+                        ],
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                'type' => 'array',
+                                'items' => [
+                                    '$ref' => '#/components/schemas/CompoundEntityNested',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], json_decode($this->getModel('CompoundEntity')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'CompoundEntityNested',
+            'type' => 'object',
+            'required' => ['complex'],
+            'properties' => [
+                'complex' => [
+                    'oneOf' => [
+                        [
+                            'type' => 'integer',
+                        ],
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntity',
+                            ],
+                        ],
+                    ],
+                ],
+                'nullableComplex' => [
+                    'nullable' => true,
+                    'oneOf' => [
+                        [
+                            'type' => 'integer',
+                            'nullable' => true,
+                        ],
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntity',
+                            ],
+                        ],
+                    ],
+                ],
+                'complexNested' => [
+                    'nullable' => true,
+                    'oneOf' => [
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntityNested',
+                            ],
+                            'nullable' => true,
+                        ],
+                        [
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
+            ],
+        ], json_decode($this->getModel('CompoundEntityNested')->toJson(), true));
     }
 
     public function testInvokableController()
@@ -612,7 +919,11 @@ class FunctionalTest extends WebTestCase
 
     public function testModelsWithDiscriminatorMapAreLoadedWithOpenApiPolymorphism()
     {
-        $model = $this->getModel('SymfonyDiscriminator');
+        if (TestKernel::isAttributesAvailable()) {
+            $model = $this->getModel('SymfonyDiscriminator81');
+        } else {
+            $model = $this->getModel('SymfonyDiscriminator80');
+        }
 
         $this->assertInstanceOf(OAAnnotations\Discriminator::class, $model->discriminator);
         $this->assertSame('type', $model->discriminator->propertyName);
@@ -659,11 +970,50 @@ class FunctionalTest extends WebTestCase
 
         $this->assertSame('string', $model->type);
         $this->assertCount(2, $model->enum);
+
+        $model = $this->getModel('ArticleType81NotBacked');
+
+        $this->assertSame('object', $model->type, 'Non backed enums cannot be described');
+
+        $model = $this->getModel('ArticleType81IntBacked');
+
+        $this->assertSame('integer', $model->type);
+        $this->assertCount(2, $model->enum);
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                ],
+                'type' => [
+                    '$ref' => '#/components/schemas/ArticleType81',
+                ],
+                'intBackedType' => [
+                    '$ref' => '#/components/schemas/ArticleType81IntBacked',
+                ],
+                'notBackedType' => [
+                    '$ref' => '#/components/schemas/ArticleType81NotBacked',
+                ],
+                'nullableType' => [
+                    'nullable' => true,
+                    'allOf' => [
+                        ['$ref' => '#/components/schemas/ArticleType81'],
+                    ],
+                ],
+            ],
+            'required' => ['id', 'type', 'intBackedType', 'notBackedType'],
+            'schema' => 'Article81',
+        ], json_decode($this->getModel('Article81')->toJson(), true));
     }
 
     public function testEntitiesWithOverriddenSchemaTypeDoNotReadOtherProperties()
     {
-        $model = $this->getModel('EntityWithAlternateType');
+        if (TestKernel::isAttributesAvailable()) {
+            $model = $this->getModel('EntityWithAlternateType81');
+        } else {
+            $model = $this->getModel('EntityWithAlternateType80');
+        }
 
         $this->assertSame('array', $model->type);
         $this->assertSame('string', $model->items->type);
@@ -706,6 +1056,19 @@ class FunctionalTest extends WebTestCase
         $this->assertSame(Generator::UNDEFINED, $model->properties);
     }
 
+    public function testFormCsrfIsOnlyDetectedIfCsrfExtensionIsEnabled(): void
+    {
+        // Make sure that test precondition is correct.
+        $isCsrfFormExtensionEnabled = self::getContainer()->getParameter('form.type_extension.csrf.enabled');
+        $this->assertFalse($isCsrfFormExtensionEnabled, 'The test needs the csrf form extension to be disabled.');
+
+        $model = $this->getModel('FormWithCsrfProtectionEnabledType');
+
+        // Make sure that no token property was added
+        $this->assertCount(1, $model->properties);
+        $this->assertHasProperty('name', $model);
+    }
+
     public function testEntityWithNullableSchemaSet()
     {
         $model = $this->getModel('EntityWithNullableSchemaSet');
@@ -729,5 +1092,186 @@ class FunctionalTest extends WebTestCase
 
         // nonNullablePropertyNullableTrueSet
         $this->assertTrue($model->properties[5]->nullable);
+    }
+
+    public function testContextPassedToNameConverter()
+    {
+        $operation = $this->getOperation('/api/name_converter_context', 'get');
+
+        $response = $this->getOperationResponse($operation, '200');
+        self::assertEquals([
+            'response' => '200',
+            'description' => '',
+            'content' => [
+                'application/json' => [
+                    'schema' => ['$ref' => '#/components/schemas/EntityThroughNameConverter'],
+                ],
+            ],
+        ], json_decode($response->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'EntityThroughNameConverter',
+            'type' => 'object',
+            'required' => [
+                'name_converter_context_id',
+                'name_converter_context_name',
+                'name_converter_context_nested',
+            ],
+            'properties' => [
+                'name_converter_context_id' => [
+                    'type' => 'integer',
+                ],
+                'name_converter_context_name' => [
+                    'type' => 'string',
+                ],
+                'name_converter_context_nested' => [
+                    '$ref' => '#/components/schemas/EntityThroughNameConverterNested',
+                ],
+            ],
+        ], json_decode($this->getModel('EntityThroughNameConverter')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'EntityThroughNameConverterNested',
+            'type' => 'object',
+            'required' => [
+                'name_converter_context_someNestedId',
+                'name_converter_context_someNestedName',
+            ],
+            'properties' => [
+                'name_converter_context_someNestedId' => [
+                    'type' => 'integer',
+                ],
+                'name_converter_context_someNestedName' => [
+                    'type' => 'string',
+                ],
+            ],
+        ], json_decode($this->getModel('EntityThroughNameConverterNested')->toJson(), true));
+
+        $response = $this->getOperationResponse($operation, '201');
+        self::assertEquals([
+            'response' => '201',
+            'description' => 'Same class without context',
+            'content' => [
+                'application/json' => [
+                    'schema' => ['$ref' => '#/components/schemas/EntityThroughNameConverter2'],
+                ],
+            ],
+        ], json_decode($response->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'EntityThroughNameConverter2',
+            'type' => 'object',
+            'required' => [
+                'id',
+                'name',
+                'nested',
+            ],
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                ],
+                'name' => [
+                    'type' => 'string',
+                ],
+                'nested' => [
+                    '$ref' => '#/components/schemas/EntityThroughNameConverterNested2',
+                ],
+            ],
+        ], json_decode($this->getModel('EntityThroughNameConverter2')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'EntityThroughNameConverterNested2',
+            'type' => 'object',
+            'required' => [
+                'someNestedId',
+                'someNestedName',
+            ],
+            'properties' => [
+                'someNestedId' => [
+                    'type' => 'integer',
+                ],
+                'someNestedName' => [
+                    'type' => 'string',
+                ],
+            ],
+        ], json_decode($this->getModel('EntityThroughNameConverterNested2')->toJson(), true));
+    }
+
+    public function testArbitraryArrayModel()
+    {
+        $this->getOperation('/api/arbitrary_array', 'get');
+
+        self::assertEquals([
+            'schema' => 'Foo',
+            'required' => ['articles', 'bars'],
+            'properties' => [
+                'articles' => [
+                    'type' => 'string',
+                ],
+                'bars' => [
+                    'type' => 'array',
+                    'items' => ['$ref' => '#/components/schemas/Bar'],
+                ],
+            ],
+            'type' => 'object',
+        ], json_decode($this->getModel('Foo')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'Bar',
+            'required' => ['things', 'moreThings'],
+            'properties' => [
+                'things' => [
+                    'type' => 'array',
+                    'items' => [],
+                ],
+                'moreThings' => [
+                    'type' => 'array',
+                    'items' => [],
+                ],
+            ],
+            'type' => 'object',
+        ], json_decode($this->getModel('Bar')->toJson(), true));
+    }
+
+    public function testEntityWithFalsyDefaults()
+    {
+        $model = $this->getModel('EntityWithFalsyDefaults');
+
+        $this->assertSame(Generator::UNDEFINED, $model->required);
+
+        self::assertEquals([
+            'schema' => 'EntityWithFalsyDefaults',
+            'type' => 'object',
+            'properties' => [
+                'zero' => [
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
+                'float' => [
+                    'type' => 'number',
+                    'format' => 'float',
+                    'default' => 0.0,
+                ],
+                'empty' => [
+                    'type' => 'string',
+                    'default' => '',
+                ],
+                'false' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
+                'nullString' => [
+                    'nullable' => true,
+                    'type' => 'string',
+                ],
+                'array' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'string',
+                    ],
+                    'default' => [],
+                ],
+            ],
+        ], json_decode($model->toJson(), true));
     }
 }

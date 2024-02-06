@@ -28,7 +28,7 @@ class SymfonyConstraintAnnotationReader
     use SetsContextTrait;
 
     /**
-     * @var Reader
+     * @var Reader|null
      */
     private $annotationsReader;
 
@@ -42,7 +42,7 @@ class SymfonyConstraintAnnotationReader
      */
     private $useValidationGroups;
 
-    public function __construct(Reader $annotationsReader, bool $useValidationGroups=false)
+    public function __construct(?Reader $annotationsReader, bool $useValidationGroups = false)
     {
         $this->annotationsReader = $annotationsReader;
         $this->useValidationGroups = $useValidationGroups;
@@ -79,12 +79,12 @@ class SymfonyConstraintAnnotationReader
                     return;
                 }
 
-                $propertyName = $this->getSchemaPropertyName($property);
+                $propertyName = Util::getSchemaPropertyName($this->schema, $property);
                 if (null === $propertyName) {
                     return;
                 }
 
-                $existingRequiredFields =  Generator::UNDEFINED !== $this->schema->required ? $this->schema->required : [];
+                $existingRequiredFields = Generator::UNDEFINED !== $this->schema->required ? $this->schema->required : [];
                 $existingRequiredFields[] = $propertyName;
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
@@ -107,22 +107,30 @@ class SymfonyConstraintAnnotationReader
             } elseif ($annotation instanceof Assert\Choice) {
                 $this->applyEnumFromChoiceConstraint($property, $annotation, $reflection);
             } elseif ($annotation instanceof Assert\Range) {
-                if (isset($annotation->min)) {
-                    $property->minimum = (int) $annotation->min;
+                if (\is_int($annotation->min)) {
+                    $property->minimum = $annotation->min;
                 }
-                if (isset($annotation->max)) {
-                    $property->maximum = (int) $annotation->max;
+                if (\is_int($annotation->max)) {
+                    $property->maximum = $annotation->max;
                 }
             } elseif ($annotation instanceof Assert\LessThan) {
-                $property->exclusiveMaximum = true;
-                $property->maximum = (int) $annotation->value;
+                if (\is_int($annotation->value)) {
+                    $property->exclusiveMaximum = true;
+                    $property->maximum = $annotation->value;
+                }
             } elseif ($annotation instanceof Assert\LessThanOrEqual) {
-                $property->maximum = (int) $annotation->value;
+                if (\is_int($annotation->value)) {
+                    $property->maximum = $annotation->value;
+                }
             } elseif ($annotation instanceof Assert\GreaterThan) {
-                $property->exclusiveMinimum = true;
-                $property->minimum = (int) $annotation->value;
+                if (\is_int($annotation->value)) {
+                    $property->exclusiveMinimum = true;
+                    $property->minimum = $annotation->value;
+                }
             } elseif ($annotation instanceof Assert\GreaterThanOrEqual) {
-                $property->minimum = (int) $annotation->value;
+                if (\is_int($annotation->value)) {
+                    $property->minimum = $annotation->value;
+                }
             }
         }
     }
@@ -130,23 +138,6 @@ class SymfonyConstraintAnnotationReader
     public function setSchema($schema): void
     {
         $this->schema = $schema;
-    }
-
-    /**
-     * Get assigned property name for property schema.
-     */
-    private function getSchemaPropertyName(OA\Schema $property): ?string
-    {
-        if (null === $this->schema) {
-            return null;
-        }
-        foreach ($this->schema->properties as $schemaProperty) {
-            if ($schemaProperty === $property) {
-                return Generator::UNDEFINED !== $schemaProperty->property ? $schemaProperty->property : null;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -215,10 +206,12 @@ class SymfonyConstraintAnnotationReader
             }
         }
 
-        if ($reflection instanceof \ReflectionProperty) {
-            yield from $this->annotationsReader->getPropertyAnnotations($reflection);
-        } elseif ($reflection instanceof \ReflectionMethod) {
-            yield from $this->annotationsReader->getMethodAnnotations($reflection);
+        if (null !== $this->annotationsReader) {
+            if ($reflection instanceof \ReflectionProperty) {
+                yield from $this->annotationsReader->getPropertyAnnotations($reflection);
+            } elseif ($reflection instanceof \ReflectionMethod) {
+                yield from $this->annotationsReader->getMethodAnnotations($reflection);
+            }
         }
     }
 

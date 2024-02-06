@@ -11,15 +11,27 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Annotations as OA;
 
-/**
- * @OA\Schema(ref="#/components/schemas/Test")
- */
-class EntityWithRef
-{
+if (TestKernel::isAnnotationsAvailable()) {
     /**
-     * @var string
+     * @OA\Schema(ref="#/components/schemas/Test")
      */
-    public $ignored = 'this property should be ignored because of the annotation above';
+    class EntityWithRef
+    {
+        /**
+         * @var string
+         */
+        public $ignored = 'this property should be ignored because of the annotation above';
+    }
+} else {
+    #[\OpenApi\Attributes\Schema(ref: '#/components/schemas/Test')]
+    class EntityWithRef
+    {
+        /**
+         * @var string
+         */
+        public $ignored = 'this property should be ignored because of the annotation above';
+    }
 }

@@ -17,6 +17,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use ReflectionClass;
 use Symfony\Component\PropertyInfo\Type;
 
 class ModelRegistryTest extends TestCase
@@ -50,18 +51,25 @@ class ModelRegistryTest extends TestCase
                     'type' => $arrayType,
                     'options' => null,
                     'groups' => ['group2'],
+                    'serialization_context' => [
+                        'groups' => ['group2'],
+                    ],
                 ],
                 'taken_by' => [
                     'type' => $arrayType,
                     'options' => null,
                     'groups' => ['group1'],
+                    'serialization_context' => [
+                        'groups' => ['group1'],
+                        'extra_context' => true,
+                    ],
                 ],
             ]);
 
         $registry = new ModelRegistry([], $this->createOpenApi(), []);
         $registry->setLogger($logger);
 
-        $registry->register(new Model($type, ['group1']));
+        $registry->register(new Model($type, ['group1'], null, ['extra_context' => true]));
         $registry->register(new Model($type, ['group2']));
     }
 
@@ -103,7 +111,7 @@ class ModelRegistryTest extends TestCase
 
     public function testNameCollisionsAreLoggedWithAlternativeNames()
     {
-        $ref = new \ReflectionClass(self::class);
+        $ref = new ReflectionClass(self::class);
         $alternativeNames = [
             $ref->getShortName() => [
                 'type' => $ref->getName(),
@@ -127,6 +135,7 @@ class ModelRegistryTest extends TestCase
                     ],
                     'options' => null,
                     'groups' => ['group2'],
+                    'serialization_context' => ['groups' => ['group2']],
                 ],
                 'taken_by' => [
                     'type' => [
@@ -139,6 +148,7 @@ class ModelRegistryTest extends TestCase
                     ],
                     'options' => null,
                     'groups' => ['group1'],
+                    'serialization_context' => ['groups' => ['group1']],
                 ],
             ]);
 
@@ -151,8 +161,6 @@ class ModelRegistryTest extends TestCase
 
     /**
      * @dataProvider getNameAlternatives
-     *
-     * @param $expected
      */
     public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames)
     {

@@ -23,9 +23,11 @@ class BazingaController
 {
     /**
      * @Route("/api/bazinga", methods={"GET"})
+     *
      * @OA\Response(
      *     response=200,
      *     description="Success",
+     *
      *     @Model(type=BazingaUser::class)
      * )
      */
@@ -35,9 +37,11 @@ class BazingaController
 
     /**
      * @Route("/api/bazinga_foo", methods={"GET"})
+     *
      * @OA\Response(
      *     response=200,
      *     description="Success",
+     *
      *     @Model(type=BazingaUser::class, groups={"foo"})
      * )
      */

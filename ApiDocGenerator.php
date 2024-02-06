@@ -20,6 +20,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Analysis;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
+use OpenApi\Processors\ProcessorInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -47,17 +48,25 @@ final class ApiDocGenerator
 
     /** @var string[] */
     private $mediaTypes = ['json'];
+    /**
+     * @var ?string
+     */
+    private $openApiVersion = null;
+
+    /** @var Generator */
+    private $generator;
 
     /**
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null)
+    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null, Generator $generator = null)
     {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
         $this->cacheItemPool = $cacheItemPool;
         $this->cacheItemId = $cacheItemId;
+        $this->generator = $generator ?? new Generator($this->logger);
     }
 
     public function setAlternativeNames(array $alternativeNames)
@@ -68,6 +77,11 @@ final class ApiDocGenerator
     public function setMediaTypes(array $mediaTypes)
     {
         $this->mediaTypes = $mediaTypes;
+    }
+
+    public function setOpenApiVersion(?string $openApiVersion)
+    {
+        $this->openApiVersion = $openApiVersion;
     }
 
     public function generate(): OpenApi
@@ -83,15 +97,13 @@ final class ApiDocGenerator
             }
         }
 
-        $generator = new Generator();
-        // Remove OperationId processor as we use a lot of generated annotations which do not have enough information in their context
-        // to generate these ids properly.
-        // @see https://github.com/zircote/swagger-php/issues/1153
-        $generator->setProcessors(array_filter($generator->getProcessors(), function ($processor) {
-            return !$processor instanceof \OpenApi\Processors\OperationId;
-        }));
+        if ($this->openApiVersion) {
+            $this->generator->setVersion($this->openApiVersion);
+        }
 
-        $context = Util::createContext(['version' => $generator->getVersion()]);
+        $this->generator->setProcessors($this->getProcessors($this->generator));
+
+        $context = Util::createContext(['version' => $this->generator->getVersion()]);
 
         $this->openApi = new OpenApi(['_context' => $context]);
         $modelRegistry = new ModelRegistry($this->modelDescribers, $this->openApi, $this->alternativeNames);
@@ -116,7 +128,7 @@ final class ApiDocGenerator
         // Calculate the associated schemas
         $modelRegistry->registerSchemas();
 
-        $analysis->process($generator->getProcessors());
+        $analysis->process($this->generator->getProcessors());
         $analysis->validate();
 
         if (isset($item)) {
@@ -124,5 +136,29 @@ final class ApiDocGenerator
         }
 
         return $this->openApi;
+    }
+
+    /**
+     * Get an array of processors that will be used to process the OpenApi object.
+     *
+     * @param Generator $generator The generator instance to get the standard processors from
+     *
+     * @return array<ProcessorInterface|callable> The array of processors
+     */
+    private function getProcessors(Generator $generator): array
+    {
+        // Get the standard processors from the generator.
+        $processors = $generator->getProcessors();
+
+        // Remove OperationId processor as we use a lot of generated annotations which do not have enough information in their context
+        // to generate these ids properly.
+        // @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createContext
+        foreach ($processors as $key => $processor) {
+            if ($processor instanceof \OpenApi\Processors\OperationId) {
+                unset($processors[$key]);
+            }
+        }
+
+        return $processors;
     }
 }
