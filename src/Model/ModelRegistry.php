@@ -151,10 +151,12 @@ final class ModelRegistry
         }
 
         if ($i > 1) {
-            $this->logger->info(sprintf('Can not assign a name for the model, the name "%s" is now being used %s times', $base, $i), [
-                'model' => $this->modelToArray($model),
-                'taken_by' => $this->modelToArray($this->registeredModelNames[$base]),
-            ]);
+            if (isset($this->registeredModelNames[$base])) {
+                $this->logger->info(sprintf('Can not assign a name for the model, the name "%s" is now being used %s times', $base, $i), [
+                    'model' => $this->modelToArray($model),
+                    'taken_by' => $this->modelToArray($this->registeredModelNames[$base]),
+                ]);
+            }
         }
         return $name;
     }
