@@ -58,7 +58,6 @@ class ControllerKernel extends Kernel
         }
     }
 
-
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
         $container->loadFromExtension('framework', ['test' => null]);

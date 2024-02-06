@@ -11,18 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\Tests\Helper;
-use OpenApi\Annotations as OAAnnotations;
-use OpenApi\Attributes as OAAttributes;
-use OpenApi\Generator;
 use OpenApi\Annotations as OA;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Serializer\Annotation\SerializedName;
-use const PHP_VERSION_ID;
 
 class ControllerTest extends WebTestCase
 {
@@ -57,7 +49,7 @@ class ControllerTest extends WebTestCase
             $routes->withPath('/')->import(__DIR__."/Controller/$testName.php", 'attribute');
         };
 
-        $this->kernelBootFactory(new ControllerKernel($routingConfiguration ,$extraConfigs));
+        $this->kernelBootFactory(new ControllerKernel($routingConfiguration, $extraConfigs));
 
         $apiDefinition = $this->getOpenApiDefinition();
 
