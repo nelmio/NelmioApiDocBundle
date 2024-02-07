@@ -12,32 +12,31 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use OpenApi\Annotations as OA;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
-class ControllerTest extends WebTestCase
+final class ControllerTest extends WebTestCase
 {
     /**
-     * @var ContainerInterface
+     * @var ConfigurableContainerFactory
      */
-    private $container;
+    private $configurableContainerFactory;
+
+    protected function setUp(): void
+    {
+        $this->configurableContainerFactory = new ConfigurableContainerFactory();
+
+        static::createClient([], ['HTTP_HOST' => 'api.example.com']);
+    }
 
     protected static function createKernel(array $options = []): KernelInterface
     {
-        return new ControllerKernel();
+        return new NelmioKernel([],null, []);
     }
 
     protected function getOpenApiDefinition($area = 'default'): OA\OpenApi
     {
-        return $this->container->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        static::createClient([], ['HTTP_HOST' => 'api.example.com']);
+        return $this->configurableContainerFactory->getContainer()->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }
 
     /**
@@ -49,7 +48,7 @@ class ControllerTest extends WebTestCase
             $routes->withPath('/')->import(__DIR__."/Controller/$testName.php", 'attribute');
         };
 
-        $this->kernelBootFactory(new ControllerKernel($routingConfiguration, $extraConfigs));
+        $this->configurableContainerFactory->create([], $routingConfiguration, $extraConfigs);
 
         $apiDefinition = $this->getOpenApiDefinition();
 
@@ -66,13 +65,6 @@ class ControllerTest extends WebTestCase
     public static function provideIssueTests(): iterable
     {
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => ['Controller2209'];
-    }
-
-    private function kernelBootFactory(KernelInterface $kernel): void
-    {
-        $kernel->boot();
-
-        $this->container = $kernel->getContainer();
     }
 
     private static function getFixture(string $fixture): string

@@ -16,27 +16,35 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
-class ControllerKernel extends Kernel
+final class NelmioKernel extends Kernel
 {
     use MicroKernelTrait;
+
+    /**
+     * @var Bundle[]
+     */
+    private $extraBundles;
 
     private $routeConfiguration;
 
     /**
      * @var string[]
      */
-    private $extraConfigs = [];
+    private $extraConfigs;
 
     /**
+     * @param Bundle[] $extraBundles
      * @param string[] $extraConfigs
      */
-    public function __construct(?callable $routeConfiguration = null, array $extraConfigs = [])
+    public function __construct(array $extraBundles, ?callable $routeConfiguration, array $extraConfigs)
     {
-        parent::__construct('test_controller', true);
+        parent::__construct('test', true);
 
+        $this->extraBundles = $extraBundles;
         $this->routeConfiguration = $routeConfiguration;
         $this->extraConfigs = $extraConfigs;
     }
@@ -47,6 +55,8 @@ class ControllerKernel extends Kernel
             new FrameworkBundle(),
             new NelmioApiDocBundle(),
         ];
+
+        $bundles = array_merge($bundles, $this->extraBundles);
 
         return $bundles;
     }
@@ -65,15 +75,5 @@ class ControllerKernel extends Kernel
         foreach ($this->extraConfigs as $extraConfig) {
             $loader->load($extraConfig);
         }
-    }
-
-    public function getCacheDir(): string
-    {
-        return parent::getCacheDir().'/controller';
-    }
-
-    public function getLogDir(): string
-    {
-        return parent::getLogDir().'/controller';
     }
 }
