@@ -68,11 +68,19 @@ final class NelmioKernel extends Kernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
-        $container->loadFromExtension('framework', ['test' => null]);
+        $framework = [
+            'assets' => true,
+            'secret' => 'MySecretKey',
+            'test' => null,
+            'validation' => null,
+            'serializer' => []
+        ];
 
         if (TestKernel::isAnnotationsAvailable()) {
             $loader->load(__DIR__.'/Configs/annotations.yaml');
         }
+
+        $container->loadFromExtension('framework', $framework);
 
         foreach ($this->extraConfigs as $extraConfig) {
             $loader->load($extraConfig);
