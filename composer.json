@@ -54,7 +54,8 @@
         "composer/package-versions-deprecated": "1.11.99.1",
 
         "phpunit/phpunit": "^9.6",
-        "doctrine/annotations": "^2.0"
+        "doctrine/annotations": "^2.0",
+        "phpstan/phpstan": "^1.10"
     },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
@@ -90,9 +91,11 @@
         }
     },
     "scripts-descriptions": {
-        "phpunit": "Run phpunit"
+        "phpunit": "Run phpunit",
+        "phpstan": "Run phpstan"
     },
     "scripts": {
-        "phpunit": "phpunit"
+        "phpunit": "phpunit",
+        "phpstan": "phpstan analyse --memory-limit=2G"
     }
 }
