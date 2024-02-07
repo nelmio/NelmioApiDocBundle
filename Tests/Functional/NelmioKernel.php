@@ -70,6 +70,10 @@ final class NelmioKernel extends Kernel
     {
         $container->loadFromExtension('framework', ['test' => null]);
 
+        if (TestKernel::isAnnotationsAvailable()) {
+            $loader->load(__DIR__.'/Configs/annotations.yaml');
+        }
+
         foreach ($this->extraConfigs as $extraConfig) {
             $loader->load($extraConfig);
         }
