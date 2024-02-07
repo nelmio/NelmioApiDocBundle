@@ -15,13 +15,7 @@
         <ini name="error_reporting" value="-1" />
         <ini name="memory_limit" value="512M" />
 
-        <!-- add "generateBaseline=true&amp;" to the value to generate a new baseline. Keep in mind to clear the test cache before. -->
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="ignoreFile=./phpunit-ignore&amp;max[self]=0" />
-
-        <!-- ###+ symfony/framework-bundle ### -->
-        <env name="APP_ENV" value="dev"/>
-        <env name="APP_SECRET" value="9d756d899cf7a3e24e885e6e7644d582"/>
-        <!-- ###- symfony/framework-bundle ### -->
     </php>
 
     <testsuites>
