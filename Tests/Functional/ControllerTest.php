@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use OpenApi\Annotations as OA;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
@@ -41,7 +41,7 @@ final class ControllerTest extends WebTestCase
     }
 
     /**
-     * @dataProvider provideIssueTests
+     * @dataProvider provideControllers
      */
     public function testIssues(string $testName, array $extraConfigs = []): void
     {
@@ -53,6 +53,7 @@ final class ControllerTest extends WebTestCase
 
         $apiDefinition = $this->getOpenApiDefinition();
 
+        // Create the fixture if it does not exist
         if (!file_exists($fixtureDir = __DIR__.'/Fixtures/'.$testName.'.json')) {
             file_put_contents($fixtureDir, $apiDefinition->toJson());
         }
@@ -63,10 +64,11 @@ final class ControllerTest extends WebTestCase
         );
     }
 
-    public static function provideIssueTests(): iterable
+    public static function provideControllers(): iterable
     {
-        if (class_exists(MapRequestPayload::class)) {
+        if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
             yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => ['Controller2209'];
+            yield 'MapQueryString' => ['MapQueryStringController'];
         }
     }
 
