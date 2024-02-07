@@ -58,7 +58,7 @@ final class MapRequestPayloadProcessor implements ProcessorInterface
             foreach ($formats as $format) {
                 $contentSchema = $this->getContentSchemaForType($requestBody, $format);
 
-                if ($contentSchema === null) {
+                if (null === $contentSchema) {
                     continue;
                 }
 

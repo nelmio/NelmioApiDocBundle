@@ -31,7 +31,7 @@ final class ControllerTest extends WebTestCase
 
     protected static function createKernel(array $options = []): KernelInterface
     {
-        return new NelmioKernel([],null, []);
+        return new NelmioKernel([], null, []);
     }
 
     protected function getOpenApiDefinition($area = 'default'): OA\OpenApi
