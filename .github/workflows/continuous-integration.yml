@@ -40,6 +40,8 @@ jobs:
         exclude:
           - symfony-require: "^7.0"
             doctrine-annotations: true
+          - php: "8.1"
+            symfony-require: "^7.0"
 
     steps:
       - name: "Checkout"
