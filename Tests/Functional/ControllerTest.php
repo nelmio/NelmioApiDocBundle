@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
@@ -64,7 +65,9 @@ final class ControllerTest extends WebTestCase
 
     public static function provideIssueTests(): iterable
     {
-        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => ['Controller2209'];
+        if (class_exists(MapRequestPayload::class)) {
+            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => ['Controller2209'];
+        }
     }
 
     private static function getFixture(string $fixture): string
