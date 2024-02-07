@@ -1,0 +1,11 @@
+# Ignore certain deprecation notices for phpunit
+
+# Doctrine annotations for Symfony 6.4
+%Since symfony/framework-bundle 6.4: The "annotations.cache_warmer" service is deprecated without replacement.%
+%Since symfony/framework-bundle 6.4: The "annotations.reader" service is deprecated without replacement.%
+%Since symfony/framework-bundle 6.4: The "annotations.cached_reader" service is deprecated without replacement.%
+%Since symfony/framework-bundle 6.4: The "annotations.cache_adapter" service is deprecated without replacement.%
+%Since symfony/serializer 6.4: Passing a "Doctrine\\Common\\Annotations\\PsrCachedReader" instance as argument 1 to "Symfony\\Component\\Serializer\\Mapping\\Loader\\AttributeLoader::__construct()" is deprecated, pass null or omit the parameter instead.%
+%Since symfony/validator 6.4: Method "Symfony\\Component\\Validator\\ValidatorBuilder::setDoctrineAnnotationReader()" is deprecated without replacement.%
+%Since symfony/routing 6.4: Passing an instance of "Doctrine\\Common\\Annotations\\Reader" as first and the environment as second argument to "Symfony\\Component\\Routing\\Loader\\AttributeClassLoader::__construct" is deprecated. Pass the environment as first argument instead.%
+%Since symfony/serializer 6.4: Property "Nelmio\\ApiDocBundle\\Tests\\Functional\\Entity\\SymfonyConstraintsWithValidationGroups80::$property" uses Doctrine Annotations to configure serialization, which is deprecated. Use PHP attributes instead.%
