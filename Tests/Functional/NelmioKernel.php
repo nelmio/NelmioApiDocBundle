@@ -73,7 +73,7 @@ final class NelmioKernel extends Kernel
             'secret' => 'MySecretKey',
             'test' => null,
             'validation' => null,
-            'serializer' => []
+            'serializer' => [],
         ];
 
         if (TestKernel::isAnnotationsAvailable()) {
