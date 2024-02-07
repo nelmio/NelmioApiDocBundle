@@ -24,37 +24,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - php-version: 7.2
-            composer-flags: "--prefer-lowest"
-            doctrine-annotations: true
-          - php-version: 7.3
-            symfony-require: "5.4.*"
-            doctrine-annotations: true
-          - php-version: 7.4
-            symfony-require: "5.4.*"
-            doctrine-annotations: true
-          - php-version: 8.0
-            symfony-require: "5.4.*"
-            doctrine-annotations: true
-          - php-version: 8.1
-            symfony-require: "5.4.*"
-            doctrine-annotations: true
-          - php-version: 8.3
-            symfony-require: "5.4.*"
-            doctrine-annotations: true
-          - php-version: 8.1
-            symfony-require: "6.3.*"
-            doctrine-annotations: true
-          - php-version: 8.3
-            symfony-require: "6.3.*"
-            doctrine-annotations: true
-          - php-version: 8.2
-            symfony-require: "7.0.*"
-            doctrine-annotations: false
-          - php-version: 8.3
-            symfony-require: "7.0.*"
-            doctrine-annotations: false
+        php:
+          - "8.1"
+          - "8.2"
+          - "8.3"
+        dependencies:
+          - "lowest"
+          - "highest"
+        symfony-require:
+          - "^6.4"
+          - "^7.0"
+        doctrine-annotations:
+          - true
+          - false
 
     steps:
       - name: "Checkout"
@@ -86,14 +68,14 @@ jobs:
           composer require doctrine/annotations --no-update
 
       - name: Remove packages not compatible symfony 7
-        if: matrix.symfony-require == '7.0.*'
+        if: matrix.symfony-require == '^7.*'
         run: |
           composer remove friendsofsymfony/rest-bundle sensio/framework-extra-bundle --no-update --dev
 
       - name: "Install dependencies with composer"
+        uses: "ramsey/composer-install@v2"
         env:
           SYMFONY_REQUIRE: "${{ matrix.symfony-require }}"
-        run: composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
 
       - name: "PHPUnit Tests"
         run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text
