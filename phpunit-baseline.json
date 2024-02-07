@@ -5,11 +5,6 @@
         "count": 1
     },
     {
-        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testRedocly",
-        "message": "Since api-platform/core 2.7: Using \"api_platform.iri_converter.legacy\" is deprecated since API Platform 2.7. Use \"ApiPlatform\\Api\\IriConverterInterface\" instead.",
-        "count": 1
-    },
-    {
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testApiPlatformSwaggerUi",
         "message": "Since api-platform/core 2.7: Using \"api_platform.iri_converter.legacy\" is deprecated since API Platform 2.7. Use \"ApiPlatform\\Api\\IriConverterInterface\" instead.",
         "count": 1
@@ -7285,33 +7280,43 @@
         "count": 1
     },
     {
-        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testRedocly",
-        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\ControllerTest::setUp",
+        "message": "Since symfony/framework-bundle 6.4: The \"annotations.reader\" service is deprecated without replacement.",
         "count": 1
     },
     {
-        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testRedocly",
-        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\ControllerTest::setUp",
+        "message": "Since symfony/framework-bundle 6.4: The \"annotations.cache_warmer\" service is deprecated without replacement.",
         "count": 1
     },
     {
-        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testRedocly",
-        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\ControllerTest::setUp",
+        "message": "Since symfony/framework-bundle 6.4: The \"annotations.cached_reader\" service is deprecated without replacement.",
         "count": 1
     },
     {
-        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
-        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\ControllerTest::setUp",
+        "message": "Since symfony/framework-bundle 6.4: The \"annotations.cache_adapter\" service is deprecated without replacement.",
         "count": 1
     },
     {
-        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
-        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
-        "count": 1
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\ControllerTest::testControllers",
+        "message": "Since symfony/framework-bundle 6.4: The \"annotations.reader\" service is deprecated without replacement.",
+        "count": 3
     },
     {
-        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
-        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
-        "count": 1
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\ControllerTest::testControllers",
+        "message": "Since symfony/framework-bundle 6.4: The \"annotations.cache_warmer\" service is deprecated without replacement.",
+        "count": 3
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\ControllerTest::testControllers",
+        "message": "Since symfony/framework-bundle 6.4: The \"annotations.cached_reader\" service is deprecated without replacement.",
+        "count": 3
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\ControllerTest::testControllers",
+        "message": "Since symfony/framework-bundle 6.4: The \"annotations.cache_adapter\" service is deprecated without replacement.",
+        "count": 3
     }
 ]
