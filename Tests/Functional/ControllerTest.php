@@ -84,7 +84,7 @@ final class ControllerTest extends WebTestCase
             yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
                 'MapQueryStringController',
                 'MapQueryStringCleanupComponents',
-                [ __DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml']
+                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
             ];
         }
     }
