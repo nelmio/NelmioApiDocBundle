@@ -37,6 +37,9 @@ jobs:
         doctrine-annotations:
           - true
           - false
+        exclude:
+          - symfony-require: "^7.0"
+            doctrine-annotations: true
 
     steps:
       - name: "Checkout"
