@@ -16,12 +16,20 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
+/**
+ * Fairly intensive functional tests because the Kernel is recreated for each test.
+ */
 final class ControllerTest extends WebTestCase
 {
     /**
      * @var ConfigurableContainerFactory
      */
     private $configurableContainerFactory;
+
+    /**
+     * @var string[]
+     */
+    private static $usedFixtures = [];
 
     protected function setUp(): void
     {
@@ -43,10 +51,12 @@ final class ControllerTest extends WebTestCase
     /**
      * @dataProvider provideControllers
      */
-    public function testIssues(string $testName, array $extraConfigs = []): void
+    public function testControllers(string $controllerName, ?string $fixtureName = null, array $extraConfigs = []): void
     {
-        $routingConfiguration = function (RoutingConfigurator $routes) use ($testName) {
-            $routes->withPath('/')->import(__DIR__."/Controller/$testName.php", 'attribute');
+        $fixtureName = $fixtureName ?? $controllerName;
+
+        $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName) {
+            $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", 'attribute');
         };
 
         $this->configurableContainerFactory->create([], $routingConfiguration, $extraConfigs);
@@ -54,9 +64,11 @@ final class ControllerTest extends WebTestCase
         $apiDefinition = $this->getOpenApiDefinition();
 
         // Create the fixture if it does not exist
-        if (!file_exists($fixtureDir = __DIR__.'/Fixtures/'.$testName.'.json')) {
+        if (!file_exists($fixtureDir = __DIR__.'/Fixtures/'.$fixtureName.'.json')) {
             file_put_contents($fixtureDir, $apiDefinition->toJson());
         }
+
+        static::$usedFixtures[] = $fixtureName.'.json';
 
         self::assertSame(
             self::getFixture($fixtureDir),
@@ -69,7 +81,25 @@ final class ControllerTest extends WebTestCase
         if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
             yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => ['Controller2209'];
             yield 'MapQueryString' => ['MapQueryStringController'];
+            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
+                'MapQueryStringController',
+                'MapQueryStringCleanupComponents',
+                [ __DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml']
+            ];
         }
+    }
+
+    /**
+     * @depends testControllers
+     */
+    public function testUnusedFixtures(): void
+    {
+        $fixtures = glob(__DIR__.'/Fixtures/*.json');
+        $fixtures = array_map('basename', $fixtures);
+
+        $diff = array_diff($fixtures, static::$usedFixtures);
+
+        self::assertEmpty($diff, sprintf('The following fixtures are not used: %s', implode(', ', $diff)));
     }
 
     private static function getFixture(string $fixture): string

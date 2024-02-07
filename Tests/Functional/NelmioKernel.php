@@ -56,9 +56,7 @@ final class NelmioKernel extends Kernel
             new NelmioApiDocBundle(),
         ];
 
-        $bundles = array_merge($bundles, $this->extraBundles);
-
-        return $bundles;
+        return array_merge($bundles, $this->extraBundles);
     }
 
     protected function configureRoutes(RoutingConfigurator $routes)
