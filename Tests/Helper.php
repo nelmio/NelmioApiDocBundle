@@ -14,4 +14,15 @@ final class Helper
 
         return version_compare($validatorVersion, 'v5.1', '>=');
     }
+
+    public static function isDoctrineAnnotationsAvailable(): bool
+    {
+        try {
+            Versions::getVersion('doctrine/annotations');
+
+            return true;
+        } catch (\OutOfBoundsException $e) {
+            return false;
+        }
+    }
 }
