@@ -8,6 +8,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapRequestPayloadDescriber;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use OpenApi\Processors\ProcessorInterface;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -56,6 +57,11 @@ final class MapRequestPayloadProcessor implements ProcessorInterface
 
             foreach ($formats as $format) {
                 $contentSchema = $this->getContentSchemaForType($requestBody, $format);
+
+                if ($contentSchema === null) {
+                    continue;
+                }
+
                 Util::modifyAnnotationValue($contentSchema, 'ref', $modelRef);
 
                 if ($argumentMetaData->isNullable()) {
@@ -65,8 +71,12 @@ final class MapRequestPayloadProcessor implements ProcessorInterface
         }
     }
 
-    private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
+    private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): ?OA\Schema
     {
+        if (!Generator::isDefault($requestBody->content)) {
+            return null;
+        }
+
         Util::modifyAnnotationValue($requestBody, 'content', []);
         switch ($type) {
             case 'json':
