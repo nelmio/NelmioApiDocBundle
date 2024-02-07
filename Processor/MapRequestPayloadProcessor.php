@@ -56,11 +56,11 @@ final class MapRequestPayloadProcessor implements ProcessorInterface
             }
 
             foreach ($formats as $format) {
-                $contentSchema = $this->getContentSchemaForType($requestBody, $format);
-
-                if (null === $contentSchema) {
+                if (!Generator::isDefault($requestBody->content)) {
                     continue;
                 }
+
+                $contentSchema = $this->getContentSchemaForType($requestBody, $format);
 
                 Util::modifyAnnotationValue($contentSchema, 'ref', $modelRef);
 
@@ -71,12 +71,8 @@ final class MapRequestPayloadProcessor implements ProcessorInterface
         }
     }
 
-    private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): ?OA\Schema
+    private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
-        if (!Generator::isDefault($requestBody->content)) {
-            return null;
-        }
-
         Util::modifyAnnotationValue($requestBody, 'content', []);
         switch ($type) {
             case 'json':
