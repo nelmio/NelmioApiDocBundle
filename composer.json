@@ -96,6 +96,7 @@
     },
     "scripts": {
         "phpunit": "phpunit",
-        "phpstan": "phpstan analyse --memory-limit=2G"
+        "phpstan": "phpstan analyse --memory-limit=2G",
+        "phpstan-baseline": "phpstan analyse --generate-baseline --memory-limit=2G"
     }
 }

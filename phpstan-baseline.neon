@@ -1,0 +1,2061 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Areas\\:\\:__construct\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Annotation/Areas.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\:\\:\\$_required type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Annotation/Model.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Security\\:\\:__construct\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Annotation/Security.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Security\\:\\:__construct\\(\\) has parameter \\$scopes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Annotation/Security.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Security\\:\\:\\$_required type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Annotation/Security.php
+
+		-
+			message: "#^Cannot call method save\\(\\) on Psr\\\\Cache\\\\CacheItemPoolInterface\\|null\\.$#"
+			count: 1
+			path: ApiDocGenerator.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ApiDocGenerator\\:\\:generate\\(\\) should return OpenApi\\\\Annotations\\\\OpenApi but returns mixed\\.$#"
+			count: 1
+			path: ApiDocGenerator.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ApiDocGenerator\\:\\:setAlternativeNames\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ApiDocGenerator.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ApiDocGenerator\\:\\:setAlternativeNames\\(\\) has parameter \\$alternativeNames with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ApiDocGenerator.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ApiDocGenerator\\:\\:setMediaTypes\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ApiDocGenerator.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ApiDocGenerator\\:\\:setMediaTypes\\(\\) has parameter \\$mediaTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ApiDocGenerator.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ApiDocGenerator\\:\\:setOpenApiVersion\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ApiDocGenerator.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ApiDocGenerator\\:\\:\\$openApi \\(OpenApi\\\\Annotations\\\\OpenApi\\) does not accept mixed\\.$#"
+			count: 1
+			path: ApiDocGenerator.php
+
+		-
+			message: "#^Parameter \\#1 \\$format of method Nelmio\\\\ApiDocBundle\\\\Render\\\\RenderOpenApi\\:\\:render\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: Command/DumpCommand.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, mixed given\\.$#"
+			count: 1
+			path: Command/DumpCommand.php
+
+		-
+			message: "#^Parameter \\#2 \\$area of method Nelmio\\\\ApiDocBundle\\\\Render\\\\RenderOpenApi\\:\\:render\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: Command/DumpCommand.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Controller\\\\DocumentationController\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Controller/DocumentationController.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Controller\\\\DocumentationController\\:\\:__invoke\\(\\) has parameter \\$area with no type specified\\.$#"
+			count: 1
+			path: Controller/DocumentationController.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Controller\\\\SwaggerUiController\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Controller/SwaggerUiController.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Controller\\\\SwaggerUiController\\:\\:__invoke\\(\\) has parameter \\$area with no type specified\\.$#"
+			count: 1
+			path: Controller/SwaggerUiController.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Controller\\\\YamlDocumentationController\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Controller/YamlDocumentationController.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Controller\\\\YamlDocumentationController\\:\\:__invoke\\(\\) has parameter \\$area with no type specified\\.$#"
+			count: 1
+			path: Controller/YamlDocumentationController.php
+
+		-
+			message: "#^Argument of an invalid type array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: DependencyInjection/Compiler/TagDescribersPass.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\TreeBuilder\\:\\:root\\(\\)\\.$#"
+			count: 1
+			path: DependencyInjection/Configuration.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\DependencyInjection\\\\NelmioApiDocExtension\\:\\:findNameAliases\\(\\) has parameter \\$names with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: DependencyInjection/NelmioApiDocExtension.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\DependencyInjection\\\\NelmioApiDocExtension\\:\\:findNameAliases\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: DependencyInjection/NelmioApiDocExtension.php
+
+		-
+			message: "#^Class Nelmio\\\\ApiDocBundle\\\\Describer\\\\Documentation not found\\.$#"
+			count: 2
+			path: Describer/ApiPlatformDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\DefaultDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Describer/DefaultDescriber.php
+
+		-
+			message: "#^Result of && is always true\\.$#"
+			count: 1
+			path: Describer/DefaultDescriber.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between '@OA\\\\\\\\Generator\\:…' and array\\<OpenApi\\\\Annotations\\\\PathItem\\> will always evaluate to false\\.$#"
+			count: 1
+			path: Describer/DefaultDescriber.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between '@OA\\\\\\\\Generator\\:…' and array\\<OpenApi\\\\Annotations\\\\Response\\> will always evaluate to false\\.$#"
+			count: 1
+			path: Describer/DefaultDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\DescriberInterface\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Describer/DescriberInterface.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\ExternalDocDescriber\\:\\:__construct\\(\\) has parameter \\$externalDoc with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Describer/ExternalDocDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\ExternalDocDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Describer/ExternalDocDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\ExternalDocDescriber\\:\\:getExternalDoc\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Describer/ExternalDocDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Describer\\\\ExternalDocDescriber\\:\\:\\$externalDoc has no type specified\\.$#"
+			count: 1
+			path: Describer/ExternalDocDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Describer\\\\ExternalDocDescriber\\:\\:\\$overwrite has no type specified\\.$#"
+			count: 1
+			path: Describer/ExternalDocDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\ModelRegistryAwareInterface\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Describer/ModelRegistryAwareInterface.php
+
+		-
+			message: "#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#"
+			count: 2
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\OpenApiPhpDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\OpenApiPhpDescriber\\:\\:getAttributesAsAnnotation\\(\\) has parameter \\$reflection with generic class ReflectionClass but does not specify its types\\: T$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\OpenApiPhpDescriber\\:\\:getSupportedHttpMethods\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\OpenApiPhpDescriber\\:\\:setContextFromReflection\\(\\) has parameter \\$reflection with no type specified\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$value of function count expects array\\|Countable, array\\<OpenApi\\\\Annotations\\\\AbstractAnnotation\\>\\|OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Parameter \\#2 \\$haystack of function in_array expects array, mixed given\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Parameter \\#2 \\$method of static method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getOperation\\(\\) expects string, mixed given\\.$#"
+			count: 2
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Parameter \\#2 \\$path of static method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getPath\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Parameter \\#2 \\.\\.\\.\\$arrays of function array_merge expects array, array\\<OpenApi\\\\Annotations\\\\AbstractAnnotation\\>\\|OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Describer\\\\OpenApiPhpDescriber\\:\\:\\$controllerReflector has no type specified\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Describer\\\\OpenApiPhpDescriber\\:\\:\\$logger has no type specified\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Describer\\\\OpenApiPhpDescriber\\:\\:\\$overwrite has no type specified\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Describer\\\\OpenApiPhpDescriber\\:\\:\\$overwrite is never read, only written\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Describer\\\\OpenApiPhpDescriber\\:\\:\\$routeCollection has no type specified\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Property OpenApi\\\\Context\\:\\:\\$filename \\(string\\|null\\) does not accept string\\|false\\.$#"
+			count: 1
+			path: Describer/OpenApiPhpDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\RouteDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Describer/RouteDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Describer\\\\RouteDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Describer/RouteDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Describer\\\\RouteDescriber\\:\\:\\$controllerReflector has no type specified\\.$#"
+			count: 1
+			path: Describer/RouteDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Describer\\\\RouteDescriber\\:\\:\\$routeCollection has no type specified\\.$#"
+			count: 1
+			path: Describer/RouteDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Describer\\\\RouteDescriber\\:\\:\\$routeDescribers has no type specified\\.$#"
+			count: 1
+			path: Describer/RouteDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Exception\\\\UndocumentedArrayItemsException\\:\\:getClass\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Exception/UndocumentedArrayItemsException.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Exception\\\\UndocumentedArrayItemsException\\:\\:getPath\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Exception/UndocumentedArrayItemsException.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Exception\\\\UndocumentedArrayItemsException\\:\\:\\$class has no type specified\\.$#"
+			count: 1
+			path: Exception/UndocumentedArrayItemsException.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Exception\\\\UndocumentedArrayItemsException\\:\\:\\$path has no type specified\\.$#"
+			count: 1
+			path: Exception/UndocumentedArrayItemsException.php
+
+		-
+			message: "#^Cannot access offset 0 on iterable\\<string\\>\\.$#"
+			count: 1
+			path: Form/Extension/DocumentationExtension.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Form\\\\Extension\\\\DocumentationExtension\\:\\:getExtendedType\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Form/Extension/DocumentationExtension.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Model\\\\Model\\:\\:__construct\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Model/Model.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Model\\\\Model\\:\\:__construct\\(\\) has parameter \\$serializationContext with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Model/Model.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Model\\\\Model\\:\\:\\$options has no type specified\\.$#"
+			count: 1
+			path: Model/Model.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Model\\\\Model\\:\\:\\$serializationContext has no type specified\\.$#"
+			count: 1
+			path: Model/Model.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Model\\\\Model\\:\\:\\$type has no type specified\\.$#"
+			count: 1
+			path: Model/Model.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\PropertyInfo\\\\Type\\:\\:getCollectionKeyType\\(\\)\\.$#"
+			count: 2
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\PropertyInfo\\\\Type\\:\\:getCollectionValueType\\(\\)\\.$#"
+			count: 3
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Cannot call method info\\(\\) on Psr\\\\Log\\\\LoggerInterface\\|null\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Model\\\\ModelRegistry\\:\\:__construct\\(\\) has parameter \\$alternativeNames with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Model\\\\ModelRegistry\\:\\:getCollectionKeyTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Model\\\\ModelRegistry\\:\\:getCollectionValueTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Model\\\\ModelRegistry\\:\\:modelToArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Parameter \\#2 \\$schema of static method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getSchema\\(\\) expects string, int\\|string given\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Parameter \\#2 \\$string of function explode expects string, string\\|null given\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Model\\\\ModelRegistry\\:\\:\\$alternativeNames has no type specified\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Model\\\\ModelRegistry\\:\\:\\$api has no type specified\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Model\\\\ModelRegistry\\:\\:\\$modelDescribers has no type specified\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Model\\\\ModelRegistry\\:\\:\\$models has no type specified\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Model\\\\ModelRegistry\\:\\:\\$names has no type specified\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Model\\\\ModelRegistry\\:\\:\\$registeredModelNames has no type specified\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Model\\\\ModelRegistry\\:\\:\\$unregistered has no type specified\\.$#"
+			count: 1
+			path: Model/ModelRegistry.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\AnnotationsReader\\:\\:__construct\\(\\) has parameter \\$mediaTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/AnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\AnnotationsReader\\:\\:getPropertyName\\(\\) has parameter \\$reflection with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/AnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\AnnotationsReader\\:\\:updateDefinition\\(\\) has parameter \\$reflectionClass with generic class ReflectionClass but does not specify its types\\: T$#"
+			count: 1
+			path: ModelDescriber/Annotations/AnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\AnnotationsReader\\:\\:updateProperty\\(\\) has parameter \\$reflection with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/AnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\AnnotationsReader\\:\\:updateProperty\\(\\) has parameter \\$serializationGroups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/AnnotationsReader.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\AnnotationsReader\\:\\:\\$openApiAnnotationsReader has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/AnnotationsReader.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\AnnotationsReader\\:\\:\\$phpDocReader has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/AnnotationsReader.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\AnnotationsReader\\:\\:\\$symfonyConstraintAnnotationReader has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/AnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\OpenApiAnnotationsReader\\:\\:__construct\\(\\) has parameter \\$mediaTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\OpenApiAnnotationsReader\\:\\:getAnnotation\\(\\) has parameter \\$reflection with generic class ReflectionClass but does not specify its types\\: T$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\OpenApiAnnotationsReader\\:\\:getPropertyName\\(\\) has parameter \\$reflection with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\OpenApiAnnotationsReader\\:\\:setContextFromReflection\\(\\) has parameter \\$reflection with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\OpenApiAnnotationsReader\\:\\:updateProperty\\(\\) has parameter \\$reflection with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\OpenApiAnnotationsReader\\:\\:updateProperty\\(\\) has parameter \\$serializationGroups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\OpenApiAnnotationsReader\\:\\:updateSchema\\(\\) has parameter \\$reflectionClass with generic class ReflectionClass but does not specify its types\\: T$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Parameter \\#1 \\$parentContext of method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\OpenApiAnnotationsReader\\:\\:getAnnotation\\(\\) expects OpenApi\\\\Context, OpenApi\\\\Context\\|null given\\.$#"
+			count: 2
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Parameter \\#2 \\$annotationName of method Doctrine\\\\Common\\\\Annotations\\\\Reader\\:\\:getClassAnnotation\\(\\) expects class\\-string\\<mixed\\>, string given\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Parameter \\#2 \\$annotationName of method Doctrine\\\\Common\\\\Annotations\\\\Reader\\:\\:getMethodAnnotation\\(\\) expects class\\-string\\<mixed\\>, string given\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Parameter \\#2 \\$annotationName of method Doctrine\\\\Common\\\\Annotations\\\\Reader\\:\\:getPropertyAnnotation\\(\\) expects class\\-string\\<mixed\\>, string given\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\OpenApiAnnotationsReader\\:\\:\\$modelRegister has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Doctrine\\\\Common\\\\Annotations\\\\Reader\\:\\:getClassAnnotation\\(\\)$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Doctrine\\\\Common\\\\Annotations\\\\Reader\\:\\:getMethodAnnotation\\(\\)$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Doctrine\\\\Common\\\\Annotations\\\\Reader\\:\\:getPropertyAnnotation\\(\\)$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Variable \\$oaProperty in PHPDoc tag @var does not exist\\.$#"
+			count: 2
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Variable \\$oaSchema in PHPDoc tag @var does not exist\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/OpenApiAnnotationsReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\PropertyPhpDocReader\\:\\:updateProperty\\(\\) has parameter \\$reflection with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/PropertyPhpDocReader.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\PropertyPhpDocReader\\:\\:\\$docBlockFactory has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/PropertyPhpDocReader.php
+
+		-
+			message: "#^Access to an undefined property OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:\\$enum\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:appendPattern\\(\\) has parameter \\$newPattern with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:getAnnotations\\(\\) has parameter \\$validationGroups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:getAnnotations\\(\\) return type has no value type specified in iterable type iterable\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:isConstraintInGroup\\(\\) has parameter \\$validationGroups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:locateAnnotations\\(\\) return type has no value type specified in iterable type Traversable\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:processPropertyAnnotations\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:processPropertyAnnotations\\(\\) has parameter \\$annotations with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:processPropertyAnnotations\\(\\) has parameter \\$reflection with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:setContextFromReflection\\(\\) has parameter \\$reflection with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:setSchema\\(\\) has parameter \\$schema with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:updateProperty\\(\\) has parameter \\$validationGroups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of function call_user_func expects callable\\(\\)\\: mixed, array given\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Parameter \\#1 \\$parentContext of method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\SymfonyConstraintAnnotationReader\\:\\:getAnnotations\\(\\) expects OpenApi\\\\Context, OpenApi\\\\Context\\|null given\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/SymfonyConstraintAnnotationReader.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\Annotations\\\\UpdateClassDefinitionResult\\:\\:\\$shouldDescribeModelProperties has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/Annotations/UpdateClassDefinitionResult.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\BazingaHateoasModelDescriber\\:\\:getHateoasMetadata\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/BazingaHateoasModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\BazingaHateoasModelDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/BazingaHateoasModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\BazingaHateoasModelDescriber\\:\\:\\$JMSModelDescriber has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/BazingaHateoasModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\BazingaHateoasModelDescriber\\:\\:\\$factory has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/BazingaHateoasModelDescriber.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between null and Hateoas\\\\Configuration\\\\Metadata\\\\ClassMetadata will always evaluate to false\\.$#"
+			count: 1
+			path: ModelDescriber/BazingaHateoasModelDescriber.php
+
+		-
+			message: "#^Call to an undefined method ReflectionType\\:\\:getName\\(\\)\\.$#"
+			count: 1
+			path: ModelDescriber/EnumModelDescriber.php
+
+		-
+			message: "#^Cannot call static method cases\\(\\) on string\\|null\\.$#"
+			count: 1
+			path: ModelDescriber/EnumModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\EnumModelDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/EnumModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$enum of function enum_exists expects string, string\\|null given\\.$#"
+			count: 1
+			path: ModelDescriber/EnumModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionEnum constructor expects class\\-string\\<T of UnitEnum\\>\\|T of UnitEnum, string\\|null given\\.$#"
+			count: 1
+			path: ModelDescriber/EnumModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FallbackObjectModelDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/FallbackObjectModelDescriber.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:__construct\\(\\) has parameter \\$mediaTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:findFormType\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:isBooleansArray\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:isNumbersArray\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:parseForm\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:setContextFromReflection\\(\\) has parameter \\$reflection with no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$object of method OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:mergeProperties\\(\\) expects object, mixed given\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string\\|null given\\.$#"
+			count: 2
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$object_or_class of function is_a expects object\\|string, string\\|null given\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$parentContext of method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:setContextFromReflection\\(\\) expects OpenApi\\\\Context, OpenApi\\\\Context\\|null given\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\.\\.\\.\\$arrays of function array_merge expects array, mixed given\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Parameter \\#2 \\$property of method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:findFormType\\(\\) expects OpenApi\\\\Annotations\\\\Schema, OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Parameter \\#2 \\$property of static method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getProperty\\(\\) expects string, mixed given\\.$#"
+			count: 2
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Parameter \\#2 \\.\\.\\.\\$arrays of function array_merge expects array, mixed given\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#"
+			count: 2
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:\\$formFactory has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:\\$isFormCsrfExtensionEnabled has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:\\$mediaTypes has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\FormModelDescriber\\:\\:\\$useValidationGroups has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$items \\(OpenApi\\\\Annotations\\\\Items\\) does not accept OpenApi\\\\Annotations\\\\AbstractAnnotation\\.$#"
+			count: 3
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$required \\(array\\<string\\>\\) does not accept array\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$required \\(array\\<string\\>\\) does not accept array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: ModelDescriber/FormModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:__construct\\(\\) has parameter \\$mediaTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:computeGroups\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:computeGroups\\(\\) has parameter \\$type with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:describeItem\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:describeItem\\(\\) has parameter \\$type with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:getNestedTypeInArray\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:getNestedTypeInArray\\(\\) has parameter \\$type with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:propertyTypeUsesGroups\\(\\) has parameter \\$type with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string\\|null given\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Parameter \\#2 \\$property of method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:describeItem\\(\\) expects OpenApi\\\\Annotations\\\\Schema, OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
+			count: 2
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:\\$contextFactory has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:\\$contexts has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:\\$factory has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:\\$mediaTypes has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:\\$metadataStacks has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:\\$namingStrategy has no type specified\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\JMSModelDescriber\\:\\:\\$propertyTypeUseGroupsCache type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$additionalProperties \\(bool\\|OpenApi\\\\Annotations\\\\AdditionalProperties\\) does not accept OpenApi\\\\Annotations\\\\AbstractAnnotation\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$items \\(OpenApi\\\\Annotations\\\\Items\\) does not accept OpenApi\\\\Annotations\\\\AbstractAnnotation\\.$#"
+			count: 1
+			path: ModelDescriber/JMSModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\ModelDescriberInterface\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/ModelDescriberInterface.php
+
+		-
+			message: "#^Cannot access property \\$class on OpenApi\\\\Context\\|null\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\ObjectModelDescriber\\:\\:__construct\\(\\) has parameter \\$mediaTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\ObjectModelDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\ObjectModelDescriber\\:\\:describeProperty\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\ObjectModelDescriber\\:\\:getReflections\\(\\) has parameter \\$reflClass with generic class ReflectionClass but does not specify its types\\: T$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\ModelDescriber\\\\ObjectModelDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Method Symfony\\\\Component\\\\Serializer\\\\NameConverter\\\\NameConverterInterface\\:\\:normalize\\(\\) invoked with 4 parameters, 1 required\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Offset string does not exist on array\\<string\\>\\|null\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$class of function class_exists expects string, string\\|null given\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$class of method Symfony\\\\Component\\\\PropertyInfo\\\\PropertyListExtractorInterface\\:\\:getProperties\\(\\) expects string, string\\|null given\\.$#"
+			count: 2
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$class of method Symfony\\\\Component\\\\PropertyInfo\\\\PropertyTypeExtractorInterface\\:\\:getTypes\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$interface of function interface_exists expects string, string\\|null given\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string\\|null given\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$value of method Symfony\\\\Component\\\\Serializer\\\\Mapping\\\\Factory\\\\ClassMetadataFactoryInterface\\:\\:getMetadataFor\\(\\) expects object\\|string, string\\|null given\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Right side of && is always false\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between '@OA\\\\\\\\Generator\\:…' and OpenApi\\\\Annotations\\\\Discriminator will always evaluate to false\\.$#"
+			count: 1
+			path: ModelDescriber/ObjectModelDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of function call_user_func expects callable\\(\\)\\: mixed, array\\{string\\|null, 'describe'\\} given\\.$#"
+			count: 1
+			path: ModelDescriber/SelfDescribingModelDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\ModelRegister\\:\\:__construct\\(\\) has parameter \\$mediaTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/ModelRegister.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\ModelRegister\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/ModelRegister.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\ModelRegister\\:\\:__invoke\\(\\) has parameter \\$parentGroups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/ModelRegister.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\ModelRegister\\:\\:createContentForMediaType\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/ModelRegister.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\ModelRegister\\:\\:createContentForMediaType\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/ModelRegister.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\ModelRegister\\:\\:getGroups\\(\\) has parameter \\$parentGroups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/ModelRegister.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\ModelRegister\\:\\:getGroups\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/ModelRegister.php
+
+		-
+			message: "#^Parameter \\#1 \\$annotation of method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\ModelRegister\\:\\:getModel\\(\\) expects OpenApi\\\\Annotations\\\\AbstractAnnotation, object given\\.$#"
+			count: 1
+			path: OpenApiPhp/ModelRegister.php
+
+		-
+			message: "#^Cannot use array destructuring on array\\<string\\>\\|string\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Constant Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:OPERATIONS type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:createChild\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:createChild\\(\\) should return OpenApi\\\\Annotations\\\\AbstractAnnotation but returns object\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:createCollectionItem\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:createContext\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:createWeakContext\\(\\) has parameter \\$additionalProperties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getChild\\(\\) has parameter \\$class with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getChild\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getCollectionItem\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getNestingIndexes\\(\\) has parameter \\$class with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getNestingIndexes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getOperation\\(\\) should return OpenApi\\\\Annotations\\\\Operation but returns OpenApi\\\\Annotations\\\\AbstractAnnotation\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getOperationParameter\\(\\) should return OpenApi\\\\Annotations\\\\Parameter but returns OpenApi\\\\Annotations\\\\AbstractAnnotation\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getPath\\(\\) should return OpenApi\\\\Annotations\\\\PathItem but returns OpenApi\\\\Annotations\\\\AbstractAnnotation\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getProperty\\(\\) should return OpenApi\\\\Annotations\\\\Property but returns OpenApi\\\\Annotations\\\\AbstractAnnotation\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getSchema\\(\\) should return OpenApi\\\\Annotations\\\\Schema but returns OpenApi\\\\Annotations\\\\AbstractAnnotation\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:merge\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:merge\\(\\) has parameter \\$from with generic class ArrayObject but does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:merge\\(\\) has parameter \\$from with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeChild\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeChild\\(\\) has parameter \\$className with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeChild\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeCollection\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeCollection\\(\\) has parameter \\$className with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeCollection\\(\\) has parameter \\$collection with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeCollection\\(\\) has parameter \\$items with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeCollection\\(\\) has parameter \\$property with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeFromArray\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeFromArray\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeProperty\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeProperty\\(\\) has parameter \\$default with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeProperty\\(\\) has parameter \\$propertyName with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeProperty\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeTyped\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeTyped\\(\\) has parameter \\$defaults with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeTyped\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeTyped\\(\\) has parameter \\$propertyName with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeTyped\\(\\) has parameter \\$type with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:modifyAnnotationValue\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:searchCollectionItem\\(\\) has parameter \\$collection with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:searchCollectionItem\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:searchIndexedCollectionItem\\(\\) has parameter \\$collection with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Parameter \\#2 \\$properties of static method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:mergeFromArray\\(\\) expects array, mixed given\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between '@OA\\\\\\\\Generator\\:…' and array\\<OpenApi\\\\Annotations\\\\Property\\> will always evaluate to false\\.$#"
+			count: 1
+			path: OpenApiPhp/Util.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Processor\\\\MapQueryStringProcessor\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Processor/MapQueryStringProcessor.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Processor\\\\MapQueryStringProcessor\\:\\:addQueryParameters\\(\\) has parameter \\$mapQueryStringContext with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Processor/MapQueryStringProcessor.php
+
+		-
+			message: "#^Parameter \\#1 \\$api of static method Nelmio\\\\ApiDocBundle\\\\OpenApiPhp\\\\Util\\:\\:getSchema\\(\\) expects OpenApi\\\\Annotations\\\\OpenApi, OpenApi\\\\Annotations\\\\OpenApi\\|null given\\.$#"
+			count: 1
+			path: Processor/MapQueryStringProcessor.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between '@OA\\\\\\\\Generator\\:…' and array\\<OpenApi\\\\Annotations\\\\Property\\> will always evaluate to false\\.$#"
+			count: 1
+			path: Processor/MapQueryStringProcessor.php
+
+		-
+			message: "#^Access to an undefined property OpenApi\\\\Context\\:\\:\\$nelmio_api_doc_bundle\\.model_ref\\.Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteArgumentDescriber\\\\SymfonyMapRequestPayloadDescriber\\.$#"
+			count: 1
+			path: Processor/MapRequestPayloadProcessor.php
+
+		-
+			message: "#^Cannot access offset 'application/json'\\|'application/xml' on array\\<OpenApi\\\\Annotations\\\\MediaType\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Annotations\\\\Attachable\\|OpenApi\\\\Annotations\\\\MediaType\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\XmlContent\\.$#"
+			count: 1
+			path: Processor/MapRequestPayloadProcessor.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Processor\\\\MapRequestPayloadProcessor\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Processor/MapRequestPayloadProcessor.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Processor\\\\MapRequestPayloadProcessor\\:\\:getContentSchemaForType\\(\\) should return OpenApi\\\\Annotations\\\\Schema but returns OpenApi\\\\Annotations\\\\AbstractAnnotation\\.$#"
+			count: 1
+			path: Processor/MapRequestPayloadProcessor.php
+
+		-
+			message: "#^Cannot access property \\$components on OpenApi\\\\Annotations\\\\OpenApi\\|null\\.$#"
+			count: 3
+			path: Processor/NullablePropertyProcessor.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$nullable \\(bool\\) does not accept string\\.$#"
+			count: 1
+			path: Processor/NullablePropertyProcessor.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between '@OA\\\\\\\\Generator\\:…' and array\\<OpenApi\\\\Annotations\\\\Property\\> will always evaluate to false\\.$#"
+			count: 1
+			path: Processor/NullablePropertyProcessor.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\ArrayPropertyDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/ArrayPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\ArrayPropertyDescriber\\:\\:describe\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/ArrayPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\ArrayPropertyDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/ArrayPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: PropertyDescriber/ArrayPropertyDescriber.php
+
+		-
+			message: "#^Parameter \\#2 \\$property of method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) expects OpenApi\\\\Annotations\\\\Schema, OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
+			count: 1
+			path: PropertyDescriber/ArrayPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\BooleanPropertyDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/BooleanPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\BooleanPropertyDescriber\\:\\:describe\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/BooleanPropertyDescriber.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: PropertyDescriber/CompoundPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\CompoundPropertyDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/CompoundPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\CompoundPropertyDescriber\\:\\:describe\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/CompoundPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\CompoundPropertyDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/CompoundPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: PropertyDescriber/CompoundPropertyDescriber.php
+
+		-
+			message: "#^Parameter \\#2 \\$property of method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) expects OpenApi\\\\Annotations\\\\Schema, OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
+			count: 1
+			path: PropertyDescriber/CompoundPropertyDescriber.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$oneOf \\(array\\<OpenApi\\\\Annotations\\\\Schema\\>\\) does not accept array\\<OpenApi\\\\Annotations\\\\AbstractAnnotation\\>\\.$#"
+			count: 1
+			path: PropertyDescriber/CompoundPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\DateTimePropertyDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/DateTimePropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\DateTimePropertyDescriber\\:\\:describe\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/DateTimePropertyDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$object_or_class of function is_a expects object\\|string, string\\|null given\\.$#"
+			count: 1
+			path: PropertyDescriber/DateTimePropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\FloatPropertyDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/FloatPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\FloatPropertyDescriber\\:\\:describe\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/FloatPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\IntegerPropertyDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/IntegerPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\IntegerPropertyDescriber\\:\\:describe\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/IntegerPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\NullablePropertyDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/NullablePropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\NullablePropertyDescriber\\:\\:describe\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/NullablePropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: PropertyDescriber/NullablePropertyDescriber.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between '@OA\\\\\\\\Generator\\:…' and bool will always evaluate to false\\.$#"
+			count: 1
+			path: PropertyDescriber/NullablePropertyDescriber.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\PropertyInfo\\\\Type\\:\\:getCollectionKeyType\\(\\)\\.$#"
+			count: 1
+			path: PropertyDescriber/ObjectPropertyDescriber.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\PropertyInfo\\\\Type\\:\\:getCollectionValueType\\(\\)\\.$#"
+			count: 1
+			path: PropertyDescriber/ObjectPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\ObjectPropertyDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/ObjectPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\ObjectPropertyDescriber\\:\\:describe\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/ObjectPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\ObjectPropertyDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/ObjectPropertyDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$enum of function enum_exists expects string, string\\|null given\\.$#"
+			count: 1
+			path: PropertyDescriber/ObjectPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriber\\:\\:__construct\\(\\) has parameter \\$propertyDescribers with no value type specified in iterable type iterable\\.$#"
+			count: 1
+			path: PropertyDescriber/PropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriber\\:\\:describe\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/PropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriber\\:\\:getHash\\(\\) has parameter \\$types with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/PropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriber\\:\\:getPropertyDescriber\\(\\) has parameter \\$types with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/PropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/PropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: PropertyDescriber/PropertyDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriber\\:\\:\\$propertyDescribers \\(array\\<Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\>\\) does not accept iterable\\.$#"
+			count: 1
+			path: PropertyDescriber/PropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/PropertyDescriberInterface.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$context$#"
+			count: 1
+			path: PropertyDescriber/PropertyDescriberInterface.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$schema$#"
+			count: 1
+			path: PropertyDescriber/PropertyDescriberInterface.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: PropertyDescriber/RequiredPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: PropertyDescriber/RequiredPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\RequiredPropertyDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/RequiredPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\RequiredPropertyDescriber\\:\\:describe\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/RequiredPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\StringPropertyDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: PropertyDescriber/StringPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\StringPropertyDescriber\\:\\:describe\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: PropertyDescriber/StringPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:__invoke\\(\\) has parameter \\$asset with no type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:__invoke\\(\\) has parameter \\$defaultAssetsMode with no type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:getExtension\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:getExtension\\(\\) has parameter \\$asset with no type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:getExtension\\(\\) has parameter \\$assetsMode with no type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:getResource\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:getResource\\(\\) has parameter \\$asset with no type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:getResource\\(\\) has parameter \\$mode with no type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:renderCss\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:renderJavascript\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:\\$assetExtension has no type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:\\$cdnUrl has no type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\GetNelmioAsset\\:\\:\\$resourcesDir has no type specified\\.$#"
+			count: 1
+			path: Render/Html/GetNelmioAsset.php
+
+		-
+			message: "#^Call to method render\\(\\) on an unknown class Twig_Environment\\.$#"
+			count: 1
+			path: Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: "#^Class Twig_Environment not found\\.$#"
+			count: 1
+			path: Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:__construct\\(\\) has parameter \\$twig with no type specified\\.$#"
+			count: 1
+			path: Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:render\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:\\$twig has unknown class Twig_Environment as its type\\.$#"
+			count: 1
+			path: Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Json\\\\JsonOpenApiRenderer\\:\\:render\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Render/Json/JsonOpenApiRenderer.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Json\\\\JsonOpenApiRenderer\\:\\:render\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: Render/Json/JsonOpenApiRenderer.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\OpenApiRenderer\\:\\:render\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Render/OpenApiRenderer.php
+
+		-
+			message: "#^Cannot call method generate\\(\\) on mixed\\.$#"
+			count: 1
+			path: Render/RenderOpenApi.php
+
+		-
+			message: "#^Cannot call method render\\(\\) on Nelmio\\\\ApiDocBundle\\\\Render\\\\OpenApiRenderer\\|null\\.$#"
+			count: 1
+			path: Render/RenderOpenApi.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\RenderOpenApi\\:\\:getAvailableFormats\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Render/RenderOpenApi.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\RenderOpenApi\\:\\:getServersFromOptions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Render/RenderOpenApi.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\RenderOpenApi\\:\\:getServersFromOptions\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Render/RenderOpenApi.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\RenderOpenApi\\:\\:render\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Render/RenderOpenApi.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\RenderOpenApi\\:\\:renderFromRequest\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Render/RenderOpenApi.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\RenderOpenApi\\:\\:renderFromRequest\\(\\) has parameter \\$area with no type specified\\.$#"
+			count: 1
+			path: Render/RenderOpenApi.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\RenderOpenApi\\:\\:renderFromRequest\\(\\) has parameter \\$extraOptions with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Render/RenderOpenApi.php
+
+		-
+			message: "#^PHPDoc tag @throws with type Nelmio\\\\ApiDocBundle\\\\Render\\\\InvalidArgumentException is not subtype of Throwable$#"
+			count: 1
+			path: Render/RenderOpenApi.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: Render/RenderOpenApi.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Render\\\\Yaml\\\\YamlOpenApiRenderer\\:\\:render\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Render/Yaml/YamlOpenApiRenderer.php
+
+		-
+			message: "#^Access to an undefined property FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam\\|OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:\\$nullable\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to an undefined property FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam\\|OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:\\$strict\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Call to an undefined method FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\|FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam\\|OpenApi\\\\Annotations\\\\AbstractAnnotation\\:\\:getName\\(\\)\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Cannot access offset 'application/json'\\|'application/xml' on array\\<OpenApi\\\\Annotations\\\\MediaType\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Annotations\\\\Attachable\\|OpenApi\\\\Annotations\\\\MediaType\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\XmlContent\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 2
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:__construct\\(\\) has parameter \\$mediaTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:describeCommonSchemaFromAnnotation\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:describeCommonSchemaFromAnnotation\\(\\) has parameter \\$annotation with no type specified\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:getAttributesAsAnnotation\\(\\) should return array\\<OpenApi\\\\Annotations\\\\AbstractAnnotation\\> but returns array\\<int\\<0, max\\>, object\\>\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:getContentSchemaForType\\(\\) should return OpenApi\\\\Annotations\\\\Schema but returns OpenApi\\\\Annotations\\\\AbstractAnnotation\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:getEnum\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:getEnum\\(\\) has parameter \\$requirements with no type specified\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:getFormat\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:getFormat\\(\\) has parameter \\$requirements with no type specified\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:getPattern\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:getPattern\\(\\) has parameter \\$requirements with no type specified\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$schema of method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\FosRestDescriber\\:\\:describeCommonSchemaFromAnnotation\\(\\) expects OpenApi\\\\Annotations\\\\Schema, OpenApi\\\\Annotations\\\\AbstractAnnotation given\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Property OpenApi\\\\Annotations\\\\Schema\\:\\:\\$items \\(OpenApi\\\\Annotations\\\\Items\\) does not accept OpenApi\\\\Annotations\\\\AbstractAnnotation\\.$#"
+			count: 1
+			path: RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\PhpDocDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: RouteDescriber/PhpDocDescriber.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\PhpDocDescriber\\:\\:\\$docBlockFactory has no type specified\\.$#"
+			count: 1
+			path: RouteDescriber/PhpDocDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteArgumentDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber.php
+
+		-
+			message: "#^Method Symfony\\\\Component\\\\HttpKernel\\\\ControllerMetadata\\\\ArgumentMetadataFactoryInterface\\:\\:createArgumentMetadata\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$controller of method Symfony\\\\Component\\\\HttpKernel\\\\ControllerMetadata\\\\ArgumentMetadataFactoryInterface\\:\\:createArgumentMetadata\\(\\) expects array\\|object\\|string, mixed given\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteArgumentDescriber\\\\SymfonyMapQueryParameterDescriber\\:\\:describeValidateFilter\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapQueryParameterDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteArgumentDescriber\\\\SymfonyMapQueryParameterDescriber\\:\\:describeValidateFilter\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapQueryParameterDescriber.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapQueryParameterDescriber.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between '@OA\\\\\\\\Generator\\:…' and bool will always evaluate to false\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapQueryParameterDescriber.php
+
+		-
+			message: "#^Variable \\$attribute in PHPDoc tag @var does not exist\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapQueryParameterDescriber.php
+
+		-
+			message: "#^Cannot access property \\$nelmio_api_doc_bundle\\.map_query_string\\.Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteArgumentDescriber\\\\SymfonyMapQueryStringDescriber on OpenApi\\\\Context\\|null\\.$#"
+			count: 2
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapQueryStringDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteArgumentDescriber\\\\SymfonyMapQueryStringDescriber\\:\\:getGroups\\(\\) should return array\\<string\\>\\|null but returns array\\<int, array\\<string\\>\\|string\\|Symfony\\\\Component\\\\Validator\\\\Constraints\\\\GroupSequence\\>\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapQueryStringDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteArgumentDescriber\\\\SymfonyMapQueryStringDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapQueryStringDescriber.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapQueryStringDescriber.php
+
+		-
+			message: "#^Variable \\$attribute in PHPDoc tag @var does not exist\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapQueryStringDescriber.php
+
+		-
+			message: "#^Cannot access property \\$nelmio_api_doc_bundle\\.argument_metadata\\.Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteArgumentDescriber\\\\SymfonyMapRequestPayloadDescriber on OpenApi\\\\Context\\|null\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapRequestPayloadDescriber.php
+
+		-
+			message: "#^Cannot access property \\$nelmio_api_doc_bundle\\.model_ref\\.Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteArgumentDescriber\\\\SymfonyMapRequestPayloadDescriber on OpenApi\\\\Context\\|null\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapRequestPayloadDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteArgumentDescriber\\\\SymfonyMapRequestPayloadDescriber\\:\\:getGroups\\(\\) should return array\\<string\\>\\|null but returns array\\<int, array\\<string\\>\\|string\\|Symfony\\\\Component\\\\Validator\\\\Constraints\\\\GroupSequence\\>\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapRequestPayloadDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteArgumentDescriber\\\\SymfonyMapRequestPayloadDescriber\\:\\:setModelRegistry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapRequestPayloadDescriber.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapRequestPayloadDescriber.php
+
+		-
+			message: "#^Variable \\$attribute in PHPDoc tag @var does not exist\\.$#"
+			count: 1
+			path: RouteDescriber/RouteArgumentDescriber/SymfonyMapRequestPayloadDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteDescriberInterface\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: RouteDescriber/RouteDescriberInterface.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: RouteDescriber/RouteMetadataDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteMetadataDescriber\\:\\:describe\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: RouteDescriber/RouteMetadataDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\RouteDescriber\\\\RouteMetadataDescriber\\:\\:getPossibleEnumValues\\(\\) is unused\\.$#"
+			count: 1
+			path: RouteDescriber/RouteMetadataDescriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function mb_substr expects string, object\\|string given\\.$#"
+			count: 1
+			path: RouteDescriber/RouteMetadataDescriber.php
+
+		-
+			message: "#^Result of && is always true\\.$#"
+			count: 1
+			path: RouteDescriber/RouteMetadataDescriber.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between '@OA\\\\\\\\Generator\\:…' and true will always evaluate to false\\.$#"
+			count: 1
+			path: RouteDescriber/RouteMetadataDescriber.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: RouteDescriber/RouteMetadataDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Routing\\\\FilteredRouteCollectionBuilder\\:\\:__construct\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Routing/FilteredRouteCollectionBuilder.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Routing\\\\FilteredRouteCollectionBuilder\\:\\:getAttributesAsAnnotation\\(\\) has parameter \\$reflection with generic class ReflectionClass but does not specify its types\\: T$#"
+			count: 1
+			path: Routing/FilteredRouteCollectionBuilder.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Routing\\\\FilteredRouteCollectionBuilder\\:\\:getAttributesAsAnnotation\\(\\) should return array\\<Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Areas\\> but returns array\\<int\\<0, max\\>, object\\>\\.$#"
+			count: 1
+			path: Routing/FilteredRouteCollectionBuilder.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Routing\\\\FilteredRouteCollectionBuilder\\:\\:\\$options type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Routing/FilteredRouteCollectionBuilder.php
+
+		-
+			message: "#^Class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\ControllerNameParser not found\\.$#"
+			count: 1
+			path: Util/ControllerReflector.php
+
+		-
+			message: "#^Comparison operation \"\\>\\=\" between 60403 and 40100 is always true\\.$#"
+			count: 1
+			path: Util/ControllerReflector.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Util\\\\ControllerReflector\\:\\:getClassAndMethod\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Util/ControllerReflector.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\Util\\\\ControllerReflector\\:\\:getReflectionMethod\\(\\) has parameter \\$controller with no type specified\\.$#"
+			count: 1
+			path: Util/ControllerReflector.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Util\\\\ControllerReflector\\:\\:\\$container has no type specified\\.$#"
+			count: 1
+			path: Util/ControllerReflector.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Util\\\\ControllerReflector\\:\\:\\$controllerNameParser has no type specified\\.$#"
+			count: 1
+			path: Util/ControllerReflector.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Util\\\\ControllerReflector\\:\\:\\$controllers has no type specified\\.$#"
+			count: 1
+			path: Util/ControllerReflector.php
