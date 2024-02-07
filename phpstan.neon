@@ -18,5 +18,7 @@ parameters:
         - RouteDescriber
         - Routing
         - Util
+        - NelmioApiDocBundle.php
+        - ApiDocGenerator.php
     parallel:
         processTimeout: 300.0
