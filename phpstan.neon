@@ -1,0 +1,22 @@
+parameters:
+    phpVersion: 80100
+    level: max
+    paths:
+        - Annotation
+        - Command
+        - Controller
+        - DependencyInjection
+        - Describer
+        - Exception
+        - Form
+        - Model
+        - ModelDescriber
+        - OpenApiPhp
+        - Processor
+        - PropertyDescriber
+        - Render
+        - RouteDescriber
+        - Routing
+        - Util
+    parallel:
+        processTimeout: 300.0
