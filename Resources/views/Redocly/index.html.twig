@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block meta %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    {% endblock meta %}
+    <title>{% block title %}{{ swagger_data.spec.info.title }}{% endblock title %}</title>
+
+    {% block stylesheets %}
+        <link
+                href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700"
+                rel="stylesheet"
+        />
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    {% endblock stylesheets %}
+
+    {% block swagger_data %}
+        {# json_encode(65) is for JSON_UNESCAPED_SLASHES|JSON_HEX_TAG to avoid JS XSS #}
+        <script id="swagger-data" type="application/json">{{ swagger_data|json_encode(65)|raw }}</script>
+    {% endblock swagger_data %}
+</head>
+<body>
+    {% block swagger_ui %}
+        <div id="swagger-ui"></div>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ nelmioAsset(assets_mode, 'redocly/redoc.standalone.js') }}
+    {% endblock javascripts %}
+
+    {{ nelmioAsset(assets_mode, 'init-redocly-ui.js') }}
+</html>

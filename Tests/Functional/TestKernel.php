@@ -87,42 +87,30 @@ class TestKernel extends Kernel
         return $bundles;
     }
 
-    protected function configureRoutes($routes)
+    protected function configureRoutes(RoutingConfigurator $routes)
     {
         if (self::isAnnotationsAvailable()) {
-            $this->import($routes, __DIR__.'/Resources/routes.yaml', '/', 'yaml');
+            $routes->withPath('/')->import(__DIR__.'/Resources/routes.yaml', 'yaml');
         } else {
-            $this->import($routes, __DIR__.'/Resources/routes-attributes.yaml', '/', 'yaml');
+            $routes->withPath('/')->import(__DIR__.'/Resources/routes-attributes.yaml', 'yaml');
         }
 
         if ($this->flags & self::USE_JMS) {
-            $this->import($routes, __DIR__.'/Controller/JMSController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
+            $routes->withPath('/')->import(__DIR__.'/Controller/JMSController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
         }
 
         if ($this->flags & self::USE_BAZINGA) {
-            $this->import($routes, __DIR__.'/Controller/BazingaController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
+            $routes->withPath('/')->import(__DIR__.'/Controller/BazingaTypedController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
 
             try {
                 new ReflectionMethod(Embedded::class, 'getType');
-                $this->import($routes, __DIR__.'/Controller/BazingaTypedController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
+                $routes->withPath('/')->import(__DIR__.'/Controller/BazingaTypedController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
             } catch (ReflectionException $e) {
             }
         }
 
         if ($this->flags & self::USE_FOSREST) {
-            $this->import($routes, __DIR__.'/Controller/FOSRestController.php', '/', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
-        }
-    }
-
-    /**
-     * BC for sf < 5.1.
-     */
-    private function import($routes, $resource, $prefix, $type)
-    {
-        if ($routes instanceof RoutingConfigurator) {
-            $routes->withPath($prefix)->import($resource, $type);
-        } else {
-            $routes->import($resource, $prefix, $type);
+            $routes->withPath('/')->import(__DIR__.'/Controller/FOSRestController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
         }
     }
 

@@ -25,9 +25,15 @@ final class SwaggerUiController
      */
     private $renderOpenApi;
 
-    public function __construct(RenderOpenApi $renderOpenApi)
+    /**
+     * @var string
+     */
+    private $uiRenderer;
+
+    public function __construct(RenderOpenApi $renderOpenApi, string $uiRenderer)
     {
         $this->renderOpenApi = $renderOpenApi;
+        $this->uiRenderer = $uiRenderer;
     }
 
     public function __invoke(Request $request, $area = 'default')
@@ -36,6 +42,7 @@ final class SwaggerUiController
             $response = new Response(
                 $this->renderOpenApi->renderFromRequest($request, RenderOpenApi::HTML, $area, [
                     'assets_mode' => AssetsMode::BUNDLE,
+                    'ui_renderer' => $this->uiRenderer,
                 ]),
                 Response::HTTP_OK,
                 ['Content-Type' => 'text/html']

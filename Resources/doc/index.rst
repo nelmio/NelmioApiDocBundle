@@ -55,7 +55,7 @@ By default, only routes under ``/api`` are documented. Update the regexp at ``ne
             }
         }
 
-    To browse your documentation with Swagger UI, register the following route:
+    To browse your documentation with an UI, register one of the following route:
 
     .. code-block:: yaml
 
@@ -64,6 +64,14 @@ By default, only routes under ``/api`` are documented. Update the regexp at ``ne
             path: /api/doc
             methods: GET
             defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+
+    .. code-block:: yaml
+
+        # config/routes.yaml
+        app.redocly:
+            path: /api/doc
+            methods: GET
+            defaults: { _controller: nelmio_api_doc.controller.redocly }
 
     If you also want to expose it in JSON, register this route:
 

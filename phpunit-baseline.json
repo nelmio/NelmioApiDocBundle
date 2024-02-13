@@ -5,6 +5,11 @@
         "count": 1
     },
     {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testRedocly",
+        "message": "Since api-platform/core 2.7: Using \"api_platform.iri_converter.legacy\" is deprecated since API Platform 2.7. Use \"ApiPlatform\\Api\\IriConverterInterface\" instead.",
+        "count": 1
+    },
+    {
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testApiPlatformSwaggerUi",
         "message": "Since api-platform/core 2.7: Using \"api_platform.iri_converter.legacy\" is deprecated since API Platform 2.7. Use \"ApiPlatform\\Api\\IriConverterInterface\" instead.",
         "count": 1
@@ -7281,16 +7286,19 @@
     },
     {
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testRedocly",
         "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
         "count": 1
     },
     {
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testRedocly",
         "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
         "count": 1
     },
     {
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testRedocly",
         "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
         "count": 1
     }
