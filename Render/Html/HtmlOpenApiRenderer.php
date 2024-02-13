@@ -45,6 +45,16 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
             'swagger_ui_config' => [],
         ];
 
+        if (isset($options['ui_renderer']) && Renderer::REDOCLY === $options['ui_renderer']) {
+            return $this->twig->render(
+                '@NelmioApiDoc/Redocly/index.html.twig',
+                [
+                    'swagger_data' => ['spec' => json_decode($spec->toJson(), true)],
+                    'assets_mode' => $options['assets_mode'],
+                ]
+            );
+        }
+
         return $this->twig->render(
             '@NelmioApiDoc/SwaggerUi/index.html.twig',
             [
