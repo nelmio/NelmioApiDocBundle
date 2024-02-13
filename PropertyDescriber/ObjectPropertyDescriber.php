@@ -22,7 +22,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 {
     use ModelRegistryAwareTrait;
 
-    public function describe(array $types, OA\Schema $property, array $groups = null)
+    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
         $type = new Type(
             $types[0]->getBuiltinType(),
@@ -38,17 +38,23 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
         if ($types[0]->isNullable()) {
             $weakContext = Util::createWeakContext($property->_context);
-            $property->nullable = true;
-            $property->allOf = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups)), '_context' => $weakContext])];
+            $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups, null, $context)), '_context' => $weakContext])];
+
+            if (function_exists('enum_exists') && enum_exists($type->getClassName())) {
+                $property->allOf = $schemas;
+            } else {
+                $property->oneOf = $schemas;
+            }
 
             return;
         }
 
-        $property->ref = $this->modelRegistry->register(new Model($type, $groups));
+        $property->ref = $this->modelRegistry->register(new Model($type, $groups, null, $context));
     }
 
     public function supports(array $types): bool
     {
-        return 1 === count($types) && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
+        return 1 === count($types)
+            && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
     }
 }

@@ -148,11 +148,11 @@ class JMSFunctionalTest extends WebTestCase
                 ],
                 'virtual_type1' => [
                     'title' => 'JMS custom types handled via Custom Type Handlers.',
-                    'allOf' => [['$ref' => '#/components/schemas/VirtualTypeClassDoesNotExistsHandlerDefined']],
+                    'oneOf' => [['$ref' => '#/components/schemas/VirtualTypeClassDoesNotExistsHandlerDefined']],
                 ],
                 'virtual_type2' => [
                     'title' => 'JMS custom types handled via Custom Type Handlers.',
-                    'allOf' => [['$ref' => '#/components/schemas/VirtualTypeClassDoesNotExistsHandlerNotDefined']],
+                    'oneOf' => [['$ref' => '#/components/schemas/VirtualTypeClassDoesNotExistsHandlerNotDefined']],
                 ],
                 'last_update' => [
                     'type' => 'date',
@@ -326,13 +326,50 @@ class JMSFunctionalTest extends WebTestCase
             'properties' => [
                 'beautifulName' => [
                     'type' => 'string',
-                    'maxLength' => '10',
-                    'minLength' => '3',
+                    'maxLength' => 10,
+                    'minLength' => 3,
                 ],
             ],
             'required' => ['beautifulName'],
             'schema' => 'JMSNamingStrategyConstraints',
         ], json_decode($this->getModel('JMSNamingStrategyConstraints')->toJson(), true));
+    }
+
+    /**
+     * @requires PHP >= 8.1
+     */
+    public function testEnumSupport()
+    {
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                ],
+                'type' => [
+                    '$ref' => '#/components/schemas/ArticleType81',
+                ],
+                'int_backed_type' => [
+                    '$ref' => '#/components/schemas/ArticleType81IntBacked',
+                ],
+                'not_backed_type' => [
+                    '$ref' => '#/components/schemas/ArticleType81NotBacked',
+                ],
+                'nullable_type' => [
+                    '$ref' => '#/components/schemas/ArticleType81',
+                ],
+            ],
+            'schema' => 'Article81',
+        ], json_decode($this->getModel('Article81')->toJson(), true));
+
+        $this->assertEquals([
+            'schema' => 'ArticleType81',
+            'type' => 'string',
+            'enum' => [
+                'draft',
+                'final',
+            ],
+        ], json_decode($this->getModel('ArticleType81')->toJson(), true));
     }
 
     protected static function createKernel(array $options = []): KernelInterface

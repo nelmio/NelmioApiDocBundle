@@ -17,4 +17,19 @@ class CompoundEntity
      * @var int|CompoundEntity[]
      */
     public $complex;
+
+    /**
+     * @var int|CompoundEntity[]|null
+     */
+    public $nullableComplex;
+
+    /**
+     * @var CompoundEntityNested[]|string|null
+     */
+    public $complexNested;
+
+    /**
+     * @var array<CompoundEntityNested>|array<array<CompoundEntityNested>>
+     */
+    public $arrayOfArrayComplex;
 }

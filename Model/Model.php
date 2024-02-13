@@ -17,18 +17,20 @@ final class Model
 {
     private $type;
 
-    private $groups;
-
     private $options;
+    private $serializationContext;
 
     /**
      * @param string[]|null $groups
      */
-    public function __construct(Type $type, array $groups = null, array $options = null)
+    public function __construct(Type $type, array $groups = null, array $options = null, array $serializationContext = [])
     {
         $this->type = $type;
-        $this->groups = $groups;
         $this->options = $options;
+        $this->serializationContext = $serializationContext;
+        if (null !== $groups) {
+            $this->serializationContext['groups'] = $groups;
+        }
     }
 
     /**
@@ -44,12 +46,20 @@ final class Model
      */
     public function getGroups()
     {
-        return $this->groups;
+        return $this->serializationContext['groups'] ?? null;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getSerializationContext(): array
+    {
+        return $this->serializationContext;
     }
 
     public function getHash(): string
     {
-        return md5(serialize([$this->type, $this->groups]));
+        return md5(serialize([$this->type, $this->getSerializationContext()]));
     }
 
     /**

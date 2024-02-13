@@ -50,20 +50,28 @@ final class Model extends Attachable
     public $options;
 
     /**
-     * @param mixed[]  $properties
-     * @param string[] $groups
-     * @param mixed[]  $options
+     * @var array<string, mixed>
+     */
+    public $serializationContext;
+
+    /**
+     * @param mixed[]              $properties
+     * @param string[]             $groups
+     * @param mixed[]              $options
+     * @param array<string, mixed> $serializationContext
      */
     public function __construct(
         array $properties = [],
         string $type = Generator::UNDEFINED,
         array $groups = null,
-        array $options = null
+        array $options = null,
+        array $serializationContext = []
     ) {
         parent::__construct($properties + [
             'type' => $type,
             'groups' => $groups,
             'options' => $options,
+            'serializationContext' => $serializationContext,
         ]);
     }
 }

@@ -43,7 +43,7 @@ class DumpCommand extends Command
     /**
      * Configures the dump command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $availableFormats = $this->renderOpenApi->getAvailableFormats();
         $this
@@ -62,10 +62,7 @@ class DumpCommand extends Command
         ;
     }
 
-    /**
-     * @return int|void
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $area = $input->getOption('area');
         $format = $input->getOption('format');

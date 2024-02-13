@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
@@ -35,10 +34,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private $propertyInfo;
     /** @var ClassMetadataFactoryInterface|null */
     private $classMetadataFactory;
-    /** @var Reader */
+    /** @var Reader|null */
     private $doctrineReader;
-    /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
+    /** @var PropertyDescriberInterface|PropertyDescriberInterface[] */
+    private $propertyDescriber;
     /** @var string[] */
     private $mediaTypes;
     /** @var NameConverterInterface|null */
@@ -46,18 +45,29 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /** @var bool */
     private $useValidationGroups;
 
+    /**
+     * @param PropertyDescriberInterface|PropertyDescriberInterface[] $propertyDescribers
+     */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        Reader $reader,
-        iterable $propertyDescribers,
+        ?Reader $reader,
+        $propertyDescribers,
         array $mediaTypes,
         NameConverterInterface $nameConverter = null,
         bool $useValidationGroups = false,
         ClassMetadataFactoryInterface $classMetadataFactory = null
     ) {
+        if (is_array($propertyDescribers)) {
+            trigger_deprecation('nelmio/api-doc-bundle', '4.17', 'Passing an array of PropertyDescriberInterface to %s() is deprecated. Pass a single PropertyDescriberInterface instead.', __METHOD__);
+        } else {
+            if (!$propertyDescribers instanceof PropertyDescriberInterface) {
+                throw new \InvalidArgumentException(sprintf('Argument 3 passed to %s() must be an array of %s or a single %s.', __METHOD__, PropertyDescriberInterface::class, PropertyDescriberInterface::class));
+            }
+        }
+
         $this->propertyInfo = $propertyInfo;
         $this->doctrineReader = $reader;
-        $this->propertyDescribers = $propertyDescribers;
+        $this->propertyDescriber = $propertyDescribers;
         $this->mediaTypes = $mediaTypes;
         $this->nameConverter = $nameConverter;
         $this->useValidationGroups = $useValidationGroups;
@@ -116,8 +126,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         // The SerializerExtractor does expose private/protected properties for some reason, so we eliminate them here
         $propertyInfoProperties = array_intersect($propertyInfoProperties, $this->propertyInfo->getProperties($class, []) ?? []);
 
+        $defaultValues = array_filter($reflClass->getDefaultProperties(), static function ($value) {
+            return null !== $value;
+        });
+
         foreach ($propertyInfoProperties as $propertyName) {
-            $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, null !== $model->getGroups() ? ['groups' => $model->getGroups()] : []) : $propertyName;
+            $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, $model->getSerializationContext()) : $propertyName;
 
             $reflections = $this->getReflections($reflClass, $propertyName);
 
@@ -142,12 +156,16 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 continue;
             }
 
+            if (Generator::UNDEFINED === $property->default && array_key_exists($propertyName, $defaultValues)) {
+                $property->default = $defaultValues[$propertyName];
+            }
+
             $types = $this->propertyInfo->getTypes($class, $propertyName);
             if (null === $types || 0 === count($types)) {
                 throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
             }
 
-            $this->describeProperty($types, $model, $property, $propertyName);
+            $this->describeProperty($types, $model, $property, $propertyName, $schema);
         }
     }
 
@@ -182,22 +200,16 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /**
      * @param Type[] $types
      */
-    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName)
+    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema)
     {
-        foreach ($this->propertyDescribers as $propertyDescriber) {
+        $propertyDescribers = is_array($this->propertyDescriber) ? $this->propertyDescriber : [$this->propertyDescriber];
+
+        foreach ($propertyDescribers as $propertyDescriber) {
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
             if ($propertyDescriber->supports($types)) {
-                try {
-                    $propertyDescriber->describe($types, $property, $model->getGroups());
-                } catch (UndocumentedArrayItemsException $e) {
-                    if (null !== $e->getClass()) {
-                        throw $e; // This exception is already complete
-                    }
-
-                    throw new UndocumentedArrayItemsException($model->getType()->getClassName(), sprintf('%s%s', $propertyName, $e->getPath()));
-                }
+                $propertyDescriber->describe($types, $property, $model->getGroups(), $schema, $model->getSerializationContext());
 
                 return;
             }

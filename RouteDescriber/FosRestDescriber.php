@@ -19,6 +19,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Regex;
 
@@ -26,13 +27,13 @@ final class FosRestDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    /** @var Reader */
+    /** @var Reader|null */
     private $annotationReader;
 
     /** @var string[] */
     private $mediaTypes;
 
-    public function __construct(Reader $annotationReader, array $mediaTypes)
+    public function __construct(?Reader $annotationReader, array $mediaTypes)
     {
         $this->annotationReader = $annotationReader;
         $this->mediaTypes = $mediaTypes;
@@ -40,7 +41,9 @@ final class FosRestDescriber implements RouteDescriberInterface
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
-        $annotations = $this->annotationReader->getMethodAnnotations($reflectionMethod);
+        $annotations = null !== $this->annotationReader
+            ? $this->annotationReader->getMethodAnnotations($reflectionMethod)
+            : [];
         $annotations = array_filter($annotations, static function ($value) {
             return $value instanceof RequestParam || $value instanceof QueryParam;
         });
@@ -129,6 +132,15 @@ final class FosRestDescriber implements RouteDescriberInterface
         return null;
     }
 
+    private function getEnum($requirements)
+    {
+        if ($requirements instanceof Choice) {
+            return $requirements->choices;
+        }
+
+        return null;
+    }
+
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
         $requestBody->content = Generator::UNDEFINED !== $requestBody->content ? $requestBody->content : [];
@@ -187,6 +199,11 @@ final class FosRestDescriber implements RouteDescriberInterface
         $format = $this->getFormat($annotation->requirements);
         if (null !== $format) {
             $schema->format = $format;
+        }
+
+        $enum = $this->getEnum($annotation->requirements);
+        if (null !== $enum) {
+            $schema->enum = $enum;
         }
     }
 

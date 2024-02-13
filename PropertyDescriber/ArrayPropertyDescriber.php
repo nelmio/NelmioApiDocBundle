@@ -13,59 +13,33 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 
-class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
+class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface, PropertyDescriberAwareInterface
 {
     use ModelRegistryAwareTrait;
-    use NullablePropertyTrait;
+    use PropertyDescriberAwareTrait;
 
-    /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
-
-    public function __construct(iterable $propertyDescribers = [])
+    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
-        $this->propertyDescribers = $propertyDescribers;
-    }
-
-    public function describe(array $types, OA\Schema $property, array $groups = null)
-    {
-        // BC layer for symfony < 5.3
-        $type = method_exists($types[0], 'getCollectionValueTypes') ?
-            ($types[0]->getCollectionValueTypes()[0] ?? null) :
-            $types[0]->getCollectionValueType();
-        if (null === $type) {
-            throw new UndocumentedArrayItemsException();
-        }
-
         $property->type = 'array';
-        $this->setNullableProperty($types[0], $property);
         $property = Util::getChild($property, OA\Items::class);
 
-        foreach ($this->propertyDescribers as $propertyDescriber) {
-            if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
-                $propertyDescriber->setModelRegistry($this->modelRegistry);
+        foreach ($types[0]->getCollectionValueTypes() as $type) {
+            // Handle list pseudo type
+            // https://symfony.com/doc/current/components/property_info.html#type-getcollectionkeytypes-type-getcollectionvaluetypes
+            if ($this->supports([$type]) && empty($type->getCollectionValueTypes())) {
+                continue;
             }
-            if ($propertyDescriber->supports([$type])) {
-                try {
-                    $propertyDescriber->describe([$type], $property, $groups);
-                } catch (UndocumentedArrayItemsException $e) {
-                    if (null !== $e->getClass()) {
-                        throw $e; // This exception is already complete
-                    }
 
-                    throw new UndocumentedArrayItemsException(null, sprintf('%s[]', $e->getPath()));
-                }
-
-                break;
-            }
+            $this->propertyDescriber->describe([$type], $property, $groups, $schema, $context);
         }
     }
 
     public function supports(array $types): bool
     {
-        return 1 === count($types) && $types[0]->isCollection();
+        return 1 === count($types)
+            && $types[0]->isCollection();
     }
 }

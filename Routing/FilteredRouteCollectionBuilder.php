@@ -14,13 +14,14 @@ namespace Nelmio\ApiDocBundle\Routing;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
+use OpenApi\Annotations\AbstractAnnotation;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 final class FilteredRouteCollectionBuilder
 {
-    /** @var Reader */
+    /** @var Reader|null */
     private $annotationReader;
 
     /** @var ControllerReflector */
@@ -33,7 +34,7 @@ final class FilteredRouteCollectionBuilder
     private $options;
 
     public function __construct(
-        Reader $annotationReader,
+        ?Reader $annotationReader,
         ControllerReflector $controllerReflector,
         string $area,
         array $options = []
@@ -55,7 +56,7 @@ final class FilteredRouteCollectionBuilder
         ;
 
         if (array_key_exists(0, $options)) {
-            @trigger_error(sprintf('Passing an indexed array with a collection of path patterns as argument 1 for `%s()` is deprecated since 3.2.0, expected structure is an array containing parameterized options.', __METHOD__), E_USER_DEPRECATED);
+            trigger_deprecation('nelmio/api-doc-bundle', '3.2', 'Passing an indexed array with a collection of path patterns as argument 1 for `%s()` is deprecated since 3.2.0, expected structure is an array containing parameterized options.', __METHOD__);
 
             $normalizedOptions = ['path_patterns' => $options];
             $options = $normalizedOptions;
@@ -136,7 +137,7 @@ final class FilteredRouteCollectionBuilder
             /** @var Areas|null $areas */
             $areas = $this->getAttributesAsAnnotation($reflectionMethod->getDeclaringClass(), Areas::class)[0] ?? null;
 
-            if (null === $areas) {
+            if (null === $areas && null !== $this->annotationReader) {
                 /** @var Areas|null $areas */
                 $areas = $this->annotationReader->getMethodAnnotation(
                     $reflectionMethod,
@@ -166,11 +167,20 @@ final class FilteredRouteCollectionBuilder
             return false;
         }
 
-        $annotations = $this->annotationReader->getMethodAnnotations($method);
+        $annotations = null !== $this->annotationReader
+            ? $this->annotationReader->getMethodAnnotations($method)
+            : [];
+
+        if (method_exists(\ReflectionMethod::class, 'getAttributes')) {
+            $annotations = array_merge($annotations, array_map(function (\ReflectionAttribute $attribute) {
+                return $attribute->newInstance();
+            }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF)));
+        }
 
         foreach ($annotations as $annotation) {
             if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')
                 || false !== strpos(get_class($annotation), 'OpenApi\\Annotations')
+                || false !== strpos(get_class($annotation), 'OpenApi\\Attributes')
             ) {
                 return true;
             }

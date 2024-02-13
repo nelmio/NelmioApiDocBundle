@@ -24,12 +24,17 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
 {
     use ApplyOpenApiDiscriminatorTrait;
 
-    const GROUPS = ['test'];
-    const OPTIONS = ['test' => 123];
+    public const GROUPS = ['test'];
+    public const OPTIONS = ['test' => 123];
 
     private $schema;
 
     private $model;
+
+    /**
+     * @var ModelRegistry
+     */
+    private $modelRegistry;
 
     public function testApplyAddsDiscriminatorProperty()
     {

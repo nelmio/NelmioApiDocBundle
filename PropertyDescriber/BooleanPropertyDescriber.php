@@ -16,12 +16,9 @@ use Symfony\Component\PropertyInfo\Type;
 
 class BooleanPropertyDescriber implements PropertyDescriberInterface
 {
-    use NullablePropertyTrait;
-
-    public function describe(array $types, OA\Schema $property, array $groups = null)
+    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
         $property->type = 'boolean';
-        $this->setNullableProperty($types[0], $property);
     }
 
     public function supports(array $types): bool

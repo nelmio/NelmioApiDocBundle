@@ -6,10 +6,6 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Nelmio",
-            "homepage": "http://nelm.io"
-        },
-        {
             "name": "Symfony Community",
             "homepage": "https://github.com/nelmio/NelmioApiDocBundle/contributors"
         }
@@ -17,61 +13,63 @@
     "require": {
         "php": ">=7.2",
         "ext-json": "*",
-        "doctrine/annotations": "^1.11",
         "psr/cache": "^1.0|^2.0|^3.0",
         "psr/container": "^1.0|^2.0",
         "psr/log": "^1.0|^2.0|^3.0",
-        "symfony/config": "^4.4|^5.0|^6.0",
-        "symfony/console": "^4.4|^5.0|^6.0",
-        "symfony/dependency-injection": "^4.4|^5.0|^6.0",
-        "symfony/framework-bundle": "^4.4|^5.0|^6.0",
-        "symfony/http-foundation": "^4.4|^5.0|^6.0",
-        "symfony/http-kernel": "^4.4|^5.0|^6.0",
-        "symfony/options-resolver": "^4.4|^5.0|^6.0",
-        "symfony/property-info": "^4.4|^5.0|^6.0",
-        "symfony/routing": "^4.4|^5.0|^6.0",
+        "symfony/config": "^5.4|^6.0|^7.0",
+        "symfony/console": "^5.4|^6.0|^7.0",
+        "symfony/dependency-injection": "^5.4|^6.0|^7.0",
+        "symfony/framework-bundle": "^5.4.24|^6.0|^7.0",
+        "symfony/http-foundation": "^5.4|^6.0|^7.0",
+        "symfony/http-kernel": "^5.4|^6.0|^7.0",
+        "symfony/options-resolver": "^5.4|^6.0|^7.0",
+        "symfony/property-info": "^5.4|^6.0|^7.0",
+        "symfony/routing": "^5.4|^6.0|^7.0",
         "zircote/swagger-php": "^4.2.15",
-        "phpdocumentor/reflection-docblock": "^3.1|^4.0|^5.0"
+        "phpdocumentor/reflection-docblock": "^3.1|^4.0|^5.0",
+        "symfony/deprecation-contracts": "^2.1|^3"
     },
     "require-dev": {
-        "sensio/framework-extra-bundle": "^4.4|^5.2|^6.0",
-        "symfony/asset": "^4.4|^5.2|^6.0",
-        "symfony/dom-crawler": "^4.4|^5.2|^6.0",
-        "symfony/browser-kit": "^4.4|^5.2|^6.0",
-        "symfony/cache": "^4.4|^5.2|^6.0",
-        "symfony/form": "^4.4|^5.2|^6.0",
-        "symfony/phpunit-bridge": "^5.2",
-        "symfony/property-access": "^4.4|^5.2|^6.0",
-        "symfony/serializer": "^4.4|^5.2|^6.0",
-        "symfony/stopwatch": "^4.4|^5.2|^6.0",
-        "symfony/templating": "^4.4|^5.2|^6.0",
-        "symfony/twig-bundle": "^4.4|^5.2|^6.0",
-        "symfony/validator": "^4.4|^5.2|^6.0",
+        "sensio/framework-extra-bundle": "^5.4|^6.0",
+        "symfony/asset": "^5.4|^6.0|^7.0",
+        "symfony/dom-crawler": "^5.4|^6.0|^7.0",
+        "symfony/browser-kit": "^5.4|^6.0|^7.0",
+        "symfony/cache": "^5.4|^6.0|^7.0",
+        "symfony/form": "^5.4|^6.0|^7.0",
+        "symfony/phpunit-bridge": "^6.4",
+        "symfony/property-access": "^5.4|^6.0|^7.0",
+        "symfony/serializer": "^5.4|^6.0|^7.0",
+        "symfony/stopwatch": "^5.4|^6.0|^7.0",
+        "symfony/templating": "^5.4|^6.0|^7.0",
+        "symfony/twig-bundle": "^5.4|^6.0|^7.0",
+        "symfony/validator": "^5.4|^6.0|^7.0",
+        "symfony/expression-language": "^5.4|^6.0|^7.0",
+        "symfony/security-csrf": "^5.4|^6.0|^7.0",
 
-        "api-platform/core": "^2.7.0|^3@dev",
-        "symfony/deprecation-contracts": "^2.1|^3",
-
+        "api-platform/core": "^2.7.0|^3",
         "friendsofsymfony/rest-bundle": "^2.8|^3.0",
         "willdurand/hateoas-bundle": "^1.0|^2.0",
-        "jms/serializer-bundle": "^2.3|^3.0|^4.0|^5.0@beta",
+        "jms/serializer-bundle": "^2.3|^3.0|^4.0|^5.0",
         "jms/serializer": "^1.14|^3.0",
-        "composer/package-versions-deprecated": "1.11.99.1"
+        "composer/package-versions-deprecated": "1.11.99.1",
+
+        "phpunit/phpunit": "^8.5|^9.6",
+        "doctrine/annotations": "^2.0"
     },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
+        "doctrine/annotations": "For using doctrine annotations",
         "friendsofsymfony/rest-bundle": "For using the parameters annotations.",
         "jms/serializer-bundle": "For describing your models.",
         "symfony/asset": "For using the Swagger UI.",
         "symfony/cache": "For using a PSR-6 compatible cache implementation with the API doc generator.",
         "symfony/form": "For describing your form type models.",
+        "symfony/security-csrf": "For using csrf protection tokens in forms.",
         "symfony/monolog-bundle": "For using a PSR-3 compatible logger implementation with the API PHP describer.",
         "symfony/serializer": "For describing your models.",
         "symfony/twig-bundle": "For using the Swagger UI.",
         "symfony/validator": "For describing the validation constraints in your models.",
         "willdurand/hateoas-bundle": "For extracting HATEOAS metadata."
-    },
-    "conflict": {
-        "symfony/framework-bundle": "4.2.7"
     },
     "autoload": {
         "psr-4": {
@@ -90,5 +88,11 @@
         "branch-alias": {
             "dev-master": "4.x-dev"
         }
+    },
+    "scripts-descriptions": {
+        "phpunit": "Run phpunit"
+    },
+    "scripts": {
+        "phpunit": "phpunit"
     }
 }

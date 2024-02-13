@@ -2,7 +2,7 @@
 
 <!-- http://phpunit.de/manual/4.1/en/appendixes.configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.6/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.5/phpunit.xsd"
          backupGlobals="false"
          colors="true"
          failOnWarning="true"
@@ -14,7 +14,9 @@
         <env name="SHELL_VERBOSITY" value="-1" />
         <ini name="error_reporting" value="-1" />
         <ini name="memory_limit" value="512M" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
+
+        <!-- add "generateBaseline=true&amp;" to the value to generate a new baseline. Keep in mind to clear the test cache before. -->
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="baselineFile=./phpunit-baseline.json&amp;max[self]=0" />
     </php>
 
     <testsuites>

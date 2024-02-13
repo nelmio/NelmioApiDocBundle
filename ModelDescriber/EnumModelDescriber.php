@@ -17,7 +17,12 @@ class EnumModelDescriber implements ModelDescriberInterface
             $enums[] = $enumCase->value;
         }
 
-        $schema->type = is_subclass_of($enumClass, \IntBackedEnum::class) ? 'int' : 'string';
+        $reflectionEnum = new \ReflectionEnum($enumClass);
+        if ($reflectionEnum->isBacked() && 'int' === $reflectionEnum->getBackingType()->getName()) {
+            $schema->type = 'integer';
+        } else {
+            $schema->type = 'string';
+        }
         $schema->enum = $enums;
     }
 

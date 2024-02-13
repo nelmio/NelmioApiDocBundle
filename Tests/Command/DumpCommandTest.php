@@ -33,8 +33,8 @@ class DumpCommandTest extends WebTestCase
     public function provideJsonMode()
     {
         return [
-            'pretty print' => [[], JSON_PRETTY_PRINT],
-            'one line' => [['--no-pretty'], 0],
+            'pretty print' => [[], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES],
+            'one line' => [['--no-pretty'], 0 | JSON_UNESCAPED_SLASHES],
         ];
     }
 
