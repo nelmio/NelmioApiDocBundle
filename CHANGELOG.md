@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+4.20.0
+-----
+* Added Redocly as an alternative to Swagger UI. https://github.com/Redocly/redoc.
+* Added support for describing dictionary types in OpenAPI 3.0.
+
 4.0.0
 -----
 * Added support of OpenAPI 3.0. The internals were completely reworked and this version introduces BC breaks.
