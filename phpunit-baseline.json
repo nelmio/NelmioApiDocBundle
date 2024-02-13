@@ -7285,20 +7285,32 @@
         "count": 1
     },
     {
-        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testRedocly",
         "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
         "count": 1
     },
     {
-        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testRedocly",
         "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
         "count": 1
     },
     {
-        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerUiTest::testRedocly",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_class\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
+        "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_dir\" service is deprecated since version 5.2",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FunctionalTest::testDictionaryModel",
         "message": "Since sensio/framework-extra-bundle 5.2: The \"sensio_framework_extra.routing.loader.annot_file\" service is deprecated since version 5.2",
         "count": 1
     }
