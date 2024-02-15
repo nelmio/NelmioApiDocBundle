@@ -33,19 +33,13 @@ final class ModelRegistry
 
     private $names = [];
 
-    private $modelDescribers = [];
-
-    private $api;
-
     /**
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      *
      * @internal
      */
-    public function __construct($modelDescribers, OA\OpenApi $api, array $alternativeNames = [])
+    public function __construct(private $modelDescribers, private OA\OpenApi $api, array $alternativeNames = [])
     {
-        $this->modelDescribers = $modelDescribers;
-        $this->api = $api;
         $this->logger = new NullLogger();
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
             $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
@@ -168,7 +162,7 @@ final class ModelRegistry
         }
 
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
-            $parts = explode('\\', $type->getClassName());
+            $parts = explode('\\', (string) $type->getClassName());
 
             return end($parts);
         }

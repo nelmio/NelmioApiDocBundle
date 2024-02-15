@@ -24,7 +24,7 @@ class RenderOpenApiTest extends TestCase
     private $format = 'irrelevant format';
     private $hasArea = true;
 
-    public function testRender()
+    public function testRender(): void
     {
         $openApiRenderer = $this->createMock(OpenApiRenderer::class);
         $openApiRenderer->method('getFormat')->willReturn($this->format);
@@ -32,21 +32,21 @@ class RenderOpenApiTest extends TestCase
         $this->renderOpenApi($openApiRenderer);
     }
 
-    public function testUnknownFormat()
+    public function testUnknownFormat(): void
     {
         $availableOpenApiRenderers = [];
         $this->expectExceptionObject(new InvalidArgumentException(sprintf('Format "%s" is not supported.', $this->format)));
         $this->renderOpenApi(...$availableOpenApiRenderers);
     }
 
-    public function testUnknownArea()
+    public function testUnknownArea(): void
     {
         $this->hasArea = false;
         $this->expectExceptionObject(new InvalidArgumentException(sprintf('Area "%s" is not supported.', $this->area)));
         $this->renderOpenApi();
     }
 
-    public function testNullFormat()
+    public function testNullFormat(): void
     {
         $openApiRenderer = $this->createMock(OpenApiRenderer::class);
         $openApiRenderer->method('getFormat')->willReturn($this->format);
@@ -63,11 +63,8 @@ class RenderOpenApiTest extends TestCase
     {
         $spec = $this->createMock(OpenApi::class);
         $generator = new class($spec) {
-            private $spec;
-
-            public function __construct($spec)
+            public function __construct(private $spec)
             {
-                $this->spec = $spec;
             }
 
             public function generate()

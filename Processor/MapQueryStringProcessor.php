@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  */
 final class MapQueryStringProcessor implements ProcessorInterface
 {
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         /** @var OA\Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
@@ -53,7 +53,7 @@ final class MapQueryStringProcessor implements ProcessorInterface
             throw new \LogicException(sprintf('MapQueryString Model reference not found for operation "%s"', $operation->operationId));
         }
 
-        $nativeModelName = str_replace(OA\Components::SCHEMA_REF, '', $modelRef);
+        $nativeModelName = str_replace(OA\Components::SCHEMA_REF, '', (string) $modelRef);
 
         $schemaModel = Util::getSchema($analysis->openapi, $nativeModelName);
 

@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  */
 final class MapRequestPayloadProcessor implements ProcessorInterface
 {
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         /** @var OA\Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
@@ -74,18 +74,11 @@ final class MapRequestPayloadProcessor implements ProcessorInterface
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
         Util::modifyAnnotationValue($requestBody, 'content', []);
-        switch ($type) {
-            case 'json':
-                $contentType = 'application/json';
-
-                break;
-            case 'xml':
-                $contentType = 'application/xml';
-
-                break;
-            default:
-                throw new \InvalidArgumentException('Unsupported media type');
-        }
+        $contentType = match ($type) {
+            'json' => 'application/json',
+            'xml' => 'application/xml',
+            default => throw new \InvalidArgumentException('Unsupported media type'),
+        };
 
         if (!isset($requestBody->content[$contentType])) {
             $weakContext = Util::createWeakContext($requestBody->_context);

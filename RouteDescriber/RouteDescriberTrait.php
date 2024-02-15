@@ -42,7 +42,7 @@ trait RouteDescriberTrait
 
     private function normalizePath(string $path): string
     {
-        if ('.{_format}' === substr($path, -10)) {
+        if (str_ends_with($path, '.{_format}')) {
             $path = substr($path, 0, -10);
         }
 

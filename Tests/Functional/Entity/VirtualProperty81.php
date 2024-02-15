@@ -54,6 +54,6 @@ class VirtualProperty81
             return 'Success';
         }
 
-        throw new LogicException(sprintf('%s::__call does not implement this function.', __CLASS__));
+        throw new LogicException(sprintf('%s::__call does not implement this function.', self::class));
     }
 }

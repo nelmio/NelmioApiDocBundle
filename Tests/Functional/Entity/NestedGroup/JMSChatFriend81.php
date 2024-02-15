@@ -19,17 +19,17 @@ use JMS\Serializer\Annotation as Serializer;
 #[Serializer\ExclusionPolicy('all')]
 class JMSChatFriend81
 {
-    #[Serializer\Type('Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom')]
+    #[Serializer\Type(\Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom::class)]
     #[Serializer\Expose]
     #[Serializer\Groups(['mini'])]
     private $room;
 
-    #[Serializer\Type('Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatLivingRoom')]
+    #[Serializer\Type(\Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatLivingRoom::class)]
     #[Serializer\Expose]
     #[Serializer\Groups(['Default', 'mini'])]
     private $living;
 
-    #[Serializer\Type('Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom')]
+    #[Serializer\Type(\Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoom::class)]
     #[Serializer\Expose]
     private $dining;
 }

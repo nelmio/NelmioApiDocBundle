@@ -19,7 +19,7 @@ use Twig\TwigFunction;
 class GetNelmioAssetTest extends WebTestCase
 {
     /** @dataProvider provideAsset */
-    public function test($mode, $asset, $expectedContent)
+    public function test($mode, $asset, $expectedContent): void
     {
         static::bootKernel();
         /** @var GetNelmioAsset $getNelmioAsset */

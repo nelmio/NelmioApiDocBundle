@@ -54,9 +54,7 @@ class FormModelDescriberTest extends TestCase
         $describer->describe($model, $schema);
 
         if ($expectProperty) {
-            $filteredProperties = array_filter($schema->properties, function (Property $property) use ($tokenName) {
-                return $property->property === $tokenName;
-            });
+            $filteredProperties = array_filter($schema->properties, fn(Property $property) => $property->property === $tokenName);
 
             $this->assertCount(1, $filteredProperties);
         } else {

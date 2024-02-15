@@ -31,26 +31,11 @@ final class OpenApiPhpDescriber
 {
     use SetsContextTrait;
 
-    private $routeCollection;
-    private $controllerReflector;
-
-    /**
-     * @var Reader|null
-     */
-    private $annotationReader;
-    private $logger;
-    private $overwrite;
-
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, ?Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
+    public function __construct(private RouteCollection $routeCollection, private ControllerReflector $controllerReflector, private ?Reader $annotationReader, private LoggerInterface $logger, private bool $overwrite = false)
     {
-        $this->routeCollection = $routeCollection;
-        $this->controllerReflector = $controllerReflector;
-        $this->annotationReader = $annotationReader;
-        $this->logger = $logger;
-        $this->overwrite = $overwrite;
     }
 
-    public function describe(OA\OpenApi $api)
+    public function describe(OA\OpenApi $api): void
     {
         $classAnnotations = [];
 
@@ -74,9 +59,7 @@ final class OpenApiPhpDescriber
                     $classAnnotations = $this->annotationReader->getClassAnnotations($declaringClass);
                 }
 
-                $classAnnotations = array_filter($classAnnotations, function ($v) {
-                    return $v instanceof OA\AbstractAnnotation;
-                });
+                $classAnnotations = array_filter($classAnnotations, fn($v) => $v instanceof OA\AbstractAnnotation);
 
                 $classAnnotations = array_merge($classAnnotations, $this->getAttributesAsAnnotation($declaringClass, $context));
                 $classAnnotations[$declaringClass->getName()] = $classAnnotations;
@@ -84,9 +67,7 @@ final class OpenApiPhpDescriber
 
             $annotations = [];
             if (null !== $this->annotationReader) {
-                $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
-                    return $v instanceof OA\AbstractAnnotation;
-                });
+                $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), fn($v) => $v instanceof OA\AbstractAnnotation);
             }
 
             $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($method, $context));
@@ -149,7 +130,7 @@ final class OpenApiPhpDescriber
                     !$annotation instanceof OA\Parameter &&
                     !$annotation instanceof OA\ExternalDocumentation
                 ) {
-                    throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', get_class($annotation), $method->getDeclaringClass()->name, $method->name));
+                    throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', $annotation::class, $method->getDeclaringClass()->name, $method->name));
                 }
 
                 $implicitAnnotations[] = $annotation;
@@ -208,7 +189,7 @@ final class OpenApiPhpDescriber
 
     private function normalizePath(string $path): string
     {
-        if ('.{_format}' === substr($path, -10)) {
+        if (str_ends_with($path, '.{_format}')) {
             $path = substr($path, 0, -10);
         }
 

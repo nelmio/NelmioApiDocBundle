@@ -25,15 +25,11 @@ class RenderOpenApi
     public const JSON = 'json';
     public const YAML = 'yaml';
 
-    /** @var ContainerInterface */
-    private $generatorLocator;
-
     /** @var array<string, OpenApiRenderer|null> */
     private $openApiRenderers = [];
 
-    public function __construct(ContainerInterface $generatorLocator, ?OpenApiRenderer ...$openApiRenderers)
+    public function __construct(private readonly ContainerInterface $generatorLocator, ?OpenApiRenderer ...$openApiRenderers)
     {
-        $this->generatorLocator = $generatorLocator;
         foreach ($openApiRenderers as $openApiRenderer) {
             if (null === $openApiRenderer) {
                 continue;

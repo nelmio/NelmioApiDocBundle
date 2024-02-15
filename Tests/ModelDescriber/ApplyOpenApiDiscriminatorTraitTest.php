@@ -36,7 +36,7 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
      */
     private $modelRegistry;
 
-    public function testApplyAddsDiscriminatorProperty()
+    public function testApplyAddsDiscriminatorProperty(): void
     {
         $this->applyOpenApiDiscriminator($this->model, $this->schema, $this->modelRegistry, 'type', [
             'one' => 'FirstType',
@@ -57,7 +57,7 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
         );
     }
 
-    public function testApplyAddsOneOfFieldToSchema()
+    public function testApplyAddsOneOfFieldToSchema(): void
     {
         $this->applyOpenApiDiscriminator($this->model, $this->schema, $this->modelRegistry, 'type', [
             'one' => 'FirstType',
@@ -79,7 +79,7 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
     protected function setUp(): void
     {
         $this->schema = new OA\Schema(['_context' => new Context()]);
-        $this->model = $this->createModel(__CLASS__);
+        $this->model = $this->createModel(self::class);
         $this->modelRegistry = new ModelRegistry([], new OA\OpenApi(['_context' => new Context()]));
     }
 

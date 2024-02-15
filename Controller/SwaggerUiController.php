@@ -20,20 +20,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class SwaggerUiController
 {
-    /**
-     * @var RenderOpenApi
-     */
-    private $renderOpenApi;
-
-    /**
-     * @var string
-     */
-    private $uiRenderer;
-
-    public function __construct(RenderOpenApi $renderOpenApi, string $uiRenderer)
+    public function __construct(private readonly RenderOpenApi $renderOpenApi, private readonly string $uiRenderer)
     {
-        $this->renderOpenApi = $renderOpenApi;
-        $this->uiRenderer = $uiRenderer;
     }
 
     public function __invoke(Request $request, $area = 'default')
@@ -51,7 +39,7 @@ final class SwaggerUiController
             return $response->setCharset('UTF-8');
         } catch (RenderInvalidArgumentException $e) {
             $advice = '';
-            if (false !== strpos($area, '.json')) {
+            if (str_contains((string) $area, '.json')) {
                 $advice = ' Since the area provided contains `.json`, the issue is likely caused by route priorities. Try switching the Swagger UI / the json documentation routes order.';
             }
 

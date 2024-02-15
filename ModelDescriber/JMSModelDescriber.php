@@ -34,53 +34,23 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 {
     use ModelRegistryAwareTrait;
 
-    private $factory;
-
-    private $contextFactory;
-
-    private $namingStrategy;
-
-    /**
-     * @var Reader|null
-     */
-    private $doctrineReader;
-
     private $contexts = [];
 
     private $metadataStacks = [];
-
-    private $mediaTypes;
 
     /**
      * @var array
      */
     private $propertyTypeUseGroupsCache = [];
 
-    /**
-     * @var bool
-     */
-    private $useValidationGroups;
-
-    public function __construct(
-        MetadataFactoryInterface $factory,
-        ?Reader $reader,
-        array $mediaTypes,
-        ?PropertyNamingStrategyInterface $namingStrategy = null,
-        bool $useValidationGroups = false,
-        ?SerializationContextFactoryInterface $contextFactory = null
-    ) {
-        $this->factory = $factory;
-        $this->namingStrategy = $namingStrategy;
-        $this->doctrineReader = $reader;
-        $this->mediaTypes = $mediaTypes;
-        $this->useValidationGroups = $useValidationGroups;
-        $this->contextFactory = $contextFactory;
+    public function __construct(private MetadataFactoryInterface $factory, private ?Reader $doctrineReader, private array $mediaTypes, private ?PropertyNamingStrategyInterface $namingStrategy = null, private bool $useValidationGroups = false, private ?SerializationContextFactoryInterface $contextFactory = null)
+    {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function describe(Model $model, OA\Schema $schema)
+    public function describe(Model $model, OA\Schema $schema): void
     {
         $className = $model->getType()->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
@@ -126,13 +96,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if (null !== $item->getter) {
                 try {
                     $reflections[] = new \ReflectionMethod($item->class, $item->getter);
-                } catch (\ReflectionException $ignored) {
+                } catch (\ReflectionException) {
                 }
             }
             if (null !== $item->setter) {
                 try {
                     $reflections[] = new \ReflectionMethod($item->class, $item->setter);
-                } catch (\ReflectionException $ignored) {
+                } catch (\ReflectionException) {
                 }
             }
 
@@ -240,7 +210,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if ($this->factory->getMetadataForClass($className)) {
                 return true;
             }
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
         }
 
         return false;
@@ -249,7 +219,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     /**
      * @internal
      */
-    public function describeItem(array $type, OA\Schema $property, Context $context)
+    public function describeItem(array $type, OA\Schema $property, Context $context): void
     {
         $nestedTypeInfo = $this->getNestedTypeInArray($type);
         if (null !== $nestedTypeInfo) {
@@ -357,7 +327,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $this->propertyTypeUseGroupsCache[$type['name']] = false;
 
             return false;
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             $this->propertyTypeUseGroupsCache[$type['name']] = null;
 
             return null;

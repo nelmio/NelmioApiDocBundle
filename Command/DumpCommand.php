@@ -21,11 +21,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DumpCommand extends Command
 {
     /**
-     * @var RenderOpenApi
-     */
-    private $renderOpenApi;
-
-    /**
      * @var mixed[]
      */
     private $defaultHtmlConfig = [
@@ -33,10 +28,8 @@ class DumpCommand extends Command
         'swagger_ui_config' => [],
     ];
 
-    public function __construct(RenderOpenApi $renderOpenApi)
+    public function __construct(private readonly RenderOpenApi $renderOpenApi)
     {
-        $this->renderOpenApi = $renderOpenApi;
-
         parent::__construct();
     }
 
@@ -69,7 +62,7 @@ class DumpCommand extends Command
 
         $options = [];
         if (RenderOpenApi::HTML === $format) {
-            $rawHtmlConfig = json_decode($input->getOption('html-config'), true);
+            $rawHtmlConfig = json_decode((string) $input->getOption('html-config'), true);
             $options = is_array($rawHtmlConfig) ? $rawHtmlConfig : $this->defaultHtmlConfig;
         } elseif (RenderOpenApi::JSON === $format) {
             $options = [

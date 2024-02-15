@@ -27,26 +27,20 @@ final class FosRestDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    /** @var Reader|null */
-    private $annotationReader;
-
-    /** @var string[] */
-    private $mediaTypes;
-
-    public function __construct(?Reader $annotationReader, array $mediaTypes)
+    public function __construct(
+        private ?Reader $annotationReader,
+        /** @var string[] */
+        private array $mediaTypes
+    )
     {
-        $this->annotationReader = $annotationReader;
-        $this->mediaTypes = $mediaTypes;
     }
 
-    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         $annotations = null !== $this->annotationReader
             ? $this->annotationReader->getMethodAnnotations($reflectionMethod)
             : [];
-        $annotations = array_filter($annotations, static function ($value) {
-            return $value instanceof RequestParam || $value instanceof QueryParam;
-        });
+        $annotations = array_filter($annotations, static fn($value) => $value instanceof RequestParam || $value instanceof QueryParam);
         $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($reflectionMethod, RequestParam::class));
         $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($reflectionMethod, QueryParam::class));
 
@@ -144,18 +138,11 @@ final class FosRestDescriber implements RouteDescriberInterface
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
         $requestBody->content = Generator::UNDEFINED !== $requestBody->content ? $requestBody->content : [];
-        switch ($type) {
-            case 'json':
-                $contentType = 'application/json';
-
-                break;
-            case 'xml':
-                $contentType = 'application/xml';
-
-                break;
-            default:
-                throw new \InvalidArgumentException('Unsupported media type');
-        }
+        $contentType = match ($type) {
+            'json' => 'application/json',
+            'xml' => 'application/xml',
+            default => throw new \InvalidArgumentException('Unsupported media type'),
+        };
         if (!isset($requestBody->content[$contentType])) {
             $weakContext = Util::createWeakContext($requestBody->_context);
             $requestBody->content[$contentType] = new OA\MediaType(
@@ -178,7 +165,7 @@ final class FosRestDescriber implements RouteDescriberInterface
         );
     }
 
-    private function describeCommonSchemaFromAnnotation(OA\Schema $schema, $annotation)
+    private function describeCommonSchemaFromAnnotation(OA\Schema $schema, $annotation): void
     {
         $schema->default = $annotation->getDefault();
 

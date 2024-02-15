@@ -19,7 +19,7 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 class ApiDocGeneratorTest extends TestCase
 {
-    public function testCache()
+    public function testCache(): void
     {
         $adapter = new ArrayAdapter();
         $generator = new ApiDocGenerator([new DefaultDescriber()], [], $adapter, null, new Generator());
@@ -27,7 +27,7 @@ class ApiDocGeneratorTest extends TestCase
         $this->assertEquals(json_encode($generator->generate()), json_encode($adapter->getItem('openapi_doc')->get()));
     }
 
-    public function testCacheWithCustomId()
+    public function testCacheWithCustomId(): void
     {
         $adapter = new ArrayAdapter();
         $generator = new ApiDocGenerator([new DefaultDescriber()], [], $adapter, 'custom_id', new Generator());

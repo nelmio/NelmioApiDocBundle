@@ -59,17 +59,11 @@ final class Configuration implements ConfigurationInterface
                         ]
                     )
                     ->beforeNormalization()
-                        ->ifTrue(function ($v) {
-                            return 0 === count($v) || isset($v['path_patterns']) || isset($v['host_patterns']) || isset($v['documentation']);
-                        })
-                        ->then(function ($v) {
-                            return ['default' => $v];
-                        })
+                        ->ifTrue(fn($v) => 0 === count($v) || isset($v['path_patterns']) || isset($v['host_patterns']) || isset($v['documentation']))
+                        ->then(fn($v) => ['default' => $v])
                     ->end()
                     ->validate()
-                        ->ifTrue(function ($v) {
-                            return !isset($v['default']);
-                        })
+                        ->ifTrue(fn($v) => !isset($v['default']))
                         ->thenInvalid('You must specify a `default` area under `nelmio_api_doc.areas`.')
                     ->end()
                     ->useAttributeAsKey('name')
@@ -123,7 +117,7 @@ final class Configuration implements ConfigurationInterface
                                     ->variableNode('groups')
                                         ->defaultValue(null)
                                         ->validate()
-                                            ->ifTrue(function ($v) { return null !== $v && !is_array($v); })
+                                            ->ifTrue(fn($v) => null !== $v && !is_array($v))
                                             ->thenInvalid('Model groups must be either `null` or an array.')
                                         ->end()
                                     ->end()

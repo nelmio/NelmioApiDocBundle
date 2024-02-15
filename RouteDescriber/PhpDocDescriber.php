@@ -31,19 +31,19 @@ final class PhpDocDescriber implements RouteDescriberInterface
         $this->docBlockFactory = $docBlockFactory;
     }
 
-    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         $classDocBlock = null;
         $docBlock = null;
 
         try {
             $classDocBlock = $this->docBlockFactory->create($reflectionMethod->getDeclaringClass());
-        } catch (\Exception $e) {
+        } catch (\Exception) {
         }
 
         try {
             $docBlock = $this->docBlockFactory->create($reflectionMethod);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
         }
 
         foreach ($this->getOperations($api, $route) as $operation) {

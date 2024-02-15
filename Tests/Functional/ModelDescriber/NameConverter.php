@@ -9,14 +9,8 @@ use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 
 class NameConverter implements AdvancedNameConverterInterface
 {
-    /**
-     * @var MetadataAwareNameConverter
-     */
-    private $inner;
-
-    public function __construct(MetadataAwareNameConverter $inner)
+    public function __construct(private readonly MetadataAwareNameConverter $inner)
     {
-        $this->inner = $inner;
     }
 
     public function normalize(string $propertyName, string $class = null, string $format = null, array $context = []): string

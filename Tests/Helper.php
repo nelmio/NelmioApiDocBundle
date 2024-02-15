@@ -21,7 +21,7 @@ final class Helper
             Versions::getVersion('doctrine/annotations');
 
             return true;
-        } catch (\OutOfBoundsException $e) {
+        } catch (\OutOfBoundsException) {
             return false;
         }
     }

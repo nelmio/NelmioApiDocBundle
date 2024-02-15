@@ -21,14 +21,14 @@ use Symfony\Component\Routing\Route;
 
 class RouteMetadataDescriberTest extends TestCase
 {
-    public function testUndefinedCheck()
+    public function testUndefinedCheck(): void
     {
         $routeDescriber = new RouteMetadataDescriber();
 
-        $this->assertNull($routeDescriber->describe(new OpenApi(['_context' => new Context()]), new Route('foo'), new ReflectionMethod(__CLASS__, 'testUndefinedCheck')));
+        $this->assertNull($routeDescriber->describe(new OpenApi(['_context' => new Context()]), new Route('foo'), new ReflectionMethod(self::class, 'testUndefinedCheck')));
     }
 
-    public function testRouteRequirementsWithPattern()
+    public function testRouteRequirementsWithPattern(): void
     {
         $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();
@@ -36,7 +36,7 @@ class RouteMetadataDescriberTest extends TestCase
         $routeDescriber->describe(
             $api,
             $route,
-            new ReflectionMethod(__CLASS__, 'testRouteRequirementsWithPattern')
+            new ReflectionMethod(self::class, 'testRouteRequirementsWithPattern')
         );
 
         $this->assertEquals('/index/{bar}/{foo}.html', $api->paths[0]->path);
@@ -52,7 +52,7 @@ class RouteMetadataDescriberTest extends TestCase
     /**
      * @dataProvider provideEnumPattern
      */
-    public function testSimpleOrRequirementsAreHandledAsEnums($req)
+    public function testSimpleOrRequirementsAreHandledAsEnums($req): void
     {
         $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();
@@ -60,7 +60,7 @@ class RouteMetadataDescriberTest extends TestCase
         $routeDescriber->describe(
             $api,
             $route,
-            new ReflectionMethod(__CLASS__, 'testSimpleOrRequirementsAreHandledAsEnums')
+            new ReflectionMethod(self::class, 'testSimpleOrRequirementsAreHandledAsEnums')
         );
 
         $this->assertEquals('/index/{bar}/{foo}.html', $api->paths[0]->path);
@@ -68,14 +68,14 @@ class RouteMetadataDescriberTest extends TestCase
         $this->assertEquals('path', $getPathParameter->in);
         $this->assertEquals('foo', $getPathParameter->name);
         $this->assertEquals('string', $getPathParameter->schema->type);
-        $this->assertEquals(explode('|', $req), $getPathParameter->schema->enum);
+        $this->assertEquals(explode('|', (string) $req), $getPathParameter->schema->enum);
         $this->assertEquals($req, $getPathParameter->schema->pattern);
     }
 
     /**
      * @dataProvider provideInvalidEnumPattern
      */
-    public function testNonEnumPatterns($pattern)
+    public function testNonEnumPatterns($pattern): void
     {
         $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();
@@ -83,7 +83,7 @@ class RouteMetadataDescriberTest extends TestCase
         $routeDescriber->describe(
             $api,
             $route,
-            new ReflectionMethod(__CLASS__, 'testNonEnumPatterns')
+            new ReflectionMethod(self::class, 'testNonEnumPatterns')
         );
 
         $getPathParameter = $api->paths[0]->get->parameters[0];

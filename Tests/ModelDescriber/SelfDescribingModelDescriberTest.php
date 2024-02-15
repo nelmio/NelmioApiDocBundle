@@ -21,21 +21,21 @@ use Symfony\Component\PropertyInfo\Type;
 
 class SelfDescribingModelDescriberTest extends TestCase
 {
-    public function testSupports()
+    public function testSupports(): void
     {
         $describer = new SelfDescribingModelDescriber();
 
         $this->assertTrue($describer->supports(new Model(new Type('object', false, SelfDescribingModel::class))));
     }
 
-    public function testDoesNotSupport()
+    public function testDoesNotSupport(): void
     {
         $describer = new SelfDescribingModelDescriber();
 
         $this->assertFalse($describer->supports(new Model(new Type('object', false, stdClass::class))));
     }
 
-    public function testDescribe()
+    public function testDescribe(): void
     {
         $describer = new SelfDescribingModelDescriber();
 

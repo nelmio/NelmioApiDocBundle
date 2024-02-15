@@ -15,19 +15,11 @@ use Symfony\Component\PropertyInfo\Type;
 
 final class Model
 {
-    private $type;
-
-    private $options;
-    private $serializationContext;
-
     /**
      * @param string[]|null $groups
      */
-    public function __construct(Type $type, array $groups = null, array $options = null, array $serializationContext = [])
+    public function __construct(private readonly Type $type, array $groups = null, private readonly ?array $options = null, private array $serializationContext = [])
     {
-        $this->type = $type;
-        $this->options = $options;
-        $this->serializationContext = $serializationContext;
         if (null !== $groups) {
             $this->serializationContext['groups'] = $groups;
         }

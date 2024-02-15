@@ -26,16 +26,11 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 {
     use ModelRegistryAwareTrait;
 
-    private $factory;
-    private $JMSModelDescriber;
-
-    public function __construct(MetadataFactoryInterface $factory, JMSModelDescriber $JMSModelDescriber)
+    public function __construct(private MetadataFactoryInterface $factory, private JMSModelDescriber $JMSModelDescriber)
     {
-        $this->factory = $factory;
-        $this->JMSModelDescriber = $JMSModelDescriber;
     }
 
-    public function setModelRegistry(ModelRegistry $modelRegistry)
+    public function setModelRegistry(ModelRegistry $modelRegistry): void
     {
         $this->modelRegistry = $modelRegistry;
         $this->JMSModelDescriber->setModelRegistry($modelRegistry);
@@ -100,7 +95,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
             if ($metadata = $this->factory->getMetadataForClass($className)) {
                 return $metadata;
             }
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
         }
 
         return null;

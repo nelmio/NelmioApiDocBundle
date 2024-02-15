@@ -21,22 +21,13 @@ use Symfony\Component\Routing\RouteCollection;
 
 final class FilteredRouteCollectionBuilder
 {
-    /** @var Reader|null */
-    private $annotationReader;
-
-    /** @var ControllerReflector */
-    private $controllerReflector;
-
-    /** @var string */
-    private $area;
-
     /** @var array */
     private $options;
 
     public function __construct(
-        ?Reader $annotationReader,
-        ControllerReflector $controllerReflector,
-        string $area,
+        private readonly ?Reader $annotationReader,
+        private readonly ControllerReflector $controllerReflector,
+        private readonly string $area,
         array $options = []
     ) {
         $resolver = new OptionsResolver();
@@ -61,10 +52,6 @@ final class FilteredRouteCollectionBuilder
             $normalizedOptions = ['path_patterns' => $options];
             $options = $normalizedOptions;
         }
-
-        $this->annotationReader = $annotationReader;
-        $this->controllerReflector = $controllerReflector;
-        $this->area = $area;
         $this->options = $resolver->resolve($options);
     }
 
@@ -172,15 +159,13 @@ final class FilteredRouteCollectionBuilder
             : [];
 
         if (method_exists(\ReflectionMethod::class, 'getAttributes')) {
-            $annotations = array_merge($annotations, array_map(function (\ReflectionAttribute $attribute) {
-                return $attribute->newInstance();
-            }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF)));
+            $annotations = array_merge($annotations, array_map(fn(\ReflectionAttribute $attribute) => $attribute->newInstance(), $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF)));
         }
 
         foreach ($annotations as $annotation) {
-            if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')
-                || false !== strpos(get_class($annotation), 'OpenApi\\Annotations')
-                || false !== strpos(get_class($annotation), 'OpenApi\\Attributes')
+            if (str_contains($annotation::class, 'Nelmio\\ApiDocBundle\\Annotation')
+                || str_contains($annotation::class, 'OpenApi\\Annotations')
+                || str_contains($annotation::class, 'OpenApi\\Attributes')
             ) {
                 return true;
             }

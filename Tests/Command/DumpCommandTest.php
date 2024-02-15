@@ -19,7 +19,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class DumpCommandTest extends WebTestCase
 {
     /** @dataProvider provideJsonMode */
-    public function testJson(array $jsonOptions, int $expectedJsonFlags)
+    public function testJson(array $jsonOptions, int $expectedJsonFlags): void
     {
         $output = $this->executeDumpCommand($jsonOptions + [
             '--area' => 'test',
@@ -38,7 +38,7 @@ class DumpCommandTest extends WebTestCase
         ];
     }
 
-    public function testYaml()
+    public function testYaml(): void
     {
         $output = $this->executeDumpCommand([
             '--format' => 'yaml',
@@ -53,7 +53,7 @@ YAML;
     }
 
     /** @dataProvider provideAssetsMode */
-    public function testHtml($htmlConfig, string $expectedHtml)
+    public function testHtml($htmlConfig, string $expectedHtml): void
     {
         $output = $this->executeDumpCommand([
             '--area' => 'test',

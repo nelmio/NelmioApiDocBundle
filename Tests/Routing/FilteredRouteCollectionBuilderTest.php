@@ -44,7 +44,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $this->doctrineAnnotations = class_exists(AnnotationReader::class) ? new AnnotationReader() : null;
     }
 
-    public function testFilter()
+    public function testFilter(): void
     {
         $options = [
             'path_patterns' => [
@@ -78,7 +78,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
      *
      * @expectedDeprecation Passing an indexed array with a collection of path patterns as argument 1 for `Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder::__construct()` is deprecated since 3.2.0, expected structure is an array containing parameterized options.
      */
-    public function testFilterWithDeprecatedArgument()
+    public function testFilterWithDeprecatedArgument(): void
     {
         $pathPattern = [
             '^/api/foo',
@@ -104,7 +104,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     /**
      * @dataProvider getInvalidOptions
      */
-    public function testFilterWithInvalidOption(array $options)
+    public function testFilterWithInvalidOption(array $options): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -156,7 +156,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     /**
      * @dataProvider getMatchingRoutes
      */
-    public function testMatchingRoutes(string $name, Route $route, array $options = [])
+    public function testMatchingRoutes(string $name, Route $route, array $options = []): void
     {
         $routes = new RouteCollection();
         $routes->add($name, $route);
@@ -193,7 +193,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
      *
      * @dataProvider getMatchingRoutesWithAnnotation
      */
-    public function testMatchingRoutesWithAnnotation(string $name, Route $route, array $options = [])
+    public function testMatchingRoutesWithAnnotation(string $name, Route $route, array $options = []): void
     {
         $routes = new RouteCollection();
         $routes->add($name, $route);
@@ -258,7 +258,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     /**
      * @dataProvider getNonMatchingRoutes
      */
-    public function testNonMatchingRoutes(string $name, Route $route, array $options = [])
+    public function testNonMatchingRoutes(string $name, Route $route, array $options = []): void
     {
         $routes = new RouteCollection();
         $routes->add($name, $route);

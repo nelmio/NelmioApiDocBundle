@@ -29,7 +29,7 @@ class SwaggerUiTest extends WebTestCase
         $this->client = static::createClient([], ['HTTP_HOST' => 'api.example.com', 'PHP_SELF' => '/app_dev.php/default/docs', 'SCRIPT_FILENAME' => '/var/www/app/web/app_dev.php']);
     }
 
-    public function testSwaggerUi()
+    public function testSwaggerUi(): void
     {
         $crawler = $this->client->request('GET', '/app_dev.php/default/docs');
 
@@ -46,7 +46,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
 
-    public function testRedocly()
+    public function testRedocly(): void
     {
         $crawler = $this->client->request('GET', '/app_dev.php/default/redocly/docs');
 
@@ -64,7 +64,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
 
-    public function testApiPlatformSwaggerUi()
+    public function testApiPlatformSwaggerUi(): void
     {
         $crawler = $this->client->request('GET', '/app_dev.php/test/docs');
 
@@ -80,7 +80,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
     }
 
-    public function testJsonDocs()
+    public function testJsonDocs(): void
     {
         $this->client->request('GET', '/app_dev.php/default/docs.json');
 
@@ -96,7 +96,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals($expected, json_decode($response->getContent(), true));
     }
 
-    public function testInvalidJsonArea()
+    public function testInvalidJsonArea(): void
     {
         $this->client->request('GET', '/app_dev.php/nonexistent/docs.json');
 
@@ -104,7 +104,7 @@ class SwaggerUiTest extends WebTestCase
         $this->assertEquals(400, $response->getStatusCode());
     }
 
-    public function testYamlDocs()
+    public function testYamlDocs(): void
     {
         $this->client->request('GET', '/app_dev.php/default/docs.yaml');
 

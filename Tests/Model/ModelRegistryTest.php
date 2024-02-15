@@ -22,7 +22,7 @@ use Symfony\Component\PropertyInfo\Type;
 
 class ModelRegistryTest extends TestCase
 {
-    public function testNameAliasingNotAppliedForCollections()
+    public function testNameAliasingNotAppliedForCollections(): void
     {
         $alternativeNames = [
             'Foo1' => [
@@ -39,7 +39,7 @@ class ModelRegistryTest extends TestCase
     /**
      * @dataProvider provideNameCollisionsTypes
      */
-    public function testNameCollisionsAreLogged(Type $type, array $arrayType)
+    public function testNameCollisionsAreLogged(Type $type, array $arrayType): void
     {
         $logger = $this->createMock(LoggerInterface::class);
         $logger
@@ -78,7 +78,7 @@ class ModelRegistryTest extends TestCase
         yield [
             new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class),
             [
-                'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+                'class' => \Nelmio\ApiDocBundle\Tests\Model\ModelRegistryTest::class,
                 'built_in_type' => 'object',
                 'nullable' => false,
                 'collection' => false,
@@ -90,7 +90,7 @@ class ModelRegistryTest extends TestCase
         yield [
             new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class, true, new Type(Type::BUILTIN_TYPE_OBJECT)),
             [
-                'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+                'class' => \Nelmio\ApiDocBundle\Tests\Model\ModelRegistryTest::class,
                 'built_in_type' => 'object',
                 'nullable' => false,
                 'collection' => true,
@@ -109,7 +109,7 @@ class ModelRegistryTest extends TestCase
         ];
     }
 
-    public function testNameCollisionsAreLoggedWithAlternativeNames()
+    public function testNameCollisionsAreLoggedWithAlternativeNames(): void
     {
         $ref = new ReflectionClass(self::class);
         $alternativeNames = [
@@ -126,7 +126,7 @@ class ModelRegistryTest extends TestCase
                 'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.', [
                 'model' => [
                     'type' => [
-                        'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+                        'class' => \Nelmio\ApiDocBundle\Tests\Model\ModelRegistryTest::class,
                         'built_in_type' => 'object',
                         'nullable' => false,
                         'collection' => false,
@@ -139,7 +139,7 @@ class ModelRegistryTest extends TestCase
                 ],
                 'taken_by' => [
                     'type' => [
-                        'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+                        'class' => \Nelmio\ApiDocBundle\Tests\Model\ModelRegistryTest::class,
                         'built_in_type' => 'object',
                         'nullable' => false,
                         'collection' => false,
@@ -162,7 +162,7 @@ class ModelRegistryTest extends TestCase
     /**
      * @dataProvider getNameAlternatives
      */
-    public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames)
+    public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames): void
     {
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
@@ -229,7 +229,7 @@ class ModelRegistryTest extends TestCase
     /**
      * @dataProvider unsupportedTypesProvider
      */
-    public function testUnsupportedTypeException(Type $type, string $stringType)
+    public function testUnsupportedTypeException(Type $type, string $stringType): void
     {
         $this->expectException('\LogicException');
         $this->expectExceptionMessage(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $stringType));
@@ -247,7 +247,7 @@ class ModelRegistryTest extends TestCase
         ];
     }
 
-    public function testUnsupportedTypeExceptionWithNonExistentClass()
+    public function testUnsupportedTypeExceptionWithNonExistentClass(): void
     {
         $className = DoesNotExist::class;
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, $className);

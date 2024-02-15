@@ -27,7 +27,7 @@ final class PhpDocExtractorPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('property_info.php_doc_extractor')) {
-            $definition = $container->register('property_info.php_doc_extractor', 'Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor');
+            $definition = $container->register('property_info.php_doc_extractor', \Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor::class);
             $definition->addTag('property_info.description_extractor', ['priority' => -1000]);
             $definition->addTag('property_info.type_extractor', ['priority' => -1001]);
         }

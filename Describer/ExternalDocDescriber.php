@@ -18,18 +18,15 @@ class ExternalDocDescriber implements DescriberInterface
 {
     private $externalDoc;
 
-    private $overwrite;
-
     /**
      * @param array|callable $externalDoc
      */
-    public function __construct($externalDoc, bool $overwrite = false)
+    public function __construct($externalDoc, private readonly bool $overwrite = false)
     {
         $this->externalDoc = $externalDoc;
-        $this->overwrite = $overwrite;
     }
 
-    public function describe(OA\OpenApi $api)
+    public function describe(OA\OpenApi $api): void
     {
         $externalDoc = $this->getExternalDoc();
 

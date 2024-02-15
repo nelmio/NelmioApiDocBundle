@@ -38,38 +38,24 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 {
     use ModelRegistryAwareTrait;
     use SetsContextTrait;
-
-    private $formFactory;
-
-    /**
-     * @var Reader|null
-     */
-    private $doctrineReader;
     private $mediaTypes;
-    private $useValidationGroups;
-    private $isFormCsrfExtensionEnabled;
 
     public function __construct(
-        FormFactoryInterface $formFactory = null,
-        Reader $reader = null,
+        private ?\Symfony\Component\Form\FormFactoryInterface $formFactory = null,
+        private ?\Doctrine\Common\Annotations\Reader $doctrineReader = null,
         array $mediaTypes = null,
-        bool $useValidationGroups = false,
-        bool $isFormCsrfExtensionEnabled = false
+        private bool $useValidationGroups = false,
+        private bool $isFormCsrfExtensionEnabled = false
     ) {
-        $this->formFactory = $formFactory;
-        $this->doctrineReader = $reader;
-
         if (null === $mediaTypes) {
             $mediaTypes = ['json'];
 
             trigger_deprecation('nelmio/api-doc-bundle', '4.1', 'Not passing media types to the constructor of %s is deprecated and won\'t be allowed in version 5.', self::class);
         }
         $this->mediaTypes = $mediaTypes;
-        $this->useValidationGroups = $useValidationGroups;
-        $this->isFormCsrfExtensionEnabled = $isFormCsrfExtensionEnabled;
     }
 
-    public function describe(Model $model, OA\Schema $schema)
+    public function describe(Model $model, OA\Schema $schema): void
     {
         if (method_exists(AbstractType::class, 'setDefaultOptions')) {
             throw new \LogicException('symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.');
@@ -107,7 +93,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         return is_a($model->getType()->getClassName(), FormTypeInterface::class, true);
     }
 
-    private function parseForm(OA\Schema $schema, FormInterface $form)
+    private function parseForm(OA\Schema $schema, FormInterface $form): void
     {
         foreach ($form as $name => $child) {
             $config = $child->getConfig();
@@ -160,14 +146,14 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
      *
      * Returns true if a native OpenAPi type was found, false otherwise
      */
-    private function findFormType(FormConfigInterface $config, OA\Schema $property)
+    private function findFormType(FormConfigInterface $config, OA\Schema $property): void
     {
         $type = $config->getType();
 
         if (!$builtinFormType = $this->getBuiltinFormType($type)) {
             // if form type is not builtin in Form component.
             $model = new Model(
-                new Type(Type::BUILTIN_TYPE_OBJECT, false, get_class($type->getInnerType())),
+                new Type(Type::BUILTIN_TYPE_OBJECT, false, $type->getInnerType()::class),
                 null,
                 $config->getOptions()
             );
@@ -338,7 +324,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     private function getBuiltinFormType(ResolvedFormTypeInterface $type)
     {
         do {
-            $class = get_class($type->getInnerType());
+            $class = $type->getInnerType()::class;
 
             if (FormType::class === $class) {
                 return null;
@@ -348,7 +334,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 return $type;
             }
 
-            if (0 === strpos($class, 'Symfony\Component\Form\Extension\Core\Type\\')) {
+            if (str_starts_with($class, 'Symfony\Component\Form\Extension\Core\Type\\')) {
                 return $type;
             }
         } while ($type = $type->getParent());

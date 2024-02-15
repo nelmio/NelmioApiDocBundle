@@ -20,13 +20,11 @@ use Twig\TwigFunction;
  */
 class GetNelmioAsset extends AbstractExtension
 {
-    private $assetExtension;
     private $resourcesDir;
     private $cdnUrl;
 
-    public function __construct(AssetExtension $assetExtension)
+    public function __construct(private readonly AssetExtension $assetExtension)
     {
-        $this->assetExtension = $assetExtension;
         $this->cdnUrl = 'https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public';
         $this->resourcesDir = __DIR__.'/../../Resources/public';
     }
@@ -53,7 +51,7 @@ class GetNelmioAsset extends AbstractExtension
 
     private function getExtension($assetsMode, $asset)
     {
-        $extension = mb_substr($asset, -3, 3, 'utf-8');
+        $extension = mb_substr((string) $asset, -3, 3, 'utf-8');
         if ('.js' === $extension) {
             return ['js', $assetsMode];
         } elseif ('png' === $extension) {

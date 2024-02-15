@@ -161,7 +161,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ->addTag('container.service_locator')
             ->addArgument(array_combine(
                 array_keys($config['areas']),
-                array_map(function ($area) { return new Reference(sprintf('nelmio_api_doc.generator.%s', $area)); }, array_keys($config['areas']))
+                array_map(fn($area) => new Reference(sprintf('nelmio_api_doc.generator.%s', $area)), array_keys($config['areas']))
             ));
 
         $container->getDefinition('nelmio_api_doc.model_describers.object')
@@ -222,7 +222,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         }
 
         $bundles = $container->getParameter('kernel.bundles');
-        if (!isset($bundles['TwigBundle']) || !class_exists('Symfony\Component\Asset\Packages')) {
+        if (!isset($bundles['TwigBundle']) || !class_exists(\Symfony\Component\Asset\Packages::class)) {
             $container->removeDefinition('nelmio_api_doc.controller.swagger_ui');
 
             $container->removeDefinition('nelmio_api_doc.render_docs.html');
@@ -230,7 +230,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         }
 
         // ApiPlatform support
-        if (isset($bundles['ApiPlatformBundle']) && class_exists('ApiPlatform\Documentation\Documentation')) {
+        if (isset($bundles['ApiPlatformBundle']) && class_exists(\ApiPlatform\Documentation\Documentation::class)) {
             $loader->load('api_platform.xml');
         }
 
@@ -283,9 +283,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
     private function findNameAliases(array $names, string $area): array
     {
-        $nameAliases = array_filter($names, function (array $aliasInfo) use ($area) {
-            return empty($aliasInfo['areas']) || in_array($area, $aliasInfo['areas'], true);
-        });
+        $nameAliases = array_filter($names, fn(array $aliasInfo) => empty($aliasInfo['areas']) || in_array($area, $aliasInfo['areas'], true));
 
         $aliases = [];
         foreach ($nameAliases as $nameAlias) {

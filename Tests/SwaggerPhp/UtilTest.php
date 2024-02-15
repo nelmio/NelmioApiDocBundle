@@ -64,14 +64,14 @@ class UtilTest extends TestCase
         $this->rootAnnotation = $this->createObj(OA\OpenApi::class, ['_context' => $this->rootContext]);
     }
 
-    public function testCreateContextSetsParentContext()
+    public function testCreateContextSetsParentContext(): void
     {
         $context = Util::createContext([], $this->rootContext);
 
         $this->assertContextIsConnectedToRootContext($context);
     }
 
-    public function testCreateContextWithProperties()
+    public function testCreateContextWithProperties(): void
     {
         $context = Util::createContext(['testing' => 'trait']);
 
@@ -79,21 +79,21 @@ class UtilTest extends TestCase
         $this->assertSame('trait', $context->testing);
     }
 
-    public function testCreateChild()
+    public function testCreateChild(): void
     {
         $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
         $this->assertInstanceOf(OA\Info::class, $info);
     }
 
-    public function testCreateChildHasContext()
+    public function testCreateChildHasContext(): void
     {
         $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
         $this->assertInstanceOf(Context::class, $info->_context);
     }
 
-    public function testCreateChildHasNestedContext()
+    public function testCreateChildHasNestedContext(): void
     {
         $path = Util::createChild($this->rootAnnotation, OA\PathItem::class);
         $this->assertIsNested($this->rootAnnotation, $path);
@@ -107,15 +107,13 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($schema);
     }
 
-    public function testCreateChildWithEmptyProperties()
+    public function testCreateChildWithEmptyProperties(): void
     {
         $properties = [];
         /** @var OA\Info $info */
         $info = Util::createChild($this->rootAnnotation, OA\Info::class, $properties);
 
-        $properties = array_filter(get_object_vars($info), function ($key) {
-            return 0 !== strpos($key, '_');
-        }, ARRAY_FILTER_USE_KEY);
+        $properties = array_filter(get_object_vars($info), fn($key) => !str_starts_with((string) $key, '_'), ARRAY_FILTER_USE_KEY);
 
         $this->assertEquals([Generator::UNDEFINED], array_unique(array_values($properties)));
 
@@ -123,7 +121,7 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($info);
     }
 
-    public function testCreateChildWithProperties()
+    public function testCreateChildWithProperties(): void
     {
         $properties = ['title' => 'testing', 'version' => '999', 'x' => new stdClass()];
         /** @var OA\Info $info */
@@ -137,7 +135,7 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($info);
     }
 
-    public function testCreateCollectionItemAddsCreatedItemToCollection()
+    public function testCreateCollectionItemAddsCreatedItemToCollection(): void
     {
         $collection = 'paths';
         $class = OA\PathItem::class;
@@ -169,7 +167,7 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($this->rootAnnotation->components->{$collection}[$d1]);
     }
 
-    public function testCreateCollectionItemDoesNotAddToUnknownProperty()
+    public function testCreateCollectionItemDoesNotAddToUnknownProperty(): void
     {
         $collection = 'foobars';
         $class = OA\Info::class;
@@ -183,7 +181,7 @@ class UtilTest extends TestCase
         restore_error_handler();
     }
 
-    public function testSearchCollectionItem()
+    public function testSearchCollectionItem(): void
     {
         $item1 = new stdClass();
         $item1->prop1 = 'item 1 prop 1';
@@ -224,7 +222,7 @@ class UtilTest extends TestCase
     /**
      * @dataProvider provideIndexedCollectionData
      */
-    public function testSearchIndexedCollectionItem($setup, $asserts)
+    public function testSearchIndexedCollectionItem($setup, $asserts): void
     {
         foreach ($asserts as $collection => $items) {
             foreach ($items as $assert) {
@@ -255,7 +253,7 @@ class UtilTest extends TestCase
     /**
      * @dataProvider provideIndexedCollectionData
      */
-    public function testGetIndexedCollectionItem($setup, $asserts)
+    public function testGetIndexedCollectionItem($setup, $asserts): void
     {
         $parent = new $setup['class'](array_merge(
             $this->getSetupPropertiesWithoutClass($setup),
@@ -381,7 +379,7 @@ class UtilTest extends TestCase
     /**
      * @dataProvider provideChildData
      */
-    public function testGetChild($setup, $asserts)
+    public function testGetChild($setup, $asserts): void
     {
         $parent = new $setup['class'](array_merge(
             $this->getSetupPropertiesWithoutClass($setup),
@@ -464,7 +462,7 @@ class UtilTest extends TestCase
         ]];
     }
 
-    public function testGetOperationParameterReturnsExisting()
+    public function testGetOperationParameterReturnsExisting(): void
     {
         $name = 'operation name';
         $in = 'operation in';
@@ -483,7 +481,7 @@ class UtilTest extends TestCase
         $this->assertSame($parameter, $actual);
     }
 
-    public function testGetOperationParameterCreatesWithNameAndIn()
+    public function testGetOperationParameterCreatesWithNameAndIn(): void
     {
         $name = 'operation name';
         $in = 'operation in';
@@ -502,7 +500,7 @@ class UtilTest extends TestCase
         $this->assertSame($in, $actual->in);
     }
 
-    public function testGetOperationReturnsExisting()
+    public function testGetOperationReturnsExisting(): void
     {
         $get = $this->createObj(OA\Get::class, []);
         $path = $this->createObj(OA\PathItem::class, ['get' => $get]);
@@ -510,7 +508,7 @@ class UtilTest extends TestCase
         $this->assertSame($get, Util::getOperation($path, 'get'));
     }
 
-    public function testGetOperationCreatesWithPath()
+    public function testGetOperationCreatesWithPath(): void
     {
         $pathStr = '/testing/get/path';
         $path = $this->createObj(OA\PathItem::class, ['path' => $pathStr]);
@@ -520,7 +518,7 @@ class UtilTest extends TestCase
         $this->assertSame($pathStr, $get->path);
     }
 
-    public function testMergeWithEmptyArray()
+    public function testMergeWithEmptyArray(): void
     {
         $api = $this->createObj(OA\OpenApi::class, ['_context' => new Context()]);
         $expected = json_encode($api);
@@ -539,7 +537,7 @@ class UtilTest extends TestCase
     /**
      * @dataProvider provideMergeData
      */
-    public function testMerge($setup, $merge, $assert)
+    public function testMerge($setup, $merge, $assert): void
     {
         $api = $this->createObj(OA\OpenApi::class, $setup + ['_context' => new Context()]);
 
@@ -839,34 +837,34 @@ class UtilTest extends TestCase
             ], ];
     }
 
-    public function assertIsNested(OA\AbstractAnnotation $parent, OA\AbstractAnnotation $child)
+    public function assertIsNested(OA\AbstractAnnotation $parent, OA\AbstractAnnotation $child): void
     {
         self::assertTrue($child->_context->is('nested'));
         self::assertSame($parent, $child->_context->nested);
     }
 
-    public function assertIsConnectedToRootContext(OA\AbstractAnnotation $annotation)
+    public function assertIsConnectedToRootContext(OA\AbstractAnnotation $annotation): void
     {
         $this->assertContextIsConnectedToRootContext($annotation->_context);
     }
 
-    public function assertContextIsConnectedToRootContext(Context $context)
+    public function assertContextIsConnectedToRootContext(Context $context): void
     {
         $this->assertSame($this->rootContext, $context->root());
     }
 
     private function getSetupPropertiesWithoutClass(array $setup)
     {
-        return array_filter($setup, function ($k) {return 'class' !== $k; }, ARRAY_FILTER_USE_KEY);
+        return array_filter($setup, fn($k) => 'class' !== $k, ARRAY_FILTER_USE_KEY);
     }
 
     private function getNonDefaultProperties($object)
     {
         $objectVars = get_object_vars($object);
-        $classVars = get_class_vars(get_class($object));
+        $classVars = get_class_vars($object::class);
         $props = [];
         foreach ($objectVars as $key => $value) {
-            if ($value !== $classVars[$key] && 0 !== strpos($key, '_')) {
+            if ($value !== $classVars[$key] && !str_starts_with($key, '_')) {
                 $props[$key] = $value;
             }
         }

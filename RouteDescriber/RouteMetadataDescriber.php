@@ -26,7 +26,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
 
     private const ALPHANUM_EXPANDED_REGEX = '/^[-a-zA-Z0-9_]*$/';
 
-    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         foreach ($this->getOperations($api, $route) as $operation) {
             $requirements = $route->getRequirements();
@@ -122,7 +122,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     private function getPossibleEnumValues(string $reqPattern): array
     {
         $requirements = [];
-        if (false !== strpos($reqPattern, '|')) {
+        if (str_contains($reqPattern, '|')) {
             $parts = explode('|', $reqPattern);
             foreach ($parts as $part) {
                 if ('' === $part || 0 === preg_match(self::ALPHANUM_EXPANDED_REGEX, $part)) {

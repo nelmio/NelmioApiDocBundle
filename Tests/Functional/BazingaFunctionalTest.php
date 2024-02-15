@@ -30,7 +30,7 @@ class BazingaFunctionalTest extends WebTestCase
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
 
-    public function testModelComplexDocumentationBazinga()
+    public function testModelComplexDocumentationBazinga(): void
     {
         $this->assertEquals([
             'type' => 'object',
@@ -84,7 +84,7 @@ class BazingaFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('BazingaUser')->toJson(), true));
     }
 
-    public function testWithGroup()
+    public function testWithGroup(): void
     {
         $this->assertEquals([
             'type' => 'object',
@@ -102,11 +102,11 @@ class BazingaFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('BazingaUser_grouped')->toJson(), true));
     }
 
-    public function testWithType()
+    public function testWithType(): void
     {
         try {
             new ReflectionMethod(Embedded::class, 'getType');
-        } catch (ReflectionException $e) {
+        } catch (ReflectionException) {
             $this->markTestSkipped('Typed embedded properties require at least willdurand/hateoas 3.0');
         }
         $this->assertEquals([

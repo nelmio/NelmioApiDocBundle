@@ -31,18 +31,6 @@ final class ApiDocGenerator
     /** @var OpenApi */
     private $openApi;
 
-    /** @var iterable|DescriberInterface[] */
-    private $describers;
-
-    /** @var iterable|ModelDescriberInterface[] */
-    private $modelDescribers;
-
-    /** @var CacheItemPoolInterface|null */
-    private $cacheItemPool;
-
-    /** @var string|null */
-    private $cacheItemId;
-
     /** @var string[] */
     private $alternativeNames = [];
 
@@ -60,26 +48,22 @@ final class ApiDocGenerator
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, CacheItemPoolInterface $cacheItemPool = null, string $cacheItemId = null, Generator $generator = null)
+    public function __construct(private $describers, private $modelDescribers, private ?\Psr\Cache\CacheItemPoolInterface $cacheItemPool = null, private ?string $cacheItemId = null, Generator $generator = null)
     {
-        $this->describers = $describers;
-        $this->modelDescribers = $modelDescribers;
-        $this->cacheItemPool = $cacheItemPool;
-        $this->cacheItemId = $cacheItemId;
         $this->generator = $generator ?? new Generator($this->logger);
     }
 
-    public function setAlternativeNames(array $alternativeNames)
+    public function setAlternativeNames(array $alternativeNames): void
     {
         $this->alternativeNames = $alternativeNames;
     }
 
-    public function setMediaTypes(array $mediaTypes)
+    public function setMediaTypes(array $mediaTypes): void
     {
         $this->mediaTypes = $mediaTypes;
     }
 
-    public function setOpenApiVersion(?string $openApiVersion)
+    public function setOpenApiVersion(?string $openApiVersion): void
     {
         $this->openApiVersion = $openApiVersion;
     }

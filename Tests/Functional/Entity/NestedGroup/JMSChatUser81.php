@@ -23,7 +23,7 @@ class JMSChatUser81
     #[Serializer\Expose]
     private $id;
 
-    #[Serializer\Type('Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture')]
+    #[Serializer\Type(\Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture::class)]
     #[Serializer\Groups(['mini'])]
     #[Serializer\Expose]
     private $picture;

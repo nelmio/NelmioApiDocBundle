@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints\Choice;
 
 class FosRestDescriberTest extends TestCase
 {
-    public function testQueryParamWithChoiceConstraintIsAddedAsEnum()
+    public function testQueryParamWithChoiceConstraintIsAddedAsEnum(): void
     {
         if (Kernel::MAJOR_VERSION >= 7) {
             $this->markTestSkipped('FosRest is not supported in symfony 7');

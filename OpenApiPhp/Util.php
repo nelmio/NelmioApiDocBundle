@@ -214,9 +214,8 @@ final class Util
      * @see OA\AbstractAnnotation::$_nested
      *
      * @param string $class
-     * @param mixed  $value
      */
-    public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, $class, $value): OA\AbstractAnnotation
+    public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, $class, mixed $value): OA\AbstractAnnotation
     {
         $nested = $parent::$_nested;
         [$collection, $property] = $nested[$class];
@@ -259,11 +258,10 @@ final class Util
      * Search for an Annotation within the $collection that has its member $index set to $value.
      *
      * @param string $member
-     * @param mixed  $value
      *
      * @return false|int|string
      */
-    public static function searchIndexedCollectionItem(array $collection, $member, $value)
+    public static function searchIndexedCollectionItem(array $collection, $member, mixed $value)
     {
         return array_search($value, array_column($collection, $member), true);
     }
@@ -357,7 +355,7 @@ final class Util
      *
      * @param array|\ArrayObject|OA\AbstractAnnotation $from
      */
-    public static function merge(OA\AbstractAnnotation $annotation, $from, bool $overwrite = false)
+    public static function merge(OA\AbstractAnnotation $annotation, $from, bool $overwrite = false): void
     {
         if (\is_array($from)) {
             self::mergeFromArray($annotation, $from, $overwrite);
@@ -388,11 +386,11 @@ final class Util
         return null;
     }
 
-    private static function mergeFromArray(OA\AbstractAnnotation $annotation, array $properties, bool $overwrite)
+    private static function mergeFromArray(OA\AbstractAnnotation $annotation, array $properties, bool $overwrite): void
     {
         $done = [];
 
-        $defaults = \get_class_vars(\get_class($annotation));
+        $defaults = \get_class_vars($annotation::class);
 
         foreach ($annotation::$_nested as $className => $propertyName) {
             if (\is_string($propertyName)) {
@@ -430,12 +428,12 @@ final class Util
         }
     }
 
-    private static function mergeChild(OA\AbstractAnnotation $annotation, $className, $value, bool $overwrite)
+    private static function mergeChild(OA\AbstractAnnotation $annotation, $className, $value, bool $overwrite): void
     {
         self::merge(self::getChild($annotation, $className), $value, $overwrite);
     }
 
-    private static function mergeCollection(OA\AbstractAnnotation $annotation, $className, $collection, $property, $items, bool $overwrite)
+    private static function mergeCollection(OA\AbstractAnnotation $annotation, $className, $collection, $property, $items, bool $overwrite): void
     {
         if (null !== $property) {
             foreach ($items as $prop => $value) {
@@ -459,9 +457,9 @@ final class Util
         }
     }
 
-    private static function mergeTyped(OA\AbstractAnnotation $annotation, $propertyName, $type, array $properties, array $defaults, bool $overwrite)
+    private static function mergeTyped(OA\AbstractAnnotation $annotation, $propertyName, $type, array $properties, array $defaults, bool $overwrite): void
     {
-        if (\is_string($type) && 0 === strpos($type, '[')) {
+        if (\is_string($type) && str_starts_with($type, '[')) {
             $innerType = substr($type, 1, -1);
 
             if (!$annotation->{$propertyName} || Generator::UNDEFINED === $annotation->{$propertyName}) {
@@ -488,7 +486,7 @@ final class Util
         }
     }
 
-    private static function mergeProperty(OA\AbstractAnnotation $annotation, $propertyName, $value, $default, bool $overwrite)
+    private static function mergeProperty(OA\AbstractAnnotation $annotation, $propertyName, $value, $default, bool $overwrite): void
     {
         if (true === $overwrite || $default === $annotation->{$propertyName}) {
             $annotation->{$propertyName} = $value;
@@ -498,9 +496,7 @@ final class Util
     private static function getNestingIndexes($class): array
     {
         return array_values(array_map(
-            function ($value) {
-                return \is_array($value) ? $value[0] : $value;
-            },
+            fn($value) => \is_array($value) ? $value[0] : $value,
             $class::$_nested
         ));
     }

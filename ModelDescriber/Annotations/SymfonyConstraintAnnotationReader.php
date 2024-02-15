@@ -28,24 +28,12 @@ class SymfonyConstraintAnnotationReader
     use SetsContextTrait;
 
     /**
-     * @var Reader|null
-     */
-    private $annotationsReader;
-
-    /**
      * @var OA\Schema
      */
     private $schema;
 
-    /**
-     * @var bool
-     */
-    private $useValidationGroups;
-
-    public function __construct(?Reader $annotationsReader, bool $useValidationGroups = false)
+    public function __construct(private ?Reader $annotationsReader, private bool $useValidationGroups = false)
     {
-        $this->annotationsReader = $annotationsReader;
-        $this->useValidationGroups = $useValidationGroups;
     }
 
     /**
@@ -64,7 +52,7 @@ class SymfonyConstraintAnnotationReader
         }
     }
 
-    private function processPropertyAnnotations($reflection, OA\Property $property, $annotations)
+    private function processPropertyAnnotations($reflection, OA\Property $property, $annotations): void
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {

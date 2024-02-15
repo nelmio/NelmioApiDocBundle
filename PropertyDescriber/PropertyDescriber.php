@@ -15,13 +15,11 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
     /** @var array<string, PropertyDescriberInterface[]> Recursion helper */
     private $called = [];
 
-    /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
-
     public function __construct(
-        iterable $propertyDescribers
-    ) {
-        $this->propertyDescribers = $propertyDescribers;
+        /** @var PropertyDescriberInterface[] */
+        private iterable $propertyDescribers
+    )
+    {
     }
 
     public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = []): void

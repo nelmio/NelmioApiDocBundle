@@ -37,7 +37,7 @@ class FOSRestTest extends WebTestCase
     /**
      * @dataProvider provideRoute
      */
-    public function testFOSRestAction(string $route)
+    public function testFOSRestAction(string $route): void
     {
         $operation = $this->getOperation($route, 'post');
 

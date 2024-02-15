@@ -53,7 +53,7 @@ final class ControllerTest extends WebTestCase
      */
     public function testControllers(string $controllerName, ?string $fixtureName = null, array $extraConfigs = []): void
     {
-        $fixtureName = $fixtureName ?? $controllerName;
+        $fixtureName ??= $controllerName;
 
         $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName) {
             $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", 'attribute');

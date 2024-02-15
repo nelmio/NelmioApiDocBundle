@@ -8,7 +8,7 @@ use Symfony\Component\PropertyInfo\Type;
 
 class EnumModelDescriber implements ModelDescriberInterface
 {
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, Schema $schema): void
     {
         $enumClass = $model->getType()->getClassName();
 

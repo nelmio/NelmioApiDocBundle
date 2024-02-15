@@ -21,7 +21,7 @@ final class RequiredPropertyDescriber implements PropertyDescriberInterface, Pro
 {
     use PropertyDescriberAwareTrait;
 
-    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = []): void
     {
         $this->propertyDescriber->describe($types, $property, $groups, $schema, $context);
 

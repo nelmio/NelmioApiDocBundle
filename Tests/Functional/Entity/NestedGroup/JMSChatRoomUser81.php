@@ -20,7 +20,7 @@ class JMSChatRoomUser81
     #[Serializer\Expose]
     private $id;
 
-    #[Serializer\Type('Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatFriend')]
+    #[Serializer\Type(\Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatFriend::class)]
     #[Serializer\Expose]
     #[Serializer\Groups(['mini'])]
     private $friend;

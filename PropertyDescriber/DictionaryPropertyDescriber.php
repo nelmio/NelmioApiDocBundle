@@ -22,7 +22,7 @@ final class DictionaryPropertyDescriber implements PropertyDescriberInterface, M
     use ModelRegistryAwareTrait;
     use PropertyDescriberAwareTrait;
 
-    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = []): void
     {
         $property->type = 'object';
         /** @var OA\AdditionalProperties $additionalProperties */

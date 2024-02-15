@@ -20,16 +20,12 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class ControllerReflector
 {
-    private $container;
-
     private $controllerNameParser;
 
     private $controllers = [];
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(private readonly ContainerInterface $container)
     {
-        $this->container = $container;
-
         if (1 < \func_num_args() && func_get_arg(1) instanceof ControllerNameParser) {
             $this->controllerNameParser = func_get_arg(1);
         }
@@ -60,7 +56,7 @@ class ControllerReflector
     {
         try {
             return new \ReflectionMethod($class, $method);
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             // In case we can't reflect the controller, we just
             // ignore the route
         }
@@ -74,25 +70,25 @@ class ControllerReflector
             return $this->controllers[$controller];
         }
 
-        if ($this->controllerNameParser && false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
+        if ($this->controllerNameParser && !str_contains($controller, '::') && 2 === substr_count($controller, ':')) {
             $deprecatedNotation = $controller;
 
             try {
                 $controller = $this->controllerNameParser->parse($controller);
 
                 trigger_deprecation('nelmio/api-doc-bundle', '3.6', 'Referencing controllers with %s is deprecated since Symfony 4.1, use "%s" instead.', $deprecatedNotation, $controller);
-            } catch (\InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException) {
                 // unable to optimize unknown notation
             }
         }
 
-        if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
+        if (preg_match('#(.+)::([\w]+)#', (string) $controller, $matches)) {
             $class = $matches[1];
             $method = $matches[2];
             // Since symfony 4.1 routes are defined like service_id::method_name
             if (Kernel::VERSION_ID >= 40100 && !class_exists($class)) {
                 if ($this->container->has($class)) {
-                    $class = get_class($this->container->get($class));
+                    $class = $this->container->get($class)::class;
                     if (class_exists(ClassUtils::class)) {
                         $class = ClassUtils::getRealClass($class);
                     }
@@ -103,13 +99,13 @@ class ControllerReflector
             $method = '__invoke';
         } else {
             // Has to be removed when dropping support of symfony < 4.1
-            if (preg_match('#(.+):([\w]+)#', $controller, $matches)) {
+            if (preg_match('#(.+):([\w]+)#', (string) $controller, $matches)) {
                 $controller = $matches[1];
                 $method = $matches[2];
             }
 
             if ($this->container->has($controller)) {
-                $class = get_class($this->container->get($controller));
+                $class = $this->container->get($controller)::class;
                 if (class_exists(ClassUtils::class)) {
                     $class = ClassUtils::getRealClass($class);
                 }

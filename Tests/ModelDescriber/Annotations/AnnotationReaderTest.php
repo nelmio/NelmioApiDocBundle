@@ -32,7 +32,7 @@ class AnnotationReaderTest extends TestCase
      *
      * @dataProvider provideProperty
      */
-    public function testProperty($entity)
+    public function testProperty($entity): void
     {
         $baseProps = ['_context' => new Context()];
 

@@ -29,33 +29,21 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 {
     use ModelRegistryAwareTrait;
     use ApplyOpenApiDiscriminatorTrait;
-
-    /** @var PropertyInfoExtractorInterface */
-    private $propertyInfo;
-    /** @var ClassMetadataFactoryInterface|null */
-    private $classMetadataFactory;
-    /** @var Reader|null */
-    private $doctrineReader;
     /** @var PropertyDescriberInterface|PropertyDescriberInterface[] */
     private $propertyDescriber;
-    /** @var string[] */
-    private $mediaTypes;
-    /** @var NameConverterInterface|null */
-    private $nameConverter;
-    /** @var bool */
-    private $useValidationGroups;
 
     /**
      * @param PropertyDescriberInterface|PropertyDescriberInterface[] $propertyDescribers
      */
     public function __construct(
-        PropertyInfoExtractorInterface $propertyInfo,
-        ?Reader $reader,
+        private PropertyInfoExtractorInterface $propertyInfo,
+        private ?Reader $doctrineReader,
         $propertyDescribers,
-        array $mediaTypes,
-        NameConverterInterface $nameConverter = null,
-        bool $useValidationGroups = false,
-        ClassMetadataFactoryInterface $classMetadataFactory = null
+        /** @var string[] */
+        private array $mediaTypes,
+        private ?\Symfony\Component\Serializer\NameConverter\NameConverterInterface $nameConverter = null,
+        private bool $useValidationGroups = false,
+        private ?\Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface $classMetadataFactory = null
     ) {
         if (is_array($propertyDescribers)) {
             trigger_deprecation('nelmio/api-doc-bundle', '4.17', 'Passing an array of PropertyDescriberInterface to %s() is deprecated. Pass a single PropertyDescriberInterface instead.', __METHOD__);
@@ -64,17 +52,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 throw new \InvalidArgumentException(sprintf('Argument 3 passed to %s() must be an array of %s or a single %s.', __METHOD__, PropertyDescriberInterface::class, PropertyDescriberInterface::class));
             }
         }
-
-        $this->propertyInfo = $propertyInfo;
-        $this->doctrineReader = $reader;
         $this->propertyDescriber = $propertyDescribers;
-        $this->mediaTypes = $mediaTypes;
-        $this->nameConverter = $nameConverter;
-        $this->useValidationGroups = $useValidationGroups;
-        $this->classMetadataFactory = $classMetadataFactory;
     }
 
-    public function describe(Model $model, OA\Schema $schema)
+    public function describe(Model $model, OA\Schema $schema): void
     {
         $class = $model->getType()->getClassName();
         $schema->_context->class = $class;
@@ -126,9 +107,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         // The SerializerExtractor does expose private/protected properties for some reason, so we eliminate them here
         $propertyInfoProperties = array_intersect($propertyInfoProperties, $this->propertyInfo->getProperties($class, []) ?? []);
 
-        $defaultValues = array_filter($reflClass->getDefaultProperties(), static function ($value) {
-            return null !== $value;
-        });
+        $defaultValues = array_filter($reflClass->getDefaultProperties(), static fn($value) => null !== $value);
 
         foreach ($propertyInfoProperties as $propertyName) {
             $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, $model->getSerializationContext()) : $propertyName;
@@ -200,7 +179,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /**
      * @param Type[] $types
      */
-    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema)
+    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema): void
     {
         $propertyDescribers = is_array($this->propertyDescriber) ? $this->propertyDescriber : [$this->propertyDescriber];
 

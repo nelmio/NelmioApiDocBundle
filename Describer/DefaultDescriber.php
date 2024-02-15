@@ -22,7 +22,7 @@ use OpenApi\Generator;
  */
 final class DefaultDescriber implements DescriberInterface
 {
-    public function describe(OA\OpenApi $api)
+    public function describe(OA\OpenApi $api): void
     {
         // Info
         /** @var OA\Info $info */

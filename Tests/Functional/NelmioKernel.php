@@ -24,29 +24,16 @@ final class NelmioKernel extends Kernel
 {
     use MicroKernelTrait;
 
-    /**
-     * @var Bundle[]
-     */
-    private $extraBundles;
-
     private $routeConfiguration;
-
-    /**
-     * @var string[]
-     */
-    private $extraConfigs;
 
     /**
      * @param Bundle[] $extraBundles
      * @param string[] $extraConfigs
      */
-    public function __construct(array $extraBundles, ?callable $routeConfiguration, array $extraConfigs)
+    public function __construct(private array $extraBundles, ?callable $routeConfiguration, private array $extraConfigs)
     {
         parent::__construct('test', true);
-
-        $this->extraBundles = $extraBundles;
         $this->routeConfiguration = $routeConfiguration;
-        $this->extraConfigs = $extraConfigs;
     }
 
     public function registerBundles(): iterable

@@ -101,7 +101,7 @@ if (TestKernel::isAnnotationsAvailable()) {
          */
         private $dateAsInterface;
 
-        public function setMoney(float $money)
+        public function setMoney(float $money): void
         {
             $this->money = $money;
         }
@@ -109,12 +109,12 @@ if (TestKernel::isAnnotationsAvailable()) {
         /**
          * @OA\Property(example=1)
          */
-        public function setId(int $id)
+        public function setId(int $id): void
         {
             $this->id = $id;
         }
 
-        public function setEmail($email)
+        public function setEmail($email): void
         {
             $this->email = $email;
         }
@@ -122,7 +122,7 @@ if (TestKernel::isAnnotationsAvailable()) {
         /**
          * @param string[] $roles
          */
-        public function setRoles(array $roles)
+        public function setRoles(array $roles): void
         {
             $this->roles = $roles;
         }
@@ -131,7 +131,7 @@ if (TestKernel::isAnnotationsAvailable()) {
         {
         }
 
-        public function setFriendsNumber(int $friendsNumber)
+        public function setFriendsNumber(int $friendsNumber): void
         {
             $this->friendsNumber = $friendsNumber;
         }
@@ -165,7 +165,7 @@ if (TestKernel::isAnnotationsAvailable()) {
             return $this->dateAsInterface;
         }
 
-        public function setDateAsInterface(\DateTimeInterface $dateAsInterface)
+        public function setDateAsInterface(\DateTimeInterface $dateAsInterface): void
         {
             $this->dateAsInterface = $dateAsInterface;
         }
@@ -243,18 +243,18 @@ if (TestKernel::isAnnotationsAvailable()) {
          */
         private $dateAsInterface;
 
-        public function setMoney(float $money)
+        public function setMoney(float $money): void
         {
             $this->money = $money;
         }
 
         #[\OpenApi\Attributes\Property(example: 1)]
-        public function setId(int $id)
+        public function setId(int $id): void
         {
             $this->id = $id;
         }
 
-        public function setEmail($email)
+        public function setEmail($email): void
         {
             $this->email = $email;
         }
@@ -262,7 +262,7 @@ if (TestKernel::isAnnotationsAvailable()) {
         /**
          * @param string[] $roles
          */
-        public function setRoles(array $roles)
+        public function setRoles(array $roles): void
         {
             $this->roles = $roles;
         }
@@ -271,7 +271,7 @@ if (TestKernel::isAnnotationsAvailable()) {
         {
         }
 
-        public function setFriendsNumber(int $friendsNumber)
+        public function setFriendsNumber(int $friendsNumber): void
         {
             $this->friendsNumber = $friendsNumber;
         }
@@ -305,7 +305,7 @@ if (TestKernel::isAnnotationsAvailable()) {
             return $this->dateAsInterface;
         }
 
-        public function setDateAsInterface(\DateTimeInterface $dateAsInterface)
+        public function setDateAsInterface(\DateTimeInterface $dateAsInterface): void
         {
             $this->dateAsInterface = $dateAsInterface;
         }

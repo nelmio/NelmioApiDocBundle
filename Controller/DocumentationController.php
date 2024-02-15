@@ -19,14 +19,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class DocumentationController
 {
-    /**
-     * @var RenderOpenApi
-     */
-    private $renderOpenApi;
-
-    public function __construct(RenderOpenApi $renderOpenApi)
+    public function __construct(private readonly RenderOpenApi $renderOpenApi)
     {
-        $this->renderOpenApi = $renderOpenApi;
     }
 
     public function __invoke(Request $request, $area = 'default')
@@ -35,7 +29,7 @@ final class DocumentationController
             return JsonResponse::fromJsonString(
                 $this->renderOpenApi->renderFromRequest($request, RenderOpenApi::JSON, $area)
             );
-        } catch (RenderInvalidArgumentException $e) {
+        } catch (RenderInvalidArgumentException) {
             throw new BadRequestHttpException(sprintf('Area "%s" is not supported as it isn\'t defined in config.', $area));
         }
     }
