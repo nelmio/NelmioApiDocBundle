@@ -27,6 +27,10 @@ return RectorConfig::configure()
     ])
     ->withRootFiles()
     ->withPhpSets()
+    ->withIndent()
+    ->withPHPStanConfigs([
+        __DIR__ . '/phpstan.neon',
+    ])
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,
     ]);
