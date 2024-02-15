@@ -78,15 +78,13 @@ final class ControllerTest extends WebTestCase
 
     public static function provideControllers(): iterable
     {
-        if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
-            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => ['Controller2209'];
-            yield 'MapQueryString' => ['MapQueryStringController'];
-            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
-                'MapQueryStringController',
-                'MapQueryStringCleanupComponents',
-                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
-            ];
-        }
+        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => ['Controller2209'];
+        yield 'MapQueryString' => ['MapQueryStringController'];
+        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
+            'MapQueryStringController',
+            'MapQueryStringCleanupComponents',
+            [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
+        ];
     }
 
     /**

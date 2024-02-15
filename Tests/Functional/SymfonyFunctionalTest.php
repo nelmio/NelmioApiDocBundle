@@ -19,10 +19,6 @@ class SymfonyFunctionalTest extends WebTestCase
 {
     protected function setUp(): void
     {
-        if (PHP_VERSION_ID < 80100) {
-            self::markTestSkipped('Attributes require PHP 8');
-        }
-
         parent::setUp();
 
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);

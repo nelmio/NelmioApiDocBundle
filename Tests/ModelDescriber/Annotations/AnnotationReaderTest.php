@@ -69,13 +69,11 @@ class AnnotationReaderTest extends TestCase
             private $property2;
         }];
 
-        if (PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => [new class() {
-                #[OAattr\Property(example: 1)]
-                private $property1;
-                #[OAattr\Property(example: 'some example', description: 'some description')]
-                private $property2;
-            }];
-        }
+        yield 'Attributes' => [new class() {
+            #[OAattr\Property(example: 1)]
+            private $property1;
+            #[OAattr\Property(example: 'some example', description: 'some description')]
+            private $property2;
+        }];
     }
 }

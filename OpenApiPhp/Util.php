@@ -406,7 +406,7 @@ final class Util
             } elseif (\array_key_exists($propertyName[0], $properties)) {
                 $collection = $propertyName[0];
                 $property = $propertyName[1] ?? null;
-                self::mergeCollection($annotation, $className, $collection, $property, $properties[$collection], $overwrite);
+                self::mergeCollection($annotation, $className, $property, $properties[$collection], $overwrite);
                 $done[] = $collection;
             }
         }
@@ -433,7 +433,7 @@ final class Util
         self::merge(self::getChild($annotation, $className), $value, $overwrite);
     }
 
-    private static function mergeCollection(OA\AbstractAnnotation $annotation, $className, $collection, $property, $items, bool $overwrite): void
+    private static function mergeCollection(OA\AbstractAnnotation $annotation, $className, $property, $items, bool $overwrite): void
     {
         if (null !== $property) {
             foreach ($items as $prop => $value) {

@@ -200,9 +200,6 @@ final class FosRestDescriber implements RouteDescriberInterface
     private function getAttributesAsAnnotation(\ReflectionMethod $reflection, string $className): array
     {
         $annotations = [];
-        if (\PHP_VERSION_ID < 80100) {
-            return $annotations;
-        }
 
         foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
             $annotations[] = $attribute->newInstance();

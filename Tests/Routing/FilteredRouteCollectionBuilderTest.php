@@ -183,9 +183,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             ['r10', new Route('/api/areas/new'), ['path_patterns' => ['^/api']]],
         ];
 
-        if (PHP_VERSION_ID < 80000) {
-            yield ['r10', new Route('/api/areas_attributes/new'), ['path_patterns' => ['^/api']]];
-        }
+        yield ['r10', new Route('/api/areas_attributes/new'), ['path_patterns' => ['^/api']]];
     }
 
     /**
@@ -239,20 +237,18 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             ],
         ];
 
-        if (PHP_VERSION_ID < 80000) {
-            yield from [
-                'with attribute only' => [
-                    'r10',
-                    new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
-                    ['with_annotation' => true],
-                ],
-                'with attribute and path patterns' => [
-                    'r10',
-                    new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
-                    ['path_patterns' => ['^/api'], 'with_annotation' => true],
-                ],
-            ];
-        }
+        yield from [
+            'with attribute only' => [
+                'r10',
+                new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
+                ['with_annotation' => true],
+            ],
+            'with attribute and path patterns' => [
+                'r10',
+                new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
+                ['path_patterns' => ['^/api'], 'with_annotation' => true],
+            ],
+        ];
     }
 
     /**

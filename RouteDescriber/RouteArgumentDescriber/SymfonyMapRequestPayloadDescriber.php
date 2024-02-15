@@ -53,11 +53,6 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
         if (is_array($attribute->validationGroups)) {
             return $attribute->validationGroups;
         }
-
-        if ($attribute->validationGroups instanceof GroupSequence) {
-            return $attribute->validationGroups->groups;
-        }
-
-        return null;
+        return $attribute->validationGroups->groups;
     }
 }

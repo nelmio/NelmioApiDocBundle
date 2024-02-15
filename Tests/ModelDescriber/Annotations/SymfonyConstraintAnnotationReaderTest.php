@@ -125,15 +125,13 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class() {
-                #[Assert\NotBlank(allowNull: true)]
-                #[Assert\Length(min: 1)]
-                private $property1;
-                #[Assert\NotBlank]
-                private $property2;
-            }];
-        }
+        yield 'Attributes' => [new class() {
+            #[Assert\NotBlank(allowNull: true)]
+            #[Assert\Length(min: 1)]
+            private $property1;
+            #[Assert\NotBlank]
+            private $property2;
+        }];
     }
 
     /**
@@ -175,13 +173,11 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class() {
-                #[Assert\Length(min: 1)]
-                #[Assert\Choice(choices: TEST_ASSERT_CHOICE_STATUSES)]
-                private $property1;
-            }];
-        }
+        yield 'Attributes' => [new class() {
+            #[Assert\Length(min: 1)]
+            #[Assert\Choice(choices: TEST_ASSERT_CHOICE_STATUSES)]
+            private $property1;
+        }];
     }
 
     /**
@@ -214,12 +210,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             }];
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class() {
-                #[Assert\Choice(choices: ['one', 'two'], multiple: true)]
-                private $property1;
-            }];
-        }
+        yield 'Attributes' => [new class() {
+            #[Assert\Choice(choices: ['one', 'two'], multiple: true)]
+            private $property1;
+        }];
     }
 
     /**
@@ -256,12 +250,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class() {
-                #[Assert\Length(min: 1)]
-                private $property1;
-            }];
-        }
+        yield 'Attributes' => [new class() {
+            #[Assert\Length(min: 1)]
+            private $property1;
+        }];
     }
 
     /**
@@ -298,12 +290,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class() {
-                #[Assert\Length(max: 100)]
-                private $property1;
-            }];
-        }
+        yield 'Attributes' => [new class() {
+            #[Assert\Length(max: 100)]
+            private $property1;
+        }];
     }
 
     public function testCompoundValidationRules(): void
@@ -380,12 +370,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class() {
-                #[Assert\Count(max: 10)]
-                private $property1;
-            }];
-        }
+        yield 'Attributes' => [new class() {
+            #[Assert\Count(max: 10)]
+            private $property1;
+        }];
     }
 
     /**
@@ -422,12 +410,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class() {
-                #[Assert\Count(min: 10)]
-                private $property1;
-            }];
-        }
+        yield 'Attributes' => [new class() {
+            #[Assert\Count(min: 10)]
+            private $property1;
+        }];
     }
 
     /**
@@ -464,12 +450,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class() {
-                #[Assert\Range(min: 10)]
-                private $property1;
-            }];
-        }
+        yield 'Attributes' => [new class() {
+            #[Assert\Range(min: 10)]
+            private $property1;
+        }];
     }
 
     /**
@@ -506,12 +490,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class() {
-                #[Assert\Range(max: 10)]
-                private $property1;
-            }];
-        }
+        yield 'Attributes' => [new class() {
+            #[Assert\Range(max: 10)]
+            private $property1;
+        }];
     }
 
     /**
@@ -625,13 +607,11 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             }];
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class() {
-                #[Assert\NotBlank()]
-                #[Assert\Range(min: 1, groups: ['other'])]
-                private $property1;
-            }];
-        }
+        yield 'Attributes' => [new class() {
+            #[Assert\NotBlank()]
+            #[Assert\Range(min: 1, groups: ['other'])]
+            private $property1;
+        }];
     }
 
     private function createConstraintReaderWithValidationGroupsEnabled(): SymfonyConstraintAnnotationReader

@@ -113,7 +113,7 @@ class UtilTest extends TestCase
         /** @var OA\Info $info */
         $info = Util::createChild($this->rootAnnotation, OA\Info::class, $properties);
 
-        $properties = array_filter(get_object_vars($info), fn($key) => !str_starts_with((string) $key, '_'), ARRAY_FILTER_USE_KEY);
+        $properties = array_filter(get_object_vars($info), fn($key) => !str_starts_with($key, '_'), ARRAY_FILTER_USE_KEY);
 
         $this->assertEquals([Generator::UNDEFINED], array_unique(array_values($properties)));
 

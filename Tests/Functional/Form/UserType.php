@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Form;
 
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
+use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAT;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-if (PHP_VERSION_ID < 80100) {
+if (TestKernel::isAnnotationsAvailable()) {
     /**
      * @OA\Schema(
      *     description="this is the description of an user"

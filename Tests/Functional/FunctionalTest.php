@@ -68,9 +68,7 @@ class FunctionalTest extends WebTestCase
             yield 'Annotations' => ['/api/article/{id}'];
         }
 
-        if (PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => ['/api/article_attributes/{id}'];
-        }
+        yield 'Attributes' => ['/api/article_attributes/{id}'];
     }
 
     public function testFilteredAction(): void
@@ -166,10 +164,10 @@ class FunctionalTest extends WebTestCase
 
     public function testApiPlatform(): void
     {
-        $operation = $this->getOperation('/api/dummies', 'get');
-        $operation = $this->getOperation('/api/foo', 'get');
-        $operation = $this->getOperation('/api/foo', 'post');
-        $operation = $this->getOperation('/api/dummies/{id}', 'get');
+        $this->getOperation('/api/dummies', 'get');
+        $this->getOperation('/api/foo', 'get');
+        $this->getOperation('/api/foo', 'post');
+        $this->getOperation('/api/dummies/{id}', 'get');
     }
 
     public function testUserModel(): void
@@ -387,9 +385,7 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/security'];
 
-        if (PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => ['/api/security_attributes'];
-        }
+        yield 'Attributes' => ['/api/security_attributes'];
     }
 
     /**
@@ -405,17 +401,11 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/securityOverride'];
 
-        if (PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => ['/api/security_override_attributes'];
-        }
+        yield 'Attributes' => ['/api/security_override_attributes'];
     }
 
     public function testInlinePHP81Parameters(): void
     {
-        if (PHP_VERSION_ID < 80100) {
-            $this->markTestSkipped('Attributes require PHP 8.1');
-        }
-
         $operation = $this->getOperation('/api/inline_path_parameters', 'get');
         $this->assertCount(1, $operation->parameters);
         $this->assertInstanceOf(OAAttributes\PathParameter::class, $operation->parameters[0]);
@@ -621,135 +611,6 @@ class FunctionalTest extends WebTestCase
 
     public function testCompoundEntityAction(): void
     {
-        if (PHP_VERSION_ID < 70400) {
-            self::assertEquals([
-                'schema' => 'CompoundEntity',
-                'type' => 'object',
-                'required' => ['complex', 'arrayOfArrayComplex'],
-                'properties' => [
-                    'complex' => [
-                        'oneOf' => [
-                            [
-                                'type' => 'integer',
-                            ],
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntity',
-                                ],
-                            ],
-                        ],
-                    ],
-                    'nullableComplex' => [
-                        'nullable' => true,
-                        'oneOf' => [
-                            [
-                                'type' => 'integer',
-                                'nullable' => true,
-                            ],
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntity',
-                                ],
-                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
-                            ],
-                        ],
-                    ],
-                    'complexNested' => [
-                        'nullable' => true,
-                        'oneOf' => [
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntityNested',
-                                ],
-                                'nullable' => true,
-                            ],
-                            [
-                                'type' => 'string',
-                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
-                            ],
-                        ],
-                    ],
-                    'arrayOfArrayComplex' => [
-                        'oneOf' => [
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntityNested',
-                                ],
-                            ],
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    'type' => 'array',
-                                    'items' => [
-                                        '$ref' => '#/components/schemas/CompoundEntityNested',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ], json_decode($this->getModel('CompoundEntity')->toJson(), true));
-
-            self::assertEquals([
-                'schema' => 'CompoundEntityNested',
-                'type' => 'object',
-                'required' => ['complex'],
-                'properties' => [
-                    'complex' => [
-                        'oneOf' => [
-                            [
-                                'type' => 'integer',
-                            ],
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntity',
-                                ],
-                            ],
-                        ],
-                    ],
-                    'nullableComplex' => [
-                        'nullable' => true,
-                        'oneOf' => [
-                            [
-                                'type' => 'integer',
-                                'nullable' => true,
-                            ],
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntity',
-                                ],
-                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
-                            ],
-                        ],
-                    ],
-                    'complexNested' => [
-                        'nullable' => true,
-                        'oneOf' => [
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntityNested',
-                                ],
-                                'nullable' => true,
-                            ],
-                            [
-                                'type' => 'string',
-                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
-                            ],
-                        ],
-                    ],
-                ],
-            ], json_decode($this->getModel('CompoundEntityNested')->toJson(), true));
-
-            return;
-        }
-
         self::assertEquals([
             'schema' => 'CompoundEntity',
             'type' => 'object',

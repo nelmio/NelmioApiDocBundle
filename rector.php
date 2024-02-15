@@ -26,11 +26,17 @@ return RectorConfig::configure()
         __DIR__ . '/Util',
     ])
     ->withRootFiles()
+    ->withSkip([
+        __DIR__ . '/Tests/Functional/Entity',
+    ])
     ->withPhpSets()
     ->withIndent()
     ->withPHPStanConfigs([
         __DIR__ . '/phpstan.neon',
     ])
+    ->withPreparedSets(
+        deadCode: true,
+    )
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,
     ]);

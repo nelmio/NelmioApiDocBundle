@@ -137,7 +137,7 @@ final class FilteredRouteCollectionBuilder
             }
         }
 
-        return (null !== $areas) ? $areas->has($this->area) : false;
+        return null !== $areas && $areas->has($this->area);
     }
 
     private function defaultRouteDisabled(Route $route): bool
@@ -182,9 +182,6 @@ final class FilteredRouteCollectionBuilder
     private function getAttributesAsAnnotation($reflection, string $className): array
     {
         $annotations = [];
-        if (\PHP_VERSION_ID < 80100) {
-            return $annotations;
-        }
 
         foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
             $annotations[] = $attribute->newInstance();

@@ -88,10 +88,8 @@ class OpenApiAnnotationsReader
         $this->setContextFromReflection($parentContext, $reflection);
 
         try {
-            if (\PHP_VERSION_ID >= 80100) {
-                if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
-                    return $attribute->newInstance();
-                }
+            if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
+                return $attribute->newInstance();
             }
 
             if (null !== $this->annotationsReader) {

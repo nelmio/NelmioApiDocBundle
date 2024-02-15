@@ -39,7 +39,7 @@ final class ApiDocGenerator
     /**
      * @var ?string
      */
-    private $openApiVersion = null;
+    private $openApiVersion;
 
     /** @var Generator */
     private $generator;
