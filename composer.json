@@ -53,9 +53,11 @@
         "jms/serializer": "^1.14|^3.0",
         "composer/package-versions-deprecated": "1.11.99.1",
 
-        "phpunit/phpunit": "^9.6",
         "doctrine/annotations": "^2.0",
-        "phpstan/phpstan": "^1.10"
+
+        "phpunit/phpunit": "^9.6",
+        "phpstan/phpstan": "^1.10",
+        "rector/rector": "^1.0.0"
     },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
@@ -92,11 +94,13 @@
     },
     "scripts-descriptions": {
         "phpunit": "Run phpunit",
-        "phpstan": "Run phpstan"
+        "phpstan": "Run phpstan",
+        "rector": "Run rector"
     },
     "scripts": {
         "phpunit": "phpunit",
         "phpstan": "phpstan analyse --memory-limit=2G",
-        "phpstan-baseline": "phpstan analyse --generate-baseline --memory-limit=2G"
+        "phpstan-baseline": "phpstan analyse --generate-baseline --memory-limit=2G",
+        "rector": "rector"
     }
 }
