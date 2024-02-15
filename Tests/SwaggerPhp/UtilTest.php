@@ -864,9 +864,13 @@ class UtilTest extends TestCase
         $classVars = get_class_vars($object::class);
         $props = [];
         foreach ($objectVars as $key => $value) {
-            if ($value !== $classVars[$key] && !str_starts_with($key, '_')) {
-                $props[$key] = $value;
+            if ($value === $classVars[$key]) {
+                continue;
             }
+            if (str_starts_with($key, '_')) {
+                continue;
+            }
+            $props[$key] = $value;
         }
 
         return $props;

@@ -45,7 +45,10 @@ class PropertyPhpDocReader
         if (!$title = $docBlock->getSummary()) {
             /** @var Var_ $var */
             foreach ($docBlock->getTagsByName('var') as $var) {
-                if (!method_exists($var, 'getDescription') || !$description = $var->getDescription()) {
+                if (!method_exists($var, 'getDescription')) {
+                    continue;
+                }
+                if (!$description = $var->getDescription()) {
                     continue;
                 }
                 $title = $description->render();
@@ -57,8 +60,15 @@ class PropertyPhpDocReader
         if (Generator::UNDEFINED === $property->title && $title) {
             $property->title = $title;
         }
-        if (Generator::UNDEFINED === $property->description && $docBlock->getDescription() && $docBlock->getDescription()->render()) {
-            $property->description = $docBlock->getDescription()->render();
+        if (Generator::UNDEFINED !== $property->description) {
+            return;
         }
+        if (!$docBlock->getDescription()) {
+            return;
+        }
+        if (!$docBlock->getDescription()->render()) {
+            return;
+        }
+        $property->description = $docBlock->getDescription()->render();
     }
 }

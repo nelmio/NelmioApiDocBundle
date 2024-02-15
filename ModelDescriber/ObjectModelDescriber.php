@@ -129,9 +129,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             foreach ($reflections as $reflection) {
                 $annotationsReader->updateProperty($reflection, $property, $groups);
             }
-
             // If type manually defined
-            if (Generator::UNDEFINED !== $property->type || Generator::UNDEFINED !== $property->ref) {
+            if (Generator::UNDEFINED !== $property->type) {
+                continue;
+            }
+            if (Generator::UNDEFINED !== $property->ref) {
                 continue;
             }
 

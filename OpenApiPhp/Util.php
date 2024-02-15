@@ -422,9 +422,13 @@ final class Util
             if ('$ref' === $propertyName) {
                 $propertyName = 'ref';
             }
-            if (array_key_exists($propertyName, $defaults) && !\in_array($propertyName, $done, true)) {
-                self::mergeProperty($annotation, $propertyName, $value, $defaults[$propertyName], $overwrite);
+            if (!array_key_exists($propertyName, $defaults)) {
+                continue;
             }
+            if (\in_array($propertyName, $done, true)) {
+                continue;
+            }
+            self::mergeProperty($annotation, $propertyName, $value, $defaults[$propertyName], $overwrite);
         }
     }
 

@@ -29,12 +29,14 @@ final class NullablePropertyProcessor implements ProcessorInterface
             }
 
             foreach ($schema->properties as $property) {
-                if (Generator::UNDEFINED !== $property->nullable) {
-                    if (!$property->nullable) {
-                        // if already false mark it as undefined (so it does not show up as `nullable: false`)
-                        $property->nullable = Generator::UNDEFINED;
-                    }
+                if (Generator::UNDEFINED === $property->nullable) {
+                    continue;
                 }
+                if ($property->nullable) {
+                    continue;
+                }
+                // if already false mark it as undefined (so it does not show up as `nullable: false`)
+                $property->nullable = Generator::UNDEFINED;
             }
         }
     }

@@ -106,7 +106,10 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
      */
     public function supports(Model $model): bool
     {
-        return $this->JMSModelDescriber->supports($model) || null !== $this->getHateoasMetadata($model);
+        if ($this->JMSModelDescriber->supports($model)) {
+            return true;
+        }
+        return null !== $this->getHateoasMetadata($model);
     }
 
     private function setAttributeProperties(Relation $relation, OA\Property $subProperty): void

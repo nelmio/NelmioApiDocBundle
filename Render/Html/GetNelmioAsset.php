@@ -42,11 +42,11 @@ class GetNelmioAsset extends AbstractExtension
         [$resource, $isInline] = $this->getResource($asset, $mode);
         if ('js' == $extension) {
             return $this->renderJavascript($resource, $isInline);
-        } elseif ('css' == $extension) {
-            return $this->renderCss($resource, $isInline);
-        } else {
-            return $resource;
         }
+        if ('css' == $extension) {
+            return $this->renderCss($resource, $isInline);
+        }
+        return $resource;
     }
 
     private function getExtension($assetsMode, $asset)
@@ -54,41 +54,40 @@ class GetNelmioAsset extends AbstractExtension
         $extension = mb_substr((string) $asset, -3, 3, 'utf-8');
         if ('.js' === $extension) {
             return ['js', $assetsMode];
-        } elseif ('png' === $extension) {
-            return ['png', AssetsMode::OFFLINE == $assetsMode ? AssetsMode::CDN : $assetsMode];
-        } else {
-            return ['css', $assetsMode];
         }
+        if ('png' === $extension) {
+            return ['png', AssetsMode::OFFLINE == $assetsMode ? AssetsMode::CDN : $assetsMode];
+        }
+        return ['css', $assetsMode];
     }
 
     private function getResource($asset, $mode)
     {
         if (filter_var($asset, FILTER_VALIDATE_URL)) {
             return [$asset, false];
-        } elseif (AssetsMode::OFFLINE === $mode) {
-            return [file_get_contents($this->resourcesDir.'/'.$asset), true];
-        } elseif (AssetsMode::CDN === $mode) {
-            return [$this->cdnUrl.'/'.$asset, false];
-        } else {
-            return [$this->assetExtension->getAssetUrl(sprintf('bundles/nelmioapidoc/%s', $asset)), false];
         }
+        if (AssetsMode::OFFLINE === $mode) {
+            return [file_get_contents($this->resourcesDir.'/'.$asset), true];
+        }
+        if (AssetsMode::CDN === $mode) {
+            return [$this->cdnUrl.'/'.$asset, false];
+        }
+        return [$this->assetExtension->getAssetUrl(sprintf('bundles/nelmioapidoc/%s', $asset)), false];
     }
 
     private function renderJavascript(string $script, bool $isInline)
     {
         if ($isInline) {
             return sprintf('<script>%s</script>', $script);
-        } else {
-            return sprintf('<script src="%s"></script>', $script);
         }
+        return sprintf('<script src="%s"></script>', $script);
     }
 
     private function renderCss(string $stylesheet, bool $isInline)
     {
         if ($isInline) {
             return sprintf('<style>%s</style>', $stylesheet);
-        } else {
-            return sprintf('<link rel="stylesheet" href="%s">', $stylesheet);
         }
+        return sprintf('<link rel="stylesheet" href="%s">', $stylesheet);
     }
 }

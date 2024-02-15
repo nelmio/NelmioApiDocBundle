@@ -36,6 +36,7 @@ return RectorConfig::configure()
     ])
     ->withPreparedSets(
         deadCode: true,
+        earlyReturn: true,
     )
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,

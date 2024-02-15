@@ -95,9 +95,11 @@ class OpenApiAnnotationsReader
             if (null !== $this->annotationsReader) {
                 if ($reflection instanceof \ReflectionClass) {
                     return $this->annotationsReader->getClassAnnotation($reflection, $className);
-                } elseif ($reflection instanceof \ReflectionProperty) {
+                }
+                if ($reflection instanceof \ReflectionProperty) {
                     return $this->annotationsReader->getPropertyAnnotation($reflection, $className);
-                } elseif ($reflection instanceof \ReflectionMethod) {
+                }
+                if ($reflection instanceof \ReflectionMethod) {
                     return $this->annotationsReader->getMethodAnnotation($reflection, $className);
                 }
             }

@@ -26,9 +26,13 @@ class ControllerReflector
 
     public function __construct(private readonly ContainerInterface $container)
     {
-        if (1 < \func_num_args() && func_get_arg(1) instanceof ControllerNameParser) {
-            $this->controllerNameParser = func_get_arg(1);
+        if (1 >= \func_num_args()) {
+            return;
         }
+        if (!func_get_arg(1) instanceof ControllerNameParser) {
+            return;
+        }
+        $this->controllerNameParser = func_get_arg(1);
     }
 
     /**

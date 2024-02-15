@@ -174,15 +174,14 @@ final class ModelRegistry
     {
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
             return '\\'.$type->getClassName();
-        } elseif ($type->isCollection()) {
+        }
+        if ($type->isCollection()) {
             if (null !== $collectionType = $this->getCollectionValueType($type)) {
                 return $this->typeToString($collectionType).'[]';
-            } else {
-                return 'mixed[]';
             }
-        } else {
-            return $type->getBuiltinType();
+            return 'mixed[]';
         }
+        return $type->getBuiltinType();
     }
 
     private function getCollectionKeyTypes(Type $type): array

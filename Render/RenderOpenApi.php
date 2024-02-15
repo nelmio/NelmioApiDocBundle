@@ -64,7 +64,8 @@ class RenderOpenApi
     {
         if (!$this->generatorLocator->has($area)) {
             throw new RenderInvalidArgumentException(sprintf('Area "%s" is not supported.', $area));
-        } elseif (!array_key_exists($format, $this->openApiRenderers)) {
+        }
+        if (!array_key_exists($format, $this->openApiRenderers)) {
             throw new RenderInvalidArgumentException(sprintf('Format "%s" is not supported.', $format));
         }
 

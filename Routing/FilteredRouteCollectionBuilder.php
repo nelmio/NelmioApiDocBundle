@@ -59,14 +59,22 @@ final class FilteredRouteCollectionBuilder
     {
         $filteredRoutes = new RouteCollection();
         foreach ($routes->all() as $name => $route) {
-            if ($this->matchPath($route)
-                && $this->matchHost($route)
-                && $this->matchAnnotation($route)
-                && $this->matchName($name)
-                && $this->defaultRouteDisabled($route)
-            ) {
-                $filteredRoutes->add($name, $route);
+            if (!$this->matchPath($route)) {
+                continue;
             }
+            if (!$this->matchHost($route)) {
+                continue;
+            }
+            if (!$this->matchAnnotation($route)) {
+                continue;
+            }
+            if (!$this->matchName($name)) {
+                continue;
+            }
+            if (!$this->defaultRouteDisabled($route)) {
+                continue;
+            }
+            $filteredRoutes->add($name, $route);
         }
 
         return $filteredRoutes;
