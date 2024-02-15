@@ -1,13 +1,18 @@
-name: CI
+name: docs
 
 on:
-    push: ~
-    pull_request: ~
+    pull_request:
+        branches:
+            - "*.x"
+            - master
+    push:
+        branches:
+            - "*.x"
+            - master
 
 jobs:
     doctor-rst:
         name: Lint (DOCtor-RST)
-
         runs-on: ubuntu-latest
 
         steps:

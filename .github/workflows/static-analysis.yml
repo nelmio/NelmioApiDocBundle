@@ -1,0 +1,42 @@
+name: "static-analysis"
+
+on:
+  pull_request:
+    branches:
+      - "*.x"
+      - master
+  push:
+    branches:
+      - "*.x"
+      - master
+
+jobs:
+  static-analysis:
+    name: "PHPStan"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: "Install PHP without coverage"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: "Cache dependencies"
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: "Install dependencies with composer"
+        uses: "ramsey/composer-install@v2"
+        with:
+          dependency-versions: 'highest'
+
+      - name: "PHPStan"
+        run: composer phpstan
