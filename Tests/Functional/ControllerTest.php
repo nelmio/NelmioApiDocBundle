@@ -51,12 +51,14 @@ final class ControllerTest extends WebTestCase
     /**
      * @dataProvider provideControllers
      */
-    public function testControllers(string $controllerName, ?string $fixtureName = null, array $extraConfigs = []): void
+    public function testControllers(string|array $controllerName, ?string $fixtureName = null, array $extraConfigs = []): void
     {
         $fixtureName = $fixtureName ?? $controllerName;
 
         $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName) {
-            $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", 'attribute');
+            foreach ((array) $controllerName as $controllerName) {
+                $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", 'attribute');
+            }
         };
 
         $this->configurableContainerFactory->create([], $routingConfiguration, $extraConfigs);
@@ -78,15 +80,20 @@ final class ControllerTest extends WebTestCase
 
     public static function provideControllers(): iterable
     {
-        if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
-            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => ['Controller2209'];
-            yield 'MapQueryString' => ['MapQueryStringController'];
-            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
-                'MapQueryStringController',
-                'MapQueryStringCleanupComponents',
-                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
-            ];
-        }
+//        if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
+//            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => ['Controller2209'];
+//            yield 'MapQueryString' => ['MapQueryStringController'];
+//            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
+//                'MapQueryStringController',
+//                'MapQueryStringCleanupComponents',
+//                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
+//            ];
+//        }
+
+        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2218' => [
+            ['Issue2218/ContactController2218', 'Issue2218/EventController2218'],
+            'Issue2218'
+        ];
     }
 
     /**

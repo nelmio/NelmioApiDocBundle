@@ -1,0 +1,227 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/contact/list": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_issue2218_contactcontroller2218_list",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ContactOutput"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/contact/show": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_issue2218_contactcontroller2218_show",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactOutput"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/contact/create": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_issue2218_contactcontroller2218_create",
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactOutput"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/contact/update": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_issue2218_contactcontroller2218_update",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactOutput"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/event/list": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_issue2218_eventcontroller2218_list",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/EventOutput"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/event/show": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_issue2218_eventcontroller2218_show",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventOutput"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/event/create": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_issue2218_eventcontroller2218_create",
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventOutput"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/event/update": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_issue2218_eventcontroller2218_update",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventOutput"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ContactOutput": {
+                "required": [
+                    "contact",
+                    "member"
+                ],
+                "properties": {
+                    "contact": {
+                        "$ref": "#/components/schemas/Contact"
+                    },
+                    "member": {
+                        "$ref": "#/components/schemas/Member"
+                    }
+                },
+                "type": "object"
+            },
+            "EventOutput": {
+                "required": [
+                    "eventt",
+                    "member"
+                ],
+                "properties": {
+                    "eventt": {
+                        "$ref": "#/components/schemas/Event"
+                    },
+                    "member": {
+                        "$ref": "#/components/schemas/Member2"
+                    }
+                },
+                "type": "object"
+            },
+            "Contact": {
+                "required": [
+                    "member"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "member": {
+                        "$ref": "#/components/schemas/Member"
+                    }
+                },
+                "type": "object"
+            },
+            "Member": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Event": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Member2": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
