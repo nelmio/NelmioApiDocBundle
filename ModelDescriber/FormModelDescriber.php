@@ -218,7 +218,20 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 break;
             }
 
-            if ('choice' === $blockPrefix) {
+            if ('enum' === $blockPrefix || 'enum' === $config->getType()->getInnerType()->getBlockPrefix()) {
+                $model = new Model(
+                    new Type(Type::BUILTIN_TYPE_OBJECT, !$config->getOption('required'), $config->getOption('class')),
+                    null,
+                    $config->getOptions()
+                );
+                $ref = $this->modelRegistry->register($model);
+                if ($config->getOption('multiple')) {
+                    $property->type = 'array';
+                    $property->items = Util::createChild($property, OA\Items::class, ['ref' => $ref]);
+                } else {
+                    $property->ref = $ref;
+                }
+            } elseif ('choice' === $blockPrefix) {
                 if ($config->getOption('multiple')) {
                     $property->type = 'array';
                 } else {
