@@ -169,8 +169,8 @@ class NelmioApiDocExtensionTest extends TestCase
                 'areas' => [
                     'default' => [],
                     'area1' => [],
-                ]
-            ]
+                ],
+            ],
         ], $container);
 
         $reference = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(2);
