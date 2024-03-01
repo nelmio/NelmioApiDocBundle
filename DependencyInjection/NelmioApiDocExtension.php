@@ -99,7 +99,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
                     $cachePool,
-                    null,
+                    $config['cache_item_id'],
                     new Reference('nelmio_api_doc.open_api.generator'),
                 ]);
 

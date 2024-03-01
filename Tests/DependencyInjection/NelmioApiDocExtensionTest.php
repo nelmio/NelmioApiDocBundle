@@ -166,6 +166,7 @@ class NelmioApiDocExtensionTest extends TestCase
                     ],
                 ],
                 'cache_pool' => 'test.cache',
+                'cache_item_id' => 'nelmio.docs',
                 'areas' => [
                     'default' => [],
                     'area1' => [],
@@ -178,5 +179,11 @@ class NelmioApiDocExtensionTest extends TestCase
 
         $reference = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(2);
         $this->assertSame('test.cache', (string) $reference);
+
+        $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(3);
+        $this->assertSame('nelmio.docs', $cacheItemId);
+
+        $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(3);
+        $this->assertSame('nelmio.docs', $cacheItemId);
     }
 }
