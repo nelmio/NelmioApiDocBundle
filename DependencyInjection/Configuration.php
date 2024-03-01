@@ -35,7 +35,7 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('cache')
                     ->validate()
-                        ->ifTrue(function ($v) { return null !== $v['item_id'] && null === $v['pool']; } )
+                        ->ifTrue(function ($v) { return null !== $v['item_id'] && null === $v['pool']; })
                         ->thenInvalid('Can not set cache.item_id if cache.pool is null')
                     ->end()
                     ->children()
