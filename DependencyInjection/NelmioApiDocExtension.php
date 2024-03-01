@@ -84,7 +84,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $container->register('nelmio_api_doc.open_api.generator', Generator::class)
             ->setPublic(false);
 
-        $cachePool = null === $config['cache_pool'] ? null : new Reference($config['cache_pool']);
+        $cachePool = isset($config['cache']['pool']) ? new Reference($config['cache']['pool']) : null;
+        $cacheItemId = $config['cache']['item_id'] ?? null;
 
         foreach ($config['areas'] as $area => $areaConfig) {
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
@@ -99,7 +100,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
                     $cachePool,
-                    $config['cache_item_id'],
+                    $cacheItemId,
                     new Reference('nelmio_api_doc.open_api.generator'),
                 ]);
 

@@ -165,8 +165,10 @@ class NelmioApiDocExtensionTest extends TestCase
                         'description' => 'This is the api documentation, use it wisely',
                     ],
                 ],
-                'cache_pool' => 'test.cache',
-                'cache_item_id' => 'nelmio.docs',
+                'cache' => [
+                    'pool' => 'test.cache',
+                    'item_id' => 'nelmio.docs'
+                ],
                 'areas' => [
                     'default' => [],
                     'area1' => [],
