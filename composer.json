@@ -27,7 +27,8 @@
         "symfony/routing": "^5.4|^6.0|^7.0",
         "zircote/swagger-php": "^4.2.15",
         "phpdocumentor/reflection-docblock": "^3.1|^4.0|^5.0",
-        "symfony/deprecation-contracts": "^2.1|^3"
+        "symfony/deprecation-contracts": "^2.1|^3",
+        "doctrine/annotations": "^2.0"
     },
     "require-dev": {
         "sensio/framework-extra-bundle": "^5.4|^6.0",
@@ -53,8 +54,7 @@
         "jms/serializer": "^1.14|^3.0",
         "composer/package-versions-deprecated": "1.11.99.1",
 
-        "phpunit/phpunit": "^8.5|^9.6",
-        "doctrine/annotations": "^2.0"
+        "phpunit/phpunit": "^8.5|^9.6"
     },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
@@ -73,11 +73,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Nelmio\\ApiDocBundle\\": ""
-        },
-        "exclude-from-classmap": [
-            "Tests/"
-        ]
+            "Nelmio\\ApiDocBundle\\": "src/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
