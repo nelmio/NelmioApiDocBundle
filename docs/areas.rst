@@ -32,7 +32,7 @@ You can define areas which will each generates a different documentation:
             store:
                 # Includes routes with names containing 'store'
                 name_patterns: [ store ]
-            
+
 
 Your main documentation is under the ``default`` area. It's the one shown when accessing ``/api/doc``.
 
@@ -67,7 +67,7 @@ Use annotations to filter documented routes in each area
 
 You can use the `@Areas` annotation inside your controllers to define your routes' areas.
 
-First, you need to define which areas will use the`@Areas` annotations to filter 
+First, you need to define which areas will use the`@Areas` annotations to filter
 the routes that should be documented:
 
 .. code-block:: yaml
@@ -78,7 +78,7 @@ the routes that should be documented:
                 path_patterns: [ ^/api ]
             internal:
                 with_annotation: true
-                
+
 Then add the annotation before your controller or action::
 
     use Nelmio\Annotations as Nelmio;
