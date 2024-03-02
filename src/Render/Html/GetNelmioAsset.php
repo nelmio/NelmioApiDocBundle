@@ -27,8 +27,8 @@ class GetNelmioAsset extends AbstractExtension
     public function __construct(AssetExtension $assetExtension)
     {
         $this->assetExtension = $assetExtension;
-        $this->cdnUrl = 'https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public';
-        $this->resourcesDir = __DIR__.'/../../Resources/public';
+        $this->cdnUrl = 'https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/public';
+        $this->resourcesDir = __DIR__.'/../../../public';
     }
 
     public function getFunctions(): array

@@ -31,8 +31,8 @@ class GetNelmioAssetTest extends WebTestCase
 
     public function provideAsset()
     {
-        $cdnDir = 'https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public';
-        $resourceDir = __DIR__.'/../../../Resources/public';
+        $cdnDir = 'https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/public';
+        $resourceDir = __DIR__.'/../../../public';
 
         return $this->provideCss($cdnDir, $resourceDir)
             + $this->provideJs($cdnDir, $resourceDir)
