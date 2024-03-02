@@ -78,7 +78,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Nelmio\\ApiDocBundle\\Tests\\": "Tests/"
+            "Nelmio\\ApiDocBundle\\Tests\\": "tests/"
         }
     },
     "extra": {
