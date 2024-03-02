@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+4.22.0
+-----
+* Updated bundle directory structure to recommended file structure as described in https://symfony.com/doc/7.0/bundles/best_practices.html.
+
+  It might be necessary to reinstall the assets:
+  ```bash
+    bin/console assets:install
+  ```
+
 4.21.0
 -----
 * Added bundle configuration options `cache.pool` and `cache.item_id`.
