@@ -30,4 +30,21 @@ final class NelmioApiDocBundle extends Bundle
         $container->addCompilerPass(new PhpDocExtractorPass());
         $container->addCompilerPass(new CustomProcessorPass());
     }
+
+    /**
+     * Allows using the new directory structure on Symfony < 6.1.
+     * Without this no proper namespace is set for twig templates.
+     *
+     * @see \Symfony\Component\HttpKernel\Bundle\AbstractBundle::getPath()
+     */
+    public function getPath(): string
+    {
+        if (!isset($this->path)) {
+            $reflected = new \ReflectionObject($this);
+            // assume the modern directory structure by default
+            $this->path = \dirname($reflected->getFileName(), 2);
+        }
+
+        return $this->path;
+    }
 }
