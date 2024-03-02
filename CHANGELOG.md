@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+4.21.0
+-----
+* Added bundle configuration options `cache.pool` and `cache.item_id`.
+
 4.20.0
 -----
 * Added Redocly as an alternative to Swagger UI. https://github.com/Redocly/redoc.
