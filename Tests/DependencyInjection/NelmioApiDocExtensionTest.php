@@ -150,4 +150,42 @@ class NelmioApiDocExtensionTest extends TestCase
             ],
         ], $container->getDefinition('nelmio_api_doc.describers.config')->getArgument(0));
     }
+
+    public function testApiDocGeneratorWithCachePool()
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', []);
+
+        $extension = new NelmioApiDocExtension();
+        $extension->load([
+            [
+                'documentation' => [
+                    'info' => [
+                        'title' => 'API documentation',
+                        'description' => 'This is the api documentation, use it wisely',
+                    ],
+                ],
+                'cache' => [
+                    'pool' => 'test.cache',
+                    'item_id' => 'nelmio.docs',
+                ],
+                'areas' => [
+                    'default' => [],
+                    'area1' => [],
+                ],
+            ],
+        ], $container);
+
+        $reference = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(2);
+        $this->assertSame('test.cache', (string) $reference);
+
+        $reference = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(2);
+        $this->assertSame('test.cache', (string) $reference);
+
+        $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(3);
+        $this->assertSame('nelmio.docs', $cacheItemId);
+
+        $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(3);
+        $this->assertSame('nelmio.docs', $cacheItemId);
+    }
 }
