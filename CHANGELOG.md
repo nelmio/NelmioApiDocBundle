@@ -12,8 +12,14 @@ CHANGELOG
 
 4.21.0
 -----
-* Added bundle configuration options `cache.pool` and `cache.item_id`.
-
+* Added bundle configuration options `nelmio_api_doc.cache.pool` and `nelmio_api_doc.cache.item_id`.
+  ```yml
+  nelmio_api_doc:
+      cache:
+          pool: app.cache
+          item_id: nelmio_api_doc.docs
+  ```
+  
 4.20.0
 -----
 * Added Redocly as an alternative to Swagger UI. https://github.com/Redocly/redoc.
