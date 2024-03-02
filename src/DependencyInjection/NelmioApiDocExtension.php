@@ -68,7 +68,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
 
         $loader->load('services.xml');
 
