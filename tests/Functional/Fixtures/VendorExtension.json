@@ -1,0 +1,23 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Test API",
+        "description": "Test API description",
+        "version": "0.0.0",
+        "x-build": "#SomeCommitHash",
+        "x-vendor": {
+            "test": "Test vendor extension"
+        }
+    },
+    "paths": {},
+    "components": {
+        "schemas": {
+            "Test": {
+                "type": "string",
+                "x-vendor": {
+                    "test": "Test vendor extension inside schema"
+                }
+            }
+        }
+    }
+}

@@ -87,6 +87,12 @@ final class ControllerTest extends WebTestCase
                 [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
             ];
         }
+
+        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2224' => [
+            'NullController',
+            'VendorExtension',
+            [__DIR__.'/Configs/VendorExtension.yaml'],
+        ];
     }
 
     /**
