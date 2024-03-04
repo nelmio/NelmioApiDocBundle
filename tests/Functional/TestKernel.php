@@ -158,7 +158,7 @@ class TestKernel extends Kernel
             'exception_controller' => null,
         ]);
 
-        if (self::isAnnotationsAvailable()) {
+        if (class_exists(SensioFrameworkExtraBundle::class)) {
             $c->loadFromExtension('sensio_framework_extra', [
                 'router' => [
                     'annotations' => false,
@@ -174,7 +174,7 @@ class TestKernel extends Kernel
             ]],
         ]);
 
-        if (self::isAnnotationsAvailable()) {
+        if (class_exists(FOSRestBundle::class)) {
             $c->loadFromExtension('fos_rest', [
                 'format_listener' => [
                     'rules' => [
@@ -382,6 +382,6 @@ class TestKernel extends Kernel
 
     public static function isAttributesAvailable(): bool
     {
-        return PHP_VERSION_ID >= 80100;
+        return !Helper::isAnnotationsAvailable();
     }
 }
