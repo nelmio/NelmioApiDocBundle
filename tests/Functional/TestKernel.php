@@ -382,6 +382,6 @@ class TestKernel extends Kernel
 
     public static function isAttributesAvailable(): bool
     {
-        return !Helper::isAnnotationsAvailable();
+        return PHP_VERSION_ID >= 80100 || !Helper::isAnnotationsAvailable();
     }
 }
