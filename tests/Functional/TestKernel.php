@@ -268,6 +268,7 @@ class TestKernel extends Kernel
             'documentation' => [
                 'info' => [
                     'title' => 'My Default App',
+                    'x-buildHash' => 'ab1234567890',
                 ],
                 'paths' => [
                     // Ensures we can define routes in Yaml without defining OperationIds
