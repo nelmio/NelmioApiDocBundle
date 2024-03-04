@@ -14,4 +14,9 @@ final class Helper
 
         return version_compare($validatorVersion, 'v5.1', '>=');
     }
+
+    public static function isAnnotationsAvailable(): bool
+    {
+        return class_exists('Doctrine\Common\Annotations\Annotation');
+    }
 }

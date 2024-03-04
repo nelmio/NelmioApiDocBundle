@@ -26,6 +26,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\NameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
+use Nelmio\ApiDocBundle\Tests\Helper;
 use ReflectionException;
 use ReflectionMethod;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
@@ -376,15 +377,7 @@ class TestKernel extends Kernel
 
     public static function isAnnotationsAvailable(): bool
     {
-        if (Kernel::MAJOR_VERSION <= 5) {
-            return true;
-        }
-
-        if (Kernel::MAJOR_VERSION >= 7) {
-            return false;
-        }
-
-        return PHP_VERSION_ID < 80100;
+        return Helper::isAnnotationsAvailable();
     }
 
     public static function isAttributesAvailable(): bool

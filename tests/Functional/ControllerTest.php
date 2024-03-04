@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -56,7 +57,7 @@ final class ControllerTest extends WebTestCase
         $fixtureName = $fixtureName ?? $controllerName;
 
         $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName) {
-            $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", 'attribute');
+            $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", Helper::isAnnotationsAvailable() ? 'annotation' : 'attribute');
         };
 
         $this->configurableContainerFactory->create([], $routingConfiguration, $extraConfigs);
