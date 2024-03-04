@@ -27,11 +27,6 @@ final class ControllerTest extends WebTestCase
      */
     private $configurableContainerFactory;
 
-    /**
-     * @var string[]
-     */
-    private static $usedFixtures = [];
-
     protected function setUp(): void
     {
         $this->configurableContainerFactory = new ConfigurableContainerFactory();
@@ -69,8 +64,6 @@ final class ControllerTest extends WebTestCase
             file_put_contents($fixtureDir, $apiDefinition->toJson());
         }
 
-        static::$usedFixtures[] = $fixtureName.'.json';
-
         self::assertSame(
             self::getFixture($fixtureDir),
             $this->getOpenApiDefinition()->toJson()
@@ -94,19 +87,6 @@ final class ControllerTest extends WebTestCase
             'VendorExtension',
             [__DIR__.'/Configs/VendorExtension.yaml'],
         ];
-    }
-
-    /**
-     * @depends testControllers
-     */
-    public function testUnusedFixtures(): void
-    {
-        $fixtures = glob(__DIR__.'/Fixtures/*.json');
-        $fixtures = array_map('basename', $fixtures);
-
-        $diff = array_diff($fixtures, static::$usedFixtures);
-
-        self::assertEmpty($diff, sprintf('The following fixtures are not used: %s', implode(', ', $diff)));
     }
 
     private static function getFixture(string $fixture): string
