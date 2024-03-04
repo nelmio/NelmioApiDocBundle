@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 /**
- * Useful for testing configuration
+ * Useful for testing configuration.
  */
 class NullController
 {
