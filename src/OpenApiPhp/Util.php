@@ -421,9 +421,21 @@ final class Util
         }
 
         foreach ($properties as $propertyName => $value) {
+            if (str_starts_with($propertyName, 'x-')) {
+                $propertyName = substr($propertyName, 2);
+
+                if (Generator::isDefault($annotation->x)) {
+                    $annotation->x = [];
+                }
+
+                $annotation->x = [$propertyName => $value] + ($annotation->x ?: []);
+                continue;
+            }
+
             if ('$ref' === $propertyName) {
                 $propertyName = 'ref';
             }
+
             if (array_key_exists($propertyName, $defaults) && !\in_array($propertyName, $done, true)) {
                 self::mergeProperty($annotation, $propertyName, $value, $defaults[$propertyName], $overwrite);
             }
