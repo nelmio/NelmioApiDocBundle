@@ -88,13 +88,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $cacheItemId = $config['cache']['item_id'] ?? null;
 
         foreach ($config['areas'] as $area => $areaConfig) {
-            $areaCachePool = $cachePool;
-            $areaCacheItemId = $cacheItemId;
-
-            if (isset($areaConfig['cache']['pool'])) {
-                $areaCachePool = $areaConfig['cache']['pool'];
-                $areaCacheItemId = $areaConfig['cache']['item_id'];
-            }
+            $areaCachePool = $areaConfig['cache']['pool'] ?? $cachePool;
+            $areaCacheItemId = $areaConfig['cache']['item_id'] ?? $cacheItemId;
 
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
             $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
