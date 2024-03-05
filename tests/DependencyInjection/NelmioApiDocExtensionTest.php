@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\DependencyInjection;
 use Nelmio\ApiDocBundle\DependencyInjection\NelmioApiDocExtension;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 class NelmioApiDocExtensionTest extends TestCase
 {
@@ -163,10 +164,20 @@ class NelmioApiDocExtensionTest extends TestCase
         $extension->load([$config], $container);
 
         $reference = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(2);
-        $this->assertSame($expectedValues['defaultCachePool'], null !== $reference ? (string) $reference : null);
+        if (null === $expectedValues['defaultCachePool']) {
+            $this->assertNull($reference);
+        } else {
+            $this->assertInstanceOf(Reference::class, $reference);
+            $this->assertSame($expectedValues['defaultCachePool'], (string) $reference);
+        }
 
         $reference = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(2);
-        $this->assertSame($expectedValues['area1CachePool'], null !== $reference ? (string) $reference : null);
+        if (null === $expectedValues['area1CachePool']) {
+            $this->assertNull($reference);
+        } else {
+            $this->assertInstanceOf(Reference::class, $reference);
+            $this->assertSame($expectedValues['area1CachePool'], (string) $reference);
+        }
 
         $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(3);
         $this->assertSame($expectedValues['defaultCacheItemId'], $cacheItemId);
