@@ -197,8 +197,8 @@ class NelmioApiDocExtensionTest extends TestCase
                 'defaultCachePool' => 'test.cache.default',
                 'defaultCacheItemId' => 'nelmio.docs.default',
                 'area1CachePool' => 'test.cache',
-                'area1CacheItemId' => 'nelmio.docs'
-            ]
+                'area1CacheItemId' => 'nelmio.docs',
+            ],
         ];
 
         yield [
@@ -218,14 +218,14 @@ class NelmioApiDocExtensionTest extends TestCase
                 'defaultCachePool' => null,
                 'defaultCacheItemId' => null,
                 'area1CachePool' => 'app.cache',
-                'area1CacheItemId' => 'docs'
-            ]
+                'area1CacheItemId' => 'docs',
+            ],
         ];
 
         yield [
             'config' => [
                 'cache' => [
-                    'pool' => 'app.cache'
+                    'pool' => 'app.cache',
                 ],
                 'areas' => [
                     'default' => [
@@ -244,8 +244,8 @@ class NelmioApiDocExtensionTest extends TestCase
                 'defaultCachePool' => 'app.cache',
                 'defaultCacheItemId' => 'docs',
                 'area1CachePool' => 'app.cache',
-                'area1CacheItemId' => 'docs'
-            ]
+                'area1CacheItemId' => 'docs',
+            ],
         ];
     }
 }
