@@ -177,7 +177,44 @@ class NelmioApiDocExtensionTest extends TestCase
 
     public static function provideCacheConfig(): iterable
     {
-        yield [
+        yield 'default cache.item_id & area appending' => [
+            'config' => [
+                'cache' => [
+                    'pool' => 'test.cache',
+                ],
+                'areas' => [
+                    'default' => [],
+                    'area1' => [],
+                ],
+            ],
+            'expectedValues' => [
+                'defaultCachePool' => 'test.cache',
+                'defaultCacheItemId' => 'openapi_doc.default',
+                'area1CachePool' => 'test.cache',
+                'area1CacheItemId' => 'openapi_doc.area1',
+            ],
+        ];
+
+        yield 'configuring cache.item_id & area appending' => [
+            'config' => [
+                'cache' => [
+                    'pool' => 'test.cache',
+                    'item_id' => 'test.docs',
+                ],
+                'areas' => [
+                    'default' => [],
+                    'area1' => [],
+                ],
+            ],
+            'expectedValues' => [
+                'defaultCachePool' => 'test.cache',
+                'defaultCacheItemId' => 'test.docs.default',
+                'area1CachePool' => 'test.cache',
+                'area1CacheItemId' => 'test.docs.area1',
+            ],
+        ];
+
+        yield 'overwriting item_id for an area' => [
             'config' => [
                 'cache' => [
                     'pool' => 'test.cache',
@@ -197,11 +234,11 @@ class NelmioApiDocExtensionTest extends TestCase
                 'defaultCachePool' => 'test.cache.default',
                 'defaultCacheItemId' => 'nelmio.docs.default',
                 'area1CachePool' => 'test.cache',
-                'area1CacheItemId' => 'nelmio.docs',
+                'area1CacheItemId' => 'nelmio.docs.area1',
             ],
         ];
 
-        yield [
+        yield 'setting cache for a single area' => [
             'config' => [
                 'areas' => [
                     'default' => [
@@ -216,13 +253,13 @@ class NelmioApiDocExtensionTest extends TestCase
             ],
             'expectedValues' => [
                 'defaultCachePool' => null,
-                'defaultCacheItemId' => null,
+                'defaultCacheItemId' => 'openapi_doc.default',
                 'area1CachePool' => 'app.cache',
                 'area1CacheItemId' => 'docs',
             ],
         ];
 
-        yield [
+        yield 'setting a global cache pool & shared item_id' => [
             'config' => [
                 'cache' => [
                     'pool' => 'app.cache',
