@@ -151,20 +151,34 @@ class NelmioApiDocExtensionTest extends TestCase
         ], $container->getDefinition('nelmio_api_doc.describers.config')->getArgument(0));
     }
 
-    public function testApiDocGeneratorWithCachePool()
+    /**
+     * @dataProvider provideCacheConfig
+     */
+    public function testApiDocGeneratorWithCachePool(array $config, array $expectedValues)
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);
 
         $extension = new NelmioApiDocExtension();
-        $extension->load([
-            [
-                'documentation' => [
-                    'info' => [
-                        'title' => 'API documentation',
-                        'description' => 'This is the api documentation, use it wisely',
-                    ],
-                ],
+        $extension->load([$config], $container);
+
+        $reference = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(2);
+        $this->assertSame($expectedValues['defaultCachePool'], null !== $reference ? (string) $reference : null);
+
+        $reference = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(2);
+        $this->assertSame($expectedValues['area1CachePool'], null !== $reference ? (string) $reference : null);
+
+        $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(3);
+        $this->assertSame($expectedValues['defaultCacheItemId'], $cacheItemId);
+
+        $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(3);
+        $this->assertSame($expectedValues['area1CacheItemId'], $cacheItemId);
+    }
+
+    public static function provideCacheConfig(): iterable
+    {
+        yield [
+            'config' => [
                 'cache' => [
                     'pool' => 'test.cache',
                     'item_id' => 'nelmio.docs',
@@ -179,18 +193,59 @@ class NelmioApiDocExtensionTest extends TestCase
                     'area1' => [],
                 ],
             ],
-        ], $container);
+            'expectedValues' => [
+                'defaultCachePool' => 'test.cache.default',
+                'defaultCacheItemId' => 'nelmio.docs.default',
+                'area1CachePool' => 'test.cache',
+                'area1CacheItemId' => 'nelmio.docs'
+            ]
+        ];
 
-        $reference = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(2);
-        $this->assertSame('test.cache.default', (string) $reference);
+        yield [
+            'config' => [
+                'areas' => [
+                    'default' => [
+                    ],
+                    'area1' => [
+                        'cache' => [
+                            'pool' => 'app.cache',
+                            'item_id' => 'docs',
+                        ],
+                    ],
+                ],
+            ],
+            'expectedValues' => [
+                'defaultCachePool' => null,
+                'defaultCacheItemId' => null,
+                'area1CachePool' => 'app.cache',
+                'area1CacheItemId' => 'docs'
+            ]
+        ];
 
-        $reference = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(2);
-        $this->assertSame('test.cache', (string) $reference);
-
-        $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(3);
-        $this->assertSame('nelmio.docs.default', $cacheItemId);
-
-        $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(3);
-        $this->assertSame('nelmio.docs', $cacheItemId);
+        yield [
+            'config' => [
+                'cache' => [
+                    'pool' => 'app.cache'
+                ],
+                'areas' => [
+                    'default' => [
+                        'cache' => [
+                            'item_id' => 'docs',
+                        ],
+                    ],
+                    'area1' => [
+                        'cache' => [
+                            'item_id' => 'docs',
+                        ],
+                    ],
+                ],
+            ],
+            'expectedValues' => [
+                'defaultCachePool' => 'app.cache',
+                'defaultCacheItemId' => 'docs',
+                'area1CachePool' => 'app.cache',
+                'area1CacheItemId' => 'docs'
+            ]
+        ];
     }
 }
