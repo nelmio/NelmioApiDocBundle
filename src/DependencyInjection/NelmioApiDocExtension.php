@@ -91,7 +91,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $areaCachePool = $cachePool;
             $areaCacheItemId = $cacheItemId;
 
-            if(isset($areaConfig['cache']['pool'])) {
+            if (isset($areaConfig['cache']['pool'])) {
                 $areaCachePool = $areaConfig['cache']['pool'];
                 $areaCacheItemId = $areaConfig['cache']['item_id'];
             }

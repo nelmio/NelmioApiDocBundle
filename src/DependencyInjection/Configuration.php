@@ -76,7 +76,7 @@ final class Configuration implements ConfigurationInterface
                                 'documentation' => [],
                                 'name_patterns' => [],
                                 'disable_default_routes' => false,
-                                'cache' => []
+                                'cache' => [],
                             ],
                         ]
                     )

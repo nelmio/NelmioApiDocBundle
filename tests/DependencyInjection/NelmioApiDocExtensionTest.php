@@ -196,8 +196,8 @@ class NelmioApiDocExtensionTest extends TestCase
                     'default' => [
                         'cache' => [
                             'pool' => 'test.cache.default',
-                            'item_id' => 'nelmio.docs.default'
-                        ]
+                            'item_id' => 'nelmio.docs.default',
+                        ],
                     ],
                     'area1' => [],
                 ],
