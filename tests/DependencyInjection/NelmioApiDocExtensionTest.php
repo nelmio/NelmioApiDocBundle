@@ -13,10 +13,13 @@ namespace Nelmio\ApiDocBundle\Tests\DependencyInjection;
 
 use Nelmio\ApiDocBundle\DependencyInjection\NelmioApiDocExtension;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class NelmioApiDocExtensionTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     public function testNameAliasesArePassedToModelRegistry()
     {
         $container = new ContainerBuilder();
@@ -151,12 +154,32 @@ class NelmioApiDocExtensionTest extends TestCase
         ], $container->getDefinition('nelmio_api_doc.describers.config')->getArgument(0));
     }
 
+    /**
+     * @group legacy
+     */
     public function testApiDocGeneratorWithCachePool()
     {
+        $this->expectDeprecation('Since nelmio/api-doc-bundle 4.23: Using global cache config for all areas is deprecated. Define it on area level instead.');
+
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);
 
         $extension = new NelmioApiDocExtension();
+        $extension->load([
+            [
+                'documentation' => [
+                    'info' => [
+                        'title' => 'API documentation',
+                        'description' => 'This is the api documentation, use it wisely',
+                    ],
+                ],
+                'areas' => [
+                    'default' => [
+                    ],
+                    'area1' => [],
+                ],
+            ],
+        ], $container);
         $extension->load([
             [
                 'documentation' => [
@@ -170,20 +193,25 @@ class NelmioApiDocExtensionTest extends TestCase
                     'item_id' => 'nelmio.docs',
                 ],
                 'areas' => [
-                    'default' => [],
+                    'default' => [
+                        'cache' => [
+                            'pool' => 'test.cache.default',
+                            'item_id' => 'nelmio.docs.default'
+                        ]
+                    ],
                     'area1' => [],
                 ],
             ],
         ], $container);
 
         $reference = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(2);
-        $this->assertSame('test.cache', (string) $reference);
+        $this->assertSame('test.cache.default', (string) $reference);
 
         $reference = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(2);
         $this->assertSame('test.cache', (string) $reference);
 
         $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(3);
-        $this->assertSame('nelmio.docs', $cacheItemId);
+        $this->assertSame('nelmio.docs.default', $cacheItemId);
 
         $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(3);
         $this->assertSame('nelmio.docs', $cacheItemId);
