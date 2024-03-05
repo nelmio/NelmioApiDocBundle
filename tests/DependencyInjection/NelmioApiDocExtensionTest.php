@@ -165,21 +165,6 @@ class NelmioApiDocExtensionTest extends TestCase
                         'description' => 'This is the api documentation, use it wisely',
                     ],
                 ],
-                'areas' => [
-                    'default' => [
-                    ],
-                    'area1' => [],
-                ],
-            ],
-        ], $container);
-        $extension->load([
-            [
-                'documentation' => [
-                    'info' => [
-                        'title' => 'API documentation',
-                        'description' => 'This is the api documentation, use it wisely',
-                    ],
-                ],
                 'cache' => [
                     'pool' => 'test.cache',
                     'item_id' => 'nelmio.docs',
