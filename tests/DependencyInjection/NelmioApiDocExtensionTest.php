@@ -13,13 +13,10 @@ namespace Nelmio\ApiDocBundle\Tests\DependencyInjection;
 
 use Nelmio\ApiDocBundle\DependencyInjection\NelmioApiDocExtension;
 use PHPUnit\Framework\TestCase;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class NelmioApiDocExtensionTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     public function testNameAliasesArePassedToModelRegistry()
     {
         $container = new ContainerBuilder();
@@ -154,13 +151,8 @@ class NelmioApiDocExtensionTest extends TestCase
         ], $container->getDefinition('nelmio_api_doc.describers.config')->getArgument(0));
     }
 
-    /**
-     * @group legacy
-     */
     public function testApiDocGeneratorWithCachePool()
     {
-        $this->expectDeprecation('Since nelmio/api-doc-bundle 4.23: Using global cache config for all areas is deprecated. Define it on area level instead.');
-
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);
 
