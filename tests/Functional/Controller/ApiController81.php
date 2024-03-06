@@ -31,6 +31,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\ArrayQueryModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\FilterQueryModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\PaginationQueryModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\SortQueryModel;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\RangeInteger;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator81;
@@ -465,6 +466,12 @@ class ApiController81
     #[Route('/enum')]
     #[OA\Response(response: '201', description: '', attachables: [new Model(type: Article81::class)])]
     public function enum()
+    {
+    }
+
+    #[Route('/range_integer')]
+    #[OA\Response(response: '201', description: '', attachables: [new Model(type: RangeInteger::class)])]
+    public function rangeInteger()
     {
     }
 

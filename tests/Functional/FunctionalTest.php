@@ -1358,4 +1358,42 @@ class FunctionalTest extends WebTestCase
             ],
         ], json_decode($model->toJson(), true));
     }
+
+    public function testRangeIntegers()
+    {
+        self::assertEquals([
+            'schema' => 'RangeInteger',
+            'required' => ['rangeInt', 'minRangeInt', 'maxRangeInt', 'positiveInt', 'negativeInt'],
+            'properties' => [
+                'rangeInt' => [
+                    'type' => 'integer',
+                    'minimum' => 0,
+                    'maximum' => 100,
+                ],
+                'minRangeInt' => [
+                    'type' => 'integer',
+                    'minimum' => 1,
+                ],
+                'maxRangeInt' => [
+                    'type' => 'integer',
+                    'maximum' => 99,
+                ],
+                'positiveInt' => [
+                    'type' => 'integer',
+                    'minimum' => 1,
+                ],
+                'negativeInt' => [
+                    'type' => 'integer',
+                    'maximum' => -1,
+                ],
+                'nullableRangeInt' => [
+                    'type' => 'integer',
+                    'nullable' => true,
+                    'minimum' => 0,
+                    'maximum' => 100,
+                ],
+            ],
+            'type' => 'object',
+        ], json_decode($this->getModel('RangeInteger')->toJson(), true));
+    }
 }

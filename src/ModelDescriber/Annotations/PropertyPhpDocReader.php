@@ -15,6 +15,10 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
+use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
+use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
+use phpDocumentor\Reflection\Types\Compound;
 
 /**
  * Extract information about properties of a model from the DocBlock comment.
@@ -42,23 +46,49 @@ class PropertyPhpDocReader
             return;
         }
 
-        if (!$title = $docBlock->getSummary()) {
-            /** @var Var_ $var */
-            foreach ($docBlock->getTagsByName('var') as $var) {
-                if (!method_exists($var, 'getDescription') || !$description = $var->getDescription()) {
-                    continue;
-                }
+        $title = $docBlock->getSummary();
+
+        /** @var Var_ $var */
+        foreach ($docBlock->getTagsByName('var') as $var) {
+            if (!$title && method_exists($var, 'getDescription') && $description = $var->getDescription()) {
                 $title = $description->render();
-                if ($title) {
-                    break;
+            }
+
+            if (
+                (!isset($min) || $min !== null) && (!isset($max) || $max !== null)
+                && method_exists($var, 'getType') && $type = $var->getType()
+            ) {
+                $types = $type instanceof Compound ? $type->getIterator() : [$type];
+
+                foreach ($types as $type) {
+                    if ($type instanceof IntegerRange) {
+                        $min = is_numeric($type->getMinValue()) ? (int) $type->getMinValue() : null;
+                        $max = is_numeric($type->getMaxValue()) ? (int) $type->getMaxValue() : null;
+                        break;
+                    } elseif ($type instanceof PositiveInteger) {
+                        $min = 1;
+                        $max = null;
+                        break;
+                    } elseif ($type instanceof NegativeInteger) {
+                        $min = null;
+                        $max = -1;
+                        break;
+                    }
                 }
             }
         }
+
         if (Generator::UNDEFINED === $property->title && $title) {
             $property->title = $title;
         }
         if (Generator::UNDEFINED === $property->description && $docBlock->getDescription() && $docBlock->getDescription()->render()) {
             $property->description = $docBlock->getDescription()->render();
+        }
+        if (Generator::UNDEFINED === $property->minimum && isset($min)) {
+            $property->minimum = $min;
+        }
+        if (Generator::UNDEFINED === $property->maximum && isset($max)) {
+            $property->maximum = $max;
         }
     }
 }
