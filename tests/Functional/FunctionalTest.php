@@ -1390,7 +1390,8 @@ class FunctionalTest extends WebTestCase
         ];
 
         if (version_compare(Kernel::VERSION, '6.1', '>=')) {
-            $expected['required'] += ['positiveInt', 'negativeInt'];
+            $expected['required'][] = 'positiveInt';
+            $expected['required'][] = 'negativeInt';
             $expected['properties'] += [
                 'positiveInt' => [
                     'type' => 'integer',

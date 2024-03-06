@@ -469,8 +469,8 @@ class ApiController81
     {
     }
 
-    #[Route('/range_integer')]
-    #[OA\Response(response: '201', description: '', attachables: [new Model(type: RangeInteger::class)])]
+    #[Route('/range_integer', methods: ['GET'])]
+    #[OA\Response(response: '200', attachables: [new Model(type: RangeInteger::class)])]
     public function rangeInteger()
     {
     }
