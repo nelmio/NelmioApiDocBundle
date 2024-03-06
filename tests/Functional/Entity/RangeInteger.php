@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-class RangeInteger
+use Symfony\Component\HttpKernel\Kernel;
+
+trait RangeIntegerTrait
 {
     /**
      * @var int<0, 100>
@@ -22,17 +24,29 @@ class RangeInteger
     public $maxRangeInt;
 
     /**
-     * @var positive-int
-     */
-    public $positiveInt;
-
-    /**
-     * @var negative-int
-     */
-    public $negativeInt;
-
-    /**
      * @var int<0, 100>|null
      */
     public $nullableRangeInt;
+}
+
+if (version_compare(Kernel::VERSION, '6.1', '>=')) {
+    class RangeInteger
+    {
+        use RangeIntegerTrait;
+
+        /**
+         * @var positive-int
+         */
+        public $positiveInt;
+
+        /**
+         * @var negative-int
+         */
+        public $negativeInt;
+    }
+} else {
+    class RangeInteger
+    {
+        use RangeIntegerTrait;
+    }
 }

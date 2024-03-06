@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use const PHP_VERSION_ID;
 
@@ -1361,9 +1362,9 @@ class FunctionalTest extends WebTestCase
 
     public function testRangeIntegers()
     {
-        self::assertEquals([
+        $expected = [
             'schema' => 'RangeInteger',
-            'required' => ['rangeInt', 'minRangeInt', 'maxRangeInt', 'positiveInt', 'negativeInt'],
+            'required' => ['rangeInt', 'minRangeInt', 'maxRangeInt'],
             'properties' => [
                 'rangeInt' => [
                     'type' => 'integer',
@@ -1378,14 +1379,6 @@ class FunctionalTest extends WebTestCase
                     'type' => 'integer',
                     'maximum' => 99,
                 ],
-                'positiveInt' => [
-                    'type' => 'integer',
-                    'minimum' => 1,
-                ],
-                'negativeInt' => [
-                    'type' => 'integer',
-                    'maximum' => -1,
-                ],
                 'nullableRangeInt' => [
                     'type' => 'integer',
                     'nullable' => true,
@@ -1394,6 +1387,22 @@ class FunctionalTest extends WebTestCase
                 ],
             ],
             'type' => 'object',
-        ], json_decode($this->getModel('RangeInteger')->toJson(), true));
+        ];
+
+        if (version_compare(Kernel::VERSION, '6.1', '>=')) {
+            $expected['required'] += ['positiveInt', 'negativeInt'];
+            $expected['properties'] += [
+                'positiveInt' => [
+                    'type' => 'integer',
+                    'minimum' => 1,
+                ],
+                'negativeInt' => [
+                    'type' => 'integer',
+                    'maximum' => -1,
+                ],
+            ];
+        }
+
+        self::assertEquals($expected, json_decode($this->getModel('RangeInteger')->toJson(), true));
     }
 }
