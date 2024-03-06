@@ -50,7 +50,7 @@
                     },
                     "nullableType": {
                         "nullable": true,
-                        "allOf": [
+                        "oneOf": [
                             {
                                 "$ref": "#/components/schemas/ArticleType81"
                             }

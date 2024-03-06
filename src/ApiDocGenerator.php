@@ -40,7 +40,7 @@ final class ApiDocGenerator
     /** @var CacheItemPoolInterface|null */
     private $cacheItemPool;
 
-    /** @var string|null */
+    /** @var string */
     private $cacheItemId;
 
     /** @var string[] */
@@ -65,7 +65,7 @@ final class ApiDocGenerator
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
         $this->cacheItemPool = $cacheItemPool;
-        $this->cacheItemId = $cacheItemId;
+        $this->cacheItemId = $cacheItemId ?? 'openapi_doc';
         $this->generator = $generator ?? new Generator($this->logger);
     }
 
@@ -91,7 +91,7 @@ final class ApiDocGenerator
         }
 
         if ($this->cacheItemPool) {
-            $item = $this->cacheItemPool->getItem($this->cacheItemId ?? 'openapi_doc');
+            $item = $this->cacheItemPool->getItem($this->cacheItemId);
             if ($item->isHit()) {
                 return $this->openApi = $item->get();
             }
