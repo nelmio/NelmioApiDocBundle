@@ -1,6 +1,60 @@
 CHANGELOG
 =========
 
+4.23.0
+-----
+* Cache configuration option `nelmio_api_doc.cache.item_id` now automatically gets the area appended.
+  ```yml
+  nelmio_api_doc:
+      cache:
+          pool: app.cache
+          item_id: nelmio_api_doc.docs
+      areas:
+          default: 
+              ...
+          area1:   
+              ...
+  ```
+  Result in cache keys: `nelmio_api_doc.docs.default` & `nelmio_api_doc.docs.area1` to be used respectively.
+* Added cache configuration option per area.
+  ```yml
+  nelmio_api_doc:
+      areas:
+          default: # Manual cache configuration
+              cache:
+                  pool: app.cache
+                  item_id: nelmio_api_doc.docs.default
+              ...
+          area1:   
+              cache:
+                  pool: app.cache
+                  item_id: nelmio_api_doc.docs.area1
+              ...
+  ```
+  Non-configured options will be inherited from `nelmio_api_doc.cache`.
+* Fixed vendor extensions (`x-*`) from configuration not being outputted in the generated specification.
+  ```yml
+  nelmio_api_doc:
+      documentation:
+          info:
+              title: 'My API'
+              description: 'My API description'
+              x-foo: 'bar'
+  ```
+  Now results in JSON specification:
+  ```json
+  {
+    ...
+    "info": {
+      "title": "API",
+      "version": "1.0",
+      "x-foo": "bar"
+    },
+    ...
+  }
+  ```
+* Updated nullable enum handling to align with the behaviour of other object types. It now uses wraps nullable enums with `oneOf` instead of `allOf`.
+
 4.22.0
 -----
 * Updated bundle directory structure to recommended file structure as described in https://symfony.com/doc/7.0/bundles/best_practices.html.
