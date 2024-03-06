@@ -517,6 +517,7 @@ class ApiController80
      *
      * @OA\Response(
      *      response="200",
+     *      description="",
      *
      *      @Model(type=RangeInteger::class)
      *  )
