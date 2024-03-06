@@ -130,6 +130,7 @@ You can configure global information in the bundle configuration ``documentation
                 title: My App
                 description: This is an awesome app!
                 version: 1.0.0
+                x-build: #CommitHash
             components:
                 securitySchemes:
                     Bearer:
