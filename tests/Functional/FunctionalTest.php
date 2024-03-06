@@ -997,7 +997,7 @@ class FunctionalTest extends WebTestCase
                 ],
                 'nullableType' => [
                     'nullable' => true,
-                    'allOf' => [
+                    'oneOf' => [
                         ['$ref' => '#/components/schemas/ArticleType81'],
                     ],
                 ],
