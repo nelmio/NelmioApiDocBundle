@@ -157,7 +157,7 @@ class TestKernel extends Kernel
             'exception_controller' => null,
         ]);
 
-        if (self::isAnnotationsAvailable()) {
+        if (class_exists(SensioFrameworkExtraBundle::class)) {
             $c->loadFromExtension('sensio_framework_extra', [
                 'router' => [
                     'annotations' => false,
@@ -173,7 +173,7 @@ class TestKernel extends Kernel
             ]],
         ]);
 
-        if (self::isAnnotationsAvailable()) {
+        if (class_exists(FOSRestBundle::class)) {
             $c->loadFromExtension('fos_rest', [
                 'format_listener' => [
                     'rules' => [
@@ -268,6 +268,7 @@ class TestKernel extends Kernel
             'documentation' => [
                 'info' => [
                     'title' => 'My Default App',
+                    'x-buildHash' => 'ab1234567890',
                 ],
                 'paths' => [
                     // Ensures we can define routes in Yaml without defining OperationIds

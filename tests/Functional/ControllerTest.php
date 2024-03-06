@@ -26,11 +26,6 @@ final class ControllerTest extends WebTestCase
      */
     private $configurableContainerFactory;
 
-    /**
-     * @var string[]
-     */
-    private static $usedFixtures = [];
-
     protected function setUp(): void
     {
         $this->configurableContainerFactory = new ConfigurableContainerFactory();
@@ -51,11 +46,15 @@ final class ControllerTest extends WebTestCase
     /**
      * @dataProvider provideControllers
      */
-    public function testControllers(string $controllerName, ?string $fixtureName = null, array $extraConfigs = []): void
+    public function testControllers(?string $controllerName, ?string $fixtureName = null, array $extraConfigs = []): void
     {
-        $fixtureName = $fixtureName ?? $controllerName;
+        $fixtureName = $fixtureName ?? $controllerName ?? $this->fail('A fixture name must be provided.');
 
         $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName) {
+            if (null === $controllerName) {
+                return;
+            }
+
             $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", 'attribute');
         };
 
@@ -67,8 +66,6 @@ final class ControllerTest extends WebTestCase
         if (!file_exists($fixtureDir = __DIR__.'/Fixtures/'.$fixtureName.'.json')) {
             file_put_contents($fixtureDir, $apiDefinition->toJson());
         }
-
-        static::$usedFixtures[] = $fixtureName.'.json';
 
         self::assertSame(
             self::getFixture($fixtureDir),
@@ -87,19 +84,12 @@ final class ControllerTest extends WebTestCase
                 [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
             ];
         }
-    }
 
-    /**
-     * @depends testControllers
-     */
-    public function testUnusedFixtures(): void
-    {
-        $fixtures = glob(__DIR__.'/Fixtures/*.json');
-        $fixtures = array_map('basename', $fixtures);
-
-        $diff = array_diff($fixtures, static::$usedFixtures);
-
-        self::assertEmpty($diff, sprintf('The following fixtures are not used: %s', implode(', ', $diff)));
+        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2224' => [
+            null,
+            'VendorExtension',
+            [__DIR__.'/Configs/VendorExtension.yaml'],
+        ];
     }
 
     private static function getFixture(string $fixture): string
