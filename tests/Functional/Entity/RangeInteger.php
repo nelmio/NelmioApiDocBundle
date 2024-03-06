@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Kernel;
 trait RangeIntegerTrait
 {
     /**
-     * @var int<0, 100>
+     * @var int<1, 99>
      */
     public $rangeInt;
 
@@ -24,7 +24,7 @@ trait RangeIntegerTrait
     public $maxRangeInt;
 
     /**
-     * @var int<0, 100>|null
+     * @var int<1, 99>|null
      */
     public $nullableRangeInt;
 }

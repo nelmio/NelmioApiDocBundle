@@ -1368,8 +1368,8 @@ class FunctionalTest extends WebTestCase
             'properties' => [
                 'rangeInt' => [
                     'type' => 'integer',
-                    'minimum' => 0,
-                    'maximum' => 100,
+                    'minimum' => 1,
+                    'maximum' => 99,
                 ],
                 'minRangeInt' => [
                     'type' => 'integer',
@@ -1382,8 +1382,8 @@ class FunctionalTest extends WebTestCase
                 'nullableRangeInt' => [
                     'type' => 'integer',
                     'nullable' => true,
-                    'minimum' => 0,
-                    'maximum' => 100,
+                    'minimum' => 1,
+                    'maximum' => 99,
                 ],
             ],
             'type' => 'object',
