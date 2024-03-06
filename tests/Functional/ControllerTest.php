@@ -46,11 +46,15 @@ final class ControllerTest extends WebTestCase
     /**
      * @dataProvider provideControllers
      */
-    public function testControllers(string $controllerName, ?string $fixtureName = null, array $extraConfigs = []): void
+    public function testControllers(?string $controllerName, ?string $fixtureName = null, array $extraConfigs = []): void
     {
-        $fixtureName = $fixtureName ?? $controllerName;
+        $fixtureName = $fixtureName ?? $controllerName ?? $this->fail('A fixture name must be provided.');
 
         $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName) {
+            if (null === $controllerName) {
+                return;
+            }
+
             $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", 'attribute');
         };
 
@@ -82,7 +86,7 @@ final class ControllerTest extends WebTestCase
         }
 
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2224' => [
-            'NullController',
+            null,
             'VendorExtension',
             [__DIR__.'/Configs/VendorExtension.yaml'],
         ];
