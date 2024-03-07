@@ -25,7 +25,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php-version: 7.2
+          - php-version: 7.3
             composer-flags: "--prefer-lowest"
             doctrine-annotations: true
           - php-version: 7.3
