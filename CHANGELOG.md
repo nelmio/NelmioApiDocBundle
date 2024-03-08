@@ -64,6 +64,20 @@ CHANGELOG
     bin/console assets:install
   ```
 
+### Breaking change
+If your codebase mentions a file or directory by path then an update to this path is necessary. For example to following configuration:
+```yaml
+doc-api:
+    resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
+    prefix: /api/doc
+```
+Becomes:
+```yaml
+doc-api:
+    resource: "@NelmioApiDocBundle/config/routing/swaggerui.xml"
+    prefix: /api/doc
+```
+
 4.21.0
 -----
 * Added bundle configuration options `nelmio_api_doc.cache.pool` and `nelmio_api_doc.cache.item_id`.
