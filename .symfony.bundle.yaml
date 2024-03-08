@@ -3,4 +3,4 @@ maintained_branches: ["3.x", "master"]
 current_branch: "master"
 dev_branch: "master"
 dev_branch_alias: "4.x"
-doc_dir: "docs/"
+doc_dir: { "3.x": "Resources/doc/", "master": "docs/" }
