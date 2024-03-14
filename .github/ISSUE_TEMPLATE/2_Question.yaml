@@ -1,0 +1,26 @@
+name: Question
+description: Ask a question
+title: "[Question]: "
+labels: ["question"]
+
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version are you running?
+      placeholder: x.y.z
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: Please tell us about your question or problem
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Any other context (configs, logs, screenshots etc.)

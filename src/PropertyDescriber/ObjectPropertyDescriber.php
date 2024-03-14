@@ -39,12 +39,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
         if ($types[0]->isNullable()) {
             $weakContext = Util::createWeakContext($property->_context);
             $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups, null, $context)), '_context' => $weakContext])];
-
-            if (function_exists('enum_exists') && enum_exists($type->getClassName())) {
-                $property->allOf = $schemas;
-            } else {
-                $property->oneOf = $schemas;
-            }
+            $property->oneOf = $schemas;
 
             return;
         }

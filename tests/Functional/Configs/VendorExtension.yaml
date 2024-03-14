@@ -1,0 +1,14 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: 'Test API'
+      description: 'Test API description'
+      x-vendor:
+        test: 'Test vendor extension'
+      x-build: '#SomeCommitHash'
+    components:
+      schemas:
+        Test:
+          type: string
+          x-vendor:
+            test: 'Test vendor extension inside schema'

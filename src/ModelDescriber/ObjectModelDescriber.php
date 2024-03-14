@@ -57,7 +57,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         bool $useValidationGroups = false,
         ClassMetadataFactoryInterface $classMetadataFactory = null
     ) {
-        if (is_array($propertyDescribers)) {
+        if (is_iterable($propertyDescribers)) {
             trigger_deprecation('nelmio/api-doc-bundle', '4.17', 'Passing an array of PropertyDescriberInterface to %s() is deprecated. Pass a single PropertyDescriberInterface instead.', __METHOD__);
         } else {
             if (!$propertyDescribers instanceof PropertyDescriberInterface) {
@@ -202,7 +202,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
      */
     private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema)
     {
-        $propertyDescribers = is_array($this->propertyDescriber) ? $this->propertyDescriber : [$this->propertyDescriber];
+        $propertyDescribers = is_iterable($this->propertyDescriber) ? $this->propertyDescriber : [$this->propertyDescriber];
 
         foreach ($propertyDescribers as $propertyDescriber) {
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {

@@ -33,6 +33,7 @@ class FunctionalTest extends WebTestCase
     public function testConfiguredDocumentation()
     {
         $this->assertEquals('My Default App', $this->getOpenApiDefinition()->info->title);
+        $this->assertEquals(['buildHash' => 'ab1234567890'], $this->getOpenApiDefinition()->info->x);
         $this->assertEquals('My Test App', $this->getOpenApiDefinition('test')->info->title);
     }
 
@@ -998,7 +999,7 @@ class FunctionalTest extends WebTestCase
                 ],
                 'nullableType' => [
                     'nullable' => true,
-                    'allOf' => [
+                    'oneOf' => [
                         ['$ref' => '#/components/schemas/ArticleType81'],
                     ],
                 ],

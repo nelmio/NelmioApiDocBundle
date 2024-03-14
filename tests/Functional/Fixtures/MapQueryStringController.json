@@ -47,7 +47,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -102,7 +102,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -157,7 +157,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -212,7 +212,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -267,7 +267,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -322,7 +322,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -377,7 +377,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -432,7 +432,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -489,7 +489,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -544,7 +544,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -599,7 +599,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -654,7 +654,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -709,7 +709,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -764,7 +764,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -819,7 +819,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -874,7 +874,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -1253,7 +1253,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -1308,7 +1308,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -1363,7 +1363,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -1418,7 +1418,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -1473,7 +1473,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -1528,7 +1528,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -1583,7 +1583,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -1638,7 +1638,7 @@
                         "required": false,
                         "schema": {
                             "nullable": true,
-                            "allOf": [
+                            "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
@@ -3090,7 +3090,7 @@
                     },
                     "nullableArticleType81": {
                         "nullable": true,
-                        "allOf": [
+                        "oneOf": [
                             {
                                 "$ref": "#/components/schemas/ArticleType81"
                             }
@@ -3121,7 +3121,7 @@
                     },
                     "nullableArticleType81": {
                         "nullable": true,
-                        "allOf": [
+                        "oneOf": [
                             {
                                 "$ref": "#/components/schemas/ArticleType81"
                             }

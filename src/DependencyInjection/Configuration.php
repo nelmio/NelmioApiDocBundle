@@ -71,6 +71,7 @@ final class Configuration implements ConfigurationInterface
                                 'documentation' => [],
                                 'name_patterns' => [],
                                 'disable_default_routes' => false,
+                                'cache' => [],
                             ],
                         ]
                     )
@@ -121,6 +122,18 @@ final class Configuration implements ConfigurationInterface
                                 ->info('The documentation used for area')
                                 ->example(['info' => ['title' => 'My App']])
                                 ->prototype('variable')->end()
+                            ->end()
+                            ->arrayNode('cache')
+                                ->children()
+                                    ->scalarNode('pool')
+                                        ->info('define cache pool to use')
+                                        ->defaultNull()
+                                    ->end()
+                                    ->scalarNode('item_id')
+                                        ->info('define cache item id')
+                                        ->defaultNull()
+                                    ->end()
+                                ->end()
                             ->end()
                         ->end()
                     ->end()
