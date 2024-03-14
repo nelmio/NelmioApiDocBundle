@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use const PHP_VERSION_ID;
 
@@ -622,135 +623,6 @@ class FunctionalTest extends WebTestCase
 
     public function testCompoundEntityAction()
     {
-        if (PHP_VERSION_ID < 70300) {
-            self::assertEquals([
-                'schema' => 'CompoundEntity',
-                'type' => 'object',
-                'required' => ['complex', 'arrayOfArrayComplex'],
-                'properties' => [
-                    'complex' => [
-                        'oneOf' => [
-                            [
-                                'type' => 'integer',
-                            ],
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntity',
-                                ],
-                            ],
-                        ],
-                    ],
-                    'nullableComplex' => [
-                        'nullable' => true,
-                        'oneOf' => [
-                            [
-                                'type' => 'integer',
-                                'nullable' => true,
-                            ],
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntity',
-                                ],
-                                'nullable' => true, // For some reason, this only exists on PHP < 7.3, which should not be the case. Assuming this to be a bug in PHP.
-                            ],
-                        ],
-                    ],
-                    'complexNested' => [
-                        'nullable' => true,
-                        'oneOf' => [
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntityNested',
-                                ],
-                                'nullable' => true,
-                            ],
-                            [
-                                'type' => 'string',
-                                'nullable' => true, // For some reason, this only exists on PHP < 7.3, which should not be the case. Assuming this to be a bug in PHP.
-                            ],
-                        ],
-                    ],
-                    'arrayOfArrayComplex' => [
-                        'oneOf' => [
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntityNested',
-                                ],
-                            ],
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    'type' => 'array',
-                                    'items' => [
-                                        '$ref' => '#/components/schemas/CompoundEntityNested',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ], json_decode($this->getModel('CompoundEntity')->toJson(), true));
-
-            self::assertEquals([
-                'schema' => 'CompoundEntityNested',
-                'type' => 'object',
-                'required' => ['complex'],
-                'properties' => [
-                    'complex' => [
-                        'oneOf' => [
-                            [
-                                'type' => 'integer',
-                            ],
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntity',
-                                ],
-                            ],
-                        ],
-                    ],
-                    'nullableComplex' => [
-                        'nullable' => true,
-                        'oneOf' => [
-                            [
-                                'type' => 'integer',
-                                'nullable' => true,
-                            ],
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntity',
-                                ],
-                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
-                            ],
-                        ],
-                    ],
-                    'complexNested' => [
-                        'nullable' => true,
-                        'oneOf' => [
-                            [
-                                'type' => 'array',
-                                'items' => [
-                                    '$ref' => '#/components/schemas/CompoundEntityNested',
-                                ],
-                                'nullable' => true,
-                            ],
-                            [
-                                'type' => 'string',
-                                'nullable' => true, // For some reason, this only exists on PHP < 7.4, which should not be the case. Assuming this to be a bug in PHP.
-                            ],
-                        ],
-                    ],
-                ],
-            ], json_decode($this->getModel('CompoundEntityNested')->toJson(), true));
-
-            return;
-        }
-
         self::assertEquals([
             'schema' => 'CompoundEntity',
             'type' => 'object',
@@ -1234,9 +1106,6 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('Bar')->toJson(), true));
     }
 
-    /**
-     * @requires PHP >= 7.3
-     */
     public function testDictionaryModel()
     {
         $this->getOperation('/api/dictionary', 'get');
@@ -1358,5 +1227,51 @@ class FunctionalTest extends WebTestCase
                 ],
             ],
         ], json_decode($model->toJson(), true));
+    }
+
+    public function testRangeIntegers()
+    {
+        $expected = [
+            'schema' => 'RangeInteger',
+            'required' => ['rangeInt', 'minRangeInt', 'maxRangeInt'],
+            'properties' => [
+                'rangeInt' => [
+                    'type' => 'integer',
+                    'minimum' => 1,
+                    'maximum' => 99,
+                ],
+                'minRangeInt' => [
+                    'type' => 'integer',
+                    'minimum' => 1,
+                ],
+                'maxRangeInt' => [
+                    'type' => 'integer',
+                    'maximum' => 99,
+                ],
+                'nullableRangeInt' => [
+                    'type' => 'integer',
+                    'nullable' => true,
+                    'minimum' => 1,
+                    'maximum' => 99,
+                ],
+            ],
+            'type' => 'object',
+        ];
+
+        if (version_compare(Kernel::VERSION, '6.1', '>=')) {
+            array_unshift($expected['required'], 'positiveInt', 'negativeInt');
+            $expected['properties'] += [
+                'positiveInt' => [
+                    'type' => 'integer',
+                    'minimum' => 1,
+                ],
+                'negativeInt' => [
+                    'type' => 'integer',
+                    'maximum' => -1,
+                ],
+            ];
+        }
+
+        self::assertEquals($expected, json_decode($this->getModel('RangeInteger')->toJson(), true));
     }
 }
