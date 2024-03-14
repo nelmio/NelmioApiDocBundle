@@ -12,8 +12,11 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Hateoas\Configuration\Embedded;
+use Metadata\Cache\PsrCacheAdapter;
+use Metadata\MetadataFactory;
 use ReflectionException;
 use ReflectionMethod;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -28,6 +31,15 @@ class BazingaFunctionalTest extends WebTestCase
         parent::setUp();
 
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
+
+        $metaDataFactory = self::getContainer()->get('hateoas.configuration.metadata_factory');
+
+        if (!$metaDataFactory instanceof MetadataFactory) {
+            $this->fail('The hateoas.metadata_factory service is not an instance of MetadataFactory');
+        }
+
+        // Reusing the cache from previous tests causes relations metadata to be lost, so we need to clear it
+        $metaDataFactory->setCache(new PsrCacheAdapter('BazingaFunctionalTest', new ArrayAdapter()));
     }
 
     public function testModelComplexDocumentationBazinga()
