@@ -7,9 +7,9 @@ CHANGELOG
   Annotations attached to integer properties like:
   ```php
     /**
-     * @var int<5, 10>
-     * @var int<min, 10>
-     * @var int<5, max>
+     * @var int<6, 11>
+     * @var int<min, 11>
+     * @var int<6, max>
      * @var positive-int
      * @var negative-int
      */
