@@ -16,7 +16,7 @@ CHANGELOG
   ```
   will be interpreted as appropriate `minimum` and `maximum` properties in the generated OpenAPI specification.
 
-### Breaking change
+### Minor breaking change
 Dropped support for PHP 7.2 and PHP 7.3. PHP 7.4 is the minimum required version now.
 
 4.23.0
