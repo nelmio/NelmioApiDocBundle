@@ -25,11 +25,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php-version: 7.3
+          - php-version: 7.4
             composer-flags: "--prefer-lowest"
-            doctrine-annotations: true
-          - php-version: 7.3
-            symfony-require: "5.4.*"
             doctrine-annotations: true
           - php-version: 7.4
             symfony-require: "5.4.*"

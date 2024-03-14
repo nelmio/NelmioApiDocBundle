@@ -1,6 +1,24 @@
 CHANGELOG
 =========
 
+4.24.0
+-----
+* Added support for some integer ranges (https://phpstan.org/writing-php-code/phpdoc-types#integer-ranges).  
+  Annotations attached to integer properties like:
+  ```php
+    /**
+     * @var int<5, 10>
+     * @var int<min, 10>
+     * @var int<5, max>
+     * @var positive-int
+     * @var negative-int
+     */
+  ```
+  will be interpreted as appropriate `minimum` and `maximum` properties in the generated OpenAPI specification.
+
+### Breaking change
+Dropped support for PHP 7.2 and PHP 7.3, so 7.4 is the minimum required version now.
+
 4.23.0
 -----
 * Cache configuration option `nelmio_api_doc.cache.item_id` now automatically gets the area appended.
