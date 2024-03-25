@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\DiscriminatorMap\JMSAbstractUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSDualComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSNamingStrategyConstraints;
@@ -149,6 +150,20 @@ class JMSController80
      * )
      */
     public function minUserNestedAction()
+    {
+    }
+
+    /**
+     * @Route("/api/jms_discriminator_map", methods={"GET"})
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *
+     *     @Model(type=JMSAbstractUser::class)
+     * )
+     */
+    public function discriminatorMapAction()
     {
     }
 }

@@ -15,6 +15,7 @@ use Doctrine\Common\Annotations\Reader;
 use JMS\Serializer\Context;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
+use JMS\Serializer\Metadata\ClassMetadata;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
@@ -33,6 +34,7 @@ use Symfony\Component\PropertyInfo\Type;
 class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
+    use ApplyOpenApiDiscriminatorTrait;
 
     private $factory;
 
@@ -84,8 +86,23 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     {
         $className = $model->getType()->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
-        if (null === $metadata) {
+        if (!$metadata instanceof ClassMetadata) {
             throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
+        }
+
+        if (!empty($metadata->discriminatorFieldName)
+            && $className === $metadata->discriminatorBaseClass
+            && [] !== $metadata->discriminatorMap
+            && Generator::UNDEFINED === $schema->discriminator) {
+            $this->applyOpenApiDiscriminator(
+                $model,
+                $schema,
+                $this->modelRegistry,
+                $metadata->discriminatorFieldName,
+                $metadata->discriminatorMap
+            );
+
+            return;
         }
 
         $annotationsReader = new AnnotationsReader(

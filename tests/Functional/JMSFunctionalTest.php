@@ -372,6 +372,47 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('ArticleType81')->toJson(), true));
     }
 
+    public function testModeDiscriminatorMap()
+    {
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'username' => [
+                    'type' => 'string',
+                ],
+            ],
+            'schema' => 'JMSManager',
+        ], json_decode($this->getModel('JMSManager')->toJson(), true));
+
+        $this->assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'username' => [
+                    'type' => 'string',
+                ],
+                'admin_title' => [
+                    'type' => 'string',
+                ],
+            ],
+            'schema' => 'JMSAdministrator',
+        ], json_decode($this->getModel('JMSAdministrator')->toJson(), true));
+
+        $this->assertEquals([
+            'oneOf' => [
+                ['$ref' => '#/components/schemas/JMSManager'],
+                ['$ref' => '#/components/schemas/JMSAdministrator'],
+            ],
+            'schema' => 'JMSAbstractUser',
+            'discriminator' => [
+                'propertyName' => 'type',
+                'mapping' => [
+                    'manager' => '#/components/schemas/JMSManager',
+                    'administrator' => '#/components/schemas/JMSAdministrator',
+                ],
+            ],
+        ], json_decode($this->getModel('JMSAbstractUser')->toJson(), true));
+    }
+
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_JMS);
