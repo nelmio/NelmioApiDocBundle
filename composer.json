@@ -57,6 +57,9 @@
         "phpunit/phpunit": "^8.5|^9.6",
         "doctrine/annotations": "^2.0"
     },
+    "conflict": {
+        "zircote/swagger-php": "4.8.7"
+    },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
         "doctrine/annotations": "For using doctrine annotations",
