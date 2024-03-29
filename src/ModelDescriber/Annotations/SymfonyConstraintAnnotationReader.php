@@ -84,6 +84,10 @@ class SymfonyConstraintAnnotationReader
                     return;
                 }
 
+                if (true === $property->nullable || !Generator::isDefault($property->default)) {
+                    return;
+                }
+
                 $existingRequiredFields = Generator::UNDEFINED !== $this->schema->required ? $this->schema->required : [];
                 $existingRequiredFields[] = $propertyName;
 

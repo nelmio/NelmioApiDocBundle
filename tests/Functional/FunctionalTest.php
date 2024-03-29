@@ -1229,6 +1229,42 @@ class FunctionalTest extends WebTestCase
         ], json_decode($model->toJson(), true));
     }
 
+    public function testEntityWithPromotedPropertiesWithDefaults()
+    {
+        if (PHP_VERSION_ID < 80000) {
+            $this->markTestSkipped('Promoted properties require PHP 8.0');
+        }
+
+        if (TestKernel::isAttributesAvailable()) {
+            $modelName = 'EntityWithPromotedPropertiesWithDefaults81';
+        } else {
+            $modelName = 'EntityWithPromotedPropertiesWithDefaults80';
+        }
+
+        $model = $this->getModel($modelName);
+
+        $this->assertSame(Generator::UNDEFINED, $model->required);
+
+        self::assertEquals([
+            'schema' => $modelName,
+            'type' => 'object',
+            'properties' => [
+                'page' => [
+                    'type' => 'integer',
+                    'default' => 30,
+                ],
+                'sort' => [
+                    'type' => 'string',
+                    'default' => 'id',
+                ],
+                'order' => [
+                    'type' => 'string',
+                    'default' => 'asc',
+                ],
+            ],
+        ], json_decode($model->toJson(), true));
+    }
+
     public function testRangeIntegers()
     {
         $expected = [
