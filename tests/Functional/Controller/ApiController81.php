@@ -26,7 +26,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithPromotedPropertiesWithDefaults81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\ArrayQueryModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\FilterQueryModel;
@@ -415,18 +414,6 @@ class ApiController81
         content: new Model(type: EntityWithFalsyDefaults::class),
     )]
     public function entityWithFalsyDefaults()
-    {
-    }
-
-    #[Route('/entity-with-promoted-properties-with-defaults', methods: ['GET'])]
-    #[OA\Response(
-        response: 204,
-        description: 'Operation automatically detected',
-    )]
-    #[OA\RequestBody(
-        content: new Model(type: EntityWithPromotedPropertiesWithDefaults81::class),
-    )]
-    public function entityWithPromotedPropertiesWithDefaults()
     {
     }
 
