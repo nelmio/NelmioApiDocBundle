@@ -18,7 +18,7 @@ class EntityWithPromotedPropertiesWithDefaults80
     /**
      * @Assert\NotBlank()
      */
-    public readonly string $nonNullableNonPromotedPropertyWithDefault;
+    public string $nonNullableNonPromotedPropertyWithDefault;
 
     public function __construct(
         int $nonNullableNonPromotedProperty,
@@ -27,8 +27,8 @@ class EntityWithPromotedPropertiesWithDefaults80
         string $nonNullableNonPromotedPropertyWithDefault = 'nonNullableNonPromotedPropertyWithDefault',
         ?int $nullableNonPromotedPropertyWithDefault = null,
 
-        public readonly int $nonNullablePromotedPropertyWithDefault = 4711,
-        public readonly ?string $nullablePromotedPropertyWithDefault = null,
+        public int $nonNullablePromotedPropertyWithDefault = 4711,
+        public ?string $nullablePromotedPropertyWithDefault = null,
     ) {
         $this->nonNullableNonPromotedPropertyWithDefault = $nonNullableNonPromotedPropertyWithDefault;
     }
