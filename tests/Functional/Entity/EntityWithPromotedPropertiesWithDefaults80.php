@@ -13,23 +13,33 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EntityWithPromotedPropertiesWithDefaults80
-{
-    /**
-     * @Assert\NotBlank()
-     */
-    public string $nonNullableNonPromotedPropertyWithDefault;
+if (PHP_VERSION_ID >= 80000) {
+    // Due to backward compatibility with PHP 7.4, eval() has to be used in addition to checking the PHP_VERSION_ID,
+    // as the PHP 8.0 promoted properties syntax will otherwise still cause ParseErrors when running the test suite.
+    eval('
+        class EntityWithPromotedPropertiesWithDefaults80
+        {
+            /**
+             * @Assert\NotBlank()
+             */
+            public string $nonNullableNonPromotedPropertyWithDefault;
 
-    public function __construct(
-        int $nonNullableNonPromotedProperty,
-        ?string $nullableNonPromotedProperty,
+            public function __construct(
+                int $nonNullableNonPromotedProperty,
+                ?string $nullableNonPromotedProperty,
 
-        string $nonNullableNonPromotedPropertyWithDefault = 'nonNullableNonPromotedPropertyWithDefault',
-        ?int $nullableNonPromotedPropertyWithDefault = null,
+                string $nonNullableNonPromotedPropertyWithDefault = \'nonNullableNonPromotedPropertyWithDefault\',
+                ?int $nullableNonPromotedPropertyWithDefault = null,
 
-        public int $nonNullablePromotedPropertyWithDefault = 4711,
-        public ?string $nullablePromotedPropertyWithDefault = null,
-    ) {
-        $this->nonNullableNonPromotedPropertyWithDefault = $nonNullableNonPromotedPropertyWithDefault;
+                public int $nonNullablePromotedPropertyWithDefault = 4711,
+                public ?string $nullablePromotedPropertyWithDefault = null,
+            ) {
+                $this->nonNullableNonPromotedPropertyWithDefault = $nonNullableNonPromotedPropertyWithDefault;
+            }
+        }
+    ');
+} else {
+    class EntityWithPromotedPropertiesWithDefaults80
+    {
     }
 }
