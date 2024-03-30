@@ -39,15 +39,17 @@ final class OpenApiPhpDescriber
      */
     private $annotationReader;
     private $logger;
-    private $overwrite;
 
     public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, ?Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
     {
+        if ($overwrite || func_num_args() > 4) {
+            trigger_deprecation('nelmio/api-doc-bundle', '4.25.1', 'The "$overwrite" argument of "%s" is unused and therefore deprecated.', __METHOD__);
+        }
+
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
         $this->annotationReader = $annotationReader;
         $this->logger = $logger;
-        $this->overwrite = $overwrite;
     }
 
     public function describe(OA\OpenApi $api)
