@@ -18,14 +18,18 @@ class EntityWithPromotedPropertiesWithDefaults80
     /**
      * @Assert\NotBlank()
      */
-    public string $order;
+    public string $nonNullableNonPromotedPropertyWithDefault;
 
     public function __construct(
-        string $order = 'asc',
+        int $nonNullableNonPromotedProperty,
+        ?string $nullableNonPromotedProperty,
 
-        public int $page = 30,
-        public string $sort = 'id',
+        string $nonNullableNonPromotedPropertyWithDefault = 'nonNullableNonPromotedPropertyWithDefault',
+        ?int $nullableNonPromotedPropertyWithDefault = null,
+
+        public int $nonNullablePromotedPropertyWithDefault = 4711,
+        public ?string $nullablePromotedPropertyWithDefault = null,
     ) {
-        $this->order = $order;
+        $this->nonNullableNonPromotedPropertyWithDefault = $nonNullableNonPromotedPropertyWithDefault;
     }
 }

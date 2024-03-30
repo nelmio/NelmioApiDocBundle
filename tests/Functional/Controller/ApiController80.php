@@ -498,7 +498,7 @@ class ApiController80
     }
 
     /**
-     * @Route("/entity-with-falsy-defaults", methods={"GET"})
+     * @Route("/entity-with-falsy-defaults", methods={"POST"})
      *
      * @OA\Response(
      *     response="204",

@@ -84,7 +84,7 @@ class SymfonyConstraintAnnotationReader
                     return;
                 }
 
-                if (true === $property->nullable || !Generator::isDefault($property->default)) {
+                if (!Generator::isDefault($property->default)) {
                     return;
                 }
 

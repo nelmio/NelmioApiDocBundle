@@ -16,14 +16,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EntityWithPromotedPropertiesWithDefaults81
 {
     #[Assert\NotBlank]
-    public readonly string $order;
+    public readonly string $nonNullableNonPromotedPropertyWithDefault;
 
     public function __construct(
-        string $order = 'asc',
+        int $nonNullableNonPromotedProperty,
+        ?string $nullableNonPromotedProperty,
 
-        public readonly int $page = 30,
-        public readonly string $sort = 'id',
+        string $nonNullableNonPromotedPropertyWithDefault = 'nonNullableNonPromotedPropertyWithDefault',
+        ?int $nullableNonPromotedPropertyWithDefault = null,
+
+        public readonly int $nonNullablePromotedPropertyWithDefault = 4711,
+        public readonly ?string $nullablePromotedPropertyWithDefault = null,
     ) {
-        $this->order = $order;
+        $this->nonNullableNonPromotedPropertyWithDefault = $nonNullableNonPromotedPropertyWithDefault;
     }
 }

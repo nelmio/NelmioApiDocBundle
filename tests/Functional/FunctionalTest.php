@@ -1249,17 +1249,18 @@ class FunctionalTest extends WebTestCase
             'schema' => $modelName,
             'type' => 'object',
             'properties' => [
-                'page' => [
+                'nonNullableNonPromotedPropertyWithDefault' => [
+                    'type' => 'string',
+                    'default' => 'nonNullableNonPromotedPropertyWithDefault',
+                ],
+                'nonNullablePromotedPropertyWithDefault' => [
                     'type' => 'integer',
-                    'default' => 30,
+                    'default' => 4711,
                 ],
-                'sort' => [
+                'nullablePromotedPropertyWithDefault' => [
                     'type' => 'string',
-                    'default' => 'id',
-                ],
-                'order' => [
-                    'type' => 'string',
-                    'default' => 'asc',
+                    'default' => null,
+                    'nullable' => true,
                 ],
             ],
         ], json_decode($model->toJson(), true));

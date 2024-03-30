@@ -136,7 +136,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $reflClassConstructor = $reflClass->getConstructor();
         $reflClassConstructorParameters = null !== $reflClassConstructor ? $reflClassConstructor->getParameters() : [];
         foreach ($reflClassConstructorParameters as $parameter) {
-            if (!$parameter->isDefaultValueAvailable() || null === $parameter->getDefaultValue()) {
+            if (!$parameter->isDefaultValueAvailable()) {
                 continue;
             }
 
