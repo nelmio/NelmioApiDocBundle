@@ -11,12 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 if (PHP_VERSION_ID >= 80000) {
     // Due to backward compatibility with PHP 7.4, eval() has to be used in addition to checking the PHP_VERSION_ID,
     // as the PHP 8.0 promoted properties syntax will otherwise still cause ParseErrors when running the test suite.
     eval('
+        use Symfony\Component\Validator\Constraints as Assert;
+
         class EntityWithPromotedPropertiesWithDefaults80
         {
             /**
