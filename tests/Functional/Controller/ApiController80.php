@@ -25,7 +25,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithPromotedPropertiesWithDefaults80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\RangeInteger;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints80;
@@ -510,22 +509,6 @@ class ApiController80
      *     @Model(type=EntityWithFalsyDefaults::class))
      *  )*/
     public function entityWithFalsyDefaults()
-    {
-    }
-
-    /**
-     * @Route("/entity-with-promoted-properties-with-defaults", methods={"GET"})
-     *
-     * @OA\Response(
-     *     response="204",
-     *     description="Operation automatically detected",
-     *  ),
-     *
-     * @OA\RequestBody(
-     *
-     *     @Model(type=EntityWithPromotedPropertiesWithDefaults80::class))
-     *  )*/
-    public function entityWithPromotedPropertiesWithDefaults()
     {
     }
 

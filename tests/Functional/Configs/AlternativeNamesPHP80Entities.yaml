@@ -1,0 +1,14 @@
+# Removes the `80` suffix from the entity names used in annotation entities.
+nelmio_api_doc:
+  models:
+    names:
+      - alias: EntityWithPromotedPropertiesWithDefaults
+        type: Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithPromotedPropertiesWithDefaults80
+      - alias: EntityWithAlternateType
+        type: Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType80
+
+# Clean unused components from the OpenAPI schema.
+services:
+  OpenApi\Processors\CleanUnusedComponents:
+    tags:
+      - { name: 'nelmio_api_doc.swagger.processor', priority: -100 }
