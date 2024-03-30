@@ -44,18 +44,26 @@ final class ControllerTest extends WebTestCase
     }
 
     /**
-     * @dataProvider provideControllers
+     * @dataProvider provideAnnotationTestCases
+     * @dataProvider provideAttributeTestCases
+     * @dataProvider provideUniversalTestCases
+     *
+     * @param array{name: string, type: string}|null $controller
+     * @param string[]                               $extraConfigs
      */
-    public function testControllers(?string $controllerName, ?string $fixtureName = null, array $extraConfigs = []): void
+    public function testControllers(?array $controller, ?string $fixtureName = null, array $extraConfigs = []): void
     {
+        $controllerName = $controller['name'] ?? null;
+        $controllerType = $controller['type'] ?? null;
+
         $fixtureName = $fixtureName ?? $controllerName ?? $this->fail('A fixture name must be provided.');
 
-        $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName) {
+        $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName, $controllerType) {
             if (null === $controllerName) {
                 return;
             }
 
-            $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", 'attribute');
+            $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", $controllerType);
         };
 
         $this->configurableContainerFactory->create([], $routingConfiguration, $extraConfigs);
@@ -69,22 +77,74 @@ final class ControllerTest extends WebTestCase
 
         self::assertSame(
             self::getFixture($fixtureDir),
-            $this->getOpenApiDefinition()->toJson()
+            $this->getOpenApiDefinition()->toJson(),
         );
     }
 
-    public static function provideControllers(): iterable
+    public static function provideAttributeTestCases(): iterable
     {
+        if (PHP_VERSION_ID < 80100) {
+            return;
+        }
+
+        $type = Kernel::MAJOR_VERSION === 5 ? 'annotation' : 'attribute';
+
+        yield 'Promoted properties defaults attributes' => [
+            [
+                'name' => 'PromotedPropertiesController81',
+                'type' => $type,
+            ],
+            'PromotedPropertiesDefaults',
+            [__DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml'],
+        ];
+
         if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
-            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => ['Controller2209'];
-            yield 'MapQueryString' => ['MapQueryStringController'];
+            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
+                [
+                    'name' => 'Controller2209',
+                    'type' => $type,
+                ],
+            ];
+            yield 'MapQueryString' => [
+                [
+                    'name' => 'MapQueryStringController',
+                    'type' => $type,
+                ],
+            ];
             yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
-                'MapQueryStringController',
+                [
+                    'name' => 'MapQueryStringController',
+                    'type' => $type,
+                ],
                 'MapQueryStringCleanupComponents',
                 [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
             ];
         }
+    }
 
+    public static function provideAnnotationTestCases(): iterable
+    {
+        if (!TestKernel::isAnnotationsAvailable()) {
+            return;
+        }
+
+        if (PHP_VERSION_ID >= 80000) {
+            yield 'Promoted properties defaults annotations' => [
+                [
+                    'name' => 'PromotedPropertiesController80',
+                    'type' => 'annotation',
+                ],
+                'PromotedPropertiesDefaults',
+                [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml'],
+            ];
+        }
+    }
+
+    /**
+     * Test cases that are universal and can be run without depending on the existence of a specific feature.
+     */
+    public static function provideUniversalTestCases(): iterable
+    {
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2224' => [
             null,
             'VendorExtension',
