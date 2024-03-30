@@ -1,0 +1,19 @@
+includes:
+    - phar://phpstan.phar/conf/bleedingEdge.neon
+
+parameters:
+    phpVersion: 70400
+    level: 6
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - tests/Functional/Entity/*
+        - tests/Functional/EntityExcluded/*
+        - tests/Functional/Controller/*
+    dynamicConstantNames:
+        - Symfony\Component\HttpKernel\Kernel::VERSION
+        - Symfony\Component\HttpKernel\Kernel::VERSION_ID
+        - Symfony\Component\HttpKernel\Kernel::MAJOR_VERSION
+        - Symfony\Component\HttpKernel\Kernel::MINOR_VERSION
+        - Symfony\Component\HttpKernel\Kernel::RELEASE_VERSION
