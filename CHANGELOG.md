@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+4.25.0
+-----
+* Added support for [JMS @Discriminator](https://jmsyst.com/libs/serializer/master/reference/annotations#discriminator) annotation/attribute
+  ```php
+  #[\JMS\Serializer\Annotation\Discriminator(field: 'type', map: ['car' => Car::class, 'plane' => Plane::class])]
+  abstract class Vehicle { }
+  class Car extends Vehicle { }
+  class Plane extends Vehicle { }
+  ```
+
 4.24.0
 -----
 * Added support for some integer ranges (https://phpstan.org/writing-php-code/phpdoc-types#integer-ranges).  
