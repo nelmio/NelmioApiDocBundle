@@ -214,7 +214,6 @@ final class Util
      * @see OA\AbstractAnnotation::$_nested
      *
      * @param string $class
-     * @param mixed  $value
      */
     public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, $class, $value): OA\AbstractAnnotation
     {
@@ -259,7 +258,6 @@ final class Util
      * Search for an Annotation within the $collection that has its member $index set to $value.
      *
      * @param string $member
-     * @param mixed  $value
      *
      * @return false|int|string
      */

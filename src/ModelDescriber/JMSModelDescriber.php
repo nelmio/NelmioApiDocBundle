@@ -79,9 +79,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $this->contextFactory = $contextFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function describe(Model $model, OA\Schema $schema)
     {
         $className = $model->getType()->getClassName();
@@ -246,9 +243,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return $groups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(Model $model): bool
     {
         $className = $model->getType()->getClassName();

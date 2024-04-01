@@ -16,7 +16,6 @@ use Nelmio\ApiDocBundle\ModelDescriber\SelfDescribingModelDescriber;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Fixtures\SelfDescribingModel;
 use OpenApi\Annotations\Schema;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Symfony\Component\PropertyInfo\Type;
 
 class SelfDescribingModelDescriberTest extends TestCase
@@ -32,7 +31,7 @@ class SelfDescribingModelDescriberTest extends TestCase
     {
         $describer = new SelfDescribingModelDescriber();
 
-        $this->assertFalse($describer->supports(new Model(new Type('object', false, stdClass::class))));
+        $this->assertFalse($describer->supports(new Model(new Type('object', false, \stdClass::class))));
     }
 
     public function testDescribe()

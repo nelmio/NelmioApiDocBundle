@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the NelmioApiDocBundle package.
+ *
+ * (c) Nelmio
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems;
 
 class Dictionary
@@ -12,12 +21,12 @@ class Dictionary
     public $options;
 
     /**
-     * @var array<string, string|integer>
+     * @var array<string, string|int>
      */
     public $compoundOptions;
 
     /**
-     * @var array<array<string, string|integer>>
+     * @var array<array<string, string|int>>
      */
     public $nestedCompoundOptions;
 
@@ -37,7 +46,7 @@ class Dictionary
     public $arrayOrDictOptions;
 
     /**
-     * @var array<string, integer>
+     * @var array<string, int>
      */
     public $integerOptions;
 }

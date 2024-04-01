@@ -47,9 +47,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 final class NelmioApiDocExtension extends Extension implements PrependExtensionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function prepend(ContainerBuilder $container): void
     {
         $container->prependExtensionConfig('framework', ['property_info' => ['enabled' => true]]);
@@ -62,9 +59,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);

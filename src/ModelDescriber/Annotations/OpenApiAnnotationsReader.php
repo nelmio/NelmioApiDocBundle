@@ -86,8 +86,6 @@ class OpenApiAnnotationsReader
 
     /**
      * @param \ReflectionClass|\ReflectionProperty|\ReflectionMethod $reflection
-     *
-     * @return mixed
      */
     private function getAnnotation(Context $parentContext, $reflection, string $className)
     {

@@ -19,7 +19,6 @@ use OpenApi\Annotations\AbstractAnnotation;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Security extends AbstractAnnotation
 {
-    /** {@inheritdoc} */
     public static $_types = [
         'name' => 'string',
         'scopes' => '[string]',
