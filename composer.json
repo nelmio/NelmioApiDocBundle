@@ -55,7 +55,8 @@
         "composer/package-versions-deprecated": "1.11.99.1",
 
         "phpunit/phpunit": "^8.5|^9.6",
-        "doctrine/annotations": "^2.0"
+        "doctrine/annotations": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.52"
     },
     "conflict": {
         "zircote/swagger-php": "4.8.7"
@@ -91,9 +92,13 @@
         }
     },
     "scripts-descriptions": {
+        "phpcs-check": "Run PHP-CS-Fixer in dry-run mode",
+        "phpcs-fix": "Run PHP-CS-Fixer",
         "phpunit": "Run phpunit"
     },
     "scripts": {
+        "phpcs-check": "vendor/bin/php-cs-fixer check -v --diff",
+        "phpcs-fix": "vendor/bin/php-cs-fixer fix -v",
         "phpunit": "phpunit"
     }
 }
