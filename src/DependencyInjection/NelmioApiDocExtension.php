@@ -227,6 +227,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
             $container->removeDefinition('nelmio_api_doc.render_docs.html');
             $container->removeDefinition('nelmio_api_doc.render_docs.html.asset');
+        } elseif (isset($config['html_config'])) {
+            $container->getDefinition('nelmio_api_doc.render_docs.html')->replaceArgument(1, $config['html_config']);
         }
 
         // ApiPlatform support

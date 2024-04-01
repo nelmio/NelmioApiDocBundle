@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\DependencyInjection;
 
 use Nelmio\ApiDocBundle\DependencyInjection\NelmioApiDocExtension;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -298,5 +299,24 @@ class NelmioApiDocExtensionTest extends TestCase
                 'area1CacheItemId' => 'docs',
             ],
         ];
+    }
+
+    public function testHtmlOpenApiRendererWithHtmlConfig()
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', [
+            'TwigBundle' => TwigBundle::class,
+        ]);
+
+        $extension = new NelmioApiDocExtension();
+        $extension->load([['html_config' => $htmlConfig = [
+            'redocly' => [
+                'expandResponses' => '200,201',
+                'hideDownloadButton' => true,
+            ],
+        ]]], $container);
+
+        $argument = $container->getDefinition('nelmio_api_doc.render_docs.html')->getArgument(1);
+        self::assertSame($htmlConfig, $argument);
     }
 }

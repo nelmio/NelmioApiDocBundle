@@ -28,6 +28,7 @@ class DumpCommand extends Command
     private $defaultHtmlConfig = [
         'assets_mode' => AssetsMode::CDN,
         'swagger_ui_config' => [],
+        'redocly_config' => [],
     ];
 
     public function __construct(RenderOpenApi $renderOpenApi)

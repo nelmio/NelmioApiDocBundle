@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+4.26.0
+-----
+* Add ability to configure UI through configuration
+
 4.25.0
 -----
 * Added support for [JMS @Discriminator](https://jmsyst.com/libs/serializer/master/reference/annotations#discriminator) annotation/attribute

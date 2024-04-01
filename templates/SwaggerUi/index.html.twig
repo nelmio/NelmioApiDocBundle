@@ -75,10 +75,9 @@ file that was distributed with this source code. #}
 
     {% block swagger_initialization %}
         <script type="text/javascript">
-            (function () {
-                var swaggerUI = {{ swagger_ui_config|json_encode(65)|raw }};
-                window.onload = loadSwaggerUI(swaggerUI);
-            })();
+            window.onload = () => {
+                loadSwaggerUI({{ swagger_ui_config|json_encode(65)|raw }});
+            };
         </script>
     {% endblock swagger_initialization %}
 </body>

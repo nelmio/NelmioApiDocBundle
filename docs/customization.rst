@@ -25,16 +25,34 @@ Just create a file ``templates/bundles/NelmioApiDocBundle/SwaggerUi/index.html.t
     {% extends '@!NelmioApiDoc/SwaggerUi/index.html.twig' %}
 
     {#
-        Change swagger UI configuration
+        Change Swagger UI configuration
         All parameters are explained on Swagger UI website:
         https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/
     #}
     {% block swagger_initialization %}
         <script type="text/javascript">
-            window.onload = loadSwaggerUI({
-                defaultModelsExpandDepth: -1,
-                deepLinking: true,
-            });
+            window.onload = () => {
+                loadSwaggerUI({
+                    defaultModelsExpandDepth: -1,
+                    deepLinking: true,
+                });
+            };
+        </script>
+    {% endblock %}
+
+    {#
+        Change Redocly configuration
+        All parameters are explained on Redocly website:
+        https://redocly.com/docs/redoc/config/
+    #}
+    {% block swagger_initialization %}
+        <script type="text/javascript">
+            window.onload = () => {
+                loadRedocly({
+                    expandResponses: '200,201',
+                    hideDownloadButton: true,
+                });
+            };
         </script>
     {% endblock %}
 
