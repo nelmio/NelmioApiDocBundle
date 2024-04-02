@@ -896,6 +896,17 @@ class FunctionalTest extends WebTestCase
         self::assertSame(Generator::UNDEFINED, $model->properties);
     }
 
+    public function testEntityWithUuid()
+    {
+        $model = $this->getModel('EntityWithUuid');
+
+        $this->assertSame('object', $model->type);
+
+        $this->assertSame('id', $model->properties[0]->property);
+        $this->assertSame('string', $model->properties[0]->type);
+        $this->assertSame('uuid', $model->properties[0]->format);
+    }
+
     public function testEntitiesWithRefInSchemaDoNoReadOtherProperties(): void
     {
         $model = $this->getModel('EntityWithRef');
