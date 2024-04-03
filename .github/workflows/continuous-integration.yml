@@ -75,3 +75,29 @@ jobs:
 
       - name: PHPUnit Tests
         run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text
+
+  php-cs-fixer:
+    name: PHP-CS-Fixer
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Install PHP without coverage
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer, flex
+          coverage: pcov
+
+      - name: Setup dependencies
+        uses: ./.github/workflows/common/composer-install
+        with:
+          symfony-version: "7.0.*"
+          install-doctrine-annotations: false
+
+      - name: Run PHP-CS-Fixer
+        run: composer phpcs-check
