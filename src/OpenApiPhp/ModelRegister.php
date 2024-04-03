@@ -38,7 +38,7 @@ final class ModelRegister
         $this->mediaTypes = $mediaTypes;
     }
 
-    public function __invoke(Analysis $analysis, array $parentGroups = null)
+    public function __invoke(Analysis $analysis, ?array $parentGroups = null)
     {
         foreach ($analysis->annotations as $annotation) {
             // @Model using the ref field
@@ -106,7 +106,7 @@ final class ModelRegister
         }
     }
 
-    private function getGroups(ModelAnnotation $model, array $parentGroups = null): ?array
+    private function getGroups(ModelAnnotation $model, ?array $parentGroups = null): ?array
     {
         if (null === $model->groups) {
             return $parentGroups;

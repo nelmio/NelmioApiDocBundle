@@ -53,9 +53,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         ?Reader $reader,
         $propertyDescribers,
         array $mediaTypes,
-        NameConverterInterface $nameConverter = null,
+        ?NameConverterInterface $nameConverter = null,
         bool $useValidationGroups = false,
-        ClassMetadataFactoryInterface $classMetadataFactory = null
+        ?ClassMetadataFactoryInterface $classMetadataFactory = null
     ) {
         if (is_iterable($propertyDescribers)) {
             trigger_deprecation('nelmio/api-doc-bundle', '4.17', 'Passing an array of PropertyDescriberInterface to %s() is deprecated. Pass a single PropertyDescriberInterface instead.', __METHOD__);

@@ -224,7 +224,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         return $context;
     }
 
-    private function computeGroups(Context $context, array $type = null)
+    private function computeGroups(Context $context, ?array $type = null)
     {
         if (null === $type || true !== $this->propertyTypeUsesGroups($type)) {
             return null;

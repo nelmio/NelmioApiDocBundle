@@ -62,8 +62,8 @@ final class Model extends Attachable
     public function __construct(
         array $properties = [],
         string $type = Generator::UNDEFINED,
-        array $groups = null,
-        array $options = null,
+        ?array $groups = null,
+        ?array $options = null,
         array $serializationContext = []
     ) {
         parent::__construct($properties + [

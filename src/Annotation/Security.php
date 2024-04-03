@@ -38,7 +38,7 @@ class Security extends AbstractAnnotation
 
     public function __construct(
         array $properties = [],
-        string $name = null,
+        ?string $name = null,
         array $scopes = []
     ) {
         parent::__construct($properties + [

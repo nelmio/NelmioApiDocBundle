@@ -310,7 +310,7 @@ final class Util
      *
      * @see Context
      */
-    public static function createContext(array $properties = [], Context $parent = null): Context
+    public static function createContext(array $properties = [], ?Context $parent = null): Context
     {
         return new Context($properties, $parent);
     }
@@ -320,7 +320,7 @@ final class Util
      *
      * @see Context
      */
-    public static function createWeakContext(Context $parent = null, array $additionalProperties = []): Context
+    public static function createWeakContext(?Context $parent = null, array $additionalProperties = []): Context
     {
         $propsToCopy = [
             'version',
