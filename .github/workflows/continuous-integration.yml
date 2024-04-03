@@ -1,7 +1,7 @@
 # from doctrine/instantiator:
 # https://github.com/doctrine/instantiator/blob/97aa11bb71ad6259a8c5a1161b4de2d6cdcc5501/.github/workflows/continuous-integration.yml
 
-name: "CI"
+name: CI
 
 on:
   pull_request:
@@ -18,8 +18,8 @@ env:
 
 jobs:
   phpunit:
-    name: "PHPUnit"
-    runs-on: "ubuntu-22.04"
+    name: PHPUnit
+    runs-on: ubuntu-22.04
 
     strategy:
       fail-fast: false
@@ -54,43 +54,24 @@ jobs:
             doctrine-annotations: false
 
     steps:
-      - name: "Checkout"
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
-      - name: "Install PHP without coverage"
+      - name: Install PHP without coverage
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "${{ matrix.php-version }}"
+          php-version: ${{ matrix.php-version }}
           tools: composer, flex
           coverage: pcov
 
-      - name: "Get composer cache directory"
-        id: composercache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: "Cache dependencies"
-        uses: actions/cache@v3
+      - name: Setup dependencies
+        uses: ./.github/workflows/common/composer-install
         with:
-          path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          symfony-version: ${{ matrix.symfony-require }}
+          install-doctrine-annotations: ${{ matrix.doctrine-annotations }}
+          composer-flags: ${{ matrix.composer-flags }}
 
-      - name: Install doctrine/annotations
-        if: matrix.doctrine-annotations == true
-        run: |
-          composer require doctrine/annotations --no-update
-
-      - name: Remove packages not compatible symfony 7
-        if: matrix.symfony-require == '7.0.*'
-        run: |
-          composer remove friendsofsymfony/rest-bundle sensio/framework-extra-bundle --no-update --dev
-
-      - name: "Install dependencies with composer"
-        env:
-          SYMFONY_REQUIRE: "${{ matrix.symfony-require }}"
-        run: composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
-
-      - name: "PHPUnit Tests"
+      - name: PHPUnit Tests
         run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text
