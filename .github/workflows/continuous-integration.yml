@@ -100,4 +100,4 @@ jobs:
           install-doctrine-annotations: false
 
       - name: Run PHP-CS-Fixer
-        run: composer phpcs-check
+        run: vendor/bin/php-cs-fixer check -v --diff

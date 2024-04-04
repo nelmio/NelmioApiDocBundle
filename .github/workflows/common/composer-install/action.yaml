@@ -4,7 +4,7 @@ description: Setup, install and cache Composer dependencies
 inputs:
   symfony-version:
     description: The required Symfony version that will be installed
-    required: false
+    required: true
     type: string
 
   install-doctrine-annotations:
