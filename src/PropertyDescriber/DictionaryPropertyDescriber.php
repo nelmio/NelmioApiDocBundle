@@ -22,7 +22,7 @@ final class DictionaryPropertyDescriber implements PropertyDescriberInterface, M
     use ModelRegistryAwareTrait;
     use PropertyDescriberAwareTrait;
 
-    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = [])
+    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
         $property->type = 'object';
         /** @var OA\AdditionalProperties $additionalProperties */
@@ -31,7 +31,6 @@ final class DictionaryPropertyDescriber implements PropertyDescriberInterface, M
         $this->propertyDescriber->describe($types[0]->getCollectionValueTypes(), $additionalProperties, $groups, $schema, $context);
     }
 
-    /** {@inheritDoc} */
     public function supports(array $types): bool
     {
         return 1 === count($types)

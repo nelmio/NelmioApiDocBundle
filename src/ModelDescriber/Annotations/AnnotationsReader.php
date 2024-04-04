@@ -54,7 +54,7 @@ class AnnotationsReader
         return $this->openApiAnnotationsReader->getPropertyName($reflection, $default);
     }
 
-    public function updateProperty($reflection, OA\Property $property, array $serializationGroups = null): void
+    public function updateProperty($reflection, OA\Property $property, ?array $serializationGroups = null): void
     {
         $this->openApiAnnotationsReader->updateProperty($reflection, $property, $serializationGroups);
         $this->phpDocReader->updateProperty($reflection, $property);

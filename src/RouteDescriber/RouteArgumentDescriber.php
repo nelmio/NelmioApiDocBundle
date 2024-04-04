@@ -2,13 +2,21 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the NelmioApiDocBundle package.
+ *
+ * (c) Nelmio
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\RouteArgumentDescriberInterface;
 use OpenApi\Annotations as OA;
-use ReflectionMethod;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactoryInterface;
 use Symfony\Component\Routing\Route;
 
@@ -26,7 +34,7 @@ final class RouteArgumentDescriber implements RouteDescriberInterface, ModelRegi
     ) {
     }
 
-    public function describe(OA\OpenApi $api, Route $route, ReflectionMethod $reflectionMethod): void
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         $controller = $route->getDefault('_controller');
 

@@ -1,16 +1,15 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
+declare(strict_types=1);
+
+$finder = (new PhpCsFixer\Finder())
     ->in(__DIR__)
     ->exclude('var')
-    ->exclude('Tests/Functional/cache')
-;
+    ->exclude('tests/Functional/cache');
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
-        'ordered_imports' => true,
-        'phpdoc_order' => true,
         'header_comment' => [
             'header' => <<<HEADER
 This file is part of the NelmioApiDocBundle package.
@@ -22,5 +21,4 @@ file that was distributed with this source code.
 HEADER
         ],
     ])
-    ->setFinder($finder)
-;
+    ->setFinder($finder);

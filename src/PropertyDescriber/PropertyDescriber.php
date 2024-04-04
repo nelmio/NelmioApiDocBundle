@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the NelmioApiDocBundle package.
+ *
+ * (c) Nelmio
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
@@ -24,7 +33,7 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
         $this->propertyDescribers = $propertyDescribers;
     }
 
-    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null, array $context = []): void
+    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = []): void
     {
         if (!$propertyDescriber = $this->getPropertyDescriber($types)) {
             return;

@@ -26,8 +26,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\NameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
-use ReflectionException;
-use ReflectionMethod;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\Command\CachePoolClearCommand;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -43,11 +41,12 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 class TestKernel extends Kernel
 {
     use MicroKernelTrait;
-    const USE_JMS = 1;
-    const USE_BAZINGA = 2;
-    const USE_FOSREST = 3;
-    const USE_VALIDATION_GROUPS = 8;
-    const USE_FORM_CSRF = 16;
+
+    public const USE_JMS = 1;
+    public const USE_BAZINGA = 2;
+    public const USE_FOSREST = 3;
+    public const USE_VALIDATION_GROUPS = 8;
+    public const USE_FORM_CSRF = 16;
 
     private $flags;
 
@@ -103,9 +102,9 @@ class TestKernel extends Kernel
             $routes->withPath('/')->import(__DIR__.'/Controller/BazingaTypedController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
 
             try {
-                new ReflectionMethod(Embedded::class, 'getType');
+                new \ReflectionMethod(Embedded::class, 'getType');
                 $routes->withPath('/')->import(__DIR__.'/Controller/BazingaTypedController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
-            } catch (ReflectionException $e) {
+            } catch (\ReflectionException $e) {
             }
         }
 
@@ -246,13 +245,13 @@ class TestKernel extends Kernel
         } elseif (self::isAttributesAvailable()) {
             $models = array_merge($models, [
                 [
-                'alias' => 'JMSComplex',
-                'type' => JMSComplex81::class,
-                'groups' => [
-                    'list',
-                    'details',
-                    'User' => ['list'],
-                ],
+                    'alias' => 'JMSComplex',
+                    'type' => JMSComplex81::class,
+                    'groups' => [
+                        'list',
+                        'details',
+                        'User' => ['list'],
+                    ],
                 ],
                 [
                     'alias' => 'JMSComplexDefault',
@@ -319,20 +318,20 @@ class TestKernel extends Kernel
                     ],
                 ],
             ],
-           'areas' => [
-               'default' => [
-                   'path_patterns' => ['^/api(?!/admin)'],
-                   'host_patterns' => ['^api\.'],
-               ],
-               'test' => [
-                   'path_patterns' => ['^/test'],
-                   'host_patterns' => ['^api-test\.'],
-                   'documentation' => [
-                       'info' => [
-                           'title' => 'My Test App',
-                       ],
-                   ],
-               ],
+            'areas' => [
+                'default' => [
+                    'path_patterns' => ['^/api(?!/admin)'],
+                    'host_patterns' => ['^api\.'],
+                ],
+                'test' => [
+                    'path_patterns' => ['^/test'],
+                    'host_patterns' => ['^api-test\.'],
+                    'documentation' => [
+                        'info' => [
+                            'title' => 'My Test App',
+                        ],
+                    ],
+                ],
             ],
             'models' => [
                 'names' => $models,

@@ -26,7 +26,7 @@ class EntityWithFalsyDefaults
     public $false = false;
 
     /** @var string|null */
-    public $nullString = null;
+    public $nullString;
 
     /** @var string[] */
     public $array = [];

@@ -19,7 +19,7 @@ class UndocumentedArrayItemsException extends \LogicException
     private $class;
     private $path;
 
-    public function __construct(string $class = null, string $path = '')
+    public function __construct(?string $class = null, string $path = '')
     {
         $this->class = $class;
         $this->path = $path;

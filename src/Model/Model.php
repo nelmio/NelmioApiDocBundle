@@ -23,7 +23,7 @@ final class Model
     /**
      * @param string[]|null $groups
      */
-    public function __construct(Type $type, array $groups = null, array $options = null, array $serializationContext = [])
+    public function __construct(Type $type, ?array $groups = null, ?array $options = null, array $serializationContext = [])
     {
         $this->type = $type;
         $this->options = $options;

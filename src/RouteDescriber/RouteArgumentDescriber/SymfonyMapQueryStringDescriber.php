@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the NelmioApiDocBundle package.
+ *
+ * (c) Nelmio
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
@@ -15,11 +24,11 @@ use Symfony\Component\Validator\Constraints\GroupSequence;
 
 final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInterface, ModelRegistryAwareInterface
 {
+    use ModelRegistryAwareTrait;
+
     public const CONTEXT_KEY = 'nelmio_api_doc_bundle.map_query_string.'.self::class;
     public const CONTEXT_ARGUMENT_METADATA = 'nelmio_api_doc_bundle.argument_metadata.'.self::class;
     public const CONTEXT_MODEL_REF = 'nelmio_api_doc_bundle.model_ref.'.self::class;
-
-    use ModelRegistryAwareTrait;
 
     public function describe(ArgumentMetadata $argumentMetadata, OA\Operation $operation): void
     {
