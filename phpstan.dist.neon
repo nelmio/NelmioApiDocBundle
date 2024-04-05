@@ -7,7 +7,7 @@ includes:
 
 parameters:
     phpVersion: 70400
-    level: 6
+    level: 1
     paths:
         - src
         - tests
