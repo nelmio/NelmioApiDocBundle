@@ -90,14 +90,14 @@ final class ApiDocGenerator
             return $this->openApi;
         }
 
-        if ($this->cacheItemPool) {
+        if (null !== $this->cacheItemPool) {
             $item = $this->cacheItemPool->getItem($this->cacheItemId);
             if ($item->isHit()) {
                 return $this->openApi = $item->get();
             }
         }
 
-        if ($this->openApiVersion) {
+        if (null !== $this->openApiVersion) {
             $this->generator->setVersion($this->openApiVersion);
         }
 

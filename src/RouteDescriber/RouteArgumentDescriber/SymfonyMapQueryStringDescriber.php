@@ -32,7 +32,6 @@ final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInte
 
     public function describe(ArgumentMetadata $argumentMetadata, OA\Operation $operation): void
     {
-        /** @var MapQueryString $attribute */
         if (!$attribute = $argumentMetadata->getAttributes(MapQueryString::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? null) {
             return;
         }

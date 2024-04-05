@@ -26,7 +26,6 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
 
     public function describe(ArgumentMetadata $argumentMetadata, OA\Operation $operation): void
     {
-        /** @var MapQueryParameter $attribute */
         if (!$attribute = $argumentMetadata->getAttributes(MapQueryParameter::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? null) {
             return;
         }

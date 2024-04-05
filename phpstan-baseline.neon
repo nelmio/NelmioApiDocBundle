@@ -1,9 +1,74 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Call to method render\\(\\) on an unknown class Twig_Environment\\.$#"
+			count: 2
+			path: src/Render/Html/HtmlOpenApiRenderer.php
+
+		-
 			message: "#^Class Twig_Environment not found\\.$#"
 			count: 1
 			path: src/Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:\\$twig has unknown class Twig_Environment as its type\\.$#"
+			count: 1
+			path: src/Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: "#^Access to property \\$allowBlank on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$description on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$key on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$key on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$map on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 2
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$nullable on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 2
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$nullable on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$strict on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$strict on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Call to method getName\\(\\) on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Call to method getName\\(\\) on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
 
 		-
 			message: "#^Class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam not found\\.$#"
@@ -19,3 +84,28 @@ parameters:
 			message: "#^Class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\ControllerNameParser not found\\.$#"
 			count: 1
 			path: src/Util/ControllerReflector.php
+
+		-
+			message: "#^Only booleans are allowed in &&, int\\<0, 1\\> given on the left side\\.$#"
+			count: 1
+			path: tests/Functional/TestKernel.php
+
+		-
+			message: "#^Only booleans are allowed in an if condition, int\\<0, 16\\> given\\.$#"
+			count: 1
+			path: tests/Functional/TestKernel.php
+
+		-
+			message: "#^Only booleans are allowed in an if condition, int\\<0, 1\\> given\\.$#"
+			count: 2
+			path: tests/Functional/TestKernel.php
+
+		-
+			message: "#^Only booleans are allowed in an if condition, int\\<0, 2\\> given\\.$#"
+			count: 2
+			path: tests/Functional/TestKernel.php
+
+		-
+			message: "#^Only booleans are allowed in an if condition, int\\<0, 3\\> given\\.$#"
+			count: 1
+			path: tests/Functional/TestKernel.php

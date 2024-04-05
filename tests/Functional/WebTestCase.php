@@ -123,9 +123,11 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
+    /**
+     * @param OA\Operation|OA\OpenApi $annotation
+     */
     public function assertHasParameter($name, $in, OA\AbstractAnnotation $annotation)
     {
-        /* @var OA\Operation|OA\OpenApi $annotation */
         $parameters = array_filter(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], function (OA\Parameter $parameter) use ($name, $in) {
             return $parameter->name === $name && $parameter->in === $in;
         });
@@ -136,9 +138,11 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
+    /**
+     * @param OA\Operation|OA\OpenApi $annotation
+     */
     public function assertNotHasParameter($name, $in, OA\AbstractAnnotation $annotation)
     {
-        /* @var OA\Operation|OA\OpenApi $annotation */
         $parameters = array_column(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], 'name', 'in');
         static::assertNotContains(
             $name,
@@ -147,9 +151,11 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
+    /**
+     * @param OA\Schema|OA\Property|OA\Items $annotation
+     */
     public function assertHasProperty($property, OA\AbstractAnnotation $annotation)
     {
-        /* @var OA\Schema|OA\Property|OA\Items $annotation */
         $properties = array_column(Generator::UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
         static::assertContains(
             $property,
@@ -158,9 +164,11 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
+    /**
+     * @param OA\Schema|OA\Property|OA\Items $annotation
+     */
     public function assertNotHasProperty($property, OA\AbstractAnnotation $annotation)
     {
-        /* @var OA\Schema|OA\Property|OA\Items $annotation */
         $properties = array_column(Generator::UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
         static::assertNotContains(
             $property,

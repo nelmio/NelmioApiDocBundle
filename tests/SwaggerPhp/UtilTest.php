@@ -169,7 +169,7 @@ class UtilTest extends TestCase
         $this->expectOutputRegex($expectedRegex);
         Util::createCollectionItem($this->rootAnnotation, $collection, $class);
         $this->expectOutputRegex($expectedRegex);
-        self::assertNull($this->rootAnnotation->{$collection});
+        self::assertNull($this->rootAnnotation->{$collection}); /* @phpstan-ignore-line */
         restore_error_handler();
     }
 

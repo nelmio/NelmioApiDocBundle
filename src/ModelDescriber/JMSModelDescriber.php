@@ -87,7 +87,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
         }
 
-        if ($metadata->discriminatorFieldName
+        if (isset($metadata->discriminatorFieldName)
             && $className === $metadata->discriminatorBaseClass
             && [] !== $metadata->discriminatorMap
             && Generator::UNDEFINED === $schema->discriminator) {
@@ -317,7 +317,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             $customFields = (array) $property->jsonSerialize();
             unset($customFields['property']);
-            if (!$customFields) { // no custom fields
+            if ([] === $customFields) { // no custom fields
                 $property->ref = $modelRef;
             } else {
                 $weakContext = Util::createWeakContext($property->_context);

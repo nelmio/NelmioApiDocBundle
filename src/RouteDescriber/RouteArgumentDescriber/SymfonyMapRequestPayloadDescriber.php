@@ -31,7 +31,6 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
 
     public function describe(ArgumentMetadata $argumentMetadata, OA\Operation $operation): void
     {
-        /** @var MapRequestPayload $attribute */
         if (!$attribute = $argumentMetadata->getAttributes(MapRequestPayload::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? null) {
             return;
         }

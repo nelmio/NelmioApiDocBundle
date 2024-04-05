@@ -164,7 +164,7 @@ class SymfonyConstraintAnnotationReader
      */
     private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection): void
     {
-        if ($choice->callback) {
+        if (null !== $choice->callback) {
             $enumValues = call_user_func(is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);
         } else {
             $enumValues = $choice->choices;
@@ -229,7 +229,7 @@ class SymfonyConstraintAnnotationReader
      */
     private function isConstraintInGroup(Constraint $annotation, ?array $validationGroups): bool
     {
-        if (!$validationGroups) {
+        if (null === $validationGroups) {
             $validationGroups = [Constraint::DEFAULT_GROUP];
         }
 

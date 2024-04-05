@@ -154,6 +154,12 @@ final class Util
      * $property is determined from $parent::$_nested[$class]
      * it is expected to be a string nested property.
      *
+     * @template T of OA\AbstractAnnotation
+     *
+     * @param class-string<T> $class
+     *
+     * @return T
+     *
      * @see OA\AbstractAnnotation::$_nested
      */
     public static function getChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
@@ -188,7 +194,7 @@ final class Util
         $nested = $parent::$_nested;
         $collection = $nested[$class][0];
 
-        if ($properties) {
+        if ([] !== $properties) {
             $key = self::searchCollectionItem(
                 $parent->{$collection} && Generator::UNDEFINED !== $parent->{$collection} ? $parent->{$collection} : [],
                 $properties
@@ -288,7 +294,11 @@ final class Util
     /**
      * Create a new Object of $class with members $properties and set the context parent to be $parent.
      *
-     * @param string $class
+     * @template T of OA\AbstractAnnotation
+     *
+     * @param class-string<T> $class
+     *
+     * @return T
      *
      * @throws \InvalidArgumentException at an attempt to pass in properties that are found in $parent::$_nested
      */

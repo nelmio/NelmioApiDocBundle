@@ -164,7 +164,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     {
         $type = $config->getType();
 
-        if (!$builtinFormType = $this->getBuiltinFormType($type)) {
+        if (null === $builtinFormType = $this->getBuiltinFormType($type)) {
             // if form type is not builtin in Form component.
             $model = new Model(
                 new Type(Type::BUILTIN_TYPE_OBJECT, false, get_class($type->getInnerType())),

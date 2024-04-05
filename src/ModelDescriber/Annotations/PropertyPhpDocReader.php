@@ -50,13 +50,13 @@ class PropertyPhpDocReader
 
         /** @var Var_ $var */
         foreach ($docBlock->getTagsByName('var') as $var) {
-            if (!$title && method_exists($var, 'getDescription') && $description = $var->getDescription()) {
+            if (!$title && method_exists($var, 'getDescription') && null !== $description = $var->getDescription()) {
                 $title = $description->render();
             }
 
             if (
                 (!isset($min) || null !== $min) && (!isset($max) || null !== $max)
-                && method_exists($var, 'getType') && $varType = $var->getType()
+                && method_exists($var, 'getType') && null !== $varType = $var->getType()
             ) {
                 $types = $varType instanceof Compound
                     ? $varType->getIterator()

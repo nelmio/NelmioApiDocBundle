@@ -58,7 +58,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 
         /** @var Relation $relation */
         foreach ($metadata->getRelations() as $relation) {
-            if (!$relation->getEmbedded() && !$relation->getHref()) {
+            if (null === $relation->getEmbedded() && null === $relation->getHref()) {
                 continue;
             }
             $item = new RelationPropertyMetadata($relation->getExclusion(), $relation);
@@ -70,16 +70,16 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
             $context->pushPropertyMetadata($item);
 
             $embedded = $relation->getEmbedded();
-            $relationSchema = Util::getProperty($schema, $relation->getEmbedded() ? '_embedded' : '_links');
+            $relationSchema = Util::getProperty($schema, null !== $relation->getEmbedded() ? '_embedded' : '_links');
             $relationSchema->readOnly = true;
 
             $property = Util::getProperty($relationSchema, $relation->getName());
-            if ($embedded && method_exists($embedded, 'getType') && $embedded->getType()) {
+            if (null !== $embedded && method_exists($embedded, 'getType') && null !== $embedded->getType()) {
                 $this->JMSModelDescriber->describeItem($embedded->getType(), $property, $context);
             } else {
                 $property->type = 'object';
             }
-            if ($relation->getHref()) {
+            if (null !== $relation->getHref()) {
                 $hrefProp = Util::getProperty($property, 'href');
                 $hrefProp->type = 'string';
                 $this->setAttributeProperties($relation, $property);

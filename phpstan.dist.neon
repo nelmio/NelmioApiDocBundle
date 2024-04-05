@@ -7,7 +7,7 @@ includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
-    level: 1
+    level: 2
     paths:
         - src
         - tests
@@ -25,3 +25,16 @@ parameters:
         consoleApplicationLoader: tests/console-application.php
     strictRules:
         noVariableVariables: false # Neccessary for swagger-php integration
+    universalObjectCratesClasses:
+        - OpenApi\Context
+    ignoreErrors:
+        - '#Method Nelmio\\ApiDocBundle\\PropertyDescriber\\PropertyDescriberInterface::describe\(\) invoked with 5 parameters, 2-3 required.#'
+        -
+            message: "#^PHPDoc tag @param references unknown parameter\\: \\$context$#"
+            count: 1
+            path: src/PropertyDescriber/PropertyDescriberInterface.php
+
+        -
+            message: "#^PHPDoc tag @param references unknown parameter\\: \\$schema$#"
+            count: 1
+            path: src/PropertyDescriber/PropertyDescriberInterface.php
