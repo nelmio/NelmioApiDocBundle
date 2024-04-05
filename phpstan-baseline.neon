@@ -81,11 +81,6 @@ parameters:
 			path: src/RouteDescriber/FosRestDescriber.php
 
 		-
-			message: "#^Class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\ControllerNameParser not found\\.$#"
-			count: 1
-			path: src/Util/ControllerReflector.php
-
-		-
 			message: "#^Only booleans are allowed in &&, int\\<0, 1\\> given on the left side\\.$#"
 			count: 1
 			path: tests/Functional/TestKernel.php
