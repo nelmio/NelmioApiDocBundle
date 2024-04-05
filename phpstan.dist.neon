@@ -6,7 +6,6 @@ includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
-    phpVersion: 70400
     level: 1
     paths:
         - src
