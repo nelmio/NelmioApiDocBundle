@@ -1,0 +1,51 @@
+name: Composer setup
+description: Setup, install and cache Composer dependencies
+
+inputs:
+  symfony-version:
+    description: The required Symfony version that will be installed
+    required: true
+    type: string
+
+  install-doctrine-annotations:
+    description: If the doctrine/annotations package should be additionally installed as a dependency
+    required: true
+    type: boolean
+
+  composer-flags:
+    description: Additional flags that are passed to the `composer update` step
+    required: false
+    type: string
+
+runs:
+  using: composite
+  steps:
+    - name: Get Composer cache directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          ${{ runner.os }}-composer-
+
+    - name: Install doctrine/annotations
+      if: ${{ inputs.install-doctrine-annotations == 'true' }}
+      run: composer require --no-update doctrine/annotations
+      shell: bash
+
+    - name: Remove packages not compatible Symfony 7
+      if: ${{ inputs.symfony-version == '7.0.*' }}
+      run: composer remove --dev --no-update friendsofsymfony/rest-bundle sensio/framework-extra-bundle
+      shell: bash
+
+    - name: Install dependencies with Composer
+      env:
+        SYMFONY_REQUIRE: ${{ inputs.symfony-version }}
+      run: composer update --no-interaction --no-progress ${{ inputs.composer-flags }}
+      shell: bash

@@ -146,10 +146,10 @@ final class OpenApiPhpDescriber
                 }
 
                 if (
-                    !$annotation instanceof OA\Response &&
-                    !$annotation instanceof OA\RequestBody &&
-                    !$annotation instanceof OA\Parameter &&
-                    !$annotation instanceof OA\ExternalDocumentation
+                    !$annotation instanceof OA\Response
+                    && !$annotation instanceof OA\RequestBody
+                    && !$annotation instanceof OA\Parameter
+                    && !$annotation instanceof OA\ExternalDocumentation
                 ) {
                     throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', get_class($annotation), $method->getDeclaringClass()->name, $method->name));
                 }

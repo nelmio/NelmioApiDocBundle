@@ -20,9 +20,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class NelmioApiDocBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new ConfigurationPass());

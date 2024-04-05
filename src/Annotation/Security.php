@@ -19,7 +19,6 @@ use OpenApi\Annotations\AbstractAnnotation;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Security extends AbstractAnnotation
 {
-    /** {@inheritdoc} */
     public static $_types = [
         'name' => 'string',
         'scopes' => '[string]',
@@ -39,7 +38,7 @@ class Security extends AbstractAnnotation
 
     public function __construct(
         array $properties = [],
-        string $name = null,
+        ?string $name = null,
         array $scopes = []
     ) {
         parent::__construct($properties + [

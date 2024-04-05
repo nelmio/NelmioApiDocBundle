@@ -41,9 +41,6 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         $this->JMSModelDescriber->setModelRegistry($modelRegistry);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function describe(Model $model, OA\Schema $schema): void
     {
         $this->JMSModelDescriber->describe($model, $schema);
@@ -106,9 +103,6 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(Model $model): bool
     {
         return $this->JMSModelDescriber->supports($model) || null !== $this->getHateoasMetadata($model);

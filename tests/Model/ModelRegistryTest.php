@@ -17,7 +17,6 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ReflectionClass;
 use Symfony\Component\PropertyInfo\Type;
 
 class ModelRegistryTest extends TestCase
@@ -47,24 +46,24 @@ class ModelRegistryTest extends TestCase
             ->method('info')
             ->with(
                 'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.', [
-                'model' => [
-                    'type' => $arrayType,
-                    'options' => null,
-                    'groups' => ['group2'],
-                    'serialization_context' => [
+                    'model' => [
+                        'type' => $arrayType,
+                        'options' => null,
                         'groups' => ['group2'],
+                        'serialization_context' => [
+                            'groups' => ['group2'],
+                        ],
                     ],
-                ],
-                'taken_by' => [
-                    'type' => $arrayType,
-                    'options' => null,
-                    'groups' => ['group1'],
-                    'serialization_context' => [
+                    'taken_by' => [
+                        'type' => $arrayType,
+                        'options' => null,
                         'groups' => ['group1'],
-                        'extra_context' => true,
+                        'serialization_context' => [
+                            'groups' => ['group1'],
+                            'extra_context' => true,
+                        ],
                     ],
-                ],
-            ]);
+                ]);
 
         $registry = new ModelRegistry([], $this->createOpenApi(), []);
         $registry->setLogger($logger);
@@ -111,7 +110,7 @@ class ModelRegistryTest extends TestCase
 
     public function testNameCollisionsAreLoggedWithAlternativeNames()
     {
-        $ref = new ReflectionClass(self::class);
+        $ref = new \ReflectionClass(self::class);
         $alternativeNames = [
             $ref->getShortName() => [
                 'type' => $ref->getName(),
@@ -124,33 +123,33 @@ class ModelRegistryTest extends TestCase
             ->method('info')
             ->with(
                 'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.', [
-                'model' => [
-                    'type' => [
-                        'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
-                        'built_in_type' => 'object',
-                        'nullable' => false,
-                        'collection' => false,
-                        'collection_key_types' => null,
-                        'collection_value_types' => null,
+                    'model' => [
+                        'type' => [
+                            'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+                            'built_in_type' => 'object',
+                            'nullable' => false,
+                            'collection' => false,
+                            'collection_key_types' => null,
+                            'collection_value_types' => null,
+                        ],
+                        'options' => null,
+                        'groups' => ['group2'],
+                        'serialization_context' => ['groups' => ['group2']],
                     ],
-                    'options' => null,
-                    'groups' => ['group2'],
-                    'serialization_context' => ['groups' => ['group2']],
-                ],
-                'taken_by' => [
-                    'type' => [
-                        'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
-                        'built_in_type' => 'object',
-                        'nullable' => false,
-                        'collection' => false,
-                        'collection_key_types' => null,
-                        'collection_value_types' => null,
+                    'taken_by' => [
+                        'type' => [
+                            'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+                            'built_in_type' => 'object',
+                            'nullable' => false,
+                            'collection' => false,
+                            'collection_key_types' => null,
+                            'collection_value_types' => null,
+                        ],
+                        'options' => null,
+                        'groups' => ['group1'],
+                        'serialization_context' => ['groups' => ['group1']],
                     ],
-                    'options' => null,
-                    'groups' => ['group1'],
-                    'serialization_context' => ['groups' => ['group1']],
-                ],
-            ]);
+                ]);
 
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $registry->setLogger($logger);
