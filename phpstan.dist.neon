@@ -21,3 +21,5 @@ parameters:
         - Symfony\Component\HttpKernel\Kernel::MAJOR_VERSION
         - Symfony\Component\HttpKernel\Kernel::MINOR_VERSION
         - Symfony\Component\HttpKernel\Kernel::RELEASE_VERSION
+    symfony:
+        consoleApplicationLoader: tests/console-application.php
