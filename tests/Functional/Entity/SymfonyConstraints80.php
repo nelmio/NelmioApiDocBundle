@@ -33,7 +33,7 @@ class SymfonyConstraints80
     /**
      * @var int
      *
-     * @Assert\Length(min="0", max="50")
+     * @Assert\Length(min=0, max=50)
      */
     private $propertyAssertLength;
 
@@ -47,7 +47,7 @@ class SymfonyConstraints80
     /**
      * @var int
      *
-     * @Assert\Count(min="0", max="10")
+     * @Assert\Count(min=0, max=10)
      */
     private $propertyCount;
 
@@ -172,7 +172,7 @@ class SymfonyConstraints80
     }
 
     /**
-     * @Assert\Count(min="0", max="10")
+     * @Assert\Count(min=0, max=10)
      */
     public function setPropertyNotBlank(int $propertyNotBlank): void
     {

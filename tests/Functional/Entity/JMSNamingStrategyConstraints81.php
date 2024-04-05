@@ -23,7 +23,7 @@ class JMSNamingStrategyConstraints81
     #[Serializer\SerializedName('beautifulName')]
     #[Assert\NotBlank()]
     #[Assert\Regex(pattern: '\w+')]
-    #[Assert\Length(min: '3', max: '10')]
+    #[Assert\Length(min: 3, max: 10)]
     private $some_weird_named_property = 'default';
 
     public function getSomeWeirdNamedProperty(): string
