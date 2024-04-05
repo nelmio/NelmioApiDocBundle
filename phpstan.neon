@@ -1,6 +1,3 @@
-includes:
-    - phar://phpstan.phar/conf/bleedingEdge.neon
-
 parameters:
     phpVersion: 70400
     level: 6
