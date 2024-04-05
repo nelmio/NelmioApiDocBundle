@@ -168,21 +168,4 @@ class WebTestCase extends BaseWebTestCase
             sprintf('Failed asserting that property "%s" does not exist.', $property)
         );
     }
-
-    /**
-     * BC symfony < 5.3 and symfony >= 7.
-     *
-     * KernelTestCase::getContainer has a Container return type object in symfony 7
-     * which is incompatible with the return type of previous versions or
-     * at least the return type of overridden method (which was added for BC compatibility),
-     * hence moving it to the magic method.
-     */
-    public static function __callStatic(string $name, array $arguments)
-    {
-        if ('getContainer' === $name) {
-            return static::$container;
-        }
-
-        return null;
-    }
 }
