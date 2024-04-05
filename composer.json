@@ -62,7 +62,8 @@
 
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-symfony": "^1.3",
-        "phpstan/phpstan-phpunit": "^1.3"
+        "phpstan/phpstan-phpunit": "^1.3",
+        "phpstan/phpstan-strict-rules": "^1.5"
     },
     "conflict": {
         "zircote/swagger-php": "4.8.7"
