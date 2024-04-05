@@ -51,7 +51,7 @@ class NelmioApiDocExtensionTest extends TestCase
         $foundMethodCall = false;
         foreach ($methodCalls as $methodCall) {
             if ('setAlternativeNames' === $methodCall[0]) {
-                $this->assertEquals([
+                self::assertEquals([
                     'Foo1' => [
                         'type' => 'App\\Foo',
                         'groups' => null,
@@ -64,13 +64,13 @@ class NelmioApiDocExtensionTest extends TestCase
                 $foundMethodCall = true;
             }
         }
-        $this->assertTrue($foundMethodCall);
+        self::assertTrue($foundMethodCall);
 
         $methodCalls = $container->getDefinition('nelmio_api_doc.generator.commercial')->getMethodCalls();
         $foundMethodCall = false;
         foreach ($methodCalls as $methodCall) {
             if ('setAlternativeNames' === $methodCall[0]) {
-                $this->assertEquals([
+                self::assertEquals([
                     'Foo1' => [
                         'type' => 'App\\Bar',
                         'groups' => null,
@@ -83,7 +83,7 @@ class NelmioApiDocExtensionTest extends TestCase
                 $foundMethodCall = true;
             }
         }
-        $this->assertTrue($foundMethodCall);
+        self::assertTrue($foundMethodCall);
     }
 
     public function testMergesRootKeysFromMultipleConfigurations()
@@ -127,7 +127,7 @@ class NelmioApiDocExtensionTest extends TestCase
             ],
         ], $container);
 
-        $this->assertSame([
+        self::assertSame([
             'info' => [
                 'title' => 'API documentation',
                 'description' => 'This is the api documentation, use it wisely',
@@ -165,25 +165,25 @@ class NelmioApiDocExtensionTest extends TestCase
 
         $reference = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(2);
         if (null === $expectedValues['defaultCachePool']) {
-            $this->assertNull($reference);
+            self::assertNull($reference);
         } else {
-            $this->assertInstanceOf(Reference::class, $reference);
-            $this->assertSame($expectedValues['defaultCachePool'], (string) $reference);
+            self::assertInstanceOf(Reference::class, $reference);
+            self::assertSame($expectedValues['defaultCachePool'], (string) $reference);
         }
 
         $reference = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(2);
         if (null === $expectedValues['area1CachePool']) {
-            $this->assertNull($reference);
+            self::assertNull($reference);
         } else {
-            $this->assertInstanceOf(Reference::class, $reference);
-            $this->assertSame($expectedValues['area1CachePool'], (string) $reference);
+            self::assertInstanceOf(Reference::class, $reference);
+            self::assertSame($expectedValues['area1CachePool'], (string) $reference);
         }
 
         $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.default')->getArgument(3);
-        $this->assertSame($expectedValues['defaultCacheItemId'], $cacheItemId);
+        self::assertSame($expectedValues['defaultCacheItemId'], $cacheItemId);
 
         $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(3);
-        $this->assertSame($expectedValues['area1CacheItemId'], $cacheItemId);
+        self::assertSame($expectedValues['area1CacheItemId'], $cacheItemId);
     }
 
     public static function provideCacheConfig(): iterable

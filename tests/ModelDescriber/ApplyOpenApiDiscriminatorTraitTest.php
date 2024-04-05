@@ -43,15 +43,15 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
             'two' => 'SecondType',
         ]);
 
-        $this->assertInstanceOf(OA\Discriminator::class, $this->schema->discriminator);
-        $this->assertSame('type', $this->schema->discriminator->propertyName);
-        $this->assertArrayHasKey('one', $this->schema->discriminator->mapping);
-        $this->assertSame(
+        self::assertInstanceOf(OA\Discriminator::class, $this->schema->discriminator);
+        self::assertSame('type', $this->schema->discriminator->propertyName);
+        self::assertArrayHasKey('one', $this->schema->discriminator->mapping);
+        self::assertSame(
             $this->modelRegistry->register($this->createModel('FirstType')),
             $this->schema->discriminator->mapping['one']
         );
-        $this->assertArrayHasKey('two', $this->schema->discriminator->mapping);
-        $this->assertSame(
+        self::assertArrayHasKey('two', $this->schema->discriminator->mapping);
+        self::assertSame(
             $this->modelRegistry->register($this->createModel('SecondType')),
             $this->schema->discriminator->mapping['two']
         );
@@ -64,13 +64,13 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
             'two' => 'SecondType',
         ]);
 
-        $this->assertNotSame(Generator::UNDEFINED, $this->schema->oneOf);
-        $this->assertCount(2, $this->schema->oneOf);
-        $this->assertSame(
+        self::assertNotSame(Generator::UNDEFINED, $this->schema->oneOf);
+        self::assertCount(2, $this->schema->oneOf);
+        self::assertSame(
             $this->modelRegistry->register($this->createModel('FirstType')),
             $this->schema->oneOf[0]->ref
         );
-        $this->assertSame(
+        self::assertSame(
             $this->modelRegistry->register($this->createModel('SecondType')),
             $this->schema->oneOf[1]->ref
         );

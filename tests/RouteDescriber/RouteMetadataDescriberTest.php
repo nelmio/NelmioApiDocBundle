@@ -24,7 +24,7 @@ class RouteMetadataDescriberTest extends TestCase
     {
         $routeDescriber = new RouteMetadataDescriber();
 
-        $this->assertNull($routeDescriber->describe(new OpenApi(['_context' => new Context()]), new Route('foo'), new \ReflectionMethod(__CLASS__, 'testUndefinedCheck')));
+        self::assertNull($routeDescriber->describe(new OpenApi(['_context' => new Context()]), new Route('foo'), new \ReflectionMethod(__CLASS__, 'testUndefinedCheck')));
     }
 
     public function testRouteRequirementsWithPattern()
@@ -38,13 +38,13 @@ class RouteMetadataDescriberTest extends TestCase
             new \ReflectionMethod(__CLASS__, 'testRouteRequirementsWithPattern')
         );
 
-        $this->assertEquals('/index/{bar}/{foo}.html', $api->paths[0]->path);
+        self::assertEquals('/index/{bar}/{foo}.html', $api->paths[0]->path);
         $getPathParameter = $api->paths[0]->get->parameters[1];
         if ('foo' === $getPathParameter->name) {
-            $this->assertEquals('path', $getPathParameter->in);
-            $this->assertEquals('foo', $getPathParameter->name);
-            $this->assertEquals('string', $getPathParameter->schema->type);
-            $this->assertEquals('[0-9]|[a-z]', $getPathParameter->schema->pattern);
+            self::assertEquals('path', $getPathParameter->in);
+            self::assertEquals('foo', $getPathParameter->name);
+            self::assertEquals('string', $getPathParameter->schema->type);
+            self::assertEquals('[0-9]|[a-z]', $getPathParameter->schema->pattern);
         }
     }
 
@@ -62,13 +62,13 @@ class RouteMetadataDescriberTest extends TestCase
             new \ReflectionMethod(__CLASS__, 'testSimpleOrRequirementsAreHandledAsEnums')
         );
 
-        $this->assertEquals('/index/{bar}/{foo}.html', $api->paths[0]->path);
+        self::assertEquals('/index/{bar}/{foo}.html', $api->paths[0]->path);
         $getPathParameter = $api->paths[0]->get->parameters[1];
-        $this->assertEquals('path', $getPathParameter->in);
-        $this->assertEquals('foo', $getPathParameter->name);
-        $this->assertEquals('string', $getPathParameter->schema->type);
-        $this->assertEquals(explode('|', $req), $getPathParameter->schema->enum);
-        $this->assertEquals($req, $getPathParameter->schema->pattern);
+        self::assertEquals('path', $getPathParameter->in);
+        self::assertEquals('foo', $getPathParameter->name);
+        self::assertEquals('string', $getPathParameter->schema->type);
+        self::assertEquals(explode('|', $req), $getPathParameter->schema->enum);
+        self::assertEquals($req, $getPathParameter->schema->pattern);
     }
 
     /**
@@ -86,8 +86,8 @@ class RouteMetadataDescriberTest extends TestCase
         );
 
         $getPathParameter = $api->paths[0]->get->parameters[0];
-        $this->assertEquals($pattern, $getPathParameter->schema->pattern);
-        $this->assertEquals(Generator::UNDEFINED, $getPathParameter->schema->enum);
+        self::assertEquals($pattern, $getPathParameter->schema->pattern);
+        self::assertEquals(Generator::UNDEFINED, $getPathParameter->schema->enum);
     }
 
     public function provideEnumPattern()

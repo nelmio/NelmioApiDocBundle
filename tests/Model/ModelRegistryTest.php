@@ -32,7 +32,7 @@ class ModelRegistryTest extends TestCase
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true);
 
-        $this->assertEquals('#/components/schemas/array', $registry->register(new Model($type, ['group1'])));
+        self::assertEquals('#/components/schemas/array', $registry->register(new Model($type, ['group1'])));
     }
 
     /**
@@ -166,7 +166,7 @@ class ModelRegistryTest extends TestCase
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
 
-        $this->assertEquals($expected, $registry->register(new Model($type, $groups)));
+        self::assertEquals($expected, $registry->register(new Model($type, $groups)));
     }
 
     public function getNameAlternatives()
@@ -248,11 +248,11 @@ class ModelRegistryTest extends TestCase
 
     public function testUnsupportedTypeExceptionWithNonExistentClass()
     {
-        $className = DoesNotExist::class;
+        $className = 'Some\\Class\\That\\DoesNotExist';
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, $className);
 
-        $this->expectException('\LogicException');
-        $this->expectExceptionMessage(sprintf('Schema of type "\%s" can\'t be generated, no describer supports it. Class "\Nelmio\ApiDocBundle\Tests\Model\DoesNotExist" does not exist, did you forget a use statement, or typed it wrong?', $className));
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf('Schema of type "\%s" can\'t be generated, no describer supports it. Class "\Some\Class\That\DoesNotExist" does not exist, did you forget a use statement, or typed it wrong?', $className));
 
         $registry = new ModelRegistry([], $this->createOpenApi());
         $registry->register(new Model($type));

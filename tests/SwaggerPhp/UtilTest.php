@@ -65,22 +65,22 @@ class UtilTest extends TestCase
     {
         $context = Util::createContext(['testing' => 'trait']);
 
-        $this->assertTrue($context->is('testing'));
-        $this->assertSame('trait', $context->testing);
+        self::assertTrue($context->is('testing'));
+        self::assertSame('trait', $context->testing);
     }
 
     public function testCreateChild()
     {
         $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
-        $this->assertInstanceOf(OA\Info::class, $info);
+        self::assertInstanceOf(OA\Info::class, $info);
     }
 
     public function testCreateChildHasContext()
     {
         $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
-        $this->assertInstanceOf(Context::class, $info->_context);
+        self::assertInstanceOf(Context::class, $info->_context);
     }
 
     public function testCreateChildHasNestedContext()
@@ -107,7 +107,7 @@ class UtilTest extends TestCase
             return 0 !== \strpos($key, '_');
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->assertEquals([Generator::UNDEFINED], array_unique(array_values($properties)));
+        self::assertEquals([Generator::UNDEFINED], array_unique(array_values($properties)));
 
         $this->assertIsNested($this->rootAnnotation, $info);
         $this->assertIsConnectedToRootContext($info);
@@ -119,9 +119,9 @@ class UtilTest extends TestCase
         /** @var OA\Info $info */
         $info = Util::createChild($this->rootAnnotation, OA\Info::class, $properties);
 
-        $this->assertSame($info->title, $properties['title']);
-        $this->assertSame($info->version, $properties['version']);
-        $this->assertSame($info->x, $properties['x']);
+        self::assertSame($info->title, $properties['title']);
+        self::assertSame($info->version, $properties['version']);
+        self::assertSame($info->x, $properties['x']);
 
         $this->assertIsNested($this->rootAnnotation, $info);
         $this->assertIsConnectedToRootContext($info);
@@ -133,16 +133,16 @@ class UtilTest extends TestCase
         $class = OA\PathItem::class;
 
         $p1 = Util::createCollectionItem($this->rootAnnotation, $collection, $class);
-        $this->assertSame(0, $p1);
-        $this->assertCount(1, $this->rootAnnotation->{$collection});
-        $this->assertInstanceOf($class, $this->rootAnnotation->{$collection}[$p1]);
+        self::assertSame(0, $p1);
+        self::assertCount(1, $this->rootAnnotation->{$collection});
+        self::assertInstanceOf($class, $this->rootAnnotation->{$collection}[$p1]);
         $this->assertIsNested($this->rootAnnotation, $this->rootAnnotation->{$collection}[$p1]);
         $this->assertIsConnectedToRootContext($this->rootAnnotation->{$collection}[$p1]);
 
         $p2 = Util::createCollectionItem($this->rootAnnotation, $collection, $class);
-        $this->assertSame(1, $p2);
-        $this->assertCount(2, $this->rootAnnotation->{$collection});
-        $this->assertInstanceOf($class, $this->rootAnnotation->{$collection}[$p2]);
+        self::assertSame(1, $p2);
+        self::assertCount(2, $this->rootAnnotation->{$collection});
+        self::assertInstanceOf($class, $this->rootAnnotation->{$collection}[$p2]);
         $this->assertIsNested($this->rootAnnotation, $this->rootAnnotation->{$collection}[$p2]);
         $this->assertIsConnectedToRootContext($this->rootAnnotation->{$collection}[$p2]);
 
@@ -152,9 +152,9 @@ class UtilTest extends TestCase
         $class = OA\Schema::class;
 
         $d1 = Util::createCollectionItem($this->rootAnnotation->components, $collection, $class);
-        $this->assertSame(0, $d1);
-        $this->assertCount(1, $this->rootAnnotation->components->{$collection});
-        $this->assertInstanceOf($class, $this->rootAnnotation->components->{$collection}[$d1]);
+        self::assertSame(0, $d1);
+        self::assertCount(1, $this->rootAnnotation->components->{$collection});
+        self::assertInstanceOf($class, $this->rootAnnotation->components->{$collection}[$d1]);
         $this->assertIsNested($this->rootAnnotation->components, $this->rootAnnotation->components->{$collection}[$d1]);
         $this->assertIsConnectedToRootContext($this->rootAnnotation->components->{$collection}[$d1]);
     }
@@ -169,7 +169,7 @@ class UtilTest extends TestCase
         $this->expectOutputRegex($expectedRegex);
         Util::createCollectionItem($this->rootAnnotation, $collection, $class);
         $this->expectOutputRegex($expectedRegex);
-        $this->assertNull($this->rootAnnotation->{$collection});
+        self::assertNull($this->rootAnnotation->{$collection});
         restore_error_handler();
     }
 
@@ -190,10 +190,10 @@ class UtilTest extends TestCase
             $item2,
         ];
 
-        $this->assertSame(0, Util::searchCollectionItem($collection, \get_object_vars($item1)));
-        $this->assertSame(1, Util::searchCollectionItem($collection, \get_object_vars($item2)));
+        self::assertSame(0, Util::searchCollectionItem($collection, \get_object_vars($item1)));
+        self::assertSame(1, Util::searchCollectionItem($collection, \get_object_vars($item2)));
 
-        $this->assertNull(Util::searchCollectionItem(
+        self::assertNull(Util::searchCollectionItem(
             $collection,
             array_merge(\get_object_vars($item2), ['prop3' => 'foobar'])
         ));
@@ -208,7 +208,7 @@ class UtilTest extends TestCase
         }
 
         // no exception on empty collection
-        $this->assertNull(Util::searchCollectionItem([], \get_object_vars($item2)));
+        self::assertNull(Util::searchCollectionItem([], \get_object_vars($item2)));
     }
 
     /**
@@ -218,7 +218,7 @@ class UtilTest extends TestCase
     {
         foreach ($asserts as $collection => $items) {
             foreach ($items as $assert) {
-                $setupCollection = empty($assert['components']) ?
+                $setupCollection = !isset($assert['components']) ?
                     ($setup[$collection] ?? []) :
                     (Generator::UNDEFINED !== $setup['components']->{$collection} ? $setup['components']->{$collection} : []);
 
@@ -233,7 +233,7 @@ class UtilTest extends TestCase
                     ]);
                 }
 
-                $this->assertSame(
+                self::assertSame(
                     $assert['index'],
                     Util::searchIndexedCollectionItem($properties, $assert['key'], $assert['value']),
                     sprintf('Failed to get the correct index for %s', print_r($assert, true))
@@ -254,7 +254,7 @@ class UtilTest extends TestCase
 
         foreach ($asserts as $collection => $items) {
             foreach ($items as $assert) {
-                $itemParent = empty($assert['components']) ? $parent : $parent->components;
+                $itemParent = !isset($assert['components']) ? $parent : $parent->components;
 
                 $child = Util::getIndexedCollectionItem(
                     $itemParent,
@@ -262,14 +262,14 @@ class UtilTest extends TestCase
                     $assert['value']
                 );
 
-                $this->assertInstanceOf($assert['class'], $child);
-                $this->assertSame($child->{$assert['key']}, $assert['value']);
-                $this->assertSame(
+                self::assertInstanceOf($assert['class'], $child);
+                self::assertSame($child->{$assert['key']}, $assert['value']);
+                self::assertSame(
                     $itemParent->{$collection}[$assert['index']],
                     $child
                 );
 
-                $setupHaystack = empty($assert['components']) ?
+                $setupHaystack = !isset($assert['components']) ?
                     $setup[$collection] ?? [] :
                     $setup['components']->{$collection} ?? [];
 
@@ -384,14 +384,14 @@ class UtilTest extends TestCase
             }
             $child = Util::getChild($parent, $assert['class'], $assert['props']);
 
-            $this->assertInstanceOf($assert['class'], $child);
-            $this->assertSame($child, $parent->{$key});
+            self::assertInstanceOf($assert['class'], $child);
+            self::assertSame($child, $parent->{$key});
 
             if (\array_key_exists($key, $setup)) {
-                $this->assertSame($setup[$key], $parent->{$key});
+                self::assertSame($setup[$key], $parent->{$key});
             }
 
-            $this->assertEquals($assert['props'], $this->getNonDefaultProperties($child));
+            self::assertEquals($assert['props'], $this->getNonDefaultProperties($child));
         }
     }
 
@@ -470,7 +470,7 @@ class UtilTest extends TestCase
         ]]);
 
         $actual = Util::getOperationParameter($operation, $name, $in);
-        $this->assertSame($parameter, $actual);
+        self::assertSame($parameter, $actual);
     }
 
     public function testGetOperationParameterCreatesWithNameAndIn()
@@ -487,9 +487,9 @@ class UtilTest extends TestCase
         ]]);
 
         $actual = Util::getOperationParameter($operation, $name, $in);
-        $this->assertInstanceOf(OA\Parameter::class, $actual);
-        $this->assertSame($name, $actual->name);
-        $this->assertSame($in, $actual->in);
+        self::assertInstanceOf(OA\Parameter::class, $actual);
+        self::assertSame($name, $actual->name);
+        self::assertSame($in, $actual->in);
     }
 
     public function testGetOperationReturnsExisting()
@@ -497,7 +497,7 @@ class UtilTest extends TestCase
         $get = $this->createObj(OA\Get::class, []);
         $path = $this->createObj(OA\PathItem::class, ['get' => $get]);
 
-        $this->assertSame($get, Util::getOperation($path, 'get'));
+        self::assertSame($get, Util::getOperation($path, 'get'));
     }
 
     public function testGetOperationCreatesWithPath()
@@ -506,8 +506,8 @@ class UtilTest extends TestCase
         $path = $this->createObj(OA\PathItem::class, ['path' => $pathStr]);
 
         $get = Util::getOperation($path, 'get');
-        $this->assertInstanceOf(OA\Get::class, $get);
-        $this->assertSame($pathStr, $get->path);
+        self::assertInstanceOf(OA\Get::class, $get);
+        self::assertSame($pathStr, $get->path);
     }
 
     public function testMergeWithEmptyArray()
@@ -518,12 +518,12 @@ class UtilTest extends TestCase
         Util::merge($api, [], false);
         $actual = json_encode($api);
 
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
 
         Util::merge($api, [], true);
         $actual = json_encode($api);
 
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -534,10 +534,10 @@ class UtilTest extends TestCase
         $api = $this->createObj(OA\OpenApi::class, $setup + ['_context' => new Context()]);
 
         Util::merge($api, $merge, false);
-        $this->assertTrue($api->validate());
+        self::assertTrue($api->validate());
         $actual = json_decode(json_encode($api), true);
 
-        $this->assertEquals($assert, $actual);
+        self::assertEquals($assert, $actual);
     }
 
     public function provideMergeData(): array
@@ -842,7 +842,7 @@ class UtilTest extends TestCase
 
     public function assertContextIsConnectedToRootContext(Context $context)
     {
-        $this->assertSame($this->rootContext, $context->root());
+        self::assertSame($this->rootContext, $context->root());
     }
 
     private function getSetupPropertiesWithoutClass(array $setup)

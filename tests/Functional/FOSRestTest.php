@@ -26,7 +26,7 @@ class FOSRestTest extends WebTestCase
     protected function setUp(): void
     {
         if (Kernel::MAJOR_VERSION >= 7) {
-            $this->markTestSkipped('Not supported in symfony 7');
+            self::markTestSkipped('Not supported in symfony 7');
         }
 
         parent::setUp();
@@ -41,44 +41,44 @@ class FOSRestTest extends WebTestCase
     {
         $operation = $this->getOperation($route, 'post');
 
-        $this->assertHasParameter('foo', 'query', $operation);
-        $this->assertInstanceOf(OA\RequestBody::class, $operation->requestBody);
+        self::assertHasParameter('foo', 'query', $operation);
+        self::assertInstanceOf(OA\RequestBody::class, $operation->requestBody);
 
         $bodySchema = $operation->requestBody->content['application/json']->schema;
 
-        $this->assertHasProperty('bar', $bodySchema);
-        $this->assertHasProperty('baz', $bodySchema);
+        self::assertHasProperty('bar', $bodySchema);
+        self::assertHasProperty('baz', $bodySchema);
 
         $fooParameter = $this->getParameter($operation, 'foo', 'query');
-        $this->assertInstanceOf(OA\Schema::class, $fooParameter->schema);
-        $this->assertEquals('\d+', $fooParameter->schema->pattern);
-        $this->assertEquals(Generator::UNDEFINED, $fooParameter->schema->format);
+        self::assertInstanceOf(OA\Schema::class, $fooParameter->schema);
+        self::assertEquals('\d+', $fooParameter->schema->pattern);
+        self::assertEquals(Generator::UNDEFINED, $fooParameter->schema->format);
 
         $mappedParameter = $this->getParameter($operation, 'mapped[]', 'query');
-        $this->assertTrue($mappedParameter->explode);
+        self::assertTrue($mappedParameter->explode);
 
         $barProperty = $this->getProperty($bodySchema, 'bar');
-        $this->assertEquals('\d+', $barProperty->pattern);
-        $this->assertEquals(Generator::UNDEFINED, $barProperty->format);
+        self::assertEquals('\d+', $barProperty->pattern);
+        self::assertEquals(Generator::UNDEFINED, $barProperty->format);
 
         $bazProperty = $this->getProperty($bodySchema, 'baz');
-        $this->assertEquals(Generator::UNDEFINED, $bazProperty->pattern);
-        $this->assertEquals('IsTrue', $bazProperty->format);
+        self::assertEquals(Generator::UNDEFINED, $bazProperty->pattern);
+        self::assertEquals('IsTrue', $bazProperty->format);
 
         $dateTimeProperty = $this->getProperty($bodySchema, 'datetime');
-        $this->assertEquals('date-time', $dateTimeProperty->format);
+        self::assertEquals('date-time', $dateTimeProperty->format);
 
         $dateTimeAltProperty = $this->getProperty($bodySchema, 'datetimeAlt');
-        $this->assertEquals('date-time', $dateTimeAltProperty->format);
+        self::assertEquals('date-time', $dateTimeAltProperty->format);
 
         $dateTimeNoFormatProperty = $this->getProperty($bodySchema, 'datetimeNoFormat');
-        $this->assertEquals(Generator::UNDEFINED, $dateTimeNoFormatProperty->format);
+        self::assertEquals(Generator::UNDEFINED, $dateTimeNoFormatProperty->format);
 
         $dateProperty = $this->getProperty($bodySchema, 'date');
-        $this->assertEquals('date', $dateProperty->format);
+        self::assertEquals('date', $dateProperty->format);
 
         // The _format path attribute should be removed
-        $this->assertNotHasParameter('_format', 'path', $operation);
+        self::assertNotHasParameter('_format', 'path', $operation);
     }
 
     public function provideRoute(): iterable

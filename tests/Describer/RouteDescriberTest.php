@@ -30,10 +30,10 @@ class RouteDescriberTest extends AbstractDescriberTest
     public function testIgnoreWhenNoController()
     {
         $this->routes->add('foo', new Route('foo'));
-        $this->routeDescriber->expects($this->never())
+        $this->routeDescriber->expects(self::never())
             ->method('describe');
 
-        $this->assertEquals((new OpenApi(['_context' => new Context()]))->toJson(), $this->getOpenApiDoc()->toJson());
+        self::assertEquals((new OpenApi(['_context' => new Context()]))->toJson(), $this->getOpenApiDoc()->toJson());
     }
 
     protected function setUp(): void

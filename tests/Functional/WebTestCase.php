@@ -31,7 +31,7 @@ class WebTestCase extends BaseWebTestCase
     public function hasModel(string $name): bool
     {
         $api = $this->getOpenApiDefinition();
-        $key = array_search($name, array_column($api->components->schemas, 'schema'));
+        $key = array_search($name, array_column($api->components->schemas, 'schema'), true);
 
         return false !== $key;
     }
@@ -39,7 +39,7 @@ class WebTestCase extends BaseWebTestCase
     protected function getModel($name): OA\Schema
     {
         $api = $this->getOpenApiDefinition();
-        $key = array_search($name, array_column($api->components->schemas, 'schema'));
+        $key = array_search($name, array_column($api->components->schemas, 'schema'), true);
         static::assertNotFalse($key, sprintf('Model "%s" does not exist.', $name));
 
         return $api->components->schemas[$key];
@@ -49,7 +49,7 @@ class WebTestCase extends BaseWebTestCase
     {
         $path = $this->getPath($path);
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             OA\Operation::class,
             $path->{$method},
             sprintf('Operation "%s" for path "%s" does not exist', $method, $path->path)
@@ -61,7 +61,7 @@ class WebTestCase extends BaseWebTestCase
     protected function getOperationResponse(OA\Operation $operation, $response): OA\Response
     {
         $this->assertHasResponse($response, $operation);
-        $key = array_search($response, array_column($operation->responses, 'response'));
+        $key = array_search($response, array_column($operation->responses, 'response'), true);
 
         return $operation->responses[$key];
     }
@@ -69,7 +69,7 @@ class WebTestCase extends BaseWebTestCase
     protected function getProperty(OA\Schema $annotation, $property): OA\Property
     {
         $this->assertHasProperty($property, $annotation);
-        $key = array_search($property, array_column($annotation->properties, 'property'));
+        $key = array_search($property, array_column($annotation->properties, 'property'), true);
 
         return $annotation->properties[$key];
     }
@@ -78,7 +78,7 @@ class WebTestCase extends BaseWebTestCase
     {
         /* @var OA\Operation|OA\OpenApi $annotation */
         $this->assertHasParameter($name, $in, $annotation);
-        $parameters = array_filter($annotation->parameters ?: [], function (OA\Parameter $parameter) use ($name, $in) {
+        $parameters = array_filter($annotation->parameters ?? [], function (OA\Parameter $parameter) use ($name, $in) {
             return $parameter->name === $name && $parameter->in === $in;
         });
 
@@ -90,7 +90,7 @@ class WebTestCase extends BaseWebTestCase
         $api = $this->getOpenApiDefinition();
         self::assertHasPath($path, $api);
 
-        return $api->paths[array_search($path, array_column($api->paths, 'path'))];
+        return $api->paths[array_search($path, array_column($api->paths, 'path'), true)];
     }
 
     public function assertHasPath($path, OA\OpenApi $api)

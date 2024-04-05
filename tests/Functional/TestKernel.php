@@ -363,16 +363,6 @@ class TestKernel extends Kernel
         return parent::getLogDir().'/'.$this->flags;
     }
 
-    public function serialize()
-    {
-        return serialize($this->useJMS);
-    }
-
-    public function unserialize($str)
-    {
-        $this->__construct(unserialize($str));
-    }
-
     public static function isAnnotationsAvailable(): bool
     {
         if (Kernel::MAJOR_VERSION <= 5) {

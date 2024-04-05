@@ -22,7 +22,7 @@ class ConfigurationTest extends TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => ['path_patterns' => ['/foo']]]]);
 
-        $this->assertSame(
+        self::assertSame(
             [
                 'default' => [
                     'path_patterns' => ['/foo'],
@@ -67,7 +67,7 @@ class ConfigurationTest extends TestCase
             ],
         ]]]);
 
-        $this->assertSame($areas, $config['areas']);
+        self::assertSame($areas, $config['areas']);
     }
 
     public function testAlternativeNames()
@@ -109,7 +109,7 @@ class ConfigurationTest extends TestCase
                 ],
             ],
         ]]);
-        $this->assertEquals([
+        self::assertEquals([
             [
                 'alias' => 'Foo1',
                 'type' => 'App\Foo',
