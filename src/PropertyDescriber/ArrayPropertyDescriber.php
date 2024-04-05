@@ -31,7 +31,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         foreach ($types[0]->getCollectionValueTypes() as $type) {
             // Handle list pseudo type
             // https://symfony.com/doc/current/components/property_info.html#type-getcollectionkeytypes-type-getcollectionvaluetypes
-            if ($this->supports([$type]) && empty($type->getCollectionValueTypes())) {
+            if ($this->supports([$type]) && !$type->getCollectionValueTypes()) {
                 continue;
             }
 
@@ -45,7 +45,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
             return false;
         }
 
-        if (empty($types[0]->getCollectionKeyTypes())) {
+        if (!$types[0]->getCollectionKeyTypes()) {
             return true;
         }
 

@@ -56,9 +56,11 @@ class PropertyPhpDocReader
 
             if (
                 (!isset($min) || null !== $min) && (!isset($max) || null !== $max)
-                && method_exists($var, 'getType') && $type = $var->getType()
+                && method_exists($var, 'getType') && $varType = $var->getType()
             ) {
-                $types = $type instanceof Compound ? $type->getIterator() : [$type];
+                $types = $varType instanceof Compound
+                    ? $varType->getIterator()
+                    : [$varType];
 
                 foreach ($types as $type) {
                     if ($type instanceof IntegerRange) {

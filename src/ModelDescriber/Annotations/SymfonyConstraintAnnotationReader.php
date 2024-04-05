@@ -94,19 +94,19 @@ class SymfonyConstraintAnnotationReader
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
             } elseif ($annotation instanceof Assert\Length) {
                 if (isset($annotation->min)) {
-                    $property->minLength = (int) $annotation->min;
+                    $property->minLength = $annotation->min;
                 }
                 if (isset($annotation->max)) {
-                    $property->maxLength = (int) $annotation->max;
+                    $property->maxLength = $annotation->max;
                 }
             } elseif ($annotation instanceof Assert\Regex) {
                 $this->appendPattern($property, $annotation->getHtmlPattern());
             } elseif ($annotation instanceof Assert\Count) {
                 if (isset($annotation->min)) {
-                    $property->minItems = (int) $annotation->min;
+                    $property->minItems = $annotation->min;
                 }
                 if (isset($annotation->max)) {
-                    $property->maxItems = (int) $annotation->max;
+                    $property->maxItems = $annotation->max;
                 }
             } elseif ($annotation instanceof Assert\Choice) {
                 $this->applyEnumFromChoiceConstraint($property, $annotation, $reflection);
@@ -229,9 +229,13 @@ class SymfonyConstraintAnnotationReader
      */
     private function isConstraintInGroup(Constraint $annotation, ?array $validationGroups): bool
     {
-        return count(array_intersect(
-            $validationGroups ?: [Constraint::DEFAULT_GROUP],
+        if (!$validationGroups) {
+            $validationGroups = [Constraint::DEFAULT_GROUP];
+        }
+
+        return [] !== array_intersect(
+            $validationGroups,
             (array) $annotation->groups
-        )) > 0;
+        );
     }
 }

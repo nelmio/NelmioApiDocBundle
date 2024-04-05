@@ -35,10 +35,17 @@ class FormModelDescriberTest extends TestCase
         $formConfigMock = $this->createMock(FormConfigInterface::class);
         $formConfigMock->expects($this->exactly($csrfProtectionEnabled ? 2 : 1))
             ->method('getOption')
-            ->willReturnMap([
-                ['csrf_protection', false, $csrfProtectionEnabled],
-                ['csrf_field_name', null, $tokenName],
-            ]);
+            ->willReturnCallback(function (string $option, mixed $default) use ($csrfProtectionEnabled, $tokenName) {
+                if ('csrf_protection' === $option) {
+                    return $csrfProtectionEnabled;
+                }
+
+                if ('csrf_field_name' === $option) {
+                    return $tokenName;
+                }
+
+                return $default;
+            });
 
         $formMock = $this->createMock(FormInterface::class);
         $formMock->expects($this->exactly($csrfProtectionEnabled ? 2 : 1))

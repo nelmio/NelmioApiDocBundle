@@ -157,7 +157,7 @@ final class OpenApiPhpDescriber
                 $implicitAnnotations[] = $annotation;
             }
 
-            if (empty($implicitAnnotations) && empty(get_object_vars($mergeProperties))) {
+            if (!$implicitAnnotations && !get_object_vars($mergeProperties)) {
                 continue;
             }
 
@@ -189,7 +189,7 @@ final class OpenApiPhpDescriber
             }
             $path = $this->normalizePath($route->getPath());
             $supportedHttpMethods = $this->getSupportedHttpMethods($route);
-            if (empty($supportedHttpMethods)) {
+            if (!$supportedHttpMethods) {
                 $this->logger->warning('None of the HTTP methods specified for path {path} are supported by swagger-ui, skipping this path', [
                     'path' => $path,
                 ]);
@@ -205,7 +205,12 @@ final class OpenApiPhpDescriber
         $allMethods = Util::OPERATIONS;
         $methods = array_map('strtolower', $route->getMethods());
 
-        return array_intersect($methods ?: $allMethods, $allMethods);
+        // an empty array means that any method is allowed
+        if ([] === $methods) {
+            return $allMethods;
+        }
+
+        return array_intersect($methods, $allMethods);
     }
 
     private function normalizePath(string $path): string

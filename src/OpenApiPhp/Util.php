@@ -188,7 +188,7 @@ final class Util
         $nested = $parent::$_nested;
         $collection = $nested[$class][0];
 
-        if (!empty($properties)) {
+        if ($properties) {
             $key = self::searchCollectionItem(
                 $parent->{$collection} && Generator::UNDEFINED !== $parent->{$collection} ? $parent->{$collection} : [],
                 $properties
@@ -241,7 +241,7 @@ final class Util
      */
     public static function searchCollectionItem(array $collection, array $properties)
     {
-        foreach ($collection ?: [] as $i => $child) {
+        foreach ($collection as $i => $child) {
             foreach ($properties as $k => $prop) {
                 if ($child->{$k} !== $prop) {
                     continue 2;
@@ -279,7 +279,7 @@ final class Util
             $parent->{$collection} = [];
         }
 
-        $key = \count($parent->{$collection} ?: []);
+        $key = \count($parent->{$collection} ?? []);
         $parent->{$collection}[$key] = self::createChild($parent, $class, $properties);
 
         return $key;
@@ -296,7 +296,7 @@ final class Util
     {
         $nesting = self::getNestingIndexes($class);
 
-        if (!empty(array_intersect(array_keys($properties), $nesting))) {
+        if ([] !== array_intersect(array_keys($properties), $nesting)) {
             throw new \InvalidArgumentException('Nesting Annotations is not supported.');
         }
 
@@ -426,7 +426,11 @@ final class Util
                     $annotation->x = [];
                 }
 
-                $annotation->x = [$propertyName => $value] + ($annotation->x ?: []);
+                $annotation->x = [
+                    $propertyName => $value,
+                    ...$annotation->x ?? [],
+                ];
+
                 continue;
             }
 

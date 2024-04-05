@@ -36,7 +36,7 @@ final class Areas
                 throw new \InvalidArgumentException('An area must be given as a string');
             }
 
-            if (!in_array($area, $areas)) {
+            if (!in_array($area, $areas, true)) {
                 $areas[] = $area;
             }
         }

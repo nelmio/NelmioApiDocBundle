@@ -140,7 +140,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             $this->findFormType($config, $property);
         }
 
-        if ($this->isFormCsrfExtensionEnabled && $form->getConfig()->getOption('csrf_protection', false)) {
+        if ($this->isFormCsrfExtensionEnabled && true === $form->getConfig()->getOption('csrf_protection')) {
             $tokenFieldName = $form->getConfig()->getOption('csrf_field_name');
 
             $property = Util::getProperty($schema, $tokenFieldName);
@@ -174,7 +174,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
             $ref = $this->modelRegistry->register($model);
             // We need to use allOf for description and title to be displayed
-            if ($config->hasOption('documentation') && !empty($config->getOption('documentation'))) {
+            if ($config->hasOption('documentation') && [] !== $config->getOption('documentation')) {
                 $property->oneOf = [new OA\Schema(['ref' => $ref])];
             } else {
                 $property->ref = $ref;
@@ -219,12 +219,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             }
 
             if ('choice' === $blockPrefix) {
-                if ($config->getOption('multiple')) {
+                if (true === $config->getOption('multiple')) {
                     $property->type = 'array';
                 } else {
                     $property->type = 'string';
                 }
-                if (($choices = $config->getOption('choices')) && is_array($choices) && count($choices)) {
+                if ([] !== $choices = $config->getOption('choices')) {
                     $enums = array_values($choices);
                     if ($this->isNumbersArray($enums)) {
                         $type = 'number';
@@ -234,7 +234,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                         $type = 'string';
                     }
 
-                    if ($config->getOption('multiple')) {
+                    if (true === $config->getOption('multiple')) {
                         $property->items = Util::createChild($property, OA\Items::class, ['type' => $type, 'enum' => $enums]);
                     } else {
                         $property->type = $type;
@@ -290,7 +290,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             if ('entity' === $blockPrefix || 'document' === $blockPrefix) {
                 $entityClass = $config->getOption('class');
 
-                if ($config->getOption('multiple')) {
+                if (true === $config->getOption('multiple')) {
                     $property->format = sprintf('[%s id]', $entityClass);
                     $property->type = 'array';
                     $property->items = Util::createChild($property, OA\Items::class, ['type' => 'string']);

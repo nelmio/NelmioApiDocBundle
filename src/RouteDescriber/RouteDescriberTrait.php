@@ -27,10 +27,16 @@ trait RouteDescriberTrait
     {
         $operations = [];
         $path = Util::getPath($api, $this->normalizePath($route->getPath()));
-        $methods = $route->getMethods() ?: Util::OPERATIONS;
+        $methods = $route->getMethods();
+
+        // an empty array means that any method is allowed
+        if ([] === $methods) {
+            $methods = Util::OPERATIONS;
+        }
+
         foreach ($methods as $method) {
             $method = strtolower($method);
-            if (!in_array($method, Util::OPERATIONS)) {
+            if (!in_array($method, Util::OPERATIONS, true)) {
                 continue;
             }
 

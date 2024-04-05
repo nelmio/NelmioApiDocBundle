@@ -119,7 +119,6 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 
                     break;
                 case 'double':
-                case 'float':
                     $subSubProp->type = 'number';
                     $subSubProp->default = $value;
 

@@ -109,7 +109,7 @@ final class ModelRegistry
             }
         }
 
-        if (empty($this->unregistered) && !empty($this->alternativeNames)) {
+        if (!$this->unregistered && $this->alternativeNames) {
             foreach ($this->alternativeNames as $model) {
                 $this->register($model);
             }
