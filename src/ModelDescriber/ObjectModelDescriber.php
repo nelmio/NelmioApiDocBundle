@@ -47,7 +47,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private $useValidationGroups;
 
     /**
-     * @param PropertyDescriberInterface|PropertyDescriberInterface[] $propertyDescribers
+     * @param PropertyDescriberInterface|PropertyDescriberInterface[]      $propertyDescribers
+     * @param (NameConverterInterface&AdvancedNameConverterInterface)|null $nameConverter
      */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,

@@ -267,7 +267,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             [$nestedType, $isHash] = $nestedTypeInfo;
             if ($isHash) {
                 $property->type = 'object';
-                $property->additionalProperties = Util::createChild($property, OA\Property::class);
+                $property->additionalProperties = Util::createChild($property, OA\AdditionalProperties::class);
 
                 // this is a free form object (as nested array)
                 if ('array' === $nestedType['name'] && !isset($nestedType['params'][0])) {

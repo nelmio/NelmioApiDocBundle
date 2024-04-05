@@ -41,7 +41,7 @@ final class NullablePropertyProcessor implements ProcessorInterface
                 if (Generator::UNDEFINED !== $property->nullable) {
                     if (!$property->nullable) {
                         // if already false mark it as undefined (so it does not show up as `nullable: false`)
-                        $property->nullable = Generator::UNDEFINED;
+                        $property->nullable = Generator::UNDEFINED; /* @phpstan-ignore-line */
                     }
                 }
             }
