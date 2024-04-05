@@ -487,7 +487,6 @@ class UtilTest extends TestCase
         ]]);
 
         $actual = Util::getOperationParameter($operation, $name, $in);
-        self::assertInstanceOf(OA\Parameter::class, $actual);
         self::assertSame($name, $actual->name);
         self::assertSame($in, $actual->in);
     }

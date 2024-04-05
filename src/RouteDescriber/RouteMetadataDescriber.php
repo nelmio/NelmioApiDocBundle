@@ -62,7 +62,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 if (isset($requirements[$pathVariable])) {
                     $req = $requirements[$pathVariable];
                     $enumValues = $this->getPossibleEnumValues($req);
-                    if ($enumValues && Generator::UNDEFINED === $parameter->schema->pattern) {
+                    if ([] !== $enumValues && Generator::UNDEFINED === $parameter->schema->pattern) {
                         $parameter->schema->enum = $enumValues;
                     }
                     // add the pattern anyway

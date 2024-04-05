@@ -79,3 +79,8 @@ parameters:
 			message: "#^Class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam not found\\.$#"
 			count: 2
 			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Call to function method_exists\\(\\) with 'Hateoas\\\\\\\\Configuration\\\\\\\\Embedded' and 'getType' will always evaluate to true\\.$#"
+			count: 1
+			path: tests/Functional/BazingaFunctionalTest.php

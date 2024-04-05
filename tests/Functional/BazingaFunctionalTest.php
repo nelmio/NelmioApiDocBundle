@@ -114,11 +114,10 @@ class BazingaFunctionalTest extends WebTestCase
 
     public function testWithType()
     {
-        try {
-            new \ReflectionMethod(Embedded::class, 'getType');
-        } catch (\ReflectionException $e) {
-            self::markTestSkipped('Typed embedded properties require at least willdurand/hateoas 3.0');
+        if (!method_exists(Embedded::class, 'getType')) {
+            self::markTestSkipped('Typed embedded properties require at most willdurand/hateoas 3.0');
         }
+
         self::assertEquals([
             'type' => 'object',
             'properties' => [

@@ -50,10 +50,6 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
      */
     private function getGroups(MapRequestPayload $attribute): ?array
     {
-        if (null === $attribute->validationGroups) {
-            return null;
-        }
-
         if (is_string($attribute->validationGroups)) {
             return [$attribute->validationGroups];
         }

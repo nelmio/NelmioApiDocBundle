@@ -55,7 +55,8 @@ class PropertyPhpDocReader
             }
 
             if (
-                (!isset($min) || null !== $min) && (!isset($max) || null !== $max)
+                !isset($min)
+                && !isset($max)
                 && method_exists($var, 'getType') && null !== $varType = $var->getType()
             ) {
                 $types = $varType instanceof Compound

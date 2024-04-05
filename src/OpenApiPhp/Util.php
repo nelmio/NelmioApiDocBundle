@@ -448,7 +448,7 @@ final class Util
                     $annotation->x = [];
                 }
 
-                $annotation->x = [$propertyName => $value] + ($annotation->x ?? []);
+                $annotation->x = [$propertyName => $value] + $annotation->x;
 
                 continue;
             }

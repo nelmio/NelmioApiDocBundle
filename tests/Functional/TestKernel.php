@@ -27,7 +27,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidation
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\NameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
-use Symfony\Bundle\FrameworkBundle\Command\CachePoolClearCommand;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -139,16 +138,14 @@ class TestKernel extends Kernel
             $framework['form'] = ['csrf_protection' => true];
         }
 
-        // Support symfony/framework-bundle < 5.4
-        if (method_exists(CachePoolClearCommand::class, 'complete')) {
-            $framework += [
-                'exceptions' => [
-                    'Symfony\Component\HttpKernel\Exception\BadRequestHttpException' => [
-                        'log_level' => 'debug',
-                    ],
+        $framework += [
+            'exceptions' => [
+                'Symfony\Component\HttpKernel\Exception\BadRequestHttpException' => [
+                    'log_level' => 'debug',
                 ],
-            ];
-        }
+            ],
+        ];
+
         $c->loadFromExtension('framework', $framework);
 
         $c->loadFromExtension('twig', [

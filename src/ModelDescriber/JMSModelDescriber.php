@@ -87,7 +87,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
         }
 
-        if (isset($metadata->discriminatorFieldName)
+        if (null !== $metadata->discriminatorFieldName
             && $className === $metadata->discriminatorBaseClass
             && [] !== $metadata->discriminatorMap
             && Generator::UNDEFINED === $schema->discriminator) {

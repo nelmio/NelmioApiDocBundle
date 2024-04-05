@@ -7,7 +7,7 @@ includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
-    level: 3
+    level: 4
     paths:
         - src
         - tests
@@ -27,6 +27,7 @@ parameters:
         noVariableVariables: false # Neccessary for swagger-php integration
     universalObjectCratesClasses:
         - OpenApi\Context
+    treatPhpDocTypesAsCertain: false
     ignoreErrors:
         - '#Method Nelmio\\ApiDocBundle\\PropertyDescriber\\PropertyDescriberInterface::describe\(\) invoked with 5 parameters, 2-3 required.#'
         -

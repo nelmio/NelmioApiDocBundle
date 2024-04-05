@@ -171,7 +171,7 @@ final class FilteredRouteCollectionBuilder
             ? $this->annotationReader->getMethodAnnotations($method)
             : [];
 
-        if (method_exists(\ReflectionMethod::class, 'getAttributes')) {
+        if (\PHP_VERSION_ID >= 80100) {
             $annotations = array_merge($annotations, array_map(function (\ReflectionAttribute $attribute) {
                 return $attribute->newInstance();
             }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF)));
