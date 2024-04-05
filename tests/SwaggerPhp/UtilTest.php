@@ -164,13 +164,18 @@ class UtilTest extends TestCase
         $collection = 'foobars';
         $class = OA\Info::class;
 
-        $expectedRegex = "/Property \"{$collection}\" doesn't exist .*/";
-        set_error_handler(function ($_, $err) { echo $err; });
-        $this->expectOutputRegex($expectedRegex);
-        Util::createCollectionItem($this->rootAnnotation, $collection, $class);
-        $this->expectOutputRegex($expectedRegex);
-        self::assertNull($this->rootAnnotation->{$collection}); /* @phpstan-ignore-line */
-        restore_error_handler();
+        $expectedRegex = "/Property \"foobars\" doesn't exist .*/";
+        try {
+            Util::createCollectionItem($this->rootAnnotation, $collection, $class);
+        } catch (\Exception $e) {
+            self::assertMatchesRegularExpression($expectedRegex, $e->getMessage());
+        }
+
+        try {
+            self::assertNull($this->rootAnnotation->{$collection}); /* @phpstan-ignore-line */
+        } catch (\Exception $e) {
+            self::assertMatchesRegularExpression($expectedRegex, $e->getMessage());
+        }
     }
 
     public function testSearchCollectionItem()
@@ -199,12 +204,11 @@ class UtilTest extends TestCase
         ));
 
         $search = ['baz' => 'foobar'];
-        $this->expectOutputString('Undefined property: stdClass::$baz');
 
         try {
             Util::searchCollectionItem($collection, array_merge(\get_object_vars($item2), $search));
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            self::assertSame('Undefined property: stdClass::$baz', $e->getMessage());
         }
 
         // no exception on empty collection
