@@ -72,7 +72,7 @@ class ModelRegistryTest extends TestCase
         $registry->register(new Model($type, ['group2']));
     }
 
-    public function provideNameCollisionsTypes()
+    public static function provideNameCollisionsTypes(): iterable
     {
         yield [
             new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class),
@@ -169,7 +169,7 @@ class ModelRegistryTest extends TestCase
         self::assertEquals($expected, $registry->register(new Model($type, $groups)));
     }
 
-    public function getNameAlternatives()
+    public static function getNameAlternatives(): iterable
     {
         return [
             [
@@ -238,7 +238,7 @@ class ModelRegistryTest extends TestCase
         $registry->registerSchemas();
     }
 
-    public function unsupportedTypesProvider()
+    public static function unsupportedTypesProvider(): iterable
     {
         return [
             [new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true), 'mixed[]'],

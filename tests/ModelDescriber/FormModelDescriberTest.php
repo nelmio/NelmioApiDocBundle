@@ -80,7 +80,7 @@ class FormModelDescriberTest extends TestCase
         }
     }
 
-    public function provideCsrfProtectionOptions(): array
+    public static function provideCsrfProtectionOptions(): iterable
     {
         return [
             [true, '_token', true],

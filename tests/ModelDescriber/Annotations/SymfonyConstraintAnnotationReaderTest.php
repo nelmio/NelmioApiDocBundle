@@ -102,7 +102,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertEquals($schema->required, ['property2']);
     }
 
-    public function provideOptionalProperty(): iterable
+    public static function provideOptionalProperty(): iterable
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -152,7 +152,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertEquals($schema->properties[0]->enum, ['active', 'blocked']);
     }
 
-    public function provideAssertChoiceResultsInNumericArray(): iterable
+    public static function provideAssertChoiceResultsInNumericArray(): iterable
     {
         define('TEST_ASSERT_CHOICE_STATUSES', [
             1 => 'active',
@@ -200,7 +200,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertEquals($schema->properties[0]->items->enum, ['one', 'two']);
     }
 
-    public function provideMultipleChoiceConstraintsApplyEnumToItems(): iterable
+    public static function provideMultipleChoiceConstraintsApplyEnumToItems(): iterable
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [new class() {
@@ -240,7 +240,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(1, $schema->properties[0]->minLength);
     }
 
-    public function provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet(): iterable
+    public static function provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet(): iterable
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -282,7 +282,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(100, $schema->properties[0]->maxLength);
     }
 
-    public function provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet(): iterable
+    public static function provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet(): iterable
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -364,7 +364,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(10, $schema->properties[0]->maxItems);
     }
 
-    public function provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet(): iterable
+    public static function provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet(): iterable
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -406,7 +406,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(10, $schema->properties[0]->minItems);
     }
 
-    public function provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet(): iterable
+    public static function provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet(): iterable
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -448,7 +448,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(10, $schema->properties[0]->minimum);
     }
 
-    public function provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet(): iterable
+    public static function provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet(): iterable
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -490,7 +490,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(10, $schema->properties[0]->maximum);
     }
 
-    public function provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet(): iterable
+    public static function provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet(): iterable
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -609,7 +609,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(1, $schema->properties[0]->minimum, 'should have read constraint in other group');
     }
 
-    public function provideConstraintsWithGroups(): iterable
+    public static function provideConstraintsWithGroups(): iterable
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [new class() {

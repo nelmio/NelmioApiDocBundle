@@ -30,17 +30,17 @@ class GetNelmioAssetTest extends WebTestCase
         self::assertSame($expectedContent, $twigFunction->getCallable()->__invoke($mode, $asset));
     }
 
-    public function provideAsset()
+    public static function provideAsset(): iterable
     {
         $cdnDir = 'https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/public';
         $resourceDir = __DIR__.'/../../../public';
 
-        return $this->provideCss($cdnDir, $resourceDir)
-            + $this->provideJs($cdnDir, $resourceDir)
-            + $this->provideImage($cdnDir);
+        return self::provideCss($cdnDir, $resourceDir)
+            + self::provideJs($cdnDir, $resourceDir)
+            + self::provideImage($cdnDir);
     }
 
-    private function provideCss($cdnDir, $resourceDir)
+    private static function provideCss($cdnDir, $resourceDir): array
     {
         return [
             'bundled css' => [
@@ -66,7 +66,7 @@ class GetNelmioAssetTest extends WebTestCase
         ];
     }
 
-    private function provideJs($cdnDir, $resourceDir)
+    private static function provideJs($cdnDir, $resourceDir): array
     {
         return [
             'bundled js' => [
@@ -92,7 +92,7 @@ class GetNelmioAssetTest extends WebTestCase
         ];
     }
 
-    private function provideImage($cdnDir)
+    private static function provideImage($cdnDir): array
     {
         return [
             'bundled image' => [

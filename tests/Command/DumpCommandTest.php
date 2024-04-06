@@ -30,7 +30,7 @@ class DumpCommandTest extends WebTestCase
         );
     }
 
-    public function provideJsonMode()
+    public static function provideJsonMode(): iterable
     {
         return [
             'pretty print' => [[], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES],
@@ -64,7 +64,7 @@ YAML;
         self::assertStringContainsString($expectedHtml, $output);
     }
 
-    public function provideAssetsMode()
+    public static function provideAssetsMode(): iterable
     {
         return [
             'default mode is cdn' => [

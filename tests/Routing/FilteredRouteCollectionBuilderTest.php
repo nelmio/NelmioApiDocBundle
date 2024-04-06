@@ -112,7 +112,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         );
     }
 
-    public function getInvalidOptions(): array
+    public static function getInvalidOptions(): iterable
     {
         return [
             [['invalid_option' => null]],
@@ -168,7 +168,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         self::assertCount(1, $filteredRoutes);
     }
 
-    public function getMatchingRoutes(): iterable
+    public static function getMatchingRoutes(): iterable
     {
         yield from [
             ['r1', new Route('/api/bar/action1')],
@@ -220,7 +220,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         self::assertCount(1, $filteredRoutes);
     }
 
-    public function getMatchingRoutesWithAnnotation(): iterable
+    public static function getMatchingRoutesWithAnnotation(): iterable
     {
         yield from [
             'with annotation only' => [
@@ -270,7 +270,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         self::assertCount(0, $filteredRoutes);
     }
 
-    public function getNonMatchingRoutes(): array
+    public static function getNonMatchingRoutes(): iterable
     {
         return [
             ['r1', new Route('/api/bar/action1'), ['path_patterns' => ['^/apis']]],
@@ -326,7 +326,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     /**
      * @return array<string,array>
      */
-    public function getRoutesWithDisabledDefaultRoutes(): array
+    public static function getRoutesWithDisabledDefaultRoutes(): iterable
     {
         return [
             'non matching route without Annotation' => [

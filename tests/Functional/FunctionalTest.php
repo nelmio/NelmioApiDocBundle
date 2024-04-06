@@ -63,7 +63,7 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasProperty('author', Util::getProperty($articleModel, 'author'));
     }
 
-    public function provideArticleRoute(): iterable
+    public static function provideArticleRoute(): iterable
     {
         if (interface_exists(Reader::class)) {
             yield 'Annotations' => ['/api/article/{id}'];
@@ -95,7 +95,7 @@ class FunctionalTest extends WebTestCase
         self::assertEquals('An example resource', $response->description);
     }
 
-    public function swaggerActionPathsProvider()
+    public static function swaggerActionPathsProvider(): iterable
     {
         return [['/api/swagger'], ['/api/swagger2']];
     }
@@ -133,7 +133,7 @@ class FunctionalTest extends WebTestCase
         self::assertEquals('#/components/schemas/User', $requestBody->content['application/json']->schema->items->ref);
     }
 
-    public function implicitSwaggerActionMethodsProvider()
+    public static function implicitSwaggerActionMethodsProvider(): iterable
     {
         return [['get'], ['post']];
     }
@@ -384,7 +384,7 @@ class FunctionalTest extends WebTestCase
         self::assertEquals($expected, $operation->security);
     }
 
-    public function provideSecurityRoute(): iterable
+    public static function provideSecurityRoute(): iterable
     {
         yield 'Annotations' => ['/api/security'];
 
@@ -402,7 +402,7 @@ class FunctionalTest extends WebTestCase
         self::assertEquals([], $operation->security);
     }
 
-    public function provideSecurityOverrideRoute(): iterable
+    public static function provideSecurityOverrideRoute(): iterable
     {
         yield 'Annotations' => ['/api/securityOverride'];
 
