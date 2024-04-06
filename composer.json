@@ -101,7 +101,8 @@
         "phpcs-check": "Run PHP-CS-Fixer in dry-run mode",
         "phpcs-fix": "Run PHP-CS-Fixer",
         "phpunit": "Run phpunit",
-        "phpstan": "Run phpstan"
+        "phpstan": "Run phpstan",
+        "phpstan-baseline": "Generate a baseline for phpstan"
     },
     "scripts": {
         "phpcs-check": "vendor/bin/php-cs-fixer check -v --diff",
