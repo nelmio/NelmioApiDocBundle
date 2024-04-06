@@ -41,10 +41,9 @@ use PHPUnit\Framework\TestCase;
  */
 class UtilTest extends TestCase
 {
-    public $rootContext;
+    private Context $rootContext;
 
-    /** @var OA\OpenApi */
-    public $rootAnnotation;
+    private OA\OpenApi $rootAnnotation;
 
     public function setUp(): void
     {
@@ -222,8 +221,11 @@ class UtilTest extends TestCase
 
     /**
      * @dataProvider provideIndexedCollectionData
+     *
+     * @param array<mixed> $setup
+     * @param array<mixed> $asserts
      */
-    public function testSearchIndexedCollectionItem($setup, $asserts): void
+    public function testSearchIndexedCollectionItem(array $setup, array $asserts): void
     {
         foreach ($asserts as $collection => $items) {
             foreach ($items as $assert) {
@@ -253,8 +255,11 @@ class UtilTest extends TestCase
 
     /**
      * @dataProvider provideIndexedCollectionData
+     *
+     * @param array<mixed> $setup
+     * @param array<mixed> $asserts
      */
-    public function testGetIndexedCollectionItem($setup, $asserts): void
+    public function testGetIndexedCollectionItem(array $setup, array $asserts): void
     {
         $parent = new $setup['class'](array_merge(
             $this->getSetupPropertiesWithoutClass($setup),
@@ -265,6 +270,7 @@ class UtilTest extends TestCase
             foreach ($items as $assert) {
                 $itemParent = !isset($assert['components']) ? $parent : $parent->components;
 
+                self::assertTrue(is_a($assert['class'], OA\AbstractAnnotation::class, true), sprintf('Invalid class %s', $assert['class']));
                 $child = Util::getIndexedCollectionItem(
                     $itemParent,
                     $assert['class'],
@@ -379,8 +385,11 @@ class UtilTest extends TestCase
 
     /**
      * @dataProvider provideChildData
+     *
+     * @param array<mixed> $setup
+     * @param array<mixed> $asserts
      */
-    public function testGetChild($setup, $asserts): void
+    public function testGetChild(array $setup, array $asserts): void
     {
         $parent = new $setup['class'](array_merge(
             $this->getSetupPropertiesWithoutClass($setup),
@@ -391,6 +400,7 @@ class UtilTest extends TestCase
             if (\array_key_exists('exceptionMessage', $assert)) {
                 $this->expectExceptionMessage($assert['exceptionMessage']);
             }
+            self::assertTrue(is_a($assert['class'], OA\AbstractAnnotation::class, true), sprintf('Invalid class %s', $assert['class']));
             $child = Util::getChild($parent, $assert['class'], $assert['props']);
 
             self::assertInstanceOf($assert['class'], $child);
@@ -540,8 +550,12 @@ class UtilTest extends TestCase
 
     /**
      * @dataProvider provideMergeData
+     *
+     * @param array<mixed>              $setup
+     * @param array<mixed>|\ArrayObject $merge
+     * @param array<mixed>              $assert
      */
-    public function testMerge($setup, $merge, $assert): void
+    public function testMerge(array $setup, $merge, array $assert): void
     {
         $api = self::createObj(OA\OpenApi::class, $setup + ['_context' => new Context()]);
 
@@ -852,28 +866,36 @@ class UtilTest extends TestCase
         ];
     }
 
-    public function assertIsNested(OA\AbstractAnnotation $parent, OA\AbstractAnnotation $child)
+    public function assertIsNested(OA\AbstractAnnotation $parent, OA\AbstractAnnotation $child): void
     {
         self::assertTrue($child->_context->is('nested'));
         self::assertSame($parent, $child->_context->nested);
     }
 
-    public function assertIsConnectedToRootContext(OA\AbstractAnnotation $annotation)
+    public function assertIsConnectedToRootContext(OA\AbstractAnnotation $annotation): void
     {
         $this->assertContextIsConnectedToRootContext($annotation->_context);
     }
 
-    public function assertContextIsConnectedToRootContext(Context $context)
+    public function assertContextIsConnectedToRootContext(Context $context): void
     {
         self::assertSame($this->rootContext, $context->root());
     }
 
-    private function getSetupPropertiesWithoutClass(array $setup)
+    /**
+     * @param array<mixed> $setup
+     *
+     * @return array<mixed>
+     */
+    private function getSetupPropertiesWithoutClass(array $setup): array
     {
         return array_filter($setup, function ($k) {return 'class' !== $k; }, ARRAY_FILTER_USE_KEY);
     }
 
-    private function getNonDefaultProperties($object)
+    /**
+     * @return array<mixed>
+     */
+    private function getNonDefaultProperties(OA\AbstractAnnotation $object): array
     {
         $objectVars = \get_object_vars($object);
         $classVars = \get_class_vars(\get_class($object));
@@ -887,7 +909,11 @@ class UtilTest extends TestCase
         return $props;
     }
 
-    private static function createObj(string $className, array $props = [])
+    /**
+     * @param class-string<OA\AbstractAnnotation> $className
+     * @param array<string, mixed>                $props
+     */
+    private static function createObj(string $className, array $props = []): object
     {
         return new $className($props + ['_context' => new Context()]);
     }

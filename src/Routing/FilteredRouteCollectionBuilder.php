@@ -33,7 +33,7 @@ final class FilteredRouteCollectionBuilder
     private array $options;
 
     /**
-     * @param array<string, mixed> $options
+     * @param array<mixed> $options
      */
     public function __construct(
         ?Reader $annotationReader,

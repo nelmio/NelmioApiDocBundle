@@ -17,6 +17,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class FOSRestTest extends WebTestCase
 {
+    /**
+     * @param array<mixed> $options
+     */
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_FOSREST);

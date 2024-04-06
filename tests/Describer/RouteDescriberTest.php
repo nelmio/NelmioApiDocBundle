@@ -16,15 +16,19 @@ use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 class RouteDescriberTest extends AbstractDescriberTestCase
 {
-    private $routes;
+    private RouteCollection $routes;
 
-    private $routeDescriber;
+    /**
+     * @var MockObject&RouteDescriberInterface
+     */
+    private RouteDescriberInterface $routeDescriber;
 
     public function testIgnoreWhenNoController(): void
     {

@@ -519,7 +519,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet
      */
-    public function testReaderWithValidationGroupsEnabledChecksForDefaultGroupWhenNoSerializationGroupsArePassed($entity): void
+    public function testReaderWithValidationGroupsEnabledChecksForDefaultGroupWhenNoSerializationGroupsArePassed(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -540,7 +540,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideConstraintsWithGroups
      */
-    public function testReaderWithValidationGroupsEnabledDoesNotReadAnnotationsWithoutDefaultGroupIfNoGroupsArePassed($entity): void
+    public function testReaderWithValidationGroupsEnabledDoesNotReadAnnotationsWithoutDefaultGroupIfNoGroupsArePassed(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([
@@ -564,7 +564,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideConstraintsWithGroups
      */
-    public function testReaderWithValidationGroupsEnabledReadsOnlyConstraintsWithGroupsProvided($entity): void
+    public function testReaderWithValidationGroupsEnabledReadsOnlyConstraintsWithGroupsProvided(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([
@@ -589,7 +589,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideConstraintsWithGroups
      */
-    public function testReaderWithValidationGroupsEnabledCanReadFromMultipleValidationGroups($entity): void
+    public function testReaderWithValidationGroupsEnabledCanReadFromMultipleValidationGroups(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([
@@ -639,7 +639,15 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         );
     }
 
-    private function createObj(string $className, array $props = [])
+    /**
+     * @template T of OA\AbstractAnnotation
+     *
+     * @param class-string<T>      $className
+     * @param array<string, mixed> $props
+     *
+     * @return T
+     */
+    private function createObj(string $className, array $props = []): object
     {
         return new $className($props + ['_context' => new Context()]);
     }

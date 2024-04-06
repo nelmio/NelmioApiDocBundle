@@ -77,7 +77,7 @@ class TestKernel extends Kernel
         return $bundles;
     }
 
-    protected function configureRoutes(RoutingConfigurator $routes)
+    protected function configureRoutes(RoutingConfigurator $routes): void
     {
         if (self::isAnnotationsAvailable()) {
             $routes->withPath('/')->import(__DIR__.'/Resources/routes.yaml', 'yaml');
@@ -104,7 +104,7 @@ class TestKernel extends Kernel
         }
     }
 
-    protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader): void
     {
         $framework = [
             'assets' => true,

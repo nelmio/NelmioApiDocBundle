@@ -33,12 +33,15 @@ final class ControllerTest extends WebTestCase
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
 
+    /**
+     * @param array<mixed> $options
+     */
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new NelmioKernel([], null, []);
     }
 
-    protected function getOpenApiDefinition($area = 'default'): OA\OpenApi
+    protected function getOpenApiDefinition(string $area = 'default'): OA\OpenApi
     {
         return $this->configurableContainerFactory->getContainer()->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }

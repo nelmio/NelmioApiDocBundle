@@ -140,6 +140,9 @@ class BazingaFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('BazingaUserTyped')->toJson(), true));
     }
 
+    /**
+     * @param array<mixed> $options
+     */
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_BAZINGA);

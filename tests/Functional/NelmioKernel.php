@@ -27,14 +27,17 @@ final class NelmioKernel extends Kernel
     /**
      * @var Bundle[]
      */
-    private $extraBundles;
+    private array $extraBundles;
 
+    /**
+     * @var callable|null
+     */
     private $routeConfiguration;
 
     /**
      * @var string[]
      */
-    private $extraConfigs;
+    private array $extraConfigs;
 
     /**
      * @param Bundle[] $extraBundles
@@ -59,14 +62,14 @@ final class NelmioKernel extends Kernel
         return array_merge($bundles, $this->extraBundles);
     }
 
-    protected function configureRoutes(RoutingConfigurator $routes)
+    protected function configureRoutes(RoutingConfigurator $routes): void
     {
         if (null !== $this->routeConfiguration) {
             ($this->routeConfiguration)($routes);
         }
     }
 
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $container->loadFromExtension('framework', ['test' => null]);
 

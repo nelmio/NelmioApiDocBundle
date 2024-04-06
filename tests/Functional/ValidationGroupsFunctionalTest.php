@@ -15,6 +15,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class ValidationGroupsFunctionalTest extends WebTestCase
 {
+    /**
+     * @param array<mixed> $options
+     */
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_VALIDATION_GROUPS);

@@ -28,6 +28,9 @@ class NameConverter implements AdvancedNameConverterInterface
         $this->inner = $inner;
     }
 
+    /**
+     * @param array<mixed> $context
+     */
     public function normalize(string $propertyName, ?string $class = null, ?string $format = null, array $context = []): string
     {
         if (!isset($context['secret_name_converter_value'])) {
@@ -37,6 +40,9 @@ class NameConverter implements AdvancedNameConverterInterface
         return 'name_converter_context_'.$propertyName;
     }
 
+    /**
+     * @param array<mixed> $context
+     */
     public function denormalize(string $propertyName, ?string $class = null, ?string $format = null, array $context = []): string
     {
         throw new \RuntimeException('Was not expected to be called');

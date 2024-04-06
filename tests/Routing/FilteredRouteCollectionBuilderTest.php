@@ -99,6 +99,8 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     /**
      * @dataProvider getInvalidOptions
+     *
+     * @param array<string, mixed> $options
      */
     public function testFilterWithInvalidOption(array $options): void
     {
@@ -131,6 +133,9 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         yield [['name_patterns' => [new \stdClass()]]];
     }
 
+    /**
+     * @return array<string,Route>
+     */
     private function getRoutes(): array
     {
         return [
@@ -149,6 +154,8 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     /**
      * @dataProvider getMatchingRoutes
+     *
+     * @param array<string, mixed> $options
      */
     public function testMatchingRoutes(string $name, Route $route, array $options = []): void
     {
@@ -186,6 +193,8 @@ class FilteredRouteCollectionBuilderTest extends TestCase
      * @group test
      *
      * @dataProvider getMatchingRoutesWithAnnotation
+     *
+     * @param array<string, mixed> $options
      */
     public function testMatchingRoutesWithAnnotation(string $name, Route $route, array $options = []): void
     {
@@ -251,6 +260,8 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     /**
      * @dataProvider getNonMatchingRoutes
+     *
+     * @param array<string, mixed> $options
      */
     public function testNonMatchingRoutes(string $name, Route $route, array $options = []): void
     {
@@ -319,9 +330,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         self::assertCount($expectedRoutesCount, $filteredRoutes);
     }
 
-    /**
-     * @return array<string,array>
-     */
     public static function getRoutesWithDisabledDefaultRoutes(): \Generator
     {
         yield 'non matching route without Annotation' => [

@@ -16,13 +16,17 @@ use ApiPlatform\Metadata\Resource\ResourceNameCollection;
 use Nelmio\ApiDocBundle\Describer\ApiPlatformDescriber;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ApiPlatformDescriberTest extends AbstractDescriberTestCase
 {
-    private $documentation;
+    private Documentation $documentation;
 
-    private $normalizer;
+    /**
+     * @var MockObject&NormalizerInterface
+     */
+    private NormalizerInterface $normalizer;
 
     public function testDescribe(): void
     {

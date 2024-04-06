@@ -37,6 +37,8 @@ class ModelRegistryTest extends TestCase
 
     /**
      * @dataProvider provideNameCollisionsTypes
+     *
+     * @param array<string, mixed> $arrayType
      */
     public function testNameCollisionsAreLogged(Type $type, array $arrayType): void
     {
@@ -160,8 +162,11 @@ class ModelRegistryTest extends TestCase
 
     /**
      * @dataProvider getNameAlternatives
+     *
+     * @param string[]|null        $groups
+     * @param array<string, mixed> $alternativeNames
      */
-    public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames): void
+    public function testNameAliasingForObjects(string $expected, ?array $groups, array $alternativeNames): void
     {
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
@@ -259,7 +264,7 @@ class ModelRegistryTest extends TestCase
         $registry->registerSchemas();
     }
 
-    private function createOpenApi()
+    private function createOpenApi(): OA\OpenApi
     {
         return new OA\OpenApi(['_context' => new Context()]);
     }
