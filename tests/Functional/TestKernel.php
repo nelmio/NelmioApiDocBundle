@@ -26,7 +26,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\NameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
-use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -65,10 +64,6 @@ class TestKernel extends Kernel
             new NelmioApiDocBundle(),
             new TestBundle(),
         ];
-
-        if (class_exists(SensioFrameworkExtraBundle::class)) {
-            $bundles[] = new SensioFrameworkExtraBundle();
-        }
 
         if (class_exists(FOSRestBundle::class)) {
             $bundles[] = new FOSRestBundle();
@@ -152,14 +147,6 @@ class TestKernel extends Kernel
             'strict_variables' => '%kernel.debug%',
             'exception_controller' => null,
         ]);
-
-        if (class_exists(SensioFrameworkExtraBundle::class)) {
-            $c->loadFromExtension('sensio_framework_extra', [
-                'router' => [
-                    'annotations' => false,
-                ],
-            ]);
-        }
 
         $c->loadFromExtension('api_platform', [
             'mapping' => ['paths' => [

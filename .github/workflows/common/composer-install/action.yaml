@@ -41,7 +41,7 @@ runs:
 
     - name: Remove packages not compatible Symfony 7
       if: ${{ inputs.symfony-version == '7.0.*' }}
-      run: composer remove --dev --no-update friendsofsymfony/rest-bundle sensio/framework-extra-bundle
+      run: composer remove --dev --no-update friendsofsymfony/rest-bundle
       shell: bash
 
     - name: Install dependencies with Composer
