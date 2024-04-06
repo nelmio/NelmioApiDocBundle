@@ -52,6 +52,18 @@ class UtilTest extends TestCase
 
         $this->rootContext = new Context(['isTestingRoot' => true]);
         $this->rootAnnotation = self::createObj(OA\OpenApi::class, ['_context' => $this->rootContext]);
+
+        set_error_handler(
+            static function ($errno, $errstr) {
+                throw new \Exception($errstr, $errno);
+            },
+            E_ALL
+        );
+    }
+
+    public function tearDown(): void
+    {
+        restore_error_handler();
     }
 
     public function testCreateContextSetsParentContext()
@@ -164,18 +176,15 @@ class UtilTest extends TestCase
         $collection = 'foobars';
         $class = OA\Info::class;
 
-        $expectedRegex = "/Property \"foobars\" doesn't exist .*/";
-        try {
-            Util::createCollectionItem($this->rootAnnotation, $collection, $class);
-        } catch (\Exception $e) {
-            self::assertMatchesRegularExpression($expectedRegex, $e->getMessage());
-        }
+        self::expectException(\Exception::class);
+        self::expectExceptionMessage("Property \"foobars\" doesn't exist");
+        self::expectExceptionCode(E_USER_WARNING);
+        Util::createCollectionItem($this->rootAnnotation, $collection, $class);
 
-        try {
-            self::assertNull($this->rootAnnotation->{$collection}); /* @phpstan-ignore-line */
-        } catch (\Exception $e) {
-            self::assertMatchesRegularExpression($expectedRegex, $e->getMessage());
-        }
+        self::expectException(\Exception::class);
+        self::expectExceptionMessage("Property \"foobars\" doesn't exist");
+        self::expectExceptionCode(E_USER_WARNING);
+        self::assertNull($this->rootAnnotation->{$collection}); /* @phpstan-ignore-line */
     }
 
     public function testSearchCollectionItem()
@@ -205,11 +214,10 @@ class UtilTest extends TestCase
 
         $search = ['baz' => 'foobar'];
 
-        try {
-            Util::searchCollectionItem($collection, array_merge(\get_object_vars($item2), $search));
-        } catch (\Exception $e) {
-            self::assertSame('Undefined property: stdClass::$baz', $e->getMessage());
-        }
+        self::expectException(\Exception::class);
+        self::expectExceptionMessage('Undefined property: stdClass::$baz');
+        self::expectExceptionCode(E_WARNING);
+        Util::searchCollectionItem($collection, array_merge(\get_object_vars($item2), $search));
 
         // no exception on empty collection
         self::assertNull(Util::searchCollectionItem([], \get_object_vars($item2)));
