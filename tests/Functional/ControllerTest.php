@@ -81,7 +81,7 @@ final class ControllerTest extends WebTestCase
         );
     }
 
-    public static function provideAttributeTestCases(): iterable
+    public static function provideAttributeTestCases(): \Generator
     {
         if (PHP_VERSION_ID < 80100) {
             return;
@@ -122,7 +122,7 @@ final class ControllerTest extends WebTestCase
         }
     }
 
-    public static function provideAnnotationTestCases(): iterable
+    public static function provideAnnotationTestCases(): \Generator
     {
         if (!TestKernel::isAnnotationsAvailable()) {
             return;
@@ -143,7 +143,7 @@ final class ControllerTest extends WebTestCase
     /**
      * Test cases that are universal and can be run without depending on the existence of a specific feature.
      */
-    public static function provideUniversalTestCases(): iterable
+    public static function provideUniversalTestCases(): \Generator
     {
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2224' => [
             null,

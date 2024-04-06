@@ -80,13 +80,11 @@ class FormModelDescriberTest extends TestCase
         }
     }
 
-    public static function provideCsrfProtectionOptions(): iterable
+    public static function provideCsrfProtectionOptions(): \Generator
     {
-        return [
-            [true, '_token', true],
-            [true, '_another_token', true],
-            [false, '_token', false],
-        ];
+        yield [true, '_token', true];
+        yield [true, '_another_token', true];
+        yield [false, '_token', false];
     }
 
     private function initSchema(): \OpenApi\Annotations\Schema

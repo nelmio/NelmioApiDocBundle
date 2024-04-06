@@ -154,6 +154,9 @@ class NelmioApiDocExtensionTest extends TestCase
 
     /**
      * @dataProvider provideCacheConfig
+     *
+     * @param array<string, mixed> $config
+     * @param array<string, mixed> $expectedValues
      */
     public function testApiDocGeneratorWithCachePool(array $config, array $expectedValues): void
     {
@@ -186,7 +189,7 @@ class NelmioApiDocExtensionTest extends TestCase
         self::assertSame($expectedValues['area1CacheItemId'], $cacheItemId);
     }
 
-    public static function provideCacheConfig(): iterable
+    public static function provideCacheConfig(): \Generator
     {
         yield 'default cache.item_id & area appending' => [
             'config' => [

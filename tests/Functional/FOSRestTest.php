@@ -76,7 +76,7 @@ class FOSRestTest extends WebTestCase
         self::assertNotHasParameter('_format', 'path', $operation);
     }
 
-    public static function provideRoute(): iterable
+    public static function provideRoute(): \Generator
     {
         yield 'Annotations' => ['/api/fosrest'];
 

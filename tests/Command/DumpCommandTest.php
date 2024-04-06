@@ -18,7 +18,11 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class DumpCommandTest extends WebTestCase
 {
-    /** @dataProvider provideJsonMode */
+    /**
+     * @dataProvider provideJsonMode
+     *
+     * @param array<string, mixed> $jsonOptions
+     */
     public function testJson(array $jsonOptions, int $expectedJsonFlags): void
     {
         $output = $this->executeDumpCommand($jsonOptions + [
@@ -30,12 +34,11 @@ class DumpCommandTest extends WebTestCase
         );
     }
 
-    public static function provideJsonMode(): iterable
+    public static function provideJsonMode(): \Generator
     {
-        return [
-            'pretty print' => [[], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES],
-            'one line' => [['--no-pretty'], 0 | JSON_UNESCAPED_SLASHES],
-        ];
+        yield 'pretty print' => [[], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES];
+
+        yield 'one line' => [['--no-pretty'], 0 | JSON_UNESCAPED_SLASHES];
     }
 
     public function testYaml(): void
@@ -52,7 +55,11 @@ YAML;
         self::assertStringContainsString($expectedYaml, $output);
     }
 
-    /** @dataProvider provideAssetsMode */
+    /**
+     * @dataProvider provideAssetsMode
+     *
+     * @param mixed $htmlConfig the value of the --html-config option
+     */
     public function testHtml($htmlConfig, string $expectedHtml): void
     {
         $output = $this->executeDumpCommand([
@@ -64,43 +71,49 @@ YAML;
         self::assertStringContainsString($expectedHtml, $output);
     }
 
-    public static function provideAssetsMode(): iterable
+    public static function provideAssetsMode(): \Generator
     {
-        return [
-            'default mode is cdn' => [
-                null,
-                'https://cdn.jsdelivr.net',
-            ],
-            'invalid mode fallbacks to cdn' => [
-                'invalid',
-                'https://cdn.jsdelivr.net',
-            ],
-            'select cdn mode' => [
-                ['assets_mode' => AssetsMode::CDN],
-                'https://cdn.jsdelivr.net',
-            ],
-            'select offline mode' => [
-                ['assets_mode' => AssetsMode::OFFLINE],
-                '<style>',
-            ],
-            'configure swagger ui' => [
-                [
-                    'swagger_ui_config' => [
-                        'supportedSubmitMethods' => ['get'],
-                    ],
+        yield 'default mode is cdn' => [
+            null,
+            'https://cdn.jsdelivr.net',
+        ];
+
+        yield 'invalid mode fallbacks to cdn' => [
+            'invalid',
+            'https://cdn.jsdelivr.net',
+        ];
+
+        yield 'select cdn mode' => [
+            ['assets_mode' => AssetsMode::CDN],
+            'https://cdn.jsdelivr.net',
+        ];
+
+        yield 'select offline mode' => [
+            ['assets_mode' => AssetsMode::OFFLINE],
+            '<style>',
+        ];
+
+        yield 'configure swagger ui' => [
+            [
+                'swagger_ui_config' => [
+                    'supportedSubmitMethods' => ['get'],
                 ],
-                '"supportedSubmitMethods":["get"]',
             ],
-            'configure server url' => [
-                [
-                    'server_url' => 'http://example.com/api',
-                ],
-                '[{"url":"http://example.com/api"}]',
+            '"supportedSubmitMethods":["get"]',
+        ];
+
+        yield 'configure server url' => [
+            [
+                'server_url' => 'http://example.com/api',
             ],
+            '[{"url":"http://example.com/api"}]',
         ];
     }
 
-    private function executeDumpCommand(array $options)
+    /**
+     * @param array<string, mixed> $options
+     */
+    private function executeDumpCommand(array $options): string
     {
         $kernel = static::bootKernel();
         $application = new Application($kernel);

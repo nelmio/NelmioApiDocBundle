@@ -72,7 +72,7 @@ class ModelRegistryTest extends TestCase
         $registry->register(new Model($type, ['group2']));
     }
 
-    public static function provideNameCollisionsTypes(): iterable
+    public static function provideNameCollisionsTypes(): \Generator
     {
         yield [
             new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class),
@@ -169,57 +169,59 @@ class ModelRegistryTest extends TestCase
         self::assertEquals($expected, $registry->register(new Model($type, $groups)));
     }
 
-    public static function getNameAlternatives(): iterable
+    public static function getNameAlternatives(): \Generator
     {
-        return [
+        yield [
+            '#/components/schemas/ModelRegistryTest',
+            null,
             [
-                '#/components/schemas/ModelRegistryTest',
-                null,
-                [
-                    'Foo1' => [
-                        'type' => self::class,
-                        'groups' => ['group1'],
-                    ],
+                'Foo1' => [
+                    'type' => self::class,
+                    'groups' => ['group1'],
                 ],
             ],
+        ];
+
+        yield [
+            '#/components/schemas/Foo1',
+            ['group1'],
             [
-                '#/components/schemas/Foo1',
-                ['group1'],
-                [
-                    'Foo1' => [
-                        'type' => self::class,
-                        'groups' => ['group1'],
-                    ],
+                'Foo1' => [
+                    'type' => self::class,
+                    'groups' => ['group1'],
                 ],
             ],
+        ];
+
+        yield [
+            '#/components/schemas/Foo1',
+            ['group1', 'group2'],
             [
-                '#/components/schemas/Foo1',
-                ['group1', 'group2'],
-                [
-                    'Foo1' => [
-                        'type' => self::class,
-                        'groups' => ['group1', 'group2'],
-                    ],
+                'Foo1' => [
+                    'type' => self::class,
+                    'groups' => ['group1', 'group2'],
                 ],
             ],
+        ];
+
+        yield [
+            '#/components/schemas/ModelRegistryTest',
+            null,
             [
-                '#/components/schemas/ModelRegistryTest',
-                null,
-                [
-                    'Foo1' => [
-                        'type' => self::class,
-                        'groups' => [],
-                    ],
+                'Foo1' => [
+                    'type' => self::class,
+                    'groups' => [],
                 ],
             ],
+        ];
+
+        yield [
+            '#/components/schemas/Foo1',
+            [],
             [
-                '#/components/schemas/Foo1',
-                [],
-                [
-                    'Foo1' => [
-                        'type' => self::class,
-                        'groups' => [],
-                    ],
+                'Foo1' => [
+                    'type' => self::class,
+                    'groups' => [],
                 ],
             ],
         ];
@@ -238,12 +240,10 @@ class ModelRegistryTest extends TestCase
         $registry->registerSchemas();
     }
 
-    public static function unsupportedTypesProvider(): iterable
+    public static function unsupportedTypesProvider(): \Generator
     {
-        return [
-            [new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true), 'mixed[]'],
-            [new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class), '\\'.self::class],
-        ];
+        yield [new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true), 'mixed[]'];
+        yield [new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class), '\\'.self::class];
     }
 
     public function testUnsupportedTypeExceptionWithNonExistentClass(): void

@@ -291,9 +291,9 @@ class UtilTest extends TestCase
         }
     }
 
-    public static function provideIndexedCollectionData(): iterable
+    public static function provideIndexedCollectionData(): \Generator
     {
-        return [[
+        yield [
             'setup' => [
                 'class' => OA\OpenApi::class,
                 'paths' => [
@@ -374,7 +374,7 @@ class UtilTest extends TestCase
                     ],
                 ],
             ],
-        ]];
+        ];
     }
 
     /**
@@ -404,9 +404,9 @@ class UtilTest extends TestCase
         }
     }
 
-    public static function provideChildData(): iterable
+    public static function provideChildData(): \Generator
     {
-        return [[
+        yield [
             'setup' => [
                 'class' => OA\PathItem::class,
                 'get' => self::createObj(OA\Get::class, []),
@@ -431,7 +431,9 @@ class UtilTest extends TestCase
                     ],
                 ],
             ],
-        ], [
+        ];
+
+        yield [
             'setup' => [
                 'class' => OA\Parameter::class,
             ],
@@ -446,7 +448,9 @@ class UtilTest extends TestCase
                     ],
                 ],
             ],
-        ], [
+        ];
+
+        yield [
             'setup' => [
                 'class' => OA\Parameter::class,
             ],
@@ -460,7 +464,7 @@ class UtilTest extends TestCase
                     'exceptionMessage' => 'Nesting Annotations is not supported.',
                 ],
             ],
-        ]];
+        ];
     }
 
     public function testGetOperationParameterReturnsExisting(): void
@@ -548,7 +552,7 @@ class UtilTest extends TestCase
         self::assertEquals($assert, $actual);
     }
 
-    public static function provideMergeData(): array
+    public static function provideMergeData(): \Generator
     {
         $no = 'do not overwrite';
         $yes = 'do overwrite';
@@ -565,7 +569,7 @@ class UtilTest extends TestCase
             'paths' => [],
         ];
 
-        return [[
+        yield [
             // simple child merge
             'setup' => [
                 'info' => self::createObj(OA\Info::class, ['version' => $no]),
@@ -577,7 +581,9 @@ class UtilTest extends TestCase
             'assert' => [
                 'info' => ['title' => $yes, 'version' => $no],
             ] + $assertDefaults,
-        ], [
+        ];
+
+        yield [
             // Parse server url with variables, see https://github.com/nelmio/NelmioApiDocBundle/issues/1691
             'setup' => $setupDefaults,
             'merge' => [
@@ -596,7 +602,9 @@ class UtilTest extends TestCase
                     ],
                 ],
             ] + $assertDefaults,
-        ], [
+        ];
+
+        yield [
             // indexed collection merge
             'setup' => [
                 'components' => self::createObj(OA\Components::class, [
@@ -619,7 +627,9 @@ class UtilTest extends TestCase
                     ],
                 ],
             ] + $assertDefaults,
-        ], [
+        ];
+
+        yield [
             // collection merge
             'setup' => [
                 'tags' => [self::createObj(OA\Tag::class, ['name' => $no])],
@@ -645,56 +655,31 @@ class UtilTest extends TestCase
                     ['name' => $no, 'description' => $yes],
                 ],
             ] + $assertDefaults,
-        ],
-            [
-                // heavy nested merge array
-                'setup' => $setupDefaults,
-                'merge' => $merge = [
-                    'servers' => [
-                        ['url' => 'http'],
-                        ['url' => 'https'],
-                    ],
-                    'paths' => [
-                        '/path/to/resource' => [
-                            'get' => [
-                                'responses' => [
-                                    '200' => [
-                                        '$ref' => '#/components/responses/default',
-                                    ],
-                                ],
-                                'requestBody' => [
-                                    'description' => 'request foo',
-                                    'content' => [
-                                        'foo-request' => [
-                                            'schema' => [
-                                                'type' => 'object',
-                                                'required' => ['baz', 'bar'],
-                                            ],
-                                        ],
-                                    ],
+        ];
+
+        yield [
+            // heavy nested merge array
+            'setup' => $setupDefaults,
+            'merge' => $merge = [
+                'servers' => [
+                    ['url' => 'http'],
+                    ['url' => 'https'],
+                ],
+                'paths' => [
+                    '/path/to/resource' => [
+                        'get' => [
+                            'responses' => [
+                                '200' => [
+                                    '$ref' => '#/components/responses/default',
                                 ],
                             ],
-                        ],
-                    ],
-                    'tags' => [
-                        ['name' => 'baz'],
-                        ['name' => 'foo'],
-                        ['name' => 'baz'],
-                        ['name' => 'foo'],
-                        ['name' => 'foo'],
-                    ],
-                    'components' => [
-                        'responses' => [
-                            'default' => [
-                                'description' => 'default response',
-                                'headers' => [
-                                    'foo-header' => [
+                            'requestBody' => [
+                                'description' => 'request foo',
+                                'content' => [
+                                    'foo-request' => [
                                         'schema' => [
-                                            'type' => 'array',
-                                            'items' => [
-                                                'type' => 'string',
-                                                'enum' => ['foo', 'bar', 'baz'],
-                                            ],
+                                            'type' => 'object',
+                                            'required' => ['baz', 'bar'],
                                         ],
                                     ],
                                 ],
@@ -702,139 +687,169 @@ class UtilTest extends TestCase
                         ],
                     ],
                 ],
-                'assert' => array_merge(
-                    $assertDefaults,
-                    $merge,
-                    ['tags' => \array_slice($merge['tags'], 0, 2, true)]
-                ),
-            ], [
-                // heavy nested merge array object
-                'setup' => $setupDefaults,
-                'merge' => new \ArrayObject([
-                    'servers' => [
-                        ['url' => 'http'],
-                        ['url' => 'https'],
-                    ],
-                    'paths' => [
-                        '/path/to/resource' => [
-                            'get' => new \ArrayObject([
-                                'responses' => [
-                                    '200' => [
-                                        '$ref' => '#/components/responses/default',
-                                    ],
-                                ],
-                                'requestBody' => new \ArrayObject([
-                                    'description' => 'request foo',
-                                    'content' => [
-                                        'foo-request' => [
-                                            'schema' => [
-                                                'required' => ['baz', 'bar'],
-                                                'type' => 'object',
-                                            ],
+                'tags' => [
+                    ['name' => 'baz'],
+                    ['name' => 'foo'],
+                    ['name' => 'baz'],
+                    ['name' => 'foo'],
+                    ['name' => 'foo'],
+                ],
+                'components' => [
+                    'responses' => [
+                        'default' => [
+                            'description' => 'default response',
+                            'headers' => [
+                                'foo-header' => [
+                                    'schema' => [
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string',
+                                            'enum' => ['foo', 'bar', 'baz'],
                                         ],
                                     ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'assert' => array_merge(
+                $assertDefaults,
+                $merge,
+                ['tags' => \array_slice($merge['tags'], 0, 2, true)]
+            ),
+        ];
+
+        yield [
+            // heavy nested merge array object
+            'setup' => $setupDefaults,
+            'merge' => new \ArrayObject([
+                'servers' => [
+                    ['url' => 'http'],
+                    ['url' => 'https'],
+                ],
+                'paths' => [
+                    '/path/to/resource' => [
+                        'get' => new \ArrayObject([
+                            'responses' => [
+                                '200' => [
+                                    '$ref' => '#/components/responses/default',
+                                ],
+                            ],
+                            'requestBody' => new \ArrayObject([
+                                'description' => 'request foo',
+                                'content' => [
+                                    'foo-request' => [
+                                        'schema' => [
+                                            'required' => ['baz', 'bar'],
+                                            'type' => 'object',
+                                        ],
+                                    ],
+                                ],
+                            ]),
+                        ]),
+                    ],
+                ],
+                'tags' => new \ArrayObject([
+                    ['name' => 'baz'],
+                    ['name' => 'foo'],
+                    new \ArrayObject(['name' => 'baz']),
+                    ['name' => 'foo'],
+                    ['name' => 'foo'],
+                ]),
+                'components' => new \ArrayObject([
+                    'responses' => [
+                        'default' => [
+                            'description' => 'default response',
+                            'headers' => new \ArrayObject([
+                                'foo-header' => new \ArrayObject([
+                                    'schema' => new \ArrayObject([
+                                        'type' => 'array',
+                                        'items' => new \ArrayObject([
+                                            'type' => 'string',
+                                            'enum' => ['foo', 'bar', 'baz'],
+                                        ]),
+                                    ]),
                                 ]),
                             ]),
                         ],
                     ],
-                    'tags' => new \ArrayObject([
-                        ['name' => 'baz'],
-                        ['name' => 'foo'],
-                        new \ArrayObject(['name' => 'baz']),
-                        ['name' => 'foo'],
-                        ['name' => 'foo'],
+                ]),
+            ]),
+            'assert' => array_merge(
+                $assertDefaults,
+                $merge,
+                ['tags' => \array_slice($merge['tags'], 0, 2, true)]
+            ),
+        ];
+
+        yield [
+            // heavy nested merge swagger instance
+            'setup' => $setupDefaults,
+            'merge' => self::createObj(OA\OpenApi::class, [
+                'servers' => [
+                    self::createObj(OA\Server::class, ['url' => 'http']),
+                    self::createObj(OA\Server::class, ['url' => 'https']),
+                ],
+                'paths' => [
+                    self::createObj(OA\PathItem::class, [
+                        'path' => '/path/to/resource',
+                        'get' => self::createObj(OA\Get::class, [
+                            'responses' => [
+                                self::createObj(OA\Response::class, [
+                                    'response' => '200',
+                                    'ref' => '#/components/responses/default',
+                                ]),
+                            ],
+                            'requestBody' => self::createObj(OA\RequestBody::class, [
+                                'description' => 'request foo',
+                                'content' => [
+                                    self::createObj(OA\MediaType::class, [
+                                        'mediaType' => 'foo-request',
+                                        'schema' => self::createObj(OA\Schema::class, [
+                                            'type' => 'object',
+                                            'required' => ['baz', 'bar'],
+                                        ]),
+                                    ]),
+                                ],
+                            ]),
+                        ]),
                     ]),
-                    'components' => new \ArrayObject([
-                        'responses' => [
-                            'default' => [
-                                'description' => 'default response',
-                                'headers' => new \ArrayObject([
-                                    'foo-header' => new \ArrayObject([
-                                        'schema' => new \ArrayObject([
-                                            'type' => 'array',
-                                            'items' => new \ArrayObject([
-                                                'type' => 'string',
-                                                'enum' => ['foo', 'bar', 'baz'],
-                                            ]),
+                ],
+                'tags' => [
+                    self::createObj(OA\Tag::class, ['name' => 'baz']),
+                    self::createObj(OA\Tag::class, ['name' => 'foo']),
+                    self::createObj(OA\Tag::class, ['name' => 'baz']),
+                    self::createObj(OA\Tag::class, ['name' => 'foo']),
+                    self::createObj(OA\Tag::class, ['name' => 'foo']),
+                ],
+                'components' => self::createObj(OA\Components::class, [
+                    'responses' => [
+                        self::createObj(OA\Response::class, [
+                            'response' => 'default',
+                            'description' => 'default response',
+                            'headers' => [
+                                self::createObj(OA\Header::class, [
+                                    'header' => 'foo-header',
+                                    'schema' => self::createObj(OA\Schema::class, [
+                                        'type' => 'array',
+                                        'items' => self::createObj(OA\Items::class, [
+                                            'type' => 'string',
+                                            'enum' => ['foo', 'bar', 'baz'],
                                         ]),
                                     ]),
                                 ]),
                             ],
-                        ],
-                    ]),
-                ]),
-                'assert' => array_merge(
-                    $assertDefaults,
-                    $merge,
-                    ['tags' => \array_slice($merge['tags'], 0, 2, true)]
-                ),
-            ], [
-                // heavy nested merge swagger instance
-                'setup' => $setupDefaults,
-                'merge' => self::createObj(OA\OpenApi::class, [
-                    'servers' => [
-                        self::createObj(OA\Server::class, ['url' => 'http']),
-                        self::createObj(OA\Server::class, ['url' => 'https']),
-                    ],
-                    'paths' => [
-                        self::createObj(OA\PathItem::class, [
-                            'path' => '/path/to/resource',
-                            'get' => self::createObj(OA\Get::class, [
-                                'responses' => [
-                                    self::createObj(OA\Response::class, [
-                                        'response' => '200',
-                                        'ref' => '#/components/responses/default',
-                                    ]),
-                                ],
-                                'requestBody' => self::createObj(OA\RequestBody::class, [
-                                    'description' => 'request foo',
-                                    'content' => [
-                                        self::createObj(OA\MediaType::class, [
-                                            'mediaType' => 'foo-request',
-                                            'schema' => self::createObj(OA\Schema::class, [
-                                                'type' => 'object',
-                                                'required' => ['baz', 'bar'],
-                                            ]),
-                                        ]),
-                                    ],
-                                ]),
-                            ]),
                         ]),
                     ],
-                    'tags' => [
-                        self::createObj(OA\Tag::class, ['name' => 'baz']),
-                        self::createObj(OA\Tag::class, ['name' => 'foo']),
-                        self::createObj(OA\Tag::class, ['name' => 'baz']),
-                        self::createObj(OA\Tag::class, ['name' => 'foo']),
-                        self::createObj(OA\Tag::class, ['name' => 'foo']),
-                    ],
-                    'components' => self::createObj(OA\Components::class, [
-                        'responses' => [
-                            self::createObj(OA\Response::class, [
-                                'response' => 'default',
-                                'description' => 'default response',
-                                'headers' => [
-                                    self::createObj(OA\Header::class, [
-                                        'header' => 'foo-header',
-                                        'schema' => self::createObj(OA\Schema::class, [
-                                            'type' => 'array',
-                                            'items' => self::createObj(OA\Items::class, [
-                                                'type' => 'string',
-                                                'enum' => ['foo', 'bar', 'baz'],
-                                            ]),
-                                        ]),
-                                    ]),
-                                ],
-                            ]),
-                        ],
-                    ]),
                 ]),
-                'assert' => array_merge(
-                    $assertDefaults,
-                    $merge,
-                    ['tags' => \array_slice($merge['tags'], 0, 2, true)]
-                ),
-            ], ];
+            ]),
+            'assert' => array_merge(
+                $assertDefaults,
+                $merge,
+                ['tags' => \array_slice($merge['tags'], 0, 2, true)]
+            ),
+        ];
     }
 
     public function assertIsNested(OA\AbstractAnnotation $parent, OA\AbstractAnnotation $child)
