@@ -39,11 +39,6 @@ runs:
       run: composer require --no-update doctrine/annotations
       shell: bash
 
-    - name: Remove packages not compatible Symfony 7
-      if: ${{ inputs.symfony-version == '7.0.*' }}
-      run: composer remove --dev --no-update friendsofsymfony/rest-bundle
-      shell: bash
-
     - name: Install dependencies with Composer
       env:
         SYMFONY_REQUIRE: ${{ inputs.symfony-version }}
