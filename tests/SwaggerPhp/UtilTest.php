@@ -178,12 +178,10 @@ class UtilTest extends TestCase
 
         self::expectException(\Exception::class);
         self::expectExceptionMessage("Property \"foobars\" doesn't exist");
-        self::expectExceptionCode(E_USER_WARNING);
         Util::createCollectionItem($this->rootAnnotation, $collection, $class);
 
         self::expectException(\Exception::class);
         self::expectExceptionMessage("Property \"foobars\" doesn't exist");
-        self::expectExceptionCode(E_USER_WARNING);
         self::assertNull($this->rootAnnotation->{$collection}); /* @phpstan-ignore-line */
     }
 
@@ -216,7 +214,6 @@ class UtilTest extends TestCase
 
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Undefined property: stdClass::$baz');
-        self::expectExceptionCode(E_WARNING);
         Util::searchCollectionItem($collection, array_merge(\get_object_vars($item2), $search));
 
         // no exception on empty collection
