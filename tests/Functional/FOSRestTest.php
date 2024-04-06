@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class FOSRestTest extends WebTestCase
@@ -25,10 +24,6 @@ class FOSRestTest extends WebTestCase
 
     protected function setUp(): void
     {
-        if (Kernel::MAJOR_VERSION >= 7) {
-            self::markTestSkipped('Not supported in symfony 7');
-        }
-
         parent::setUp();
 
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);

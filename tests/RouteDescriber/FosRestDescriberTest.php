@@ -16,7 +16,6 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber;
 use OpenApi\Annotations\OpenApi;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraints\Choice;
 
@@ -24,14 +23,6 @@ class FosRestDescriberTest extends TestCase
 {
     public function testQueryParamWithChoiceConstraintIsAddedAsEnum()
     {
-        if (Kernel::MAJOR_VERSION >= 7) {
-            self::markTestSkipped('FosRest is not supported in symfony 7');
-        }
-
-        if (!class_exists(QueryParam::class)) {
-            self::markTestSkipped('FOSRestBundle is not installed');
-        }
-
         $choices = ['foo', 'bar'];
 
         $queryParam = new QueryParam();
