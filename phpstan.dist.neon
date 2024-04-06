@@ -28,3 +28,4 @@ parameters:
     universalObjectCratesClasses:
         - OpenApi\Context
     treatPhpDocTypesAsCertain: false
+    checkGenericClassInNonGenericObjectType: false
