@@ -15,6 +15,7 @@ parameters:
         - tests/Functional/Entity/*
         - tests/Functional/EntityExcluded/*
         - tests/Functional/Controller/*
+        - tests/ModelDescriber/Annotations/Fixture/*
     dynamicConstantNames:
         - Symfony\Component\HttpKernel\Kernel::VERSION
         - Symfony\Component\HttpKernel\Kernel::VERSION_ID
@@ -29,3 +30,5 @@ parameters:
         - OpenApi\Context
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: false
+    ignoreErrors:
+        - '#^Property class@anonymous/tests/.* has no type specified.$#'
