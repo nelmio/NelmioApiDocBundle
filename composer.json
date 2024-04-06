@@ -110,10 +110,5 @@
         "phpunit": "phpunit",
         "phpstan": "phpstan --memory-limit=2G",
         "phpstan-baseline": "phpstan --memory-limit=2G --generate-baseline"
-    },
-    "config": {
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
     }
 }
