@@ -28,14 +28,3 @@ parameters:
     universalObjectCratesClasses:
         - OpenApi\Context
     treatPhpDocTypesAsCertain: false
-    ignoreErrors:
-        - '#Method Nelmio\\ApiDocBundle\\PropertyDescriber\\PropertyDescriberInterface::describe\(\) invoked with 5 parameters, 2-3 required.#'
-        -
-            message: "#^PHPDoc tag @param references unknown parameter\\: \\$context$#"
-            count: 1
-            path: src/PropertyDescriber/PropertyDescriberInterface.php
-
-        -
-            message: "#^PHPDoc tag @param references unknown parameter\\: \\$schema$#"
-            count: 1
-            path: src/PropertyDescriber/PropertyDescriberInterface.php
