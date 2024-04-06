@@ -90,7 +90,7 @@ class RouteMetadataDescriberTest extends TestCase
         self::assertEquals(Generator::UNDEFINED, $getPathParameter->schema->enum);
     }
 
-    public function provideEnumPattern()
+    public static function provideEnumPattern(): iterable
     {
         yield ['1|2|3'];
         yield ['srf|rtr|rsi'];
@@ -98,7 +98,7 @@ class RouteMetadataDescriberTest extends TestCase
         yield ['srf-1|srf-2'];
     }
 
-    public function provideInvalidEnumPattern()
+    public static function provideInvalidEnumPattern(): iterable
     {
         yield ['|'];
         yield ['|a'];

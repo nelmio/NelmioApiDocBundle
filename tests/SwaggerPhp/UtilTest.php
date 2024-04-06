@@ -51,7 +51,19 @@ class UtilTest extends TestCase
         parent::setUp();
 
         $this->rootContext = new Context(['isTestingRoot' => true]);
-        $this->rootAnnotation = $this->createObj(OA\OpenApi::class, ['_context' => $this->rootContext]);
+        $this->rootAnnotation = self::createObj(OA\OpenApi::class, ['_context' => $this->rootContext]);
+
+        set_error_handler(
+            static function ($errno, $errstr) {
+                throw new \Exception($errstr, $errno);
+            },
+            E_ALL
+        );
+    }
+
+    public function tearDown(): void
+    {
+        restore_error_handler();
     }
 
     public function testCreateContextSetsParentContext()
@@ -164,18 +176,13 @@ class UtilTest extends TestCase
         $collection = 'foobars';
         $class = OA\Info::class;
 
-        $expectedRegex = "/Property \"foobars\" doesn't exist .*/";
-        try {
-            Util::createCollectionItem($this->rootAnnotation, $collection, $class);
-        } catch (\Exception $e) {
-            self::assertMatchesRegularExpression($expectedRegex, $e->getMessage());
-        }
+        self::expectException(\Exception::class);
+        self::expectExceptionMessage("Property \"foobars\" doesn't exist");
+        Util::createCollectionItem($this->rootAnnotation, $collection, $class);
 
-        try {
-            self::assertNull($this->rootAnnotation->{$collection}); /* @phpstan-ignore-line */
-        } catch (\Exception $e) {
-            self::assertMatchesRegularExpression($expectedRegex, $e->getMessage());
-        }
+        self::expectException(\Exception::class);
+        self::expectExceptionMessage("Property \"foobars\" doesn't exist");
+        self::assertNull($this->rootAnnotation->{$collection}); /* @phpstan-ignore-line */
     }
 
     public function testSearchCollectionItem()
@@ -205,11 +212,9 @@ class UtilTest extends TestCase
 
         $search = ['baz' => 'foobar'];
 
-        try {
-            Util::searchCollectionItem($collection, array_merge(\get_object_vars($item2), $search));
-        } catch (\Exception $e) {
-            self::assertSame('Undefined property: stdClass::$baz', $e->getMessage());
-        }
+        self::expectException(\Exception::class);
+        self::expectExceptionMessage('Undefined property: stdClass::$baz');
+        Util::searchCollectionItem($collection, array_merge(\get_object_vars($item2), $search));
 
         // no exception on empty collection
         self::assertNull(Util::searchCollectionItem([], \get_object_vars($item2)));
@@ -231,8 +236,8 @@ class UtilTest extends TestCase
 
                 // prepare the haystack array
                 foreach ($items as $assertItem) {
-                    // e.g. $properties[1] = $this->createObj(OA\PathItem::class, ['path' => 'path 1'])
-                    $properties[$assertItem['index']] = $this->createObj($assertItem['class'], [
+                    // e.g. $properties[1] = self::createObj(OA\PathItem::class, ['path' => 'path 1'])
+                    $properties[$assertItem['index']] = self::createObj($assertItem['class'], [
                         $assertItem['key'] => $assertItem['value'],
                     ]);
                 }
@@ -286,18 +291,18 @@ class UtilTest extends TestCase
         }
     }
 
-    public function provideIndexedCollectionData(): array
+    public static function provideIndexedCollectionData(): iterable
     {
         return [[
             'setup' => [
                 'class' => OA\OpenApi::class,
                 'paths' => [
-                    $this->createObj(OA\PathItem::class, ['path' => 'path 0']),
+                    self::createObj(OA\PathItem::class, ['path' => 'path 0']),
                 ],
-                'components' => $this->createObj(OA\Components::class, [
+                'components' => self::createObj(OA\Components::class, [
                     'parameters' => [
-                        $this->createObj(OA\Parameter::class, ['parameter' => 'parameter 0']),
-                        $this->createObj(OA\Parameter::class, ['parameter' => 'parameter 1']),
+                        self::createObj(OA\Parameter::class, ['parameter' => 'parameter 0']),
+                        self::createObj(OA\Parameter::class, ['parameter' => 'parameter 1']),
                     ],
                 ]),
             ],
@@ -399,12 +404,12 @@ class UtilTest extends TestCase
         }
     }
 
-    public function provideChildData(): array
+    public static function provideChildData(): iterable
     {
         return [[
             'setup' => [
                 'class' => OA\PathItem::class,
-                'get' => $this->createObj(OA\Get::class, []),
+                'get' => self::createObj(OA\Get::class, []),
             ],
             'assert' => [
                 // fixed within setup
@@ -463,13 +468,13 @@ class UtilTest extends TestCase
         $name = 'operation name';
         $in = 'operation in';
 
-        $parameter = $this->createObj(OA\Parameter::class, ['name' => $name, 'in' => $in]);
-        $operation = $this->createObj(OA\Get::class, ['parameters' => [
-            $this->createObj(OA\Parameter::class, []),
-            $this->createObj(OA\Parameter::class, ['name' => 'foo']),
-            $this->createObj(OA\Parameter::class, ['in' => 'bar']),
-            $this->createObj(OA\Parameter::class, ['name' => $name, 'in' => 'bar']),
-            $this->createObj(OA\Parameter::class, ['name' => 'foo', 'in' => $in]),
+        $parameter = self::createObj(OA\Parameter::class, ['name' => $name, 'in' => $in]);
+        $operation = self::createObj(OA\Get::class, ['parameters' => [
+            self::createObj(OA\Parameter::class, []),
+            self::createObj(OA\Parameter::class, ['name' => 'foo']),
+            self::createObj(OA\Parameter::class, ['in' => 'bar']),
+            self::createObj(OA\Parameter::class, ['name' => $name, 'in' => 'bar']),
+            self::createObj(OA\Parameter::class, ['name' => 'foo', 'in' => $in]),
             $parameter,
         ]]);
 
@@ -482,12 +487,12 @@ class UtilTest extends TestCase
         $name = 'operation name';
         $in = 'operation in';
 
-        $operation = $this->createObj(OA\Get::class, ['parameters' => [
-            $this->createObj(OA\Parameter::class, []),
-            $this->createObj(OA\Parameter::class, ['name' => 'foo']),
-            $this->createObj(OA\Parameter::class, ['in' => 'bar']),
-            $this->createObj(OA\Parameter::class, ['name' => $name, 'in' => 'bar']),
-            $this->createObj(OA\Parameter::class, ['name' => 'foo', 'in' => $in]),
+        $operation = self::createObj(OA\Get::class, ['parameters' => [
+            self::createObj(OA\Parameter::class, []),
+            self::createObj(OA\Parameter::class, ['name' => 'foo']),
+            self::createObj(OA\Parameter::class, ['in' => 'bar']),
+            self::createObj(OA\Parameter::class, ['name' => $name, 'in' => 'bar']),
+            self::createObj(OA\Parameter::class, ['name' => 'foo', 'in' => $in]),
         ]]);
 
         $actual = Util::getOperationParameter($operation, $name, $in);
@@ -497,8 +502,8 @@ class UtilTest extends TestCase
 
     public function testGetOperationReturnsExisting()
     {
-        $get = $this->createObj(OA\Get::class, []);
-        $path = $this->createObj(OA\PathItem::class, ['get' => $get]);
+        $get = self::createObj(OA\Get::class, []);
+        $path = self::createObj(OA\PathItem::class, ['get' => $get]);
 
         self::assertSame($get, Util::getOperation($path, 'get'));
     }
@@ -506,7 +511,7 @@ class UtilTest extends TestCase
     public function testGetOperationCreatesWithPath()
     {
         $pathStr = '/testing/get/path';
-        $path = $this->createObj(OA\PathItem::class, ['path' => $pathStr]);
+        $path = self::createObj(OA\PathItem::class, ['path' => $pathStr]);
 
         $get = Util::getOperation($path, 'get');
         self::assertInstanceOf(OA\Get::class, $get);
@@ -515,7 +520,7 @@ class UtilTest extends TestCase
 
     public function testMergeWithEmptyArray()
     {
-        $api = $this->createObj(OA\OpenApi::class, ['_context' => new Context()]);
+        $api = self::createObj(OA\OpenApi::class, ['_context' => new Context()]);
         $expected = json_encode($api);
 
         Util::merge($api, [], false);
@@ -534,7 +539,7 @@ class UtilTest extends TestCase
      */
     public function testMerge($setup, $merge, $assert)
     {
-        $api = $this->createObj(OA\OpenApi::class, $setup + ['_context' => new Context()]);
+        $api = self::createObj(OA\OpenApi::class, $setup + ['_context' => new Context()]);
 
         Util::merge($api, $merge, false);
         self::assertTrue($api->validate());
@@ -543,7 +548,7 @@ class UtilTest extends TestCase
         self::assertEquals($assert, $actual);
     }
 
-    public function provideMergeData(): array
+    public static function provideMergeData(): array
     {
         $no = 'do not overwrite';
         $yes = 'do overwrite';
@@ -551,7 +556,7 @@ class UtilTest extends TestCase
         $requiredInfo = ['title' => '', 'version' => ''];
 
         $setupDefaults = [
-            'info' => $this->createObj(OA\Info::class, $requiredInfo),
+            'info' => self::createObj(OA\Info::class, $requiredInfo),
             'paths' => [],
         ];
         $assertDefaults = [
@@ -563,7 +568,7 @@ class UtilTest extends TestCase
         return [[
             // simple child merge
             'setup' => [
-                'info' => $this->createObj(OA\Info::class, ['version' => $no]),
+                'info' => self::createObj(OA\Info::class, ['version' => $no]),
                 'paths' => [],
             ],
             'merge' => [
@@ -594,9 +599,9 @@ class UtilTest extends TestCase
         ], [
             // indexed collection merge
             'setup' => [
-                'components' => $this->createObj(OA\Components::class, [
+                'components' => self::createObj(OA\Components::class, [
                     'schemas' => [
-                        $this->createObj(OA\Schema::class, ['schema' => $no, 'title' => $no]),
+                        self::createObj(OA\Schema::class, ['schema' => $no, 'title' => $no]),
                     ],
                 ]),
             ] + $setupDefaults,
@@ -617,7 +622,7 @@ class UtilTest extends TestCase
         ], [
             // collection merge
             'setup' => [
-                'tags' => [$this->createObj(OA\Tag::class, ['name' => $no])],
+                'tags' => [self::createObj(OA\Tag::class, ['name' => $no])],
             ] + $setupDefaults,
             'merge' => [
                 'tags' => [
@@ -766,27 +771,27 @@ class UtilTest extends TestCase
             ], [
                 // heavy nested merge swagger instance
                 'setup' => $setupDefaults,
-                'merge' => $this->createObj(OA\OpenApi::class, [
+                'merge' => self::createObj(OA\OpenApi::class, [
                     'servers' => [
-                        $this->createObj(OA\Server::class, ['url' => 'http']),
-                        $this->createObj(OA\Server::class, ['url' => 'https']),
+                        self::createObj(OA\Server::class, ['url' => 'http']),
+                        self::createObj(OA\Server::class, ['url' => 'https']),
                     ],
                     'paths' => [
-                        $this->createObj(OA\PathItem::class, [
+                        self::createObj(OA\PathItem::class, [
                             'path' => '/path/to/resource',
-                            'get' => $this->createObj(OA\Get::class, [
+                            'get' => self::createObj(OA\Get::class, [
                                 'responses' => [
-                                    $this->createObj(OA\Response::class, [
+                                    self::createObj(OA\Response::class, [
                                         'response' => '200',
                                         'ref' => '#/components/responses/default',
                                     ]),
                                 ],
-                                'requestBody' => $this->createObj(OA\RequestBody::class, [
+                                'requestBody' => self::createObj(OA\RequestBody::class, [
                                     'description' => 'request foo',
                                     'content' => [
-                                        $this->createObj(OA\MediaType::class, [
+                                        self::createObj(OA\MediaType::class, [
                                             'mediaType' => 'foo-request',
-                                            'schema' => $this->createObj(OA\Schema::class, [
+                                            'schema' => self::createObj(OA\Schema::class, [
                                                 'type' => 'object',
                                                 'required' => ['baz', 'bar'],
                                             ]),
@@ -797,23 +802,23 @@ class UtilTest extends TestCase
                         ]),
                     ],
                     'tags' => [
-                        $this->createObj(OA\Tag::class, ['name' => 'baz']),
-                        $this->createObj(OA\Tag::class, ['name' => 'foo']),
-                        $this->createObj(OA\Tag::class, ['name' => 'baz']),
-                        $this->createObj(OA\Tag::class, ['name' => 'foo']),
-                        $this->createObj(OA\Tag::class, ['name' => 'foo']),
+                        self::createObj(OA\Tag::class, ['name' => 'baz']),
+                        self::createObj(OA\Tag::class, ['name' => 'foo']),
+                        self::createObj(OA\Tag::class, ['name' => 'baz']),
+                        self::createObj(OA\Tag::class, ['name' => 'foo']),
+                        self::createObj(OA\Tag::class, ['name' => 'foo']),
                     ],
-                    'components' => $this->createObj(OA\Components::class, [
+                    'components' => self::createObj(OA\Components::class, [
                         'responses' => [
-                            $this->createObj(OA\Response::class, [
+                            self::createObj(OA\Response::class, [
                                 'response' => 'default',
                                 'description' => 'default response',
                                 'headers' => [
-                                    $this->createObj(OA\Header::class, [
+                                    self::createObj(OA\Header::class, [
                                         'header' => 'foo-header',
-                                        'schema' => $this->createObj(OA\Schema::class, [
+                                        'schema' => self::createObj(OA\Schema::class, [
                                             'type' => 'array',
-                                            'items' => $this->createObj(OA\Items::class, [
+                                            'items' => self::createObj(OA\Items::class, [
                                                 'type' => 'string',
                                                 'enum' => ['foo', 'bar', 'baz'],
                                             ]),
@@ -867,7 +872,7 @@ class UtilTest extends TestCase
         return $props;
     }
 
-    private function createObj(string $className, array $props = [])
+    private static function createObj(string $className, array $props = [])
     {
         return new $className($props + ['_context' => new Context()]);
     }

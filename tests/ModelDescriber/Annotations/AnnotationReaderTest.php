@@ -54,7 +54,7 @@ class AnnotationReaderTest extends TestCase
         self::assertEquals($schema->properties[1]->description, 'some description');
     }
 
-    public function provideProperty(): iterable
+    public static function provideProperty(): iterable
     {
         yield 'Annotations' => [new class() {
             /**

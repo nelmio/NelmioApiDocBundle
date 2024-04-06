@@ -55,7 +55,7 @@
 
         "doctrine/annotations": "^2.0",
 
-        "phpunit/phpunit": "^8.5|^9.6",
+        "phpunit/phpunit": "^9.6|^10.5",
 
         "friendsofphp/php-cs-fixer": "^3.52",
 
