@@ -20,14 +20,14 @@ use Symfony\Component\Routing\Route;
 
 class RouteMetadataDescriberTest extends TestCase
 {
-    public function testUndefinedCheck()
+    public function testUndefinedCheck(): void
     {
         $routeDescriber = new RouteMetadataDescriber();
 
         self::assertNull($routeDescriber->describe(new OpenApi(['_context' => new Context()]), new Route('foo'), new \ReflectionMethod(__CLASS__, 'testUndefinedCheck')));
     }
 
-    public function testRouteRequirementsWithPattern()
+    public function testRouteRequirementsWithPattern(): void
     {
         $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();
@@ -51,7 +51,7 @@ class RouteMetadataDescriberTest extends TestCase
     /**
      * @dataProvider provideEnumPattern
      */
-    public function testSimpleOrRequirementsAreHandledAsEnums($req)
+    public function testSimpleOrRequirementsAreHandledAsEnums($req): void
     {
         $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();
@@ -74,7 +74,7 @@ class RouteMetadataDescriberTest extends TestCase
     /**
      * @dataProvider provideInvalidEnumPattern
      */
-    public function testNonEnumPatterns($pattern)
+    public function testNonEnumPatterns($pattern): void
     {
         $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();

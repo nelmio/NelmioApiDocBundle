@@ -17,7 +17,7 @@ use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase
 {
-    public function testDefaultArea()
+    public function testDefaultArea(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => ['path_patterns' => ['/foo']]]]);
@@ -37,7 +37,7 @@ class ConfigurationTest extends TestCase
         );
     }
 
-    public function testAreas()
+    public function testAreas(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [['areas' => $areas = [
@@ -70,7 +70,7 @@ class ConfigurationTest extends TestCase
         self::assertSame($areas, $config['areas']);
     }
 
-    public function testAlternativeNames()
+    public function testAlternativeNames(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[

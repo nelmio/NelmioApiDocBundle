@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class NelmioApiDocExtensionTest extends TestCase
 {
-    public function testNameAliasesArePassedToModelRegistry()
+    public function testNameAliasesArePassedToModelRegistry(): void
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);
@@ -86,7 +86,7 @@ class NelmioApiDocExtensionTest extends TestCase
         self::assertTrue($foundMethodCall);
     }
 
-    public function testMergesRootKeysFromMultipleConfigurations()
+    public function testMergesRootKeysFromMultipleConfigurations(): void
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);
@@ -155,7 +155,7 @@ class NelmioApiDocExtensionTest extends TestCase
     /**
      * @dataProvider provideCacheConfig
      */
-    public function testApiDocGeneratorWithCachePool(array $config, array $expectedValues)
+    public function testApiDocGeneratorWithCachePool(array $config, array $expectedValues): void
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);

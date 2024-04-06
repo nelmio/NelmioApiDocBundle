@@ -40,7 +40,7 @@ class BazingaFunctionalTest extends WebTestCase
         $metaDataFactory->setCache(new PsrCacheAdapter('BazingaFunctionalTest', new ArrayAdapter()));
     }
 
-    public function testModelComplexDocumentationBazinga()
+    public function testModelComplexDocumentationBazinga(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -94,7 +94,7 @@ class BazingaFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('BazingaUser')->toJson(), true));
     }
 
-    public function testWithGroup()
+    public function testWithGroup(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -112,7 +112,7 @@ class BazingaFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('BazingaUser_grouped')->toJson(), true));
     }
 
-    public function testWithType()
+    public function testWithType(): void
     {
         if (!method_exists(Embedded::class, 'getType')) {
             self::markTestSkipped('Typed embedded properties require at most willdurand/hateoas 3.0');

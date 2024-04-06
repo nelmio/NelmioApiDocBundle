@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints\Choice;
 
 class FosRestDescriberTest extends TestCase
 {
-    public function testQueryParamWithChoiceConstraintIsAddedAsEnum()
+    public function testQueryParamWithChoiceConstraintIsAddedAsEnum(): void
     {
         $choices = ['foo', 'bar'];
 

@@ -26,7 +26,7 @@ class RouteDescriberTest extends AbstractDescriberTestCase
 
     private $routeDescriber;
 
-    public function testIgnoreWhenNoController()
+    public function testIgnoreWhenNoController(): void
     {
         $this->routes->add('foo', new Route('foo'));
         $this->routeDescriber->expects(self::never())

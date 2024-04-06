@@ -23,7 +23,7 @@ class SwaggerPHPApiComplianceTest extends WebTestCase
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
 
-    public function testAllContextsCopyRoot()
+    public function testAllContextsCopyRoot(): void
     {
         $openApi = $this->getOpenApiDefinition();
         $root = $openApi->_context;

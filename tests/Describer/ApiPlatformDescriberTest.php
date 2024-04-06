@@ -24,7 +24,7 @@ class ApiPlatformDescriberTest extends AbstractDescriberTestCase
 
     private $normalizer;
 
-    public function testDescribe()
+    public function testDescribe(): void
     {
         $this->normalizer->expects(self::once())
             ->method('normalize')
@@ -35,7 +35,7 @@ class ApiPlatformDescriberTest extends AbstractDescriberTestCase
         self::assertEquals($expectedApi->toJson(), $this->getOpenApiDoc()->toJson());
     }
 
-    public function testDescribeRemovesBasePathAfterNormalization()
+    public function testDescribeRemovesBasePathAfterNormalization(): void
     {
         $this->normalizer->expects(self::once())
             ->method('normalize')

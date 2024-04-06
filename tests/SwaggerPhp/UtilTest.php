@@ -66,14 +66,14 @@ class UtilTest extends TestCase
         restore_error_handler();
     }
 
-    public function testCreateContextSetsParentContext()
+    public function testCreateContextSetsParentContext(): void
     {
         $context = Util::createContext([], $this->rootContext);
 
         $this->assertContextIsConnectedToRootContext($context);
     }
 
-    public function testCreateContextWithProperties()
+    public function testCreateContextWithProperties(): void
     {
         $context = Util::createContext(['testing' => 'trait']);
 
@@ -81,21 +81,21 @@ class UtilTest extends TestCase
         self::assertSame('trait', $context->testing);
     }
 
-    public function testCreateChild()
+    public function testCreateChild(): void
     {
         $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
         self::assertInstanceOf(OA\Info::class, $info);
     }
 
-    public function testCreateChildHasContext()
+    public function testCreateChildHasContext(): void
     {
         $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
         self::assertInstanceOf(Context::class, $info->_context);
     }
 
-    public function testCreateChildHasNestedContext()
+    public function testCreateChildHasNestedContext(): void
     {
         $path = Util::createChild($this->rootAnnotation, OA\PathItem::class);
         $this->assertIsNested($this->rootAnnotation, $path);
@@ -109,7 +109,7 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($schema);
     }
 
-    public function testCreateChildWithEmptyProperties()
+    public function testCreateChildWithEmptyProperties(): void
     {
         $properties = [];
         /** @var OA\Info $info */
@@ -125,7 +125,7 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($info);
     }
 
-    public function testCreateChildWithProperties()
+    public function testCreateChildWithProperties(): void
     {
         $properties = ['title' => 'testing', 'version' => '999', 'x' => new \stdClass()];
         /** @var OA\Info $info */
@@ -139,7 +139,7 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($info);
     }
 
-    public function testCreateCollectionItemAddsCreatedItemToCollection()
+    public function testCreateCollectionItemAddsCreatedItemToCollection(): void
     {
         $collection = 'paths';
         $class = OA\PathItem::class;
@@ -171,7 +171,7 @@ class UtilTest extends TestCase
         $this->assertIsConnectedToRootContext($this->rootAnnotation->components->{$collection}[$d1]);
     }
 
-    public function testCreateCollectionItemDoesNotAddToUnknownProperty()
+    public function testCreateCollectionItemDoesNotAddToUnknownProperty(): void
     {
         $collection = 'foobars';
         $class = OA\Info::class;
@@ -185,7 +185,7 @@ class UtilTest extends TestCase
         self::assertNull($this->rootAnnotation->{$collection}); /* @phpstan-ignore-line */
     }
 
-    public function testSearchCollectionItem()
+    public function testSearchCollectionItem(): void
     {
         $item1 = new \stdClass();
         $item1->prop1 = 'item 1 prop 1';
@@ -223,7 +223,7 @@ class UtilTest extends TestCase
     /**
      * @dataProvider provideIndexedCollectionData
      */
-    public function testSearchIndexedCollectionItem($setup, $asserts)
+    public function testSearchIndexedCollectionItem($setup, $asserts): void
     {
         foreach ($asserts as $collection => $items) {
             foreach ($items as $assert) {
@@ -254,7 +254,7 @@ class UtilTest extends TestCase
     /**
      * @dataProvider provideIndexedCollectionData
      */
-    public function testGetIndexedCollectionItem($setup, $asserts)
+    public function testGetIndexedCollectionItem($setup, $asserts): void
     {
         $parent = new $setup['class'](array_merge(
             $this->getSetupPropertiesWithoutClass($setup),
@@ -380,7 +380,7 @@ class UtilTest extends TestCase
     /**
      * @dataProvider provideChildData
      */
-    public function testGetChild($setup, $asserts)
+    public function testGetChild($setup, $asserts): void
     {
         $parent = new $setup['class'](array_merge(
             $this->getSetupPropertiesWithoutClass($setup),
@@ -463,7 +463,7 @@ class UtilTest extends TestCase
         ]];
     }
 
-    public function testGetOperationParameterReturnsExisting()
+    public function testGetOperationParameterReturnsExisting(): void
     {
         $name = 'operation name';
         $in = 'operation in';
@@ -482,7 +482,7 @@ class UtilTest extends TestCase
         self::assertSame($parameter, $actual);
     }
 
-    public function testGetOperationParameterCreatesWithNameAndIn()
+    public function testGetOperationParameterCreatesWithNameAndIn(): void
     {
         $name = 'operation name';
         $in = 'operation in';
@@ -500,7 +500,7 @@ class UtilTest extends TestCase
         self::assertSame($in, $actual->in);
     }
 
-    public function testGetOperationReturnsExisting()
+    public function testGetOperationReturnsExisting(): void
     {
         $get = self::createObj(OA\Get::class, []);
         $path = self::createObj(OA\PathItem::class, ['get' => $get]);
@@ -508,7 +508,7 @@ class UtilTest extends TestCase
         self::assertSame($get, Util::getOperation($path, 'get'));
     }
 
-    public function testGetOperationCreatesWithPath()
+    public function testGetOperationCreatesWithPath(): void
     {
         $pathStr = '/testing/get/path';
         $path = self::createObj(OA\PathItem::class, ['path' => $pathStr]);
@@ -518,7 +518,7 @@ class UtilTest extends TestCase
         self::assertSame($pathStr, $get->path);
     }
 
-    public function testMergeWithEmptyArray()
+    public function testMergeWithEmptyArray(): void
     {
         $api = self::createObj(OA\OpenApi::class, ['_context' => new Context()]);
         $expected = json_encode($api);
@@ -537,7 +537,7 @@ class UtilTest extends TestCase
     /**
      * @dataProvider provideMergeData
      */
-    public function testMerge($setup, $merge, $assert)
+    public function testMerge($setup, $merge, $assert): void
     {
         $api = self::createObj(OA\OpenApi::class, $setup + ['_context' => new Context()]);
 

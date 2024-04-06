@@ -21,7 +21,7 @@ use Symfony\Component\PropertyInfo\Type;
 
 class ModelRegistryTest extends TestCase
 {
-    public function testNameAliasingNotAppliedForCollections()
+    public function testNameAliasingNotAppliedForCollections(): void
     {
         $alternativeNames = [
             'Foo1' => [
@@ -38,7 +38,7 @@ class ModelRegistryTest extends TestCase
     /**
      * @dataProvider provideNameCollisionsTypes
      */
-    public function testNameCollisionsAreLogged(Type $type, array $arrayType)
+    public function testNameCollisionsAreLogged(Type $type, array $arrayType): void
     {
         $logger = $this->createMock(LoggerInterface::class);
         $logger
@@ -108,7 +108,7 @@ class ModelRegistryTest extends TestCase
         ];
     }
 
-    public function testNameCollisionsAreLoggedWithAlternativeNames()
+    public function testNameCollisionsAreLoggedWithAlternativeNames(): void
     {
         $ref = new \ReflectionClass(self::class);
         $alternativeNames = [
@@ -161,7 +161,7 @@ class ModelRegistryTest extends TestCase
     /**
      * @dataProvider getNameAlternatives
      */
-    public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames)
+    public function testNameAliasingForObjects(string $expected, $groups, array $alternativeNames): void
     {
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
@@ -228,7 +228,7 @@ class ModelRegistryTest extends TestCase
     /**
      * @dataProvider unsupportedTypesProvider
      */
-    public function testUnsupportedTypeException(Type $type, string $stringType)
+    public function testUnsupportedTypeException(Type $type, string $stringType): void
     {
         $this->expectException('\LogicException');
         $this->expectExceptionMessage(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $stringType));
@@ -246,7 +246,7 @@ class ModelRegistryTest extends TestCase
         ];
     }
 
-    public function testUnsupportedTypeExceptionWithNonExistentClass()
+    public function testUnsupportedTypeExceptionWithNonExistentClass(): void
     {
         $className = 'Some\\Class\\That\\DoesNotExist';
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, $className);
