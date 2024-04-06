@@ -18,9 +18,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ControllerReflector
 {
-    private $container;
-
-    private $controllers = [];
+    private ContainerInterface $container;
+    /**
+     * @var array<string, array{string, string}|null>
+     */
+    private array $controllers = [];
 
     public function __construct(ContainerInterface $container)
     {
@@ -29,6 +31,8 @@ class ControllerReflector
 
     /**
      * Returns the ReflectionMethod for the given controller string.
+     *
+     * @param string|array{string, string}|null $controller
      */
     public function getReflectionMethod($controller): ?\ReflectionMethod
     {
@@ -54,6 +58,9 @@ class ControllerReflector
         return null;
     }
 
+    /**
+     * @return array{string, string}|null
+     */
     private function getClassAndMethod(string $controller): ?array
     {
         if (isset($this->controllers[$controller])) {

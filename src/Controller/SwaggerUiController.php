@@ -20,15 +20,9 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class SwaggerUiController
 {
-    /**
-     * @var RenderOpenApi
-     */
-    private $renderOpenApi;
+    private RenderOpenApi $renderOpenApi;
 
-    /**
-     * @var string
-     */
-    private $uiRenderer;
+    private string $uiRenderer;
 
     public function __construct(RenderOpenApi $renderOpenApi, string $uiRenderer)
     {
@@ -36,7 +30,7 @@ final class SwaggerUiController
         $this->uiRenderer = $uiRenderer;
     }
 
-    public function __invoke(Request $request, $area = 'default')
+    public function __invoke(Request $request, string $area = 'default'): Response
     {
         try {
             $response = new Response(

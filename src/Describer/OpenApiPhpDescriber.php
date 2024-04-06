@@ -31,14 +31,11 @@ final class OpenApiPhpDescriber
 {
     use SetsContextTrait;
 
-    private $routeCollection;
-    private $controllerReflector;
+    private RouteCollection $routeCollection;
+    private ControllerReflector $controllerReflector;
 
-    /**
-     * @var Reader|null
-     */
-    private $annotationReader;
-    private $logger;
+    private ?Reader $annotationReader;
+    private LoggerInterface $logger;
 
     public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, ?Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
     {
@@ -52,7 +49,7 @@ final class OpenApiPhpDescriber
         $this->logger = $logger;
     }
 
-    public function describe(OA\OpenApi $api)
+    public function describe(OA\OpenApi $api): void
     {
         $classAnnotations = [];
 
@@ -200,6 +197,9 @@ final class OpenApiPhpDescriber
         }
     }
 
+    /**
+     * @return string[]
+     */
     private function getSupportedHttpMethods(Route $route): array
     {
         $allMethods = Util::OPERATIONS;
@@ -223,7 +223,7 @@ final class OpenApiPhpDescriber
     }
 
     /**
-     * @param \ReflectionClass|\ReflectionMethod $reflection
+     * @param \ReflectionClass<object>|\ReflectionMethod $reflection
      *
      * @return OA\AbstractAnnotation[]
      */

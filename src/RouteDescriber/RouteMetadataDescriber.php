@@ -25,7 +25,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
 
     private const ALPHANUM_EXPANDED_REGEX = '/^[-a-zA-Z0-9_]*$/';
 
-    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         foreach ($this->getOperations($api, $route) as $operation) {
             $requirements = $route->getRequirements();

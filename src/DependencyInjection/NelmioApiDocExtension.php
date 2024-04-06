@@ -281,6 +281,11 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         }
     }
 
+    /**
+     * @param array<int, mixed> $names
+     *
+     * @return array<string, mixed>
+     */
     private function findNameAliases(array $names, string $area): array
     {
         $nameAliases = array_filter($names, function (array $aliasInfo) use ($area) {

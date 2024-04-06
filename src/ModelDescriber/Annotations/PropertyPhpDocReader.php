@@ -27,7 +27,7 @@ use phpDocumentor\Reflection\Types\Compound;
  */
 class PropertyPhpDocReader
 {
-    private $docBlockFactory;
+    private DocBlockFactory $docBlockFactory;
 
     public function __construct()
     {
@@ -36,6 +36,8 @@ class PropertyPhpDocReader
 
     /**
      * Update the Swagger information with information from the DocBlock comment.
+     *
+     * @param \ReflectionProperty|\ReflectionMethod $reflection
      */
     public function updateProperty($reflection, OA\Property $property): void
     {
@@ -50,7 +52,7 @@ class PropertyPhpDocReader
 
         /** @var Var_ $var */
         foreach ($docBlock->getTagsByName('var') as $var) {
-            if (!$title && method_exists($var, 'getDescription') && null !== $description = $var->getDescription()) {
+            if ('' === $title && method_exists($var, 'getDescription') && null !== $description = $var->getDescription()) {
                 $title = $description->render();
             }
 
@@ -81,10 +83,10 @@ class PropertyPhpDocReader
             }
         }
 
-        if (Generator::UNDEFINED === $property->title && $title) {
+        if (Generator::UNDEFINED === $property->title && '' !== $title) {
             $property->title = $title;
         }
-        if (Generator::UNDEFINED === $property->description && $docBlock->getDescription() && $docBlock->getDescription()->render()) {
+        if (Generator::UNDEFINED === $property->description && '' !== $docBlock->getDescription()->render()) {
             $property->description = $docBlock->getDescription()->render();
         }
         if (Generator::UNDEFINED === $property->minimum && isset($min)) {

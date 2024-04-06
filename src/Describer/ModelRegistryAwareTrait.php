@@ -15,11 +15,11 @@ use Nelmio\ApiDocBundle\Model\ModelRegistry;
 
 trait ModelRegistryAwareTrait
 {
-    /**
-     * @var ModelRegistry
-     */
-    private $modelRegistry;
+    private ModelRegistry $modelRegistry;
 
+    /**
+     * @return void
+     */
     public function setModelRegistry(ModelRegistry $modelRegistry)
     {
         $this->modelRegistry = $modelRegistry;

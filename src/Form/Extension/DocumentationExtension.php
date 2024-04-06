@@ -32,6 +32,11 @@ class DocumentationExtension extends AbstractTypeExtension
             ->setAllowedTypes('documentation', ['array', 'bool']);
     }
 
+    /**
+     * @deprecated since Symfony 4.2, use getExtendedTypes() instead.
+     *
+     * @return string
+     */
     public function getExtendedType()
     {
         return self::getExtendedTypes()[0];

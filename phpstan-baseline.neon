@@ -1,6 +1,21 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\:\\:\\$_required type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Annotation/Model.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Security\\:\\:\\$_required type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Annotation/Security.php
+
+		-
+			message: "#^Only booleans are allowed in an if condition, mixed given\\.$#"
+			count: 1
+			path: src/Describer/ExternalDocDescriber.php
+
+		-
 			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: src/PropertyDescriber/ArrayPropertyDescriber.php
@@ -51,11 +66,11 @@ parameters:
 			path: src/Render/Html/HtmlOpenApiRenderer.php
 
 		-
-			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:\\$twig has unknown class Twig_Environment as its type\\.$#"
+			message: "#^Parameter \\$twig of method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:__construct\\(\\) has invalid type Twig_Environment\\.$#"
 			count: 1
 			path: src/Render/Html/HtmlOpenApiRenderer.php
 
 		-
-			message: "#^Call to function method_exists\\(\\) with 'Hateoas\\\\\\\\Configuration\\\\\\\\Embedded' and 'getType' will always evaluate to true\\.$#"
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:\\$twig has unknown class Twig_Environment as its type\\.$#"
 			count: 1
-			path: tests/Functional/BazingaFunctionalTest.php
+			path: src/Render/Html/HtmlOpenApiRenderer.php

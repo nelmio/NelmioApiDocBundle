@@ -16,6 +16,9 @@ use Symfony\Component\PropertyInfo\Type;
 
 class DateTimePropertyDescriber implements PropertyDescriberInterface
 {
+    /**
+     * @param array<string, mixed> $context Context options for describing the property
+     */
     public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
         $property->type = 'string';

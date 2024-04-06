@@ -16,23 +16,30 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use OpenApi\Annotations as OA;
+use Symfony\Component\PropertyInfo\Type;
 
 final class PropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
     /** @var array<string, PropertyDescriberInterface[]> Recursion helper */
-    private $called = [];
+    private array $called = [];
 
     /** @var PropertyDescriberInterface[] */
-    private $propertyDescribers;
+    private iterable $propertyDescribers;
 
+    /**
+     * @param PropertyDescriberInterface[] $propertyDescribers
+     */
     public function __construct(
         iterable $propertyDescribers
     ) {
         $this->propertyDescribers = $propertyDescribers;
     }
 
+    /**
+     * @param array<string, mixed> $context Context options for describing the property
+     */
     public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = []): void
     {
         if (null === $propertyDescriber = $this->getPropertyDescriber($types)) {
@@ -49,11 +56,17 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
         return null !== $this->getPropertyDescriber($types);
     }
 
+    /**
+     * @param Type[] $types
+     */
     private function getHash(array $types): string
     {
         return md5(serialize($types));
     }
 
+    /**
+     * @param Type[] $types
+     */
     private function getPropertyDescriber(array $types): ?PropertyDescriberInterface
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {

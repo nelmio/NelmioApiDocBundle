@@ -26,16 +26,17 @@ class Security extends AbstractAnnotation
 
     public static $_required = ['name'];
 
-    /**
-     * @var string
-     */
-    public $name;
+    public ?string $name;
 
     /**
      * @var string[]
      */
-    public $scopes = [];
+    public array $scopes = [];
 
+    /**
+     * @param array<string, mixed> $properties
+     * @param string[]             $scopes
+     */
     public function __construct(
         array $properties = [],
         ?string $name = null,

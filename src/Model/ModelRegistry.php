@@ -23,22 +23,41 @@ final class ModelRegistry
 {
     use LoggerAwareTrait;
 
-    private $registeredModelNames = [];
+    /**
+     * @var array<string, Model> List of model names to models
+     */
+    private array $registeredModelNames = [];
 
-    private $alternativeNames = [];
+    /**
+     * @var Model[]
+     */
+    private array $alternativeNames = [];
 
-    private $unregistered = [];
+    /**
+     * @var string[] List of hashes of models that have not been registered yet
+     */
+    private array $unregistered = [];
 
-    private $models = [];
+    /**
+     * @var array<string, Model> List of model hashes to models
+     */
+    private array $models = [];
 
-    private $names = [];
+    /**
+     * @var array<string, string> List of model hashes to model names
+     */
+    private array $names = [];
 
-    private $modelDescribers = [];
+    /**
+     * @var ModelDescriberInterface[]|iterable
+     */
+    private iterable $modelDescribers;
 
-    private $api;
+    private OA\OpenApi $api;
 
     /**
      * @param ModelDescriberInterface[]|iterable $modelDescribers
+     * @param array<string, mixed>               $alternativeNames
      *
      * @internal
      */
@@ -109,7 +128,7 @@ final class ModelRegistry
             }
         }
 
-        if (!$this->unregistered && $this->alternativeNames) {
+        if ([] === $this->unregistered && [] !== $this->alternativeNames) {
             foreach ($this->alternativeNames as $model) {
                 $this->register($model);
             }
@@ -140,6 +159,9 @@ final class ModelRegistry
         return $name;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function modelToArray(Model $model): array
     {
         $getType = function (Type $type) use (&$getType) {
@@ -148,8 +170,8 @@ final class ModelRegistry
                 'built_in_type' => $type->getBuiltinType(),
                 'nullable' => $type->isNullable(),
                 'collection' => $type->isCollection(),
-                'collection_key_types' => $type->isCollection() ? array_map($getType, $this->getCollectionKeyTypes($type)) : null,
-                'collection_value_types' => $type->isCollection() ? array_map($getType, $this->getCollectionValueTypes($type)) : null,
+                'collection_key_types' => $type->isCollection() ? array_map($getType, $type->getCollectionKeyTypes()) : null,
+                'collection_value_types' => $type->isCollection() ? array_map($getType, $type->getCollectionValueTypes()) : null,
             ];
         };
 
@@ -189,16 +211,6 @@ final class ModelRegistry
         } else {
             return $type->getBuiltinType();
         }
-    }
-
-    private function getCollectionKeyTypes(Type $type): array
-    {
-        return $type->getCollectionKeyTypes();
-    }
-
-    private function getCollectionValueTypes(Type $type): array
-    {
-        return $type->getCollectionValueTypes();
     }
 
     private function getCollectionValueType(Type $type): ?Type

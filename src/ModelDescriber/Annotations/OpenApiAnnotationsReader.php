@@ -28,12 +28,12 @@ class OpenApiAnnotationsReader
 {
     use SetsContextTrait;
 
-    /**
-     * @var Reader|null
-     */
-    private $annotationsReader;
-    private $modelRegister;
+    private ?Reader $annotationsReader;
+    private ModelRegister $modelRegister;
 
+    /**
+     * @param string[] $mediaTypes
+     */
     public function __construct(?Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
     {
         $this->annotationsReader = $annotationsReader;
@@ -56,6 +56,9 @@ class OpenApiAnnotationsReader
         $schema->mergeProperties($oaSchema);
     }
 
+    /**
+     * @param \ReflectionProperty|\ReflectionMethod $reflection
+     */
     public function getPropertyName($reflection, string $default): string
     {
         if (null === $oaProperty = $this->getAnnotation(new Context(), $reflection, OA\Property::class)) {
@@ -65,6 +68,10 @@ class OpenApiAnnotationsReader
         return Generator::UNDEFINED !== $oaProperty->property ? $oaProperty->property : $default;
     }
 
+    /**
+     * @param \ReflectionProperty|\ReflectionMethod $reflection
+     * @param string[]|null                         $serializationGroups
+     */
     public function updateProperty($reflection, OA\Property $property, ?array $serializationGroups = null): void
     {
         if (null === $oaProperty = $this->getAnnotation($property->_context, $reflection, OA\Property::class)) {

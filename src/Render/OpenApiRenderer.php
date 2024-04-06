@@ -20,5 +20,8 @@ interface OpenApiRenderer
 {
     public function getFormat(): string;
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function render(OpenApi $spec, array $options = []): string;
 }

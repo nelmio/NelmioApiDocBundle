@@ -21,7 +21,7 @@ final class PhpDocDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    private $docBlockFactory;
+    private ?DocBlockFactoryInterface $docBlockFactory;
 
     public function __construct(?DocBlockFactoryInterface $docBlockFactory = null)
     {
@@ -31,7 +31,7 @@ final class PhpDocDescriber implements RouteDescriberInterface
         $this->docBlockFactory = $docBlockFactory;
     }
 
-    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         $classDocBlock = null;
         $docBlock = null;

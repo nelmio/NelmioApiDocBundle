@@ -19,17 +19,19 @@ use OpenApi\Generator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @internal
+ */
 class RenderOpenApi
 {
     public const HTML = 'html';
     public const JSON = 'json';
     public const YAML = 'yaml';
 
-    /** @var ContainerInterface */
-    private $generatorLocator;
+    private ContainerInterface $generatorLocator;
 
     /** @var array<string, OpenApiRenderer|null> */
-    private $openApiRenderers = [];
+    private array $openApiRenderers = [];
 
     public function __construct(ContainerInterface $generatorLocator, ?OpenApiRenderer ...$openApiRenderers)
     {
@@ -43,12 +45,18 @@ class RenderOpenApi
         }
     }
 
+    /**
+     * @return string[]
+     */
     public function getAvailableFormats(): array
     {
         return array_keys($this->openApiRenderers);
     }
 
-    public function renderFromRequest(Request $request, string $format, $area, array $extraOptions = [])
+    /**
+     * @param array<string, mixed> $extraOptions
+     */
+    public function renderFromRequest(Request $request, string $format, string $area, array $extraOptions = []): string
     {
         $options = [];
         if ('' !== $request->getBaseUrl()) {
@@ -62,6 +70,8 @@ class RenderOpenApi
     }
 
     /**
+     * @param array<string, mixed> $options
+     *
      * @throws \InvalidArgumentException If the area to dump is not valid
      */
     public function render(string $format, string $area, array $options = []): string
@@ -84,9 +94,14 @@ class RenderOpenApi
         }
     }
 
+    /**
+     * @param array<string, mixed> $options
+     *
+     * @return Server[]|Generator::UNDEFINED
+     */
     private function getServersFromOptions(OpenApi $spec, array $options)
     {
-        if (array_key_exists('server_url', $options) && $options['server_url']) {
+        if (array_key_exists('server_url', $options)) {
             return [new Server(['url' => $options['server_url'], '_context' => new Context()])];
         }
 
@@ -94,7 +109,7 @@ class RenderOpenApi
             return $spec->servers;
         }
 
-        if (array_key_exists('fallback_url', $options) && $options['fallback_url']) {
+        if (array_key_exists('fallback_url', $options)) {
             return [new Server(['url' => $options['fallback_url'], '_context' => new Context()])];
         }
 

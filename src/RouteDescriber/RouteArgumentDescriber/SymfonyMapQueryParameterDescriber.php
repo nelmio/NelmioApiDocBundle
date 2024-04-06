@@ -72,6 +72,10 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
     }
 
     /**
+     * @param mixed[] $options
+     *
+     * @return array<string, mixed>
+     *
      * @see https://www.php.net/manual/en/filter.filters.validate.php
      */
     private function describeValidateFilter(?int $filter, int $flags, array $options): array
@@ -98,11 +102,11 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
 
         if (FILTER_VALIDATE_INT === $filter) {
             $props = [];
-            if ($options['min_range'] ?? false) {
+            if (array_key_exists('min_range', $options)) {
                 $props['minimum'] = $options['min_range'];
             }
 
-            if ($options['max_range'] ?? false) {
+            if (array_key_exists('max_range', $options)) {
                 $props['maximum'] = $options['max_range'];
             }
 

@@ -69,17 +69,23 @@ final class ApiDocGenerator
         $this->generator = $generator ?? new Generator($this->logger);
     }
 
-    public function setAlternativeNames(array $alternativeNames)
+    /**
+     * @param string[] $alternativeNames
+     */
+    public function setAlternativeNames(array $alternativeNames): void
     {
         $this->alternativeNames = $alternativeNames;
     }
 
-    public function setMediaTypes(array $mediaTypes)
+    /**
+     * @param string[] $mediaTypes
+     */
+    public function setMediaTypes(array $mediaTypes): void
     {
         $this->mediaTypes = $mediaTypes;
     }
 
-    public function setOpenApiVersion(?string $openApiVersion)
+    public function setOpenApiVersion(?string $openApiVersion): void
     {
         $this->openApiVersion = $openApiVersion;
     }

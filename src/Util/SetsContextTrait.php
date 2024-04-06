@@ -25,6 +25,9 @@ trait SetsContextTrait
         \OpenApi\Generator::$context = $context;
     }
 
+    /**
+     * @param \ReflectionClass|\ReflectionProperty|\ReflectionMethod $reflection
+     */
     private function setContextFromReflection(Context $parentContext, $reflection): void
     {
         // In order to have nicer errors

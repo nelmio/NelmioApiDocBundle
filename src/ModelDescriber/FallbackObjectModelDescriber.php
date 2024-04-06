@@ -17,6 +17,9 @@ use Symfony\Component\PropertyInfo\Type;
 
 class FallbackObjectModelDescriber implements ModelDescriberInterface
 {
+    /**
+     * @return void
+     */
     public function describe(Model $model, OA\Schema $schema)
     {
     }

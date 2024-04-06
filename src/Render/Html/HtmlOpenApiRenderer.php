@@ -24,6 +24,9 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
     /** @var Environment|\Twig_Environment */
     private $twig;
 
+    /**
+     * @param Environment|\Twig_Environment $twig
+     */
     public function __construct($twig)
     {
         if (!$twig instanceof \Twig_Environment && !$twig instanceof Environment) {

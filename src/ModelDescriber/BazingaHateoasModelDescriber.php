@@ -26,8 +26,8 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 {
     use ModelRegistryAwareTrait;
 
-    private $factory;
-    private $JMSModelDescriber;
+    private MetadataFactoryInterface $factory;
+    private JMSModelDescriber $JMSModelDescriber;
 
     public function __construct(MetadataFactoryInterface $factory, JMSModelDescriber $JMSModelDescriber)
     {
@@ -45,18 +45,14 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
     {
         $this->JMSModelDescriber->describe($model, $schema);
 
-        /**
-         * @var ClassMetadata
-         */
         $metadata = $this->getHateoasMetadata($model);
-        if (null === $metadata) {
+        if (!$metadata instanceof ClassMetadata) {
             return;
         }
 
         $schema->type = 'object';
         $context = $this->JMSModelDescriber->getSerializationContext($model);
 
-        /** @var Relation $relation */
         foreach ($metadata->getRelations() as $relation) {
             if (null === $relation->getEmbedded() && null === $relation->getHref()) {
                 continue;
@@ -89,14 +85,10 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         }
     }
 
-    private function getHateoasMetadata(Model $model)
+    private function getHateoasMetadata(Model $model): ?object
     {
-        $className = $model->getType()->getClassName();
-
         try {
-            if ($metadata = $this->factory->getMetadataForClass($className)) {
-                return $metadata;
-            }
+            return $this->factory->getMetadataForClass($model->getType()->getClassName());
         } catch (\ReflectionException $e) {
         }
 
@@ -105,7 +97,8 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 
     public function supports(Model $model): bool
     {
-        return $this->JMSModelDescriber->supports($model) || null !== $this->getHateoasMetadata($model);
+        return $this->JMSModelDescriber->supports($model)
+            || $this->getHateoasMetadata($model) instanceof ClassMetadata;
     }
 
     private function setAttributeProperties(Relation $relation, OA\Property $subProperty): void

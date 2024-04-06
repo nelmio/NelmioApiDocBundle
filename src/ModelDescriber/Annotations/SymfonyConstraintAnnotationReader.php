@@ -52,6 +52,7 @@ class SymfonyConstraintAnnotationReader
      * Update the given property and schema with defined Symfony constraints.
      *
      * @param \ReflectionProperty|\ReflectionMethod $reflection
+     * @param string[]|null                         $validationGroups
      */
     public function updateProperty($reflection, OA\Property $property, ?array $validationGroups = null): void
     {
@@ -64,7 +65,11 @@ class SymfonyConstraintAnnotationReader
         }
     }
 
-    private function processPropertyAnnotations($reflection, OA\Property $property, $annotations)
+    /**
+     * @param \ReflectionProperty|\ReflectionMethod $reflection
+     * @param Constraint[]                          $annotations
+     */
+    private function processPropertyAnnotations($reflection, OA\Property $property, array $annotations): void
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
@@ -138,7 +143,7 @@ class SymfonyConstraintAnnotationReader
         }
     }
 
-    public function setSchema($schema): void
+    public function setSchema(OA\Schema $schema): void
     {
         $this->schema = $schema;
     }
@@ -146,7 +151,7 @@ class SymfonyConstraintAnnotationReader
     /**
      * Append the pattern from the constraint to the existing pattern.
      */
-    private function appendPattern(OA\Schema $property, $newPattern): void
+    private function appendPattern(OA\Schema $property, ?string $newPattern): void
     {
         if (null === $newPattern) {
             return;
@@ -179,6 +184,9 @@ class SymfonyConstraintAnnotationReader
 
     /**
      * @param \ReflectionProperty|\ReflectionMethod $reflection
+     * @param string[]|null                         $validationGroups
+     *
+     * @return iterable<Constraint>
      */
     private function getAnnotations(Context $parentContext, $reflection, ?array $validationGroups): iterable
     {
@@ -200,10 +208,12 @@ class SymfonyConstraintAnnotationReader
 
     /**
      * @param \ReflectionProperty|\ReflectionMethod $reflection
+     *
+     * @return \Traversable<Constraint>
      */
     private function locateAnnotations($reflection): \Traversable
     {
-        if (\PHP_VERSION_ID >= 80000 && class_exists(Constraint::class)) {
+        if (\PHP_VERSION_ID >= 80000) {
             foreach ($reflection->getAttributes(Constraint::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
                 yield $attribute->newInstance();
             }
@@ -225,6 +235,8 @@ class SymfonyConstraintAnnotationReader
      * and constraints without any `groups` passed to them would be in that same
      * default group. So even with a null $validationGroups passed here there still
      * has to be a check on the default group.
+     *
+     * @param string[]|null $validationGroups
      */
     private function isConstraintInGroup(Constraint $annotation, ?array $validationGroups): bool
     {

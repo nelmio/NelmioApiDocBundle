@@ -16,12 +16,15 @@ use OpenApi\Annotations as OA;
 
 class ExternalDocDescriber implements DescriberInterface
 {
+    /**
+     * @var array<string, mixed>|callable
+     */
     private $externalDoc;
 
-    private $overwrite;
+    private bool $overwrite;
 
     /**
-     * @param array|callable $externalDoc
+     * @param array<string, mixed>|callable $externalDoc
      */
     public function __construct($externalDoc, bool $overwrite = false)
     {
@@ -29,6 +32,9 @@ class ExternalDocDescriber implements DescriberInterface
         $this->overwrite = $overwrite;
     }
 
+    /**
+     * @return void
+     */
     public function describe(OA\OpenApi $api)
     {
         $externalDoc = $this->getExternalDoc();
@@ -38,6 +44,9 @@ class ExternalDocDescriber implements DescriberInterface
         }
     }
 
+    /**
+     * @return mixed The external doc
+     */
     private function getExternalDoc()
     {
         if (is_callable($this->externalDoc)) {
