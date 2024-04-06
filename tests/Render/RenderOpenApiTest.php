@@ -27,7 +27,7 @@ class RenderOpenApiTest extends TestCase
     {
         $openApiRenderer = $this->createMock(OpenApiRenderer::class);
         $openApiRenderer->method('getFormat')->willReturn($this->format);
-        $openApiRenderer->expects($this->once())->method('render');
+        $openApiRenderer->expects(self::once())->method('render');
         $this->renderOpenApi($openApiRenderer);
     }
 
@@ -49,7 +49,7 @@ class RenderOpenApiTest extends TestCase
     {
         $openApiRenderer = $this->createMock(OpenApiRenderer::class);
         $openApiRenderer->method('getFormat')->willReturn($this->format);
-        $openApiRenderer->expects($this->once())->method('render');
+        $openApiRenderer->expects(self::once())->method('render');
 
         $availableOpenApiRenderers = [
             $openApiRenderer,

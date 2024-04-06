@@ -35,7 +35,7 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
     public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = []): void
     {
-        if (!$propertyDescriber = $this->getPropertyDescriber($types)) {
+        if (null === $propertyDescriber = $this->getPropertyDescriber($types)) {
             return;
         }
 

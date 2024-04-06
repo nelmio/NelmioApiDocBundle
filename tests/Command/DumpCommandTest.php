@@ -24,7 +24,7 @@ class DumpCommandTest extends WebTestCase
         $output = $this->executeDumpCommand($jsonOptions + [
             '--area' => 'test',
         ]);
-        $this->assertEquals(
+        self::assertEquals(
             json_encode($this->getOpenApiDefinition('test'), $expectedJsonFlags)."\n",
             $output
         );

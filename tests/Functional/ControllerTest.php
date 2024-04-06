@@ -56,7 +56,7 @@ final class ControllerTest extends WebTestCase
         $controllerName = $controller['name'] ?? null;
         $controllerType = $controller['type'] ?? null;
 
-        $fixtureName = $fixtureName ?? $controllerName ?? $this->fail('A fixture name must be provided.');
+        $fixtureName = $fixtureName ?? $controllerName ?? self::fail('A fixture name must be provided.');
 
         $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName, $controllerType) {
             if (null === $controllerName) {

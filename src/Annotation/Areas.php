@@ -20,6 +20,9 @@ final class Areas
     /** @var string[] */
     private $areas;
 
+    /**
+     * @param string[]|array{value: string[]} $properties
+     */
     public function __construct(array $properties)
     {
         if (!array_key_exists('value', $properties) || !is_array($properties['value'])) {
@@ -36,13 +39,9 @@ final class Areas
                 throw new \InvalidArgumentException('An area must be given as a string');
             }
 
-            if (!in_array($area, $areas)) {
+            if (!in_array($area, $areas, true)) {
                 $areas[] = $area;
             }
-        }
-
-        if (0 === count($areas)) {
-            throw new \LogicException('At least one area is expected');
         }
 
         $this->areas = $areas;

@@ -25,7 +25,11 @@ class FosRestDescriberTest extends TestCase
     public function testQueryParamWithChoiceConstraintIsAddedAsEnum()
     {
         if (Kernel::MAJOR_VERSION >= 7) {
-            $this->markTestSkipped('FosRest is not supported in symfony 7');
+            self::markTestSkipped('FosRest is not supported in symfony 7');
+        }
+
+        if (!class_exists(QueryParam::class)) {
+            self::markTestSkipped('FOSRestBundle is not installed');
         }
 
         $choices = ['foo', 'bar'];
@@ -50,6 +54,6 @@ class FosRestDescriberTest extends TestCase
             $this->createMock(\ReflectionMethod::class)
         );
 
-        $this->assertSame($choices, $api->paths[0]->get->parameters[0]->schema->enum);
+        self::assertSame($choices, $api->paths[0]->get->parameters[0]->schema->enum);
     }
 }

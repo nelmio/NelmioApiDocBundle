@@ -23,7 +23,7 @@ class BazingaFunctionalTest extends WebTestCase
     protected function setUp(): void
     {
         if (Kernel::MAJOR_VERSION >= 7) {
-            $this->markTestSkipped('Not supported in symfony 7');
+            self::markTestSkipped('Not supported in symfony 7');
         }
 
         parent::setUp();
@@ -33,7 +33,7 @@ class BazingaFunctionalTest extends WebTestCase
         $metaDataFactory = self::getContainer()->get('hateoas.configuration.metadata_factory');
 
         if (!$metaDataFactory instanceof MetadataFactory) {
-            $this->fail('The hateoas.metadata_factory service is not an instance of MetadataFactory');
+            self::fail('The hateoas.metadata_factory service is not an instance of MetadataFactory');
         }
 
         // Reusing the cache from previous tests causes relations metadata to be lost, so we need to clear it
@@ -42,7 +42,7 @@ class BazingaFunctionalTest extends WebTestCase
 
     public function testModelComplexDocumentationBazinga()
     {
-        $this->assertEquals([
+        self::assertEquals([
             'type' => 'object',
             'properties' => [
                 '_links' => [
@@ -96,7 +96,7 @@ class BazingaFunctionalTest extends WebTestCase
 
     public function testWithGroup()
     {
-        $this->assertEquals([
+        self::assertEquals([
             'type' => 'object',
             'properties' => [
                 '_embedded' => [
@@ -114,12 +114,11 @@ class BazingaFunctionalTest extends WebTestCase
 
     public function testWithType()
     {
-        try {
-            new \ReflectionMethod(Embedded::class, 'getType');
-        } catch (\ReflectionException $e) {
-            $this->markTestSkipped('Typed embedded properties require at least willdurand/hateoas 3.0');
+        if (!method_exists(Embedded::class, 'getType')) {
+            self::markTestSkipped('Typed embedded properties require at most willdurand/hateoas 3.0');
         }
-        $this->assertEquals([
+
+        self::assertEquals([
             'type' => 'object',
             'properties' => [
                 '_embedded' => [
@@ -143,6 +142,6 @@ class BazingaFunctionalTest extends WebTestCase
 
     protected static function createKernel(array $options = []): KernelInterface
     {
-        return new TestKernel(TestKernel::USE_JMS | TestKernel::USE_BAZINGA);
+        return new TestKernel(TestKernel::USE_BAZINGA);
     }
 }

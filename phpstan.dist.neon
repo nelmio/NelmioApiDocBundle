@@ -1,0 +1,30 @@
+includes:
+    - phpstan-baseline.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+    level: 5
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - tests/Functional/Entity/*
+        - tests/Functional/EntityExcluded/*
+        - tests/Functional/Controller/*
+    dynamicConstantNames:
+        - Symfony\Component\HttpKernel\Kernel::VERSION
+        - Symfony\Component\HttpKernel\Kernel::VERSION_ID
+        - Symfony\Component\HttpKernel\Kernel::MAJOR_VERSION
+        - Symfony\Component\HttpKernel\Kernel::MINOR_VERSION
+        - Symfony\Component\HttpKernel\Kernel::RELEASE_VERSION
+    symfony:
+        consoleApplicationLoader: tests/console-application.php
+    strictRules:
+        noVariableVariables: false # Neccessary for swagger-php integration
+    universalObjectCratesClasses:
+        - OpenApi\Context
+    treatPhpDocTypesAsCertain: false

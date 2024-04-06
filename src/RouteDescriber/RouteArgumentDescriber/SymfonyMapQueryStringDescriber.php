@@ -32,7 +32,6 @@ final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInte
 
     public function describe(ArgumentMetadata $argumentMetadata, OA\Operation $operation): void
     {
-        /** @var MapQueryString $attribute */
         if (!$attribute = $argumentMetadata->getAttributes(MapQueryString::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? null) {
             return;
         }
@@ -60,10 +59,6 @@ final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInte
      */
     private function getGroups(MapQueryString $attribute): ?array
     {
-        if (null === $attribute->validationGroups) {
-            return null;
-        }
-
         if (is_string($attribute->validationGroups)) {
             return [$attribute->validationGroups];
         }

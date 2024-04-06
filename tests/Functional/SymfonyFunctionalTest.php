@@ -65,7 +65,7 @@ class SymfonyFunctionalTest extends WebTestCase
             'type' => 'object',
         ];
 
-        $this->assertSame($expected, json_decode($this->getModel('SymfonyMapQueryString')->toJson(), true));
+        self::assertSame($expected, json_decode($this->getModel('SymfonyMapQueryString')->toJson(), true));
     }
 
     public function testMapQueryString(): void

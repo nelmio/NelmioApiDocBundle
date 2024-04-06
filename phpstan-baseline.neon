@@ -1,0 +1,126 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: src/PropertyDescriber/ArrayPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: src/PropertyDescriber/CompoundPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: src/PropertyDescriber/DictionaryPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: src/PropertyDescriber/NullablePropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: src/PropertyDescriber/PropertyDescriber.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$context$#"
+			count: 1
+			path: src/PropertyDescriber/PropertyDescriberInterface.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$schema$#"
+			count: 1
+			path: src/PropertyDescriber/PropertyDescriberInterface.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: src/PropertyDescriber/RequiredPropertyDescriber.php
+
+		-
+			message: "#^Call to method render\\(\\) on an unknown class Twig_Environment\\.$#"
+			count: 2
+			path: src/Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: "#^Class Twig_Environment not found\\.$#"
+			count: 1
+			path: src/Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:\\$twig has unknown class Twig_Environment as its type\\.$#"
+			count: 1
+			path: src/Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: "#^Access to property \\$allowBlank on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$description on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$key on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$key on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$map on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 2
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$nullable on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 2
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$nullable on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$strict on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Access to property \\$strict on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Call to method getName\\(\\) on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Call to method getName\\(\\) on an unknown class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\QueryParam not found\\.$#"
+			count: 3
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Class FOS\\\\RestBundle\\\\Controller\\\\Annotations\\\\RequestParam not found\\.$#"
+			count: 2
+			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Call to function method_exists\\(\\) with 'Hateoas\\\\\\\\Configuration\\\\\\\\Embedded' and 'getType' will always evaluate to true\\.$#"
+			count: 1
+			path: tests/Functional/BazingaFunctionalTest.php

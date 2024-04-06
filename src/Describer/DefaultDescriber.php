@@ -42,7 +42,7 @@ final class DefaultDescriber implements DescriberInterface
             foreach (Util::OPERATIONS as $method) {
                 /** @var OA\Operation $operation */
                 $operation = $path->{$method};
-                if (Generator::UNDEFINED !== $operation && null !== $operation && (Generator::UNDEFINED === $operation->responses || empty($operation->responses))) {
+                if (Generator::UNDEFINED !== $operation && null !== $operation && (Generator::UNDEFINED === $operation->responses || [] === $operation->responses)) {
                     /** @var OA\Response $response */
                     $response = Util::getIndexedCollectionItem($operation, OA\Response::class, 'default');
                     $response->description = '';

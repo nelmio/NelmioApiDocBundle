@@ -21,11 +21,11 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
     public function __construct(object $documentation, NormalizerInterface $normalizer)
     {
         if (!$documentation instanceof DocumentationInterface && !$documentation instanceof OpenApi) {
-            throw new \InvalidArgumentException(sprintf('Argument 1 passed to %s() must be an instance of %s or %s. The documentation provided is an instance of %s.', __METHOD__, Documentation::class, OpenApi::class, get_class($documentation)));
+            throw new \InvalidArgumentException(sprintf('Argument 1 passed to %s() must be an instance of %s or %s. The documentation provided is an instance of %s.', __METHOD__, DocumentationInterface::class, OpenApi::class, get_class($documentation)));
         }
 
         if (!$normalizer->supportsNormalization($documentation, 'json')) {
-            throw new \InvalidArgumentException(sprintf('Argument 2 passed to %s() must implement %s and support normalization of %s. The normalizer provided is an instance of %s.', __METHOD__, NormalizerInterface::class, Documentation::class, get_class($normalizer)));
+            throw new \InvalidArgumentException(sprintf('Argument 2 passed to %s() must implement %s and support normalization of %s. The normalizer provided is an instance of %s.', __METHOD__, NormalizerInterface::class, DocumentationInterface::class, get_class($normalizer)));
         }
 
         parent::__construct(function () use ($documentation, $normalizer) {

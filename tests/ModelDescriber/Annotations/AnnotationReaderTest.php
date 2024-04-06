@@ -47,11 +47,11 @@ class AnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->properties[1]);
 
-        $this->assertEquals($schema->properties[0]->example, 1);
-        $this->assertEquals($schema->properties[0]->description, Generator::UNDEFINED);
+        self::assertEquals($schema->properties[0]->example, 1);
+        self::assertEquals($schema->properties[0]->description, Generator::UNDEFINED);
 
-        $this->assertEquals($schema->properties[1]->example, 'some example');
-        $this->assertEquals($schema->properties[1]->description, 'some description');
+        self::assertEquals($schema->properties[1]->example, 'some example');
+        self::assertEquals($schema->properties[1]->description, 'some description');
     }
 
     public function provideProperty(): iterable
@@ -60,19 +60,19 @@ class AnnotationReaderTest extends TestCase
             /**
              * @OA\Property(example=1)
              */
-            private $property1;
+            public $property1;
             /**
              * @OA\Property(example="some example", description="some description")
              */
-            private $property2;
+            public $property2;
         }];
 
         if (\PHP_VERSION_ID >= 80100) {
             yield 'Attributes' => [new class() {
                 #[OAattr\Property(example: 1)]
-                private $property1;
+                public $property1;
                 #[OAattr\Property(example: 'some example', description: 'some description')]
-                private $property2;
+                public $property2;
             }];
         }
     }

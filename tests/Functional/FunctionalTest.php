@@ -31,9 +31,9 @@ class FunctionalTest extends WebTestCase
 
     public function testConfiguredDocumentation()
     {
-        $this->assertEquals('My Default App', $this->getOpenApiDefinition()->info->title);
-        $this->assertEquals(['buildHash' => 'ab1234567890'], $this->getOpenApiDefinition()->info->x);
-        $this->assertEquals('My Test App', $this->getOpenApiDefinition('test')->info->title);
+        self::assertEquals('My Default App', $this->getOpenApiDefinition()->info->title);
+        self::assertEquals(['buildHash' => 'ab1234567890'], $this->getOpenApiDefinition()->info->x);
+        self::assertEquals('My Test App', $this->getOpenApiDefinition('test')->info->title);
     }
 
     public function testUndocumentedAction()
@@ -53,13 +53,13 @@ class FunctionalTest extends WebTestCase
 
         $this->assertHasResponse('200', $operation);
         $response = $this->getOperationResponse($operation, '200');
-        $this->assertEquals('#/components/schemas/Article', $response->content['application/json']->schema->ref);
+        self::assertEquals('#/components/schemas/Article', $response->content['application/json']->schema->ref);
 
         // Ensure that groups are supported
         $articleModel = $this->getModel('Article');
-        $this->assertCount(1, $articleModel->properties);
+        self::assertCount(1, $articleModel->properties);
         $this->assertHasProperty('author', $articleModel);
-        $this->assertSame('#/components/schemas/User2', Util::getProperty($articleModel, 'author')->ref);
+        self::assertSame('#/components/schemas/User2', Util::getProperty($articleModel, 'author')->ref);
         $this->assertNotHasProperty('author', Util::getProperty($articleModel, 'author'));
     }
 
@@ -92,7 +92,7 @@ class FunctionalTest extends WebTestCase
 
         $this->assertHasResponse('201', $operation);
         $response = $this->getOperationResponse($operation, '201');
-        $this->assertEquals('An example resource', $response->description);
+        self::assertEquals('An example resource', $response->description);
     }
 
     public function swaggerActionPathsProvider()
@@ -103,7 +103,7 @@ class FunctionalTest extends WebTestCase
     public function testAnnotationWithManualPath()
     {
         $path = $this->getPath('/api/swagger2');
-        $this->assertSame(Generator::UNDEFINED, $path->post);
+        self::assertSame(Generator::UNDEFINED, $path->post);
 
         $operation = $this->getOperation('/api/swagger', 'get');
         $this->assertNotHasParameter('Accept-Version', 'header', $operation);
@@ -119,18 +119,18 @@ class FunctionalTest extends WebTestCase
     {
         $operation = $this->getOperation('/api/swagger/implicit', $method);
 
-        $this->assertEquals(['implicit'], $operation->tags);
+        self::assertEquals(['implicit'], $operation->tags);
 
         $this->assertHasResponse('201', $operation);
         $response = $this->getOperationResponse($operation, '201');
-        $this->assertEquals('Operation automatically detected', $response->description);
-        $this->assertEquals('#/components/schemas/User', $response->content['application/json']->schema->ref);
+        self::assertEquals('Operation automatically detected', $response->description);
+        self::assertEquals('#/components/schemas/User', $response->content['application/json']->schema->ref);
 
-        $this->assertInstanceOf(OAAnnotations\RequestBody::class, $operation->requestBody);
+        self::assertInstanceOf(OAAnnotations\RequestBody::class, $operation->requestBody);
         $requestBody = $operation->requestBody;
-        $this->assertEquals('This is a request body', $requestBody->description);
-        $this->assertEquals('array', $requestBody->content['application/json']->schema->type);
-        $this->assertEquals('#/components/schemas/User', $requestBody->content['application/json']->schema->items->ref);
+        self::assertEquals('This is a request body', $requestBody->description);
+        self::assertEquals('array', $requestBody->content['application/json']->schema->type);
+        self::assertEquals('#/components/schemas/User', $requestBody->content['application/json']->schema->items->ref);
     }
 
     public function implicitSwaggerActionMethodsProvider()
@@ -142,27 +142,27 @@ class FunctionalTest extends WebTestCase
     {
         $operation = $this->getOperation('/api/test/{user}', 'get');
 
-        $this->assertEquals(Generator::UNDEFINED, $operation->security);
-        $this->assertEquals(Generator::UNDEFINED, $operation->summary);
-        $this->assertEquals(Generator::UNDEFINED, $operation->description);
-        $this->assertEquals(Generator::UNDEFINED, $operation->deprecated);
+        self::assertEquals(Generator::UNDEFINED, $operation->security);
+        self::assertEquals(Generator::UNDEFINED, $operation->summary);
+        self::assertEquals(Generator::UNDEFINED, $operation->description);
+        self::assertEquals(Generator::UNDEFINED, $operation->deprecated);
         $this->assertHasResponse(200, $operation);
 
         $this->assertHasParameter('user', 'path', $operation);
         $parameter = Util::getOperationParameter($operation, 'user', 'path');
-        $this->assertTrue($parameter->required);
-        $this->assertEquals('string', $parameter->schema->type);
-        $this->assertEquals('/foo/', $parameter->schema->pattern);
-        $this->assertEquals(Generator::UNDEFINED, $parameter->schema->format);
+        self::assertTrue($parameter->required);
+        self::assertEquals('string', $parameter->schema->type);
+        self::assertEquals('/foo/', $parameter->schema->pattern);
+        self::assertEquals(Generator::UNDEFINED, $parameter->schema->format);
     }
 
     public function testDeprecatedAction()
     {
         $operation = $this->getOperation('/api/deprecated', 'get');
 
-        $this->assertEquals('This action is deprecated.', $operation->summary);
-        $this->assertEquals('Please do not use this action.', $operation->description);
-        $this->assertTrue($operation->deprecated);
+        self::assertEquals('This action is deprecated.', $operation->summary);
+        self::assertEquals('Please do not use this action.', $operation->description);
+        self::assertTrue($operation->deprecated);
     }
 
     public function testApiPlatform()
@@ -175,7 +175,7 @@ class FunctionalTest extends WebTestCase
 
     public function testUserModel()
     {
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'type' => 'object',
                 'properties' => [
@@ -261,7 +261,7 @@ class FunctionalTest extends WebTestCase
 
     public function testFormSupport()
     {
-        $this->assertEquals([
+        self::assertEquals([
             'type' => 'object',
             'description' => 'this is the description of an user',
             'properties' => [
@@ -311,7 +311,7 @@ class FunctionalTest extends WebTestCase
             'schema' => 'UserType',
         ], json_decode($this->getModel('UserType')->toJson(), true));
 
-        $this->assertEquals([
+        self::assertEquals([
             'type' => 'object',
             'properties' => [
                 'bar' => [
@@ -357,7 +357,7 @@ class FunctionalTest extends WebTestCase
             'schema' => 'DummyType',
         ], json_decode($this->getModel('DummyType')->toJson(), true));
 
-        $this->assertEquals([
+        self::assertEquals([
             'type' => 'object',
             'properties' => [
                 'quz' => [
@@ -381,7 +381,7 @@ class FunctionalTest extends WebTestCase
             ['basic' => []],
             ['oauth2' => ['scope_1']],
         ];
-        $this->assertEquals($expected, $operation->security);
+        self::assertEquals($expected, $operation->security);
     }
 
     public function provideSecurityRoute(): iterable
@@ -399,7 +399,7 @@ class FunctionalTest extends WebTestCase
     public function testSecurityOverrideAction(string $route)
     {
         $operation = $this->getOperation($route, 'get');
-        $this->assertEquals([], $operation->security);
+        self::assertEquals([], $operation->security);
     }
 
     public function provideSecurityOverrideRoute(): iterable
@@ -414,14 +414,14 @@ class FunctionalTest extends WebTestCase
     public function testInlinePHP81Parameters()
     {
         if (\PHP_VERSION_ID < 80100) {
-            $this->markTestSkipped('Attributes require PHP 8.1');
+            self::markTestSkipped('Attributes require PHP 8.1');
         }
 
         $operation = $this->getOperation('/api/inline_path_parameters', 'get');
-        $this->assertCount(1, $operation->parameters);
-        $this->assertInstanceOf(OAAttributes\PathParameter::class, $operation->parameters[0]);
-        $this->assertSame($operation->parameters[0]->name, 'product_id');
-        $this->assertSame($operation->parameters[0]->schema->type, 'string');
+        self::assertCount(1, $operation->parameters);
+        self::assertInstanceOf(OAAttributes\PathParameter::class, $operation->parameters[0]);
+        self::assertSame($operation->parameters[0]->name, 'product_id');
+        self::assertSame($operation->parameters[0]->schema->type, 'string');
     }
 
     public function testClassSecurityAction()
@@ -431,7 +431,7 @@ class FunctionalTest extends WebTestCase
         $expected = [
             ['basic' => []],
         ];
-        $this->assertEquals($expected, $operation->security);
+        self::assertEquals($expected, $operation->security);
     }
 
     public function testSymfonyConstraintDocumentation()
@@ -572,25 +572,25 @@ class FunctionalTest extends WebTestCase
             ];
         }
 
-        $this->assertEquals($expected, json_decode($this->getModel($modelName)->toJson(), true));
+        self::assertEquals($expected, json_decode($this->getModel($modelName)->toJson(), true));
     }
 
     public function testConfigReference()
     {
         $operation = $this->getOperation('/api/configReference', 'get');
-        $this->assertEquals('#/components/schemas/Test', $this->getOperationResponse($operation, '200')->ref);
-        $this->assertEquals('#/components/responses/201', $this->getOperationResponse($operation, '201')->ref);
+        self::assertEquals('#/components/schemas/Test', $this->getOperationResponse($operation, '200')->ref);
+        self::assertEquals('#/components/responses/201', $this->getOperationResponse($operation, '201')->ref);
     }
 
     public function testOperationsWithOtherAnnotationsAction()
     {
         $getOperation = $this->getOperation('/api/multi-annotations', 'get');
-        $this->assertSame('This is the get operation', $getOperation->description);
-        $this->assertSame('Worked well!', $this->getOperationResponse($getOperation, 200)->description);
+        self::assertSame('This is the get operation', $getOperation->description);
+        self::assertSame('Worked well!', $this->getOperationResponse($getOperation, 200)->description);
 
         $postOperation = $this->getOperation('/api/multi-annotations', 'post');
-        $this->assertSame('This is post', $postOperation->description);
-        $this->assertSame('Worked well!', $this->getOperationResponse($postOperation, 200)->description);
+        self::assertSame('This is post', $postOperation->description);
+        self::assertSame('Worked well!', $this->getOperationResponse($postOperation, 200)->description);
     }
 
     public function testNoDuplicatedParameters()
@@ -602,7 +602,7 @@ class FunctionalTest extends WebTestCase
     public function testSerializedNameAction()
     {
         if (!class_exists(SerializedName::class)) {
-            $this->markTestSkipped('Annotation @SerializedName doesn\'t exist.');
+            self::markTestSkipped('Annotation @SerializedName doesn\'t exist.');
         }
 
         if (TestKernel::isAttributesAvailable()) {
@@ -611,7 +611,7 @@ class FunctionalTest extends WebTestCase
             $model = $this->getModel('SerializedNameEnt');
         }
 
-        $this->assertCount(2, $model->properties);
+        self::assertCount(2, $model->properties);
 
         $this->assertNotHasProperty('foo', $model);
         $this->assertHasProperty('notfoo', $model);
@@ -747,31 +747,31 @@ class FunctionalTest extends WebTestCase
     public function testInvokableController()
     {
         $operation = $this->getOperation('/api/invoke', 'get');
-        $this->assertSame('Invokable!', $this->getOperationResponse($operation, 200)->description);
+        self::assertSame('Invokable!', $this->getOperationResponse($operation, 200)->description);
     }
 
     public function testDefaultOperationId()
     {
         $operation = $this->getOperation('/api/article/{id}', 'get');
-        $this->assertEquals('get_api_nelmio_apidoc_tests_functional_api_fetcharticle', $operation->operationId);
+        self::assertEquals('get_api_nelmio_apidoc_tests_functional_api_fetcharticle', $operation->operationId);
     }
 
     public function testNamedRouteOperationId()
     {
         $operation = $this->getOperation('/api/named_route-operation-id', 'get');
-        $this->assertEquals('get_api_named_route_operation_id', $operation->operationId);
+        self::assertEquals('get_api_named_route_operation_id', $operation->operationId);
 
         $operation = $this->getOperation('/api/named_route-operation-id', 'post');
-        $this->assertEquals('post_api_named_route_operation_id', $operation->operationId);
+        self::assertEquals('post_api_named_route_operation_id', $operation->operationId);
     }
 
     public function testCustomOperationId()
     {
         $operation = $this->getOperation('/api/custom-operation-id', 'get');
-        $this->assertEquals('get-custom-operation-id', $operation->operationId);
+        self::assertEquals('get-custom-operation-id', $operation->operationId);
 
         $operation = $this->getOperation('/api/custom-operation-id', 'post');
-        $this->assertEquals('post-custom-operation-id', $operation->operationId);
+        self::assertEquals('post-custom-operation-id', $operation->operationId);
     }
 
     /**
@@ -782,7 +782,7 @@ class FunctionalTest extends WebTestCase
     {
         // Ensure that groups are supported
         $model = $this->getModel('PrivateProtectedExposure');
-        $this->assertCount(1, $model->properties);
+        self::assertCount(1, $model->properties);
         $this->assertHasProperty('publicField', $model);
         $this->assertNotHasProperty('privateField', $model);
         $this->assertNotHasProperty('protectedField', $model);
@@ -797,26 +797,26 @@ class FunctionalTest extends WebTestCase
             $model = $this->getModel('SymfonyDiscriminator80');
         }
 
-        $this->assertInstanceOf(OAAnnotations\Discriminator::class, $model->discriminator);
-        $this->assertSame('type', $model->discriminator->propertyName);
-        $this->assertCount(2, $model->discriminator->mapping);
-        $this->assertArrayHasKey('one', $model->discriminator->mapping);
-        $this->assertArrayHasKey('two', $model->discriminator->mapping);
-        $this->assertNotSame(Generator::UNDEFINED, $model->oneOf);
-        $this->assertCount(2, $model->oneOf);
+        self::assertInstanceOf(OAAnnotations\Discriminator::class, $model->discriminator);
+        self::assertSame('type', $model->discriminator->propertyName);
+        self::assertCount(2, $model->discriminator->mapping);
+        self::assertArrayHasKey('one', $model->discriminator->mapping);
+        self::assertArrayHasKey('two', $model->discriminator->mapping);
+        self::assertNotSame(Generator::UNDEFINED, $model->oneOf);
+        self::assertCount(2, $model->oneOf);
     }
 
     public function testModelsWithDiscriminatorMapAreLoadedWithOpenApiPolymorphismWhenUsingFileConfiguration()
     {
         $model = $this->getModel('SymfonyDiscriminatorFileMapping');
 
-        $this->assertInstanceOf(OAAnnotations\Discriminator::class, $model->discriminator);
-        $this->assertSame('type', $model->discriminator->propertyName);
-        $this->assertCount(2, $model->discriminator->mapping);
-        $this->assertArrayHasKey('one', $model->discriminator->mapping);
-        $this->assertArrayHasKey('two', $model->discriminator->mapping);
-        $this->assertNotSame(Generator::UNDEFINED, $model->oneOf);
-        $this->assertCount(2, $model->oneOf);
+        self::assertInstanceOf(OAAnnotations\Discriminator::class, $model->discriminator);
+        self::assertSame('type', $model->discriminator->propertyName);
+        self::assertCount(2, $model->discriminator->mapping);
+        self::assertArrayHasKey('one', $model->discriminator->mapping);
+        self::assertArrayHasKey('two', $model->discriminator->mapping);
+        self::assertNotSame(Generator::UNDEFINED, $model->oneOf);
+        self::assertCount(2, $model->oneOf);
     }
 
     public function testDiscriminatorMapLoadsChildrenModels()
@@ -830,7 +830,7 @@ class FunctionalTest extends WebTestCase
     {
         $model = $this->getModel('AddProp');
 
-        $this->assertFalse($model->additionalProperties);
+        self::assertFalse($model->additionalProperties);
     }
 
     /**
@@ -840,19 +840,19 @@ class FunctionalTest extends WebTestCase
     {
         $model = $this->getModel('ArticleType81');
 
-        $this->assertSame('string', $model->type);
-        $this->assertCount(2, $model->enum);
+        self::assertSame('string', $model->type);
+        self::assertCount(2, $model->enum);
 
         $model = $this->getModel('ArticleType81NotBacked');
 
-        $this->assertSame('object', $model->type, 'Non backed enums cannot be described');
+        self::assertSame('object', $model->type, 'Non backed enums cannot be described');
 
         $model = $this->getModel('ArticleType81IntBacked');
 
-        $this->assertSame('integer', $model->type);
-        $this->assertCount(2, $model->enum);
+        self::assertSame('integer', $model->type);
+        self::assertCount(2, $model->enum);
 
-        $this->assertEquals([
+        self::assertEquals([
             'type' => 'object',
             'properties' => [
                 'id' => [
@@ -887,57 +887,57 @@ class FunctionalTest extends WebTestCase
             $model = $this->getModel('EntityWithAlternateType80');
         }
 
-        $this->assertSame('array', $model->type);
-        $this->assertSame('string', $model->items->type);
-        $this->assertSame(Generator::UNDEFINED, $model->properties);
+        self::assertSame('array', $model->type);
+        self::assertSame('string', $model->items->type);
+        self::assertSame(Generator::UNDEFINED, $model->properties);
     }
 
     public function testEntitiesWithRefInSchemaDoNoReadOtherProperties()
     {
         $model = $this->getModel('EntityWithRef');
 
-        $this->assertSame(Generator::UNDEFINED, $model->type);
-        $this->assertSame('#/components/schemas/Test', $model->ref);
-        $this->assertSame(Generator::UNDEFINED, $model->properties);
+        self::assertSame(Generator::UNDEFINED, $model->type);
+        self::assertSame('#/components/schemas/Test', $model->ref);
+        self::assertSame(Generator::UNDEFINED, $model->properties);
     }
 
     public function testEntitiesWithObjectTypeStillReadProperties()
     {
         $model = $this->getModel('EntityWithObjectType');
 
-        $this->assertSame('object', $model->type);
-        $this->assertCount(1, $model->properties);
+        self::assertSame('object', $model->type);
+        self::assertCount(1, $model->properties);
         $property = Util::getProperty($model, 'notIgnored');
-        $this->assertSame('string', $property->type);
+        self::assertSame('string', $property->type);
     }
 
     public function testFormsWithOverriddenSchemaTypeDoNotReadOtherProperties()
     {
         $model = $this->getModel('FormWithAlternateSchemaType');
 
-        $this->assertSame('string', $model->type);
-        $this->assertSame(Generator::UNDEFINED, $model->properties);
+        self::assertSame('string', $model->type);
+        self::assertSame(Generator::UNDEFINED, $model->properties);
     }
 
     public function testFormWithRefInSchemaDoNoReadOtherProperties()
     {
         $model = $this->getModel('FormWithRefType');
 
-        $this->assertSame(Generator::UNDEFINED, $model->type);
-        $this->assertSame('#/components/schemas/Test', $model->ref);
-        $this->assertSame(Generator::UNDEFINED, $model->properties);
+        self::assertSame(Generator::UNDEFINED, $model->type);
+        self::assertSame('#/components/schemas/Test', $model->ref);
+        self::assertSame(Generator::UNDEFINED, $model->properties);
     }
 
     public function testFormCsrfIsOnlyDetectedIfCsrfExtensionIsEnabled(): void
     {
         // Make sure that test precondition is correct.
         $isCsrfFormExtensionEnabled = self::getContainer()->getParameter('form.type_extension.csrf.enabled');
-        $this->assertFalse($isCsrfFormExtensionEnabled, 'The test needs the csrf form extension to be disabled.');
+        self::assertFalse($isCsrfFormExtensionEnabled, 'The test needs the csrf form extension to be disabled.');
 
         $model = $this->getModel('FormWithCsrfProtectionEnabledType');
 
         // Make sure that no token property was added
-        $this->assertCount(1, $model->properties);
+        self::assertCount(1, $model->properties);
         $this->assertHasProperty('name', $model);
     }
 
@@ -945,25 +945,25 @@ class FunctionalTest extends WebTestCase
     {
         $model = $this->getModel('EntityWithNullableSchemaSet');
 
-        $this->assertCount(6, $model->properties);
+        self::assertCount(6, $model->properties);
 
         // nullablePropertyNullableNotSet
-        $this->assertTrue($model->properties[0]->nullable);
+        self::assertTrue($model->properties[0]->nullable);
 
         // nullablePropertyNullableFalseSet
-        $this->assertSame(Generator::UNDEFINED, $model->properties[1]->nullable);
+        self::assertSame(Generator::UNDEFINED, $model->properties[1]->nullable);
 
         // nullablePropertyNullableTrueSet
-        $this->assertTrue($model->properties[2]->nullable);
+        self::assertTrue($model->properties[2]->nullable);
 
         // nonNullablePropertyNullableNotSet
-        $this->assertSame(Generator::UNDEFINED, $model->properties[3]->nullable);
+        self::assertSame(Generator::UNDEFINED, $model->properties[3]->nullable);
 
         // nonNullablePropertyNullableFalseSet
-        $this->assertSame(Generator::UNDEFINED, $model->properties[4]->nullable);
+        self::assertSame(Generator::UNDEFINED, $model->properties[4]->nullable);
 
         // nonNullablePropertyNullableTrueSet
-        $this->assertTrue($model->properties[5]->nullable);
+        self::assertTrue($model->properties[5]->nullable);
     }
 
     public function testContextPassedToNameConverter()
@@ -1190,7 +1190,7 @@ class FunctionalTest extends WebTestCase
     {
         $model = $this->getModel('EntityWithFalsyDefaults');
 
-        $this->assertSame(Generator::UNDEFINED, $model->required);
+        self::assertSame(Generator::UNDEFINED, $model->required);
 
         self::assertEquals([
             'schema' => 'EntityWithFalsyDefaults',

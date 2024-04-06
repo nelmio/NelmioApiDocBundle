@@ -62,7 +62,7 @@ class RenderOpenApi
     }
 
     /**
-     * @throws InvalidArgumentException If the area to dump is not valid
+     * @throws \InvalidArgumentException If the area to dump is not valid
      */
     public function render(string $format, string $area, array $options = []): string
     {

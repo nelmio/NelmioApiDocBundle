@@ -39,15 +39,17 @@ final class OpenApiPhpDescriber
      */
     private $annotationReader;
     private $logger;
-    private $overwrite;
 
     public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, ?Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
     {
+        if ($overwrite || func_num_args() > 4) {
+            trigger_deprecation('nelmio/api-doc-bundle', '4.25.2', 'The "$overwrite" argument of "%s" is unused and therefore deprecated.', __METHOD__);
+        }
+
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
         $this->annotationReader = $annotationReader;
         $this->logger = $logger;
-        $this->overwrite = $overwrite;
     }
 
     public function describe(OA\OpenApi $api)
@@ -155,7 +157,7 @@ final class OpenApiPhpDescriber
                 $implicitAnnotations[] = $annotation;
             }
 
-            if (empty($implicitAnnotations) && empty(get_object_vars($mergeProperties))) {
+            if ([] === $implicitAnnotations && [] === get_object_vars($mergeProperties)) {
                 continue;
             }
 
@@ -187,7 +189,7 @@ final class OpenApiPhpDescriber
             }
             $path = $this->normalizePath($route->getPath());
             $supportedHttpMethods = $this->getSupportedHttpMethods($route);
-            if (empty($supportedHttpMethods)) {
+            if ([] === $supportedHttpMethods) {
                 $this->logger->warning('None of the HTTP methods specified for path {path} are supported by swagger-ui, skipping this path', [
                     'path' => $path,
                 ]);
@@ -203,7 +205,12 @@ final class OpenApiPhpDescriber
         $allMethods = Util::OPERATIONS;
         $methods = array_map('strtolower', $route->getMethods());
 
-        return array_intersect($methods ?: $allMethods, $allMethods);
+        // an empty array means that any method is allowed
+        if ([] === $methods) {
+            return $allMethods;
+        }
+
+        return array_intersect($methods, $allMethods);
     }
 
     private function normalizePath(string $path): string

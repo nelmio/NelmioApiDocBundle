@@ -77,7 +77,7 @@ class DumpCommand extends Command
             ];
         }
 
-        if ($input->getOption('server-url')) {
+        if (null !== $input->getOption('server-url')) {
             $options['server_url'] = $input->getOption('server-url');
         }
 

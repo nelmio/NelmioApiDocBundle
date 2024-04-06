@@ -33,20 +33,27 @@ class FormModelDescriberTest extends TestCase
     public function testDescribeCreatesTokenPropertyDependingOnOptions(bool $csrfProtectionEnabled, string $tokenName, bool $expectProperty): void
     {
         $formConfigMock = $this->createMock(FormConfigInterface::class);
-        $formConfigMock->expects($this->exactly($csrfProtectionEnabled ? 2 : 1))
+        $formConfigMock->expects(self::exactly($csrfProtectionEnabled ? 2 : 1))
             ->method('getOption')
-            ->willReturnMap([
-                ['csrf_protection', false, $csrfProtectionEnabled],
-                ['csrf_field_name', null, $tokenName],
-            ]);
+            ->willReturnCallback(function (string $option, $default) use ($csrfProtectionEnabled, $tokenName) {
+                if ('csrf_protection' === $option) {
+                    return $csrfProtectionEnabled;
+                }
+
+                if ('csrf_field_name' === $option) {
+                    return $tokenName;
+                }
+
+                return $default;
+            });
 
         $formMock = $this->createMock(FormInterface::class);
-        $formMock->expects($this->exactly($csrfProtectionEnabled ? 2 : 1))
+        $formMock->expects(self::exactly($csrfProtectionEnabled ? 2 : 1))
             ->method('getConfig')
             ->willReturn($formConfigMock);
 
         $formFactoryMock = $this->createMock(FormFactoryInterface::class);
-        $formFactoryMock->expects($this->once())
+        $formFactoryMock->expects(self::once())
             ->method('create')
             ->willReturn($formMock);
 
@@ -67,9 +74,9 @@ class FormModelDescriberTest extends TestCase
                 return $property->property === $tokenName;
             });
 
-            $this->assertCount(1, $filteredProperties);
+            self::assertCount(1, $filteredProperties);
         } else {
-            $this->assertSame(Generator::UNDEFINED, $schema->properties);
+            self::assertSame(Generator::UNDEFINED, $schema->properties);
         }
     }
 

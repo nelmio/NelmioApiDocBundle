@@ -31,7 +31,7 @@ class SymfonyConstraints81
     /**
      * @var int
      */
-    #[Assert\Length(min: '0', max: '50')]
+    #[Assert\Length(min: 0, max: 50)]
     private $propertyAssertLength;
 
     /**
@@ -150,7 +150,7 @@ class SymfonyConstraints81
         $this->propertyWithCompoundValidationRule = $propertyWithCompoundValidationRule;
     }
 
-    #[Assert\Count(min: '0', max: '10')]
+    #[Assert\Count(min: 0, max: 10)]
     public function setPropertyNotBlank(int $propertyNotBlank): void
     {
         $this->propertyNotBlank = $propertyNotBlank;

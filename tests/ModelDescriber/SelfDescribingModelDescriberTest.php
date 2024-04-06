@@ -24,14 +24,14 @@ class SelfDescribingModelDescriberTest extends TestCase
     {
         $describer = new SelfDescribingModelDescriber();
 
-        $this->assertTrue($describer->supports(new Model(new Type('object', false, SelfDescribingModel::class))));
+        self::assertTrue($describer->supports(new Model(new Type('object', false, SelfDescribingModel::class))));
     }
 
     public function testDoesNotSupport()
     {
         $describer = new SelfDescribingModelDescriber();
 
-        $this->assertFalse($describer->supports(new Model(new Type('object', false, \stdClass::class))));
+        self::assertFalse($describer->supports(new Model(new Type('object', false, \stdClass::class))));
     }
 
     public function testDescribe()
@@ -42,7 +42,7 @@ class SelfDescribingModelDescriberTest extends TestCase
         $schema = new Schema([]);
 
         $describer->describe($model, $schema);
-        $this->assertSame('SelfDescribingTitle', $schema->title);
-        $this->assertSame(SelfDescribingModel::class, $schema->description);
+        self::assertSame('SelfDescribingTitle', $schema->title);
+        self::assertSame(SelfDescribingModel::class, $schema->description);
     }
 }

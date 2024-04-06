@@ -53,9 +53,16 @@
         "jms/serializer": "^1.14|^3.0",
         "composer/package-versions-deprecated": "1.11.99.1",
 
-        "phpunit/phpunit": "^8.5|^9.6",
         "doctrine/annotations": "^2.0",
-        "friendsofphp/php-cs-fixer": "^3.52"
+
+        "phpunit/phpunit": "^8.5|^9.6",
+
+        "friendsofphp/php-cs-fixer": "^3.52",
+
+        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan-symfony": "^1.3",
+        "phpstan/phpstan-phpunit": "^1.3",
+        "phpstan/phpstan-strict-rules": "^1.5"
     },
     "conflict": {
         "zircote/swagger-php": "4.8.7"
@@ -93,11 +100,15 @@
     "scripts-descriptions": {
         "phpcs-check": "Run PHP-CS-Fixer in dry-run mode",
         "phpcs-fix": "Run PHP-CS-Fixer",
-        "phpunit": "Run phpunit"
+        "phpunit": "Run phpunit",
+        "phpstan": "Run phpstan",
+        "phpstan-baseline": "Generate a baseline for phpstan"
     },
     "scripts": {
         "phpcs-check": "vendor/bin/php-cs-fixer check -v --diff",
         "phpcs-fix": "vendor/bin/php-cs-fixer fix -v",
-        "phpunit": "phpunit"
+        "phpunit": "phpunit",
+        "phpstan": "phpstan --memory-limit=2G",
+        "phpstan-baseline": "phpstan --memory-limit=2G --generate-baseline"
     }
 }

@@ -44,7 +44,7 @@ final class RouteArgumentDescriber implements RouteDescriberInterface, ModelRegi
             return;
         }
 
-        if (!$argumentMetaDataList) {
+        if ([] === $argumentMetaDataList) {
             return;
         }
 

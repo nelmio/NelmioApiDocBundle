@@ -26,24 +26,24 @@ class ApiPlatformDescriberTest extends AbstractDescriberTest
 
     public function testDescribe()
     {
-        $this->normalizer->expects($this->once())
+        $this->normalizer->expects(self::once())
             ->method('normalize')
             ->with($this->documentation)
             ->willReturn(['info' => ['title' => 'My Test App']]);
 
         $expectedApi = new OpenApi(['info' => ['title' => 'My Test App'], '_context' => new Context()]);
-        $this->assertEquals($expectedApi->toJson(), $this->getOpenApiDoc()->toJson());
+        self::assertEquals($expectedApi->toJson(), $this->getOpenApiDoc()->toJson());
     }
 
     public function testDescribeRemovesBasePathAfterNormalization()
     {
-        $this->normalizer->expects($this->once())
+        $this->normalizer->expects(self::once())
             ->method('normalize')
             ->with($this->documentation)
             ->willReturn(['info' => ['title' => 'My Test App'], 'basePath' => '/foo']);
 
         $expectedApi = new OpenApi(['info' => ['title' => 'My Test App'], '_context' => new Context()]);
-        $this->assertEquals($expectedApi->toJson(), $this->getOpenApiDoc()->toJson());
+        self::assertEquals($expectedApi->toJson(), $this->getOpenApiDoc()->toJson());
     }
 
     protected function setUp(): void
@@ -51,7 +51,7 @@ class ApiPlatformDescriberTest extends AbstractDescriberTest
         $this->documentation = new Documentation(new ResourceNameCollection(['dummy' => 'dummy']));
 
         $this->normalizer = $this->createMock(NormalizerInterface::class);
-        $this->normalizer->expects($this->once())
+        $this->normalizer->expects(self::once())
             ->method('supportsNormalization')
             ->willReturn(true);
 

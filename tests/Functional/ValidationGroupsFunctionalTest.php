@@ -44,7 +44,7 @@ class ValidationGroupsFunctionalTest extends WebTestCase
             'schema' => 'SymfonyConstraintsTestGroup',
         ];
 
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             json_decode($this->getModel('SymfonyConstraintsTestGroup')->toJson(), true)
         );
@@ -81,7 +81,7 @@ class ValidationGroupsFunctionalTest extends WebTestCase
             ],
         ];
 
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             json_decode($this->getModel('SymfonyConstraintsDefaultGroup')->toJson(), true)
         );

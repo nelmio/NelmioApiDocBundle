@@ -31,7 +31,6 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
 
     public function describe(ArgumentMetadata $argumentMetadata, OA\Operation $operation): void
     {
-        /** @var MapRequestPayload $attribute */
         if (!$attribute = $argumentMetadata->getAttributes(MapRequestPayload::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? null) {
             return;
         }
@@ -51,10 +50,6 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
      */
     private function getGroups(MapRequestPayload $attribute): ?array
     {
-        if (null === $attribute->validationGroups) {
-            return null;
-        }
-
         if (is_string($attribute->validationGroups)) {
             return [$attribute->validationGroups];
         }

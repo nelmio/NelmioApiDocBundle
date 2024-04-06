@@ -8,6 +8,7 @@
 /Tests/Functional/cache
 /Tests/Functional/logs
 .idea
+/phpstan.neon
 
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php

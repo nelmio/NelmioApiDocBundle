@@ -109,7 +109,7 @@ final class ModelRegistry
             }
         }
 
-        if (empty($this->unregistered) && !empty($this->alternativeNames)) {
+        if (!$this->unregistered && $this->alternativeNames) {
             foreach ($this->alternativeNames as $model) {
                 $this->register($model);
             }
@@ -193,31 +193,16 @@ final class ModelRegistry
 
     private function getCollectionKeyTypes(Type $type): array
     {
-        // BC layer, this condition should be removed after removing support for symfony < 5.3
-        if (!method_exists($type, 'getCollectionKeyTypes')) {
-            return null !== $type->getCollectionKeyType() ? [$type->getCollectionKeyType()] : [];
-        }
-
         return $type->getCollectionKeyTypes();
     }
 
     private function getCollectionValueTypes(Type $type): array
     {
-        // BC layer, this condition should be removed after removing support for symfony < 5.3
-        if (!method_exists($type, 'getCollectionValueTypes')) {
-            return null !== $type->getCollectionValueType() ? [$type->getCollectionValueType()] : [];
-        }
-
         return $type->getCollectionValueTypes();
     }
 
     private function getCollectionValueType(Type $type): ?Type
     {
-        // BC layer, this condition should be removed after removing support for symfony < 5.3
-        if (!method_exists($type, 'getCollectionValueTypes')) {
-            return $type->getCollectionValueType();
-        }
-
         return $type->getCollectionValueTypes()[0] ?? null;
     }
 }

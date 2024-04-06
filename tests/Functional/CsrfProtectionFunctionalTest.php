@@ -30,9 +30,9 @@ class CsrfProtectionFunctionalTest extends WebTestCase
     {
         // Make sure that test precondition is correct.
         $isCsrfFormExtensionEnabled = self::getContainer()->getParameter('form.type_extension.csrf.enabled');
-        $this->assertTrue($isCsrfFormExtensionEnabled, 'The test needs the csrf form extension to be enabled.');
+        self::assertTrue($isCsrfFormExtensionEnabled, 'The test needs the csrf form extension to be enabled.');
 
-        $this->assertEquals([
+        self::assertEquals([
             'type' => 'object',
             'properties' => [
                 'quz' => [
@@ -50,7 +50,7 @@ class CsrfProtectionFunctionalTest extends WebTestCase
 
     public function testTokenPropertyExistsIfCsrfProtectionIsEnabled(): void
     {
-        $this->assertEquals([
+        self::assertEquals([
             'type' => 'object',
             'properties' => [
                 'name' => [
@@ -68,7 +68,7 @@ class CsrfProtectionFunctionalTest extends WebTestCase
 
     public function testTokenPropertyNotExistsIfCsrfProtectionIsDisabled(): void
     {
-        $this->assertEquals([
+        self::assertEquals([
             'type' => 'object',
             'properties' => [
                 'name' => [

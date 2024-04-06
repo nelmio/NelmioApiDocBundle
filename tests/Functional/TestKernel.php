@@ -26,7 +26,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\NameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
-use Symfony\Bundle\FrameworkBundle\Command\CachePoolClearCommand;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -47,13 +46,13 @@ class TestKernel extends Kernel
     public const USE_VALIDATION_GROUPS = 8;
     public const USE_FORM_CSRF = 16;
 
-    private $flags;
+    private int $flag;
 
-    public function __construct(int $flags = 0)
+    public function __construct(int $flag = 0)
     {
-        parent::__construct('test'.$flags, true);
+        parent::__construct('test'.$flag, true);
 
-        $this->flags = $flags;
+        $this->flag = $flag;
     }
 
     public function registerBundles(): iterable
@@ -70,10 +69,10 @@ class TestKernel extends Kernel
             $bundles[] = new FOSRestBundle();
         }
 
-        if ($this->flags & self::USE_JMS) {
+        if (self::USE_JMS === $this->flag || self::USE_BAZINGA === $this->flag) {
             $bundles[] = new JMSSerializerBundle();
 
-            if ($this->flags & self::USE_BAZINGA) {
+            if (self::USE_BAZINGA === $this->flag) {
                 $bundles[] = new BazingaHateoasBundle();
             }
         }
@@ -89,11 +88,11 @@ class TestKernel extends Kernel
             $routes->withPath('/')->import(__DIR__.'/Resources/routes-attributes.yaml', 'yaml');
         }
 
-        if ($this->flags & self::USE_JMS) {
+        if (self::USE_JMS === $this->flag || self::USE_BAZINGA === $this->flag) {
             $routes->withPath('/')->import(__DIR__.'/Controller/JMSController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
         }
 
-        if ($this->flags & self::USE_BAZINGA) {
+        if (self::USE_BAZINGA === $this->flag) {
             $routes->withPath('/')->import(__DIR__.'/Controller/BazingaTypedController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
 
             try {
@@ -103,7 +102,7 @@ class TestKernel extends Kernel
             }
         }
 
-        if ($this->flags & self::USE_FOSREST) {
+        if (self::USE_FOSREST === $this->flag) {
             $routes->withPath('/')->import(__DIR__.'/Controller/FOSRestController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
         }
     }
@@ -128,22 +127,20 @@ class TestKernel extends Kernel
             'property_access' => true,
         ];
 
-        if ($this->flags & self::USE_FORM_CSRF) {
+        if (self::USE_FORM_CSRF === $this->flag) {
             $framework['csrf_protection']['enabled'] = true;
             $framework['session']['storage_factory_id'] = 'session.storage.factory.mock_file';
             $framework['form'] = ['csrf_protection' => true];
         }
 
-        // Support symfony/framework-bundle < 5.4
-        if (method_exists(CachePoolClearCommand::class, 'complete')) {
-            $framework += [
-                'exceptions' => [
-                    'Symfony\Component\HttpKernel\Exception\BadRequestHttpException' => [
-                        'log_level' => 'debug',
-                    ],
+        $framework += [
+            'exceptions' => [
+                'Symfony\Component\HttpKernel\Exception\BadRequestHttpException' => [
+                    'log_level' => 'debug',
                 ],
-            ];
-        }
+            ],
+        ];
+
         $c->loadFromExtension('framework', $framework);
 
         $c->loadFromExtension('twig', [
@@ -250,7 +247,7 @@ class TestKernel extends Kernel
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
-            'use_validation_groups' => boolval($this->flags & self::USE_VALIDATION_GROUPS),
+            'use_validation_groups' => boolval(self::USE_VALIDATION_GROUPS === $this->flag),
             'documentation' => [
                 'info' => [
                     'title' => 'My Default App',
@@ -325,7 +322,7 @@ class TestKernel extends Kernel
             ],
         ]);
 
-        if ($this->flags & self::USE_JMS && \PHP_VERSION_ID >= 80100) {
+        if (self::USE_JMS === $this->flag && \PHP_VERSION_ID >= 80100) {
             $c->loadFromExtension('jms_serializer', [
                 'enum_support' => true,
             ]);
@@ -342,22 +339,12 @@ class TestKernel extends Kernel
 
     public function getCacheDir(): string
     {
-        return parent::getCacheDir().'/'.$this->flags;
+        return parent::getCacheDir().'/'.$this->flag;
     }
 
     public function getLogDir(): string
     {
-        return parent::getLogDir().'/'.$this->flags;
-    }
-
-    public function serialize()
-    {
-        return serialize($this->useJMS);
-    }
-
-    public function unserialize($str)
-    {
-        $this->__construct(unserialize($str));
+        return parent::getLogDir().'/'.$this->flag;
     }
 
     public static function isAnnotationsAvailable(): bool

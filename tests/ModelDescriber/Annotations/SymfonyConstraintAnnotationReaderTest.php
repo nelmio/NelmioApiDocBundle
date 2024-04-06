@@ -45,21 +45,21 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                  *
                  * @Assert\Length(min = 1)
                  */
-                private $property1;
+                public $property1;
 
                 /**
                  * @Assert\NotBlank()
                  */
-                private $property2;
+                public $property2;
             };
         } else {
             $entity = new class() {
                 #[Assert\Length(min: 1)]
                 #[Assert\NotBlank()]
-                private $property1;
+                public $property1;
 
                 #[Assert\NotBlank()]
-                private $property2;
+                public $property2;
             };
         }
 
@@ -74,7 +74,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->properties[1]);
 
         // expect required to be numeric array with sequential keys (not [0 => ..., 2 => ...])
-        $this->assertEquals($schema->required, ['property1', 'property2']);
+        self::assertEquals($schema->required, ['property1', 'property2']);
     }
 
     /**
@@ -85,7 +85,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function testOptionalProperty($entity)
     {
         if (!\property_exists(Assert\NotBlank::class, 'allowNull')) {
-            $this->markTestSkipped('NotBlank::allowNull was added in symfony/validator 4.3.');
+            self::markTestSkipped('NotBlank::allowNull was added in symfony/validator 4.3.');
         }
 
         $schema = $this->createObj(OA\Schema::class, []);
@@ -99,7 +99,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property2'), $schema->properties[1]);
 
         // expect required to be numeric array with sequential keys (not [0 => ..., 2 => ...])
-        $this->assertEquals($schema->required, ['property2']);
+        self::assertEquals($schema->required, ['property2']);
     }
 
     public function provideOptionalProperty(): iterable
@@ -112,12 +112,12 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                      *
                      * @Assert\Length(min = 1)
                      */
-                    private $property1;
+                    public $property1;
 
                     /**
                      * @Assert\NotBlank()
                      */
-                    private $property2;
+                    public $property2;
                 },
             ];
         }
@@ -126,9 +126,9 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             yield 'Attributes' => [new class() {
                 #[Assert\NotBlank(allowNull: true)]
                 #[Assert\Length(min: 1)]
-                private $property1;
+                public $property1;
                 #[Assert\NotBlank]
-                private $property2;
+                public $property2;
             }];
         }
     }
@@ -149,7 +149,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
         // expect enum to be numeric array with sequential keys (not [1 => "active", 2 => "active"])
-        $this->assertEquals($schema->properties[0]->enum, ['active', 'blocked']);
+        self::assertEquals($schema->properties[0]->enum, ['active', 'blocked']);
     }
 
     public function provideAssertChoiceResultsInNumericArray(): iterable
@@ -167,7 +167,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                      *
                      * @Assert\Choice(choices=TEST_ASSERT_CHOICE_STATUSES)
                      */
-                    private $property1;
+                    public $property1;
                 },
             ];
         }
@@ -176,7 +176,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             yield 'Attributes' => [new class() {
                 #[Assert\Length(min: 1)]
                 #[Assert\Choice(choices: TEST_ASSERT_CHOICE_STATUSES)]
-                private $property1;
+                public $property1;
             }];
         }
     }
@@ -196,8 +196,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertInstanceOf(OA\Items::class, $schema->properties[0]->items);
-        $this->assertEquals($schema->properties[0]->items->enum, ['one', 'two']);
+        self::assertInstanceOf(OA\Items::class, $schema->properties[0]->items);
+        self::assertEquals($schema->properties[0]->items->enum, ['one', 'two']);
     }
 
     public function provideMultipleChoiceConstraintsApplyEnumToItems(): iterable
@@ -207,14 +207,14 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                 /**
                  * @Assert\Choice(choices={"one", "two"}, multiple=true)
                  */
-                private $property1;
+                public $property1;
             }];
         }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Choice(choices: ['one', 'two'], multiple: true)]
-                private $property1;
+                public $property1;
             }];
         }
     }
@@ -236,8 +236,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maxLength);
-        $this->assertSame(1, $schema->properties[0]->minLength);
+        self::assertSame(Generator::UNDEFINED, $schema->properties[0]->maxLength);
+        self::assertSame(1, $schema->properties[0]->minLength);
     }
 
     public function provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet(): iterable
@@ -248,7 +248,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                     /**
                      * @Assert\Length(min = 1)
                      */
-                    private $property1;
+                    public $property1;
                 },
             ];
         }
@@ -256,7 +256,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Length(min: 1)]
-                private $property1;
+                public $property1;
             }];
         }
     }
@@ -278,8 +278,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minLength);
-        $this->assertSame(100, $schema->properties[0]->maxLength);
+        self::assertSame(Generator::UNDEFINED, $schema->properties[0]->minLength);
+        self::assertSame(100, $schema->properties[0]->maxLength);
     }
 
     public function provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet(): iterable
@@ -290,7 +290,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                     /**
                      * @Assert\Length(max = 100)
                      */
-                    private $property1;
+                    public $property1;
                 },
             ];
         }
@@ -298,7 +298,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Length(max: 100)]
-                private $property1;
+                public $property1;
             }];
         }
     }
@@ -310,12 +310,12 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                 /**
                  * @CustomAssert\CompoundValidationRule()
                  */
-                private $property1;
+                public $property1;
             };
         } else {
             $entity = new class() {
                 #[CustomAssert\CompoundValidationRule()]
-                private $property1;
+                public $property1;
             };
         }
         $propertyName = 'property1';
@@ -329,17 +329,17 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, $propertyName), $schema->properties[0]);
 
         if (Helper::isCompoundValidatorConstraintSupported()) {
-            $this->assertSame([$propertyName], $schema->required);
-            $this->assertSame(0, $schema->properties[0]->minimum);
-            $this->assertTrue($schema->properties[0]->exclusiveMinimum);
-            $this->assertSame(5, $schema->properties[0]->maximum);
-            $this->assertTrue($schema->properties[0]->exclusiveMaximum);
+            self::assertSame([$propertyName], $schema->required);
+            self::assertSame(0, $schema->properties[0]->minimum);
+            self::assertTrue($schema->properties[0]->exclusiveMinimum);
+            self::assertSame(5, $schema->properties[0]->maximum);
+            self::assertTrue($schema->properties[0]->exclusiveMaximum);
         } else {
-            $this->assertSame(Generator::UNDEFINED, $schema->required);
-            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum);
-            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMinimum);
-            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maximum);
-            $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMaximum);
+            self::assertSame(Generator::UNDEFINED, $schema->required);
+            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum);
+            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMinimum);
+            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->maximum);
+            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMaximum);
         }
     }
 
@@ -360,8 +360,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minItems);
-        $this->assertSame(10, $schema->properties[0]->maxItems);
+        self::assertSame(Generator::UNDEFINED, $schema->properties[0]->minItems);
+        self::assertSame(10, $schema->properties[0]->maxItems);
     }
 
     public function provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet(): iterable
@@ -372,7 +372,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                     /**
                      * @Assert\Count(max = 10)
                      */
-                    private $property1;
+                    public $property1;
                 },
             ];
         }
@@ -380,7 +380,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Count(max: 10)]
-                private $property1;
+                public $property1;
             }];
         }
     }
@@ -402,8 +402,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maxItems);
-        $this->assertSame(10, $schema->properties[0]->minItems);
+        self::assertSame(Generator::UNDEFINED, $schema->properties[0]->maxItems);
+        self::assertSame(10, $schema->properties[0]->minItems);
     }
 
     public function provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet(): iterable
@@ -414,7 +414,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                     /**
                      * @Assert\Count(min = 10)
                      */
-                    private $property1;
+                    public $property1;
                 },
             ];
         }
@@ -422,7 +422,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Count(min: 10)]
-                private $property1;
+                public $property1;
             }];
         }
     }
@@ -444,8 +444,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->maximum);
-        $this->assertSame(10, $schema->properties[0]->minimum);
+        self::assertSame(Generator::UNDEFINED, $schema->properties[0]->maximum);
+        self::assertSame(10, $schema->properties[0]->minimum);
     }
 
     public function provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet(): iterable
@@ -456,7 +456,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                     /**
                      * @Assert\Range(min = 10)
                      */
-                    private $property1;
+                    public $property1;
                 },
             ];
         }
@@ -464,7 +464,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Range(min: 10)]
-                private $property1;
+                public $property1;
             }];
         }
     }
@@ -486,8 +486,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
-        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum);
-        $this->assertSame(10, $schema->properties[0]->maximum);
+        self::assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum);
+        self::assertSame(10, $schema->properties[0]->maximum);
     }
 
     public function provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet(): iterable
@@ -498,7 +498,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                     /**
                      * @Assert\Range(max = 10)
                      */
-                    private $property1;
+                    public $property1;
                 },
             ];
         }
@@ -506,7 +506,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         if (\PHP_VERSION_ID >= 80000) {
             yield 'Attributes' => [new class() {
                 #[Assert\Range(max: 10)]
-                private $property1;
+                public $property1;
             }];
         }
     }
@@ -532,7 +532,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             $schema->properties[0]
         );
 
-        $this->assertSame(10, $schema->properties[0]->maximum, 'should have read constraints in the default group');
+        self::assertSame(10, $schema->properties[0]->maximum, 'should have read constraints in the default group');
     }
 
     /**
@@ -555,8 +555,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             $schema->properties[0]
         );
 
-        $this->assertSame(['property1'], $schema->required, 'should have read constraint in default group');
-        $this->assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum, 'should not have read constraint in other group');
+        self::assertSame(['property1'], $schema->required, 'should have read constraint in default group');
+        self::assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum, 'should not have read constraint in other group');
     }
 
     /**
@@ -580,8 +580,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ['other']
         );
 
-        $this->assertSame(Generator::UNDEFINED, $schema->required, 'should not have read constraint in default group');
-        $this->assertSame(1, $schema->properties[0]->minimum, 'should have read constraint in other group');
+        self::assertSame(Generator::UNDEFINED, $schema->required, 'should not have read constraint in default group');
+        self::assertSame(1, $schema->properties[0]->minimum, 'should have read constraint in other group');
     }
 
     /**
@@ -605,8 +605,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ['other', Constraint::DEFAULT_GROUP]
         );
 
-        $this->assertSame(['property1'], $schema->required, 'should have read constraint in default group');
-        $this->assertSame(1, $schema->properties[0]->minimum, 'should have read constraint in other group');
+        self::assertSame(['property1'], $schema->required, 'should have read constraint in default group');
+        self::assertSame(1, $schema->properties[0]->minimum, 'should have read constraint in other group');
     }
 
     public function provideConstraintsWithGroups(): iterable
@@ -618,7 +618,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                  *
                  * @Assert\Range(min=1, groups={"other"})
                  */
-                private $property1;
+                public $property1;
             }];
         }
 
@@ -626,7 +626,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             yield 'Attributes' => [new class() {
                 #[Assert\NotBlank()]
                 #[Assert\Range(min: 1, groups: ['other'])]
-                private $property1;
+                public $property1;
             }];
         }
     }

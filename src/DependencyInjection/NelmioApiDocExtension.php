@@ -284,7 +284,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
     private function findNameAliases(array $names, string $area): array
     {
         $nameAliases = array_filter($names, function (array $aliasInfo) use ($area) {
-            return empty($aliasInfo['areas']) || in_array($area, $aliasInfo['areas'], true);
+            return [] === $aliasInfo['areas'] || in_array($area, $aliasInfo['areas'], true);
         });
 
         $aliases = [];

@@ -50,10 +50,10 @@ final class MapRequestPayloadProcessor implements ProcessorInterface
                 throw new \LogicException(sprintf('Operation "%s" does not contain attribute of "%s', $operation->operationId, MapRequestPayload::class));
             }
 
-            $modelRef = $operation->_context->{SymfonyMapRequestPayloadDescriber::CONTEXT_MODEL_REF};
-            if (!isset($modelRef)) {
+            if (!isset($operation->_context->{SymfonyMapRequestPayloadDescriber::CONTEXT_MODEL_REF})) {
                 throw new \LogicException(sprintf('MapRequestPayload Model reference not found for operation "%s"', $operation->operationId));
             }
+            $modelRef = $operation->_context->{SymfonyMapRequestPayloadDescriber::CONTEXT_MODEL_REF};
 
             /** @var OA\RequestBody $requestBody */
             $requestBody = Util::getChild($operation, OA\RequestBody::class);

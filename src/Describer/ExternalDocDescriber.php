@@ -33,7 +33,7 @@ class ExternalDocDescriber implements DescriberInterface
     {
         $externalDoc = $this->getExternalDoc();
 
-        if (!empty($externalDoc)) {
+        if ($externalDoc) {
             Util::merge($api, $externalDoc, $this->overwrite);
         }
     }

@@ -42,8 +42,7 @@ class OpenApiAnnotationsReader
 
     public function updateSchema(\ReflectionClass $reflectionClass, OA\Schema $schema): void
     {
-        /** @var OA\Schema|null $oaSchema */
-        if (!$oaSchema = $this->getAnnotation($schema->_context, $reflectionClass, OA\Schema::class)) {
+        if (null === $oaSchema = $this->getAnnotation($schema->_context, $reflectionClass, OA\Schema::class)) {
             return;
         }
 
@@ -59,8 +58,7 @@ class OpenApiAnnotationsReader
 
     public function getPropertyName($reflection, string $default): string
     {
-        /** @var OA\Property|null $oaProperty */
-        if (!$oaProperty = $this->getAnnotation(new Context(), $reflection, OA\Property::class)) {
+        if (null === $oaProperty = $this->getAnnotation(new Context(), $reflection, OA\Property::class)) {
             return $default;
         }
 
@@ -69,8 +67,7 @@ class OpenApiAnnotationsReader
 
     public function updateProperty($reflection, OA\Property $property, ?array $serializationGroups = null): void
     {
-        /** @var OA\Property|null $oaProperty */
-        if (!$oaProperty = $this->getAnnotation($property->_context, $reflection, OA\Property::class)) {
+        if (null === $oaProperty = $this->getAnnotation($property->_context, $reflection, OA\Property::class)) {
             return;
         }
 
@@ -85,7 +82,12 @@ class OpenApiAnnotationsReader
     }
 
     /**
+     * @template T of object
+     *
      * @param \ReflectionClass|\ReflectionProperty|\ReflectionMethod $reflection
+     * @param class-string<T>                                        $className
+     *
+     * @return T|null
      */
     private function getAnnotation(Context $parentContext, $reflection, string $className)
     {

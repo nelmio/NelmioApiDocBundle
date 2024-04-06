@@ -23,7 +23,7 @@ class SelfDescribingModelDescriber implements ModelDescriberInterface
 
     public function supports(Model $model): bool
     {
-        return $model->getType()->getClassName()
+        return null !== $model->getType()->getClassName()
             && class_exists($model->getType()->getClassName())
             && is_a($model->getType()->getClassName(), SelfDescribingModelInterface::class, true);
     }

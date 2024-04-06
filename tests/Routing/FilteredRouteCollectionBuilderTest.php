@@ -20,7 +20,6 @@ use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use Symfony\Component\Routing\Route;
@@ -67,7 +66,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         );
         $filteredRoutes = $routeBuilder->filter($routes);
 
-        $this->assertCount(4, $filteredRoutes);
+        self::assertCount(4, $filteredRoutes);
     }
 
     /**
@@ -95,7 +94,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         );
         $filteredRoutes = $routeBuilder->filter($routes);
 
-        $this->assertCount(5, $filteredRoutes);
+        self::assertCount(5, $filteredRoutes);
     }
 
     /**
@@ -166,7 +165,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         );
         $filteredRoutes = $routeBuilder->filter($routes);
 
-        $this->assertCount(1, $filteredRoutes);
+        self::assertCount(1, $filteredRoutes);
     }
 
     public function getMatchingRoutes(): iterable
@@ -218,7 +217,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         );
         $filteredRoutes = $routeBuilder->filter($routes);
 
-        $this->assertCount(1, $filteredRoutes);
+        self::assertCount(1, $filteredRoutes);
     }
 
     public function getMatchingRoutesWithAnnotation(): iterable
@@ -268,7 +267,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         );
         $filteredRoutes = $routeBuilder->filter($routes);
 
-        $this->assertCount(0, $filteredRoutes);
+        self::assertCount(0, $filteredRoutes);
     }
 
     public function getNonMatchingRoutes(): array
@@ -321,7 +320,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         );
         $filteredRoutes = $routeBuilder->filter($routes);
 
-        $this->assertCount($expectedRoutesCount, $filteredRoutes);
+        self::assertCount($expectedRoutesCount, $filteredRoutes);
     }
 
     /**
@@ -356,13 +355,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     private function createControllerReflector(): ControllerReflector
     {
-        if (class_exists(ControllerNameParser::class)) {
-            return new ControllerReflector(
-                new Container(),
-                $this->createMock(ControllerNameParser::class)
-            );
-        }
-
         return new ControllerReflector(new Container());
     }
 }

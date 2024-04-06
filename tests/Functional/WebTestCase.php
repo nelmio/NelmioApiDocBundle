@@ -31,7 +31,7 @@ class WebTestCase extends BaseWebTestCase
     public function hasModel(string $name): bool
     {
         $api = $this->getOpenApiDefinition();
-        $key = array_search($name, array_column($api->components->schemas, 'schema'));
+        $key = array_search($name, array_column($api->components->schemas, 'schema'), true);
 
         return false !== $key;
     }
@@ -39,7 +39,7 @@ class WebTestCase extends BaseWebTestCase
     protected function getModel($name): OA\Schema
     {
         $api = $this->getOpenApiDefinition();
-        $key = array_search($name, array_column($api->components->schemas, 'schema'));
+        $key = array_search($name, array_column($api->components->schemas, 'schema'), true);
         static::assertNotFalse($key, sprintf('Model "%s" does not exist.', $name));
 
         return $api->components->schemas[$key];
@@ -49,7 +49,7 @@ class WebTestCase extends BaseWebTestCase
     {
         $path = $this->getPath($path);
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             OA\Operation::class,
             $path->{$method},
             sprintf('Operation "%s" for path "%s" does not exist', $method, $path->path)
@@ -61,7 +61,7 @@ class WebTestCase extends BaseWebTestCase
     protected function getOperationResponse(OA\Operation $operation, $response): OA\Response
     {
         $this->assertHasResponse($response, $operation);
-        $key = array_search($response, array_column($operation->responses, 'response'));
+        $key = array_search($response, array_column($operation->responses, 'response'), true);
 
         return $operation->responses[$key];
     }
@@ -69,16 +69,18 @@ class WebTestCase extends BaseWebTestCase
     protected function getProperty(OA\Schema $annotation, $property): OA\Property
     {
         $this->assertHasProperty($property, $annotation);
-        $key = array_search($property, array_column($annotation->properties, 'property'));
+        $key = array_search($property, array_column($annotation->properties, 'property'), true);
 
         return $annotation->properties[$key];
     }
 
+    /**
+     * @param OA\Operation|OA\OpenApi $annotation
+     */
     protected function getParameter(OA\AbstractAnnotation $annotation, $name, $in): OA\Parameter
     {
-        /* @var OA\Operation|OA\OpenApi $annotation */
         $this->assertHasParameter($name, $in, $annotation);
-        $parameters = array_filter($annotation->parameters ?: [], function (OA\Parameter $parameter) use ($name, $in) {
+        $parameters = array_filter($annotation->parameters ?? [], function (OA\Parameter $parameter) use ($name, $in) {
             return $parameter->name === $name && $parameter->in === $in;
         });
 
@@ -90,7 +92,7 @@ class WebTestCase extends BaseWebTestCase
         $api = $this->getOpenApiDefinition();
         self::assertHasPath($path, $api);
 
-        return $api->paths[array_search($path, array_column($api->paths, 'path'))];
+        return $api->paths[array_search($path, array_column($api->paths, 'path'), true)];
     }
 
     public function assertHasPath($path, OA\OpenApi $api)
@@ -123,9 +125,11 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
+    /**
+     * @param OA\Operation|OA\OpenApi $annotation
+     */
     public function assertHasParameter($name, $in, OA\AbstractAnnotation $annotation)
     {
-        /* @var OA\Operation|OA\OpenApi $annotation */
         $parameters = array_filter(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], function (OA\Parameter $parameter) use ($name, $in) {
             return $parameter->name === $name && $parameter->in === $in;
         });
@@ -136,9 +140,11 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
+    /**
+     * @param OA\Operation|OA\OpenApi $annotation
+     */
     public function assertNotHasParameter($name, $in, OA\AbstractAnnotation $annotation)
     {
-        /* @var OA\Operation|OA\OpenApi $annotation */
         $parameters = array_column(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], 'name', 'in');
         static::assertNotContains(
             $name,
@@ -147,9 +153,11 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
+    /**
+     * @param OA\Schema|OA\Property|OA\Items $annotation
+     */
     public function assertHasProperty($property, OA\AbstractAnnotation $annotation)
     {
-        /* @var OA\Schema|OA\Property|OA\Items $annotation */
         $properties = array_column(Generator::UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
         static::assertContains(
             $property,
@@ -158,31 +166,16 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
+    /**
+     * @param OA\Schema|OA\Property|OA\Items $annotation
+     */
     public function assertNotHasProperty($property, OA\AbstractAnnotation $annotation)
     {
-        /* @var OA\Schema|OA\Property|OA\Items $annotation */
         $properties = array_column(Generator::UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
         static::assertNotContains(
             $property,
             $properties,
             sprintf('Failed asserting that property "%s" does not exist.', $property)
         );
-    }
-
-    /**
-     * BC symfony < 5.3 and symfony >= 7.
-     *
-     * KernelTestCase::getContainer has a Container return type object in symfony 7
-     * which is incompatible with the return type of previous versions or
-     * at least the return type of overridden method (which was added for BC compatibility),
-     * hence moving it to the magic method.
-     */
-    public static function __callStatic(string $name, array $arguments)
-    {
-        if ('getContainer' === $name) {
-            return static::$container;
-        }
-
-        return null;
     }
 }

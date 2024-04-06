@@ -125,6 +125,10 @@ final class Util
     {
         $class = array_keys($path::$_nested, \strtolower($method), true)[0];
 
+        if (!is_a($class, OA\Operation::class, true)) {
+            throw new \InvalidArgumentException('Invalid operation class provided.');
+        }
+
         return self::getChild($path, $class, ['path' => $path->path]);
     }
 
@@ -154,6 +158,12 @@ final class Util
      * $property is determined from $parent::$_nested[$class]
      * it is expected to be a string nested property.
      *
+     * @template T of OA\AbstractAnnotation
+     *
+     * @param class-string<T> $class
+     *
+     * @return T
+     *
      * @see OA\AbstractAnnotation::$_nested
      */
     public static function getChild(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
@@ -178,9 +188,13 @@ final class Util
      * $collection is determined from $parent::$_nested[$class]
      * it is expected to be a single value array nested Annotation.
      *
-     * @see OA\AbstractAnnotation::$_nested
+     * @template T of OA\AbstractAnnotation
      *
-     * @param string $class
+     * @param class-string<T> $class
+     *
+     * @return T
+     *
+     * @see OA\AbstractAnnotation::$_nested
      */
     public static function getCollectionItem(OA\AbstractAnnotation $parent, $class, array $properties = []): OA\AbstractAnnotation
     {
@@ -188,7 +202,7 @@ final class Util
         $nested = $parent::$_nested;
         $collection = $nested[$class][0];
 
-        if (!empty($properties)) {
+        if ([] !== $properties) {
             $key = self::searchCollectionItem(
                 $parent->{$collection} && Generator::UNDEFINED !== $parent->{$collection} ? $parent->{$collection} : [],
                 $properties
@@ -211,9 +225,13 @@ final class Util
      * it is expected to be a double value array nested Annotation
      * with the second value being the mapping index $property.
      *
-     * @see OA\AbstractAnnotation::$_nested
+     * @template T of OA\AbstractAnnotation
      *
-     * @param string $class
+     * @param class-string<T> $class
+     *
+     * @return T
+     *
+     * @see OA\AbstractAnnotation::$_nested
      */
     public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, $class, $value): OA\AbstractAnnotation
     {
@@ -241,7 +259,7 @@ final class Util
      */
     public static function searchCollectionItem(array $collection, array $properties)
     {
-        foreach ($collection ?: [] as $i => $child) {
+        foreach ($collection as $i => $child) {
             foreach ($properties as $k => $prop) {
                 if ($child->{$k} !== $prop) {
                     continue 2;
@@ -279,7 +297,7 @@ final class Util
             $parent->{$collection} = [];
         }
 
-        $key = \count($parent->{$collection} ?: []);
+        $key = \count($parent->{$collection} ?? []);
         $parent->{$collection}[$key] = self::createChild($parent, $class, $properties);
 
         return $key;
@@ -288,7 +306,11 @@ final class Util
     /**
      * Create a new Object of $class with members $properties and set the context parent to be $parent.
      *
-     * @param string $class
+     * @template T of OA\AbstractAnnotation
+     *
+     * @param class-string<T> $class
+     *
+     * @return T
      *
      * @throws \InvalidArgumentException at an attempt to pass in properties that are found in $parent::$_nested
      */
@@ -296,7 +318,7 @@ final class Util
     {
         $nesting = self::getNestingIndexes($class);
 
-        if (!empty(array_intersect(array_keys($properties), $nesting))) {
+        if ([] !== array_intersect(array_keys($properties), $nesting)) {
             throw new \InvalidArgumentException('Nesting Annotations is not supported.');
         }
 
@@ -426,7 +448,8 @@ final class Util
                     $annotation->x = [];
                 }
 
-                $annotation->x = [$propertyName => $value] + ($annotation->x ?: []);
+                $annotation->x = [$propertyName => $value] + $annotation->x;
+
                 continue;
             }
 

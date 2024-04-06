@@ -87,7 +87,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
         }
 
-        if (!empty($metadata->discriminatorFieldName)
+        if (null !== $metadata->discriminatorFieldName
             && $className === $metadata->discriminatorBaseClass
             && [] !== $metadata->discriminatorMap
             && Generator::UNDEFINED === $schema->discriminator) {
@@ -267,7 +267,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             [$nestedType, $isHash] = $nestedTypeInfo;
             if ($isHash) {
                 $property->type = 'object';
-                $property->additionalProperties = Util::createChild($property, OA\Property::class);
+                $property->additionalProperties = Util::createChild($property, OA\AdditionalProperties::class);
 
                 // this is a free form object (as nested array)
                 if ('array' === $nestedType['name'] && !isset($nestedType['params'][0])) {
@@ -317,7 +317,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             $customFields = (array) $property->jsonSerialize();
             unset($customFields['property']);
-            if (empty($customFields)) { // no custom fields
+            if ([] === $customFields) { // no custom fields
                 $property->ref = $modelRef;
             } else {
                 $weakContext = Util::createWeakContext($property->_context);
