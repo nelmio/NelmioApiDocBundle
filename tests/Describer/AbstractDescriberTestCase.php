@@ -16,7 +16,7 @@ use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
 
-abstract class AbstractDescriberTest extends TestCase
+abstract class AbstractDescriberTestCase extends TestCase
 {
     /** @var DescriberInterface */
     protected $describer;

@@ -18,7 +18,7 @@ use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ApiPlatformDescriberTest extends AbstractDescriberTest
+class ApiPlatformDescriberTestCase extends AbstractDescriberTestCase
 {
     private $documentation;
 

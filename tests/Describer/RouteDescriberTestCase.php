@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class RouteDescriberTest extends AbstractDescriberTest
+class RouteDescriberTestCase extends AbstractDescriberTestCase
 {
     private $routes;
 
