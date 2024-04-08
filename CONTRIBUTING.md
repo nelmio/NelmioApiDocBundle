@@ -39,9 +39,9 @@ You MUST validate newly added or revised tests by running `composer run phpunit`
 
 ### Documentation
 
-You SHOULD write documentation.
+You SHOULD write (or update) documentation.
 
-You MUST write
+You SHOULD write
 [commit messages that make sense](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 
 You MUST [rebase your branch](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) before submitting your Pull Request.
