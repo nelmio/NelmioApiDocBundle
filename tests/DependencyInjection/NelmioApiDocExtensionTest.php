@@ -310,7 +310,8 @@ class NelmioApiDocExtensionTest extends TestCase
 
         $extension = new NelmioApiDocExtension();
         $extension->load([['html_config' => $htmlConfig = [
-            'redocly' => [
+            'assets_mode' => 'cdn',
+            'redocly_config' => [
                 'expandResponses' => '200,201',
                 'hideDownloadButton' => true,
             ],

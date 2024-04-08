@@ -34,7 +34,7 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
             throw new \InvalidArgumentException(sprintf('Providing an instance of "%s" as twig is not supported.', get_class($twig)));
         }
         $this->twig = $twig;
-        $this->htmlConfig = $htmlConfig + ['swagger_ui' => [], 'redocly' => []];
+        $this->htmlConfig = $htmlConfig;
     }
 
     public function getFormat(): string
@@ -44,7 +44,7 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
 
     public function render(OpenApi $spec, array $options = []): string
     {
-        $options += [
+        $options += $this->htmlConfig + [
             'assets_mode' => AssetsMode::CDN,
             'swagger_ui_config' => [],
             'redocly_config' => [],
@@ -56,7 +56,7 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
                 [
                     'swagger_data' => ['spec' => json_decode($spec->toJson(), true)],
                     'assets_mode' => $options['assets_mode'],
-                    'redocly_config' => $options['redocly_config'] + $this->htmlConfig['redocly'],
+                    'redocly_config' => $options['redocly_config'],
                 ]
             );
         }
@@ -66,7 +66,7 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
             [
                 'swagger_data' => ['spec' => json_decode($spec->toJson(), true)],
                 'assets_mode' => $options['assets_mode'],
-                'swagger_ui_config' => $options['swagger_ui_config'] + $this->htmlConfig['swagger_ui'],
+                'swagger_ui_config' => $options['swagger_ui_config'],
             ]
         );
     }

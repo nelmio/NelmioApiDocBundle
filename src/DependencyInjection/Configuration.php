@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
+use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -56,12 +57,15 @@ final class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                 ->end()
                 ->arrayNode('html_config')
-                    ->info('SwaggerUI/Redocly configuration options')
+                    ->info('UI configuration options')
                     ->children()
-                        ->arrayNode('swagger_ui')
+                        ->scalarNode('assets_mode')
+                            ->defaultValue(AssetsMode::CDN)
+                        ->end()
+                        ->arrayNode('swagger_ui_config')
                             ->ignoreExtraKeys(false)
                         ->end()
-                        ->arrayNode('redocly')
+                        ->arrayNode('redocly_config')
                             ->ignoreExtraKeys(false)
                         ->end()
                     ->end()
