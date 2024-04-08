@@ -301,7 +301,10 @@ class NelmioApiDocExtensionTest extends TestCase
         ];
     }
 
-    public function testHtmlOpenApiRendererWithHtmlConfig()
+    /**
+     * @dataProvider provideOpenApiRendererWithHtmlConfig
+     */
+    public function testHtmlOpenApiRendererWithHtmlConfig(array $htmlConfig, array $expectedHtmlConfig): void
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', [
@@ -309,15 +312,53 @@ class NelmioApiDocExtensionTest extends TestCase
         ]);
 
         $extension = new NelmioApiDocExtension();
-        $extension->load([['html_config' => $htmlConfig = [
-            'assets_mode' => 'cdn',
-            'redocly_config' => [
-                'expandResponses' => '200,201',
-                'hideDownloadButton' => true,
-            ],
-        ]]], $container);
+        $extension->load([['html_config' => $htmlConfig]], $container);
 
         $argument = $container->getDefinition('nelmio_api_doc.render_docs.html')->getArgument(1);
-        self::assertSame($htmlConfig, $argument);
+        self::assertSame($expectedHtmlConfig, $argument);
+    }
+
+    public static function provideOpenApiRendererWithHtmlConfig(): iterable
+    {
+        yield 'default' => [
+            [],
+            [
+                'assets_mode' => 'cdn',
+                'swagger_ui_config' => [],
+                'redocly_config' => [],
+            ],
+        ];
+        yield 'swagger_ui' => [
+            [
+                'assets_mode' => 'bundle',
+                'swagger_ui_config' => [
+                    'deepLinking' => true,
+                ],
+            ],
+            [
+                'assets_mode' => 'bundle',
+                'swagger_ui_config' => [
+                    'deepLinking' => true,
+                ],
+                'redocly_config' => [],
+            ],
+        ];
+        yield 'redocly' => [
+            [
+                'assets_mode' => 'cdn',
+                'redocly_config' => [
+                    'expandResponses' => '200,201',
+                    'hideDownloadButton' => true,
+                ],
+            ],
+            [
+                'assets_mode' => 'cdn',
+                'redocly_config' => [
+                    'expandResponses' => '200,201',
+                    'hideDownloadButton' => true,
+                ],
+                'swagger_ui_config' => [],
+            ],
+        ];
     }
 }

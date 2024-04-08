@@ -68,7 +68,7 @@ class DumpCommand extends Command
         $options = [];
         if (RenderOpenApi::HTML === $format) {
             $rawHtmlConfig = json_decode($input->getOption('html-config'), true);
-            $options = is_array($rawHtmlConfig) ? $rawHtmlConfig : $this->defaultHtmlConfig;
+            $options = is_array($rawHtmlConfig) ? $rawHtmlConfig + $this->defaultHtmlConfig : $this->defaultHtmlConfig;
         } elseif (RenderOpenApi::JSON === $format) {
             $options = [
                 'no-pretty' => $input->hasParameterOption(['--no-pretty']),

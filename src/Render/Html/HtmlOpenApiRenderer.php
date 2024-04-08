@@ -44,11 +44,7 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
 
     public function render(OpenApi $spec, array $options = []): string
     {
-        $options += $this->htmlConfig + [
-            'assets_mode' => AssetsMode::CDN,
-            'swagger_ui_config' => [],
-            'redocly_config' => [],
-        ];
+        $options += $this->htmlConfig;
 
         if (isset($options['ui_renderer']) && Renderer::REDOCLY === $options['ui_renderer']) {
             return $this->twig->render(
