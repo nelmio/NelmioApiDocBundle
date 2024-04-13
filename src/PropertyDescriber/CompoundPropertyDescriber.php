@@ -27,6 +27,14 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
      */
     public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
+        if (null !== $groups) {
+            trigger_deprecation(
+                'nelmio/api-doc-bundle',
+                '4.17.0',
+                'Using the $groups property is deprecated and will be removed in a future version. Pass groups via $context[\'groups\']',
+            );
+        }
+
         $property->oneOf = Generator::UNDEFINED !== $property->oneOf ? $property->oneOf : [];
 
         foreach ($types as $type) {

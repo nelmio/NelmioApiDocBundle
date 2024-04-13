@@ -23,6 +23,13 @@ trait NullablePropertyTrait
 {
     protected function setNullableProperty(Type $type, OA\Schema $property, ?OA\Schema $schema, array $context = []): void
     {
+        trigger_deprecation(
+            'nelmio/api-doc-bundle',
+            '4.17',
+            'Use %s instead',
+            NullablePropertyDescriber::class,
+        );
+
         if (Generator::UNDEFINED !== $property->nullable) {
             if (!$property->nullable) {
                 // if already false mark it as undefined (so it does not show up as `nullable: false`)

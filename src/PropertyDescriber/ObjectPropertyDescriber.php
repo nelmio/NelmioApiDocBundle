@@ -27,6 +27,14 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
      */
     public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
+        if (null !== $groups) {
+            trigger_deprecation(
+                'nelmio/api-doc-bundle',
+                '4.17.0',
+                'Using the $groups property is deprecated and will be removed in a future version. Pass groups via $context[\'groups\']',
+            );
+        }
+
         $type = new Type(
             $types[0]->getBuiltinType(),
             false,
