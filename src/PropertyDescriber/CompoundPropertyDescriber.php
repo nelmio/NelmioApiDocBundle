@@ -31,7 +31,7 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
             trigger_deprecation(
                 'nelmio/api-doc-bundle',
                 '4.17.0',
-                'Using the $groups property is deprecated and will be removed in a future version. Pass groups via $context[\'groups\']',
+                'Using the $groups parameter of "PropertyDescriberInterface::describe()" is deprecated and will be removed in a future version. Pass groups via $context[\'groups\']',
             );
         }
 

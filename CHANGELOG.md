@@ -137,7 +137,7 @@ doc-api:
 
 4.17.0
 -----
-* Passing groups to `PropertyDescriberInterface::describe()` via the `$groups` property is deprecated, the property will get removed in a future version. Pass groups via `$context['groups']` instead.
+* Passing groups to `PropertyDescriberInterface::describe()` via the `$groups` parameter is deprecated, the parameter will get removed in a future version. Pass groups via `$context['groups']` instead.
 
 4.0.0
 -----
