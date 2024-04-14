@@ -18,6 +18,14 @@ use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
+/*
+ * Not all operationIds were generqted properly. This test case covers the following scenarios:
+ * - routes with unnamed symfony route annotations (fall back to SF naming strategy)
+ * - routes combined with OA\Get annotations
+ * - routes with OA\Get annotations and additional ApiDoc root annotations
+ * - routes with operationId explicitly set
+
+ */
 class OperationIdController
 {
     // a route with only a symfony route annotation (generates GET Operation using available metadata as operationId)
@@ -26,6 +34,7 @@ class OperationIdController
     {
         return new JsonResponse();
     }
+
     // a route with a named symfony route annotation (generates GET Operation using route name as operationId)
     #[Route(path: '/generate/operation_id_route', name: 'named_route', methods: 'GET')]
     public function getMustGenerateOperationIdByRouteAnnotation(): JsonResponse
@@ -50,9 +59,9 @@ class OperationIdController
         return new JsonResponse();
     }
 
-   // custom operationId is uesed when set explicitly
+    // custom operationId is uesed when set explicitly
     #[Route(path: '/has/explicit/operationid', name: 'customOperationId', methods: 'GET')]
-    #[OA\Get(summary: 'Custom operation id must be taken', operationId: 'customOperationId')]
+    #[OA\Get(summary: 'Custom operation id must be used if provided', operationId: 'customOperationId')]
     public function getWithCustomOperationId(): JsonResponse
     {
         return new JsonResponse();

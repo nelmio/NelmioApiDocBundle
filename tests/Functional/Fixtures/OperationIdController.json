@@ -53,7 +53,7 @@
         },
         "/has/explicit/operationid": {
             "get": {
-                "summary": "Custom operation id must be taken",
+                "summary": "Custom operation id must be used if provided",
                 "operationId": "customOperationId",
                 "responses": {
                     "default": {
