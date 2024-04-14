@@ -5,14 +5,39 @@
         "version": "0.0.0"
     },
     "paths": {
-        "/generate/operation_id_route": {
+        "/generate/operation_id_route_unnamed": {
             "get": {
-                "operationId": "get_only_route",
+                "operationId": "get_nelmio_apidoc_tests_functional_operationid_getmustgenerateoperationidbyunnamedrouteannotation",
                 "responses": {
                     "default": {
                         "description": ""
                     }
                 }
+            }
+        },
+        "/generate/operation_id_route": {
+            "get": {
+                "operationId": "get_named_route",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/generate/operation_id_with_security/": {
+            "get": {
+                "operationId": "get_with_security",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/generate/operation_id_get": {
@@ -35,21 +60,6 @@
                         "description": ""
                     }
                 }
-            }
-        },
-        "/generate/operation_id_with_security/": {
-            "get": {
-                "operationId": "get_with_security",
-                "responses": {
-                    "default": {
-                        "description": ""
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         }
     }
