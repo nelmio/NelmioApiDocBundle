@@ -89,6 +89,7 @@ class FunctionalTest extends WebTestCase
     public function testSwaggerAction(string $path)
     {
         $operation = $this->getOperation($path, 'get');
+
         $this->assertHasResponse('201', $operation);
         $response = $this->getOperationResponse($operation, '201');
         self::assertEquals('An example resource', $response->description);
