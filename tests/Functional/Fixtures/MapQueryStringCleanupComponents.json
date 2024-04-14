@@ -7,6 +7,7 @@
     "paths": {
         "/article_map_query_string": {
             "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystring",
                 "parameters": [
                     {
                         "name": "id",
@@ -62,6 +63,7 @@
                 }
             },
             "put": {
+                "operationId": "put_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystring",
                 "parameters": [
                     {
                         "name": "id",
@@ -117,6 +119,7 @@
                 }
             },
             "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystring",
                 "parameters": [
                     {
                         "name": "id",
@@ -172,6 +175,7 @@
                 }
             },
             "delete": {
+                "operationId": "delete_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystring",
                 "parameters": [
                     {
                         "name": "id",
@@ -227,6 +231,7 @@
                 }
             },
             "options": {
+                "operationId": "options_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystring",
                 "parameters": [
                     {
                         "name": "id",
@@ -282,6 +287,7 @@
                 }
             },
             "head": {
+                "operationId": "head_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystring",
                 "parameters": [
                     {
                         "name": "id",
@@ -337,6 +343,7 @@
                 }
             },
             "patch": {
+                "operationId": "patch_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystring",
                 "parameters": [
                     {
                         "name": "id",
@@ -392,6 +399,7 @@
                 }
             },
             "trace": {
+                "operationId": "trace_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystring",
                 "parameters": [
                     {
                         "name": "id",
@@ -449,6 +457,7 @@
         },
         "/article_map_query_string_nullable": {
             "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringnullable",
                 "parameters": [
                     {
                         "name": "id",
@@ -504,6 +513,7 @@
                 }
             },
             "put": {
+                "operationId": "put_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringnullable",
                 "parameters": [
                     {
                         "name": "id",
@@ -559,6 +569,7 @@
                 }
             },
             "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringnullable",
                 "parameters": [
                     {
                         "name": "id",
@@ -614,6 +625,7 @@
                 }
             },
             "delete": {
+                "operationId": "delete_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringnullable",
                 "parameters": [
                     {
                         "name": "id",
@@ -669,6 +681,7 @@
                 }
             },
             "options": {
+                "operationId": "options_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringnullable",
                 "parameters": [
                     {
                         "name": "id",
@@ -724,6 +737,7 @@
                 }
             },
             "head": {
+                "operationId": "head_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringnullable",
                 "parameters": [
                     {
                         "name": "id",
@@ -779,6 +793,7 @@
                 }
             },
             "patch": {
+                "operationId": "patch_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringnullable",
                 "parameters": [
                     {
                         "name": "id",
@@ -834,6 +849,7 @@
                 }
             },
             "trace": {
+                "operationId": "trace_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringnullable",
                 "parameters": [
                     {
                         "name": "id",
@@ -891,6 +907,7 @@
         },
         "/article_map_query_string_passes_validation_groups": {
             "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringhandlesvalidationgroups",
                 "parameters": [
                     {
                         "name": "property",
@@ -931,6 +948,7 @@
                 }
             },
             "put": {
+                "operationId": "put_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringhandlesvalidationgroups",
                 "parameters": [
                     {
                         "name": "property",
@@ -971,6 +989,7 @@
                 }
             },
             "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringhandlesvalidationgroups",
                 "parameters": [
                     {
                         "name": "property",
@@ -1011,6 +1030,7 @@
                 }
             },
             "delete": {
+                "operationId": "delete_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringhandlesvalidationgroups",
                 "parameters": [
                     {
                         "name": "property",
@@ -1051,6 +1071,7 @@
                 }
             },
             "options": {
+                "operationId": "options_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringhandlesvalidationgroups",
                 "parameters": [
                     {
                         "name": "property",
@@ -1091,6 +1112,7 @@
                 }
             },
             "head": {
+                "operationId": "head_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringhandlesvalidationgroups",
                 "parameters": [
                     {
                         "name": "property",
@@ -1131,6 +1153,7 @@
                 }
             },
             "patch": {
+                "operationId": "patch_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringhandlesvalidationgroups",
                 "parameters": [
                     {
                         "name": "property",
@@ -1171,6 +1194,7 @@
                 }
             },
             "trace": {
+                "operationId": "trace_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringhandlesvalidationgroups",
                 "parameters": [
                     {
                         "name": "property",
@@ -1213,6 +1237,7 @@
         },
         "/article_map_query_string_overwrite_parameters": {
             "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringoverwriteparameters",
                 "parameters": [
                     {
                         "name": "id",
@@ -1268,6 +1293,7 @@
                 }
             },
             "put": {
+                "operationId": "put_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringoverwriteparameters",
                 "parameters": [
                     {
                         "name": "id",
@@ -1323,6 +1349,7 @@
                 }
             },
             "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringoverwriteparameters",
                 "parameters": [
                     {
                         "name": "id",
@@ -1378,6 +1405,7 @@
                 }
             },
             "delete": {
+                "operationId": "delete_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringoverwriteparameters",
                 "parameters": [
                     {
                         "name": "id",
@@ -1433,6 +1461,7 @@
                 }
             },
             "options": {
+                "operationId": "options_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringoverwriteparameters",
                 "parameters": [
                     {
                         "name": "id",
@@ -1488,6 +1517,7 @@
                 }
             },
             "head": {
+                "operationId": "head_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringoverwriteparameters",
                 "parameters": [
                     {
                         "name": "id",
@@ -1543,6 +1573,7 @@
                 }
             },
             "patch": {
+                "operationId": "patch_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringoverwriteparameters",
                 "parameters": [
                     {
                         "name": "id",
@@ -1598,6 +1629,7 @@
                 }
             },
             "trace": {
+                "operationId": "trace_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlefrommapquerystringoverwriteparameters",
                 "parameters": [
                     {
                         "name": "id",
@@ -1655,6 +1687,7 @@
         },
         "/article_map_query_string_many_parameters": {
             "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -1743,6 +1776,7 @@
                 }
             },
             "put": {
+                "operationId": "put_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -1831,6 +1865,7 @@
                 }
             },
             "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -1919,6 +1954,7 @@
                 }
             },
             "delete": {
+                "operationId": "delete_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2007,6 +2043,7 @@
                 }
             },
             "options": {
+                "operationId": "options_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2095,6 +2132,7 @@
                 }
             },
             "head": {
+                "operationId": "head_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2183,6 +2221,7 @@
                 }
             },
             "patch": {
+                "operationId": "patch_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2271,6 +2310,7 @@
                 }
             },
             "trace": {
+                "operationId": "trace_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2361,6 +2401,7 @@
         },
         "/article_map_query_string_many_parameters_optional": {
             "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyoptionalparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2449,6 +2490,7 @@
                 }
             },
             "put": {
+                "operationId": "put_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyoptionalparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2537,6 +2579,7 @@
                 }
             },
             "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyoptionalparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2625,6 +2668,7 @@
                 }
             },
             "delete": {
+                "operationId": "delete_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyoptionalparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2713,6 +2757,7 @@
                 }
             },
             "options": {
+                "operationId": "options_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyoptionalparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2801,6 +2846,7 @@
                 }
             },
             "head": {
+                "operationId": "head_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyoptionalparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2889,6 +2935,7 @@
                 }
             },
             "patch": {
+                "operationId": "patch_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyoptionalparameters",
                 "parameters": [
                     {
                         "name": "filter",
@@ -2977,6 +3024,7 @@
                 }
             },
             "trace": {
+                "operationId": "trace_nelmio_apidoc_tests_functional_mapquerystring_fetcharticlewithmanyoptionalparameters",
                 "parameters": [
                     {
                         "name": "filter",
