@@ -49,7 +49,7 @@ final class ModelRegistry
     private array $names = [];
 
     /**
-     * @var ModelDescriberInterface[]|iterable
+     * @var iterable<ModelDescriberInterface>
      */
     private iterable $modelDescribers;
 

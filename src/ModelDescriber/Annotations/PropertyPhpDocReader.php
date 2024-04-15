@@ -15,6 +15,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
@@ -27,7 +28,7 @@ use phpDocumentor\Reflection\Types\Compound;
  */
 class PropertyPhpDocReader
 {
-    private DocBlockFactory $docBlockFactory;
+    private DocBlockFactoryInterface $docBlockFactory;
 
     public function __construct()
     {

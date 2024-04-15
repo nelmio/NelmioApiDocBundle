@@ -25,11 +25,11 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
     /** @var array<string, PropertyDescriberInterface[]> Recursion helper */
     private array $called = [];
 
-    /** @var PropertyDescriberInterface[] */
+    /** @var iterable<PropertyDescriberInterface> */
     private iterable $propertyDescribers;
 
     /**
-     * @param PropertyDescriberInterface[] $propertyDescribers
+     * @param iterable<PropertyDescriberInterface> $propertyDescribers
      */
     public function __construct(
         iterable $propertyDescribers

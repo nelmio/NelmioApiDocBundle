@@ -25,9 +25,9 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
     private ControllerReflector $controllerReflector;
 
     /**
-     * @var RouteDescriberInterface[]|iterable
+     * @var iterable<RouteDescriberInterface>
      */
-    private $routeDescribers;
+    private iterable $routeDescribers;
 
     /**
      * @param RouteDescriberInterface[]|iterable $routeDescribers

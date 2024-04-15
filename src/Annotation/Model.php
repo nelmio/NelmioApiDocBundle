@@ -41,7 +41,7 @@ final class Model extends Attachable
     public ?array $groups;
 
     /**
-     * @var mixed[]
+     * @var mixed[]|null
      */
     public ?array $options;
 
