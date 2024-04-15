@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /*
- * Not all operationIds were generqted properly. This test case covers the following scenarios:
+ * Not all operationIds were generated properly. This test case covers the following scenarios:
  * - routes with unnamed symfony route annotations (fall back to SF naming strategy)
  * - routes combined with OA\Get annotations
  * - routes with OA\Get annotations and additional ApiDoc root annotations
