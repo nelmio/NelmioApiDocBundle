@@ -29,7 +29,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  */
 final class MapQueryStringProcessor implements ProcessorInterface
 {
-    public function __invoke(Analysis $analysis)
+    public function __invoke(Analysis $analysis): void
     {
         /** @var OA\Operation[] $operations */
         $operations = $analysis->getAnnotationsOfType(OA\Operation::class);
@@ -50,6 +50,9 @@ final class MapQueryStringProcessor implements ProcessorInterface
         }
     }
 
+    /**
+     * @param array<string, mixed> $mapQueryStringContext
+     */
     private function addQueryParameters(Analysis $analysis, OA\Operation $operation, array $mapQueryStringContext): void
     {
         $argumentMetaData = $mapQueryStringContext[SymfonyMapQueryStringDescriber::CONTEXT_ARGUMENT_METADATA];

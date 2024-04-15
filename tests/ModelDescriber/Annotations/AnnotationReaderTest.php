@@ -30,7 +30,7 @@ class AnnotationReaderTest extends TestCase
      *
      * @dataProvider provideProperty
      */
-    public function testProperty($entity)
+    public function testProperty($entity): void
     {
         $baseProps = ['_context' => new Context()];
 
@@ -54,7 +54,7 @@ class AnnotationReaderTest extends TestCase
         self::assertEquals($schema->properties[1]->description, 'some description');
     }
 
-    public static function provideProperty(): iterable
+    public static function provideProperty(): \Generator
     {
         yield 'Annotations' => [new class() {
             /**

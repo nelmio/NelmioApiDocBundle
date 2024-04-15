@@ -20,9 +20,9 @@ use Twig\TwigFunction;
  */
 class GetNelmioAsset extends AbstractExtension
 {
-    private $assetExtension;
-    private $resourcesDir;
-    private $cdnUrl;
+    private AssetExtension $assetExtension;
+    private string $resourcesDir;
+    private string $cdnUrl;
 
     public function __construct(AssetExtension $assetExtension)
     {
@@ -38,7 +38,7 @@ class GetNelmioAsset extends AbstractExtension
         ];
     }
 
-    public function __invoke($defaultAssetsMode, $asset)
+    public function __invoke(string $defaultAssetsMode, string $asset): string
     {
         [$extension, $mode] = $this->getExtension($defaultAssetsMode, $asset);
         [$resource, $isInline] = $this->getResource($asset, $mode);
@@ -51,7 +51,10 @@ class GetNelmioAsset extends AbstractExtension
         }
     }
 
-    private function getExtension($assetsMode, $asset)
+    /**
+     * @return array{string, string}
+     */
+    private function getExtension(string $assetsMode, string $asset): array
     {
         $extension = mb_substr($asset, -3, 3, 'utf-8');
         if ('.js' === $extension) {
@@ -63,7 +66,10 @@ class GetNelmioAsset extends AbstractExtension
         }
     }
 
-    private function getResource($asset, $mode)
+    /**
+     * @return array{string, bool}
+     */
+    private function getResource(string $asset, string $mode): array
     {
         if (filter_var($asset, FILTER_VALIDATE_URL)) {
             return [$asset, false];
@@ -76,7 +82,7 @@ class GetNelmioAsset extends AbstractExtension
         }
     }
 
-    private function renderJavascript(string $script, bool $isInline)
+    private function renderJavascript(string $script, bool $isInline): string
     {
         if ($isInline) {
             return sprintf('<script>%s</script>', $script);
@@ -85,7 +91,7 @@ class GetNelmioAsset extends AbstractExtension
         }
     }
 
-    private function renderCss(string $stylesheet, bool $isInline)
+    private function renderCss(string $stylesheet, bool $isInline): string
     {
         if ($isInline) {
             return sprintf('<style>%s</style>', $stylesheet);

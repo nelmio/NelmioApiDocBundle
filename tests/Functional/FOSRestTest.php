@@ -17,6 +17,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class FOSRestTest extends WebTestCase
 {
+    /**
+     * @param array<mixed> $options
+     */
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_FOSREST);
@@ -32,7 +35,7 @@ class FOSRestTest extends WebTestCase
     /**
      * @dataProvider provideRoute
      */
-    public function testFOSRestAction(string $route)
+    public function testFOSRestAction(string $route): void
     {
         $operation = $this->getOperation($route, 'post');
 
@@ -76,7 +79,7 @@ class FOSRestTest extends WebTestCase
         self::assertNotHasParameter('_format', 'path', $operation);
     }
 
-    public static function provideRoute(): iterable
+    public static function provideRoute(): \Generator
     {
         yield 'Annotations' => ['/api/fosrest'];
 

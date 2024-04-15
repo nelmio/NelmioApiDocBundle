@@ -18,12 +18,15 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class WebTestCase extends BaseWebTestCase
 {
+    /**
+     * @param array<mixed> $options
+     */
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel();
     }
 
-    protected function getOpenApiDefinition($area = 'default'): OA\OpenApi
+    protected function getOpenApiDefinition(string $area = 'default'): OA\OpenApi
     {
         return static::$kernel->getContainer()->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }
@@ -36,7 +39,7 @@ class WebTestCase extends BaseWebTestCase
         return false !== $key;
     }
 
-    protected function getModel($name): OA\Schema
+    protected function getModel(string $name): OA\Schema
     {
         $api = $this->getOpenApiDefinition();
         $key = array_search($name, array_column($api->components->schemas, 'schema'), true);
@@ -45,7 +48,7 @@ class WebTestCase extends BaseWebTestCase
         return $api->components->schemas[$key];
     }
 
-    protected function getOperation($path, $method): OA\Operation
+    protected function getOperation(string $path, string $method): OA\Operation
     {
         $path = $this->getPath($path);
 
@@ -58,6 +61,9 @@ class WebTestCase extends BaseWebTestCase
         return $path->{$method};
     }
 
+    /**
+     * @param int|string $response
+     */
     protected function getOperationResponse(OA\Operation $operation, $response): OA\Response
     {
         $this->assertHasResponse($response, $operation);
@@ -66,7 +72,7 @@ class WebTestCase extends BaseWebTestCase
         return $operation->responses[$key];
     }
 
-    protected function getProperty(OA\Schema $annotation, $property): OA\Property
+    protected function getProperty(OA\Schema $annotation, string $property): OA\Property
     {
         $this->assertHasProperty($property, $annotation);
         $key = array_search($property, array_column($annotation->properties, 'property'), true);
@@ -77,7 +83,7 @@ class WebTestCase extends BaseWebTestCase
     /**
      * @param OA\Operation|OA\OpenApi $annotation
      */
-    protected function getParameter(OA\AbstractAnnotation $annotation, $name, $in): OA\Parameter
+    protected function getParameter(OA\AbstractAnnotation $annotation, string $name, string $in): OA\Parameter
     {
         $this->assertHasParameter($name, $in, $annotation);
         $parameters = array_filter($annotation->parameters ?? [], function (OA\Parameter $parameter) use ($name, $in) {
@@ -87,7 +93,7 @@ class WebTestCase extends BaseWebTestCase
         return array_values($parameters)[0];
     }
 
-    protected function getPath($path): OA\PathItem
+    protected function getPath(string $path): OA\PathItem
     {
         $api = $this->getOpenApiDefinition();
         self::assertHasPath($path, $api);
@@ -95,7 +101,7 @@ class WebTestCase extends BaseWebTestCase
         return $api->paths[array_search($path, array_column($api->paths, 'path'), true)];
     }
 
-    public function assertHasPath($path, OA\OpenApi $api)
+    public function assertHasPath(string $path, OA\OpenApi $api): void
     {
         $paths = array_column(Generator::UNDEFINED !== $api->paths ? $api->paths : [], 'path');
         static::assertContains(
@@ -105,7 +111,7 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    public function assertNotHasPath($path, OA\OpenApi $api)
+    public function assertNotHasPath(string $path, OA\OpenApi $api): void
     {
         $paths = array_column(Generator::UNDEFINED !== $api->paths ? $api->paths : [], 'path');
         static::assertNotContains(
@@ -115,7 +121,10 @@ class WebTestCase extends BaseWebTestCase
         );
     }
 
-    public function assertHasResponse($responseCode, OA\Operation $operation)
+    /**
+     * @param int|string $responseCode
+     */
+    public function assertHasResponse($responseCode, OA\Operation $operation): void
     {
         $responses = array_column(Generator::UNDEFINED !== $operation->responses ? $operation->responses : [], 'response');
         static::assertContains(
@@ -128,7 +137,7 @@ class WebTestCase extends BaseWebTestCase
     /**
      * @param OA\Operation|OA\OpenApi $annotation
      */
-    public function assertHasParameter($name, $in, OA\AbstractAnnotation $annotation)
+    public function assertHasParameter(string $name, string $in, OA\AbstractAnnotation $annotation): void
     {
         $parameters = array_filter(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], function (OA\Parameter $parameter) use ($name, $in) {
             return $parameter->name === $name && $parameter->in === $in;
@@ -143,7 +152,7 @@ class WebTestCase extends BaseWebTestCase
     /**
      * @param OA\Operation|OA\OpenApi $annotation
      */
-    public function assertNotHasParameter($name, $in, OA\AbstractAnnotation $annotation)
+    public function assertNotHasParameter(string $name, string $in, OA\AbstractAnnotation $annotation): void
     {
         $parameters = array_column(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], 'name', 'in');
         static::assertNotContains(
@@ -156,7 +165,7 @@ class WebTestCase extends BaseWebTestCase
     /**
      * @param OA\Schema|OA\Property|OA\Items $annotation
      */
-    public function assertHasProperty($property, OA\AbstractAnnotation $annotation)
+    public function assertHasProperty(string $property, OA\AbstractAnnotation $annotation): void
     {
         $properties = array_column(Generator::UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
         static::assertContains(
@@ -169,7 +178,7 @@ class WebTestCase extends BaseWebTestCase
     /**
      * @param OA\Schema|OA\Property|OA\Items $annotation
      */
-    public function assertNotHasProperty($property, OA\AbstractAnnotation $annotation)
+    public function assertNotHasProperty(string $property, OA\AbstractAnnotation $annotation): void
     {
         $properties = array_column(Generator::UNDEFINED !== $annotation->properties ? $annotation->properties : [], 'property');
         static::assertNotContains(

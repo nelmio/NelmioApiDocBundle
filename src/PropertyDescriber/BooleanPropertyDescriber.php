@@ -16,6 +16,9 @@ use Symfony\Component\PropertyInfo\Type;
 
 class BooleanPropertyDescriber implements PropertyDescriberInterface
 {
+    /**
+     * @param array<string, mixed> $context Context options for describing the property
+     */
     public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
         $property->type = 'boolean';

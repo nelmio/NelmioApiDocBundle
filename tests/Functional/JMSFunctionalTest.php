@@ -22,7 +22,7 @@ class JMSFunctionalTest extends WebTestCase
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
 
-    public function testModelPictureDocumentation()
+    public function testModelPictureDocumentation(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -45,7 +45,7 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSPicture_mini')->toJson(), true));
     }
 
-    public function testModeChatDocumentation()
+    public function testModeChatDocumentation(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -74,7 +74,7 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSChatUser')->toJson(), true));
     }
 
-    public function testModelDocumentation()
+    public function testModelDocumentation(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -230,7 +230,7 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('VirtualTypeClassDoesNotExistsHandlerDefined')->toJson(), true));
     }
 
-    public function testModelComplexDualDocumentation()
+    public function testModelComplexDualDocumentation(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -249,7 +249,7 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSDualComplex')->toJson(), true));
     }
 
-    public function testNestedGroups()
+    public function testNestedGroups(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -270,7 +270,7 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSChatRoom')->toJson(), true));
     }
 
-    public function testModelComplexDocumentation()
+    public function testModelComplexDocumentation(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -289,7 +289,7 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSComplex')->toJson(), true));
     }
 
-    public function testYamlConfig()
+    public function testYamlConfig(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -308,7 +308,7 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('VirtualProperty')->toJson(), true));
     }
 
-    public function testNoCollisionsAreGenerated()
+    public function testNoCollisionsAreGenerated(): void
     {
         self::assertFalse($this->hasModel('JMSComplex2'));
         self::assertFalse($this->hasModel('JMSUser2'));
@@ -319,7 +319,7 @@ class JMSFunctionalTest extends WebTestCase
         self::assertFalse($this->hasModel('JMSPicture2'));
     }
 
-    public function testNamingStrategyWithConstraints()
+    public function testNamingStrategyWithConstraints(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -338,7 +338,7 @@ class JMSFunctionalTest extends WebTestCase
     /**
      * @requires PHP >= 8.1
      */
-    public function testEnumSupport()
+    public function testEnumSupport(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -372,7 +372,7 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('ArticleType81')->toJson(), true));
     }
 
-    public function testModeDiscriminatorMap()
+    public function testModeDiscriminatorMap(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -413,6 +413,9 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSAbstractUser')->toJson(), true));
     }
 
+    /**
+     * @param array<mixed> $options
+     */
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_JMS);

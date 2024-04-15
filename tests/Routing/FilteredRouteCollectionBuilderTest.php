@@ -40,7 +40,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $this->doctrineAnnotations = class_exists(AnnotationReader::class) ? new AnnotationReader() : null;
     }
 
-    public function testFilter()
+    public function testFilter(): void
     {
         $options = [
             'path_patterns' => [
@@ -74,7 +74,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
      *
      * @expectedDeprecation Passing an indexed array with a collection of path patterns as argument 1 for `Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder::__construct()` is deprecated since 3.2.0, expected structure is an array containing parameterized options.
      */
-    public function testFilterWithDeprecatedArgument()
+    public function testFilterWithDeprecatedArgument(): void
     {
         $pathPattern = [
             '^/api/foo',
@@ -99,8 +99,10 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     /**
      * @dataProvider getInvalidOptions
+     *
+     * @param array<string, mixed> $options
      */
-    public function testFilterWithInvalidOption(array $options)
+    public function testFilterWithInvalidOption(array $options): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -112,27 +114,28 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         );
     }
 
-    public static function getInvalidOptions(): iterable
+    public static function getInvalidOptions(): \Generator
     {
-        return [
-            [['invalid_option' => null]],
-            [['invalid_option' => 42]],
-            [['invalid_option' => []]],
-            [['path_patterns' => [22]]],
-            [['path_patterns' => [null]]],
-            [['path_patterns' => [new \stdClass()]]],
-            [['path_patterns' => ['^/foo$', 1]]],
-            [['with_annotation' => ['an array']]],
-            [['path_patterns' => 'a string']],
-            [['path_patterns' => 11]],
-            [['name_patterns' => 22]],
-            [['name_patterns' => 'a string']],
-            [['name_patterns' => [22]]],
-            [['name_patterns' => [null]]],
-            [['name_patterns' => [new \stdClass()]]],
-        ];
+        yield [['invalid_option' => null]];
+        yield [['invalid_option' => 42]];
+        yield [['invalid_option' => []]];
+        yield [['path_patterns' => [22]]];
+        yield [['path_patterns' => [null]]];
+        yield [['path_patterns' => [new \stdClass()]]];
+        yield [['path_patterns' => ['^/foo$', 1]]];
+        yield [['with_annotation' => ['an array']]];
+        yield [['path_patterns' => 'a string']];
+        yield [['path_patterns' => 11]];
+        yield [['name_patterns' => 22]];
+        yield [['name_patterns' => 'a string']];
+        yield [['name_patterns' => [22]]];
+        yield [['name_patterns' => [null]]];
+        yield [['name_patterns' => [new \stdClass()]]];
     }
 
+    /**
+     * @return array<string,Route>
+     */
     private function getRoutes(): array
     {
         return [
@@ -151,8 +154,10 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     /**
      * @dataProvider getMatchingRoutes
+     *
+     * @param array<string, mixed> $options
      */
-    public function testMatchingRoutes(string $name, Route $route, array $options = [])
+    public function testMatchingRoutes(string $name, Route $route, array $options = []): void
     {
         $routes = new RouteCollection();
         $routes->add($name, $route);
@@ -168,7 +173,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         self::assertCount(1, $filteredRoutes);
     }
 
-    public static function getMatchingRoutes(): iterable
+    public static function getMatchingRoutes(): \Generator
     {
         yield from [
             ['r1', new Route('/api/bar/action1')],
@@ -188,8 +193,10 @@ class FilteredRouteCollectionBuilderTest extends TestCase
      * @group test
      *
      * @dataProvider getMatchingRoutesWithAnnotation
+     *
+     * @param array<string, mixed> $options
      */
-    public function testMatchingRoutesWithAnnotation(string $name, Route $route, array $options = [])
+    public function testMatchingRoutesWithAnnotation(string $name, Route $route, array $options = []): void
     {
         $routes = new RouteCollection();
         $routes->add($name, $route);
@@ -220,7 +227,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         self::assertCount(1, $filteredRoutes);
     }
 
-    public static function getMatchingRoutesWithAnnotation(): iterable
+    public static function getMatchingRoutesWithAnnotation(): \Generator
     {
         yield from [
             'with annotation only' => [
@@ -253,8 +260,10 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     /**
      * @dataProvider getNonMatchingRoutes
+     *
+     * @param array<string, mixed> $options
      */
-    public function testNonMatchingRoutes(string $name, Route $route, array $options = [])
+    public function testNonMatchingRoutes(string $name, Route $route, array $options = []): void
     {
         $routes = new RouteCollection();
         $routes->add($name, $route);
@@ -270,16 +279,14 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         self::assertCount(0, $filteredRoutes);
     }
 
-    public static function getNonMatchingRoutes(): iterable
+    public static function getNonMatchingRoutes(): \Generator
     {
-        return [
-            ['r1', new Route('/api/bar/action1'), ['path_patterns' => ['^/apis']]],
-            ['r2', new Route('/api/foo/action1'), ['path_patterns' => ['^/apis', 'i/foo/b', 'n1/$'], 'name_patterns' => ['r2']]],
-            ['r3_matching_path_and_non_matching_host', new Route('/api/foo/action2'), ['path_patterns' => ['^/api/foo/action2$'], 'host_patterns' => ['^api\.']]],
-            ['r4_matching_path_and_non_matching_host', new Route('/api/bar/action1', [], [], [], 'www.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.']]],
-            ['r5_non_matching_path_and_matching_host', new Route('/admin/bar/action1', [], [], [], 'api.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.']]],
-            ['r6_non_matching_path_and_non_matching_host', new Route('/admin/bar/action1', [], [], [], 'www.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.ex']]],
-        ];
+        yield ['r1', new Route('/api/bar/action1'), ['path_patterns' => ['^/apis']]];
+        yield ['r2', new Route('/api/foo/action1'), ['path_patterns' => ['^/apis', 'i/foo/b', 'n1/$'], 'name_patterns' => ['r2']]];
+        yield ['r3_matching_path_and_non_matching_host', new Route('/api/foo/action2'), ['path_patterns' => ['^/api/foo/action2$'], 'host_patterns' => ['^api\.']]];
+        yield ['r4_matching_path_and_non_matching_host', new Route('/api/bar/action1', [], [], [], 'www.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.']]];
+        yield ['r5_non_matching_path_and_matching_host', new Route('/admin/bar/action1', [], [], [], 'api.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.']]];
+        yield ['r6_non_matching_path_and_non_matching_host', new Route('/admin/bar/action1', [], [], [], 'www.example.com'), ['path_patterns' => ['^/api/'], 'host_patterns' => ['^api\.ex']]];
     }
 
     /**
@@ -323,33 +330,28 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         self::assertCount($expectedRoutesCount, $filteredRoutes);
     }
 
-    /**
-     * @return array<string,array>
-     */
-    public static function getRoutesWithDisabledDefaultRoutes(): iterable
+    public static function getRoutesWithDisabledDefaultRoutes(): \Generator
     {
-        return [
-            'non matching route without Annotation' => [
-                'r10',
-                new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
-                [],
-                ['disable_default_routes' => true],
-                0,
-            ],
-            'matching route with Nelmio Annotation' => [
-                'r10',
-                new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
-                [new Operation(['_context' => new Context()])],
-                ['disable_default_routes' => true],
-                1,
-            ],
-            'matching route with Swagger Annotation' => [
-                'r10',
-                new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
-                [new Parameter(['_context' => new Context()])],
-                ['disable_default_routes' => true],
-                1,
-            ],
+        yield 'non matching route without Annotation' => [
+            'r10',
+            new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+            [],
+            ['disable_default_routes' => true],
+            0,
+        ];
+        yield 'matching route with Nelmio Annotation' => [
+            'r10',
+            new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+            [new Operation(['_context' => new Context()])],
+            ['disable_default_routes' => true],
+            1,
+        ];
+        yield 'matching route with Swagger Annotation' => [
+            'r10',
+            new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+            [new Parameter(['_context' => new Context()])],
+            ['disable_default_routes' => true],
+            1,
         ];
     }
 

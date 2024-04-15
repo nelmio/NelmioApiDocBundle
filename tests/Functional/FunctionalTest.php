@@ -29,14 +29,14 @@ class FunctionalTest extends WebTestCase
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
 
-    public function testConfiguredDocumentation()
+    public function testConfiguredDocumentation(): void
     {
         self::assertEquals('My Default App', $this->getOpenApiDefinition()->info->title);
         self::assertEquals(['buildHash' => 'ab1234567890'], $this->getOpenApiDefinition()->info->x);
         self::assertEquals('My Test App', $this->getOpenApiDefinition('test')->info->title);
     }
 
-    public function testUndocumentedAction()
+    public function testUndocumentedAction(): void
     {
         $api = $this->getOpenApiDefinition();
 
@@ -47,7 +47,7 @@ class FunctionalTest extends WebTestCase
     /**
      * @dataProvider provideArticleRoute
      */
-    public function testFetchArticleAction(string $articleRoute)
+    public function testFetchArticleAction(string $articleRoute): void
     {
         $operation = $this->getOperation($articleRoute, 'get');
 
@@ -63,7 +63,7 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasProperty('author', Util::getProperty($articleModel, 'author'));
     }
 
-    public static function provideArticleRoute(): iterable
+    public static function provideArticleRoute(): \Generator
     {
         if (interface_exists(Reader::class)) {
             yield 'Annotations' => ['/api/article/{id}'];
@@ -74,7 +74,7 @@ class FunctionalTest extends WebTestCase
         }
     }
 
-    public function testFilteredAction()
+    public function testFilteredAction(): void
     {
         $openApi = $this->getOpenApiDefinition();
 
@@ -86,7 +86,7 @@ class FunctionalTest extends WebTestCase
      *
      * @dataProvider swaggerActionPathsProvider
      */
-    public function testSwaggerAction(string $path)
+    public function testSwaggerAction(string $path): void
     {
         $operation = $this->getOperation($path, 'get');
 
@@ -95,12 +95,14 @@ class FunctionalTest extends WebTestCase
         self::assertEquals('An example resource', $response->description);
     }
 
-    public static function swaggerActionPathsProvider(): iterable
+    public static function swaggerActionPathsProvider(): \Generator
     {
-        return [['/api/swagger'], ['/api/swagger2']];
+        yield ['/api/swagger'];
+
+        yield ['/api/swagger2'];
     }
 
-    public function testAnnotationWithManualPath()
+    public function testAnnotationWithManualPath(): void
     {
         $path = $this->getPath('/api/swagger2');
         self::assertSame(Generator::UNDEFINED, $path->post);
@@ -115,7 +117,7 @@ class FunctionalTest extends WebTestCase
     /**
      * @dataProvider implicitSwaggerActionMethodsProvider
      */
-    public function testImplicitSwaggerAction(string $method)
+    public function testImplicitSwaggerAction(string $method): void
     {
         $operation = $this->getOperation('/api/swagger/implicit', $method);
 
@@ -133,12 +135,14 @@ class FunctionalTest extends WebTestCase
         self::assertEquals('#/components/schemas/User', $requestBody->content['application/json']->schema->items->ref);
     }
 
-    public static function implicitSwaggerActionMethodsProvider(): iterable
+    public static function implicitSwaggerActionMethodsProvider(): \Generator
     {
-        return [['get'], ['post']];
+        yield ['get'];
+
+        yield ['post'];
     }
 
-    public function testUserAction()
+    public function testUserAction(): void
     {
         $operation = $this->getOperation('/api/test/{user}', 'get');
 
@@ -156,7 +160,7 @@ class FunctionalTest extends WebTestCase
         self::assertEquals(Generator::UNDEFINED, $parameter->schema->format);
     }
 
-    public function testDeprecatedAction()
+    public function testDeprecatedAction(): void
     {
         $operation = $this->getOperation('/api/deprecated', 'get');
 
@@ -165,7 +169,7 @@ class FunctionalTest extends WebTestCase
         self::assertTrue($operation->deprecated);
     }
 
-    public function testApiPlatform()
+    public function testApiPlatform(): void
     {
         $operation = $this->getOperation('/api/dummies', 'get');
         $operation = $this->getOperation('/api/foo', 'get');
@@ -173,7 +177,7 @@ class FunctionalTest extends WebTestCase
         $operation = $this->getOperation('/api/dummies/{id}', 'get');
     }
 
-    public function testUserModel()
+    public function testUserModel(): void
     {
         self::assertEquals(
             [
@@ -259,7 +263,7 @@ class FunctionalTest extends WebTestCase
         );
     }
 
-    public function testFormSupport()
+    public function testFormSupport(): void
     {
         self::assertEquals([
             'type' => 'object',
@@ -372,7 +376,7 @@ class FunctionalTest extends WebTestCase
     /**
      * @dataProvider provideSecurityRoute
      */
-    public function testSecurityAction(string $route)
+    public function testSecurityAction(string $route): void
     {
         $operation = $this->getOperation($route, 'get');
 
@@ -384,7 +388,7 @@ class FunctionalTest extends WebTestCase
         self::assertEquals($expected, $operation->security);
     }
 
-    public static function provideSecurityRoute(): iterable
+    public static function provideSecurityRoute(): \Generator
     {
         yield 'Annotations' => ['/api/security'];
 
@@ -396,13 +400,13 @@ class FunctionalTest extends WebTestCase
     /**
      * @dataProvider provideSecurityOverrideRoute
      */
-    public function testSecurityOverrideAction(string $route)
+    public function testSecurityOverrideAction(string $route): void
     {
         $operation = $this->getOperation($route, 'get');
         self::assertEquals([], $operation->security);
     }
 
-    public static function provideSecurityOverrideRoute(): iterable
+    public static function provideSecurityOverrideRoute(): \Generator
     {
         yield 'Annotations' => ['/api/securityOverride'];
 
@@ -411,7 +415,7 @@ class FunctionalTest extends WebTestCase
         }
     }
 
-    public function testInlinePHP81Parameters()
+    public function testInlinePHP81Parameters(): void
     {
         if (\PHP_VERSION_ID < 80100) {
             self::markTestSkipped('Attributes require PHP 8.1');
@@ -424,7 +428,7 @@ class FunctionalTest extends WebTestCase
         self::assertSame($operation->parameters[0]->schema->type, 'string');
     }
 
-    public function testClassSecurityAction()
+    public function testClassSecurityAction(): void
     {
         $operation = $this->getOperation('/api/security/class', 'get');
 
@@ -434,7 +438,7 @@ class FunctionalTest extends WebTestCase
         self::assertEquals($expected, $operation->security);
     }
 
-    public function testSymfonyConstraintDocumentation()
+    public function testSymfonyConstraintDocumentation(): void
     {
         if (TestKernel::isAttributesAvailable()) {
             $modelName = 'SymfonyConstraints81';
@@ -575,14 +579,14 @@ class FunctionalTest extends WebTestCase
         self::assertEquals($expected, json_decode($this->getModel($modelName)->toJson(), true));
     }
 
-    public function testConfigReference()
+    public function testConfigReference(): void
     {
         $operation = $this->getOperation('/api/configReference', 'get');
         self::assertEquals('#/components/schemas/Test', $this->getOperationResponse($operation, '200')->ref);
         self::assertEquals('#/components/responses/201', $this->getOperationResponse($operation, '201')->ref);
     }
 
-    public function testOperationsWithOtherAnnotationsAction()
+    public function testOperationsWithOtherAnnotationsAction(): void
     {
         $getOperation = $this->getOperation('/api/multi-annotations', 'get');
         self::assertSame('This is the get operation', $getOperation->description);
@@ -593,13 +597,13 @@ class FunctionalTest extends WebTestCase
         self::assertSame('Worked well!', $this->getOperationResponse($postOperation, 200)->description);
     }
 
-    public function testNoDuplicatedParameters()
+    public function testNoDuplicatedParameters(): void
     {
         $this->assertHasPath('/api/article/{id}', $this->getOpenApiDefinition());
         $this->assertNotHasParameter('id', 'path', $this->getOperation('/api/article/{id}', 'get'));
     }
 
-    public function testSerializedNameAction()
+    public function testSerializedNameAction(): void
     {
         if (!class_exists(SerializedName::class)) {
             self::markTestSkipped('Annotation @SerializedName doesn\'t exist.');
@@ -620,7 +624,7 @@ class FunctionalTest extends WebTestCase
         $this->assertHasProperty('notwhatyouthink', $model);
     }
 
-    public function testCompoundEntityAction()
+    public function testCompoundEntityAction(): void
     {
         self::assertEquals([
             'schema' => 'CompoundEntity',
@@ -744,19 +748,19 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('CompoundEntityNested')->toJson(), true));
     }
 
-    public function testInvokableController()
+    public function testInvokableController(): void
     {
         $operation = $this->getOperation('/api/invoke', 'get');
         self::assertSame('Invokable!', $this->getOperationResponse($operation, 200)->description);
     }
 
-    public function testDefaultOperationId()
+    public function testDefaultOperationId(): void
     {
         $operation = $this->getOperation('/api/article/{id}', 'get');
         self::assertEquals('get_api_nelmio_apidoc_tests_functional_api_fetcharticle', $operation->operationId);
     }
 
-    public function testNamedRouteOperationId()
+    public function testNamedRouteOperationId(): void
     {
         $operation = $this->getOperation('/api/named_route-operation-id', 'get');
         self::assertEquals('get_api_named_route_operation_id', $operation->operationId);
@@ -765,7 +769,7 @@ class FunctionalTest extends WebTestCase
         self::assertEquals('post_api_named_route_operation_id', $operation->operationId);
     }
 
-    public function testCustomOperationId()
+    public function testCustomOperationId(): void
     {
         $operation = $this->getOperation('/api/custom-operation-id', 'get');
         self::assertEquals('get-custom-operation-id', $operation->operationId);
@@ -778,7 +782,7 @@ class FunctionalTest extends WebTestCase
      * Related to https://github.com/nelmio/NelmioApiDocBundle/issues/1756
      * Ensures private/protected properties are not exposed, just like the symfony serializer does.
      */
-    public function testPrivateProtectedExposure()
+    public function testPrivateProtectedExposure(): void
     {
         // Ensure that groups are supported
         $model = $this->getModel('PrivateProtectedExposure');
@@ -789,7 +793,7 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasProperty('protected', $model);
     }
 
-    public function testModelsWithDiscriminatorMapAreLoadedWithOpenApiPolymorphism()
+    public function testModelsWithDiscriminatorMapAreLoadedWithOpenApiPolymorphism(): void
     {
         if (TestKernel::isAttributesAvailable()) {
             $model = $this->getModel('SymfonyDiscriminator81');
@@ -806,7 +810,7 @@ class FunctionalTest extends WebTestCase
         self::assertCount(2, $model->oneOf);
     }
 
-    public function testModelsWithDiscriminatorMapAreLoadedWithOpenApiPolymorphismWhenUsingFileConfiguration()
+    public function testModelsWithDiscriminatorMapAreLoadedWithOpenApiPolymorphismWhenUsingFileConfiguration(): void
     {
         $model = $this->getModel('SymfonyDiscriminatorFileMapping');
 
@@ -819,14 +823,14 @@ class FunctionalTest extends WebTestCase
         self::assertCount(2, $model->oneOf);
     }
 
-    public function testDiscriminatorMapLoadsChildrenModels()
+    public function testDiscriminatorMapLoadsChildrenModels(): void
     {
         // get model does its own assertions
         $this->getModel('SymfonyDiscriminatorOne');
         $this->getModel('SymfonyDiscriminatorTwo');
     }
 
-    public function testNoAdditionalPropertiesSupport()
+    public function testNoAdditionalPropertiesSupport(): void
     {
         $model = $this->getModel('AddProp');
 
@@ -836,7 +840,7 @@ class FunctionalTest extends WebTestCase
     /**
      * @requires PHP >= 8.1
      */
-    public function testEnumSupport()
+    public function testEnumSupport(): void
     {
         $model = $this->getModel('ArticleType81');
 
@@ -879,7 +883,7 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('Article81')->toJson(), true));
     }
 
-    public function testEntitiesWithOverriddenSchemaTypeDoNotReadOtherProperties()
+    public function testEntitiesWithOverriddenSchemaTypeDoNotReadOtherProperties(): void
     {
         if (TestKernel::isAttributesAvailable()) {
             $model = $this->getModel('EntityWithAlternateType81');
@@ -892,7 +896,7 @@ class FunctionalTest extends WebTestCase
         self::assertSame(Generator::UNDEFINED, $model->properties);
     }
 
-    public function testEntitiesWithRefInSchemaDoNoReadOtherProperties()
+    public function testEntitiesWithRefInSchemaDoNoReadOtherProperties(): void
     {
         $model = $this->getModel('EntityWithRef');
 
@@ -901,7 +905,7 @@ class FunctionalTest extends WebTestCase
         self::assertSame(Generator::UNDEFINED, $model->properties);
     }
 
-    public function testEntitiesWithObjectTypeStillReadProperties()
+    public function testEntitiesWithObjectTypeStillReadProperties(): void
     {
         $model = $this->getModel('EntityWithObjectType');
 
@@ -911,7 +915,7 @@ class FunctionalTest extends WebTestCase
         self::assertSame('string', $property->type);
     }
 
-    public function testFormsWithOverriddenSchemaTypeDoNotReadOtherProperties()
+    public function testFormsWithOverriddenSchemaTypeDoNotReadOtherProperties(): void
     {
         $model = $this->getModel('FormWithAlternateSchemaType');
 
@@ -919,7 +923,7 @@ class FunctionalTest extends WebTestCase
         self::assertSame(Generator::UNDEFINED, $model->properties);
     }
 
-    public function testFormWithRefInSchemaDoNoReadOtherProperties()
+    public function testFormWithRefInSchemaDoNoReadOtherProperties(): void
     {
         $model = $this->getModel('FormWithRefType');
 
@@ -941,7 +945,7 @@ class FunctionalTest extends WebTestCase
         $this->assertHasProperty('name', $model);
     }
 
-    public function testEntityWithNullableSchemaSet()
+    public function testEntityWithNullableSchemaSet(): void
     {
         $model = $this->getModel('EntityWithNullableSchemaSet');
 
@@ -966,7 +970,7 @@ class FunctionalTest extends WebTestCase
         self::assertTrue($model->properties[5]->nullable);
     }
 
-    public function testContextPassedToNameConverter()
+    public function testContextPassedToNameConverter(): void
     {
         $operation = $this->getOperation('/api/name_converter_context', 'get');
 
@@ -1069,7 +1073,7 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('EntityThroughNameConverterNested2')->toJson(), true));
     }
 
-    public function testArbitraryArrayModel()
+    public function testArbitraryArrayModel(): void
     {
         $this->getOperation('/api/arbitrary_array', 'get');
 
@@ -1105,7 +1109,7 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('Bar')->toJson(), true));
     }
 
-    public function testDictionaryModel()
+    public function testDictionaryModel(): void
     {
         $this->getOperation('/api/dictionary', 'get');
         self::assertEquals([
@@ -1186,7 +1190,7 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('Dictionary')->toJson(), true));
     }
 
-    public function testEntityWithFalsyDefaults()
+    public function testEntityWithFalsyDefaults(): void
     {
         $model = $this->getModel('EntityWithFalsyDefaults');
 
@@ -1228,7 +1232,7 @@ class FunctionalTest extends WebTestCase
         ], json_decode($model->toJson(), true));
     }
 
-    public function testRangeIntegers()
+    public function testRangeIntegers(): void
     {
         $expected = [
             'schema' => 'RangeInteger',

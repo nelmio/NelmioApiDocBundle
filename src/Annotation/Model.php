@@ -33,25 +33,22 @@ final class Model extends Attachable
         Parameter::class,
     ];
 
-    /**
-     * @var string
-     */
-    public $type;
+    public string $type;
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    public $groups;
+    public ?array $groups;
 
     /**
-     * @var mixed[]
+     * @var mixed[]|null
      */
-    public $options;
+    public ?array $options;
 
     /**
      * @var array<string, mixed>
      */
-    public $serializationContext;
+    public array $serializationContext;
 
     /**
      * @param mixed[]              $properties

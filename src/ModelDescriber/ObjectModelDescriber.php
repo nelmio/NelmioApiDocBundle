@@ -49,6 +49,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /**
      * @param PropertyDescriberInterface|PropertyDescriberInterface[]      $propertyDescribers
      * @param (NameConverterInterface&AdvancedNameConverterInterface)|null $nameConverter
+     * @param string[]                                                     $mediaTypes
      */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
@@ -218,7 +219,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /**
      * @param Type[] $types
      */
-    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema)
+    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema): void
     {
         $propertyDescribers = is_iterable($this->propertyDescriber) ? $this->propertyDescriber : [$this->propertyDescriber];
 

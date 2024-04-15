@@ -27,16 +27,13 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
     public const GROUPS = ['test'];
     public const OPTIONS = ['test' => 123];
 
-    private $schema;
+    private OA\Schema $schema;
 
-    private $model;
+    private Model $model;
 
-    /**
-     * @var ModelRegistry
-     */
-    private $modelRegistry;
+    private ModelRegistry $modelRegistry;
 
-    public function testApplyAddsDiscriminatorProperty()
+    public function testApplyAddsDiscriminatorProperty(): void
     {
         $this->applyOpenApiDiscriminator($this->model, $this->schema, $this->modelRegistry, 'type', [
             'one' => 'FirstType',
@@ -57,7 +54,7 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
         );
     }
 
-    public function testApplyAddsOneOfFieldToSchema()
+    public function testApplyAddsOneOfFieldToSchema(): void
     {
         $this->applyOpenApiDiscriminator($this->model, $this->schema, $this->modelRegistry, 'type', [
             'one' => 'FirstType',

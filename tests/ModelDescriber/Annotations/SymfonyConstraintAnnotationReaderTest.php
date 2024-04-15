@@ -36,7 +36,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $this->doctrineAnnotations = class_exists(AnnotationReader::class) ? new AnnotationReader() : null;
     }
 
-    public function testUpdatePropertyFix1283()
+    public function testUpdatePropertyFix1283(): void
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             $entity = new class() {
@@ -82,7 +82,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideOptionalProperty
      */
-    public function testOptionalProperty($entity)
+    public function testOptionalProperty($entity): void
     {
         if (!\property_exists(Assert\NotBlank::class, 'allowNull')) {
             self::markTestSkipped('NotBlank::allowNull was added in symfony/validator 4.3.');
@@ -102,7 +102,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertEquals($schema->required, ['property2']);
     }
 
-    public static function provideOptionalProperty(): iterable
+    public static function provideOptionalProperty(): \Generator
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -138,7 +138,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideAssertChoiceResultsInNumericArray
      */
-    public function testAssertChoiceResultsInNumericArray($entity)
+    public function testAssertChoiceResultsInNumericArray($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -152,7 +152,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertEquals($schema->properties[0]->enum, ['active', 'blocked']);
     }
 
-    public static function provideAssertChoiceResultsInNumericArray(): iterable
+    public static function provideAssertChoiceResultsInNumericArray(): \Generator
     {
         define('TEST_ASSERT_CHOICE_STATUSES', [
             1 => 'active',
@@ -186,7 +186,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideMultipleChoiceConstraintsApplyEnumToItems
      */
-    public function testMultipleChoiceConstraintsApplyEnumToItems($entity)
+    public function testMultipleChoiceConstraintsApplyEnumToItems($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -200,7 +200,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertEquals($schema->properties[0]->items->enum, ['one', 'two']);
     }
 
-    public static function provideMultipleChoiceConstraintsApplyEnumToItems(): iterable
+    public static function provideMultipleChoiceConstraintsApplyEnumToItems(): \Generator
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [new class() {
@@ -226,7 +226,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet
      */
-    public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet($entity)
+    public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -240,7 +240,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(1, $schema->properties[0]->minLength);
     }
 
-    public static function provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet(): iterable
+    public static function provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet(): \Generator
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -268,7 +268,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet
      */
-    public function testLengthConstraintDoesNotSetMinLengthIfMinIsNotSet($entity)
+    public function testLengthConstraintDoesNotSetMinLengthIfMinIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -282,7 +282,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(100, $schema->properties[0]->maxLength);
     }
 
-    public static function provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet(): iterable
+    public static function provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet(): \Generator
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -303,7 +303,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }
     }
 
-    public function testCompoundValidationRules()
+    public function testCompoundValidationRules(): void
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             $entity = new class() {
@@ -350,7 +350,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet
      */
-    public function testCountConstraintDoesNotSetMinItemsIfMinIsNotSet($entity)
+    public function testCountConstraintDoesNotSetMinItemsIfMinIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -364,7 +364,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(10, $schema->properties[0]->maxItems);
     }
 
-    public static function provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet(): iterable
+    public static function provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet(): \Generator
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -392,7 +392,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet
      */
-    public function testCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet($entity)
+    public function testCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -406,7 +406,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(10, $schema->properties[0]->minItems);
     }
 
-    public static function provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet(): iterable
+    public static function provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet(): \Generator
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -434,7 +434,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet
      */
-    public function testRangeConstraintDoesNotSetMaximumIfMaxIsNotSet($entity)
+    public function testRangeConstraintDoesNotSetMaximumIfMaxIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -448,7 +448,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(10, $schema->properties[0]->minimum);
     }
 
-    public static function provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet(): iterable
+    public static function provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet(): \Generator
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -476,7 +476,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet
      */
-    public function testRangeConstraintDoesNotSetMinimumIfMinIsNotSet($entity)
+    public function testRangeConstraintDoesNotSetMinimumIfMinIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -490,7 +490,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(10, $schema->properties[0]->maximum);
     }
 
-    public static function provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet(): iterable
+    public static function provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet(): \Generator
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
@@ -519,7 +519,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet
      */
-    public function testReaderWithValidationGroupsEnabledChecksForDefaultGroupWhenNoSerializationGroupsArePassed($entity)
+    public function testReaderWithValidationGroupsEnabledChecksForDefaultGroupWhenNoSerializationGroupsArePassed(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -540,7 +540,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideConstraintsWithGroups
      */
-    public function testReaderWithValidationGroupsEnabledDoesNotReadAnnotationsWithoutDefaultGroupIfNoGroupsArePassed($entity)
+    public function testReaderWithValidationGroupsEnabledDoesNotReadAnnotationsWithoutDefaultGroupIfNoGroupsArePassed(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([
@@ -564,7 +564,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideConstraintsWithGroups
      */
-    public function testReaderWithValidationGroupsEnabledReadsOnlyConstraintsWithGroupsProvided($entity)
+    public function testReaderWithValidationGroupsEnabledReadsOnlyConstraintsWithGroupsProvided(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([
@@ -589,7 +589,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      *
      * @dataProvider provideConstraintsWithGroups
      */
-    public function testReaderWithValidationGroupsEnabledCanReadFromMultipleValidationGroups($entity)
+    public function testReaderWithValidationGroupsEnabledCanReadFromMultipleValidationGroups(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([
@@ -609,7 +609,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(1, $schema->properties[0]->minimum, 'should have read constraint in other group');
     }
 
-    public static function provideConstraintsWithGroups(): iterable
+    public static function provideConstraintsWithGroups(): \Generator
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [new class() {
@@ -639,7 +639,15 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         );
     }
 
-    private function createObj(string $className, array $props = [])
+    /**
+     * @template T of OA\AbstractAnnotation
+     *
+     * @param class-string<T>      $className
+     * @param array<string, mixed> $props
+     *
+     * @return T
+     */
+    private function createObj(string $className, array $props = []): object
     {
         return new $className($props + ['_context' => new Context()]);
     }

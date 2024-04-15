@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
+use FOS\RestBundle\Controller\Annotations\AbstractScalarParam;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
@@ -27,19 +28,21 @@ final class FosRestDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    /** @var Reader|null */
-    private $annotationReader;
+    private ?Reader $annotationReader;
 
     /** @var string[] */
-    private $mediaTypes;
+    private array $mediaTypes;
 
+    /**
+     * @param string[] $mediaTypes
+     */
     public function __construct(?Reader $annotationReader, array $mediaTypes)
     {
         $this->annotationReader = $annotationReader;
         $this->mediaTypes = $mediaTypes;
     }
 
-    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod)
+    public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
         $annotations = null !== $this->annotationReader
             ? $this->annotationReader->getMethodAnnotations($reflectionMethod)
@@ -91,7 +94,10 @@ final class FosRestDescriber implements RouteDescriberInterface
         }
     }
 
-    private function getPattern($requirements)
+    /**
+     * @param mixed $requirements Value to retrieve a pattern from
+     */
+    private function getPattern($requirements): ?string
     {
         if (is_array($requirements) && isset($requirements['rule'])) {
             return (string) $requirements['rule'];
@@ -108,7 +114,10 @@ final class FosRestDescriber implements RouteDescriberInterface
         return null;
     }
 
-    private function getFormat($requirements)
+    /**
+     * @param mixed $requirements Value to retrieve a format from
+     */
+    private function getFormat($requirements): ?string
     {
         if ($requirements instanceof Constraint && !$requirements instanceof Regex) {
             if ($requirements instanceof DateTime) {
@@ -132,7 +141,12 @@ final class FosRestDescriber implements RouteDescriberInterface
         return null;
     }
 
-    private function getEnum($requirements)
+    /**
+     * @param mixed $requirements Value to retrieve an enum from
+     *
+     * @return mixed[]|null
+     */
+    private function getEnum($requirements): ?array
     {
         if ($requirements instanceof Choice) {
             return $requirements->choices;
@@ -178,7 +192,7 @@ final class FosRestDescriber implements RouteDescriberInterface
         );
     }
 
-    private function describeCommonSchemaFromAnnotation(OA\Schema $schema, $annotation)
+    private function describeCommonSchemaFromAnnotation(OA\Schema $schema, AbstractScalarParam $annotation): void
     {
         $schema->default = $annotation->getDefault();
 
@@ -208,7 +222,11 @@ final class FosRestDescriber implements RouteDescriberInterface
     }
 
     /**
-     * @return OA\AbstractAnnotation[]
+     * @template T of object
+     *
+     * @param class-string<T> $className
+     *
+     * @return T[]
      */
     private function getAttributesAsAnnotation(\ReflectionMethod $reflection, string $className): array
     {

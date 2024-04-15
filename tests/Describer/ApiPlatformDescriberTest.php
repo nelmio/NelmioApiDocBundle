@@ -16,15 +16,19 @@ use ApiPlatform\Metadata\Resource\ResourceNameCollection;
 use Nelmio\ApiDocBundle\Describer\ApiPlatformDescriber;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ApiPlatformDescriberTest extends AbstractDescriberTestCase
 {
-    private $documentation;
+    private Documentation $documentation;
 
-    private $normalizer;
+    /**
+     * @var MockObject&NormalizerInterface
+     */
+    private NormalizerInterface $normalizer;
 
-    public function testDescribe()
+    public function testDescribe(): void
     {
         $this->normalizer->expects(self::once())
             ->method('normalize')
@@ -35,7 +39,7 @@ class ApiPlatformDescriberTest extends AbstractDescriberTestCase
         self::assertEquals($expectedApi->toJson(), $this->getOpenApiDoc()->toJson());
     }
 
-    public function testDescribeRemovesBasePathAfterNormalization()
+    public function testDescribeRemovesBasePathAfterNormalization(): void
     {
         $this->normalizer->expects(self::once())
             ->method('normalize')

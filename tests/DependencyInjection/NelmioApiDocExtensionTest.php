@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class NelmioApiDocExtensionTest extends TestCase
 {
-    public function testNameAliasesArePassedToModelRegistry()
+    public function testNameAliasesArePassedToModelRegistry(): void
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);
@@ -86,7 +86,7 @@ class NelmioApiDocExtensionTest extends TestCase
         self::assertTrue($foundMethodCall);
     }
 
-    public function testMergesRootKeysFromMultipleConfigurations()
+    public function testMergesRootKeysFromMultipleConfigurations(): void
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);
@@ -154,8 +154,11 @@ class NelmioApiDocExtensionTest extends TestCase
 
     /**
      * @dataProvider provideCacheConfig
+     *
+     * @param array<string, mixed> $config
+     * @param array<string, mixed> $expectedValues
      */
-    public function testApiDocGeneratorWithCachePool(array $config, array $expectedValues)
+    public function testApiDocGeneratorWithCachePool(array $config, array $expectedValues): void
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', []);
@@ -186,7 +189,7 @@ class NelmioApiDocExtensionTest extends TestCase
         self::assertSame($expectedValues['area1CacheItemId'], $cacheItemId);
     }
 
-    public static function provideCacheConfig(): iterable
+    public static function provideCacheConfig(): \Generator
     {
         yield 'default cache.item_id & area appending' => [
             'config' => [

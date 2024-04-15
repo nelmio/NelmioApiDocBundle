@@ -18,7 +18,7 @@ namespace Nelmio\ApiDocBundle\Annotation;
 final class Areas
 {
     /** @var string[] */
-    private $areas;
+    private array $areas;
 
     /**
      * @param string[]|array{value: string[]} $properties

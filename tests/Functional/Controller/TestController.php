@@ -30,7 +30,7 @@ if (TestKernel::isAnnotationsAvailable()) {
          *
          * @Route("/test/", methods={"GET"})
          */
-        public function testAction()
+        public function testAction(): void
         {
         }
     }
@@ -40,7 +40,7 @@ if (TestKernel::isAnnotationsAvailable()) {
     {
         #[OAT\Response(response: 200, description: 'Test')]
         #[Route('/test/', methods: ['GET'])]
-        public function testAction()
+        public function testAction(): void
         {
         }
     }

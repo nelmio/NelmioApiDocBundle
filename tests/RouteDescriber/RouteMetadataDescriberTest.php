@@ -20,14 +20,16 @@ use Symfony\Component\Routing\Route;
 
 class RouteMetadataDescriberTest extends TestCase
 {
-    public function testUndefinedCheck()
+    public function testUndefinedCheck(): void
     {
+        self::expectNotToPerformAssertions();
+
         $routeDescriber = new RouteMetadataDescriber();
 
-        self::assertNull($routeDescriber->describe(new OpenApi(['_context' => new Context()]), new Route('foo'), new \ReflectionMethod(__CLASS__, 'testUndefinedCheck')));
+        $routeDescriber->describe(new OpenApi(['_context' => new Context()]), new Route('foo'), new \ReflectionMethod(__CLASS__, 'testUndefinedCheck'));
     }
 
-    public function testRouteRequirementsWithPattern()
+    public function testRouteRequirementsWithPattern(): void
     {
         $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();
@@ -38,20 +40,20 @@ class RouteMetadataDescriberTest extends TestCase
             new \ReflectionMethod(__CLASS__, 'testRouteRequirementsWithPattern')
         );
 
-        self::assertEquals('/index/{bar}/{foo}.html', $api->paths[0]->path);
+        self::assertSame('/index/{bar}/{foo}.html', $api->paths[0]->path);
         $getPathParameter = $api->paths[0]->get->parameters[1];
         if ('foo' === $getPathParameter->name) {
-            self::assertEquals('path', $getPathParameter->in);
-            self::assertEquals('foo', $getPathParameter->name);
-            self::assertEquals('string', $getPathParameter->schema->type);
-            self::assertEquals('[0-9]|[a-z]', $getPathParameter->schema->pattern);
+            self::assertSame('path', $getPathParameter->in);
+            self::assertSame('foo', $getPathParameter->name);
+            self::assertSame('string', $getPathParameter->schema->type);
+            self::assertSame('[0-9]|[a-z]', $getPathParameter->schema->pattern);
         }
     }
 
     /**
      * @dataProvider provideEnumPattern
      */
-    public function testSimpleOrRequirementsAreHandledAsEnums($req)
+    public function testSimpleOrRequirementsAreHandledAsEnums(string $req): void
     {
         $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();
@@ -62,19 +64,19 @@ class RouteMetadataDescriberTest extends TestCase
             new \ReflectionMethod(__CLASS__, 'testSimpleOrRequirementsAreHandledAsEnums')
         );
 
-        self::assertEquals('/index/{bar}/{foo}.html', $api->paths[0]->path);
+        self::assertSame('/index/{bar}/{foo}.html', $api->paths[0]->path);
         $getPathParameter = $api->paths[0]->get->parameters[1];
-        self::assertEquals('path', $getPathParameter->in);
-        self::assertEquals('foo', $getPathParameter->name);
-        self::assertEquals('string', $getPathParameter->schema->type);
-        self::assertEquals(explode('|', $req), $getPathParameter->schema->enum);
-        self::assertEquals($req, $getPathParameter->schema->pattern);
+        self::assertSame('path', $getPathParameter->in);
+        self::assertSame('foo', $getPathParameter->name);
+        self::assertSame('string', $getPathParameter->schema->type);
+        self::assertSame(explode('|', $req), $getPathParameter->schema->enum);
+        self::assertSame($req, $getPathParameter->schema->pattern);
     }
 
     /**
      * @dataProvider provideInvalidEnumPattern
      */
-    public function testNonEnumPatterns($pattern)
+    public function testNonEnumPatterns(string $pattern): void
     {
         $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();
@@ -86,11 +88,11 @@ class RouteMetadataDescriberTest extends TestCase
         );
 
         $getPathParameter = $api->paths[0]->get->parameters[0];
-        self::assertEquals($pattern, $getPathParameter->schema->pattern);
-        self::assertEquals(Generator::UNDEFINED, $getPathParameter->schema->enum);
+        self::assertSame($pattern, $getPathParameter->schema->pattern);
+        self::assertSame(Generator::UNDEFINED, $getPathParameter->schema->enum);
     }
 
-    public static function provideEnumPattern(): iterable
+    public static function provideEnumPattern(): \Generator
     {
         yield ['1|2|3'];
         yield ['srf|rtr|rsi'];
@@ -98,7 +100,7 @@ class RouteMetadataDescriberTest extends TestCase
         yield ['srf-1|srf-2'];
     }
 
-    public static function provideInvalidEnumPattern(): iterable
+    public static function provideInvalidEnumPattern(): \Generator
     {
         yield ['|'];
         yield ['|a'];

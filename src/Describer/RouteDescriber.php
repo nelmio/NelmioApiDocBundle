@@ -20,11 +20,14 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
 {
     use ModelRegistryAwareTrait;
 
-    private $routeCollection;
+    private RouteCollection $routeCollection;
 
-    private $controllerReflector;
+    private ControllerReflector $controllerReflector;
 
-    private $routeDescribers;
+    /**
+     * @var iterable<RouteDescriberInterface>
+     */
+    private iterable $routeDescribers;
 
     /**
      * @param RouteDescriberInterface[]|iterable $routeDescribers
@@ -36,7 +39,7 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
         $this->routeDescribers = $routeDescribers;
     }
 
-    public function describe(OA\OpenApi $api)
+    public function describe(OA\OpenApi $api): void
     {
         if (0 === count($this->routeDescribers)) {
             return;
@@ -49,7 +52,7 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
 
             // if able to resolve the controller
             $controller = $route->getDefault('_controller');
-            if ($method = $this->controllerReflector->getReflectionMethod($controller)) {
+            if (null !== $method = $this->controllerReflector->getReflectionMethod($controller)) {
                 // Extract as many information as possible about this route
                 foreach ($this->routeDescribers as $describer) {
                     if ($describer instanceof ModelRegistryAwareInterface) {

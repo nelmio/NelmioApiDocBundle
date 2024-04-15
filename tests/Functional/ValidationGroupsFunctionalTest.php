@@ -15,6 +15,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class ValidationGroupsFunctionalTest extends WebTestCase
 {
+    /**
+     * @param array<mixed> $options
+     */
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_VALIDATION_GROUPS);
@@ -27,7 +30,7 @@ class ValidationGroupsFunctionalTest extends WebTestCase
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
 
-    public function testConstraintGroupsAreRespectedWhenDescribingModels()
+    public function testConstraintGroupsAreRespectedWhenDescribingModels(): void
     {
         $expected = [
             'required' => [
@@ -50,7 +53,7 @@ class ValidationGroupsFunctionalTest extends WebTestCase
         );
     }
 
-    public function testConstraintDefaultGroupsAreRespectedWhenReadingAnnotations()
+    public function testConstraintDefaultGroupsAreRespectedWhenReadingAnnotations(): void
     {
         $expected = [
             'properties' => [

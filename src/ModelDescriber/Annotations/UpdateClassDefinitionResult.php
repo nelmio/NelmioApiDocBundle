@@ -20,14 +20,14 @@ namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 final class UpdateClassDefinitionResult
 {
     /**
-     * Whether or not the model describer shoudl continue reading class properties
+     * Whether the model describer should continue reading class properties
      * after updating the open api schema from an `OA\Schema` definition.
      *
-     * Users may maually define a `type` or `ref` on a schema, and if that's the case
+     * Users may manually define a `type` or `ref` on a schema, and if that's the case
      * model describers should _probably_ not describe any additional properties or try
      * to merge in properties.
      */
-    private $shouldDescribeModelProperties;
+    private bool $shouldDescribeModelProperties;
 
     public function __construct(bool $shouldDescribeModelProperties)
     {

@@ -21,6 +21,9 @@ class CsrfProtectionFunctionalTest extends WebTestCase
         static::bootKernel();
     }
 
+    /**
+     * @param array<mixed> $options
+     */
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_FORM_CSRF);

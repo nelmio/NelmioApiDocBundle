@@ -26,19 +26,24 @@ use Symfony\Component\PropertyInfo\Type;
  */
 final class ModelRegister
 {
-    /** @var ModelRegistry */
-    private $modelRegistry;
+    private ModelRegistry $modelRegistry;
 
     /** @var string[] */
-    private $mediaTypes;
+    private array $mediaTypes;
 
+    /**
+     * @param string[] $mediaTypes
+     */
     public function __construct(ModelRegistry $modelRegistry, array $mediaTypes)
     {
         $this->modelRegistry = $modelRegistry;
         $this->mediaTypes = $mediaTypes;
     }
 
-    public function __invoke(Analysis $analysis, ?array $parentGroups = null)
+    /**
+     * @param string[]|null $parentGroups
+     */
+    public function __invoke(Analysis $analysis, ?array $parentGroups = null): void
     {
         foreach ($analysis->annotations as $annotation) {
             // @Model using the ref field
@@ -92,11 +97,6 @@ final class ModelRegister
                 $annotationClass = OA\Schema::class;
             }
 
-            if (!is_string($model->type)) {
-                // Ignore invalid annotations, they are validated later
-                continue;
-            }
-
             $annotation->merge([new $annotationClass([
                 'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext)),
             ])]);
@@ -106,6 +106,11 @@ final class ModelRegister
         }
     }
 
+    /**
+     * @param string[]|null $parentGroups
+     *
+     * @return string[]|null
+     */
     private function getGroups(ModelAnnotation $model, ?array $parentGroups = null): ?array
     {
         if (null === $model->groups) {
@@ -152,12 +157,15 @@ final class ModelRegister
         return null;
     }
 
+    /**
+     * @param mixed[] $properties
+     */
     private function createContentForMediaType(
         string $type,
         array $properties,
         OA\AbstractAnnotation $annotation,
         Analysis $analysis
-    ) {
+    ): void {
         switch ($type) {
             case 'json':
                 $modelAnnotation = new OA\JsonContent($properties);

@@ -16,5 +16,8 @@ use Symfony\Component\Routing\Route;
 
 interface RouteDescriberInterface
 {
+    /**
+     * @return void
+     */
     public function describe(OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod);
 }
