@@ -59,7 +59,7 @@ class OperationIdController
         return new JsonResponse();
     }
 
-    // custom operationId is uesed when set explicitly
+    // custom operationId is used when set explicitly
     #[Route(path: '/has/explicit/operationid', name: 'customOperationId', methods: 'GET')]
     #[OA\Get(summary: 'Custom operation id must be used if provided', operationId: 'customOperationId')]
     public function getWithCustomOperationId(): JsonResponse
