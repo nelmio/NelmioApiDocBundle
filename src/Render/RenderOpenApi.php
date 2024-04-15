@@ -19,9 +19,6 @@ use OpenApi\Generator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @internal
- */
 class RenderOpenApi
 {
     public const HTML = 'html';
@@ -55,8 +52,10 @@ class RenderOpenApi
 
     /**
      * @param array<string, mixed> $extraOptions
+     *
+     * @return string
      */
-    public function renderFromRequest(Request $request, string $format, string $area, array $extraOptions = []): string
+    public function renderFromRequest(Request $request, string $format, string $area, array $extraOptions = [])
     {
         $options = [];
         if ('' !== $request->getBaseUrl()) {
