@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+4.27.1
+-----
+* Calling `DocumentationExtension::getExtendedType()` has been deprecated in favor of `DocumentationExtension::getExtendedTypes()` to align with the deprecation introduced with `symfony/symfony` version `4.2`.
+
 4.26.0
 -----
 * Add ability to configure UI through configuration
