@@ -41,7 +41,7 @@ class DocumentationExtension extends AbstractTypeExtension
     {
         trigger_deprecation(
             'nelmio/api-doc-bundle',
-            '4.26.0',
+            '4.25.3',
             'Calling %s is deprecated since Symfony 4.2, call %s instead',
             __METHOD__,
             'DocumentationExtension::getExtendedTypes()',
