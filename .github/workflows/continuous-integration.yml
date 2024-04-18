@@ -151,5 +151,8 @@ jobs:
           symfony-version: "7.0.*"
           install-doctrine-annotations: false
 
+      - name: Install Composer Require Checker
+        run: composer require --dev maglnet/composer-require-checker
+
       - name: Composer Require Checker
         run: vendor/bin/composer-require-checker
