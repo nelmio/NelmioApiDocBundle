@@ -23,10 +23,12 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
 {
     /** @var Environment|\Twig_Environment */
     private $twig;
+    /** @var array<string, mixed> */
     private array $htmlConfig;
 
     /**
      * @param Environment|\Twig_Environment $twig
+     * @param array<string, mixed>          $htmlConfig
      */
     public function __construct($twig, array $htmlConfig)
     {

@@ -303,6 +303,9 @@ class NelmioApiDocExtensionTest extends TestCase
 
     /**
      * @dataProvider provideOpenApiRendererWithHtmlConfig
+     *
+     * @param array<string, mixed> $htmlConfig
+     * @param array<string, mixed> $expectedHtmlConfig
      */
     public function testHtmlOpenApiRendererWithHtmlConfig(array $htmlConfig, array $expectedHtmlConfig): void
     {
@@ -318,6 +321,9 @@ class NelmioApiDocExtensionTest extends TestCase
         self::assertSame($expectedHtmlConfig, $argument);
     }
 
+    /**
+     * @return iterable<string, list{array<string, mixed>, array<string, mixed>}>
+     */
     public static function provideOpenApiRendererWithHtmlConfig(): iterable
     {
         yield 'default' => [
