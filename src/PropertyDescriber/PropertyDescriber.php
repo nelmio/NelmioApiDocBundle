@@ -42,6 +42,14 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
      */
     public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = []): void
     {
+        if (null === $schema) {
+            trigger_deprecation(
+                'nelmio/api-doc-bundle',
+                '4.15.0',
+                'Passing null for the $schema parameter of "PropertyDescriberInterface::describe()" is deprecated. In future versions, the $schema parameter will be made non-nullable',
+            );
+        }
+
         if (null !== $groups) {
             trigger_deprecation(
                 'nelmio/api-doc-bundle',

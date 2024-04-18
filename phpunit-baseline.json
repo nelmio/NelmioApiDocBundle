@@ -1,6 +1,16 @@
 [
     {
         "location": "Nelmio\\ApiDocBundle\\Tests\\Command\\DumpCommandTest::testJson",
+        "message": "Since api-platform/core 3.2: Setting the \"formats\" section will be mandatory in API Platform 4.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Command\\DumpCommandTest::testJson",
+        "message": "Since api-platform/core 3.2: Using doctrine/inflector is deprecated since API Platform 3.2 and will be removed in API Platform 4. Use symfony/string instead. Run \"composer require symfony/string\" and set \"keep_legacy_inflector\" to false in config.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Command\\DumpCommandTest::testJson",
         "message": "Since nelmio/api-doc-bundle 4.17.0: Using the $groups parameter of \"PropertyDescriberInterface::describe()\" is deprecated and will be removed in a future version. Pass groups via $context['groups']",
         "count": 8
     },
@@ -20,6 +30,16 @@
         "count": 16
     },
     {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\CsrfProtectionFunctionalTest::setUp",
+        "message": "Since api-platform/core 3.2: Setting the \"formats\" section will be mandatory in API Platform 4.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\CsrfProtectionFunctionalTest::setUp",
+        "message": "Since api-platform/core 3.2: Using doctrine/inflector is deprecated since API Platform 3.2 and will be removed in API Platform 4. Use symfony/string instead. Run \"composer require symfony/string\" and set \"keep_legacy_inflector\" to false in config.",
+        "count": 1
+    },
+    {
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\CsrfProtectionFunctionalTest::testTokenPropertyExistsPerDefaultIfEnabledPerFrameworkConfig",
         "message": "Since nelmio/api-doc-bundle 4.17.0: Using the $groups parameter of \"PropertyDescriberInterface::describe()\" is deprecated and will be removed in a future version. Pass groups via $context['groups']",
         "count": 8
@@ -33,6 +53,16 @@
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\CsrfProtectionFunctionalTest::testTokenPropertyNotExistsIfCsrfProtectionIsDisabled",
         "message": "Since nelmio/api-doc-bundle 4.17.0: Using the $groups parameter of \"PropertyDescriberInterface::describe()\" is deprecated and will be removed in a future version. Pass groups via $context['groups']",
         "count": 8
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FOSRestTest::setUp",
+        "message": "Since api-platform/core 3.2: Setting the \"formats\" section will be mandatory in API Platform 4.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FOSRestTest::setUp",
+        "message": "Since api-platform/core 3.2: Using doctrine/inflector is deprecated since API Platform 3.2 and will be removed in API Platform 4. Use symfony/string instead. Run \"composer require symfony/string\" and set \"keep_legacy_inflector\" to false in config.",
+        "count": 1
     },
     {
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\FOSRestTest::testFOSRestAction",
@@ -265,6 +295,26 @@
         "count": 8
     },
     {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\JMSFunctionalTest::setUp",
+        "message": "Since api-platform/core 3.2: Setting the \"formats\" section will be mandatory in API Platform 4.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\JMSFunctionalTest::setUp",
+        "message": "Since api-platform/core 3.2: Using doctrine/inflector is deprecated since API Platform 3.2 and will be removed in API Platform 4. Use symfony/string instead. Run \"composer require symfony/string\" and set \"keep_legacy_inflector\" to false in config.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\JMSFunctionalTest::setUp",
+        "message": "Since symfony/templating 6.4: \"Symfony\\Component\\Templating\\Helper\\Helper\" is deprecated since version 6.4 and will be removed in 7.0. Use Twig instead.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\JMSFunctionalTest::setUp",
+        "message": "Since symfony/templating 6.4: \"Symfony\\Component\\Templating\\Helper\\HelperInterface\" is deprecated since version 6.4 and will be removed in 7.0. Use Twig instead.",
+        "count": 1
+    },
+    {
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SwaggerPHPApiComplianceTest::testAllContextsCopyRoot",
         "message": "Since nelmio/api-doc-bundle 4.17.0: Using the $groups parameter of \"PropertyDescriberInterface::describe()\" is deprecated and will be removed in a future version. Pass groups via $context['groups']",
         "count": 8
@@ -378,6 +428,16 @@
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\SymfonyFunctionalTest::testMapQueryParameterHandlesValidateFilters",
         "message": "Since nelmio/api-doc-bundle 4.17.0: Using the $groups parameter of \"PropertyDescriberInterface::describe()\" is deprecated and will be removed in a future version. Pass groups via $context['groups']",
         "count": 8
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\ValidationGroupsFunctionalTest::setUp",
+        "message": "Since api-platform/core 3.2: Setting the \"formats\" section will be mandatory in API Platform 4.",
+        "count": 1
+    },
+    {
+        "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\ValidationGroupsFunctionalTest::setUp",
+        "message": "Since api-platform/core 3.2: Using doctrine/inflector is deprecated since API Platform 3.2 and will be removed in API Platform 4. Use symfony/string instead. Run \"composer require symfony/string\" and set \"keep_legacy_inflector\" to false in config.",
+        "count": 1
     },
     {
         "location": "Nelmio\\ApiDocBundle\\Tests\\Functional\\ValidationGroupsFunctionalTest::testConstraintGroupsAreRespectedWhenDescribingModels",
