@@ -127,3 +127,29 @@ jobs:
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse --memory-limit=2G --no-progress --no-interaction
+
+  dependency-check:
+    name: Composer Require Checker
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Install PHP without coverage
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer, flex
+          coverage: pcov
+
+      - name: Setup dependencies
+        uses: ./.github/workflows/common/composer-install
+        with:
+          symfony-version: "7.0.*"
+          install-doctrine-annotations: false
+
+      - name: Composer Require Checker
+        run: vendor/bin/composer-require-checker
