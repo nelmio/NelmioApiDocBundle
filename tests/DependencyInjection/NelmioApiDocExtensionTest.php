@@ -321,10 +321,7 @@ class NelmioApiDocExtensionTest extends TestCase
         self::assertSame($expectedHtmlConfig, $argument);
     }
 
-    /**
-     * @return iterable<string, list{array<string, mixed>, array<string, mixed>}>
-     */
-    public static function provideOpenApiRendererWithHtmlConfig(): iterable
+    public static function provideOpenApiRendererWithHtmlConfig(): \Generator
     {
         yield 'default' => [
             [],
