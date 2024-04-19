@@ -122,6 +122,13 @@ final class ControllerTest extends WebTestCase
                 'MapQueryStringCleanupComponents',
                 [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
             ];
+
+            yield 'operationId must always be generated' => [
+                [
+                    'name' => 'OperationIdController',
+                    'type' => $type,
+                ],
+            ];
         }
     }
 
