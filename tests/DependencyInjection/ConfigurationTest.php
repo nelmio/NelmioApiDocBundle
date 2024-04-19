@@ -179,5 +179,48 @@ class ConfigurationTest extends TestCase
             ],
             'Invalid assets mode "invalid"',
         ];
+
+        yield 'do not set cache.item_id' => [
+            [
+                'cache' => [
+                    'pool' => null,
+                    'item_id' => 'some-id',
+                ],
+            ],
+            'Can not set cache.item_id if cache.pool is null',
+        ];
+
+        yield 'do not set cache.item_id, default pool' => [
+            [
+                'cache' => [
+                    'item_id' => 'some-id',
+                ],
+            ],
+            'Can not set cache.item_id if cache.pool is null',
+        ];
+
+        yield 'default area missing ' => [
+            [
+                'areas' => [
+                    'some_not_default_area' => [],
+                ],
+            ],
+            'You must specify a `default` area under `nelmio_api_doc.areas`.',
+        ];
+
+        yield 'invalid groups value for model ' => [
+            [
+                'models' => [
+                    'names' => [
+                        [
+                            'alias' => 'Foo1',
+                            'type' => 'App\Foo',
+                            'groups' => 'invalid_string_value',
+                        ],
+                    ],
+                ],
+            ],
+            'Model groups must be either `null` or an array.',
+        ];
     }
 }
