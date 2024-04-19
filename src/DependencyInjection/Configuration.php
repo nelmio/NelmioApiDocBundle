@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
+use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -54,6 +55,29 @@ final class Configuration implements ConfigurationInterface
                     ->info('List of enabled Media Types')
                     ->defaultValue(['json'])
                     ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('html_config')
+                    ->info('UI configuration options')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('assets_mode')
+                            ->defaultValue(AssetsMode::CDN)
+                            ->validate()
+                                ->ifNotInArray([AssetsMode::BUNDLE, AssetsMode::CDN, AssetsMode::OFFLINE])
+                                ->thenInvalid('Invalid assets mode %s')
+                            ->end()
+                        ->end()
+                        ->arrayNode('swagger_ui_config')
+                            ->info('https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/')
+                            ->addDefaultsIfNotSet()
+                            ->ignoreExtraKeys(false)
+                        ->end()
+                        ->arrayNode('redocly_config')
+                            ->info('https://redocly.com/docs/redoc/config/')
+                            ->addDefaultsIfNotSet()
+                            ->ignoreExtraKeys(false)
+                        ->end()
+                    ->end()
                 ->end()
                 ->arrayNode('areas')
                     ->info('Filter the routes that are documented')

@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\DependencyInjection;
 
 use Nelmio\ApiDocBundle\DependencyInjection\NelmioApiDocExtension;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -296,6 +297,70 @@ class NelmioApiDocExtensionTest extends TestCase
                 'defaultCacheItemId' => 'docs',
                 'area1CachePool' => 'app.cache',
                 'area1CacheItemId' => 'docs',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideOpenApiRendererWithHtmlConfig
+     *
+     * @param array<string, mixed> $htmlConfig
+     * @param array<string, mixed> $expectedHtmlConfig
+     */
+    public function testHtmlOpenApiRendererWithHtmlConfig(array $htmlConfig, array $expectedHtmlConfig): void
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', [
+            'TwigBundle' => TwigBundle::class,
+        ]);
+
+        $extension = new NelmioApiDocExtension();
+        $extension->load([['html_config' => $htmlConfig]], $container);
+
+        $argument = $container->getDefinition('nelmio_api_doc.render_docs.html')->getArgument(1);
+        self::assertSame($expectedHtmlConfig, $argument);
+    }
+
+    public static function provideOpenApiRendererWithHtmlConfig(): \Generator
+    {
+        yield 'default' => [
+            [],
+            [
+                'assets_mode' => 'cdn',
+                'swagger_ui_config' => [],
+                'redocly_config' => [],
+            ],
+        ];
+        yield 'swagger_ui' => [
+            [
+                'assets_mode' => 'bundle',
+                'swagger_ui_config' => [
+                    'deepLinking' => true,
+                ],
+            ],
+            [
+                'assets_mode' => 'bundle',
+                'swagger_ui_config' => [
+                    'deepLinking' => true,
+                ],
+                'redocly_config' => [],
+            ],
+        ];
+        yield 'redocly' => [
+            [
+                'assets_mode' => 'cdn',
+                'redocly_config' => [
+                    'expandResponses' => '200,201',
+                    'hideDownloadButton' => true,
+                ],
+            ],
+            [
+                'assets_mode' => 'cdn',
+                'redocly_config' => [
+                    'expandResponses' => '200,201',
+                    'hideDownloadButton' => true,
+                ],
+                'swagger_ui_config' => [],
             ],
         ];
     }

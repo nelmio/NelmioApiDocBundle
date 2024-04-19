@@ -37,9 +37,11 @@ or configure UI configuration, use the ``--html-config`` option.
 - ``server_url`` - API url, useful if static documentation is not hosted on API url
 - ``swagger_ui_config`` - `configure Swagger UI`_
     - ``"supportedSubmitMethods":[]`` disables the sandbox
+- ``redocly_config`` - `configure Redocly`_
 
 .. code-block:: bash
 
     $ php bin/console nelmio:apidoc:dump --format=html --html-config '{"assets_mode":"offline","server_url":"https://example.com","swagger_ui_config":{"supportedSubmitMethods":[]}}' > api.html
 
 .. _`configure Swagger UI`: https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/
+.. _`configure Redocly`: https://redocly.com/docs/redoc/config/
