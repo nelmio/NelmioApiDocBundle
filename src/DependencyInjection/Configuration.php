@@ -73,7 +73,7 @@ final class Configuration implements ConfigurationInterface
                             ->ignoreExtraKeys(false)
                         ->end()
                         ->arrayNode('redocly_config')
-                            ->info('https://redocly.com/docs/api-reference-docs/configuration/functionality/')
+                            ->info('https://redocly.com/docs/redoc/config/')
                             ->addDefaultsIfNotSet()
                             ->ignoreExtraKeys(false)
                         ->end()
