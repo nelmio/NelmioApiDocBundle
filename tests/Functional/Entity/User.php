@@ -48,8 +48,7 @@ if (TestKernel::isAnnotationsAvailable()) {
 
         /**
          * User Location.
-         *
-         * @OA\Property(type = "string")
+         * @var string
          */
         private $location;
 
