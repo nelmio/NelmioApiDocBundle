@@ -172,10 +172,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $container->registerForAutoconfiguration(ModelDescriberInterface::class)
             ->addTag('nelmio_api_doc.model_describer');
 
-        if (class_exists(\Symfony\Component\Uid\Uuid::class)) {
-            $container->register('nelmio_api_doc.object_model.property_describers.uuid', UuidPropertyDescriber::class)
-                ->setPublic(false)
-                ->addTag('nelmio_api_doc.object_model.property_describer');
+        if (class_exists(\Symfony\Component\Uid\AbstractUid::class)) {
+            $loader->load('symfony_uid.xml');
         }
 
         // Import services needed for each library
