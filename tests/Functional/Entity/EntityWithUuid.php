@@ -6,8 +6,8 @@ use Symfony\Component\Uid\Uuid;
 
 class EntityWithUuid
 {
-    public ?Uuid $id;
-    private string $name;
+    public Uuid $id;
+    public string $name;
 
     public function __construct(string $name)
     {

@@ -347,7 +347,6 @@ class ApiController81
     }
 
     #[Route('/entity-with-uuid', methods: ['GET', 'POST'])]
-    #[OA\Get(operationId: 'entity-with-uuid')]
     #[OA\Response(
         response: 200,
         description: 'success',

@@ -418,8 +418,6 @@ class ApiController80
     /**
      * @Route("/entity-with-uuid", methods={"GET", "POST"})
      *
-     * @OA\Get(operationId="entity-with-uuid")
-     *
      * @OA\Response(response=200, description="success", @OA\JsonContent(
      *      ref=@Model(type=EntityWithUuid::class),
      * ))

@@ -16,10 +16,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Uid\Uuid;
 
-/**
- * @covers \Nelmio\ApiDocBundle\PropertyDescriber\UuidPropertyDescriber::supports
- * @covers \Nelmio\ApiDocBundle\PropertyDescriber\UuidPropertyDescriber::describe
- */
 class UuidPropertyDescriberTest extends TestCase
 {
     public function testSupportsUuidPropertyType(): void
