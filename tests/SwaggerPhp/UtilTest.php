@@ -312,7 +312,7 @@ class UtilTest extends TestCase
                     ],
                 ]),
             ],
-            'assert' => [
+            'asserts' => [
                 // one fixed within setup and one dynamically created
                 'paths' => [
                     [
@@ -421,7 +421,7 @@ class UtilTest extends TestCase
                 'class' => OA\PathItem::class,
                 'get' => self::createObj(OA\Get::class, []),
             ],
-            'assert' => [
+            'asserts' => [
                 // fixed within setup
                 'get' => [
                     'class' => OA\Get::class,
@@ -447,7 +447,7 @@ class UtilTest extends TestCase
             'setup' => [
                 'class' => OA\Parameter::class,
             ],
-            'assert' => [
+            'asserts' => [
                 // create new with multiple props
                 'schema' => [
                     'class' => OA\Schema::class,
@@ -464,7 +464,7 @@ class UtilTest extends TestCase
             'setup' => [
                 'class' => OA\Parameter::class,
             ],
-            'assert' => [
+            'asserts' => [
                 // externalDocs triggers invalid argument exception
                 'schema' => [
                     'class' => OA\Schema::class,
