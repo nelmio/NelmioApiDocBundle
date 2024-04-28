@@ -23,7 +23,6 @@ use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\Processor\MapQueryStringProcessor;
 use Nelmio\ApiDocBundle\Processor\MapRequestPayloadProcessor;
-use Nelmio\ApiDocBundle\PropertyDescriber\UuidPropertyDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\RouteArgumentDescriberInterface;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryParameterDescriber;

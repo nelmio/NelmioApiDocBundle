@@ -17,7 +17,7 @@ use Symfony\Component\Uid\AbstractUid;
 
 class UuidPropertyDescriber implements PropertyDescriberInterface
 {
-    public function describe(array $types, OA\Schema $property, array $groups = null, ?OA\Schema $schema = null)
+    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null)
     {
         $property->type = 'string';
         $property->format = 'uuid';

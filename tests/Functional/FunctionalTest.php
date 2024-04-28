@@ -909,7 +909,7 @@ class FunctionalTest extends WebTestCase
                 ],
                 'name' => [
                     'type' => 'string',
-                ]
+                ],
             ],
         ], json_decode($this->getModel('EntityWithUuid')->toJson(), true));
     }
