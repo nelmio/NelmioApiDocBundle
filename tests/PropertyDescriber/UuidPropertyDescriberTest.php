@@ -24,7 +24,7 @@ class UuidPropertyDescriberTest extends TestCase
 
         $describer = new UuidPropertyDescriber();
 
-        $this->assertTrue($describer->supports([$type]));
+        self::assertTrue($describer->supports([$type]));
     }
 
     public function testSupportsNoIntPropertyType(): void
@@ -33,7 +33,7 @@ class UuidPropertyDescriberTest extends TestCase
 
         $describer = new UuidPropertyDescriber();
 
-        $this->assertFalse($describer->supports([$type]));
+        self::assertFalse($describer->supports([$type]));
     }
 
     public function testSupportsNoDifferentObjectPropertyType(): void
@@ -42,7 +42,7 @@ class UuidPropertyDescriberTest extends TestCase
 
         $describer = new UuidPropertyDescriber();
 
-        $this->assertFalse($describer->supports([$type]));
+        self::assertFalse($describer->supports([$type]));
     }
 
     public function testDescribeUuidPropertyType(): void
@@ -53,8 +53,8 @@ class UuidPropertyDescriberTest extends TestCase
         $describer = new UuidPropertyDescriber();
         $describer->describe([], $property, [], $schema);
 
-        $this->assertSame('string', $property->type);
-        $this->assertSame('uuid', $property->format);
+        self::assertSame('string', $property->type);
+        self::assertSame('uuid', $property->format);
     }
 
     private function initProperty(): \OpenApi\Annotations\Property
