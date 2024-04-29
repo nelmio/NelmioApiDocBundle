@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\FormModelDescriber;
 use OpenApi\Annotations\Property;
 use OpenApi\Attributes\OpenApi;
+use OpenApi\Context;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -58,7 +59,7 @@ class FormModelDescriberTest extends TestCase
             ->willReturn($formMock);
 
         $annotationReader = $this->createMock(Reader::class);
-
+        Generator::$context = new Context(['openapi' => OpenApi::DEFAULT_VERSION]); // use generator context as fallback instead of generating one on the fly
         $api = new OpenApi();
         $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, FormType::class));
         $schema = $this->initSchema();

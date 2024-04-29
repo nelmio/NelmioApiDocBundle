@@ -15,6 +15,9 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\SelfDescribingModelDescriber;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Fixtures\SelfDescribingModel;
 use OpenApi\Annotations\Schema;
+use OpenApi\Attributes\OpenApi;
+use OpenApi\Context;
+use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -36,6 +39,8 @@ class SelfDescribingModelDescriberTest extends TestCase
 
     public function testDescribe(): void
     {
+        Generator::$context = new Context(['openapi' => OpenApi::DEFAULT_VERSION]); // use generator context as fallback instead of generating one on the fly
+
         $describer = new SelfDescribingModelDescriber();
 
         $model = new Model(new Type('object', false, SelfDescribingModel::class));
