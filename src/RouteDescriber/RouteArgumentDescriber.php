@@ -37,7 +37,7 @@ final class RouteArgumentDescriber implements RouteDescriberInterface, ModelRegi
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
-        $saveContext = $context = $api->_context ?? Generator::$context;
+        $saveContext = $context = Generator::$context;
         if (null === $context) {
             Generator::$context = new \OpenApi\Context(['file' => __FILE__, 'line' => __LINE__, 'class' => __CLASS__, 'method' => __METHOD__]);
         }
