@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\RouteArgumentDescriberInterface;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactoryInterface;
 use Symfony\Component\Routing\Route;
 
@@ -36,15 +37,23 @@ final class RouteArgumentDescriber implements RouteDescriberInterface, ModelRegi
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
+        $saveContext = $context = $api->_context ?? Generator::$context;
+        if (null === $context) {
+            Generator::$context = new \OpenApi\Context(['file' => __FILE__, 'line' => __LINE__, 'class' => __CLASS__, 'method' => __METHOD__]);
+        }
         $controller = $route->getDefault('_controller');
 
         try {
             $argumentMetaDataList = $this->argumentMetadataFactory->createArgumentMetadata($controller, $reflectionMethod);
         } catch (\ReflectionException) {
+            Generator::$context = $saveContext;
+
             return;
         }
 
         if ([] === $argumentMetaDataList) {
+            Generator::$context = $saveContext;
+
             return;
         }
 
@@ -59,5 +68,6 @@ final class RouteArgumentDescriber implements RouteDescriberInterface, ModelRegi
                 }
             }
         }
+        Generator::$context = $saveContext;
     }
 }
