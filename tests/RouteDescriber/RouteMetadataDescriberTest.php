@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\Tests\RouteDescriber;
 
 use Nelmio\ApiDocBundle\RouteDescriber\RouteMetadataDescriber;
 use OpenApi\Annotations\OpenApi;
-use OpenApi\Context;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
@@ -26,12 +25,12 @@ class RouteMetadataDescriberTest extends TestCase
 
         $routeDescriber = new RouteMetadataDescriber();
 
-        $routeDescriber->describe(new OpenApi(['_context' => new Context(['method' => __METHOD__, 'class' => self::class])]), new Route('foo'), new \ReflectionMethod(__CLASS__, 'testUndefinedCheck'));
+        $routeDescriber->describe(new OpenApi([]), new Route('foo'), new \ReflectionMethod(__CLASS__, 'testUndefinedCheck'));
     }
 
     public function testRouteRequirementsWithPattern(): void
     {
-        $api = new OpenApi(['_context' => new Context(['method' => __METHOD__, 'class' => __CLASS__])]);
+        $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();
         $route = new Route('/index/{bar}/{foo}.html', [], ['foo' => '[0-9]|[a-z]'], [], 'localhost', 'https', ['GET']);
         $routeDescriber->describe(
@@ -55,7 +54,7 @@ class RouteMetadataDescriberTest extends TestCase
      */
     public function testSimpleOrRequirementsAreHandledAsEnums(string $req): void
     {
-        $api = new OpenApi(['_context' => new Context(['method' => __METHOD__, 'class' => __CLASS__])]);
+        $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();
         $route = new Route('/index/{bar}/{foo}.html', [], ['foo' => $req], [], 'localhost', 'https', ['GET']);
         $routeDescriber->describe(
@@ -78,7 +77,7 @@ class RouteMetadataDescriberTest extends TestCase
      */
     public function testNonEnumPatterns(string $pattern): void
     {
-        $api = new OpenApi(['_context' => new Context(['method' => __METHOD__, 'class' => self::class])]);
+        $api = new OpenApi([]);
         $routeDescriber = new RouteMetadataDescriber();
         $route = new Route('/index/{foo}.html', [], ['foo' => $pattern], [], 'localhost', 'https', ['GET']);
         $routeDescriber->describe(
