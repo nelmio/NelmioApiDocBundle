@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 
 class NameConverter implements AdvancedNameConverterInterface
 {
-    private \Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter $inner;
+    private MetadataAwareNameConverter $inner;
 
     public function __construct(MetadataAwareNameConverter $inner)
     {

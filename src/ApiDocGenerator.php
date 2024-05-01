@@ -37,7 +37,7 @@ final class ApiDocGenerator
     /** @var iterable|ModelDescriberInterface[] */
     private $modelDescribers;
 
-    private ?\Psr\Cache\CacheItemPoolInterface $cacheItemPool;
+    private ?CacheItemPoolInterface $cacheItemPool;
 
     private string $cacheItemId;
 
@@ -51,7 +51,7 @@ final class ApiDocGenerator
      */
     private $openApiVersion;
 
-    private \OpenApi\Generator $generator;
+    private Generator $generator;
 
     /**
      * @param DescriberInterface[]|iterable      $describers

@@ -27,7 +27,7 @@ class SymfonyConstraintAnnotationReader
 {
     use SetsContextTrait;
 
-    private ?\Doctrine\Common\Annotations\Reader $annotationsReader;
+    private ?Reader $annotationsReader;
 
     /**
      * @var OA\Schema
