@@ -27,20 +27,14 @@ class SymfonyConstraintAnnotationReader
 {
     use SetsContextTrait;
 
-    /**
-     * @var Reader|null
-     */
-    private $annotationsReader;
+    private ?\Doctrine\Common\Annotations\Reader $annotationsReader;
 
     /**
      * @var OA\Schema
      */
     private $schema;
 
-    /**
-     * @var bool
-     */
-    private $useValidationGroups;
+    private bool $useValidationGroups;
 
     public function __construct(?Reader $annotationsReader, bool $useValidationGroups = false)
     {

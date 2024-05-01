@@ -31,20 +31,16 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     use ModelRegistryAwareTrait;
     use ApplyOpenApiDiscriminatorTrait;
 
-    /** @var PropertyInfoExtractorInterface */
-    private $propertyInfo;
-    /** @var ClassMetadataFactoryInterface|null */
-    private $classMetadataFactory;
-    /** @var Reader|null */
-    private $doctrineReader;
+    private \Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface $propertyInfo;
+    private ?\Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface $classMetadataFactory;
+    private ?\Doctrine\Common\Annotations\Reader $doctrineReader;
     /** @var PropertyDescriberInterface|PropertyDescriberInterface[] */
     private $propertyDescriber;
     /** @var string[] */
-    private $mediaTypes;
+    private array $mediaTypes;
     /** @var (NameConverterInterface&AdvancedNameConverterInterface)|null */
-    private $nameConverter;
-    /** @var bool */
-    private $useValidationGroups;
+    private ?\Symfony\Component\Serializer\NameConverter\NameConverterInterface $nameConverter;
+    private bool $useValidationGroups;
 
     /**
      * @param PropertyDescriberInterface|PropertyDescriberInterface[]      $propertyDescribers

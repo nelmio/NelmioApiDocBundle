@@ -31,10 +31,7 @@ class VirtualProperty81
     #[Serializer\Expose]
     private $id;
 
-    /**
-     * @var User
-     */
-    private $user;
+    private \Nelmio\ApiDocBundle\Tests\Functional\Entity\User $user;
 
     #[Serializer\Accessor(getter: 'getFoo', setter: 'setFoo')]
     #[Serializer\Type('string')]
