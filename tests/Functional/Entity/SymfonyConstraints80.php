@@ -239,9 +239,6 @@ class SymfonyConstraints80
         $this->propertyLessThanOrEqual = $propertyLessThanOrEqual;
     }
 
-    /**
-     * @return array
-     */
     public static function fetchAllowedChoices(): array
     {
         return ['choice1', 'choice2'];
