@@ -18,6 +18,7 @@ use FOS\RestBundle\FOSRestBundle;
 use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
+use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
@@ -242,6 +243,9 @@ class TestKernel extends Kernel
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
+            'html_config' => [
+                'assets_mode' => AssetsMode::BUNDLE,
+            ],
             'use_validation_groups' => boolval(self::USE_VALIDATION_GROUPS === $this->flag),
             'documentation' => [
                 'info' => [
