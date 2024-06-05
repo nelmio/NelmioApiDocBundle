@@ -219,7 +219,7 @@ class SymfonyConstraints81
     /**
      * @return array
      */
-    public static function fetchAllowedChoices()
+    public static function fetchAllowedChoices(): array
     {
         return ['choice1', 'choice2'];
     }

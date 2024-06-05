@@ -164,7 +164,7 @@ final class ModelRegistry
      */
     private function modelToArray(Model $model): array
     {
-        $getType = function (Type $type) use (&$getType) {
+        $getType = function (Type $type) use (&$getType): array {
             return [
                 'class' => $type->getClassName(),
                 'built_in_type' => $type->getBuiltinType(),
