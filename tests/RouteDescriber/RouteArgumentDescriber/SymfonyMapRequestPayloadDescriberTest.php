@@ -29,6 +29,11 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
 {
     public function testDescribeHandlesArrayParameterAndRegistersCorrectSchema(): void
     {
+        $attribute = new \ReflectionClass(MapRequestPayload::class);
+        if (!$attribute->hasProperty('type')) {
+            self::markTestSkipped('Requires Symfony 7.1');
+        }
+
         $registry = new ModelRegistry(
             [$this->createMock(ModelDescriberInterface::class)],
             $this->createMock(OpenApi::class),
@@ -43,6 +48,7 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
             hasDefaultValue: false,
             defaultValue: null,
             attributes: [
+                /** @phpstan-ignore-next-line can be removed with Symfony 7.1 integration */
                 new MapRequestPayload(type: SomeObject::class),
             ]
         );
