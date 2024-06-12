@@ -15,7 +15,7 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Uid\AbstractUid;
 
-class UuidPropertyDescriber implements PropertyDescriberInterface
+final class UuidPropertyDescriber implements PropertyDescriberInterface
 {
     public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null)
     {
