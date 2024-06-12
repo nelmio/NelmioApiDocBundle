@@ -41,10 +41,10 @@ jobs:
             symfony-require: "5.4.*"
             doctrine-annotations: true
           - php-version: 8.1
-            symfony-require: "6.3.*"
+            symfony-require: "6.4.*"
             doctrine-annotations: true
           - php-version: 8.3
-            symfony-require: "6.3.*"
+            symfony-require: "6.4.*"
             doctrine-annotations: true
           - php-version: 8.2
             symfony-require: "7.0.*"
@@ -52,7 +52,12 @@ jobs:
           - php-version: 8.3
             symfony-require: "7.0.*"
             doctrine-annotations: false
-
+          - php-version: 8.2
+            symfony-require: "7.1.*"
+            doctrine-annotations: false
+          - php-version: 8.3
+            symfony-require: "7.1.*"
+            doctrine-annotations: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4

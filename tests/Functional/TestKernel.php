@@ -18,9 +18,12 @@ use FOS\RestBundle\FOSRestBundle;
 use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
+use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSTyped80;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSTyped81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
@@ -220,6 +223,10 @@ class TestKernel extends Kernel
                     'type' => JMSComplex80::class,
                     'groups' => null,
                 ],
+                [
+                    'alias' => 'JMSTyped',
+                    'type' => JMSTyped80::class,
+                ],
             ]);
         } elseif (self::isAttributesAvailable()) {
             $models = array_merge($models, [
@@ -237,11 +244,18 @@ class TestKernel extends Kernel
                     'type' => JMSComplex81::class,
                     'groups' => null,
                 ],
+                [
+                    'alias' => 'JMSTyped',
+                    'type' => JMSTyped81::class,
+                ],
             ]);
         }
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
+            'html_config' => [
+                'assets_mode' => AssetsMode::BUNDLE,
+            ],
             'use_validation_groups' => boolval(self::USE_VALIDATION_GROUPS === $this->flag),
             'documentation' => [
                 'info' => [
