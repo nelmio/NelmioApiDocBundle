@@ -35,10 +35,7 @@ class VirtualProperty80
      */
     private $id;
 
-    /**
-     * @var User
-     */
-    private $user;
+    private User $user;
 
     /**
      * @Serializer\Accessor(getter="getFoo", setter="setFoo")
