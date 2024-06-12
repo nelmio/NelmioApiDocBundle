@@ -90,10 +90,6 @@ final class OpenApiPhpDescriber
 
             $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($method, $context));
 
-            if (0 === count($annotations) && 0 === count($classAnnotations[$declaringClass->getName()])) {
-                continue;
-            }
-
             $implicitAnnotations = [];
             $mergeProperties = new \stdClass();
 
@@ -154,14 +150,14 @@ final class OpenApiPhpDescriber
                 $implicitAnnotations[] = $annotation;
             }
 
-            if ([] === $implicitAnnotations && [] === get_object_vars($mergeProperties)) {
-                continue;
-            }
-
             foreach ($httpMethods as $httpMethod) {
                 $operation = Util::getOperation($path, $httpMethod);
-                $operation->merge($implicitAnnotations);
-                $operation->mergeProperties($mergeProperties);
+                if ([] !== $implicitAnnotations) {
+                    $operation->merge($implicitAnnotations);
+                }
+                if ([] !== get_object_vars($mergeProperties)) {
+                    $operation->mergeProperties($mergeProperties);
+                }
 
                 if (Generator::UNDEFINED === $operation->operationId) {
                     $operation->operationId = $httpMethod.'_'.$routeName;

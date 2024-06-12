@@ -35,4 +35,13 @@
     {% endblock javascripts %}
 
     {{ nelmioAsset(assets_mode, 'init-redocly-ui.js') }}
+
+    {% block swagger_initialization %}
+        <script type="text/javascript">
+            window.onload = () => {
+                loadRedocly({{ redocly_config|json_encode(81)|raw }});
+            };
+        </script>
+    {% endblock swagger_initialization %}
+</body>
 </html>

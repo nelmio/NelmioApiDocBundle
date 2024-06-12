@@ -27,20 +27,14 @@ class SymfonyConstraintAnnotationReader
 {
     use SetsContextTrait;
 
-    /**
-     * @var Reader|null
-     */
-    private $annotationsReader;
+    private ?Reader $annotationsReader;
 
     /**
      * @var OA\Schema
      */
     private $schema;
 
-    /**
-     * @var bool
-     */
-    private $useValidationGroups;
+    private bool $useValidationGroups;
 
     public function __construct(?Reader $annotationsReader, bool $useValidationGroups = false)
     {
@@ -213,7 +207,7 @@ class SymfonyConstraintAnnotationReader
      */
     private function locateAnnotations($reflection): \Traversable
     {
-        if (\PHP_VERSION_ID >= 80000) {
+        if (\PHP_VERSION_ID >= 80000 && class_exists(Constraint::class)) {
             foreach ($reflection->getAttributes(Constraint::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
                 yield $attribute->newInstance();
             }

@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Command;
 
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
+use Nelmio\ApiDocBundle\Render\Html\Renderer;
 use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase; // for the creation of the kernel
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -100,6 +101,16 @@ YAML;
                 ],
             ],
             '"supportedSubmitMethods":["get"]',
+        ];
+
+        yield 'configure redocly' => [
+            [
+                'ui_renderer' => Renderer::REDOCLY,
+                'redocly_config' => [
+                    'hideDownloadButton' => true,
+                ],
+            ],
+            '"hideDownloadButton":true',
         ];
 
         yield 'configure server url' => [

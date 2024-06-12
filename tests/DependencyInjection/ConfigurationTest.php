@@ -13,14 +13,23 @@ namespace Nelmio\ApiDocBundle\Tests\DependencyInjection;
 
 use Nelmio\ApiDocBundle\DependencyInjection\Configuration;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase
 {
+    private Processor $processor;
+
+    protected function setUp(): void
+    {
+        $this->processor = new Processor();
+
+        parent::setUp();
+    }
+
     public function testDefaultArea(): void
     {
-        $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), [['areas' => ['path_patterns' => ['/foo']]]]);
+        $config = $this->processor->processConfiguration(new Configuration(), [['areas' => ['path_patterns' => ['/foo']]]]);
 
         self::assertSame(
             [
@@ -39,8 +48,7 @@ class ConfigurationTest extends TestCase
 
     public function testAreas(): void
     {
-        $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), [['areas' => $areas = [
+        $config = $this->processor->processConfiguration(new Configuration(), [['areas' => $areas = [
             'default' => [
                 'path_patterns' => ['/foo'],
                 'host_patterns' => [],
@@ -72,8 +80,7 @@ class ConfigurationTest extends TestCase
 
     public function testAlternativeNames(): void
     {
-        $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), [[
+        $config = $this->processor->processConfiguration(new Configuration(), [[
             'models' => [
                 'names' => [
                     [
@@ -147,5 +154,73 @@ class ConfigurationTest extends TestCase
                 'areas' => [],
             ],
         ], $config['models']['names']);
+    }
+
+    /**
+     * @dataProvider provideInvalidConfiguration
+     *
+     * @param mixed[] $configuration
+     */
+    public function testInvalidConfiguration(array $configuration, string $expectedError): void
+    {
+        self::expectException(InvalidConfigurationException::class);
+        self::expectExceptionMessage($expectedError);
+
+        $this->processor->processConfiguration(new Configuration(), [$configuration]);
+    }
+
+    public static function provideInvalidConfiguration(): \Generator
+    {
+        yield 'invalid html_config.assets_mode' => [
+            [
+                'html_config' => [
+                    'assets_mode' => 'invalid',
+                ],
+            ],
+            'Invalid assets mode "invalid"',
+        ];
+
+        yield 'do not set cache.item_id' => [
+            [
+                'cache' => [
+                    'pool' => null,
+                    'item_id' => 'some-id',
+                ],
+            ],
+            'Can not set cache.item_id if cache.pool is null',
+        ];
+
+        yield 'do not set cache.item_id, default pool' => [
+            [
+                'cache' => [
+                    'item_id' => 'some-id',
+                ],
+            ],
+            'Can not set cache.item_id if cache.pool is null',
+        ];
+
+        yield 'default area missing ' => [
+            [
+                'areas' => [
+                    'some_not_default_area' => [],
+                ],
+            ],
+            'You must specify a `default` area under `nelmio_api_doc.areas`.',
+        ];
+
+        yield 'invalid groups value for model ' => [
+            [
+                'models' => [
+                    'names' => [
+                        [
+                            'alias' => 'Foo1',
+                            'type' => 'App\Foo',
+                            'groups' => 'invalid_string_value',
+                        ],
+                    ],
+                ],
+            ],
+            'Model groups must be either `null` or an array.',
+        ];
     }
 }

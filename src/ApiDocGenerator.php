@@ -37,11 +37,9 @@ final class ApiDocGenerator
     /** @var iterable|ModelDescriberInterface[] */
     private $modelDescribers;
 
-    /** @var CacheItemPoolInterface|null */
-    private $cacheItemPool;
+    private ?CacheItemPoolInterface $cacheItemPool;
 
-    /** @var string */
-    private $cacheItemId;
+    private string $cacheItemId;
 
     /** @var string[] */
     private $alternativeNames = [];
@@ -53,8 +51,7 @@ final class ApiDocGenerator
      */
     private $openApiVersion;
 
-    /** @var Generator */
-    private $generator;
+    private Generator $generator;
 
     /**
      * @param DescriberInterface[]|iterable      $describers
