@@ -48,7 +48,7 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
             hasDefaultValue: false,
             defaultValue: null,
             attributes: [
-                /** @phpstan-ignore-next-line can be removed with Symfony 7.1 integration */
+                /* @phpstan-ignore-next-line can be removed with Symfony 7.1 integration */
                 new MapRequestPayload(type: SomeObject::class),
             ]
         );
