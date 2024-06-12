@@ -27,6 +27,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithUuid;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\ArrayQueryModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\FilterQueryModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\QueryModel\PaginationQueryModel;
@@ -342,6 +343,18 @@ class ApiController81
         ),
     )]
     public function entityWithObjectType()
+    {
+    }
+
+    #[Route('/entity-with-uuid', methods: ['GET', 'POST'])]
+    #[OA\Response(
+        response: 200,
+        description: 'success',
+        content: new OA\JsonContent(
+            ref: new Model(type: EntityWithUuid::class),
+        ),
+    )]
+    public function entityWithUuid()
     {
     }
 
