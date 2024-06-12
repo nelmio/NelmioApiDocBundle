@@ -9,14 +9,14 @@ on:
       - synchronize
 
 jobs:
-  lint-pr:
-    name: Validate PR title
+  semantic-pr:
+    name: Validate semantic PR title
     runs-on: ubuntu-latest
 
     steps:
-      - name: Lint title
+      - name: Semantic PR title
         uses: amannn/action-semantic-pull-request@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          subjectPattern: ^(?![A-Z]).+$
+          subjectPattern: ^(?![A-Z]).+$ # This pattern ensures the subject doesn't start with an uppercase character.
