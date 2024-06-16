@@ -25,7 +25,8 @@ class BooleanPropertyDescriber implements PropertyDescriberInterface
             trigger_deprecation(
                 'nelmio/api-doc-bundle',
                 '4.15.0',
-                'Passing null for the $schema parameter of "PropertyDescriberInterface::describe()" is deprecated. In future versions, the $schema parameter will be made non-nullable',
+                '"%s()" will have a new "OA\Schema $schema" argument in a future version. Not defining it or passing null is deprecated',
+                __METHOD__
             );
         }
 
@@ -33,7 +34,8 @@ class BooleanPropertyDescriber implements PropertyDescriberInterface
             trigger_deprecation(
                 'nelmio/api-doc-bundle',
                 '4.17.0',
-                'Using the $groups parameter of "PropertyDescriberInterface::describe()" is deprecated and will be removed in a future version. Pass groups via $context[\'groups\']',
+                'Using the $groups parameter of "%s()" is deprecated and will be removed in a future version. Pass groups via $context[\'groups\']',
+                __METHOD__
             );
         }
 
