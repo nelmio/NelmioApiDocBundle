@@ -46,15 +46,13 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
         $describer->setModelRegistry($registry);
 
         $argumentData = new ArgumentMetadata(
-            name: 'someObjects',
-            type: Type::BUILTIN_TYPE_ARRAY,
-            isVariadic: false,
-            hasDefaultValue: false,
-            defaultValue: null,
-            attributes: [
-                /* @phpstan-ignore-next-line can be removed with Symfony 7.1 integration */
-                new MapRequestPayload(type: SomeObject::class),
-            ]
+            'someObjects',
+            Type::BUILTIN_TYPE_ARRAY,
+            false,
+            false,
+            null,
+            false,
+            [new MapRequestPayload(SomeObject::class)]
         );
 
         $operation = $this->createMock(Operation::class);
