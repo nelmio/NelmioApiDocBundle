@@ -21,7 +21,9 @@ use Nelmio\ApiDocBundle\Tests\RouteDescriber\RouteArgumentDescriber\fixture\Some
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestPayloadValueResolver;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\PropertyInfo\Type;
 
@@ -52,7 +54,17 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
             false,
             null,
             false,
-            [new MapRequestPayload(SomeObject::class)]
+            [
+                /* @phpstan-ignore-next-line can be removed with Symfony 7.1 integration */
+                new MapRequestPayload(
+                    null,
+                    [],
+                    null,
+                    RequestPayloadValueResolver::class,
+                    Response::HTTP_UNPROCESSABLE_ENTITY,
+                    SomeObject::class
+                ),
+            ]
         );
 
         $operation = $this->createMock(Operation::class);
