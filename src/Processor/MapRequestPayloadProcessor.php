@@ -70,8 +70,17 @@ final class MapRequestPayloadProcessor implements ProcessorInterface
                 }
 
                 $contentSchema = $this->getContentSchemaForType($requestBody, $format);
-
-                Util::modifyAnnotationValue($contentSchema, 'ref', $modelRef);
+                if ('array' === $argumentMetaData->getType()) {
+                    $contentSchema->type = 'array';
+                    $contentSchema->items = new OA\Items(
+                        [
+                            'ref' => $modelRef,
+                            '_context' => Util::createWeakContext($contentSchema->_context),
+                        ]
+                    );
+                } else {
+                    Util::modifyAnnotationValue($contentSchema, 'ref', $modelRef);
+                }
 
                 if ($argumentMetaData->isNullable()) {
                     $contentSchema->nullable = true;
