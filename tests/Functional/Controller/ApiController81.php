@@ -50,7 +50,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController81
@@ -653,65 +652,6 @@ class ApiController81
     public function fetchArticleFromMapQueryParameterOverwriteParameters(
         #[MapQueryParameter] ?int $id,
         #[MapQueryParameter] ?string $changedType,
-    ) {
-    }
-
-    #[Route('/article_map_request_payload', methods: ['POST'])]
-    #[OA\Response(response: '200', description: '')]
-    public function createArticleFromMapRequestPayload(
-        #[MapRequestPayload] Article81 $article81,
-    ) {
-    }
-
-    #[Route('/article_map_request_payload_nullable', methods: ['POST'])]
-    #[OA\Response(response: '200', description: '')]
-    public function createArticleFromMapRequestPayloadNullable(
-        #[MapRequestPayload] ?Article81 $article81,
-    ) {
-    }
-
-    #[Route('/article_map_request_payload_overwrite', methods: ['POST'])]
-    #[OA\RequestBody(
-        description: 'Request body description',
-        content: new Model(type: EntityWithNullableSchemaSet::class),
-    )]
-    #[OA\Response(response: '200', description: '')]
-    public function createArticleFromMapRequestPayloadOverwrite(
-        #[MapRequestPayload] Article81 $article81,
-    ) {
-    }
-
-    #[Route('/article_map_request_payload_handles_already_set_content', methods: ['POST'])]
-    #[OA\RequestBody(
-        description: 'Request body description',
-        content: new OA\JsonContent(
-            ref: new Model(type: Article81::class)
-        ),
-    )]
-    #[OA\Response(response: '200', description: '')]
-    public function createArticleFromMapRequestPayloadHandlesAlreadySetContent(
-        #[MapRequestPayload] Article81 $article81,
-    ) {
-    }
-
-    #[Route('/article_map_request_payload_validation_groups', methods: ['POST'])]
-    #[OA\Response(response: '200', description: '')]
-    public function createArticleFromMapRequestPayloadPassedValidationGroups(
-        #[MapRequestPayload(validationGroups: ['test'])] SymfonyConstraintsWithValidationGroups $symfonyConstraintsWithValidationGroups,
-    ) {
-    }
-
-    #[Route('/article_map_request_payload_array', methods: ['POST'])]
-    #[OA\Response(response: '200', description: '')]
-    public function createArticleFromMapRequestPayloadArray(
-        #[MapRequestPayload(type: Article81::class)] array $articles,
-    ) {
-    }
-
-    #[Route('/article_map_request_payload_nullable_array', methods: ['POST'])]
-    #[OA\Response(response: '200', description: '')]
-    public function createArticleFromMapRequestPayloadNullableArray(
-        #[MapRequestPayload(type: Article81::class)] ?array $nullableArticles,
     ) {
     }
 }

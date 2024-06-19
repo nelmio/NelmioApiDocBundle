@@ -1,0 +1,199 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/article_map_request_payload": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_maprequestpayload_createarticlefrommaprequestpayload",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Article81"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_request_payload_nullable": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_maprequestpayload_createarticlefrommaprequestpayloadnullable",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "oneOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Article81"
+                                    }
+                                ],
+                                "nullable": true
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_request_payload_overwrite": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_maprequestpayload_createarticlefrommaprequestpayloadoverwrite",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Article81"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_request_payload_handles_already_set_content": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_maprequestpayload_createarticlefrommaprequestpayloadhandlesalreadysetcontent",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Article81"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_request_payload_validation_groups": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_maprequestpayload_createarticlefrommaprequestpayloadpassedvalidationgroups",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SymfonyConstraintsWithValidationGroups"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Article81": {
+                "required": [
+                    "id",
+                    "type",
+                    "intBackedType",
+                    "notBackedType"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/ArticleType81"
+                    },
+                    "intBackedType": {
+                        "$ref": "#/components/schemas/ArticleType81IntBacked"
+                    },
+                    "notBackedType": {
+                        "$ref": "#/components/schemas/ArticleType81NotBacked"
+                    },
+                    "nullableType": {
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleType81"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "SymfonyConstraintsWithValidationGroups": {
+                "required": [
+                    "property",
+                    "propertyInDefaultGroup"
+                ],
+                "properties": {
+                    "property": {
+                        "type": "integer",
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "propertyInDefaultGroup": {
+                        "type": "integer",
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "propertyArray": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ArticleType81": {
+                "type": "string",
+                "enum": [
+                    "draft",
+                    "final"
+                ]
+            },
+            "ArticleType81IntBacked": {
+                "type": "integer",
+                "enum": [
+                    0,
+                    1
+                ]
+            },
+            "ArticleType81NotBacked": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
