@@ -830,4 +830,71 @@ class SymfonyFunctionalTest extends WebTestCase
             ],
         ], json_decode($this->getOperation('/api/article_map_query_parameter_validate_filters', 'get')->toJson(), true)['parameters']);
     }
+
+    public function testMapRequestPayloadArray(): void
+    {
+        if (!class_exists(MapRequestPayload::class)) {
+            self::markTestSkipped('Symfony 6.3 MapRequestPayload attribute not found');
+        }
+
+        if (!property_exists(MapRequestPayload::class, 'type')) {
+            self::markTestSkipped('Symfony 7.1 MapRequestPayload attribute type property not found');
+        }
+
+        self::assertEquals([
+            'operationId' => 'post_api_nelmio_apidoc_tests_functional_api_createarticlefrommaprequestpayloadarray',
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+            'requestBody' => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/Article81',
+                            ],
+                        ],
+                    ],
+                ],
+                'required' => true,
+            ],
+        ], json_decode($this->getOperation('/api/article_map_request_payload_array', 'post')->toJson(), true));
+    }
+
+    public function testMapRequestPayloadNullableArray(): void
+    {
+        if (!class_exists(MapRequestPayload::class)) {
+            self::markTestSkipped('Symfony 6.3 MapRequestPayload attribute not found');
+        }
+
+        if (!property_exists(MapRequestPayload::class, 'type')) {
+            self::markTestSkipped('Symfony 7.1 MapRequestPayload attribute type property not found');
+        }
+
+        self::assertEquals([
+            'operationId' => 'post_api_nelmio_apidoc_tests_functional_api_createarticlefrommaprequestpayloadnullablearray',
+            'responses' => [
+                '200' => [
+                    'description' => '',
+                ],
+            ],
+            'requestBody' => [
+                'content' => [
+                    'application/json' => [
+                        'schema' => [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/Article81',
+                            ],
+                            'nullable' => true,
+                        ],
+                    ],
+                ],
+                'required' => false,
+            ],
+        ], json_decode($this->getOperation('/api/article_map_request_payload_nullable_array', 'post')->toJson(), true));
+    }
 }

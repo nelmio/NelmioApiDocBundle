@@ -700,4 +700,18 @@ class ApiController81
         #[MapRequestPayload(validationGroups: ['test'])] SymfonyConstraintsWithValidationGroups $symfonyConstraintsWithValidationGroups,
     ) {
     }
+
+    #[Route('/article_map_request_payload_array', methods: ['POST'])]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayloadArray(
+        #[MapRequestPayload(type: Article81::class)] array $articles,
+    ) {
+    }
+
+    #[Route('/article_map_request_payload_nullable_array', methods: ['POST'])]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayloadNullableArray(
+        #[MapRequestPayload(type: Article81::class)] ?array $nullableArticles,
+    ) {
+    }
 }
