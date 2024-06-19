@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MapQueryParameterController
 {
-    #[Route('/article_map_query_parameter')]
+    #[Route('/article_map_query_parameter', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryParameter(
         #[MapQueryParameter] int $someInt,
@@ -27,7 +27,7 @@ class MapQueryParameterController
     ) {
     }
 
-    #[Route('/article_map_query_parameter_validate_filters')]
+    #[Route('/article_map_query_parameter_validate_filters', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryParameterValidateFilters(
         #[MapQueryParameter(options: ['min_range' => 2, 'max_range' => 1234])] int $minMaxInt,
@@ -42,21 +42,21 @@ class MapQueryParameterController
     ) {
     }
 
-    #[Route('/article_map_query_parameter_nullable')]
+    #[Route('/article_map_query_parameter_nullable', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryParameterNullable(
         #[MapQueryParameter] ?int $id,
     ) {
     }
 
-    #[Route('/article_map_query_parameter_default')]
+    #[Route('/article_map_query_parameter_default', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryParameterDefault(
         #[MapQueryParameter] int $id = 123,
     ) {
     }
 
-    #[Route('/article_map_query_parameter_overwrite_parameters')]
+    #[Route('/article_map_query_parameter_overwrite_parameters', methods: ['GET'])]
     #[OA\Parameter(
         name: 'id',
         in: 'query',
