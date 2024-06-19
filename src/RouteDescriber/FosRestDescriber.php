@@ -149,6 +149,14 @@ final class FosRestDescriber implements RouteDescriberInterface
     private function getEnum($requirements): ?array
     {
         if ($requirements instanceof Choice) {
+            if (null != $requirements->callback) {
+                if (!\is_callable($choices = $requirements->callback)) {
+                    return null;
+                }
+
+                return $choices();
+            }
+
             return $requirements->choices;
         }
 
@@ -217,7 +225,14 @@ final class FosRestDescriber implements RouteDescriberInterface
 
         $enum = $this->getEnum($annotation->requirements);
         if (null !== $enum) {
-            $schema->enum = $enum;
+            if ($annotation->requirements instanceof Choice) {
+                if ($annotation->requirements->multiple) {
+                    $schema->type = 'array';
+                    $schema->items = Util::createChild($schema, OA\Items::class, ['type' => 'string', 'enum' => $enum]);
+                } else {
+                    $schema->enum = $enum;
+                }
+            }
         }
     }
 
