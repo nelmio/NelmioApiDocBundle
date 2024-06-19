@@ -44,7 +44,14 @@ You SHOULD write (or update) documentation.
 You SHOULD write
 [commit messages that make sense](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 
-You MUST [rebase your branch](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) before submitting your Pull Request.
+### Pull requests
 
-While creating your Pull Request on GitHub, you MUST write a description which gives the context and/or explains why you
-are creating it.
+You MUST [rebase your branch](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) before submitting your pull request.
+
+You MUST use a pull request title compliant with the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+
+You MUST write a meaningful description which gives the context and/or explains why you
+are creating the pull request.
+
+You SHOULD resolve review comments instead of commenting.
+<sub>Once you've done the work, resolve the conversation by selecting the Resolve conversation button in the PR overview. Avoid posting comments like "I've done the work", or "Done".</sub>
