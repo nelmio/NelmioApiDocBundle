@@ -131,6 +131,13 @@ final class ControllerTest extends WebTestCase
                 ],
             ];
 
+            yield 'Symfony 6.3 MapQueryParameter attribute' => [
+                [
+                    'name' => 'MapQueryParameterController',
+                    'type' => $type,
+                ],
+            ];
+
             yield 'Symfony 6.3 MapRequestPayload attribute' => [
                 [
                     'name' => 'MapRequestPayloadController',
