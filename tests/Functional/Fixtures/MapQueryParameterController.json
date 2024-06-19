@@ -1,0 +1,229 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/article_map_query_parameter": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapqueryparameter_fetcharticlefrommapqueryparameter",
+                "parameters": [
+                    {
+                        "name": "someInt",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "someFloat",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "someBool",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "someString",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "someArray[]",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_query_parameter_validate_filters": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapqueryparameter_fetcharticlefrommapqueryparametervalidatefilters",
+                "parameters": [
+                    {
+                        "name": "minMaxInt",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 1234,
+                            "minimum": 2
+                        }
+                    },
+                    {
+                        "name": "domain",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "hostname"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email"
+                        }
+                    },
+                    {
+                        "name": "ip",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "ip"
+                        }
+                    },
+                    {
+                        "name": "ipv4",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "ipv4"
+                        }
+                    },
+                    {
+                        "name": "ipv6",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "ipv6"
+                        }
+                    },
+                    {
+                        "name": "macAddress",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "mac"
+                        }
+                    },
+                    {
+                        "name": "regexp",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "/^test/"
+                        }
+                    },
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uri"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_query_parameter_nullable": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapqueryparameter_fetcharticlefrommapqueryparameternullable",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_query_parameter_default": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapqueryparameter_fetcharticlefrommapqueryparameterdefault",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 123
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_query_parameter_overwrite_parameters": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapqueryparameter_fetcharticlefrommapqueryparameteroverwriteparameters",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "changedType",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    }
+}
