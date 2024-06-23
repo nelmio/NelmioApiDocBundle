@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-4.27.1
+4.28.1
 -----
 * Calling `DocumentationExtension::getExtendedType()` has been deprecated in favor of `DocumentationExtension::getExtendedTypes()` to align with the deprecation introduced with `symfony/symfony` version `4.2`.
 
