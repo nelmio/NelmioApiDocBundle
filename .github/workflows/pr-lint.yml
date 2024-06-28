@@ -12,7 +12,8 @@ jobs:
   semantic-pr:
     name: Validate semantic PR title
     runs-on: ubuntu-latest
-
+    permissions:
+      pull-requests: read
     steps:
       - name: Semantic PR title
         uses: amannn/action-semantic-pull-request@v5
