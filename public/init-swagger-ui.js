@@ -25,10 +25,10 @@ function loadSwaggerUI(userOptions = {}) {
 
   const storageKey = 'nelmio_api_auth';
 
-  function getAuthorizationsFromStorage(){
+  function getAuthorizationsFromStorage() {
     if (sessionStorage.getItem(storageKey)) {
       try {
-        return JSON.parse(sessionStorage.getItem(storageKey))
+        return JSON.parse(sessionStorage.getItem(storageKey));
       } catch (ignored) {
         // catch any errors here so it does not stop script execution
       }
