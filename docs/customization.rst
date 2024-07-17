@@ -85,7 +85,7 @@ The `html_config` settings allow you to configure how assets are loaded for the 
 `assets_mode`
 ~~~~~~~~~~~~~
 
-The three values are listed in `AssetsMode <https://github.com/nelmio/NelmioApiDocBundle/blob/master/src/Render/Html/AssetsMode.php>`_
+The three values possible values can be found in `AssetsMode.php <https://github.com/nelmio/NelmioApiDocBundle/blob/master/src/Render/Html/AssetsMode.php>`_
 - **cdn**: Loads assets from `jsDelivr <https://www.jsdelivr.com/>`_.
 - **bundle**: Fetches assets from the bundle in the vendor directory, including updates.
 - **offline**: Loads assets from the local `assets` directory, requiring the developer to update them manually.
