@@ -25,14 +25,17 @@ body:
       label: JSON OpenApi
       description: Your generated JSON OpenApi documentation (`bin/console nelmio:apidoc:dump`)
     validations:
-      required: true
+      required: false
     value: |
+        <details><summary>JSON OpenApi</summary>
+    
         ```json
 
         Replace this text with your JSON (`bin/console nelmio:apidoc:dump`)
 
         ```
-    render: markdown
+        
+        </details>
   - type: textarea
     id: additional-context
     attributes:
