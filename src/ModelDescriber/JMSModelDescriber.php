@@ -152,7 +152,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 } catch (\ReflectionException $ignored) {
                 }
             }
-            $this->checkRequiredFields($reflections, $schema, $name);
             if (null !== $item->setter) {
                 try {
                     $reflections[] = new \ReflectionMethod($item->class, $item->setter);
@@ -396,36 +395,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $this->propertyTypeUseGroupsCache[$type['name']] = null;
 
             return null;
-        }
-    }
-
-    /**
-     * Mark property as required if it is not nullable.
-     *
-     * @param array<\ReflectionProperty|\ReflectionMethod> $reflections
-     */
-    private function checkRequiredFields(array $reflections, OA\Schema $schema, string $name): void
-    {
-        foreach ($reflections as $reflection) {
-            $nullable = false;
-            if ($reflection instanceof \ReflectionProperty) {
-                $type = PHP_VERSION_ID >= 70400 ? $reflection->getType() : null;
-                if (null !== $type && !$type->allowsNull()) {
-                    $nullable = true;
-                }
-            } elseif ($reflection instanceof \ReflectionMethod) {
-                $returnType = $reflection->getReturnType();
-                if (null !== $returnType && !$returnType->allowsNull()) {
-                    $nullable = true;
-                }
-            }
-            if ($nullable) {
-                $required = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
-                $required[] = $name;
-
-                $schema->required = $required;
-                break;
-            }
         }
     }
 }
