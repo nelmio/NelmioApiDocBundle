@@ -90,6 +90,7 @@ class SymfonyConstraintAnnotationReader
                 $existingRequiredFields[] = $propertyName;
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
+                $property->nullable = false;
             } elseif ($annotation instanceof Assert\Length) {
                 if (isset($annotation->min)) {
                     $property->minLength = $annotation->min;
