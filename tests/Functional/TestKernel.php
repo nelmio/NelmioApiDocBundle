@@ -22,8 +22,6 @@ use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSTyped80;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSTyped81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
@@ -223,10 +221,6 @@ class TestKernel extends Kernel
                     'type' => JMSComplex80::class,
                     'groups' => null,
                 ],
-                [
-                    'alias' => 'JMSTyped',
-                    'type' => JMSTyped80::class,
-                ],
             ]);
         } elseif (self::isAttributesAvailable()) {
             $models = array_merge($models, [
@@ -243,10 +237,6 @@ class TestKernel extends Kernel
                     'alias' => 'JMSComplexDefault',
                     'type' => JMSComplex81::class,
                     'groups' => null,
-                ],
-                [
-                    'alias' => 'JMSTyped',
-                    'type' => JMSTyped81::class,
                 ],
             ]);
         }
