@@ -6,6 +6,17 @@ NelmioApiDocBundle has the ability to automatically create documentation from **
 MapQueryString
 -------------------------------
 
+Install required component
+
+.. code-block:: terminal
+
+    $ composer require symfony/property-access
+
+.. include:: /components/require_autoload.rst.inc
+
+Usage
+-----
+
 Using the `Symfony MapQueryString`_ attribute allows NelmioApiDocBundle to automatically generate your query parameter documentation for your endpoint from your object.
 
 .. versionadded:: 6.3
