@@ -56,7 +56,7 @@ class AnnotationReaderTest extends TestCase
 
     public static function provideProperty(): \Generator
     {
-        yield 'Annotations' => [new class() {
+        yield 'Annotations' => [new class {
             /**
              * @OA\Property(example=1)
              */
@@ -68,7 +68,7 @@ class AnnotationReaderTest extends TestCase
         }];
 
         if (\PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => [new class() {
+            yield 'Attributes' => [new class {
                 #[OAattr\Property(example: 1)]
                 public $property1;
                 #[OAattr\Property(example: 'some example', description: 'some description')]
