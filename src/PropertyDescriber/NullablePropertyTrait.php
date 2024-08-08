@@ -17,12 +17,19 @@ use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
- * @deprecated Since 4.17, {@see NullablePropertyDescriber} instead.
+ * @deprecated Since 4.17.0, {@see NullablePropertyDescriber} instead.
  */
 trait NullablePropertyTrait
 {
     protected function setNullableProperty(Type $type, OA\Schema $property, ?OA\Schema $schema, array $context = []): void
     {
+        trigger_deprecation(
+            'nelmio/api-doc-bundle',
+            '4.17.0',
+            'Use %s instead',
+            NullablePropertyDescriber::class,
+        );
+
         if (Generator::UNDEFINED !== $property->nullable) {
             if (!$property->nullable) {
                 // if already false mark it as undefined (so it does not show up as `nullable: false`)
