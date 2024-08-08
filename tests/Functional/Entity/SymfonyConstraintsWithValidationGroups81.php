@@ -37,4 +37,11 @@ class SymfonyConstraintsWithValidationGroups81
     #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
     #[Assert\Valid]
     public $propertyArray;
+
+    /**
+     * @var ?string
+     */
+    #[Groups(['test'])]
+    #[Assert\NotNull(groups: ['test'])]
+    public $propertyNotNullOnSpecificGroup;
 }
