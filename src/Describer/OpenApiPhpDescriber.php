@@ -135,6 +135,9 @@ final class OpenApiPhpDescriber
                     $annotation->validate();
                     $mergeProperties->tags[] = $annotation->name;
 
+                    $tag = Util::getTag($api, $annotation->name);
+                    $tag->mergeProperties($annotation);
+
                     continue;
                 }
 

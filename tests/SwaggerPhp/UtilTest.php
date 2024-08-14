@@ -866,6 +866,24 @@ class UtilTest extends TestCase
         ];
     }
 
+    public function testGetTag(): void
+    {
+        $api = self::createObj(OA\OpenApi::class, ['_context' => new Context()]);
+        self::assertEquals(Generator::UNDEFINED, $api->tags);
+
+        $tag = Util::getTag($api, 'foo');
+        self::assertEquals('foo', $tag->name);
+        self::assertEquals(Generator::UNDEFINED, $tag->description);
+        self::assertEquals(Generator::UNDEFINED, $tag->externalDocs);
+
+        self::assertIsArray($api->tags);
+
+        $api->tags[] = self::createObj(OA\Tag::class, ['name' => 'bar', 'description' => 'baz']);
+        $tag = Util::getTag($api, 'bar');
+        self::assertEquals('bar', $tag->name);
+        self::assertEquals('baz', $tag->description);
+    }
+
     public function assertIsNested(OA\AbstractAnnotation $parent, OA\AbstractAnnotation $child): void
     {
         self::assertTrue($child->_context->is('nested'));

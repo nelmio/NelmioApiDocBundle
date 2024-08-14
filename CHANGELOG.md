@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+next
+-----
+* Create top level OpenApi Tag from Tags top level annotations/attributes
+
 4.26.0
 -----
 * Add ability to configure UI through configuration

@@ -71,6 +71,30 @@ final class Util
     }
 
     /**
+     * Return an existing Tag object from $api->tags[] having its member name set to $name.
+     * Create, add to $api->tags[] and return this new Tag object and set the property if none found.
+     *
+     * @see OA\OpenApi::$tags
+     * @see OA\Tag::$name
+     */
+    public static function getTag(OA\OpenApi $api, string $name): OA\Tag
+    {
+        // Tags ar not considered indexed, so we cannot use getIndexedCollectionItem directly
+        // because we need to specify that the search should use the "name" property.
+        $key = self::searchIndexedCollectionItem(
+            is_array($api->tags) ? $api->tags : [],
+            'name',
+            $name
+        );
+
+        if (false === $key) {
+            $key = self::createCollectionItem($api, 'tags', OA\Tag::class, ['name' => $name]);
+        }
+
+        return $api->tags[$key];
+    }
+
+    /**
      * Return an existing Schema object from $api->components->schemas[] having its member schema set to $schema.
      * Create, add to $api->components->schemas[] and return this new Schema object and set the property if none found.
      *
