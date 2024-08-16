@@ -20,7 +20,6 @@ use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Context;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;

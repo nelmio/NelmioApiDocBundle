@@ -17,7 +17,6 @@ use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
