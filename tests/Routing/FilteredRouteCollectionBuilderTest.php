@@ -357,6 +357,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     private function createControllerReflector(): ControllerReflector
     {
-        return new ControllerReflector(new Container());
+        return new ControllerReflector();
     }
 }

@@ -20,7 +20,7 @@ class ControllerReflectorTest extends TestCase
 {
     public function testGetReflectionMethod(): void
     {
-        $controllerReflector = new ControllerReflector(new Container());
+        $controllerReflector = new ControllerReflector();
         self::assertEquals(
             \ReflectionMethod::class,
             get_class($controllerReflector->getReflectionMethod([BazingaController::class, 'userAction']))

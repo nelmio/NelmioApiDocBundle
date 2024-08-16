@@ -11,23 +11,15 @@
 
 namespace Nelmio\ApiDocBundle\Util;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 /**
  * @internal
  */
 class ControllerReflector
 {
-    private ContainerInterface $container;
     /**
      * @var array<string, array{string, string}|null>
      */
     private array $controllers = [];
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
 
     /**
      * Returns the ReflectionMethod for the given controller string.
@@ -70,10 +62,6 @@ class ControllerReflector
         if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
             $class = $matches[1];
             $method = $matches[2];
-
-            if (!class_exists($class) && $this->container->has($class)) {
-                $class = get_class($this->container->get($class));
-            }
 
             return $this->controllers[$controller] = [$class, $method];
         }

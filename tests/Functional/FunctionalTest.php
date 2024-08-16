@@ -13,11 +13,9 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class FunctionalTest extends WebTestCase
@@ -468,6 +466,7 @@ class FunctionalTest extends WebTestCase
                 'propertyGreaterThanDate',
                 'propertyGreaterThanOrEqual',
                 'propertyGreaterThanOrEqualDate',
+                'propertyWithCompoundValidationRule',
             ],
             'properties' => [
                 'propertyNotBlank' => [
@@ -540,9 +539,6 @@ class FunctionalTest extends WebTestCase
                     'type' => 'string',
                     'format' => 'date-time',
                 ],
-                'propertyWithCompoundValidationRule' => [
-                    'type' => 'integer',
-                ],
                 'propertyGreaterThan' => [
                     'type' => 'integer',
                     'exclusiveMinimum' => true,
@@ -560,21 +556,17 @@ class FunctionalTest extends WebTestCase
                     'type' => 'string',
                     'format' => 'date-time',
                 ],
+                'propertyWithCompoundValidationRule' => [
+                    'type' => 'integer',
+                    'maximum' => 5,
+                    'exclusiveMaximum' => true,
+                    'minimum' => 0,
+                    'exclusiveMinimum' => true,
+                ],
             ],
             'type' => 'object',
             'schema' => $modelName,
         ];
-
-        if (Helper::isCompoundValidatorConstraintSupported()) {
-            $expected['required'][] = 'propertyWithCompoundValidationRule';
-            $expected['properties']['propertyWithCompoundValidationRule'] = [
-                'type' => 'integer',
-                'maximum' => 5,
-                'exclusiveMaximum' => true,
-                'minimum' => 0,
-                'exclusiveMinimum' => true,
-            ];
-        }
 
         self::assertEquals($expected, json_decode($this->getModel($modelName)->toJson(), true));
     }
@@ -1254,8 +1246,16 @@ class FunctionalTest extends WebTestCase
     {
         $expected = [
             'schema' => 'RangeInteger',
-            'required' => ['rangeInt', 'minRangeInt', 'maxRangeInt'],
+            'required' => ['positiveInt', 'negativeInt', 'rangeInt', 'minRangeInt', 'maxRangeInt'],
             'properties' => [
+                'positiveInt' => [
+                    'type' => 'integer',
+                    'minimum' => 1,
+                ],
+                'negativeInt' => [
+                    'type' => 'integer',
+                    'maximum' => -1,
+                ],
                 'rangeInt' => [
                     'type' => 'integer',
                     'minimum' => 1,
@@ -1278,20 +1278,6 @@ class FunctionalTest extends WebTestCase
             ],
             'type' => 'object',
         ];
-
-        if (version_compare(Kernel::VERSION, '6.1', '>=')) {
-            array_unshift($expected['required'], 'positiveInt', 'negativeInt');
-            $expected['properties'] += [
-                'positiveInt' => [
-                    'type' => 'integer',
-                    'minimum' => 1,
-                ],
-                'negativeInt' => [
-                    'type' => 'integer',
-                    'maximum' => -1,
-                ],
-            ];
-        }
 
         self::assertEquals($expected, json_decode($this->getModel('RangeInteger')->toJson(), true));
     }

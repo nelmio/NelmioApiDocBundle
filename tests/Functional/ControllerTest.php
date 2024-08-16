@@ -102,57 +102,55 @@ final class ControllerTest extends WebTestCase
             [__DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml'],
         ];
 
-        if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
-            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
-                [
-                    'name' => 'Controller2209',
-                    'type' => $type,
-                ],
-            ];
-            yield 'MapQueryString' => [
-                [
-                    'name' => 'MapQueryStringController',
-                    'type' => $type,
-                ],
-            ];
-            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
-                [
-                    'name' => 'MapQueryStringController',
-                    'type' => $type,
-                ],
-                'MapQueryStringCleanupComponents',
-                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
-            ];
+        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
+            [
+                'name' => 'Controller2209',
+                'type' => $type,
+            ],
+        ];
+        yield 'MapQueryString' => [
+            [
+                'name' => 'MapQueryStringController',
+                'type' => $type,
+            ],
+        ];
+        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
+            [
+                'name' => 'MapQueryStringController',
+                'type' => $type,
+            ],
+            'MapQueryStringCleanupComponents',
+            [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
+        ];
 
-            yield 'operationId must always be generated' => [
+        yield 'operationId must always be generated' => [
+            [
+                'name' => 'OperationIdController',
+                'type' => $type,
+            ],
+        ];
+
+        yield 'Symfony 6.3 MapQueryParameter attribute' => [
+            [
+                'name' => 'MapQueryParameterController',
+                'type' => $type,
+            ],
+        ];
+
+        yield 'Symfony 6.3 MapRequestPayload attribute' => [
+            [
+                'name' => 'MapRequestPayloadController',
+                'type' => $type,
+            ],
+        ];
+
+        if (property_exists(MapRequestPayload::class, 'type')) {
+            yield 'Symfony 7.1 MapRequestPayload array type' => [
                 [
-                    'name' => 'OperationIdController',
+                    'name' => 'MapRequestPayloadArray',
                     'type' => $type,
                 ],
             ];
-
-            yield 'Symfony 6.3 MapQueryParameter attribute' => [
-                [
-                    'name' => 'MapQueryParameterController',
-                    'type' => $type,
-                ],
-            ];
-
-            yield 'Symfony 6.3 MapRequestPayload attribute' => [
-                [
-                    'name' => 'MapRequestPayloadController',
-                    'type' => $type,
-                ],
-            ];
-
-            if (property_exists(MapRequestPayload::class, 'type')) {
-                yield 'Symfony 7.1 MapRequestPayload array type' => [
-                    [
-                        'name' => 'MapRequestPayloadArray',
-                        'type' => $type,
-                    ],
-                ];
-            }
         }
     }
 

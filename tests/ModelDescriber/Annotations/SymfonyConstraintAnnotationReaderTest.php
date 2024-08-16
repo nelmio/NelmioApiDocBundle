@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader;
-use Nelmio\ApiDocBundle\Tests\Helper;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
@@ -84,10 +83,6 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testOptionalProperty($entity): void
     {
-        if (!\property_exists(Assert\NotBlank::class, 'allowNull')) {
-            self::markTestSkipped('NotBlank::allowNull was added in symfony/validator 4.3.');
-        }
-
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property2'])]);
@@ -328,19 +323,11 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, $propertyName), $schema->properties[0]);
 
-        if (Helper::isCompoundValidatorConstraintSupported()) {
-            self::assertSame([$propertyName], $schema->required);
-            self::assertSame(0, $schema->properties[0]->minimum);
-            self::assertTrue($schema->properties[0]->exclusiveMinimum);
-            self::assertSame(5, $schema->properties[0]->maximum);
-            self::assertTrue($schema->properties[0]->exclusiveMaximum);
-        } else {
-            self::assertSame(Generator::UNDEFINED, $schema->required);
-            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum);
-            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMinimum);
-            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->maximum);
-            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMaximum);
-        }
+        self::assertSame([$propertyName], $schema->required);
+        self::assertSame(0, $schema->properties[0]->minimum);
+        self::assertTrue($schema->properties[0]->exclusiveMinimum);
+        self::assertSame(5, $schema->properties[0]->maximum);
+        self::assertTrue($schema->properties[0]->exclusiveMaximum);
     }
 
     /**

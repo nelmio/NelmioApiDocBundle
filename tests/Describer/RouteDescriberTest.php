@@ -45,7 +45,7 @@ class RouteDescriberTest extends AbstractDescriberTestCase
         $this->routes = new RouteCollection();
         $this->describer = new RouteDescriber(
             $this->routes,
-            new ControllerReflector(new Container()),
+            new ControllerReflector(),
             [$this->routeDescriber]
         );
     }
