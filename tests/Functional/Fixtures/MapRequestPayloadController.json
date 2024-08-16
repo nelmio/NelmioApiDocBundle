@@ -147,7 +147,8 @@
             "SymfonyConstraintsWithValidationGroups": {
                 "required": [
                     "property",
-                    "propertyInDefaultGroup"
+                    "propertyInDefaultGroup",
+                    "propertyNotNullOnSpecificGroup"
                 ],
                 "properties": {
                     "property": {
@@ -165,6 +166,9 @@
                         "items": {
                             "type": "string"
                         }
+                    },
+                    "propertyNotNullOnSpecificGroup": {
+                        "type": "string"
                     }
                 },
                 "type": "object"
