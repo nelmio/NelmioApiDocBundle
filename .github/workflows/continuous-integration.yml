@@ -26,7 +26,6 @@ jobs:
       matrix:
         include:
           - php-version: 8.1
-            symfony-require: "6.4.*"
             composer-flags: "--prefer-lowest"
             doctrine-annotations: true
           - php-version: 8.1
