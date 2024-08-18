@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use Nelmio\ApiDocBundle\Tests\ComposerHelper;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Kernel;
@@ -93,14 +94,32 @@ final class ControllerTest extends WebTestCase
 
         $type = Kernel::MAJOR_VERSION === 5 ? 'annotation' : 'attribute';
 
-        yield 'Promoted properties defaults attributes' => [
-            [
-                'name' => 'PromotedPropertiesController81',
-                'type' => $type,
-            ],
-            'PromotedPropertiesDefaults',
-            [__DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml'],
-        ];
+        if (ComposerHelper::compareVersion('zircote/swagger-php', '4.10.1') >= 0) {
+            yield 'Promoted properties defaults attributes' => [
+                [
+                    'name' => 'PromotedPropertiesController81',
+                    'type' => $type,
+                ],
+                'PromotedPropertiesDefaults',
+                [
+                    __DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml',
+                    __DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml',
+                ],
+            ];
+        } else {
+            yield 'Promoted properties defaults attributes' => [
+                [
+                    'name' => 'PromotedPropertiesController81',
+                    'type' => $type,
+                ],
+                'PromotedPropertiesDefaults',
+                [
+                    __DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml',
+                    __DIR__.'/Configs/CleanUnusedComponentsProcessorOldSwaggerProcessor.yaml',
+                ],
+            ];
+        }
+
 
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
             [
@@ -114,14 +133,26 @@ final class ControllerTest extends WebTestCase
                 'type' => $type,
             ],
         ];
-        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
-            [
-                'name' => 'MapQueryStringController',
-                'type' => $type,
-            ],
-            'MapQueryStringCleanupComponents',
-            [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
-        ];
+
+        if (ComposerHelper::compareVersion('zircote/swagger-php', '4.10.1') >= 0) {
+            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
+                [
+                    'name' => 'MapQueryStringController',
+                    'type' => $type,
+                ],
+                'MapQueryStringCleanupComponents',
+                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
+            ];
+        } else {
+            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
+                [
+                    'name' => 'MapQueryStringController',
+                    'type' => $type,
+                ],
+                'MapQueryStringCleanupComponents',
+                [__DIR__.'/Configs/CleanUnusedComponentsProcessorOldSwaggerProcessor.yaml'],
+            ];
+        }
 
         yield 'operationId must always be generated' => [
             [
@@ -160,14 +191,29 @@ final class ControllerTest extends WebTestCase
             return;
         }
 
-        if (PHP_VERSION_ID >= 80000) {
+        if (ComposerHelper::compareVersion('zircote/swagger-php', '4.10.1') >= 0) {
             yield 'Promoted properties defaults annotations' => [
                 [
                     'name' => 'PromotedPropertiesController80',
                     'type' => 'annotation',
                 ],
                 'PromotedPropertiesDefaults',
-                [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml'],
+                [
+                    __DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml',
+                    __DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml',
+                ],
+            ];
+        } else {
+            yield 'Promoted properties defaults annotations' => [
+                [
+                    'name' => 'PromotedPropertiesController80',
+                    'type' => 'annotation',
+                ],
+                'PromotedPropertiesDefaults',
+                [
+                    __DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml',
+                    __DIR__.'/Configs/CleanUnusedComponentsProcessorOldSwaggerProcessor.yaml',
+                ],
             ];
         }
     }
