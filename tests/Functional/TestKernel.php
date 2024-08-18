@@ -349,17 +349,12 @@ class TestKernel extends Kernel
 
     public static function isAnnotationsAvailable(): bool
     {
-        if (Kernel::MAJOR_VERSION <= 5) {
-            return true;
-        }
-
-        if (Kernel::MAJOR_VERSION >= 7) {
-            return false;
-        }
-
-        return PHP_VERSION_ID < 80100;
+        return ComposerHelper::isPackageInstalled('doctrine/annotations');
     }
 
+    /**
+     * TODO: Remove this
+     */
     public static function isAttributesAvailable(): bool
     {
         return PHP_VERSION_ID >= 80100;

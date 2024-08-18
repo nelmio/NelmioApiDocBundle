@@ -17,4 +17,9 @@ final class ComposerHelper
     {
         return version_compare(\Composer\InstalledVersions::getPrettyVersion($package), $version);
     }
+
+    public static function isPackageInstalled(string $package): bool
+    {
+        return \Composer\InstalledVersions::isInstalled($package);
+    }
 }
