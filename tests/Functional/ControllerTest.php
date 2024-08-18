@@ -23,10 +23,7 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
  */
 final class ControllerTest extends WebTestCase
 {
-    /**
-     * @var ConfigurableContainerFactory
-     */
-    private $configurableContainerFactory;
+    private ConfigurableContainerFactory $configurableContainerFactory;
 
     protected function setUp(): void
     {
@@ -88,17 +85,11 @@ final class ControllerTest extends WebTestCase
 
     public static function provideAttributeTestCases(): \Generator
     {
-        if (PHP_VERSION_ID < 80100) {
-            return;
-        }
-
-        $type = Kernel::MAJOR_VERSION === 5 ? 'annotation' : 'attribute';
-
         if (ComposerHelper::compareVersion('zircote/swagger-php', '4.10.1') >= 0) {
             yield 'Promoted properties defaults attributes' => [
                 [
                     'name' => 'PromotedPropertiesController81',
-                    'type' => $type,
+                    'type' => 'attribute',
                 ],
                 'PromotedPropertiesDefaults',
                 [
@@ -110,7 +101,7 @@ final class ControllerTest extends WebTestCase
             yield 'Promoted properties defaults attributes' => [
                 [
                     'name' => 'PromotedPropertiesController81',
-                    'type' => $type,
+                    'type' => 'attribute',
                 ],
                 'PromotedPropertiesDefaults',
                 [
@@ -124,13 +115,13 @@ final class ControllerTest extends WebTestCase
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
             [
                 'name' => 'Controller2209',
-                'type' => $type,
+                'type' => 'attribute',
             ],
         ];
         yield 'MapQueryString' => [
             [
                 'name' => 'MapQueryStringController',
-                'type' => $type,
+                'type' => 'attribute',
             ],
         ];
 
@@ -138,7 +129,7 @@ final class ControllerTest extends WebTestCase
             yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
                 [
                     'name' => 'MapQueryStringController',
-                    'type' => $type,
+                    'type' => 'attribute',
                 ],
                 'MapQueryStringCleanupComponents',
                 [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
@@ -147,7 +138,7 @@ final class ControllerTest extends WebTestCase
             yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
                 [
                     'name' => 'MapQueryStringController',
-                    'type' => $type,
+                    'type' => 'attribute',
                 ],
                 'MapQueryStringCleanupComponents',
                 [__DIR__.'/Configs/CleanUnusedComponentsProcessorOldSwaggerProcessor.yaml'],
@@ -157,21 +148,21 @@ final class ControllerTest extends WebTestCase
         yield 'operationId must always be generated' => [
             [
                 'name' => 'OperationIdController',
-                'type' => $type,
+                'type' => 'attribute',
             ],
         ];
 
         yield 'Symfony 6.3 MapQueryParameter attribute' => [
             [
                 'name' => 'MapQueryParameterController',
-                'type' => $type,
+                'type' => 'attribute',
             ],
         ];
 
         yield 'Symfony 6.3 MapRequestPayload attribute' => [
             [
                 'name' => 'MapRequestPayloadController',
-                'type' => $type,
+                'type' => 'attribute',
             ],
         ];
 
@@ -179,7 +170,7 @@ final class ControllerTest extends WebTestCase
             yield 'Symfony 7.1 MapRequestPayload array type' => [
                 [
                     'name' => 'MapRequestPayloadArray',
-                    'type' => $type,
+                    'type' => 'attribute',
                 ],
             ];
         }
