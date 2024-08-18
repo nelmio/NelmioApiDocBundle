@@ -6,11 +6,3 @@ nelmio_api_doc:
         type: Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithPromotedPropertiesWithDefaults81
       - alias: EntityWithAlternateType
         type: Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType81
-
-# Clean unused components from the OpenAPI schema.
-services:
-  OpenApi\Processors\CleanUnusedComponents:
-    tags:
-      - { name: 'nelmio_api_doc.swagger.processor', priority: -100 }
-    calls:
-      - setEnabled: [ true ]

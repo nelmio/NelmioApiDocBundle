@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+Unreleased
+----------
+* Bumped minimum Symfony version from 5.4 to 6.4.
+
 4.26.0
 -----
 * Add ability to configure UI through configuration

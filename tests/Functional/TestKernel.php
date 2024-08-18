@@ -19,6 +19,7 @@ use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
+use Nelmio\ApiDocBundle\Tests\ComposerHelper;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
@@ -321,7 +322,7 @@ class TestKernel extends Kernel
             ],
         ]);
 
-        if (self::USE_JMS === $this->flag && \PHP_VERSION_ID >= 80100) {
+        if (self::USE_JMS === $this->flag && ComposerHelper::compareVersion('jms/serializer-bundle', '5.2.0') >= 0) {
             $c->loadFromExtension('jms_serializer', [
                 'enum_support' => true,
             ]);
