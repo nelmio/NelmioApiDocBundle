@@ -43,4 +43,13 @@ class SymfonyConstraintsWithValidationGroups80
      * @Assert\Valid
      */
     public $propertyArray;
+
+    /**
+     * @var ?string
+     *
+     * @Groups({"test"})
+     *
+     * @Assert\NotNull(groups={"test"})
+     */
+    public $propertyNotNullOnSpecificGroup;
 }

@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -129,6 +130,29 @@ final class ControllerTest extends WebTestCase
                     'type' => $type,
                 ],
             ];
+
+            yield 'Symfony 6.3 MapQueryParameter attribute' => [
+                [
+                    'name' => 'MapQueryParameterController',
+                    'type' => $type,
+                ],
+            ];
+
+            yield 'Symfony 6.3 MapRequestPayload attribute' => [
+                [
+                    'name' => 'MapRequestPayloadController',
+                    'type' => $type,
+                ],
+            ];
+
+            if (property_exists(MapRequestPayload::class, 'type')) {
+                yield 'Symfony 7.1 MapRequestPayload array type' => [
+                    [
+                        'name' => 'MapRequestPayloadArray',
+                        'type' => $type,
+                    ],
+                ];
+            }
         }
     }
 

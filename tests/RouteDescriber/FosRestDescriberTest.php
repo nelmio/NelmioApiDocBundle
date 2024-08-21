@@ -47,4 +47,57 @@ class FosRestDescriberTest extends TestCase
 
         self::assertSame($choices, $api->paths[0]->get->parameters[0]->schema->enum);
     }
+
+    public function testQueryParamWithChoiceConstraintCallbackIsAddedAsEnum(): void
+    {
+        $queryParam = new QueryParam();
+        $choice = new Choice();
+        $choice->callback = function () {
+            return ['foo', 'bar'];
+        };
+
+        $queryParam->requirements = $choice;
+        $readerMock = $this->createMock(Reader::class);
+        $readerMock->method('getMethodAnnotations')->willReturn([
+            $queryParam,
+        ]);
+
+        $fosRestDescriber = new FosRestDescriber($readerMock, []);
+        $api = new OpenApi([]);
+
+        $fosRestDescriber->describe(
+            $api,
+            new Route('/'),
+            $this->createMock(\ReflectionMethod::class)
+        );
+
+        self::assertSame(['foo', 'bar'], $api->paths[0]->get->parameters[0]->schema->enum);
+    }
+
+    public function testQueryParamWithChoiceConstraintAsArray(): void
+    {
+        $choices = ['foo', 'bar'];
+
+        $queryParam = new QueryParam();
+        $choice = new Choice($choices);
+        $choice->multiple = true;
+        $queryParam->requirements = $choice;
+
+        $readerMock = $this->createMock(Reader::class);
+        $readerMock->method('getMethodAnnotations')->willReturn([
+            $queryParam,
+        ]);
+
+        $fosRestDescriber = new FosRestDescriber($readerMock, []);
+        $api = new OpenApi([]);
+
+        $fosRestDescriber->describe(
+            $api,
+            new Route('/'),
+            $this->createMock(\ReflectionMethod::class)
+        );
+
+        self::assertEquals('array', $api->paths[0]->get->parameters[0]->schema->type);
+        self::assertSame($choices, $api->paths[0]->get->parameters[0]->schema->items->enum);
+    }
 }

@@ -24,28 +24,28 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MapQueryStringController
 {
-    #[Route('/article_map_query_string')]
+    #[Route('/article_map_query_string', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryString(
         #[MapQueryString] SymfonyMapQueryString $article81Query
     ) {
     }
 
-    #[Route('/article_map_query_string_nullable')]
+    #[Route('/article_map_query_string_nullable', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryStringNullable(
         #[MapQueryString] ?SymfonyMapQueryString $article81Query
     ) {
     }
 
-    #[Route('/article_map_query_string_passes_validation_groups')]
+    #[Route('/article_map_query_string_passes_validation_groups', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryStringHandlesValidationGroups(
         #[MapQueryString(validationGroups: ['test'])] SymfonyConstraintsWithValidationGroups $symfonyConstraintsWithValidationGroups,
     ) {
     }
 
-    #[Route('/article_map_query_string_overwrite_parameters')]
+    #[Route('/article_map_query_string_overwrite_parameters', methods: ['GET'])]
     #[OA\Parameter(
         name: 'id',
         in: 'query',
@@ -78,7 +78,7 @@ class MapQueryStringController
     ) {
     }
 
-    #[Route('/article_map_query_string_many_parameters')]
+    #[Route('/article_map_query_string_many_parameters', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleWithManyParameters(
         #[MapQueryString] FilterQueryModel $filterQuery,

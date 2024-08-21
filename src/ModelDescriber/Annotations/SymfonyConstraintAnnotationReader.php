@@ -27,20 +27,14 @@ class SymfonyConstraintAnnotationReader
 {
     use SetsContextTrait;
 
-    /**
-     * @var Reader|null
-     */
-    private $annotationsReader;
+    private ?Reader $annotationsReader;
 
     /**
      * @var OA\Schema
      */
     private $schema;
 
-    /**
-     * @var bool
-     */
-    private $useValidationGroups;
+    private bool $useValidationGroups;
 
     public function __construct(?Reader $annotationsReader, bool $useValidationGroups = false)
     {
@@ -96,6 +90,7 @@ class SymfonyConstraintAnnotationReader
                 $existingRequiredFields[] = $propertyName;
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
+                $property->nullable = false;
             } elseif ($annotation instanceof Assert\Length) {
                 if (isset($annotation->min)) {
                     $property->minLength = $annotation->min;

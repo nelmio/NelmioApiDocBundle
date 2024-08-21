@@ -98,7 +98,7 @@ final class Configuration implements ConfigurationInterface
                         ->ifTrue(function ($v) {
                             return 0 === count($v) || isset($v['path_patterns']) || isset($v['host_patterns']) || isset($v['documentation']);
                         })
-                        ->then(function ($v) {
+                        ->then(function ($v): array {
                             return ['default' => $v];
                         })
                     ->end()

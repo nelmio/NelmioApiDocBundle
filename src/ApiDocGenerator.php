@@ -20,7 +20,6 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Analysis;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
-use OpenApi\Processors\ProcessorInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -37,11 +36,9 @@ final class ApiDocGenerator
     /** @var iterable|ModelDescriberInterface[] */
     private $modelDescribers;
 
-    /** @var CacheItemPoolInterface|null */
-    private $cacheItemPool;
+    private ?CacheItemPoolInterface $cacheItemPool;
 
-    /** @var string */
-    private $cacheItemId;
+    private string $cacheItemId;
 
     /** @var string[] */
     private $alternativeNames = [];
@@ -53,8 +50,7 @@ final class ApiDocGenerator
      */
     private $openApiVersion;
 
-    /** @var Generator */
-    private $generator;
+    private Generator $generator;
 
     /**
      * @param DescriberInterface[]|iterable      $describers
@@ -149,7 +145,7 @@ final class ApiDocGenerator
      *
      * @param Generator $generator The generator instance to get the standard processors from
      *
-     * @return array<ProcessorInterface|callable> The array of processors
+     * @return array<callable> The array of processors
      */
     private function getProcessors(Generator $generator): array
     {

@@ -273,14 +273,20 @@ final class Util
     /**
      * Search for an Annotation within the $collection that has its member $index set to $value.
      *
-     * @param mixed[] $collection
-     * @param mixed   $value      The value to search for
+     * @param OA\AbstractAnnotation[] $collection
+     * @param mixed                   $value      The value to search for
      *
      * @return false|int|string
      */
     public static function searchIndexedCollectionItem(array $collection, string $member, $value)
     {
-        return array_search($value, array_column($collection, $member), true);
+        foreach ($collection as $i => $child) {
+            if ($child->{$member} === $value) {
+                return $i;
+            }
+        }
+
+        return false;
     }
 
     /**

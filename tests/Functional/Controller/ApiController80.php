@@ -26,6 +26,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithUuid;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\RangeInteger;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
@@ -411,6 +412,17 @@ class ApiController80
      * ))
      */
     public function entityWithObjectType()
+    {
+    }
+
+    /**
+     * @Route("/entity-with-uuid", methods={"GET", "POST"})
+     *
+     * @OA\Response(response=200, description="success", @OA\JsonContent(
+     *      ref=@Model(type=EntityWithUuid::class),
+     * ))
+     */
+    public function entityWithUuid()
     {
     }
 
