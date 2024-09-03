@@ -145,6 +145,13 @@ final class ControllerTest extends WebTestCase
                 ],
             ];
 
+            yield 'Create top level Tag from Tag attribute' => [
+                [
+                    'name' => 'OpenApiTagController',
+                    'type' => $type,
+                ],
+            ];
+
             if (property_exists(MapRequestPayload::class, 'type')) {
                 yield 'Symfony 7.1 MapRequestPayload array type' => [
                     [
