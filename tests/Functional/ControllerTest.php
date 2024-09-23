@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 /**
@@ -30,16 +29,6 @@ final class ControllerTest extends WebTestCase
     protected function setUp(): void
     {
         $this->configurableContainerFactory = new ConfigurableContainerFactory();
-
-        static::createClient([], ['HTTP_HOST' => 'api.example.com']);
-    }
-
-    /**
-     * @param array<mixed> $options
-     */
-    protected static function createKernel(array $options = []): KernelInterface
-    {
-        return new NelmioKernel([], null, []);
     }
 
     protected function getOpenApiDefinition(string $area = 'default'): OA\OpenApi
