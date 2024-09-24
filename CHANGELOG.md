@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## next
+## 4.31.0
 
 * Added support to opt out of JMS serializer usage per endpoint by setting `useJms` in the serializationContext.
   ```php
