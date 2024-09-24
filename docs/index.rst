@@ -509,6 +509,18 @@ General PHP objects
         nelmio_api_doc:
             models: { use_jms: false }
 
+    Alternatively, it is also possible to opt out of JMS serializer usage per endpoint by setting `useJms` in the serializationContext:
+
+    .. configuration-block::
+
+        .. code-block:: php-annotations
+
+            /** @OA\Response(response=200, @Model(type=UserDto::class, serializationContext={"useJms"=false})) */
+
+        .. code-block:: php-attributes
+
+            #[OA\Response(response: 200, content: new Model(type: UserDto::class, serializationContext: ["useJms" => false]))]
+
     When using the JMS serializer combined with `willdurand/Hateoas`_ (and the `BazingaHateoasBundle`_),
     HATEOAS metadata are automatically extracted
 
