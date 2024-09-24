@@ -11,8 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use JMS\SerializerBundle\JMSSerializerBundle;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
@@ -42,9 +44,10 @@ final class ControllerTest extends WebTestCase
      * @dataProvider provideUniversalTestCases
      *
      * @param array{name: string, type: string}|null $controller
+     * @param Bundle[]                               $extraBundles
      * @param string[]                               $extraConfigs
      */
-    public function testControllers(?array $controller, ?string $fixtureName = null, array $extraConfigs = []): void
+    public function testControllers(?array $controller, ?string $fixtureName = null, array $extraBundles = [], array $extraConfigs = []): void
     {
         $controllerName = $controller['name'] ?? null;
         $controllerType = $controller['type'] ?? null;
@@ -59,7 +62,7 @@ final class ControllerTest extends WebTestCase
             $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", $controllerType);
         };
 
-        $this->configurableContainerFactory->create([], $routingConfiguration, $extraConfigs);
+        $this->configurableContainerFactory->create($extraBundles, $routingConfiguration, $extraConfigs);
 
         $apiDefinition = $this->getOpenApiDefinition();
 
@@ -88,7 +91,18 @@ final class ControllerTest extends WebTestCase
                 'type' => $type,
             ],
             'PromotedPropertiesDefaults',
+            [],
             [__DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml'],
+        ];
+
+        yield 'JMS model opt out' => [
+            [
+                'name' => 'JmsOptOutController',
+                'type' => $type,
+            ],
+            'JmsOptOutController',
+            [new JMSSerializerBundle()],
+            [__DIR__.'/Configs/JMS.yaml'],
         ];
 
         if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
@@ -110,6 +124,7 @@ final class ControllerTest extends WebTestCase
                     'type' => $type,
                 ],
                 'MapQueryStringCleanupComponents',
+                [],
                 [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
             ];
 
@@ -165,6 +180,7 @@ final class ControllerTest extends WebTestCase
                     'type' => 'annotation',
                 ],
                 'PromotedPropertiesDefaults',
+                [],
                 [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml'],
             ];
         }
@@ -178,6 +194,7 @@ final class ControllerTest extends WebTestCase
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2224' => [
             null,
             'VendorExtension',
+            [],
             [__DIR__.'/Configs/VendorExtension.yaml'],
         ];
     }

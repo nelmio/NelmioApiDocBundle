@@ -261,6 +261,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function supports(Model $model): bool
     {
+        if (($model->getSerializationContext()['useJms'] ?? null) === false) {
+            return false;
+        }
+
         $className = $model->getType()->getClassName();
 
         try {

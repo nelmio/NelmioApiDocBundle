@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 4.31.0
+
+* Added support to opt out of JMS serializer usage per endpoint by setting `useJms` in the serializationContext.
+  ```php
+  #[OA\Response(response: 200, content: new Model(type: UserDto::class, serializationContext: ["useJms" => false]))]
+  ```
+
 ## 4.30.0
 * Create top level OpenApi Tag from Tags top level annotations/attributes
 
