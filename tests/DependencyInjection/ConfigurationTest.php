@@ -126,7 +126,7 @@ class ConfigurationTest extends TestCase
                     [
                         'alias' => 'Foo1',
                         'type' => 'App\Foo',
-                        'serializationContext' => ['useJms' => false],
+                        'serializationContext' => ['useJms' => false, 'foo' => 'bar'],
                     ],
                 ],
             ],
@@ -201,7 +201,10 @@ class ConfigurationTest extends TestCase
                 'type' => 'App\Foo',
                 'groups' => null,
                 'options' => null,
-                'serializationContext' => ['useJms' => false],
+                'serializationContext' => [
+                    'useJms' => false,
+                    'foo' => 'bar',
+                ],
                 'areas' => [],
             ],
         ], $config['models']['names']);
