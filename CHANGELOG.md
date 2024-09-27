@@ -2,7 +2,7 @@
 
 ## next
 
-* Added support to configure `options` and `serializationContext` via `nelmio_api_doc.models.names` as well.
+* Added support to configure `options` and `serializationContext` via `nelmio_api_doc.models.names`.
 
 ## 4.31.0
 
