@@ -27,8 +27,6 @@ class ModelRegistryTest extends TestCase
             'Foo1' => [
                 'type' => self::class,
                 'groups' => ['group1'],
-                'options' => null,
-                'serializationContext' => [],
             ],
         ];
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
@@ -119,8 +117,6 @@ class ModelRegistryTest extends TestCase
             $ref->getShortName() => [
                 'type' => $ref->getName(),
                 'groups' => ['group1'],
-                'options' => null,
-                'serializationContext' => [],
             ],
         ];
         $logger = $this->createMock(LoggerInterface::class);
@@ -187,8 +183,6 @@ class ModelRegistryTest extends TestCase
                 'Foo1' => [
                     'type' => self::class,
                     'groups' => ['group1'],
-                    'options' => null,
-                    'serializationContext' => [],
                 ],
             ],
         ];
@@ -200,8 +194,6 @@ class ModelRegistryTest extends TestCase
                 'Foo1' => [
                     'type' => self::class,
                     'groups' => ['group1'],
-                    'options' => null,
-                    'serializationContext' => [],
                 ],
             ],
         ];
@@ -213,8 +205,6 @@ class ModelRegistryTest extends TestCase
                 'Foo1' => [
                     'type' => self::class,
                     'groups' => ['group1', 'group2'],
-                    'options' => null,
-                    'serializationContext' => [],
                 ],
             ],
         ];
@@ -226,8 +216,6 @@ class ModelRegistryTest extends TestCase
                 'Foo1' => [
                     'type' => self::class,
                     'groups' => [],
-                    'options' => null,
-                    'serializationContext' => [],
                 ],
             ],
         ];
@@ -239,8 +227,6 @@ class ModelRegistryTest extends TestCase
                 'Foo1' => [
                     'type' => self::class,
                     'groups' => [],
-                    'options' => null,
-                    'serializationContext' => [],
                 ],
             ],
         ];
