@@ -303,6 +303,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $aliases[$nameAlias['alias']] = [
                 'type' => $nameAlias['type'],
                 'groups' => $nameAlias['groups'],
+                'options' => $nameAlias['options'],
+                'serializationContext' => $nameAlias['serializationContext'],
             ];
         }
 
