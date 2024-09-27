@@ -276,5 +276,20 @@ class ConfigurationTest extends TestCase
             ],
             'Model groups must be either `null` or an array.',
         ];
+
+        yield 'invalid options value for model' => [
+            [
+                'models' => [
+                    'names' => [
+                        [
+                            'alias' => 'Foo1',
+                            'type' => 'App\Foo',
+                            'options' => 'invalid_string_value',
+                        ],
+                    ],
+                ],
+            ],
+            'Model options must be either `null` or an array.',
+        ];
     }
 }
