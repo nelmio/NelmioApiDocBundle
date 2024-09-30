@@ -1,8 +1,9 @@
 # CHANGELOG
 
-## next
+## 4.32.0
 
 * Added support to configure `options` and `serializationContext` via `nelmio_api_doc.models.names`.
+* Fixed `serializationContext` not being applied to nested models.
 
 ## 4.31.0
 
