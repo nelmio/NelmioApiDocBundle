@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## next
+
+* Added support to configure `options` and `serializationContext` via `nelmio_api_doc.models.names`.
+
 ## 4.31.0
 
 * Added support to opt out of JMS serializer usage per endpoint by setting `useJms` in the serializationContext.

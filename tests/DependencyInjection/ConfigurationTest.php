@@ -113,6 +113,21 @@ class ConfigurationTest extends TestCase
                         'type' => 'App\Foo',
                         'groups' => ['group1', ['group2', 'parent' => 'child3']],
                     ],
+                    [
+                        'alias' => 'Foo1',
+                        'type' => 'App\Foo',
+                        'options' => null,
+                    ],
+                    [
+                        'alias' => 'Foo1',
+                        'type' => 'App\Foo',
+                        'options' => ['foo' => 'bar'],
+                    ],
+                    [
+                        'alias' => 'Foo1',
+                        'type' => 'App\Foo',
+                        'serializationContext' => ['useJms' => false, 'foo' => 'bar'],
+                    ],
                 ],
             ],
         ]]);
@@ -121,36 +136,75 @@ class ConfigurationTest extends TestCase
                 'alias' => 'Foo1',
                 'type' => 'App\Foo',
                 'groups' => ['group'],
+                'options' => null,
+                'serializationContext' => [],
                 'areas' => [],
             ],
             [
                 'alias' => 'Foo2',
                 'type' => 'App\Foo',
                 'groups' => [],
+                'options' => null,
+                'serializationContext' => [],
                 'areas' => [],
             ],
             [
                 'alias' => 'Foo3',
                 'type' => 'App\Foo',
                 'groups' => null,
+                'options' => null,
+                'serializationContext' => [],
                 'areas' => [],
             ],
             [
                 'alias' => 'Foo4',
                 'type' => 'App\\Foo',
                 'groups' => ['group'],
+                'options' => null,
+                'serializationContext' => [],
                 'areas' => ['internal'],
             ],
             [
                 'alias' => 'Foo1',
                 'type' => 'App\\Foo',
                 'groups' => null,
+                'options' => null,
+                'serializationContext' => [],
                 'areas' => ['internal'],
             ],
             [
                 'alias' => 'Foo1',
                 'type' => 'App\Foo',
                 'groups' => ['group1', ['group2', 'parent' => 'child3']],
+                'options' => null,
+                'serializationContext' => [],
+                'areas' => [],
+            ],
+            [
+                'alias' => 'Foo1',
+                'type' => 'App\Foo',
+                'groups' => null,
+                'options' => null,
+                'serializationContext' => [],
+                'areas' => [],
+            ],
+            [
+                'alias' => 'Foo1',
+                'type' => 'App\Foo',
+                'groups' => null,
+                'options' => ['foo' => 'bar'],
+                'serializationContext' => [],
+                'areas' => [],
+            ],
+            [
+                'alias' => 'Foo1',
+                'type' => 'App\Foo',
+                'groups' => null,
+                'options' => null,
+                'serializationContext' => [
+                    'useJms' => false,
+                    'foo' => 'bar',
+                ],
                 'areas' => [],
             ],
         ], $config['models']['names']);
@@ -221,6 +275,21 @@ class ConfigurationTest extends TestCase
                 ],
             ],
             'Model groups must be either `null` or an array.',
+        ];
+
+        yield 'invalid options value for model' => [
+            [
+                'models' => [
+                    'names' => [
+                        [
+                            'alias' => 'Foo1',
+                            'type' => 'App\Foo',
+                            'options' => 'invalid_string_value',
+                        ],
+                    ],
+                ],
+            ],
+            'Model options must be either `null` or an array.',
         ];
     }
 }
