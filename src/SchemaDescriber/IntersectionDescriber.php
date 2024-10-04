@@ -30,9 +30,9 @@ final class IntersectionDescriber implements SchemaDescriberInterface, SchemaDes
     {
         $weakContext = Util::createWeakContext($schema->_context);
 
-        $schema->oneOf = Generator::UNDEFINED !== $schema->oneOf ? $schema->oneOf : [];
+        $schema->allOf = Generator::UNDEFINED !== $schema->allOf ? $schema->allOf : [];
         foreach ($type->getTypes() as $innerType) {
-            $schema->oneOf[] = $childSchema = new Schema([
+            $schema->allOf[] = $childSchema = new Schema([
                 '_context' => $weakContext
             ]);
 

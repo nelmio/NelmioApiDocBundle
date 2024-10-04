@@ -30,9 +30,9 @@ final class UnionDescriber implements SchemaDescriberInterface, SchemaDescriberA
     {
         $weakContext = Util::createWeakContext($schema->_context);
 
-        $schema->allOf = Generator::UNDEFINED !== $schema->allOf ? $schema->allOf : [];
+        $schema->oneOf = Generator::UNDEFINED !== $schema->oneOf ? $schema->oneOf : [];
         foreach ($type->getTypes() as $innerType) {
-            $schema->allOf[] = $childSchema = new Schema([
+            $schema->oneOf[] = $childSchema = new Schema([
                 '_context' => $weakContext
             ]);
 
