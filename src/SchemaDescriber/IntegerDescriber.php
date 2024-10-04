@@ -29,6 +29,7 @@ final class IntegerDescriber implements SchemaDescriberInterface
 
     public function supports(Type $type, array $context = []): bool
     {
-        return $type->isA(TypeIdentifier::INT);
+        return $type instanceof Type\BuiltinType
+            && $type->isA(TypeIdentifier::INT);
     }
 }

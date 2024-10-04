@@ -30,6 +30,7 @@ final class MixedDescriber implements SchemaDescriberInterface
 
     public function supports(Type $type, array $context = []): bool
     {
-        return $type->isA(TypeIdentifier::MIXED);
+        return $type instanceof Type\BuiltinType
+            && $type->isA(TypeIdentifier::MIXED);
     }
 }

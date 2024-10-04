@@ -29,6 +29,7 @@ final class BoolDescriber implements SchemaDescriberInterface
 
     public function supports(Type $type, array $context = []): bool
     {
-        return $type->isA(TypeIdentifier::BOOL);
+        return $type instanceof Type\BuiltinType
+            && $type->isA(TypeIdentifier::BOOL);
     }
 }

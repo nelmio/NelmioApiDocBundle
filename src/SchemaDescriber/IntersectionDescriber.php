@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\SchemaDescriber;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations\Schema;
+use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\IntersectionType;
 
@@ -29,6 +30,7 @@ final class IntersectionDescriber implements SchemaDescriberInterface, SchemaDes
     {
         $weakContext = Util::createWeakContext($schema->_context);
 
+        $schema->oneOf = Generator::UNDEFINED !== $schema->oneOf ? $schema->oneOf : [];
         foreach ($type->getTypes() as $innerType) {
             $schema->oneOf[] = $childSchema = new Schema([
                 '_context' => $weakContext

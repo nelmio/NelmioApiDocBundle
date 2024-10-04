@@ -11,6 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\SchemaDescriber;
 
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use OpenApi\Annotations\Schema;
 use Symfony\Component\TypeInfo\Type;
 
@@ -19,8 +21,10 @@ use Symfony\Component\TypeInfo\Type;
  *
  * @experimental
  */
-final class ChainDescriber implements SchemaDescriberInterface
+final class ChainDescriber implements SchemaDescriberInterface, ModelRegistryAwareInterface
 {
+    use ModelRegistryAwareTrait;
+
     /** @var iterable<SchemaDescriberInterface> */
     private iterable $describers;
 
@@ -41,10 +45,9 @@ final class ChainDescriber implements SchemaDescriberInterface
                 continue;
             }
 
-            // TODO: Implement proper dependency injection
-            //            if ($describer instanceof ModelRegistryAwareInterface) {
-            //                $describer->setModelRegistry($this->modelRegistry);
-            //            }
+            if ($describer instanceof ModelRegistryAwareInterface) {
+                $describer->setModelRegistry($this->modelRegistry);
+            }
 
             if ($describer instanceof SchemaDescriberAwareInterface) {
                 $describer->setDescriber($this);

@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\SchemaDescriber;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations\Schema;
+use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\UnionType;
 
@@ -29,6 +30,7 @@ final class UnionDescriber implements SchemaDescriberInterface, SchemaDescriberA
     {
         $weakContext = Util::createWeakContext($schema->_context);
 
+        $schema->allOf = Generator::UNDEFINED !== $schema->allOf ? $schema->allOf : [];
         foreach ($type->getTypes() as $innerType) {
             $schema->allOf[] = $childSchema = new Schema([
                 '_context' => $weakContext

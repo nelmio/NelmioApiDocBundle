@@ -30,6 +30,7 @@ final class FloatDescriber implements SchemaDescriberInterface
 
     public function supports(Type $type, array $context = []): bool
     {
-        return $type->isA(TypeIdentifier::FLOAT);
+        return $type instanceof Type\BuiltinType
+            && $type->isA(TypeIdentifier::FLOAT);
     }
 }
