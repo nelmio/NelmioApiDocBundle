@@ -189,10 +189,6 @@
             <tag name="nelmio_api_doc.schema_describer" />
         </service>
 
-        <service id="nelmio_api_doc.schema_describer.enum" class="Nelmio\ApiDocBundle\SchemaDescriber\EnumDescriber" public="false">
-            <tag name="nelmio_api_doc.schema_describer" />
-        </service>
-
         <service id="nelmio_api_doc.schema_describer.float" class="Nelmio\ApiDocBundle\SchemaDescriber\FloatDescriber" public="false">
             <tag name="nelmio_api_doc.schema_describer" />
         </service>

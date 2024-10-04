@@ -34,7 +34,7 @@ final class IntersectionDescriber implements SchemaDescriberInterface, SchemaDes
         }));
 
         // Ensure that non $ref schemas are not described in allOf
-        if (1 === count($innerTypes) && !$type instanceof Type\ObjectType && !$type instanceof Type\EnumType) {
+        if (1 === count($innerTypes) && !$innerTypes[0] instanceof Type\ObjectType) {
             $this->describer->describe($innerTypes[0], $schema, $context);
 
             return;

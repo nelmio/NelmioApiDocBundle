@@ -34,7 +34,7 @@ final class UnionDescriber implements SchemaDescriberInterface, SchemaDescriberA
         }));
 
         // Ensure that non $ref schemas are not described in oneOf
-        if (1 === count($innerTypes) && !$type instanceof Type\ObjectType && !$type instanceof Type\EnumType) {
+        if (1 === count($innerTypes) && !$innerTypes[0] instanceof Type\ObjectType) {
             $this->describer->describe($innerTypes[0], $schema, $context);
 
             return;
