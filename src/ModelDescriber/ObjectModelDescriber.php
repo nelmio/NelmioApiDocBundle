@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
+use Nelmio\ApiDocBundle\SchemaDescriber\SchemaDescriberInterface;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
@@ -34,7 +35,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private PropertyInfoExtractorInterface $propertyInfo;
     private ?ClassMetadataFactoryInterface $classMetadataFactory;
     private ?Reader $doctrineReader;
-    /** @var PropertyDescriberInterface|PropertyDescriberInterface[] */
+    /** @var PropertyDescriberInterface|PropertyDescriberInterface[]|SchemaDescriberInterface */
     private $propertyDescriber;
     /** @var string[] */
     private array $mediaTypes;
@@ -43,9 +44,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private bool $useValidationGroups;
 
     /**
-     * @param PropertyDescriberInterface|PropertyDescriberInterface[]      $propertyDescribers
-     * @param (NameConverterInterface&AdvancedNameConverterInterface)|null $nameConverter
-     * @param string[]                                                     $mediaTypes
+     * @param PropertyDescriberInterface|PropertyDescriberInterface[]|SchemaDescriberInterface $propertyDescribers
+     * @param (NameConverterInterface&AdvancedNameConverterInterface)|null                     $nameConverter
+     * @param string[]                                                                         $mediaTypes
      */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
@@ -59,7 +60,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         if (is_iterable($propertyDescribers)) {
             trigger_deprecation('nelmio/api-doc-bundle', '4.17', 'Passing an array of PropertyDescriberInterface to %s() is deprecated. Pass a single PropertyDescriberInterface instead.', __METHOD__);
         } else {
-            if (!$propertyDescribers instanceof PropertyDescriberInterface) {
+            if (!$propertyDescribers instanceof PropertyDescriberInterface && !$propertyDescribers instanceof SchemaDescriberInterface) {
                 throw new \InvalidArgumentException(sprintf('Argument 3 passed to %s() must be an array of %s or a single %s.', __METHOD__, PropertyDescriberInterface::class, PropertyDescriberInterface::class));
             }
         }
@@ -175,12 +176,36 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 continue;
             }
 
-            $types = $this->propertyInfo->getTypes($class, $propertyName);
-            if (null === $types || 0 === count($types)) {
-                throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
-            }
+            /*
+             * @experimental
+             */
+            if ($this->propertyDescriber instanceof SchemaDescriberInterface) {
+                if (false === method_exists($this->propertyInfo, 'getType')) {
+                    throw new \RuntimeException('The PropertyInfo component is missing the "getType" method. Are you running on version 7.1?');
+                }
 
-            $this->describeProperty($types, $model, $property, $propertyName, $schema);
+                $type = $this->propertyInfo->getType($class, $propertyName, $context);
+                if (null === $type) {
+                    throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
+                }
+
+                if ($this->propertyDescriber instanceof ModelRegistryAwareInterface) {
+                    $this->propertyDescriber->setModelRegistry($this->modelRegistry);
+                }
+
+                if (!$this->propertyDescriber->supports($type, $context)) {
+                    throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $type->__toString(), $model->getType()->getClassName(), $propertyName));
+                }
+
+                $this->propertyDescriber->describe($type, $property, $context);
+            } else {
+                $types = $this->propertyInfo->getTypes($class, $propertyName);
+                if (null === $types || 0 === count($types)) {
+                    throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
+                }
+
+                $this->describeProperty($types, $model, $property, $propertyName, $schema);
+            }
         }
     }
 

@@ -164,6 +164,11 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 array_map(function ($area) { return new Reference(sprintf('nelmio_api_doc.generator.%s', $area)); }, array_keys($config['areas']))
             ));
 
+        if (true === $config['experimental_type_info']) {
+            $container->getDefinition('nelmio_api_doc.model_describers.object')
+                ->setArgument(2, new Reference('nelmio_api_doc.schema_describer.chain'));
+        }
+
         $container->getDefinition('nelmio_api_doc.model_describers.object')
             ->setArgument(3, $config['media_types']);
 
