@@ -42,14 +42,12 @@ class AnnotationsReader
         );
     }
 
-    public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema): UpdateClassDefinitionResult
+    public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema): bool
     {
         $this->openApiAnnotationsReader->updateSchema($reflectionClass, $schema);
         $this->symfonyConstraintAnnotationReader->setSchema($schema);
 
-        return new UpdateClassDefinitionResult(
-            $this->shouldDescribeModelProperties($schema)
-        );
+        return $this->shouldDescribeModelProperties($schema);
     }
 
     /**
