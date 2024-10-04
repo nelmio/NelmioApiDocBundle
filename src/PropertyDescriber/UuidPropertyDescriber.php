@@ -15,6 +15,9 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Uid\AbstractUid;
 
+/**
+ * @deprecated in favor of a model describer {@see UuidModelDescriber}
+ */
 final class UuidPropertyDescriber implements PropertyDescriberInterface
 {
     /**
