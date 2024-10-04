@@ -13,29 +13,32 @@ namespace Nelmio\ApiDocBundle\SchemaDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
+use Nelmio\ApiDocBundle\Model\Model;
 use OpenApi\Annotations\Schema;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
-use Symfony\Component\TypeInfo\Type\BuiltinType;
+use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
- * @implements SchemaDescriberInterface<BuiltinType>
+ * @implements SchemaDescriberInterface<ObjectType>
  *
  * @experimental
  */
-final class ObjectDescriber implements SchemaDescriberInterface, ModelRegistryAwareInterface
+final class ObjectClassDescriber implements SchemaDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        $schema->type = 'object';
-        $schema->additionalProperties = true;
+        $schema->ref = $this->modelRegistry->register(
+            new Model(new LegacyType('object', false, $type->getClassName()), null, null, $context)
+        );
     }
 
     public function supports(Type $type, array $context = []): bool
     {
-        return $type instanceof BuiltinType
+        return $type instanceof ObjectType
             && $type->isA(TypeIdentifier::OBJECT);
     }
 }

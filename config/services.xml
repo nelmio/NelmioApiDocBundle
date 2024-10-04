@@ -213,6 +213,10 @@
             <tag name="nelmio_api_doc.schema_describer" />
         </service>
 
+        <service id="nelmio_api_doc.schema_describer.object_class" class="Nelmio\ApiDocBundle\SchemaDescriber\ObjectClassDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
         <service id="nelmio_api_doc.schema_describer.object" class="Nelmio\ApiDocBundle\SchemaDescriber\ObjectDescriber" public="false">
             <tag name="nelmio_api_doc.schema_describer" />
         </service>
