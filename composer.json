@@ -58,6 +58,7 @@
         "symfony/twig-bundle": "^5.4 || ^6.4 || ^7.0",
         "symfony/uid": "^5.4 || ^6.4 || ^7.0",
         "symfony/validator": "^5.4 || ^6.4 || ^7.0",
+        "symfony/type-info": "^7.1",
         "willdurand/hateoas-bundle": "^1.0 || ^2.0"
     },
     "conflict": {
@@ -76,7 +77,8 @@
         "symfony/serializer": "For describing your models.",
         "symfony/twig-bundle": "For using the Swagger UI.",
         "symfony/validator": "For describing the validation constraints in your models.",
-        "willdurand/hateoas-bundle": "For extracting HATEOAS metadata."
+        "willdurand/hateoas-bundle": "For extracting HATEOAS metadata.",
+        "symfony/type-info": "For using the type info extractor."
     },
     "autoload": {
         "psr-4": {
