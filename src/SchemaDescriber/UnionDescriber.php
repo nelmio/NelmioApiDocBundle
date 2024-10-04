@@ -16,6 +16,7 @@ use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\UnionType;
+use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
  * @implements SchemaDescriberInterface<UnionType>
@@ -28,10 +29,23 @@ final class UnionDescriber implements SchemaDescriberInterface, SchemaDescriberA
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        $weakContext = Util::createWeakContext($schema->_context);
+        $innerTypes = array_values(array_filter($type->getTypes(), function (Type $innerType) {
+            return !$innerType->isA(TypeIdentifier::NULL);
+        }));
 
-        $schema->oneOf = Generator::UNDEFINED !== $schema->oneOf ? $schema->oneOf : [];
-        foreach ($type->getTypes() as $innerType) {
+        // Ensure that non $ref schemas are not described in oneOf
+        if (1 === count($innerTypes) && !$type instanceof Type\ObjectType && !$type instanceof Type\EnumType) {
+            $this->describer->describe($innerTypes[0], $schema, $context);
+
+            return;
+        }
+
+        $weakContext = Util::createWeakContext($schema->_context);
+        foreach ($innerTypes as $innerType) {
+            if (Generator::UNDEFINED === $schema->oneOf) {
+                $schema->oneOf = [];
+            }
+
             $schema->oneOf[] = $childSchema = new Schema([
                 '_context' => $weakContext
             ]);

@@ -16,6 +16,7 @@ use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\IntersectionType;
+use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
  * @implements SchemaDescriberInterface<IntersectionType>
@@ -28,10 +29,23 @@ final class IntersectionDescriber implements SchemaDescriberInterface, SchemaDes
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        $weakContext = Util::createWeakContext($schema->_context);
+        $innerTypes = array_values(array_filter($type->getTypes(), function (Type $innerType) {
+            return !$innerType->isA(TypeIdentifier::NULL);
+        }));
 
-        $schema->allOf = Generator::UNDEFINED !== $schema->allOf ? $schema->allOf : [];
-        foreach ($type->getTypes() as $innerType) {
+        // Ensure that non $ref schemas are not described in allOf
+        if (1 === count($innerTypes) && !$type instanceof Type\ObjectType && !$type instanceof Type\EnumType) {
+            $this->describer->describe($innerTypes[0], $schema, $context);
+
+            return;
+        }
+
+        $weakContext = Util::createWeakContext($schema->_context);
+        foreach ($innerTypes as $innerType) {
+            if (Generator::UNDEFINED === $schema->allOf) {
+                $schema->allOf = [];
+            }
+
             $schema->allOf[] = $childSchema = new Schema([
                 '_context' => $weakContext
             ]);
