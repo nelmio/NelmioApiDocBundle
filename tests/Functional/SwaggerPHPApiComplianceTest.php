@@ -30,7 +30,7 @@ class SwaggerPHPApiComplianceTest extends WebTestCase
         self::assertTrue($root->is('version'));
 
         foreach ((new Analysis([$openApi], Util::createContext()))->annotations as $annotation) {
-            self::assertSame($annotation->_context->version, $root->version);
+            self::assertSame($annotation->_context->getVersion(), $root->getVersion());
         }
     }
 }
