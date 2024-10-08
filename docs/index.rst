@@ -109,7 +109,7 @@ It generates an OpenAPI documentation from your Symfony app thanks to
 routes, etc.
 
 If you configured the ``app.swagger_ui`` route above, you can browse your
-documentation at `http://example.org/api/doc`.
+documentation at ``http://example.org/api/doc``.
 
 Using the bundle
 ----------------
@@ -350,7 +350,7 @@ properties and validator constraints. Take the model class below:
         }
 
 The ``NotBlank`` constraint will apply only to the ``default`` and ``create``
-group, but not ``update``. In more practical terms: the `username` property
+group, but not ``update``. In more practical terms: the ``username`` property
 would show as ``required`` for both model create and default, but not update.
 When using code generators to build API clients, this often translates into
 client side validation and types. ``NotBlank`` adding ``required`` will cause
@@ -509,7 +509,7 @@ General PHP objects
         nelmio_api_doc:
             models: { use_jms: false }
 
-    Alternatively, it is also possible to opt out of JMS serializer usage per endpoint by setting `useJms` in the serializationContext:
+    Alternatively, it is also possible to opt out of JMS serializer usage per endpoint by setting ``useJms`` in the serializationContext:
 
     .. configuration-block::
 
