@@ -11,11 +11,14 @@
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
+use Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
 /**
  * Mark a property as required if it is not nullable.
+ *
+ * @deprecated {@see ObjectModelDescriber::markRequiredProperties()}
  */
 final class RequiredPropertyDescriber implements PropertyDescriberInterface, PropertyDescriberAwareInterface
 {
