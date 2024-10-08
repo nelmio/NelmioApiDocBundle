@@ -127,7 +127,7 @@ jobs:
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
         with:
-          symfony-version: "7.0.*"
+          symfony-version: "7.1.*"
           install-doctrine-annotations: false
 
       - name: Run PHPStan

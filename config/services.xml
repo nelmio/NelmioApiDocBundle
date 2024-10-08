@@ -96,6 +96,14 @@
             <tag name="nelmio_api_doc.model_describer" priority="100"/>
         </service>
 
+        <service id="nelmio_api_doc.model_describers.datetime" class="Nelmio\ApiDocBundle\ModelDescriber\DateTimeModelDescriber" public="false">
+            <tag name="nelmio_api_doc.model_describer" priority="100" />
+        </service>
+
+        <service id="nelmio_api_doc.model_describers.uuid" class="Nelmio\ApiDocBundle\ModelDescriber\UuidModelDescriber" public="false">
+            <tag name="nelmio_api_doc.model_describer" priority="100" />
+        </service>
+
         <service id="nelmio_api_doc.model_describers.object_fallback" class="Nelmio\ApiDocBundle\ModelDescriber\FallbackObjectModelDescriber" public="false">
             <tag name="nelmio_api_doc.model_describer" priority="-1000" />
         </service>
@@ -139,10 +147,6 @@
             <tag name="nelmio_api_doc.object_model.property_describer" />
         </service>
 
-        <service id="nelmio_api_doc.object_model.property_describers.required" class="Nelmio\ApiDocBundle\PropertyDescriber\RequiredPropertyDescriber" public="false">
-            <tag name="nelmio_api_doc.object_model.property_describer" />
-        </service>
-
         <service id="nelmio_api_doc.object_model.property_describers.object" class="Nelmio\ApiDocBundle\PropertyDescriber\ObjectPropertyDescriber" public="false">
             <tag name="nelmio_api_doc.object_model.property_describer" priority="-1000" />
         </service>
@@ -164,6 +168,61 @@
         <!-- Swagger processors -->
         <service id="nelmio_api_doc.swagger.processor.nullable_property" class="Nelmio\ApiDocBundle\Processor\NullablePropertyProcessor">
             <tag name="nelmio_api_doc.swagger.processor" />
+        </service>
+
+        <!-- Experimental schema describers (symfony/type-info) -->
+        <service id="nelmio_api_doc.schema_describer.chain" class="Nelmio\ApiDocBundle\SchemaDescriber\ChainDescriber" public="false">
+            <argument type="tagged" tag="nelmio_api_doc.schema_describer" />
+
+            <tag name="nelmio_api_doc.schema_describer" priority="100" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.bool" class="Nelmio\ApiDocBundle\SchemaDescriber\BoolDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.dictionary" class="Nelmio\ApiDocBundle\SchemaDescriber\DictionaryDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.float" class="Nelmio\ApiDocBundle\SchemaDescriber\FloatDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.integer" class="Nelmio\ApiDocBundle\SchemaDescriber\IntegerDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.intersection" class="Nelmio\ApiDocBundle\SchemaDescriber\IntersectionDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.list" class="Nelmio\ApiDocBundle\SchemaDescriber\ListDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.mixed" class="Nelmio\ApiDocBundle\SchemaDescriber\MixedDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.nullable" class="Nelmio\ApiDocBundle\SchemaDescriber\NullableDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.object_class" class="Nelmio\ApiDocBundle\SchemaDescriber\ObjectClassDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.object" class="Nelmio\ApiDocBundle\SchemaDescriber\ObjectDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.string" class="Nelmio\ApiDocBundle\SchemaDescriber\StringDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
+        </service>
+
+        <service id="nelmio_api_doc.schema_describer.union" class="Nelmio\ApiDocBundle\SchemaDescriber\UnionDescriber" public="false">
+            <tag name="nelmio_api_doc.schema_describer" />
         </service>
     </services>
 
