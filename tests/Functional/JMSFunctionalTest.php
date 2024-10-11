@@ -370,6 +370,31 @@ class JMSFunctionalTest extends WebTestCase
                 'final',
             ],
         ], json_decode($this->getModel('ArticleType81')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'JMSEnum81',
+            'type' => 'object',
+            'properties' => [
+                'enum_value' => [
+                    '$ref' => '#/components/schemas/ArticleType81'
+                ],
+                'enum_values' => [
+                    'type' => 'array',
+                    'items' => [
+                        '$ref' => '#/components/schemas/ArticleType81'
+                    ]
+                ],
+            ]
+        ], json_decode($this->getModel('JMSEnum81')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'ArticleType81',
+            'type' => 'string',
+            'enum' => [
+                'draft',
+                'final'
+            ]
+        ], json_decode($this->getModel('ArticleType81')->toJson(), true));
     }
 
     public function testModeDiscriminatorMap(): void
