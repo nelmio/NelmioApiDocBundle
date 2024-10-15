@@ -203,14 +203,12 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes->add($name, $route);
         $area = 'area';
 
-        $reflectionMethodStub = $this->createMock(\ReflectionMethod::class);
-
         $annotationReader = null;
         if (interface_exists(Reader::class)) {
             $annotationReader = $this->createMock(Reader::class);
             $annotationReader
                 ->method('getMethodAnnotation')
-                ->with($reflectionMethodStub, Areas::class)
+                ->with(self::isInstanceOf(\ReflectionMethod::class), Areas::class)
                 ->willReturn(new Areas(['value' => [$area]]))
             ;
         }
