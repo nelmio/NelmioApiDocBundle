@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * @internal
  */
-class ControllerReflector
+final class ControllerReflector
 {
     private ContainerInterface $container;
     /**
