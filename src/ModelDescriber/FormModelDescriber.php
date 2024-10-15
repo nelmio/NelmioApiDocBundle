@@ -74,9 +74,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        if (method_exists(AbstractType::class, 'setDefaultOptions')) {
-            throw new \LogicException('symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.');
-        }
         if (null === $this->formFactory) {
             throw new \LogicException('You need to enable forms in your application to use a form as a model.');
         }
