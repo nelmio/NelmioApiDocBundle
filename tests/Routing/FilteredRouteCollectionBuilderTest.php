@@ -16,6 +16,7 @@ use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
+use Nelmio\ApiDocBundle\Tests\Functional\Controller\ApiController;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Context;
@@ -203,8 +204,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $area = 'area';
 
         $reflectionMethodStub = $this->createMock(\ReflectionMethod::class);
-        $controllerReflectorStub = $this->createMock(ControllerReflector::class);
-        $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethodStub);
 
         $annotationReader = null;
         if (interface_exists(Reader::class)) {
@@ -218,7 +217,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
             $annotationReader,
-            $controllerReflectorStub,
+            $this->createControllerReflector(),
             $area,
             $options
         );
@@ -232,12 +231,12 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         yield from [
             'with annotation only' => [
                 'r10',
-                new Route('/api/areas/new', ['_controller' => 'ApiController::newAreaAction']),
+                new Route('/api/areas/new', ['_controller' => ApiController::class.'::newAreaAction']),
                 ['with_annotation' => true],
             ],
             'with annotation and path patterns' => [
                 'r10',
-                new Route('/api/areas/new', ['_controller' => 'ApiController::newAreaAction']),
+                new Route('/api/areas/new', ['_controller' => ApiController::class.'::newAreaAction']),
                 ['path_patterns' => ['^/api'], 'with_annotation' => true],
             ],
         ];
@@ -246,12 +245,12 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             yield from [
                 'with attribute only' => [
                     'r10',
-                    new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
+                    new Route('/api/areas_attributes/new', ['_controller' => ApiController::class.':newAreaActionAttributes']),
                     ['with_annotation' => true],
                 ],
                 'with attribute and path patterns' => [
                     'r10',
-                    new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
+                    new Route('/api/areas_attributes/new', ['_controller' => ApiController::class.'::newAreaActionAttributes']),
                     ['path_patterns' => ['^/api'], 'with_annotation' => true],
                 ],
             ];
@@ -306,10 +305,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes->add($name, $route);
         $area = 'area';
 
-        $reflectionMethodStub = $this->createMock(\ReflectionMethod::class);
-        $controllerReflectorStub = $this->createMock(ControllerReflector::class);
-        $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethodStub);
-
         $annotationReader = null;
         if (interface_exists(Reader::class)) {
             $annotationReader = $this->createMock(Reader::class);
@@ -321,7 +316,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
             $annotationReader,
-            $controllerReflectorStub,
+            $this->createControllerReflector(),
             $area,
             $options
         );
@@ -334,21 +329,21 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     {
         yield 'non matching route without Annotation' => [
             'r10',
-            new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+            new Route('/api/foo', ['_controller' => ApiController::class.'::newAreaAction']),
             [],
             ['disable_default_routes' => true],
             0,
         ];
         yield 'matching route with Nelmio Annotation' => [
             'r10',
-            new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+            new Route('/api/foo', ['_controller' => ApiController::class.'::newAreaAction']),
             [new Operation(['_context' => new Context()])],
             ['disable_default_routes' => true],
             1,
         ];
         yield 'matching route with Swagger Annotation' => [
             'r10',
-            new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+            new Route('/api/foo', ['_controller' => ApiController::class.'::newAreaAction']),
             [new Parameter(['_context' => new Context()])],
             ['disable_default_routes' => true],
             1,
