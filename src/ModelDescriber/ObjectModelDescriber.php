@@ -235,21 +235,30 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $types[0]->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
     }
 
+    /**
+     * Mark properties as required while ordering them in the same order as the properties of the schema.
+     */
     private function markRequiredProperties(OA\Schema $schema): void
     {
         if (Generator::isDefault($properties = $schema->properties)) {
             return;
         }
 
+        $newRequired = [];
         foreach ($properties as $property) {
-            if (true === $property->nullable || !Generator::isDefault($property->default)) {
+            if (is_array($schema->required) && \in_array($property->property, $schema->required, true)) {
+                $newRequired[] = $property->property;
                 continue;
             }
 
-            $existingRequiredFields = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
-            $existingRequiredFields[] = $property->property;
+            if (true === $property->nullable || !Generator::isDefault($property->default)) {
+                continue;
+            }
+            $newRequired[] = $property->property;
+        }
 
-            $schema->required = array_values(array_unique($existingRequiredFields));
+        if ([] !== $newRequired) {
+            $schema->required = array_values(array_unique($newRequired));
         }
     }
 

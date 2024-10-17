@@ -569,7 +569,7 @@ class FunctionalTest extends WebTestCase
         ];
 
         if (Helper::isCompoundValidatorConstraintSupported()) {
-            array_splice($expected['required'], 2, 0, 'propertyWithCompoundValidationRule');
+            $expected['required'][] = 'propertyWithCompoundValidationRule';
             $expected['properties']['propertyWithCompoundValidationRule'] = [
                 'type' => 'integer',
                 'maximum' => 5,
