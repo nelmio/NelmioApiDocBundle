@@ -1,0 +1,2 @@
+# Ignoring deprecations from Nelmio\ApiDocBundle 4.17.0
+/^Since nelmio\/api-doc-bundle 4\.17\.0: Using the \$groups parameter of "Nelmio\\ApiDocBundle\\PropertyDescriber\\(PropertyDescriber|IntegerPropertyDescriber|NullablePropertyDescriber|StringPropertyDescriber|ObjectPropertyDescriber)::describe\(\)" is deprecated/

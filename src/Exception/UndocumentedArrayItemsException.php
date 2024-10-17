@@ -11,6 +11,13 @@
 
 namespace Nelmio\ApiDocBundle\Exception;
 
+trigger_deprecation(
+    'nelmio/api-doc-bundle',
+    '4.17.0',
+    'The "%s" class is deprecated and will be removed in a future version',
+    UndocumentedArrayItemsException::class,
+);
+
 /**
  * @deprecated since 4.17, this exception is not used anymore
  */

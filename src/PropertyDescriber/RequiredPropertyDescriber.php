@@ -28,6 +28,24 @@ final class RequiredPropertyDescriber implements PropertyDescriberInterface, Pro
      */
     public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
     {
+        if (null === $schema) {
+            trigger_deprecation(
+                'nelmio/api-doc-bundle',
+                '4.15.0',
+                '"%s()" will have a new "OA\Schema $schema" argument in a future version. Not defining it or passing null is deprecated',
+                __METHOD__
+            );
+        }
+
+        if (null !== $groups) {
+            trigger_deprecation(
+                'nelmio/api-doc-bundle',
+                '4.17.0',
+                'Using the $groups parameter of "%s()" is deprecated and will be removed in a future version. Pass groups via $context[\'groups\']',
+                __METHOD__
+            );
+        }
+
         $this->propertyDescriber->describe($types, $property, $groups, $schema, $context);
 
         if (!$property instanceof OA\Property) {

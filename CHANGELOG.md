@@ -15,6 +15,11 @@
 ## 4.30.0
 * Create top level OpenApi Tag from Tags top level annotations/attributes
 
+## 4.25.3
+
+* Calling `DocumentationExtension::getExtendedType()` has been deprecated in favor of `DocumentationExtension::getExtendedTypes()` to align with the deprecation introduced with `symfony/symfony` version `4.2`.
+
+
 ## 4.26.0
 
 * Add ability to configure UI through configuration
@@ -149,6 +154,11 @@ doc-api:
 * Added Redocly as an alternative to Swagger UI. https://github.com/Redocly/redoc.
 * Added support for describing dictionary types in OpenAPI 3.0.
 
+## 4.17.0
+
+* Passing groups to `PropertyDescriberInterface::describe()` via the `$groups` parameter is deprecated, the parameter will get removed in a future version. Pass groups via `$context['groups']` instead.
+
+
 ## 4.0.0
 
 * Added support of OpenAPI 3.0. The internals were completely reworked and this version introduces BC breaks.
@@ -175,7 +185,7 @@ doc-api:
 
 * Add a documentation form extension. Use the ``documentation`` option to define how a form field is documented.
 * Allow references to config definitions in controllers.
-* Using `@Model` implicitely in `@SWG\Schema`, `@SWG\Items` and `@SWG\Property` is deprecated. Use `ref=@Model()` instead.
+* Using `@Model` implicitly in `@SWG\Schema`, `@SWG\Items` and `@SWG\Property` is deprecated. Use `ref=@Model()` instead.
 
   Before:
   ```php
