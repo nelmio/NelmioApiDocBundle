@@ -19,12 +19,11 @@ interface PropertyDescriberInterface
     /**
      * @param Type[]               $types
      * @param string[]|null        $groups  Deprecated use $context['groups'] instead
-     * @param Schema               $schema  Allows to make changes inside of the schema (e.g. adding required fields)
      * @param array<string, mixed> $context Context options for describing the property
      *
      * @return void
      */
-    public function describe(array $types, Schema $property, ?array $groups = null /* , ?Schema $schema = null */ /* , array $context = [] */);
+    public function describe(array $types, Schema $property, ?array $groups = null /* , array $context = [] */);
 
     /**
      * @param Type[] $types

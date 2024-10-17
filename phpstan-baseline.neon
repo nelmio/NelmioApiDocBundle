@@ -36,11 +36,6 @@ parameters:
 			path: src/PropertyDescriber/PropertyDescriberInterface.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$schema$#"
-			count: 1
-			path: src/PropertyDescriber/PropertyDescriberInterface.php
-
-		-
 			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: src/PropertyDescriber/RequiredPropertyDescriber.php
