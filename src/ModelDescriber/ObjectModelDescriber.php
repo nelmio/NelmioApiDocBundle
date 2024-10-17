@@ -92,7 +92,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         );
         $classResult = $annotationsReader->updateDefinition($reflClass, $schema);
 
-        if (!$classResult->shouldDescribeModelProperties()) {
+        if (!$classResult) {
             return;
         }
 

@@ -87,7 +87,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         );
         $classResult = $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
 
-        if (!$classResult->shouldDescribeModelProperties()) {
+        if (!$classResult) {
             return;
         }
 
