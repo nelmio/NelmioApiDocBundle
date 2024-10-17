@@ -16,7 +16,7 @@
         <ini name="memory_limit" value="512M" />
 
         <!-- add "generateBaseline=true&amp;" to the value to generate a new baseline. Keep in mind to clear the test cache before. -->
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="baselineFile=./phpunit-baseline.json&amp;max[self]=0" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="ignoreFile=./phpunit-ignore.txt&amp;max[self]=0" />
     </php>
 
     <testsuites>

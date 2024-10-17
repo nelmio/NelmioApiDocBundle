@@ -278,18 +278,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // Import the base configuration
         $container->getDefinition('nelmio_api_doc.describers.config')->replaceArgument(0, $config['documentation']);
-
-        // Compatibility Symfony
-        $controllerNameConverter = null;
-        if ($container->hasDefinition('.legacy_controller_name_converter')) { // 4.4
-            $controllerNameConverter = $container->getDefinition('.legacy_controller_name_converter');
-        } elseif ($container->hasDefinition('controller_name_converter')) { // < 4.4
-            $controllerNameConverter = $container->getDefinition('controller_name_converter');
-        }
-
-        if (null !== $controllerNameConverter) {
-            $container->getDefinition('nelmio_api_doc.controller_reflector')->setArgument(1, $controllerNameConverter);
-        }
     }
 
     /**

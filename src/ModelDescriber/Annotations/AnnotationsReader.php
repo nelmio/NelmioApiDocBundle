@@ -70,9 +70,12 @@ class AnnotationsReader
     }
 
     /**
-     * if an objects schema type and ref are undefined OR the object was manually
-     * defined as an object, then we're good to do the normal describe flow of
-     * class properties.
+     * Whether the model describer should continue reading class properties
+     * after updating the open api schema from an `OA\Schema` definition.
+     *
+     * Users may manually define a `type` or `ref` on a schema, and if that's the case
+     * model describers should _probably_ not describe any additional properties or try
+     * to merge in properties.
      */
     private function shouldDescribeModelProperties(OA\Schema $schema): bool
     {
