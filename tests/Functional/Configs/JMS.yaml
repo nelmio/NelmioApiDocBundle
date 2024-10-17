@@ -1,0 +1,3 @@
+nelmio_api_doc:
+  models:
+    use_jms: true

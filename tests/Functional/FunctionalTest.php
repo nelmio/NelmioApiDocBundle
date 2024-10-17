@@ -252,6 +252,9 @@ class FunctionalTest extends WebTestCase
                 ],
                 'schema' => 'User',
                 'required' => [
+                    'email',
+                    'location',
+                    'friendsNumber',
                     'creationDate',
                     'users',
                     'status',

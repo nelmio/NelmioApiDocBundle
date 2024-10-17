@@ -18,7 +18,6 @@ use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryStr
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use OpenApi\Processors\ProcessorInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
@@ -27,7 +26,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  *
  * @see SymfonyMapQueryStringDescriber
  */
-final class MapQueryStringProcessor implements ProcessorInterface
+final class MapQueryStringProcessor
 {
     public function __invoke(Analysis $analysis): void
     {

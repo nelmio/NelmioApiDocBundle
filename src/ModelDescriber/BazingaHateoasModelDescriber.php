@@ -71,7 +71,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 
             $property = Util::getProperty($relationSchema, $relation->getName());
             if (null !== $embedded && method_exists($embedded, 'getType') && null !== $embedded->getType()) {
-                $this->JMSModelDescriber->describeItem($embedded->getType(), $property, $context);
+                $this->JMSModelDescriber->describeItem($embedded->getType(), $property, $context, $model->getSerializationContext());
             } else {
                 $property->type = 'object';
             }

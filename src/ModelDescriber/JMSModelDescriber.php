@@ -119,7 +119,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         );
         $classResult = $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
 
-        if (!$classResult->shouldDescribeModelProperties()) {
+        if (!$classResult) {
             return;
         }
         $schema->type = 'object';
@@ -200,7 +200,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 continue;
             }
 
-            $this->describeItem($item->type, $property, $context);
+            $this->describeItem($item->type, $property, $context, $model->getSerializationContext());
             $context->popPropertyMetadata();
         }
         $context->popClassMetadata();
@@ -261,6 +261,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function supports(Model $model): bool
     {
+        if (($model->getSerializationContext()['useJms'] ?? null) === false) {
+            return false;
+        }
+
         $className = $model->getType()->getClassName();
 
         try {
@@ -277,8 +281,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      * @internal
      *
      * @param mixed[] $type
+     * @param mixed[] $serializationContext
      */
-    public function describeItem(array $type, OA\Schema $property, Context $context): void
+    public function describeItem(array $type, OA\Schema $property, Context $context, array $serializationContext): void
     {
         $nestedTypeInfo = $this->getNestedTypeInArray($type);
         if (null !== $nestedTypeInfo) {
@@ -295,14 +300,14 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                     return;
                 }
 
-                $this->describeItem($nestedType, $property->additionalProperties, $context);
+                $this->describeItem($nestedType, $property->additionalProperties, $context, $serializationContext);
 
                 return;
             }
 
             $property->type = 'array';
             $property->items = Util::createChild($property, OA\Items::class);
-            $this->describeItem($nestedType, $property->items, $context);
+            $this->describeItem($nestedType, $property->items, $context, $serializationContext);
         } elseif ('array' === $type['name']) {
             $property->type = 'object';
             $property->additionalProperties = true;
@@ -329,8 +334,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             }
 
             $groups = $this->computeGroups($context, $type);
+            unset($serializationContext['groups']);
 
-            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups);
+            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups, null, $serializationContext);
             $modelRef = $this->modelRegistry->register($model);
 
             $customFields = (array) $property->jsonSerialize();

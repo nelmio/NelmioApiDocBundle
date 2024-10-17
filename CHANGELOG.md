@@ -1,8 +1,22 @@
-CHANGELOG
-=========
+# CHANGELOG
 
-4.26.0
------
+## 4.32.0
+
+* Added support to configure `options` and `serializationContext` via `nelmio_api_doc.models.names`.
+* Fixed `serializationContext` not being applied to nested models.
+
+## 4.31.0
+
+* Added support to opt out of JMS serializer usage per endpoint by setting `useJms` in the serializationContext.
+  ```php
+  #[OA\Response(response: 200, content: new Model(type: UserDto::class, serializationContext: ["useJms" => false]))]
+  ```
+
+## 4.30.0
+* Create top level OpenApi Tag from Tags top level annotations/attributes
+
+## 4.26.0
+
 * Add ability to configure UI through configuration
 ```yaml
 nelmio_api_doc:
@@ -15,8 +29,8 @@ nelmio_api_doc:
       deepLinking: true
 ```
 
-4.25.0
------
+## 4.25.0
+
 * Added support for [JMS @Discriminator](https://jmsyst.com/libs/serializer/master/reference/annotations#discriminator) annotation/attribute
   ```php
   #[\JMS\Serializer\Annotation\Discriminator(field: 'type', map: ['car' => Car::class, 'plane' => Plane::class])]
@@ -25,8 +39,8 @@ nelmio_api_doc:
   class Plane extends Vehicle { }
   ```
 
-4.24.0
------
+## 4.24.0
+
 * Added support for some integer ranges (https://phpstan.org/writing-php-code/phpdoc-types#integer-ranges).  
   Annotations attached to integer properties like:
   ```php
@@ -43,8 +57,8 @@ nelmio_api_doc:
 ### Minor breaking change
 Dropped support for PHP 7.2 and PHP 7.3. PHP 7.4 is the minimum required version now.
 
-4.23.0
------
+## 4.23.0
+
 * Cache configuration option `nelmio_api_doc.cache.item_id` now automatically gets the area appended.
   ```yml
   nelmio_api_doc:
@@ -97,8 +111,8 @@ Dropped support for PHP 7.2 and PHP 7.3. PHP 7.4 is the minimum required version
   ```
 * Updated nullable enum handling to align with the behaviour of other object types. It now uses wraps nullable enums with `oneOf` instead of `allOf`.
 
-4.22.0
------
+## 4.22.0
+
 * Updated bundle directory structure to recommended file structure as described in https://symfony.com/doc/7.0/bundles/best_practices.html.
 
   It might be necessary to reinstall the assets:
@@ -120,8 +134,8 @@ doc-api:
     prefix: /api/doc
 ```
 
-4.21.0
------
+## 4.21.0
+
 * Added bundle configuration options `nelmio_api_doc.cache.pool` and `nelmio_api_doc.cache.item_id`.
   ```yml
   nelmio_api_doc:
@@ -130,25 +144,25 @@ doc-api:
           item_id: nelmio_api_doc.docs
   ```
   
-4.20.0
------
+## 4.20.0
+
 * Added Redocly as an alternative to Swagger UI. https://github.com/Redocly/redoc.
 * Added support for describing dictionary types in OpenAPI 3.0.
 
-4.0.0
------
+## 4.0.0
+
 * Added support of OpenAPI 3.0. The internals were completely reworked and this version introduces BC breaks.
 
-3.7.0
------
+## 3.7.0
+
 
 * Added `@SerializedName` annotation support and name converters when using Symfony >= 4.2.
 * Removed pattern added from the Expression Violation message.
 * Added FOSRestBundle 3.x support
 * Added `@SWG` annotations support at methods level in models
 
-3.3.0
------
+## 3.3.0
+
 
 * Usage of Google Fonts was removed. System fonts `serif` / `sans` will be used instead.
   This can lead to a different look on different operating systems.
@@ -157,8 +171,7 @@ doc-api:
 * The Twig template for the Swagger UI now contains blocks to make it easier to overwrite certain parts.
   See the [official documentation](https://symfony.com/doc/current/bundles/NelmioApiDocBundle/customization.html) how to do this.
 
-3.2.0 (2018-03-24)
-------------------
+## 3.2.0 (2018-03-24)
 
 * Add a documentation form extension. Use the ``documentation`` option to define how a form field is documented.
 * Allow references to config definitions in controllers.
@@ -194,8 +207,7 @@ Config
 
 * Added dependency for "symfony/options-resolver:^3.4.4|^4.0"
 
-3.1.0 (2018-01-28)
-------------------
+## 3.1.0 (2018-01-28)
 
 * Added Symfony Validator constraints support
 
@@ -226,8 +238,7 @@ Config
       areas: [ path_patterns: [ /api ] ]
   ```
 
-3.0.0 (2017-12-10)
-------------------
+## 3.0.0 (2017-12-10)
 
 Large refactoring introducing `zircote/swagger-php` for swagger annotations.
 

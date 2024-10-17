@@ -18,7 +18,6 @@ use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapRequestP
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use OpenApi\Processors\ProcessorInterface;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
@@ -28,7 +27,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  *
  * @see SymfonyMapRequestPayloadDescriber
  */
-final class MapRequestPayloadProcessor implements ProcessorInterface
+final class MapRequestPayloadProcessor
 {
     public function __invoke(Analysis $analysis): void
     {

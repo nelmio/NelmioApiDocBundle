@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Analysis;
+use OpenApi\Context;
 
 class SwaggerPHPApiComplianceTest extends WebTestCase
 {
@@ -30,7 +31,12 @@ class SwaggerPHPApiComplianceTest extends WebTestCase
         self::assertTrue($root->is('version'));
 
         foreach ((new Analysis([$openApi], Util::createContext()))->annotations as $annotation) {
-            self::assertSame($annotation->_context->version, $root->version);
+            /* @phpstan-ignore function.alreadyNarrowedType */
+            if (method_exists(Context::class, 'getVersion')) {
+                self::assertSame($annotation->_context->getVersion(), $root->getVersion());
+            } else {
+                self::assertSame($annotation->_context->version, $root->version);
+            }
         }
     }
 }
