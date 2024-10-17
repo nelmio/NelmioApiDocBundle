@@ -148,7 +148,7 @@
                     {
                         "name": "propertyArray[]",
                         "in": "query",
-                        "required": false,
+                        "required": true,
                         "schema": {
                             "type": "array",
                             "items": {
@@ -304,7 +304,7 @@
                         "name": "productIds[]",
                         "in": "query",
                         "description": "List of product ids",
-                        "required": false,
+                        "required": true,
                         "schema": {
                             "description": "List of product ids",
                             "type": "array",
@@ -1103,8 +1103,9 @@
             "SymfonyConstraintsWithValidationGroups": {
                 "required": [
                     "property",
+                    "propertyNotNullOnSpecificGroup",
                     "propertyInDefaultGroup",
-                    "propertyNotNullOnSpecificGroup"
+                    "propertyArray"
                 ],
                 "properties": {
                     "property": {
@@ -1180,7 +1181,8 @@
             },
             "ArrayQueryModel": {
                 "required": [
-                    "ids"
+                    "ids",
+                    "productIds"
                 ],
                 "properties": {
                     "ids": {
@@ -1248,7 +1250,8 @@
             },
             "ArrayQueryModel2": {
                 "required": [
-                    "ids"
+                    "ids",
+                    "productIds"
                 ],
                 "properties": {
                     "ids": {

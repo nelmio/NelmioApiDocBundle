@@ -252,6 +252,9 @@ class FunctionalTest extends WebTestCase
                 ],
                 'schema' => 'User',
                 'required' => [
+                    'email',
+                    'location',
+                    'friendsNumber',
                     'creationDate',
                     'users',
                     'status',
@@ -566,7 +569,7 @@ class FunctionalTest extends WebTestCase
         ];
 
         if (Helper::isCompoundValidatorConstraintSupported()) {
-            $expected['required'][] = 'propertyWithCompoundValidationRule';
+            array_splice($expected['required'], 2, 0, 'propertyWithCompoundValidationRule');
             $expected['properties']['propertyWithCompoundValidationRule'] = [
                 'type' => 'integer',
                 'maximum' => 5,
