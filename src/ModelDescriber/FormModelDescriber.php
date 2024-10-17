@@ -22,7 +22,6 @@ use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -74,9 +73,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        if (method_exists(AbstractType::class, 'setDefaultOptions')) {
-            throw new \LogicException('symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.');
-        }
         if (null === $this->formFactory) {
             throw new \LogicException('You need to enable forms in your application to use a form as a model.');
         }
@@ -91,7 +87,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         );
         $classResult = $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
 
-        if (!$classResult->shouldDescribeModelProperties()) {
+        if (!$classResult) {
             return;
         }
 

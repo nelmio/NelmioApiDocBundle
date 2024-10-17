@@ -67,7 +67,12 @@ final class ModelRegistry
         $this->api = $api;
         $this->logger = new NullLogger();
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
-            $this->alternativeNames[] = $model = new Model(new Type('object', false, $criteria['type']), $criteria['groups']);
+            $this->alternativeNames[] = $model = new Model(
+                new Type('object', false, $criteria['type']),
+                $criteria['groups'],
+                $criteria['options'] ?? null,
+                $criteria['serializationContext'] ?? [],
+            );
             $this->names[$model->getHash()] = $alternativeName;
             $this->registeredModelNames[$alternativeName] = $model;
             Util::getSchema($this->api, $alternativeName);

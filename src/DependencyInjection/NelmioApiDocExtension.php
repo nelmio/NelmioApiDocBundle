@@ -35,6 +35,7 @@ use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -42,7 +43,6 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Routing\RouteCollection;
 
 final class NelmioApiDocExtension extends Extension implements PrependExtensionInterface
@@ -273,18 +273,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // Import the base configuration
         $container->getDefinition('nelmio_api_doc.describers.config')->replaceArgument(0, $config['documentation']);
-
-        // Compatibility Symfony
-        $controllerNameConverter = null;
-        if ($container->hasDefinition('.legacy_controller_name_converter')) { // 4.4
-            $controllerNameConverter = $container->getDefinition('.legacy_controller_name_converter');
-        } elseif ($container->hasDefinition('controller_name_converter')) { // < 4.4
-            $controllerNameConverter = $container->getDefinition('controller_name_converter');
-        }
-
-        if (null !== $controllerNameConverter) {
-            $container->getDefinition('nelmio_api_doc.controller_reflector')->setArgument(1, $controllerNameConverter);
-        }
     }
 
     /**
@@ -303,6 +291,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $aliases[$nameAlias['alias']] = [
                 'type' => $nameAlias['type'],
                 'groups' => $nameAlias['groups'],
+                'options' => $nameAlias['options'],
+                'serializationContext' => $nameAlias['serializationContext'],
             ];
         }
 

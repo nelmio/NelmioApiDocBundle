@@ -16,7 +16,6 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\DiscriminatorMap\JMSAbstractUser
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSDualComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSNamingStrategyConstraints;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSTyped80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChat;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatRoomUser;
@@ -165,20 +164,6 @@ class JMSController80
      * )
      */
     public function discriminatorMapAction()
-    {
-    }
-
-    /**
-     * @Route("/api/jms_typed", methods={"GET"})
-     *
-     * @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *
-     *     @Model(type=JMSTyped80::class)
-     * )
-     */
-    public function typedAction()
     {
     }
 }

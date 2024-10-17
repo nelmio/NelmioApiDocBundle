@@ -56,10 +56,14 @@ class NelmioApiDocExtensionTest extends TestCase
                     'Foo1' => [
                         'type' => 'App\\Foo',
                         'groups' => null,
+                        'options' => null,
+                        'serializationContext' => [],
                     ],
                     'Test1' => [
                         'type' => 'App\\Test',
                         'groups' => null,
+                        'options' => null,
+                        'serializationContext' => [],
                     ],
                 ], $methodCall[1][0]);
                 $foundMethodCall = true;
@@ -75,10 +79,14 @@ class NelmioApiDocExtensionTest extends TestCase
                     'Foo1' => [
                         'type' => 'App\\Bar',
                         'groups' => null,
+                        'options' => null,
+                        'serializationContext' => [],
                     ],
                     'Test1' => [
                         'type' => 'App\\Test',
                         'groups' => null,
+                        'options' => null,
+                        'serializationContext' => [],
                     ],
                 ], $methodCall[1][0]);
                 $foundMethodCall = true;
