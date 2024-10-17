@@ -237,6 +237,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     /**
      * Mark properties as required while ordering them in the same order as the properties of the schema.
+     * Then append the original required properties.
      */
     private function markRequiredProperties(OA\Schema $schema): void
     {
@@ -258,7 +259,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         if ([] !== $newRequired) {
-            $schema->required = array_values(array_unique($newRequired));
+            $originalRequired = Generator::isDefault($schema->required) ? [] : $schema->required;
+
+            $schema->required = array_values(array_unique(array_merge($newRequired, $originalRequired)));
         }
     }
 
