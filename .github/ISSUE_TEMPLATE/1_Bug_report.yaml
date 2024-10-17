@@ -20,6 +20,23 @@ body:
     validations:
       required: true
   - type: textarea
+    id: json
+    attributes:
+      label: JSON OpenApi
+      description: Your generated JSON OpenApi documentation (`bin/console nelmio:apidoc:dump`)
+      value: |
+        <details><summary>JSON OpenApi</summary>
+    
+        ```json
+
+        Replace this text with your JSON (`bin/console nelmio:apidoc:dump`)
+
+        ```
+        
+        </details>
+    validations:
+      required: false
+  - type: textarea
     id: additional-context
     attributes:
       label: Additional context

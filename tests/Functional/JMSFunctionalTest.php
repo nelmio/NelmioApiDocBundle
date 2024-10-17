@@ -360,12 +360,6 @@ class JMSFunctionalTest extends WebTestCase
                 ],
             ],
             'schema' => 'Article81',
-            'required' => [
-                'id',
-                'type',
-                'int_backed_type',
-                'not_backed_type',
-            ],
         ], json_decode($this->getModel('Article81')->toJson(), true));
 
         self::assertEquals([
@@ -425,24 +419,5 @@ class JMSFunctionalTest extends WebTestCase
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_JMS);
-    }
-
-    public function testModelTypedDocumentation(): void
-    {
-        self::assertEquals([
-            'type' => 'object',
-            'properties' => [
-                'id' => ['type' => 'integer'],
-                'user' => ['$ref' => '#/components/schemas/JMSUser'],
-                'name' => ['type' => 'string'],
-                'virtual_friend' => ['$ref' => '#/components/schemas/JMSUser'],
-            ],
-            'required' => [
-                'virtual_friend',
-                'id',
-                'user',
-            ],
-            'schema' => 'JMSTyped',
-        ], json_decode($this->getModel('JMSTyped')->toJson(), true));
     }
 }

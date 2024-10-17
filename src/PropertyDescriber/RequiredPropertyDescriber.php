@@ -16,6 +16,8 @@ use OpenApi\Generator;
 
 /**
  * Mark a property as required if it is not nullable.
+ *
+ * @deprecated {@see ObjectModelDescriber::markRequiredProperties()}
  */
 final class RequiredPropertyDescriber implements PropertyDescriberInterface, PropertyDescriberAwareInterface
 {
