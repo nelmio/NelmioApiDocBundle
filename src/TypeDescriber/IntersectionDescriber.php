@@ -22,10 +22,12 @@ use Symfony\Component\TypeInfo\TypeIdentifier;
  * @implements TypeDescriberInterface<IntersectionType>
  *
  * @experimental
+ *
+ * @internal
  */
 final class IntersectionDescriber implements TypeDescriberInterface, TypeDescriberAwareInterface
 {
-    use SchemaDescriberAwareTrait;
+    use TypeDescriberAwareTrait;
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {

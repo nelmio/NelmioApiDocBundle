@@ -22,6 +22,8 @@ use Symfony\Component\TypeInfo\TypeIdentifier;
  * @implements TypeDescriberInterface<BuiltinType>
  *
  * @experimental
+ *
+ * @internal
  */
 final class ObjectDescriber implements TypeDescriberInterface, ModelRegistryAwareInterface
 {

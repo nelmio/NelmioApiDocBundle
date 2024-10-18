@@ -13,6 +13,8 @@ namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 /**
  * @experimental
+ *
+ * @internal
  */
 trait TypeDescriberAwareTrait
 {

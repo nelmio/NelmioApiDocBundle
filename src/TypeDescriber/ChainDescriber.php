@@ -20,6 +20,8 @@ use Symfony\Component\TypeInfo\Type;
  * @implements TypeDescriberInterface<Type>
  *
  * @experimental
+ *
+ * @internal
  */
 final class ChainDescriber implements TypeDescriberInterface, ModelRegistryAwareInterface
 {

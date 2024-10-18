@@ -22,10 +22,12 @@ use Symfony\Component\TypeInfo\TypeIdentifier;
  * @implements TypeDescriberInterface<UnionType>
  *
  * @experimental
+ *
+ * @internal
  */
 final class UnionDescriber implements TypeDescriberInterface, TypeDescriberAwareInterface
 {
-    use SchemaDescriberAwareTrait;
+    use TypeDescriberAwareTrait;
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
