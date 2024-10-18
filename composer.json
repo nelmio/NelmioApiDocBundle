@@ -58,7 +58,8 @@
         "symfony/twig-bundle": "^5.4 || ^6.4 || ^7.0",
         "symfony/uid": "^5.4 || ^6.4 || ^7.0",
         "symfony/validator": "^5.4 || ^6.4 || ^7.0",
-        "willdurand/hateoas-bundle": "^2.0"
+        "willdurand/hateoas-bundle": "^2.0",
+        "willdurand/negotiation": "^3.0"
     },
     "conflict": {
         "zircote/swagger-php": "4.8.7"
