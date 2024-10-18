@@ -184,7 +184,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                     throw new \RuntimeException('The PropertyInfo component is missing the "getType" method. Are you running on version 7.1?');
                 }
 
-                $type = $this->propertyInfo->getType($class, $propertyName, $context);
+                $type = $this->propertyInfo->getType($class, $propertyName);
                 if (null === $type) {
                     throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
                 }
@@ -193,11 +193,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                     $this->propertyDescriber->setModelRegistry($this->modelRegistry);
                 }
 
-                if (!$this->propertyDescriber->supports($type, $context)) {
-                    throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $type->__toString(), $model->getType()->getClassName(), $propertyName));
+                if (!$this->propertyDescriber->supports($type, $model->getSerializationContext())) {
+                    throw new \Exception(sprintf('Type "%s" $model->getSerializationContext() not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $type->__toString(), $model->getType()->getClassName(), $propertyName));
                 }
 
-                $this->propertyDescriber->describe($type, $property, $context);
+                $this->propertyDescriber->describe($type, $property, $model->getSerializationContext());
             } else {
                 $types = $this->propertyInfo->getTypes($class, $propertyName);
                 if (null === $types || 0 === count($types)) {
