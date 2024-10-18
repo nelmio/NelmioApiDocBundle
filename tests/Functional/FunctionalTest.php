@@ -69,9 +69,7 @@ class FunctionalTest extends WebTestCase
             yield 'Annotations' => ['/api/article/{id}'];
         }
 
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => ['/api/article_attributes/{id}'];
-        }
+        yield 'Attributes' => ['/api/article_attributes/{id}'];
     }
 
     public function testFilteredAction(): void
@@ -395,9 +393,7 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/security'];
 
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => ['/api/security_attributes'];
-        }
+        yield 'Attributes' => ['/api/security_attributes'];
     }
 
     /**
@@ -413,17 +409,11 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/securityOverride'];
 
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => ['/api/security_override_attributes'];
-        }
+        yield 'Attributes' => ['/api/security_override_attributes'];
     }
 
     public function testInlinePHP81Parameters(): void
     {
-        if (\PHP_VERSION_ID < 80100) {
-            self::markTestSkipped('Attributes require PHP 8.1');
-        }
-
         $operation = $this->getOperation('/api/inline_path_parameters', 'get');
         self::assertCount(1, $operation->parameters);
         self::assertInstanceOf(OAAttributes\PathParameter::class, $operation->parameters[0]);

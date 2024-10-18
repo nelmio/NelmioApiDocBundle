@@ -79,10 +79,6 @@ final class ControllerTest extends WebTestCase
 
     public static function provideAttributeTestCases(): \Generator
     {
-        if (PHP_VERSION_ID < 80100) {
-            return;
-        }
-
         $type = Kernel::MAJOR_VERSION === 5 ? 'annotation' : 'attribute';
 
         yield 'Promoted properties defaults attributes' => [
@@ -173,17 +169,15 @@ final class ControllerTest extends WebTestCase
             return;
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Promoted properties defaults annotations' => [
-                [
-                    'name' => 'PromotedPropertiesController80',
-                    'type' => 'annotation',
-                ],
-                'PromotedPropertiesDefaults',
-                [],
-                [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml'],
-            ];
-        }
+        yield 'Promoted properties defaults annotations' => [
+            [
+                'name' => 'PromotedPropertiesController80',
+                'type' => 'annotation',
+            ],
+            'PromotedPropertiesDefaults',
+            [],
+            [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml'],
+        ];
     }
 
     /**
