@@ -11,13 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
-use Nelmio\ApiDocBundle\ModelDescriber\DateTimeModelDescriber;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
-/**
- * @deprecated in favor of a model describer {@see DateTimeModelDescriber}
- */
 class DateTimePropertyDescriber implements PropertyDescriberInterface
 {
     /**
