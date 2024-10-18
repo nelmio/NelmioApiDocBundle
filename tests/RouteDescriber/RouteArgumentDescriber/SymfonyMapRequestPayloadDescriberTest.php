@@ -55,7 +55,6 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
             null,
             false,
             [
-                /* @phpstan-ignore-next-line can be removed with Symfony 7.1 integration */
                 new MapRequestPayload(
                     null,
                     [],
