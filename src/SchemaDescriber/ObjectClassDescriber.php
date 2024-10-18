@@ -19,6 +19,7 @@ use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\TypeInfo\TypeIdentifier;
+use Symfony\Component\Uid\AbstractUid;
 
 /**
  * @implements SchemaDescriberInterface<ObjectType>
@@ -31,6 +32,20 @@ final class ObjectClassDescriber implements SchemaDescriberInterface, ModelRegis
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
+        if (is_a($type->getClassName(), AbstractUid::class, true)) {
+            $schema->type = 'string';
+            $schema->format = 'uuid';
+
+            return;
+        }
+
+        if (is_a($type->getClassName(), \DateTimeInterface::class, true)) {
+            $schema->type = 'string';
+            $schema->format = 'date-time';
+
+            return;
+        }
+
         $schema->ref = $this->modelRegistry->register(
             new Model(new LegacyType('object', false, $type->getClassName()), null, null, $context)
         );
