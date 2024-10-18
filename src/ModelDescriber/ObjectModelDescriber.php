@@ -206,7 +206,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
                 $this->describeProperty($types, $model, $property, $propertyName, $schema);
             }
-            $this->markRequiredProperties($schema);
         }
 
         $this->markRequiredProperties($schema);
