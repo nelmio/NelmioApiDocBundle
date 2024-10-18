@@ -9,27 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SchemaDescriber;
+namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use OpenApi\Annotations\Schema;
+use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
- * @implements SchemaDescriberInterface<Type\BuiltinType>
+ * @implements TypeDescriberInterface<Type\BuiltinType>
  *
  * @experimental
  */
-final class BoolDescriber implements SchemaDescriberInterface
+final class MixedDescriber implements TypeDescriberInterface
 {
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        $schema->type = 'boolean';
+        $schema->type = Generator::UNDEFINED;
     }
 
     public function supports(Type $type, array $context = []): bool
     {
         return $type instanceof Type\BuiltinType
-            && $type->isA(TypeIdentifier::BOOL);
+            && $type->isA(TypeIdentifier::MIXED);
     }
 }

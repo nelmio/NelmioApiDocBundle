@@ -9,27 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SchemaDescriber;
+namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use OpenApi\Annotations\Schema;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
- * @implements SchemaDescriberInterface<Type\BuiltinType>
+ * @implements TypeDescriberInterface<Type\BuiltinType>
  *
  * @experimental
  */
-final class StringDescriber implements SchemaDescriberInterface
+final class FloatDescriber implements TypeDescriberInterface
 {
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        $schema->type = 'string';
+        $schema->type = 'number';
+        $schema->format = 'float';
     }
 
     public function supports(Type $type, array $context = []): bool
     {
         return $type instanceof Type\BuiltinType
-            && $type->isA(TypeIdentifier::STRING);
+            && $type->isA(TypeIdentifier::FLOAT);
     }
 }

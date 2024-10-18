@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SchemaDescriber;
+namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 /**
  * @experimental
  */
-interface SchemaDescriberAwareInterface
+interface TypeDescriberAwareInterface
 {
-    public function setDescriber(SchemaDescriberInterface $describer): void;
+    public function setDescriber(TypeDescriberInterface $describer): void;
 }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SchemaDescriber;
+namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
@@ -17,19 +17,19 @@ use OpenApi\Annotations\Schema;
 use Symfony\Component\TypeInfo\Type;
 
 /**
- * @implements SchemaDescriberInterface<Type>
+ * @implements TypeDescriberInterface<Type>
  *
  * @experimental
  */
-final class ChainDescriber implements SchemaDescriberInterface, ModelRegistryAwareInterface
+final class ChainDescriber implements TypeDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
-    /** @var iterable<SchemaDescriberInterface> */
+    /** @var iterable<TypeDescriberInterface> */
     private iterable $describers;
 
     /**
-     * @param iterable<SchemaDescriberInterface> $describers
+     * @param iterable<TypeDescriberInterface> $describers
      */
     public function __construct(
         iterable $describers
@@ -49,7 +49,7 @@ final class ChainDescriber implements SchemaDescriberInterface, ModelRegistryAwa
                 $describer->setModelRegistry($this->modelRegistry);
             }
 
-            if ($describer instanceof SchemaDescriberAwareInterface) {
+            if ($describer instanceof TypeDescriberAwareInterface) {
                 $describer->setDescriber($this);
             }
 

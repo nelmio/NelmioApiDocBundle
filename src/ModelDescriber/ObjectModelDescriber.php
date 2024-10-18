@@ -18,7 +18,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
-use Nelmio\ApiDocBundle\SchemaDescriber\SchemaDescriberInterface;
+use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
@@ -35,7 +35,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private PropertyInfoExtractorInterface $propertyInfo;
     private ?ClassMetadataFactoryInterface $classMetadataFactory;
     private ?Reader $doctrineReader;
-    /** @var PropertyDescriberInterface|PropertyDescriberInterface[]|SchemaDescriberInterface */
+    /** @var PropertyDescriberInterface|PropertyDescriberInterface[]|TypeDescriberInterface */
     private $propertyDescriber;
     /** @var string[] */
     private array $mediaTypes;
@@ -44,9 +44,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private bool $useValidationGroups;
 
     /**
-     * @param PropertyDescriberInterface|PropertyDescriberInterface[]|SchemaDescriberInterface $propertyDescribers
-     * @param (NameConverterInterface&AdvancedNameConverterInterface)|null                     $nameConverter
-     * @param string[]                                                                         $mediaTypes
+     * @param PropertyDescriberInterface|PropertyDescriberInterface[]|TypeDescriberInterface $propertyDescribers
+     * @param (NameConverterInterface&AdvancedNameConverterInterface)|null                   $nameConverter
+     * @param string[]                                                                       $mediaTypes
      */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
@@ -60,7 +60,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         if (is_iterable($propertyDescribers)) {
             trigger_deprecation('nelmio/api-doc-bundle', '4.17', 'Passing an array of PropertyDescriberInterface to %s() is deprecated. Pass a single PropertyDescriberInterface instead.', __METHOD__);
         } else {
-            if (!$propertyDescribers instanceof PropertyDescriberInterface && !$propertyDescribers instanceof SchemaDescriberInterface) {
+            if (!$propertyDescribers instanceof PropertyDescriberInterface && !$propertyDescribers instanceof TypeDescriberInterface) {
                 throw new \InvalidArgumentException(sprintf('Argument 3 passed to %s() must be an array of %s or a single %s.', __METHOD__, PropertyDescriberInterface::class, PropertyDescriberInterface::class));
             }
         }
@@ -179,7 +179,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             /*
              * @experimental
              */
-            if ($this->propertyDescriber instanceof SchemaDescriberInterface) {
+            if ($this->propertyDescriber instanceof TypeDescriberInterface) {
                 if (false === method_exists($this->propertyInfo, 'getType')) {
                     throw new \RuntimeException('The PropertyInfo component is missing the "getType" method. Are you running on version 7.1?');
                 }

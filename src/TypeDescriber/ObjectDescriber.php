@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SchemaDescriber;
+namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
@@ -19,11 +19,11 @@ use Symfony\Component\TypeInfo\Type\BuiltinType;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
- * @implements SchemaDescriberInterface<BuiltinType>
+ * @implements TypeDescriberInterface<BuiltinType>
  *
  * @experimental
  */
-final class ObjectDescriber implements SchemaDescriberInterface, ModelRegistryAwareInterface
+final class ObjectDescriber implements TypeDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 

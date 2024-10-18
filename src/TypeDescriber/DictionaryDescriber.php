@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SchemaDescriber;
+namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
@@ -19,25 +19,25 @@ use Symfony\Component\TypeInfo\Type\CollectionType;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
- * @implements SchemaDescriberInterface<CollectionType>
+ * @implements TypeDescriberInterface<CollectionType>
  *
  * @experimental
  */
-final class ListDescriber implements SchemaDescriberInterface, SchemaDescriberAwareInterface
+final class DictionaryDescriber implements TypeDescriberInterface, TypeDescriberAwareInterface
 {
     use SchemaDescriberAwareTrait;
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        $schema->type = 'array';
-        $item = Util::getChild($schema, OA\Items::class);
+        $schema->type = 'object';
+        $additionalProperties = Util::getChild($schema, OA\AdditionalProperties::class);
 
-        $this->describer->describe($type->getCollectionValueType(), $item, $context);
+        $this->describer->describe($type->getCollectionValueType(), $additionalProperties, $context);
     }
 
     public function supports(Type $type, array $context = []): bool
     {
         return $type instanceof CollectionType
-            && $type->getCollectionKeyType()->isA(TypeIdentifier::INT);
+            && $type->getCollectionKeyType()->isA(TypeIdentifier::STRING);
     }
 }

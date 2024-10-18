@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SchemaDescriber;
+namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations\Schema;
@@ -19,11 +19,11 @@ use Symfony\Component\TypeInfo\Type\UnionType;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
- * @implements SchemaDescriberInterface<UnionType>
+ * @implements TypeDescriberInterface<UnionType>
  *
  * @experimental
  */
-final class UnionDescriber implements SchemaDescriberInterface, SchemaDescriberAwareInterface
+final class UnionDescriber implements TypeDescriberInterface, TypeDescriberAwareInterface
 {
     use SchemaDescriberAwareTrait;
 

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SchemaDescriber;
+namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use OpenApi\Annotations\Schema;
 use Symfony\Component\TypeInfo\Type;
@@ -19,7 +19,7 @@ use Symfony\Component\TypeInfo\Type;
  *
  * @experimental
  */
-interface SchemaDescriberInterface
+interface TypeDescriberInterface
 {
     /**
      * @param T                    $type

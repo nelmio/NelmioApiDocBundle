@@ -9,27 +9,27 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SchemaDescriber;
+namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use OpenApi\Annotations\Schema;
 use Symfony\Component\TypeInfo\Type;
+use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
- * @implements SchemaDescriberInterface<Type>
+ * @implements TypeDescriberInterface<Type\BuiltinType>
  *
  * @experimental
  */
-final class NullableDescriber implements SchemaDescriberInterface, SchemaDescriberAwareInterface
+final class StringDescriber implements TypeDescriberInterface
 {
-    use SchemaDescriberAwareTrait;
-
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        $schema->nullable = true;
+        $schema->type = 'string';
     }
 
     public function supports(Type $type, array $context = []): bool
     {
-        return $type->isNullable();
+        return $type instanceof Type\BuiltinType
+            && $type->isA(TypeIdentifier::STRING);
     }
 }

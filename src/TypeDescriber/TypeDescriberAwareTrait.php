@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SchemaDescriber;
+namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 /**
  * @experimental
  */
-trait SchemaDescriberAwareTrait
+trait TypeDescriberAwareTrait
 {
-    protected SchemaDescriberInterface $describer;
+    protected TypeDescriberInterface $describer;
 
-    public function setDescriber(SchemaDescriberInterface $describer): void
+    public function setDescriber(TypeDescriberInterface $describer): void
     {
         $this->describer = $describer;
     }
