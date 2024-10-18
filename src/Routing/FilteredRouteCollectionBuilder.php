@@ -173,11 +173,9 @@ final class FilteredRouteCollectionBuilder
             ? $this->annotationReader->getMethodAnnotations($method)
             : [];
 
-        if (\PHP_VERSION_ID >= 80100) {
-            $annotations = array_merge($annotations, array_map(function (\ReflectionAttribute $attribute) {
-                return $attribute->newInstance();
-            }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF)));
-        }
+        $annotations = array_merge($annotations, array_map(function (\ReflectionAttribute $attribute) {
+            return $attribute->newInstance();
+        }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF)));
 
         foreach ($annotations as $annotation) {
             if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')
@@ -199,10 +197,6 @@ final class FilteredRouteCollectionBuilder
     private function getAttributesAsAnnotation($reflection, string $className): array
     {
         $annotations = [];
-        if (\PHP_VERSION_ID < 80100) {
-            return $annotations;
-        }
-
         foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
             $annotations[] = $attribute->newInstance();
         }
