@@ -115,7 +115,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArguments([
                     new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
-                    new Reference('annotations.reader', ContainerInterface::NULL_ON_INVALID_REFERENCE), // We cannot use the cached version of the annotation reader since the construction of the annotations is context dependant...
                     new Reference('logger'),
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);

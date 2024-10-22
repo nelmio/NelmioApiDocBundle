@@ -17,3 +17,6 @@ Upgrade to PHP 8.1 attributes.
 public int $negative;
 ...
 ```
+
+This causes the following breaking changes in classes that used on annotations:
+- BC BREAK: Removed 3rd parameter `?Reader $annotationReader` from `Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber::__construct()`
