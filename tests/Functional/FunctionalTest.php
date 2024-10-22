@@ -533,9 +533,6 @@ class FunctionalTest extends WebTestCase
                     'type' => 'string',
                     'format' => 'date-time',
                 ],
-                'propertyWithCompoundValidationRule' => [
-                    'type' => 'integer',
-                ],
                 'propertyGreaterThan' => [
                     'type' => 'integer',
                     'exclusiveMinimum' => true,
