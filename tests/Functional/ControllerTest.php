@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use JMS\SerializerBundle\JMSSerializerBundle;
 use OpenApi\Annotations as OA;
+use OpenApi\Processors\CleanUnusedComponents;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
@@ -88,7 +89,7 @@ final class ControllerTest extends WebTestCase
             ],
             'PromotedPropertiesDefaults',
             [],
-            [__DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml'],
+            [__DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml', ...self::cleanUnusedComponentsConfig()],
         ];
 
         yield 'JMS model opt out' => [
@@ -176,7 +177,7 @@ final class ControllerTest extends WebTestCase
             ],
             'PromotedPropertiesDefaults',
             [],
-            [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml'],
+            [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml', ...self::cleanUnusedComponentsConfig()],
         ];
     }
 
@@ -206,5 +207,14 @@ final class ControllerTest extends WebTestCase
         }
 
         return $content;
+    }
+
+    private static function cleanUnusedComponentsConfig(): array
+    {
+        if (method_exists(CleanUnusedComponents::class, 'setEnabled')) {
+            return [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'];
+        }
+
+        return [__DIR__.'/Configs/CleanUnusedComponentsProcessorNoSetter.yaml'];
     }
 }
