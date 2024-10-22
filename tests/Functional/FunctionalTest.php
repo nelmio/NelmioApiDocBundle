@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
@@ -461,6 +460,7 @@ class FunctionalTest extends WebTestCase
                 'propertyGreaterThanDate',
                 'propertyGreaterThanOrEqual',
                 'propertyGreaterThanOrEqualDate',
+                'propertyWithCompoundValidationRule',
             ],
             'properties' => [
                 'propertyNotBlank' => [
@@ -553,21 +553,17 @@ class FunctionalTest extends WebTestCase
                     'type' => 'string',
                     'format' => 'date-time',
                 ],
+                'propertyWithCompoundValidationRule' => [
+                    'type' => 'integer',
+                    'maximum' => 5,
+                    'exclusiveMaximum' => true,
+                    'minimum' => 0,
+                    'exclusiveMinimum' => true,
+                ],
             ],
             'type' => 'object',
             'schema' => $modelName,
         ];
-
-        if (Helper::isCompoundValidatorConstraintSupported()) {
-            $expected['required'][] = 'propertyWithCompoundValidationRule';
-            $expected['properties']['propertyWithCompoundValidationRule'] = [
-                'type' => 'integer',
-                'maximum' => 5,
-                'exclusiveMaximum' => true,
-                'minimum' => 0,
-                'exclusiveMinimum' => true,
-            ];
-        }
 
         self::assertEquals($expected, json_decode($this->getModel($modelName)->toJson(), true));
     }
