@@ -209,8 +209,12 @@ final class ControllerTest extends WebTestCase
         return $content;
     }
 
+    /**
+     * @return string[]
+     */
     private static function cleanUnusedComponentsConfig(): array
     {
+        /* @phpstan-ignore-next-line */
         if (method_exists(CleanUnusedComponents::class, 'setEnabled')) {
             return [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'];
         }
