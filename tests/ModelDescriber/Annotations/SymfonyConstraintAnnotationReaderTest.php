@@ -38,7 +38,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function testUpdatePropertyFix1283(): void
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
-            $entity = new class() {
+            $entity = new class {
                 /**
                  * @Assert\NotBlank()
                  *
@@ -52,7 +52,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
                 public $property2;
             };
         } else {
-            $entity = new class() {
+            $entity = new class {
                 #[Assert\Length(min: 1)]
                 #[Assert\NotBlank()]
                 public $property1;
@@ -105,7 +105,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
-                new class() {
+                new class {
                     /**
                      * @Assert\NotBlank(allowNull = true)
                      *
@@ -121,7 +121,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        yield 'Attributes' => [new class() {
+        yield 'Attributes' => [new class {
             #[Assert\NotBlank(allowNull: true)]
             #[Assert\Length(min: 1)]
             public $property1;
@@ -158,7 +158,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
-                new class() {
+                new class {
                     /**
                      * @Assert\Length(min = 1)
                      *
@@ -169,7 +169,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        yield 'Attributes' => [new class() {
+        yield 'Attributes' => [new class {
             #[Assert\Length(min: 1)]
             #[Assert\Choice(choices: TEST_ASSERT_CHOICE_STATUSES)]
             public $property1;
@@ -198,7 +198,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public static function provideMultipleChoiceConstraintsApplyEnumToItems(): \Generator
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
-            yield 'Annotations' => [new class() {
+            yield 'Annotations' => [new class {
                 /**
                  * @Assert\Choice(choices={"one", "two"}, multiple=true)
                  */
@@ -206,7 +206,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             }];
         }
 
-        yield 'Attributes' => [new class() {
+        yield 'Attributes' => [new class {
             #[Assert\Choice(choices: ['one', 'two'], multiple: true)]
             public $property1;
         }];
@@ -237,7 +237,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
-                new class() {
+                new class {
                     /**
                      * @Assert\Length(min = 1)
                      */
@@ -246,7 +246,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        yield 'Attributes' => [new class() {
+        yield 'Attributes' => [new class {
             #[Assert\Length(min: 1)]
             public $property1;
         }];
@@ -277,7 +277,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
-                new class() {
+                new class {
                     /**
                      * @Assert\Length(max = 100)
                      */
@@ -286,7 +286,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        yield 'Attributes' => [new class() {
+        yield 'Attributes' => [new class {
             #[Assert\Length(max: 100)]
             public $property1;
         }];
@@ -295,14 +295,14 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public function testCompoundValidationRules(): void
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
-            $entity = new class() {
+            $entity = new class {
                 /**
                  * @CustomAssert\CompoundValidationRule()
                  */
                 public $property1;
             };
         } else {
-            $entity = new class() {
+            $entity = new class {
                 #[CustomAssert\CompoundValidationRule()]
                 public $property1;
             };
@@ -349,7 +349,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
-                new class() {
+                new class {
                     /**
                      * @Assert\Count(max = 10)
                      */
@@ -358,7 +358,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        yield 'Attributes' => [new class() {
+        yield 'Attributes' => [new class {
             #[Assert\Count(max: 10)]
             public $property1;
         }];
@@ -389,7 +389,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
-                new class() {
+                new class {
                     /**
                      * @Assert\Count(min = 10)
                      */
@@ -398,7 +398,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        yield 'Attributes' => [new class() {
+        yield 'Attributes' => [new class {
             #[Assert\Count(min: 10)]
             public $property1;
         }];
@@ -429,7 +429,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
-                new class() {
+                new class {
                     /**
                      * @Assert\Range(min = 10)
                      */
@@ -438,7 +438,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        yield 'Attributes' => [new class() {
+        yield 'Attributes' => [new class {
             #[Assert\Range(min: 10)]
             public $property1;
         }];
@@ -469,7 +469,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
             yield 'Annotations' => [
-                new class() {
+                new class {
                     /**
                      * @Assert\Range(max = 10)
                      */
@@ -478,7 +478,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        yield 'Attributes' => [new class() {
+        yield 'Attributes' => [new class {
             #[Assert\Range(max: 10)]
             public $property1;
         }];
@@ -585,7 +585,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     public static function provideConstraintsWithGroups(): \Generator
     {
         if (interface_exists(Reader::class) && Kernel::MAJOR_VERSION < 7) {
-            yield 'Annotations' => [new class() {
+            yield 'Annotations' => [new class {
                 /**
                  * @Assert\NotBlank()
                  *
@@ -595,7 +595,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             }];
         }
 
-        yield 'Attributes' => [new class() {
+        yield 'Attributes' => [new class {
             #[Assert\NotBlank()]
             #[Assert\Range(min: 1, groups: ['other'])]
             public $property1;
