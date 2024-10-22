@@ -59,19 +59,11 @@ class UuidPropertyDescriberTest extends TestCase
 
     private function initProperty(): \OpenApi\Annotations\Property
     {
-        if (PHP_VERSION_ID < 80000) {
-            return new \OpenApi\Annotations\Property([]);
-        }
-
         return new \OpenApi\Attributes\Property(); // union types, used in schema attribute require PHP >= 8.0.0
     }
 
     private function initSchema(): \OpenApi\Annotations\Schema
     {
-        if (PHP_VERSION_ID < 80000) {
-            return new \OpenApi\Annotations\Schema([]);
-        }
-
         return new \OpenApi\Attributes\Schema(); // union types, used in schema attribute require PHP >= 8.0.0
     }
 }

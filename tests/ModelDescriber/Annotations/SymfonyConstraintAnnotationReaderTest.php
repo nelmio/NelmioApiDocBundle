@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader;
-use Nelmio\ApiDocBundle\Tests\Helper;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
@@ -122,15 +121,13 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class {
-                #[Assert\NotBlank(allowNull: true)]
-                #[Assert\Length(min: 1)]
-                public $property1;
-                #[Assert\NotBlank]
-                public $property2;
-            }];
-        }
+        yield 'Attributes' => [new class {
+            #[Assert\NotBlank(allowNull: true)]
+            #[Assert\Length(min: 1)]
+            public $property1;
+            #[Assert\NotBlank]
+            public $property2;
+        }];
     }
 
     /**
@@ -172,13 +169,11 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class {
-                #[Assert\Length(min: 1)]
-                #[Assert\Choice(choices: TEST_ASSERT_CHOICE_STATUSES)]
-                public $property1;
-            }];
-        }
+        yield 'Attributes' => [new class {
+            #[Assert\Length(min: 1)]
+            #[Assert\Choice(choices: TEST_ASSERT_CHOICE_STATUSES)]
+            public $property1;
+        }];
     }
 
     /**
@@ -211,12 +206,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             }];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class {
-                #[Assert\Choice(choices: ['one', 'two'], multiple: true)]
-                public $property1;
-            }];
-        }
+        yield 'Attributes' => [new class {
+            #[Assert\Choice(choices: ['one', 'two'], multiple: true)]
+            public $property1;
+        }];
     }
 
     /**
@@ -253,12 +246,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class {
-                #[Assert\Length(min: 1)]
-                public $property1;
-            }];
-        }
+        yield 'Attributes' => [new class {
+            #[Assert\Length(min: 1)]
+            public $property1;
+        }];
     }
 
     /**
@@ -295,12 +286,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class {
-                #[Assert\Length(max: 100)]
-                public $property1;
-            }];
-        }
+        yield 'Attributes' => [new class {
+            #[Assert\Length(max: 100)]
+            public $property1;
+        }];
     }
 
     public function testCompoundValidationRules(): void
@@ -328,19 +317,11 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, $propertyName), $schema->properties[0]);
 
-        if (Helper::isCompoundValidatorConstraintSupported()) {
-            self::assertSame([$propertyName], $schema->required);
-            self::assertSame(0, $schema->properties[0]->minimum);
-            self::assertTrue($schema->properties[0]->exclusiveMinimum);
-            self::assertSame(5, $schema->properties[0]->maximum);
-            self::assertTrue($schema->properties[0]->exclusiveMaximum);
-        } else {
-            self::assertSame(Generator::UNDEFINED, $schema->required);
-            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum);
-            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMinimum);
-            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->maximum);
-            self::assertSame(Generator::UNDEFINED, $schema->properties[0]->exclusiveMaximum);
-        }
+        self::assertSame([$propertyName], $schema->required);
+        self::assertSame(0, $schema->properties[0]->minimum);
+        self::assertTrue($schema->properties[0]->exclusiveMinimum);
+        self::assertSame(5, $schema->properties[0]->maximum);
+        self::assertTrue($schema->properties[0]->exclusiveMaximum);
     }
 
     /**
@@ -377,12 +358,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class {
-                #[Assert\Count(max: 10)]
-                public $property1;
-            }];
-        }
+        yield 'Attributes' => [new class {
+            #[Assert\Count(max: 10)]
+            public $property1;
+        }];
     }
 
     /**
@@ -419,12 +398,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class {
-                #[Assert\Count(min: 10)]
-                public $property1;
-            }];
-        }
+        yield 'Attributes' => [new class {
+            #[Assert\Count(min: 10)]
+            public $property1;
+        }];
     }
 
     /**
@@ -461,12 +438,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class {
-                #[Assert\Range(min: 10)]
-                public $property1;
-            }];
-        }
+        yield 'Attributes' => [new class {
+            #[Assert\Range(min: 10)]
+            public $property1;
+        }];
     }
 
     /**
@@ -503,12 +478,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             ];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class {
-                #[Assert\Range(max: 10)]
-                public $property1;
-            }];
-        }
+        yield 'Attributes' => [new class {
+            #[Assert\Range(max: 10)]
+            public $property1;
+        }];
     }
 
     /**
@@ -622,13 +595,11 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             }];
         }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield 'Attributes' => [new class {
-                #[Assert\NotBlank()]
-                #[Assert\Range(min: 1, groups: ['other'])]
-                public $property1;
-            }];
-        }
+        yield 'Attributes' => [new class {
+            #[Assert\NotBlank()]
+            #[Assert\Range(min: 1, groups: ['other'])]
+            public $property1;
+        }];
     }
 
     private function createConstraintReaderWithValidationGroupsEnabled(): SymfonyConstraintAnnotationReader
