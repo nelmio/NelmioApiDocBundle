@@ -83,14 +83,17 @@ jobs:
         run: | 
           vendor/bin/phpunit \
           --configuration phpunit.xml.dist \
+          --junit-xml=junit-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml \
           --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml \
           --coverage-filter=src/
 
       - uses: actions/upload-artifact@v4
         if: ${{ matrix.php-version != '7.4' }}
         with:
-          name: coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}
-          path: coverage*.xml
+          name: phpunit-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}
+          path: |
+            coverage*.xml
+            junit*.xml
           if-no-files-found: error
           retention-days: 2
 
