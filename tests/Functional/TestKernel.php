@@ -140,9 +140,9 @@ class TestKernel extends Kernel
 
         $c->loadFromExtension('api_platform', [
             'mapping' => ['paths' => [
-                !class_exists(ApiProperty::class)
-                ? '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform3'
-                : '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform2',
+                class_exists(ApiProperty::class)
+                ? '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform2'
+                : '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform3',
             ]],
         ]);
 

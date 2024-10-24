@@ -15,12 +15,12 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded;
 
 // BC Api-Platform < 3.x
-if (!class_exists(ApiProperty::class)) {
-    class Dummy extends EntityExcluded\ApiPlatform3\Dummy
+if (class_exists(ApiProperty::class)) {
+    class Dummy extends EntityExcluded\ApiPlatform2\Dummy
     {
     }
 } else {
-    class Dummy extends EntityExcluded\ApiPlatform2\Dummy
+    class Dummy extends EntityExcluded\ApiPlatform3\Dummy
     {
     }
 }
