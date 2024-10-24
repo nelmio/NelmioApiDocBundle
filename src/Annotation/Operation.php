@@ -13,9 +13,6 @@ namespace Nelmio\ApiDocBundle\Annotation;
 
 use OpenApi\Annotations\Operation as BaseOperation;
 
-/**
- * @Annotation
- */
 #[\Attribute(\Attribute::TARGET_METHOD)]
 class Operation extends BaseOperation
 {

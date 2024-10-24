@@ -11,9 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Annotation;
 
-/**
- * @Annotation
- */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 final class Areas
 {
