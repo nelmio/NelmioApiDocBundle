@@ -28,31 +28,22 @@ jobs:
           - php-version: 8.1
             symfony-require: "5.4"
             composer-flags: "--prefer-lowest"
-            doctrine-annotations: true
           - php-version: 8.1
             symfony-require: "5.4"
-            doctrine-annotations: true
           - php-version: 8.3
             symfony-require: "5.4"
-            doctrine-annotations: true
           - php-version: 8.1
             symfony-require: "6.4"
-            doctrine-annotations: true
           - php-version: 8.3
             symfony-require: "6.4"
-            doctrine-annotations: true
           - php-version: 8.2
             symfony-require: "7.0"
-            doctrine-annotations: false
           - php-version: 8.3
             symfony-require: "7.0"
-            doctrine-annotations: false
           - php-version: 8.2
             symfony-require: "7.1"
-            doctrine-annotations: false
           - php-version: 8.3
             symfony-require: "7.1"
-            doctrine-annotations: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -70,7 +61,6 @@ jobs:
         uses: ./.github/workflows/common/composer-install
         with:
           symfony-version: ${{ matrix.symfony-require }}
-          install-doctrine-annotations: ${{ matrix.doctrine-annotations }}
           composer-flags: ${{ matrix.composer-flags }}
 
       - name: PHPUnit Tests
@@ -139,7 +129,6 @@ jobs:
         uses: ./.github/workflows/common/composer-install
         with:
           symfony-version: "7.0.*"
-          install-doctrine-annotations: false
 
       - name: Run PHP-CS-Fixer
         run: vendor/bin/php-cs-fixer check -v --diff
@@ -165,7 +154,6 @@ jobs:
         uses: ./.github/workflows/common/composer-install
         with:
           symfony-version: "7.0.*"
-          install-doctrine-annotations: false
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse --memory-limit=2G --no-progress --no-interaction

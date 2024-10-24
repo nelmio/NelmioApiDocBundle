@@ -15,15 +15,11 @@ use JMS\Serializer\Annotation as Serializer;
 
 /**
  * User.
- *
- * @Serializer\ExclusionPolicy("all")
  */
+#[Serializer\ExclusionPolicy(policy: 'all')]
 class JMSChatLivingRoom
 {
-    /**
-     * @Serializer\Type("integer")
-     *
-     * @Serializer\Expose
-     */
+    #[Serializer\Type(name: 'integer')]
+    #[Serializer\Expose]
     private $id;
 }

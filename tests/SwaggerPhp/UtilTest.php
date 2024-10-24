@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -220,11 +221,10 @@ class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIndexedCollectionData
-     *
      * @param array<mixed> $setup
      * @param array<mixed> $asserts
      */
+    #[DataProvider('provideIndexedCollectionData')]
     public function testSearchIndexedCollectionItem(array $setup, array $asserts): void
     {
         foreach ($asserts as $collection => $items) {
@@ -254,11 +254,10 @@ class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIndexedCollectionData
-     *
      * @param array<mixed> $setup
      * @param array<mixed> $asserts
      */
+    #[DataProvider('provideIndexedCollectionData')]
     public function testGetIndexedCollectionItem(array $setup, array $asserts): void
     {
         $parent = new $setup['class'](array_merge(
@@ -384,11 +383,10 @@ class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider provideChildData
-     *
      * @param array<mixed> $setup
      * @param array<mixed> $asserts
      */
+    #[DataProvider('provideChildData')]
     public function testGetChild(array $setup, array $asserts): void
     {
         $parent = new $setup['class'](array_merge(
@@ -549,12 +547,11 @@ class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider provideMergeData
-     *
      * @param array<mixed>              $setup
      * @param array<mixed>|\ArrayObject $merge
      * @param array<mixed>              $assert
      */
+    #[DataProvider('provideMergeData')]
     public function testMerge(array $setup, $merge, array $assert): void
     {
         $api = self::createObj(OA\OpenApi::class, $setup + ['_context' => new Context()]);

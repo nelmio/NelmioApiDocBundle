@@ -64,8 +64,3 @@ parameters:
 			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:\\$twig has unknown class Twig_Environment as its type\\.$#"
 			count: 1
 			path: src/Render/Html/HtmlOpenApiRenderer.php
-
-		-
-			message: "#^Call to function method_exists\\(\\) with 'Hateoas\\\\\\\\Configuration\\\\\\\\Embedded' and 'getType' will always evaluate to true\\.$#"
-			count: 1
-			path: tests/Functional/BazingaFunctionalTest.php

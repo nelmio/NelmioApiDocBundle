@@ -11,91 +11,43 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class EntityWithNullableSchemaSet
-    {
-        /**
-         * @var ?string
-         *
-         * @OA\Property()
-         */
-        public $nullablePropertyNullableNotSet;
+class EntityWithNullableSchemaSet
+{
+    /**
+     * @var ?string
+     */
+    #[OA\Property]
+    public $nullablePropertyNullableNotSet;
 
-        /**
-         * @var ?string
-         *
-         * @OA\Property(nullable=false)
-         */
-        public $nullablePropertyNullableFalseSet;
+    /**
+     * @var ?string
+     */
+    #[OA\Property(nullable: false)]
+    public $nullablePropertyNullableFalseSet;
 
-        /**
-         * @var ?string
-         *
-         * @OA\Property(nullable=true)
-         */
-        public $nullablePropertyNullableTrueSet;
+    /**
+     * @var ?string
+     */
+    #[OA\Property(nullable: true)]
+    public $nullablePropertyNullableTrueSet;
 
-        /**
-         * @var string
-         *
-         * @OA\Property()
-         */
-        public $nonNullablePropertyNullableNotSet;
+    /**
+     * @var string
+     */
+    #[OA\Property]
+    public $nonNullablePropertyNullableNotSet;
 
-        /**
-         * @var string
-         *
-         * @OA\Property(nullable=false)
-         */
-        public $nonNullablePropertyNullableFalseSet;
+    /**
+     * @var string
+     */
+    #[OA\Property(nullable: false)]
+    public $nonNullablePropertyNullableFalseSet;
 
-        /**
-         * @var string
-         *
-         * @OA\Property(nullable=true)
-         */
-        public $nonNullablePropertyNullableTrueSet;
-    }
-} else {
-    class EntityWithNullableSchemaSet
-    {
-        /**
-         * @var ?string
-         */
-        #[\OpenApi\Attributes\Property]
-        public $nullablePropertyNullableNotSet;
-
-        /**
-         * @var ?string
-         */
-        #[\OpenApi\Attributes\Property(nullable: false)]
-        public $nullablePropertyNullableFalseSet;
-
-        /**
-         * @var ?string
-         */
-        #[\OpenApi\Attributes\Property(nullable: true)]
-        public $nullablePropertyNullableTrueSet;
-
-        /**
-         * @var string
-         */
-        #[\OpenApi\Attributes\Property]
-        public $nonNullablePropertyNullableNotSet;
-
-        /**
-         * @var string
-         */
-        #[\OpenApi\Attributes\Property(nullable: false)]
-        public $nonNullablePropertyNullableFalseSet;
-
-        /**
-         * @var string
-         */
-        #[\OpenApi\Attributes\Property(nullable: true)]
-        public $nonNullablePropertyNullableTrueSet;
-    }
+    /**
+     * @var string
+     */
+    #[OA\Property(nullable: true)]
+    public $nonNullablePropertyNullableTrueSet;
 }

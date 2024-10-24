@@ -12,23 +12,10 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\DiscriminatorMap;
 
 use JMS\Serializer\Annotation as Serializer;
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class JMSAdministrator extends JMSAbstractUser
-    {
-        /**
-         * @Serializer\Type("string")
-         *
-         * @Serializer\Groups({"Default"})
-         */
-        public $adminTitle;
-    }
-} else {
-    class JMSAdministrator extends JMSAbstractUser
-    {
-        #[Serializer\Type('string')]
-        #[Serializer\Groups(['Default'])]
-        public $adminTitle;
-    }
+class JMSAdministrator extends JMSAbstractUser
+{
+    #[Serializer\Type('string')]
+    #[Serializer\Groups(['Default'])]
+    public $adminTitle;
 }

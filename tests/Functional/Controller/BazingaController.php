@@ -13,38 +13,28 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(host="api.example.com")
- */
+#[Route(host: 'api.example.com')]
 class BazingaController
 {
-    /**
-     * @Route("/api/bazinga", methods={"GET"})
-     *
-     * @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *
-     *     @Model(type=BazingaUser::class)
-     * )
-     */
+    #[Route(path: '/api/bazinga', methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Success',
+        content: new Model(type: BazingaUser::class)
+    )]
     public function userAction()
     {
     }
 
-    /**
-     * @Route("/api/bazinga_foo", methods={"GET"})
-     *
-     * @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *
-     *     @Model(type=BazingaUser::class, groups={"foo"})
-     * )
-     */
+    #[Route(path: '/api/bazinga_foo', methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Success',
+        content: new Model(type: BazingaUser::class, groups: ['foo'])
+    )]
     public function userGroupAction()
     {
     }

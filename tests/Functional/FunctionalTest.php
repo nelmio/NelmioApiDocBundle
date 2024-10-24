@@ -11,13 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class FunctionalTest extends WebTestCase
 {
@@ -43,9 +42,7 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasPath('/api/admin', $api);
     }
 
-    /**
-     * @dataProvider provideArticleRoute
-     */
+    #[DataProvider('provideArticleRoute')]
     public function testFetchArticleAction(string $articleRoute): void
     {
         $operation = $this->getOperation($articleRoute, 'get');
@@ -64,9 +61,7 @@ class FunctionalTest extends WebTestCase
 
     public static function provideArticleRoute(): \Generator
     {
-        if (interface_exists(Reader::class)) {
-            yield 'Annotations' => ['/api/article/{id}'];
-        }
+        yield 'Annotations' => ['/api/article/{id}'];
 
         yield 'Attributes' => ['/api/article_attributes/{id}'];
     }
@@ -80,9 +75,8 @@ class FunctionalTest extends WebTestCase
 
     /**
      * Tests that the paths are automatically resolved in Swagger annotations.
-     *
-     * @dataProvider swaggerActionPathsProvider
      */
+    #[DataProvider('swaggerActionPathsProvider')]
     public function testSwaggerAction(string $path): void
     {
         $operation = $this->getOperation($path, 'get');
@@ -111,9 +105,7 @@ class FunctionalTest extends WebTestCase
         $this->assertHasParameter('Accept-Version', 'header', $operation);
     }
 
-    /**
-     * @dataProvider implicitSwaggerActionMethodsProvider
-     */
+    #[DataProvider('implicitSwaggerActionMethodsProvider')]
     public function testImplicitSwaggerAction(string $method): void
     {
         $operation = $this->getOperation('/api/swagger/implicit', $method);
@@ -168,10 +160,10 @@ class FunctionalTest extends WebTestCase
 
     public function testApiPlatform(): void
     {
-        $operation = $this->getOperation('/api/dummies', 'get');
-        $operation = $this->getOperation('/api/foo', 'get');
-        $operation = $this->getOperation('/api/foo', 'post');
-        $operation = $this->getOperation('/api/dummies/{id}', 'get');
+        $this->getOperation('/api/dummies', 'get');
+        $this->getOperation('/api/foo', 'get');
+        $this->getOperation('/api/foo', 'post');
+        $this->getOperation('/api/dummies/{id}', 'get');
     }
 
     public function testUserModel(): void
@@ -373,9 +365,7 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('FormWithModel')->toJson(), true));
     }
 
-    /**
-     * @dataProvider provideSecurityRoute
-     */
+    #[DataProvider('provideSecurityRoute')]
     public function testSecurityAction(string $route): void
     {
         $operation = $this->getOperation($route, 'get');
@@ -395,9 +385,7 @@ class FunctionalTest extends WebTestCase
         yield 'Attributes' => ['/api/security_attributes'];
     }
 
-    /**
-     * @dataProvider provideSecurityOverrideRoute
-     */
+    #[DataProvider('provideSecurityOverrideRoute')]
     public function testSecurityOverrideAction(string $route): void
     {
         $operation = $this->getOperation($route, 'get');
@@ -432,11 +420,7 @@ class FunctionalTest extends WebTestCase
 
     public function testSymfonyConstraintDocumentation(): void
     {
-        if (TestKernel::isAttributesAvailable()) {
-            $modelName = 'SymfonyConstraints81';
-        } else {
-            $modelName = 'SymfonyConstraints80';
-        }
+        $modelName = 'SymfonyConstraints';
 
         $expected = [
             'required' => [
@@ -591,15 +575,7 @@ class FunctionalTest extends WebTestCase
 
     public function testSerializedNameAction(): void
     {
-        if (!class_exists(SerializedName::class)) {
-            self::markTestSkipped('Annotation @SerializedName doesn\'t exist.');
-        }
-
-        if (TestKernel::isAttributesAvailable()) {
-            $model = $this->getModel('SerializedNameEntity');
-        } else {
-            $model = $this->getModel('SerializedNameEnt');
-        }
+        $model = $this->getModel('SerializedNameEntity');
 
         self::assertCount(2, $model->properties);
 
@@ -781,11 +757,7 @@ class FunctionalTest extends WebTestCase
 
     public function testModelsWithDiscriminatorMapAreLoadedWithOpenApiPolymorphism(): void
     {
-        if (TestKernel::isAttributesAvailable()) {
-            $model = $this->getModel('SymfonyDiscriminator81');
-        } else {
-            $model = $this->getModel('SymfonyDiscriminator80');
-        }
+        $model = $this->getModel('SymfonyDiscriminator');
 
         self::assertInstanceOf(OAAnnotations\Discriminator::class, $model->discriminator);
         self::assertSame('type', $model->discriminator->propertyName);
@@ -871,11 +843,7 @@ class FunctionalTest extends WebTestCase
 
     public function testEntitiesWithOverriddenSchemaTypeDoNotReadOtherProperties(): void
     {
-        if (TestKernel::isAttributesAvailable()) {
-            $model = $this->getModel('EntityWithAlternateType81');
-        } else {
-            $model = $this->getModel('EntityWithAlternateType80');
-        }
+        $model = $this->getModel('EntityWithAlternateType');
 
         self::assertSame('array', $model->type);
         self::assertSame('string', $model->items->type);

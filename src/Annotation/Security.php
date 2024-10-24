@@ -13,9 +13,6 @@ namespace Nelmio\ApiDocBundle\Annotation;
 
 use OpenApi\Annotations\AbstractAnnotation;
 
-/**
- * @Annotation
- */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Security extends AbstractAnnotation
 {

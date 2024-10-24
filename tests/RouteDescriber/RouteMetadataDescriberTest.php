@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\RouteDescriber\RouteMetadataDescriber;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Context;
 use OpenApi\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 
@@ -50,9 +51,7 @@ class RouteMetadataDescriberTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider provideEnumPattern
-     */
+    #[DataProvider('provideEnumPattern')]
     public function testSimpleOrRequirementsAreHandledAsEnums(string $req): void
     {
         $api = new OpenApi([]);
@@ -73,9 +72,7 @@ class RouteMetadataDescriberTest extends TestCase
         self::assertSame($req, $getPathParameter->schema->pattern);
     }
 
-    /**
-     * @dataProvider provideInvalidEnumPattern
-     */
+    #[DataProvider('provideInvalidEnumPattern')]
     public function testNonEnumPatterns(string $pattern): void
     {
         $api = new OpenApi([]);

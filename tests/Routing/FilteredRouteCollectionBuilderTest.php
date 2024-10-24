@@ -19,6 +19,7 @@ use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Context;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
@@ -98,10 +99,9 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     }
 
     /**
-     * @dataProvider getInvalidOptions
-     *
      * @param array<string, mixed> $options
      */
+    #[DataProvider('getInvalidOptions')]
     public function testFilterWithInvalidOption(array $options): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -153,10 +153,9 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     }
 
     /**
-     * @dataProvider getMatchingRoutes
-     *
      * @param array<string, mixed> $options
      */
+    #[DataProvider('getMatchingRoutes')]
     public function testMatchingRoutes(string $name, Route $route, array $options = []): void
     {
         $routes = new RouteCollection();
@@ -190,12 +189,9 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     }
 
     /**
-     * @group test
-     *
-     * @dataProvider getMatchingRoutesWithAnnotation
-     *
      * @param array<string, mixed> $options
      */
+    #[DataProvider('getMatchingRoutesWithAnnotation')]
     public function testMatchingRoutesWithAnnotation(string $name, Route $route, array $options = []): void
     {
         $routes = new RouteCollection();
@@ -259,10 +255,9 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     }
 
     /**
-     * @dataProvider getNonMatchingRoutes
-     *
      * @param array<string, mixed> $options
      */
+    #[DataProvider('getNonMatchingRoutes')]
     public function testNonMatchingRoutes(string $name, Route $route, array $options = []): void
     {
         $routes = new RouteCollection();
@@ -290,11 +285,10 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     }
 
     /**
-     * @dataProvider getRoutesWithDisabledDefaultRoutes
-     *
      * @param array<Operation|Parameter> $annotations
      * @param array<string|bool>         $options
      */
+    #[DataProvider('getRoutesWithDisabledDefaultRoutes')]
     public function testRoutesWithDisabledDefaultRoutes(
         string $name,
         Route $route,

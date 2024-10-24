@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use Doctrine\Common\Annotations\Reader;
 use JMS\Serializer\Context;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
@@ -42,8 +41,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     private ?PropertyNamingStrategyInterface $namingStrategy;
 
-    private ?Reader $doctrineReader;
-
     /**
      * @var array<string, Context>
      */
@@ -71,7 +68,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      */
     public function __construct(
         MetadataFactoryInterface $factory,
-        ?Reader $reader,
         array $mediaTypes,
         ?PropertyNamingStrategyInterface $namingStrategy = null,
         bool $useValidationGroups = false,
@@ -79,7 +75,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
-        $this->doctrineReader = $reader;
         $this->mediaTypes = $mediaTypes;
         $this->useValidationGroups = $useValidationGroups;
         $this->contextFactory = $contextFactory;
@@ -112,7 +107,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
 
         $annotationsReader = new AnnotationsReader(
-            $this->doctrineReader,
             $this->modelRegistry,
             $this->mediaTypes,
             $this->useValidationGroups

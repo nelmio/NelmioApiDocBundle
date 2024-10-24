@@ -13,7 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EntityWithPromotedPropertiesWithDefaults81
+class EntityWithPromotedPropertiesWithDefaults
 {
     #[Assert\NotBlank]
     public readonly string $nonNullableNonPromotedPropertyWithDefault;

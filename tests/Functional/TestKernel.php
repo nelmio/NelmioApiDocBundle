@@ -15,13 +15,11 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use FOS\RestBundle\FOSRestBundle;
-use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
@@ -92,12 +90,6 @@ class TestKernel extends Kernel
 
         if (self::USE_BAZINGA === $this->flag) {
             $routes->withPath('/')->import(__DIR__.'/Controller/BazingaTypedController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
-
-            try {
-                new \ReflectionMethod(Embedded::class, 'getType');
-                $routes->withPath('/')->import(__DIR__.'/Controller/BazingaTypedController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
-            } catch (\ReflectionException $e) {
-            }
         }
 
         if (self::USE_FOSREST === $this->flag) {
@@ -148,9 +140,9 @@ class TestKernel extends Kernel
 
         $c->loadFromExtension('api_platform', [
             'mapping' => ['paths' => [
-                !class_exists(ApiProperty::class)
-                ? '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform3'
-                : '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform2',
+                class_exists(ApiProperty::class)
+                ? '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform2'
+                : '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform3',
             ]],
         ]);
 
@@ -205,41 +197,22 @@ class TestKernel extends Kernel
             ],
         ];
 
-        if (self::isAnnotationsAvailable()) {
-            $models = array_merge($models, [
-                [
-                    'alias' => 'JMSComplex',
-                    'type' => JMSComplex80::class,
-                    'groups' => [
-                        'list',
-                        'details',
-                        'User' => ['list'],
-                    ],
+        $models = array_merge($models, [
+            [
+                'alias' => 'JMSComplex',
+                'type' => JMSComplex::class,
+                'groups' => [
+                    'list',
+                    'details',
+                    'User' => ['list'],
                 ],
-                [
-                    'alias' => 'JMSComplexDefault',
-                    'type' => JMSComplex80::class,
-                    'groups' => null,
-                ],
-            ]);
-        } elseif (self::isAttributesAvailable()) {
-            $models = array_merge($models, [
-                [
-                    'alias' => 'JMSComplex',
-                    'type' => JMSComplex81::class,
-                    'groups' => [
-                        'list',
-                        'details',
-                        'User' => ['list'],
-                    ],
-                ],
-                [
-                    'alias' => 'JMSComplexDefault',
-                    'type' => JMSComplex81::class,
-                    'groups' => null,
-                ],
-            ]);
-        }
+            ],
+            [
+                'alias' => 'JMSComplexDefault',
+                'type' => JMSComplex::class,
+                'groups' => null,
+            ],
+        ]);
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [

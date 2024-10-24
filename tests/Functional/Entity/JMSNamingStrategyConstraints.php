@@ -11,14 +11,28 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class JMSNamingStrategyConstraints extends JMSNamingStrategyConstraints80
+class JMSNamingStrategyConstraints
+{
+    /**
+     * @var string
+     */
+    #[Serializer\Type('string')]
+    #[Serializer\SerializedName('beautifulName')]
+    #[Assert\NotBlank()]
+    #[Assert\Regex(pattern: '\w+')]
+    #[Assert\Length(min: 3, max: 10)]
+    private $some_weird_named_property = 'default';
+
+    public function getSomeWeirdNamedProperty(): string
     {
+        return $this->some_weird_named_property;
     }
-} else {
-    class JMSNamingStrategyConstraints extends JMSNamingStrategyConstraints81
+
+    public function setSomeWeirdNamedProperty(string $some_weird_named_property)
     {
+        $this->some_weird_named_property = $some_weird_named_property;
     }
 }

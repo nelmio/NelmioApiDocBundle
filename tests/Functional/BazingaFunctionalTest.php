@@ -11,21 +11,15 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use Hateoas\Configuration\Embedded;
 use Metadata\Cache\PsrCacheAdapter;
 use Metadata\MetadataFactory;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class BazingaFunctionalTest extends WebTestCase
 {
     protected function setUp(): void
     {
-        if (Kernel::MAJOR_VERSION >= 7) {
-            self::markTestSkipped('Not supported in symfony 7');
-        }
-
         parent::setUp();
 
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
@@ -114,10 +108,6 @@ class BazingaFunctionalTest extends WebTestCase
 
     public function testWithType(): void
     {
-        if (!method_exists(Embedded::class, 'getType')) {
-            self::markTestSkipped('Typed embedded properties require at most willdurand/hateoas 3.0');
-        }
-
         self::assertEquals([
             'type' => 'object',
             'properties' => [

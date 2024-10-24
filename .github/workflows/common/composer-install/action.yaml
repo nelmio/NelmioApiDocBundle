@@ -7,11 +7,6 @@ inputs:
     required: true
     type: string
 
-  install-doctrine-annotations:
-    description: If the doctrine/annotations package should be additionally installed as a dependency
-    required: true
-    type: boolean
-
   composer-flags:
     description: Additional flags that are passed to the `composer update` step
     required: false
@@ -33,11 +28,6 @@ runs:
         restore-keys: |
           ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           ${{ runner.os }}-composer-
-
-    - name: Install doctrine/annotations
-      if: ${{ inputs.install-doctrine-annotations == 'true' }}
-      run: composer require --no-update doctrine/annotations
-      shell: bash
 
     - name: Install dependencies with Composer
       env:

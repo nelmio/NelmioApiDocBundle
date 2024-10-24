@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
@@ -33,11 +32,9 @@ final class OpenApiPhpDescriber
 
     private RouteCollection $routeCollection;
     private ControllerReflector $controllerReflector;
-
-    private ?Reader $annotationReader;
     private LoggerInterface $logger;
 
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, ?Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, LoggerInterface $logger, bool $overwrite = false)
     {
         if ($overwrite || func_num_args() > 4) {
             trigger_deprecation('nelmio/api-doc-bundle', '4.25.2', 'The "$overwrite" argument of "%s" is unused and therefore deprecated.', __METHOD__);
@@ -45,7 +42,6 @@ final class OpenApiPhpDescriber
 
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
-        $this->annotationReader = $annotationReader;
         $this->logger = $logger;
     }
 
@@ -68,27 +64,10 @@ final class OpenApiPhpDescriber
             $this->setContext($context);
 
             if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
-                $classAnnotations = [];
-                if (null !== $this->annotationReader) {
-                    $classAnnotations = $this->annotationReader->getClassAnnotations($declaringClass);
-                }
-
-                $classAnnotations = array_filter($classAnnotations, function ($v) {
-                    return $v instanceof OA\AbstractAnnotation;
-                });
-
-                $classAnnotations = array_merge($classAnnotations, $this->getAttributesAsAnnotation($declaringClass, $context));
-                $classAnnotations[$declaringClass->getName()] = $classAnnotations;
+                $classAnnotations[$declaringClass->getName()] = $this->getAttributesAsAnnotation($declaringClass, $context);
             }
 
-            $annotations = [];
-            if (null !== $this->annotationReader) {
-                $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
-                    return $v instanceof OA\AbstractAnnotation;
-                });
-            }
-
-            $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($method, $context));
+            $annotations = $this->getAttributesAsAnnotation($method, $context);
 
             $implicitAnnotations = [];
             $mergeProperties = new \stdClass();

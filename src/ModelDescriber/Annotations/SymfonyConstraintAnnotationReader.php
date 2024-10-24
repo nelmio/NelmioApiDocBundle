@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Annotations as OA;
@@ -27,8 +26,6 @@ class SymfonyConstraintAnnotationReader
 {
     use SetsContextTrait;
 
-    private ?Reader $annotationsReader;
-
     /**
      * @var OA\Schema
      */
@@ -36,9 +33,8 @@ class SymfonyConstraintAnnotationReader
 
     private bool $useValidationGroups;
 
-    public function __construct(?Reader $annotationsReader, bool $useValidationGroups = false)
+    public function __construct(bool $useValidationGroups = false)
     {
-        $this->annotationsReader = $annotationsReader;
         $this->useValidationGroups = $useValidationGroups;
     }
 
@@ -189,10 +185,6 @@ class SymfonyConstraintAnnotationReader
         $this->setContextFromReflection($parentContext, $reflection);
 
         foreach ($this->locateAnnotations($reflection) as $annotation) {
-            if (!$annotation instanceof Constraint) {
-                continue;
-            }
-
             if (!$this->useValidationGroups || $this->isConstraintInGroup($annotation, $validationGroups)) {
                 yield $annotation;
             }
@@ -211,14 +203,6 @@ class SymfonyConstraintAnnotationReader
         if (class_exists(Constraint::class)) {
             foreach ($reflection->getAttributes(Constraint::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
                 yield $attribute->newInstance();
-            }
-        }
-
-        if (null !== $this->annotationsReader) {
-            if ($reflection instanceof \ReflectionProperty) {
-                yield from $this->annotationsReader->getPropertyAnnotations($reflection);
-            } elseif ($reflection instanceof \ReflectionMethod) {
-                yield from $this->annotationsReader->getMethodAnnotations($reflection);
             }
         }
     }
