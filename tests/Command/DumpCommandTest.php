@@ -14,16 +14,16 @@ namespace Nelmio\ApiDocBundle\Tests\Command;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Render\Html\Renderer;
 use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase; // for the creation of the kernel
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class DumpCommandTest extends WebTestCase
 {
     /**
-     * @dataProvider provideJsonMode
-     *
      * @param array<string, mixed> $jsonOptions
      */
+    #[DataProvider('provideJsonMode')]
     public function testJson(array $jsonOptions, int $expectedJsonFlags): void
     {
         $output = $this->executeDumpCommand($jsonOptions + [
@@ -57,10 +57,9 @@ YAML;
     }
 
     /**
-     * @dataProvider provideAssetsMode
-     *
      * @param mixed $htmlConfig the value of the --html-config option
      */
+    #[DataProvider('provideAssetsMode')]
     public function testHtml($htmlConfig, string $expectedHtml): void
     {
         $output = $this->executeDumpCommand([

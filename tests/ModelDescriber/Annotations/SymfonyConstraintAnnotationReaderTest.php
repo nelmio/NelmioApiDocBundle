@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -49,9 +50,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
-     *
-     * @dataProvider provideOptionalProperty
      */
+    #[DataProvider('provideOptionalProperty')]
     public function testOptionalProperty($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -81,9 +81,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
-     *
-     * @dataProvider provideAssertChoiceResultsInNumericArray
      */
+    #[DataProvider('provideAssertChoiceResultsInNumericArray')]
     public function testAssertChoiceResultsInNumericArray($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -114,9 +113,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
-     *
-     * @dataProvider provideMultipleChoiceConstraintsApplyEnumToItems
      */
+    #[DataProvider('provideMultipleChoiceConstraintsApplyEnumToItems')]
     public function testMultipleChoiceConstraintsApplyEnumToItems($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -141,11 +139,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
-     *
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
-     *
-     * @dataProvider provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet
      */
+    #[DataProvider('provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet')]
     public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -170,11 +165,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
-     *
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1780
-     *
-     * @dataProvider provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet
      */
+    #[DataProvider('provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet')]
     public function testLengthConstraintDoesNotSetMinLengthIfMinIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -222,11 +214,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
-     *
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1821
-     *
-     * @dataProvider provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet
      */
+    #[DataProvider('provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet')]
     public function testCountConstraintDoesNotSetMinItemsIfMinIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -251,11 +240,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
-     *
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1821
-     *
-     * @dataProvider provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet
      */
+    #[DataProvider('provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet')]
     public function testCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -280,11 +266,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
-     *
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1822
-     *
-     * @dataProvider provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet
      */
+    #[DataProvider('provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet')]
     public function testRangeConstraintDoesNotSetMaximumIfMaxIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -309,11 +292,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
-     *
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1822
-     *
-     * @dataProvider provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet
      */
+    #[DataProvider('provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet')]
     public function testRangeConstraintDoesNotSetMinimumIfMinIsNotSet($entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -339,11 +319,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     /**
      * re-using another provider here, since all constraints land in the default
      * group when `group={"someGroup"}` is not set.
-     *
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
-     *
-     * @dataProvider provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet
      */
+    #[DataProvider('provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet')]
     public function testReaderWithValidationGroupsEnabledChecksForDefaultGroupWhenNoSerializationGroupsArePassed(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -360,11 +337,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(10, $schema->properties[0]->maximum, 'should have read constraints in the default group');
     }
 
-    /**
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
-     *
-     * @dataProvider provideConstraintsWithGroups
-     */
+    #[DataProvider('provideConstraintsWithGroups')]
     public function testReaderWithValidationGroupsEnabledDoesNotReadAnnotationsWithoutDefaultGroupIfNoGroupsArePassed(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -384,11 +357,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(Generator::UNDEFINED, $schema->properties[0]->minimum, 'should not have read constraint in other group');
     }
 
-    /**
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
-     *
-     * @dataProvider provideConstraintsWithGroups
-     */
+    #[DataProvider('provideConstraintsWithGroups')]
     public function testReaderWithValidationGroupsEnabledReadsOnlyConstraintsWithGroupsProvided(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
@@ -409,11 +378,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertSame(1, $schema->properties[0]->minimum, 'should have read constraint in other group');
     }
 
-    /**
-     * @group https://github.com/nelmio/NelmioApiDocBundle/issues/1857
-     *
-     * @dataProvider provideConstraintsWithGroups
-     */
+    #[DataProvider('provideConstraintsWithGroups')]
     public function testReaderWithValidationGroupsEnabledCanReadFromMultipleValidationGroups(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);

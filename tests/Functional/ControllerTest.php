@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use OpenApi\Annotations as OA;
 use OpenApi\Processors\CleanUnusedComponents;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
@@ -40,13 +41,12 @@ final class ControllerTest extends WebTestCase
     }
 
     /**
-     * @dataProvider provideAttributeTestCases
-     * @dataProvider provideUniversalTestCases
-     *
      * @param array{name: string, type: string}|null $controller
      * @param Bundle[]                               $extraBundles
      * @param string[]                               $extraConfigs
      */
+    #[DataProvider('provideAttributeTestCases')]
+    #[DataProvider('provideUniversalTestCases')]
     public function testControllers(?array $controller, ?string $fixtureName = null, array $extraBundles = [], array $extraConfigs = []): void
     {
         $controllerName = $controller['name'] ?? null;

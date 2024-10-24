@@ -18,6 +18,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAattr;
 use OpenApi\Context;
 use OpenApi\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AnnotationReaderTest extends TestCase
@@ -26,9 +27,8 @@ class AnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
-     *
-     * @dataProvider provideProperty
      */
+    #[DataProvider('provideProperty')]
     public function testProperty($entity): void
     {
         $baseProps = ['_context' => new Context()];

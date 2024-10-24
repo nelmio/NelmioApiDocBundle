@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\ModelDescriber\FormModelDescriber;
 use OpenApi\Annotations\Property;
 use OpenApi\Attributes\OpenApi;
 use OpenApi\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigInterface;
@@ -27,9 +28,7 @@ use Symfony\Component\PropertyInfo\Type;
 
 class FormModelDescriberTest extends TestCase
 {
-    /**
-     * @dataProvider provideCsrfProtectionOptions
-     */
+    #[DataProvider('provideCsrfProtectionOptions')]
     public function testDescribeCreatesTokenPropertyDependingOnOptions(bool $csrfProtectionEnabled, string $tokenName, bool $expectProperty): void
     {
         $formConfigMock = $this->createMock(FormConfigInterface::class);

@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\DependencyInjection;
 
 use Nelmio\ApiDocBundle\DependencyInjection\NelmioApiDocExtension;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -162,11 +163,10 @@ class NelmioApiDocExtensionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideCacheConfig
-     *
      * @param array<string, mixed> $config
      * @param array<string, mixed> $expectedValues
      */
+    #[DataProvider('provideCacheConfig')]
     public function testApiDocGeneratorWithCachePool(array $config, array $expectedValues): void
     {
         $container = new ContainerBuilder();
@@ -310,11 +310,10 @@ class NelmioApiDocExtensionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideOpenApiRendererWithHtmlConfig
-     *
      * @param array<string, mixed> $htmlConfig
      * @param array<string, mixed> $expectedHtmlConfig
      */
+    #[DataProvider('provideOpenApiRendererWithHtmlConfig')]
     public function testHtmlOpenApiRendererWithHtmlConfig(array $htmlConfig, array $expectedHtmlConfig): void
     {
         $container = new ContainerBuilder();

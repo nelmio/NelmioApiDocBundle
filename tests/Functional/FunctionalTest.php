@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpKernel\Kernel;
 
 class FunctionalTest extends WebTestCase
@@ -42,9 +43,7 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasPath('/api/admin', $api);
     }
 
-    /**
-     * @dataProvider provideArticleRoute
-     */
+    #[DataProvider('provideArticleRoute')]
     public function testFetchArticleAction(string $articleRoute): void
     {
         $operation = $this->getOperation($articleRoute, 'get');
@@ -79,9 +78,8 @@ class FunctionalTest extends WebTestCase
 
     /**
      * Tests that the paths are automatically resolved in Swagger annotations.
-     *
-     * @dataProvider swaggerActionPathsProvider
      */
+    #[DataProvider('swaggerActionPathsProvider')]
     public function testSwaggerAction(string $path): void
     {
         $operation = $this->getOperation($path, 'get');
@@ -110,9 +108,7 @@ class FunctionalTest extends WebTestCase
         $this->assertHasParameter('Accept-Version', 'header', $operation);
     }
 
-    /**
-     * @dataProvider implicitSwaggerActionMethodsProvider
-     */
+    #[DataProvider('implicitSwaggerActionMethodsProvider')]
     public function testImplicitSwaggerAction(string $method): void
     {
         $operation = $this->getOperation('/api/swagger/implicit', $method);
@@ -372,9 +368,7 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('FormWithModel')->toJson(), true));
     }
 
-    /**
-     * @dataProvider provideSecurityRoute
-     */
+    #[DataProvider('provideSecurityRoute')]
     public function testSecurityAction(string $route): void
     {
         $operation = $this->getOperation($route, 'get');
@@ -394,9 +388,7 @@ class FunctionalTest extends WebTestCase
         yield 'Attributes' => ['/api/security_attributes'];
     }
 
-    /**
-     * @dataProvider provideSecurityOverrideRoute
-     */
+    #[DataProvider('provideSecurityOverrideRoute')]
     public function testSecurityOverrideAction(string $route): void
     {
         $operation = $this->getOperation($route, 'get');

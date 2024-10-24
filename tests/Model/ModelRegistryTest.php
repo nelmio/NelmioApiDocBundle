@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyInfo\Type;
@@ -36,10 +37,9 @@ class ModelRegistryTest extends TestCase
     }
 
     /**
-     * @dataProvider provideNameCollisionsTypes
-     *
      * @param array<string, mixed> $arrayType
      */
+    #[DataProvider('provideNameCollisionsTypes')]
     public function testNameCollisionsAreLogged(Type $type, array $arrayType): void
     {
         $logger = $this->createMock(LoggerInterface::class);
@@ -161,11 +161,10 @@ class ModelRegistryTest extends TestCase
     }
 
     /**
-     * @dataProvider getNameAlternatives
-     *
      * @param string[]|null        $groups
      * @param array<string, mixed> $alternativeNames
      */
+    #[DataProvider('getNameAlternatives')]
     public function testNameAliasingForObjects(string $expected, ?array $groups, array $alternativeNames): void
     {
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
@@ -232,9 +231,7 @@ class ModelRegistryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider unsupportedTypesProvider
-     */
+    #[DataProvider('unsupportedTypesProvider')]
     public function testUnsupportedTypeException(Type $type, string $stringType): void
     {
         $this->expectException('\LogicException');
