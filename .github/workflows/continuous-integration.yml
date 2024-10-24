@@ -79,11 +79,11 @@ jobs:
           composer-flags: ${{ matrix.composer-flags }}
 
       - name: PHPUnit Tests
-        run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}.xml
+        run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}
+          name: coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}
           path: coverage*.xml
           if-no-files-found: error
           retention-days: 2
