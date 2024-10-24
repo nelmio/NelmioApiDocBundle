@@ -64,7 +64,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Install PHP without coverage
+      - name: Install PHP with coverage
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
@@ -96,7 +96,7 @@ jobs:
         with:
           php-version: 8.3
           tools: composer, flex
-          coverage: pcov
+          coverage: none
 
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
@@ -122,7 +122,7 @@ jobs:
         with:
           php-version: 8.3
           tools: composer, flex
-          coverage: pcov
+          coverage: none
 
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
