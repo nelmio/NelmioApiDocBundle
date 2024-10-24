@@ -168,10 +168,10 @@ class FunctionalTest extends WebTestCase
 
     public function testApiPlatform(): void
     {
-        $operation = $this->getOperation('/api/dummies', 'get');
-        $operation = $this->getOperation('/api/foo', 'get');
-        $operation = $this->getOperation('/api/foo', 'post');
-        $operation = $this->getOperation('/api/dummies/{id}', 'get');
+        $this->getOperation('/api/dummies', 'get');
+        $this->getOperation('/api/foo', 'get');
+        $this->getOperation('/api/foo', 'post');
+        $this->getOperation('/api/dummies/{id}', 'get');
     }
 
     public function testUserModel(): void
