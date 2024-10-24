@@ -114,7 +114,7 @@ class TestKernel extends Kernel
             'validation' => null,
             'form' => null,
             'serializer' => (
-                PHP_VERSION_ID >= 80100 && Kernel::MAJOR_VERSION < 7
+                Kernel::MAJOR_VERSION < 7
                     ? ['enable_annotations' => true]
                     : []
             ) + [
@@ -321,7 +321,7 @@ class TestKernel extends Kernel
             ],
         ]);
 
-        if (self::USE_JMS === $this->flag && \PHP_VERSION_ID >= 80100) {
+        if (self::USE_JMS === $this->flag) {
             $c->loadFromExtension('jms_serializer', [
                 'enum_support' => true,
             ]);
@@ -356,11 +356,11 @@ class TestKernel extends Kernel
             return false;
         }
 
-        return PHP_VERSION_ID < 80100;
+        return false;
     }
 
     public static function isAttributesAvailable(): bool
     {
-        return PHP_VERSION_ID >= 80100;
+        return true;
     }
 }

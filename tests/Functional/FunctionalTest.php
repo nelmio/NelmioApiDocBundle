@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\Tests\Helper;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
@@ -69,9 +68,7 @@ class FunctionalTest extends WebTestCase
             yield 'Annotations' => ['/api/article/{id}'];
         }
 
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => ['/api/article_attributes/{id}'];
-        }
+        yield 'Attributes' => ['/api/article_attributes/{id}'];
     }
 
     public function testFilteredAction(): void
@@ -395,9 +392,7 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/security'];
 
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => ['/api/security_attributes'];
-        }
+        yield 'Attributes' => ['/api/security_attributes'];
     }
 
     /**
@@ -413,17 +408,11 @@ class FunctionalTest extends WebTestCase
     {
         yield 'Annotations' => ['/api/securityOverride'];
 
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => ['/api/security_override_attributes'];
-        }
+        yield 'Attributes' => ['/api/security_override_attributes'];
     }
 
     public function testInlinePHP81Parameters(): void
     {
-        if (\PHP_VERSION_ID < 80100) {
-            self::markTestSkipped('Attributes require PHP 8.1');
-        }
-
         $operation = $this->getOperation('/api/inline_path_parameters', 'get');
         self::assertCount(1, $operation->parameters);
         self::assertInstanceOf(OAAttributes\PathParameter::class, $operation->parameters[0]);
@@ -471,6 +460,7 @@ class FunctionalTest extends WebTestCase
                 'propertyGreaterThanDate',
                 'propertyGreaterThanOrEqual',
                 'propertyGreaterThanOrEqualDate',
+                'propertyWithCompoundValidationRule',
             ],
             'properties' => [
                 'propertyNotBlank' => [
@@ -543,9 +533,6 @@ class FunctionalTest extends WebTestCase
                     'type' => 'string',
                     'format' => 'date-time',
                 ],
-                'propertyWithCompoundValidationRule' => [
-                    'type' => 'integer',
-                ],
                 'propertyGreaterThan' => [
                     'type' => 'integer',
                     'exclusiveMinimum' => true,
@@ -563,21 +550,17 @@ class FunctionalTest extends WebTestCase
                     'type' => 'string',
                     'format' => 'date-time',
                 ],
+                'propertyWithCompoundValidationRule' => [
+                    'type' => 'integer',
+                    'maximum' => 5,
+                    'exclusiveMaximum' => true,
+                    'minimum' => 0,
+                    'exclusiveMinimum' => true,
+                ],
             ],
             'type' => 'object',
             'schema' => $modelName,
         ];
-
-        if (Helper::isCompoundValidatorConstraintSupported()) {
-            $expected['required'][] = 'propertyWithCompoundValidationRule';
-            $expected['properties']['propertyWithCompoundValidationRule'] = [
-                'type' => 'integer',
-                'maximum' => 5,
-                'exclusiveMaximum' => true,
-                'minimum' => 0,
-                'exclusiveMinimum' => true,
-            ];
-        }
 
         self::assertEquals($expected, json_decode($this->getModel($modelName)->toJson(), true));
     }

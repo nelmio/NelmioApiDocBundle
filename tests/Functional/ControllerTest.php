@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use JMS\SerializerBundle\JMSSerializerBundle;
 use OpenApi\Annotations as OA;
+use OpenApi\Processors\CleanUnusedComponents;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
@@ -79,10 +80,6 @@ final class ControllerTest extends WebTestCase
 
     public static function provideAttributeTestCases(): \Generator
     {
-        if (PHP_VERSION_ID < 80100) {
-            return;
-        }
-
         $type = Kernel::MAJOR_VERSION === 5 ? 'annotation' : 'attribute';
 
         yield 'Promoted properties defaults attributes' => [
@@ -92,7 +89,7 @@ final class ControllerTest extends WebTestCase
             ],
             'PromotedPropertiesDefaults',
             [],
-            [__DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml'],
+            [__DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml', ...self::cleanUnusedComponentsConfig()],
         ];
 
         yield 'JMS model opt out' => [
@@ -173,17 +170,15 @@ final class ControllerTest extends WebTestCase
             return;
         }
 
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Promoted properties defaults annotations' => [
-                [
-                    'name' => 'PromotedPropertiesController80',
-                    'type' => 'annotation',
-                ],
-                'PromotedPropertiesDefaults',
-                [],
-                [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml'],
-            ];
-        }
+        yield 'Promoted properties defaults annotations' => [
+            [
+                'name' => 'PromotedPropertiesController80',
+                'type' => 'annotation',
+            ],
+            'PromotedPropertiesDefaults',
+            [],
+            [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml', ...self::cleanUnusedComponentsConfig()],
+        ];
     }
 
     /**
@@ -212,5 +207,18 @@ final class ControllerTest extends WebTestCase
         }
 
         return $content;
+    }
+
+    /**
+     * @return string[]
+     */
+    private static function cleanUnusedComponentsConfig(): array
+    {
+        /* @phpstan-ignore-next-line */
+        if (method_exists(CleanUnusedComponents::class, 'setEnabled')) {
+            return [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'];
+        }
+
+        return [__DIR__.'/Configs/CleanUnusedComponentsProcessorNoSetter.yaml'];
     }
 }
