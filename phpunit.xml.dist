@@ -25,9 +25,11 @@
         </testsuite>
     </testsuites>
 
-    <source>
-      <include>
-        <directory suffix=".php">src</directory>
-      </include>
-    </source>
+    <coverage includeUncoveredFiles="true">
+        <source>
+          <include>
+            <directory suffix=".php">src</directory>
+          </include>
+        </source>
+    </coverage>
 </phpunit>
