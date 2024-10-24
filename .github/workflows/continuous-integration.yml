@@ -74,17 +74,24 @@ jobs:
           composer-flags: ${{ matrix.composer-flags }}
 
       - name: PHPUnit Tests
-        run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml --coverage-filter=src/
+        run: | 
+          vendor/bin/phpunit \
+          --configuration phpunit.xml.dist \
+          --log-junit=junit-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml \
+          --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml \
+          --coverage-filter=src/
 
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}
-          path: coverage*.xml
+          name: phpunit-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}
+          path: |
+            coverage*.xml
+            junit*.xml
           if-no-files-found: error
           retention-days: 2
 
-  upload-to-codecov:
-    name: Upload Code Coverage
+  codecov:
+    name: Codecov
     runs-on: ubuntu-22.04
 
     needs: phpunit
@@ -99,7 +106,13 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
 
-      - uses: codecov/codecov-action@v4
+      - name: Upload test results to Codecov.io
+        uses: codecov/test-results-action@v1
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload code coverage to Codecov.io
+        uses: codecov/codecov-action@v4
         with:
           fail_ci_if_error: true
         env:
