@@ -10,7 +10,7 @@
  */
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
-;
+
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(type: 'object')]

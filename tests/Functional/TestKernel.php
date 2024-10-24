@@ -20,7 +20,6 @@ use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
