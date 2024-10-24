@@ -21,7 +21,7 @@ use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex80;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
@@ -205,41 +205,22 @@ class TestKernel extends Kernel
             ],
         ];
 
-        if (self::isAnnotationsAvailable()) {
-            $models = array_merge($models, [
-                [
-                    'alias' => 'JMSComplex',
-                    'type' => JMSComplex80::class,
-                    'groups' => [
-                        'list',
-                        'details',
-                        'User' => ['list'],
-                    ],
+        $models = array_merge($models, [
+            [
+                'alias' => 'JMSComplex',
+                'type' => JMSComplex::class,
+                'groups' => [
+                    'list',
+                    'details',
+                    'User' => ['list'],
                 ],
-                [
-                    'alias' => 'JMSComplexDefault',
-                    'type' => JMSComplex80::class,
-                    'groups' => null,
-                ],
-            ]);
-        } elseif (self::isAttributesAvailable()) {
-            $models = array_merge($models, [
-                [
-                    'alias' => 'JMSComplex',
-                    'type' => JMSComplex81::class,
-                    'groups' => [
-                        'list',
-                        'details',
-                        'User' => ['list'],
-                    ],
-                ],
-                [
-                    'alias' => 'JMSComplexDefault',
-                    'type' => JMSComplex81::class,
-                    'groups' => null,
-                ],
-            ]);
-        }
+            ],
+            [
+                'alias' => 'JMSComplexDefault',
+                'type' => JMSComplex::class,
+                'groups' => null,
+            ],
+        ]);
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [

@@ -11,14 +11,24 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup;
 
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
+use JMS\Serializer\Annotation as Serializer;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class JMSChatUser extends JMSChatUser80
-    {
-    }
-} else {
-    class JMSChatUser extends JMSChatUser81
-    {
-    }
+/**
+ * User.
+ */
+#[Serializer\ExclusionPolicy('all')]
+class JMSChatUser
+{
+    #[Serializer\Type('integer')]
+    #[Serializer\Expose]
+    private $id;
+
+    #[Serializer\Type('Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture')]
+    #[Serializer\Groups(['mini'])]
+    #[Serializer\Expose]
+    private $picture;
+
+    #[Serializer\Type('array<Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture>')]
+    #[Serializer\Expose]
+    private $allPictures;
 }

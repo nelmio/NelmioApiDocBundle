@@ -12,30 +12,11 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\DiscriminatorMap;
 
 use JMS\Serializer\Annotation as Serializer;
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    /**
-     * @Serializer\Discriminator(map={
-     *     "manager" = JMSManager::class,
-     *     "administrator" = JMSAdministrator::class,
-     * }, groups={"Default"})
-     */
-    abstract class JMSAbstractUser
-    {
-        /**
-         * @Serializer\Type("string")
-         *
-         * @Serializer\Groups({"Default"})
-         */
-        public $username;
-    }
-} else {
-    #[Serializer\Discriminator(map: ['manager' => JMSManager::class, 'administrator' => JMSAdministrator::class], groups: ['Default'])]
-    abstract class JMSAbstractUser
-    {
-        #[Serializer\Type('string')]
-        #[Serializer\Groups(['Default'])]
-        public $username;
-    }
+#[Serializer\Discriminator(map: ['manager' => JMSManager::class, 'administrator' => JMSAdministrator::class], groups: ['Default'])]
+abstract class JMSAbstractUser
+{
+    #[Serializer\Type('string')]
+    #[Serializer\Groups(['Default'])]
+    public $username;
 }

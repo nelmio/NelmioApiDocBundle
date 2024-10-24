@@ -29,7 +29,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithUuid;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\RangeInteger;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints81;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorFileMapping;
@@ -224,7 +224,7 @@ class ApiController
     #[OA\Response(
         response: '201',
         description: 'Used for symfony constraints test',
-        content: new Model(type: SymfonyConstraints81::class),
+        content: new Model(type: SymfonyConstraints::class),
     )]
     public function symfonyConstraintsAction()
     {

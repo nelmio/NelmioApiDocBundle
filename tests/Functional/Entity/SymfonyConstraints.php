@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class SymfonyConstraints81
+class SymfonyConstraints
 {
     /**
      * @var int

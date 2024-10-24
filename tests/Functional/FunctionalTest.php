@@ -432,11 +432,7 @@ class FunctionalTest extends WebTestCase
 
     public function testSymfonyConstraintDocumentation(): void
     {
-        if (TestKernel::isAttributesAvailable()) {
-            $modelName = 'SymfonyConstraints81';
-        } else {
-            $modelName = 'SymfonyConstraints80';
-        }
+        $modelName = 'SymfonyConstraints';
 
         $expected = [
             'required' => [
