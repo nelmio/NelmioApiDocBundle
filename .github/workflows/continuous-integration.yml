@@ -97,8 +97,8 @@ jobs:
           if-no-files-found: error
           retention-days: 2
 
-  upload-to-codecov:
-    name: Upload Code Coverage
+  codecov:
+    name: Codecov
     runs-on: ubuntu-22.04
 
     needs: phpunit
