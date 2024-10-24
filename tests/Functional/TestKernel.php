@@ -15,7 +15,6 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use FOS\RestBundle\FOSRestBundle;
-use Hateoas\Configuration\Embedded;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
@@ -91,12 +90,6 @@ class TestKernel extends Kernel
 
         if (self::USE_BAZINGA === $this->flag) {
             $routes->withPath('/')->import(__DIR__.'/Controller/BazingaTypedController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
-
-            try {
-                new \ReflectionMethod(Embedded::class, 'getType');
-                $routes->withPath('/')->import(__DIR__.'/Controller/BazingaTypedController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
-            } catch (\ReflectionException $e) {
-            }
         }
 
         if (self::USE_FOSREST === $this->flag) {

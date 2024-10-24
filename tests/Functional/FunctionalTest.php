@@ -17,7 +17,6 @@ use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class FunctionalTest extends WebTestCase
 {
@@ -587,15 +586,7 @@ class FunctionalTest extends WebTestCase
 
     public function testSerializedNameAction(): void
     {
-        if (!class_exists(SerializedName::class)) {
-            self::markTestSkipped('Annotation @SerializedName doesn\'t exist.');
-        }
-
-        if (TestKernel::isAttributesAvailable()) {
-            $model = $this->getModel('SerializedNameEntity');
-        } else {
-            $model = $this->getModel('SerializedNameEnt');
-        }
+        $model = $this->getModel('SerializedNameEntity');
 
         self::assertCount(2, $model->properties);
 

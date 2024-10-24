@@ -54,10 +54,6 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
      */
     public function testOptionalProperty($entity): void
     {
-        if (!\property_exists(Assert\NotBlank::class, 'allowNull')) {
-            self::markTestSkipped('NotBlank::allowNull was added in symfony/validator 4.3.');
-        }
-
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property2'])]);

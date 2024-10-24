@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use Hateoas\Configuration\Embedded;
 use Metadata\Cache\PsrCacheAdapter;
 use Metadata\MetadataFactory;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -109,10 +108,6 @@ class BazingaFunctionalTest extends WebTestCase
 
     public function testWithType(): void
     {
-        if (!method_exists(Embedded::class, 'getType')) {
-            self::markTestSkipped('Typed embedded properties require at most willdurand/hateoas 3.0');
-        }
-
         self::assertEquals([
             'type' => 'object',
             'properties' => [
