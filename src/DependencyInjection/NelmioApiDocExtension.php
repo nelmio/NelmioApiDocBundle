@@ -164,7 +164,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ));
 
         $container->getDefinition('nelmio_api_doc.model_describers.object')
-            ->setArgument(3, $config['media_types']);
+            ->setArgument(2, $config['media_types']);
 
         // Add autoconfiguration for model describer
         $container->registerForAutoconfiguration(ModelDescriberInterface::class)
@@ -246,7 +246,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setPublic(false)
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
-                    new Reference('annotations.reader', ContainerInterface::NULL_ON_INVALID_REFERENCE),
                     $config['media_types'],
                     $jmsNamingStrategy,
                     $container->getParameter('nelmio_api_doc.use_validation_groups'),

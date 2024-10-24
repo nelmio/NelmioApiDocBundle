@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
@@ -33,7 +32,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     private PropertyInfoExtractorInterface $propertyInfo;
     private ?ClassMetadataFactoryInterface $classMetadataFactory;
-    private ?Reader $doctrineReader;
     /** @var PropertyDescriberInterface|PropertyDescriberInterface[] */
     private $propertyDescriber;
     /** @var string[] */
@@ -49,7 +47,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
      */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        ?Reader $reader,
         $propertyDescribers,
         array $mediaTypes,
         ?NameConverterInterface $nameConverter = null,
@@ -65,7 +62,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
 
         $this->propertyInfo = $propertyInfo;
-        $this->doctrineReader = $reader;
         $this->propertyDescriber = $propertyDescribers;
         $this->mediaTypes = $mediaTypes;
         $this->nameConverter = $nameConverter;

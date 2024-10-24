@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
@@ -62,9 +61,7 @@ class FunctionalTest extends WebTestCase
 
     public static function provideArticleRoute(): \Generator
     {
-        if (interface_exists(Reader::class)) {
-            yield 'Annotations' => ['/api/article/{id}'];
-        }
+        yield 'Annotations' => ['/api/article/{id}'];
 
         yield 'Attributes' => ['/api/article_attributes/{id}'];
     }

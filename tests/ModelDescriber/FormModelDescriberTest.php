@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\ModelDescriber;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\FormModelDescriber;
@@ -56,14 +55,12 @@ class FormModelDescriberTest extends TestCase
             ->method('create')
             ->willReturn($formMock);
 
-        $annotationReader = $this->createMock(Reader::class);
-
         $api = new OpenApi();
         $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, FormType::class));
         $schema = $this->initSchema();
         $modelRegistry = new ModelRegistry([], $api);
 
-        $describer = new FormModelDescriber($formFactoryMock, $annotationReader, [], false, true);
+        $describer = new FormModelDescriber($formFactoryMock, [], false, true);
         $describer->setModelRegistry($modelRegistry);
 
         $describer->describe($model, $schema);

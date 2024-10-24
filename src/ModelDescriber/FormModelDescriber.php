@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
@@ -39,7 +38,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     use SetsContextTrait;
 
     private ?FormFactoryInterface $formFactory;
-    private ?Reader $doctrineReader;
 
     /**
      * @var string[]
@@ -53,13 +51,11 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
      */
     public function __construct(
         ?FormFactoryInterface $formFactory = null,
-        ?Reader $reader = null,
         ?array $mediaTypes = null,
         bool $useValidationGroups = false,
         bool $isFormCsrfExtensionEnabled = false
     ) {
         $this->formFactory = $formFactory;
-        $this->doctrineReader = $reader;
 
         if (null === $mediaTypes) {
             $mediaTypes = ['json'];
