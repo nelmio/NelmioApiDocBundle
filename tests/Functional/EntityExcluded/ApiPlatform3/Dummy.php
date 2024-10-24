@@ -38,9 +38,8 @@ class Dummy
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     #[ApiProperty(iris: ['http://schema.org/name'])]
     private $name;
 
