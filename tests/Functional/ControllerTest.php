@@ -40,7 +40,6 @@ final class ControllerTest extends WebTestCase
     }
 
     /**
-     * @dataProvider provideAnnotationTestCases
      * @dataProvider provideAttributeTestCases
      * @dataProvider provideUniversalTestCases
      *
@@ -162,23 +161,6 @@ final class ControllerTest extends WebTestCase
                 ];
             }
         }
-    }
-
-    public static function provideAnnotationTestCases(): \Generator
-    {
-        if (!TestKernel::isAnnotationsAvailable()) {
-            return;
-        }
-
-        yield 'Promoted properties defaults annotations' => [
-            [
-                'name' => 'PromotedPropertiesController80',
-                'type' => 'annotation',
-            ],
-            'PromotedPropertiesDefaults',
-            [],
-            [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml', ...self::cleanUnusedComponentsConfig()],
-        ];
     }
 
     /**

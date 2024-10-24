@@ -12,21 +12,15 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Annotation\Security;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OAT;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/api", host="api.example.com")
- *
- * @Security(name="basic")
- */
-class ClassApiController80
+#[Security(name: 'basic')]
+#[Route('/api', host: 'api.example.com')]
+class ClassApiController
 {
-    /**
-     * @Route("/security/class")
-     *
-     * @OA\Response(response="201", description="")
-     */
+    #[OAT\Response(response: 201, description: '')]
+    #[Route('/security/class')]
     public function securityAction()
     {
     }
