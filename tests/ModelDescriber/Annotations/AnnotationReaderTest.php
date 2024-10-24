@@ -54,17 +54,6 @@ class AnnotationReaderTest extends TestCase
 
     public static function provideProperty(): \Generator
     {
-        yield 'Annotations' => [new class {
-            /**
-             * @OA\Property(example=1)
-             */
-            public $property1;
-            /**
-             * @OA\Property(example="some example", description="some description")
-             */
-            public $property2;
-        }];
-
         yield 'Attributes' => [new class {
             #[OAattr\Property(example: 1)]
             public $property1;
