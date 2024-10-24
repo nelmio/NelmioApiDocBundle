@@ -185,10 +185,6 @@ class SymfonyConstraintAnnotationReader
         $this->setContextFromReflection($parentContext, $reflection);
 
         foreach ($this->locateAnnotations($reflection) as $annotation) {
-            if (!$annotation instanceof Constraint) {
-                continue;
-            }
-
             if (!$this->useValidationGroups || $this->isConstraintInGroup($annotation, $validationGroups)) {
                 yield $annotation;
             }
