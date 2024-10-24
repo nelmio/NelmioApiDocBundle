@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Model;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\ModelDescriber\EnumModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
@@ -145,6 +146,10 @@ final class ModelRegistry
     private function generateModelName(Model $model): string
     {
         $name = $base = $this->getTypeShortName($model->getType());
+        if (isset($model->getSerializationContext()[EnumModelDescriber::FORCE_NAMES]) && true === $model->getSerializationContext()[EnumModelDescriber::FORCE_NAMES]) {
+            $name .= 'Name';
+        }
+
         $names = array_column(
             $this->api->components instanceof OA\Components && is_array($this->api->components->schemas) ? $this->api->components->schemas : [],
             'schema'

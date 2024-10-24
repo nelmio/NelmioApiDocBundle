@@ -328,9 +328,23 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if ('enum' === $type['name']
                 && isset($type['params'][0])
                 && function_exists('enum_exists')
-                && enum_exists($type['params'][0])
             ) {
-                $type = ['name' => $type['params'][0]];
+                $typeParam = $type['params'][0];
+                if (isset($typeParam['name'])) {
+                    $typeParam = $typeParam['name'];
+                }
+                if (is_string($typeParam) && enum_exists($typeParam)) {
+                    $type['name'] = $typeParam;
+                }
+
+                if (isset($type['params'][1])) {
+                    if ('value' !== $type['params'][1] && is_a($type['name'], \BackedEnum::class, true)) {
+                        // In case of a backed enum, it is possible to serialize it using its names instead of values
+                        // Set a specific serialization context property to enforce a new model, as options cannot be used to force a new model
+                        // See https://github.com/schmittjoh/serializer/blob/5a5a03a71a28a480189c5a0ca95893c19f1d120c/src/Handler/EnumHandler.php#L47
+                        $serializationContext[EnumModelDescriber::FORCE_NAMES] = true;
+                    }
+                }
             }
 
             $groups = $this->computeGroups($context, $type);

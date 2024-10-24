@@ -17,13 +17,16 @@ use Symfony\Component\PropertyInfo\Type;
 
 class EnumModelDescriber implements ModelDescriberInterface
 {
+    public const FORCE_NAMES = '_nelmio_enum_force_names';
+
     public function describe(Model $model, Schema $schema)
     {
         $enumClass = $model->getType()->getClassName();
+        $forceName = isset($model->getSerializationContext()[self::FORCE_NAMES]) && true === $model->getSerializationContext()[self::FORCE_NAMES];
 
         $enums = [];
         foreach ($enumClass::cases() as $enumCase) {
-            $enums[] = $enumCase->value;
+            $enums[] = $forceName ? $enumCase->name : $enumCase->value;
         }
 
         $reflectionEnum = new \ReflectionEnum($enumClass);
