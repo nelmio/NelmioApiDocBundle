@@ -83,7 +83,7 @@ jobs:
         run: | 
           vendor/bin/phpunit \
           --configuration phpunit.xml.dist \
-          --junit-xml=junit-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml \
+          --log-junit=junit-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml \
           --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml \
           --coverage-filter=src/
 
