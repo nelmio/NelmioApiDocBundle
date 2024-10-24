@@ -11,12 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(type="array", @OA\Items(type="string"))
- */
-class EntityWithAlternateType80 implements \IteratorAggregate
+#[OA\Schema(type: 'array', items: new OA\Items(type: 'string'))]
+class EntityWithAlternateType implements \IteratorAggregate
 {
     /**
      * @var string

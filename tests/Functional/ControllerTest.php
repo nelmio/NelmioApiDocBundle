@@ -88,7 +88,7 @@ final class ControllerTest extends WebTestCase
             ],
             'PromotedPropertiesDefaults',
             [],
-            [__DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml', ...self::cleanUnusedComponentsConfig()],
+            [...self::cleanUnusedComponentsConfig()],
         ];
 
         yield 'JMS model opt out' => [

@@ -22,7 +22,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArticleInterface;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityThroughNameConverter;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType81;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
@@ -306,7 +306,7 @@ class ApiController
         response: 200,
         description: 'success',
         content: new OA\JsonContent(
-            ref: new Model(type: EntityWithAlternateType81::class),
+            ref: new Model(type: EntityWithAlternateType::class),
         ),
     )]
     public function alternateEntityType()

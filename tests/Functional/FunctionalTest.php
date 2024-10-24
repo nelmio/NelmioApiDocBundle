@@ -863,11 +863,7 @@ class FunctionalTest extends WebTestCase
 
     public function testEntitiesWithOverriddenSchemaTypeDoNotReadOtherProperties(): void
     {
-        if (TestKernel::isAttributesAvailable()) {
-            $model = $this->getModel('EntityWithAlternateType81');
-        } else {
-            $model = $this->getModel('EntityWithAlternateType80');
-        }
+        $model = $this->getModel('EntityWithAlternateType');
 
         self::assertSame('array', $model->type);
         self::assertSame('string', $model->items->type);
