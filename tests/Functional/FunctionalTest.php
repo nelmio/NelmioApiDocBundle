@@ -781,11 +781,7 @@ class FunctionalTest extends WebTestCase
 
     public function testModelsWithDiscriminatorMapAreLoadedWithOpenApiPolymorphism(): void
     {
-        if (TestKernel::isAttributesAvailable()) {
-            $model = $this->getModel('SymfonyDiscriminator81');
-        } else {
-            $model = $this->getModel('SymfonyDiscriminator80');
-        }
+        $model = $this->getModel('SymfonyDiscriminator');
 
         self::assertInstanceOf(OAAnnotations\Discriminator::class, $model->discriminator);
         self::assertSame('type', $model->discriminator->propertyName);

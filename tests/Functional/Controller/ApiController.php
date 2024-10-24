@@ -31,7 +31,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithUuid;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\RangeInteger;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator81;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorFileMapping;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedNameEntity;
@@ -265,7 +265,7 @@ class ApiController
     }
 
     #[Route('/discriminator-mapping', methods: ['GET', 'POST'])]
-    #[OA\Response(response: 200, description: 'Worked well!', attachables: [new Model(type: SymfonyDiscriminator81::class)])]
+    #[OA\Response(response: 200, description: 'Worked well!', attachables: [new Model(type: SymfonyDiscriminator::class)])]
     public function discriminatorMappingAction()
     {
     }

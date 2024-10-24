@@ -13,16 +13,11 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-/**
- * @DiscriminatorMap(typeProperty="type", mapping={
- *      "one": SymfonyDiscriminatorOne::class,
- *      "two": SymfonyDiscriminatorTwo::class,
- * })
- */
-abstract class SymfonyDiscriminator80
+#[DiscriminatorMap(
+    typeProperty: 'type',
+    mapping: ['one' => SymfonyDiscriminatorOne::class, 'two' => SymfonyDiscriminatorTwo::class]
+)]
+abstract class SymfonyDiscriminator
 {
-    /**
-     * @var string
-     */
-    public $type;
+    public string $type;
 }
