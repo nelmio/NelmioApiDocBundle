@@ -80,7 +80,7 @@ jobs:
           composer-flags: ${{ matrix.composer-flags }}
 
       - name: PHPUnit Tests
-        run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml
+        run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml --coverage-filter=src/
 
       - uses: actions/upload-artifact@v4
         with:
