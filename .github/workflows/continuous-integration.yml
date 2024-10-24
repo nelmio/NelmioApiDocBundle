@@ -26,37 +26,38 @@ jobs:
       matrix:
         include:
           - php-version: 7.4
+            symfony-require: "5.4"
             composer-flags: "--prefer-lowest"
             doctrine-annotations: true
           - php-version: 7.4
-            symfony-require: "5.4.*"
+            symfony-require: "5.4"
             doctrine-annotations: true
           - php-version: 8.0
-            symfony-require: "5.4.*"
+            symfony-require: "5.4"
             doctrine-annotations: true
           - php-version: 8.1
-            symfony-require: "5.4.*"
+            symfony-require: "5.4"
             doctrine-annotations: true
           - php-version: 8.3
-            symfony-require: "5.4.*"
+            symfony-require: "5.4"
             doctrine-annotations: true
           - php-version: 8.1
-            symfony-require: "6.4.*"
+            symfony-require: "6.4"
             doctrine-annotations: true
           - php-version: 8.3
-            symfony-require: "6.4.*"
+            symfony-require: "6.4"
             doctrine-annotations: true
           - php-version: 8.2
-            symfony-require: "7.0.*"
+            symfony-require: "7.0"
             doctrine-annotations: false
           - php-version: 8.3
-            symfony-require: "7.0.*"
+            symfony-require: "7.0"
             doctrine-annotations: false
           - php-version: 8.2
-            symfony-require: "7.1.*"
+            symfony-require: "7.1"
             doctrine-annotations: false
           - php-version: 8.3
-            symfony-require: "7.1.*"
+            symfony-require: "7.1"
             doctrine-annotations: false
     steps:
       - name: Checkout
@@ -64,7 +65,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Install PHP without coverage
+      - name: Install PHP with coverage
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
@@ -79,7 +80,37 @@ jobs:
           composer-flags: ${{ matrix.composer-flags }}
 
       - name: PHPUnit Tests
-        run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text
+        run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}.xml --coverage-filter=src/
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ matrix.php-version != '7.4' }}
+        with:
+          name: coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}${{ matrix.composer-flags }}
+          path: coverage*.xml
+          if-no-files-found: error
+          retention-days: 2
+
+  upload-to-codecov:
+    name: Upload Code Coverage
+    runs-on: ubuntu-22.04
+
+    needs: phpunit
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
+      - uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   php-cs-fixer:
     name: PHP-CS-Fixer
@@ -96,7 +127,7 @@ jobs:
         with:
           php-version: 8.3
           tools: composer, flex
-          coverage: pcov
+          coverage: none
 
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
@@ -122,7 +153,7 @@ jobs:
         with:
           php-version: 8.3
           tools: composer, flex
-          coverage: pcov
+          coverage: none
 
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
