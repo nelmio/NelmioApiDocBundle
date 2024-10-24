@@ -48,8 +48,7 @@ if (TestKernel::isAnnotationsAvailable()) {
 
         /**
          * User Location.
-         *
-         * @OA\Property(type = "string")
+         * @var string
          */
         private $location;
 
@@ -196,8 +195,7 @@ if (TestKernel::isAnnotationsAvailable()) {
         /**
          * User Location.
          */
-        #[\OpenApi\Attributes\Property(type: 'string')]
-        private $location;
+        private string $location;
 
         /**
          * @var int
