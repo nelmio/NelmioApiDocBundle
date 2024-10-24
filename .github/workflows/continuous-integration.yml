@@ -79,7 +79,36 @@ jobs:
           composer-flags: ${{ matrix.composer-flags }}
 
       - name: PHPUnit Tests
-        run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text
+        run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.doctrine-annotations }}.xml
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage*.xml
+          if-no-files-found: error
+          retention-days: 2
+
+  upload-to-codecov:
+    name: Upload Code Coverage
+    runs-on: ubuntu-22.04
+
+    needs: phpunit
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
+      - uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   php-cs-fixer:
     name: PHP-CS-Fixer
