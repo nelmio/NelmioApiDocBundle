@@ -17,16 +17,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author Guilhem N. <egetick@gmail.com>
- *
- * @ApiResource(
- *   collectionOperations={
- *     "get"={"method"="GET"},
- *     "custom2"={"path"="/foo", "method"="GET"},
- *     "custom"={"path"="/foo", "method"="POST"},
- *   },
- *   itemOperations={"get"={"method"="GET"}})
- * )
  */
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['method' => 'GET'],
+        'custom2' => ['path' => '/foo', 'method' => 'GET'],
+        'custom' => ['path' => '/foo', 'method' => 'POST'],
+    ],
+    itemOperations: ['get' => ['method' => 'GET']]
+)]
 class Dummy
 {
     /**
@@ -36,11 +35,9 @@ class Dummy
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     *
-     * @ApiProperty(iri="http://schema.org/name")
      */
+    #[Assert\NotBlank]
+    #[ApiProperty(iri: 'http://schema.org/name')]
     private $name;
 
     public function getId(): int
