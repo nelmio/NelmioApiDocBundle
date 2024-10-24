@@ -41,6 +41,6 @@ runs:
 
     - name: Install dependencies with Composer
       env:
-        SYMFONY_REQUIRE: ${{ inputs.symfony-version }}.*
+        SYMFONY_REQUIRE: "${{ inputs.symfony-version }}.*"
       run: composer update --no-interaction --no-progress ${{ inputs.composer-flags }}
       shell: bash
