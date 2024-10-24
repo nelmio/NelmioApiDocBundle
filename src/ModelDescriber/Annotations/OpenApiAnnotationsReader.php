@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
@@ -28,15 +27,13 @@ class OpenApiAnnotationsReader
 {
     use SetsContextTrait;
 
-    private ?Reader $annotationsReader;
     private ModelRegister $modelRegister;
 
     /**
      * @param string[] $mediaTypes
      */
-    public function __construct(?Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
+    public function __construct(ModelRegistry $modelRegistry, array $mediaTypes)
     {
-        $this->annotationsReader = $annotationsReader;
         $this->modelRegister = new ModelRegister($modelRegistry, $mediaTypes);
     }
 
@@ -103,16 +100,6 @@ class OpenApiAnnotationsReader
         try {
             if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
                 return $attribute->newInstance();
-            }
-
-            if (null !== $this->annotationsReader) {
-                if ($reflection instanceof \ReflectionClass) {
-                    return $this->annotationsReader->getClassAnnotation($reflection, $className);
-                } elseif ($reflection instanceof \ReflectionProperty) {
-                    return $this->annotationsReader->getPropertyAnnotation($reflection, $className);
-                } elseif ($reflection instanceof \ReflectionMethod) {
-                    return $this->annotationsReader->getMethodAnnotation($reflection, $className);
-                }
             }
         } finally {
             $this->setContext(null);

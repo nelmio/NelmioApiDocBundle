@@ -112,7 +112,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
 
         $annotationsReader = new AnnotationsReader(
-            $this->doctrineReader,
             $this->modelRegistry,
             $this->mediaTypes,
             $this->useValidationGroups

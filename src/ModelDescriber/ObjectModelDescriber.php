@@ -85,7 +85,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
         $reflClass = new \ReflectionClass($class);
         $annotationsReader = new AnnotationsReader(
-            $this->doctrineReader,
             $this->modelRegistry,
             $this->mediaTypes,
             $this->useValidationGroups

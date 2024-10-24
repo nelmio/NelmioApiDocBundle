@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\OpenApiAnnotationsReader;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
@@ -40,7 +39,6 @@ class AnnotationReaderTest extends TestCase
 
         $registry = new ModelRegistry([], new OA\OpenApi($baseProps), []);
         $symfonyConstraintAnnotationReader = new OpenApiAnnotationsReader(
-            class_exists(AnnotationReader::class) ? new AnnotationReader() : null,
             $registry,
             ['json']
         );

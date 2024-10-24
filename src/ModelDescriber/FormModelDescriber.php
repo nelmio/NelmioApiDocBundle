@@ -80,7 +80,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         $class = $model->getType()->getClassName();
 
         $annotationsReader = new AnnotationsReader(
-            $this->doctrineReader,
             $this->modelRegistry,
             $this->mediaTypes,
             $this->useValidationGroups

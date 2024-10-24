@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
@@ -29,17 +28,13 @@ class AnnotationsReader
      * @param string[] $mediaTypes
      */
     public function __construct(
-        ?Reader $annotationsReader,
         ModelRegistry $modelRegistry,
         array $mediaTypes,
         bool $useValidationGroups = false
     ) {
         $this->phpDocReader = new PropertyPhpDocReader();
-        $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($annotationsReader, $modelRegistry, $mediaTypes);
-        $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(
-            $annotationsReader,
-            $useValidationGroups
-        );
+        $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($modelRegistry, $mediaTypes);
+        $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($useValidationGroups);
     }
 
     public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema): bool

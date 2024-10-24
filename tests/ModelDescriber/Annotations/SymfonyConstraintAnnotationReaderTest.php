@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\SymfonyConstraintAnnotationReader;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations\Fixture as CustomAssert;
@@ -25,15 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SymfonyConstraintAnnotationReaderTest extends TestCase
 {
-    /**
-     * @var AnnotationReader|null
-     */
-    private $doctrineAnnotations;
-
-    protected function setUp(): void
-    {
-        $this->doctrineAnnotations = class_exists(AnnotationReader::class) ? new AnnotationReader() : null;
-    }
 
     public function testUpdatePropertyFix1283(): void
     {
@@ -66,7 +56,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property2'])]);
 
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader;
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
@@ -91,7 +81,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property2'])]);
 
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader;
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
@@ -140,7 +130,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader;
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
@@ -186,7 +176,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader;
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
@@ -224,7 +214,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader;
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
@@ -264,7 +254,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader;
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
@@ -312,7 +302,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => $propertyName])]);
 
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader;
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, $propertyName), $schema->properties[0]);
@@ -336,7 +326,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader();
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
@@ -376,7 +366,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader;
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
@@ -416,7 +406,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader;
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
@@ -456,7 +446,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
 
-        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($this->doctrineAnnotations);
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader;
         $symfonyConstraintAnnotationReader->setSchema($schema);
 
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
@@ -496,7 +486,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
-        $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
+        $reader = new SymfonyConstraintAnnotationReader(true);
         $reader->setSchema($schema);
 
         // no serialization groups passed here
@@ -519,7 +509,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema->merge([
             $this->createObj(OA\Property::class, ['property' => 'property1']),
         ]);
-        $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
+        $reader = new SymfonyConstraintAnnotationReader(true);
         $reader->setSchema($schema);
 
         // no serialization groups passed here
@@ -543,7 +533,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema->merge([
             $this->createObj(OA\Property::class, ['property' => 'property1']),
         ]);
-        $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
+        $reader = new SymfonyConstraintAnnotationReader(true);
         $reader->setSchema($schema);
 
         // no serialization groups passed here
@@ -568,7 +558,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $schema->merge([
             $this->createObj(OA\Property::class, ['property' => 'property1']),
         ]);
-        $reader = $this->createConstraintReaderWithValidationGroupsEnabled();
+        $reader = new SymfonyConstraintAnnotationReader(true);
         $reader->setSchema($schema);
 
         // no serialization groups passed here
@@ -600,14 +590,6 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             #[Assert\Range(min: 1, groups: ['other'])]
             public $property1;
         }];
-    }
-
-    private function createConstraintReaderWithValidationGroupsEnabled(): SymfonyConstraintAnnotationReader
-    {
-        return new SymfonyConstraintAnnotationReader(
-            $this->doctrineAnnotations,
-            true
-        );
     }
 
     /**
