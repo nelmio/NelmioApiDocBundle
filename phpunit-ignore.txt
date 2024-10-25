@@ -1,2 +1,5 @@
 # Ignoring deprecations from Nelmio\ApiDocBundle 4.17.0
 /^Since nelmio\/api-doc-bundle 4\.17\.0: Using the \$groups parameter of "Nelmio\\ApiDocBundle\\PropertyDescriber\\(PropertyDescriber|IntegerPropertyDescriber|NullablePropertyDescriber|StringPropertyDescriber|ObjectPropertyDescriber)::describe\(\)" is deprecated/
+
+# Ignoring deprecations from Nelmio\ApiDocBundle 4.32.3
+/^Since nelmio\/api-doc-bundle 4\.32\.3: The "Nelmio\\ApiDocBundle\\Annotation\\(Operation|Security|Areas|Model)" class is deprecated and will be removed in 5\.0\. Use the "\\Nelmio\\ApiDocBundle\\Attribute\\(Operation|Security|Areas|Model)" attribute instead\./
