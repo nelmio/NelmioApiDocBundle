@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class FOSRestTest extends WebTestCase
@@ -32,9 +33,7 @@ class FOSRestTest extends WebTestCase
         static::createClient([], ['HTTP_HOST' => 'api.example.com']);
     }
 
-    /**
-     * @dataProvider provideRoute
-     */
+    #[DataProvider('provideRoute')]
     public function testFOSRestAction(string $route): void
     {
         $operation = $this->getOperation($route, 'post');

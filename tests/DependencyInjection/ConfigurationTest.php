@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\DependencyInjection;
 
 use Nelmio\ApiDocBundle\DependencyInjection\Configuration;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
@@ -211,10 +212,9 @@ class ConfigurationTest extends TestCase
     }
 
     /**
-     * @dataProvider provideInvalidConfiguration
-     *
      * @param mixed[] $configuration
      */
+    #[DataProvider('provideInvalidConfiguration')]
     public function testInvalidConfiguration(array $configuration, string $expectedError): void
     {
         self::expectException(InvalidConfigurationException::class);

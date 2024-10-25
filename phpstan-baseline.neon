@@ -66,6 +66,6 @@ parameters:
 			path: src/Render/Html/HtmlOpenApiRenderer.php
 
 		-
-			message: "#^Call to function method_exists\\(\\) with 'Hateoas\\\\\\\\Configuration\\\\\\\\Embedded' and 'getType' will always evaluate to true\\.$#"
+			message: "#^Call to function is_callable\\(\\) with array\\{string, mixed\\} will always evaluate to false\\.$#"
 			count: 1
-			path: tests/Functional/BazingaFunctionalTest.php
+			path: src/RouteDescriber/FosRestDescriber.php

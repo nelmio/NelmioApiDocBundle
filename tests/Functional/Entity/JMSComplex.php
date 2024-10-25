@@ -25,7 +25,7 @@ use OpenApi\Attributes as OA;
         ),
     ],
 )]
-class JMSComplex81
+class JMSComplex
 {
     #[Serializer\Type('integer')]
     #[Serializer\Expose]

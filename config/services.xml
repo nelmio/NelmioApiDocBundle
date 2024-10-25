@@ -82,7 +82,6 @@
 
         <service id="nelmio_api_doc.model_describers.object" class="Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber" public="false">
             <argument type="service" id="property_info" />
-            <argument type="service" id="annotations.reader" on-invalid="null"/>
             <argument type="service" id="nelmio_api_doc.object_model.property_describer" />
             <argument />
             <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore" />

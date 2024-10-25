@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use OpenApi\Annotations as OA;
 use OpenApi\Processors\CleanUnusedComponents;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
@@ -40,14 +41,12 @@ final class ControllerTest extends WebTestCase
     }
 
     /**
-     * @dataProvider provideAnnotationTestCases
-     * @dataProvider provideAttributeTestCases
-     * @dataProvider provideUniversalTestCases
-     *
      * @param array{name: string, type: string}|null $controller
      * @param Bundle[]                               $extraBundles
      * @param string[]                               $extraConfigs
      */
+    #[DataProvider('provideAttributeTestCases')]
+    #[DataProvider('provideUniversalTestCases')]
     public function testControllers(?array $controller, ?string $fixtureName = null, array $extraBundles = [], array $extraConfigs = []): void
     {
         $controllerName = $controller['name'] ?? null;
@@ -89,7 +88,7 @@ final class ControllerTest extends WebTestCase
             ],
             'PromotedPropertiesDefaults',
             [],
-            [__DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml', ...self::cleanUnusedComponentsConfig()],
+            [...self::cleanUnusedComponentsConfig()],
         ];
 
         yield 'JMS model opt out' => [
@@ -162,23 +161,6 @@ final class ControllerTest extends WebTestCase
                 ];
             }
         }
-    }
-
-    public static function provideAnnotationTestCases(): \Generator
-    {
-        if (!TestKernel::isAnnotationsAvailable()) {
-            return;
-        }
-
-        yield 'Promoted properties defaults annotations' => [
-            [
-                'name' => 'PromotedPropertiesController80',
-                'type' => 'annotation',
-            ],
-            'PromotedPropertiesDefaults',
-            [],
-            [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml', ...self::cleanUnusedComponentsConfig()],
-        ];
     }
 
     /**

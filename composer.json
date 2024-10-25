@@ -1,6 +1,6 @@
 {
     "name": "nelmio/api-doc-bundle",
-    "description": "Generates documentation for your REST API from annotations and attributes",
+    "description": "Generates documentation for your REST API from attributes",
     "keywords": ["api", "documentation", "doc", "rest"],
     "type": "symfony-bundle",
     "license": "MIT",
@@ -32,7 +32,6 @@
     },
     "require-dev": {
         "api-platform/core": "^2.7.0 || ^3",
-        "doctrine/annotations": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.52",
         "friendsofsymfony/rest-bundle": "^3.2.0",
         "jms/serializer": "^3.0",
@@ -57,7 +56,8 @@
         "symfony/twig-bundle": "^5.4 || ^6.4 || ^7.0",
         "symfony/uid": "^5.4 || ^6.4 || ^7.0",
         "symfony/validator": "^5.4 || ^6.4 || ^7.0",
-        "willdurand/hateoas-bundle": "^2.0",
+        "willdurand/hateoas-bundle": "^2.7@beta",
+        "willdurand/hateoas": "^3.11@beta",
         "willdurand/negotiation": "^3.0"
     },
     "conflict": {
@@ -65,7 +65,6 @@
     },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
-        "doctrine/annotations": "For using doctrine annotations",
         "friendsofsymfony/rest-bundle": "For using the parameters annotations.",
         "jms/serializer-bundle": "For describing your models.",
         "symfony/asset": "For using the Swagger UI.",

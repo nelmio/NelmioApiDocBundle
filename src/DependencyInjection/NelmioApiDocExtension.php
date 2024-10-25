@@ -33,7 +33,6 @@ use OpenApi\Generator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -115,7 +114,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArguments([
                     new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
-                    new Reference('annotations.reader', ContainerInterface::NULL_ON_INVALID_REFERENCE), // We cannot use the cached version of the annotation reader since the construction of the annotations is context dependant...
                     new Reference('logger'),
                 ])
                 ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
@@ -144,7 +142,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                         (new Definition(FilteredRouteCollectionBuilder::class))
                             ->setArguments(
                                 [
-                                    new Reference('annotation_reader', ContainerInterface::NULL_ON_INVALID_REFERENCE), // Here we use the cached version as we don't deal with @OA annotations in this service
                                     new Reference('nelmio_api_doc.controller_reflector'),
                                     $area,
                                     $areaConfig,
@@ -165,7 +162,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ));
 
         $container->getDefinition('nelmio_api_doc.model_describers.object')
-            ->setArgument(3, $config['media_types']);
+            ->setArgument(2, $config['media_types']);
 
         // Add autoconfiguration for model describer
         $container->registerForAutoconfiguration(ModelDescriberInterface::class)
@@ -181,7 +178,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         if (interface_exists(ParamInterface::class)) {
             $loader->load('fos_rest.xml');
             $container->getDefinition('nelmio_api_doc.route_describers.fos_rest')
-                ->setArgument(1, $config['media_types']);
+                ->setArgument(0, $config['media_types']);
         }
 
         // Add autoconfiguration for route argument describer
@@ -247,7 +244,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setPublic(false)
                 ->setArguments([
                     new Reference('jms_serializer.metadata_factory'),
-                    new Reference('annotations.reader', ContainerInterface::NULL_ON_INVALID_REFERENCE),
                     $config['media_types'],
                     $jmsNamingStrategy,
                     $container->getParameter('nelmio_api_doc.use_validation_groups'),

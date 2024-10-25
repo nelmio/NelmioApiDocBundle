@@ -11,14 +11,37 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class SymfonyConstraintsWithValidationGroups extends SymfonyConstraintsWithValidationGroups80
-    {
-    }
-} else {
-    class SymfonyConstraintsWithValidationGroups extends SymfonyConstraintsWithValidationGroups81
-    {
-    }
+class SymfonyConstraintsWithValidationGroups
+{
+    /**
+     * @var int
+     */
+    #[Assert\Range(min: 1, max: 100)]
+    #[Assert\NotBlank(groups: ['test'])]
+    #[Groups('test')]
+    public $property;
+
+    /**
+     * @var int
+     */
+    #[Assert\Range(min: 1, max: 100)]
+    public $propertyInDefaultGroup;
+
+    /**
+     * @var array
+     */
+    #[OA\Property(type: 'array', items: new OA\Items(type: 'string'))]
+    #[Assert\Valid]
+    public $propertyArray;
+
+    /**
+     * @var ?string
+     */
+    #[Groups(['test'])]
+    #[Assert\NotNull(groups: ['test'])]
+    public $propertyNotNullOnSpecificGroup;
 }

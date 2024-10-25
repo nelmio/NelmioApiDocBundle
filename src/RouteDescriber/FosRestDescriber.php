@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\RouteDescriber;
 
-use Doctrine\Common\Annotations\Reader;
 use FOS\RestBundle\Controller\Annotations\AbstractScalarParam;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
@@ -28,29 +27,20 @@ final class FosRestDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    private ?Reader $annotationReader;
-
     /** @var string[] */
     private array $mediaTypes;
 
     /**
      * @param string[] $mediaTypes
      */
-    public function __construct(?Reader $annotationReader, array $mediaTypes)
+    public function __construct(array $mediaTypes)
     {
-        $this->annotationReader = $annotationReader;
         $this->mediaTypes = $mediaTypes;
     }
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
-        $annotations = null !== $this->annotationReader
-            ? $this->annotationReader->getMethodAnnotations($reflectionMethod)
-            : [];
-        $annotations = array_filter($annotations, static function ($value) {
-            return $value instanceof RequestParam || $value instanceof QueryParam;
-        });
-        $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($reflectionMethod, RequestParam::class));
+        $annotations = $this->getAttributesAsAnnotation($reflectionMethod, RequestParam::class);
         $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($reflectionMethod, QueryParam::class));
 
         foreach ($this->getOperations($api, $route) as $operation) {
@@ -73,7 +63,7 @@ final class FosRestDescriber implements RouteDescriberInterface
                     }
 
                     $schema = Util::getChild($parameter, OA\Schema::class);
-                    $this->describeCommonSchemaFromAnnotation($schema, $annotation);
+                    $this->describeCommonSchemaFromAnnotation($schema, $annotation, $reflectionMethod);
                 } else {
                     /** @var OA\RequestBody $requestBody */
                     $requestBody = Util::getChild($operation, OA\RequestBody::class);
@@ -87,7 +77,7 @@ final class FosRestDescriber implements RouteDescriberInterface
 
                             $contentSchema->required = array_values(array_unique($requiredParameters));
                         }
-                        $this->describeCommonSchemaFromAnnotation($schema, $annotation);
+                        $this->describeCommonSchemaFromAnnotation($schema, $annotation, $reflectionMethod);
                     }
                 }
             }
@@ -146,18 +136,20 @@ final class FosRestDescriber implements RouteDescriberInterface
      *
      * @return mixed[]|null
      */
-    private function getEnum($requirements): ?array
+    private function getEnum($requirements, \ReflectionMethod $reflectionMethod): ?array
     {
-        if ($requirements instanceof Choice) {
-            if (null != $requirements->callback) {
-                if (!\is_callable($choices = $requirements->callback)) {
-                    return null;
-                }
+        if (!($requirements instanceof Choice)) {
+            return null;
+        }
 
-                return $choices();
-            }
-
+        if (null === $requirements->callback) {
             return $requirements->choices;
+        }
+
+        if (\is_callable($choices = $requirements->callback)
+            || \is_callable($choices = [$reflectionMethod->class, $requirements->callback])
+        ) {
+            return $choices();
         }
 
         return null;
@@ -200,7 +192,7 @@ final class FosRestDescriber implements RouteDescriberInterface
         );
     }
 
-    private function describeCommonSchemaFromAnnotation(OA\Schema $schema, AbstractScalarParam $annotation): void
+    private function describeCommonSchemaFromAnnotation(OA\Schema $schema, AbstractScalarParam $annotation, \ReflectionMethod $reflectionMethod): void
     {
         $schema->default = $annotation->getDefault();
 
@@ -223,7 +215,7 @@ final class FosRestDescriber implements RouteDescriberInterface
             $schema->format = $format;
         }
 
-        $enum = $this->getEnum($annotation->requirements);
+        $enum = $this->getEnum($annotation->requirements, $reflectionMethod);
         if (null !== $enum) {
             if ($annotation->requirements instanceof Choice) {
                 if ($annotation->requirements->multiple) {
@@ -246,7 +238,6 @@ final class FosRestDescriber implements RouteDescriberInterface
     private function getAttributesAsAnnotation(\ReflectionMethod $reflection, string $className): array
     {
         $annotations = [];
-
         foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
             $annotations[] = $attribute->newInstance();
         }
