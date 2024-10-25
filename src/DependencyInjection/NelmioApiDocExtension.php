@@ -180,7 +180,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         if (interface_exists(ParamInterface::class)) {
             $loader->load('fos_rest.xml');
             $container->getDefinition('nelmio_api_doc.route_describers.fos_rest')
-                ->setArgument(1, $config['media_types']);
+                ->setArgument(0, $config['media_types']);
         }
 
         // Add autoconfiguration for route argument describer
