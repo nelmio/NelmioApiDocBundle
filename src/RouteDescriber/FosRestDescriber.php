@@ -73,7 +73,7 @@ final class FosRestDescriber implements RouteDescriberInterface
                     }
 
                     $schema = Util::getChild($parameter, OA\Schema::class);
-                    $this->describeCommonSchemaFromAnnotation($schema, $annotation);
+                    $this->describeCommonSchemaFromAnnotation($schema, $annotation, $reflectionMethod);
                 } else {
                     /** @var OA\RequestBody $requestBody */
                     $requestBody = Util::getChild($operation, OA\RequestBody::class);
@@ -87,7 +87,7 @@ final class FosRestDescriber implements RouteDescriberInterface
 
                             $contentSchema->required = array_values(array_unique($requiredParameters));
                         }
-                        $this->describeCommonSchemaFromAnnotation($schema, $annotation);
+                        $this->describeCommonSchemaFromAnnotation($schema, $annotation, $reflectionMethod);
                     }
                 }
             }
@@ -146,21 +146,23 @@ final class FosRestDescriber implements RouteDescriberInterface
      *
      * @return mixed[]|null
      */
-    private function getEnum($requirements): ?array
+    private function getEnum($requirements, \ReflectionMethod $reflectionMethod): ?array
     {
-        if ($requirements instanceof Choice) {
-            if (null != $requirements->callback) {
-                if (!\is_callable($choices = $requirements->callback)) {
-                    return null;
-                }
+        if (!($requirements instanceof Choice)) {
+            return null;
+        }
 
-                return $choices();
-            }
-
+        if (null === $requirements->callback) {
             return $requirements->choices;
         }
 
-        return null;
+        if (\is_callable($choices = $requirements->callback)
+            || \is_callable($choices = [$reflectionMethod->class, $requirements->callback])
+        ) {
+            return $choices();
+        }
+
+        return $requirements->choices;
     }
 
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
