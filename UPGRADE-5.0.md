@@ -26,7 +26,7 @@ This causes the following breaking changes in classes that used annotations:
 - BC BREAK: Removed 1st parameter `?Reader $annotationReader` from `Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber::__construct()`
 - BC BREAK: Removed 1st parameter `?Reader $annotationReader` from `Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder::__construct()`
 
-## BC BREAK: `Nelmio\ApiDocBundle\Annotation` namespace has been moved to `Nelmio\ApiDocBundle\Attribute`
+## BC BREAK: `Nelmio\ApiDocBundle\Annotation` namespace has been remove in favor of `Nelmio\ApiDocBundle\Attribute`
 
 ## BC BREAK: Configuration option `with_annotation` has been renamed to `with_attribute`
 ```diff
