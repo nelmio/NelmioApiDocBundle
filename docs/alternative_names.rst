@@ -29,7 +29,7 @@ In this case the class ``App\Entity\User`` will be aliased into:
 
 .. tip::
 
-    This allows to use normal references instead of ``@Model``. Notably, you can specify
+    This allows to use normal references instead of ``#[Model]``. Notably, you can specify
     the groups used for a model once in config and then refer to its alternative name:
 
     .. code-block:: yaml
@@ -38,14 +38,26 @@ In this case the class ``App\Entity\User`` will be aliased into:
             models:
                 names: [ { alias: MyModel, type: App\MyModel, groups: [light] }]
 
-    .. code-block:: php
+    .. configuration-block::
 
-        class HomeController
-        {
-            /**
-             * @OA\Response(response=200, @OA\JsonContent(ref="#/components/schemas/MyModel"))
-             */
-            public function indexAction()
+        .. code-block:: php-annotations
+
+            class HomeController
             {
+                /**
+                 * @OA\Response(response=200, @OA\JsonContent(ref="#/components/schemas/MyModel"))
+                 */
+                public function indexAction()
+                {
+                }
             }
-        }
+
+        .. code-block:: php-attributes
+
+            class HomeController
+            {
+                #[OA\Response(response: 200, content: new OA\JsonContent(ref: "#/components/schemas/MyModel"))]
+                public function indexAction()
+                {
+                }
+            }

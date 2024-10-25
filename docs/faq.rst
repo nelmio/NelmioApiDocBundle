@@ -180,30 +180,32 @@ Endpoints grouping
 
 Q: Areas feature doesn't fit my needs. So how can I group similar endpoints of one or more controllers in a separate section in the documentation?
 
-A: Use ``@OA\Tag`` annotation.
+A: Use ``#[OA\Tag]`` attribute.
 
-.. code-block:: php-annotations
+.. configuration-block::
 
-    /**
-     * Class BookmarkController
-     *
-     * @OA\Tag(name="Bookmarks")
-     */
-    class BookmarkController extends AbstractFOSRestController implements ContextPresetInterface
-    {
-        // ...
-    }
+    .. code-block:: php-annotations
 
-.. code-block:: php-attributes
+        /**
+         * Class BookmarkController
+         *
+         * @OA\Tag(name="Bookmarks")
+         */
+        class BookmarkController extends AbstractFOSRestController implements ContextPresetInterface
+        {
+            // ...
+        }
 
-    /**
-     * Class BookmarkController
-     */
-    #[OA\Tag(name: "Bookmarks")]
-    class BookmarkController extends AbstractFOSRestController implements ContextPresetInterface
-    {
-        // ...
-    }
+    .. code-block:: php-attributes
+
+        /**
+         * Class BookmarkController
+         */
+        #[OA\Tag(name: "Bookmarks")]
+        class BookmarkController extends AbstractFOSRestController implements ContextPresetInterface
+        {
+            // ...
+        }
 
 
 Disable Default Section
@@ -226,36 +228,38 @@ Overriding a Form or Plain PHP Object Schema Type
 Q: I'd like to define a PHP object or form with a type other any ``object``, how
 do I do that?
 
-A: By using the ``@OA\Schema`` annotation or attribute with a ``type`` or ``ref``.
+A: By using the ``#[OA\Schema]`` attribute/annotation with a ``type`` or ``ref``.
 Note, however, that a ``type="object"`` will still read all a models properties.
 
-.. code-block:: php-annotations
+.. configuration-block::
 
-    use Nelmio\ApiDocBundle\Annotation\Model;
-    use OpenApi\Annotations as OA;
+    .. code-block:: php-annotations
 
-    /**
-     * @OA\Schema(type="array", @OA\Items(ref=@Model(type=SomeEntity::class)))
-     *
-     * or define a `ref`:
-     * @OA\Schema(ref="#/components/schemas/SomeRef")
-     */
-    class SomeCollection implements \IteratorAggregate
-    {
-        // ...
-    }
+        use Nelmio\ApiDocBundle\Annotation\Model;
+        use OpenApi\Annotations as OA;
 
-.. code-block:: php-attributes
+        /**
+         * @OA\Schema(type="array", @OA\Items(ref=@Model(type=SomeEntity::class)))
+         *
+         * or define a `ref`:
+         * @OA\Schema(ref="#/components/schemas/SomeRef")
+         */
+        class SomeCollection implements \IteratorAggregate
+        {
+            // ...
+        }
 
-    use Nelmio\ApiDocBundle\Attribute\Model;
-    use OpenApi\Attributes as OA;
+    .. code-block:: php-attributes
 
-    /**
-     * or define a `ref`:
-     * #[OA\Schema(ref: "#/components/schemas/SomeRef")
-     */
-    #[OA\Schema(type: "array", items: new OA\Items(ref: new Model(type: SomeEntity::class)))]
-    class SomeCollection implements \IteratorAggregate
-    {
-        // ...
-    }
+        use Nelmio\ApiDocBundle\Attribute\Model;
+        use OpenApi\Attributes as OA;
+
+        /**
+         * or define a `ref`:
+         * #[OA\Schema(ref: "#/components/schemas/SomeRef")
+         */
+        #[OA\Schema(type: "array", items: new OA\Items(ref: new Model(type: SomeEntity::class)))]
+        class SomeCollection implements \IteratorAggregate
+        {
+            // ...
+        }
