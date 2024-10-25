@@ -23,7 +23,7 @@ class FosRestDescriberTest extends TestCase
     public function testQueryParamWithChoiceConstraintIsAddedAsEnum(): void
     {
         $class = new class {
-            #[QueryParam(requirements: new Choice(['foo', 'bar']))]
+            #[QueryParam(requirements: new Choice(choices: ['foo', 'bar']))]
             public function getAction(): void
             {
             }
@@ -50,6 +50,9 @@ class FosRestDescriberTest extends TestCase
             {
             }
 
+            /**
+             * @return string[]
+             */
             public static function getChoices(): array
             {
                 return ['foo', 'bar'];

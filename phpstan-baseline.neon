@@ -64,3 +64,8 @@ parameters:
 			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:\\$twig has unknown class Twig_Environment as its type\\.$#"
 			count: 1
 			path: src/Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: "#^Call to function is_callable\\(\\) with array\\{string, mixed\\} will always evaluate to false\\.$#"
+			count: 1
+			path: src/RouteDescriber/FosRestDescriber.php

@@ -152,7 +152,7 @@ final class FosRestDescriber implements RouteDescriberInterface
             return $choices();
         }
 
-        return $requirements->choices;
+        return null;
     }
 
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
@@ -237,10 +237,11 @@ final class FosRestDescriber implements RouteDescriberInterface
      */
     private function getAttributesAsAnnotation(\ReflectionMethod $reflection, string $className): array
     {
+        $annotations = [];
         foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
             $annotations[] = $attribute->newInstance();
         }
 
-        return $annotations ?? [];
+        return $annotations;
     }
 }
