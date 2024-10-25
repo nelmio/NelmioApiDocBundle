@@ -306,6 +306,14 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             0,
         ];
 
+        yield 'no area defined' => [
+            'r10',
+            new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+            new \ReflectionMethod($apiController, 'fooAction'),
+            ['with_annotation' => true],
+            0,
+        ];
+
         $apiController = new class {
             #[Areas(['area_something_very_different'])]
             public function fooAction(): void
