@@ -203,6 +203,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             {
             }
         };
+
         yield from [
             'with attribute only' => [
                 'r10',
@@ -216,6 +217,19 @@ class FilteredRouteCollectionBuilderTest extends TestCase
                 new \ReflectionMethod($apiController, 'fooAction'),
                 ['path_patterns' => ['^/api'], 'with_annotation' => true],
             ],
+        ];
+
+        $apiController = new #[Areas(['area'])] class {
+            public function fooAction(): void
+            {
+            }
+        };
+
+        yield 'with class attribute only' => [
+            'r10',
+            new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
+            new \ReflectionMethod($apiController, 'fooAction'),
+            ['with_annotation' => true],
         ];
     }
 
@@ -299,7 +313,21 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             }
         };
 
-        yield 'non matching route with different area Annotation' => [
+        yield 'non matching route with different method area Annotation' => [
+            'r10',
+            new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+            new \ReflectionMethod($apiController, 'fooAction'),
+            ['disable_default_routes' => true],
+            0,
+        ];
+
+        $apiController = new #[Areas(['area_something_very_different'])] class {
+            public function fooAction(): void
+            {
+            }
+        };
+
+        yield 'non matching route with different class area Annotation' => [
             'r10',
             new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
             new \ReflectionMethod($apiController, 'fooAction'),
