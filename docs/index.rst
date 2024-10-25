@@ -152,7 +152,7 @@ You can configure global information in the bundle configuration ``documentation
     You may find in the ``.yaml`` files from `SwaggerPHP examples`_.
 
 To document your routes, you can use the SwaggerPHP annotations and the
-``Nelmio\ApiDocBundle\Annotation\Model`` annotation in your controllers::
+``Nelmio\ApiDocBundle\Attribute\Model`` annotation in your controllers::
 
 .. configuration-block::
 
@@ -204,8 +204,8 @@ To document your routes, you can use the SwaggerPHP annotations and the
 
         use AppBundle\Entity\Reward;
         use AppBundle\Entity\User;
-        use Nelmio\ApiDocBundle\Annotation\Model;
-        use Nelmio\ApiDocBundle\Annotation\Security;
+        use Nelmio\ApiDocBundle\Attribute\Model;
+        use Nelmio\ApiDocBundle\Attribute\Security;
         use OpenApi\Attributes as OA;
         use Symfony\Component\Routing\Annotation\Route;
 
@@ -531,7 +531,7 @@ If you want to customize the documentation of an object's property, you can use 
 
     .. code-block:: php-annotations
 
-        use Nelmio\ApiDocBundle\Annotation\Model;
+        use Nelmio\ApiDocBundle\Attribute\Model;
         use OpenApi\Annotations as OA;
 
         class User
@@ -562,7 +562,7 @@ If you want to customize the documentation of an object's property, you can use 
 
     .. code-block:: php-attributes
 
-        use Nelmio\ApiDocBundle\Annotation\Model;
+        use Nelmio\ApiDocBundle\Attribute\Model;
         use OpenApi\Attributes as OA;
 
         class User
