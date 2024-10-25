@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\OpenApiPhp;
 
-use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
+use Nelmio\ApiDocBundle\Attribute\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use OpenApi\Analysis;

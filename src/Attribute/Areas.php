@@ -12,10 +12,10 @@
 namespace Nelmio\ApiDocBundle\Attribute;
 
 /**
- * @Annotation
+ * @final
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
-final class Areas
+class Areas
 {
     /** @var string[] */
     private array $areas;

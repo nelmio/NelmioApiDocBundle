@@ -16,10 +16,10 @@ use OpenApi\Attributes\Attachable;
 use OpenApi\Generator;
 
 /**
- * @Annotation
+ * @final
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
-final class Model extends Attachable
+class Model extends Attachable
 {
     public static $_types = [
         'type' => 'string',
