@@ -108,7 +108,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         yield [['path_patterns' => [null]]];
         yield [['path_patterns' => [new \stdClass()]]];
         yield [['path_patterns' => ['^/foo$', 1]]];
-        yield [['with_annotation' => ['an array']]];
+        yield [['with_attribute' => ['an array']]];
         yield [['path_patterns' => 'a string']];
         yield [['path_patterns' => 11]];
         yield [['name_patterns' => 22]];
@@ -209,13 +209,13 @@ class FilteredRouteCollectionBuilderTest extends TestCase
                 'r10',
                 new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
                 new \ReflectionMethod($apiController, 'fooAction'),
-                ['with_annotation' => true],
+                ['with_attribute' => true],
             ],
             'with attribute and path patterns' => [
                 'r10',
                 new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
                 new \ReflectionMethod($apiController, 'fooAction'),
-                ['path_patterns' => ['^/api'], 'with_annotation' => true],
+                ['path_patterns' => ['^/api'], 'with_attribute' => true],
             ],
         ];
 
@@ -229,7 +229,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             'r10',
             new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
             new \ReflectionMethod($apiController, 'fooAction'),
-            ['with_annotation' => true],
+            ['with_attribute' => true],
         ];
     }
 
@@ -310,7 +310,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             'r10',
             new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
             new \ReflectionMethod($apiController, 'fooAction'),
-            ['with_annotation' => true],
+            ['with_attribute' => true],
             0,
         ];
 
@@ -387,7 +387,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routeBuilder = new FilteredRouteCollectionBuilder(
             $controllerReflectorStub,
             'area',
-            ['with_annotation' => true],
+            ['with_attribute' => true],
         );
         $filteredRoutes = $routeBuilder->filter($routes);
 

@@ -38,7 +38,7 @@ class ConfigurationTest extends TestCase
                     'path_patterns' => ['/foo'],
                     'host_patterns' => [],
                     'name_patterns' => [],
-                    'with_annotation' => false,
+                    'with_attribute' => false,
                     'disable_default_routes' => false,
                     'documentation' => [],
                 ],
@@ -53,7 +53,7 @@ class ConfigurationTest extends TestCase
             'default' => [
                 'path_patterns' => ['/foo'],
                 'host_patterns' => [],
-                'with_annotation' => false,
+                'with_attribute' => false,
                 'documentation' => [],
                 'name_patterns' => [],
                 'disable_default_routes' => false,
@@ -61,7 +61,7 @@ class ConfigurationTest extends TestCase
             'internal' => [
                 'path_patterns' => ['/internal'],
                 'host_patterns' => ['^swagger\.'],
-                'with_annotation' => false,
+                'with_attribute' => false,
                 'documentation' => [],
                 'name_patterns' => [],
                 'disable_default_routes' => false,
@@ -69,7 +69,7 @@ class ConfigurationTest extends TestCase
             'commercial' => [
                 'path_patterns' => ['/internal'],
                 'host_patterns' => [],
-                'with_annotation' => false,
+                'with_attribute' => false,
                 'documentation' => [],
                 'name_patterns' => [],
                 'disable_default_routes' => false,
