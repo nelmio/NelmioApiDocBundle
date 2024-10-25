@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\RouteDescriber;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -94,5 +95,27 @@ class FosRestDescriberTest extends TestCase
 
         self::assertEquals('array', $api->paths[0]->get->parameters[0]->schema->type);
         self::assertSame(['foo', 'bar'], $api->paths[0]->get->parameters[0]->schema->items->enum);
+    }
+
+    public function testQueryParamWithInvalidCallback(): void
+    {
+        $class = new class {
+            #[QueryParam(requirements: new Choice(callback: 'InvalidClass::getChoices'))]
+            public function getAction(): void
+            {
+            }
+        };
+        $reflectionMethod = new \ReflectionMethod($class, 'getAction');
+
+        $fosRestDescriber = new FosRestDescriber([]);
+        $api = new OpenApi([]);
+
+        $fosRestDescriber->describe(
+            $api,
+            new Route('/'),
+            $reflectionMethod,
+        );
+
+        self::assertSame(Generator::UNDEFINED, $api->paths[0]->get->parameters[0]->schema->enum);
     }
 }
