@@ -79,27 +79,9 @@ the routes that should be documented:
             internal:
                 with_annotation: true
 
-Then add the attribute/annotation before your controller or action::
+Then add the attribute before your controller or action::
 
 .. configuration-block::
-
-    .. code-block:: php-annotations
-
-        use Nelmio\Annotation as Nelmio;
-
-        /**
-         * @Nelmio\Areas({"internal"}) => All actions in this controller are documented under the 'internal' area
-         */
-        class MyController
-        {
-            /**
-             * @Nelmio\Areas({"internal"}) => This action is documented under the 'internal' area
-             */
-            public function index()
-            {
-               ...
-            }
-        }
 
     .. code-block:: php-attributes
 

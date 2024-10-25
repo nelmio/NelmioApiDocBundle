@@ -40,18 +40,6 @@ In this case the class ``App\Entity\User`` will be aliased into:
 
     .. configuration-block::
 
-        .. code-block:: php-annotations
-
-            class HomeController
-            {
-                /**
-                 * @OA\Response(response=200, @OA\JsonContent(ref="#/components/schemas/MyModel"))
-                 */
-                public function indexAction()
-                {
-                }
-            }
-
         .. code-block:: php-attributes
 
             class HomeController

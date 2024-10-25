@@ -184,18 +184,6 @@ A: Use ``#[OA\Tag]`` attribute.
 
 .. configuration-block::
 
-    .. code-block:: php-annotations
-
-        /**
-         * Class BookmarkController
-         *
-         * @OA\Tag(name="Bookmarks")
-         */
-        class BookmarkController extends AbstractFOSRestController implements ContextPresetInterface
-        {
-            // ...
-        }
-
     .. code-block:: php-attributes
 
         /**
@@ -228,26 +216,10 @@ Overriding a Form or Plain PHP Object Schema Type
 Q: I'd like to define a PHP object or form with a type other any ``object``, how
 do I do that?
 
-A: By using the ``#[OA\Schema]`` attribute/annotation with a ``type`` or ``ref``.
+A: By using the ``#[OA\Schema]`` attribute with a ``type`` or ``ref``.
 Note, however, that a ``type="object"`` will still read all a models properties.
 
 .. configuration-block::
-
-    .. code-block:: php-annotations
-
-        use Nelmio\ApiDocBundle\Annotation\Model;
-        use OpenApi\Annotations as OA;
-
-        /**
-         * @OA\Schema(type="array", @OA\Items(ref=@Model(type=SomeEntity::class)))
-         *
-         * or define a `ref`:
-         * @OA\Schema(ref="#/components/schemas/SomeRef")
-         */
-        class SomeCollection implements \IteratorAggregate
-        {
-            // ...
-        }
 
     .. code-block:: php-attributes
 

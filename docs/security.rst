@@ -24,31 +24,19 @@ This will add the Bearer security policy to all registered paths.
 Overriding Specific Paths
 -------------------------
 
-The security policy can be overridden for a path using the ``Security`` attribute/annotation.
+The security policy can be overridden for a path using the ``Security`` attribute.
 
 .. configuration-block::
-
-    .. code-block:: php-annotations
-
-        /**
-         * @Security(name="ApiKeyAuth")
-         */
 
     .. code-block:: php-attributes
 
         #[Security(name: "ApiKeyAuth")]
 
-Notice at the bottom of the docblock is a ``Security`` attribute/annotation with a name of `ApiKeyAuth`. This will override the global security policy to only accept the ``ApiKeyAuth`` policy for this path.
+Notice at the bottom of the docblock is a ``Security`` attribute with a name of `ApiKeyAuth`. This will override the global security policy to only accept the ``ApiKeyAuth`` policy for this path.
 
 You can also completely remove security from a path by providing ``Security`` with a name of ``null``.
 
 .. configuration-block::
-
-    .. code-block:: php-annotations
-
-        /**
-         * @Security(name=null)
-         */
 
     .. code-block:: php-attributes
 
