@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\Security;
+use Nelmio\ApiDocBundle\Attribute\Security;
 use OpenApi\Attributes as OAT;
 use Symfony\Component\Routing\Annotation\Route;
 

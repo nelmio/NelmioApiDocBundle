@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Form;
 
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

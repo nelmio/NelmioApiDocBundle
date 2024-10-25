@@ -17,7 +17,7 @@ First, copy this command in ``src/AppBundle/Command/SwaggerDocblockConvertComman
 // src/AppBundle/Command/SwaggerDocblockConvertCommand.php
 namespace AppBundle\Command;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Attribute\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Routing;
 
-use Nelmio\ApiDocBundle\Annotation\Areas;
+use Nelmio\ApiDocBundle\Attribute\Areas;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\AbstractAnnotation;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -153,7 +153,7 @@ final class FilteredRouteCollectionBuilder
         }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF));
 
         foreach ($annotations as $annotation) {
-            if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')
+            if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Attribute')
                 || false !== strpos(get_class($annotation), 'OpenApi\\Annotations')
                 || false !== strpos(get_class($annotation), 'OpenApi\\Attributes')
             ) {

@@ -11,10 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\Areas;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Annotation\Security;
+use Nelmio\ApiDocBundle\Attribute\Areas;
+use Nelmio\ApiDocBundle\Attribute\Model;
+use Nelmio\ApiDocBundle\Attribute\Operation;
+use Nelmio\ApiDocBundle\Attribute\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems\Dictionary;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\ArrayItems\Foo;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Nelmio\ApiDocBundle\Tests\RouteDescriber\RouteArgumentDescriber;
 
-use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Attribute\Operation;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapRequestPayloadDescriber;

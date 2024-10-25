@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 
 class JMSDualComplex

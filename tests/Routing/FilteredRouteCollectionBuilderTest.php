@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Routing;
 
-use Nelmio\ApiDocBundle\Annotation\Areas;
-use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Attribute\Areas;
+use Nelmio\ApiDocBundle\Attribute\Operation;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Attributes\Parameter;
