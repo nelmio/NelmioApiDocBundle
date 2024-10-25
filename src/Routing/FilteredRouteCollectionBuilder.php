@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Routing;
 
-use Nelmio\ApiDocBundle\Annotation\Areas;
+use Nelmio\ApiDocBundle\Attribute\Areas;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\AbstractAnnotation;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,13 +43,13 @@ final class FilteredRouteCollectionBuilder
                 'path_patterns' => [],
                 'host_patterns' => [],
                 'name_patterns' => [],
-                'with_annotation' => false,
+                'with_attribute' => false,
                 'disable_default_routes' => false,
             ])
             ->setAllowedTypes('path_patterns', 'string[]')
             ->setAllowedTypes('host_patterns', 'string[]')
             ->setAllowedTypes('name_patterns', 'string[]')
-            ->setAllowedTypes('with_annotation', 'boolean')
+            ->setAllowedTypes('with_attribute', 'boolean')
             ->setAllowedTypes('disable_default_routes', 'boolean')
         ;
 
@@ -117,7 +117,7 @@ final class FilteredRouteCollectionBuilder
 
     private function matchAnnotation(Route $route): bool
     {
-        if (false === $this->options['with_annotation']) {
+        if (false === $this->options['with_attribute']) {
             return true;
         }
 
@@ -153,7 +153,7 @@ final class FilteredRouteCollectionBuilder
         }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF));
 
         foreach ($annotations as $annotation) {
-            if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')
+            if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Attribute')
                 || false !== strpos(get_class($annotation), 'OpenApi\\Annotations')
                 || false !== strpos(get_class($annotation), 'OpenApi\\Attributes')
             ) {

@@ -122,7 +122,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             if ($config->hasOption('documentation')) {
                 $property->mergeProperties($config->getOption('documentation'));
 
-                // Parse inner @Model annotations
+                // Parse inner #[Model] attributes
                 $modelRegister = new ModelRegister($this->modelRegistry, $this->mediaTypes);
                 $modelRegister->__invoke(new Analysis([$property], Util::createContext()));
             }

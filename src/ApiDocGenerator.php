@@ -123,7 +123,7 @@ final class ApiDocGenerator
         $analysis = new Analysis([], $context);
         $analysis->addAnnotation($this->openApi, $context);
 
-        // Register model annotations
+        // Register model attributes
         $modelRegister = new ModelRegister($modelRegistry, $this->mediaTypes);
         $modelRegister($analysis);
 
@@ -152,7 +152,7 @@ final class ApiDocGenerator
         // Get the standard processors from the generator.
         $processors = $generator->getProcessors();
 
-        // Remove OperationId processor as we use a lot of generated annotations which do not have enough information in their context
+        // Remove OperationId processor as we use a lot of generated attributes which do not have enough information in their context
         // to generate these ids properly.
         // @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createContext
         foreach ($processors as $key => $processor) {

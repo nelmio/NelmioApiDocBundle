@@ -26,7 +26,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->booleanNode('use_validation_groups')
-                    ->info('If true, `groups` passed to @Model annotations will be used to limit validation constraints')
+                    ->info('If true, `groups` passed to #[Model] attributes will be used to limit validation constraints')
                     ->defaultFalse()
                 ->end()
                 ->arrayNode('cache')
@@ -86,7 +86,7 @@ final class Configuration implements ConfigurationInterface
                             'default' => [
                                 'path_patterns' => [],
                                 'host_patterns' => [],
-                                'with_annotation' => false,
+                                'with_attribute' => false,
                                 'documentation' => [],
                                 'name_patterns' => [],
                                 'disable_default_routes' => false,
@@ -127,13 +127,13 @@ final class Configuration implements ConfigurationInterface
                                 ->example(['^api_v1'])
                                 ->prototype('scalar')->end()
                             ->end()
-                            ->booleanNode('with_annotation')
+                            ->booleanNode('with_attribute')
                                 ->defaultFalse()
-                                ->info('whether to filter by annotation')
+                                ->info('whether to filter by attributes')
                             ->end()
                             ->booleanNode('disable_default_routes')
                                 ->defaultFalse()
-                                ->info('if set disables default routes without annotations')
+                                ->info('if set disables default routes without attributes')
                             ->end()
                             ->arrayNode('documentation')
                                 ->useAttributeAsKey('key')

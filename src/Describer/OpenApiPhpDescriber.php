@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Annotation\Security;
+use Nelmio\ApiDocBundle\Attribute\Operation;
+use Nelmio\ApiDocBundle\Attribute\Security;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;

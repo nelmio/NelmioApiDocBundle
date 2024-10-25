@@ -40,30 +40,30 @@ final class FosRestDescriber implements RouteDescriberInterface
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
-        $annotations = $this->getAttributesAsAnnotation($reflectionMethod, RequestParam::class);
-        $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($reflectionMethod, QueryParam::class));
+        $attributes = $this->getAttributes($reflectionMethod, RequestParam::class);
+        $attributes = array_merge($attributes, $this->getAttributes($reflectionMethod, QueryParam::class));
 
         foreach ($this->getOperations($api, $route) as $operation) {
-            foreach ($annotations as $annotation) {
-                $parameterName = $annotation->key ?? $annotation->getName(); // the key used by fosrest
+            foreach ($attributes as $attribute) {
+                $parameterName = $attribute->key ?? $attribute->getName(); // the key used by fosrest
 
-                if ($annotation instanceof QueryParam) {
-                    $name = $parameterName.($annotation->map ? '[]' : '');
+                if ($attribute instanceof QueryParam) {
+                    $name = $parameterName.($attribute->map ? '[]' : '');
                     $parameter = Util::getOperationParameter($operation, $name, 'query');
-                    $parameter->allowEmptyValue = $annotation->nullable && $annotation->allowBlank;
+                    $parameter->allowEmptyValue = $attribute->nullable && $attribute->allowBlank;
 
-                    $parameter->required = !$annotation->nullable && $annotation->strict;
+                    $parameter->required = !$attribute->nullable && $attribute->strict;
 
                     if (Generator::UNDEFINED === $parameter->description) {
-                        $parameter->description = $annotation->description;
+                        $parameter->description = $attribute->description;
                     }
 
-                    if ($annotation->map) {
+                    if ($attribute->map) {
                         $parameter->explode = true;
                     }
 
                     $schema = Util::getChild($parameter, OA\Schema::class);
-                    $this->describeCommonSchemaFromAnnotation($schema, $annotation, $reflectionMethod);
+                    $this->describeCommonSchemaFromAttribute($schema, $attribute, $reflectionMethod);
                 } else {
                     /** @var OA\RequestBody $requestBody */
                     $requestBody = Util::getChild($operation, OA\RequestBody::class);
@@ -71,13 +71,13 @@ final class FosRestDescriber implements RouteDescriberInterface
                         $contentSchema = $this->getContentSchemaForType($requestBody, $mediaType);
                         $schema = Util::getProperty($contentSchema, $parameterName);
 
-                        if (!$annotation->nullable && $annotation->strict) {
+                        if (!$attribute->nullable && $attribute->strict) {
                             $requiredParameters = is_array($contentSchema->required) ? $contentSchema->required : [];
                             $requiredParameters[] = $parameterName;
 
                             $contentSchema->required = array_values(array_unique($requiredParameters));
                         }
-                        $this->describeCommonSchemaFromAnnotation($schema, $annotation, $reflectionMethod);
+                        $this->describeCommonSchemaFromAttribute($schema, $attribute, $reflectionMethod);
                     }
                 }
             }
@@ -192,33 +192,33 @@ final class FosRestDescriber implements RouteDescriberInterface
         );
     }
 
-    private function describeCommonSchemaFromAnnotation(OA\Schema $schema, AbstractScalarParam $annotation, \ReflectionMethod $reflectionMethod): void
+    private function describeCommonSchemaFromAttribute(OA\Schema $schema, AbstractScalarParam $attribute, \ReflectionMethod $reflectionMethod): void
     {
-        $schema->default = $annotation->getDefault();
+        $schema->default = $attribute->getDefault();
 
         if (Generator::UNDEFINED === $schema->type) {
-            $schema->type = $annotation->map ? 'array' : 'string';
+            $schema->type = $attribute->map ? 'array' : 'string';
         }
 
-        if ($annotation->map) {
+        if ($attribute->map) {
             $schema->type = 'array';
             $schema->items = Util::getChild($schema, OA\Items::class);
         }
 
-        $pattern = $this->getPattern($annotation->requirements);
+        $pattern = $this->getPattern($attribute->requirements);
         if (null !== $pattern) {
             $schema->pattern = $pattern;
         }
 
-        $format = $this->getFormat($annotation->requirements);
+        $format = $this->getFormat($attribute->requirements);
         if (null !== $format) {
             $schema->format = $format;
         }
 
-        $enum = $this->getEnum($annotation->requirements, $reflectionMethod);
+        $enum = $this->getEnum($attribute->requirements, $reflectionMethod);
         if (null !== $enum) {
-            if ($annotation->requirements instanceof Choice) {
-                if ($annotation->requirements->multiple) {
+            if ($attribute->requirements instanceof Choice) {
+                if ($attribute->requirements->multiple) {
                     $schema->type = 'array';
                     $schema->items = Util::createChild($schema, OA\Items::class, ['type' => 'string', 'enum' => $enum]);
                 } else {
@@ -235,13 +235,13 @@ final class FosRestDescriber implements RouteDescriberInterface
      *
      * @return T[]
      */
-    private function getAttributesAsAnnotation(\ReflectionMethod $reflection, string $className): array
+    private function getAttributes(\ReflectionMethod $reflection, string $className): array
     {
-        $annotations = [];
+        $attributes = [];
         foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
-            $annotations[] = $attribute->newInstance();
+            $attributes[] = $attribute->newInstance();
         }
 
-        return $annotations;
+        return $attributes;
     }
 }

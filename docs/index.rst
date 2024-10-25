@@ -7,8 +7,8 @@ OpenAPI (Swagger) format and provides a sandbox to interactively experiment with
 What's supported?
 -----------------
 
-This bundle supports *Symfony* route requirements, *Symfony* request mapping (:doc:`symfony_attributes`), PHP annotations, `Swagger-Php`_ annotations,
-`FOSRestBundle`_ annotations and applications using `Api-Platform`_.
+This bundle supports *Symfony* route requirements, *Symfony* request mapping (:doc:`symfony_attributes`), PHP attributes, `Swagger-Php`_ attributes,
+`FOSRestBundle`_ attributes and applications using `Api-Platform`_.
 
 .. _`Swagger-Php`: https://github.com/zircote/swagger-php
 .. _`FOSRestBundle`: https://github.com/FriendsOfSymfony/FOSRestBundle
@@ -105,7 +105,7 @@ How does this bundle work?
 --------------------------
 
 It generates an OpenAPI documentation from your Symfony app thanks to
-**Describers**. One extracts data from SwaggerPHP annotations, one from your
+**Describers**. One extracts data from SwaggerPHP attributes, one from your
 routes, etc.
 
 If you configured the ``app.swagger_ui`` route above, you can browse your
@@ -151,52 +151,10 @@ You can configure global information in the bundle configuration ``documentation
     This configuration field can more generally be used to store your documentation as yaml.
     You may find in the ``.yaml`` files from `SwaggerPHP examples`_.
 
-To document your routes, you can use the SwaggerPHP annotations and the
-``Nelmio\ApiDocBundle\Annotation\Model`` annotation in your controllers::
+To document your routes, you can use the SwaggerPHP attributes and the
+``#[Model]`` attribute in your controllers::
 
 .. configuration-block::
-
-    .. code-block:: php-annotations
-
-        namespace AppBundle\Controller;
-
-        use AppBundle\Entity\Reward;
-        use AppBundle\Entity\User;
-        use Nelmio\ApiDocBundle\Annotation\Model;
-        use Nelmio\ApiDocBundle\Annotation\Security;
-        use OpenApi\Annotations as OA;
-        use Symfony\Component\Routing\Annotation\Route;
-
-        class UserController
-        {
-            /**
-             * List the rewards of the specified user.
-             *
-             * This call takes into account all confirmed awards, but not pending or refused awards.
-             *
-             * @Route("/api/{user}/rewards", methods={"GET"})
-             * @OA\Response(
-             *     response=200,
-             *     description="Returns the rewards of an user",
-             *     @OA\JsonContent(
-             *        type="array",
-             *        @OA\Items(ref=@Model(type=Reward::class, groups={"full"}))
-             *     )
-             * )
-             * @OA\Parameter(
-             *     name="order",
-             *     in="query",
-             *     description="The field used to order rewards",
-             *     @OA\Schema(type="string")
-             * )
-             * @OA\Tag(name="rewards")
-             * @Security(name="Bearer")
-             */
-            public function fetchUserRewardsAction(User $user)
-            {
-                // ...
-            }
-        }
 
     .. code-block:: php-attributes
 
@@ -204,8 +162,8 @@ To document your routes, you can use the SwaggerPHP annotations and the
 
         use AppBundle\Entity\Reward;
         use AppBundle\Entity\User;
-        use Nelmio\ApiDocBundle\Annotation\Model;
-        use Nelmio\ApiDocBundle\Annotation\Security;
+        use Nelmio\ApiDocBundle\Attribute\Model;
+        use Nelmio\ApiDocBundle\Attribute\Security;
         use OpenApi\Attributes as OA;
         use Symfony\Component\Routing\Annotation\Route;
 
@@ -244,7 +202,7 @@ The normal PHPDoc block on the controller method is used for the summary and des
 
 .. tip::
 
-    Examples of using the annotations can be found in `SwaggerPHP examples`_.
+    Examples of using the attributes/annotations can be found in `SwaggerPHP examples`_.
     However, unlike in those examples, when using this bundle you don't need to specify paths and you can easily document models as well as some
     other properties described below as they can be automatically be documented using the Symfony integration.
 
@@ -257,27 +215,18 @@ The normal PHPDoc block on the controller method is used for the summary and des
 Use Models
 ----------
 
-As shown in the example above, the bundle provides the ``@Model`` annotation.
+As shown in the example above, the bundle provides the ``#[Model]`` attribute.
 Use it instead of a definition reference and the bundle will deduce your model properties.
 
 .. note::
 
     A model can be a Symfony form type, a Doctrine ORM entity or a general PHP object.
 
-This annotation has two options:
+This attribute has two options:
 
 * ``type`` to specify your model's type::
 
 .. configuration-block::
-
-    .. code-block:: php-annotations
-
-        /**
-         * @OA\Response(
-         *     response=200,
-         *     @Model(type=User::class)
-         * )
-         */
 
     .. code-block:: php-attributes
 
@@ -291,15 +240,6 @@ This annotation has two options:
 
 
 .. configuration-block::
-
-    .. code-block:: php-annotations
-
-         /**
-         * @OA\Response(
-         *     response=200,
-         *     @Model(type=User::class, groups={"non_sensitive_data"})
-         * )
-         */
 
     .. code-block:: php-attributes
 
@@ -323,20 +263,6 @@ properties and validator constraints. Take the model class below:
 
 .. configuration-block::
 
-    .. code-block:: php-annotations
-
-        use Symfony\Component\Serializer\Annotation\Groups;
-        use Symfony\Component\Validator\Constraints as Assert;
-
-        class UserDto
-        {
-            /**
-             * @Groups({"default", "create", "update"})
-             * @Assert\NotBlank(groups={"default", "create"})
-             */
-            public string $username;
-        }
-
     .. code-block:: php-attributes
 
         use Symfony\Component\Serializer\Annotation\Groups;
@@ -344,8 +270,8 @@ properties and validator constraints. Take the model class below:
 
         class UserDto
         {
-             #[Groups(["default", "create", "update"])]
-             #[Assert\NotBlank(groups: ["default", "create"])]
+            #[Groups(["default", "create", "update"])]
+            #[Assert\NotBlank(groups: ["default", "create"])]
             public string $username;
         }
 
@@ -357,29 +283,6 @@ client side validation and types. ``NotBlank`` adding ``required`` will cause
 that property type to not be nullable, for example.
 
 .. configuration-block::
-
-    .. code-block:: php-annotations
-
-        use OpenApi\Annotations as OA;
-
-         /**
-          * shows `username` as `required` in the OpenAPI schema (not nullable)
-          * @OA\Response(
-          *     response=200,
-          *     @Model(type=UserDto::class, groups={"default"})
-          * )
-          */
-
-         /**
-          * Similarly, this will make the username `required` in the create
-          * schema
-          * @OA\RequestBody(@Model(type=UserDto::class, groups={"create"}))
-          */
-
-         /**
-          * But for updates, the `username` property will not be required
-          * @OA\RequestBody(@Model(type=UserDto::class, groups={"update"}))
-          */
 
     .. code-block:: php-attributes
 
@@ -397,30 +300,14 @@ that property type to not be nullable, for example.
 
 .. tip::
 
-     When used at the root of ``@OA\Response`` and ``@OA\Parameter``, ``@Model`` is automatically nested
-     in a ``@OA\Schema``.
+     When used at the root of ``#[OA\Response]`` and ``#[OA\Parameter]``, ``#[Model]`` is automatically nested
+     in a ``#[OA\Schema]``.
 
      The media type defaults to ``application/json``.
 
-     To use ``@Model`` directly within a ``@OA\Schema``, ``@OA\Items`` or ``@OA\Property``, you have to use the ``$ref`` field::
+     To use ``#[Model]`` directly within a ``#[OA\Schema]``, ``#[OA\Items]`` or ``#[OA\Property]``, you have to use the ``$ref`` field::
 
 .. configuration-block::
-
-    .. code-block:: php-annotations
-
-         /**
-          * @OA\Response(
-          *     @OA\JsonContent(ref=@Model(type=User::class))
-          * )
-          *
-          * or
-          *
-          * @OA\Response(@OA\XmlContent(
-          *     @OA\Schema(type="object",
-          *         @OA\Property(property="foo", ref=@Model(type=FooClass::class))
-          *     )
-          * ))
-          */
 
     .. code-block:: php-attributes
 
@@ -462,12 +349,12 @@ General PHP objects
 .. tip::
 
     **If you're not using the JMS Serializer**, the `Symfony PropertyInfo component`_ is used to describe your models.
-    It supports doctrine annotations, type hints, and even PHP doc blocks.
+    It supports doctrine attributes, type hints, and even PHP doc blocks.
     It does also support serialization groups when using the Symfony serializer.
 
     **If you're using the JMS Serializer**, the metadata of the JMS serializer are used by default to describe your
     models. Additional information is extracted from the PHP doc block comment,
-    but the property types must be specified in the JMS annotations.
+    but the property types must be specified in the JMS attributes.
 
     NOTE: If you are using serialization contexts (e.g. Groups) each permutation will be treated as a separate Path. For example if you have the following two variations defined in different places in your code:
 
@@ -490,10 +377,6 @@ General PHP objects
 
     .. configuration-block::
 
-        .. code-block:: php-annotations
-
-            @OA\Schema(ref=@Model(type="App\Response\ItemResponse", groups=["Default"])),
-
         .. code-block:: php-attributes
 
             #[OA\Schema(ref: new Model(type: App\Response\ItemResponse::class, groups: ['Default']))]
@@ -513,10 +396,6 @@ General PHP objects
 
     .. configuration-block::
 
-        .. code-block:: php-annotations
-
-            /** @OA\Response(response=200, @Model(type=UserDto::class, serializationContext={"useJms"=false})) */
-
         .. code-block:: php-attributes
 
             #[OA\Response(response: 200, content: new Model(type: UserDto::class, serializationContext: ["useJms" => false]))]
@@ -524,45 +403,14 @@ General PHP objects
     When using the JMS serializer combined with `willdurand/Hateoas`_ (and the `BazingaHateoasBundle`_),
     HATEOAS metadata are automatically extracted
 
-If you want to customize the documentation of an object's property, you can use ``@OA\Property``::
+If you want to customize the documentation of an object's property, you can use ``#[OA\Property]``::
 
 
 .. configuration-block::
 
-    .. code-block:: php-annotations
-
-        use Nelmio\ApiDocBundle\Annotation\Model;
-        use OpenApi\Annotations as OA;
-
-        class User
-        {
-            /**
-             * @var int
-             * @OA\Property(description="The unique identifier of the user.")
-             */
-            public $id;
-
-            /**
-             * @OA\Property(type="string", maxLength=255)
-             */
-            public $username;
-
-            /**
-             * @OA\Property(ref=@Model(type=User::class))
-             */
-            public $friend;
-
-            /**
-             * @OA\Property(description="This is my coworker!")
-             */
-            public setCoworker(User $coworker) {
-                // ...
-            }
-        }
-
     .. code-block:: php-attributes
 
-        use Nelmio\ApiDocBundle\Annotation\Model;
+        use Nelmio\ApiDocBundle\Attribute\Model;
         use OpenApi\Attributes as OA;
 
         class User
@@ -585,7 +433,7 @@ If you want to customize the documentation of an object's property, you can use 
             }
         }
 
-See the `OpenAPI 3.0 specification`__ to see all the available fields of ``@OA\Property``.
+See the `OpenAPI 3.0 specification`__ to see all the available fields of ``#[@OA\Property]``.
 
 __ https://swagger.io/specification/
 

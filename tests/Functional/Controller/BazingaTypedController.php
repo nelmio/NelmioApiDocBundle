@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\BazingaUserTyped;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Routing\Annotation\Route;

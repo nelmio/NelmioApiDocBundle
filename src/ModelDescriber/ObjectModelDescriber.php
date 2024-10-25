@@ -172,7 +172,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
             $types = $this->propertyInfo->getTypes($class, $propertyName);
             if (null === $types || 0 === count($types)) {
-                throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
+                throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `#[OA\Property(type="")]` to make its type explicit.', $class, $propertyName));
             }
 
             $this->describeProperty($types, $model, $property, $propertyName, $schema);
@@ -227,7 +227,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
         }
 
-        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $types[0]->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
+        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `#[OA\Property(type="")]` annotation to specify it manually.', $types[0]->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
     }
 
     /**

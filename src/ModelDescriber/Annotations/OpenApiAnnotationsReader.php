@@ -39,11 +39,11 @@ class OpenApiAnnotationsReader
 
     public function updateSchema(\ReflectionClass $reflectionClass, OA\Schema $schema): void
     {
-        if (null === $oaSchema = $this->getAnnotation($schema->_context, $reflectionClass, OA\Schema::class)) {
+        if (null === $oaSchema = $this->getAttribute($schema->_context, $reflectionClass, OA\Schema::class)) {
             return;
         }
 
-        // Read @Model annotations
+        // Read #[Model] attributes
         $this->modelRegister->__invoke(new Analysis([$oaSchema], Util::createContext()));
 
         if (!$oaSchema->validate()) {
@@ -58,7 +58,7 @@ class OpenApiAnnotationsReader
      */
     public function getPropertyName($reflection, string $default): string
     {
-        if (null === $oaProperty = $this->getAnnotation(new Context(), $reflection, OA\Property::class)) {
+        if (null === $oaProperty = $this->getAttribute(new Context(), $reflection, OA\Property::class)) {
             return $default;
         }
 
@@ -71,11 +71,11 @@ class OpenApiAnnotationsReader
      */
     public function updateProperty($reflection, OA\Property $property, ?array $serializationGroups = null): void
     {
-        if (null === $oaProperty = $this->getAnnotation($property->_context, $reflection, OA\Property::class)) {
+        if (null === $oaProperty = $this->getAttribute($property->_context, $reflection, OA\Property::class)) {
             return;
         }
 
-        // Read @Model annotations
+        // Read #[Model] attributes
         $this->modelRegister->__invoke(new Analysis([$oaProperty], Util::createContext()), $serializationGroups);
 
         if (!$oaProperty->validate()) {
@@ -93,7 +93,7 @@ class OpenApiAnnotationsReader
      *
      * @return T|null
      */
-    private function getAnnotation(Context $parentContext, $reflection, string $className)
+    private function getAttribute(Context $parentContext, $reflection, string $className)
     {
         $this->setContextFromReflection($parentContext, $reflection);
 
