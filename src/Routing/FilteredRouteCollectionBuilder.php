@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Routing;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\AbstractAnnotation;
@@ -21,8 +20,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 final class FilteredRouteCollectionBuilder
 {
-    private ?Reader $annotationReader;
-
     private ControllerReflector $controllerReflector;
 
     private string $area;
@@ -36,7 +33,6 @@ final class FilteredRouteCollectionBuilder
      * @param array<mixed> $options
      */
     public function __construct(
-        ?Reader $annotationReader,
         ControllerReflector $controllerReflector,
         string $area,
         array $options = []
@@ -64,7 +60,6 @@ final class FilteredRouteCollectionBuilder
             $options = $normalizedOptions;
         }
 
-        $this->annotationReader = $annotationReader;
         $this->controllerReflector = $controllerReflector;
         $this->area = $area;
         $this->options = $resolver->resolve($options);
@@ -132,27 +127,11 @@ final class FilteredRouteCollectionBuilder
             return false;
         }
 
-        /** @var Areas|null $areas */
-        $areas = $this->getAttributesAsAnnotation($reflectionMethod, Areas::class)[0] ?? null;
+        $areas = $this->getAttributesAsAnnotation($reflectionMethod, Areas::class)[0]
+            ?? $this->getAttributesAsAnnotation($reflectionMethod->getDeclaringClass(), Areas::class)[0]
+            ?? null;
 
-        if (null === $areas) {
-            /** @var Areas|null $areas */
-            $areas = $this->getAttributesAsAnnotation($reflectionMethod->getDeclaringClass(), Areas::class)[0] ?? null;
-
-            if (null === $areas && null !== $this->annotationReader) {
-                /** @var Areas|null $areas */
-                $areas = $this->annotationReader->getMethodAnnotation(
-                    $reflectionMethod,
-                    Areas::class
-                );
-
-                if (null === $areas) {
-                    $areas = $this->annotationReader->getClassAnnotation($reflectionMethod->getDeclaringClass(), Areas::class);
-                }
-            }
-        }
-
-        return (null !== $areas) ? $areas->has($this->area) : false;
+        return null !== $areas && $areas->has($this->area);
     }
 
     private function defaultRouteDisabled(Route $route): bool
@@ -169,13 +148,9 @@ final class FilteredRouteCollectionBuilder
             return false;
         }
 
-        $annotations = null !== $this->annotationReader
-            ? $this->annotationReader->getMethodAnnotations($method)
-            : [];
-
-        $annotations = array_merge($annotations, array_map(function (\ReflectionAttribute $attribute) {
+        $annotations = array_map(function (\ReflectionAttribute $attribute) {
             return $attribute->newInstance();
-        }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF)));
+        }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF));
 
         foreach ($annotations as $annotation) {
             if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')

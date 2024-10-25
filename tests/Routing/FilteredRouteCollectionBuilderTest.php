@@ -11,13 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Routing;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Annotation\Areas;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
-use OpenApi\Annotations\Parameter;
+use OpenApi\Attributes\Parameter;
 use OpenApi\Context;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -31,16 +29,6 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class FilteredRouteCollectionBuilderTest extends TestCase
 {
-    /**
-     * @var AnnotationReader|null
-     */
-    private $doctrineAnnotations;
-
-    protected function setUp(): void
-    {
-        $this->doctrineAnnotations = class_exists(AnnotationReader::class) ? new AnnotationReader() : null;
-    }
-
     public function testFilter(): void
     {
         $options = [
@@ -60,7 +48,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         }
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
-            $this->doctrineAnnotations,
             $this->createControllerReflector(),
             'areaName',
             $options
@@ -88,7 +75,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         }
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
-            $this->doctrineAnnotations,
             $this->createControllerReflector(),
             'areaName',
             $pathPattern
@@ -107,7 +93,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         new FilteredRouteCollectionBuilder(
-            $this->doctrineAnnotations,
             $this->createControllerReflector(),
             'areaName',
             $options
@@ -162,7 +147,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes->add($name, $route);
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
-            $this->doctrineAnnotations,
             $this->createControllerReflector(),
             'area',
             $options
@@ -192,28 +176,16 @@ class FilteredRouteCollectionBuilderTest extends TestCase
      * @param array<string, mixed> $options
      */
     #[DataProvider('getMatchingRoutesWithAnnotation')]
-    public function testMatchingRoutesWithAnnotation(string $name, Route $route, array $options = []): void
+    public function testMatchingRoutesWithAnnotation(string $name, Route $route, \ReflectionMethod $reflectionMethod, array $options = []): void
     {
         $routes = new RouteCollection();
         $routes->add($name, $route);
         $area = 'area';
 
-        $reflectionMethodStub = $this->createMock(\ReflectionMethod::class);
         $controllerReflectorStub = $this->createMock(ControllerReflector::class);
-        $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethodStub);
-
-        $annotationReader = null;
-        if (interface_exists(Reader::class)) {
-            $annotationReader = $this->createMock(Reader::class);
-            $annotationReader
-                ->method('getMethodAnnotation')
-                ->with($reflectionMethodStub, Areas::class)
-                ->willReturn(new Areas(['value' => [$area]]))
-            ;
-        }
+        $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethod);
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
-            $annotationReader,
             $controllerReflectorStub,
             $area,
             $options
@@ -225,33 +197,26 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     public static function getMatchingRoutesWithAnnotation(): \Generator
     {
+        $apiController = new class {
+            #[Areas(['area'])]
+            public function fooAction(): void
+            {
+            }
+        };
         yield from [
-            'with annotation only' => [
+            'with attribute only' => [
                 'r10',
-                new Route('/api/areas/new', ['_controller' => 'ApiController::newAreaAction']),
+                new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
+                new \ReflectionMethod($apiController, 'fooAction'),
                 ['with_annotation' => true],
             ],
-            'with annotation and path patterns' => [
+            'with attribute and path patterns' => [
                 'r10',
-                new Route('/api/areas/new', ['_controller' => 'ApiController::newAreaAction']),
+                new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
+                new \ReflectionMethod($apiController, 'fooAction'),
                 ['path_patterns' => ['^/api'], 'with_annotation' => true],
             ],
         ];
-
-        if (\PHP_VERSION_ID < 80000) {
-            yield from [
-                'with attribute only' => [
-                    'r10',
-                    new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
-                    ['with_annotation' => true],
-                ],
-                'with attribute and path patterns' => [
-                    'r10',
-                    new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
-                    ['path_patterns' => ['^/api'], 'with_annotation' => true],
-                ],
-            ];
-        }
     }
 
     /**
@@ -264,7 +229,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes->add($name, $route);
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
-            $this->doctrineAnnotations,
             $this->createControllerReflector(),
             'areaName',
             $options
@@ -285,14 +249,13 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     }
 
     /**
-     * @param array<Operation|Parameter> $annotations
-     * @param array<string|bool>         $options
+     * @param array<string|bool> $options
      */
     #[DataProvider('getRoutesWithDisabledDefaultRoutes')]
     public function testRoutesWithDisabledDefaultRoutes(
         string $name,
         Route $route,
-        array $annotations,
+        \ReflectionMethod $reflectionMethod,
         array $options,
         int $expectedRoutesCount
     ): void {
@@ -300,21 +263,10 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         $routes->add($name, $route);
         $area = 'area';
 
-        $reflectionMethodStub = $this->createMock(\ReflectionMethod::class);
         $controllerReflectorStub = $this->createMock(ControllerReflector::class);
-        $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethodStub);
-
-        $annotationReader = null;
-        if (interface_exists(Reader::class)) {
-            $annotationReader = $this->createMock(Reader::class);
-            $annotationReader
-                ->method('getMethodAnnotations')
-                ->willReturn($annotations)
-            ;
-        }
+        $controllerReflectorStub->method('getReflectionMethod')->willReturn($reflectionMethod);
 
         $routeBuilder = new FilteredRouteCollectionBuilder(
-            $annotationReader,
             $controllerReflectorStub,
             $area,
             $options
@@ -326,24 +278,59 @@ class FilteredRouteCollectionBuilderTest extends TestCase
 
     public static function getRoutesWithDisabledDefaultRoutes(): \Generator
     {
+        $apiController = new class {
+            public function fooAction(): void
+            {
+            }
+        };
+
         yield 'non matching route without Annotation' => [
             'r10',
             new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
-            [],
+            new \ReflectionMethod($apiController, 'fooAction'),
             ['disable_default_routes' => true],
             0,
         ];
+
+        $apiController = new class {
+            #[Areas(['area_something_very_different'])]
+            public function fooAction(): void
+            {
+            }
+        };
+
+        yield 'non matching route with different area Annotation' => [
+            'r10',
+            new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
+            new \ReflectionMethod($apiController, 'fooAction'),
+            ['disable_default_routes' => true],
+            0,
+        ];
+
+        $apiController = new class {
+            #[Operation(['_context' => new Context()])]
+            public function fooAction(): void
+            {
+            }
+        };
         yield 'matching route with Nelmio Annotation' => [
             'r10',
             new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
-            [new Operation(['_context' => new Context()])],
+            new \ReflectionMethod($apiController, 'fooAction'),
             ['disable_default_routes' => true],
             1,
         ];
+
+        $apiController = new class {
+            #[Parameter]
+            public function fooAction(): void
+            {
+            }
+        };
         yield 'matching route with Swagger Annotation' => [
             'r10',
             new Route('/api/foo', ['_controller' => 'ApiController::fooAction']),
-            [new Parameter(['_context' => new Context()])],
+            new \ReflectionMethod($apiController, 'fooAction'),
             ['disable_default_routes' => true],
             1,
         ];
