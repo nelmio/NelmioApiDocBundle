@@ -37,7 +37,7 @@ class UndocumentedArrayItemsException extends \LogicException
         }
         $propertyName .= $path;
 
-        parent::__construct(sprintf('Property "%s" is an array, but its items type isn\'t specified. You can specify that by using the type `string[]` for instance or `@OA\Property(type="array", @OA\Items(type="string"))`.', $propertyName));
+        parent::__construct(sprintf('Property "%s" is an array, but its items type isn\'t specified. You can specify that by using the type `string[]` for instance or `#[OA\Property(type="array", new OA\Items(type="string"))]`.', $propertyName));
     }
 
     /**

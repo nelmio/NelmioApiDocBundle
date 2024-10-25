@@ -131,7 +131,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $context->pushPropertyMetadata($item);
 
             $name = true === $isJmsV1 ? $this->namingStrategy->translateName($item) : $item->serializedName;
-            // read property options from Swagger Property annotation if it exists
+            // read property options from Swagger Property attribute if it exists
 
             $reflections = [];
             if (true === $isJmsV1 && property_exists($item, 'reflection') && null !== $item->reflection) {

@@ -46,7 +46,7 @@ final class ModelRegister
     public function __invoke(Analysis $analysis, ?array $parentGroups = null): void
     {
         foreach ($analysis->annotations as $annotation) {
-            // @Model using the ref field
+            // #[Model] using the ref field
             if ($annotation instanceof OA\Schema && $annotation->ref instanceof ModelAnnotation) {
                 $model = $annotation->ref;
 
@@ -60,15 +60,15 @@ final class ModelRegister
 
             // Misusage of ::$ref
             if (($annotation instanceof OA\Response || $annotation instanceof OA\RequestBody) && $annotation->ref instanceof ModelAnnotation) {
-                throw new \InvalidArgumentException(sprintf('Using @Model inside @%s::$ref is not allowed. You should use ::$ref with @Property, @Parameter, @Schema, @Items but within @Response or @RequestBody you should put @Model directly at the root of the annotation : `@Response(..., @Model(...))`.', get_class($annotation)));
+                throw new \InvalidArgumentException(sprintf('Using #[Model] inside #[%s::$ref] is not allowed. You should use ::$ref with #[Property], #[Parameter], #[Schema], #[Items] but within #[Response] or #[RequestBody} You should use ::$content : `#[Response(..., content: new Model())]`.', get_class($annotation)));
             }
 
             // Implicit usages
 
-            // We don't use $ref for @Responses, @RequestBody and @Parameter to respect semantics
-            // We don't replace these objects with the @Model found (we inject it in a subfield) whereas we do for @Schemas
+            // We don't use $ref for #[Responses], #[RequestBody] and #[Parameter] to respect semantics
+            // We don't replace these objects with the #[Model] found (we inject it in a subfield) whereas we do for @Schemas
 
-            $model = $this->getModel($annotation); // We check whether there is a @Model annotation nested
+            $model = $this->getModel($annotation); // We check whether there is a #[Model] attribute nested
             if (null === $model) {
                 continue;
             }
@@ -88,7 +88,7 @@ final class ModelRegister
             }
 
             if (!$annotation instanceof OA\Parameter) {
-                throw new \InvalidArgumentException(sprintf("@Model annotation can't be nested with an annotation of type @%s.", get_class($annotation)));
+                throw new \InvalidArgumentException(sprintf("#[Model] attribute can't be nested with an attribute of type @%s.", get_class($annotation)));
             }
 
             if ($annotation->schema instanceof OA\Schema && 'array' === $annotation->schema->type) {
@@ -176,7 +176,7 @@ final class ModelRegister
 
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf("@Model annotation is not compatible with the media types '%s'. It must be one of 'json' or 'xml'.", implode(',', $this->mediaTypes)));
+                throw new \InvalidArgumentException(sprintf("#[Model] attribute is not compatible with the media types '%s'. It must be one of 'json' or 'xml'.", implode(',', $this->mediaTypes)));
         }
 
         $annotation->merge([$modelAnnotation]);

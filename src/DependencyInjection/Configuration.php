@@ -133,7 +133,7 @@ final class Configuration implements ConfigurationInterface
                             ->end()
                             ->booleanNode('disable_default_routes')
                                 ->defaultFalse()
-                                ->info('if set disables default routes without annotations')
+                                ->info('if set disables default routes without attributes')
                             ->end()
                             ->arrayNode('documentation')
                                 ->useAttributeAsKey('key')
