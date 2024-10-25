@@ -12,8 +12,8 @@
 namespace Nelmio\ApiDocBundle\Routing;
 
 use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\Attribute\Areas;
 use Nelmio\ApiDocBundle\Annotation\Areas as LegacyAreas;
+use Nelmio\ApiDocBundle\Attribute\Areas;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\AbstractAnnotation;
 use Symfony\Component\OptionsResolver\OptionsResolver;
