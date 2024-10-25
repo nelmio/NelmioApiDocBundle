@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Annotation;
 
-trigger_deprecation('nelmio/api-doc-bundle', '4.32.3', 'The "%s" class is deprecated and will be removed in 4.0. Use the \Nelmio\ApiDocBundle\Attribute\Security attribute instead.', Security::class);
+trigger_deprecation('nelmio/api-doc-bundle', '4.32.3', 'The "%s" class is deprecated and will be removed in 5.0. Use the \Nelmio\ApiDocBundle\Attribute\Security attribute instead.', Security::class);
 
 /**
  * @Annotation
