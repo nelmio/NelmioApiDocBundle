@@ -105,7 +105,7 @@ How does this bundle work?
 --------------------------
 
 It generates an OpenAPI documentation from your Symfony app thanks to
-**Describers**. One extracts data from SwaggerPHP annotations, one from your
+**Describers**. One extracts data from SwaggerPHP attributes/annotations, one from your
 routes, etc.
 
 If you configured the ``app.swagger_ui`` route above, you can browse your
@@ -151,8 +151,8 @@ You can configure global information in the bundle configuration ``documentation
     This configuration field can more generally be used to store your documentation as yaml.
     You may find in the ``.yaml`` files from `SwaggerPHP examples`_.
 
-To document your routes, you can use the SwaggerPHP annotations and the
-``Nelmio\ApiDocBundle\Annotation\Model`` annotation in your controllers::
+To document your routes, you can use the SwaggerPHP attributes/annotations and the
+``#[Model]`` attribute/annotation in your controllers::
 
 .. configuration-block::
 
@@ -204,8 +204,8 @@ To document your routes, you can use the SwaggerPHP annotations and the
 
         use AppBundle\Entity\Reward;
         use AppBundle\Entity\User;
-        use Nelmio\ApiDocBundle\Annotation\Model;
-        use Nelmio\ApiDocBundle\Annotation\Security;
+        use Nelmio\ApiDocBundle\Attribute\Model;
+        use Nelmio\ApiDocBundle\Attribute\Security;
         use OpenApi\Attributes as OA;
         use Symfony\Component\Routing\Annotation\Route;
 
@@ -244,7 +244,7 @@ The normal PHPDoc block on the controller method is used for the summary and des
 
 .. tip::
 
-    Examples of using the annotations can be found in `SwaggerPHP examples`_.
+    Examples of using the attributes/annotations can be found in `SwaggerPHP examples`_.
     However, unlike in those examples, when using this bundle you don't need to specify paths and you can easily document models as well as some
     other properties described below as they can be automatically be documented using the Symfony integration.
 
@@ -257,14 +257,14 @@ The normal PHPDoc block on the controller method is used for the summary and des
 Use Models
 ----------
 
-As shown in the example above, the bundle provides the ``@Model`` annotation.
+As shown in the example above, the bundle provides the ``#[Model]`` attribute.
 Use it instead of a definition reference and the bundle will deduce your model properties.
 
 .. note::
 
     A model can be a Symfony form type, a Doctrine ORM entity or a general PHP object.
 
-This annotation has two options:
+This attribute has two options:
 
 * ``type`` to specify your model's type::
 
@@ -397,12 +397,12 @@ that property type to not be nullable, for example.
 
 .. tip::
 
-     When used at the root of ``@OA\Response`` and ``@OA\Parameter``, ``@Model`` is automatically nested
-     in a ``@OA\Schema``.
+     When used at the root of ``#[OA\Response]`` and ``#[OA\Parameter]``, ``#[Model]`` is automatically nested
+     in a ``#[OA\Schema]``.
 
      The media type defaults to ``application/json``.
 
-     To use ``@Model`` directly within a ``@OA\Schema``, ``@OA\Items`` or ``@OA\Property``, you have to use the ``$ref`` field::
+     To use ``#[Model]`` directly within a ``#[OA\Schema]``, ``#[OA\Items]`` or ``#[OA\Property]``, you have to use the ``$ref`` field::
 
 .. configuration-block::
 
@@ -462,12 +462,12 @@ General PHP objects
 .. tip::
 
     **If you're not using the JMS Serializer**, the `Symfony PropertyInfo component`_ is used to describe your models.
-    It supports doctrine annotations, type hints, and even PHP doc blocks.
+    It supports doctrine attributes/annotations, type hints, and even PHP doc blocks.
     It does also support serialization groups when using the Symfony serializer.
 
     **If you're using the JMS Serializer**, the metadata of the JMS serializer are used by default to describe your
     models. Additional information is extracted from the PHP doc block comment,
-    but the property types must be specified in the JMS annotations.
+    but the property types must be specified in the JMS attributes/annotations.
 
     NOTE: If you are using serialization contexts (e.g. Groups) each permutation will be treated as a separate Path. For example if you have the following two variations defined in different places in your code:
 
@@ -524,14 +524,14 @@ General PHP objects
     When using the JMS serializer combined with `willdurand/Hateoas`_ (and the `BazingaHateoasBundle`_),
     HATEOAS metadata are automatically extracted
 
-If you want to customize the documentation of an object's property, you can use ``@OA\Property``::
+If you want to customize the documentation of an object's property, you can use ``#[OA\Property]``::
 
 
 .. configuration-block::
 
     .. code-block:: php-annotations
 
-        use Nelmio\ApiDocBundle\Annotation\Model;
+        use Nelmio\ApiDocBundle\Attribute\Model;
         use OpenApi\Annotations as OA;
 
         class User
@@ -562,7 +562,7 @@ If you want to customize the documentation of an object's property, you can use 
 
     .. code-block:: php-attributes
 
-        use Nelmio\ApiDocBundle\Annotation\Model;
+        use Nelmio\ApiDocBundle\Attribute\Model;
         use OpenApi\Attributes as OA;
 
         class User
@@ -585,7 +585,7 @@ If you want to customize the documentation of an object's property, you can use 
             }
         }
 
-See the `OpenAPI 3.0 specification`__ to see all the available fields of ``@OA\Property``.
+See the `OpenAPI 3.0 specification`__ to see all the available fields of ``#[@OA\Property]``.
 
 __ https://swagger.io/specification/
 
