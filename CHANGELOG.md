@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 4.32.3
+
+* Deprecated `Nelmio\ApiDocBundle\Annotation` namespace in favor of `Nelmio\ApiDocBundle\Attribute` namespace in preparation for 5.x. Consider upgrading to the new attribute syntax.
+```diff 
+- use Nelmio\ApiDocBundle\Annotation\Areas;
+- use Nelmio\ApiDocBundle\Annotation\Model;
+- use Nelmio\ApiDocBundle\Annotation\Operation;
+- use Nelmio\ApiDocBundle\Annotation\Security;
+
++ use Nelmio\ApiDocBundle\Attribute\Areas;
++ use Nelmio\ApiDocBundle\Attribute\Model;
++ use Nelmio\ApiDocBundle\Attribute\Operation;
++ use Nelmio\ApiDocBundle\Attribute\Security;
+```
+
+
 ## 4.32.0
 
 * Added support to configure `options` and `serializationContext` via `nelmio_api_doc.models.names`.
