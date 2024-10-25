@@ -336,6 +336,28 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         ];
     }
 
+    public function testRoutesWithInvalidController(): void
+    {
+        $routes = new RouteCollection();
+        $routes->add('foo', new Route('/api/foo', ['_controller' => 'ApiController::fooAction']));
+
+        $controllerReflectorStub = $this->createMock(ControllerReflector::class);
+        $controllerReflectorStub
+            ->expects(self::once())
+            ->method('getReflectionMethod')
+            ->with('ApiController::fooAction')
+            ->willReturn(null);
+
+        $routeBuilder = new FilteredRouteCollectionBuilder(
+            $controllerReflectorStub,
+            'area',
+            ['with_annotation' => true],
+        );
+        $filteredRoutes = $routeBuilder->filter($routes);
+
+        self::assertCount(0, $filteredRoutes);
+    }
+
     private function createControllerReflector(): ControllerReflector
     {
         return new ControllerReflector(new Container());
