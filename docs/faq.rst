@@ -182,7 +182,7 @@ Q: Areas feature doesn't fit my needs. So how can I group similar endpoints of o
 
 A: Use ``@OA\Tag`` annotation.
 
-.. code-block:: php
+.. code-block:: php-annotations
 
     /**
      * Class BookmarkController
@@ -193,6 +193,18 @@ A: Use ``@OA\Tag`` annotation.
     {
         // ...
     }
+
+.. code-block:: php-attributes
+
+    /**
+     * Class BookmarkController
+     */
+    #[OA\Tag(name: "Bookmarks")]
+    class BookmarkController extends AbstractFOSRestController implements ContextPresetInterface
+    {
+        // ...
+    }
+
 
 Disable Default Section
 -----------------------
@@ -217,11 +229,10 @@ do I do that?
 A: By using the ``@OA\Schema`` annotation or attribute with a ``type`` or ``ref``.
 Note, however, that a ``type="object"`` will still read all a models properties.
 
-.. code-block:: php
+.. code-block:: php-annotations
 
-    <?php
-    use OpenApi\Annotations as OA;
     use Nelmio\ApiDocBundle\Annotation\Model;
+    use OpenApi\Annotations as OA;
 
     /**
      * @OA\Schema(type="array", @OA\Items(ref=@Model(type=SomeEntity::class)))
@@ -234,3 +245,17 @@ Note, however, that a ``type="object"`` will still read all a models properties.
         // ...
     }
 
+.. code-block:: php-attributes
+
+    use Nelmio\ApiDocBundle\Attribute\Model;
+    use OpenApi\Attributes as OA;
+
+    /**
+     * or define a `ref`:
+     * #[OA\Schema(ref: "#/components/schemas/SomeRef")
+     */
+    #[OA\Schema(type: "array", items: new OA\Items(ref: new Model(type: SomeEntity::class)))]
+    class SomeCollection implements \IteratorAggregate
+    {
+        // ...
+    }
