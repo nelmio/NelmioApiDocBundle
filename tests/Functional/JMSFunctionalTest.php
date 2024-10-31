@@ -386,6 +386,15 @@ class JMSFunctionalTest extends WebTestCase
         }
 
         self::assertEquals([
+            'schema' => 'ArticleType812',
+            'type' => 'string',
+            'enum' => [
+                'DRAFT',
+                'FINAL'
+            ]
+        ], json_decode($this->getModel('ArticleType812')->toJson(), true));
+
+        self::assertEquals([
             'schema' => 'JMSEnum',
             'type' => 'object',
             'properties' => [
@@ -396,6 +405,15 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'array',
                     'items' => [
                         '$ref' => '#/components/schemas/ArticleType81'
+                    ]
+                ],
+                'enum_name' => [
+                    '$ref' => '#/components/schemas/ArticleType812'
+                ],
+                'enum_names' => [
+                    'type' => 'array',
+                    'items' => [
+                        '$ref' => '#/components/schemas/ArticleType812'
                     ]
                 ],
             ]
