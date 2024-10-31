@@ -67,7 +67,7 @@ Use attributes to filter documented routes in each area
 
 You can use the ``#[Areas]`` attribute inside your controllers to define your routes' areas.
 
-First, you need to define which areas will use the`#[Areas]` attributes to filter
+First, you need to define which areas will use the ``#[Areas]`` attributes to filter
 the routes that should be documented:
 
 .. code-block:: yaml
