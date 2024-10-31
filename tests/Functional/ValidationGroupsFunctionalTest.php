@@ -89,6 +89,7 @@ class ValidationGroupsFunctionalTest extends WebTestCase
             'required' => [
                 'property',
                 'propertyInDefaultGroup',
+                'propertyArray',
             ],
         ];
 

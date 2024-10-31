@@ -11,12 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Annotation;
 
-use OpenApi\Annotations\Operation as BaseOperation;
+trigger_deprecation('nelmio/api-doc-bundle', '4.32.3', 'The "%s" class is deprecated and will be removed in 5.0. Use the "\Nelmio\ApiDocBundle\Attribute\Operation" attribute instead.', Operation::class);
 
 /**
  * @Annotation
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
-class Operation extends BaseOperation
+class Operation extends \Nelmio\ApiDocBundle\Attribute\Operation
 {
 }

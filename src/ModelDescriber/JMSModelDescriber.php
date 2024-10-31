@@ -119,7 +119,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         );
         $classResult = $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
 
-        if (!$classResult->shouldDescribeModelProperties()) {
+        if (!$classResult) {
             return;
         }
         $schema->type = 'object';

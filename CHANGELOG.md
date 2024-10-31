@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 4.32.3
+
+* Deprecated `Nelmio\ApiDocBundle\Annotation` namespace in favor of `Nelmio\ApiDocBundle\Attribute` namespace in preparation for 5.x. Consider upgrading to the new attribute syntax.
+```diff 
+- use Nelmio\ApiDocBundle\Annotation\Areas;
+- use Nelmio\ApiDocBundle\Annotation\Model;
+- use Nelmio\ApiDocBundle\Annotation\Operation;
+- use Nelmio\ApiDocBundle\Annotation\Security;
+
++ use Nelmio\ApiDocBundle\Attribute\Areas;
++ use Nelmio\ApiDocBundle\Attribute\Model;
++ use Nelmio\ApiDocBundle\Attribute\Operation;
++ use Nelmio\ApiDocBundle\Attribute\Security;
+```
+
+
 ## 4.32.0
 
 * Added support to configure `options` and `serializationContext` via `nelmio_api_doc.models.names`.
@@ -14,6 +30,11 @@
 
 ## 4.30.0
 * Create top level OpenApi Tag from Tags top level annotations/attributes
+
+## 4.25.3
+
+* Calling `DocumentationExtension::getExtendedType()` has been deprecated in favor of `DocumentationExtension::getExtendedTypes()` to align with the deprecation introduced with `symfony/symfony` version `4.2`.
+
 
 ## 4.26.0
 
@@ -149,6 +170,11 @@ doc-api:
 * Added Redocly as an alternative to Swagger UI. https://github.com/Redocly/redoc.
 * Added support for describing dictionary types in OpenAPI 3.0.
 
+## 4.17.0
+
+* Passing groups to `PropertyDescriberInterface::describe()` via the `$groups` parameter is deprecated, the parameter will get removed in a future version. Pass groups via `$context['groups']` instead.
+
+
 ## 4.0.0
 
 * Added support of OpenAPI 3.0. The internals were completely reworked and this version introduces BC breaks.
@@ -175,7 +201,7 @@ doc-api:
 
 * Add a documentation form extension. Use the ``documentation`` option to define how a form field is documented.
 * Allow references to config definitions in controllers.
-* Using `@Model` implicitely in `@SWG\Schema`, `@SWG\Items` and `@SWG\Property` is deprecated. Use `ref=@Model()` instead.
+* Using `@Model` implicitly in `@SWG\Schema`, `@SWG\Items` and `@SWG\Property` is deprecated. Use `ref=@Model()` instead.
 
   Before:
   ```php

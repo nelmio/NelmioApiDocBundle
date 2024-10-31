@@ -11,44 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Annotation;
 
+trigger_deprecation('nelmio/api-doc-bundle', '4.32.3', 'The "%s" class is deprecated and will be removed in 5.0. Use the "\Nelmio\ApiDocBundle\Attribute\Areas" attribute instead.', Areas::class);
+
 /**
  * @Annotation
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
-final class Areas
+final class Areas extends \Nelmio\ApiDocBundle\Attribute\Areas
 {
-    /** @var string[] */
-    private array $areas;
-
-    /**
-     * @param string[]|array{value: string[]} $properties
-     */
-    public function __construct(array $properties)
-    {
-        if (!array_key_exists('value', $properties) || !is_array($properties['value'])) {
-            $properties['value'] = array_values($properties);
-        }
-
-        if ([] === $properties['value']) {
-            throw new \InvalidArgumentException('An array of areas was expected');
-        }
-
-        $areas = [];
-        foreach ($properties['value'] as $area) {
-            if (!is_string($area)) {
-                throw new \InvalidArgumentException('An area must be given as a string');
-            }
-
-            if (!in_array($area, $areas, true)) {
-                $areas[] = $area;
-            }
-        }
-
-        $this->areas = $areas;
-    }
-
-    public function has(string $area): bool
-    {
-        return in_array($area, $this->areas, true);
-    }
 }

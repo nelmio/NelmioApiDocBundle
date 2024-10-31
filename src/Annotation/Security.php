@@ -11,40 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Annotation;
 
-use OpenApi\Annotations\AbstractAnnotation;
+trigger_deprecation('nelmio/api-doc-bundle', '4.32.3', 'The "%s" class is deprecated and will be removed in 5.0. Use the "\Nelmio\ApiDocBundle\Attribute\Security" attribute instead.', Security::class);
 
 /**
  * @Annotation
  */
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Security extends AbstractAnnotation
+class Security extends \Nelmio\ApiDocBundle\Attribute\Security
 {
-    public static $_types = [
-        'name' => 'string',
-        'scopes' => '[string]',
-    ];
-
-    public static $_required = ['name'];
-
-    public ?string $name;
-
-    /**
-     * @var string[]
-     */
-    public array $scopes = [];
-
-    /**
-     * @param array<string, mixed> $properties
-     * @param string[]             $scopes
-     */
-    public function __construct(
-        array $properties = [],
-        ?string $name = null,
-        array $scopes = []
-    ) {
-        parent::__construct($properties + [
-            'name' => $name,
-            'scopes' => $scopes,
-        ]);
-    }
 }
