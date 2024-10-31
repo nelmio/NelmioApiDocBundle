@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\DiscriminatorMap\JMSAbstractUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSDualComplex;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSEnum;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSNamingStrategyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChat;
@@ -140,6 +141,16 @@ class JMSController
         content: new Model(type: JMSAbstractUser::class))
     ]
     public function discriminatorMapAction()
+    {
+    }
+
+    #[Route('/api/jms_enum_array', methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Success',
+        content: new Model(type: JMSEnum::class))
+    ]
+    public function enumArrayAction()
     {
     }
 }

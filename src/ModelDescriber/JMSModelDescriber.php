@@ -322,9 +322,14 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if ('enum' === $type['name']
                 && isset($type['params'][0])
                 && function_exists('enum_exists')
-                && enum_exists($type['params'][0])
             ) {
-                $type = ['name' => $type['params'][0]];
+                $typeParam = $type['params'][0];
+                if (isset($typeParam['name'])) {
+                    $typeParam = $typeParam['name'];
+                }
+                if (is_string($typeParam) && enum_exists($typeParam)) {
+                    $type['name'] = $typeParam;
+                }
             }
 
             $groups = $this->computeGroups($context, $type);
