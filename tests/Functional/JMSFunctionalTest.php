@@ -372,6 +372,20 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('ArticleType81')->toJson(), true));
 
         self::assertEquals([
+            'schema' => 'ArticleType81',
+            'type' => 'string',
+            'enum' => [
+                'draft',
+                'final'
+            ]
+        ], json_decode($this->getModel('ArticleType81')->toJson(), true));
+
+        if (TestKernel::isAnnotationsAvailable()) {
+            // Further tests have only been defined with attributes
+            return;
+        }
+
+        self::assertEquals([
             'schema' => 'JMSEnum81',
             'type' => 'object',
             'properties' => [
@@ -386,15 +400,6 @@ class JMSFunctionalTest extends WebTestCase
                 ],
             ]
         ], json_decode($this->getModel('JMSEnum81')->toJson(), true));
-
-        self::assertEquals([
-            'schema' => 'ArticleType81',
-            'type' => 'string',
-            'enum' => [
-                'draft',
-                'final'
-            ]
-        ], json_decode($this->getModel('ArticleType81')->toJson(), true));
     }
 
     public function testModeDiscriminatorMap(): void
