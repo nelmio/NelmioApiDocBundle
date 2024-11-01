@@ -41,3 +41,5 @@ nelmio_api_doc:
 ## BC BREAK: Removed `Nelmio\ApiDocBundle\PropertyDescriber\NullablePropertyTrait`
 This class was deprecated since `4.17.0`
 
+## Removed optional 4th param `bool $overwrite = false` from `Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber::__construct()`
+This parameter was deprecated since `4.25.2`

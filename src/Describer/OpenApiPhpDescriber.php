@@ -34,12 +34,8 @@ final class OpenApiPhpDescriber
     private ControllerReflector $controllerReflector;
     private LoggerInterface $logger;
 
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, LoggerInterface $logger, bool $overwrite = false)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, LoggerInterface $logger)
     {
-        if ($overwrite || func_num_args() > 4) {
-            trigger_deprecation('nelmio/api-doc-bundle', '4.25.2', 'The "$overwrite" argument of "%s" is unused and therefore deprecated.', __METHOD__);
-        }
-
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
         $this->logger = $logger;
