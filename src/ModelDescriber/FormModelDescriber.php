@@ -38,7 +38,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     use ModelRegistryAwareTrait;
     use SetsContextTrait;
 
-    private ?FormFactoryInterface $formFactory;
+    private FormFactoryInterface $formFactory;
     private ?Reader $doctrineReader;
 
     /**
@@ -49,23 +49,17 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     private bool $isFormCsrfExtensionEnabled;
 
     /**
-     * @param string[]|null $mediaTypes
+     * @param string[] $mediaTypes
      */
     public function __construct(
-        ?FormFactoryInterface $formFactory = null,
-        ?Reader $reader = null,
-        ?array $mediaTypes = null,
-        bool $useValidationGroups = false,
-        bool $isFormCsrfExtensionEnabled = false
+        FormFactoryInterface $formFactory,
+        ?Reader $reader,
+        array $mediaTypes,
+        bool $useValidationGroups,
+        bool $isFormCsrfExtensionEnabled
     ) {
         $this->formFactory = $formFactory;
         $this->doctrineReader = $reader;
-
-        if (null === $mediaTypes) {
-            $mediaTypes = ['json'];
-
-            trigger_deprecation('nelmio/api-doc-bundle', '4.1', 'Not passing media types to the constructor of %s is deprecated and won\'t be allowed in version 5.', self::class);
-        }
         $this->mediaTypes = $mediaTypes;
         $this->useValidationGroups = $useValidationGroups;
         $this->isFormCsrfExtensionEnabled = $isFormCsrfExtensionEnabled;
@@ -73,10 +67,6 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        if (null === $this->formFactory) {
-            throw new \LogicException('You need to enable forms in your application to use a form as a model.');
-        }
-
         $class = $model->getType()->getClassName();
 
         $annotationsReader = new AnnotationsReader(
