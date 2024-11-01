@@ -41,11 +41,6 @@ parameters:
 			path: src/PropertyDescriber/PropertyDescriberInterface.php
 
 		-
-			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
-			count: 1
-			path: src/PropertyDescriber/RequiredPropertyDescriber.php
-
-		-
 			message: "#^Call to method render\\(\\) on an unknown class Twig_Environment\\.$#"
 			count: 2
 			path: src/Render/Html/HtmlOpenApiRenderer.php
