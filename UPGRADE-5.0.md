@@ -37,3 +37,7 @@ nelmio_api_doc:
 -       with_annotation: true
 +       with_attribute: true
 ```
+
+## BC BREAK: Removed `Nelmio\ApiDocBundle\PropertyDescriber\NullablePropertyTrait`
+This class was deprecated since `4.17.0`
+
