@@ -57,7 +57,7 @@
         "symfony/uid": "^5.4 || ^6.4 || ^7.0",
         "symfony/validator": "^5.4 || ^6.4 || ^7.0",
         "willdurand/hateoas-bundle": "^2.7@beta",
-        "willdurand/hateoas": "^3.11@beta",
+        "willdurand/hateoas": "^3.12@beta",
         "willdurand/negotiation": "^3.0"
     },
     "conflict": {
