@@ -154,13 +154,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
             $property = Util::getProperty($schema, $serializedName);
 
-            // Fix for https://github.com/nelmio/NelmioApiDocBundle/issues/2222
-            // Property default value has to be set before SymfonyConstraintAnnotationReader::processPropertyAnnotations()
-            // is called to prevent wrongly detected required properties
-            if (Generator::UNDEFINED === $property->default && array_key_exists($propertyName, $defaultValues)) {
-                $property->default = $defaultValues[$propertyName];
-            }
-
             // Interpret additional options
             $groups = $model->getGroups();
             if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
@@ -173,6 +166,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             // If type manually defined
             if (Generator::UNDEFINED !== $property->type || Generator::UNDEFINED !== $property->ref) {
                 continue;
+            }
+
+            if (Generator::UNDEFINED === $property->default && array_key_exists($propertyName, $defaultValues)) {
+                $property->default = $defaultValues[$propertyName];
             }
 
             $types = $this->propertyInfo->getTypes($class, $propertyName);
