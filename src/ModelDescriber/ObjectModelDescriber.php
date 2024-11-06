@@ -172,6 +172,18 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 $property->default = $defaultValues[$propertyName];
             }
 
+            if (Generator::UNDEFINED !== $property->default) {
+                // Fix for https://github.com/nelmio/NelmioApiDocBundle/issues/2222
+                // When a default value has been set for the property, we can
+                // remove the field from the required fields.
+                if (is_array($schema->required) && ($key = array_search($propertyName, $schema->required, true)) !== false) {
+                    unset($schema->required[$key]);
+                }
+            }
+            if ([] === $schema->required) {
+                $schema->required = Generator::UNDEFINED;
+            }
+
             $types = $this->propertyInfo->getTypes($class, $propertyName);
             if (null === $types || 0 === count($types)) {
                 throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
