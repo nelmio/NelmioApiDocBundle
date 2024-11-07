@@ -18,30 +18,25 @@ use OpenApi\Generator;
 /**
  * Read default values of a property from the function or property signature.
  *
- * This needs to be called before the SymfonyConstraintAnnotationReader,
+ * This needs to be called before the {@see SymfonyConstraintAnnotationReader},
  * otherwise required properties might be considered wrongly.
  *
  * @internal
  */
-class ReflectionReader
+final class ReflectionReader
 {
     use SetsContextTrait;
 
-    /**
-     * @var OA\Schema
-     */
-    private $schema;
+    private ?OA\Schema $schema;
 
     /**
      * Update the given property and schema with defined Symfony constraints.
      *
      * @param \ReflectionProperty|\ReflectionMethod $reflection
-     * @param string[]|null                         $validationGroups
      */
     public function updateProperty(
         $reflection,
-        OA\Property $property,
-        ?array $validationGroups = null
+        OA\Property $property
     ): void {
         // The default has been set by an Annotation or Attribute
         // We leave that as it is!
