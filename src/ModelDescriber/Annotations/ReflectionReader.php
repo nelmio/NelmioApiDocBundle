@@ -43,9 +43,6 @@ class ReflectionReader
         OA\Property $property,
         ?array $validationGroups = null
     ): void {
-        if (PHP_VERSION_ID < 80000) {
-            return;
-        }
         // The default has been set by an Annotation or Attribute
         // We leave that as it is!
         if (Generator::UNDEFINED !== $property->default) {
@@ -53,7 +50,7 @@ class ReflectionReader
         }
 
         $serializedName = $reflection->getName();
-        foreach (['', 'get', 'is', 'has', 'can', 'add', 'remove', 'set'] as $prefix) {
+        foreach (['get', 'is', 'has', 'can', 'add', 'remove', 'set'] as $prefix) {
             if (0 === strpos($serializedName, $prefix)) {
                 $serializedName = substr($serializedName, strlen($prefix));
             }
@@ -106,7 +103,10 @@ class ReflectionReader
         $this->schema = $schema;
     }
 
-    private function getDefaultFromMethodReflection(\ReflectionMethod $reflection): mixed
+    /**
+     * @return mixed|string
+     */
+    private function getDefaultFromMethodReflection(\ReflectionMethod $reflection)
     {
         if (0 !== strpos($reflection->name, 'set')) {
             return Generator::UNDEFINED;
@@ -129,22 +129,22 @@ class ReflectionReader
         return $param->getDefaultValue();
     }
 
-    public function getDefaultFromPropertyReflection(\ReflectionProperty $reflection): mixed
+    /**
+     * @return mixed|string
+     */
+    public function getDefaultFromPropertyReflection(\ReflectionProperty $reflection)
     {
         $propertyName = $reflection->name;
         if (!$reflection->getDeclaringClass()->hasProperty($propertyName)) {
             return Generator::UNDEFINED;
         }
 
-        $reflectionProp = $reflection->getDeclaringClass()->getProperty($propertyName);
-        if (!$reflectionProp->hasDefaultValue()) {
+        $defaultValue = $reflection->getDeclaringClass()->getDefaultProperties()[$propertyName] ?? null;
+
+        if (null === $defaultValue) {
             return Generator::UNDEFINED;
         }
 
-        if (null === $reflectionProp->getDefaultValue()) {
-            return Generator::UNDEFINED;
-        }
-
-        return $reflectionProp->getDefaultValue();
+        return $defaultValue;
     }
 }
