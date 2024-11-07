@@ -7,7 +7,7 @@
 
 #!/bin/sh
 
-dest=public/swagger-ui/
+dest=../public/swagger-ui/
 
 yarn add --production --no-lockfile swagger-ui-dist
 if [ -d $dest ]; then
