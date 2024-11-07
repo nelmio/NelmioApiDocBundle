@@ -1,0 +1,16 @@
+{
+  "description": "Script utils for nelmio/api-doc-bundle UI",
+  "license": "MIT",
+  "dependencies": {
+    "swagger-ui-dist": "5.18.1"
+  },
+  "scripts": {
+    "swagger": "yarn run swagger:bundle && yarn run swagger:standalone && yarn run swagger:css",
+    "swagger:bundle": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.js* $npm_package_config_destination",
+    "swagger:standalone": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js* $npm_package_config_destination",
+    "swagger:css": "cp node_modules/swagger-ui-dist/swagger-ui.css* $npm_package_config_destination"
+  },
+  "config": {
+    "destination": "../public/swagger-ui"
+  }
+}
