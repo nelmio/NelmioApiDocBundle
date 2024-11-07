@@ -23,6 +23,7 @@ class AnnotationsReader
     private PropertyPhpDocReader $phpDocReader;
     private OpenApiAnnotationsReader $openApiAnnotationsReader;
     private SymfonyConstraintAnnotationReader $symfonyConstraintAnnotationReader;
+    private ReflectionReader $reflectionReader;
 
     /**
      * @param string[] $mediaTypes
@@ -35,12 +36,14 @@ class AnnotationsReader
         $this->phpDocReader = new PropertyPhpDocReader();
         $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($modelRegistry, $mediaTypes);
         $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($useValidationGroups);
+        $this->reflectionReader = new ReflectionReader();
     }
 
     public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema): bool
     {
         $this->openApiAnnotationsReader->updateSchema($reflectionClass, $schema);
         $this->symfonyConstraintAnnotationReader->setSchema($schema);
+        $this->reflectionReader->setSchema($schema);
 
         return $this->shouldDescribeModelProperties($schema);
     }
@@ -61,6 +64,7 @@ class AnnotationsReader
     {
         $this->openApiAnnotationsReader->updateProperty($reflection, $property, $serializationGroups);
         $this->phpDocReader->updateProperty($reflection, $property);
+        $this->reflectionReader->updateProperty($reflection, $property);
         $this->symfonyConstraintAnnotationReader->updateProperty($reflection, $property, $serializationGroups);
     }
 

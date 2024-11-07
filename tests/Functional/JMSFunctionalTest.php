@@ -328,9 +328,9 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'string',
                     'maxLength' => 10,
                     'minLength' => 3,
+                    'default' => 'default'
                 ],
             ],
-            'required' => ['beautifulName'],
             'schema' => 'JMSNamingStrategyConstraints',
         ], json_decode($this->getModel('JMSNamingStrategyConstraints')->toJson(), true));
     }

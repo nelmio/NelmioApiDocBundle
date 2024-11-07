@@ -226,6 +226,7 @@ class FunctionalTest extends WebTestCase
                             '$ref' => '#/components/schemas/User',
                         ],
                         'type' => 'array',
+                        'default' => [],
                     ],
                     'dummy' => [
                         '$ref' => '#/components/schemas/Dummy2',

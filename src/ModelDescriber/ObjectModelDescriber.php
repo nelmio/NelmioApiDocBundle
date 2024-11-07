@@ -120,23 +120,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         // The SerializerExtractor does expose private/protected properties for some reason, so we eliminate them here
         $propertyInfoProperties = array_intersect($propertyInfoProperties, $this->propertyInfo->getProperties($class, []) ?? []);
 
-        $defaultValues = array_filter($reflClass->getDefaultProperties(), static function ($value) {
-            return null !== $value;
-        });
-
-        // Fix for https://github.com/nelmio/NelmioApiDocBundle/issues/2222
-        // Promoted properties with a value initialized by the constructor are not considered to have a default value
-        // and are therefore not returned by ReflectionClass::getDefaultProperties(); see https://bugs.php.net/bug.php?id=81386
-        $reflClassConstructor = $reflClass->getConstructor();
-        $reflClassConstructorParameters = null !== $reflClassConstructor ? $reflClassConstructor->getParameters() : [];
-        foreach ($reflClassConstructorParameters as $parameter) {
-            if (!$parameter->isDefaultValueAvailable()) {
-                continue;
-            }
-
-            $defaultValues[$parameter->name] = $parameter->getDefaultValue();
-        }
-
         foreach ($propertyInfoProperties as $propertyName) {
             $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, $model->getSerializationContext()) : $propertyName;
 
@@ -148,13 +131,6 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             $property = Util::getProperty($schema, $serializedName);
-
-            // Fix for https://github.com/nelmio/NelmioApiDocBundle/issues/2222
-            // Property default value has to be set before SymfonyConstraintAnnotationReader::processPropertyAnnotations()
-            // is called to prevent wrongly detected required properties
-            if (Generator::UNDEFINED === $property->default && array_key_exists($propertyName, $defaultValues)) {
-                $property->default = $defaultValues[$propertyName];
-            }
 
             // Interpret additional options
             $groups = $model->getGroups();
