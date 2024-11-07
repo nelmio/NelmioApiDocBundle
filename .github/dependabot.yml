@@ -10,5 +10,5 @@ updates:
   - package-ecosystem: "npm"
     directory: "/utils"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     versioning-strategy: increase
