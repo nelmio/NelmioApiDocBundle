@@ -1,0 +1,33 @@
+name: Dependabot update UI files
+
+on: pull_request
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./utils
+
+    permissions:
+      contents: write
+
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - run: yarn install
+      - name: Swagger UI
+        run: yarn run swagger
+      - name: Redocly
+        run: yarn run redoc
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "[dependabot-skip] Update UI files"
+          branch: ${{ github.head_ref }}
