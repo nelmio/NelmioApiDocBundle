@@ -1,8 +1,8 @@
 # CHANGELOG
 
 ## 4.33.4
-* Deprecated `null` type from `$options` in `Nelmio\ApiDocBundle\Attribute\Model::_construct()`. Pass an empty array (`[]`) instead.
-* Deprecated `null` type from `$options` in `NNelmio\ApiDocBundle\Attribute\Model::_construct()`. Pass an empty array (`[]`) instead.
+* Deprecated `null` type from `$options` in `Nelmio\ApiDocBundle\Attribute\Model::__construct()`. Pass an empty array (`[]`) instead.
+* Deprecated `null` type from `$options` in `NNelmio\ApiDocBundle\Attribute\Model::__construct()`. Pass an empty array (`[]`) instead.
 
 ## 4.33.3
 * Bumped swagger-ui files from `5.18.1` to `5.18.2`
