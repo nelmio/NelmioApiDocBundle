@@ -1,0 +1,85 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/legacy/null_options": {
+            "post": {
+                "operationId": "post_legacy_null_options",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Article81"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Article81": {
+                "required": [
+                    "id",
+                    "type",
+                    "intBackedType",
+                    "notBackedType"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/ArticleType81"
+                    },
+                    "intBackedType": {
+                        "$ref": "#/components/schemas/ArticleType81IntBacked"
+                    },
+                    "notBackedType": {
+                        "$ref": "#/components/schemas/ArticleType81NotBacked"
+                    },
+                    "nullableType": {
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleType81"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "ArticleType81": {
+                "type": "string",
+                "enum": [
+                    "draft",
+                    "final"
+                ]
+            },
+            "ArticleType81IntBacked": {
+                "type": "integer",
+                "enum": [
+                    0,
+                    1
+                ]
+            },
+            "ArticleType81NotBacked": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
