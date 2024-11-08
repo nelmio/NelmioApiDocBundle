@@ -101,7 +101,6 @@ jobs:
     name: Codecov
     runs-on: ubuntu-22.04
 
-    needs: phpunit
     timeout-minutes: 5
 
     if: github.event.pull_request.user.login != 'dependabot[bot]'
