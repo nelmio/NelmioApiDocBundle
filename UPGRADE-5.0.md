@@ -45,3 +45,5 @@ This class was deprecated since `4.17.0`
 This parameter was deprecated since `4.25.2`
 
 ## BC BREAK: Removed `Nelmio\ApiDocBundle\PropertyDescriber\RequiredPropertyDescriber`
+
+## BC BREAK: Removed `Nelmio\ApiDocBundle\Form\Extension::getExtendedType()`
