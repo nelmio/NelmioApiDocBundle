@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 4.33.4
+* Deprecated `null` type from `$options` in `Nelmio\ApiDocBundle\Attribute\Model::__construct()`. Pass an empty array (`[]`) instead.
+* Deprecated `null` type from `$options` in `NNelmio\ApiDocBundle\Attribute\Model::__construct()`. Pass an empty array (`[]`) instead.
+
+## 4.33.3
+* Bumped swagger-ui files from `5.18.1` to `5.18.2`
+* Bumped redoc files to `2.2.0`
+
+## 4.33.2
+* Fixed incorrect directory updated for swagger-ui files from version `4.33.2`
+
+## 4.33.1
+* Bumped swagger-ui files to `5.18.1`
+* Fixed explicitly set default values defined in `#[OA\Property]` being overwritten
+
+## 4.33.0
+* Fixed custom JMS enum type handling
+* Added support for name based serialisation of JMS enums
+
 ## 4.32.3
 
 * Deprecated `Nelmio\ApiDocBundle\Annotation` namespace in favor of `Nelmio\ApiDocBundle\Attribute` namespace in preparation for 5.x. Consider upgrading to the new attribute syntax.

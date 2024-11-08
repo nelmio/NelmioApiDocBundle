@@ -105,6 +105,13 @@ final class ControllerTest extends WebTestCase
             [__DIR__.'/Configs/JMS.yaml'],
         ];
 
+        yield 'Deprecation null model options' => [
+            [
+                'name' => 'DeprecationController',
+                'type' => $type,
+            ],
+        ];
+
         if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
             yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
                 [

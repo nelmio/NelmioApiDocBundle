@@ -350,7 +350,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $groups = $this->computeGroups($context, $type);
             unset($serializationContext['groups']);
 
-            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups, null, $serializationContext);
+            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups, [], $serializationContext);
             $modelRef = $this->modelRegistry->register($model);
 
             $customFields = (array) $property->jsonSerialize();

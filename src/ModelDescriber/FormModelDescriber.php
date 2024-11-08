@@ -85,7 +85,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
         $this->setContextFromReflection($schema->_context, new \ReflectionClass($class));
 
-        $form = $this->formFactory->create($class, null, $model->getOptions() ?? []);
+        $form = $this->formFactory->create($class, null, $model->getOptions());
         $this->parseForm($schema, $form);
 
         $this->setContext(null);

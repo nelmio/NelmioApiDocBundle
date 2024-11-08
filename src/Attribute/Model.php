@@ -41,9 +41,9 @@ class Model extends Attachable
     public ?array $groups;
 
     /**
-     * @var mixed[]|null
+     * @var mixed[]
      */
-    public ?array $options;
+    public array $options;
 
     /**
      * @var array<string, mixed>
@@ -60,9 +60,14 @@ class Model extends Attachable
         array $properties = [],
         string $type = Generator::UNDEFINED,
         ?array $groups = null,
-        ?array $options = null,
+        ?array $options = [],
         array $serializationContext = []
     ) {
+        if (null === $options) {
+            trigger_deprecation('nelmio/api-doc-bundle', '4.33.4', 'Passing null to the "$options" argument of "%s()" is deprecated, pass an empty array instead.', __METHOD__);
+            $options = [];
+        }
+
         parent::__construct($properties + [
             'type' => $type,
             'groups' => $groups,
