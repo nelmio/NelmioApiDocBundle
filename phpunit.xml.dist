@@ -9,6 +9,7 @@
          failOnRisky="true"
          stopOnFailure="false"
          bootstrap="vendor/autoload.php"
+         displayDetailsOnTestsThatTriggerWarnings="true"
 >
     <php>
         <env name="SHELL_VERBOSITY" value="-1" />

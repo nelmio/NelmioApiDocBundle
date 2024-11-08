@@ -56,13 +56,13 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
         if ($types[0]->isNullable()) {
             $weakContext = Util::createWeakContext($property->_context);
-            $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups, null, $context)), '_context' => $weakContext])];
+            $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups, [], $context)), '_context' => $weakContext])];
             $property->oneOf = $schemas;
 
             return;
         }
 
-        $property->ref = $this->modelRegistry->register(new Model($type, $groups, null, $context));
+        $property->ref = $this->modelRegistry->register(new Model($type, $groups, [], $context));
     }
 
     public function supports(array $types): bool
