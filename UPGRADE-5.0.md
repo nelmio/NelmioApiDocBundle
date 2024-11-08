@@ -47,3 +47,5 @@ This parameter was deprecated since `4.25.2`
 ## BC BREAK: Removed `Nelmio\ApiDocBundle\PropertyDescriber\RequiredPropertyDescriber`
 
 ## BC BREAK: Removed `Nelmio\ApiDocBundle\Form\Extension::getExtendedType()`
+
+## BC BREAK: Removed `null` as a possible type for parameter `$options` in `Nelmio\ApiDocBundle\Model\Model::__construct()` & `Nelmio\ApiDocBundle\Attribute\Model::__construct()`
