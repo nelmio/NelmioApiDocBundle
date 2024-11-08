@@ -29,7 +29,7 @@ final class Model
 
     /**
      * @param string[]|null $groups
-     * @param mixed[]|null  $options
+     * @param mixed[]       $options
      * @param mixed[]       $serializationContext
      */
     public function __construct(Type $type, ?array $groups = null, array $options = [], array $serializationContext = [])
