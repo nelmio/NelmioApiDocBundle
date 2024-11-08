@@ -39,6 +39,8 @@ class ModelRegistryTest extends TestCase
      * @dataProvider provideNameCollisionsTypes
      *
      * @param array<string, mixed> $arrayType
+     *
+     * @group legacy
      */
     public function testNameCollisionsAreLogged(Type $type, array $arrayType): void
     {
@@ -110,6 +112,9 @@ class ModelRegistryTest extends TestCase
         ];
     }
 
+    /**
+     * @group legacy
+     */
     public function testNameCollisionsAreLoggedWithAlternativeNames(): void
     {
         $ref = new \ReflectionClass(self::class);
