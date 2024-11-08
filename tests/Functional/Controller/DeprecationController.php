@@ -22,6 +22,7 @@ class DeprecationController
     #[Route(path: '/legacy/null_options', name: 'legacy_null_options', methods: 'POST')]
     #[OA\Response(
         response: 200,
+        description: 'Legacy null options',
         content: new Model(type: Article81::class, options: null),
     )]
     public function __invoke(Article81 $requestDTO): JsonResponse

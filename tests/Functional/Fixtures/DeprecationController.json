@@ -10,6 +10,7 @@
                 "operationId": "post_legacy_null_options",
                 "responses": {
                     "200": {
+                        "description": "Legacy null options",
                         "content": {
                             "application/json": {
                                 "schema": {
