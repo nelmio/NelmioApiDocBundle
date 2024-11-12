@@ -58,33 +58,6 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
-     * @expectedDeprecation Passing an indexed array with a collection of path patterns as argument 1 for `Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder::__construct()` is deprecated since 3.2.0, expected structure is an array containing parameterized options.
-     */
-    public function testFilterWithDeprecatedArgument(): void
-    {
-        $pathPattern = [
-            '^/api/foo',
-            '^/api/bar',
-        ];
-
-        $routes = new RouteCollection();
-        foreach ($this->getRoutes() as $name => $route) {
-            $routes->add($name, $route);
-        }
-
-        $routeBuilder = new FilteredRouteCollectionBuilder(
-            $this->createControllerReflector(),
-            'areaName',
-            $pathPattern
-        );
-        $filteredRoutes = $routeBuilder->filter($routes);
-
-        self::assertCount(5, $filteredRoutes);
-    }
-
-    /**
      * @param array<string, mixed> $options
      */
     #[DataProvider('getInvalidOptions')]

@@ -25,26 +25,8 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $context = [])
     {
-        if (null === $schema) {
-            trigger_deprecation(
-                'nelmio/api-doc-bundle',
-                '4.15.0',
-                '"%s()" will have a new "OA\Schema $schema" argument in a future version. Not defining it or passing null is deprecated',
-                __METHOD__
-            );
-        }
-
-        if (null !== $groups) {
-            trigger_deprecation(
-                'nelmio/api-doc-bundle',
-                '4.17.0',
-                'Using the $groups parameter of "%s()" is deprecated and will be removed in a future version. Pass groups via $context[\'groups\']',
-                __METHOD__
-            );
-        }
-
         $property->type = 'array';
         /** @var OA\Items $property */
         $property = Util::getChild($property, OA\Items::class);
@@ -52,15 +34,15 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         foreach ($types[0]->getCollectionValueTypes() as $type) {
             // Handle list pseudo type
             // https://symfony.com/doc/current/components/property_info.html#type-getcollectionkeytypes-type-getcollectionvaluetypes
-            if ($this->supports([$type]) && [] === $type->getCollectionValueTypes()) {
+            if ($this->supports([$type], $context) && [] === $type->getCollectionValueTypes()) {
                 continue;
             }
 
-            $this->propertyDescriber->describe([$type], $property, $groups, $schema, $context);
+            $this->propertyDescriber->describe([$type], $property, $context);
         }
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
         if (1 !== count($types) || !$types[0]->isCollection()) {
             return false;

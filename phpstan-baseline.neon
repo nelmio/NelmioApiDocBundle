@@ -6,46 +6,6 @@ parameters:
 			path: src/Describer/ExternalDocDescriber.php
 
 		-
-			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
-			count: 1
-			path: src/PropertyDescriber/ArrayPropertyDescriber.php
-
-		-
-			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
-			count: 1
-			path: src/PropertyDescriber/CompoundPropertyDescriber.php
-
-		-
-			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
-			count: 1
-			path: src/PropertyDescriber/DictionaryPropertyDescriber.php
-
-		-
-			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
-			count: 1
-			path: src/PropertyDescriber/NullablePropertyDescriber.php
-
-		-
-			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
-			count: 1
-			path: src/PropertyDescriber/PropertyDescriber.php
-
-		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$context$#"
-			count: 1
-			path: src/PropertyDescriber/PropertyDescriberInterface.php
-
-		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$schema$#"
-			count: 1
-			path: src/PropertyDescriber/PropertyDescriberInterface.php
-
-		-
-			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
-			count: 1
-			path: src/PropertyDescriber/RequiredPropertyDescriber.php
-
-		-
 			message: "#^Call to method render\\(\\) on an unknown class Twig_Environment\\.$#"
 			count: 2
 			path: src/Render/Html/HtmlOpenApiRenderer.php

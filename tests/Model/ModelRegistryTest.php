@@ -70,7 +70,7 @@ class ModelRegistryTest extends TestCase
         $registry = new ModelRegistry([], $this->createOpenApi(), []);
         $registry->setLogger($logger);
 
-        $registry->register(new Model($type, ['group1'], null, ['extra_context' => true]));
+        $registry->register(new Model($type, ['group1'], [], ['extra_context' => true]));
         $registry->register(new Model($type, ['group2']));
     }
 

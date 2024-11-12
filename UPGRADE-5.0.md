@@ -37,3 +37,38 @@ nelmio_api_doc:
 -       with_annotation: true
 +       with_attribute: true
 ```
+
+## BC BREAK: Removed `Nelmio\ApiDocBundle\PropertyDescriber\NullablePropertyTrait`
+This class was deprecated since `4.17.0`
+
+## Removed optional 4th param `bool $overwrite = false` from `Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber::__construct()`
+This parameter was deprecated since `4.25.2`
+
+## BC BREAK: Removed `Nelmio\ApiDocBundle\PropertyDescriber\RequiredPropertyDescriber`
+
+## BC BREAK: Removed `Nelmio\ApiDocBundle\Form\Extension::getExtendedType()`
+
+## BC BREAK: Removed `null` as a possible type for parameter `$options` in `Nelmio\ApiDocBundle\Model\Model::__construct()` & `Nelmio\ApiDocBundle\Attribute\Model::__construct()`
+
+## BC BREAK: Removed `Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException`
+
+## BC BREAK: Changed type of parameter `$propertyDescriber` in `Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber::__construct()` from `PropertyDescriberInterface|PropertyDescriberInterface[]` to `PropertyDescriberInterface`
+
+## BC BREAK: Removed passing an indexed array with a collection of path patterns as argument 1 for `Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder::__construct()`
+
+## BC BREAK: Updated `PropertyDescriberInterface::describe()` signature
+```diff
+- public function describe(array $types, Schema $property, ?array $groups = null /* , ?Schema $schema = null */ /* , array $context = [] */);
++ public function describe(array $types, Schema $property, array $context = []);
+```
+
+`$groups` are passed in `$context` and can be accessed via `$context['groups']`.
+
+`$schema` has been removed with no replacement.
+
+## BC BREAK: Updated `PropertyDescriberInterface::supports()` signature
+Future proofing for potential future changes and keeping it consistent with `describe()`.
+```diff
+- public function supports(array $types): bool;
++ public function supports(array $types, array $context = []): bool;
+```
