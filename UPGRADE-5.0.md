@@ -53,3 +53,5 @@ This parameter was deprecated since `4.25.2`
 ## BC BREAK: Removed `Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException`
 
 ## BC BREAK: Changed type of parameter `$propertyDescriber` in `Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber::__construct()` from `PropertyDescriberInterface|PropertyDescriberInterface[]` to `PropertyDescriberInterface`
+
+## BC BREAK: Removed passing an indexed array with a collection of path patterns as argument 1 for `Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder::__construct()`

@@ -53,13 +53,6 @@ final class FilteredRouteCollectionBuilder
             ->setAllowedTypes('disable_default_routes', 'boolean')
         ;
 
-        if (array_key_exists(0, $options)) {
-            trigger_deprecation('nelmio/api-doc-bundle', '3.2', 'Passing an indexed array with a collection of path patterns as argument 1 for `%s()` is deprecated since 3.2.0, expected structure is an array containing parameterized options.', __METHOD__);
-
-            $normalizedOptions = ['path_patterns' => $options];
-            $options = $normalizedOptions;
-        }
-
         $this->controllerReflector = $controllerReflector;
         $this->area = $area;
         $this->options = $resolver->resolve($options);
