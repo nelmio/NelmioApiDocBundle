@@ -65,7 +65,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
         $property->ref = $this->modelRegistry->register(new Model($type, $groups, [], $context));
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
         return 1 === count($types)
             && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
