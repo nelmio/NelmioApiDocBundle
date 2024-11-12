@@ -48,10 +48,9 @@ class UuidPropertyDescriberTest extends TestCase
     public function testDescribeUuidPropertyType(): void
     {
         $property = $this->initProperty();
-        $schema = $this->initSchema();
 
         $describer = new UuidPropertyDescriber();
-        $describer->describe([], $property, [], $schema);
+        $describer->describe([], $property, []);
 
         self::assertSame('string', $property->type);
         self::assertSame('uuid', $property->format);
@@ -60,10 +59,5 @@ class UuidPropertyDescriberTest extends TestCase
     private function initProperty(): \OpenApi\Annotations\Property
     {
         return new \OpenApi\Attributes\Property(); // union types, used in schema attribute require PHP >= 8.0.0
-    }
-
-    private function initSchema(): \OpenApi\Annotations\Schema
-    {
-        return new \OpenApi\Attributes\Schema(); // union types, used in schema attribute require PHP >= 8.0.0
     }
 }

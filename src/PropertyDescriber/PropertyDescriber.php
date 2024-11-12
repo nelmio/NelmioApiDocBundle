@@ -40,32 +40,14 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = []): void
+    public function describe(array $types, OA\Schema $property, array $context = []): void
     {
-        if (null === $schema) {
-            trigger_deprecation(
-                'nelmio/api-doc-bundle',
-                '4.15.0',
-                '"%s()" will have a new "OA\Schema $schema" argument in a future version. Not defining it or passing null is deprecated',
-                __METHOD__
-            );
-        }
-
-        if (null !== $groups) {
-            trigger_deprecation(
-                'nelmio/api-doc-bundle',
-                '4.17.0',
-                'Using the $groups parameter of "%s()" is deprecated and will be removed in a future version. Pass groups via $context[\'groups\']',
-                __METHOD__
-            );
-        }
-
         if (null === $propertyDescriber = $this->getPropertyDescriber($types)) {
             return;
         }
 
         $this->called[$this->getHash($types)][] = $propertyDescriber;
-        $propertyDescriber->describe($types, $property, $groups, $schema, $context);
+        $propertyDescriber->describe($types, $property, $context);
         $this->called = []; // Reset recursion helper
     }
 

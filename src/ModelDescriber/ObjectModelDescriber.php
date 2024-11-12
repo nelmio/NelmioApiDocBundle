@@ -141,7 +141,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `#[OA\Property(type="")]` to make its type explicit.', $class, $propertyName));
             }
 
-            $this->describeProperty($types, $model, $property, $propertyName, $schema);
+            $this->describeProperty($types, $model, $property, $propertyName);
         }
 
         $this->markRequiredProperties($schema);
@@ -178,13 +178,13 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     /**
      * @param Type[] $types
      */
-    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema): void
+    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName): void
     {
         if ($this->propertyDescriber instanceof ModelRegistryAwareInterface) {
             $this->propertyDescriber->setModelRegistry($this->modelRegistry);
         }
         if ($this->propertyDescriber->supports($types)) {
-            $this->propertyDescriber->describe($types, $property, $model->getGroups(), $schema, $model->getSerializationContext());
+            $this->propertyDescriber->describe($types, $property, $model->getSerializationContext());
 
             return;
         }

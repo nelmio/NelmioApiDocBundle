@@ -25,26 +25,8 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $context = [])
     {
-        if (null === $schema) {
-            trigger_deprecation(
-                'nelmio/api-doc-bundle',
-                '4.15.0',
-                '"%s()" will have a new "OA\Schema $schema" argument in a future version. Not defining it or passing null is deprecated',
-                __METHOD__
-            );
-        }
-
-        if (null !== $groups) {
-            trigger_deprecation(
-                'nelmio/api-doc-bundle',
-                '4.17.0',
-                'Using the $groups parameter of "%s()" is deprecated and will be removed in a future version. Pass groups via $context[\'groups\']',
-                __METHOD__
-            );
-        }
-
         $type = new Type(
             $types[0]->getBuiltinType(),
             false,
@@ -56,13 +38,13 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
         if ($types[0]->isNullable()) {
             $weakContext = Util::createWeakContext($property->_context);
-            $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups, [], $context)), '_context' => $weakContext])];
+            $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, serializationContext: $context)), '_context' => $weakContext])];
             $property->oneOf = $schemas;
 
             return;
         }
 
-        $property->ref = $this->modelRegistry->register(new Model($type, $groups, [], $context));
+        $property->ref = $this->modelRegistry->register(new Model($type, serializationContext: $context));
     }
 
     public function supports(array $types): bool
