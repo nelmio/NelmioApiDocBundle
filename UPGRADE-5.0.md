@@ -51,3 +51,5 @@ This parameter was deprecated since `4.25.2`
 ## BC BREAK: Removed `null` as a possible type for parameter `$options` in `Nelmio\ApiDocBundle\Model\Model::__construct()` & `Nelmio\ApiDocBundle\Attribute\Model::__construct()`
 
 ## BC BREAK: Removed `Nelmio\ApiDocBundle\Exception\UndocumentedArrayItemsException`
+
+## BC BREAK: Changed type of parameter `$propertyDescriber` in `Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber::__construct()` from `PropertyDescriberInterface|PropertyDescriberInterface[]` to `PropertyDescriberInterface`

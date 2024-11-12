@@ -32,8 +32,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     private PropertyInfoExtractorInterface $propertyInfo;
     private ?ClassMetadataFactoryInterface $classMetadataFactory;
-    /** @var PropertyDescriberInterface|PropertyDescriberInterface[] */
-    private $propertyDescriber;
+    private PropertyDescriberInterface $propertyDescriber;
     /** @var string[] */
     private array $mediaTypes;
     /** @var (NameConverterInterface&AdvancedNameConverterInterface)|null */
@@ -41,26 +40,17 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private bool $useValidationGroups;
 
     /**
-     * @param PropertyDescriberInterface|PropertyDescriberInterface[]      $propertyDescribers
      * @param (NameConverterInterface&AdvancedNameConverterInterface)|null $nameConverter
      * @param string[]                                                     $mediaTypes
      */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        $propertyDescribers,
+        PropertyDescriberInterface $propertyDescribers,
         array $mediaTypes,
         ?NameConverterInterface $nameConverter = null,
         bool $useValidationGroups = false,
         ?ClassMetadataFactoryInterface $classMetadataFactory = null
     ) {
-        if (is_iterable($propertyDescribers)) {
-            trigger_deprecation('nelmio/api-doc-bundle', '4.17', 'Passing an array of PropertyDescriberInterface to %s() is deprecated. Pass a single PropertyDescriberInterface instead.', __METHOD__);
-        } else {
-            if (!$propertyDescribers instanceof PropertyDescriberInterface) {
-                throw new \InvalidArgumentException(sprintf('Argument 3 passed to %s() must be an array of %s or a single %s.', __METHOD__, PropertyDescriberInterface::class, PropertyDescriberInterface::class));
-            }
-        }
-
         $this->propertyInfo = $propertyInfo;
         $this->propertyDescriber = $propertyDescribers;
         $this->mediaTypes = $mediaTypes;
@@ -190,17 +180,13 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
      */
     private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema): void
     {
-        $propertyDescribers = is_iterable($this->propertyDescriber) ? $this->propertyDescriber : [$this->propertyDescriber];
+        if ($this->propertyDescriber instanceof ModelRegistryAwareInterface) {
+            $this->propertyDescriber->setModelRegistry($this->modelRegistry);
+        }
+        if ($this->propertyDescriber->supports($types)) {
+            $this->propertyDescriber->describe($types, $property, $model->getGroups(), $schema, $model->getSerializationContext());
 
-        foreach ($propertyDescribers as $propertyDescriber) {
-            if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
-                $propertyDescriber->setModelRegistry($this->modelRegistry);
-            }
-            if ($propertyDescriber->supports($types)) {
-                $propertyDescriber->describe($types, $property, $model->getGroups(), $schema, $model->getSerializationContext());
-
-                return;
-            }
+            return;
         }
 
         throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `#[OA\Property(type="")]` annotation to specify it manually.', $types[0]->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
