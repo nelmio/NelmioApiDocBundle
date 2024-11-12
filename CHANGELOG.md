@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 4.33.5
+* Added new optional parameter `$context` to` PropertyDescriberInterface::supports()`
+
 ## 4.33.4
 * Deprecated `null` type from `$options` in `Nelmio\ApiDocBundle\Attribute\Model::__construct()`. Pass an empty array (`[]`) instead.
 * Deprecated `null` type from `$options` in `NNelmio\ApiDocBundle\Attribute\Model::__construct()`. Pass an empty array (`[]`) instead.
