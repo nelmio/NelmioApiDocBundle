@@ -26,9 +26,24 @@ parameters:
 			path: src/Describer/ExternalDocDescriber.php
 
 		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\ArrayPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/ArrayPropertyDescriber.php
+
+		-
 			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: src/PropertyDescriber/ArrayPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\BooleanPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/BooleanPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\CompoundPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/CompoundPropertyDescriber.php
 
 		-
 			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
@@ -36,9 +51,34 @@ parameters:
 			path: src/PropertyDescriber/CompoundPropertyDescriber.php
 
 		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\DateTimePropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/DateTimePropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\DictionaryPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/DictionaryPropertyDescriber.php
+
+		-
 			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: src/PropertyDescriber/DictionaryPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\FloatPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/FloatPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\IntegerPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/IntegerPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\NullablePropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/NullablePropertyDescriber.php
 
 		-
 			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
@@ -46,13 +86,28 @@ parameters:
 			path: src/PropertyDescriber/NullablePropertyDescriber.php
 
 		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\ObjectPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/ObjectPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/PropertyDescriber.php
+
+		-
 			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: src/PropertyDescriber/PropertyDescriber.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$context$#"
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:supports\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 1
+			path: src/PropertyDescriber/PropertyDescriber.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$context$#"
+			count: 2
 			path: src/PropertyDescriber/PropertyDescriberInterface.php
 
 		-
@@ -64,6 +119,21 @@ parameters:
 			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: src/PropertyDescriber/RequiredPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\RequiredPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/RequiredPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\StringPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/StringPropertyDescriber.php
+
+		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\UuidPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PropertyDescriber/UuidPropertyDescriber.php
 
 		-
 			message: "#^Call to method render\\(\\) on an unknown class Twig_Environment\\.$#"
