@@ -62,6 +62,13 @@ This parameter was deprecated since `4.25.2`
 + public function describe(array $types, Schema $property, array $context = []);
 ```
 
-`$groups` are now passed in `$context` and can be accessed via `$context['groups']`.
+`$groups` are passed in `$context` and can be accessed via `$context['groups']`.
 
 `$schema` has been removed with no replacement.
+
+## BC BREAK: Updated `PropertyDescriberInterface::supports()` signature
+Future proofing for potential future changes and keeping it consistent with `describe()`.
+```diff
+- public function supports(array $types): bool;
++ public function supports(array $types, array $context = []): bool;
+```

@@ -183,7 +183,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         if ($this->propertyDescriber instanceof ModelRegistryAwareInterface) {
             $this->propertyDescriber->setModelRegistry($this->modelRegistry);
         }
-        if ($this->propertyDescriber->supports($types)) {
+        if ($this->propertyDescriber->supports($types, $model->getSerializationContext())) {
             $this->propertyDescriber->describe($types, $property, $model->getSerializationContext());
 
             return;

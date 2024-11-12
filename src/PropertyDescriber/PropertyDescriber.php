@@ -42,7 +42,7 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
      */
     public function describe(array $types, OA\Schema $property, array $context = []): void
     {
-        if (null === $propertyDescriber = $this->getPropertyDescriber($types)) {
+        if (null === $propertyDescriber = $this->getPropertyDescriber($types, $context)) {
             return;
         }
 
@@ -51,9 +51,9 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
         $this->called = []; // Reset recursion helper
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
-        return null !== $this->getPropertyDescriber($types);
+        return null !== $this->getPropertyDescriber($types, $context);
     }
 
     /**
@@ -65,9 +65,10 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
     }
 
     /**
-     * @param Type[] $types
+     * @param Type[]               $types
+     * @param array<string, mixed> $context
      */
-    private function getPropertyDescriber(array $types): ?PropertyDescriberInterface
+    private function getPropertyDescriber(array $types, array $context): ?PropertyDescriberInterface
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
             /* BC layer for Symfony < 6.3 @see https://symfony.com/doc/6.3/service_container/tags.html#reference-tagged-services */
@@ -90,7 +91,7 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
                 $propertyDescriber->setPropertyDescriber($this);
             }
 
-            if ($propertyDescriber->supports($types)) {
+            if ($propertyDescriber->supports($types, $context)) {
                 return $propertyDescriber;
             }
         }

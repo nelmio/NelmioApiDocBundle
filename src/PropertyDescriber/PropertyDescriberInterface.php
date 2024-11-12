@@ -25,7 +25,8 @@ interface PropertyDescriberInterface
     public function describe(array $types, Schema $property, array $context = []);
 
     /**
-     * @param Type[] $types
+     * @param Type[]               $types
+     * @param array<string, mixed> $context Context options for describing the property
      */
-    public function supports(array $types): bool;
+    public function supports(array $types, array $context = []): bool;
 }
