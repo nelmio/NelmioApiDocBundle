@@ -37,7 +37,7 @@ final class ControllerTest extends WebTestCase
 
     protected function getOpenApiDefinition(string $area = 'default'): OA\OpenApi
     {
-        return $this->configurableContainerFactory->getContainer()->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
+        return $this->configurableContainerFactory->getContainer()->get(\sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }
 
     /**
@@ -179,13 +179,13 @@ final class ControllerTest extends WebTestCase
     private static function getFixture(string $fixture): string
     {
         if (!file_exists($fixture)) {
-            self::fail(sprintf('The fixture file "%s" does not exist.', $fixture));
+            self::fail(\sprintf('The fixture file "%s" does not exist.', $fixture));
         }
 
         $content = file_get_contents($fixture);
 
         if (false === $content) {
-            self::fail(sprintf('Failed to read the fixture file "%s".', $fixture));
+            self::fail(\sprintf('Failed to read the fixture file "%s".', $fixture));
         }
 
         return $content;

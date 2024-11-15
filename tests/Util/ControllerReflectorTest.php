@@ -23,11 +23,11 @@ class ControllerReflectorTest extends TestCase
         $controllerReflector = new ControllerReflector(new Container());
         self::assertEquals(
             \ReflectionMethod::class,
-            get_class($controllerReflector->getReflectionMethod([BazingaController::class, 'userAction']))
+            \get_class($controllerReflector->getReflectionMethod([BazingaController::class, 'userAction']))
         );
         self::assertEquals(
             \ReflectionMethod::class,
-            get_class($controllerReflector->getReflectionMethod(BazingaController::class.'::userAction'))
+            \get_class($controllerReflector->getReflectionMethod(BazingaController::class.'::userAction'))
         );
         self::assertNull(
             $controllerReflector->getReflectionMethod('UnknownController::userAction')

@@ -25,7 +25,7 @@ final class TagDescribersPass implements CompilerPassInterface
             $describer = $container->getDefinition($id);
             foreach ($container->getParameter('nelmio_api_doc.areas') as $area) {
                 foreach ($tags as $tag) {
-                    $describer->addTag(sprintf('nelmio_api_doc.describer.%s', $area), $tag);
+                    $describer->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), $tag);
                 }
             }
         }

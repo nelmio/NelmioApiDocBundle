@@ -27,8 +27,8 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
-    use ModelRegistryAwareTrait;
     use ApplyOpenApiDiscriminatorTrait;
+    use ModelRegistryAwareTrait;
 
     private PropertyInfoExtractorInterface $propertyInfo;
     private ?ClassMetadataFactoryInterface $classMetadataFactory;
@@ -124,7 +124,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
             // Interpret additional options
             $groups = $model->getGroups();
-            if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
+            if (isset($groups[$propertyName]) && \is_array($groups[$propertyName])) {
                 $groups = $model->getGroups()[$propertyName];
             }
             foreach ($reflections as $reflection) {
@@ -137,8 +137,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             $types = $this->propertyInfo->getTypes($class, $propertyName);
-            if (null === $types || 0 === count($types)) {
-                throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `#[OA\Property(type="")]` to make its type explicit.', $class, $propertyName));
+            if (null === $types || 0 === \count($types)) {
+                throw new \LogicException(\sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `#[OA\Property(type="")]` to make its type explicit.', $class, $propertyName));
             }
 
             $this->describeProperty($types, $model, $property, $propertyName);
@@ -189,7 +189,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             return;
         }
 
-        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `#[OA\Property(type="")]` annotation to specify it manually.', $types[0]->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
+        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may use the `#[OA\Property(type="")]` annotation to specify it manually.', $types[0]->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
     }
 
     /**
@@ -204,7 +204,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
         $newRequired = [];
         foreach ($properties as $property) {
-            if (is_array($schema->required) && \in_array($property->property, $schema->required, true)) {
+            if (\is_array($schema->required) && \in_array($property->property, $schema->required, true)) {
                 $newRequired[] = $property->property;
                 continue;
             }

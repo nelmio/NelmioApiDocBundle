@@ -37,9 +37,9 @@ class DumpCommandTest extends WebTestCase
 
     public static function provideJsonMode(): \Generator
     {
-        yield 'pretty print' => [[], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES];
+        yield 'pretty print' => [[], \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES];
 
-        yield 'one line' => [['--no-pretty'], 0 | JSON_UNESCAPED_SLASHES];
+        yield 'one line' => [['--no-pretty'], 0 | \JSON_UNESCAPED_SLASHES];
     }
 
     public function testYaml(): void

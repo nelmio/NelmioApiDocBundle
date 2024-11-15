@@ -72,7 +72,7 @@ final class FosRestDescriber implements RouteDescriberInterface
                         $schema = Util::getProperty($contentSchema, $parameterName);
 
                         if (!$attribute->nullable && $attribute->strict) {
-                            $requiredParameters = is_array($contentSchema->required) ? $contentSchema->required : [];
+                            $requiredParameters = \is_array($contentSchema->required) ? $contentSchema->required : [];
                             $requiredParameters[] = $parameterName;
 
                             $contentSchema->required = array_values(array_unique($requiredParameters));
@@ -89,11 +89,11 @@ final class FosRestDescriber implements RouteDescriberInterface
      */
     private function getPattern($requirements): ?string
     {
-        if (is_array($requirements) && isset($requirements['rule'])) {
+        if (\is_array($requirements) && isset($requirements['rule'])) {
             return (string) $requirements['rule'];
         }
 
-        if (is_string($requirements)) {
+        if (\is_string($requirements)) {
             return $requirements;
         }
 

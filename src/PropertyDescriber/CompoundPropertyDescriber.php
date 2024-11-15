@@ -38,6 +38,6 @@ final class CompoundPropertyDescriber implements PropertyDescriberInterface, Mod
 
     public function supports(array $types, array $context = []): bool
     {
-        return count($types) >= 2;
+        return \count($types) >= 2;
     }
 }

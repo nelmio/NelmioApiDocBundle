@@ -148,7 +148,7 @@ class SymfonyConstraintAnnotationReader
             return;
         }
         if (Generator::UNDEFINED !== $property->pattern) {
-            $property->pattern = sprintf('%s, %s', $property->pattern, $newPattern);
+            $property->pattern = \sprintf('%s, %s', $property->pattern, $newPattern);
         } else {
             $property->pattern = $newPattern;
         }
@@ -160,7 +160,7 @@ class SymfonyConstraintAnnotationReader
     private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection): void
     {
         if (null !== $choice->callback) {
-            $enumValues = call_user_func(is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);
+            $enumValues = \call_user_func(\is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);
         } else {
             $enumValues = $choice->choices;
         }

@@ -219,7 +219,7 @@ class TestKernel extends Kernel
             'html_config' => [
                 'assets_mode' => AssetsMode::BUNDLE,
             ],
-            'use_validation_groups' => boolval(self::USE_VALIDATION_GROUPS === $this->flag),
+            'use_validation_groups' => self::USE_VALIDATION_GROUPS === $this->flag,
             'documentation' => [
                 'info' => [
                     'title' => 'My Default App',

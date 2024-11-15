@@ -60,7 +60,7 @@ final class ModelRegister
 
             // Misusage of ::$ref
             if (($annotation instanceof OA\Response || $annotation instanceof OA\RequestBody) && $annotation->ref instanceof ModelAnnotation) {
-                throw new \InvalidArgumentException(sprintf('Using #[Model] inside #[%s::$ref] is not allowed. You should use ::$ref with #[Property], #[Parameter], #[Schema], #[Items] but within #[Response] or #[RequestBody} You should use ::$content : `#[Response(..., content: new Model())]`.', get_class($annotation)));
+                throw new \InvalidArgumentException(\sprintf('Using #[Model] inside #[%s::$ref] is not allowed. You should use ::$ref with #[Property], #[Parameter], #[Schema], #[Items] but within #[Response] or #[RequestBody} You should use ::$content : `#[Response(..., content: new Model())]`.', $annotation::class));
             }
 
             // Implicit usages
@@ -88,7 +88,7 @@ final class ModelRegister
             }
 
             if (!$annotation instanceof OA\Parameter) {
-                throw new \InvalidArgumentException(sprintf("#[Model] attribute can't be nested with an attribute of type @%s.", get_class($annotation)));
+                throw new \InvalidArgumentException(\sprintf("#[Model] attribute can't be nested with an attribute of type @%s.", $annotation::class));
             }
 
             if ($annotation->schema instanceof OA\Schema && 'array' === $annotation->schema->type) {
@@ -176,7 +176,7 @@ final class ModelRegister
 
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf("#[Model] attribute is not compatible with the media types '%s'. It must be one of 'json' or 'xml'.", implode(',', $this->mediaTypes)));
+                throw new \InvalidArgumentException(\sprintf("#[Model] attribute is not compatible with the media types '%s'. It must be one of 'json' or 'xml'.", implode(',', $this->mediaTypes)));
         }
 
         $annotation->merge([$modelAnnotation]);

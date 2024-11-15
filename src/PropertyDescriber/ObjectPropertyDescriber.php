@@ -49,7 +49,7 @@ final class ObjectPropertyDescriber implements PropertyDescriberInterface, Model
 
     public function supports(array $types, array $context = []): bool
     {
-        return 1 === count($types)
+        return 1 === \count($types)
             && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
     }
 }

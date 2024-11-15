@@ -82,7 +82,7 @@ final class Util
         // Tags ar not considered indexed, so we cannot use getIndexedCollectionItem directly
         // because we need to specify that the search should use the "name" property.
         $key = self::searchIndexedCollectionItem(
-            is_array($api->tags) ? $api->tags : [],
+            \is_array($api->tags) ? $api->tags : [],
             'name',
             $name
         );
@@ -139,7 +139,7 @@ final class Util
      */
     public static function getOperation(OA\PathItem $path, string $method): OA\Operation
     {
-        $class = array_keys($path::$_nested, \strtolower($method), true)[0];
+        $class = array_keys($path::$_nested, strtolower($method), true)[0];
 
         if (!is_a($class, OA\Operation::class, true)) {
             throw new \InvalidArgumentException('Invalid operation class provided.');
@@ -417,10 +417,10 @@ final class Util
     {
         if (\is_array($from)) {
             self::mergeFromArray($annotation, $from, $overwrite);
-        } elseif (\is_a($from, OA\AbstractAnnotation::class)) {
+        } elseif (is_a($from, OA\AbstractAnnotation::class)) {
             /* @var OA\AbstractAnnotation $from */
             self::mergeFromArray($annotation, json_decode(json_encode($from), true), $overwrite);
-        } elseif (\is_a($from, \ArrayObject::class)) {
+        } elseif (is_a($from, \ArrayObject::class)) {
             /* @var \ArrayObject $from */
             self::mergeFromArray($annotation, $from->getArrayCopy(), $overwrite);
         }
@@ -451,12 +451,12 @@ final class Util
     {
         $done = [];
 
-        $defaults = \get_class_vars(\get_class($annotation));
+        $defaults = get_class_vars($annotation::class);
 
         foreach ($annotation::$_nested as $className => $propertyName) {
             if (\is_string($propertyName)) {
-                if (array_key_exists($propertyName, $properties)) {
-                    if (!is_bool($properties[$propertyName])) {
+                if (\array_key_exists($propertyName, $properties)) {
+                    if (!\is_bool($properties[$propertyName])) {
                         self::mergeChild($annotation, $className, $properties[$propertyName], $overwrite);
                     } elseif ($overwrite || $annotation->{$propertyName} === $defaults[$propertyName]) {
                         // Support for boolean values (for instance for additionalProperties)
@@ -473,7 +473,7 @@ final class Util
         }
 
         foreach ($annotation::$_types as $propertyName => $type) {
-            if (array_key_exists($propertyName, $properties)) {
+            if (\array_key_exists($propertyName, $properties)) {
                 self::mergeTyped($annotation, $propertyName, $type, $properties, $defaults, $overwrite);
                 $done[] = $propertyName;
             }
@@ -496,7 +496,7 @@ final class Util
                 $propertyName = 'ref';
             }
 
-            if (array_key_exists($propertyName, $defaults) && !\in_array($propertyName, $done, true)) {
+            if (\array_key_exists($propertyName, $defaults) && !\in_array($propertyName, $done, true)) {
                 self::mergeProperty($annotation, $propertyName, $value, $defaults[$propertyName], $overwrite);
             }
         }
@@ -550,7 +550,7 @@ final class Util
      */
     private static function mergeTyped(OA\AbstractAnnotation $annotation, string $propertyName, $type, array $properties, array $defaults, bool $overwrite): void
     {
-        if (\is_string($type) && 0 === strpos($type, '[')) {
+        if (\is_string($type) && str_starts_with($type, '[')) {
             $innerType = substr($type, 1, -1);
 
             if (!$annotation->{$propertyName} || Generator::UNDEFINED === $annotation->{$propertyName}) {

@@ -27,6 +27,6 @@ final class FloatPropertyDescriber implements PropertyDescriberInterface
 
     public function supports(array $types, array $context = []): bool
     {
-        return 1 === count($types) && Type::BUILTIN_TYPE_FLOAT === $types[0]->getBuiltinType();
+        return 1 === \count($types) && Type::BUILTIN_TYPE_FLOAT === $types[0]->getBuiltinType();
     }
 }

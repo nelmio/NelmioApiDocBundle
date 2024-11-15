@@ -36,9 +36,9 @@ final class DictionaryPropertyDescriber implements PropertyDescriberInterface, M
 
     public function supports(array $types, array $context = []): bool
     {
-        return 1 === count($types)
+        return 1 === \count($types)
             && $types[0]->isCollection()
-            && 1 === count($types[0]->getCollectionKeyTypes())
+            && 1 === \count($types[0]->getCollectionKeyTypes())
             && Type::BUILTIN_TYPE_STRING === $types[0]->getCollectionKeyTypes()[0]->getBuiltinType();
     }
 }

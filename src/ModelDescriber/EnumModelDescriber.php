@@ -40,7 +40,7 @@ class EnumModelDescriber implements ModelDescriberInterface
 
     public function supports(Model $model): bool
     {
-        if (!function_exists('enum_exists')) {
+        if (!\function_exists('enum_exists')) {
             return false;
         }
 

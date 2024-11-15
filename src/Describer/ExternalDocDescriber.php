@@ -46,8 +46,8 @@ class ExternalDocDescriber implements DescriberInterface
      */
     private function getExternalDoc(): mixed
     {
-        if (is_callable($this->externalDoc)) {
-            return call_user_func($this->externalDoc);
+        if (\is_callable($this->externalDoc)) {
+            return \call_user_func($this->externalDoc);
         }
 
         return $this->externalDoc;

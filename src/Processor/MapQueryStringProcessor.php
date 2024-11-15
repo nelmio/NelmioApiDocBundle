@@ -39,8 +39,8 @@ final class MapQueryStringProcessor
             }
 
             $mapQueryStringContexts = $operation->_context->{SymfonyMapQueryStringDescriber::CONTEXT_KEY};
-            if (!is_array($mapQueryStringContexts)) {
-                throw new \LogicException(sprintf('MapQueryString contexts not found for operation "%s"', $operation->operationId));
+            if (!\is_array($mapQueryStringContexts)) {
+                throw new \LogicException(\sprintf('MapQueryString contexts not found for operation "%s"', $operation->operationId));
             }
 
             foreach ($mapQueryStringContexts as $mapQueryStringContext) {
@@ -56,12 +56,12 @@ final class MapQueryStringProcessor
     {
         $argumentMetaData = $mapQueryStringContext[SymfonyMapQueryStringDescriber::CONTEXT_ARGUMENT_METADATA];
         if (!$argumentMetaData instanceof ArgumentMetadata) {
-            throw new \LogicException(sprintf('MapQueryString ArgumentMetaData not found for operation "%s"', $operation->operationId));
+            throw new \LogicException(\sprintf('MapQueryString ArgumentMetaData not found for operation "%s"', $operation->operationId));
         }
 
         $modelRef = $mapQueryStringContext[SymfonyMapQueryStringDescriber::CONTEXT_MODEL_REF];
         if (!isset($modelRef)) {
-            throw new \LogicException(sprintf('MapQueryString Model reference not found for operation "%s"', $operation->operationId));
+            throw new \LogicException(\sprintf('MapQueryString Model reference not found for operation "%s"', $operation->operationId));
         }
 
         $nativeModelName = str_replace(OA\Components::SCHEMA_REF, '', $modelRef);
@@ -97,7 +97,7 @@ final class MapQueryStringProcessor
 
             if ($isModelOptional) {
                 Util::modifyAnnotationValue($operationParameter, 'required', false);
-            } elseif (is_array($schemaModel->required) && in_array($property->property, $schemaModel->required, true)) {
+            } elseif (\is_array($schemaModel->required) && \in_array($property->property, $schemaModel->required, true)) {
                 Util::modifyAnnotationValue($operationParameter, 'required', true);
             } else {
                 Util::modifyAnnotationValue($operationParameter, 'required', false);

@@ -50,6 +50,6 @@ class VirtualProperty
             return 'Success';
         }
 
-        throw new \LogicException(sprintf('%s::__call does not implement this function.', __CLASS__));
+        throw new \LogicException(\sprintf('%s::__call does not implement this function.', __CLASS__));
     }
 }

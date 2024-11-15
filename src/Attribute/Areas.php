@@ -22,7 +22,7 @@ final class Areas
      */
     public function __construct(array $properties)
     {
-        if (!array_key_exists('value', $properties) || !is_array($properties['value'])) {
+        if (!\array_key_exists('value', $properties) || !\is_array($properties['value'])) {
             $properties['value'] = array_values($properties);
         }
 
@@ -32,11 +32,11 @@ final class Areas
 
         $areas = [];
         foreach ($properties['value'] as $area) {
-            if (!is_string($area)) {
+            if (!\is_string($area)) {
                 throw new \InvalidArgumentException('An area must be given as a string');
             }
 
-            if (!in_array($area, $areas, true)) {
+            if (!\in_array($area, $areas, true)) {
                 $areas[] = $area;
             }
         }
@@ -46,6 +46,6 @@ final class Areas
 
     public function has(string $area): bool
     {
-        return in_array($area, $this->areas, true);
+        return \in_array($area, $this->areas, true);
     }
 }

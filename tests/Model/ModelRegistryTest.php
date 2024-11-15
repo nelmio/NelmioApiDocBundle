@@ -235,7 +235,7 @@ class ModelRegistryTest extends TestCase
     public function testUnsupportedTypeException(Type $type, string $stringType): void
     {
         $this->expectException('\LogicException');
-        $this->expectExceptionMessage(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $stringType));
+        $this->expectExceptionMessage(\sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $stringType));
 
         $registry = new ModelRegistry([], $this->createOpenApi());
         $registry->register(new Model($type));
@@ -254,7 +254,7 @@ class ModelRegistryTest extends TestCase
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, $className);
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage(sprintf('Schema of type "\%s" can\'t be generated, no describer supports it. Class "\Some\Class\That\DoesNotExist" does not exist, did you forget a use statement, or typed it wrong?', $className));
+        $this->expectExceptionMessage(\sprintf('Schema of type "\%s" can\'t be generated, no describer supports it. Class "\Some\Class\That\DoesNotExist" does not exist, did you forget a use statement, or typed it wrong?', $className));
 
         $registry = new ModelRegistry([], $this->createOpenApi());
         $registry->register(new Model($type));
