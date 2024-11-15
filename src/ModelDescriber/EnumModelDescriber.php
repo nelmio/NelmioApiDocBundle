@@ -19,7 +19,7 @@ class EnumModelDescriber implements ModelDescriberInterface
 {
     public const FORCE_NAMES = '_nelmio_enum_force_names';
 
-    public function describe(Model $model, Schema $schema)
+    public function describe(Model $model, Schema $schema): void
     {
         $enumClass = $model->getType()->getClassName();
         $forceName = isset($model->getSerializationContext()[self::FORCE_NAMES]) && true === $model->getSerializationContext()[self::FORCE_NAMES];

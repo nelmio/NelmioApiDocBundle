@@ -15,8 +15,5 @@ use OpenApi\Annotations\OpenApi;
 
 interface DescriberInterface
 {
-    /**
-     * @return void
-     */
-    public function describe(OpenApi $api);
+    public function describe(OpenApi $api): void;
 }

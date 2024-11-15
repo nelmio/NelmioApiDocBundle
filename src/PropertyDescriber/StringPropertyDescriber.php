@@ -19,7 +19,7 @@ final class StringPropertyDescriber implements PropertyDescriberInterface
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $context = []): void
     {
         $property->type = 'string';
     }

@@ -80,10 +80,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $this->contextFactory = $contextFactory;
     }
 
-    /**
-     * @return void
-     */
-    public function describe(Model $model, OA\Schema $schema)
+    public function describe(Model $model, OA\Schema $schema): void
     {
         $className = $model->getType()->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
