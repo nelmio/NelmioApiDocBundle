@@ -26,18 +26,13 @@ use Symfony\Component\PropertyInfo\Type;
  */
 final class ModelRegister
 {
-    private ModelRegistry $modelRegistry;
-
-    /** @var string[] */
-    private array $mediaTypes;
-
     /**
      * @param string[] $mediaTypes
      */
-    public function __construct(ModelRegistry $modelRegistry, array $mediaTypes)
-    {
-        $this->modelRegistry = $modelRegistry;
-        $this->mediaTypes = $mediaTypes;
+    public function __construct(
+        private ModelRegistry $modelRegistry,
+        private array $mediaTypes,
+    ) {
     }
 
     /**

@@ -30,15 +30,11 @@ final class OpenApiPhpDescriber
 {
     use SetsContextTrait;
 
-    private RouteCollection $routeCollection;
-    private ControllerReflector $controllerReflector;
-    private LoggerInterface $logger;
-
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, LoggerInterface $logger)
-    {
-        $this->routeCollection = $routeCollection;
-        $this->controllerReflector = $controllerReflector;
-        $this->logger = $logger;
+    public function __construct(
+        private RouteCollection $routeCollection,
+        private ControllerReflector $controllerReflector,
+        private LoggerInterface $logger,
+    ) {
     }
 
     public function describe(OA\OpenApi $api): void

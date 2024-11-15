@@ -23,21 +23,14 @@ class Security extends AbstractAnnotation
 
     public static $_required = ['name'];
 
-    public ?string $name;
-
-    /**
-     * @var string[]
-     */
-    public array $scopes = [];
-
     /**
      * @param array<string, mixed> $properties
      * @param string[]             $scopes
      */
     public function __construct(
         array $properties = [],
-        ?string $name = null,
-        array $scopes = [],
+        public ?string $name = null,
+        public array $scopes = [],
     ) {
         parent::__construct($properties + [
             'name' => $name,

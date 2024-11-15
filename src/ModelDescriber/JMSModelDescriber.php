@@ -35,12 +35,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     use ApplyOpenApiDiscriminatorTrait;
     use ModelRegistryAwareTrait;
 
-    private MetadataFactoryInterface $factory;
-
-    private ?SerializationContextFactoryInterface $contextFactory;
-
-    private ?PropertyNamingStrategyInterface $namingStrategy;
-
     /**
      * @var array<string, Context>
      */
@@ -52,32 +46,20 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
     private array $metadataStacks = [];
 
     /**
-     * @var string[]
-     */
-    private array $mediaTypes;
-
-    /**
      * @var array<string, bool|null>
      */
     private array $propertyTypeUseGroupsCache = [];
-
-    private bool $useValidationGroups;
 
     /**
      * @param string[] $mediaTypes
      */
     public function __construct(
-        MetadataFactoryInterface $factory,
-        array $mediaTypes,
-        ?PropertyNamingStrategyInterface $namingStrategy = null,
-        bool $useValidationGroups = false,
-        ?SerializationContextFactoryInterface $contextFactory = null,
+        private MetadataFactoryInterface $factory,
+        private array $mediaTypes,
+        private ?PropertyNamingStrategyInterface $namingStrategy = null,
+        private bool $useValidationGroups = false,
+        private ?SerializationContextFactoryInterface $contextFactory = null,
     ) {
-        $this->factory = $factory;
-        $this->namingStrategy = $namingStrategy;
-        $this->mediaTypes = $mediaTypes;
-        $this->useValidationGroups = $useValidationGroups;
-        $this->contextFactory = $contextFactory;
     }
 
     public function describe(Model $model, OA\Schema $schema): void

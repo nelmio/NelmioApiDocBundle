@@ -30,14 +30,6 @@ final class ApiDocGenerator
     /** @var OpenApi */
     private $openApi;
 
-    /** @var iterable|DescriberInterface[] */
-    private $describers;
-
-    /** @var iterable|ModelDescriberInterface[] */
-    private $modelDescribers;
-
-    private ?CacheItemPoolInterface $cacheItemPool;
-
     private string $cacheItemId;
 
     /** @var string[] */
@@ -53,14 +45,16 @@ final class ApiDocGenerator
     private Generator $generator;
 
     /**
-     * @param DescriberInterface[]|iterable      $describers
-     * @param ModelDescriberInterface[]|iterable $modelDescribers
+     * @param iterable<DescriberInterface>      $describers
+     * @param iterable<ModelDescriberInterface> $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, ?CacheItemPoolInterface $cacheItemPool = null, ?string $cacheItemId = null, ?Generator $generator = null)
-    {
-        $this->describers = $describers;
-        $this->modelDescribers = $modelDescribers;
-        $this->cacheItemPool = $cacheItemPool;
+    public function __construct(
+        private iterable $describers,
+        private iterable $modelDescribers,
+        private ?CacheItemPoolInterface $cacheItemPool = null,
+        ?string $cacheItemId = null,
+        ?Generator $generator = null,
+    ) {
         $this->cacheItemId = $cacheItemId ?? 'openapi_doc';
         $this->generator = $generator ?? new Generator($this->logger);
     }

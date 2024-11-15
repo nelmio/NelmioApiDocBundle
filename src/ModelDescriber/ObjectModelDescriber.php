@@ -30,33 +30,18 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     use ApplyOpenApiDiscriminatorTrait;
     use ModelRegistryAwareTrait;
 
-    private PropertyInfoExtractorInterface $propertyInfo;
-    private ?ClassMetadataFactoryInterface $classMetadataFactory;
-    private PropertyDescriberInterface $propertyDescriber;
-    /** @var string[] */
-    private array $mediaTypes;
-    /** @var (NameConverterInterface&AdvancedNameConverterInterface)|null */
-    private ?NameConverterInterface $nameConverter;
-    private bool $useValidationGroups;
-
     /**
      * @param (NameConverterInterface&AdvancedNameConverterInterface)|null $nameConverter
      * @param string[]                                                     $mediaTypes
      */
     public function __construct(
-        PropertyInfoExtractorInterface $propertyInfo,
-        PropertyDescriberInterface $propertyDescribers,
-        array $mediaTypes,
-        ?NameConverterInterface $nameConverter = null,
-        bool $useValidationGroups = false,
-        ?ClassMetadataFactoryInterface $classMetadataFactory = null,
+        private PropertyInfoExtractorInterface $propertyInfo,
+        private PropertyDescriberInterface $propertyDescriber,
+        private array $mediaTypes,
+        private ?NameConverterInterface $nameConverter = null,
+        private bool $useValidationGroups = false,
+        private ?ClassMetadataFactoryInterface $classMetadataFactory = null,
     ) {
-        $this->propertyInfo = $propertyInfo;
-        $this->propertyDescriber = $propertyDescribers;
-        $this->mediaTypes = $mediaTypes;
-        $this->nameConverter = $nameConverter;
-        $this->useValidationGroups = $useValidationGroups;
-        $this->classMetadataFactory = $classMetadataFactory;
     }
 
     public function describe(Model $model, OA\Schema $schema): void

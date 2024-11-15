@@ -20,13 +20,12 @@ use Twig\TwigFunction;
  */
 class GetNelmioAsset extends AbstractExtension
 {
-    private AssetExtension $assetExtension;
     private string $resourcesDir;
     private string $cdnUrl;
 
-    public function __construct(AssetExtension $assetExtension)
+    public function __construct(
+        private AssetExtension $assetExtension)
     {
-        $this->assetExtension = $assetExtension;
         $this->cdnUrl = 'https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/public';
         $this->resourcesDir = __DIR__.'/../../../public';
     }
