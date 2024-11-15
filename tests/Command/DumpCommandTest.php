@@ -49,10 +49,10 @@ class DumpCommandTest extends WebTestCase
             '--server-url' => 'http://example.com/api',
         ]);
         $expectedYaml = <<<YAML
-servers:
-  -
-    url: 'http://example.com/api'
-YAML;
+            servers:
+              -
+                url: 'http://example.com/api'
+            YAML;
         self::assertStringContainsString($expectedYaml, $output);
     }
 
