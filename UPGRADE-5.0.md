@@ -95,3 +95,19 @@ Future proofing for potential future changes and keeping it consistent with `des
 - `Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait::setModelRegistry()`
 - `Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface::describe()`
 - `Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface::describe()`
+
+## BC BREAK: `Nelmio\ApiDocBundle\Attribute\Area::__construct()` `$properties`been changed:
+- `$properties` is has been renamed to `$areas`
+```diff
+-#[Areas(properties: ['foo', 'bar'])]
++#[Areas(areas: ['foo', 'bar'])]
+```
+- `$properties` is no longer allows an array key `values` with a list of strings, pass a list of string instead
+```diff
+-/** @param string[]|array{value: string[]} $properties */
+-#[Areas(properties: ['values' => ['foo', 'bar']])]
+-[Areas(['values' => ['foo', 'bar']])]
++/** @param string[] $areas */
++#[Areas(areas: ['foo', 'bar'])]
++#[Areas(['foo', 'bar'])]
+```

@@ -14,34 +14,17 @@ namespace Nelmio\ApiDocBundle\Attribute;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 final class Areas
 {
-    /** @var string[] */
-    private array $areas;
-
     /**
-     * @param string[]|array{value: string[]} $properties
+     * @param string[] $areas
      */
-    public function __construct(array $properties)
-    {
-        if (!\array_key_exists('value', $properties) || !\is_array($properties['value'])) {
-            $properties['value'] = array_values($properties);
-        }
-
-        if ([] === $properties['value']) {
-            throw new \InvalidArgumentException('An array of areas was expected');
-        }
-
-        $areas = [];
-        foreach ($properties['value'] as $area) {
+    public function __construct(
+        private array $areas
+    ) {
+        foreach ($areas as $area) {
             if (!\is_string($area)) {
                 throw new \InvalidArgumentException('An area must be given as a string');
             }
-
-            if (!\in_array($area, $areas, true)) {
-                $areas[] = $area;
-            }
         }
-
-        $this->areas = $areas;
     }
 
     public function has(string $area): bool
