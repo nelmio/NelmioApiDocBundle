@@ -20,14 +20,16 @@ class MapRequestPayloadArray
     #[Route('/article_map_request_payload_array', methods: ['POST'])]
     #[OA\Response(response: '200', description: '')]
     public function createArticleFromMapRequestPayloadArray(
-        #[MapRequestPayload(type: Article81::class)] array $articles,
+        #[MapRequestPayload(type: Article81::class)]
+        array $articles,
     ) {
     }
 
     #[Route('/article_map_request_payload_nullable_array', methods: ['POST'])]
     #[OA\Response(response: '200', description: '')]
     public function createArticleFromMapRequestPayloadNullableArray(
-        #[MapRequestPayload(type: Article81::class)] ?array $nullableArticles,
+        #[MapRequestPayload(type: Article81::class)]
+        ?array $nullableArticles,
     ) {
     }
 }

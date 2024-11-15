@@ -27,21 +27,24 @@ class MapQueryStringController
     #[Route('/article_map_query_string', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryString(
-        #[MapQueryString] SymfonyMapQueryString $article81Query,
+        #[MapQueryString]
+        SymfonyMapQueryString $article81Query,
     ) {
     }
 
     #[Route('/article_map_query_string_nullable', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryStringNullable(
-        #[MapQueryString] ?SymfonyMapQueryString $article81Query,
+        #[MapQueryString]
+        ?SymfonyMapQueryString $article81Query,
     ) {
     }
 
     #[Route('/article_map_query_string_passes_validation_groups', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryStringHandlesValidationGroups(
-        #[MapQueryString(validationGroups: ['test'])] SymfonyConstraintsWithValidationGroups $symfonyConstraintsWithValidationGroups,
+        #[MapQueryString(validationGroups: ['test'])]
+        SymfonyConstraintsWithValidationGroups $symfonyConstraintsWithValidationGroups,
     ) {
     }
 
@@ -74,27 +77,36 @@ class MapQueryStringController
     )]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryStringOverwriteParameters(
-        #[MapQueryString] SymfonyMapQueryString $article81Query,
+        #[MapQueryString]
+        SymfonyMapQueryString $article81Query,
     ) {
     }
 
     #[Route('/article_map_query_string_many_parameters', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleWithManyParameters(
-        #[MapQueryString] FilterQueryModel $filterQuery,
-        #[MapQueryString] PaginationQueryModel $paginationQuery,
-        #[MapQueryString] SortQueryModel $sortQuery,
-        #[MapQueryString] ArrayQueryModel $arrayQuery,
+        #[MapQueryString]
+        FilterQueryModel $filterQuery,
+        #[MapQueryString]
+        PaginationQueryModel $paginationQuery,
+        #[MapQueryString]
+        SortQueryModel $sortQuery,
+        #[MapQueryString]
+        ArrayQueryModel $arrayQuery,
     ) {
     }
 
     #[Route('/article_map_query_string_many_parameters_optional')]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleWithManyOptionalParameters(
-        #[MapQueryString] ?FilterQueryModel $filterQuery,
-        #[MapQueryString] ?PaginationQueryModel $paginationQuery,
-        #[MapQueryString] ?SortQueryModel $sortQuery,
-        #[MapQueryString] ?ArrayQueryModel $arrayQuery,
+        #[MapQueryString]
+        ?FilterQueryModel $filterQuery,
+        #[MapQueryString]
+        ?PaginationQueryModel $paginationQuery,
+        #[MapQueryString]
+        ?SortQueryModel $sortQuery,
+        #[MapQueryString]
+        ?ArrayQueryModel $arrayQuery,
     ) {
     }
 }
