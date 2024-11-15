@@ -72,3 +72,5 @@ Future proofing for potential future changes and keeping it consistent with `des
 - public function supports(array $types): bool;
 + public function supports(array $types, array $context = []): bool;
 ```
+
+## BC BREAK: `Nelmio\ApiDocBundle\Command` has been made final
