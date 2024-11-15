@@ -47,7 +47,8 @@ class ModelRegistryTest extends TestCase
             ->expects(self::once())
             ->method('info')
             ->with(
-                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.', [
+                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.',
+                [
                     'model' => [
                         'type' => $arrayType,
                         'options' => [],
@@ -65,7 +66,8 @@ class ModelRegistryTest extends TestCase
                             'extra_context' => true,
                         ],
                     ],
-                ]);
+                ]
+            );
 
         $registry = new ModelRegistry([], $this->createOpenApi(), []);
         $registry->setLogger($logger);
@@ -124,7 +126,8 @@ class ModelRegistryTest extends TestCase
             ->expects(self::once())
             ->method('info')
             ->with(
-                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.', [
+                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.',
+                [
                     'model' => [
                         'type' => [
                             'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
@@ -151,7 +154,8 @@ class ModelRegistryTest extends TestCase
                         'groups' => ['group1'],
                         'serialization_context' => ['groups' => ['group1']],
                     ],
-                ]);
+                ]
+            );
 
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $registry->setLogger($logger);
