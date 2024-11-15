@@ -244,7 +244,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         Route $route,
         \ReflectionMethod $reflectionMethod,
         array $options,
-        int $expectedRoutesCount
+        int $expectedRoutesCount,
     ): void {
         $routes = new RouteCollection();
         $routes->add($name, $route);

@@ -41,7 +41,7 @@ trait ApplyOpenApiDiscriminatorTrait
         OA\Schema $schema,
         ModelRegistry $modelRegistry,
         string $discriminatorProperty,
-        array $typeMap
+        array $typeMap,
     ): void {
         $weakContext = Util::createWeakContext($schema->_context);
 

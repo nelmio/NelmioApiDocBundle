@@ -27,14 +27,14 @@ class MapQueryStringController
     #[Route('/article_map_query_string', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryString(
-        #[MapQueryString] SymfonyMapQueryString $article81Query
+        #[MapQueryString] SymfonyMapQueryString $article81Query,
     ) {
     }
 
     #[Route('/article_map_query_string_nullable', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryStringNullable(
-        #[MapQueryString] ?SymfonyMapQueryString $article81Query
+        #[MapQueryString] ?SymfonyMapQueryString $article81Query,
     ) {
     }
 
@@ -74,7 +74,7 @@ class MapQueryStringController
     )]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryStringOverwriteParameters(
-        #[MapQueryString] SymfonyMapQueryString $article81Query
+        #[MapQueryString] SymfonyMapQueryString $article81Query,
     ) {
     }
 

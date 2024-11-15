@@ -328,7 +328,7 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'string',
                     'maxLength' => 10,
                     'minLength' => 3,
-                    'default' => 'default'
+                    'default' => 'default',
                 ],
             ],
             'schema' => 'JMSNamingStrategyConstraints',
@@ -376,8 +376,8 @@ class JMSFunctionalTest extends WebTestCase
             'type' => 'string',
             'enum' => [
                 'draft',
-                'final'
-            ]
+                'final',
+            ],
         ], json_decode($this->getModel('ArticleType81')->toJson(), true));
 
         if (TestKernel::isAnnotationsAvailable()) {
@@ -390,8 +390,8 @@ class JMSFunctionalTest extends WebTestCase
             'type' => 'string',
             'enum' => [
                 'DRAFT',
-                'FINAL'
-            ]
+                'FINAL',
+            ],
         ], json_decode($this->getModel('ArticleType812')->toJson(), true));
 
         self::assertEquals([
@@ -399,24 +399,24 @@ class JMSFunctionalTest extends WebTestCase
             'type' => 'object',
             'properties' => [
                 'enum_value' => [
-                    '$ref' => '#/components/schemas/ArticleType81'
+                    '$ref' => '#/components/schemas/ArticleType81',
                 ],
                 'enum_values' => [
                     'type' => 'array',
                     'items' => [
-                        '$ref' => '#/components/schemas/ArticleType81'
-                    ]
+                        '$ref' => '#/components/schemas/ArticleType81',
+                    ],
                 ],
                 'enum_name' => [
-                    '$ref' => '#/components/schemas/ArticleType812'
+                    '$ref' => '#/components/schemas/ArticleType812',
                 ],
                 'enum_names' => [
                     'type' => 'array',
                     'items' => [
-                        '$ref' => '#/components/schemas/ArticleType812'
-                    ]
+                        '$ref' => '#/components/schemas/ArticleType812',
+                    ],
                 ],
-            ]
+            ],
         ], json_decode($this->getModel('JMSEnum')->toJson(), true));
     }
 

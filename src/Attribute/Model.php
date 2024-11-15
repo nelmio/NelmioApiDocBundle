@@ -58,7 +58,7 @@ final class Model extends Attachable
         string $type = Generator::UNDEFINED,
         ?array $groups = null,
         array $options = [],
-        array $serializationContext = []
+        array $serializationContext = [],
     ) {
         parent::__construct($properties + [
             'type' => $type,

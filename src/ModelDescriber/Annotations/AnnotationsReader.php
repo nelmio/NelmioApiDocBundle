@@ -31,7 +31,7 @@ class AnnotationsReader
     public function __construct(
         ModelRegistry $modelRegistry,
         array $mediaTypes,
-        bool $useValidationGroups = false
+        bool $useValidationGroups = false,
     ) {
         $this->phpDocReader = new PropertyPhpDocReader();
         $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($modelRegistry, $mediaTypes);

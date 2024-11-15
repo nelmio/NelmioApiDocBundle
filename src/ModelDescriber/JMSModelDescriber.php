@@ -71,7 +71,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         array $mediaTypes,
         ?PropertyNamingStrategyInterface $namingStrategy = null,
         bool $useValidationGroups = false,
-        ?SerializationContextFactoryInterface $contextFactory = null
+        ?SerializationContextFactoryInterface $contextFactory = null,
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
