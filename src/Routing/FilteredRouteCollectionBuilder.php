@@ -35,7 +35,7 @@ final class FilteredRouteCollectionBuilder
     public function __construct(
         ControllerReflector $controllerReflector,
         string $area,
-        array $options = []
+        array $options = [],
     ) {
         $resolver = new OptionsResolver();
         $resolver

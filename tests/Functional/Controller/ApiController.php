@@ -465,7 +465,7 @@ class ApiController
     #[Route('/inline_path_parameters')]
     #[OA\Response(response: '200', description: '')]
     public function inlinePathParameters(
-        #[OA\PathParameter] string $product_id
+        #[OA\PathParameter] string $product_id,
     ) {
     }
 

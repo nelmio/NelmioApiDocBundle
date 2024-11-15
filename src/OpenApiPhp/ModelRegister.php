@@ -164,7 +164,7 @@ final class ModelRegister
         string $type,
         array $properties,
         OA\AbstractAnnotation $annotation,
-        Analysis $analysis
+        Analysis $analysis,
     ): void {
         switch ($type) {
             case 'json':

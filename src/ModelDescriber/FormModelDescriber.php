@@ -53,7 +53,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         FormFactoryInterface $formFactory,
         array $mediaTypes,
         bool $useValidationGroups,
-        bool $isFormCsrfExtensionEnabled
+        bool $isFormCsrfExtensionEnabled,
     ) {
         $this->formFactory = $formFactory;
         $this->mediaTypes = $mediaTypes;

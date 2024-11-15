@@ -32,7 +32,7 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
      * @param iterable<PropertyDescriberInterface> $propertyDescribers
      */
     public function __construct(
-        iterable $propertyDescribers
+        iterable $propertyDescribers,
     ) {
         $this->propertyDescribers = $propertyDescribers;
     }

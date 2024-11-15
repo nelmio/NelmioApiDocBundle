@@ -49,7 +49,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         array $mediaTypes,
         ?NameConverterInterface $nameConverter = null,
         bool $useValidationGroups = false,
-        ?ClassMetadataFactoryInterface $classMetadataFactory = null
+        ?ClassMetadataFactoryInterface $classMetadataFactory = null,
     ) {
         $this->propertyInfo = $propertyInfo;
         $this->propertyDescriber = $propertyDescribers;

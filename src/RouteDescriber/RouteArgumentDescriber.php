@@ -30,7 +30,7 @@ final class RouteArgumentDescriber implements RouteDescriberInterface, ModelRegi
      */
     public function __construct(
         private ArgumentMetadataFactoryInterface $argumentMetadataFactory,
-        private iterable $inlineParameterDescribers
+        private iterable $inlineParameterDescribers,
     ) {
     }
 

@@ -36,7 +36,7 @@ final class ReflectionReader
      */
     public function updateProperty(
         $reflection,
-        OA\Property $property
+        OA\Property $property,
     ): void {
         // The default has been set by an Annotation or Attribute
         // We leave that as it is!
