@@ -20,21 +20,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class DumpCommand extends Command
 {
-    private RenderOpenApi $renderOpenApi;
-
     /**
      * @var mixed[]
      */
-    private $defaultHtmlConfig = [
+    private array $defaultHtmlConfig = [
         'assets_mode' => AssetsMode::CDN,
         'swagger_ui_config' => [],
         'redocly_config' => [],
     ];
 
-    public function __construct(RenderOpenApi $renderOpenApi)
-    {
-        $this->renderOpenApi = $renderOpenApi;
-
+    public function __construct(
+        private RenderOpenApi $renderOpenApi,
+    ) {
         parent::__construct();
     }
 

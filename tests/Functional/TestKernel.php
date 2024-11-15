@@ -45,13 +45,10 @@ class TestKernel extends Kernel
     public const USE_VALIDATION_GROUPS = 8;
     public const USE_FORM_CSRF = 16;
 
-    private int $flag;
-
-    public function __construct(int $flag = 0)
-    {
+    public function __construct(
+        private int $flag = 0,
+    ) {
         parent::__construct('test'.$flag, true);
-
-        $this->flag = $flag;
     }
 
     public function registerBundles(): iterable

@@ -20,23 +20,14 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
 {
     use ModelRegistryAwareTrait;
 
-    private RouteCollection $routeCollection;
-
-    private ControllerReflector $controllerReflector;
-
     /**
-     * @var iterable<RouteDescriberInterface>
+     * @param iterable<RouteDescriberInterface> $routeDescribers
      */
-    private iterable $routeDescribers;
-
-    /**
-     * @param RouteDescriberInterface[]|iterable $routeDescribers
-     */
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, $routeDescribers)
-    {
-        $this->routeCollection = $routeCollection;
-        $this->controllerReflector = $controllerReflector;
-        $this->routeDescribers = $routeDescribers;
+    public function __construct(
+        private RouteCollection $routeCollection,
+        private ControllerReflector $controllerReflector,
+        private iterable $routeDescribers,
+    ) {
     }
 
     public function describe(OA\OpenApi $api): void

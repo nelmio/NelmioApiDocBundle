@@ -18,11 +18,9 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class YamlDocumentationController
 {
-    private RenderOpenApi $renderOpenApi;
-
-    public function __construct(RenderOpenApi $renderOpenApi)
-    {
-        $this->renderOpenApi = $renderOpenApi;
+    public function __construct(
+        private RenderOpenApi $renderOpenApi,
+    ) {
     }
 
     public function __invoke(Request $request, string $area = 'default'): Response

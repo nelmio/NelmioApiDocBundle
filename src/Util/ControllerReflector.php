@@ -18,15 +18,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ControllerReflector
 {
-    private ContainerInterface $container;
     /**
      * @var array<string, array{string, string}|null>
      */
     private array $controllers = [];
 
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        private ContainerInterface $container,
+    ) {
     }
 
     /**

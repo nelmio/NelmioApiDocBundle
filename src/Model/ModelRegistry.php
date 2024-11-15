@@ -49,22 +49,16 @@ final class ModelRegistry
     private array $names = [];
 
     /**
-     * @var iterable<ModelDescriberInterface>
-     */
-    private iterable $modelDescribers;
-
-    private OA\OpenApi $api;
-
-    /**
-     * @param ModelDescriberInterface[]|iterable $modelDescribers
-     * @param array<string, mixed>               $alternativeNames
+     * @param iterable<ModelDescriberInterface> $modelDescribers
+     * @param array<string, mixed>              $alternativeNames
      *
      * @internal
      */
-    public function __construct($modelDescribers, OA\OpenApi $api, array $alternativeNames = [])
+    public function __construct(
+        private iterable $modelDescribers,
+        private OA\OpenApi $api,
+        array $alternativeNames = [])
     {
-        $this->modelDescribers = $modelDescribers;
-        $this->api = $api;
         $this->logger = new NullLogger();
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
             $this->alternativeNames[] = $model = new Model(

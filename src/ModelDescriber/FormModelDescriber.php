@@ -37,28 +37,15 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     use ModelRegistryAwareTrait;
     use SetsContextTrait;
 
-    private FormFactoryInterface $formFactory;
-
-    /**
-     * @var string[]
-     */
-    private array $mediaTypes;
-    private bool $useValidationGroups;
-    private bool $isFormCsrfExtensionEnabled;
-
     /**
      * @param string[] $mediaTypes
      */
     public function __construct(
-        FormFactoryInterface $formFactory,
-        array $mediaTypes,
-        bool $useValidationGroups,
-        bool $isFormCsrfExtensionEnabled,
+        private FormFactoryInterface $formFactory,
+        private array $mediaTypes,
+        private bool $useValidationGroups,
+        private bool $isFormCsrfExtensionEnabled,
     ) {
-        $this->formFactory = $formFactory;
-        $this->mediaTypes = $mediaTypes;
-        $this->useValidationGroups = $useValidationGroups;
-        $this->isFormCsrfExtensionEnabled = $isFormCsrfExtensionEnabled;
     }
 
     public function describe(Model $model, OA\Schema $schema): void

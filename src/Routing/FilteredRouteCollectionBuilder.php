@@ -20,10 +20,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 final class FilteredRouteCollectionBuilder
 {
-    private ControllerReflector $controllerReflector;
-
-    private string $area;
-
     /**
      * @var array<string, mixed>
      */
@@ -33,8 +29,8 @@ final class FilteredRouteCollectionBuilder
      * @param array<mixed> $options
      */
     public function __construct(
-        ControllerReflector $controllerReflector,
-        string $area,
+        private ControllerReflector $controllerReflector,
+        private string $area,
         array $options = [],
     ) {
         $resolver = new OptionsResolver();
@@ -53,8 +49,6 @@ final class FilteredRouteCollectionBuilder
             ->setAllowedTypes('disable_default_routes', 'boolean')
         ;
 
-        $this->controllerReflector = $controllerReflector;
-        $this->area = $area;
         $this->options = $resolver->resolve($options);
     }
 

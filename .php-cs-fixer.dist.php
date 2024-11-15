@@ -10,9 +10,9 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
+        '@PHP84Migration' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        '@PHP84Migration' => true,
         'header_comment' => [
             'header' => <<<HEADER
 This file is part of the NelmioApiDocBundle package.

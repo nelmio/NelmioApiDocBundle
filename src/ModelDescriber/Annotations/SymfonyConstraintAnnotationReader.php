@@ -26,16 +26,11 @@ class SymfonyConstraintAnnotationReader
 {
     use SetsContextTrait;
 
-    /**
-     * @var OA\Schema
-     */
-    private $schema;
+    private OA\Schema $schema;
 
-    private bool $useValidationGroups;
-
-    public function __construct(bool $useValidationGroups = false)
-    {
-        $this->useValidationGroups = $useValidationGroups;
+    public function __construct(
+        private bool $useValidationGroups = false,
+    ) {
     }
 
     /**
@@ -65,11 +60,6 @@ class SymfonyConstraintAnnotationReader
             if ($attribute instanceof Assert\NotBlank || $attribute instanceof Assert\NotNull) {
                 if ($attribute instanceof Assert\NotBlank && $attribute->allowNull) {
                     // The field is optional
-                    return;
-                }
-
-                // The field is required
-                if (null === $this->schema) {
                     return;
                 }
 
