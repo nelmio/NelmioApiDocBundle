@@ -252,7 +252,7 @@ final class Util
      *
      * @see OA\AbstractAnnotation::$_nested
      */
-    public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, string $class, $value): OA\AbstractAnnotation
+    public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, string $class, mixed $value): OA\AbstractAnnotation
     {
         $nested = $parent::$_nested;
         [$collection, $property] = $nested[$class];
@@ -302,7 +302,7 @@ final class Util
      *
      * @return false|int|string
      */
-    public static function searchIndexedCollectionItem(array $collection, string $member, $value)
+    public static function searchIndexedCollectionItem(array $collection, string $member, mixed $value)
     {
         foreach ($collection as $i => $child) {
             if ($child->{$member} === $value) {
@@ -508,7 +508,7 @@ final class Util
      * @param class-string<T> $className
      * @param mixed           $value     The value of the property
      */
-    private static function mergeChild(OA\AbstractAnnotation $annotation, string $className, $value, bool $overwrite): void
+    private static function mergeChild(OA\AbstractAnnotation $annotation, string $className, mixed $value, bool $overwrite): void
     {
         self::merge(self::getChild($annotation, $className), $value, $overwrite);
     }
