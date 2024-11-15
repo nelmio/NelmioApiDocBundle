@@ -10,6 +10,7 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
+        '@PHP84Migration' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
         'header_comment' => [
