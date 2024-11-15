@@ -27,7 +27,7 @@ final class DateTimePropertyDescriber implements PropertyDescriberInterface
 
     public function supports(array $types, array $context = []): bool
     {
-        return 1 === count($types)
+        return 1 === \count($types)
             && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType()
             && is_a($types[0]->getClassName(), \DateTimeInterface::class, true);
     }

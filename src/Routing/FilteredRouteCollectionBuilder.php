@@ -83,7 +83,7 @@ final class FilteredRouteCollectionBuilder
             }
         }
 
-        return 0 === count($this->options['path_patterns']);
+        return 0 === \count($this->options['path_patterns']);
     }
 
     private function matchHost(Route $route): bool
@@ -94,7 +94,7 @@ final class FilteredRouteCollectionBuilder
             }
         }
 
-        return 0 === count($this->options['host_patterns']);
+        return 0 === \count($this->options['host_patterns']);
     }
 
     private function matchName(string $name): bool
@@ -105,7 +105,7 @@ final class FilteredRouteCollectionBuilder
             }
         }
 
-        return 0 === count($this->options['name_patterns']);
+        return 0 === \count($this->options['name_patterns']);
     }
 
     private function matchAnnotation(Route $route): bool
@@ -146,9 +146,9 @@ final class FilteredRouteCollectionBuilder
         }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF));
 
         foreach ($annotations as $annotation) {
-            if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Attribute')
-                || false !== strpos(get_class($annotation), 'OpenApi\\Annotations')
-                || false !== strpos(get_class($annotation), 'OpenApi\\Attributes')
+            if (str_contains($annotation::class, 'Nelmio\\ApiDocBundle\\Attribute')
+                || str_contains($annotation::class, 'OpenApi\\Annotations')
+                || str_contains($annotation::class, 'OpenApi\\Attributes')
             ) {
                 return true;
             }

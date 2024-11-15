@@ -84,58 +84,58 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
             return [];
         }
 
-        if (FILTER_VALIDATE_BOOLEAN === $filter) {
+        if (\FILTER_VALIDATE_BOOLEAN === $filter) {
             return ['type' => 'boolean'];
         }
 
-        if (FILTER_VALIDATE_DOMAIN === $filter) {
+        if (\FILTER_VALIDATE_DOMAIN === $filter) {
             return ['type' => 'string', 'format' => 'hostname'];
         }
 
-        if (FILTER_VALIDATE_EMAIL === $filter) {
+        if (\FILTER_VALIDATE_EMAIL === $filter) {
             return ['type' => 'string', 'format' => 'email'];
         }
 
-        if (FILTER_VALIDATE_FLOAT === $filter) {
+        if (\FILTER_VALIDATE_FLOAT === $filter) {
             return ['type' => 'number', 'format' => 'float'];
         }
 
-        if (FILTER_VALIDATE_INT === $filter) {
+        if (\FILTER_VALIDATE_INT === $filter) {
             $props = [];
-            if (array_key_exists('min_range', $options)) {
+            if (\array_key_exists('min_range', $options)) {
                 $props['minimum'] = $options['min_range'];
             }
 
-            if (array_key_exists('max_range', $options)) {
+            if (\array_key_exists('max_range', $options)) {
                 $props['maximum'] = $options['max_range'];
             }
 
             return ['type' => 'integer', ...$props];
         }
 
-        if (FILTER_VALIDATE_IP === $filter) {
+        if (\FILTER_VALIDATE_IP === $filter) {
             $format = match ($flags) {
-                FILTER_FLAG_IPV4 => 'ipv4',
-                FILTER_FLAG_IPV6 => 'ipv6',
+                \FILTER_FLAG_IPV4 => 'ipv4',
+                \FILTER_FLAG_IPV6 => 'ipv6',
                 default => 'ip',
             };
 
             return ['type' => 'string', 'format' => $format];
         }
 
-        if (FILTER_VALIDATE_MAC === $filter) {
+        if (\FILTER_VALIDATE_MAC === $filter) {
             return ['type' => 'string', 'format' => 'mac'];
         }
 
-        if (FILTER_VALIDATE_REGEXP === $filter) {
+        if (\FILTER_VALIDATE_REGEXP === $filter) {
             return ['type' => 'string', 'pattern' => $options['regexp']];
         }
 
-        if (FILTER_VALIDATE_URL === $filter) {
+        if (\FILTER_VALIDATE_URL === $filter) {
             return ['type' => 'string', 'format' => 'uri'];
         }
 
-        if (FILTER_DEFAULT === $filter) {
+        if (\FILTER_DEFAULT === $filter) {
             return ['type' => 'string'];
         }
 

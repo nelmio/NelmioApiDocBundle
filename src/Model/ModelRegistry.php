@@ -102,7 +102,7 @@ final class ModelRegistry
      */
     public function registerSchemas(): void
     {
-        while (count($this->unregistered)) {
+        while (\count($this->unregistered)) {
             $tmp = [];
             foreach ($this->unregistered as $hash) {
                 $tmp[$this->names[$hash]] = $this->models[$hash];
@@ -124,9 +124,9 @@ final class ModelRegistry
                 }
 
                 if (null === $schema) {
-                    $errorMessage = sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType()));
+                    $errorMessage = \sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType()));
                     if (Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType() && !class_exists($className = $model->getType()->getClassName())) {
-                        $errorMessage .= sprintf(' Class "\\%s" does not exist, did you forget a use statement, or typed it wrong?', $className);
+                        $errorMessage .= \sprintf(' Class "\\%s" does not exist, did you forget a use statement, or typed it wrong?', $className);
                     }
                     throw new \LogicException($errorMessage);
                 }
@@ -146,13 +146,13 @@ final class ModelRegistry
     {
         $name = $base = $this->getTypeShortName($model->getType());
         $names = array_column(
-            $this->api->components instanceof OA\Components && is_array($this->api->components->schemas) ? $this->api->components->schemas : [],
+            $this->api->components instanceof OA\Components && \is_array($this->api->components->schemas) ? $this->api->components->schemas : [],
             'schema'
         );
         $i = 1;
         while (\in_array($name, $names, true)) {
             if (isset($this->registeredModelNames[$name])) {
-                $this->logger->info(sprintf('Can not assign a name for the model, the name "%s" has already been taken.', $name), [
+                $this->logger->info(\sprintf('Can not assign a name for the model, the name "%s" has already been taken.', $name), [
                     'model' => $this->modelToArray($model),
                     'taken_by' => $this->modelToArray($this->registeredModelNames[$name]),
                 ]);

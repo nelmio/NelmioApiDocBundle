@@ -99,7 +99,7 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public static function provideAssertChoiceResultsInNumericArray(): \Generator
     {
-        define('TEST_ASSERT_CHOICE_STATUSES', [
+        \define('TEST_ASSERT_CHOICE_STATUSES', [
             1 => 'active',
             2 => 'blocked',
         ]);

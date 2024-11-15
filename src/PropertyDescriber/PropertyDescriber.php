@@ -77,8 +77,8 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
             }
 
             // Prevent infinite recursion
-            if (key_exists($this->getHash($types), $this->called)) {
-                if (in_array($propertyDescriber, $this->called[$this->getHash($types)], true)) {
+            if (\array_key_exists($this->getHash($types), $this->called)) {
+                if (\in_array($propertyDescriber, $this->called[$this->getHash($types)], true)) {
                     continue;
                 }
             }

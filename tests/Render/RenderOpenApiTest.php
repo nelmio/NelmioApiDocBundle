@@ -34,14 +34,14 @@ class RenderOpenApiTest extends TestCase
     public function testUnknownFormat(): void
     {
         $availableOpenApiRenderers = [];
-        $this->expectExceptionObject(new \InvalidArgumentException(sprintf('Format "%s" is not supported.', self::FORMAT)));
+        $this->expectExceptionObject(new \InvalidArgumentException(\sprintf('Format "%s" is not supported.', self::FORMAT)));
         $this->renderOpenApi(...$availableOpenApiRenderers);
     }
 
     public function testUnknownArea(): void
     {
         $this->hasArea = false;
-        $this->expectExceptionObject(new \InvalidArgumentException(sprintf('Area "%s" is not supported.', self::AREA)));
+        $this->expectExceptionObject(new \InvalidArgumentException(\sprintf('Area "%s" is not supported.', self::AREA)));
         $this->renderOpenApi();
     }
 

@@ -32,8 +32,8 @@ use Symfony\Component\PropertyInfo\Type;
  */
 class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
-    use ModelRegistryAwareTrait;
     use ApplyOpenApiDiscriminatorTrait;
+    use ModelRegistryAwareTrait;
 
     private MetadataFactoryInterface $factory;
 
@@ -85,7 +85,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $className = $model->getType()->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
         if (!$metadata instanceof ClassMetadata) {
-            throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
+            throw new \InvalidArgumentException(\sprintf('No metadata found for class %s.', $className));
         }
 
         if (null !== $metadata->discriminatorFieldName
@@ -133,7 +133,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $reflections = [];
             if (true === $isJmsV1 && property_exists($item, 'reflection') && null !== $item->reflection) {
                 $reflections[] = $item->reflection;
-            } elseif (\property_exists($item->class, $item->name)) {
+            } elseif (property_exists($item->class, $item->name)) {
                 $reflections[] = new \ReflectionProperty($item->class, $item->name);
             }
 
@@ -154,7 +154,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
             if (true === $item->inline && isset($item->type['name'])) {
                 // currently array types can not be documented :-/
-                if (!in_array($item->type['name'], ['array', 'ArrayCollection'], true)) {
+                if (!\in_array($item->type['name'], ['array', 'ArrayCollection'], true)) {
                     $inlineModel = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $item->type['name']), $groups);
                     $this->describe($inlineModel, $schema);
                 }
@@ -304,11 +304,11 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $property->additionalProperties = true;
         } elseif ('string' === $type['name']) {
             $property->type = 'string';
-        } elseif (in_array($type['name'], ['bool', 'boolean'], true)) {
+        } elseif (\in_array($type['name'], ['bool', 'boolean'], true)) {
             $property->type = 'boolean';
-        } elseif (in_array($type['name'], ['int', 'integer'], true)) {
+        } elseif (\in_array($type['name'], ['int', 'integer'], true)) {
             $property->type = 'integer';
-        } elseif (in_array($type['name'], ['double', 'float'], true)) {
+        } elseif (\in_array($type['name'], ['double', 'float'], true)) {
             $property->type = 'number';
             $property->format = $type['name'];
         } elseif (is_a($type['name'], \DateTimeInterface::class, true)) {
@@ -318,13 +318,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             // See https://github.com/schmittjoh/serializer/blob/5a5a03a/src/Metadata/Driver/EnumPropertiesDriver.php#L51
             if ('enum' === $type['name']
                 && isset($type['params'][0])
-                && function_exists('enum_exists')
+                && \function_exists('enum_exists')
             ) {
                 $typeParam = $type['params'][0];
                 if (isset($typeParam['name'])) {
                     $typeParam = $typeParam['name'];
                 }
-                if (is_string($typeParam) && enum_exists($typeParam)) {
+                if (\is_string($typeParam) && enum_exists($typeParam)) {
                     $type['name'] = $typeParam;
                 }
 
@@ -385,7 +385,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      */
     private function propertyTypeUsesGroups(array $type): ?bool
     {
-        if (array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
+        if (\array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
             return $this->propertyTypeUseGroupsCache[$type['name']];
         }
 

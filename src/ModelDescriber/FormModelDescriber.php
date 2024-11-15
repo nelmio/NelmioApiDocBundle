@@ -149,7 +149,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         if (null === $builtinFormType = $this->getBuiltinFormType($type)) {
             // if form type is not builtin in Form component.
             $model = new Model(
-                new Type(Type::BUILTIN_TYPE_OBJECT, false, get_class($type->getInnerType())),
+                new Type(Type::BUILTIN_TYPE_OBJECT, false, \get_class($type->getInnerType())),
                 null,
                 $config->getOptions()
             );
@@ -273,12 +273,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $entityClass = $config->getOption('class');
 
                 if (true === $config->getOption('multiple')) {
-                    $property->format = sprintf('[%s id]', $entityClass);
+                    $property->format = \sprintf('[%s id]', $entityClass);
                     $property->type = 'array';
                     $property->items = Util::createChild($property, OA\Items::class, ['type' => 'string']);
                 } else {
                     $property->type = 'string';
-                    $property->format = sprintf('%s id', $entityClass);
+                    $property->format = \sprintf('%s id', $entityClass);
                 }
 
                 break;
@@ -310,7 +310,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     private function isBooleansArray(array $array): bool
     {
         foreach ($array as $item) {
-            if (!is_bool($item)) {
+            if (!\is_bool($item)) {
                 return false;
             }
         }
@@ -321,7 +321,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     private function getBuiltinFormType(ResolvedFormTypeInterface $type): ?ResolvedFormTypeInterface
     {
         do {
-            $class = get_class($type->getInnerType());
+            $class = \get_class($type->getInnerType());
 
             if (FormType::class === $class) {
                 return null;
@@ -331,7 +331,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 return $type;
             }
 
-            if (0 === strpos($class, 'Symfony\Component\Form\Extension\Core\Type\\')) {
+            if (str_starts_with($class, 'Symfony\Component\Form\Extension\Core\Type\\')) {
                 return $type;
             }
         } while ($type = $type->getParent());

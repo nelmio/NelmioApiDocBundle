@@ -46,8 +46,8 @@ final class ReflectionReader
 
         $serializedName = $reflection->getName();
         foreach (['get', 'is', 'has', 'can', 'add', 'remove', 'set'] as $prefix) {
-            if (0 === strpos($serializedName, $prefix)) {
-                $serializedName = substr($serializedName, strlen($prefix));
+            if (str_starts_with($serializedName, $prefix)) {
+                $serializedName = substr($serializedName, \strlen($prefix));
             }
         }
 
@@ -103,7 +103,7 @@ final class ReflectionReader
      */
     private function getDefaultFromMethodReflection(\ReflectionMethod $reflection)
     {
-        if (0 !== strpos($reflection->name, 'set')) {
+        if (!str_starts_with($reflection->name, 'set')) {
             return Generator::UNDEFINED;
         }
 

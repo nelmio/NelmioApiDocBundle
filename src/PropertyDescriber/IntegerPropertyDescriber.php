@@ -26,6 +26,6 @@ final class IntegerPropertyDescriber implements PropertyDescriberInterface
 
     public function supports(array $types, array $context = []): bool
     {
-        return 1 === count($types) && Type::BUILTIN_TYPE_INT === $types[0]->getBuiltinType();
+        return 1 === \count($types) && Type::BUILTIN_TYPE_INT === $types[0]->getBuiltinType();
     }
 }

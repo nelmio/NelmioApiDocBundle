@@ -44,7 +44,7 @@ final class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelR
 
     public function supports(array $types, array $context = []): bool
     {
-        if (1 !== count($types) || !$types[0]->isCollection()) {
+        if (1 !== \count($types) || !$types[0]->isCollection()) {
             return false;
         }
 
@@ -52,7 +52,7 @@ final class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelR
             return true;
         }
 
-        return 1 === count($types[0]->getCollectionKeyTypes())
+        return 1 === \count($types[0]->getCollectionKeyTypes())
             && Type::BUILTIN_TYPE_INT === $types[0]->getCollectionKeyTypes()[0]->getBuiltinType();
     }
 }

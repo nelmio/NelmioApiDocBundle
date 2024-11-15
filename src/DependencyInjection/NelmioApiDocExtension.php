@@ -82,10 +82,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         foreach ($config['areas'] as $area => $areaConfig) {
             $areaCachePool = $areaConfig['cache']['pool'] ?? $cachePool;
-            $areaCacheItemId = $areaConfig['cache']['item_id'] ?? sprintf('%s.%s', $cacheItemId, $area);
+            $areaCacheItemId = $areaConfig['cache']['item_id'] ?? \sprintf('%s.%s', $cacheItemId, $area);
 
             $nameAliases = $this->findNameAliases($config['models']['names'], $area);
-            $container->register(sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
+            $container->register(\sprintf('nelmio_api_doc.generator.%s', $area), ApiDocGenerator::class)
                 ->setPublic(true)
                 ->addMethodCall('setAlternativeNames', [$nameAliases])
                 ->addMethodCall('setMediaTypes', [$config['media_types']])
@@ -93,50 +93,50 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->addMethodCall('setOpenApiVersion', [$config['documentation']['openapi'] ?? null])
                 ->addTag('monolog.logger', ['channel' => 'nelmio_api_doc'])
                 ->setArguments([
-                    new TaggedIteratorArgument(sprintf('nelmio_api_doc.describer.%s', $area)),
+                    new TaggedIteratorArgument(\sprintf('nelmio_api_doc.describer.%s', $area)),
                     new TaggedIteratorArgument('nelmio_api_doc.model_describer'),
                     null !== $areaCachePool ? new Reference($areaCachePool) : null,
                     $areaCacheItemId,
                     new Reference('nelmio_api_doc.open_api.generator'),
                 ]);
 
-            $container->register(sprintf('nelmio_api_doc.describers.route.%s', $area), RouteDescriber::class)
+            $container->register(\sprintf('nelmio_api_doc.describers.route.%s', $area), RouteDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
-                    new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
+                    new Reference(\sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
                     new TaggedIteratorArgument('nelmio_api_doc.route_describer'),
                 ])
-                ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -400]);
+                ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -400]);
 
-            $container->register(sprintf('nelmio_api_doc.describers.openapi_php.%s', $area), OpenApiPhpDescriber::class)
+            $container->register(\sprintf('nelmio_api_doc.describers.openapi_php.%s', $area), OpenApiPhpDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
-                    new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
+                    new Reference(\sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
                     new Reference('logger'),
                 ])
-                ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
+                ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
 
-            $container->register(sprintf('nelmio_api_doc.describers.config.%s', $area), ExternalDocDescriber::class)
+            $container->register(\sprintf('nelmio_api_doc.describers.config.%s', $area), ExternalDocDescriber::class)
                 ->setPublic(false)
                 ->setArguments([
                     $areaConfig['documentation'],
                     true,
                 ])
-                ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => 990]);
+                ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => 990]);
 
             unset($areaConfig['documentation']);
-            if (0 === count($areaConfig['path_patterns'])
-                && 0 === count($areaConfig['host_patterns'])
-                && 0 === count($areaConfig['name_patterns'])
+            if (0 === \count($areaConfig['path_patterns'])
+                && 0 === \count($areaConfig['host_patterns'])
+                && 0 === \count($areaConfig['name_patterns'])
                 && false === $areaConfig['with_attribute']
                 && false === $areaConfig['disable_default_routes']
             ) {
-                $container->setDefinition(sprintf('nelmio_api_doc.routes.%s', $area), $routesDefinition)
+                $container->setDefinition(\sprintf('nelmio_api_doc.routes.%s', $area), $routesDefinition)
                     ->setPublic(false);
             } else {
-                $container->register(sprintf('nelmio_api_doc.routes.%s', $area), RouteCollection::class)
+                $container->register(\sprintf('nelmio_api_doc.routes.%s', $area), RouteCollection::class)
                     ->setPublic(false)
                     ->setFactory([
                         (new Definition(FilteredRouteCollectionBuilder::class))
@@ -158,7 +158,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ->addTag('container.service_locator')
             ->addArgument(array_combine(
                 array_keys($config['areas']),
-                array_map(function ($area) { return new Reference(sprintf('nelmio_api_doc.generator.%s', $area)); }, array_keys($config['areas']))
+                array_map(function ($area) { return new Reference(\sprintf('nelmio_api_doc.generator.%s', $area)); }, array_keys($config['areas']))
             ));
 
         $container->getDefinition('nelmio_api_doc.model_describers.object')
@@ -277,7 +277,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
     private function findNameAliases(array $names, string $area): array
     {
         $nameAliases = array_filter($names, function (array $aliasInfo) use ($area) {
-            return [] === $aliasInfo['areas'] || in_array($area, $aliasInfo['areas'], true);
+            return [] === $aliasInfo['areas'] || \in_array($area, $aliasInfo['areas'], true);
         });
 
         $aliases = [];

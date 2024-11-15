@@ -36,7 +36,7 @@ trait RouteDescriberTrait
 
         foreach ($methods as $method) {
             $method = strtolower($method);
-            if (!in_array($method, Util::OPERATIONS, true)) {
+            if (!\in_array($method, Util::OPERATIONS, true)) {
                 continue;
             }
 

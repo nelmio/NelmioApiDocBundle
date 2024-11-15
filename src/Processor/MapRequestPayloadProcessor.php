@@ -41,16 +41,16 @@ final class MapRequestPayloadProcessor
 
             $argumentMetaData = $operation->_context->{SymfonyMapRequestPayloadDescriber::CONTEXT_ARGUMENT_METADATA};
             if (!$argumentMetaData instanceof ArgumentMetadata) {
-                throw new \LogicException(sprintf('MapRequestPayload ArgumentMetaData not found for operation "%s"', $operation->operationId));
+                throw new \LogicException(\sprintf('MapRequestPayload ArgumentMetaData not found for operation "%s"', $operation->operationId));
             }
 
             /** @var MapRequestPayload $attribute */
             if (!$attribute = $argumentMetaData->getAttributes(MapRequestPayload::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? null) {
-                throw new \LogicException(sprintf('Operation "%s" does not contain attribute of "%s', $operation->operationId, MapRequestPayload::class));
+                throw new \LogicException(\sprintf('Operation "%s" does not contain attribute of "%s', $operation->operationId, MapRequestPayload::class));
             }
 
             if (!isset($operation->_context->{SymfonyMapRequestPayloadDescriber::CONTEXT_MODEL_REF})) {
-                throw new \LogicException(sprintf('MapRequestPayload Model reference not found for operation "%s"', $operation->operationId));
+                throw new \LogicException(\sprintf('MapRequestPayload Model reference not found for operation "%s"', $operation->operationId));
             }
             $modelRef = $operation->_context->{SymfonyMapRequestPayloadDescriber::CONTEXT_MODEL_REF};
 
@@ -59,7 +59,7 @@ final class MapRequestPayloadProcessor
             Util::modifyAnnotationValue($requestBody, 'required', !($argumentMetaData->hasDefaultValue() || $argumentMetaData->isNullable()));
 
             $formats = $attribute->acceptFormat;
-            if (!is_array($formats)) {
+            if (!\is_array($formats)) {
                 $formats = [$attribute->acceptFormat ?? 'json'];
             }
 

@@ -59,7 +59,7 @@ final class OpenApiPhpDescriber
 
             $this->setContext($context);
 
-            if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
+            if (!\array_key_exists($declaringClass->getName(), $classAnnotations)) {
                 $classAnnotations[$declaringClass->getName()] = $this->getAttributesAsAnnotation($declaringClass, $context);
             }
 
@@ -79,7 +79,7 @@ final class OpenApiPhpDescriber
                 }
 
                 if ($annotation instanceof OA\Operation) {
-                    if (!in_array($annotation->method, $httpMethods, true)) {
+                    if (!\in_array($annotation->method, $httpMethods, true)) {
                         continue;
                     }
                     if (Generator::UNDEFINED !== $annotation->path && $path->path !== $annotation->path) {
@@ -122,7 +122,7 @@ final class OpenApiPhpDescriber
                     && !$annotation instanceof OA\Parameter
                     && !$annotation instanceof OA\ExternalDocumentation
                 ) {
-                    throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', get_class($annotation), $method->getDeclaringClass()->name, $method->name));
+                    throw new \LogicException(\sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', $annotation::class, $method->getDeclaringClass()->name, $method->name));
                 }
 
                 $implicitAnnotations[] = $annotation;

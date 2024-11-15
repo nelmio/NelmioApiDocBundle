@@ -8,8 +8,10 @@ $finder = (new PhpCsFixer\Finder())
     ->exclude('tests/Functional/cache');
 
 return (new PhpCsFixer\Config())
+    ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,
+        '@Symfony:risky' => true,
         'header_comment' => [
             'header' => <<<HEADER
 This file is part of the NelmioApiDocBundle package.

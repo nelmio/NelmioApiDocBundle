@@ -96,7 +96,7 @@ final class Configuration implements ConfigurationInterface
                     )
                     ->beforeNormalization()
                         ->ifTrue(function ($v) {
-                            return 0 === count($v) || isset($v['path_patterns']) || isset($v['host_patterns']) || isset($v['documentation']);
+                            return 0 === \count($v) || isset($v['path_patterns']) || isset($v['host_patterns']) || isset($v['documentation']);
                         })
                         ->then(function ($v): array {
                             return ['default' => $v];
@@ -171,14 +171,14 @@ final class Configuration implements ConfigurationInterface
                                     ->variableNode('groups')
                                         ->defaultValue(null)
                                         ->validate()
-                                            ->ifTrue(function ($v) { return null !== $v && !is_array($v); })
+                                            ->ifTrue(function ($v) { return null !== $v && !\is_array($v); })
                                             ->thenInvalid('Model groups must be either `null` or an array.')
                                         ->end()
                                     ->end()
                                     ->variableNode('options')
                                         ->defaultValue(null)
                                         ->validate()
-                                            ->ifTrue(function ($v) { return null !== $v && !is_array($v); })
+                                            ->ifTrue(function ($v) { return null !== $v && !\is_array($v); })
                                             ->thenInvalid('Model options must be either `null` or an array.')
                                         ->end()
                                     ->end()

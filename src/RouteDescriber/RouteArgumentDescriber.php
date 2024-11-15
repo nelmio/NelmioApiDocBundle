@@ -22,8 +22,8 @@ use Symfony\Component\Routing\Route;
 
 final class RouteArgumentDescriber implements RouteDescriberInterface, ModelRegistryAwareInterface
 {
-    use RouteDescriberTrait;
     use ModelRegistryAwareTrait;
+    use RouteDescriberTrait;
 
     /**
      * @param RouteArgumentDescriberInterface[] $inlineParameterDescribers
