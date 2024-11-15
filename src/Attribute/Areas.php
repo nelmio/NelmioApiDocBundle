@@ -18,7 +18,7 @@ final class Areas
      * @param string[] $areas
      */
     public function __construct(
-        private array $areas
+        private array $areas,
     ) {
         foreach ($areas as $area) {
             if (!\is_string($area)) {
