@@ -25,7 +25,7 @@ final class ObjectPropertyDescriber implements PropertyDescriberInterface, Model
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $context = []): void
     {
         $type = new Type(
             $types[0]->getBuiltinType(),

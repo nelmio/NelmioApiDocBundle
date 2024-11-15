@@ -17,10 +17,7 @@ trait ModelRegistryAwareTrait
 {
     private ModelRegistry $modelRegistry;
 
-    /**
-     * @return void
-     */
-    public function setModelRegistry(ModelRegistry $modelRegistry)
+    public function setModelRegistry(ModelRegistry $modelRegistry): void
     {
         $this->modelRegistry = $modelRegistry;
     }

@@ -76,11 +76,22 @@ Future proofing for potential future changes and keeping it consistent with `des
 ## BC BREAK: `Nelmio\ApiDocBundle\Command` has been made final
 
 ## BC BREAK: Made classes implementing  `Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface` final
-`Nelmio\ApiDocBundle\PropertyDescriber\ArrayPropertyDescriber`
-`Nelmio\ApiDocBundle\PropertyDescriber\BooleanPropertyDescriber`
-`Nelmio\ApiDocBundle\PropertyDescriber\DateTimePropertyDescriber`
-`Nelmio\ApiDocBundle\PropertyDescriber\CompoundPropertyDescriber`
-`Nelmio\ApiDocBundle\PropertyDescriber\FloatPropertyDescriber`
-`Nelmio\ApiDocBundle\PropertyDescriber\IntegerPropertyDescriber`
-`Nelmio\ApiDocBundle\PropertyDescriber\ObjectPropertyDescriber`
-`Nelmio\ApiDocBundle\PropertyDescriber\StringPropertyDescriber`
+- `Nelmio\ApiDocBundle\PropertyDescriber\ArrayPropertyDescriber`
+- `Nelmio\ApiDocBundle\PropertyDescriber\BooleanPropertyDescriber`
+- `Nelmio\ApiDocBundle\PropertyDescriber\DateTimePropertyDescriber`
+- `Nelmio\ApiDocBundle\PropertyDescriber\CompoundPropertyDescriber`
+- `Nelmio\ApiDocBundle\PropertyDescriber\FloatPropertyDescriber`
+- `Nelmio\ApiDocBundle\PropertyDescriber\IntegerPropertyDescriber`
+- `Nelmio\ApiDocBundle\PropertyDescriber\ObjectPropertyDescriber`
+- `Nelmio\ApiDocBundle\PropertyDescriber\StringPropertyDescriber`
+
+## BC BREAK: Added `void` return type to:
+- `Nelmio\ApiDocBundle\Describer\DescriberInterface::describe()`
+- `Nelmio\ApiDocBundle\Describer\ExternalDocDescriber::describe()`
+- `Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface::describe()`
+- `Nelmio\ApiDocBundle\ModelDescriber\FallbackObjectModelDescriber::describe()`
+- `Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber::describe()`
+- `Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface::setModelRegistry()`
+- `Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait::setModelRegistry()`
+- `Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface::describe()`
+- `Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface::describe()`

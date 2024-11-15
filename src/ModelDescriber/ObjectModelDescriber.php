@@ -59,7 +59,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $this->classMetadataFactory = $classMetadataFactory;
     }
 
-    public function describe(Model $model, OA\Schema $schema)
+    public function describe(Model $model, OA\Schema $schema): void
     {
         $class = $model->getType()->getClassName();
         $schema->_context->class = $class;

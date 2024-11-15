@@ -19,10 +19,8 @@ interface PropertyDescriberInterface
     /**
      * @param Type[]               $types
      * @param array<string, mixed> $context Context options for describing the property
-     *
-     * @return void
      */
-    public function describe(array $types, Schema $property, array $context = []);
+    public function describe(array $types, Schema $property, array $context = []): void;
 
     /**
      * @param Type[]               $types
