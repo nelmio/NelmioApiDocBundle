@@ -22,14 +22,16 @@ class MapRequestPayloadController
     #[Route('/article_map_request_payload', methods: ['POST'])]
     #[OA\Response(response: '200', description: '')]
     public function createArticleFromMapRequestPayload(
-        #[MapRequestPayload] Article81 $article81,
+        #[MapRequestPayload]
+        Article81 $article81,
     ) {
     }
 
     #[Route('/article_map_request_payload_nullable', methods: ['POST'])]
     #[OA\Response(response: '200', description: '')]
     public function createArticleFromMapRequestPayloadNullable(
-        #[MapRequestPayload] ?Article81 $article81,
+        #[MapRequestPayload]
+        ?Article81 $article81,
     ) {
     }
 
@@ -40,7 +42,8 @@ class MapRequestPayloadController
     )]
     #[OA\Response(response: '200', description: '')]
     public function createArticleFromMapRequestPayloadOverwrite(
-        #[MapRequestPayload] Article81 $article81,
+        #[MapRequestPayload]
+        Article81 $article81,
     ) {
     }
 
@@ -53,14 +56,16 @@ class MapRequestPayloadController
     )]
     #[OA\Response(response: '200', description: '')]
     public function createArticleFromMapRequestPayloadHandlesAlreadySetContent(
-        #[MapRequestPayload] Article81 $article81,
+        #[MapRequestPayload]
+        Article81 $article81,
     ) {
     }
 
     #[Route('/article_map_request_payload_validation_groups', methods: ['POST'])]
     #[OA\Response(response: '200', description: '')]
     public function createArticleFromMapRequestPayloadPassedValidationGroups(
-        #[MapRequestPayload(validationGroups: ['test'])] SymfonyConstraintsWithValidationGroups $symfonyConstraintsWithValidationGroups,
+        #[MapRequestPayload(validationGroups: ['test'])]
+        SymfonyConstraintsWithValidationGroups $symfonyConstraintsWithValidationGroups,
     ) {
     }
 }

@@ -55,7 +55,8 @@ class JMSController81
         description: 'Success',
         content: new Model(
             type: JMSComplex81::class,
-            groups: ['list', 'details', 'User' => ['list']])
+            groups: ['list', 'details', 'User' => ['list']]
+        )
     )]
     public function complexAction()
     {
@@ -67,7 +68,8 @@ class JMSController81
         description: 'Success',
         content: new Model(
             type: JMSDualComplex::class,
-            groups: ['Default', 'complex' => ['User' => ['details']]])
+            groups: ['Default', 'complex' => ['User' => ['details']]]
+        )
     )]
     public function complexDualAction()
     {
@@ -127,7 +129,8 @@ class JMSController81
     #[OA\Response(
         response: 200,
         description: 'Success',
-        content: new Model(type: Article81::class))
+        content: new Model(type: Article81::class)
+    )
     ]
     public function enum()
     {
@@ -137,7 +140,8 @@ class JMSController81
     #[OA\Response(
         response: 200,
         description: 'Success',
-        content: new Model(type: JMSAbstractUser::class))
+        content: new Model(type: JMSAbstractUser::class)
+    )
     ]
     public function discriminatorMapAction()
     {
@@ -147,7 +151,8 @@ class JMSController81
     #[OA\Response(
         response: 200,
         description: 'Success',
-        content: new Model(type: JMSEnum81::class))
+        content: new Model(type: JMSEnum81::class)
+    )
     ]
     public function enumArrayAction()
     {
