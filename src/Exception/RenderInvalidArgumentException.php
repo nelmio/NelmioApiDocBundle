@@ -11,6 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Exception;
 
-class RenderInvalidArgumentException extends \InvalidArgumentException
+final class RenderInvalidArgumentException extends \InvalidArgumentException
 {
 }

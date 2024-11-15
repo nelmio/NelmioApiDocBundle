@@ -111,3 +111,5 @@ Future proofing for potential future changes and keeping it consistent with `des
 +#[Areas(areas: ['foo', 'bar'])]
 +#[Areas(['foo', 'bar'])]
 ```
+
+## BC BREAK: `Nelmio\ApiDocBundle\Exception\RenderInvalidArgumentException` has been made final
