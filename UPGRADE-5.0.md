@@ -74,3 +74,13 @@ Future proofing for potential future changes and keeping it consistent with `des
 ```
 
 ## BC BREAK: `Nelmio\ApiDocBundle\Command` has been made final
+
+## BC BREAK: Made classes implementing  `Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface` final
+`Nelmio\ApiDocBundle\PropertyDescriber\ArrayPropertyDescriber`
+`Nelmio\ApiDocBundle\PropertyDescriber\BooleanPropertyDescriber`
+`Nelmio\ApiDocBundle\PropertyDescriber\DateTimePropertyDescriber`
+`Nelmio\ApiDocBundle\PropertyDescriber\CompoundPropertyDescriber`
+`Nelmio\ApiDocBundle\PropertyDescriber\FloatPropertyDescriber`
+`Nelmio\ApiDocBundle\PropertyDescriber\IntegerPropertyDescriber`
+`Nelmio\ApiDocBundle\PropertyDescriber\ObjectPropertyDescriber`
+`Nelmio\ApiDocBundle\PropertyDescriber\StringPropertyDescriber`
