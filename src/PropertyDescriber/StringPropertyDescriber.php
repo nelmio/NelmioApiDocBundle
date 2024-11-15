@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
-class StringPropertyDescriber implements PropertyDescriberInterface
+final class StringPropertyDescriber implements PropertyDescriberInterface
 {
     /**
      * @param array<string, mixed> $context Context options for describing the property

@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
-class DateTimePropertyDescriber implements PropertyDescriberInterface
+final class DateTimePropertyDescriber implements PropertyDescriberInterface
 {
     /**
      * @param array<string, mixed> $context Context options for describing the property
