@@ -102,7 +102,7 @@
 
         <!-- Property Describers -->
         <service id="nelmio_api_doc.object_model.property_describer" class="Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriber" public="false">
-            <argument type="tagged" tag="nelmio_api_doc.object_model.property_describer" />
+            <argument type="tagged_iterator" tag="nelmio_api_doc.object_model.property_describer" />
 
             <tag name="nelmio_api_doc.object_model.property_describer" priority="100" />
         </service>

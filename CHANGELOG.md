@@ -2,6 +2,7 @@
 
 ## 4.33.5
 * Added new optional parameter `$context` to` PropertyDescriberInterface::supports()`
+* Fixed usage of `tagged` type in service configuration which is deprecated in Symfony `7.2`
 
 ## 4.33.4
 * Deprecated `null` type from `$options` in `Nelmio\ApiDocBundle\Attribute\Model::__construct()`. Pass an empty array (`[]`) instead.
