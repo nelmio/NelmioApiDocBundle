@@ -50,6 +50,8 @@ final class ApiDocGenerator
      */
     private $openApiVersion;
 
+    private ?string $area = null;
+
     private Generator $generator;
 
     /**
@@ -86,6 +88,11 @@ final class ApiDocGenerator
         $this->openApiVersion = $openApiVersion;
     }
 
+    public function setArea(string $area): void
+    {
+        $this->area = $area;
+    }
+
     public function generate(): OpenApi
     {
         if (null !== $this->openApi) {
@@ -108,7 +115,7 @@ final class ApiDocGenerator
         $context = Util::createContext(['version' => $this->generator->getVersion()]);
 
         $this->openApi = new OpenApi(['_context' => $context]);
-        $modelRegistry = new ModelRegistry($this->modelDescribers, $this->openApi, $this->alternativeNames);
+        $modelRegistry = new ModelRegistry($this->modelDescribers, $this->openApi, $this->alternativeNames, $this->area);
         if (null !== $this->logger) {
             $modelRegistry->setLogger($this->logger);
         }

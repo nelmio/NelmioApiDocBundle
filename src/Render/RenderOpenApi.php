@@ -18,6 +18,7 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Nelmio\ApiDocBundle\ApiDocGenerator;
 
 class RenderOpenApi
 {
@@ -81,8 +82,14 @@ class RenderOpenApi
             throw new RenderInvalidArgumentException(sprintf('Format "%s" is not supported.', $format));
         }
 
+        $generator = $this->generatorLocator->get($area);
+
+        if ($generator instanceof ApiDocGenerator) {
+            $generator->setArea($area);
+        }
+
         /** @var OpenApi $spec */
-        $spec = $this->generatorLocator->get($area)->generate();
+        $spec = $generator->generate();
         $tmpServers = $spec->servers;
         try {
             $spec->servers = $this->getServersFromOptions($spec, $options);
