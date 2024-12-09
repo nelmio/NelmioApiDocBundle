@@ -27,6 +27,8 @@ final class Model
      */
     private array $serializationContext;
 
+    private ?string $area = null;
+
     /**
      * @param string[]|null $groups
      * @param mixed[]|null  $options
@@ -71,6 +73,16 @@ final class Model
     public function getHash(): string
     {
         return md5(serialize([$this->type, $this->getSerializationContext()]));
+    }
+
+    public function setArea(?string $area): void
+    {
+        $this->area = $area;
+    }
+
+    public function getArea(): ?string
+    {
+        return $this->area;
     }
 
     /**

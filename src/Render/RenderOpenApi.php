@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Render;
 
+use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Exception\RenderInvalidArgumentException;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Server;
@@ -81,8 +82,14 @@ class RenderOpenApi
             throw new RenderInvalidArgumentException(sprintf('Format "%s" is not supported.', $format));
         }
 
+        $generator = $this->generatorLocator->get($area);
+
+        if ($generator instanceof ApiDocGenerator) {
+            $generator->setArea($area);
+        }
+
         /** @var OpenApi $spec */
-        $spec = $this->generatorLocator->get($area)->generate();
+        $spec = $generator->generate();
         $tmpServers = $spec->servers;
         try {
             $spec->servers = $this->getServersFromOptions($spec, $options);

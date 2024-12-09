@@ -53,6 +53,8 @@ final class ModelRegistry
      */
     private iterable $modelDescribers;
 
+    private ?string $area;
+
     private OA\OpenApi $api;
 
     /**
@@ -61,10 +63,11 @@ final class ModelRegistry
      *
      * @internal
      */
-    public function __construct($modelDescribers, OA\OpenApi $api, array $alternativeNames = [])
+    public function __construct($modelDescribers, OA\OpenApi $api, array $alternativeNames = [], ?string $area = null)
     {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
+        $this->area = $area;
         $this->logger = new NullLogger();
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
             $this->alternativeNames[] = $model = new Model(
@@ -81,6 +84,7 @@ final class ModelRegistry
 
     public function register(Model $model): string
     {
+        $model->setArea($this->area);
         $hash = $model->getHash();
         if (!isset($this->models[$hash])) {
             $this->models[$hash] = $model;
