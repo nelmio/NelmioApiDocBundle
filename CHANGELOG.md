@@ -1,5 +1,7 @@
 # CHANGELOG
 
+* Add filtering model properties by route area to `JMSModelDescriber`
+
 ## 4.33.5
 * Added new optional parameter `$context` to` PropertyDescriberInterface::supports()`
 
@@ -25,7 +27,7 @@
 ## 4.32.3
 
 * Deprecated `Nelmio\ApiDocBundle\Annotation` namespace in favor of `Nelmio\ApiDocBundle\Attribute` namespace in preparation for 5.x. Consider upgrading to the new attribute syntax.
-```diff 
+```diff
 - use Nelmio\ApiDocBundle\Annotation\Areas;
 - use Nelmio\ApiDocBundle\Annotation\Model;
 - use Nelmio\ApiDocBundle\Annotation\Operation;
@@ -84,7 +86,7 @@ nelmio_api_doc:
 
 ## 4.24.0
 
-* Added support for some integer ranges (https://phpstan.org/writing-php-code/phpdoc-types#integer-ranges).  
+* Added support for some integer ranges (https://phpstan.org/writing-php-code/phpdoc-types#integer-ranges).
   Annotations attached to integer properties like:
   ```php
     /**
@@ -109,9 +111,9 @@ Dropped support for PHP 7.2 and PHP 7.3. PHP 7.4 is the minimum required version
           pool: app.cache
           item_id: nelmio_api_doc.docs
       areas:
-          default: 
+          default:
               ...
-          area1:   
+          area1:
               ...
   ```
   Result in cache keys: `nelmio_api_doc.docs.default` & `nelmio_api_doc.docs.area1` to be used respectively.
@@ -124,7 +126,7 @@ Dropped support for PHP 7.2 and PHP 7.3. PHP 7.4 is the minimum required version
                   pool: app.cache
                   item_id: nelmio_api_doc.docs.default
               ...
-          area1:   
+          area1:
               cache:
                   pool: app.cache
                   item_id: nelmio_api_doc.docs.area1
@@ -186,7 +188,7 @@ doc-api:
           pool: app.cache
           item_id: nelmio_api_doc.docs
   ```
-  
+
 ## 4.20.0
 
 * Added Redocly as an alternative to Swagger UI. https://github.com/Redocly/redoc.
