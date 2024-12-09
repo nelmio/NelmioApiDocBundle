@@ -234,7 +234,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
 
         $area = $model->getArea();
-        if ( null !== $area ) {
+        if (null !== $area) {
             $context->addExclusionStrategy(new VersionExclusionStrategy($area));
         }
 

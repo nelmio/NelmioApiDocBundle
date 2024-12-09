@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Render;
 
+use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Exception\RenderInvalidArgumentException;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Server;
@@ -18,7 +19,6 @@ use OpenApi\Context;
 use OpenApi\Generator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Nelmio\ApiDocBundle\ApiDocGenerator;
 
 class RenderOpenApi
 {
