@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 4.33.6
+* Fixed Symfony 7.2 deprecation of tagged arguments
+
 ## 4.33.5
 * Added new optional parameter `$context` to` PropertyDescriberInterface::supports()`
 
