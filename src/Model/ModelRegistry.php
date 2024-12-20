@@ -195,9 +195,9 @@ final class ModelRegistry
         }
 
         if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
-            $parts = explode('\\', $type->getClassName());
+            $parts = array_slice(explode('\\', $type->getClassName()), 2);
 
-            return end($parts);
+            return implode('', $parts);
         }
 
         return $type->getBuiltinType();
