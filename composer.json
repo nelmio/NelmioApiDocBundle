@@ -1,5 +1,5 @@
 {
-    "name": "nelmio/api-doc-bundle",
+    "name": "alexrozz/api-doc-bundle",
     "description": "Generates documentation for your REST API from annotations and attributes",
     "keywords": ["api", "documentation", "doc", "rest"],
     "type": "symfony-bundle",
