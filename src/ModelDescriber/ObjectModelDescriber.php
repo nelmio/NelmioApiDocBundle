@@ -170,7 +170,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 }
 
                 if (!$this->propertyDescriber->supports($type, $model->getSerializationContext())) {
-                    throw new \Exception(sprintf('Type "%s" $model->getSerializationContext() not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $type->__toString(), $model->getType()->getClassName(), $propertyName));
+                    throw new \Exception(sprintf('Type "%s" not supported in %s::$%s. You may need to use the `@OA\Property(type="")` annotation to specify it manually.', $type->__toString(), $model->getType()->getClassName(), $propertyName));
                 }
 
                 $this->propertyDescriber->describe($type, $property, $model->getSerializationContext());

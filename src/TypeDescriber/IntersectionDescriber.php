@@ -32,7 +32,7 @@ final class IntersectionDescriber implements TypeDescriberInterface, TypeDescrib
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
         $innerTypes = array_values(array_filter($type->getTypes(), function (Type $innerType) {
-            return !$innerType->isA(TypeIdentifier::NULL);
+            return !$innerType->isIdentifiedBy(TypeIdentifier::NULL);
         }));
 
         // Ensure that non $ref schemas are not described in allOf
