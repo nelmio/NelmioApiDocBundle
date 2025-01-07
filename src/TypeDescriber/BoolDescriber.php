@@ -32,6 +32,6 @@ final class BoolDescriber implements TypeDescriberInterface
     public function supports(Type $type, array $context = []): bool
     {
         return $type instanceof Type\BuiltinType
-            && TypeIdentifier::BOOL === $type->getTypeIdentifier();
+            && $type->getTypeIdentifier()->isBool();
     }
 }
