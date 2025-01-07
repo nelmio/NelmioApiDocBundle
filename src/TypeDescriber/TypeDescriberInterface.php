@@ -18,8 +18,6 @@ use Symfony\Component\TypeInfo\Type;
  * @template T of Type
  *
  * @experimental
- *
- * @internal
  */
 interface TypeDescriberInterface
 {
