@@ -21,10 +21,8 @@ use Symfony\Component\TypeInfo\Type;
  *
  * @internal
  */
-final class NullableDescriber implements TypeDescriberInterface, TypeDescriberAwareInterface
+final class NullableDescriber implements TypeDescriberInterface
 {
-    use TypeDescriberAwareTrait;
-
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
         $schema->nullable = true;
