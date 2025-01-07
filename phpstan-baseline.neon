@@ -26,6 +26,11 @@ parameters:
 			path: src/Describer/ExternalDocDescriber.php
 
 		-
+			message: "#^Call to function method_exists\\(\\) with Symfony\\\\Component\\\\PropertyInfo\\\\PropertyInfoExtractorInterface and 'getType' will always evaluate to true\\.$#"
+			count: 1
+			path: src/ModelDescriber/ObjectModelDescriber.php
+
+		-
 			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\ArrayPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/PropertyDescriber/ArrayPropertyDescriber.php
@@ -159,3 +164,8 @@ parameters:
 			message: "#^Call to function method_exists\\(\\) with 'Hateoas\\\\\\\\Configuration\\\\\\\\Embedded' and 'getType' will always evaluate to true\\.$#"
 			count: 1
 			path: tests/Functional/BazingaFunctionalTest.php
+
+		-
+			message: "#^Call to static method getVersion\\(\\) on an unknown class PackageVersions\\\\Versions\\.$#"
+			count: 1
+			path: tests/Helper.php
