@@ -18,7 +18,6 @@ use OpenApi\Annotations\Schema;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
-use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\Uid\AbstractUid;
 
 /**
@@ -55,7 +54,6 @@ final class ObjectClassDescriber implements TypeDescriberInterface, ModelRegistr
 
     public function supports(Type $type, array $context = []): bool
     {
-        return $type instanceof ObjectType
-            && $type->isA(TypeIdentifier::OBJECT);
+        return $type instanceof ObjectType;
     }
 }

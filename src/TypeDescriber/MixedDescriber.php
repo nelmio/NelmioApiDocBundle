@@ -33,6 +33,6 @@ final class MixedDescriber implements TypeDescriberInterface
     public function supports(Type $type, array $context = []): bool
     {
         return $type instanceof Type\BuiltinType
-            && $type->isA(TypeIdentifier::MIXED);
+            && TypeIdentifier::MIXED === $type->getTypeIdentifier();
     }
 }

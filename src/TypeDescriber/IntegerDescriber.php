@@ -32,6 +32,6 @@ final class IntegerDescriber implements TypeDescriberInterface
     public function supports(Type $type, array $context = []): bool
     {
         return $type instanceof Type\BuiltinType
-            && $type->isA(TypeIdentifier::INT);
+            && TypeIdentifier::INT === $type->getTypeIdentifier();
     }
 }

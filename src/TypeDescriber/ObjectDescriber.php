@@ -38,6 +38,6 @@ final class ObjectDescriber implements TypeDescriberInterface, ModelRegistryAwar
     public function supports(Type $type, array $context = []): bool
     {
         return $type instanceof BuiltinType
-            && $type->isA(TypeIdentifier::OBJECT);
+            && TypeIdentifier::OBJECT === $type->getTypeIdentifier();
     }
 }

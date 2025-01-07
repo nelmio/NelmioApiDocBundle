@@ -40,6 +40,6 @@ final class ListDescriber implements TypeDescriberInterface, TypeDescriberAwareI
     public function supports(Type $type, array $context = []): bool
     {
         return $type instanceof CollectionType
-            && $type->getCollectionKeyType()->isA(TypeIdentifier::INT);
+            && $type->getCollectionKeyType()->isIdentifiedBy(TypeIdentifier::INT);
     }
 }
