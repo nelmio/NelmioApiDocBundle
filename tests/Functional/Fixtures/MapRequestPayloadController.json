@@ -19,7 +19,7 @@
                     }
                 },
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -44,7 +44,7 @@
                     }
                 },
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -54,17 +54,18 @@
             "post": {
                 "operationId": "post_nelmio_apidoc_tests_functional_maprequestpayload_createarticlefrommaprequestpayloadoverwrite",
                 "requestBody": {
+                    "description": "Request body description",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Article81"
+                                "$ref": "#/components/schemas/EntityWithNullableSchemaSet"
                             }
                         }
                     }
                 },
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -74,6 +75,7 @@
             "post": {
                 "operationId": "post_nelmio_apidoc_tests_functional_maprequestpayload_createarticlefrommaprequestpayloadhandlesalreadysetcontent",
                 "requestBody": {
+                    "description": "Request body description",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -84,7 +86,7 @@
                     }
                 },
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -104,7 +106,7 @@
                     }
                 },
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -170,6 +172,37 @@
                     },
                     "propertyNotNullOnSpecificGroup": {
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "EntityWithNullableSchemaSet": {
+                "required": [
+                    "nullablePropertyNullableFalseSet",
+                    "nonNullablePropertyNullableNotSet",
+                    "nonNullablePropertyNullableFalseSet"
+                ],
+                "properties": {
+                    "nullablePropertyNullableNotSet": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "nullablePropertyNullableFalseSet": {
+                        "type": "string"
+                    },
+                    "nullablePropertyNullableTrueSet": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "nonNullablePropertyNullableNotSet": {
+                        "type": "string"
+                    },
+                    "nonNullablePropertyNullableFalseSet": {
+                        "type": "string"
+                    },
+                    "nonNullablePropertyNullableTrueSet": {
+                        "type": "string",
+                        "nullable": true
                     }
                 },
                 "type": "object"

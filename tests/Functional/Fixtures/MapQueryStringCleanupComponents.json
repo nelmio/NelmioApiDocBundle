@@ -57,7 +57,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -115,7 +115,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -166,7 +166,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -179,14 +179,17 @@
                     {
                         "name": "id",
                         "in": "query",
+                        "description": "Query parameter id description",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string",
+                            "nullable": true
                         }
                     },
                     {
                         "name": "name",
                         "in": "query",
+                        "description": "Query parameter name description",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -195,6 +198,7 @@
                     {
                         "name": "nullableName",
                         "in": "query",
+                        "description": "Query parameter nullableName description",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -204,6 +208,7 @@
                     {
                         "name": "articleType81",
                         "in": "query",
+                        "description": "Query parameter articleType81 description",
                         "required": true,
                         "schema": {
                             "$ref": "#/components/schemas/ArticleType81"
@@ -212,6 +217,7 @@
                     {
                         "name": "nullableArticleType81",
                         "in": "query",
+                        "description": "Query parameter nullableArticleType81 description",
                         "required": false,
                         "schema": {
                             "nullable": true,
@@ -224,7 +230,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -315,7 +321,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -406,7 +412,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -495,7 +501,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -584,7 +590,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -673,7 +679,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -762,7 +768,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -851,7 +857,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -940,7 +946,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -1029,7 +1035,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }

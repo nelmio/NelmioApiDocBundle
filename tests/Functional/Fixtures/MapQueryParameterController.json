@@ -53,7 +53,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -147,7 +147,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -168,7 +168,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -189,7 +189,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -202,24 +202,28 @@
                     {
                         "name": "id",
                         "in": "query",
+                        "description": "Query parameter id description",
                         "required": false,
                         "schema": {
                             "type": "integer",
                             "nullable": true
-                        }
+                        },
+                        "example": 123
                     },
                     {
                         "name": "changedType",
                         "in": "query",
+                        "description": "Incorrectly described query parameter",
                         "required": false,
                         "schema": {
-                            "type": "string",
-                            "nullable": true
-                        }
+                            "type": "int",
+                            "nullable": false
+                        },
+                        "example": 123
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }

@@ -22,7 +22,7 @@
                     }
                 },
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -46,7 +46,7 @@
                     }
                 },
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
