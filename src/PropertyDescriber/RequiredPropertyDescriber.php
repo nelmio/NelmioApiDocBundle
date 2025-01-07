@@ -67,7 +67,7 @@ final class RequiredPropertyDescriber implements PropertyDescriberInterface, Pro
         $schema->required = array_values(array_unique($existingRequiredFields));
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
         return true;
     }

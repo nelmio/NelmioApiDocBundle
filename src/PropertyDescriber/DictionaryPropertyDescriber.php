@@ -52,7 +52,7 @@ final class DictionaryPropertyDescriber implements PropertyDescriberInterface, M
         $this->propertyDescriber->describe($types[0]->getCollectionValueTypes(), $additionalProperties, $groups, $schema, $context);
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
         return 1 === count($types)
             && $types[0]->isCollection()

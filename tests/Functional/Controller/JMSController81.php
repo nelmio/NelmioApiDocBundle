@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\DiscriminatorMap\JMSAbstractUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSDualComplex;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSEnum81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSNamingStrategyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChat;
@@ -54,7 +55,8 @@ class JMSController81
         description: 'Success',
         content: new Model(
             type: JMSComplex81::class,
-            groups: ['list', 'details', 'User' => ['list']])
+            groups: ['list', 'details', 'User' => ['list']]
+        )
     )]
     public function complexAction()
     {
@@ -66,7 +68,8 @@ class JMSController81
         description: 'Success',
         content: new Model(
             type: JMSDualComplex::class,
-            groups: ['Default', 'complex' => ['User' => ['details']]])
+            groups: ['Default', 'complex' => ['User' => ['details']]]
+        )
     )]
     public function complexDualAction()
     {
@@ -126,7 +129,8 @@ class JMSController81
     #[OA\Response(
         response: 200,
         description: 'Success',
-        content: new Model(type: Article81::class))
+        content: new Model(type: Article81::class)
+    )
     ]
     public function enum()
     {
@@ -136,9 +140,21 @@ class JMSController81
     #[OA\Response(
         response: 200,
         description: 'Success',
-        content: new Model(type: JMSAbstractUser::class))
+        content: new Model(type: JMSAbstractUser::class)
+    )
     ]
     public function discriminatorMapAction()
+    {
+    }
+
+    #[Route('/api/jms_enum_array', methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Success',
+        content: new Model(type: JMSEnum81::class)
+    )
+    ]
+    public function enumArrayAction()
     {
     }
 }

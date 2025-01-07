@@ -70,7 +70,7 @@ final class ModelRegistry
             $this->alternativeNames[] = $model = new Model(
                 new Type('object', false, $criteria['type']),
                 $criteria['groups'],
-                $criteria['options'] ?? null,
+                $criteria['options'] ?? [],
                 $criteria['serializationContext'] ?? [],
             );
             $this->names[$model->getHash()] = $alternativeName;

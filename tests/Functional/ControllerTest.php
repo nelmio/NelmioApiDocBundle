@@ -52,7 +52,7 @@ final class ControllerTest extends WebTestCase
         $controllerName = $controller['name'] ?? null;
         $controllerType = $controller['type'] ?? null;
 
-        $fixtureName = $fixtureName ?? $controllerName ?? self::fail('A fixture name must be provided.');
+        $fixtureName ??= $controllerName ?? self::fail('A fixture name must be provided.');
 
         $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName, $controllerType) {
             if (null === $controllerName) {
@@ -103,6 +103,13 @@ final class ControllerTest extends WebTestCase
             'JmsOptOutController',
             [new JMSSerializerBundle()],
             [__DIR__.'/Configs/JMS.yaml'],
+        ];
+
+        yield 'Deprecation null model options' => [
+            [
+                'name' => 'DeprecationController',
+                'type' => $type,
+            ],
         ];
 
         if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {

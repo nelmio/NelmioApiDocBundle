@@ -47,10 +47,11 @@ class ModelRegistryTest extends TestCase
             ->expects(self::once())
             ->method('info')
             ->with(
-                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.', [
+                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.',
+                [
                     'model' => [
                         'type' => $arrayType,
-                        'options' => null,
+                        'options' => [],
                         'groups' => ['group2'],
                         'serialization_context' => [
                             'groups' => ['group2'],
@@ -58,14 +59,15 @@ class ModelRegistryTest extends TestCase
                     ],
                     'taken_by' => [
                         'type' => $arrayType,
-                        'options' => null,
+                        'options' => [],
                         'groups' => ['group1'],
                         'serialization_context' => [
                             'groups' => ['group1'],
                             'extra_context' => true,
                         ],
                     ],
-                ]);
+                ]
+            );
 
         $registry = new ModelRegistry([], $this->createOpenApi(), []);
         $registry->setLogger($logger);
@@ -124,7 +126,8 @@ class ModelRegistryTest extends TestCase
             ->expects(self::once())
             ->method('info')
             ->with(
-                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.', [
+                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.',
+                [
                     'model' => [
                         'type' => [
                             'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
@@ -134,7 +137,7 @@ class ModelRegistryTest extends TestCase
                             'collection_key_types' => null,
                             'collection_value_types' => null,
                         ],
-                        'options' => null,
+                        'options' => [],
                         'groups' => ['group2'],
                         'serialization_context' => ['groups' => ['group2']],
                     ],
@@ -147,11 +150,12 @@ class ModelRegistryTest extends TestCase
                             'collection_key_types' => null,
                             'collection_value_types' => null,
                         ],
-                        'options' => null,
+                        'options' => [],
                         'groups' => ['group1'],
                         'serialization_context' => ['groups' => ['group1']],
                     ],
-                ]);
+                ]
+            );
 
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $registry->setLogger($logger);

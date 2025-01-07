@@ -328,9 +328,9 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'string',
                     'maxLength' => 10,
                     'minLength' => 3,
+                    'default' => 'default'
                 ],
             ],
-            'required' => ['beautifulName'],
             'schema' => 'JMSNamingStrategyConstraints',
         ], json_decode($this->getModel('JMSNamingStrategyConstraints')->toJson(), true));
     }
@@ -370,6 +370,54 @@ class JMSFunctionalTest extends WebTestCase
                 'final',
             ],
         ], json_decode($this->getModel('ArticleType81')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'ArticleType81',
+            'type' => 'string',
+            'enum' => [
+                'draft',
+                'final'
+            ]
+        ], json_decode($this->getModel('ArticleType81')->toJson(), true));
+
+        if (TestKernel::isAnnotationsAvailable()) {
+            // Further tests have only been defined with attributes
+            return;
+        }
+
+        self::assertEquals([
+            'schema' => 'ArticleType812',
+            'type' => 'string',
+            'enum' => [
+                'DRAFT',
+                'FINAL'
+            ]
+        ], json_decode($this->getModel('ArticleType812')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'JMSEnum81',
+            'type' => 'object',
+            'properties' => [
+                'enum_value' => [
+                    '$ref' => '#/components/schemas/ArticleType81'
+                ],
+                'enum_values' => [
+                    'type' => 'array',
+                    'items' => [
+                        '$ref' => '#/components/schemas/ArticleType81'
+                    ]
+                ],
+                'enum_name' => [
+                    '$ref' => '#/components/schemas/ArticleType812'
+                ],
+                'enum_names' => [
+                    'type' => 'array',
+                    'items' => [
+                        '$ref' => '#/components/schemas/ArticleType812'
+                    ]
+                ],
+            ]
+        ], json_decode($this->getModel('JMSEnum81')->toJson(), true));
     }
 
     public function testModeDiscriminatorMap(): void

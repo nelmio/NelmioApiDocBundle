@@ -23,10 +23,8 @@ class EntityWithPromotedPropertiesWithDefaults80
     public function __construct(
         int $nonNullableNonPromotedProperty,
         ?string $nullableNonPromotedProperty,
-
         string $nonNullableNonPromotedPropertyWithDefault = 'nonNullableNonPromotedPropertyWithDefault',
         ?int $nullableNonPromotedPropertyWithDefault = null,
-
         public int $nonNullablePromotedPropertyWithDefault = 4711,
         public ?string $nullablePromotedPropertyWithDefault = null,
     ) {

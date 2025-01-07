@@ -10,6 +10,7 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
+        '@PHP84Migration' => true,
         'header_comment' => [
             'header' => <<<HEADER
 This file is part of the NelmioApiDocBundle package.

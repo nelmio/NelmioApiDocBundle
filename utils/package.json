@@ -1,0 +1,21 @@
+{
+  "description": "Script utils for nelmio/api-doc-bundle UI",
+  "license": "MIT",
+  "dependencies": {
+    "redoc": "2.2.0",
+    "swagger-ui-dist": "5.18.2"
+  },
+  "scripts": {
+    "swagger": "yarn run swagger:bundle && yarn run swagger:standalone && yarn run swagger:css",
+    "swagger:bundle": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.js* $npm_package_config_destination_swagger",
+    "swagger:standalone": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js* $npm_package_config_destinationswagger",
+    "swagger:css": "cp node_modules/swagger-ui-dist/swagger-ui.css* $npm_package_config_destination_swagger",
+    "redoc": "cp node_modules/redoc/bundles/redoc.standalone.js $npm_package_config_destination_redoc"
+  },
+  "config": {
+    "destination": {
+      "swagger": "../public/swagger-ui",
+      "redoc": "../public/redocly"
+    }
+  }
+}
