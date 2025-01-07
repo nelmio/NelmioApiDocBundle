@@ -169,10 +169,6 @@
             <tag name="nelmio_api_doc.schema_describer" priority="100" />
         </service>
 
-        <service id="nelmio_api_doc.schema_describer.array" class="Nelmio\ApiDocBundle\TypeDescriber\ArrayDescriber" public="false">
-            <tag name="nelmio_api_doc.schema_describer" />
-        </service>
-
         <service id="nelmio_api_doc.schema_describer.bool" class="Nelmio\ApiDocBundle\TypeDescriber\BoolDescriber" public="false">
             <tag name="nelmio_api_doc.schema_describer" />
         </service>
