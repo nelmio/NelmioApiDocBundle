@@ -15,10 +15,6 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures\ArrayOfInt;
-use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures\ArrayOfString;
-use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures\ComplexArray;
-use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures\SimpleClass;
 use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase;
 use OpenApi\Annotations as OA;
 use OpenApi\Annotations\OpenApi;
@@ -68,19 +64,27 @@ class ObjectModelDescriberTest extends WebTestCase
     public static function provideFixtures(): \Generator
     {
         yield [
-            SimpleClass::class,
+            Fixtures\SimpleClass::class,
         ];
 
         yield [
-            ArrayOfInt::class,
+            Fixtures\ArrayOfInt::class,
         ];
 
         yield [
-            ArrayOfString::class,
+            Fixtures\ArrayOfString::class,
         ];
 
         yield [
-            ComplexArray::class
+            Fixtures\ComplexArray::class
+        ];
+
+        yield [
+            Fixtures\ScalarTypes::class
+        ];
+
+        yield [
+            Fixtures\NullableScalar::class
         ];
     }
 
