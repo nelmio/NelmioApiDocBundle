@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 4.34.0
+* Changed minimum Symfony version for 7.x from 7.0 to 7.1
+
 ## 4.33.6
 * Fixed Symfony 7.2 deprecation of tagged arguments
 

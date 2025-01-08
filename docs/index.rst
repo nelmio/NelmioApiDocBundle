@@ -389,10 +389,10 @@ that property type to not be nullable, for example.
         #[OA\Response(response: 200, content: new Model(type: UserDto::class, groups: ["default"]))]
 
         // Similarly, this will make the username `required` in the create  schema
-        #[OA\RequestBody(new Model(type: UserDto::class, groups: ["create"]))]
+        #[OA\RequestBody(content: new Model(type: UserDto::class, groups: ["create"]))]
 
         // But for updates, the `username` property will not be required
-        #[OA\RequestBody(new Model(type: UserDto::class, groups: ["update"]))]
+        #[OA\RequestBody(content: new Model(type: UserDto::class, groups: ["update"]))]
 
 
 .. tip::
