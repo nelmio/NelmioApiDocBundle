@@ -63,6 +63,17 @@ final class ChainDescriber implements TypeDescriberInterface, ModelRegistryAware
 
     public function supports(Type $type, array $context = []): bool
     {
-        return true;
+        foreach ($this->describers as $describer) {
+            /* BC layer for Symfony < 6.3 @see https://symfony.com/doc/6.3/service_container/tags.html#reference-tagged-services */
+            if ($describer instanceof self) {
+                continue;
+            }
+
+            if ($describer->supports($type, $context)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
