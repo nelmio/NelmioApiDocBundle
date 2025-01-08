@@ -1,0 +1,30 @@
+{
+    "required": [
+        "untypedArray",
+        "listOrDict"
+    ],
+    "properties": {
+        "untypedArray": {
+            "type": "array",
+            "items": {}
+        },
+        "listOrDict": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "number",
+                        "format": "float"
+                    }
+                }
+            ]
+        }
+    },
+    "type": "object"
+}

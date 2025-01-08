@@ -1,0 +1,33 @@
+{
+    "required": [
+        "untypedArray",
+        "arrayOfIntegers",
+        "listOfIntegers",
+        "shortArrayOfIntegers"
+    ],
+    "properties": {
+        "untypedArray": {
+            "type": "array",
+            "items": {}
+        },
+        "arrayOfIntegers": {
+            "type": "array",
+            "items": {
+                "type": "integer"
+            }
+        },
+        "listOfIntegers": {
+            "type": "array",
+            "items": {
+                "type": "integer"
+            }
+        },
+        "shortArrayOfIntegers": {
+            "type": "array",
+            "items": {
+                "type": "integer"
+            }
+        }
+    },
+    "type": "object"
+}

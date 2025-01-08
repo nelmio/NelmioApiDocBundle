@@ -13,7 +13,6 @@ namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use OpenApi\Annotations\Schema;
 use Symfony\Component\TypeInfo\Type;
-use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
  * @implements TypeDescriberInterface<Type\BuiltinType>
