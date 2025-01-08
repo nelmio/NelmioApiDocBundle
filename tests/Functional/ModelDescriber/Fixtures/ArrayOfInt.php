@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures;
 
 class ArrayOfInt
 {
+    /** @phpstan-ignore-next-line This value type is missing on purpose */
     public array $untypedArray;
 
     /**

@@ -1,13 +1,8 @@
 {
     "required": [
-        "untypedArray",
         "listOrDict"
     ],
     "properties": {
-        "untypedArray": {
-            "type": "array",
-            "items": {}
-        },
         "listOrDict": {
             "oneOf": [
                 {

@@ -34,7 +34,7 @@ class ObjectModelDescriberTest extends WebTestCase
 
         $context = Util::createContext(['version' => '3.0.0']);
         $openApi = new OpenApi(['_context' => $context]);
-        $this->modelDescriber = $this->getContainer()->get('nelmio_api_doc.model_describers.object');
+        $this->modelDescriber = self::getContainer()->get('nelmio_api_doc.model_describers.object');
 
         $modelRegistry = new ModelRegistry([$this->modelDescriber], $openApi);
 
@@ -44,7 +44,7 @@ class ObjectModelDescriberTest extends WebTestCase
     /**
      * @dataProvider provideFixtures
      */
-    public function testItDescribes(string $class): void
+    public function testItDescribes(string $class, ?string $fixtureDir = null): void
     {
         $model = new Model(new LegacyType('object', false, $class));
         $schema = new OA\Schema([
@@ -55,7 +55,7 @@ class ObjectModelDescriberTest extends WebTestCase
 
         $reflect = new \ReflectionClass($class);
 
-        if (!file_exists($fixtureDir = dirname($reflect->getFileName()).'/'.$reflect->getShortName().'.json')) {
+        if (!file_exists($fixtureDir ??= dirname($reflect->getFileName()).'/'.$reflect->getShortName().'.json')) {
             file_put_contents($fixtureDir, $schema->toJson());
         }
 
@@ -67,21 +67,21 @@ class ObjectModelDescriberTest extends WebTestCase
 
     public static function provideFixtures(): \Generator
     {
-        //        yield [
-        //            SimpleClass::class,
-        //        ];
+        yield [
+            SimpleClass::class,
+        ];
 
         yield [
             ArrayOfInt::class,
         ];
 
-        //        yield [
-        //            ArrayOfString::class,
-        //        ];
-        //
-        //        yield [
-        //            ComplexArray::class
-        //        ];
+        yield [
+            ArrayOfString::class,
+        ];
+
+        yield [
+            ComplexArray::class
+        ];
     }
 
     private static function getFixture(string $fixture): string

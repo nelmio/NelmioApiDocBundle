@@ -1,0 +1,55 @@
+{
+    "required": [
+        "untypedArray",
+        "arrayOfStrings",
+        "listOfStrings",
+        "shortArrayOfStrings"
+    ],
+    "properties": {
+        "untypedArray": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        "arrayOfStrings": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "listOfStrings": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "shortArrayOfStrings": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "type": "object"
+}

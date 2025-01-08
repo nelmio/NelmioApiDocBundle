@@ -13,8 +13,6 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures;
 
 class ComplexArray
 {
-    public array $untypedArray;
-
     /**
      * @var list<int>|array<string, float>
      */
