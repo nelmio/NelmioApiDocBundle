@@ -46,5 +46,9 @@ final class ObjectModelDescriberTestTypeInfo extends ObjectModelDescriberTest
         yield [
             Fixtures\TypeInfo\ArrayMixedKeys::class
         ];
+
+        yield [
+            Fixtures\TypeInfo\MixedTypes::class
+        ];
     }
 }
