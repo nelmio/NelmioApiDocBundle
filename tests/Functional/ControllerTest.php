@@ -202,7 +202,7 @@ final class ControllerTest extends WebTestCase
             null,
             'VendorExtension',
             [],
-            [__DIR__.'/Configs/VendorExtension.yaml'],
+            [__DIR__.'/Configs/VendorExtension.yaml', __DIR__.'/Configs/StubProcessor.yaml'],
         ];
     }
 
