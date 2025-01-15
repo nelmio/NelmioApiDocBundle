@@ -28,7 +28,7 @@
         "symfony/options-resolver": "^5.4 || ^6.4 || ^7.1",
         "symfony/property-info": "^5.4.10 || ^6.4 || ^7.1",
         "symfony/routing": "^5.4 || ^6.4 || ^7.1",
-        "zircote/swagger-php": "^4.6.1 || ^5.0"
+        "zircote/swagger-php": "^4.11.1 || ^5.0"
     },
     "require-dev": {
         "api-platform/core": "^2.7.0 || ^3",

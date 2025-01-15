@@ -21,6 +21,7 @@ use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use Nelmio\ApiDocBundle\OpenApiGenerator;
 use Nelmio\ApiDocBundle\Processor\MapQueryStringProcessor;
 use Nelmio\ApiDocBundle\Processor\MapRequestPayloadProcessor;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
@@ -75,7 +76,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $container->setParameter('nelmio_api_doc.use_validation_groups', $config['use_validation_groups']);
 
         // Register the OpenAPI Generator as a service.
-        $container->register('nelmio_api_doc.open_api.generator', Generator::class)
+        $container->register('nelmio_api_doc.open_api.generator', OpenApiGenerator::class)
             ->setPublic(false);
 
         $cachePool = $config['cache']['pool'] ?? null;
