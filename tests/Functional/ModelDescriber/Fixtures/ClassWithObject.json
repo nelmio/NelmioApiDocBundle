@@ -1,0 +1,11 @@
+{
+    "required": [
+        "name"
+    ],
+    "properties": {
+        "name": {
+            "$ref": "#/components/schemas/"
+        }
+    },
+    "type": "object"
+}

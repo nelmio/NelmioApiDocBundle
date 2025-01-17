@@ -86,6 +86,14 @@ class ObjectModelDescriberTest extends WebTestCase
         yield [
             Fixtures\NullableScalar::class
         ];
+
+        yield [
+            Fixtures\ClassWithObject::class
+        ];
+
+        yield [
+            Fixtures\ClassWithIntersection::class
+        ];
     }
 
     private static function getFixture(string $fixture): string

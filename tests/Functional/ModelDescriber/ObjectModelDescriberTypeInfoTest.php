@@ -60,5 +60,9 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
         yield [
             Fixtures\TypeInfo\MixedTypes::class
         ];
+
+        yield [
+            Fixtures\TypeInfo\ClassWithIntersectionNullable::class
+        ];
     }
 }
