@@ -21,6 +21,14 @@ final class ObjectModelDescriberTestTypeInfo extends ObjectModelDescriberTest
         return new TestKernel(TestKernel::USE_TYPE_INFO);
     }
 
+    /**
+     * @dataProvider provideFixtures
+     */
+    public function testItDescribes(string $class, ?string $fixtureDir = null): void
+    {
+        parent::testItDescribes($class, $fixtureDir);
+    }
+
     public static function provideFixtures(): \Generator
     {
         /*
