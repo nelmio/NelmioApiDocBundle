@@ -35,13 +35,6 @@ final class IntersectionDescriber implements TypeDescriberInterface, TypeDescrib
             return !$innerType->isIdentifiedBy(TypeIdentifier::NULL);
         }));
 
-        // Ensure that non $ref schemas are not described in allOf
-        if (1 === count($innerTypes) && !$innerTypes[0] instanceof Type\ObjectType) {
-            $this->describer->describe($innerTypes[0], $schema, $context);
-
-            return;
-        }
-
         $weakContext = Util::createWeakContext($schema->_context);
         foreach ($innerTypes as $innerType) {
             if (Generator::UNDEFINED === $schema->allOf) {
