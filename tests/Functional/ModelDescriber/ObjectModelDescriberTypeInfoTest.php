@@ -14,19 +14,11 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber;
 use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-final class ObjectModelDescriberTestTypeInfo extends ObjectModelDescriberTest
+final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
 {
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_TYPE_INFO);
-    }
-
-    /**
-     * @dataProvider provideFixtures
-     */
-    public function testItDescribes(string $class, ?string $fixtureDir = null): void
-    {
-        parent::testItDescribes($class, $fixtureDir);
     }
 
     public static function provideFixtures(): \Generator
