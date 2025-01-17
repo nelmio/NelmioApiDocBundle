@@ -28,7 +28,7 @@ final class ArrayDescriber implements TypeDescriberInterface, TypeDescriberAware
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        if (!$type instanceof CollectionType || !$type->getCollectionKeyType() instanceof Type\UnionType) {
+        if (!$type->getCollectionKeyType() instanceof Type\UnionType) {
             throw new \LogicException('This describer only supports '.CollectionType::class.' with '.Type\UnionType::class.' as key type.');
         }
 
