@@ -4,7 +4,8 @@
     ],
     "properties": {
         "name": {
-            "$ref": "#/components/schemas/"
+            "type": "object",
+            "additionalProperties": true
         }
     },
     "type": "object"

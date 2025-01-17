@@ -54,7 +54,7 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
             $types[0]->getCollectionValueTypes()[0] ?? null,
         ); // ignore nullable field
 
-        if (!$types[0]->getClassName()) {
+        if (null === $types[0]->getClassName()) {
             $property->type = 'object';
             $property->additionalProperties = true;
 
