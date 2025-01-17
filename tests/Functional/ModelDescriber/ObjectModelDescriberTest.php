@@ -91,9 +91,12 @@ class ObjectModelDescriberTest extends WebTestCase
             Fixtures\ClassWithObject::class
         ];
 
-        yield [
-            Fixtures\ClassWithIntersection::class
-        ];
+        if (PHP_VERSION_ID >= 80100) {
+            yield [
+                Fixtures\ClassWithIntersection::class
+            ];
+        }
+
     }
 
     private static function getFixture(string $fixture): string
