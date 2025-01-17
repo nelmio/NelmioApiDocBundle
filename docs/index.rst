@@ -601,9 +601,9 @@ If you need more complex features, take a look at:
     alternative_names
     customization
     commands
-    faq
     security
     symfony_attributes
+    faq
 
 .. _`SwaggerPHP examples`: https://github.com/zircote/swagger-php/tree/master/Examples
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
