@@ -15,8 +15,10 @@ use OpenApi\Generator;
 
 /**
  * Extension of OpenApi\Generator to be able to inject processors with dependency injection.
+ *
+ * @internal
  */
-class OpenApiGenerator extends Generator
+final class OpenApiGenerator extends Generator
 {
     public function addNelmioProcessor(callable $processor, ?string $before = null): void
     {
