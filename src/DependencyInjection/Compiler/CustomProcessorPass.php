@@ -45,7 +45,7 @@ final class CustomProcessorPass implements CompilerPassInterface
                 }
             }
 
-            $definition->addMethodCall('addProcessor', [$reference, $before]);
+            $definition->addMethodCall('addNelmioProcessor', [$reference, $before]);
         }
     }
 }
