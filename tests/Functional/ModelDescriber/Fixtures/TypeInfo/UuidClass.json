@@ -1,0 +1,52 @@
+{
+    "required": [
+        "uuid",
+        "ulid",
+        "uuidV1",
+        "uuidV3",
+        "uuidV4",
+        "uuidV5",
+        "uuidV6",
+        "uuidV7",
+        "uuidV8"
+    ],
+    "properties": {
+        "uuid": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "ulid": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "uuidV1": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "uuidV3": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "uuidV4": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "uuidV5": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "uuidV6": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "uuidV7": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "uuidV8": {
+            "type": "string",
+            "format": "uuid"
+        }
+    },
+    "type": "object"
+}
