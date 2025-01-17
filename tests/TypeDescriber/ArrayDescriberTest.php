@@ -34,8 +34,10 @@ class ArrayDescriberTest extends TestCase
 
     /**
      * @dataProvider provideInvalidCollectionTypes
+     *
+     * @param CollectionType $type
      */
-    public function testDescribeHandlesInvalidKeyType(CollectionType $type): void
+    public function testDescribeHandlesInvalidKeyType($type): void
     {
         self::expectException(\LogicException::class);
         self::expectExceptionMessage('This describer only supports '.CollectionType::class.' with '.UnionType::class.' as key type.');
@@ -45,6 +47,10 @@ class ArrayDescriberTest extends TestCase
 
     public static function provideInvalidCollectionTypes(): \Generator
     {
+        if (!version_compare(Kernel::VERSION, '7.2.0', '>=')) {
+            return yield [false];
+        }
+
         yield [Type::array(Type::int(), Type::int())];
         yield [Type::array(Type::int(), Type::string())];
         yield [Type::list()];
