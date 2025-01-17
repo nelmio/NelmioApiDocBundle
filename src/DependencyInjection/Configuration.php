@@ -26,7 +26,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->booleanNode('type_info')
-                    ->info('Use the symfony/type-info component for determining types. This is experimental and could be changed at any time without prior notice.')
+                    ->info('Use the symfony/type-info component for determining types.')
                     ->defaultFalse()
                 ->end()
                 ->booleanNode('use_validation_groups')
