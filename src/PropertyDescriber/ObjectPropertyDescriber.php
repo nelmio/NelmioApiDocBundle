@@ -54,6 +54,13 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
             $types[0]->getCollectionValueTypes()[0] ?? null,
         ); // ignore nullable field
 
+        if (!$types[0]->getClassName()) {
+            $property->type = 'object';
+            $property->additionalProperties = true;
+
+            return;
+        }
+
         if ($types[0]->isNullable()) {
             $weakContext = Util::createWeakContext($property->_context);
             $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups, [], $context)), '_context' => $weakContext])];

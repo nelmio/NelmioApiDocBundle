@@ -96,7 +96,6 @@ class ObjectModelDescriberTest extends WebTestCase
                 Fixtures\ClassWithIntersection::class
             ];
         }
-
     }
 
     private static function getFixture(string $fixture): string
