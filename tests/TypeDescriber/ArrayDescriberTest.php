@@ -35,7 +35,7 @@ class ArrayDescriberTest extends TestCase
     /**
      * @dataProvider provideInvalidCollectionTypes
      */
-    public function testDescribeHandlesInvalidKeyType(Type $type): void
+    public function testDescribeHandlesInvalidKeyType(CollectionType $type): void
     {
         self::expectException(\LogicException::class);
         self::expectExceptionMessage('This describer only supports '.CollectionType::class.' with '.UnionType::class.' as key type.');
