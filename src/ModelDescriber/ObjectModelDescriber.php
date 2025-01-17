@@ -162,7 +162,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
                 $type = $this->propertyInfo->getType($class, $propertyName);
                 if (null === $type) {
-                    throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
+                    throw new \LogicException(sprintf('The TypeInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
                 }
 
                 if ($this->propertyDescriber instanceof ModelRegistryAwareInterface) {

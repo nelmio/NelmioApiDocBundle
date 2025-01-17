@@ -11,9 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber;
 
+use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 
 final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
 {
@@ -71,6 +74,46 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
 
         yield [
             Fixtures\TypeInfo\DateTimeClass::class
+        ];
+    }
+
+    /**
+     * @dataProvider provideInvalidTypes
+     */
+    public function testInvalidType(object $class, string $expectedType, string $propertyName): void
+    {
+        $model = new Model(new LegacyType('object', false, get_class($class)));
+        $schema = new OA\Schema([
+            'type' => 'object',
+        ]);
+
+        self::expectException(\Exception::class);
+        self::expectExceptionMessage(sprintf('Type "%s" not supported in %s::%s. You may need to use the `@OA\Property(type="")` annotation to specify it manually.', $expectedType, get_class($class), $propertyName));
+
+        $this->modelDescriber->describe($model, $schema);
+    }
+
+    public static function provideInvalidTypes(): \Generator
+    {
+        yield 'never' => [
+            new class {
+                public function getNever(): never
+                {
+                    throw new \Exception('This method should never be called');
+                }
+            },
+            'never',
+            '$never',
+        ];
+
+        yield 'void' => [
+            new class {
+                public function getVoid(): void
+                {
+                }
+            },
+            'void',
+            '$void',
         ];
     }
 }

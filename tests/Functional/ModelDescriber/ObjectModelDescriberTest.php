@@ -22,7 +22,7 @@ use Symfony\Component\PropertyInfo\Type as LegacyType;
 
 class ObjectModelDescriberTest extends WebTestCase
 {
-    private ObjectModelDescriber $modelDescriber;
+    protected ObjectModelDescriber $modelDescriber;
 
     protected function setUp(): void
     {
