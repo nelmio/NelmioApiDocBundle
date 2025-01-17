@@ -123,6 +123,9 @@ final class ControllerTest extends WebTestCase
                 [
                     'name' => 'MapQueryStringController',
                     'type' => $type,
+                    null,
+                    [],
+                    [__DIR__.'/Configs/EnableSerializer.yaml']
                 ],
             ];
             yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
@@ -132,7 +135,7 @@ final class ControllerTest extends WebTestCase
                 ],
                 'MapQueryStringCleanupComponents',
                 [],
-                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
+                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml', __DIR__.'/Configs/EnableSerializer.yaml'],
             ];
 
             yield 'operationId must always be generated' => [
@@ -154,6 +157,9 @@ final class ControllerTest extends WebTestCase
                     'name' => 'MapRequestPayloadController',
                     'type' => $type,
                 ],
+                null,
+                [],
+                [__DIR__.'/Configs/EnableSerializer.yaml']
             ];
 
             yield 'Create top level Tag from Tag attribute' => [
