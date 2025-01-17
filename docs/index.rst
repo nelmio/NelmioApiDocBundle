@@ -524,6 +524,20 @@ General PHP objects
     When using the JMS serializer combined with `willdurand/Hateoas`_ (and the `BazingaHateoasBundle`_),
     HATEOAS metadata are automatically extracted
 
+.. tip::
+
+    Enable the `TypeInfo component`_ in your configuration to improve automatic type guessing:
+
+    .. code-block:: yaml
+
+        nelmio_api_doc:
+            type_info: true
+            # ...
+
+.. versionadded:: 7.2
+
+    The `TypeInfo component`_ was introduced as a stable feature in Symfony 7.2.
+
 If you want to customize the documentation of an object's property, you can use ``#[OA\Property]``::
 
 
@@ -607,6 +621,7 @@ If you need more complex features, take a look at:
 
 .. _`SwaggerPHP examples`: https://github.com/zircote/swagger-php/tree/master/Examples
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
+.. _`TypeInfo component`: https://symfony.com/doc/current/components/type_info.html
 .. _`willdurand/Hateoas`: https://github.com/willdurand/Hateoas
 .. _`BazingaHateoasBundle`: https://github.com/willdurand/BazingaHateoasBundle
 .. _`JMS serializer`: https://jmsyst.com/libs/serializer
