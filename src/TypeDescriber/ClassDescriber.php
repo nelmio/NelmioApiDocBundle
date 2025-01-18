@@ -60,7 +60,7 @@ final class ClassDescriber implements TypeDescriberInterface, ModelRegistryAware
         }
 
         $schema->ref = $this->modelRegistry->register(
-            new Model(new LegacyType('object', false, $type->getClassName()), null, null, $context)
+            new Model(new LegacyType('object', false, $type->getClassName()), serializationContext: $context)
         );
     }
 

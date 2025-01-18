@@ -66,7 +66,7 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
             ]
         );
 
-        $operation = $this->createMock(Operation::class);
+        $operation = new Operation([]);
         $operation->_context = new Context();
 
         $describer->describe($argumentData, $operation);

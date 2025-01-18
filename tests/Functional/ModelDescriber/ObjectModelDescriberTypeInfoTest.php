@@ -80,7 +80,7 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
         ]);
 
         self::expectException(\Exception::class);
-        self::expectExceptionMessage(\sprintf('Type "%s" is not supported in %s::%s. You may need to use the `@OA\Property(type="")` annotation to specify it manually.', $expectedType, $class::class, $propertyName));
+        self::expectExceptionMessage(\sprintf('Type "%s" is not supported in %s::%s. You may need to use the `#[OA\Property(type="")]` attribute to specify it manually.', $expectedType, $class::class, $propertyName));
 
         $this->modelDescriber->describe($model, $schema);
     }
