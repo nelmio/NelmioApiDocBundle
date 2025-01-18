@@ -31,7 +31,7 @@
         "zircote/swagger-php": "^4.11.1 || ^5.0"
     },
     "require-dev": {
-        "api-platform/core": "^2.7.8 || ^3",
+        "api-platform/core": "^2.7.16 || ^3",
         "friendsofphp/php-cs-fixer": "^3.52",
         "friendsofsymfony/rest-bundle": "^3.2.0",
         "jms/serializer": "^3.32",
@@ -56,7 +56,7 @@
         "symfony/twig-bundle": "^6.4 || ^7.1",
         "symfony/uid": "^6.4 || ^7.1",
         "symfony/validator": "^6.4 || ^7.1",
-        "willdurand/hateoas-bundle": "2.7.0",
+        "willdurand/hateoas-bundle": "^2.7",
         "willdurand/negotiation": "^3.0"
     },
     "conflict": {
