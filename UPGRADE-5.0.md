@@ -2,6 +2,10 @@
 
 ## BC BREAK: Bumped minimum PHP version to 8.1
 
+## Bumped minimum Symfony version to 6.4
+
+## Dropped support for Api Platform 2
+
 ## BC BREAK: Removed support for annotations
 Upgrade to PHP 8.1 attributes.
 
