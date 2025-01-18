@@ -16,7 +16,6 @@ use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Component\HttpKernel\Kernel;
 
 class FunctionalTest extends WebTestCase
 {
@@ -1234,19 +1233,17 @@ class FunctionalTest extends WebTestCase
             'type' => 'object',
         ];
 
-        if (version_compare(Kernel::VERSION, '6.1', '>=')) {
-            array_unshift($expected['required'], 'positiveInt', 'negativeInt');
-            $expected['properties'] += [
-                'positiveInt' => [
-                    'type' => 'integer',
-                    'minimum' => 1,
-                ],
-                'negativeInt' => [
-                    'type' => 'integer',
-                    'maximum' => -1,
-                ],
-            ];
-        }
+        array_unshift($expected['required'], 'positiveInt', 'negativeInt');
+        $expected['properties'] += [
+            'positiveInt' => [
+                'type' => 'integer',
+                'minimum' => 1,
+            ],
+            'negativeInt' => [
+                'type' => 'integer',
+                'maximum' => -1,
+            ],
+        ];
 
         self::assertEquals($expected, json_decode($this->getModel('RangeInteger')->toJson(), true));
     }

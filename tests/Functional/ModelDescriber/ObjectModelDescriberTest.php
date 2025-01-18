@@ -18,7 +18,6 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase;
 use OpenApi\Annotations as OA;
 use OpenApi\Annotations\OpenApi;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 
 class ObjectModelDescriberTest extends WebTestCase
@@ -92,11 +91,9 @@ class ObjectModelDescriberTest extends WebTestCase
             Fixtures\ClassWithObject::class,
         ];
 
-        if (\PHP_VERSION_ID >= 80100) {
-            yield [
-                Fixtures\ClassWithIntersection::class,
-            ];
-        }
+        yield [
+            Fixtures\ClassWithIntersection::class,
+        ];
 
         yield [
             Fixtures\DateTimeClass::class,
@@ -106,11 +103,9 @@ class ObjectModelDescriberTest extends WebTestCase
             Fixtures\UuidClass::class,
         ];
 
-        if (version_compare(Kernel::VERSION, '6.4.0', '>=')) {
-            yield [
-                Fixtures\UuidClass7And8::class,
-            ];
-        }
+        yield [
+            Fixtures\UuidClass7And8::class,
+        ];
 
         yield [
             Fixtures\Refs::class,

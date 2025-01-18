@@ -79,12 +79,10 @@ final class ControllerTest extends WebTestCase
 
     public static function provideAttributeTestCases(): \Generator
     {
-        $type = Kernel::MAJOR_VERSION === 5 ? 'annotation' : 'attribute';
-
         yield 'Promoted properties defaults attributes' => [
             [
                 'name' => 'PromotedPropertiesController81',
-                'type' => $type,
+                'type' => 'attribute',
             ],
             'PromotedPropertiesDefaults',
             [],
@@ -94,78 +92,78 @@ final class ControllerTest extends WebTestCase
         yield 'JMS model opt out' => [
             [
                 'name' => 'JmsOptOutController',
-                'type' => $type,
+                'type' => 'attribute',
             ],
             'JmsOptOutController',
             [new JMSSerializerBundle()],
             [__DIR__.'/Configs/JMS.yaml'],
         ];
 
-        if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
-            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
-                [
-                    'name' => 'Controller2209',
-                    'type' => $type,
-                ],
-            ];
-            yield 'MapQueryString' => [
-                [
-                    'name' => 'MapQueryStringController',
-                    'type' => $type,
-                    null,
-                    [],
-                    [__DIR__.'/Configs/EnableSerializer.yaml'],
-                ],
-            ];
-            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
-                [
-                    'name' => 'MapQueryStringController',
-                    'type' => $type,
-                ],
-                'MapQueryStringCleanupComponents',
-                [],
-                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml', __DIR__.'/Configs/EnableSerializer.yaml'],
-            ];
+        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
+            [
+                'name' => 'Controller2209',
+                'type' => 'attribute',
+            ],
+        ];
 
-            yield 'operationId must always be generated' => [
-                [
-                    'name' => 'OperationIdController',
-                    'type' => $type,
-                ],
-            ];
-
-            yield 'Symfony 6.3 MapQueryParameter attribute' => [
-                [
-                    'name' => 'MapQueryParameterController',
-                    'type' => $type,
-                ],
-            ];
-
-            yield 'Symfony 6.3 MapRequestPayload attribute' => [
-                [
-                    'name' => 'MapRequestPayloadController',
-                    'type' => $type,
-                ],
+        yield 'MapQueryString' => [
+            [
+                'name' => 'MapQueryStringController',
+                'type' => 'attribute',
                 null,
                 [],
                 [__DIR__.'/Configs/EnableSerializer.yaml'],
-            ];
+            ],
+        ];
 
-            yield 'Create top level Tag from Tag attribute' => [
+        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
+            [
+                'name' => 'MapQueryStringController',
+                'type' => 'attribute',
+            ],
+            'MapQueryStringCleanupComponents',
+            [],
+            [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml', __DIR__.'/Configs/EnableSerializer.yaml'],
+        ];
+
+        yield 'operationId must always be generated' => [
+            [
+                'name' => 'OperationIdController',
+                'type' => 'attribute',
+            ],
+        ];
+
+        yield 'Symfony 6.3 MapQueryParameter attribute' => [
+            [
+                'name' => 'MapQueryParameterController',
+                'type' => 'attribute',
+            ],
+        ];
+
+        yield 'Symfony 6.3 MapRequestPayload attribute' => [
+            [
+                'name' => 'MapRequestPayloadController',
+                'type' => 'attribute',
+            ],
+            null,
+            [],
+            [__DIR__.'/Configs/EnableSerializer.yaml'],
+        ];
+
+        yield 'Create top level Tag from Tag attribute' => [
+            [
+                'name' => 'OpenApiTagController',
+                'type' => 'attribute',
+            ],
+        ];
+
+        if (property_exists(MapRequestPayload::class, 'type')) {
+            yield 'Symfony 7.1 MapRequestPayload array type' => [
                 [
-                    'name' => 'OpenApiTagController',
-                    'type' => $type,
+                    'name' => 'MapRequestPayloadArray',
+                    'type' => 'attribute',
                 ],
             ];
-
-            if (property_exists(MapRequestPayload::class, 'type')) {
-                yield 'Symfony 7.1 MapRequestPayload array type' => [
-                    [
-                        'name' => 'MapRequestPayloadArray',
-                        'type' => $type,
-                    ],
-                ];
-            }
         }
     }
 

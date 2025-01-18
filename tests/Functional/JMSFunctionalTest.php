@@ -380,11 +380,6 @@ class JMSFunctionalTest extends WebTestCase
             ],
         ], json_decode($this->getModel('ArticleType81')->toJson(), true));
 
-        if (TestKernel::isAnnotationsAvailable()) {
-            // Further tests have only been defined with attributes
-            return;
-        }
-
         self::assertEquals([
             'schema' => 'ArticleType812',
             'type' => 'string',
