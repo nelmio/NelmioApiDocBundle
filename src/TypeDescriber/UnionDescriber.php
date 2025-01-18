@@ -35,8 +35,8 @@ final class UnionDescriber implements TypeDescriberInterface, TypeDescriberAware
             return !$innerType->isIdentifiedBy(TypeIdentifier::NULL);
         }));
 
-        // Ensure that non $ref schemas are not described in oneOf
-        if (1 === count($innerTypes) && !$innerTypes[0] instanceof Type\ObjectType) {
+        // Ensure that union types of a single type are not described in oneOf
+        if (1 === count($innerTypes)) {
             $this->describer->describe($innerTypes[0], $schema, $context);
 
             return;
