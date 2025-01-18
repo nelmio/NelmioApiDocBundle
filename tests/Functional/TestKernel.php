@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use FOS\RestBundle\FOSRestBundle;
@@ -133,10 +132,9 @@ class TestKernel extends Kernel
         ]);
 
         $c->loadFromExtension('api_platform', [
+            'keep_legacy_inflector' => false,
             'mapping' => ['paths' => [
-                class_exists(ApiProperty::class)
-                ? '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform2'
-                : '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform3',
+                '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform3',
             ]],
         ]);
 
