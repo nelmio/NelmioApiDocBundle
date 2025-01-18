@@ -6,7 +6,9 @@
         "uuidV3",
         "uuidV4",
         "uuidV5",
-        "uuidV6"
+        "uuidV6",
+        "uuidV7",
+        "uuidV8"
     ],
     "properties": {
         "uuid": {
@@ -34,6 +36,14 @@
             "format": "uuid"
         },
         "uuidV6": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "uuidV7": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "uuidV8": {
             "type": "string",
             "format": "uuid"
         },

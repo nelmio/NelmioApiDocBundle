@@ -18,8 +18,10 @@ use Symfony\Component\Uid\UuidV3;
 use Symfony\Component\Uid\UuidV4;
 use Symfony\Component\Uid\UuidV5;
 use Symfony\Component\Uid\UuidV6;
+use Symfony\Component\Uid\UuidV7;
+use Symfony\Component\Uid\UuidV8;
 
-class UuidClass
+class UuidClass7And8
 {
     public Uuid $uuid;
     public Ulid $ulid;
@@ -28,6 +30,8 @@ class UuidClass
     public UuidV4 $uuidV4;
     public UuidV5 $uuidV5;
     public UuidV6 $uuidV6;
+    public UuidV7 $uuidV7;
+    public UuidV8 $uuidV8;
 
     public ?Uuid $nullableUuid;
 }
