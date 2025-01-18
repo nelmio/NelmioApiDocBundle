@@ -87,7 +87,7 @@ final class FosRestDescriber implements RouteDescriberInterface
     /**
      * @param mixed $requirements Value to retrieve a pattern from
      */
-    private function getPattern($requirements): ?string
+    private function getPattern(mixed $requirements): ?string
     {
         if (\is_array($requirements) && isset($requirements['rule'])) {
             return (string) $requirements['rule'];
@@ -107,7 +107,7 @@ final class FosRestDescriber implements RouteDescriberInterface
     /**
      * @param mixed $requirements Value to retrieve a format from
      */
-    private function getFormat($requirements): ?string
+    private function getFormat(mixed $requirements): ?string
     {
         if ($requirements instanceof Constraint && !$requirements instanceof Regex) {
             if ($requirements instanceof DateTime) {
@@ -136,7 +136,7 @@ final class FosRestDescriber implements RouteDescriberInterface
      *
      * @return mixed[]|null
      */
-    private function getEnum($requirements, \ReflectionMethod $reflectionMethod): ?array
+    private function getEnum(mixed $requirements, \ReflectionMethod $reflectionMethod): ?array
     {
         if (!($requirements instanceof Choice)) {
             return null;
