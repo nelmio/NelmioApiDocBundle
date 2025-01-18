@@ -102,7 +102,7 @@
 
         <!-- Property Describers -->
         <service id="nelmio_api_doc.object_model.property_describer" class="Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriber" public="false">
-            <argument type="tagged" tag="nelmio_api_doc.object_model.property_describer" />
+            <argument type="tagged_iterator" tag="nelmio_api_doc.object_model.property_describer" />
 
             <tag name="nelmio_api_doc.object_model.property_describer" priority="100" />
         </service>
@@ -160,6 +160,65 @@
         <!-- Swagger processors -->
         <service id="nelmio_api_doc.swagger.processor.nullable_property" class="Nelmio\ApiDocBundle\Processor\NullablePropertyProcessor">
             <tag name="nelmio_api_doc.swagger.processor" />
+        </service>
+
+        <!-- Type describers (symfony/type-info) -->
+        <service id="nelmio_api_doc.type_describer.chain" class="Nelmio\ApiDocBundle\TypeDescriber\ChainDescriber" public="false">
+            <argument type="tagged" tag="nelmio_api_doc.type_describer" />
+
+            <tag name="nelmio_api_doc.type_describer" priority="1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.array" class="Nelmio\ApiDocBundle\TypeDescriber\ArrayDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.bool" class="Nelmio\ApiDocBundle\TypeDescriber\BoolDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.class" class="Nelmio\ApiDocBundle\TypeDescriber\ClassDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.dictionary" class="Nelmio\ApiDocBundle\TypeDescriber\DictionaryDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.float" class="Nelmio\ApiDocBundle\TypeDescriber\FloatDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.integer" class="Nelmio\ApiDocBundle\TypeDescriber\IntegerDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.intersection" class="Nelmio\ApiDocBundle\TypeDescriber\IntersectionDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.list" class="Nelmio\ApiDocBundle\TypeDescriber\ListDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.mixed" class="Nelmio\ApiDocBundle\TypeDescriber\MixedDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.nullable" class="Nelmio\ApiDocBundle\TypeDescriber\NullableDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-950" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.object" class="Nelmio\ApiDocBundle\TypeDescriber\ObjectDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.string" class="Nelmio\ApiDocBundle\TypeDescriber\StringDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.union" class="Nelmio\ApiDocBundle\TypeDescriber\UnionDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
         </service>
     </services>
 

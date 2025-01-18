@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
+use Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
