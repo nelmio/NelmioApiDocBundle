@@ -318,7 +318,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             // See https://github.com/schmittjoh/serializer/blob/5a5a03a/src/Metadata/Driver/EnumPropertiesDriver.php#L51
             if ('enum' === $type['name']
                 && isset($type['params'][0])
-                && \function_exists('enum_exists')
             ) {
                 $typeParam = $type['params'][0];
                 if (isset($typeParam['name'])) {

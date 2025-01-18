@@ -40,10 +40,6 @@ class EnumModelDescriber implements ModelDescriberInterface
 
     public function supports(Model $model): bool
     {
-        if (!\function_exists('enum_exists')) {
-            return false;
-        }
-
         return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
             && enum_exists($model->getType()->getClassName())
             && is_subclass_of($model->getType()->getClassName(), \BackedEnum::class);

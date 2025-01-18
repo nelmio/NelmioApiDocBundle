@@ -40,9 +40,6 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\RouteCollection;
 
 final class NelmioApiDocExtension extends Extension implements PrependExtensionInterface
@@ -200,31 +197,25 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ])
         ;
 
-        if (class_exists(MapQueryString::class)) {
-            $container->register('nelmio_api_doc.route_argument_describer.map_query_string', SymfonyMapQueryStringDescriber::class)
-                ->setPublic(false)
-                ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
+        $container->register('nelmio_api_doc.route_argument_describer.map_query_string', SymfonyMapQueryStringDescriber::class)
+            ->setPublic(false)
+            ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
 
-            $container->register('nelmio_api_doc.swagger.processor.map_query_string', MapQueryStringProcessor::class)
-                ->setPublic(false)
-                ->addTag('nelmio_api_doc.swagger.processor', ['priority' => 0]);
-        }
+        $container->register('nelmio_api_doc.swagger.processor.map_query_string', MapQueryStringProcessor::class)
+            ->setPublic(false)
+            ->addTag('nelmio_api_doc.swagger.processor', ['priority' => 0]);
 
-        if (class_exists(MapRequestPayload::class)) {
-            $container->register('nelmio_api_doc.route_argument_describer.map_request_payload', SymfonyMapRequestPayloadDescriber::class)
-                ->setPublic(false)
-                ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
+        $container->register('nelmio_api_doc.route_argument_describer.map_request_payload', SymfonyMapRequestPayloadDescriber::class)
+            ->setPublic(false)
+            ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
 
-            $container->register('nelmio_api_doc.swagger.processor.map_request_payload', MapRequestPayloadProcessor::class)
-                ->setPublic(false)
-                ->addTag('nelmio_api_doc.swagger.processor', ['priority' => 0]);
-        }
+        $container->register('nelmio_api_doc.swagger.processor.map_request_payload', MapRequestPayloadProcessor::class)
+            ->setPublic(false)
+            ->addTag('nelmio_api_doc.swagger.processor', ['priority' => 0]);
 
-        if (class_exists(MapQueryParameter::class)) {
-            $container->register('nelmio_api_doc.route_argument_describer.map_query_parameter', SymfonyMapQueryParameterDescriber::class)
-                ->setPublic(false)
-                ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
-        }
+        $container->register('nelmio_api_doc.route_argument_describer.map_query_parameter', SymfonyMapQueryParameterDescriber::class)
+            ->setPublic(false)
+            ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
 
         $bundles = $container->getParameter('kernel.bundles');
         if (!isset($bundles['TwigBundle']) || !class_exists('Symfony\Component\Asset\Packages')) {
@@ -237,7 +228,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         }
 
         // ApiPlatform support
-        if (isset($bundles['ApiPlatformBundle']) && class_exists('ApiPlatform\Documentation\Documentation')) {
+        if (isset($bundles['ApiPlatformBundle'])) {
             $loader->load('api_platform.xml');
         }
 
