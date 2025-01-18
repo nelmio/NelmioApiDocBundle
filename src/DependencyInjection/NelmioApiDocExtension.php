@@ -167,7 +167,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         if (true === $config['type_info']) {
             $container->getDefinition('nelmio_api_doc.model_describers.object')
-                ->setArgument(2, new Reference('nelmio_api_doc.schema_describer.chain'));
+                ->setArgument(2, new Reference('nelmio_api_doc.type_describer.chain'));
         }
 
         $container->getDefinition('nelmio_api_doc.model_describers.object')
