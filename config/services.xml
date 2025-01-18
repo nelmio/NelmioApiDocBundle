@@ -202,7 +202,7 @@
         </service>
 
         <service id="nelmio_api_doc.type_describer.nullable" class="Nelmio\ApiDocBundle\TypeDescriber\NullableDescriber" public="false">
-            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+            <tag name="nelmio_api_doc.type_describer" priority="-950" />
         </service>
 
         <service id="nelmio_api_doc.type_describer.object_class" class="Nelmio\ApiDocBundle\TypeDescriber\ObjectClassDescriber" public="false">
