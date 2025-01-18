@@ -56,7 +56,7 @@
         "symfony/twig-bundle": "^6.4 || ^7.1",
         "symfony/uid": "^6.4 || ^7.1",
         "symfony/validator": "^6.4 || ^7.1",
-        "willdurand/hateoas-bundle": "^2.7@beta",
+        "willdurand/hateoas-bundle": "2.7.0-beta2",
         "willdurand/negotiation": "^3.0"
     },
     "conflict": {
