@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\Attribute;
 use OpenApi\Annotations\AbstractAnnotation;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Security extends AbstractAnnotation
+final class Security extends AbstractAnnotation
 {
     public static $_types = [
         'name' => 'string',
