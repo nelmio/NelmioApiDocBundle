@@ -8,10 +8,6 @@ MapQueryString
 
 Using the `Symfony MapQueryString`_ attribute allows NelmioApiDocBundle to automatically generate your query parameter documentation for your endpoint from your object.
 
-.. versionadded:: 6.3
-
-    The :class:`Symfony\\Component\\HttpKernel\\Attribute\\MapQueryString` attribute was introduced in Symfony 6.3.
-
 Modify generated documentation
 ~~~~~~~
 
@@ -35,11 +31,6 @@ MapQueryParameter
 
 Using the `Symfony MapQueryParameter`_ attribute allows NelmioApiDocBundle to automatically generate your query parameter documentation for your endpoint.
 
-.. versionadded:: 6.3
-
-    The :class:`Symfony\\Component\\HttpKernel\\Attribute\\MapQueryParameter` attribute was introduced in Symfony 6.3.
-
-
 Modify generated documentation
 ~~~~~~~
 
@@ -58,11 +49,6 @@ MapRequestPayload
 -------------------------------
 
 Using the `Symfony MapRequestPayload`_ attribute allows NelmioApiDocBundle to automatically generate your request body documentation for your endpoint.
-
-.. versionadded:: 6.3
-
-    The :class:`Symfony\\Component\\HttpKernel\\Attribute\\MapRequestPayload` attribute was introduced in Symfony 6.3.
-
 
 Modify generated documentation
 ~~~~~~~

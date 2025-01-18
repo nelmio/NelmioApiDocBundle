@@ -11,9 +11,18 @@
 
 namespace Nelmio\ApiDocBundle\Attribute;
 
+<<<<<<<< HEAD:src/Attribute/Areas.php
+========
+trigger_deprecation('nelmio/api-doc-bundle', '4.32.3', 'The "%s" class is deprecated and will be removed in 5.0. Use the "\Nelmio\ApiDocBundle\Attribute\Areas" attribute instead.', Areas::class);
+
+/**
+ * @Annotation
+ */
+>>>>>>>> master:src/Annotation/Areas.php
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
-final class Areas
+final class Areas extends \Nelmio\ApiDocBundle\Attribute\Areas
 {
+<<<<<<<< HEAD:src/Attribute/Areas.php
     /** @var string[] */
     private array $areas;
 
@@ -48,4 +57,6 @@ final class Areas
     {
         return \in_array($area, $this->areas, true);
     }
+========
+>>>>>>>> master:src/Annotation/Areas.php
 }

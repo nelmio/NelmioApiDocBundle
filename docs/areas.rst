@@ -102,4 +102,3 @@ Then add the attribute before your controller or action::
                ...
             }
         }
-

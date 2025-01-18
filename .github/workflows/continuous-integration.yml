@@ -30,20 +30,32 @@ jobs:
             composer-flags: "--prefer-lowest"
           - php-version: 8.1
             symfony-require: "5.4"
+          - php-version: 8.2
+            symfony-require: "5.4"
           - php-version: 8.3
+            symfony-require: "5.4"
+          - php-version: 8.4
             symfony-require: "5.4"
           - php-version: 8.1
             symfony-require: "6.4"
+          - php-version: 8.2
+            symfony-require: "6.4"
           - php-version: 8.3
             symfony-require: "6.4"
-          - php-version: 8.2
-            symfony-require: "7.0"
-          - php-version: 8.3
-            symfony-require: "7.0"
+          - php-version: 8.4
+            symfony-require: "6.4"
           - php-version: 8.2
             symfony-require: "7.1"
           - php-version: 8.3
             symfony-require: "7.1"
+          - php-version: 8.4
+            symfony-require: "7.1"
+          - php-version: 8.2
+            symfony-require: "7.2"
+          - php-version: 8.3
+            symfony-require: "7.2"
+          - php-version: 8.4
+            symfony-require: "7.2"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -104,7 +116,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload code coverage to Codecov.io
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: true
         env:
@@ -130,7 +142,7 @@ jobs:
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
         with:
-          symfony-version: "7.0.*"
+          symfony-version: "7.2.*"
 
       - name: Run PHP-CS-Fixer
         run: vendor/bin/php-cs-fixer check -v --diff
@@ -155,7 +167,7 @@ jobs:
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
         with:
-          symfony-version: "7.0.*"
+          symfony-version: "7.2.*"
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse --memory-limit=2G --no-progress --no-interaction

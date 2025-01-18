@@ -101,6 +101,13 @@ final class ControllerTest extends WebTestCase
             [__DIR__.'/Configs/JMS.yaml'],
         ];
 
+        yield 'Deprecation null model options' => [
+            [
+                'name' => 'DeprecationController',
+                'type' => $type,
+            ],
+        ];
+
         if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
             yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
                 [
@@ -112,6 +119,9 @@ final class ControllerTest extends WebTestCase
                 [
                     'name' => 'MapQueryStringController',
                     'type' => $type,
+                    null,
+                    [],
+                    [__DIR__.'/Configs/EnableSerializer.yaml'],
                 ],
             ];
             yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
@@ -121,7 +131,7 @@ final class ControllerTest extends WebTestCase
                 ],
                 'MapQueryStringCleanupComponents',
                 [],
-                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
+                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml', __DIR__.'/Configs/EnableSerializer.yaml'],
             ];
 
             yield 'operationId must always be generated' => [
@@ -143,6 +153,9 @@ final class ControllerTest extends WebTestCase
                     'name' => 'MapRequestPayloadController',
                     'type' => $type,
                 ],
+                null,
+                [],
+                [__DIR__.'/Configs/EnableSerializer.yaml'],
             ];
 
             yield 'Create top level Tag from Tag attribute' => [
@@ -172,7 +185,7 @@ final class ControllerTest extends WebTestCase
             null,
             'VendorExtension',
             [],
-            [__DIR__.'/Configs/VendorExtension.yaml'],
+            [__DIR__.'/Configs/VendorExtension.yaml', __DIR__.'/Configs/StubProcessor.yaml'],
         ];
     }
 

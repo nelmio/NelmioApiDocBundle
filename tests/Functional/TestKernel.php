@@ -44,6 +44,7 @@ class TestKernel extends Kernel
     public const USE_FOSREST = 3;
     public const USE_VALIDATION_GROUPS = 8;
     public const USE_FORM_CSRF = 16;
+    public const USE_TYPE_INFO = 32;
 
     private int $flag;
 
@@ -216,6 +217,7 @@ class TestKernel extends Kernel
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
+            'type_info' => self::USE_TYPE_INFO === $this->flag,
             'html_config' => [
                 'assets_mode' => AssetsMode::BUNDLE,
             ],

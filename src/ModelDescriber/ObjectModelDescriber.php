@@ -17,13 +17,15 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
+use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+use Symfony\Component\TypeInfo\Type;
 
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
@@ -32,7 +34,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     private PropertyInfoExtractorInterface $propertyInfo;
     private ?ClassMetadataFactoryInterface $classMetadataFactory;
-    private PropertyDescriberInterface $propertyDescriber;
+    private PropertyDescriberInterface|TypeDescriberInterface $propertyDescriber;
     /** @var string[] */
     private array $mediaTypes;
     /** @var (NameConverterInterface&AdvancedNameConverterInterface)|null */
@@ -45,7 +47,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
      */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        PropertyDescriberInterface $propertyDescribers,
+        PropertyDescriberInterface|TypeDescriberInterface $propertyDescribers,
         array $mediaTypes,
         ?NameConverterInterface $nameConverter = null,
         bool $useValidationGroups = false,
@@ -136,9 +138,14 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 continue;
             }
 
-            $types = $this->propertyInfo->getTypes($class, $propertyName);
-            if (null === $types || 0 === \count($types)) {
-                throw new \LogicException(\sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `#[OA\Property(type="")]` to make its type explicit.', $class, $propertyName));
+            if ($this->propertyDescriber instanceof TypeDescriberInterface) {
+                $types = $this->propertyInfo->getType($class, $propertyName);
+            } else {
+                $types = $this->propertyInfo->getTypes($class, $propertyName);
+            }
+
+            if (null === $types) {
+                throw new \LogicException(\sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
             }
 
             $this->describeProperty($types, $model, $property, $propertyName);
@@ -176,9 +183,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     }
 
     /**
-     * @param Type[] $types
+     * @param LegacyType[]|Type $types
      */
-    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName): void
+    private function describeProperty($types, Model $model, OA\Schema $property, string $propertyName): void
     {
         if ($this->propertyDescriber instanceof ModelRegistryAwareInterface) {
             $this->propertyDescriber->setModelRegistry($this->modelRegistry);
@@ -189,7 +196,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             return;
         }
 
-        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may use the `#[OA\Property(type="")]` annotation to specify it manually.', $types[0]->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
+        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may need to use the `#[OA\Property(type="")]` annotation to specify it manually.', \is_array($types) ? $types[0]->getBuiltinType() : $types, $model->getType()->getClassName(), $propertyName));
     }
 
     /**
@@ -224,7 +231,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function supports(Model $model): bool
     {
-        return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
+        return LegacyType::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
             && (class_exists($model->getType()->getClassName()) || interface_exists($model->getType()->getClassName()));
     }
 }

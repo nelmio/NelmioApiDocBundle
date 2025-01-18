@@ -1,6 +1,26 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Class Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Areas extends @final class Nelmio\\\\ApiDocBundle\\\\Attribute\\\\Areas\\.$#"
+			count: 1
+			path: src/Annotation/Areas.php
+
+		-
+			message: "#^Class Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model extends @final class Nelmio\\\\ApiDocBundle\\\\Attribute\\\\Model\\.$#"
+			count: 1
+			path: src/Annotation/Model.php
+
+		-
+			message: "#^Class Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Operation extends @final class Nelmio\\\\ApiDocBundle\\\\Attribute\\\\Operation\\.$#"
+			count: 1
+			path: src/Annotation/Operation.php
+
+		-
+			message: "#^Class Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Security extends @final class Nelmio\\\\ApiDocBundle\\\\Attribute\\\\Security\\.$#"
+			count: 1
+			path: src/Annotation/Security.php
+
+		-
 			message: "#^Only booleans are allowed in an if condition, mixed given\\.$#"
 			count: 1
 			path: src/Describer/ExternalDocDescriber.php

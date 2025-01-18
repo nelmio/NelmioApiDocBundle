@@ -1,0 +1,24 @@
+{
+    "required": [
+        "int",
+        "float",
+        "string",
+        "bool"
+    ],
+    "properties": {
+        "int": {
+            "type": "integer"
+        },
+        "float": {
+            "type": "number",
+            "format": "float"
+        },
+        "string": {
+            "type": "string"
+        },
+        "bool": {
+            "type": "boolean"
+        }
+    },
+    "type": "object"
+}

@@ -54,6 +54,11 @@ final class ReflectionReader
         if ($reflection instanceof \ReflectionMethod) {
             $methodDefault = $this->getDefaultFromMethodReflection($reflection);
             if (Generator::UNDEFINED !== $methodDefault) {
+                if (null === $methodDefault) {
+                    $property->nullable = true;
+
+                    return;
+                }
                 $property->default = $methodDefault;
 
                 return;
@@ -61,9 +66,14 @@ final class ReflectionReader
         }
 
         if ($reflection instanceof \ReflectionProperty) {
-            $methodDefault = $this->getDefaultFromPropertyReflection($reflection);
-            if (Generator::UNDEFINED !== $methodDefault) {
-                $property->default = $methodDefault;
+            $propertyDefault = $this->getDefaultFromPropertyReflection($reflection);
+            if (Generator::UNDEFINED !== $propertyDefault) {
+                if (Generator::UNDEFINED === $property->nullable && null === $propertyDefault) {
+                    $property->nullable = true;
+
+                    return;
+                }
+                $property->default = $propertyDefault;
 
                 return;
             }
@@ -77,6 +87,7 @@ final class ReflectionReader
             if ($parameter->name !== $serializedName) {
                 continue;
             }
+
             if (!$parameter->isDefaultValueAvailable()) {
                 continue;
             }
@@ -89,7 +100,12 @@ final class ReflectionReader
                 continue;
             }
 
-            $property->default = $parameter->getDefaultValue();
+            $default = $parameter->getDefaultValue();
+            if (Generator::UNDEFINED === $property->nullable && null === $default) {
+                $property->nullable = true;
+            }
+
+            $property->default = $default;
         }
     }
 
@@ -134,12 +150,45 @@ final class ReflectionReader
             return Generator::UNDEFINED;
         }
 
-        $defaultValue = $reflection->getDeclaringClass()->getDefaultProperties()[$propertyName] ?? null;
-
-        if (null === $defaultValue) {
+        if (!$reflection->hasDefaultValue()) {
             return Generator::UNDEFINED;
         }
 
-        return $defaultValue;
+        if ($this->hasImplicitNullDefaultValue($reflection)) {
+            return Generator::UNDEFINED;
+        }
+
+        return $reflection->getDefaultValue();
+    }
+
+    /**
+     * Check whether the default value is an implicit null.
+     *
+     * An implicit null would be any null value that is not explicitly set and
+     * contradicts a set DocBlock @ var annotation
+     *
+     * So a property without an explicit value but an `@var int` docblock
+     * would be considered as not having an implicit null default value as
+     * that contradicts the annotation.
+     *
+     * A property without a default value and no docblock would be considered
+     * to have an explicit NULL default value to be set though.
+     */
+    private function hasImplicitNullDefaultValue(\ReflectionProperty $reflection): bool
+    {
+        if (null !== $reflection->getDefaultValue()) {
+            return false;
+        }
+
+        if (false === $reflection->getDocComment()) {
+            return true;
+        }
+
+        $docComment = $reflection->getDocComment();
+        if (!preg_match('/@var\s+([^\s]+)/', $docComment, $matches)) {
+            return true;
+        }
+
+        return !str_contains(strtolower($matches[1]), 'null');
     }
 }
