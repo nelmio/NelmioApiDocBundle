@@ -30,4 +30,9 @@ class ArrayOfInt
      * @var int[]
      */
     public array $shortArrayOfIntegers;
+
+    /**
+     * @var int[]|null
+     */
+    public ?array $shortArrayOfIntegersNullable;
 }

@@ -49,6 +49,13 @@
             "items": {
                 "type": "integer"
             }
+        },
+        "shortArrayOfIntegersNullable": {
+            "type": "array",
+            "items": {
+                "type": "integer"
+            },
+            "nullable": true
         }
     },
     "type": "object"
