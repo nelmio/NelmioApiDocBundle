@@ -14,7 +14,9 @@ namespace Nelmio\ApiDocBundle\TypeDescriber;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations\Schema;
+use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
@@ -45,6 +47,18 @@ final class ObjectClassDescriber implements TypeDescriberInterface, ModelRegistr
             $schema->format = 'date-time';
 
             return;
+        }
+
+        // Ensure that the schema gets describe in oneOf for nullable objects
+        if (true === $schema->nullable) {
+            $weakContext = Util::createWeakContext($schema->_context);
+            if (Generator::UNDEFINED === $schema->oneOf) {
+                $schema->oneOf = [];
+            }
+
+            $schema = $schema->oneOf[] = new Schema([
+                '_context' => $weakContext
+            ]);
         }
 
         $schema->ref = $this->modelRegistry->register(
