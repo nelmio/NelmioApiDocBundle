@@ -16,7 +16,6 @@ use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\IntersectionType;
-use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
  * @implements TypeDescriberInterface<IntersectionType>
@@ -31,12 +30,8 @@ final class IntersectionDescriber implements TypeDescriberInterface, TypeDescrib
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        $innerTypes = array_values(array_filter($type->getTypes(), function (Type $innerType) {
-            return !$innerType->isIdentifiedBy(TypeIdentifier::NULL);
-        }));
-
         $weakContext = Util::createWeakContext($schema->_context);
-        foreach ($innerTypes as $innerType) {
+        foreach ($type->getTypes() as $innerType) {
             if (Generator::UNDEFINED === $schema->allOf) {
                 $schema->allOf = [];
             }
