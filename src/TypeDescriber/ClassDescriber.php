@@ -29,7 +29,7 @@ use Symfony\Component\Uid\AbstractUid;
  *
  * @internal
  */
-final class ObjectClassDescriber implements TypeDescriberInterface, ModelRegistryAwareInterface
+final class ClassDescriber implements TypeDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 

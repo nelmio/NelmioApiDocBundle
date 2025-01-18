@@ -177,6 +177,10 @@
             <tag name="nelmio_api_doc.type_describer" priority="-1000" />
         </service>
 
+        <service id="nelmio_api_doc.type_describer.class" class="Nelmio\ApiDocBundle\TypeDescriber\ClassDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
         <service id="nelmio_api_doc.type_describer.dictionary" class="Nelmio\ApiDocBundle\TypeDescriber\DictionaryDescriber" public="false">
             <tag name="nelmio_api_doc.type_describer" priority="-1000" />
         </service>
@@ -203,10 +207,6 @@
 
         <service id="nelmio_api_doc.type_describer.nullable" class="Nelmio\ApiDocBundle\TypeDescriber\NullableDescriber" public="false">
             <tag name="nelmio_api_doc.type_describer" priority="-950" />
-        </service>
-
-        <service id="nelmio_api_doc.type_describer.object_class" class="Nelmio\ApiDocBundle\TypeDescriber\ObjectClassDescriber" public="false">
-            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
         </service>
 
         <service id="nelmio_api_doc.type_describer.object" class="Nelmio\ApiDocBundle\TypeDescriber\ObjectDescriber" public="false">
