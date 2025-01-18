@@ -263,3 +263,84 @@ Note, however, that a ``type="object"`` will still read all a models properties.
         {
             // ...
         }
+
+PropertyInfo component was unable to guess the type
+---------------------------------------------------
+
+Q: I have a property that is not recognized. How can I specify the type?
+
+.. tip::
+
+    Enable the `TypeInfo component`_ in your configuration to improve automatic type guessing:
+
+    .. code-block:: yaml
+
+        nelmio_api_doc:
+            type_info: true
+            # ...
+
+.. versionadded:: 7.2
+
+    The `TypeInfo component`_ was introduced as a stable feature in Symfony 7.2.
+
+A: If you want to customize the documentation of an object's property, you can use the ``#[OA\Property]`` attribute or annotate the property with ``@var``::
+
+.. configuration-block::
+
+   .. code-block:: php-annotations
+
+       use Nelmio\ApiDocBundle\Attribute\Model;
+       use OpenApi\Annotations as OA;
+
+       class User
+       {
+           /**
+            * @var int
+            * @OA\Property(description="The unique identifier of the user.")
+            */
+           public $id;
+
+           /**
+            * @OA\Property(type="string", maxLength=255)
+            */
+           public $username;
+
+           /**
+            * @OA\Property(ref=@Model(type=User::class))
+            */
+           public $friend;
+
+           /**
+            * @OA\Property(description="This is my coworker!")
+            */
+           public setCoworker(User $coworker) {
+               // ...
+           }
+       }
+
+   .. code-block:: php-attributes
+
+       use Nelmio\ApiDocBundle\Attribute\Model;
+       use OpenApi\Attributes as OA;
+
+       class User
+       {
+           /**
+            * @var int
+            */
+           #[OA\Property(description: 'The unique identifier of the user.')]
+           public $id;
+
+           #[OA\Property(type: 'string', maxLength: 255)]
+           public $username;
+
+           #[OA\Property(ref: new Model(type: User::class))]
+           public $friend;
+
+           #[OA\Property(description: 'This is my coworker!')]
+           public setCoworker(User $coworker) {
+               // ...
+           }
+       }
+
+.. _`TypeInfo component`: https://symfony.com/doc/current/components/type_info.html

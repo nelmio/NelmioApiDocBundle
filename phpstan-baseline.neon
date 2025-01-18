@@ -26,6 +26,11 @@ parameters:
 			path: src/Describer/ExternalDocDescriber.php
 
 		-
+			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\PropertyDescriberInterface\\:\\:describe\\(\\) invoked with 5 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: src/ModelDescriber/ObjectModelDescriber.php
+
+		-
 			message: "#^Method Nelmio\\\\ApiDocBundle\\\\PropertyDescriber\\\\ArrayPropertyDescriber\\:\\:supports\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/PropertyDescriber/ArrayPropertyDescriber.php

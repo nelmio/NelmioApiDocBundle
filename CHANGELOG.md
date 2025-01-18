@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 4.35.0
+* Added support for the symfony/type-info component
+```yaml
+nelmio_api_doc:
+  type_info: true
+```
+
 ## 4.34.0
 * Changed minimum Symfony version for 7.x from 7.0 to 7.1
 

@@ -18,13 +18,15 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
+use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+use Symfony\Component\TypeInfo\Type;
 
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
@@ -34,7 +36,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private PropertyInfoExtractorInterface $propertyInfo;
     private ?ClassMetadataFactoryInterface $classMetadataFactory;
     private ?Reader $doctrineReader;
-    /** @var PropertyDescriberInterface|PropertyDescriberInterface[] */
+    /** @var PropertyDescriberInterface|PropertyDescriberInterface[]|TypeDescriberInterface */
     private $propertyDescriber;
     /** @var string[] */
     private array $mediaTypes;
@@ -43,9 +45,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private bool $useValidationGroups;
 
     /**
-     * @param PropertyDescriberInterface|PropertyDescriberInterface[]      $propertyDescribers
-     * @param (NameConverterInterface&AdvancedNameConverterInterface)|null $nameConverter
-     * @param string[]                                                     $mediaTypes
+     * @param PropertyDescriberInterface|PropertyDescriberInterface[]|TypeDescriberInterface $propertyDescribers
+     * @param (NameConverterInterface&AdvancedNameConverterInterface)|null                   $nameConverter
+     * @param string[]                                                                       $mediaTypes
      */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
@@ -59,7 +61,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         if (is_iterable($propertyDescribers)) {
             trigger_deprecation('nelmio/api-doc-bundle', '4.17', 'Passing an array of PropertyDescriberInterface to %s() is deprecated. Pass a single PropertyDescriberInterface instead.', __METHOD__);
         } else {
-            if (!$propertyDescribers instanceof PropertyDescriberInterface) {
+            if (!$propertyDescribers instanceof PropertyDescriberInterface && !$propertyDescribers instanceof TypeDescriberInterface) {
                 throw new \InvalidArgumentException(sprintf('Argument 3 passed to %s() must be an array of %s or a single %s.', __METHOD__, PropertyDescriberInterface::class, PropertyDescriberInterface::class));
             }
         }
@@ -151,8 +153,13 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 continue;
             }
 
-            $types = $this->propertyInfo->getTypes($class, $propertyName);
-            if (null === $types || 0 === count($types)) {
+            if ($this->propertyDescriber instanceof TypeDescriberInterface) {
+                $types = $this->propertyInfo->getType($class, $propertyName);
+            } else {
+                $types = $this->propertyInfo->getTypes($class, $propertyName);
+            }
+
+            if (null === $types) {
                 throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
             }
 
@@ -191,9 +198,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     }
 
     /**
-     * @param Type[] $types
+     * @param LegacyType[]|Type $types
      */
-    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema): void
+    private function describeProperty($types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema): void
     {
         $propertyDescribers = is_iterable($this->propertyDescriber) ? $this->propertyDescriber : [$this->propertyDescriber];
 
@@ -202,13 +209,17 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 $propertyDescriber->setModelRegistry($this->modelRegistry);
             }
             if ($propertyDescriber->supports($types, $model->getSerializationContext())) {
-                $propertyDescriber->describe($types, $property, $model->getGroups(), $schema, $model->getSerializationContext());
+                if ($propertyDescriber instanceof PropertyDescriberInterface) {
+                    $propertyDescriber->describe($types, $property, $model->getGroups(), $schema, $model->getSerializationContext());
+                } else {
+                    $propertyDescriber->describe($types, $property, $model->getSerializationContext());
+                }
 
                 return;
             }
         }
 
-        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $types[0]->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
+        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may need to use the `@OA\Property(type="")` annotation to specify it manually.', is_array($types) ? $types[0]->getBuiltinType() : $types, $model->getType()->getClassName(), $propertyName));
     }
 
     /**
@@ -243,7 +254,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function supports(Model $model): bool
     {
-        return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
+        return LegacyType::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
             && (class_exists($model->getType()->getClassName()) || interface_exists($model->getType()->getClassName()));
     }
 }
