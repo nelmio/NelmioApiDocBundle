@@ -31,7 +31,7 @@
         "zircote/swagger-php": "^4.11.1 || ^5.0"
     },
     "require-dev": {
-        "api-platform/core": "^2.7.0 || ^3",
+        "api-platform/core": "^2.7.8 || ^3",
         "friendsofphp/php-cs-fixer": "^3.52",
         "friendsofsymfony/rest-bundle": "^3.2.0",
         "jms/serializer": "^3.0",
