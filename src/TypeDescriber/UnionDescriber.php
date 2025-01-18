@@ -21,8 +21,6 @@ use Symfony\Component\TypeInfo\TypeIdentifier;
 /**
  * @implements TypeDescriberInterface<UnionType>
  *
- * @experimental
- *
  * @internal
  */
 final class UnionDescriber implements TypeDescriberInterface, TypeDescriberAwareInterface

@@ -25,8 +25,6 @@ use Symfony\Component\Uid\AbstractUid;
 /**
  * @implements TypeDescriberInterface<ObjectType>
  *
- * @experimental
- *
  * @internal
  */
 final class ClassDescriber implements TypeDescriberInterface, ModelRegistryAwareInterface

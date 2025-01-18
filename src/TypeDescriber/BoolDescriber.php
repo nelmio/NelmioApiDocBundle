@@ -17,8 +17,6 @@ use Symfony\Component\TypeInfo\Type;
 /**
  * @implements TypeDescriberInterface<Type\BuiltinType>
  *
- * @experimental
- *
  * @internal
  */
 final class BoolDescriber implements TypeDescriberInterface

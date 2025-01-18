@@ -20,8 +20,6 @@ use Symfony\Component\TypeInfo\Type\IntersectionType;
 /**
  * @implements TypeDescriberInterface<IntersectionType>
  *
- * @experimental
- *
  * @internal
  */
 final class IntersectionDescriber implements TypeDescriberInterface, TypeDescriberAwareInterface

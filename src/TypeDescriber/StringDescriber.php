@@ -18,8 +18,6 @@ use Symfony\Component\TypeInfo\TypeIdentifier;
 /**
  * @implements TypeDescriberInterface<Type\BuiltinType>
  *
- * @experimental
- *
  * @internal
  */
 final class StringDescriber implements TypeDescriberInterface

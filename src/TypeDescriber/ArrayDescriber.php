@@ -18,8 +18,6 @@ use Symfony\Component\TypeInfo\Type\CollectionType;
 /**
  * @implements TypeDescriberInterface<CollectionType>
  *
- * @experimental
- *
  * @internal
  */
 final class ArrayDescriber implements TypeDescriberInterface, TypeDescriberAwareInterface

@@ -21,8 +21,6 @@ use Symfony\Component\TypeInfo\TypeIdentifier;
 /**
  * @implements TypeDescriberInterface<CollectionType>
  *
- * @experimental
- *
  * @internal
  */
 final class ListDescriber implements TypeDescriberInterface, TypeDescriberAwareInterface

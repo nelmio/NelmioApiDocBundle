@@ -11,9 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\TypeDescriber;
 
-/**
- * @experimental
- */
 interface TypeDescriberAwareInterface
 {
     public function setDescriber(TypeDescriberInterface $describer): void;

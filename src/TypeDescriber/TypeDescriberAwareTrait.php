@@ -11,9 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\TypeDescriber;
 
-/**
- * @experimental
- */
 trait TypeDescriberAwareTrait
 {
     protected TypeDescriberInterface $describer;

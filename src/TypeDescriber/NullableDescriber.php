@@ -17,8 +17,6 @@ use Symfony\Component\TypeInfo\Type;
 /**
  * @implements TypeDescriberInterface<Type>
  *
- * @experimental
- *
  * @internal
  */
 final class NullableDescriber implements TypeDescriberInterface
