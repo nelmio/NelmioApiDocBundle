@@ -9,11 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures\TypeInfo;
+namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures;
 
 class DateTimeClass
 {
     public \DateTime $dateTime;
     public \DateTimeImmutable $dateTimeImmutable;
     public \DateTimeInterface $dateTimeInterface;
+
+    public ?\DateTime $nullableDateTime;
 }

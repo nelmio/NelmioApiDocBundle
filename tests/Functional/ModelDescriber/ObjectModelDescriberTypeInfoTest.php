@@ -67,14 +67,6 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
         yield [
             Fixtures\TypeInfo\ClassWithIntersectionNullable::class
         ];
-
-        yield [
-            Fixtures\TypeInfo\UuidClass::class
-        ];
-
-        yield [
-            Fixtures\TypeInfo\DateTimeClass::class
-        ];
     }
 
     /**

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures\TypeInfo;
+namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures;
 
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
@@ -32,4 +32,6 @@ class UuidClass
     public UuidV6 $uuidV6;
     public UuidV7 $uuidV7;
     public UuidV8 $uuidV8;
+
+    public ?Uuid $nullableUuid;
 }

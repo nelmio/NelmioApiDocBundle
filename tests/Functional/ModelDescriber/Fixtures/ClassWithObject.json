@@ -6,6 +6,11 @@
         "name": {
             "type": "object",
             "additionalProperties": true
+        },
+        "nullableObject": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": true
         }
     },
     "type": "object"

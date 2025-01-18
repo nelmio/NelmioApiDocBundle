@@ -46,6 +46,11 @@
         "uuidV8": {
             "type": "string",
             "format": "uuid"
+        },
+        "nullableUuid": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
         }
     },
     "type": "object"

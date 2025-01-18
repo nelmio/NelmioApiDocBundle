@@ -96,6 +96,18 @@ class ObjectModelDescriberTest extends WebTestCase
                 Fixtures\ClassWithIntersection::class
             ];
         }
+
+        yield [
+            Fixtures\DateTimeClass::class
+        ];
+
+        yield [
+            Fixtures\UuidClass::class
+        ];
+
+        yield [
+            Fixtures\Refs::class
+        ];
     }
 
     private static function getFixture(string $fixture): string

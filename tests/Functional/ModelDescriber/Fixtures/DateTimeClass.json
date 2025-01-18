@@ -16,6 +16,11 @@
         "dateTimeInterface": {
             "type": "string",
             "format": "date-time"
+        },
+        "nullableDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
         }
     },
     "type": "object"

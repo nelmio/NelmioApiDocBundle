@@ -11,8 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures;
 
-class ClassWithObject
+class SomeRefClass
 {
-    public object $name;
-    public ?object $nullableObject;
+}
+
+class Refs
+{
+    public SomeRefClass $someRefClass;
+    public ?SomeRefClass $someRefClassNullable;
 }
