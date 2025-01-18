@@ -80,10 +80,8 @@ class FOSRestTest extends WebTestCase
 
     public static function provideRoute(): \Generator
     {
-        yield 'Annotations' => ['/api/fosrest'];
+        yield ['/api/fosrest'];
 
-        if (TestKernel::isAttributesAvailable()) {
-            yield 'Attributes' => ['/api/fosrest_attributes'];
-        }
+        yield ['/api/fosrest_attributes'];
     }
 }

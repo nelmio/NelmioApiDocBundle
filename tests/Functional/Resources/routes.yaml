@@ -1,24 +1,24 @@
 # Resources
 test:
     resource: ../Controller/TestController.php
-    type: annotation
+    type: attribute
 
 api:
     resource: ../Controller/ApiController.php
-    type: annotation
+    type: attribute
 
 class_api:
     resource: ../Controller/ClassApiController.php
-    type: annotation
-  
+    type: attribute
+
 undocumented:
     resource: ../Controller/UndocumentedController.php
-    type: annotation
-  
+    type: attribute
+
 invokable:
     resource: ../Controller/InvokableController.php
-    type: annotation
-  
+    type: attribute
+
 api_platform:
     resource: .
     prefix: /api
@@ -28,7 +28,7 @@ api_platform:
 doc_area:
     path: /{area}/docs
     controller: nelmio_api_doc.controller.swagger_ui
-    defaults: 
+    defaults:
         area: default
 
 redocly_doc_area:

@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
 use FOS\RestBundle\FOSRestBundle;
@@ -79,22 +78,18 @@ class TestKernel extends Kernel
 
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
-        if (self::isAnnotationsAvailable()) {
-            $routes->withPath('/')->import(__DIR__.'/Resources/routes.yaml', 'yaml');
-        } else {
-            $routes->withPath('/')->import(__DIR__.'/Resources/routes-attributes.yaml', 'yaml');
-        }
+        $routes->withPath('/')->import(__DIR__.'/Resources/routes.yaml', 'yaml');
 
         if (self::USE_JMS === $this->flag || self::USE_BAZINGA === $this->flag) {
-            $routes->withPath('/')->import(__DIR__.'/Controller/JMSController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
+            $routes->withPath('/')->import(__DIR__.'/Controller/JMSController.php', 'attribute');
         }
 
         if (self::USE_BAZINGA === $this->flag) {
-            $routes->withPath('/')->import(__DIR__.'/Controller/BazingaTypedController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
+            $routes->withPath('/')->import(__DIR__.'/Controller/BazingaTypedController.php', 'attribute');
         }
 
         if (self::USE_FOSREST === $this->flag) {
-            $routes->withPath('/')->import(__DIR__.'/Controller/FOSRestController.php', self::isAnnotationsAvailable() ? 'annotation' : 'attribute');
+            $routes->withPath('/')->import(__DIR__.'/Controller/FOSRestController.php', 'attribute');
         }
     }
 
@@ -106,11 +101,8 @@ class TestKernel extends Kernel
             'test' => null,
             'validation' => null,
             'form' => null,
-            'serializer' => (
-                Kernel::MAJOR_VERSION < 7
-                    ? ['enable_annotations' => true]
-                    : []
-            ) + [
+            'serializer' => [
+                'enable_attributes' => true,
                 'mapping' => [
                     'paths' => [__DIR__.'/Resources/serializer/'],
                 ],
@@ -140,10 +132,9 @@ class TestKernel extends Kernel
         ]);
 
         $c->loadFromExtension('api_platform', [
+            'keep_legacy_inflector' => false,
             'mapping' => ['paths' => [
-                class_exists(ApiProperty::class)
-                ? '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform2'
-                : '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform3',
+                '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform3',
             ]],
         ]);
 
@@ -319,23 +310,5 @@ class TestKernel extends Kernel
     public function getLogDir(): string
     {
         return parent::getLogDir().'/'.$this->flag;
-    }
-
-    public static function isAnnotationsAvailable(): bool
-    {
-        if (Kernel::MAJOR_VERSION <= 5) {
-            return true;
-        }
-
-        if (Kernel::MAJOR_VERSION >= 7) {
-            return false;
-        }
-
-        return false;
-    }
-
-    public static function isAttributesAvailable(): bool
-    {
-        return true;
     }
 }

@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use ApiPlatform\Core\Swagger\Serializer\DocumentationNormalizer;
 use ApiPlatform\Documentation\DocumentationInterface;
 use ApiPlatform\OpenApi\OpenApi;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -32,7 +31,7 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
             $documentation = (array) $normalizer->normalize(
                 $documentation,
                 null,
-                class_exists(DocumentationNormalizer::class) ? [DocumentationNormalizer::SPEC_VERSION => 3] : []
+                []
             );
 
             // TODO: remove this

@@ -71,11 +71,6 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
     private function getPropertyDescriber(array $types, array $context): ?PropertyDescriberInterface
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
-            /* BC layer for Symfony < 6.3 @see https://symfony.com/doc/6.3/service_container/tags.html#reference-tagged-services */
-            if ($propertyDescriber instanceof self) {
-                continue;
-            }
-
             // Prevent infinite recursion
             if (\array_key_exists($this->getHash($types), $this->called)) {
                 if (\in_array($propertyDescriber, $this->called[$this->getHash($types)], true)) {

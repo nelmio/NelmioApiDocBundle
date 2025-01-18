@@ -140,9 +140,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             ['r10', new Route('/api/areas/new'), ['path_patterns' => ['^/api']]],
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield ['r10', new Route('/api/areas_attributes/new'), ['path_patterns' => ['^/api']]];
-        }
+        yield ['r10', new Route('/api/areas_attributes/new'), ['path_patterns' => ['^/api']]];
     }
 
     /**
