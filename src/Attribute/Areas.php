@@ -18,12 +18,12 @@ final class Areas
     private array $areas;
 
     /**
-     * @param string[] $properties
+     * @param string[] $areas
      */
-    public function __construct(array $properties)
+    public function __construct(array $areas)
     {
         $this->areas = [];
-        foreach ($properties as $area) {
+        foreach ($areas as $area) {
             if (!\is_string($area)) {
                 throw new \InvalidArgumentException('An area must be given as a string');
             }
