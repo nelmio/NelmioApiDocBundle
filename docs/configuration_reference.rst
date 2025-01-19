@@ -111,6 +111,7 @@ cache
 Cache configuration for the generated documentation.
 
 .. code-block:: yaml
+
         nelmio_api_doc:
             # ...
 
@@ -128,6 +129,7 @@ documentation
 The api documentation to use as base.
 
 .. code-block:: yaml
+
         nelmio_api_doc:
             # ...
 
@@ -156,6 +158,7 @@ html_config
 UI configuration options.
 
 .. code-block:: yaml
+
         nelmio_api_doc:
             # ...
 
@@ -174,6 +177,7 @@ areas
 Filter the routes that are documented.
 
 .. code-block:: yaml
+
         nelmio_api_doc:
             # ...
 
@@ -283,6 +287,7 @@ List of models, this can be used to:
 - Create a custom alias (schema name) for a model. (based groups/options/serializationContext/areas)
 
 .. code-block:: yaml
+
         nelmio_api_doc:
             # ...
 
