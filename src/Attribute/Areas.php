@@ -26,7 +26,7 @@ class Areas
     public function __construct(array $properties)
     {
         if (array_key_exists('value', $properties) && is_array($properties['value'])) {
-            trigger_deprecation('nelmio/api-doc-bundle', '4.36.1', 'Passing an array with key `value` is deprecated, pass the list of strings directly.');
+            trigger_deprecation('nelmio/api-doc-bundle', '4.36.1', 'Passing an array with key "value" to "%s" is deprecated, pass the list of strings directly.', __METHOD__);
 
             $this->areas = array_values($properties['value']);
         } else {
