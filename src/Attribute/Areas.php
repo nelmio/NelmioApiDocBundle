@@ -43,7 +43,7 @@ class Areas
         }
 
         if ([] === $this->areas) {
-            throw new \InvalidArgumentException('An array of areas was expected');
+            throw new \InvalidArgumentException('A list of areas was expected');
         }
     }
 

@@ -60,4 +60,40 @@ class AreasTest extends TestCase
             ['bar']
         ];
     }
+
+    /**
+     * @dataProvider provideInvalidData
+     *
+     * @param string[] $areas
+     */
+    public function testItChecksArrayItemType(array $areas): void
+    {
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage('An area must be given as a string');
+
+        new Areas($areas);
+    }
+
+    public function testItChecksEmptyArray(): void
+    {
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage('A list of areas was expected');
+
+        new Areas([]);
+    }
+
+    public static function provideInvalidData(): \Generator
+    {
+        yield [
+            ['foo', 'bar', 42],
+        ];
+
+        yield [
+            ['foo', 'bar', []],
+        ];
+
+        yield [
+            ['foo', 'bar', new \stdClass()],
+        ];
+    }
 }
