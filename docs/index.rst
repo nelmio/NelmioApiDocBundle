@@ -617,6 +617,7 @@ If you need more complex features, take a look at:
     commands
     security
     symfony_attributes
+    configuration_reference
     faq
 
 .. _`SwaggerPHP examples`: https://github.com/zircote/swagger-php/tree/master/Examples
