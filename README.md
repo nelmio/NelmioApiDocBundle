@@ -34,7 +34,7 @@ composer require nelmio/api-doc-bundle
 ## Contributing
 
 See
-[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/master/CONTRIBUTING.md)
 file.
 
 ## Running the Tests
