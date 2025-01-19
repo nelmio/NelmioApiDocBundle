@@ -213,7 +213,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             $annotationReader
                 ->method('getMethodAnnotation')
                 ->with($reflectionMethodStub, Areas::class)
-                ->willReturn(new Areas(['value' => [$area]]))
+                ->willReturn(new Areas([$area]))
             ;
         }
 
