@@ -6,7 +6,7 @@
 -#[Areas(properties: ['value' => ['foo', 'bar']])]
 +#[Areas(properties: ['foo', 'bar'])]
 
--#[Areas(['values' => ['foo', 'bar']])]
+-#[Areas(['value' => ['foo', 'bar']])]
 +#[Areas(['foo', 'bar'])]
 ```
 
