@@ -124,6 +124,7 @@ class FilteredRouteCollectionBuilderTest extends TestCase
         yield [['path_patterns' => [new \stdClass()]]];
         yield [['path_patterns' => ['^/foo$', 1]]];
         yield [['with_annotation' => ['an array']]];
+        yield [['with_attribute' => ['an array']]];
         yield [['path_patterns' => 'a string']];
         yield [['path_patterns' => 11]];
         yield [['name_patterns' => 22]];
@@ -230,29 +231,49 @@ class FilteredRouteCollectionBuilderTest extends TestCase
     public static function getMatchingRoutesWithAnnotation(): \Generator
     {
         yield from [
-            'with annotation only' => [
+            'with annotation only, deprecated' => [
                 'r10',
                 new Route('/api/areas/new', ['_controller' => 'ApiController::newAreaAction']),
                 ['with_annotation' => true],
             ],
-            'with annotation and path patterns' => [
+            'with annotation only' => [
+                'r10',
+                new Route('/api/areas/new', ['_controller' => 'ApiController::newAreaAction']),
+                ['with_attribute' => true],
+            ],
+            'with annotation and path patterns, deprecated' => [
                 'r10',
                 new Route('/api/areas/new', ['_controller' => 'ApiController::newAreaAction']),
                 ['path_patterns' => ['^/api'], 'with_annotation' => true],
+            ],
+            'with annotation and path patterns' => [
+                'r10',
+                new Route('/api/areas/new', ['_controller' => 'ApiController::newAreaAction']),
+                ['path_patterns' => ['^/api'], 'with_attribute' => true],
             ],
         ];
 
         if (\PHP_VERSION_ID < 80000) {
             yield from [
-                'with attribute only' => [
+                'with attribute only, deprecated' => [
                     'r10',
                     new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
                     ['with_annotation' => true],
                 ],
-                'with attribute and path patterns' => [
+                'with attribute only' => [
+                    'r10',
+                    new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
+                    ['with_attribute' => true],
+                ],
+                'with attribute and path patterns, deprecated' => [
                     'r10',
                     new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
                     ['path_patterns' => ['^/api'], 'with_annotation' => true],
+                ],
+                'with attribute and path patterns' => [
+                    'r10',
+                    new Route('/api/areas_attributes/new', ['_controller' => 'ApiController::newAreaActionAttributes']),
+                    ['path_patterns' => ['^/api'], 'with_attribute' => true],
                 ],
             ];
         }

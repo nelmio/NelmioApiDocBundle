@@ -54,7 +54,7 @@ The bundle configuration is stored under the ``nelmio_api_doc`` key in your appl
                     # Example:
                     # - ^api_v1
             # whether to filter by attributes
-            with_annotation:       false
+            with_attribute: false
             # if set disables default routes without attributes
             disable_default_routes: false
             # The base documentation used for the area
@@ -193,7 +193,7 @@ Filter the routes that are documented.
                     name_patterns:
                         # Example:
                         # - ^api_v1
-                with_annotation:       false
+                with_attribute: false
                 disable_default_routes: false
                 documentation:
                     # Example:
@@ -231,6 +231,18 @@ name_patterns
 List of regular expressions to match against the name of the route.
 
 with_annotation
+...............
+
+**type**: ``boolean``
+**default**: ``false``
+
+Whether to only document routes with the ``#[Areas]`` annotation/attribute.
+
+.. deprecated:: 4.36
+
+    ``with_annotation`` was deprecated in 4.36. Use ``with_attribute`` instead.
+
+with_attribute
 ...............
 
 **type**: ``boolean``
