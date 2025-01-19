@@ -25,26 +25,26 @@ class Areas
      */
     public function __construct(array $properties)
     {
-        if (!array_key_exists('value', $properties) || !is_array($properties['value'])) {
-            $properties['value'] = array_values($properties);
-        }
+        if (array_key_exists('value', $properties) && is_array($properties['value'])) {
+            trigger_deprecation('nelmio/api-doc-bundle', '4.36.1', 'Passing an array with key "value" to "%s" is deprecated, pass the list of strings directly.', __METHOD__);
 
-        if ([] === $properties['value']) {
-            throw new \InvalidArgumentException('An array of areas was expected');
-        }
+            $this->areas = array_values($properties['value']);
+        } else {
+            $this->areas = [];
+            foreach ($properties as $area) {
+                if (!is_string($area)) {
+                    throw new \InvalidArgumentException('An area must be given as a string');
+                }
 
-        $areas = [];
-        foreach ($properties['value'] as $area) {
-            if (!is_string($area)) {
-                throw new \InvalidArgumentException('An area must be given as a string');
-            }
-
-            if (!in_array($area, $areas, true)) {
-                $areas[] = $area;
+                if (!in_array($area, $this->areas, true)) {
+                    $this->areas[] = $area;
+                }
             }
         }
 
-        $this->areas = $areas;
+        if ([] === $this->areas) {
+            throw new \InvalidArgumentException('A list of areas was expected');
+        }
     }
 
     public function has(string $area): bool

@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 4.36.1
+- Passing an array key `value` with a list of strings to the `Areas` annotation/attribute is deprecated. Pass the list of strings directly.
+```diff
+-#[Areas(properties: ['value' => ['foo', 'bar']])]
++#[Areas(properties: ['foo', 'bar'])]
+
+-#[Areas(['value' => ['foo', 'bar']])]
++#[Areas(['foo', 'bar'])]
+```
+
 ## 4.36.0
 * Configuration option `with_annotation` has been deprecated in favor of `with_attribute`
 ```diff
