@@ -7,3 +7,6 @@
 # Ignoring deprecations from Nelmio\ApiDocBundle 4.33.4
 /^Since nelmio\/api-doc-bundle 4\.33\.4: Passing null to the "\$options" argument of "Nelmio\\ApiDocBundle\\Model\\Model\:\:\_\_construct\(\)" is deprecated\, pass an empty array instead\./
 /^Since nelmio\/api-doc-bundle 4\.33\.4: Passing null to the "\$options" argument of "Nelmio\\ApiDocBundle\\Attribute\\Model\:\:\_\_construct\(\)" is deprecated\, pass an empty array instead\./
+
+# Ignoring deprecations from Nelmio\ApiDocBundle 4.36.1
+/^Since nelmio\/api-doc-bundle 4\.36\.1: Passing an array with key "value" to "Nelmio\\ApiDocBundle\\Attribute\\Areas\:\:\_\_construct" is deprecated\, pass the list of strings directly\./

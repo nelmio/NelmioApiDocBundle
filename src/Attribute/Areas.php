@@ -18,30 +18,24 @@ final class Areas
     private array $areas;
 
     /**
-     * @param string[]|array{value: string[]} $properties
+     * @param string[] $properties
      */
     public function __construct(array $properties)
     {
-        if (!\array_key_exists('value', $properties) || !\is_array($properties['value'])) {
-            $properties['value'] = array_values($properties);
-        }
-
-        if ([] === $properties['value']) {
-            throw new \InvalidArgumentException('An array of areas was expected');
-        }
-
-        $areas = [];
-        foreach ($properties['value'] as $area) {
+        $this->areas = [];
+        foreach ($properties as $area) {
             if (!\is_string($area)) {
                 throw new \InvalidArgumentException('An area must be given as a string');
             }
 
-            if (!\in_array($area, $areas, true)) {
-                $areas[] = $area;
+            if (!\in_array($area, $this->areas, true)) {
+                $this->areas[] = $area;
             }
         }
 
-        $this->areas = $areas;
+        if ([] === $this->areas) {
+            throw new \InvalidArgumentException('A list of areas was expected');
+        }
     }
 
     public function has(string $area): bool
