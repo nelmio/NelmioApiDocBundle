@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 4.36.0
+* Configuration option `with_annotation` has been deprecated in favor of `with_attribute`
+```diff
+nelmio_api_doc:
+    areas:
+        path_patterns:
+            - ^/api/foo
+-       with_annotation: true
++       with_attribute: true
+```
+
 ## 4.35.0
 * Added support for the symfony/type-info component
 ```yaml

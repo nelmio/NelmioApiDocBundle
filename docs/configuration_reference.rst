@@ -54,7 +54,7 @@ The bundle configuration is stored under the ``nelmio_api_doc`` key in your appl
                     # Example:
                     # - ^api_v1
             # whether to filter by attributes
-            with_attribute:       false
+            with_attribute: false
             # if set disables default routes without attributes
             disable_default_routes: false
             # The base documentation used for the area
@@ -93,6 +93,10 @@ Whether to use `symfony/type-info`_ for determining types.
 .. tip::
 
     If you are using Symfony 7.2 or higher, you should set this option to ``true``. As this greatly improves type detection.
+
+.. versionadded:: 4.35
+
+    Support for `symfony/type-info`_ was added in 4.35.
 
 use_validation_groups
 ~~~~~~~~~~~~~~~~~~~~~
@@ -193,7 +197,7 @@ Filter the routes that are documented.
                     name_patterns:
                         # Example:
                         # - ^api_v1
-                with_attribute:       false
+                with_attribute: false
                 disable_default_routes: false
                 documentation:
                     # Example:

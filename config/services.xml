@@ -163,7 +163,7 @@
 
         <!-- Type describers (symfony/type-info) -->
         <service id="nelmio_api_doc.type_describer.chain" class="Nelmio\ApiDocBundle\TypeDescriber\ChainDescriber" public="false">
-            <argument type="tagged" tag="nelmio_api_doc.type_describer" />
+            <argument type="tagged_iterator" tag="nelmio_api_doc.type_describer" />
 
             <tag name="nelmio_api_doc.type_describer" priority="1000" />
         </service>
