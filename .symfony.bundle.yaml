@@ -1,5 +1,6 @@
 branches: ["2.x", "3.x", "master", "5.x"]
 maintained_branches: ["master", "5.x"]
-current_branch: "5.x"
+current_branch: "master"
+master_alias: "4.x"
 dev_branch: "5.x"
 doc_dir: { "3.x": "Resources/doc/", "master": "docs/", "5.x": "docs/" }
