@@ -49,12 +49,14 @@ final class FilteredRouteCollectionBuilder
                 'host_patterns' => [],
                 'name_patterns' => [],
                 'with_annotation' => false,
+                'with_attribute' => false,
                 'disable_default_routes' => false,
             ])
             ->setAllowedTypes('path_patterns', 'string[]')
             ->setAllowedTypes('host_patterns', 'string[]')
             ->setAllowedTypes('name_patterns', 'string[]')
             ->setAllowedTypes('with_annotation', 'boolean')
+            ->setAllowedTypes('with_attribute', 'boolean')
             ->setAllowedTypes('disable_default_routes', 'boolean')
         ;
 
@@ -123,7 +125,7 @@ final class FilteredRouteCollectionBuilder
 
     private function matchAnnotation(Route $route): bool
     {
-        if (false === $this->options['with_annotation']) {
+        if (false === $this->options['with_annotation'] && false === $this->options['with_attribute']) {
             return true;
         }
 

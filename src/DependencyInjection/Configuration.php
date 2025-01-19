@@ -91,6 +91,7 @@ final class Configuration implements ConfigurationInterface
                                 'path_patterns' => [],
                                 'host_patterns' => [],
                                 'with_annotation' => false,
+                                'with_attribute' => false,
                                 'documentation' => [],
                                 'name_patterns' => [],
                                 'disable_default_routes' => false,
@@ -134,6 +135,11 @@ final class Configuration implements ConfigurationInterface
                             ->booleanNode('with_annotation')
                                 ->defaultFalse()
                                 ->info('whether to filter by annotation')
+                                ->setDeprecated('nelmio/api-doc-bundle', '4.36.0', 'The "%node%" option is deprecated. Use "with_attribute" instead.')
+                            ->end()
+                            ->booleanNode('with_attribute')
+                                ->defaultFalse()
+                                ->info('whether to filter by attribute')
                             ->end()
                             ->booleanNode('disable_default_routes')
                                 ->defaultFalse()
