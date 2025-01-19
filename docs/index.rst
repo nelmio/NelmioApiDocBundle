@@ -19,12 +19,12 @@ It does also support `Symfony form`_ types.
 
 Attributes are supported from version 4.7 and PHP 8.1.
 
-Migrate from 3.x to 4.0
+Migrate from 4.x to 5.0
 -----------------------
 
-`To migrate from 3.x to 4.0, follow our guide.`__
+`To migrate from 4.x to 5.0, follow our guide.`__
 
-__ https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-4.0.md
+__ https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/UPGRADE-5.0.md
 
 Installation
 ------------
