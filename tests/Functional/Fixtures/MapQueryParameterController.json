@@ -228,6 +228,32 @@
                     }
                 }
             }
+        },
+        "/article_array_parameter": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapqueryparameter_articlearrayparameter",
+                "parameters": [
+                    {
+                        "name": "properties",
+                        "in": "query",
+                        "description": "Filter by property",
+                        "required": true,
+                        "style": "pipeDelimited",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "pattern": "^test"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
         }
     }
 }

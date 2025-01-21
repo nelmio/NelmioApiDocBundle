@@ -76,6 +76,12 @@ class MapQueryStringController
         in: 'query',
         description: 'Query parameter nullableArticleType81 description'
     )]
+    #[OA\Parameter(
+        name: 'array',
+        in: 'query',
+        required: false,
+        style: 'pipeDelimited'
+    )]
     #[OA\Response(response: '200', description: '')]
     public function fetchArticleFromMapQueryStringOverwriteParameters(
         #[MapQueryString]

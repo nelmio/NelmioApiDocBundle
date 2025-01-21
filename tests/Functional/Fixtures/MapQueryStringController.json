@@ -54,6 +54,16 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "name": "array[]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {},
+                            "nullable": true
+                        }
                     }
                 ],
                 "responses": {
@@ -111,6 +121,16 @@
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
                             ]
+                        }
+                    },
+                    {
+                        "name": "array[]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {},
+                            "nullable": true
                         }
                     }
                 ],
@@ -226,6 +246,17 @@
                                     "$ref": "#/components/schemas/ArticleType81"
                                 }
                             ]
+                        }
+                    },
+                    {
+                        "name": "array",
+                        "in": "query",
+                        "required": false,
+                        "style": "pipeDelimited",
+                        "schema": {
+                            "type": "array",
+                            "items": {},
+                            "nullable": true
                         }
                     }
                 ],
@@ -1071,6 +1102,11 @@
                                 "$ref": "#/components/schemas/ArticleType81"
                             }
                         ]
+                    },
+                    "array": {
+                        "type": "array",
+                        "items": {},
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -1102,6 +1138,11 @@
                                 "$ref": "#/components/schemas/ArticleType81"
                             }
                         ]
+                    },
+                    "array": {
+                        "type": "array",
+                        "items": {},
+                        "nullable": true
                     }
                 },
                 "type": "object"

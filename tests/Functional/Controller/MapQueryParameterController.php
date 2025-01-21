@@ -95,4 +95,12 @@ class MapQueryParameterController
         ?string $changedType,
     ) {
     }
+
+    #[Route('/article_array_parameter', methods: ['GET'], format: 'json')]
+    public function articleArrayParameter(
+        #[OA\Parameter(name: 'properties', description: 'Filter by property', in: 'query', required: false, style: 'pipeDelimited')]
+        #[MapQueryParameter(name: 'properties', filter: \FILTER_VALIDATE_REGEXP, options: ['regexp' => '/^test/'])]
+        array $properties,
+    ) {
+    }
 }

@@ -31,11 +31,19 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
         }
 
         $name = $attribute->name ?? $argumentMetadata->getName();
-        $name = 'array' === $argumentMetadata->getType()
-            ? $name.'[]'
-            : $name;
-
-        $operationParameter = Util::getOperationParameter($operation, $name, 'query');
+        $propertyNameInDefinition = $name;
+        if ('array' === $argumentMetadata->getType()) {
+            $nested = $operation::$_nested;
+            $collection = $nested[OA\Parameter::class][0];
+            $operationParameter = Util::searchCollectionItem(
+                $operation->{$collection} && Generator::UNDEFINED !== $operation->{$collection} ? $operation->{$collection} : [],
+                ['name' => $name, 'in' => 'query']
+            );
+            if (null === $operationParameter) {
+                $propertyNameInDefinition = $name.'[]';
+            }
+        }
+        $operationParameter = Util::getOperationParameter($operation, $propertyNameInDefinition, 'query');
 
         Util::modifyAnnotationValue($operationParameter, 'required', !($argumentMetadata->hasDefaultValue() || $argumentMetadata->isNullable()));
 

@@ -76,11 +76,19 @@ final class MapQueryStringProcessor
         $isModelOptional = $argumentMetaData->hasDefaultValue() || $argumentMetaData->isNullable();
 
         foreach ($schemaModel->properties as $property) {
-            $name = 'array' === $property->type
-                ? $property->property.'[]'
-                : $property->property;
-
-            $operationParameter = Util::getOperationParameter($operation, $name, 'query');
+            $propertyNameInDefinition = $property->property;
+            if ('array' === $property->type) {
+                $nested = $operation::$_nested;
+                $collection = $nested[OA\Parameter::class][0];
+                $operationParameter = Util::searchCollectionItem(
+                    $operation->{$collection} && Generator::UNDEFINED !== $operation->{$collection} ? $operation->{$collection} : [],
+                    ['name' => $property->property, 'in' => 'query']
+                );
+                if (null === $operationParameter) {
+                    $propertyNameInDefinition = $property->property.'[]';
+                }
+            }
+            $operationParameter = Util::getOperationParameter($operation, $propertyNameInDefinition, 'query');
 
             // Remove incompatible properties
             $propertyVars = get_object_vars($property);
