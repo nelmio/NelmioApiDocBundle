@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 4.38.1
+- Support of attribute MapQueryParameter with a regexp has been improved, it now converts the regexp from PCRE to ECMA-262 for better compliance with OpenApi. 
+
 ## 4.38.0
 * Added a `#[Ignore]` attribute that allows a property to be excluded from the generated schema.
 ```php

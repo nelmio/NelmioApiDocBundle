@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -92,6 +93,30 @@ class MapQueryParameterController
         ?int $id,
         #[MapQueryParameter]
         ?string $changedType,
+    ) {
+    }
+
+    #[Route('/article_map_query_parameter_invalid_regexp', methods: ['GET'])]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleWithInvalidRegexp(
+        #[MapQueryParameter(filter: FILTER_VALIDATE_REGEXP, options: ['regexp' => 'This is not a valid regexp'])]
+        string $regexp,
+    ) {
+    }
+
+    #[Route('/article_map_query_parameter_unsupported_flag', methods: ['GET'])]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleWithUnsupportedRegexpFlag(
+        #[MapQueryParameter(filter: FILTER_VALIDATE_REGEXP, options: ['regexp' => '/\ZUnsupportedFlag/'])]
+        string $regexp,
+    ) {
+    }
+
+    #[Route('/article_map_query_parameter_replaced_flag', methods: ['GET'])]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleWithReplacedRegexpFlag(
+        #[MapQueryParameter(filter: FILTER_VALIDATE_REGEXP, options: ['regexp' => '/\ADifferentFlag/'])]
+        string $regexp,
     ) {
     }
 }
