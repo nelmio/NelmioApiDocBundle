@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 4.37.0
+* Added a `#[Ignore]` attribute that allows a property to be excluded from the generated schema.
+
+```php
+<?php
+
+use Nelmio\ApiDocBundle\Attribute\Ignore;
+
+class Foo
+{
+    #[Ignore]
+    private string $ignoredProperty;
+}
+```
+
 ## 4.36.1
 - Passing an array key `value` with a list of strings to the `Areas` annotation/attribute is deprecated. Pass the list of strings directly.
 ```diff
