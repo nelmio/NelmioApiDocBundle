@@ -3,7 +3,7 @@
   "license": "MIT",
   "dependencies": {
     "redoc": "2.4.0",
-    "swagger-ui-dist": "5.18.2"
+    "swagger-ui-dist": "5.18.3"
   },
   "scripts": {
     "swagger": "yarn run swagger:bundle && yarn run swagger:standalone && yarn run swagger:css",
