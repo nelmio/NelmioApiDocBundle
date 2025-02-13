@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 4.36.2
+- Support of attribute MapQueryParameter with a regexp has been improved, it now converts the regexp from PCRE to ECMA-262 for better compliance with OpenApi. 
+
 ## 4.36.1
 - Passing an array key `value` with a list of strings to the `Areas` annotation/attribute is deprecated. Pass the list of strings directly.
 ```diff

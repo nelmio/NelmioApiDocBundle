@@ -77,6 +77,35 @@ final class ControllerTest extends WebTestCase
         );
     }
 
+    /**
+     * @dataProvider provideExceptionsTestCases
+     *
+     * @param array{name: string, type: string}|null $controller
+     * @param Bundle[]                               $extraBundles
+     * @param string[]                               $extraConfigs
+     */
+    public function testControllersThrowingExceptions(?array $controller, array $extraBundles = [], array $extraConfigs = []): void
+    {
+        if (version_compare(Kernel::VERSION, '6.3.0', '<')) {
+            self::markTestSkipped();
+        }
+        $controllerName = $controller['name'] ?? null;
+        $controllerType = $controller['type'] ?? null;
+
+        $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName, $controllerType) {
+            if (null === $controllerName) {
+                return;
+            }
+
+            $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", $controllerType);
+        };
+
+        $this->configurableContainerFactory->create($extraBundles, $routingConfiguration, $extraConfigs);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->getOpenApiDefinition();
+    }
+
     public static function provideAttributeTestCases(): \Generator
     {
         if (PHP_VERSION_ID < 80100) {
@@ -209,6 +238,24 @@ final class ControllerTest extends WebTestCase
             'VendorExtension',
             [],
             [__DIR__.'/Configs/VendorExtension.yaml', __DIR__.'/Configs/StubProcessor.yaml'],
+        ];
+    }
+
+    public static function provideExceptionsTestCases(): \Generator
+    {
+        $type = 'attribute';
+
+        yield 'Symfony 6.3 MapQueryParameter attribute with invalid PCRE' => [
+            [
+                'name' => 'MapQueryParameterWithInvalidPCREController',
+                'type' => $type,
+            ],
+        ];
+        yield 'Symfony 6.3 MapQueryParameter attribute with unsupported flag in PCRE' => [
+            [
+                'name' => 'MapQueryParameterWithUnsupportedFlagInPCREController',
+                'type' => $type,
+            ],
         ];
     }
 
