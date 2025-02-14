@@ -140,6 +140,7 @@ final class Configuration implements ConfigurationInterface
                             ->arrayNode('security')
                                 ->defaultValue([])
                                 ->example(['bearerAuth' => ['type' => 'http', 'scheme' => 'bearer']])
+                                ->info('Security schemes to use for this area')
                                 ->useAttributeAsKey('securityScheme')
                                 ->arrayPrototype()
                                     ->children()
