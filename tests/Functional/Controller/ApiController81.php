@@ -24,6 +24,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityThroughNameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithIgnoredProperty81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
@@ -347,6 +348,18 @@ class ApiController81
         ),
     )]
     public function entityWithUuid()
+    {
+    }
+
+    #[Route('/entity-with-ignored-property', methods: ['GET', 'POST'])]
+    #[OA\Response(
+        response: 200,
+        description: 'success',
+        content: new OA\JsonContent(
+            ref: new Model(type: EntityWithIgnoredProperty81::class),
+        ),
+    )]
+    public function entityWithIgnoredProperty()
     {
     }
 

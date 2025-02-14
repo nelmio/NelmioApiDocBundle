@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\DiscriminatorMap\JMSAbstractUser
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSDualComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSEnum81;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSIgnoredProperty81;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSNamingStrategyConstraints;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChat;
@@ -155,6 +156,17 @@ class JMSController81
     )
     ]
     public function enumArrayAction()
+    {
+    }
+
+    #[Route('/api/jms_ignored_property', methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Success',
+        content: new Model(type: JMSIgnoredProperty81::class)
+    )
+    ]
+    public function ignoredProperty()
     {
     }
 }
