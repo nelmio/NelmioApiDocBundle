@@ -110,6 +110,15 @@ final class Util
         return self::getIndexedCollectionItem($api->components, OA\Schema::class, $schema);
     }
 
+    public static function getSecuritySchema(OA\OpenApi $api, string $name, array $properties = []): OA\SecurityScheme
+    {
+        if (!$api->components instanceof OA\Components) {
+            $api->components = new OA\Components(['_context' => self::createWeakContext($api->_context)]);
+        }
+
+        return self::getCollectionItem($api->components, OA\SecurityScheme::class, [...$properties, 'securityScheme' => $name]);
+    }
+
     /**
      * Return an existing Property object from $schema->properties[]
      * having its member property set to $property.

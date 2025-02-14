@@ -11,8 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
+use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use OpenApi\Generator;
 
 final class SecurityDescriber implements DescriberInterface
 {
@@ -31,13 +31,8 @@ final class SecurityDescriber implements DescriberInterface
 
     public function describe(OA\OpenApi $api): void
     {
-        $securitySchemes = Generator::UNDEFINED !== $api->components && Generator::UNDEFINED !== $api->components->securitySchemes ? $api->components->securitySchemes : [];
-
         foreach ($this->securitySchemes as $name => $securityScheme) {
-            $securitySchemes[] = new OA\SecurityScheme([
-                'securityScheme' => $name,
-                ...$securitySchemes,
-            ]);
+            Util::getSecuritySchema($api, $name, $securityScheme);
         }
     }
 }
