@@ -68,7 +68,9 @@ class DumpCommandTest extends WebTestCase
             '--format' => 'html',
             '--html-config' => json_encode($htmlConfig),
         ]);
-        self::assertStringContainsString('<body>', $output);
+        self::assertStringContainsString('<html>', $output);
+        self::assertStringContainsString('<body', $output);
+        self::assertStringContainsString('</body>', $output);
         self::assertStringContainsString($expectedHtml, $output);
     }
 
