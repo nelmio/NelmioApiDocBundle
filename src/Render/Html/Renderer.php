@@ -15,4 +15,5 @@ class Renderer
 {
     public const REDOCLY = 'redocly';
     public const SWAGGERUI = 'swaggerui';
+    public const STOPLIGHTIO = 'stoplightio';
 }
