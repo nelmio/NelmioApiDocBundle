@@ -126,15 +126,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     ->setPublic(false)
                     ->setArguments([
                         $areaConfig['security'],
+                        new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
+                        new Reference('nelmio_api_doc.controller_reflector'),
                     ])
                     ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
-
-                $container->register(sprintf('nelmio_api_doc.route_describers.route_security.%s', $area), RouteSecurityDescriber::class)
-                    ->setPublic(false)
-                    ->setArguments([
-                        $areaConfig['security'],
-                    ])
-                    ->addTag('nelmio_api_doc.route_describer', ['priority' => -200]);
             }
 
             $container->register(\sprintf('nelmio_api_doc.describers.config.%s', $area), ExternalDocDescriber::class)
