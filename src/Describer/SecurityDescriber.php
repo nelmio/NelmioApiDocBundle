@@ -32,7 +32,11 @@ final class SecurityDescriber implements DescriberInterface
     public function describe(OA\OpenApi $api): void
     {
         foreach ($this->securitySchemes as $name => $securityScheme) {
-            Util::getSecuritySchema($api, $name, $securityScheme);
+            Util::getCollectionItem(
+                $api->components,
+                OA\SecurityScheme::class,
+                $securityScheme + ['securityScheme' => $name],
+            );
         }
     }
 }
