@@ -50,6 +50,7 @@
         "symfony/phpunit-bridge": "^6.4",
         "symfony/property-access": "^6.4 || ^7.1",
         "symfony/security-csrf": "^6.4 || ^7.1",
+        "symfony/security-http": "^6.4 || ^7.1",
         "symfony/serializer": "^6.4 || ^7.1",
         "symfony/stopwatch": "^6.4 || ^7.1",
         "symfony/templating": "^6.4 || ^7.1",
