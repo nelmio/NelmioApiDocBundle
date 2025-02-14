@@ -15,10 +15,21 @@
     {% endblock stylesheets %}
 </head>
 <body>
+    {% block swagger_ui %}
+        <elements-api id="docs"/>
+    {% endblock swagger_ui %}
     {% block swagger_initialization %}
-        <elements-api
-            apiDescriptionDocument={{ swagger_data|json_encode(65)|raw }}
-        />
+        <script defer>
+            const docs = document.getElementById('docs');
+
+            docs.apiDescriptionDocument = {{ swagger_data|json_encode(65)|raw }}.spec;
+
+            const config = {{ config|json_encode(65)|raw }};
+
+            Object.keys(config).forEach(key => {
+                docs[key] = config[key];
+            });
+        </script>
     {% endblock swagger_initialization %}
 </body>
 </html>
