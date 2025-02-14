@@ -54,6 +54,14 @@ final class SecurityDescriber implements DescriberInterface
             return;
         }
 
+        foreach ($this->securitySchemes as $name => $securityScheme) {
+            Util::getCollectionItem(
+                $api->components,
+                OA\SecurityScheme::class,
+                $securityScheme + ['securityScheme' => $name],
+            );
+        }
+
         foreach ($this->routeCollection->all() as $route) {
             if (!$route->hasDefault('_controller')) {
                 continue;
@@ -65,14 +73,6 @@ final class SecurityDescriber implements DescriberInterface
 
     private function describeRoute(OA\OpenApi $api, Route $route): void
     {
-        foreach ($this->securitySchemes as $name => $securityScheme) {
-            Util::getCollectionItem(
-                $api->components,
-                OA\SecurityScheme::class,
-                $securityScheme + ['securityScheme' => $name],
-            );
-        }
-
         if (PHP_VERSION_ID < 80100) {
             return;
         }
