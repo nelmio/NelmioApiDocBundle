@@ -48,6 +48,7 @@ final class FilteredRouteCollectionBuilder
                 'path_patterns' => [],
                 'host_patterns' => [],
                 'name_patterns' => [],
+                'security' => [],
                 'with_annotation' => false,
                 'with_attribute' => false,
                 'disable_default_routes' => false,
@@ -58,6 +59,7 @@ final class FilteredRouteCollectionBuilder
             ->setAllowedTypes('with_annotation', 'boolean')
             ->setAllowedTypes('with_attribute', 'boolean')
             ->setAllowedTypes('disable_default_routes', 'boolean')
+            ->setAllowedTypes('security', 'array')
         ;
 
         if (array_key_exists(0, $options)) {
