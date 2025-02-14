@@ -95,7 +95,7 @@ final class RouteAttributeDescriber implements RouteDescriberInterface, ModelReg
         );
 
         foreach ($this->securitySchemes as $name => $securityScheme) {
-            $operation->security[] = [$name => [$scopes]];
+            $operation->security[] = [$name => array_unique(array_values($scopes))];
         }
     }
 }
