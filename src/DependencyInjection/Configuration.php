@@ -81,7 +81,7 @@ final class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->ignoreExtraKeys(false)
                         ->end()
-                        ->arrayNode('stoplightio_config')
+                        ->arrayNode('stoplight_config')
                             ->info('https://docs.stoplight.io/docs/elements/b074dc47b2826-elements-configuration-options')
                             ->addDefaultsIfNotSet()
                             ->ignoreExtraKeys(false)

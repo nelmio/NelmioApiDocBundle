@@ -12,15 +12,15 @@
     "swagger:standalone": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js* $npm_package_config_destinationswagger",
     "swagger:css": "cp node_modules/swagger-ui-dist/swagger-ui.css* $npm_package_config_destination_swagger",
     "redoc": "cp node_modules/redoc/bundles/redoc.standalone.js $npm_package_config_destination_redoc",
-    "stoplightio": "yarn run stoplightio:js && yarn run stoplightio:css",
-    "stoplightio:js": "cp node_modules/@stoplight/elements/web-components.min.js $npm_package_config_destination_stoplightio",
-    "stoplightio:css": "cp node_modules/@stoplight/elements/styles.min.css $npm_package_config_destination_stoplightio"
+    "stoplight": "yarn run stoplight:js && yarn run stoplight:css",
+    "stoplight:js": "cp node_modules/@stoplight/elements/web-components.min.js $npm_package_config_destination_stoplight",
+    "stoplight:css": "cp node_modules/@stoplight/elements/styles.min.css $npm_package_config_destination_stoplight"
   },
   "config": {
     "destination": {
       "swagger": "../public/swagger-ui",
       "redoc": "../public/redocly",
-      "stoplightio": "../public/stoplightio"
+      "stoplight": "../public/stoplight"
     }
   }
 }

@@ -113,11 +113,11 @@ class DumpCommandTest extends WebTestCase
             '"hideDownloadButton":true',
         ];
 
-        yield 'configure stoplightio' => [
+        yield 'configure stoplight' => [
             [
-                'ui_renderer' => Renderer::STOPLIGHTIO,
+                'ui_renderer' => Renderer::STOPLIGHT,
             ],
-            'stoplightio/web-components.min.js',
+            'stoplight/web-components.min.js',
         ];
 
         yield 'configure server url' => [

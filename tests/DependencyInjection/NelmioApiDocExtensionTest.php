@@ -337,7 +337,7 @@ class NelmioApiDocExtensionTest extends TestCase
                 'assets_mode' => 'cdn',
                 'swagger_ui_config' => [],
                 'redocly_config' => [],
-                'stoplightio_config' => [],
+                'stoplight_config' => [],
             ],
         ];
 
@@ -354,7 +354,7 @@ class NelmioApiDocExtensionTest extends TestCase
                     'deepLinking' => true,
                 ],
                 'redocly_config' => [],
-                'stoplightio_config' => [],
+                'stoplight_config' => [],
             ],
         ];
 
@@ -373,21 +373,21 @@ class NelmioApiDocExtensionTest extends TestCase
                     'hideDownloadButton' => true,
                 ],
                 'swagger_ui_config' => [],
-                'stoplightio_config' => [],
+                'stoplight_config' => [],
             ],
         ];
 
-        yield 'stoplightio' => [
+        yield 'stoplight' => [
             [
                 'assets_mode' => 'bundle',
-                'stoplightio_config' => [
+                'stoplight_config' => [
                     'router' => 'hash',
                     'hideSchemas' => true,
                 ],
             ],
             [
                 'assets_mode' => 'bundle',
-                'stoplightio_config' => [
+                'stoplight_config' => [
                     'router' => 'hash',
                     'hideSchemas' => true,
                 ],

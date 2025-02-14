@@ -41,7 +41,7 @@ The bundle configuration is stored under the ``nelmio_api_doc`` key in your appl
             # https://redocly.com/docs/redoc/config/
             redocly_config: []
             # https://docs.stoplight.io/docs/elements/b074dc47b2826-elements-configuration-options
-            stoplightio_config: []
+            stoplight_config: []
         # Filter the routes that are documented
         areas:
             default:
@@ -159,7 +159,7 @@ html_config
 
 **type**: ``dictionary``
 **default**: ``[]``
-**allowed keys**: ``assets_mode``, ``swagger_ui_config``, ``redocly_config``, ``stoplightio_config``
+**allowed keys**: ``assets_mode``, ``swagger_ui_config``, ``redocly_config``, ``stoplight_config``
 
 UI configuration options.
 
@@ -175,11 +175,11 @@ UI configuration options.
                 # https://redocly.com/docs/redoc/config/
                 redocly_config: []
                 # https://docs.stoplight.io/docs/elements/b074dc47b2826-elements-configuration-options
-                stoplightio_config: []
+                stoplight_config: []
 
 .. versionadded:: 4.37
 
-    The `stoplightio_config` option was added in 4.37.
+    The `stoplight_config` option was added in 4.37.
 
 areas
 ~~~~~

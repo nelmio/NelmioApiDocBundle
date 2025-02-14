@@ -8,10 +8,10 @@
     <title>{% block title %}{{ swagger_data.spec.info.title }}{% endblock title %}</title>
 
     {% block javascripts %}
-        {{ nelmioAsset(assets_mode, 'stoplightio/web-components.min.js') }}
+        {{ nelmioAsset(assets_mode, 'stoplight/web-components.min.js') }}
     {% endblock javascripts %}
     {% block stylesheets %}
-        {{ nelmioAsset(assets_mode, 'stoplightio/styles.min.css') }}
+        {{ nelmioAsset(assets_mode, 'stoplight/styles.min.css') }}
     {% endblock stylesheets %}
 </head>
 <body>
@@ -24,7 +24,7 @@
 
             docs.apiDescriptionDocument = {{ swagger_data|json_encode(65)|raw }}.spec;
 
-            const config = {{ stoplightio_config|json_encode(65)|raw }};
+            const config = {{ stoplight_config|json_encode(65)|raw }};
 
             Object.keys(config).forEach(key => {
                 docs[key] = config[key];

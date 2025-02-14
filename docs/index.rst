@@ -76,10 +76,10 @@ By default, only routes under ``/api`` are documented. Update the regexp at ``ne
     .. code-block:: yaml
 
         # config/routes.yaml
-        app.stoplightio:
+        app.stoplight:
             path: /api/doc
             methods: GET
-            defaults: { _controller: nelmio_api_doc.controller.stoplightio }
+            defaults: { _controller: nelmio_api_doc.controller.stoplight }
 
     If you also want to expose it in JSON, register this route:
 

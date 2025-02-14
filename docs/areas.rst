@@ -53,12 +53,12 @@ Then update your routing to be able to access your different documentations:
     #    methods: GET
     #    defaults: { _controller: nelmio_api_doc.controller.redocly, area: default }
 
-    # With Stoplightio
+    # With Stoplight
     # app/config/routing.yaml
-    #app.stoplightio:
+    #app.stoplight:
     #    path: /api/doc/{area}
     #    methods: GET
-    #    defaults: { _controller: nelmio_api_doc.controller.stoplightio, area: default }
+    #    defaults: { _controller: nelmio_api_doc.controller.stoplight, area: default }
 
     # To expose them as JSON
     #app.swagger.areas:
