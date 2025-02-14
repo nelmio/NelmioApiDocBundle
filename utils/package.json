@@ -2,6 +2,7 @@
   "description": "Script utils for nelmio/api-doc-bundle UI",
   "license": "MIT",
   "dependencies": {
+    "@stoplight/elements": "9.0.0",
     "redoc": "2.4.0",
     "swagger-ui-dist": "5.18.3"
   },
@@ -10,12 +11,16 @@
     "swagger:bundle": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.js* $npm_package_config_destination_swagger",
     "swagger:standalone": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js* $npm_package_config_destinationswagger",
     "swagger:css": "cp node_modules/swagger-ui-dist/swagger-ui.css* $npm_package_config_destination_swagger",
-    "redoc": "cp node_modules/redoc/bundles/redoc.standalone.js $npm_package_config_destination_redoc"
+    "redoc": "cp node_modules/redoc/bundles/redoc.standalone.js $npm_package_config_destination_redoc",
+    "stoplight": "yarn run stoplight:js && yarn run stoplight:css",
+    "stoplight:js": "cp node_modules/@stoplight/elements/web-components.min.js $npm_package_config_destination_stoplight",
+    "stoplight:css": "cp node_modules/@stoplight/elements/styles.min.css $npm_package_config_destination_stoplight"
   },
   "config": {
     "destination": {
       "swagger": "../public/swagger-ui",
-      "redoc": "../public/redocly"
+      "redoc": "../public/redocly",
+      "stoplight": "../public/stoplight"
     }
   }
 }

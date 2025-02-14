@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 4.37.0
+* Added Stoplight as an alternative UI option. https://stoplight.io/open-source/elements.
+
 ## 4.36.1
 - Passing an array key `value` with a list of strings to the `Areas` annotation/attribute is deprecated. Pass the list of strings directly.
 ```diff
