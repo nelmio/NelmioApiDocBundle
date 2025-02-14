@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Describer\ExternalDocDescriber;
 use Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
+use Nelmio\ApiDocBundle\Describer\SecurityDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
@@ -118,6 +119,15 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference('logger'),
                 ])
                 ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
+
+            if (isset($areaConfig['security'])) {
+                $container->register(sprintf('nelmio_api_doc.describers.security.%s', $area), SecurityDescriber::class)
+                    ->setPublic(false)
+                    ->setArguments([
+                        $areaConfig['security'],
+                    ])
+                    ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
+            }
 
             $container->register(\sprintf('nelmio_api_doc.describers.config.%s', $area), ExternalDocDescriber::class)
                 ->setPublic(false)
