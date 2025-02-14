@@ -16,7 +16,9 @@ namespace Nelmio\ApiDocBundle\RouteDescriber;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class RouteAttributeDescriber implements RouteDescriberInterface, ModelRegistryAwareInterface
 {
@@ -44,34 +46,49 @@ final class RouteAttributeDescriber implements RouteDescriberInterface, ModelReg
             return;
         }
 
-        $attributes = $this->getAttributes($route->getDefault('_controller'));
-    }
-
-    private function getAttributes(string|object|array $controller): array
-    {
-        if (\is_array($controller) && method_exists(...$controller)) {
-            $controllerReflector = new \ReflectionMethod(...$controller);
-        } elseif (\is_string($controller) && str_contains($controller, '::')) {
-            $controllerReflector = new \ReflectionMethod(...explode('::', $controller, 2));
-        } else {
-            $controllerReflector = new \ReflectionFunction($controller(...));
-        }
-
+        $controller = $route->getDefault('_controller');
         if (\is_array($controller) && method_exists(...$controller)) {
             $classReflector = new \ReflectionClass($controller[0]);
         } elseif (\is_string($controller) && false !== $i = strpos($controller, '::')) {
             $classReflector = new \ReflectionClass(substr($controller, 0, $i));
         } else {
-            $classReflector = $controllerReflector instanceof \ReflectionFunction && $controllerReflector->isAnonymous() ? null : $controllerReflector->getClosureCalledClass();
+            $classReflector = $reflectionMethod instanceof \ReflectionFunction && $reflectionMethod->isAnonymous() ? null : $reflectionMethod->getClosureCalledClass();
         }
 
-        $this->attributes = [];
-        foreach (array_merge($classReflector?->getAttributes() ?? [], $controllerReflector->getAttributes()) as $attribute) {
+        $attributes = [];
+        foreach (array_merge($classReflector?->getAttributes() ?? [], $reflectionMethod->getAttributes()) as $attribute) {
             if (class_exists($attribute->getName())) {
-                $this->attributes[] = $attribute->newInstance();
+                $attributes[] = $attribute->newInstance();
             }
         }
 
-        return $this->attributes;
+        foreach ($this->getOperations($api, $route) as $operation) {
+            foreach ($attributes as $attribute) {
+                if ($attribute instanceof IsGranted) {
+                    $this->IsGranted($attribute, $operation);
+                }
+            }
+        }
+    }
+
+    private function IsGranted(IsGranted $isGranted, OA\Operation $operation): void
+    {
+        if (!Generator::isDefault($operation->security)) {
+            return;
+        }
+
+        if (!is_string($isGranted->attribute)) {
+            return;
+        }
+
+        $operation->security = [];
+        foreach ($this->securitySchemes as $securityScheme) {
+            if (!isset($operation->security[$securityScheme])) {
+                $operation->security[][$securityScheme] = [];
+            }
+
+//            $operation->security[][$securityScheme][] = [$isGranted->attribute];
+            $operation->security[0][$securityScheme] = array_merge($operation->security[0][$securityScheme], [$isGranted->attribute]);
+        }
     }
 }
