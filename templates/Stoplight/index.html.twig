@@ -14,7 +14,7 @@
         {{ nelmioAsset(assets_mode, 'stoplight/styles.min.css') }}
     {% endblock stylesheets %}
 </head>
-<body>
+<body style="height: 100vh;">
     {% block swagger_ui %}
         <elements-api id="docs"/>
     {% endblock swagger_ui %}
