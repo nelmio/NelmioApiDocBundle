@@ -20,7 +20,7 @@ use OpenApi\Generator;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-final class RouteAttributeDescriber implements RouteDescriberInterface, ModelRegistryAwareInterface
+final class RouteSecurityDescriber implements RouteDescriberInterface, ModelRegistryAwareInterface
 {
     use RouteDescriberTrait;
     use ModelRegistryAwareTrait;
@@ -40,7 +40,11 @@ final class RouteAttributeDescriber implements RouteDescriberInterface, ModelReg
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void
     {
-        if (null === $this->securitySchemes) {
+        if (!class_exists(IsGranted::class)) {
+            return;
+        }
+
+        if ([] === $this->securitySchemes) {
             return;
         }
 
@@ -54,48 +58,29 @@ final class RouteAttributeDescriber implements RouteDescriberInterface, ModelReg
         } elseif (\is_string($controller) && false !== $i = strpos($controller, '::')) {
             $classReflector = new \ReflectionClass(substr($controller, 0, $i));
         } else {
-            $classReflector = $reflectionMethod instanceof \ReflectionFunction && $reflectionMethod->isAnonymous() ? null : $reflectionMethod->getClosureCalledClass();
+            return;
         }
 
-        $attributes = [];
-        foreach (array_merge($classReflector?->getAttributes() ?? [], $reflectionMethod->getAttributes()) as $attribute) {
-            if (class_exists($attribute->getName())) {
-                $attributes[] = $attribute->newInstance();
-            }
-        }
-
-        $isGrantedAttributes = array_filter(
-            $attributes,
-            static fn ($attribute): bool => $attribute instanceof IsGranted && is_string($attribute->attribute)
+        $attributes = array_map(
+            static fn (\ReflectionAttribute $attribute): IsGranted => $attribute->newInstance(),
+            array_merge($classReflector->getAttributes(IsGranted::class), $reflectionMethod->getAttributes(IsGranted::class)),
         );
 
         foreach ($this->getOperations($api, $route) as $operation) {
-            $this->isGranted($isGrantedAttributes, $operation);
-        }
-    }
+            if (!Generator::isDefault($operation->security)) {
+                return;
+            }
 
-    /**
-     * @param IsGranted[] $isGranted
-     */
-    private function IsGranted(array $isGranted, OA\Operation $operation): void
-    {
-        if (!Generator::isDefault($operation->security)) {
-            return;
-        }
+            $operation->security = [];
 
-        if (!$this->securitySchemes) {
-            return;
-        }
+            $scopes = array_map(
+                static fn (IsGranted $attribute): string => $attribute->attribute,
+                $attributes,
+            );
 
-        $operation->security = [];
-
-        $scopes = array_map(
-            static fn (IsGranted $attribute): string => $attribute->attribute,
-            $isGranted
-        );
-
-        foreach ($this->securitySchemes as $name => $securityScheme) {
-            $operation->security[] = [$name => array_unique(array_values($scopes))];
+            foreach ($this->securitySchemes as $name => $securityScheme) {
+                $operation->security[] = [$name => array_unique(array_values($scopes))];
+            }
         }
     }
 }
