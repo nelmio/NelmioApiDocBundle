@@ -25,14 +25,16 @@ final class RouteAttributeDescriber implements RouteDescriberInterface, ModelReg
     use RouteDescriberTrait;
     use ModelRegistryAwareTrait;
 
-    private ?array $securitySchemes;
+    /**
+     * @var array<string, array<string, mixed>>
+     */
+    private array $securitySchemes;
 
     /**
-     * @param string[]|null $securitySchemes
+     * @param array<string, array<string, mixed>> $securitySchemes
      */
-    public function __construct(
-        ?array $securitySchemes
-    ) {
+    public function __construct(array $securitySchemes)
+    {
         $this->securitySchemes = $securitySchemes;
     }
 
@@ -82,7 +84,7 @@ final class RouteAttributeDescriber implements RouteDescriberInterface, ModelReg
         }
 
         $operation->security = [];
-        foreach ($this->securitySchemes as $securityScheme) {
+        foreach ($this->securitySchemes as $name => $securityScheme) {
             if (!isset($operation->security[$securityScheme])) {
                 $operation->security[][$securityScheme] = [];
             }

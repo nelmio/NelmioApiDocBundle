@@ -30,6 +30,7 @@ use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\RouteArgumentDescr
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryParameterDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryStringDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapRequestPayloadDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteAttributeDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use OpenApi\Generator;
 use Symfony\Component\Config\FileLocator;
@@ -129,6 +130,13 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                         $areaConfig['security'],
                     ])
                     ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
+
+                $container->register('nelmio_api_doc.route_describers.route_attribute', RouteAttributeDescriber::class)
+                    ->setPublic(false)
+                    ->setArguments([
+                        $areaConfig['security'],
+                    ])
+                    ->addTag('nelmio_api_doc.route_describer', ['priority' => -200]);
             }
 
             $container->register(sprintf('nelmio_api_doc.describers.config.%s', $area), ExternalDocDescriber::class)

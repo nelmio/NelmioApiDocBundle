@@ -80,6 +80,10 @@
             <tag name="nelmio_api_doc.route_describer" priority="-300" />
         </service>
 
+        <service id="nelmio_api_doc.route_describers.route_attribute" class="Nelmio\ApiDocBundle\RouteDescriber\RouteAttributeDescriber" public="false">
+            <tag name="nelmio_api_doc.route_describer" priority="-300" />
+        </service>
+
         <!-- Model Describers -->
         <service id="nelmio_api_doc.model_describers.self_describing" class="Nelmio\ApiDocBundle\ModelDescriber\SelfDescribingModelDescriber" public="false">
             <tag name="nelmio_api_doc.model_describer" priority="1000" />
