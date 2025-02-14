@@ -64,33 +64,34 @@ final class RouteAttributeDescriber implements RouteDescriberInterface, ModelReg
             }
         }
 
+        $isGrantedAttributes = array_filter(
+            $attributes,
+            static fn ($attribute): bool => $attribute instanceof IsGranted && is_string($attribute->attribute)
+        );
+
         foreach ($this->getOperations($api, $route) as $operation) {
-            foreach ($attributes as $attribute) {
-                if (class_exists(IsGranted::class) && $attribute instanceof IsGranted) {
-                    $this->IsGranted($attribute, $operation);
-                }
-            }
+            $this->isGranted($isGrantedAttributes, $operation);
         }
     }
 
-    private function IsGranted(IsGranted $isGranted, OA\Operation $operation): void
+    /**
+     * @param IsGranted[] $isGranted
+     */
+    private function IsGranted(array $isGranted, OA\Operation $operation): void
     {
         if (!Generator::isDefault($operation->security)) {
             return;
         }
 
-        if (!is_string($isGranted->attribute)) {
-            return;
-        }
-
         $operation->security = [];
-        foreach ($this->securitySchemes as $name => $securityScheme) {
-            if (!isset($operation->security[$securityScheme])) {
-                $operation->security[][$securityScheme] = [];
-            }
 
-//            $operation->security[][$securityScheme][] = [$isGranted->attribute];
-            $operation->security[0][$securityScheme] = array_merge($operation->security[0][$securityScheme], [$isGranted->attribute]);
+        $scopes = array_map(
+            static fn (IsGranted $attribute): string => $attribute->attribute,
+            $isGranted
+        );
+
+        foreach ($this->securitySchemes as $name => $securityScheme) {
+            $operation->security[] = [$name => [$scopes]];
         }
     }
 }
