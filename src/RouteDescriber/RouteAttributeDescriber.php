@@ -64,7 +64,7 @@ final class RouteAttributeDescriber implements RouteDescriberInterface, ModelReg
 
         foreach ($this->getOperations($api, $route) as $operation) {
             foreach ($attributes as $attribute) {
-                if ($attribute instanceof IsGranted) {
+                if (class_exists(IsGranted::class) && $attribute instanceof IsGranted) {
                     $this->IsGranted($attribute, $operation);
                 }
             }
