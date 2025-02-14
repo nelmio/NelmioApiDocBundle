@@ -24,7 +24,7 @@
 
             docs.apiDescriptionDocument = {{ swagger_data|json_encode(65)|raw }}.spec;
 
-            const config = {{ config|json_encode(65)|raw }};
+            const config = {{ stoplightio_config|json_encode(65)|raw }};
 
             Object.keys(config).forEach(key => {
                 docs[key] = config[key];
