@@ -83,6 +83,10 @@ final class RouteAttributeDescriber implements RouteDescriberInterface, ModelReg
             return;
         }
 
+        if (!$this->securitySchemes) {
+            return;
+        }
+
         $operation->security = [];
 
         $scopes = array_map(
