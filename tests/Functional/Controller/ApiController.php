@@ -24,6 +24,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\CompoundEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityThroughNameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithAlternateType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithFalsyDefaults;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithIgnoredProperty;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
@@ -512,6 +513,18 @@ class ApiController
     #[Route('/dictionary', methods: ['GET'])]
     #[OA\Response(response: 200, description: 'Success', content: new Model(type: Dictionary::class))]
     public function dictionary()
+    {
+    }
+
+    #[Route('/entity-with-ignored-property', methods: ['GET', 'POST'])]
+    #[OA\Response(
+        response: 200,
+        description: 'success',
+        content: new OA\JsonContent(
+            ref: new Model(type: EntityWithIgnoredProperty::class),
+        ),
+    )]
+    public function entityWithIgnoredProperty()
     {
     }
 }

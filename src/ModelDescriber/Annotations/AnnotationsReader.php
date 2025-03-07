@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
+use Nelmio\ApiDocBundle\Attribute\Ignore;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
@@ -66,6 +67,20 @@ class AnnotationsReader
         $this->phpDocReader->updateProperty($reflection, $property);
         $this->reflectionReader->updateProperty($reflection, $property);
         $this->symfonyConstraintAnnotationReader->updateProperty($reflection, $property, $serializationGroups);
+    }
+
+    /**
+     * @param \ReflectionProperty[]|\ReflectionMethod[] $reflections
+     */
+    public function shouldDescribeProperty(array $reflections): bool
+    {
+        foreach ($reflections as $reflection) {
+            if ([] !== $reflection->getAttributes(Ignore::class)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

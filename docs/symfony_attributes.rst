@@ -61,6 +61,35 @@ Customizing the documentation of the request body can be done by adding the ``#[
             groups: ["create"],
         )
 
+MapUploadedFile
+-------------------------------
+
+Using the `Symfony MapUploadedFile`_ attribute allows NelmioApiDocBundle to automatically generate your request body documentation for your endpoint.
+
+.. versionadded:: 4.37
+
+    The :class:`Symfony\\Component\\HttpKernel\\Attribute\\MapUploadedFile` attribute was introduced in Symfony 7.1.
+
+
+Modify generated documentation
+~~~~~~~
+
+Customizing the documentation of the uploaded file can be done by adding the ``#[OA\RequestBody]`` attribute with the corresponding ``#[OA\MediaType]`` and ``#[OA\Schema]`` to your controller method.
+
+    .. code-block:: php-attributes
+
+        #[OA\RequestBody(
+            description: 'Describe the body',
+            content: [
+                new OA\MediaType('multipart/form-data', new OA\Schema(
+                    properties: [new OA\Property(
+                        property: 'file',
+                        description: 'Describe the file'
+                    )],
+                )),
+            ],
+        )]
+
 Complete example
 ----------------------
 
@@ -90,6 +119,10 @@ Complete example
         use AppBundle\UserDTO;
         use AppBundle\UserQuery;
         use OpenApi\Attributes as OA;
+        use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+        use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+        use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+        use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
         use Symfony\Component\Routing\Annotation\Route;
 
         class UserController
@@ -130,6 +163,26 @@ Complete example
                 groups: ['create'],
             )]
             public function createUser(#[MapRequestPayload] UserDTO $user)
+            {
+                // ...
+            }
+
+            /**
+             * Upload a profile picture
+             */
+            #[Route('/api/users/picture', methods: ['POST'])]
+            #[OA\RequestBody(
+                description: 'Content of the profile picture upload request',
+                content: [
+                    new OA\MediaType('multipart/form-data', new OA\Schema(
+                        properties: [new OA\Property(
+                            property: 'file',
+                            description: 'File containing the profile picture',
+                        )],
+                    )),
+                ],
+            )]
+            public function createUser(#[MapUploadedFile] UploadedFile $picture)
             {
                 // ...
             }
@@ -183,4 +236,5 @@ Make sure to use at least php 8.1 (attribute support) to make use of this functi
 .. _`Symfony MapQueryString`: https://symfony.com/doc/current/controller.html#mapping-the-whole-query-string
 .. _`Symfony MapQueryParameter`: https://symfony.com/doc/current/controller.html#mapping-query-parameters-individually
 .. _`Symfony MapRequestPayload`: https://symfony.com/doc/current/controller.html#mapping-request-payload
+.. _`Symfony MapUploadedFile`: https://symfony.com/doc/current/controller.html#mapping-uploaded-files
 .. _`RouteArgumentDescriberInterface`: https://github.com/DjordyKoert/NelmioApiDocBundle/blob/master/src/RouteDescriber/RouteArgumentDescriber/RouteArgumentDescriberInterface.php

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the NelmioApiDocBundle package.
  *
@@ -9,11 +11,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Render\Html;
+namespace Nelmio\ApiDocBundle\Attribute;
 
-class Renderer
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::TARGET_PROPERTY)]
+final class Ignore
 {
-    public const REDOCLY = 'redocly';
-    public const SWAGGERUI = 'swaggerui';
-    public const STOPLIGHT = 'stoplight';
 }
