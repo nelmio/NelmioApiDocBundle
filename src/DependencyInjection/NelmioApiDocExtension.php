@@ -42,8 +42,6 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -218,17 +216,16 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ->setPublic(false)
             ->addTag('nelmio_api_doc.swagger.processor', ['priority' => 0]);
 
-            if (class_exists(MapQueryParameter::class)) {
-                $container->register('nelmio_api_doc.route_argument_describer.map_query_parameter', SymfonyMapQueryParameterDescriber::class)
-                    ->setPublic(false)
-                    ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
-            }
+        if (class_exists(MapQueryParameter::class)) {
+            $container->register('nelmio_api_doc.route_argument_describer.map_query_parameter', SymfonyMapQueryParameterDescriber::class)
+                ->setPublic(false)
+                ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
+        }
 
-            if (class_exists(MapUploadedFile::class)) {
-                $container->register('nelmio_api_doc.route_argument_describer.map_uploaded_file', SymfonyMapUploadedFileDescriber::class)
-                    ->setPublic(false)
-                    ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
-            }
+        if (class_exists(MapUploadedFile::class)) {
+            $container->register('nelmio_api_doc.route_argument_describer.map_uploaded_file', SymfonyMapUploadedFileDescriber::class)
+                ->setPublic(false)
+                ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
         }
 
         $bundles = $container->getParameter('kernel.bundles');

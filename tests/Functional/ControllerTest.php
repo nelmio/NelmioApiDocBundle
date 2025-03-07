@@ -170,7 +170,7 @@ final class ControllerTest extends WebTestCase
             yield 'Symfony 7.1 MapUploadedFile attribute' => [
                 [
                     'name' => 'MapUploadedFileController',
-                    'type' => $type,
+                    'type' => 'attribute',
                 ],
             ];
         }

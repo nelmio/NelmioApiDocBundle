@@ -456,15 +456,8 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSAbstractUser')->toJson(), true));
     }
 
-    /**
-     * @requires PHP >= 8.1
-     */
     public function testIgnoredProperty(): void
     {
-        if (TestKernel::isAnnotationsAvailable()) {
-            self::markTestSkipped('Feature has only been implemented with attributes');
-        }
-
         self::assertEquals([
             'schema' => 'JMSIgnoredProperty',
             'type' => 'object',
