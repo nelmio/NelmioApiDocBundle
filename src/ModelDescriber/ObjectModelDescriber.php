@@ -210,7 +210,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
             if ($propertyDescriber->supports($types, $model->getSerializationContext())) {
                 if ($propertyDescriber instanceof PropertyDescriberInterface) {
-                    $propertyDescriber->describe($types, $property, $model->getGroups(), $schema, $model->getSerializationContext());
+                    $propertyDescriber->describe($types, $property, null, $schema, $model->getSerializationContext());
                 } else {
                     $propertyDescriber->describe($types, $property, $model->getSerializationContext());
                 }
