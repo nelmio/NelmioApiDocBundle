@@ -13,6 +13,7 @@ class Foo
     private string $ignoredProperty;
 }
 ```
+* Added support for the `#[MapUploadedFile]` symfony controller argument attribute
 
 ## 4.37.0
 * Added Stoplight as an alternative UI option. https://stoplight.io/open-source/elements.
@@ -46,7 +47,6 @@ nelmio_api_doc:
 ```
 
 ## 4.34.0
-* Added support for the `#[MapUploadedFile]` symfony controller argument attribute
 * Changed minimum Symfony version for 7.x from 7.0 to 7.1
 
 ## 4.33.6
