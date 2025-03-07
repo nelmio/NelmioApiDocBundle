@@ -1,8 +1,8 @@
 NelmioApiDocBundle
 ==================
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/nelmio/NelmioApiDocBundle/continuous-integration.yml?branch=master&style=flat-square)](https://github.com/nelmio/NelmioApiDocBundle/actions?query=workflow:CI)
-[![Codecov](https://img.shields.io/codecov/c/github/nelmio/NelmioApiDocBundle?branch=master&style=flat-square)](https://app.codecov.io/gh/nelmio/NelmioApiDocBundle)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/nelmio/NelmioApiDocBundle/continuous-integration.yml?branch=5.x&style=flat-square)](https://github.com/nelmio/NelmioApiDocBundle/actions?query=workflow:CI)
+[![Codecov](https://img.shields.io/codecov/c/github/nelmio/NelmioApiDocBundle?branch=5.x&style=flat-square)](https://app.codecov.io/gh/nelmio/NelmioApiDocBundle)
 [![Total Downloads](https://img.shields.io/packagist/dt/nelmio/api-doc-bundle?style=flat-square)](https://packagist.org/packages/nelmio/api-doc-bundle)
 [![Latest Stable Version](https://img.shields.io/packagist/v/nelmio/api-doc-bundle?label=stable&style=flat-square)](https://packagist.org/packages/nelmio/api-doc-bundle)
 [![PHP Version](https://img.shields.io/packagist/dependency-v/nelmio/api-doc-bundle/PHP?style=flat-square)](https://packagist.org/packages/nelmio/api-doc-bundle)
@@ -45,7 +45,7 @@ composer require nelmio/api-doc-bundle
 ## Contributing
 
 See
-[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/CONTRIBUTING.md)
 file.
 
 ## Running the Tests

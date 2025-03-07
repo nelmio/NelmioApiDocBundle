@@ -68,7 +68,7 @@ Just create a file ``templates/bundles/NelmioApiDocBundle/SwaggerUi/index.html.t
         <script type="text/javascript" src="{{ asset('js/custom-request-signer.js') }}"></script>
     {% endblock javascripts %}
 
-You can have a look at the `original template <https://github.com/nelmio/NelmioApiDocBundle/blob/master/templates/SwaggerUi/index.html.twig>`_, in ``/templates/SwaggerUi/index.html.twig``, to see which blocks can be overridden.
+You can have a look at the `original template <https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/templates/SwaggerUi/index.html.twig>`_, in ``/templates/SwaggerUi/index.html.twig``, to see which blocks can be overridden.
 
 Assets Loading Options
 -----------------------
@@ -85,7 +85,7 @@ The `html_config` settings allow you to configure how assets are loaded for the 
 `assets_mode`
 ~~~~~~~~~~~~~
 
-The three values possible values can be found in `AssetsMode.php <https://github.com/nelmio/NelmioApiDocBundle/blob/master/src/Render/Html/AssetsMode.php>`_
+The three values possible values can be found in `AssetsMode.php <https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/src/Render/Html/AssetsMode.php>`_
 - **cdn**: Loads assets from `jsDelivr <https://www.jsdelivr.com/>`_.
 - **bundle**: Fetches assets from the bundle in the vendor directory, including updates.
 - **offline**: Loads assets from the local `assets` directory, requiring the developer to update them manually.
