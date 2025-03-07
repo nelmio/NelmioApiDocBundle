@@ -132,6 +132,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
             $reflections = $this->getReflections($reflClass, $propertyName);
 
+            if (!$annotationsReader->shouldDescribeProperty($reflections)) {
+                continue;
+            }
+
             // Check if a custom name is set
             foreach ($reflections as $reflection) {
                 $serializedName = $annotationsReader->getPropertyName($reflection, $serializedName);

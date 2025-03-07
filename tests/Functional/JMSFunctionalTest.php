@@ -462,6 +462,26 @@ class JMSFunctionalTest extends WebTestCase
     }
 
     /**
+     * @requires PHP >= 8.1
+     */
+    public function testIgnoredProperty(): void
+    {
+        if (TestKernel::isAnnotationsAvailable()) {
+            self::markTestSkipped('Feature has only been implemented with attributes');
+        }
+
+        self::assertEquals([
+            'schema' => 'JMSIgnoredProperty81',
+            'type' => 'object',
+            'properties' => [
+                'regular_property' => [
+                    'type' => 'string',
+                ],
+            ],
+        ], json_decode($this->getModel('JMSIgnoredProperty81')->toJson(), true));
+    }
+
+    /**
      * @param array<mixed> $options
      */
     protected static function createKernel(array $options = []): KernelInterface

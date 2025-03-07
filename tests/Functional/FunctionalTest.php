@@ -918,6 +918,23 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('EntityWithUuid')->toJson(), true));
     }
 
+    /**
+     * @requires PHP >= 8.1
+     */
+    public function testEntityWithIgnoredProperty(): void
+    {
+        self::assertEquals([
+            'schema' => 'EntityWithIgnoredProperty81',
+            'type' => 'object',
+            'required' => ['regularProperty'],
+            'properties' => [
+                'regularProperty' => [
+                    'type' => 'string',
+                ],
+            ],
+        ], json_decode($this->getModel('EntityWithIgnoredProperty81')->toJson(), true));
+    }
+
     public function testEntitiesWithRefInSchemaDoNoReadOtherProperties(): void
     {
         $model = $this->getModel('EntityWithRef');
