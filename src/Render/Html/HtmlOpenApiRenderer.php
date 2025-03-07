@@ -59,6 +59,17 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
             );
         }
 
+        if (isset($options['ui_renderer']) && Renderer::STOPLIGHT === $options['ui_renderer']) {
+            return $this->twig->render(
+                '@NelmioApiDoc/Stoplight/index.html.twig',
+                [
+                    'swagger_data' => ['spec' => json_decode($spec->toJson(), true)],
+                    'assets_mode' => $options['assets_mode'],
+                    'stoplight_config' => $options['stoplight_config'],
+                ]
+            );
+        }
+
         return $this->twig->render(
             '@NelmioApiDoc/SwaggerUi/index.html.twig',
             [

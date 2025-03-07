@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block meta %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% endblock meta %}
+    <title>{% block title %}{{ swagger_data.spec.info.title }}{% endblock title %}</title>
+
+    {% block javascripts %}
+        {{ nelmioAsset(assets_mode, 'stoplight/web-components.min.js') }}
+    {% endblock javascripts %}
+    {% block stylesheets %}
+        {{ nelmioAsset(assets_mode, 'stoplight/styles.min.css') }}
+    {% endblock stylesheets %}
+</head>
+<body style="height: 100vh;">
+    {% block swagger_ui %}
+        <elements-api id="docs"/>
+    {% endblock swagger_ui %}
+    {% block swagger_initialization %}
+        <script defer>
+            const docs = document.getElementById('docs');
+
+            docs.apiDescriptionDocument = {{ swagger_data|json_encode(65)|raw }}.spec;
+
+            const config = {{ stoplight_config|json_encode(65)|raw }};
+
+            Object.keys(config).forEach(key => {
+                docs[key] = config[key];
+            });
+        </script>
+    {% endblock swagger_initialization %}
+</body>
+</html>

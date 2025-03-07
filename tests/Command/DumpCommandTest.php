@@ -68,7 +68,9 @@ class DumpCommandTest extends WebTestCase
             '--format' => 'html',
             '--html-config' => json_encode($htmlConfig),
         ]);
-        self::assertStringContainsString('<body>', $output);
+        self::assertStringContainsString('<html>', $output);
+        self::assertStringContainsString('<body', $output);
+        self::assertStringContainsString('</body>', $output);
         self::assertStringContainsString($expectedHtml, $output);
     }
 
@@ -111,6 +113,13 @@ class DumpCommandTest extends WebTestCase
                 ],
             ],
             '"hideDownloadButton":true',
+        ];
+
+        yield 'configure stoplight' => [
+            [
+                'ui_renderer' => Renderer::STOPLIGHT,
+            ],
+            'stoplight/web-components.min.js',
         ];
 
         yield 'configure server url' => [
