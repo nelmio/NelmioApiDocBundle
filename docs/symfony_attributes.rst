@@ -237,4 +237,4 @@ Make sure to use at least php 8.1 (attribute support) to make use of this functi
 .. _`Symfony MapQueryParameter`: https://symfony.com/doc/current/controller.html#mapping-query-parameters-individually
 .. _`Symfony MapRequestPayload`: https://symfony.com/doc/current/controller.html#mapping-request-payload
 .. _`Symfony MapUploadedFile`: https://symfony.com/doc/current/controller.html#mapping-uploaded-files
-.. _`RouteArgumentDescriberInterface`: https://github.com/DjordyKoert/NelmioApiDocBundle/blob/master/src/RouteDescriber/RouteArgumentDescriber/RouteArgumentDescriberInterface.php
+.. _`RouteArgumentDescriberInterface`: https://github.com/DjordyKoert/NelmioApiDocBundle/blob/4.x/src/RouteDescriber/RouteArgumentDescriber/RouteArgumentDescriberInterface.php
