@@ -150,6 +150,12 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 }
             }
 
+            if (!$annotationsReader->shouldDescribeProperty($reflections)) {
+                $context->popPropertyMetadata();
+
+                continue;
+            }
+
             $groups = $this->computeGroups($context, $item->type);
 
             if (true === $item->inline && isset($item->type['name'])) {

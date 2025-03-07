@@ -165,6 +165,15 @@ final class ControllerTest extends WebTestCase
                 ],
             ];
         }
+
+        if (version_compare(Kernel::VERSION, '7.1.0', '>=')) {
+            yield 'Symfony 7.1 MapUploadedFile attribute' => [
+                [
+                    'name' => 'MapUploadedFileController',
+                    'type' => 'attribute',
+                ],
+            ];
+        }
     }
 
     /**

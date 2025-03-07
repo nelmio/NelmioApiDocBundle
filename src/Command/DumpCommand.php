@@ -29,6 +29,7 @@ final class DumpCommand extends Command
         'assets_mode' => AssetsMode::CDN,
         'swagger_ui_config' => [],
         'redocly_config' => [],
+        'stoplight_config' => [],
     ];
 
     public function __construct(RenderOpenApi $renderOpenApi)

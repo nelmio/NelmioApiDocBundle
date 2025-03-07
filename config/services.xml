@@ -21,6 +21,11 @@
             <argument type="string">redocly</argument>
         </service>
 
+        <service id="nelmio_api_doc.controller.stoplight" class="Nelmio\ApiDocBundle\Controller\SwaggerUiController" public="true">
+            <argument type="service" id="nelmio_api_doc.render_docs" />
+            <argument type="string">stoplight</argument>
+        </service>
+
         <service id="nelmio_api_doc.controller.swagger" alias="nelmio_api_doc.controller.swagger_json" public="true" />
 
         <service id="nelmio_api_doc.controller.swagger_json" class="Nelmio\ApiDocBundle\Controller\DocumentationController" public="true">

@@ -1,10 +1,11 @@
 NelmioApiDocBundle
 ==================
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/nelmio/NelmioApiDocBundle/continuous-integration.yml?branch=master&style=flat-square)](https://github.com/nelmio/NelmioApiDocBundle/actions?query=workflow:CI) 
-[![Total Downloads](https://poser.pugx.org/nelmio/api-doc-bundle/downloads)](https://packagist.org/packages/nelmio/api-doc-bundle)
-[![Latest Stable
-Version](https://poser.pugx.org/nelmio/api-doc-bundle/v/stable)](https://packagist.org/packages/nelmio/api-doc-bundle)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/nelmio/NelmioApiDocBundle/continuous-integration.yml?branch=master&style=flat-square)](https://github.com/nelmio/NelmioApiDocBundle/actions?query=workflow:CI)
+[![Codecov](https://img.shields.io/codecov/c/github/nelmio/NelmioApiDocBundle?branch=master&style=flat-square)](https://app.codecov.io/gh/nelmio/NelmioApiDocBundle)
+[![Total Downloads](https://img.shields.io/packagist/dt/nelmio/api-doc-bundle?style=flat-square)](https://packagist.org/packages/nelmio/api-doc-bundle)
+[![Latest Stable Version](https://img.shields.io/packagist/v/nelmio/api-doc-bundle?label=stable&style=flat-square)](https://packagist.org/packages/nelmio/api-doc-bundle)
+[![PHP Version](https://img.shields.io/packagist/dependency-v/nelmio/api-doc-bundle/PHP?style=flat-square)](https://packagist.org/packages/nelmio/api-doc-bundle)
 
 The **NelmioApiDocBundle** bundle allows you to generate a decent documentation
 for your APIs.
