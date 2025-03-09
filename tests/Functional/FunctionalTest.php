@@ -1261,4 +1261,79 @@ class FunctionalTest extends WebTestCase
 
         self::assertEquals($expected, json_decode($this->getModel('RangeInteger')->toJson(), true));
     }
+
+    public function testSecuredApi(): void
+    {
+        $securitySchemes = $this->getOpenApiDefinition('secured')->components->securitySchemes;
+        self::assertCount(2, $securitySchemes);
+
+        $basicAuthScheme = $securitySchemes[0];
+        self::assertInstanceOf(OAAnnotations\SecurityScheme::class, $basicAuthScheme);
+        self::assertSame([
+            'securityScheme' => 'basicAuth',
+            'type' => 'http',
+            'scheme' => 'basic',
+        ], json_decode($basicAuthScheme->toJson(), true));
+
+        $apiKeyAuthScheme = $securitySchemes[1];
+        self::assertInstanceOf(OAAnnotations\SecurityScheme::class, $apiKeyAuthScheme);
+        self::assertSame([
+            'securityScheme' => 'apiKeyAuth',
+            'type' => 'apiKey',
+            'description' => 'API Key Authentication',
+            'name' => 'X-API-Key',
+            'in' => 'header',
+        ], json_decode($apiKeyAuthScheme->toJson(), true));
+
+        $operation = $this->getOperation('/secured/article/{id}', 'get', 'secured');
+
+        self::assertSame([
+            [
+                'basicAuth' => [
+                    'ROLE_USER',
+                ],
+            ],
+            [
+                'apiKeyAuth' => [
+                    'ROLE_USER',
+                ],
+            ],
+        ], $operation->security);
+
+        $operation = $this->getOperation('/secured/article', 'post', 'secured');
+
+        self::assertSame([
+            [
+                'basicAuth' => [
+                    'ROLE_USER',
+                    'ROLE_ADMIN',
+                ],
+            ],
+            [
+                'apiKeyAuth' => [
+                    'ROLE_USER',
+                    'ROLE_ADMIN',
+                ],
+            ],
+        ], $operation->security);
+
+        $operation = $this->getOperation('/secured/article/{id}', 'patch', 'secured');
+
+        self::assertSame([
+            [
+                'basicAuth' => [
+                    'ROLE_USER',
+                    'ROLE_ADMIN',
+                    'ROLE_UPDATE_ARTICLE',
+                ],
+            ],
+            [
+                'apiKeyAuth' => [
+                    'ROLE_USER',
+                    'ROLE_ADMIN',
+                    'ROLE_UPDATE_ARTICLE',
+                ],
+            ],
+        ], $operation->security);
+    }
 }

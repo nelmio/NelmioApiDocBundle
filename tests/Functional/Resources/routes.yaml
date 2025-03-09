@@ -3,6 +3,10 @@ api:
     resource: ../Controller/ApiController.php
     type: attribute
 
+secured_api:
+    resource: ../Controller/SecuredApiController.php
+    type: attribute
+
 class_api:
     resource: ../Controller/ClassApiController.php
     type: attribute
