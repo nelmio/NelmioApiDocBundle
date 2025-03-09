@@ -31,7 +31,6 @@ use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryPar
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryStringDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapRequestPayloadDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapUploadedFileDescriber;
-use Nelmio\ApiDocBundle\RouteDescriber\RouteSecurityDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use OpenApi\Generator;
 use Symfony\Component\Config\FileLocator;
@@ -122,14 +121,14 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
 
             if (isset($areaConfig['security'])) {
-                $container->register(sprintf('nelmio_api_doc.describers.security.%s', $area), SecurityDescriber::class)
+                $container->register(\sprintf('nelmio_api_doc.describers.security.%s', $area), SecurityDescriber::class)
                     ->setPublic(false)
                     ->setArguments([
                         $areaConfig['security'],
-                        new Reference(sprintf('nelmio_api_doc.routes.%s', $area)),
+                        new Reference(\sprintf('nelmio_api_doc.routes.%s', $area)),
                         new Reference('nelmio_api_doc.controller_reflector'),
                     ])
-                    ->addTag(sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
+                    ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
             }
 
             $container->register(\sprintf('nelmio_api_doc.describers.config.%s', $area), ExternalDocDescriber::class)

@@ -73,10 +73,6 @@ final class SecurityDescriber implements DescriberInterface
 
     private function describeRoute(OA\OpenApi $api, Route $route): void
     {
-        if (PHP_VERSION_ID < 80100) {
-            return;
-        }
-
         $controller = $route->getDefault('_controller');
         if (null === $reflectionMethod = $this->controllerReflector->getReflectionMethod($controller)) {
             return;
