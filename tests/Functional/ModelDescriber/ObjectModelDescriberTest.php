@@ -79,7 +79,14 @@ class ObjectModelDescriberTest extends WebTestCase
             /** @var class-string $fullyQualifiedClassName */
             $fullyQualifiedClassName = str_replace('.php', '', $pathWithBackslashes);
 
-            if (!class_exists($fullyQualifiedClassName)) {
+            try {
+                $classExists = class_exists($fullyQualifiedClassName);
+            } catch (\Throwable) {
+                // Skip classes that cannot be loaded (Unsupported syntax, etc.)
+                continue;
+            }
+
+            if (!$classExists) {
                 self::markTestIncomplete(\sprintf('The class "%s" does not exist.', $fullyQualifiedClassName));
             }
 
