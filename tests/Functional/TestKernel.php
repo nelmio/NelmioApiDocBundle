@@ -281,6 +281,21 @@ class TestKernel extends Kernel
                         ],
                     ],
                 ],
+                'secured' => [
+                    'path_patterns' => ['^/secured'],
+                    'security' => [
+                        'basicAuth' => [
+                            'type' => 'http',
+                            'scheme' => 'basic',
+                        ],
+                        'apiKeyAuth' => [
+                            'type' => 'apiKey',
+                            'in' => 'header',
+                            'name' => 'X-API-Key',
+                            'description' => 'API Key Authentication',
+                        ],
+                    ],
+                ],
             ],
             'models' => [
                 'names' => $models,

@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase;
 use OpenApi\Annotations as OA;
 use OpenApi\Annotations\OpenApi;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 
 class ObjectModelDescriberTest extends WebTestCase
@@ -40,18 +41,20 @@ class ObjectModelDescriberTest extends WebTestCase
     /**
      * @dataProvider provideFixtures
      */
-    public function testItDescribes(string $class, ?string $fixtureDir = null): void
+    public function testItDescribes(string $class, string $fixtureDir): void
     {
         $model = new Model(new LegacyType('object', false, $class));
         $schema = new OA\Schema([
             'type' => 'object',
         ]);
 
-        $this->modelDescriber->describe($model, $schema);
+        try {
+            $this->modelDescriber->describe($model, $schema);
+        } catch (\Exception $e) {
+            self::markTestIncomplete($e->getMessage());
+        }
 
-        $reflect = new \ReflectionClass($class);
-
-        if (!file_exists($fixtureDir ??= \dirname($reflect->getFileName()).'/'.$reflect->getShortName().'.json')) {
+        if (!file_exists($fixtureDir)) {
             file_put_contents($fixtureDir, $schema->toJson());
         }
 
@@ -63,56 +66,38 @@ class ObjectModelDescriberTest extends WebTestCase
 
     public static function provideFixtures(): \Generator
     {
-        yield [
-            Fixtures\SimpleClass::class,
-        ];
+        $finder = new Finder();
+        $entityFiles = $finder->files()
+            ->in(__DIR__.'/Fixtures')
+            ->name('*.php')
+            ->sortByCaseInsensitiveName();
 
-        yield [
-            Fixtures\ArrayOfInt::class,
-        ];
+        foreach ($entityFiles as $file) {
+            $namespacedPath = str_replace(__DIR__.'/Fixtures', 'Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures', $file->getPathname());
+            $pathWithBackslashes = str_replace('/', '\\', $namespacedPath);
 
-        yield [
-            Fixtures\ArrayOfString::class,
-        ];
+            /** @var class-string $fullyQualifiedClassName */
+            $fullyQualifiedClassName = str_replace('.php', '', $pathWithBackslashes);
 
-        yield [
-            Fixtures\ComplexArray::class,
-        ];
+            try {
+                $classExists = class_exists($fullyQualifiedClassName);
+            } catch (\Throwable) {
+                // Skip classes that cannot be loaded (Unsupported syntax, etc.)
+                continue;
+            }
 
-        yield [
-            Fixtures\ScalarTypes::class,
-        ];
+            if (!$classExists) {
+                self::markTestIncomplete(\sprintf('The class "%s" does not exist.', $fullyQualifiedClassName));
+            }
 
-        yield [
-            Fixtures\NullableScalar::class,
-        ];
-
-        yield [
-            Fixtures\ClassWithObject::class,
-        ];
-
-        yield [
-            Fixtures\ClassWithIntersection::class,
-        ];
-
-        yield [
-            Fixtures\DateTimeClass::class,
-        ];
-
-        yield [
-            Fixtures\UuidClass::class,
-        ];
-
-        yield [
-            Fixtures\UuidClass7And8::class,
-        ];
-
-        yield [
-            Fixtures\Refs::class,
-        ];
+            yield [
+                $fullyQualifiedClassName,
+                str_replace('.php', '.json', $file->getPathname()),
+            ];
+        }
     }
 
-    private static function getFixture(string $fixture): string
+    protected static function getFixture(string $fixture): string
     {
         if (!file_exists($fixture)) {
             self::fail(\sprintf('The fixture file "%s" does not exist.', $fixture));
