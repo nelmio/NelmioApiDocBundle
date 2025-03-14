@@ -16,9 +16,3 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    versioning-strategy: increase
-    ignore:
-      - dependency-name: "symfony/*"
-        update-types:
-          - "version-update:semver-patch"
-          - "version-update:semver-minor"
