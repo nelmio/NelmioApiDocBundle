@@ -47,7 +47,7 @@
         "symfony/dom-crawler": "^6.4 || ^7.1",
         "symfony/expression-language": "^6.4 || ^7.1",
         "symfony/form": "^6.4 || ^7.1",
-        "symfony/phpunit-bridge": "^6.4",
+        "symfony/phpunit-bridge": "^6.4 || ^7.1",
         "symfony/property-access": "^6.4 || ^7.1",
         "symfony/security-csrf": "^6.4 || ^7.1",
         "symfony/serializer": "^6.4 || ^7.1",
