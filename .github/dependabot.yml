@@ -12,3 +12,13 @@ updates:
     schedule:
       interval: "weekly"
     versioning-strategy: increase
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    versioning-strategy: increase
+    ignore:
+      - dependency-name: "symfony/*"
+        update-types:
+          - "version-update:semver-patch"
+          - "version-update:semver-minor"
