@@ -157,6 +157,16 @@ final class ControllerTest extends WebTestCase
             ],
         ];
 
+        yield 'Name collision with groups' => [
+            [
+                'name' => 'ApiController81Collisions',
+                'type' => 'attribute',
+            ],
+            null,
+            [],
+            [__DIR__.'/Configs/EnableSerializer.yaml'],
+        ];
+
         if (property_exists(MapRequestPayload::class, 'type')) {
             yield 'Symfony 7.1 MapRequestPayload array type' => [
                 [

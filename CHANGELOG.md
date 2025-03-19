@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 5.1.0
+* Schemas deduplication now compare generated schemas to reduce automatically named schemas (Entity / Entity2 / Entity3 / ...).
+
 ## 4.38.2
 - Support of attribute MapQueryParameter with a regexp has been improved, it now converts the regexp from PCRE to ECMA-262 for better compliance with OpenApi. 
 

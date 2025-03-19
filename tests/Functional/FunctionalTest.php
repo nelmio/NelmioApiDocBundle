@@ -54,7 +54,7 @@ class FunctionalTest extends WebTestCase
         $articleModel = $this->getModel('Article');
         self::assertCount(1, $articleModel->properties);
         $this->assertHasProperty('author', $articleModel);
-        self::assertSame('#/components/schemas/User2', Util::getProperty($articleModel, 'author')->ref);
+        self::assertSame('#/components/schemas/User', Util::getProperty($articleModel, 'author')->ref);
         $this->assertNotHasProperty('author', Util::getProperty($articleModel, 'author'));
     }
 
@@ -114,7 +114,7 @@ class FunctionalTest extends WebTestCase
         $this->assertHasResponse('201', $operation);
         $response = $this->getOperationResponse($operation, '201');
         self::assertEquals('Operation automatically detected', $response->description);
-        self::assertEquals('#/components/schemas/User', $response->content['application/json']->schema->ref);
+        self::assertEquals('#/components/schemas/User2', $response->content['application/json']->schema->ref);
 
         self::assertInstanceOf(OAAnnotations\RequestBody::class, $operation->requestBody);
         $requestBody = $operation->requestBody;
@@ -209,20 +209,20 @@ class FunctionalTest extends WebTestCase
                     ],
                     'users' => [
                         'items' => [
-                            '$ref' => '#/components/schemas/User',
+                            '$ref' => '#/components/schemas/User2',
                         ],
                         'type' => 'array',
                     ],
                     'friend' => [
                         'nullable' => true,
                         'oneOf' => [
-                            ['$ref' => '#/components/schemas/User'],
+                            ['$ref' => '#/components/schemas/User2'],
                         ],
                     ],
                     'friends' => [
                         'nullable' => true,
                         'items' => [
-                            '$ref' => '#/components/schemas/User',
+                            '$ref' => '#/components/schemas/User2',
                         ],
                         'type' => 'array',
                         'default' => [],
@@ -239,7 +239,7 @@ class FunctionalTest extends WebTestCase
                         'format' => 'date-time',
                     ],
                 ],
-                'schema' => 'User',
+                'schema' => 'User2',
                 'required' => [
                     'email',
                     'location',
@@ -251,7 +251,7 @@ class FunctionalTest extends WebTestCase
                     'dummy',
                 ],
             ],
-            json_decode($this->getModel('User')->toJson(), true)
+            json_decode($this->getModel('User2')->toJson(), true)
         );
     }
 
@@ -357,7 +357,7 @@ class FunctionalTest extends WebTestCase
             'type' => 'object',
             'properties' => [
                 'quz' => [
-                    '$ref' => '#/components/schemas/User',
+                    '$ref' => '#/components/schemas/User2',
                 ],
             ],
             'required' => ['quz'],
