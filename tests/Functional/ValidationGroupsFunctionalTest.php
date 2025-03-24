@@ -35,12 +35,16 @@ class ValidationGroupsFunctionalTest extends WebTestCase
         $expected = [
             'required' => [
                 'property',
+                'propertyNotNullOnSpecificGroup',
             ],
             'properties' => [
                 'property' => [
                     'type' => 'integer',
                     // the min/max constraint is in the default group only and shouldn't
                     // be read here with validation groups turned on
+                ],
+                'propertyNotNullOnSpecificGroup' => [
+                    'type' => 'string',
                 ],
             ],
             'type' => 'object',
@@ -75,12 +79,17 @@ class ValidationGroupsFunctionalTest extends WebTestCase
                         'type' => 'string',
                     ],
                 ],
+                'propertyNotNullOnSpecificGroup' => [
+                    'type' => 'string',
+                    'nullable' => true,
+                ],
             ],
             'type' => 'object',
             'schema' => 'SymfonyConstraintsDefaultGroup',
             'required' => [
                 'property',
                 'propertyInDefaultGroup',
+                'propertyArray',
             ],
         ];
 

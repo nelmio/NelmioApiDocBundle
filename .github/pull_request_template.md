@@ -1,15 +1,18 @@
-| Q             | A                                                                                                                         |
-|---------------|---------------------------------------------------------------------------------------------------------------------------|
-| Bug fix?      | yes/no                                                                                                                    |
-| New feature?  | yes/no <!-- please update src/**/CHANGELOG.md files -->                                                                   |
-| Deprecations? | yes/no <!-- please update UPGRADE-*.md and src/**/CHANGELOG.md files -->                                                  |
-| Issues        | Fix #... <!-- prefix each issue number with "Fix #", no need to create an issue if none exists, explain below instead --> |
+## Description
 
-<!--
-Replace this notice by a description of your feature/bugfix.
-This will help reviewers and should be a good start for the documentation.
+*Please include a summary of the changes and the related issue.*
 
-Additionally:
- - Always add tests and ensure they pass.
- - For new features, provide some code snippets to help understand usage.
--->
+Closes #...
+
+## What type of PR is this? (check all applicable)
+- [ ] Bug Fix
+- [ ] Feature
+- [ ] Refactor
+- [ ] Deprecation
+- [ ] Breaking Change
+- [ ] Documentation Update
+- [ ] CI
+
+## Checklist
+- [ ] I have made corresponding changes to the documentation (`docs/`)
+- [ ] I have made corresponding changes to the changelog (`CHANGELOG.md`)

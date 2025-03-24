@@ -1,0 +1,33 @@
+{
+    "required": [
+        "untypedArray",
+        "arrayOfStrings",
+        "listOfStrings",
+        "shortArrayOfStrings"
+    ],
+    "properties": {
+        "untypedArray": {
+            "type": "array",
+            "items": {}
+        },
+        "arrayOfStrings": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "listOfStrings": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "shortArrayOfStrings": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "type": "object"
+}

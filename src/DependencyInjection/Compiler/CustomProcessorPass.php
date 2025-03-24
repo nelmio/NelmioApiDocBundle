@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Compiler Pass to identify and register custom processors.
@@ -36,24 +35,17 @@ final class CustomProcessorPass implements CompilerPassInterface
         $definition = $container->findDefinition('nelmio_api_doc.open_api.generator');
 
         foreach ($this->findAndSortTaggedServices('nelmio_api_doc.swagger.processor', $container) as $reference) {
-            $id = (string) $reference;
-            $tags = $container->findDefinition($id)->getTags();
-
-            /**
-             * Before which processor should this processor be run?
-             *
-             * @var string|null
-             */
-            $before = null;
+            $tags = $container->findDefinition((string) $reference)->getTag('nelmio_api_doc.swagger.processor');
 
             // See if the processor has a 'before' attribute.
+            $before = null;
             foreach ($tags as $tag) {
                 if (isset($tag['before'])) {
                     $before = $tag['before'];
                 }
             }
 
-            $definition->addMethodCall('addProcessor', [new Reference($id), $before]);
+            $definition->addMethodCall('addNelmioProcessor', [$reference, $before]);
         }
     }
 }

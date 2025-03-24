@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\DependencyInjection;
 
 use Nelmio\ApiDocBundle\DependencyInjection\NelmioApiDocExtension;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -56,10 +57,14 @@ class NelmioApiDocExtensionTest extends TestCase
                     'Foo1' => [
                         'type' => 'App\\Foo',
                         'groups' => null,
+                        'options' => null,
+                        'serializationContext' => [],
                     ],
                     'Test1' => [
                         'type' => 'App\\Test',
                         'groups' => null,
+                        'options' => null,
+                        'serializationContext' => [],
                     ],
                 ], $methodCall[1][0]);
                 $foundMethodCall = true;
@@ -75,10 +80,14 @@ class NelmioApiDocExtensionTest extends TestCase
                     'Foo1' => [
                         'type' => 'App\\Bar',
                         'groups' => null,
+                        'options' => null,
+                        'serializationContext' => [],
                     ],
                     'Test1' => [
                         'type' => 'App\\Test',
                         'groups' => null,
+                        'options' => null,
+                        'serializationContext' => [],
                     ],
                 ], $methodCall[1][0]);
                 $foundMethodCall = true;
@@ -154,11 +163,10 @@ class NelmioApiDocExtensionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideCacheConfig
-     *
      * @param array<string, mixed> $config
      * @param array<string, mixed> $expectedValues
      */
+    #[DataProvider('provideCacheConfig')]
     public function testApiDocGeneratorWithCachePool(array $config, array $expectedValues): void
     {
         $container = new ContainerBuilder();
@@ -302,11 +310,10 @@ class NelmioApiDocExtensionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideOpenApiRendererWithHtmlConfig
-     *
      * @param array<string, mixed> $htmlConfig
      * @param array<string, mixed> $expectedHtmlConfig
      */
+    #[DataProvider('provideOpenApiRendererWithHtmlConfig')]
     public function testHtmlOpenApiRendererWithHtmlConfig(array $htmlConfig, array $expectedHtmlConfig): void
     {
         $container = new ContainerBuilder();
@@ -329,8 +336,10 @@ class NelmioApiDocExtensionTest extends TestCase
                 'assets_mode' => 'cdn',
                 'swagger_ui_config' => [],
                 'redocly_config' => [],
+                'stoplight_config' => [],
             ],
         ];
+
         yield 'swagger_ui' => [
             [
                 'assets_mode' => 'bundle',
@@ -344,8 +353,10 @@ class NelmioApiDocExtensionTest extends TestCase
                     'deepLinking' => true,
                 ],
                 'redocly_config' => [],
+                'stoplight_config' => [],
             ],
         ];
+
         yield 'redocly' => [
             [
                 'assets_mode' => 'cdn',
@@ -361,6 +372,26 @@ class NelmioApiDocExtensionTest extends TestCase
                     'hideDownloadButton' => true,
                 ],
                 'swagger_ui_config' => [],
+                'stoplight_config' => [],
+            ],
+        ];
+
+        yield 'stoplight' => [
+            [
+                'assets_mode' => 'bundle',
+                'stoplight_config' => [
+                    'router' => 'hash',
+                    'hideSchemas' => true,
+                ],
+            ],
+            [
+                'assets_mode' => 'bundle',
+                'stoplight_config' => [
+                    'router' => 'hash',
+                    'hideSchemas' => true,
+                ],
+                'swagger_ui_config' => [],
+                'redocly_config' => [],
             ],
         ];
     }

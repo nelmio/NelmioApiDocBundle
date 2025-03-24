@@ -11,14 +11,45 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
+use JMS\Serializer\Annotation as Serializer;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class VirtualProperty extends VirtualProperty80
+/**
+ * Class VirtualProperty.
+ */
+#[Serializer\ExclusionPolicy('all')]
+#[Serializer\VirtualProperty(
+    name: 'email',
+    exp: 'object.user.email',
+    options: [[Serializer\Type::class, ['string']]]
+)]
+class VirtualProperty
+{
+    /**
+     * @var int
+     */
+    #[Serializer\Type('integer')]
+    #[Serializer\Expose]
+    private $id;
+
+    private User $user;
+
+    #[Serializer\Accessor(getter: 'getFoo', setter: 'setFoo')]
+    #[Serializer\Type('string')]
+    #[Serializer\Expose]
+    private $virtualprop;
+
+    public function __construct()
     {
+        $this->user = new User();
+        $this->user->setEmail('dummy@test.com');
     }
-} else {
-    class VirtualProperty extends VirtualProperty81
+
+    public function __call(string $name, array $arguments)
     {
+        if ('getFoo' === $name || 'setFoo' === $name) {
+            return 'Success';
+        }
+
+        throw new \LogicException(\sprintf('%s::__call does not implement this function.', __CLASS__));
     }
 }

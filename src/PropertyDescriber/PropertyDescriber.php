@@ -32,7 +32,7 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
      * @param iterable<PropertyDescriberInterface> $propertyDescribers
      */
     public function __construct(
-        iterable $propertyDescribers
+        iterable $propertyDescribers,
     ) {
         $this->propertyDescribers = $propertyDescribers;
     }
@@ -40,20 +40,20 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = []): void
+    public function describe(array $types, OA\Schema $property, array $context = []): void
     {
-        if (null === $propertyDescriber = $this->getPropertyDescriber($types)) {
+        if (null === $propertyDescriber = $this->getPropertyDescriber($types, $context)) {
             return;
         }
 
         $this->called[$this->getHash($types)][] = $propertyDescriber;
-        $propertyDescriber->describe($types, $property, $groups, $schema, $context);
+        $propertyDescriber->describe($types, $property, $context);
         $this->called = []; // Reset recursion helper
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
-        return null !== $this->getPropertyDescriber($types);
+        return null !== $this->getPropertyDescriber($types, $context);
     }
 
     /**
@@ -65,19 +65,15 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
     }
 
     /**
-     * @param Type[] $types
+     * @param Type[]               $types
+     * @param array<string, mixed> $context
      */
-    private function getPropertyDescriber(array $types): ?PropertyDescriberInterface
+    private function getPropertyDescriber(array $types, array $context): ?PropertyDescriberInterface
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
-            /* BC layer for Symfony < 6.3 @see https://symfony.com/doc/6.3/service_container/tags.html#reference-tagged-services */
-            if ($propertyDescriber instanceof self) {
-                continue;
-            }
-
             // Prevent infinite recursion
-            if (key_exists($this->getHash($types), $this->called)) {
-                if (in_array($propertyDescriber, $this->called[$this->getHash($types)], true)) {
+            if (\array_key_exists($this->getHash($types), $this->called)) {
+                if (\in_array($propertyDescriber, $this->called[$this->getHash($types)], true)) {
                     continue;
                 }
             }
@@ -90,7 +86,7 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
                 $propertyDescriber->setPropertyDescriber($this);
             }
 
-            if ($propertyDescriber->supports($types)) {
+            if ($propertyDescriber->supports($types, $context)) {
                 return $propertyDescriber;
             }
         }

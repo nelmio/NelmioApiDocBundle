@@ -25,8 +25,12 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->booleanNode('type_info')
+                    ->info('Use the symfony/type-info component for determining types.')
+                    ->defaultFalse()
+                ->end()
                 ->booleanNode('use_validation_groups')
-                    ->info('If true, `groups` passed to @Model annotations will be used to limit validation constraints')
+                    ->info('If true, `groups` passed to #[Model] attributes will be used to limit validation constraints')
                     ->defaultFalse()
                 ->end()
                 ->arrayNode('cache')
@@ -77,6 +81,11 @@ final class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->ignoreExtraKeys(false)
                         ->end()
+                        ->arrayNode('stoplight_config')
+                            ->info('https://docs.stoplight.io/docs/elements/b074dc47b2826-elements-configuration-options')
+                            ->addDefaultsIfNotSet()
+                            ->ignoreExtraKeys(false)
+                        ->end()
                     ->end()
                 ->end()
                 ->arrayNode('areas')
@@ -86,7 +95,7 @@ final class Configuration implements ConfigurationInterface
                             'default' => [
                                 'path_patterns' => [],
                                 'host_patterns' => [],
-                                'with_annotation' => false,
+                                'with_attribute' => false,
                                 'documentation' => [],
                                 'name_patterns' => [],
                                 'disable_default_routes' => false,
@@ -96,7 +105,7 @@ final class Configuration implements ConfigurationInterface
                     )
                     ->beforeNormalization()
                         ->ifTrue(function ($v) {
-                            return 0 === count($v) || isset($v['path_patterns']) || isset($v['host_patterns']) || isset($v['documentation']);
+                            return 0 === \count($v) || isset($v['path_patterns']) || isset($v['host_patterns']) || isset($v['documentation']);
                         })
                         ->then(function ($v): array {
                             return ['default' => $v];
@@ -127,13 +136,13 @@ final class Configuration implements ConfigurationInterface
                                 ->example(['^api_v1'])
                                 ->prototype('scalar')->end()
                             ->end()
-                            ->booleanNode('with_annotation')
+                            ->booleanNode('with_attribute')
                                 ->defaultFalse()
-                                ->info('whether to filter by annotation')
+                                ->info('whether to filter by attributes')
                             ->end()
                             ->booleanNode('disable_default_routes')
                                 ->defaultFalse()
-                                ->info('if set disables default routes without annotations')
+                                ->info('if set disables default routes without attributes')
                             ->end()
                             ->arrayNode('documentation')
                                 ->useAttributeAsKey('key')
@@ -171,9 +180,20 @@ final class Configuration implements ConfigurationInterface
                                     ->variableNode('groups')
                                         ->defaultValue(null)
                                         ->validate()
-                                            ->ifTrue(function ($v) { return null !== $v && !is_array($v); })
+                                            ->ifTrue(function ($v) { return null !== $v && !\is_array($v); })
                                             ->thenInvalid('Model groups must be either `null` or an array.')
                                         ->end()
+                                    ->end()
+                                    ->variableNode('options')
+                                        ->defaultValue(null)
+                                        ->validate()
+                                            ->ifTrue(function ($v) { return null !== $v && !\is_array($v); })
+                                            ->thenInvalid('Model options must be either `null` or an array.')
+                                        ->end()
+                                    ->end()
+                                    ->arrayNode('serializationContext')
+                                        ->defaultValue([])
+                                        ->prototype('variable')->end()
                                     ->end()
                                     ->arrayNode('areas')
                                         ->defaultValue([])

@@ -1,0 +1,44 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/some_post": {
+            "post": {
+                "tags": [
+                    "My tag name"
+                ],
+                "operationId": "post_nelmio_apidoc_tests_functional_openapitag_somepost",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/some_get": {
+            "get": {
+                "tags": [
+                    "My tag name"
+                ],
+                "operationId": "get_nelmio_apidoc_tests_functional_openapitag_someget",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "My tag name",
+            "description": "My description of the tag",
+            "externalDocs": {
+                "url": "https://example.com"
+            }
+        }
+    ]
+}

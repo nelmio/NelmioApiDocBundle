@@ -19,7 +19,7 @@ use Symfony\Component\PropertyInfo\Type;
 
 class VirtualTypeClassDoesNotExistsHandlerDefinedDescriber implements ModelDescriberInterface
 {
-    public function describe(Model $model, OA\Schema $schema)
+    public function describe(Model $model, OA\Schema $schema): void
     {
         $schema->type = 'object';
         $property = Util::getProperty($schema, 'custom_prop');

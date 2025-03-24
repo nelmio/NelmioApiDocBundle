@@ -76,9 +76,9 @@ class RenderOpenApi
     public function render(string $format, string $area, array $options = []): string
     {
         if (!$this->generatorLocator->has($area)) {
-            throw new RenderInvalidArgumentException(sprintf('Area "%s" is not supported.', $area));
-        } elseif (!array_key_exists($format, $this->openApiRenderers)) {
-            throw new RenderInvalidArgumentException(sprintf('Format "%s" is not supported.', $format));
+            throw new RenderInvalidArgumentException(\sprintf('Area "%s" is not supported.', $area));
+        } elseif (!\array_key_exists($format, $this->openApiRenderers)) {
+            throw new RenderInvalidArgumentException(\sprintf('Format "%s" is not supported.', $format));
         }
 
         /** @var OpenApi $spec */
@@ -100,7 +100,7 @@ class RenderOpenApi
      */
     private function getServersFromOptions(OpenApi $spec, array $options)
     {
-        if (array_key_exists('server_url', $options)) {
+        if (\array_key_exists('server_url', $options)) {
             return [new Server(['url' => $options['server_url'], '_context' => new Context()])];
         }
 
@@ -108,7 +108,7 @@ class RenderOpenApi
             return $spec->servers;
         }
 
-        if (array_key_exists('fallback_url', $options)) {
+        if (\array_key_exists('fallback_url', $options)) {
             return [new Server(['url' => $options['fallback_url'], '_context' => new Context()])];
         }
 

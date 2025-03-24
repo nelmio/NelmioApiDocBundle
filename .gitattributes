@@ -4,3 +4,4 @@ tests export-ignore
 docs export-ignore
 phpunit export-ignore
 phpunit.xml.dist export-ignore
+utils export-ignore

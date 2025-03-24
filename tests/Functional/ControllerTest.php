@@ -11,9 +11,13 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use JMS\SerializerBundle\JMSSerializerBundle;
 use OpenApi\Annotations as OA;
+use OpenApi\Processors\CleanUnusedComponents;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 /**
@@ -29,37 +33,26 @@ final class ControllerTest extends WebTestCase
     protected function setUp(): void
     {
         $this->configurableContainerFactory = new ConfigurableContainerFactory();
-
-        static::createClient([], ['HTTP_HOST' => 'api.example.com']);
-    }
-
-    /**
-     * @param array<mixed> $options
-     */
-    protected static function createKernel(array $options = []): KernelInterface
-    {
-        return new NelmioKernel([], null, []);
     }
 
     protected function getOpenApiDefinition(string $area = 'default'): OA\OpenApi
     {
-        return $this->configurableContainerFactory->getContainer()->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
+        return $this->configurableContainerFactory->getContainer()->get(\sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }
 
     /**
-     * @dataProvider provideAnnotationTestCases
-     * @dataProvider provideAttributeTestCases
-     * @dataProvider provideUniversalTestCases
-     *
      * @param array{name: string, type: string}|null $controller
+     * @param Bundle[]                               $extraBundles
      * @param string[]                               $extraConfigs
      */
-    public function testControllers(?array $controller, ?string $fixtureName = null, array $extraConfigs = []): void
+    #[DataProvider('provideAttributeTestCases')]
+    #[DataProvider('provideUniversalTestCases')]
+    public function testControllers(?array $controller, ?string $fixtureName = null, array $extraBundles = [], array $extraConfigs = []): void
     {
         $controllerName = $controller['name'] ?? null;
         $controllerType = $controller['type'] ?? null;
 
-        $fixtureName = $fixtureName ?? $controllerName ?? self::fail('A fixture name must be provided.');
+        $fixtureName ??= $controllerName ?? self::fail('A fixture name must be provided.');
 
         $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName, $controllerType) {
             if (null === $controllerName) {
@@ -69,7 +62,7 @@ final class ControllerTest extends WebTestCase
             $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", $controllerType);
         };
 
-        $this->configurableContainerFactory->create([], $routingConfiguration, $extraConfigs);
+        $this->configurableContainerFactory->create($extraBundles, $routingConfiguration, $extraConfigs);
 
         $apiDefinition = $this->getOpenApiDefinition();
 
@@ -86,66 +79,99 @@ final class ControllerTest extends WebTestCase
 
     public static function provideAttributeTestCases(): \Generator
     {
-        if (PHP_VERSION_ID < 80100) {
-            return;
-        }
-
-        $type = Kernel::MAJOR_VERSION === 5 ? 'annotation' : 'attribute';
-
         yield 'Promoted properties defaults attributes' => [
             [
                 'name' => 'PromotedPropertiesController81',
-                'type' => $type,
+                'type' => 'attribute',
             ],
             'PromotedPropertiesDefaults',
-            [__DIR__.'/Configs/AlternativeNamesPHP81Entities.yaml'],
+            [],
+            [...self::cleanUnusedComponentsConfig()],
         ];
 
-        if (version_compare(Kernel::VERSION, '6.3.0', '>=')) {
-            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
-                [
-                    'name' => 'Controller2209',
-                    'type' => $type,
-                ],
-            ];
-            yield 'MapQueryString' => [
-                [
-                    'name' => 'MapQueryStringController',
-                    'type' => $type,
-                ],
-            ];
-            yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
-                [
-                    'name' => 'MapQueryStringController',
-                    'type' => $type,
-                ],
-                'MapQueryStringCleanupComponents',
-                [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'],
-            ];
+        yield 'JMS model opt out' => [
+            [
+                'name' => 'JmsOptOutController',
+                'type' => 'attribute',
+            ],
+            'JmsOptOutController',
+            [new JMSSerializerBundle()],
+            [__DIR__.'/Configs/JMS.yaml'],
+        ];
 
-            yield 'operationId must always be generated' => [
+        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
+            [
+                'name' => 'Controller2209',
+                'type' => 'attribute',
+            ],
+        ];
+
+        yield 'MapQueryString' => [
+            [
+                'name' => 'MapQueryStringController',
+                'type' => 'attribute',
+                null,
+                [],
+                [__DIR__.'/Configs/EnableSerializer.yaml'],
+            ],
+        ];
+
+        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
+            [
+                'name' => 'MapQueryStringController',
+                'type' => 'attribute',
+            ],
+            'MapQueryStringCleanupComponents',
+            [],
+            [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml', __DIR__.'/Configs/EnableSerializer.yaml'],
+        ];
+
+        yield 'operationId must always be generated' => [
+            [
+                'name' => 'OperationIdController',
+                'type' => 'attribute',
+            ],
+        ];
+
+        yield 'Symfony 6.3 MapQueryParameter attribute' => [
+            [
+                'name' => 'MapQueryParameterController',
+                'type' => 'attribute',
+            ],
+        ];
+
+        yield 'Symfony 6.3 MapRequestPayload attribute' => [
+            [
+                'name' => 'MapRequestPayloadController',
+                'type' => 'attribute',
+            ],
+            null,
+            [],
+            [__DIR__.'/Configs/EnableSerializer.yaml'],
+        ];
+
+        yield 'Create top level Tag from Tag attribute' => [
+            [
+                'name' => 'OpenApiTagController',
+                'type' => 'attribute',
+            ],
+        ];
+
+        if (property_exists(MapRequestPayload::class, 'type')) {
+            yield 'Symfony 7.1 MapRequestPayload array type' => [
                 [
-                    'name' => 'OperationIdController',
-                    'type' => $type,
+                    'name' => 'MapRequestPayloadArray',
+                    'type' => 'attribute',
                 ],
             ];
         }
-    }
 
-    public static function provideAnnotationTestCases(): \Generator
-    {
-        if (!TestKernel::isAnnotationsAvailable()) {
-            return;
-        }
-
-        if (PHP_VERSION_ID >= 80000) {
-            yield 'Promoted properties defaults annotations' => [
+        if (version_compare(Kernel::VERSION, '7.1.0', '>=')) {
+            yield 'Symfony 7.1 MapUploadedFile attribute' => [
                 [
-                    'name' => 'PromotedPropertiesController80',
-                    'type' => 'annotation',
+                    'name' => 'MapUploadedFileController',
+                    'type' => 'attribute',
                 ],
-                'PromotedPropertiesDefaults',
-                [__DIR__.'/Configs/AlternativeNamesPHP80Entities.yaml'],
             ];
         }
     }
@@ -158,22 +184,36 @@ final class ControllerTest extends WebTestCase
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2224' => [
             null,
             'VendorExtension',
-            [__DIR__.'/Configs/VendorExtension.yaml'],
+            [],
+            [__DIR__.'/Configs/VendorExtension.yaml', __DIR__.'/Configs/StubProcessor.yaml'],
         ];
     }
 
     private static function getFixture(string $fixture): string
     {
         if (!file_exists($fixture)) {
-            self::fail(sprintf('The fixture file "%s" does not exist.', $fixture));
+            self::fail(\sprintf('The fixture file "%s" does not exist.', $fixture));
         }
 
         $content = file_get_contents($fixture);
 
         if (false === $content) {
-            self::fail(sprintf('Failed to read the fixture file "%s".', $fixture));
+            self::fail(\sprintf('Failed to read the fixture file "%s".', $fixture));
         }
 
         return $content;
+    }
+
+    /**
+     * @return string[]
+     */
+    private static function cleanUnusedComponentsConfig(): array
+    {
+        /* @phpstan-ignore-next-line */
+        if (method_exists(CleanUnusedComponents::class, 'setEnabled')) {
+            return [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'];
+        }
+
+        return [__DIR__.'/Configs/CleanUnusedComponentsProcessorNoSetter.yaml'];
     }
 }

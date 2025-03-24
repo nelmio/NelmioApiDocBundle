@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
@@ -28,25 +27,23 @@ class OpenApiAnnotationsReader
 {
     use SetsContextTrait;
 
-    private ?Reader $annotationsReader;
     private ModelRegister $modelRegister;
 
     /**
      * @param string[] $mediaTypes
      */
-    public function __construct(?Reader $annotationsReader, ModelRegistry $modelRegistry, array $mediaTypes)
+    public function __construct(ModelRegistry $modelRegistry, array $mediaTypes)
     {
-        $this->annotationsReader = $annotationsReader;
         $this->modelRegister = new ModelRegister($modelRegistry, $mediaTypes);
     }
 
     public function updateSchema(\ReflectionClass $reflectionClass, OA\Schema $schema): void
     {
-        if (null === $oaSchema = $this->getAnnotation($schema->_context, $reflectionClass, OA\Schema::class)) {
+        if (null === $oaSchema = $this->getAttribute($schema->_context, $reflectionClass, OA\Schema::class)) {
             return;
         }
 
-        // Read @Model annotations
+        // Read #[Model] attributes
         $this->modelRegister->__invoke(new Analysis([$oaSchema], Util::createContext()));
 
         if (!$oaSchema->validate()) {
@@ -61,7 +58,7 @@ class OpenApiAnnotationsReader
      */
     public function getPropertyName($reflection, string $default): string
     {
-        if (null === $oaProperty = $this->getAnnotation(new Context(), $reflection, OA\Property::class)) {
+        if (null === $oaProperty = $this->getAttribute(new Context(), $reflection, OA\Property::class)) {
             return $default;
         }
 
@@ -74,11 +71,11 @@ class OpenApiAnnotationsReader
      */
     public function updateProperty($reflection, OA\Property $property, ?array $serializationGroups = null): void
     {
-        if (null === $oaProperty = $this->getAnnotation($property->_context, $reflection, OA\Property::class)) {
+        if (null === $oaProperty = $this->getAttribute($property->_context, $reflection, OA\Property::class)) {
             return;
         }
 
-        // Read @Model annotations
+        // Read #[Model] attributes
         $this->modelRegister->__invoke(new Analysis([$oaProperty], Util::createContext()), $serializationGroups);
 
         if (!$oaProperty->validate()) {
@@ -96,25 +93,13 @@ class OpenApiAnnotationsReader
      *
      * @return T|null
      */
-    private function getAnnotation(Context $parentContext, $reflection, string $className)
+    private function getAttribute(Context $parentContext, $reflection, string $className)
     {
         $this->setContextFromReflection($parentContext, $reflection);
 
         try {
-            if (\PHP_VERSION_ID >= 80100) {
-                if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
-                    return $attribute->newInstance();
-                }
-            }
-
-            if (null !== $this->annotationsReader) {
-                if ($reflection instanceof \ReflectionClass) {
-                    return $this->annotationsReader->getClassAnnotation($reflection, $className);
-                } elseif ($reflection instanceof \ReflectionProperty) {
-                    return $this->annotationsReader->getPropertyAnnotation($reflection, $className);
-                } elseif ($reflection instanceof \ReflectionMethod) {
-                    return $this->annotationsReader->getMethodAnnotation($reflection, $className);
-                }
+            if (null !== $attribute = $reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
+                return $attribute->newInstance();
             }
         } finally {
             $this->setContext(null);

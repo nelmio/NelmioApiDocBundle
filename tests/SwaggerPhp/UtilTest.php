@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -45,7 +46,7 @@ class UtilTest extends TestCase
 
     private OA\OpenApi $rootAnnotation;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -56,11 +57,11 @@ class UtilTest extends TestCase
             static function ($errno, $errstr) {
                 throw new \Exception($errstr, $errno);
             },
-            E_ALL
+            \E_ALL
         );
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         restore_error_handler();
     }
@@ -114,9 +115,9 @@ class UtilTest extends TestCase
         /** @var OA\Info $info */
         $info = Util::createChild($this->rootAnnotation, OA\Info::class, $properties);
 
-        $properties = array_filter(\get_object_vars($info), function ($key) {
-            return 0 !== \strpos($key, '_');
-        }, ARRAY_FILTER_USE_KEY);
+        $properties = array_filter(get_object_vars($info), function ($key) {
+            return !str_starts_with($key, '_');
+        }, \ARRAY_FILTER_USE_KEY);
 
         self::assertEquals([Generator::UNDEFINED], array_unique(array_values($properties)));
 
@@ -201,30 +202,29 @@ class UtilTest extends TestCase
             $item2,
         ];
 
-        self::assertSame(0, Util::searchCollectionItem($collection, \get_object_vars($item1)));
-        self::assertSame(1, Util::searchCollectionItem($collection, \get_object_vars($item2)));
+        self::assertSame(0, Util::searchCollectionItem($collection, get_object_vars($item1)));
+        self::assertSame(1, Util::searchCollectionItem($collection, get_object_vars($item2)));
 
         self::assertNull(Util::searchCollectionItem(
             $collection,
-            array_merge(\get_object_vars($item2), ['prop3' => 'foobar'])
+            array_merge(get_object_vars($item2), ['prop3' => 'foobar'])
         ));
 
         $search = ['baz' => 'foobar'];
 
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Undefined property: stdClass::$baz');
-        Util::searchCollectionItem($collection, array_merge(\get_object_vars($item2), $search));
+        Util::searchCollectionItem($collection, array_merge(get_object_vars($item2), $search));
 
         // no exception on empty collection
-        self::assertNull(Util::searchCollectionItem([], \get_object_vars($item2)));
+        self::assertNull(Util::searchCollectionItem([], get_object_vars($item2)));
     }
 
     /**
-     * @dataProvider provideIndexedCollectionData
-     *
      * @param array<mixed> $setup
      * @param array<mixed> $asserts
      */
+    #[DataProvider('provideIndexedCollectionData')]
     public function testSearchIndexedCollectionItem(array $setup, array $asserts): void
     {
         foreach ($asserts as $collection => $items) {
@@ -247,18 +247,17 @@ class UtilTest extends TestCase
                 self::assertSame(
                     $assert['index'],
                     Util::searchIndexedCollectionItem($properties, $assert['key'], $assert['value']),
-                    sprintf('Failed to get the correct index for %s', print_r($assert, true))
+                    \sprintf('Failed to get the correct index for %s', print_r($assert, true))
                 );
             }
         }
     }
 
     /**
-     * @dataProvider provideIndexedCollectionData
-     *
      * @param array<mixed> $setup
      * @param array<mixed> $asserts
      */
+    #[DataProvider('provideIndexedCollectionData')]
     public function testGetIndexedCollectionItem(array $setup, array $asserts): void
     {
         $parent = new $setup['class'](array_merge(
@@ -270,7 +269,7 @@ class UtilTest extends TestCase
             foreach ($items as $assert) {
                 $itemParent = !isset($assert['components']) ? $parent : $parent->components;
 
-                self::assertTrue(is_a($assert['class'], OA\AbstractAnnotation::class, true), sprintf('Invalid class %s', $assert['class']));
+                self::assertTrue(is_a($assert['class'], OA\AbstractAnnotation::class, true), \sprintf('Invalid class %s', $assert['class']));
                 $child = Util::getIndexedCollectionItem(
                     $itemParent,
                     $assert['class'],
@@ -384,11 +383,10 @@ class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider provideChildData
-     *
      * @param array<mixed> $setup
      * @param array<mixed> $asserts
      */
+    #[DataProvider('provideChildData')]
     public function testGetChild(array $setup, array $asserts): void
     {
         $parent = new $setup['class'](array_merge(
@@ -400,7 +398,7 @@ class UtilTest extends TestCase
             if (\array_key_exists('exceptionMessage', $assert)) {
                 $this->expectExceptionMessage($assert['exceptionMessage']);
             }
-            self::assertTrue(is_a($assert['class'], OA\AbstractAnnotation::class, true), sprintf('Invalid class %s', $assert['class']));
+            self::assertTrue(is_a($assert['class'], OA\AbstractAnnotation::class, true), \sprintf('Invalid class %s', $assert['class']));
             $child = Util::getChild($parent, $assert['class'], $assert['props']);
 
             self::assertInstanceOf($assert['class'], $child);
@@ -549,12 +547,11 @@ class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider provideMergeData
-     *
      * @param array<mixed>              $setup
      * @param array<mixed>|\ArrayObject $merge
      * @param array<mixed>              $assert
      */
+    #[DataProvider('provideMergeData')]
     public function testMerge(array $setup, $merge, array $assert): void
     {
         $api = self::createObj(OA\OpenApi::class, $setup + ['_context' => new Context()]);
@@ -866,6 +863,24 @@ class UtilTest extends TestCase
         ];
     }
 
+    public function testGetTag(): void
+    {
+        $api = self::createObj(OA\OpenApi::class, ['_context' => new Context()]);
+        self::assertEquals(Generator::UNDEFINED, $api->tags);
+
+        $tag = Util::getTag($api, 'foo');
+        self::assertEquals('foo', $tag->name);
+        self::assertEquals(Generator::UNDEFINED, $tag->description);
+        self::assertEquals(Generator::UNDEFINED, $tag->externalDocs);
+
+        self::assertIsArray($api->tags);
+
+        $api->tags[] = self::createObj(OA\Tag::class, ['name' => 'bar', 'description' => 'baz']);
+        $tag = Util::getTag($api, 'bar');
+        self::assertEquals('bar', $tag->name);
+        self::assertEquals('baz', $tag->description);
+    }
+
     public function assertIsNested(OA\AbstractAnnotation $parent, OA\AbstractAnnotation $child): void
     {
         self::assertTrue($child->_context->is('nested'));
@@ -889,7 +904,7 @@ class UtilTest extends TestCase
      */
     private function getSetupPropertiesWithoutClass(array $setup): array
     {
-        return array_filter($setup, function ($k) {return 'class' !== $k; }, ARRAY_FILTER_USE_KEY);
+        return array_filter($setup, function ($k) {return 'class' !== $k; }, \ARRAY_FILTER_USE_KEY);
     }
 
     /**
@@ -897,11 +912,11 @@ class UtilTest extends TestCase
      */
     private function getNonDefaultProperties(OA\AbstractAnnotation $object): array
     {
-        $objectVars = \get_object_vars($object);
-        $classVars = \get_class_vars(\get_class($object));
+        $objectVars = get_object_vars($object);
+        $classVars = get_class_vars($object::class);
         $props = [];
         foreach ($objectVars as $key => $value) {
-            if ($value !== $classVars[$key] && 0 !== \strpos($key, '_')) {
+            if ($value !== $classVars[$key] && !str_starts_with($key, '_')) {
                 $props[$key] = $value;
             }
         }

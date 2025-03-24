@@ -14,18 +14,18 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
-class BooleanPropertyDescriber implements PropertyDescriberInterface
+final class BooleanPropertyDescriber implements PropertyDescriberInterface
 {
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $context = []): void
     {
         $property->type = 'boolean';
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
-        return 1 === count($types) && Type::BUILTIN_TYPE_BOOL === $types[0]->getBuiltinType();
+        return 1 === \count($types) && Type::BUILTIN_TYPE_BOOL === $types[0]->getBuiltinType();
     }
 }

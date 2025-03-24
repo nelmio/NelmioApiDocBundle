@@ -1,0 +1,255 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/api/jms": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_jmsoptout_jms",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JMSUser"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/jms_opt_out": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_jmsoptout_jmsoptout",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JMSUser2"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "JMSUser": {
+                "properties": {
+                    "id": {
+                        "title": "userid",
+                        "description": "User id",
+                        "type": "integer",
+                        "default": null,
+                        "readOnly": true,
+                        "example": 1
+                    },
+                    "daysOnline": {
+                        "type": "integer",
+                        "default": 0,
+                        "maximum": 300,
+                        "minimum": 1
+                    },
+                    "email": {
+                        "type": "string",
+                        "readOnly": false
+                    },
+                    "roles": {
+                        "title": "roles",
+                        "description": "Roles list",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [
+                            "user"
+                        ],
+                        "example": "[\"ADMIN\",\"SUPERUSER\"]"
+                    },
+                    "location": {
+                        "title": "User Location.",
+                        "type": "string"
+                    },
+                    "last_update": {
+                        "type": "date"
+                    },
+                    "friends": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/User"
+                        }
+                    },
+                    "indexed_friends": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/User"
+                        }
+                    },
+                    "favorite_dates": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    "custom_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "friendsNumber": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 1
+                    },
+                    "best_friend": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "status": {
+                        "title": "Whether this user is enabled or disabled.",
+                        "description": "Only enabled users may be used in actions.",
+                        "type": "string",
+                        "enum": [
+                            "disabled",
+                            "enabled"
+                        ]
+                    },
+                    "virtual_type1": {
+                        "title": "JMS custom types handled via Custom Type Handlers.",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VirtualTypeClassDoesNotExistsHandlerDefined"
+                            }
+                        ]
+                    },
+                    "virtual_type2": {
+                        "title": "JMS custom types handled via Custom Type Handlers.",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/VirtualTypeClassDoesNotExistsHandlerNotDefined"
+                            }
+                        ]
+                    },
+                    "lat_lon_history": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "number",
+                                "format": "float"
+                            }
+                        }
+                    },
+                    "free_form_object": {
+                        "type": "object",
+                        "additionalProperties": true
+                    },
+                    "free_form_object_without_type": {
+                        "type": "object",
+                        "additionalProperties": true
+                    },
+                    "deep_object": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        }
+                    },
+                    "deep_object_with_items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        }
+                    },
+                    "deep_free_form_object_collection": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    },
+                    "long": {
+                        "type": "string"
+                    },
+                    "short": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "JMSUser2": {
+                "required": [
+                    "dummy"
+                ],
+                "properties": {
+                    "roles": {
+                        "title": "roles",
+                        "description": "Roles list",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [
+                            "user"
+                        ],
+                        "example": "[\"ADMIN\",\"SUPERUSER\"]"
+                    },
+                    "dummy": {
+                        "$ref": "#/components/schemas/Dummy"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "readOnly": false
+                    },
+                    "location": {
+                        "title": "User Location.",
+                        "type": "string"
+                    },
+                    "friends_number": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "VirtualTypeClassDoesNotExistsHandlerDefined": {},
+            "VirtualTypeClassDoesNotExistsHandlerNotDefined": {},
+            "Dummy": {
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

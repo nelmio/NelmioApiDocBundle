@@ -1,0 +1,8 @@
+{
+    "properties": {
+        "mixedAnnotation": {
+            "nullable": true
+        }
+    },
+    "type": "object"
+}

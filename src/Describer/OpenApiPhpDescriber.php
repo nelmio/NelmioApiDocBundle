@@ -11,9 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Describer;
 
-use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Annotation\Security;
+use Nelmio\ApiDocBundle\Attribute\Operation;
+use Nelmio\ApiDocBundle\Attribute\Security;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
@@ -33,19 +32,12 @@ final class OpenApiPhpDescriber
 
     private RouteCollection $routeCollection;
     private ControllerReflector $controllerReflector;
-
-    private ?Reader $annotationReader;
     private LoggerInterface $logger;
 
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, ?Reader $annotationReader, LoggerInterface $logger, bool $overwrite = false)
+    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, LoggerInterface $logger)
     {
-        if ($overwrite || func_num_args() > 4) {
-            trigger_deprecation('nelmio/api-doc-bundle', '4.25.2', 'The "$overwrite" argument of "%s" is unused and therefore deprecated.', __METHOD__);
-        }
-
         $this->routeCollection = $routeCollection;
         $this->controllerReflector = $controllerReflector;
-        $this->annotationReader = $annotationReader;
         $this->logger = $logger;
     }
 
@@ -67,28 +59,11 @@ final class OpenApiPhpDescriber
 
             $this->setContext($context);
 
-            if (!array_key_exists($declaringClass->getName(), $classAnnotations)) {
-                $classAnnotations = [];
-                if (null !== $this->annotationReader) {
-                    $classAnnotations = $this->annotationReader->getClassAnnotations($declaringClass);
-                }
-
-                $classAnnotations = array_filter($classAnnotations, function ($v) {
-                    return $v instanceof OA\AbstractAnnotation;
-                });
-
-                $classAnnotations = array_merge($classAnnotations, $this->getAttributesAsAnnotation($declaringClass, $context));
-                $classAnnotations[$declaringClass->getName()] = $classAnnotations;
+            if (!\array_key_exists($declaringClass->getName(), $classAnnotations)) {
+                $classAnnotations[$declaringClass->getName()] = $this->getAttributesAsAnnotation($declaringClass, $context);
             }
 
-            $annotations = [];
-            if (null !== $this->annotationReader) {
-                $annotations = array_filter($this->annotationReader->getMethodAnnotations($method), function ($v) {
-                    return $v instanceof OA\AbstractAnnotation;
-                });
-            }
-
-            $annotations = array_merge($annotations, $this->getAttributesAsAnnotation($method, $context));
+            $annotations = $this->getAttributesAsAnnotation($method, $context);
 
             $implicitAnnotations = [];
             $mergeProperties = new \stdClass();
@@ -104,7 +79,7 @@ final class OpenApiPhpDescriber
                 }
 
                 if ($annotation instanceof OA\Operation) {
-                    if (!in_array($annotation->method, $httpMethods, true)) {
+                    if (!\in_array($annotation->method, $httpMethods, true)) {
                         continue;
                     }
                     if (Generator::UNDEFINED !== $annotation->path && $path->path !== $annotation->path) {
@@ -135,6 +110,9 @@ final class OpenApiPhpDescriber
                     $annotation->validate();
                     $mergeProperties->tags[] = $annotation->name;
 
+                    $tag = Util::getTag($api, $annotation->name);
+                    $tag->mergeProperties($annotation);
+
                     continue;
                 }
 
@@ -144,7 +122,7 @@ final class OpenApiPhpDescriber
                     && !$annotation instanceof OA\Parameter
                     && !$annotation instanceof OA\ExternalDocumentation
                 ) {
-                    throw new \LogicException(sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', get_class($annotation), $method->getDeclaringClass()->name, $method->name));
+                    throw new \LogicException(\sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', $annotation::class, $method->getDeclaringClass()->name, $method->name));
                 }
 
                 $implicitAnnotations[] = $annotation;

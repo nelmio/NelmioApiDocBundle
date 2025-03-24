@@ -16,12 +16,11 @@ namespace Nelmio\ApiDocBundle\Processor;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use OpenApi\Processors\ProcessorInterface;
 
 /**
  * Processor to clean up the generated OpenAPI documentation for nullable properties.
  */
-final class NullablePropertyProcessor implements ProcessorInterface
+final class NullablePropertyProcessor
 {
     public function __invoke(Analysis $analysis): void
     {

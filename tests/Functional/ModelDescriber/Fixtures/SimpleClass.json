@@ -1,0 +1,39 @@
+{
+    "required": [
+        "name",
+        "age"
+    ],
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "age": {
+            "type": "integer"
+        },
+        "description": {
+            "type": "string",
+            "nullable": true
+        },
+        "height": {
+            "type": "integer",
+            "nullable": true
+        },
+        "email": {
+            "type": "string",
+            "nullable": true
+        },
+        "phone": {
+            "type": "string",
+            "nullable": true
+        },
+        "address": {
+            "type": "string",
+            "nullable": true
+        },
+        "city": {
+            "type": "string",
+            "nullable": true
+        }
+    },
+    "type": "object"
+}

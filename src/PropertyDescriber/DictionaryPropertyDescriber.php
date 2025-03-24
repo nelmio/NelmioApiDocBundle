@@ -25,20 +25,20 @@ final class DictionaryPropertyDescriber implements PropertyDescriberInterface, M
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $context = []): void
     {
         $property->type = 'object';
         /** @var OA\AdditionalProperties $additionalProperties */
         $additionalProperties = Util::getChild($property, OA\AdditionalProperties::class);
 
-        $this->propertyDescriber->describe($types[0]->getCollectionValueTypes(), $additionalProperties, $groups, $schema, $context);
+        $this->propertyDescriber->describe($types[0]->getCollectionValueTypes(), $additionalProperties, $context);
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
-        return 1 === count($types)
+        return 1 === \count($types)
             && $types[0]->isCollection()
-            && 1 === count($types[0]->getCollectionKeyTypes())
+            && 1 === \count($types[0]->getCollectionKeyTypes())
             && Type::BUILTIN_TYPE_STRING === $types[0]->getCollectionKeyTypes()[0]->getBuiltinType();
     }
 }

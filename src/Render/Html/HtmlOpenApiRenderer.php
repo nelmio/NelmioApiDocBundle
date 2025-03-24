@@ -33,7 +33,7 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
     public function __construct($twig, array $htmlConfig)
     {
         if (!$twig instanceof \Twig_Environment && !$twig instanceof Environment) {
-            throw new \InvalidArgumentException(sprintf('Providing an instance of "%s" as twig is not supported.', get_class($twig)));
+            throw new \InvalidArgumentException(\sprintf('Providing an instance of "%s" as twig is not supported.', $twig::class));
         }
         $this->twig = $twig;
         $this->htmlConfig = $htmlConfig;
@@ -55,6 +55,17 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
                     'swagger_data' => ['spec' => json_decode($spec->toJson(), true)],
                     'assets_mode' => $options['assets_mode'],
                     'redocly_config' => $options['redocly_config'],
+                ]
+            );
+        }
+
+        if (isset($options['ui_renderer']) && Renderer::STOPLIGHT === $options['ui_renderer']) {
+            return $this->twig->render(
+                '@NelmioApiDoc/Stoplight/index.html.twig',
+                [
+                    'swagger_data' => ['spec' => json_decode($spec->toJson(), true)],
+                    'assets_mode' => $options['assets_mode'],
+                    'stoplight_config' => $options['stoplight_config'],
                 ]
             );
         }

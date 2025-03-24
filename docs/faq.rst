@@ -180,19 +180,20 @@ Endpoints grouping
 
 Q: Areas feature doesn't fit my needs. So how can I group similar endpoints of one or more controllers in a separate section in the documentation?
 
-A: Use ``@OA\Tag`` annotation.
+A: Use ``#[OA\Tag]`` attribute.
 
-.. code-block:: php
+.. configuration-block::
 
-    /**
-     * Class BookmarkController
-     *
-     * @OA\Tag(name="Bookmarks")
-     */
-    class BookmarkController extends AbstractFOSRestController implements ContextPresetInterface
-    {
-        // ...
-    }
+    .. code-block:: php-attributes
+
+        /**
+         * Class BookmarkController
+         */
+        #[OA\Tag(name: "Bookmarks")]
+        class BookmarkController extends AbstractFOSRestController implements ContextPresetInterface
+        {
+            // ...
+        }
 
 Disable Default Section
 -----------------------
@@ -214,23 +215,72 @@ Overriding a Form or Plain PHP Object Schema Type
 Q: I'd like to define a PHP object or form with a type other any ``object``, how
 do I do that?
 
-A: By using the ``@OA\Schema`` annotation or attribute with a ``type`` or ``ref``.
+A: By using the ``#[OA\Schema]`` attribute/annotation with a ``type`` or ``ref``.
 Note, however, that a ``type="object"`` will still read all a models properties.
 
-.. code-block:: php
+.. configuration-block::
 
-    <?php
-    use OpenApi\Annotations as OA;
-    use Nelmio\ApiDocBundle\Annotation\Model;
+    .. code-block:: php-attributes
 
-    /**
-     * @OA\Schema(type="array", @OA\Items(ref=@Model(type=SomeEntity::class)))
-     *
-     * or define a `ref`:
-     * @OA\Schema(ref="#/components/schemas/SomeRef")
-     */
-    class SomeCollection implements \IteratorAggregate
-    {
-        // ...
-    }
+        use Nelmio\ApiDocBundle\Attribute\Model;
+        use OpenApi\Attributes as OA;
 
+        /**
+         * or define a `ref`:
+         * #[OA\Schema(ref: "#/components/schemas/SomeRef")
+         */
+        #[OA\Schema(type: "array", items: new OA\Items(ref: new Model(type: SomeEntity::class)))]
+        class SomeCollection implements \IteratorAggregate
+        {
+            // ...
+        }
+
+PropertyInfo component was unable to guess the type
+---------------------------------------------------
+
+Q: I have a property that is not recognized. How can I specify the type?
+
+.. tip::
+
+    Enable the `TypeInfo component`_ in your configuration to improve automatic type guessing:
+
+    .. code-block:: yaml
+
+        nelmio_api_doc:
+            type_info: true
+            # ...
+
+.. versionadded:: 4.35
+
+    The `TypeInfo component`_ was introduced as a stable feature in Symfony 7.2.
+
+A: If you want to customize the documentation of an object's property, you can use the ``#[OA\Property]`` attribute or annotate the property with ``@var``::
+
+.. configuration-block::
+
+   .. code-block:: php-attributes
+
+       use Nelmio\ApiDocBundle\Attribute\Model;
+       use OpenApi\Attributes as OA;
+
+       class User
+       {
+           /**
+            * @var int
+            */
+           #[OA\Property(description: 'The unique identifier of the user.')]
+           public $id;
+
+           #[OA\Property(type: 'string', maxLength: 255)]
+           public $username;
+
+           #[OA\Property(ref: new Model(type: User::class))]
+           public $friend;
+
+           #[OA\Property(description: 'This is my coworker!')]
+           public setCoworker(User $coworker) {
+               // ...
+           }
+       }
+
+.. _`TypeInfo component`: https://symfony.com/doc/current/components/type_info.html

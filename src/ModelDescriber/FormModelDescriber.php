@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
@@ -22,7 +21,6 @@ use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -39,8 +37,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     use ModelRegistryAwareTrait;
     use SetsContextTrait;
 
-    private ?FormFactoryInterface $formFactory;
-    private ?Reader $doctrineReader;
+    private FormFactoryInterface $formFactory;
 
     /**
      * @var string[]
@@ -50,23 +47,15 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     private bool $isFormCsrfExtensionEnabled;
 
     /**
-     * @param string[]|null $mediaTypes
+     * @param string[] $mediaTypes
      */
     public function __construct(
-        ?FormFactoryInterface $formFactory = null,
-        ?Reader $reader = null,
-        ?array $mediaTypes = null,
-        bool $useValidationGroups = false,
-        bool $isFormCsrfExtensionEnabled = false
+        FormFactoryInterface $formFactory,
+        array $mediaTypes,
+        bool $useValidationGroups,
+        bool $isFormCsrfExtensionEnabled,
     ) {
         $this->formFactory = $formFactory;
-        $this->doctrineReader = $reader;
-
-        if (null === $mediaTypes) {
-            $mediaTypes = ['json'];
-
-            trigger_deprecation('nelmio/api-doc-bundle', '4.1', 'Not passing media types to the constructor of %s is deprecated and won\'t be allowed in version 5.', self::class);
-        }
         $this->mediaTypes = $mediaTypes;
         $this->useValidationGroups = $useValidationGroups;
         $this->isFormCsrfExtensionEnabled = $isFormCsrfExtensionEnabled;
@@ -74,24 +63,16 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        if (method_exists(AbstractType::class, 'setDefaultOptions')) {
-            throw new \LogicException('symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.');
-        }
-        if (null === $this->formFactory) {
-            throw new \LogicException('You need to enable forms in your application to use a form as a model.');
-        }
-
         $class = $model->getType()->getClassName();
 
         $annotationsReader = new AnnotationsReader(
-            $this->doctrineReader,
             $this->modelRegistry,
             $this->mediaTypes,
             $this->useValidationGroups
         );
         $classResult = $annotationsReader->updateDefinition(new \ReflectionClass($class), $schema);
 
-        if (!$classResult->shouldDescribeModelProperties()) {
+        if (!$classResult) {
             return;
         }
 
@@ -99,7 +80,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
         $this->setContextFromReflection($schema->_context, new \ReflectionClass($class));
 
-        $form = $this->formFactory->create($class, null, $model->getOptions() ?? []);
+        $form = $this->formFactory->create($class, null, $model->getOptions());
         $this->parseForm($schema, $form);
 
         $this->setContext(null);
@@ -131,7 +112,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             if ($config->hasOption('documentation')) {
                 $property->mergeProperties($config->getOption('documentation'));
 
-                // Parse inner @Model annotations
+                // Parse inner #[Model] attributes
                 $modelRegister = new ModelRegister($this->modelRegistry, $this->mediaTypes);
                 $modelRegister->__invoke(new Analysis([$property], Util::createContext()));
             }
@@ -168,7 +149,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         if (null === $builtinFormType = $this->getBuiltinFormType($type)) {
             // if form type is not builtin in Form component.
             $model = new Model(
-                new Type(Type::BUILTIN_TYPE_OBJECT, false, get_class($type->getInnerType())),
+                new Type(Type::BUILTIN_TYPE_OBJECT, false, \get_class($type->getInnerType())),
                 null,
                 $config->getOptions()
             );
@@ -292,12 +273,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 $entityClass = $config->getOption('class');
 
                 if (true === $config->getOption('multiple')) {
-                    $property->format = sprintf('[%s id]', $entityClass);
+                    $property->format = \sprintf('[%s id]', $entityClass);
                     $property->type = 'array';
                     $property->items = Util::createChild($property, OA\Items::class, ['type' => 'string']);
                 } else {
                     $property->type = 'string';
-                    $property->format = sprintf('%s id', $entityClass);
+                    $property->format = \sprintf('%s id', $entityClass);
                 }
 
                 break;
@@ -329,7 +310,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     private function isBooleansArray(array $array): bool
     {
         foreach ($array as $item) {
-            if (!is_bool($item)) {
+            if (!\is_bool($item)) {
                 return false;
             }
         }
@@ -340,7 +321,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     private function getBuiltinFormType(ResolvedFormTypeInterface $type): ?ResolvedFormTypeInterface
     {
         do {
-            $class = get_class($type->getInnerType());
+            $class = \get_class($type->getInnerType());
 
             if (FormType::class === $class) {
                 return null;
@@ -350,7 +331,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
                 return $type;
             }
 
-            if (0 === strpos($class, 'Symfony\Component\Form\Extension\Core\Type\\')) {
+            if (str_starts_with($class, 'Symfony\Component\Form\Extension\Core\Type\\')) {
                 return $type;
             }
         } while ($type = $type->getParent());

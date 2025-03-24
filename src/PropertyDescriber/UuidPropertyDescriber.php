@@ -20,15 +20,15 @@ final class UuidPropertyDescriber implements PropertyDescriberInterface
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $context = []): void
     {
         $property->type = 'string';
         $property->format = 'uuid';
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
-        return 1 === count($types)
+        return 1 === \count($types)
             && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType()
             && is_a($types[0]->getClassName(), AbstractUid::class, true);
     }

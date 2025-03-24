@@ -29,6 +29,6 @@ parameters:
     universalObjectCratesClasses:
         - OpenApi\Context
     treatPhpDocTypesAsCertain: false
-    checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
+        - identifier: missingType.generics
         - '#^Property class@anonymous/tests/.* has no type specified.$#'

@@ -17,7 +17,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 
-class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface, PropertyDescriberAwareInterface
+final class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface, PropertyDescriberAwareInterface
 {
     use ModelRegistryAwareTrait;
     use PropertyDescriberAwareTrait;
@@ -25,19 +25,19 @@ class CompoundPropertyDescriber implements PropertyDescriberInterface, ModelRegi
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $context = []): void
     {
         $property->oneOf = Generator::UNDEFINED !== $property->oneOf ? $property->oneOf : [];
 
         foreach ($types as $type) {
             $property->oneOf[] = $schema = Util::createChild($property, OA\Schema::class, []);
 
-            $this->propertyDescriber->describe([$type], $schema, $groups, $schema, $context);
+            $this->propertyDescriber->describe([$type], $schema, $context);
         }
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
-        return count($types) >= 2;
+        return \count($types) >= 2;
     }
 }

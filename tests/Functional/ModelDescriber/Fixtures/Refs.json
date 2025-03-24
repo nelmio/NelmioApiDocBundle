@@ -1,0 +1,19 @@
+{
+    "required": [
+        "someRefClass"
+    ],
+    "properties": {
+        "someRefClass": {
+            "$ref": "#/components/schemas/SomeRefClass"
+        },
+        "someRefClassNullable": {
+            "nullable": true,
+            "oneOf": [
+                {
+                    "$ref": "#/components/schemas/SomeRefClass"
+                }
+            ]
+        }
+    },
+    "type": "object"
+}

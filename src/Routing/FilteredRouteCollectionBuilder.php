@@ -11,8 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Routing;
 
-use Doctrine\Common\Annotations\Reader;
-use Nelmio\ApiDocBundle\Annotation\Areas;
+use Nelmio\ApiDocBundle\Attribute\Areas;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use OpenApi\Annotations\AbstractAnnotation;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,8 +20,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 final class FilteredRouteCollectionBuilder
 {
-    private ?Reader $annotationReader;
-
     private ControllerReflector $controllerReflector;
 
     private string $area;
@@ -36,10 +33,9 @@ final class FilteredRouteCollectionBuilder
      * @param array<mixed> $options
      */
     public function __construct(
-        ?Reader $annotationReader,
         ControllerReflector $controllerReflector,
         string $area,
-        array $options = []
+        array $options = [],
     ) {
         $resolver = new OptionsResolver();
         $resolver
@@ -47,24 +43,16 @@ final class FilteredRouteCollectionBuilder
                 'path_patterns' => [],
                 'host_patterns' => [],
                 'name_patterns' => [],
-                'with_annotation' => false,
+                'with_attribute' => false,
                 'disable_default_routes' => false,
             ])
             ->setAllowedTypes('path_patterns', 'string[]')
             ->setAllowedTypes('host_patterns', 'string[]')
             ->setAllowedTypes('name_patterns', 'string[]')
-            ->setAllowedTypes('with_annotation', 'boolean')
+            ->setAllowedTypes('with_attribute', 'boolean')
             ->setAllowedTypes('disable_default_routes', 'boolean')
         ;
 
-        if (array_key_exists(0, $options)) {
-            trigger_deprecation('nelmio/api-doc-bundle', '3.2', 'Passing an indexed array with a collection of path patterns as argument 1 for `%s()` is deprecated since 3.2.0, expected structure is an array containing parameterized options.', __METHOD__);
-
-            $normalizedOptions = ['path_patterns' => $options];
-            $options = $normalizedOptions;
-        }
-
-        $this->annotationReader = $annotationReader;
         $this->controllerReflector = $controllerReflector;
         $this->area = $area;
         $this->options = $resolver->resolve($options);
@@ -95,7 +83,7 @@ final class FilteredRouteCollectionBuilder
             }
         }
 
-        return 0 === count($this->options['path_patterns']);
+        return 0 === \count($this->options['path_patterns']);
     }
 
     private function matchHost(Route $route): bool
@@ -106,7 +94,7 @@ final class FilteredRouteCollectionBuilder
             }
         }
 
-        return 0 === count($this->options['host_patterns']);
+        return 0 === \count($this->options['host_patterns']);
     }
 
     private function matchName(string $name): bool
@@ -117,12 +105,12 @@ final class FilteredRouteCollectionBuilder
             }
         }
 
-        return 0 === count($this->options['name_patterns']);
+        return 0 === \count($this->options['name_patterns']);
     }
 
     private function matchAnnotation(Route $route): bool
     {
-        if (false === $this->options['with_annotation']) {
+        if (false === $this->options['with_attribute']) {
             return true;
         }
 
@@ -132,27 +120,11 @@ final class FilteredRouteCollectionBuilder
             return false;
         }
 
-        /** @var Areas|null $areas */
-        $areas = $this->getAttributesAsAnnotation($reflectionMethod, Areas::class)[0] ?? null;
+        $areas = $this->getAttributesAsAnnotation($reflectionMethod, Areas::class)[0]
+            ?? $this->getAttributesAsAnnotation($reflectionMethod->getDeclaringClass(), Areas::class)[0]
+            ?? null;
 
-        if (null === $areas) {
-            /** @var Areas|null $areas */
-            $areas = $this->getAttributesAsAnnotation($reflectionMethod->getDeclaringClass(), Areas::class)[0] ?? null;
-
-            if (null === $areas && null !== $this->annotationReader) {
-                /** @var Areas|null $areas */
-                $areas = $this->annotationReader->getMethodAnnotation(
-                    $reflectionMethod,
-                    Areas::class
-                );
-
-                if (null === $areas) {
-                    $areas = $this->annotationReader->getClassAnnotation($reflectionMethod->getDeclaringClass(), Areas::class);
-                }
-            }
-        }
-
-        return (null !== $areas) ? $areas->has($this->area) : false;
+        return null !== $areas && $areas->has($this->area);
     }
 
     private function defaultRouteDisabled(Route $route): bool
@@ -169,20 +141,14 @@ final class FilteredRouteCollectionBuilder
             return false;
         }
 
-        $annotations = null !== $this->annotationReader
-            ? $this->annotationReader->getMethodAnnotations($method)
-            : [];
-
-        if (\PHP_VERSION_ID >= 80100) {
-            $annotations = array_merge($annotations, array_map(function (\ReflectionAttribute $attribute) {
-                return $attribute->newInstance();
-            }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF)));
-        }
+        $annotations = array_map(function (\ReflectionAttribute $attribute) {
+            return $attribute->newInstance();
+        }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF));
 
         foreach ($annotations as $annotation) {
-            if (false !== strpos(get_class($annotation), 'Nelmio\\ApiDocBundle\\Annotation')
-                || false !== strpos(get_class($annotation), 'OpenApi\\Annotations')
-                || false !== strpos(get_class($annotation), 'OpenApi\\Attributes')
+            if (str_contains($annotation::class, 'Nelmio\\ApiDocBundle\\Attribute')
+                || str_contains($annotation::class, 'OpenApi\\Annotations')
+                || str_contains($annotation::class, 'OpenApi\\Attributes')
             ) {
                 return true;
             }
@@ -199,10 +165,6 @@ final class FilteredRouteCollectionBuilder
     private function getAttributesAsAnnotation($reflection, string $className): array
     {
         $annotations = [];
-        if (\PHP_VERSION_ID < 80100) {
-            return $annotations;
-        }
-
         foreach ($reflection->getAttributes($className, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
             $annotations[] = $attribute->newInstance();
         }

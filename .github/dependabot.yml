@@ -7,3 +7,19 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/utils"
+    schedule:
+      interval: "weekly"
+    versioning-strategy: increase
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      symfony:
+        patterns:
+          - "symfony/*"
+      phpstan:
+        patterns:
+          - "phpstan/*"

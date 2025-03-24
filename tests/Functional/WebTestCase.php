@@ -28,7 +28,7 @@ class WebTestCase extends BaseWebTestCase
 
     protected function getOpenApiDefinition(string $area = 'default'): OA\OpenApi
     {
-        return static::$kernel->getContainer()->get(sprintf('nelmio_api_doc.generator.%s', $area))->generate();
+        return static::$kernel->getContainer()->get(\sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }
 
     public function hasModel(string $name): bool
@@ -43,7 +43,7 @@ class WebTestCase extends BaseWebTestCase
     {
         $api = $this->getOpenApiDefinition();
         $key = array_search($name, array_column($api->components->schemas, 'schema'), true);
-        static::assertNotFalse($key, sprintf('Model "%s" does not exist.', $name));
+        static::assertNotFalse($key, \sprintf('Model "%s" does not exist.', $name));
 
         return $api->components->schemas[$key];
     }
@@ -55,7 +55,7 @@ class WebTestCase extends BaseWebTestCase
         self::assertInstanceOf(
             OA\Operation::class,
             $path->{$method},
-            sprintf('Operation "%s" for path "%s" does not exist', $method, $path->path)
+            \sprintf('Operation "%s" for path "%s" does not exist', $method, $path->path)
         );
 
         return $path->{$method};
@@ -107,7 +107,7 @@ class WebTestCase extends BaseWebTestCase
         static::assertContains(
             $path,
             $paths,
-            sprintf('Failed asserting that path "%s" does exist.', $path)
+            \sprintf('Failed asserting that path "%s" does exist.', $path)
         );
     }
 
@@ -117,7 +117,7 @@ class WebTestCase extends BaseWebTestCase
         static::assertNotContains(
             $path,
             $paths,
-            sprintf('Failed asserting that path "%s" does not exist.', $path)
+            \sprintf('Failed asserting that path "%s" does not exist.', $path)
         );
     }
 
@@ -130,7 +130,7 @@ class WebTestCase extends BaseWebTestCase
         static::assertContains(
             $responseCode,
             $responses,
-            sprintf('Failed asserting that response "%s" does exist.', $responseCode)
+            \sprintf('Failed asserting that response "%s" does exist.', $responseCode)
         );
     }
 
@@ -145,7 +145,7 @@ class WebTestCase extends BaseWebTestCase
 
         static::assertNotEmpty(
             $parameters,
-            sprintf('Failed asserting that parameter "%s" in "%s" does exist.', $name, $in)
+            \sprintf('Failed asserting that parameter "%s" in "%s" does exist.', $name, $in)
         );
     }
 
@@ -158,7 +158,7 @@ class WebTestCase extends BaseWebTestCase
         static::assertNotContains(
             $name,
             $parameters[$in] ?? [],
-            sprintf('Failed asserting that parameter "%s" in "%s" does not exist.', $name, $in)
+            \sprintf('Failed asserting that parameter "%s" in "%s" does not exist.', $name, $in)
         );
     }
 
@@ -171,7 +171,7 @@ class WebTestCase extends BaseWebTestCase
         static::assertContains(
             $property,
             $properties,
-            sprintf('Failed asserting that property "%s" does exist.', $property)
+            \sprintf('Failed asserting that property "%s" does exist.', $property)
         );
     }
 
@@ -184,7 +184,7 @@ class WebTestCase extends BaseWebTestCase
         static::assertNotContains(
             $property,
             $properties,
-            sprintf('Failed asserting that property "%s" does not exist.', $property)
+            \sprintf('Failed asserting that property "%s" does not exist.', $property)
         );
     }
 }

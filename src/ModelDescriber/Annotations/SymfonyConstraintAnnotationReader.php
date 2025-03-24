@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Annotations as OA;
@@ -27,8 +26,6 @@ class SymfonyConstraintAnnotationReader
 {
     use SetsContextTrait;
 
-    private ?Reader $annotationsReader;
-
     /**
      * @var OA\Schema
      */
@@ -36,9 +33,8 @@ class SymfonyConstraintAnnotationReader
 
     private bool $useValidationGroups;
 
-    public function __construct(?Reader $annotationsReader, bool $useValidationGroups = false)
+    public function __construct(bool $useValidationGroups = false)
     {
-        $this->annotationsReader = $annotationsReader;
         $this->useValidationGroups = $useValidationGroups;
     }
 
@@ -50,24 +46,24 @@ class SymfonyConstraintAnnotationReader
      */
     public function updateProperty($reflection, OA\Property $property, ?array $validationGroups = null): void
     {
-        foreach ($this->getAnnotations($property->_context, $reflection, $validationGroups) as $outerAnnotation) {
-            $innerAnnotations = $outerAnnotation instanceof Assert\Compound || $outerAnnotation instanceof Assert\Sequentially
-                ? $outerAnnotation->constraints
-                : [$outerAnnotation];
+        foreach ($this->getAttributes($property->_context, $reflection, $validationGroups) as $outerAttribute) {
+            $innerAttributes = $outerAttribute instanceof Assert\Compound || $outerAttribute instanceof Assert\Sequentially
+                ? $outerAttribute->constraints
+                : [$outerAttribute];
 
-            $this->processPropertyAnnotations($reflection, $property, $innerAnnotations);
+            $this->processPropertyAttributes($reflection, $property, $innerAttributes);
         }
     }
 
     /**
      * @param \ReflectionProperty|\ReflectionMethod $reflection
-     * @param Constraint[]                          $annotations
+     * @param Constraint[]                          $attributes
      */
-    private function processPropertyAnnotations($reflection, OA\Property $property, array $annotations): void
+    private function processPropertyAttributes($reflection, OA\Property $property, array $attributes): void
     {
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Assert\NotBlank || $annotation instanceof Assert\NotNull) {
-                if ($annotation instanceof Assert\NotBlank && $annotation->allowNull) {
+        foreach ($attributes as $attribute) {
+            if ($attribute instanceof Assert\NotBlank || $attribute instanceof Assert\NotNull) {
+                if ($attribute instanceof Assert\NotBlank && $attribute->allowNull) {
                     // The field is optional
                     return;
                 }
@@ -90,48 +86,49 @@ class SymfonyConstraintAnnotationReader
                 $existingRequiredFields[] = $propertyName;
 
                 $this->schema->required = array_values(array_unique($existingRequiredFields));
-            } elseif ($annotation instanceof Assert\Length) {
-                if (isset($annotation->min)) {
-                    $property->minLength = $annotation->min;
+                $property->nullable = false;
+            } elseif ($attribute instanceof Assert\Length) {
+                if (isset($attribute->min)) {
+                    $property->minLength = $attribute->min;
                 }
-                if (isset($annotation->max)) {
-                    $property->maxLength = $annotation->max;
+                if (isset($attribute->max)) {
+                    $property->maxLength = $attribute->max;
                 }
-            } elseif ($annotation instanceof Assert\Regex) {
-                $this->appendPattern($property, $annotation->getHtmlPattern());
-            } elseif ($annotation instanceof Assert\Count) {
-                if (isset($annotation->min)) {
-                    $property->minItems = $annotation->min;
+            } elseif ($attribute instanceof Assert\Regex) {
+                $this->appendPattern($property, $attribute->getHtmlPattern());
+            } elseif ($attribute instanceof Assert\Count) {
+                if (isset($attribute->min)) {
+                    $property->minItems = $attribute->min;
                 }
-                if (isset($annotation->max)) {
-                    $property->maxItems = $annotation->max;
+                if (isset($attribute->max)) {
+                    $property->maxItems = $attribute->max;
                 }
-            } elseif ($annotation instanceof Assert\Choice) {
-                $this->applyEnumFromChoiceConstraint($property, $annotation, $reflection);
-            } elseif ($annotation instanceof Assert\Range) {
-                if (\is_int($annotation->min)) {
-                    $property->minimum = $annotation->min;
+            } elseif ($attribute instanceof Assert\Choice) {
+                $this->applyEnumFromChoiceConstraint($property, $attribute, $reflection);
+            } elseif ($attribute instanceof Assert\Range) {
+                if (\is_int($attribute->min)) {
+                    $property->minimum = $attribute->min;
                 }
-                if (\is_int($annotation->max)) {
-                    $property->maximum = $annotation->max;
+                if (\is_int($attribute->max)) {
+                    $property->maximum = $attribute->max;
                 }
-            } elseif ($annotation instanceof Assert\LessThan) {
-                if (\is_int($annotation->value)) {
+            } elseif ($attribute instanceof Assert\LessThan) {
+                if (\is_int($attribute->value)) {
                     $property->exclusiveMaximum = true;
-                    $property->maximum = $annotation->value;
+                    $property->maximum = $attribute->value;
                 }
-            } elseif ($annotation instanceof Assert\LessThanOrEqual) {
-                if (\is_int($annotation->value)) {
-                    $property->maximum = $annotation->value;
+            } elseif ($attribute instanceof Assert\LessThanOrEqual) {
+                if (\is_int($attribute->value)) {
+                    $property->maximum = $attribute->value;
                 }
-            } elseif ($annotation instanceof Assert\GreaterThan) {
-                if (\is_int($annotation->value)) {
+            } elseif ($attribute instanceof Assert\GreaterThan) {
+                if (\is_int($attribute->value)) {
                     $property->exclusiveMinimum = true;
-                    $property->minimum = $annotation->value;
+                    $property->minimum = $attribute->value;
                 }
-            } elseif ($annotation instanceof Assert\GreaterThanOrEqual) {
-                if (\is_int($annotation->value)) {
-                    $property->minimum = $annotation->value;
+            } elseif ($attribute instanceof Assert\GreaterThanOrEqual) {
+                if (\is_int($attribute->value)) {
+                    $property->minimum = $attribute->value;
                 }
             }
         }
@@ -151,7 +148,7 @@ class SymfonyConstraintAnnotationReader
             return;
         }
         if (Generator::UNDEFINED !== $property->pattern) {
-            $property->pattern = sprintf('%s, %s', $property->pattern, $newPattern);
+            $property->pattern = \sprintf('%s, %s', $property->pattern, $newPattern);
         } else {
             $property->pattern = $newPattern;
         }
@@ -163,7 +160,7 @@ class SymfonyConstraintAnnotationReader
     private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection): void
     {
         if (null !== $choice->callback) {
-            $enumValues = call_user_func(is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);
+            $enumValues = \call_user_func(\is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);
         } else {
             $enumValues = $choice->choices;
         }
@@ -182,18 +179,14 @@ class SymfonyConstraintAnnotationReader
      *
      * @return iterable<Constraint>
      */
-    private function getAnnotations(Context $parentContext, $reflection, ?array $validationGroups): iterable
+    private function getAttributes(Context $parentContext, $reflection, ?array $validationGroups): iterable
     {
-        // To correctly load OA annotations
+        // To correctly load OA attributes
         $this->setContextFromReflection($parentContext, $reflection);
 
-        foreach ($this->locateAnnotations($reflection) as $annotation) {
-            if (!$annotation instanceof Constraint) {
-                continue;
-            }
-
-            if (!$this->useValidationGroups || $this->isConstraintInGroup($annotation, $validationGroups)) {
-                yield $annotation;
+        foreach ($this->locateAttributes($reflection) as $attribute) {
+            if (!$this->useValidationGroups || $this->isConstraintInGroup($attribute, $validationGroups)) {
+                yield $attribute;
             }
         }
 
@@ -205,19 +198,11 @@ class SymfonyConstraintAnnotationReader
      *
      * @return \Traversable<Constraint>
      */
-    private function locateAnnotations($reflection): \Traversable
+    private function locateAttributes($reflection): \Traversable
     {
-        if (\PHP_VERSION_ID >= 80000 && class_exists(Constraint::class)) {
+        if (class_exists(Constraint::class)) {
             foreach ($reflection->getAttributes(Constraint::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
                 yield $attribute->newInstance();
-            }
-        }
-
-        if (null !== $this->annotationsReader) {
-            if ($reflection instanceof \ReflectionProperty) {
-                yield from $this->annotationsReader->getPropertyAnnotations($reflection);
-            } elseif ($reflection instanceof \ReflectionMethod) {
-                yield from $this->annotationsReader->getMethodAnnotations($reflection);
             }
         }
     }
@@ -232,7 +217,7 @@ class SymfonyConstraintAnnotationReader
      *
      * @param string[]|null $validationGroups
      */
-    private function isConstraintInGroup(Constraint $annotation, ?array $validationGroups): bool
+    private function isConstraintInGroup(Constraint $attribute, ?array $validationGroups): bool
     {
         if (null === $validationGroups) {
             $validationGroups = [Constraint::DEFAULT_GROUP];
@@ -240,7 +225,7 @@ class SymfonyConstraintAnnotationReader
 
         return [] !== array_intersect(
             $validationGroups,
-            (array) $annotation->groups
+            (array) $attribute->groups
         );
     }
 }

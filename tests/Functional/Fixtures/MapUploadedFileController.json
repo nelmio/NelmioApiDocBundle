@@ -1,0 +1,144 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/article_map_uploaded_file": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapuploadedfile_createuploadfrommapuploadedfilepayload",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "upload": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_uploaded_file_nullable": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapuploadedfile_createuploadfrommapuploadedfilepayloadnullable",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "upload": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_uploaded_file_multiple": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapuploadedfile_createuploadfrommapuploadedfilepayloadmultiple",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "firstUpload": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "secondUpload": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_uploaded_file_add_to_existing": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapuploadedfile_createuploadfrommapuploadedfileaddtoexisting",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "existing": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "upload": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_uploaded_file_overwrite": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapuploadedfile_createuploadfrommapuploadedfileoverwrite",
+                "requestBody": {
+                    "description": "Body if file upload request",
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "upload": {
+                                        "description": "A file",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    }
+}

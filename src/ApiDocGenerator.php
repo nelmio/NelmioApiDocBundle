@@ -20,7 +20,6 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Analysis;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
-use OpenApi\Processors\ProcessorInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -104,7 +103,10 @@ final class ApiDocGenerator
             $this->generator->setVersion($this->openApiVersion);
         }
 
-        $this->generator->setProcessors($this->getProcessors($this->generator));
+        // Remove OperationId processor as we use a lot of generated annotations which do not have enough information in their context
+        // to generate these ids properly.
+        // @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createContext
+        $this->generator->getProcessorPipeline()->remove(\OpenApi\Processors\OperationId::class);
 
         $context = Util::createContext(['version' => $this->generator->getVersion()]);
 
@@ -124,14 +126,14 @@ final class ApiDocGenerator
         $analysis = new Analysis([], $context);
         $analysis->addAnnotation($this->openApi, $context);
 
-        // Register model annotations
+        // Register model attributes
         $modelRegister = new ModelRegister($modelRegistry, $this->mediaTypes);
         $modelRegister($analysis);
 
         // Calculate the associated schemas
         $modelRegistry->registerSchemas();
 
-        $analysis->process($this->generator->getProcessors());
+        $this->generator->getProcessorPipeline()->process($analysis);
         $analysis->validate();
 
         if (isset($item)) {
@@ -139,29 +141,5 @@ final class ApiDocGenerator
         }
 
         return $this->openApi;
-    }
-
-    /**
-     * Get an array of processors that will be used to process the OpenApi object.
-     *
-     * @param Generator $generator The generator instance to get the standard processors from
-     *
-     * @return array<ProcessorInterface|callable> The array of processors
-     */
-    private function getProcessors(Generator $generator): array
-    {
-        // Get the standard processors from the generator.
-        $processors = $generator->getProcessors();
-
-        // Remove OperationId processor as we use a lot of generated annotations which do not have enough information in their context
-        // to generate these ids properly.
-        // @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createContext
-        foreach ($processors as $key => $processor) {
-            if ($processor instanceof \OpenApi\Processors\OperationId) {
-                unset($processors[$key]);
-            }
-        }
-
-        return $processors;
     }
 }

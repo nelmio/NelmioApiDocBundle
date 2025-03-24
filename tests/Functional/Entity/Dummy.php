@@ -11,14 +11,8 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded;
 
-// BC Api-Platform < 3.x
-if (!class_exists(ApiProperty::class)) {
-    class Dummy extends EntityExcluded\ApiPlatform3\Dummy
-    {
-    }
-} else {
-    class_alias(EntityExcluded\ApiPlatform2\Dummy::class, Dummy::class);
+class Dummy extends EntityExcluded\ApiPlatform3\Dummy
+{
 }

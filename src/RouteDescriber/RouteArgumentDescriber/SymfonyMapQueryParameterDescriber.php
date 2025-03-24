@@ -84,61 +84,87 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
             return [];
         }
 
-        if (FILTER_VALIDATE_BOOLEAN === $filter) {
+        if (\FILTER_VALIDATE_BOOLEAN === $filter) {
             return ['type' => 'boolean'];
         }
 
-        if (FILTER_VALIDATE_DOMAIN === $filter) {
+        if (\FILTER_VALIDATE_DOMAIN === $filter) {
             return ['type' => 'string', 'format' => 'hostname'];
         }
 
-        if (FILTER_VALIDATE_EMAIL === $filter) {
+        if (\FILTER_VALIDATE_EMAIL === $filter) {
             return ['type' => 'string', 'format' => 'email'];
         }
 
-        if (FILTER_VALIDATE_FLOAT === $filter) {
+        if (\FILTER_VALIDATE_FLOAT === $filter) {
             return ['type' => 'number', 'format' => 'float'];
         }
 
-        if (FILTER_VALIDATE_INT === $filter) {
+        if (\FILTER_VALIDATE_INT === $filter) {
             $props = [];
-            if (array_key_exists('min_range', $options)) {
+            if (\array_key_exists('min_range', $options)) {
                 $props['minimum'] = $options['min_range'];
             }
 
-            if (array_key_exists('max_range', $options)) {
+            if (\array_key_exists('max_range', $options)) {
                 $props['maximum'] = $options['max_range'];
             }
 
             return ['type' => 'integer', ...$props];
         }
 
-        if (FILTER_VALIDATE_IP === $filter) {
+        if (\FILTER_VALIDATE_IP === $filter) {
             $format = match ($flags) {
-                FILTER_FLAG_IPV4 => 'ipv4',
-                FILTER_FLAG_IPV6 => 'ipv6',
+                \FILTER_FLAG_IPV4 => 'ipv4',
+                \FILTER_FLAG_IPV6 => 'ipv6',
                 default => 'ip',
             };
 
             return ['type' => 'string', 'format' => $format];
         }
 
-        if (FILTER_VALIDATE_MAC === $filter) {
+        if (\FILTER_VALIDATE_MAC === $filter) {
             return ['type' => 'string', 'format' => 'mac'];
         }
 
-        if (FILTER_VALIDATE_REGEXP === $filter) {
-            return ['type' => 'string', 'pattern' => $options['regexp']];
+        if (\FILTER_VALIDATE_REGEXP === $filter) {
+            return ['type' => 'string', 'pattern' => $this->getEcmaRegexpFromPCRE($options['regexp'])];
         }
 
-        if (FILTER_VALIDATE_URL === $filter) {
+        if (\FILTER_VALIDATE_URL === $filter) {
             return ['type' => 'string', 'format' => 'uri'];
         }
 
-        if (FILTER_DEFAULT === $filter) {
+        if (\FILTER_DEFAULT === $filter) {
             return ['type' => 'string'];
         }
 
         return [];
+    }
+
+    private function getEcmaRegexpFromPCRE(string $pcreRegex): string
+    {
+        // Check if PCRE regex has delimiters
+        if (preg_match('/^(.)(.*)\1([a-zA-Z]*)$/s', $pcreRegex, $matches)) {
+            [$fullMatch, $delimiter, $pattern, $flags] = $matches;
+            // Remove escaped delimiters in the pattern
+            $pattern = str_replace('\\'.$delimiter, $delimiter, $pattern);
+        } else {
+            // No delimiter has been found, let's consider it's a valid regex without delimiter. Happens when regexp has been takend from "requirements" in route.
+            $pattern = $pcreRegex;
+        }
+
+        $pattern = str_replace(['\A', '\z'], ['^', '$'], $pattern); // Supported features but different syntax
+
+        // Check for unsupported PCRE specific constructs
+        $unsupportedFeatures = [
+            '\Z', // End of string before newline (not supported in JavaScript)
+            '\R', // Any Unicode newline sequence (not supported in JavaScript)
+            '\K', // Resets the start of the current match (not supported in JavaScript)
+        ];
+        $pattern = str_replace($unsupportedFeatures, '', $pattern);
+
+        // Return only the pattern (without flags or delimiters)
+        return $pattern;
     }
 }

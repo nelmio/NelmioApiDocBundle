@@ -35,8 +35,15 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
             return;
         }
 
+        $typeClass = $argumentMetadata->getType();
+
+        $reflectionAttribute = new \ReflectionClass(MapRequestPayload::class);
+        if (Type::BUILTIN_TYPE_ARRAY === $typeClass && $reflectionAttribute->hasProperty('type') && null !== $attribute->type) {
+            $typeClass = $attribute->type;
+        }
+
         $modelRef = $this->modelRegistry->register(new Model(
-            new Type(Type::BUILTIN_TYPE_OBJECT, false, $argumentMetadata->getType()),
+            new Type(Type::BUILTIN_TYPE_OBJECT, false, $typeClass),
             groups: $this->getGroups($attribute),
             serializationContext: $attribute->serializationContext,
         ));
@@ -50,11 +57,11 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
      */
     private function getGroups(MapRequestPayload $attribute): ?array
     {
-        if (is_string($attribute->validationGroups)) {
+        if (\is_string($attribute->validationGroups)) {
             return [$attribute->validationGroups];
         }
 
-        if (is_array($attribute->validationGroups)) {
+        if (\is_array($attribute->validationGroups)) {
             return $attribute->validationGroups;
         }
 

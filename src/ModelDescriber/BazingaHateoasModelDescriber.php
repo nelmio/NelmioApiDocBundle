@@ -35,7 +35,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
         $this->JMSModelDescriber = $JMSModelDescriber;
     }
 
-    public function setModelRegistry(ModelRegistry $modelRegistry)
+    public function setModelRegistry(ModelRegistry $modelRegistry): void
     {
         $this->modelRegistry = $modelRegistry;
         $this->JMSModelDescriber->setModelRegistry($modelRegistry);
@@ -71,7 +71,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 
             $property = Util::getProperty($relationSchema, $relation->getName());
             if (null !== $embedded && method_exists($embedded, 'getType') && null !== $embedded->getType()) {
-                $this->JMSModelDescriber->describeItem($embedded->getType(), $property, $context);
+                $this->JMSModelDescriber->describeItem($embedded->getType(), $property, $context, $model->getSerializationContext());
             } else {
                 $property->type = 'object';
             }
@@ -105,7 +105,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
     {
         foreach ($relation->getAttributes() as $attribute => $value) {
             $subSubProp = Util::getProperty($subProperty, $attribute);
-            switch (gettype($value)) {
+            switch (\gettype($value)) {
                 case 'integer':
                     $subSubProp->type = 'integer';
                     $subSubProp->default = $value;

@@ -32,10 +32,7 @@ class ExternalDocDescriber implements DescriberInterface
         $this->overwrite = $overwrite;
     }
 
-    /**
-     * @return void
-     */
-    public function describe(OA\OpenApi $api)
+    public function describe(OA\OpenApi $api): void
     {
         $externalDoc = $this->getExternalDoc();
 
@@ -47,10 +44,10 @@ class ExternalDocDescriber implements DescriberInterface
     /**
      * @return mixed The external doc
      */
-    private function getExternalDoc()
+    private function getExternalDoc(): mixed
     {
-        if (is_callable($this->externalDoc)) {
-            return call_user_func($this->externalDoc);
+        if (\is_callable($this->externalDoc)) {
+            return \call_user_func($this->externalDoc);
         }
 
         return $this->externalDoc;

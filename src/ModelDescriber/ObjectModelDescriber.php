@@ -11,31 +11,30 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use Doctrine\Common\Annotations\Reader;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
+use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+use Symfony\Component\TypeInfo\Type;
 
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
-    use ModelRegistryAwareTrait;
     use ApplyOpenApiDiscriminatorTrait;
+    use ModelRegistryAwareTrait;
 
     private PropertyInfoExtractorInterface $propertyInfo;
     private ?ClassMetadataFactoryInterface $classMetadataFactory;
-    private ?Reader $doctrineReader;
-    /** @var PropertyDescriberInterface|PropertyDescriberInterface[] */
-    private $propertyDescriber;
+    private PropertyDescriberInterface|TypeDescriberInterface $propertyDescriber;
     /** @var string[] */
     private array $mediaTypes;
     /** @var (NameConverterInterface&AdvancedNameConverterInterface)|null */
@@ -43,29 +42,18 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private bool $useValidationGroups;
 
     /**
-     * @param PropertyDescriberInterface|PropertyDescriberInterface[]      $propertyDescribers
      * @param (NameConverterInterface&AdvancedNameConverterInterface)|null $nameConverter
      * @param string[]                                                     $mediaTypes
      */
     public function __construct(
         PropertyInfoExtractorInterface $propertyInfo,
-        ?Reader $reader,
-        $propertyDescribers,
+        PropertyDescriberInterface|TypeDescriberInterface $propertyDescribers,
         array $mediaTypes,
         ?NameConverterInterface $nameConverter = null,
         bool $useValidationGroups = false,
-        ?ClassMetadataFactoryInterface $classMetadataFactory = null
+        ?ClassMetadataFactoryInterface $classMetadataFactory = null,
     ) {
-        if (is_iterable($propertyDescribers)) {
-            trigger_deprecation('nelmio/api-doc-bundle', '4.17', 'Passing an array of PropertyDescriberInterface to %s() is deprecated. Pass a single PropertyDescriberInterface instead.', __METHOD__);
-        } else {
-            if (!$propertyDescribers instanceof PropertyDescriberInterface) {
-                throw new \InvalidArgumentException(sprintf('Argument 3 passed to %s() must be an array of %s or a single %s.', __METHOD__, PropertyDescriberInterface::class, PropertyDescriberInterface::class));
-            }
-        }
-
         $this->propertyInfo = $propertyInfo;
-        $this->doctrineReader = $reader;
         $this->propertyDescriber = $propertyDescribers;
         $this->mediaTypes = $mediaTypes;
         $this->nameConverter = $nameConverter;
@@ -73,7 +61,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $this->classMetadataFactory = $classMetadataFactory;
     }
 
-    public function describe(Model $model, OA\Schema $schema)
+    public function describe(Model $model, OA\Schema $schema): void
     {
         $class = $model->getType()->getClassName();
         $schema->_context->class = $class;
@@ -85,14 +73,13 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
         $reflClass = new \ReflectionClass($class);
         $annotationsReader = new AnnotationsReader(
-            $this->doctrineReader,
             $this->modelRegistry,
             $this->mediaTypes,
             $this->useValidationGroups
         );
         $classResult = $annotationsReader->updateDefinition($reflClass, $schema);
 
-        if (!$classResult->shouldDescribeModelProperties()) {
+        if (!$classResult) {
             return;
         }
 
@@ -125,27 +112,14 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         // The SerializerExtractor does expose private/protected properties for some reason, so we eliminate them here
         $propertyInfoProperties = array_intersect($propertyInfoProperties, $this->propertyInfo->getProperties($class, []) ?? []);
 
-        $defaultValues = array_filter($reflClass->getDefaultProperties(), static function ($value) {
-            return null !== $value;
-        });
-
-        // Fix for https://github.com/nelmio/NelmioApiDocBundle/issues/2222
-        // Promoted properties with a value initialized by the constructor are not considered to have a default value
-        // and are therefore not returned by ReflectionClass::getDefaultProperties(); see https://bugs.php.net/bug.php?id=81386
-        $reflClassConstructor = $reflClass->getConstructor();
-        $reflClassConstructorParameters = null !== $reflClassConstructor ? $reflClassConstructor->getParameters() : [];
-        foreach ($reflClassConstructorParameters as $parameter) {
-            if (!$parameter->isDefaultValueAvailable()) {
-                continue;
-            }
-
-            $defaultValues[$parameter->name] = $parameter->getDefaultValue();
-        }
-
         foreach ($propertyInfoProperties as $propertyName) {
             $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, $model->getSerializationContext()) : $propertyName;
 
             $reflections = $this->getReflections($reflClass, $propertyName);
+
+            if (!$annotationsReader->shouldDescribeProperty($reflections)) {
+                continue;
+            }
 
             // Check if a custom name is set
             foreach ($reflections as $reflection) {
@@ -154,16 +128,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
             $property = Util::getProperty($schema, $serializedName);
 
-            // Fix for https://github.com/nelmio/NelmioApiDocBundle/issues/2222
-            // Property default value has to be set before SymfonyConstraintAnnotationReader::processPropertyAnnotations()
-            // is called to prevent wrongly detected required properties
-            if (Generator::UNDEFINED === $property->default && array_key_exists($propertyName, $defaultValues)) {
-                $property->default = $defaultValues[$propertyName];
-            }
-
             // Interpret additional options
             $groups = $model->getGroups();
-            if (isset($groups[$propertyName]) && is_array($groups[$propertyName])) {
+            if (isset($groups[$propertyName]) && \is_array($groups[$propertyName])) {
                 $groups = $model->getGroups()[$propertyName];
             }
             foreach ($reflections as $reflection) {
@@ -175,13 +142,20 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 continue;
             }
 
-            $types = $this->propertyInfo->getTypes($class, $propertyName);
-            if (null === $types || 0 === count($types)) {
-                throw new \LogicException(sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `@OA\Property(type="")` to make its type explicit.', $class, $propertyName));
+            if ($this->propertyDescriber instanceof TypeDescriberInterface) {
+                $types = $this->propertyInfo->getType($class, $propertyName);
+            } else {
+                $types = $this->propertyInfo->getTypes($class, $propertyName);
             }
 
-            $this->describeProperty($types, $model, $property, $propertyName, $schema);
+            if (null === $types) {
+                throw new \LogicException(\sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `#[OA\Property(type="")]` to make its type explicit.', $class, $propertyName));
+            }
+
+            $this->describeProperty($types, $model, $property, $propertyName);
         }
+
+        $this->markRequiredProperties($schema);
     }
 
     /**
@@ -213,29 +187,55 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     }
 
     /**
-     * @param Type[] $types
+     * @param LegacyType[]|Type $types
      */
-    private function describeProperty(array $types, Model $model, OA\Schema $property, string $propertyName, OA\Schema $schema): void
+    private function describeProperty(array|Type $types, Model $model, OA\Schema $property, string $propertyName): void
     {
-        $propertyDescribers = is_iterable($this->propertyDescriber) ? $this->propertyDescriber : [$this->propertyDescriber];
+        if ($this->propertyDescriber instanceof ModelRegistryAwareInterface) {
+            $this->propertyDescriber->setModelRegistry($this->modelRegistry);
+        }
+        if ($this->propertyDescriber->supports($types, $model->getSerializationContext())) {
+            $this->propertyDescriber->describe($types, $property, $model->getSerializationContext());
 
-        foreach ($propertyDescribers as $propertyDescriber) {
-            if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
-                $propertyDescriber->setModelRegistry($this->modelRegistry);
-            }
-            if ($propertyDescriber->supports($types)) {
-                $propertyDescriber->describe($types, $property, $model->getGroups(), $schema, $model->getSerializationContext());
-
-                return;
-            }
+            return;
         }
 
-        throw new \Exception(sprintf('Type "%s" is not supported in %s::$%s. You may use the `@OA\Property(type="")` annotation to specify it manually.', $types[0]->getBuiltinType(), $model->getType()->getClassName(), $propertyName));
+        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may need to use the `#[OA\Property(type="")]` attribute to specify it manually.', \is_array($types) ? $types[0]->getBuiltinType() : $types, $model->getType()->getClassName(), $propertyName));
+    }
+
+    /**
+     * Mark properties as required while ordering them in the same order as the properties of the schema.
+     * Then append the original required properties.
+     */
+    private function markRequiredProperties(OA\Schema $schema): void
+    {
+        if (Generator::isDefault($properties = $schema->properties)) {
+            return;
+        }
+
+        $newRequired = [];
+        foreach ($properties as $property) {
+            if (\is_array($schema->required) && \in_array($property->property, $schema->required, true)) {
+                $newRequired[] = $property->property;
+                continue;
+            }
+
+            if (true === $property->nullable || !Generator::isDefault($property->default)) {
+                continue;
+            }
+            $newRequired[] = $property->property;
+        }
+
+        if ([] !== $newRequired) {
+            $originalRequired = Generator::isDefault($schema->required) ? [] : $schema->required;
+
+            $schema->required = array_values(array_unique(array_merge($newRequired, $originalRequired)));
+        }
     }
 
     public function supports(Model $model): bool
     {
-        return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
+        return LegacyType::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
             && (class_exists($model->getType()->getClassName()) || interface_exists($model->getType()->getClassName()));
     }
 }

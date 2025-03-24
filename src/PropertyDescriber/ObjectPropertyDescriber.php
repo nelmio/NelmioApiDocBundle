@@ -18,14 +18,14 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
-class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
+final class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $context = []): void
     {
         $type = new Type(
             $types[0]->getBuiltinType(),
@@ -36,20 +36,27 @@ class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegist
             $types[0]->getCollectionValueTypes()[0] ?? null,
         ); // ignore nullable field
 
+        if (null === $types[0]->getClassName()) {
+            $property->type = 'object';
+            $property->additionalProperties = true;
+
+            return;
+        }
+
         if ($types[0]->isNullable()) {
             $weakContext = Util::createWeakContext($property->_context);
-            $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, $groups, null, $context)), '_context' => $weakContext])];
+            $schemas = [new OA\Schema(['ref' => $this->modelRegistry->register(new Model($type, serializationContext: $context)), '_context' => $weakContext])];
             $property->oneOf = $schemas;
 
             return;
         }
 
-        $property->ref = $this->modelRegistry->register(new Model($type, $groups, null, $context));
+        $property->ref = $this->modelRegistry->register(new Model($type, serializationContext: $context));
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
-        return 1 === count($types)
+        return 1 === \count($types)
             && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
     }
 }

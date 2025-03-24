@@ -1,0 +1,22 @@
+{
+    "properties": {
+        "int": {
+            "type": "integer",
+            "nullable": true
+        },
+        "float": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+        },
+        "string": {
+            "type": "string",
+            "nullable": true
+        },
+        "bool": {
+            "type": "boolean",
+            "nullable": true
+        }
+    },
+    "type": "object"
+}

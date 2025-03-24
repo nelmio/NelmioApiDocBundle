@@ -95,7 +95,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 continue;
             }
 
-            $ref = \mb_substr($ref, 24); // trim the '#/components/parameters/' part of ref
+            $ref = mb_substr($ref, 24); // trim the '#/components/parameters/' part of ref
             if (!isset($globalParams[$ref])) {
                 // this shouldn't happen during proper configs, but in case of bad config, just ignore it here
                 continue;
@@ -121,7 +121,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     private function getPossibleEnumValues(string $reqPattern): array
     {
         $requirements = [];
-        if (false !== strpos($reqPattern, '|')) {
+        if (str_contains($reqPattern, '|')) {
             $parts = explode('|', $reqPattern);
             foreach ($parts as $part) {
                 if ('' === $part || 0 === preg_match(self::ALPHANUM_EXPANDED_REGEX, $part)) {

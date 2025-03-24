@@ -22,15 +22,15 @@ use Symfony\Component\Routing\Route;
 
 final class RouteArgumentDescriber implements RouteDescriberInterface, ModelRegistryAwareInterface
 {
-    use RouteDescriberTrait;
     use ModelRegistryAwareTrait;
+    use RouteDescriberTrait;
 
     /**
      * @param RouteArgumentDescriberInterface[] $inlineParameterDescribers
      */
     public function __construct(
         private ArgumentMetadataFactoryInterface $argumentMetadataFactory,
-        private iterable $inlineParameterDescribers
+        private iterable $inlineParameterDescribers,
     ) {
     }
 

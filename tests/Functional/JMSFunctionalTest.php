@@ -328,9 +328,9 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'string',
                     'maxLength' => 10,
                     'minLength' => 3,
+                    'default' => 'default',
                 ],
             ],
-            'required' => ['beautifulName'],
             'schema' => 'JMSNamingStrategyConstraints',
         ], json_decode($this->getModel('JMSNamingStrategyConstraints')->toJson(), true));
     }
@@ -360,12 +360,6 @@ class JMSFunctionalTest extends WebTestCase
                 ],
             ],
             'schema' => 'Article81',
-            'required' => [
-                'id',
-                'type',
-                'int_backed_type',
-                'not_backed_type',
-            ],
         ], json_decode($this->getModel('Article81')->toJson(), true));
 
         self::assertEquals([
@@ -376,6 +370,49 @@ class JMSFunctionalTest extends WebTestCase
                 'final',
             ],
         ], json_decode($this->getModel('ArticleType81')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'ArticleType81',
+            'type' => 'string',
+            'enum' => [
+                'draft',
+                'final',
+            ],
+        ], json_decode($this->getModel('ArticleType81')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'ArticleType812',
+            'type' => 'string',
+            'enum' => [
+                'DRAFT',
+                'FINAL',
+            ],
+        ], json_decode($this->getModel('ArticleType812')->toJson(), true));
+
+        self::assertEquals([
+            'schema' => 'JMSEnum',
+            'type' => 'object',
+            'properties' => [
+                'enum_value' => [
+                    '$ref' => '#/components/schemas/ArticleType81',
+                ],
+                'enum_values' => [
+                    'type' => 'array',
+                    'items' => [
+                        '$ref' => '#/components/schemas/ArticleType81',
+                    ],
+                ],
+                'enum_name' => [
+                    '$ref' => '#/components/schemas/ArticleType812',
+                ],
+                'enum_names' => [
+                    'type' => 'array',
+                    'items' => [
+                        '$ref' => '#/components/schemas/ArticleType812',
+                    ],
+                ],
+            ],
+        ], json_decode($this->getModel('JMSEnum')->toJson(), true));
     }
 
     public function testModeDiscriminatorMap(): void
@@ -419,30 +456,24 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSAbstractUser')->toJson(), true));
     }
 
+    public function testIgnoredProperty(): void
+    {
+        self::assertEquals([
+            'schema' => 'JMSIgnoredProperty',
+            'type' => 'object',
+            'properties' => [
+                'regular_property' => [
+                    'type' => 'string',
+                ],
+            ],
+        ], json_decode($this->getModel('JMSIgnoredProperty')->toJson(), true));
+    }
+
     /**
      * @param array<mixed> $options
      */
     protected static function createKernel(array $options = []): KernelInterface
     {
         return new TestKernel(TestKernel::USE_JMS);
-    }
-
-    public function testModelTypedDocumentation(): void
-    {
-        self::assertEquals([
-            'type' => 'object',
-            'properties' => [
-                'id' => ['type' => 'integer'],
-                'user' => ['$ref' => '#/components/schemas/JMSUser'],
-                'name' => ['type' => 'string'],
-                'virtual_friend' => ['$ref' => '#/components/schemas/JMSUser'],
-            ],
-            'required' => [
-                'virtual_friend',
-                'id',
-                'user',
-            ],
-            'schema' => 'JMSTyped',
-        ], json_decode($this->getModel('JMSTyped')->toJson(), true));
     }
 }

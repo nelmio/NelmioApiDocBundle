@@ -11,14 +11,18 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
+use JMS\Serializer\Annotation as Serializer;
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class JMSDualComplex extends JMSDualComplex80
-    {
-    }
-} else {
-    class JMSDualComplex extends JMSDualComplex81
-    {
-    }
+class JMSDualComplex
+{
+    #[Serializer\Type('integer')]
+    private $id;
+
+    #[OA\Property(ref: new Model(type: JMSComplex::class))]
+    private $complex;
+
+    #[OA\Property(ref: new Model(type: JMSUser::class))]
+    private $user;
 }

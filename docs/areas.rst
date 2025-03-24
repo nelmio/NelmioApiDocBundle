@@ -53,6 +53,13 @@ Then update your routing to be able to access your different documentations:
     #    methods: GET
     #    defaults: { _controller: nelmio_api_doc.controller.redocly, area: default }
 
+    # With Stoplight
+    # app/config/routing.yaml
+    #app.stoplight:
+    #    path: /api/doc/{area}
+    #    methods: GET
+    #    defaults: { _controller: nelmio_api_doc.controller.stoplight, area: default }
+
     # To expose them as JSON
     #app.swagger.areas:
     #    path: /api/doc/{area}.json
@@ -62,12 +69,12 @@ Then update your routing to be able to access your different documentations:
 
 That's all! You can now access ``/api/doc/internal``, ``/api/doc/commercial`` and ``/api/doc/store``.
 
-Use annotations to filter documented routes in each area
+Use attributes to filter documented routes in each area
 --------------------------------------------------------
 
-You can use the `@Areas` annotation inside your controllers to define your routes' areas.
+You can use the ``#[Areas]`` attribute inside your controllers to define your routes' areas.
 
-First, you need to define which areas will use the`@Areas` annotations to filter
+First, you need to define which areas will use the ``#[Areas]`` attributes to filter
 the routes that should be documented:
 
 .. code-block:: yaml
@@ -77,22 +84,28 @@ the routes that should be documented:
             default:
                 path_patterns: [ ^/api ]
             internal:
-                with_annotation: true
+                with_attribute: true
 
-Then add the annotation before your controller or action::
+Then add the attribute before your controller or action::
 
-    use Nelmio\Annotations as Nelmio;
+.. configuration-block::
 
-    /**
-     * @Nelmio\Areas({"internal"}) => All actions in this controller are documented under the 'internal' area
-     */
-    class MyController
-    {
+    .. code-block:: php-attributes
+
+        use Nelmio\Attribute as Nelmio;
+
         /**
-         * @Nelmio\Areas({"internal"}) => This action is documented under the 'internal' area
+         * All actions in this controller are documented under the 'internal' area
          */
-        public function index()
+        #[Nelmio\Areas(["internal"])]
+        class MyController
         {
-           ...
+            /**
+             * This action is documented under the 'internal' area
+             */
+            #[Nelmio\Areas(["internal"])]
+            public function index()
+            {
+               ...
+            }
         }
-    }

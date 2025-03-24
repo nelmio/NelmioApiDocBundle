@@ -71,6 +71,30 @@ final class Util
     }
 
     /**
+     * Return an existing Tag object from $api->tags[] having its member name set to $name.
+     * Create, add to $api->tags[] and return this new Tag object and set the property if none found.
+     *
+     * @see OA\OpenApi::$tags
+     * @see OA\Tag::$name
+     */
+    public static function getTag(OA\OpenApi $api, string $name): OA\Tag
+    {
+        // Tags ar not considered indexed, so we cannot use getIndexedCollectionItem directly
+        // because we need to specify that the search should use the "name" property.
+        $key = self::searchIndexedCollectionItem(
+            \is_array($api->tags) ? $api->tags : [],
+            'name',
+            $name
+        );
+
+        if (false === $key) {
+            $key = self::createCollectionItem($api, 'tags', OA\Tag::class, ['name' => $name]);
+        }
+
+        return $api->tags[$key];
+    }
+
+    /**
      * Return an existing Schema object from $api->components->schemas[] having its member schema set to $schema.
      * Create, add to $api->components->schemas[] and return this new Schema object and set the property if none found.
      *
@@ -115,7 +139,7 @@ final class Util
      */
     public static function getOperation(OA\PathItem $path, string $method): OA\Operation
     {
-        $class = array_keys($path::$_nested, \strtolower($method), true)[0];
+        $class = array_keys($path::$_nested, strtolower($method), true)[0];
 
         if (!is_a($class, OA\Operation::class, true)) {
             throw new \InvalidArgumentException('Invalid operation class provided.');
@@ -228,7 +252,7 @@ final class Util
      *
      * @see OA\AbstractAnnotation::$_nested
      */
-    public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, string $class, $value): OA\AbstractAnnotation
+    public static function getIndexedCollectionItem(OA\AbstractAnnotation $parent, string $class, mixed $value): OA\AbstractAnnotation
     {
         $nested = $parent::$_nested;
         [$collection, $property] = $nested[$class];
@@ -273,14 +297,20 @@ final class Util
     /**
      * Search for an Annotation within the $collection that has its member $index set to $value.
      *
-     * @param mixed[] $collection
-     * @param mixed   $value      The value to search for
+     * @param OA\AbstractAnnotation[] $collection
+     * @param mixed                   $value      The value to search for
      *
      * @return false|int|string
      */
-    public static function searchIndexedCollectionItem(array $collection, string $member, $value)
+    public static function searchIndexedCollectionItem(array $collection, string $member, mixed $value)
     {
-        return array_search($value, array_column($collection, $member), true);
+        foreach ($collection as $i => $child) {
+            if ($child->{$member} === $value) {
+                return $i;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -387,10 +417,10 @@ final class Util
     {
         if (\is_array($from)) {
             self::mergeFromArray($annotation, $from, $overwrite);
-        } elseif (\is_a($from, OA\AbstractAnnotation::class)) {
+        } elseif (is_a($from, OA\AbstractAnnotation::class)) {
             /* @var OA\AbstractAnnotation $from */
             self::mergeFromArray($annotation, json_decode(json_encode($from), true), $overwrite);
-        } elseif (\is_a($from, \ArrayObject::class)) {
+        } elseif (is_a($from, \ArrayObject::class)) {
             /* @var \ArrayObject $from */
             self::mergeFromArray($annotation, $from->getArrayCopy(), $overwrite);
         }
@@ -421,12 +451,12 @@ final class Util
     {
         $done = [];
 
-        $defaults = \get_class_vars(\get_class($annotation));
+        $defaults = get_class_vars($annotation::class);
 
         foreach ($annotation::$_nested as $className => $propertyName) {
             if (\is_string($propertyName)) {
-                if (array_key_exists($propertyName, $properties)) {
-                    if (!is_bool($properties[$propertyName])) {
+                if (\array_key_exists($propertyName, $properties)) {
+                    if (!\is_bool($properties[$propertyName])) {
                         self::mergeChild($annotation, $className, $properties[$propertyName], $overwrite);
                     } elseif ($overwrite || $annotation->{$propertyName} === $defaults[$propertyName]) {
                         // Support for boolean values (for instance for additionalProperties)
@@ -443,7 +473,7 @@ final class Util
         }
 
         foreach ($annotation::$_types as $propertyName => $type) {
-            if (array_key_exists($propertyName, $properties)) {
+            if (\array_key_exists($propertyName, $properties)) {
                 self::mergeTyped($annotation, $propertyName, $type, $properties, $defaults, $overwrite);
                 $done[] = $propertyName;
             }
@@ -466,7 +496,7 @@ final class Util
                 $propertyName = 'ref';
             }
 
-            if (array_key_exists($propertyName, $defaults) && !\in_array($propertyName, $done, true)) {
+            if (\array_key_exists($propertyName, $defaults) && !\in_array($propertyName, $done, true)) {
                 self::mergeProperty($annotation, $propertyName, $value, $defaults[$propertyName], $overwrite);
             }
         }
@@ -478,7 +508,7 @@ final class Util
      * @param class-string<T> $className
      * @param mixed           $value     The value of the property
      */
-    private static function mergeChild(OA\AbstractAnnotation $annotation, string $className, $value, bool $overwrite): void
+    private static function mergeChild(OA\AbstractAnnotation $annotation, string $className, mixed $value, bool $overwrite): void
     {
         self::merge(self::getChild($annotation, $className), $value, $overwrite);
     }
@@ -520,7 +550,7 @@ final class Util
      */
     private static function mergeTyped(OA\AbstractAnnotation $annotation, string $propertyName, $type, array $properties, array $defaults, bool $overwrite): void
     {
-        if (\is_string($type) && 0 === strpos($type, '[')) {
+        if (\is_string($type) && str_starts_with($type, '[')) {
             $innerType = substr($type, 1, -1);
 
             if (!$annotation->{$propertyName} || Generator::UNDEFINED === $annotation->{$propertyName}) {

@@ -15,8 +15,5 @@ use Nelmio\ApiDocBundle\Model\ModelRegistry;
 
 interface ModelRegistryAwareInterface
 {
-    /**
-     * @return void
-     */
-    public function setModelRegistry(ModelRegistry $modelRegistry);
+    public function setModelRegistry(ModelRegistry $modelRegistry): void;
 }

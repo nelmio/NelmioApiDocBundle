@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\OpenApiAnnotationsReader;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
@@ -19,6 +18,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Attributes as OAattr;
 use OpenApi\Context;
 use OpenApi\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AnnotationReaderTest extends TestCase
@@ -27,9 +27,8 @@ class AnnotationReaderTest extends TestCase
 
     /**
      * @param object $entity
-     *
-     * @dataProvider provideProperty
      */
+    #[DataProvider('provideProperty')]
     public function testProperty($entity): void
     {
         $baseProps = ['_context' => new Context()];
@@ -40,7 +39,6 @@ class AnnotationReaderTest extends TestCase
 
         $registry = new ModelRegistry([], new OA\OpenApi($baseProps), []);
         $symfonyConstraintAnnotationReader = new OpenApiAnnotationsReader(
-            class_exists(AnnotationReader::class) ? new AnnotationReader() : null,
             $registry,
             ['json']
         );
@@ -56,24 +54,11 @@ class AnnotationReaderTest extends TestCase
 
     public static function provideProperty(): \Generator
     {
-        yield 'Annotations' => [new class() {
-            /**
-             * @OA\Property(example=1)
-             */
+        yield 'Attributes' => [new class {
+            #[OAattr\Property(example: 1)]
             public $property1;
-            /**
-             * @OA\Property(example="some example", description="some description")
-             */
+            #[OAattr\Property(example: 'some example', description: 'some description')]
             public $property2;
         }];
-
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'Attributes' => [new class() {
-                #[OAattr\Property(example: 1)]
-                public $property1;
-                #[OAattr\Property(example: 'some example', description: 'some description')]
-                public $property2;
-            }];
-        }
     }
 }

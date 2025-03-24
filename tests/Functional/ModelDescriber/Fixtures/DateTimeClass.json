@@ -1,0 +1,27 @@
+{
+    "required": [
+        "dateTime",
+        "dateTimeImmutable",
+        "dateTimeInterface"
+    ],
+    "properties": {
+        "dateTime": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "dateTimeImmutable": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "dateTimeInterface": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "nullableDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+        }
+    },
+    "type": "object"
+}

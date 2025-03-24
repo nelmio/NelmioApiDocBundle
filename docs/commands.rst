@@ -38,6 +38,7 @@ or configure UI configuration, use the ``--html-config`` option.
 - ``swagger_ui_config`` - `configure Swagger UI`_
     - ``"supportedSubmitMethods":[]`` disables the sandbox
 - ``redocly_config`` - `configure Redocly`_
+- ``stoplight_config`` - `configure Stoplight`_
 
 .. code-block:: bash
 

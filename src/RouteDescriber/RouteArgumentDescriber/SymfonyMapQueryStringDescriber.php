@@ -59,11 +59,11 @@ final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInte
      */
     private function getGroups(MapQueryString $attribute): ?array
     {
-        if (is_string($attribute->validationGroups)) {
+        if (\is_string($attribute->validationGroups)) {
             return [$attribute->validationGroups];
         }
 
-        if (is_array($attribute->validationGroups)) {
+        if (\is_array($attribute->validationGroups)) {
             return $attribute->validationGroups;
         }
 

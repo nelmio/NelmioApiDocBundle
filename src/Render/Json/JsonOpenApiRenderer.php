@@ -30,8 +30,8 @@ class JsonOpenApiRenderer implements OpenApiRenderer
         $options += [
             'no-pretty' => false,
         ];
-        $flags = true === $options['no-pretty'] ? 0 : JSON_PRETTY_PRINT;
+        $flags = true === $options['no-pretty'] ? 0 : \JSON_PRETTY_PRINT;
 
-        return json_encode($spec, $flags | JSON_UNESCAPED_SLASHES);
+        return json_encode($spec, $flags | \JSON_UNESCAPED_SLASHES);
     }
 }

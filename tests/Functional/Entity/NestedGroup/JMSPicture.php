@@ -11,14 +11,20 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup;
 
-use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
+use JMS\Serializer\Annotation as Serializer;
 
-if (TestKernel::isAnnotationsAvailable()) {
-    class JMSPicture extends JMSPicture80
-    {
-    }
-} else {
-    class JMSPicture extends JMSPicture81
-    {
-    }
+/**
+ * User.
+ */
+#[Serializer\ExclusionPolicy('all')]
+class JMSPicture
+{
+    #[Serializer\Type('integer')]
+    #[Serializer\Expose]
+    private $id;
+
+    #[Serializer\Type('integer')]
+    #[Serializer\Expose]
+    #[Serializer\Groups(['mini'])]
+    private $onlyDirectPictureMini;
 }

@@ -1,0 +1,62 @@
+{
+    "required": [
+        "untypedArray",
+        "arrayOfIntegers",
+        "listOfIntegers",
+        "shortArrayOfIntegers"
+    ],
+    "properties": {
+        "untypedArray": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "nullable": true
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": {
+                        "nullable": true
+                    }
+                }
+            ]
+        },
+        "arrayOfIntegers": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                }
+            ]
+        },
+        "listOfIntegers": {
+            "type": "array",
+            "items": {
+                "type": "integer"
+            }
+        },
+        "shortArrayOfIntegers": {
+            "type": "array",
+            "items": {
+                "type": "integer"
+            }
+        },
+        "shortArrayOfIntegersNullable": {
+            "type": "array",
+            "items": {
+                "type": "integer"
+            },
+            "nullable": true
+        }
+    },
+    "type": "object"
+}

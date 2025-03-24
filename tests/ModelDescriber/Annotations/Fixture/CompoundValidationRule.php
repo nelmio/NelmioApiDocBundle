@@ -20,9 +20,6 @@ if (!class_exists(Compound::class)) {
     class_alias(CompoundStub::class, Compound::class);
 }
 
-/**
- * @Annotation
- */
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 final class CompoundValidationRule extends Compound
 {

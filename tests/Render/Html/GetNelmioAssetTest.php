@@ -14,17 +14,16 @@ namespace Nelmio\ApiDocBundle\Tests\Render\Html;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Render\Html\GetNelmioAsset;
 use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class GetNelmioAssetTest extends WebTestCase
 {
     private const CDN_DIR = 'https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/public';
     private const RESOURCE_DIR = __DIR__.'/../../../public';
 
-    /**
-     * @dataProvider provideCss
-     * @dataProvider provideJs
-     * @dataProvider provideImage
-     */
+    #[DataProvider('provideCss')]
+    #[DataProvider('provideJs')]
+    #[DataProvider('provideImage')]
     public function test(string $mode, string $asset, string $expectedContent): void
     {
         static::bootKernel();

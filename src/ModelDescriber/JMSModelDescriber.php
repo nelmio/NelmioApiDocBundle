@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber;
 
-use Doctrine\Common\Annotations\Reader;
 use JMS\Serializer\Context;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
@@ -33,16 +32,14 @@ use Symfony\Component\PropertyInfo\Type;
  */
 class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
-    use ModelRegistryAwareTrait;
     use ApplyOpenApiDiscriminatorTrait;
+    use ModelRegistryAwareTrait;
 
     private MetadataFactoryInterface $factory;
 
     private ?SerializationContextFactoryInterface $contextFactory;
 
     private ?PropertyNamingStrategyInterface $namingStrategy;
-
-    private ?Reader $doctrineReader;
 
     /**
      * @var array<string, Context>
@@ -71,29 +68,24 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      */
     public function __construct(
         MetadataFactoryInterface $factory,
-        ?Reader $reader,
         array $mediaTypes,
         ?PropertyNamingStrategyInterface $namingStrategy = null,
         bool $useValidationGroups = false,
-        ?SerializationContextFactoryInterface $contextFactory = null
+        ?SerializationContextFactoryInterface $contextFactory = null,
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
-        $this->doctrineReader = $reader;
         $this->mediaTypes = $mediaTypes;
         $this->useValidationGroups = $useValidationGroups;
         $this->contextFactory = $contextFactory;
     }
 
-    /**
-     * @return void
-     */
-    public function describe(Model $model, OA\Schema $schema)
+    public function describe(Model $model, OA\Schema $schema): void
     {
         $className = $model->getType()->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
         if (!$metadata instanceof ClassMetadata) {
-            throw new \InvalidArgumentException(sprintf('No metadata found for class %s.', $className));
+            throw new \InvalidArgumentException(\sprintf('No metadata found for class %s.', $className));
         }
 
         if (null !== $metadata->discriminatorFieldName
@@ -112,14 +104,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
 
         $annotationsReader = new AnnotationsReader(
-            $this->doctrineReader,
             $this->modelRegistry,
             $this->mediaTypes,
             $this->useValidationGroups
         );
         $classResult = $annotationsReader->updateDefinition(new \ReflectionClass($className), $schema);
 
-        if (!$classResult->shouldDescribeModelProperties()) {
+        if (!$classResult) {
             return;
         }
         $schema->type = 'object';
@@ -137,12 +128,12 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $context->pushPropertyMetadata($item);
 
             $name = true === $isJmsV1 ? $this->namingStrategy->translateName($item) : $item->serializedName;
-            // read property options from Swagger Property annotation if it exists
+            // read property options from Swagger Property attribute if it exists
 
             $reflections = [];
             if (true === $isJmsV1 && property_exists($item, 'reflection') && null !== $item->reflection) {
                 $reflections[] = $item->reflection;
-            } elseif (\property_exists($item->class, $item->name)) {
+            } elseif (property_exists($item->class, $item->name)) {
                 $reflections[] = new \ReflectionProperty($item->class, $item->name);
             }
 
@@ -152,7 +143,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 } catch (\ReflectionException $ignored) {
                 }
             }
-            $this->checkRequiredFields($reflections, $schema, $name);
             if (null !== $item->setter) {
                 try {
                     $reflections[] = new \ReflectionMethod($item->class, $item->setter);
@@ -160,11 +150,17 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 }
             }
 
+            if (!$annotationsReader->shouldDescribeProperty($reflections)) {
+                $context->popPropertyMetadata();
+
+                continue;
+            }
+
             $groups = $this->computeGroups($context, $item->type);
 
             if (true === $item->inline && isset($item->type['name'])) {
                 // currently array types can not be documented :-/
-                if (!in_array($item->type['name'], ['array', 'ArrayCollection'], true)) {
+                if (!\in_array($item->type['name'], ['array', 'ArrayCollection'], true)) {
                     $inlineModel = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $item->type['name']), $groups);
                     $this->describe($inlineModel, $schema);
                 }
@@ -201,7 +197,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 continue;
             }
 
-            $this->describeItem($item->type, $property, $context);
+            $this->describeItem($item->type, $property, $context, $model->getSerializationContext());
             $context->popPropertyMetadata();
         }
         $context->popClassMetadata();
@@ -262,6 +258,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function supports(Model $model): bool
     {
+        if (($model->getSerializationContext()['useJms'] ?? null) === false) {
+            return false;
+        }
+
         $className = $model->getType()->getClassName();
 
         try {
@@ -278,8 +278,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      * @internal
      *
      * @param mixed[] $type
+     * @param mixed[] $serializationContext
      */
-    public function describeItem(array $type, OA\Schema $property, Context $context): void
+    public function describeItem(array $type, OA\Schema $property, Context $context, array $serializationContext): void
     {
         $nestedTypeInfo = $this->getNestedTypeInArray($type);
         if (null !== $nestedTypeInfo) {
@@ -296,24 +297,24 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                     return;
                 }
 
-                $this->describeItem($nestedType, $property->additionalProperties, $context);
+                $this->describeItem($nestedType, $property->additionalProperties, $context, $serializationContext);
 
                 return;
             }
 
             $property->type = 'array';
             $property->items = Util::createChild($property, OA\Items::class);
-            $this->describeItem($nestedType, $property->items, $context);
+            $this->describeItem($nestedType, $property->items, $context, $serializationContext);
         } elseif ('array' === $type['name']) {
             $property->type = 'object';
             $property->additionalProperties = true;
         } elseif ('string' === $type['name']) {
             $property->type = 'string';
-        } elseif (in_array($type['name'], ['bool', 'boolean'], true)) {
+        } elseif (\in_array($type['name'], ['bool', 'boolean'], true)) {
             $property->type = 'boolean';
-        } elseif (in_array($type['name'], ['int', 'integer'], true)) {
+        } elseif (\in_array($type['name'], ['int', 'integer'], true)) {
             $property->type = 'integer';
-        } elseif (in_array($type['name'], ['double', 'float'], true)) {
+        } elseif (\in_array($type['name'], ['double', 'float'], true)) {
             $property->type = 'number';
             $property->format = $type['name'];
         } elseif (is_a($type['name'], \DateTimeInterface::class, true)) {
@@ -323,15 +324,29 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             // See https://github.com/schmittjoh/serializer/blob/5a5a03a/src/Metadata/Driver/EnumPropertiesDriver.php#L51
             if ('enum' === $type['name']
                 && isset($type['params'][0])
-                && function_exists('enum_exists')
-                && enum_exists($type['params'][0])
             ) {
-                $type = ['name' => $type['params'][0]];
+                $typeParam = $type['params'][0];
+                if (isset($typeParam['name'])) {
+                    $typeParam = $typeParam['name'];
+                }
+                if (\is_string($typeParam) && enum_exists($typeParam)) {
+                    $type['name'] = $typeParam;
+                }
+
+                if (isset($type['params'][1])) {
+                    if ('value' !== $type['params'][1] && is_a($type['name'], \BackedEnum::class, true)) {
+                        // In case of a backed enum, it is possible to serialize it using its names instead of values
+                        // Set a specific serialization context property to enforce a new model, as options cannot be used to force a new model
+                        // See https://github.com/schmittjoh/serializer/blob/5a5a03a71a28a480189c5a0ca95893c19f1d120c/src/Handler/EnumHandler.php#L47
+                        $serializationContext[EnumModelDescriber::FORCE_NAMES] = true;
+                    }
+                }
             }
 
             $groups = $this->computeGroups($context, $type);
+            unset($serializationContext['groups']);
 
-            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups);
+            $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, $type['name']), $groups, [], $serializationContext);
             $modelRef = $this->modelRegistry->register($model);
 
             $customFields = (array) $property->jsonSerialize();
@@ -375,7 +390,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
      */
     private function propertyTypeUsesGroups(array $type): ?bool
     {
-        if (array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
+        if (\array_key_exists($type['name'], $this->propertyTypeUseGroupsCache)) {
             return $this->propertyTypeUseGroupsCache[$type['name']];
         }
 
@@ -396,36 +411,6 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $this->propertyTypeUseGroupsCache[$type['name']] = null;
 
             return null;
-        }
-    }
-
-    /**
-     * Mark property as required if it is not nullable.
-     *
-     * @param array<\ReflectionProperty|\ReflectionMethod> $reflections
-     */
-    private function checkRequiredFields(array $reflections, OA\Schema $schema, string $name): void
-    {
-        foreach ($reflections as $reflection) {
-            $nullable = false;
-            if ($reflection instanceof \ReflectionProperty) {
-                $type = PHP_VERSION_ID >= 70400 ? $reflection->getType() : null;
-                if (null !== $type && !$type->allowsNull()) {
-                    $nullable = true;
-                }
-            } elseif ($reflection instanceof \ReflectionMethod) {
-                $returnType = $reflection->getReturnType();
-                if (null !== $returnType && !$returnType->allowsNull()) {
-                    $nullable = true;
-                }
-            }
-            if ($nullable) {
-                $required = Generator::UNDEFINED !== $schema->required ? $schema->required : [];
-                $required[] = $name;
-
-                $schema->required = $required;
-                break;
-            }
         }
     }
 }

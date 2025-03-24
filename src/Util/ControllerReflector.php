@@ -36,7 +36,7 @@ class ControllerReflector
      */
     public function getReflectionMethod($controller): ?\ReflectionMethod
     {
-        if (is_string($controller)) {
+        if (\is_string($controller)) {
             $controller = $this->getClassAndMethod($controller);
         }
 
@@ -72,7 +72,7 @@ class ControllerReflector
             $method = $matches[2];
 
             if (!class_exists($class) && $this->container->has($class)) {
-                $class = get_class($this->container->get($class));
+                $class = \get_class($this->container->get($class));
             }
 
             return $this->controllers[$controller] = [$class, $method];

@@ -18,9 +18,9 @@ final class Model
     private Type $type;
 
     /**
-     * @var mixed[]|null
+     * @var mixed[]
      */
-    private ?array $options;
+    private array $options;
 
     /**
      * @var mixed[]
@@ -29,10 +29,10 @@ final class Model
 
     /**
      * @param string[]|null $groups
-     * @param mixed[]|null  $options
+     * @param mixed[]       $options
      * @param mixed[]       $serializationContext
      */
-    public function __construct(Type $type, ?array $groups = null, ?array $options = null, array $serializationContext = [])
+    public function __construct(Type $type, ?array $groups = null, array $options = [], array $serializationContext = [])
     {
         $this->type = $type;
         $this->options = $options;
@@ -69,9 +69,9 @@ final class Model
     }
 
     /**
-     * @return mixed[]|null
+     * @return mixed[]
      */
-    public function getOptions(): ?array
+    public function getOptions(): array
     {
         return $this->options;
     }

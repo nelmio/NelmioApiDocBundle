@@ -11,7 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\ModelDescriber\Annotations;
 
-use Doctrine\Common\Annotations\Reader;
+use Nelmio\ApiDocBundle\Attribute\Ignore;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
@@ -24,32 +24,29 @@ class AnnotationsReader
     private PropertyPhpDocReader $phpDocReader;
     private OpenApiAnnotationsReader $openApiAnnotationsReader;
     private SymfonyConstraintAnnotationReader $symfonyConstraintAnnotationReader;
+    private ReflectionReader $reflectionReader;
 
     /**
      * @param string[] $mediaTypes
      */
     public function __construct(
-        ?Reader $annotationsReader,
         ModelRegistry $modelRegistry,
         array $mediaTypes,
-        bool $useValidationGroups = false
+        bool $useValidationGroups = false,
     ) {
         $this->phpDocReader = new PropertyPhpDocReader();
-        $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($annotationsReader, $modelRegistry, $mediaTypes);
-        $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader(
-            $annotationsReader,
-            $useValidationGroups
-        );
+        $this->openApiAnnotationsReader = new OpenApiAnnotationsReader($modelRegistry, $mediaTypes);
+        $this->symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader($useValidationGroups);
+        $this->reflectionReader = new ReflectionReader();
     }
 
-    public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema): UpdateClassDefinitionResult
+    public function updateDefinition(\ReflectionClass $reflectionClass, OA\Schema $schema): bool
     {
         $this->openApiAnnotationsReader->updateSchema($reflectionClass, $schema);
         $this->symfonyConstraintAnnotationReader->setSchema($schema);
+        $this->reflectionReader->setSchema($schema);
 
-        return new UpdateClassDefinitionResult(
-            $this->shouldDescribeModelProperties($schema)
-        );
+        return $this->shouldDescribeModelProperties($schema);
     }
 
     /**
@@ -68,13 +65,31 @@ class AnnotationsReader
     {
         $this->openApiAnnotationsReader->updateProperty($reflection, $property, $serializationGroups);
         $this->phpDocReader->updateProperty($reflection, $property);
+        $this->reflectionReader->updateProperty($reflection, $property);
         $this->symfonyConstraintAnnotationReader->updateProperty($reflection, $property, $serializationGroups);
     }
 
     /**
-     * if an objects schema type and ref are undefined OR the object was manually
-     * defined as an object, then we're good to do the normal describe flow of
-     * class properties.
+     * @param \ReflectionProperty[]|\ReflectionMethod[] $reflections
+     */
+    public function shouldDescribeProperty(array $reflections): bool
+    {
+        foreach ($reflections as $reflection) {
+            if ([] !== $reflection->getAttributes(Ignore::class)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Whether the model describer should continue reading class properties
+     * after updating the open api schema from an `OA\Schema` definition.
+     *
+     * Users may manually define a `type` or `ref` on a schema, and if that's the case
+     * model describers should _probably_ not describe any additional properties or try
+     * to merge in properties.
      */
     private function shouldDescribeModelProperties(OA\Schema $schema): bool
     {

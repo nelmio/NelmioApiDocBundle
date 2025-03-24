@@ -1,0 +1,16 @@
+{
+    "properties": {
+        "simpleClass": {
+            "nullable": true,
+            "allOf": [
+                {
+                    "$ref": "#/components/schemas/X"
+                },
+                {
+                    "$ref": "#/components/schemas/Y"
+                }
+            ]
+        }
+    },
+    "type": "object"
+}

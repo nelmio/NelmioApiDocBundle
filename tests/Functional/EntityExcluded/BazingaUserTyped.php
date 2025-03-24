@@ -13,22 +13,20 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded;
 
 use Hateoas\Configuration\Annotation as Hateoas;
 
-/**
- * @Hateoas\Relation(
- *     name="typed_bazinga_users",
- *     embedded=@Hateoas\Embedded(
- *      "expr(service('zz'))",
- *      type="array<Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser>"
- *     )
- * )
- * @Hateoas\Relation(
- *     name="typed_bazinga_name",
- *     embedded=@Hateoas\Embedded(
- *      "expr(service('yy'))",
- *      type="string"
- *     )
- * )
- */
+#[Hateoas\Relation(
+    name: 'typed_bazinga_users',
+    embedded: new Hateoas\Embedded(
+        content: "expr(service('zz'))",
+        type: "array<Nelmio\ApiDocBundle\Tests\Functional\Entity\BazingaUser>"
+    )
+)]
+#[Hateoas\Relation(
+    name: 'typed_bazinga_name',
+    embedded: new Hateoas\Embedded(
+        content: "expr(service('yy'))",
+        type: 'string'
+    )
+)]
 class BazingaUserTyped
 {
 }

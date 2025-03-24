@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyInfo\Type;
@@ -36,10 +37,9 @@ class ModelRegistryTest extends TestCase
     }
 
     /**
-     * @dataProvider provideNameCollisionsTypes
-     *
      * @param array<string, mixed> $arrayType
      */
+    #[DataProvider('provideNameCollisionsTypes')]
     public function testNameCollisionsAreLogged(Type $type, array $arrayType): void
     {
         $logger = $this->createMock(LoggerInterface::class);
@@ -47,10 +47,11 @@ class ModelRegistryTest extends TestCase
             ->expects(self::once())
             ->method('info')
             ->with(
-                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.', [
+                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.',
+                [
                     'model' => [
                         'type' => $arrayType,
-                        'options' => null,
+                        'options' => [],
                         'groups' => ['group2'],
                         'serialization_context' => [
                             'groups' => ['group2'],
@@ -58,19 +59,20 @@ class ModelRegistryTest extends TestCase
                     ],
                     'taken_by' => [
                         'type' => $arrayType,
-                        'options' => null,
+                        'options' => [],
                         'groups' => ['group1'],
                         'serialization_context' => [
                             'groups' => ['group1'],
                             'extra_context' => true,
                         ],
                     ],
-                ]);
+                ]
+            );
 
         $registry = new ModelRegistry([], $this->createOpenApi(), []);
         $registry->setLogger($logger);
 
-        $registry->register(new Model($type, ['group1'], null, ['extra_context' => true]));
+        $registry->register(new Model($type, ['group1'], [], ['extra_context' => true]));
         $registry->register(new Model($type, ['group2']));
     }
 
@@ -124,7 +126,8 @@ class ModelRegistryTest extends TestCase
             ->expects(self::once())
             ->method('info')
             ->with(
-                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.', [
+                'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.',
+                [
                     'model' => [
                         'type' => [
                             'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
@@ -134,7 +137,7 @@ class ModelRegistryTest extends TestCase
                             'collection_key_types' => null,
                             'collection_value_types' => null,
                         ],
-                        'options' => null,
+                        'options' => [],
                         'groups' => ['group2'],
                         'serialization_context' => ['groups' => ['group2']],
                     ],
@@ -147,11 +150,12 @@ class ModelRegistryTest extends TestCase
                             'collection_key_types' => null,
                             'collection_value_types' => null,
                         ],
-                        'options' => null,
+                        'options' => [],
                         'groups' => ['group1'],
                         'serialization_context' => ['groups' => ['group1']],
                     ],
-                ]);
+                ]
+            );
 
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $registry->setLogger($logger);
@@ -161,11 +165,10 @@ class ModelRegistryTest extends TestCase
     }
 
     /**
-     * @dataProvider getNameAlternatives
-     *
      * @param string[]|null        $groups
      * @param array<string, mixed> $alternativeNames
      */
+    #[DataProvider('getNameAlternatives')]
     public function testNameAliasingForObjects(string $expected, ?array $groups, array $alternativeNames): void
     {
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
@@ -232,13 +235,11 @@ class ModelRegistryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider unsupportedTypesProvider
-     */
+    #[DataProvider('unsupportedTypesProvider')]
     public function testUnsupportedTypeException(Type $type, string $stringType): void
     {
         $this->expectException('\LogicException');
-        $this->expectExceptionMessage(sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $stringType));
+        $this->expectExceptionMessage(\sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $stringType));
 
         $registry = new ModelRegistry([], $this->createOpenApi());
         $registry->register(new Model($type));
@@ -257,7 +258,7 @@ class ModelRegistryTest extends TestCase
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, $className);
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage(sprintf('Schema of type "\%s" can\'t be generated, no describer supports it. Class "\Some\Class\That\DoesNotExist" does not exist, did you forget a use statement, or typed it wrong?', $className));
+        $this->expectExceptionMessage(\sprintf('Schema of type "\%s" can\'t be generated, no describer supports it. Class "\Some\Class\That\DoesNotExist" does not exist, did you forget a use statement, or typed it wrong?', $className));
 
         $registry = new ModelRegistry([], $this->createOpenApi());
         $registry->register(new Model($type));

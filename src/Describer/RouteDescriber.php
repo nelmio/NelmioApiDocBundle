@@ -41,7 +41,7 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
 
     public function describe(OA\OpenApi $api): void
     {
-        if (0 === count($this->routeDescribers)) {
+        if (0 === \count($this->routeDescribers)) {
             return;
         }
 

@@ -18,12 +18,8 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class CustomDateTime extends \DateTime
 {
-    /**
-     * @Serializer\Type("string")
-     *
-     * @Serializer\Expose
-     *
-     * @Serializer\SerializedName("format")
-     */
+    #[Serializer\Type(name: 'string')]
+    #[Serializer\Expose]
+    #[Serializer\SerializedName(name: 'format')]
     private $format;
 }

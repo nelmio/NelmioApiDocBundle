@@ -14,16 +14,16 @@ namespace Nelmio\ApiDocBundle\Tests\Command;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Render\Html\Renderer;
 use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase; // for the creation of the kernel
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class DumpCommandTest extends WebTestCase
 {
     /**
-     * @dataProvider provideJsonMode
-     *
      * @param array<string, mixed> $jsonOptions
      */
+    #[DataProvider('provideJsonMode')]
     public function testJson(array $jsonOptions, int $expectedJsonFlags): void
     {
         $output = $this->executeDumpCommand($jsonOptions + [
@@ -37,9 +37,9 @@ class DumpCommandTest extends WebTestCase
 
     public static function provideJsonMode(): \Generator
     {
-        yield 'pretty print' => [[], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES];
+        yield 'pretty print' => [[], \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES];
 
-        yield 'one line' => [['--no-pretty'], 0 | JSON_UNESCAPED_SLASHES];
+        yield 'one line' => [['--no-pretty'], 0 | \JSON_UNESCAPED_SLASHES];
     }
 
     public function testYaml(): void
@@ -49,18 +49,17 @@ class DumpCommandTest extends WebTestCase
             '--server-url' => 'http://example.com/api',
         ]);
         $expectedYaml = <<<YAML
-servers:
-  -
-    url: 'http://example.com/api'
-YAML;
+            servers:
+              -
+                url: 'http://example.com/api'
+            YAML;
         self::assertStringContainsString($expectedYaml, $output);
     }
 
     /**
-     * @dataProvider provideAssetsMode
-     *
      * @param mixed $htmlConfig the value of the --html-config option
      */
+    #[DataProvider('provideAssetsMode')]
     public function testHtml($htmlConfig, string $expectedHtml): void
     {
         $output = $this->executeDumpCommand([
@@ -68,7 +67,9 @@ YAML;
             '--format' => 'html',
             '--html-config' => json_encode($htmlConfig),
         ]);
-        self::assertStringContainsString('<body>', $output);
+        self::assertStringContainsString('<html>', $output);
+        self::assertStringContainsString('<body', $output);
+        self::assertStringContainsString('</body>', $output);
         self::assertStringContainsString($expectedHtml, $output);
     }
 
@@ -111,6 +112,13 @@ YAML;
                 ],
             ],
             '"hideDownloadButton":true',
+        ];
+
+        yield 'configure stoplight' => [
+            [
+                'ui_renderer' => Renderer::STOPLIGHT,
+            ],
+            'stoplight/web-components.min.js',
         ];
 
         yield 'configure server url' => [

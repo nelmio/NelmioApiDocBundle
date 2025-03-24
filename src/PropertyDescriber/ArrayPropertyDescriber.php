@@ -17,7 +17,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 
-class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface, PropertyDescriberAwareInterface
+final class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface, PropertyDescriberAwareInterface
 {
     use ModelRegistryAwareTrait;
     use PropertyDescriberAwareTrait;
@@ -25,7 +25,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
     /**
      * @param array<string, mixed> $context Context options for describing the property
      */
-    public function describe(array $types, OA\Schema $property, ?array $groups = null, ?OA\Schema $schema = null, array $context = [])
+    public function describe(array $types, OA\Schema $property, array $context = []): void
     {
         $property->type = 'array';
         /** @var OA\Items $property */
@@ -34,17 +34,17 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
         foreach ($types[0]->getCollectionValueTypes() as $type) {
             // Handle list pseudo type
             // https://symfony.com/doc/current/components/property_info.html#type-getcollectionkeytypes-type-getcollectionvaluetypes
-            if ($this->supports([$type]) && [] === $type->getCollectionValueTypes()) {
+            if ($this->supports([$type], $context) && [] === $type->getCollectionValueTypes()) {
                 continue;
             }
 
-            $this->propertyDescriber->describe([$type], $property, $groups, $schema, $context);
+            $this->propertyDescriber->describe([$type], $property, $context);
         }
     }
 
-    public function supports(array $types): bool
+    public function supports(array $types, array $context = []): bool
     {
-        if (1 !== count($types) || !$types[0]->isCollection()) {
+        if (1 !== \count($types) || !$types[0]->isCollection()) {
             return false;
         }
 
@@ -52,7 +52,7 @@ class ArrayPropertyDescriber implements PropertyDescriberInterface, ModelRegistr
             return true;
         }
 
-        return 1 === count($types[0]->getCollectionKeyTypes())
+        return 1 === \count($types[0]->getCollectionKeyTypes())
             && Type::BUILTIN_TYPE_INT === $types[0]->getCollectionKeyTypes()[0]->getBuiltinType();
     }
 }
