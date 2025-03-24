@@ -53,7 +53,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -133,7 +133,7 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "pattern": "/^test/"
+                            "pattern": "^test"
                         }
                     },
                     {
@@ -147,7 +147,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -168,7 +168,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -189,7 +189,7 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": ""
                     }
                 }
@@ -202,24 +202,91 @@
                     {
                         "name": "id",
                         "in": "query",
+                        "description": "Query parameter id description",
                         "required": false,
                         "schema": {
                             "type": "integer",
                             "nullable": true
-                        }
+                        },
+                        "example": 123
                     },
                     {
                         "name": "changedType",
                         "in": "query",
+                        "description": "Incorrectly described query parameter",
                         "required": false,
                         "schema": {
+                            "type": "int",
+                            "nullable": false
+                        },
+                        "example": 123
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_query_parameter_invalid_regexp": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapqueryparameter_fetcharticlewithinvalidregexp",
+                "parameters": [
+                    {
+                        "name": "regexp",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
                             "type": "string",
-                            "nullable": true
+                            "pattern": "This is not a valid regexp"
                         }
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_query_parameter_unsupported_flag": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapqueryparameter_fetcharticlewithunsupportedregexpflag",
+                "parameters": [
+                    {
+                        "name": "regexp",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "UnsupportedFlag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_query_parameter_replaced_flag": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapqueryparameter_fetcharticlewithreplacedregexpflag",
+                "parameters": [
+                    {
+                        "name": "regexp",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^DifferentFlag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
                         "description": ""
                     }
                 }

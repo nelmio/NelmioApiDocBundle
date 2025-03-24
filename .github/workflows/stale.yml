@@ -1,0 +1,25 @@
+name: Stale Issues and Pull Requests
+on:
+  schedule:
+    - cron: "30 1 * * *"
+
+jobs:
+  close-issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/stale@v9
+        with:
+          days-before-stale: 60
+          days-before-close: 21
+          stale-issue-label: "stale"
+          stale-pr-label: "stale"
+          exempt-issue-labels: "WIP, Do Not Close"
+          exempt-pr-labels: "Do Not Close, need review"
+          stale-issue-message: "This issue has been marked as stale because it has not had any activity for 60 days. Remove stale label or comment to prevent this from being closed in 21 days."
+          close-issue-message: "This issue was closed because it has been inactive for 21 days since being marked as stale."
+          stale-pr-message: "This PR has been marked as stale because it has not had any activity for 60 days. Remove stale label or comment to prevent this from being closed in 21 days."
+          close-pr-message: "This PR was closed because it has been inactive for 21 days since being marked as stale."
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

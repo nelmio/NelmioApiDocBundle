@@ -128,7 +128,7 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
         }
 
         if (\FILTER_VALIDATE_REGEXP === $filter) {
-            return ['type' => 'string', 'pattern' => $options['regexp']];
+            return ['type' => 'string', 'pattern' => $this->getEcmaRegexpFromPCRE($options['regexp'])];
         }
 
         if (\FILTER_VALIDATE_URL === $filter) {
@@ -140,5 +140,31 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
         }
 
         return [];
+    }
+
+    private function getEcmaRegexpFromPCRE(string $pcreRegex): string
+    {
+        // Check if PCRE regex has delimiters
+        if (preg_match('/^(.)(.*)\1([a-zA-Z]*)$/s', $pcreRegex, $matches)) {
+            [$fullMatch, $delimiter, $pattern, $flags] = $matches;
+            // Remove escaped delimiters in the pattern
+            $pattern = str_replace('\\'.$delimiter, $delimiter, $pattern);
+        } else {
+            // No delimiter has been found, let's consider it's a valid regex without delimiter. Happens when regexp has been takend from "requirements" in route.
+            $pattern = $pcreRegex;
+        }
+
+        $pattern = str_replace(['\A', '\z'], ['^', '$'], $pattern); // Supported features but different syntax
+
+        // Check for unsupported PCRE specific constructs
+        $unsupportedFeatures = [
+            '\Z', // End of string before newline (not supported in JavaScript)
+            '\R', // Any Unicode newline sequence (not supported in JavaScript)
+            '\K', // Resets the start of the current match (not supported in JavaScript)
+        ];
+        $pattern = str_replace($unsupportedFeatures, '', $pattern);
+
+        // Return only the pattern (without flags or delimiters)
+        return $pattern;
     }
 }

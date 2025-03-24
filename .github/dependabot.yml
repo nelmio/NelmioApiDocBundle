@@ -12,3 +12,14 @@ updates:
     schedule:
       interval: "weekly"
     versioning-strategy: increase
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      symfony:
+        patterns:
+          - "symfony/*"
+      phpstan:
+        patterns:
+          - "phpstan/*"

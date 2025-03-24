@@ -55,21 +55,21 @@ The bundle configuration is stored under the ``nelmio_api_doc`` key in your appl
                 name_patterns:
                     # Example:
                     # - ^api_v1
-            # whether to filter by attributes
-            with_attribute: false
-            # if set disables default routes without attributes
-            disable_default_routes: false
-            # The base documentation used for the area
-            documentation:
-                # Example:
-                # info:
-                #   title: 'My App'
-                #   description: 'My App Description'
-            cache:
-                # define cache pool to use for the area
-                pool: null
-                # define cache item id for the area
-                item_id: null
+                # whether to filter by attributes
+                with_attribute: false
+                # if set disables default routes without attributes
+                disable_default_routes: false
+                # The base documentation used for the area
+                documentation:
+                    # Example:
+                    # info:
+                    #   title: 'My App'
+                    #   description: 'My App Description'
+                cache:
+                    # define cache pool to use for the area
+                    pool: null
+                    # define cache item id for the area
+                    item_id: null
         models:
             use_jms: false
             names:
@@ -205,18 +205,18 @@ Filter the routes that are documented.
                     name_patterns:
                         # Example:
                         # - ^api_v1
-                with_attribute: false
-                disable_default_routes: false
-                documentation:
-                    # Example:
-                    # info:
-                    #   title: 'My App'
-                    #   description: 'My App Description'
-                cache:
-                    # define cache pool to use for the area
-                    pool: null
-                    # define cache item id for the area
-                    item_id: null
+                    with_attribute: false
+                    disable_default_routes: false
+                    documentation:
+                        # Example:
+                        # info:
+                        #   title: 'My App'
+                        #   description: 'My App Description'
+                    cache:
+                        # define cache pool to use for the area
+                        pool: null
+                        # define cache item id for the area
+                        item_id: null
 
 path_patterns
 .............
