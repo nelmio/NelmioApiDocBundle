@@ -114,11 +114,13 @@ class FunctionalTest extends WebTestCase
         $this->assertHasResponse('201', $operation);
         $response = $this->getOperationResponse($operation, '201');
         self::assertEquals('Operation automatically detected', $response->description);
+        self::assertArrayHasKey('application/json', $response->content);
         self::assertEquals('#/components/schemas/User', $response->content['application/json']->schema->ref);
 
         self::assertInstanceOf(OAAnnotations\RequestBody::class, $operation->requestBody);
         $requestBody = $operation->requestBody;
         self::assertEquals('This is a request body', $requestBody->description);
+        self::assertArrayHasKey('application/json', $requestBody->content);
         self::assertEquals('array', $requestBody->content['application/json']->schema->type);
         self::assertEquals('#/components/schemas/User', $requestBody->content['application/json']->schema->items->ref);
     }
