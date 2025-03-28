@@ -166,18 +166,11 @@ final class ModelRegister
         OA\AbstractAnnotation $annotation,
         Analysis $analysis,
     ): void {
-        switch ($type) {
-            case 'json':
-                $modelAnnotation = new OA\JsonContent($properties);
-
-                break;
-            case 'xml':
-                $modelAnnotation = new OA\XmlContent($properties);
-
-                break;
-            default:
-                throw new \InvalidArgumentException(\sprintf("#[Model] attribute is not compatible with the media types '%s'. It must be one of 'json' or 'xml'.", implode(',', $this->mediaTypes)));
-        }
+        $modelAnnotation = match ($type) {
+            'json' => new OA\JsonContent($properties),
+            'xml' => new OA\XmlContent($properties),
+            default => throw new \InvalidArgumentException(\sprintf("#[Model] attribute is not compatible with the media types '%s'. It must be one of 'json' or 'xml'.", implode(',', $this->mediaTypes))),
+        };
 
         $annotation->merge([$modelAnnotation]);
         $analysis->addAnnotation($modelAnnotation, $properties['_context']);
