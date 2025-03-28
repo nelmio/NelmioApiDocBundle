@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
@@ -34,6 +35,7 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
         parent::setUp();
     }
 
+    #[\Override]
     public static function provideFixtures(): \Generator
     {
         /*
@@ -45,6 +47,12 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
 
             $reflect = new \ReflectionClass($class);
             if (file_exists($fixtureDir = \dirname($reflect->getFileName()).'/TypeInfo/'.$reflect->getShortName().'.json')) {
+                self::assertNotSame(
+                    self::getFixture($fixtureDir),
+                    self::getFixture($fixture[1]),
+                    "The fixture $fixtureDir is identical to the original one. Please remove it."
+                );
+
                 yield [
                     $class,
                     $fixtureDir,
@@ -56,17 +64,35 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
             yield $fixture;
         }
 
-        yield [
-            Fixtures\TypeInfo\ArrayMixedKeys::class,
-        ];
+        $finder = new Finder();
+        $entityFiles = $finder->files()
+            ->in(__DIR__.'/Fixtures/TypeInfo')
+            ->name('*.php')
+            ->sortByCaseInsensitiveName();
 
-        yield [
-            Fixtures\TypeInfo\MixedTypes::class,
-        ];
+        foreach ($entityFiles as $file) {
+            $namespacedPath = str_replace(__DIR__.'/Fixtures/TypeInfo', 'Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\Fixtures\TypeInfo', $file->getPathname());
+            $pathWithBackslashes = str_replace('/', '\\', $namespacedPath);
 
-        yield [
-            Fixtures\TypeInfo\ClassWithIntersectionNullable::class,
-        ];
+            /** @var class-string $fullyQualifiedClassName */
+            $fullyQualifiedClassName = str_replace('.php', '', $pathWithBackslashes);
+
+            try {
+                $classExists = class_exists($fullyQualifiedClassName);
+            } catch (\Throwable) {
+                // Skip classes that cannot be loaded (Unsupported syntax, etc.)
+                continue;
+            }
+
+            if (!$classExists) {
+                self::markTestIncomplete(\sprintf('The class "%s" does not exist.', $fullyQualifiedClassName));
+            }
+
+            yield [
+                $fullyQualifiedClassName,
+                str_replace('.php', '.json', $file->getPathname()),
+            ];
+        }
     }
 
     /**
