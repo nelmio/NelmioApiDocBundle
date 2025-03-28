@@ -14,5 +14,6 @@ class Issue2286
 {
     public function addedAt(): int
     {
+        return 1;
     }
 }
