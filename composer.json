@@ -54,6 +54,7 @@
         "symfony/serializer": "^6.4 || ^7.1",
         "symfony/stopwatch": "^6.4 || ^7.1",
         "symfony/templating": "^6.4 || ^7.1",
+        "symfony/translation": "^6.4 || ^7.1",
         "symfony/twig-bundle": "^6.4 || ^7.1",
         "symfony/uid": "^6.4 || ^7.1",
         "symfony/validator": "^6.4 || ^7.1",

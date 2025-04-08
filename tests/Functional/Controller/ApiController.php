@@ -28,6 +28,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithIgnoredProperty;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithNullableSchemaSet;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithObjectType;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithRef;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithTranslatable;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithUuid;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\RangeInteger;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraints;
@@ -349,6 +350,18 @@ class ApiController
         ),
     )]
     public function entityWithUuid()
+    {
+    }
+
+    #[Route('/entity-with-translatable', methods: ['GET', 'POST'])]
+    #[OA\Response(
+        response: 200,
+        description: 'success',
+        content: new OA\JsonContent(
+            ref: new Model(type: EntityWithTranslatable::class),
+        ),
+    )]
+    public function entityWithTranslatable()
     {
     }
 
