@@ -185,7 +185,7 @@ To document your routes, you can use the SwaggerPHP attributes and the
             #[Route('/api/{user}/rewards', methods: ['GET'])]
             #[OA\Response(
                 response: 200,
-                description: 'Returns the rewards of an user',
+                description: 'Returns the rewards of a user',
                 content: new OA\JsonContent(
                     type: 'array',
                     items: new OA\Items(ref: new Model(type: AlbumDto::class, groups: ['full']))

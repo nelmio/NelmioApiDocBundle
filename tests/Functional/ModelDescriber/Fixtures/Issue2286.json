@@ -1,0 +1,22 @@
+{
+    "required": [
+        "id",
+        "name",
+        "addedAt"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "example": "8a8f8e8e-8e8e-8e8e-8e8e-8e8e8e8e8e8e"
+        },
+        "name": {
+            "type": "string",
+            "example": "Agency Name"
+        },
+        "addedAt": {
+            "type": "integer",
+            "example": 1631610000
+        }
+    },
+    "type": "object"
+}
