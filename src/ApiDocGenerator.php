@@ -140,6 +140,27 @@ final class ApiDocGenerator
             $this->cacheItemPool->save($item->set($this->openApi));
         }
 
+        $this->saveToFile($this->openApi, 'openapi_doc.json');
+
         return $this->openApi;
+    }
+
+    public function saveToFile(OpenApi $openApi, string $filePath): void
+    {
+        file_put_contents($filePath, json_encode($openApi));
+    }
+
+    public function loadFromFile(string $filePath): ?OpenApi
+    {
+        if (!file_exists($filePath)) {
+            return null;
+        }
+
+        $data = file_get_contents($filePath);
+        if (false === $data) {
+            return null;
+        }
+
+        return json_decode($data, false, 512, \JSON_THROW_ON_ERROR);
     }
 }

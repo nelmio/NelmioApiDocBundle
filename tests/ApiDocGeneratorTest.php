@@ -34,4 +34,52 @@ class ApiDocGeneratorTest extends TestCase
 
         self::assertEquals(json_encode($generator->generate()), json_encode($adapter->getItem('custom_id')->get()));
     }
+
+    public function testSaveToFile(): void
+    {
+        $adapter = new ArrayAdapter();
+        $generator = new ApiDocGenerator([new DefaultDescriber()], [], $adapter, null, new Generator());
+
+        $filePath = 'openapi_doc_test.json';
+        $generator->saveToFile($generator->generate(), $filePath);
+
+        self::assertFileExists($filePath);
+        self::assertJsonStringEqualsJsonFile($filePath, json_encode($generator->generate()));
+
+        unlink($filePath);
+    }
+
+    public function testLoadFromFile(): void
+    {
+        $adapter = new ArrayAdapter();
+        $generator = new ApiDocGenerator([new DefaultDescriber()], [], $adapter, null, new Generator());
+
+        $filePath = 'openapi_doc_test.json';
+        file_put_contents($filePath, json_encode($generator->generate()));
+
+        $loadedOpenApi = $generator->loadFromFile($filePath);
+
+        self::assertEquals(json_encode($generator->generate()), json_encode($loadedOpenApi));
+
+        unlink($filePath);
+    }
+
+    public function testGenerate(): void
+    {
+        $adapter = new ArrayAdapter();
+        $generator = new ApiDocGenerator([new DefaultDescriber()], [], $adapter, null, new Generator());
+
+        $filePath = 'openapi_doc_test.json';
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
+        $openApi = $generator->generate();
+        self::assertEquals(json_encode($openApi), json_encode($generator->generate()));
+
+        self::assertFileExists($filePath);
+        self::assertJsonStringEqualsJsonFile($filePath, json_encode($openApi));
+
+        unlink($filePath);
+    }
 }

@@ -129,6 +129,20 @@ class DumpCommandTest extends WebTestCase
         ];
     }
 
+    public function testOutputFileOption(): void
+    {
+        $filePath = 'openapi_doc_test.json';
+        $this->executeDumpCommand([
+            '--area' => 'test',
+            '--output-file' => $filePath,
+        ]);
+
+        self::assertFileExists($filePath);
+        self::assertJsonStringEqualsJsonFile($filePath, json_encode($this->getOpenApiDefinition('test')));
+
+        unlink($filePath);
+    }
+
     /**
      * @param array<string, mixed> $options
      */

@@ -58,6 +58,7 @@ final class DumpCommand extends Command
             ->addOption('server-url', '', InputOption::VALUE_REQUIRED, 'URL where live api doc is served')
             ->addOption('html-config', '', InputOption::VALUE_REQUIRED, '', json_encode($this->defaultHtmlConfig))
             ->addOption('no-pretty', '', InputOption::VALUE_NONE, 'Do not pretty format JSON output')
+            ->addOption('output-file', '', InputOption::VALUE_REQUIRED, 'File to save the documentation')
         ;
     }
 
@@ -81,7 +82,12 @@ final class DumpCommand extends Command
         }
 
         $docs = $this->renderOpenApi->render($format, $area, $options);
-        $output->writeln($docs, OutputInterface::OUTPUT_RAW);
+
+        if (null !== $input->getOption('output-file')) {
+            file_put_contents($input->getOption('output-file'), $docs);
+        } else {
+            $output->writeln($docs, OutputInterface::OUTPUT_RAW);
+        }
 
         return 0;
     }
