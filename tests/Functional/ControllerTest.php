@@ -290,6 +290,10 @@ final class ControllerTest extends WebTestCase
                     ],
                 ],
             ],
+            [
+                StubProcessor::class => (new Definition(StubProcessor::class))
+                    ->addTag('nelmio_api_doc.swagger.processor', ['priority' => -100, 'before' => CleanUnusedComponents::class]),
+            ],
         ];
     }
 
