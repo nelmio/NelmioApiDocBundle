@@ -250,10 +250,6 @@ Q: I have a property that is not recognized. How can I specify the type?
             type_info: true
             # ...
 
-.. versionadded:: 4.35
-
-    The `TypeInfo component`_ was introduced as a stable feature in Symfony 7.2.
-
 A: If you want to customize the documentation of an object's property, you can use the ``#[OA\Property]`` attribute or annotate the property with ``@var``::
 
 .. configuration-block::

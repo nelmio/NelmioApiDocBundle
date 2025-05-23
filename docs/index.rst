@@ -421,10 +421,6 @@ General PHP objects
             type_info: true
             # ...
 
-.. versionadded:: 4.35
-
-    The `TypeInfo component`_ was introduced as a stable feature in Symfony 7.2.
-
 If you want to customize the documentation of an object's property, you can use ``#[OA\Property]``::
 
 

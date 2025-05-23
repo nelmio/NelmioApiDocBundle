@@ -98,10 +98,6 @@ Whether to use `symfony/type-info`_ for determining types.
 
     If you are using Symfony 7.2 or higher, you should set this option to ``true``. As this greatly improves type detection.
 
-.. versionadded:: 4.35
-
-    Support for `symfony/type-info`_ was added in 4.35.
-
 use_validation_groups
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -214,10 +210,6 @@ UI configuration options.
                 redocly_config: []
                 # https://docs.stoplight.io/docs/elements/b074dc47b2826-elements-configuration-options
                 stoplight_config: []
-
-.. versionadded:: 4.37
-
-    The `stoplight_config` option was added in 4.37.
 
 areas
 ~~~~~
