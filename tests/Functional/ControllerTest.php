@@ -41,25 +41,20 @@ final class ControllerTest extends WebTestCase
     }
 
     /**
-     * @param array{name: string, type: string}|null $controller
-     * @param Bundle[]                               $extraBundles
-     * @param string[]                               $extraConfigs
+     * @param Bundle[] $extraBundles
+     * @param string[] $extraConfigs
      */
-    #[DataProvider('provideAttributeTestCases')]
-    #[DataProvider('provideUniversalTestCases')]
-    public function testControllers(?array $controller, ?string $fixtureName = null, array $extraBundles = [], array $extraConfigs = []): void
+    #[DataProvider('provideTestCases')]
+    public function testControllers(?string $controller, ?string $fixtureName = null, array $extraBundles = [], array $extraConfigs = []): void
     {
-        $controllerName = $controller['name'] ?? null;
-        $controllerType = $controller['type'] ?? null;
+        $fixtureName ??= $controller ?? self::fail('A fixture name must be provided.');
 
-        $fixtureName ??= $controllerName ?? self::fail('A fixture name must be provided.');
-
-        $routingConfiguration = function (RoutingConfigurator $routes) use ($controllerName, $controllerType) {
-            if (null === $controllerName) {
+        $routingConfiguration = function (RoutingConfigurator $routes) use ($controller) {
+            if (null === $controller) {
                 return;
             }
 
-            $routes->withPath('/')->import(__DIR__."/Controller/$controllerName.php", $controllerType);
+            $routes->withPath('/')->import(__DIR__."/Controller/$controller.php", 'attribute');
         };
 
         $this->configurableContainerFactory->create($extraBundles, $routingConfiguration, $extraConfigs);
@@ -77,110 +72,71 @@ final class ControllerTest extends WebTestCase
         );
     }
 
-    public static function provideAttributeTestCases(): \Generator
+    public static function provideTestCases(): \Generator
     {
         yield 'Promoted properties defaults attributes' => [
-            [
-                'name' => 'PromotedPropertiesController81',
-                'type' => 'attribute',
-            ],
+            'PromotedPropertiesController81',
             'PromotedPropertiesDefaults',
             [],
             [...self::cleanUnusedComponentsConfig()],
         ];
 
         yield 'JMS model opt out' => [
-            [
-                'name' => 'JmsOptOutController',
-                'type' => 'attribute',
-            ],
+            'JmsOptOutController',
             'JmsOptOutController',
             [new JMSSerializerBundle()],
             [__DIR__.'/Configs/JMS.yaml'],
         ];
 
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
-            [
-                'name' => 'Controller2209',
-                'type' => 'attribute',
-            ],
+            'Controller2209',
         ];
 
         yield 'MapQueryString' => [
-            [
-                'name' => 'MapQueryStringController',
-                'type' => 'attribute',
-                null,
-                [],
-                [__DIR__.'/Configs/EnableSerializer.yaml'],
-            ],
+            'MapQueryStringController',
+            null,
+            [],
+            [__DIR__.'/Configs/EnableSerializer.yaml'],
         ];
 
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
-            [
-                'name' => 'MapQueryStringController',
-                'type' => 'attribute',
-            ],
+            'MapQueryStringController',
             'MapQueryStringCleanupComponents',
             [],
             [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml', __DIR__.'/Configs/EnableSerializer.yaml'],
         ];
 
         yield 'operationId must always be generated' => [
-            [
-                'name' => 'OperationIdController',
-                'type' => 'attribute',
-            ],
+            'OperationIdController',
         ];
 
         yield 'Symfony 6.3 MapQueryParameter attribute' => [
-            [
-                'name' => 'MapQueryParameterController',
-                'type' => 'attribute',
-            ],
+            'MapQueryParameterController',
         ];
 
         yield 'Symfony 6.3 MapRequestPayload attribute' => [
-            [
-                'name' => 'MapRequestPayloadController',
-                'type' => 'attribute',
-            ],
+            'MapRequestPayloadController',
             null,
             [],
             [__DIR__.'/Configs/EnableSerializer.yaml'],
         ];
 
         yield 'Create top level Tag from Tag attribute' => [
-            [
-                'name' => 'OpenApiTagController',
-                'type' => 'attribute',
-            ],
+            'OpenApiTagController',
         ];
 
         if (property_exists(MapRequestPayload::class, 'type')) {
             yield 'Symfony 7.1 MapRequestPayload array type' => [
-                [
-                    'name' => 'MapRequestPayloadArray',
-                    'type' => 'attribute',
-                ],
+                'MapRequestPayloadArray',
             ];
         }
 
         if (version_compare(Kernel::VERSION, '7.1.0', '>=')) {
             yield 'Symfony 7.1 MapUploadedFile attribute' => [
-                [
-                    'name' => 'MapUploadedFileController',
-                    'type' => 'attribute',
-                ],
+                'MapUploadedFileController',
             ];
         }
-    }
 
-    /**
-     * Test cases that are universal and can be run without depending on the existence of a specific feature.
-     */
-    public static function provideUniversalTestCases(): \Generator
-    {
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2224' => [
             null,
             'VendorExtension',
