@@ -67,10 +67,6 @@ final class SecurityDescriber implements DescriberInterface
         }
 
         foreach ($this->routeCollection->all() as $route) {
-            if (!$route->hasDefault('_controller')) {
-                continue;
-            }
-
             $this->describeRoute($api, $route);
         }
     }
