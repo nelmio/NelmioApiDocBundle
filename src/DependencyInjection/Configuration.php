@@ -36,7 +36,7 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->enumNode('operation_id_generation')
                     ->info('How to generate operation ids')
-                    ->values(OperationIdGeneration::cases())
+                    ->values([...OperationIdGeneration::cases(), ...array_map(static fn (OperationIdGeneration $operationId): string => $operationId->value, OperationIdGeneration::cases())])
                     ->defaultValue(OperationIdGeneration::ALWAYS_PREPEND)
                 ->end()
                 ->arrayNode('cache')
