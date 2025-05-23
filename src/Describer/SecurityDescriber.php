@@ -55,6 +55,10 @@ final class SecurityDescriber implements DescriberInterface
         }
 
         foreach ($this->securitySchemes as $name => $securityScheme) {
+            if (!$api->components instanceof OA\Components) {
+                $api->components = new OA\Components(['_context' => Util::createWeakContext($api->_context)]);
+            }
+
             Util::getCollectionItem(
                 $api->components,
                 OA\SecurityScheme::class,
