@@ -553,6 +553,27 @@ final class ControllerTest extends WebTestCase
                     ->methods(['GET']);
             },
         ];
+
+        yield 'Security documentation without controllers does not throw' => [
+            null,
+            'no-controllers-registered',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'areas' => [
+                        'default' => [
+                            'security' => [
+                                'BearerAuth' => [
+                                    'type' => 'http',
+                                    'scheme' => 'bearer',
+                                    'bearerFormat' => 'JWT',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
     private static function getFixture(string $fixture): string
