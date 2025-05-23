@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
+use Nelmio\ApiDocBundle\Attribute\Security;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,6 +45,16 @@ class SecuredApiController
     )]
     #[IsGranted('ROLE_USER')]
     public function userDocumentation(Article $newArticle)
+    {
+    }
+
+    #[Route('/user/documentation/attribute', methods: 'GET')]
+    #[IsGranted('ROLE_USER')]
+    #[Security(
+        name: 'BearerAuthCustom',
+        scopes: ['read:user'],
+    )]
+    public function userDocumentationSecurityAttribute(Article $newArticle)
     {
     }
 }

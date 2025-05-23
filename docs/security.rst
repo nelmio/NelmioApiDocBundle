@@ -138,13 +138,13 @@ Above is an example of security configuration for the ``default`` area. This wil
                 }
             }
 
-    .. tab:: PHP Controller with overwritten security
+    .. tab:: PHP Controller with overridden security
 
-        Want to override the generated security definition? You can do that by using the ``#[OA\Security]`` attribute.
+        Want to :ref:`override the generated security definition <override-security>`? You can do that by using the ``#[Security]`` attribute.
 
         .. code-block:: php-attributes
 
-            use OpenApi\Attributes as OA;
+            use Nelmio\ApiDocBundle\Attribute\Security;
             use Symfony\Component\Routing\Annotation\Route;
             use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -152,10 +152,11 @@ Above is an example of security configuration for the ``default`` area. This wil
             class UserController
             {
                 #[Route('/api/users', methods: ['POST'])]
-                #[OA\Get(
-                    security: [] // Explicitly set to empty array
-                )]
                 #[IsGranted(attribute: 'write')]
+                #[Security(
+                    name: 'BearerAuthCustom',
+                    scopes: ['bearer:read'],
+                )]
                 public function createUser()
                 {
                     // ...
@@ -170,7 +171,9 @@ Above is an example of security configuration for the ``default`` area. This wil
                         "post": {
                             "security": [
                                 {
-                                    "ApiKeyAuth": []
+                                    "BearerAuthCustom": [
+                                        "bearer:read",
+                                    ]
                                 }
                             ]
                         }
@@ -187,10 +190,12 @@ Above is an example of security configuration for the ``default`` area. This wil
                 }
             }
 
+.. _override-security:
+
 Overriding Specific Paths
 -------------------------
 
-The security policy can be overridden for a path using the ``Security`` attribute/annotation.
+The security policy can be overridden for a path using the ``Security`` attribute.
 
 .. configuration-block::
 
@@ -198,7 +203,7 @@ The security policy can be overridden for a path using the ``Security`` attribut
 
         #[Security(name: "ApiKeyAuth")]
 
-Notice at the bottom of the docblock is a ``Security`` attribute/annotation with a name of `ApiKeyAuth`. This will override the global security policy to only accept the ``ApiKeyAuth`` policy for this path.
+Notice at the bottom of the docblock is a ``Security`` attribute with a name of `ApiKeyAuth`. This will override the global security policy to only accept the ``ApiKeyAuth`` policy for this path.
 
 You can also completely remove security from a path by providing ``Security`` with a name of ``null``.
 

@@ -87,6 +87,23 @@
                 },
                 "security": []
             }
+        },
+        "/secured/user/documentation/attribute": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_securedapi_userdocumentationsecurityattribute",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuthCustom": [
+                            "read:user"
+                        ]
+                    }
+                ]
+            }
         }
     },
     "components": {

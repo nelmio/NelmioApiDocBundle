@@ -92,13 +92,21 @@ final class OpenApiPhpDescriber
                 if ($annotation instanceof Security) {
                     $annotation->validate();
 
-                    if (null === $annotation->name) {
-                        $mergeProperties->security = [];
+                    foreach ($httpMethods as $httpMethod) {
+                        $operation = Util::getOperation($path, $httpMethod);
 
-                        continue;
+                        if (Generator::UNDEFINED === $operation->security) {
+                            $operation->security = [];
+                        }
+
+                        if (null === $annotation->name) {
+                            $operation->security = [];
+
+                            continue;
+                        }
+
+                        $operation->security[] = [$annotation->name => $annotation->scopes];
                     }
-
-                    $mergeProperties->security[] = [$annotation->name => $annotation->scopes];
 
                     continue;
                 }
