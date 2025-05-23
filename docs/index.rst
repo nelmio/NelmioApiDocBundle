@@ -278,8 +278,8 @@ properties and validator constraints. Take the model class below:
 
         class UserDto
         {
-            #[Groups(["default", "create", "update"])]
-            #[Assert\NotBlank(groups: ["default", "create"])]
+            #[Groups(['default', 'create', 'update'])]
+            #[Assert\NotBlank(groups: ['default', 'create'])]
             public string $username;
         }
 
@@ -297,13 +297,13 @@ that property type to not be nullable, for example.
         use OpenApi\Attributes as OA;
 
         // shows `username` as `required` in the OpenAPI schema (not nullable)
-        #[OA\Response(response: 200, content: new Model(type: UserDto::class, groups: ["default"]))]
+        #[OA\Response(response: 200, content: new Model(type: UserDto::class, groups: ['default']))]
 
         // Similarly, this will make the username `required` in the create  schema
-        #[OA\RequestBody(content: new Model(type: UserDto::class, groups: ["create"]))]
+        #[OA\RequestBody(content: new Model(type: UserDto::class, groups: ['create']))]
 
         // But for updates, the `username` property will not be required
-        #[OA\RequestBody(content: new Model(type: UserDto::class, groups: ["update"]))]
+        #[OA\RequestBody(content: new Model(type: UserDto::class, groups: ['update']))]
 
 
 .. tip::
@@ -372,8 +372,8 @@ General PHP objects
          * A nested serializer property with no context group
          *
          * @JMS\VirtualProperty
-         * @JMS\Type("ArrayCollection<App\Response\ItemResponse>")
-         * @JMS\Since("1.0")
+         * @JMS\Type('ArrayCollection<App\Response\ItemResponse>')
+         * @JMS\Since('1.0')
          *
          * @return Collection|ItemResponse[]
          */
@@ -406,7 +406,7 @@ General PHP objects
 
         .. code-block:: php-attributes
 
-            #[OA\Response(response: 200, content: new Model(type: UserDto::class, serializationContext: ["useJms" => false]))]
+            #[OA\Response(response: 200, content: new Model(type: UserDto::class, serializationContext: ['useJms' => false]))]
 
     When using the JMS serializer combined with `willdurand/Hateoas`_ (and the `BazingaHateoasBundle`_),
     HATEOAS metadata are automatically extracted
