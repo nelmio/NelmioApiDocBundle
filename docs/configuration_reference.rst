@@ -60,6 +60,7 @@ The bundle configuration is stored under the ``nelmio_api_doc`` key in your appl
                 # whether to filter by attributes
                 with_attribute: false
                 security:
+                    # Authentication schemes https://swagger.io/docs/specification/v3_0/authentication/
                     MyBearerScheme:
                         type: 'http'
                         scheme: 'bearer'
@@ -294,24 +295,20 @@ security
 **type**: ``dictionary``
 **default**: ``[]``
 
-Defines the security scheme(s) to use for the area.
+Defines the security scheme(s) to use for the area. See `authentication schemes`_ for more information and possible values.
+See the :ref:`security page <area-security-configuration>` for more information on how to configure security for your areas.
 
-This will:
-1. Generate ``components.securitySchemes.MyBearerScheme``
+.. code-block:: yaml
 
-.. code-block:: json
+        nelmio_api_doc:
+            # ...
 
-    "components": {
-         "securitySchemes": {
-              "MyBearerScheme": {
-                    "type": "http",
-                    "scheme": "bearer"
-                }
-          }
-    }
-
-2. Document the security scheme in the ``security`` section of the OpenAPI documentation for each route in the area.
-3. Document the route scopes based on the ``#[IsGranted]`` attribute.
+            areas:
+                default:
+                    security:
+                        MyBearerScheme:
+                            type: 'http'
+                            scheme: 'bearer'
 
 disable_default_routes
 ......................
@@ -378,3 +375,4 @@ List of models, this can be used to:
 
 
 .. _`symfony/type-info`: https://symfony.com/doc/current/components/type_info.html
+.. _`authentication schemes`: https://swagger.io/docs/specification/v3_0/authentication/
