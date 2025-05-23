@@ -62,7 +62,7 @@ final class SecurityDescriber implements DescriberInterface
             Util::getCollectionItem(
                 $api->components,
                 OA\SecurityScheme::class,
-                $securityScheme + ['securityScheme' => $name],
+                self::transformSecurityScheme($securityScheme) + ['securityScheme' => $name],
             );
         }
 
@@ -111,5 +111,26 @@ final class SecurityDescriber implements DescriberInterface
                 $operation->security[] = [$name => array_unique(array_values($scopes))];
             }
         }
+    }
+
+    /**
+     * @param array<string, mixed> $securityScheme
+     *
+     * @return array<string, mixed>
+     */
+    private static function transformSecurityScheme(array $securityScheme): array
+    {
+        // Ensure Flow get transformed to the proper class variant
+        if (isset($securityScheme['flows'])) {
+            $flows = [];
+
+            foreach ($securityScheme['flows'] as $flow => $flowProperties) {
+                $flows[] = new OA\Flow($flowProperties + ['flow' => $flow]);
+            }
+
+            $securityScheme['flows'] = $flows;
+        }
+
+        return $securityScheme;
     }
 }
