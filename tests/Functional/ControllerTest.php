@@ -48,9 +48,9 @@ final class ControllerTest extends WebTestCase
      * @param array<string, Definition>   $extraDefinitions
      */
     #[DataProvider('provideTestCases')]
-    public function testControllers(?string $controller, ?string $fixtureName = null, array $extraBundles = [], array $extraConfigs = [], array $extraDefinitions = []): void
+    public function testControllers(?string $controller, ?string $fixtureSuffix = null, array $extraBundles = [], array $extraConfigs = [], array $extraDefinitions = []): void
     {
-        $fixtureName ??= $controller ?? self::fail('A fixture name must be provided.');
+        $fixtureName = $controller.'.'.$fixtureSuffix;
 
         $routingConfiguration = function (RoutingConfigurator $routes) use ($controller) {
             if (null === $controller) {
@@ -79,7 +79,7 @@ final class ControllerTest extends WebTestCase
     {
         yield 'Promoted properties defaults attributes' => [
             'PromotedPropertiesController81',
-            'PromotedPropertiesDefaults',
+            'defaults',
             [],
             [],
             [
@@ -91,7 +91,7 @@ final class ControllerTest extends WebTestCase
 
         yield 'JMS model opt out' => [
             'JmsOptOutController',
-            'JmsOptOutController',
+            null,
             [new JMSSerializerBundle()],
             [
                 'nelmio_api_doc' => [
@@ -143,7 +143,7 @@ final class ControllerTest extends WebTestCase
 
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
             'MapQueryStringController',
-            'MapQueryStringCleanupComponents',
+            'cleanup-components',
             [],
             [
                 // Enable serializer
@@ -187,7 +187,7 @@ final class ControllerTest extends WebTestCase
 
         yield 'operationId generation conditionally_prepend' => [
             'OperationIdController',
-            'OperationIdController.conditionally_prepend',
+            'conditionally_prepend',
             [],
             [
                 'nelmio_api_doc' => [
@@ -198,7 +198,7 @@ final class ControllerTest extends WebTestCase
 
         yield 'operationId generation conditionally_prepend string' => [
             'OperationIdController',
-            'OperationIdController.conditionally_prepend',
+            'conditionally_prepend',
             [],
             [
                 'nelmio_api_doc' => [
@@ -209,7 +209,7 @@ final class ControllerTest extends WebTestCase
 
         yield 'operationId generation no_prepend' => [
             'OperationIdController',
-            'OperationIdController.no_prepend',
+            'no_prepend',
             [],
             [
                 'nelmio_api_doc' => [
@@ -220,7 +220,7 @@ final class ControllerTest extends WebTestCase
 
         yield 'operationId generation no_prepend string' => [
             'OperationIdController',
-            'OperationIdController.no_prepend',
+            'no_prepend',
             [],
             [
                 'nelmio_api_doc' => [
