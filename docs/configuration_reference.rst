@@ -310,6 +310,10 @@ See the :ref:`security page <area-security-configuration>` for more information 
                             type: 'http'
                             scheme: 'bearer'
 
+.. versionadded:: 5.2
+
+    The possibility to automatically generate security definitions based on the ``#[IsGranted]`` attribute was added in version 5.2.
+
 disable_default_routes
 ......................
 

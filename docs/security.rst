@@ -190,6 +190,10 @@ Above is an example of security configuration for the ``default`` area. This wil
                 }
             }
 
+.. versionadded:: 5.2
+
+    The possibility to automatically generate security definitions based on the ``#[IsGranted]`` attribute was added in version 5.2.
+
 .. _override-security:
 
 Overriding Specific Paths
