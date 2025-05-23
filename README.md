@@ -1,7 +1,7 @@
 # NelmioApiDocBundle
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/nelmio/NelmioApiDocBundle/continuous-integration.yml?branch=5.x&style=flat-square)](https://github.com/nelmio/NelmioApiDocBundle/actions?query=workflow:CI)
-[![Codecov](https://img.shields.io/codecov/c/github/nelmio/NelmioApiDocBundle?branch=5.x&style=flat-square)](https://app.codecov.io/gh/nelmio/NelmioApiDocBundle)
+[![Build Status](https://img.shields.io/github/check-runs/nelmio/NelmioApiDocBundle/5.x?style=flat-square)](https://github.com/nelmio/NelmioApiDocBundle/actions?query=workflow:CI)
+[![Codecov](https://img.shields.io/codecov/c/github/nelmio/NelmioApiDocBundle/5.x?style=flat-square)](https://app.codecov.io/gh/nelmio/NelmioApiDocBundle/tree/5.x)
 [![Total Downloads](https://img.shields.io/packagist/dt/nelmio/api-doc-bundle?style=flat-square)](https://packagist.org/packages/nelmio/api-doc-bundle)
 [![Latest Stable Version](https://img.shields.io/packagist/v/nelmio/api-doc-bundle?label=stable&style=flat-square)](https://packagist.org/packages/nelmio/api-doc-bundle)
 [![PHP Version](https://img.shields.io/packagist/dependency-v/nelmio/api-doc-bundle/PHP?style=flat-square)](https://packagist.org/packages/nelmio/api-doc-bundle)
