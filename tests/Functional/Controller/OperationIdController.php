@@ -66,4 +66,16 @@ class OperationIdController
     {
         return new JsonResponse();
     }
+
+    #[Route(path: '/generate/operation_id_route', name: 'postOperation', methods: 'POST')]
+    public function postOperation(): JsonResponse
+    {
+        return new JsonResponse();
+    }
+
+    #[Route(path: '/generate/operation_id_route', name: 'updateOperation', methods: 'PUT')]
+    public function updateOperation(): JsonResponse
+    {
+        return new JsonResponse();
+    }
 }
