@@ -50,7 +50,7 @@ final class ControllerTest extends WebTestCase
     #[DataProvider('provideTestCases')]
     public function testControllers(?string $controller, ?string $fixtureSuffix = null, array $extraBundles = [], array $extraConfigs = [], array $extraDefinitions = []): void
     {
-        $fixtureName = $controller.'.'.$fixtureSuffix;
+        $fixtureName = $fixtureSuffix ? $controller.'.'.$fixtureSuffix : $controller;
 
         $routingConfiguration = function (RoutingConfigurator $routes) use ($controller) {
             if (null === $controller) {
