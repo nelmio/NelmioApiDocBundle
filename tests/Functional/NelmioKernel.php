@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -26,12 +27,14 @@ final class NelmioKernel extends Kernel
 
     /**
      * @param Bundle[]                    $extraBundles
-     * @param array<string, array<mixed>> $extraConfigs Key is the extension name, value is the config
+     * @param array<string, array<mixed>> $extraConfigs     Key is the extension name, value is the config
+     * @param array<string, Definition>   $extraDefinitions
      */
     public function __construct(
         private array $extraBundles,
         private ?\Closure $routeConfiguration,
-        private array $extraConfigs
+        private array $extraConfigs,
+        private array $extraDefinitions,
     ) {
         parent::__construct('test', true);
     }
@@ -59,6 +62,10 @@ final class NelmioKernel extends Kernel
 
         foreach ($this->extraConfigs as $extensionName => $config) {
             $container->loadFromExtension($extensionName, $config);
+        }
+
+        foreach ($this->extraDefinitions as $id => $definition) {
+            $container->setDefinition($id, $definition);
         }
     }
 }

@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Describer\OperationIdGeneration;
 use OpenApi\Annotations as OA;
 use OpenApi\Processors\CleanUnusedComponents;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
@@ -43,10 +44,11 @@ final class ControllerTest extends WebTestCase
 
     /**
      * @param Bundle[]                    $extraBundles
-     * @param array<string, array<mixed>> $extraConfigs Key is the extension name, value is the config
+     * @param array<string, array<mixed>> $extraConfigs     Key is the extension name, value is the config
+     * @param array<string, Definition>   $extraDefinitions
      */
     #[DataProvider('provideTestCases')]
-    public function testControllers(?string $controller, ?string $fixtureName = null, array $extraBundles = [], array $extraConfigs = []): void
+    public function testControllers(?string $controller, ?string $fixtureName = null, array $extraBundles = [], array $extraConfigs = [], array $extraDefinitions = []): void
     {
         $fixtureName ??= $controller ?? self::fail('A fixture name must be provided.');
 
@@ -58,7 +60,7 @@ final class ControllerTest extends WebTestCase
             $routes->withPath('/')->import(__DIR__."/Controller/$controller.php", 'attribute');
         };
 
-        $this->configurableContainerFactory->create($extraBundles, $routingConfiguration, $extraConfigs);
+        $this->configurableContainerFactory->create($extraBundles, $routingConfiguration, $extraConfigs, $extraDefinitions);
 
         $apiDefinition = $this->getOpenApiDefinition();
 
@@ -79,7 +81,12 @@ final class ControllerTest extends WebTestCase
             'PromotedPropertiesController81',
             'PromotedPropertiesDefaults',
             [],
-            [...self::cleanUnusedComponentsConfig()],
+            [],
+            [
+                CleanUnusedComponents::class => (new Definition(CleanUnusedComponents::class))
+                    ->addTag('nelmio_api_doc.swagger.processor', ['priority' => -100])
+                    ->addMethodCall('setEnabled', [true]),
+            ],
         ];
 
         yield 'JMS model opt out' => [
@@ -166,6 +173,11 @@ final class ControllerTest extends WebTestCase
                         'auto_mapping' => [],
                     ],
                 ],
+            ],
+            [
+                CleanUnusedComponents::class => (new Definition(CleanUnusedComponents::class))
+                    ->addTag('nelmio_api_doc.swagger.processor', ['priority' => -100])
+                    ->addMethodCall('setEnabled', [true]),
             ],
         ];
 
@@ -294,31 +306,5 @@ final class ControllerTest extends WebTestCase
         }
 
         return $content;
-    }
-
-    /**
-     * @return string[]
-     */
-    private static function cleanUnusedComponentsConfig(): array
-    {
-        return [];
-
-        /* @phpstan-ignore-next-line */
-        if (method_exists(CleanUnusedComponents::class, 'setEnabled')) {
-            return [
-                'services' => [
-                    CleanUnusedComponents::class => [
-                        'tags' => [
-                            'nelmio.api_doc.processor',
-                        ],
-                        'calls' => [
-                            ['setEnabled', [true]],
-                        ],
-                    ],
-                ],
-            ];
-        }
-
-        return [__DIR__.'/Configs/CleanUnusedComponentsProcessorNoSetter.yaml'];
     }
 }
