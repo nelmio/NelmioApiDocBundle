@@ -317,6 +317,189 @@ final class ControllerTest extends WebTestCase
                     ->addTag('nelmio_api_doc.swagger.processor', ['priority' => -100, 'before' => CleanUnusedComponents::class]),
             ],
         ];
+
+        yield 'Security documentation API key' => [
+            'SecuredApiController',
+            'api-key',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'areas' => [
+                        'default' => [
+                            'security' => [
+                                'ApiKeyAuth' => [
+                                    'type' => 'apiKey',
+                                    'name' => 'X-API-KEY',
+                                    'in' => 'header',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'Security documentation basic auth' => [
+            'SecuredApiController',
+            'basic-auth',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'areas' => [
+                        'default' => [
+                            'security' => [
+                                'BasicAuth' => [
+                                    'type' => 'http',
+                                    'scheme' => 'basic',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'Security documentation bearer auth' => [
+            'SecuredApiController',
+            'bearer-auth',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'areas' => [
+                        'default' => [
+                            'security' => [
+                                'BearerAuth' => [
+                                    'type' => 'http',
+                                    'scheme' => 'bearer',
+                                    'bearerFormat' => 'JWT',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'Security documentation OAuth2' => [
+            'SecuredApiController',
+            'oauth2',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'areas' => [
+                        'default' => [
+                            'security' => [
+                                'OAuth2' => [
+                                    'type' => 'oauth2',
+                                    'description' => 'This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)',
+                                    'flows' => [
+                                        'implicit' => [
+                                            'authorizationUrl' => 'https://api.example.com/oauth/authorize',
+                                            'scopes' => [
+                                                'read:messages' => 'Read messages',
+                                                'write:messages' => 'Write messages',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'Security documentation OAuth2 multiple flows' => [
+            'SecuredApiController',
+            'oauth2-multiple-flows',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'areas' => [
+                        'default' => [
+                            'security' => [
+                                'oAuthSample' => [
+                                    'type' => 'oauth2',
+                                    'description' => 'This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)',
+                                    'flows' => [
+                                        'authorizationCode' => [
+                                            'authorizationUrl' => 'https://api.example.com/oauth/authorize',
+                                            'tokenUrl' => 'https://api.example.com/oauth/token',
+                                            'scopes' => [
+                                                'read:messages' => 'Read messages',
+                                                'write:messages' => 'Write messages',
+                                            ],
+                                        ],
+                                        'implicit' => [
+                                            'authorizationUrl' => 'https://api.example.com/oauth/authorize',
+                                            'scopes' => [
+                                                'read:messages' => 'Read messages',
+                                                'write:messages' => 'Write messages',
+                                            ],
+                                        ],
+                                        'password' => [
+                                            'tokenUrl' => 'https://api.example.com/oauth/token',
+                                            'scopes' => [
+                                                'read:messages' => 'Read messages',
+                                                'write:messages' => 'Write messages',
+                                            ],
+                                        ],
+                                        'clientCredentials' => [
+                                            'tokenUrl' => 'https://api.example.com/oauth/token',
+                                            'scopes' => [
+                                                'read:messages' => 'Read messages',
+                                                'write:messages' => 'Write messages',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'Security documentation OpenId Connect' => [
+            'SecuredApiController',
+            'openid-connect',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'areas' => [
+                        'default' => [
+                            'security' => [
+                                'OpenIdConnect' => [
+                                    'type' => 'openIdConnect',
+                                    'openIdConnectUrl' => 'https://api.example.com/.well-known/openid-configuration',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'Security documentation cookie' => [
+            'SecuredApiController',
+            'cookie',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'areas' => [
+                        'default' => [
+                            'security' => [
+                                'CookieAuth' => [
+                                    'type' => 'apiKey',
+                                    'name' => 'sessionId',
+                                    'in' => 'cookie',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
     private static function getFixture(string $fixture): string
