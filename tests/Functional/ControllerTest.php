@@ -500,6 +500,27 @@ final class ControllerTest extends WebTestCase
                 ],
             ],
         ];
+
+        yield 'Security documentation' => [
+            'InvokableController',
+            'insecured',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'areas' => [
+                        'default' => [
+                            'security' => [
+                                'BearerAuth' => [
+                                    'type' => 'http',
+                                    'scheme' => 'bearer',
+                                    'bearerFormat' => 'JWT',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
     private static function getFixture(string $fixture): string

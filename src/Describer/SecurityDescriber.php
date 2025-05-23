@@ -82,17 +82,21 @@ final class SecurityDescriber implements DescriberInterface
             return;
         }
 
+        $classReflector = null;
         if (\is_array($controller) && method_exists(...$controller)) {
             $classReflector = new \ReflectionClass($controller[0]);
         } elseif (\is_string($controller) && false !== $i = strpos($controller, '::')) {
             $classReflector = new \ReflectionClass(substr($controller, 0, $i));
-        } else {
-            return;
         }
 
         $attributes = array_map(
             static fn (\ReflectionAttribute $attribute): IsGranted => $attribute->newInstance(),
-            array_merge($classReflector->getAttributes(IsGranted::class), $reflectionMethod->getAttributes(IsGranted::class)),
+            array_merge($classReflector?->getAttributes(IsGranted::class) ?? [], $reflectionMethod->getAttributes(IsGranted::class)),
+        );
+
+        $scopes = array_map(
+            static fn (IsGranted $attribute): string => $attribute->attribute,
+            $attributes,
         );
 
         foreach ($this->getOperations($api, $route) as $operation) {
@@ -101,12 +105,6 @@ final class SecurityDescriber implements DescriberInterface
             }
 
             $operation->security = [];
-
-            $scopes = array_map(
-                static fn (IsGranted $attribute): string => $attribute->attribute,
-                $attributes,
-            );
-
             foreach ($this->securitySchemes as $name => $securityScheme) {
                 $operation->security[] = [$name => array_unique(array_values($scopes))];
             }
