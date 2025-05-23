@@ -196,6 +196,17 @@ final class ControllerTest extends WebTestCase
             ],
         ];
 
+        yield 'operationId generation conditionally_prepend string' => [
+            'OperationIdController',
+            'OperationIdController.conditionally_prepend',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'operation_id_generation' => OperationIdGeneration::CONDITIONALLY_PREPEND->value,
+                ],
+            ],
+        ];
+
         yield 'operationId generation no_prepend' => [
             'OperationIdController',
             'OperationIdController.no_prepend',
@@ -203,6 +214,17 @@ final class ControllerTest extends WebTestCase
             [
                 'nelmio_api_doc' => [
                     'operation_id_generation' => OperationIdGeneration::NO_PREPEND,
+                ],
+            ],
+        ];
+
+        yield 'operationId generation no_prepend string' => [
+            'OperationIdController',
+            'OperationIdController.no_prepend',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'operation_id_generation' => OperationIdGeneration::NO_PREPEND->value,
                 ],
             ],
         ];
