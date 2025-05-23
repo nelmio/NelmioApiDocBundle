@@ -25,8 +25,8 @@ final class ConfigurableContainerFactory
     private $container;
 
     /**
-     * @param Bundle[] $extraBundles
-     * @param string[] $extraConfigs
+     * @param Bundle[]             $extraBundles
+     * @param array<string, array> $extraConfigs Key is the extension name, value is the config
      */
     public function create(array $extraBundles, ?callable $routeConfiguration, array $extraConfigs): void
     {

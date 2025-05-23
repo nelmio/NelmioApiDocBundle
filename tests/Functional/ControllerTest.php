@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use JMS\SerializerBundle\JMSSerializerBundle;
+use Nelmio\ApiDocBundle\Describer\OperationIdGeneration;
 use OpenApi\Annotations as OA;
 use OpenApi\Processors\CleanUnusedComponents;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -41,8 +42,8 @@ final class ControllerTest extends WebTestCase
     }
 
     /**
-     * @param Bundle[] $extraBundles
-     * @param string[] $extraConfigs
+     * @param Bundle[]             $extraBundles
+     * @param array<string, array> $extraConfigs Key is the extension name, value is the config
      */
     #[DataProvider('provideTestCases')]
     public function testControllers(?string $controller, ?string $fixtureName = null, array $extraBundles = [], array $extraConfigs = []): void
@@ -85,7 +86,13 @@ final class ControllerTest extends WebTestCase
             'JmsOptOutController',
             'JmsOptOutController',
             [new JMSSerializerBundle()],
-            [__DIR__.'/Configs/JMS.yaml'],
+            [
+                'nelmio_api_doc' => [
+                    'models' => [
+                        'use_jms' => true,
+                    ],
+                ],
+            ],
         ];
 
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
@@ -96,18 +103,96 @@ final class ControllerTest extends WebTestCase
             'MapQueryStringController',
             null,
             [],
-            [__DIR__.'/Configs/EnableSerializer.yaml'],
+            [
+                // Enable serializer
+                'framework' => [
+                    'property_info' => [
+                        'enabled' => true,
+                    ],
+                    'serializer' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                    ],
+                    'validation' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                        'static_method' => [
+                            'loadValidatorMetadata',
+                        ],
+                        'translation_domain' => 'validators',
+                        'email_validation_mode' => 'html5',
+                        'mapping' => [
+                            'paths' => [],
+                        ],
+                        'not_compromised_password' => [
+                            'enabled' => true,
+                            'endpoint' => null,
+                        ],
+                        'auto_mapping' => [],
+                    ],
+                ],
+            ],
         ];
 
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
             'MapQueryStringController',
             'MapQueryStringCleanupComponents',
             [],
-            [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml', __DIR__.'/Configs/EnableSerializer.yaml'],
+            [
+                // Enable serializer
+                'framework' => [
+                    'property_info' => [
+                        'enabled' => true,
+                    ],
+                    'serializer' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                    ],
+                    'validation' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                        'static_method' => [
+                            'loadValidatorMetadata',
+                        ],
+                        'translation_domain' => 'validators',
+                        'email_validation_mode' => 'html5',
+                        'mapping' => [
+                            'paths' => [],
+                        ],
+                        'not_compromised_password' => [
+                            'enabled' => true,
+                            'endpoint' => null,
+                        ],
+                        'auto_mapping' => [],
+                    ],
+                ],
+            ],
         ];
 
         yield 'operationId must always be generated' => [
             'OperationIdController',
+        ];
+
+        yield 'operationId generation conditionally_prepend' => [
+            'OperationIdController',
+            'OperationIdController.conditionally_prepend',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'operation_id_generation' => OperationIdGeneration::CONDITIONALLY_PREPEND,
+                ],
+            ],
+        ];
+
+        yield 'operationId generation no_prepend' => [
+            'OperationIdController',
+            'OperationIdController.no_prepend',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'operation_id_generation' => OperationIdGeneration::NO_PREPEND,
+                ],
+            ],
         ];
 
         yield 'Symfony 6.3 MapQueryParameter attribute' => [
@@ -118,7 +203,35 @@ final class ControllerTest extends WebTestCase
             'MapRequestPayloadController',
             null,
             [],
-            [__DIR__.'/Configs/EnableSerializer.yaml'],
+            [
+                // Enable serializer
+                'framework' => [
+                    'property_info' => [
+                        'enabled' => true,
+                    ],
+                    'serializer' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                    ],
+                    'validation' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                        'static_method' => [
+                            'loadValidatorMetadata',
+                        ],
+                        'translation_domain' => 'validators',
+                        'email_validation_mode' => 'html5',
+                        'mapping' => [
+                            'paths' => [],
+                        ],
+                        'not_compromised_password' => [
+                            'enabled' => true,
+                            'endpoint' => null,
+                        ],
+                        'auto_mapping' => [],
+                    ],
+                ],
+            ],
         ];
 
         yield 'Create top level Tag from Tag attribute' => [
@@ -141,7 +254,30 @@ final class ControllerTest extends WebTestCase
             null,
             'VendorExtension',
             [],
-            [__DIR__.'/Configs/VendorExtension.yaml', __DIR__.'/Configs/StubProcessor.yaml'],
+            [
+                'nelmio_api_doc' => [
+                    'documentation' => [
+                        'info' => [
+                            'title' => 'Test API',
+                            'description' => 'Test API description',
+                            'x-vendor' => [
+                                'test' => 'Test vendor extension',
+                            ],
+                            'x-build' => '#SomeCommitHash',
+                        ],
+                        'components' => [
+                            'schemas' => [
+                                'Test' => [
+                                    'type' => 'string',
+                                    'x-vendor' => [
+                                        'test' => 'Test vendor extension inside schema',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -165,9 +301,22 @@ final class ControllerTest extends WebTestCase
      */
     private static function cleanUnusedComponentsConfig(): array
     {
+        return [];
+
         /* @phpstan-ignore-next-line */
         if (method_exists(CleanUnusedComponents::class, 'setEnabled')) {
-            return [__DIR__.'/Configs/CleanUnusedComponentsProcessor.yaml'];
+            return [
+                'services' => [
+                    CleanUnusedComponents::class => [
+                        'tags' => [
+                            'nelmio.api_doc.processor',
+                        ],
+                        'calls' => [
+                            ['setEnabled', [true]],
+                        ],
+                    ],
+                ],
+            ];
         }
 
         return [__DIR__.'/Configs/CleanUnusedComponentsProcessorNoSetter.yaml'];

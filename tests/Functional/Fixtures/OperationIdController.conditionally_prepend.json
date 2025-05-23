@@ -1,0 +1,82 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/generate/operation_id_route_unnamed": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_operationid_getmustgenerateoperationidbyunnamedrouteannotation",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/generate/operation_id_route": {
+            "get": {
+                "operationId": "get_named_route",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "put_updateOperation",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "postOperation",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/generate/operation_id_with_security/": {
+            "get": {
+                "operationId": "get_with_security",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/generate/operation_id_get": {
+            "get": {
+                "summary": "OperationId must be generated automatically if not provided",
+                "operationId": "get_annotation",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/has/explicit/operationid": {
+            "get": {
+                "summary": "Custom operation id must be used if provided",
+                "operationId": "customOperationId",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    }
+}
