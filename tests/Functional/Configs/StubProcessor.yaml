@@ -1,4 +1,0 @@
-services:
-  Nelmio\ApiDocBundle\Tests\Functional\StubProcessor:
-    tags:
-      - { name: 'nelmio_api_doc.swagger.processor', priority: -100, before: OpenApi\Processors\CleanUnusedComponents }

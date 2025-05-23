@@ -17,6 +17,7 @@ use JMS\Serializer\Visitor\SerializationVisitorInterface;
 use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Describer\ExternalDocDescriber;
 use Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber;
+use Nelmio\ApiDocBundle\Describer\OperationIdGeneration;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\Describer\SecurityDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
@@ -117,6 +118,9 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference(\sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
                     new Reference('logger'),
+                    $config['operation_id_generation'] instanceof OperationIdGeneration ?
+                        $config['operation_id_generation'] :
+                        OperationIdGeneration::from($config['operation_id_generation']),
                 ])
                 ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
 
