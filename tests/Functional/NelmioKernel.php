@@ -25,8 +25,8 @@ final class NelmioKernel extends Kernel
     use MicroKernelTrait;
 
     /**
-     * @param Bundle[]             $extraBundles
-     * @param array<string, array> $extraConfigs Key is the extension name, value is the config
+     * @param Bundle[]                    $extraBundles
+     * @param array<string, array<mixed>> $extraConfigs Key is the extension name, value is the config
      */
     public function __construct(
         private array $extraBundles,

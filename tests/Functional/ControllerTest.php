@@ -42,8 +42,8 @@ final class ControllerTest extends WebTestCase
     }
 
     /**
-     * @param Bundle[]             $extraBundles
-     * @param array<string, array> $extraConfigs Key is the extension name, value is the config
+     * @param Bundle[]                    $extraBundles
+     * @param array<string, array<mixed>> $extraConfigs Key is the extension name, value is the config
      */
     #[DataProvider('provideTestCases')]
     public function testControllers(?string $controller, ?string $fixtureName = null, array $extraBundles = [], array $extraConfigs = []): void
