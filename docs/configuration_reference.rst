@@ -19,6 +19,8 @@ The bundle configuration is stored under the ``nelmio_api_doc`` key in your appl
         type_info: false
         # If true, `groups` passed to #[Model] attributes will be used to limit validation constraints
         use_validation_groups: false
+        # Defines how to generate operation ids
+        operation_id_generation: always_prepend
         cache:
             # define cache pool to use
             pool: null
@@ -107,6 +109,42 @@ use_validation_groups
 **default**: ``false``
 
 If true, ``groups`` passed to ``#[Model]`` attributes will be used to limit validation constraints.
+
+operation_id_generation
+~~~~~~~~~~~~~~~~~~~~~
+
+**type**: ``string`` or ``enum``
+**default**: ``always_prepend``
+
+**allowed values**: ``always_prepend``, ``conditionally_prepend``, ``no_prepend`` or enum instance of ``Nelmio\ApiDocBundle\Describer\OperationIdGeneration``
+
+Defines how to generate operation ids.
+- ``always_prepend``: Always prepend the HTTP method to the operation id.
+- ``conditionally_prepend``: Checks if the operation id already starts with the HTTP method and prepends it if not.
+- ``no_prepend``: Never prepends the HTTP method to the operation id. Warnings will be thrown if the operation id is not unique.
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/packages/nelmio_api_doc.yaml
+        nelmio_api_doc:
+            operation_id_generation: always_prepend
+
+    .. code-block:: php
+
+        // config/services.php
+        use Nelmio\ApiDocBundle\Describer\OperationIdGeneration;
+
+        return function (ContainerConfigurator $container) {
+            $containerConfigurator->extension('nelmio_api_doc', [
+                'operation_id_generation' => OperationIdGeneration::ALWAYS_PREPEND,
+            ]);
+        };
+
+.. versionadded:: 5.1
+
+    The ``operation_id_generation`` option was added in 5.1.
 
 cache
 ~~~~~
