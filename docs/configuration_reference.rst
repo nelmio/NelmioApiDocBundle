@@ -298,6 +298,7 @@ Defines the security scheme(s) to use for the area.
 
 This will:
 1. Generate ``components.securitySchemes.MyBearerScheme``
+
 .. code-block:: json
 
     "components": {
