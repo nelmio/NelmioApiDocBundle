@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -34,6 +35,15 @@ class SecuredApiController
     #[IsGranted('ROLE_ADMIN')]
     #[IsGranted('ROLE_UPDATE_ARTICLE', subject: 'newArticle')]
     public function updateArticleAction(Article $newArticle)
+    {
+    }
+
+    #[Route('/user/documentation', methods: 'GET')]
+    #[OA\Get(
+        security: [] // Explicitly set to empty array
+    )]
+    #[IsGranted('ROLE_USER')]
+    public function userDocumentation(Article $newArticle)
     {
     }
 }

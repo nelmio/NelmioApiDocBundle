@@ -76,6 +76,17 @@
                     }
                 ]
             }
+        },
+        "/secured/user/documentation": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_securedapi_userdocumentation",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                },
+                "security": []
+            }
         }
     },
     "components": {
