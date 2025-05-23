@@ -367,10 +367,6 @@ final class Util
                 continue;
             }
 
-            if (!\is_array($propertyMapping)) {
-                throw new \LogicException('Encountered unexpected nested property mapping.');
-            }
-
             foreach ($properties[$propertyMapping[0]] as $childProperty) {
                 if (!is_a($childProperty, $childClass, true)) {
                     throw new \InvalidArgumentException('Nesting attribute properties is not supported, only nest classes.');
