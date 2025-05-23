@@ -322,7 +322,7 @@ class ConfigurationTest extends TestCase
                     ],
                 ],
             ],
-            'Invalid configuration for path "nelmio_api_doc.areas.default.security.invalid.type": Invalid `type` value "SomeInvalidType". Available types are: http, apiKey, openIdConnect, oauth2, mutualTLS',
+            'Invalid configuration for path "nelmio_api_doc.areas.default.security.invalid.type": Invalid `type` value "SomeInvalidType". Available types are: http, apiKey, openIdConnect, oauth2',
         ];
 
         yield 'invalid security schema `scheme`' => [

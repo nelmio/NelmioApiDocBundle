@@ -152,7 +152,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('type')
                                             ->validate()
-                                                ->ifNotInArray($securityTypes = ['http', 'apiKey', 'openIdConnect', 'oauth2', 'mutualTLS'])
+                                                ->ifNotInArray($securityTypes = ['http', 'apiKey', 'openIdConnect', 'oauth2'])
                                                 ->thenInvalid('Invalid `type` value %s. Available types are: '.implode(', ', $securityTypes))
                                             ->end()
                                         ->end()
