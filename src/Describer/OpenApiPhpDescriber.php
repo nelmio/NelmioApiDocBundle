@@ -30,15 +30,12 @@ final class OpenApiPhpDescriber
 {
     use SetsContextTrait;
 
-    private RouteCollection $routeCollection;
-    private ControllerReflector $controllerReflector;
-    private LoggerInterface $logger;
-
-    public function __construct(RouteCollection $routeCollection, ControllerReflector $controllerReflector, LoggerInterface $logger)
-    {
-        $this->routeCollection = $routeCollection;
-        $this->controllerReflector = $controllerReflector;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly RouteCollection $routeCollection,
+        private readonly ControllerReflector $controllerReflector,
+        private readonly LoggerInterface $logger,
+        private readonly OperationIdGeneration $operationIdGeneration = OperationIdGeneration::ALWAYS_PREPEND,
+    ) {
     }
 
     public function describe(OA\OpenApi $api): void
@@ -138,7 +135,11 @@ final class OpenApiPhpDescriber
                 }
 
                 if (Generator::UNDEFINED === $operation->operationId) {
-                    $operation->operationId = $httpMethod.'_'.$routeName;
+                    $operation->operationId = match ($this->operationIdGeneration) {
+                        OperationIdGeneration::ALWAYS_PREPEND => $httpMethod.'_'.$routeName,
+                        OperationIdGeneration::CONDITIONALLY_PREPEND => str_starts_with($routeName, $httpMethod) ? $routeName : $httpMethod.'_'.$routeName,
+                        OperationIdGeneration::NO_PREPEND => $routeName,
+                    };
                 }
             }
         }

@@ -116,6 +116,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     new Reference(\sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
                     new Reference('logger'),
+                    $config['operation_id_generation'],
                 ])
                 ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
 

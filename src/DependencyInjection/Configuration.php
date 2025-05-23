@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
+use Nelmio\ApiDocBundle\Describer\OperationIdGeneration;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -28,6 +29,11 @@ final class Configuration implements ConfigurationInterface
                 ->booleanNode('type_info')
                     ->info('Use the symfony/type-info component for determining types.')
                     ->defaultFalse()
+                ->end()
+                ->enumNode('operation_id_generation')
+                    ->info('How to generate operation ids')
+                    ->values(OperationIdGeneration::cases())
+                    ->defaultValue(OperationIdGeneration::ALWAYS_PREPEND)
                 ->end()
                 ->booleanNode('use_validation_groups')
                     ->info('If true, `groups` passed to #[Model] attributes will be used to limit validation constraints')
