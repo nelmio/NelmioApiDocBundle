@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\ApiDocBundle\Describer\OperationIdGeneration;
+use Nelmio\ApiDocBundle\Tests\Functional\Controller\SecuredApiController;
 use OpenApi\Annotations as OA;
 use OpenApi\Processors\CleanUnusedComponents;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -48,11 +49,15 @@ final class ControllerTest extends WebTestCase
      * @param array<string, Definition>   $extraDefinitions
      */
     #[DataProvider('provideTestCases')]
-    public function testControllers(?string $controller, ?string $fixtureSuffix = null, array $extraBundles = [], array $extraConfigs = [], array $extraDefinitions = []): void
+    public function testControllers(?string $controller, ?string $fixtureSuffix = null, array $extraBundles = [], array $extraConfigs = [], array $extraDefinitions = [], ?\Closure $extraRoutes = null): void
     {
         $fixtureName = null !== $fixtureSuffix ? $controller.'.'.$fixtureSuffix : $controller;
 
-        $routingConfiguration = function (RoutingConfigurator $routes) use ($controller) {
+        $routingConfiguration = function (RoutingConfigurator &$routes) use ($controller, $extraRoutes) {
+            if (null !== $extraRoutes) {
+                ($extraRoutes)($routes);
+            }
+
             if (null === $controller) {
                 return;
             }
@@ -520,6 +525,33 @@ final class ControllerTest extends WebTestCase
                     ],
                 ],
             ],
+        ];
+
+        yield 'Security documentation for manually registered controller' => [
+            null,
+            'security-manually-registered',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'areas' => [
+                        'default' => [
+                            'security' => [
+                                'BearerAuth' => [
+                                    'type' => 'http',
+                                    'scheme' => 'bearer',
+                                    'bearerFormat' => 'JWT',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [],
+            function (RoutingConfigurator $routes) {
+                $routes->add('security-manually-registered', '/security-manually-registered')
+                    ->controller([SecuredApiController::class, 'fetchArticleAction'])
+                    ->methods(['GET']);
+            },
         ];
     }
 
