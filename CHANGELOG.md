@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 5.2.0
+Made it possible to automatically generate security definitions based on the ``#[IsGranted]`` attribute.
+
+```yaml
+nelmio_api_doc:
+    # ...
+
+    areas:
+        default:
+            security:
+                MyBearerScheme:
+                    type: 'http'
+                    scheme: 'bearer'
+```
+
 ## 5.1.0
 Made it possible to configure how operation ids are generated. 
 
