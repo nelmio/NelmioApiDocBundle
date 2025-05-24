@@ -53,13 +53,6 @@ final class OpenApiPhpDescriber
 
             $path = $this->normalizePath($route->getPath());
             $supportedHttpMethods = $this->getSupportedHttpMethods($route);
-            if ([] === $supportedHttpMethods) {
-                $this->logger->warning('None of the HTTP methods specified for path {path} are supported by swagger-ui, skipping this path', [
-                    'path' => $path,
-                ]);
-
-                continue;
-            }
 
             $classReflector = $reflectedMethod->getDeclaringClass();
             if (\is_array($controller) && method_exists(...$controller)) {
