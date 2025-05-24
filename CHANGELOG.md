@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 5.3.0
+Added support for Symfony's `TranslatableInterface`
+
 ## 5.2.1
 Fixed a bug where using abstract controllers would ignore various attributes like ``#[OA\Tag]`` & ``#[Security]`` on child classes
 
