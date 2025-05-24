@@ -13,5 +13,4 @@ Dark Theme for NelmioApiDocBundle
 
 A sleek and modern dark theme for the Swagger UI documentation.
 
-**link**: `https://github.com/digitaltim-de/Symfony-NelmioApiDocBundle-Dark-Theme`__
-__ https://github.com/digitaltim-de/Symfony-NelmioApiDocBundle-Dark-Theme
+**link**: `<https://github.com/digitaltim-de/Symfony-NelmioApiDocBundle-Dark-Theme>`__
