@@ -21,6 +21,7 @@ use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\Uid\AbstractUid;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
  * @implements TypeDescriberInterface<ObjectType>
@@ -43,6 +44,12 @@ final class ClassDescriber implements TypeDescriberInterface, ModelRegistryAware
         if (is_a($type->getClassName(), \DateTimeInterface::class, true)) {
             $schema->type = 'string';
             $schema->format = 'date-time';
+
+            return;
+        }
+
+        if (is_a($type->getClassName(), TranslatableInterface::class, true)) {
+            $schema->type = 'string';
 
             return;
         }
