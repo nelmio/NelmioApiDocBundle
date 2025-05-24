@@ -20,7 +20,7 @@ Here are some additional advices that are more likely to apply to NelmioApiDocBu
 - Upgrade all your ``use Swagger\Annotations as SWG`` statements to ``use OpenApi\Annotations as OA;`` (to simplify the upgrade you may also stick to the ``SWG`` aliasing).
   In case you changed ``SWG`` to ``OA``, upgrade all your annotations from ``@SWG\...`` to ``@OA\...``.
 
-- Update your config in case you used inlined swagger documentation (the field ``nelmio_api_doc.documentation``). [A tool](https://openapi-converter.herokuapp.com/) is available to help you convert it.
+- Update your config in case you used inlined swagger documentation (the field ``nelmio_api_doc.documentation``). [A tool](https://converter.swagger.io/) is available to help you convert it.
 
 - In case you used ``@OA\Response(..., @OA\Schema(...))``, you should explicit your media type by using the annotation ``@OA\JsonContent`` or ``@OA\XmlContent`` instead of ``@OA\Schema``:
   ``@OA\Response(..., @OA\JsonContent(...))`` or ``@OA\Response(..., @OA\XmlContent(...))``.
