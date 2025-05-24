@@ -20,7 +20,6 @@ use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysers\AttributeAnnotationFactory;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -35,7 +34,6 @@ final class OpenApiPhpDescriber
     public function __construct(
         private readonly RouteCollection $routeCollection,
         private readonly ControllerReflector $controllerReflector,
-        private readonly LoggerInterface $logger,
         private readonly OperationIdGeneration $operationIdGeneration = OperationIdGeneration::ALWAYS_PREPEND,
     ) {
     }

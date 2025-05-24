@@ -117,7 +117,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArguments([
                     new Reference(\sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
-                    new Reference('logger'),
                     $config['operation_id_generation'] instanceof OperationIdGeneration ?
                         $config['operation_id_generation'] :
                         OperationIdGeneration::from($config['operation_id_generation']),
