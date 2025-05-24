@@ -193,6 +193,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $container->removeDefinition('nelmio_api_doc.object_model.property_describers.uuid');
         }
 
+        if (!interface_exists(\Symfony\Contracts\Translation\TranslatableInterface::class)) {
+            $container->removeDefinition('nelmio_api_doc.object_model.property_describers.translatable');
+        }
+
         // Import services needed for each library
         $loader->load('php_doc.xml');
 
