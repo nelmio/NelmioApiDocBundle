@@ -31,26 +31,26 @@ class WebTestCase extends BaseWebTestCase
         return static::$kernel->getContainer()->get(\sprintf('nelmio_api_doc.generator.%s', $area))->generate();
     }
 
-    public function hasModel(string $name): bool
+    public function hasModel(string $name, string $area = 'default'): bool
     {
-        $api = $this->getOpenApiDefinition();
+        $api = $this->getOpenApiDefinition($area);
         $key = array_search($name, array_column($api->components->schemas, 'schema'), true);
 
         return false !== $key;
     }
 
-    protected function getModel(string $name): OA\Schema
+    protected function getModel(string $name, string $area = 'default'): OA\Schema
     {
-        $api = $this->getOpenApiDefinition();
+        $api = $this->getOpenApiDefinition($area);
         $key = array_search($name, array_column($api->components->schemas, 'schema'), true);
         static::assertNotFalse($key, \sprintf('Model "%s" does not exist.', $name));
 
         return $api->components->schemas[$key];
     }
 
-    protected function getOperation(string $path, string $method): OA\Operation
+    protected function getOperation(string $path, string $method, string $area = 'default'): OA\Operation
     {
-        $path = $this->getPath($path);
+        $path = $this->getPath($path, $area);
 
         self::assertInstanceOf(
             OA\Operation::class,
@@ -93,9 +93,9 @@ class WebTestCase extends BaseWebTestCase
         return array_values($parameters)[0];
     }
 
-    protected function getPath(string $path): OA\PathItem
+    protected function getPath(string $path, string $area = 'default'): OA\PathItem
     {
-        $api = $this->getOpenApiDefinition();
+        $api = $this->getOpenApiDefinition($area);
         self::assertHasPath($path, $api);
 
         return $api->paths[array_search($path, array_column($api->paths, 'path'), true)];

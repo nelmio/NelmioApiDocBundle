@@ -1,10 +1,10 @@
 # Resources
-test:
-    resource: ../Controller/TestController.php
-    type: attribute
-
 api:
     resource: ../Controller/ApiController.php
+    type: attribute
+
+secured_api:
+    resource: ../Controller/SecuredApiController.php
     type: attribute
 
 class_api:

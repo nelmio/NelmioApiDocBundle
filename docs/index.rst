@@ -185,7 +185,7 @@ To document your routes, you can use the SwaggerPHP attributes and the
             #[Route('/api/{user}/rewards', methods: ['GET'])]
             #[OA\Response(
                 response: 200,
-                description: 'Returns the rewards of an user',
+                description: 'Returns the rewards of a user',
                 content: new OA\JsonContent(
                     type: 'array',
                     items: new OA\Items(ref: new Model(type: AlbumDto::class, groups: ['full']))
@@ -278,8 +278,8 @@ properties and validator constraints. Take the model class below:
 
         class UserDto
         {
-            #[Groups(["default", "create", "update"])]
-            #[Assert\NotBlank(groups: ["default", "create"])]
+            #[Groups(['default', 'create', 'update'])]
+            #[Assert\NotBlank(groups: ['default', 'create'])]
             public string $username;
         }
 
@@ -297,13 +297,13 @@ that property type to not be nullable, for example.
         use OpenApi\Attributes as OA;
 
         // shows `username` as `required` in the OpenAPI schema (not nullable)
-        #[OA\Response(response: 200, content: new Model(type: UserDto::class, groups: ["default"]))]
+        #[OA\Response(response: 200, content: new Model(type: UserDto::class, groups: ['default']))]
 
         // Similarly, this will make the username `required` in the create  schema
-        #[OA\RequestBody(content: new Model(type: UserDto::class, groups: ["create"]))]
+        #[OA\RequestBody(content: new Model(type: UserDto::class, groups: ['create']))]
 
         // But for updates, the `username` property will not be required
-        #[OA\RequestBody(content: new Model(type: UserDto::class, groups: ["update"]))]
+        #[OA\RequestBody(content: new Model(type: UserDto::class, groups: ['update']))]
 
 
 .. tip::
@@ -372,8 +372,8 @@ General PHP objects
          * A nested serializer property with no context group
          *
          * @JMS\VirtualProperty
-         * @JMS\Type("ArrayCollection<App\Response\ItemResponse>")
-         * @JMS\Since("1.0")
+         * @JMS\Type('ArrayCollection<App\Response\ItemResponse>')
+         * @JMS\Since('1.0')
          *
          * @return Collection|ItemResponse[]
          */
@@ -406,7 +406,7 @@ General PHP objects
 
         .. code-block:: php-attributes
 
-            #[OA\Response(response: 200, content: new Model(type: UserDto::class, serializationContext: ["useJms" => false]))]
+            #[OA\Response(response: 200, content: new Model(type: UserDto::class, serializationContext: ['useJms' => false]))]
 
     When using the JMS serializer combined with `willdurand/Hateoas`_ (and the `BazingaHateoasBundle`_),
     HATEOAS metadata are automatically extracted
@@ -420,10 +420,6 @@ General PHP objects
         nelmio_api_doc:
             type_info: true
             # ...
-
-.. versionadded:: 4.35
-
-    The `TypeInfo component`_ was introduced as a stable feature in Symfony 7.2.
 
 If you want to customize the documentation of an object's property, you can use ``#[OA\Property]``::
 

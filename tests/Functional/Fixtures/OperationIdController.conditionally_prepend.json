@@ -33,7 +33,7 @@
                 }
             },
             "post": {
-                "operationId": "post_postOperation",
+                "operationId": "postOperation",
                 "responses": {
                     "default": {
                         "description": ""
@@ -59,7 +59,7 @@
         "/generate/operation_id_get": {
             "get": {
                 "summary": "OperationId must be generated automatically if not provided",
-                "operationId": "get_get_annotation",
+                "operationId": "get_annotation",
                 "responses": {
                     "default": {
                         "description": ""

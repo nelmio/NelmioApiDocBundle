@@ -38,6 +38,7 @@ class ConfigurationTest extends TestCase
                     'path_patterns' => ['/foo'],
                     'host_patterns' => [],
                     'name_patterns' => [],
+                    'security' => [],
                     'with_attribute' => false,
                     'disable_default_routes' => false,
                     'documentation' => [],
@@ -53,6 +54,7 @@ class ConfigurationTest extends TestCase
             'default' => [
                 'path_patterns' => ['/foo'],
                 'host_patterns' => [],
+                'security' => [],
                 'with_attribute' => false,
                 'documentation' => [],
                 'name_patterns' => [],
@@ -61,6 +63,7 @@ class ConfigurationTest extends TestCase
             'internal' => [
                 'path_patterns' => ['/internal'],
                 'host_patterns' => ['^swagger\.'],
+                'security' => [],
                 'with_attribute' => false,
                 'documentation' => [],
                 'name_patterns' => [],
@@ -69,6 +72,21 @@ class ConfigurationTest extends TestCase
             'commercial' => [
                 'path_patterns' => ['/internal'],
                 'host_patterns' => [],
+                'security' => [],
+                'with_attribute' => false,
+                'documentation' => [],
+                'name_patterns' => [],
+                'disable_default_routes' => false,
+            ],
+            'secured' => [
+                'path_patterns' => ['/secured'],
+                'host_patterns' => [],
+                'security' => [
+                    'basic' => [
+                        'type' => 'http',
+                        'scheme' => 'basic',
+                    ],
+                ],
                 'with_attribute' => false,
                 'documentation' => [],
                 'name_patterns' => [],
@@ -290,6 +308,51 @@ class ConfigurationTest extends TestCase
                 ],
             ],
             'Model options must be either `null` or an array.',
+        ];
+
+        yield 'invalid security schema `type`' => [
+            [
+                'areas' => [
+                    'default' => [
+                        'security' => [
+                            'invalid' => [
+                                'type' => 'SomeInvalidType',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'Invalid configuration for path "nelmio_api_doc.areas.default.security.invalid.type": Invalid `type` value "SomeInvalidType". Available types are: http, apiKey, openIdConnect, oauth2',
+        ];
+
+        yield 'invalid security schema `scheme`' => [
+            [
+                'areas' => [
+                    'default' => [
+                        'security' => [
+                            'basicAuth' => [
+                                'scheme' => 'SomeInvalidScheme',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'nelmio_api_doc.areas.default.security.basicAuth.scheme": Invalid `scheme` value "SomeInvalidScheme". Available schemes are: basic, bearer',
+        ];
+
+        yield 'invalid security schema `in`' => [
+            [
+                'areas' => [
+                    'default' => [
+                        'security' => [
+                            'basicAuth' => [
+                                'in' => 'SomeInvalidIn',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'Invalid configuration for path "nelmio_api_doc.areas.default.security.basicAuth.in": Invalid `in` value "SomeInvalidIn". Available locations are: header, query, cookie',
         ];
     }
 }

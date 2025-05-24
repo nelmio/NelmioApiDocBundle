@@ -12,14 +12,14 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use OpenApi\Attributes as OA;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/test', host: 'api-test.example.com')]
-class TestController
+abstract class AbstractDocumentController
 {
-    #[OA\Response(response: 200, description: 'Test')]
-    #[Route('/test/', methods: ['GET'])]
-    public function testAction(): void
+    #[Route('', methods: ['GET'])]
+    #[OA\Response(response: 200, description: 'List documents')]
+    public function getDocuments(): JsonResponse
     {
     }
 }

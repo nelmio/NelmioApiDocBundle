@@ -45,7 +45,7 @@ class OperationIdController
     // a route with an OA\Get annotation and a separate ApiDoc Annotation(extends GET operation with operationId)
     #[Route(path: '/generate/operation_id_with_security/', name: 'with_security', methods: 'GET')]
     #[OA\Get('OperationId must be generated automatically when additional OA/nelmio root annotations are present')]
-    #[Security(name: 'bearerAuth')] // additioanl root annotations
+    #[Security(name: 'bearerAuth')] // additional root annotations
     public function getWithAdditionalAnnotationsGeneratesOperationId(): JsonResponse
     {
         return new JsonResponse();
@@ -63,6 +63,18 @@ class OperationIdController
     #[Route(path: '/has/explicit/operationid', name: 'customOperationId', methods: 'GET')]
     #[OA\Get(summary: 'Custom operation id must be used if provided', operationId: 'customOperationId')]
     public function getWithCustomOperationId(): JsonResponse
+    {
+        return new JsonResponse();
+    }
+
+    #[Route(path: '/generate/operation_id_route', name: 'postOperation', methods: 'POST')]
+    public function postOperation(): JsonResponse
+    {
+        return new JsonResponse();
+    }
+
+    #[Route(path: '/generate/operation_id_route', name: 'updateOperation', methods: 'PUT')]
+    public function updateOperation(): JsonResponse
     {
         return new JsonResponse();
     }

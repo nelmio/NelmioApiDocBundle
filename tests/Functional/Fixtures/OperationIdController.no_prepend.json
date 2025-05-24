@@ -7,7 +7,7 @@
     "paths": {
         "/generate/operation_id_route_unnamed": {
             "get": {
-                "operationId": "get_nelmio_apidoc_tests_functional_operationid_getmustgenerateoperationidbyunnamedrouteannotation",
+                "operationId": "nelmio_apidoc_tests_functional_operationid_getmustgenerateoperationidbyunnamedrouteannotation",
                 "responses": {
                     "default": {
                         "description": ""
@@ -17,7 +17,7 @@
         },
         "/generate/operation_id_route": {
             "get": {
-                "operationId": "get_named_route",
+                "operationId": "named_route",
                 "responses": {
                     "default": {
                         "description": ""
@@ -25,7 +25,7 @@
                 }
             },
             "put": {
-                "operationId": "put_updateOperation",
+                "operationId": "updateOperation",
                 "responses": {
                     "default": {
                         "description": ""
@@ -33,7 +33,7 @@
                 }
             },
             "post": {
-                "operationId": "post_postOperation",
+                "operationId": "postOperation",
                 "responses": {
                     "default": {
                         "description": ""
@@ -43,7 +43,7 @@
         },
         "/generate/operation_id_with_security/": {
             "get": {
-                "operationId": "get_with_security",
+                "operationId": "with_security",
                 "responses": {
                     "default": {
                         "description": ""
@@ -59,7 +59,7 @@
         "/generate/operation_id_get": {
             "get": {
                 "summary": "OperationId must be generated automatically if not provided",
-                "operationId": "get_get_annotation",
+                "operationId": "get_annotation",
                 "responses": {
                     "default": {
                         "description": ""

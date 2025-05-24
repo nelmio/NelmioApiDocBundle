@@ -383,93 +383,135 @@ class UtilTest extends TestCase
     }
 
     /**
-     * @param array<mixed> $setup
-     * @param array<mixed> $asserts
+     * @param array<string, array<mixed>>                              $parentProperties
+     * @param array<class-string<OA\AbstractAnnotation>, array<mixed>> $children
      */
     #[DataProvider('provideChildData')]
-    public function testGetChild(array $setup, array $asserts): void
+    public function testGetChild(string $parent, array $parentProperties, array $children): void
     {
-        $parent = new $setup['class'](array_merge(
-            $this->getSetupPropertiesWithoutClass($setup),
-            ['_context' => $this->rootContext]
-        ));
+        $parent = new $parent([
+            ...$parentProperties,
+            ...['_context' => $this->rootContext],
+        ]);
 
-        foreach ($asserts as $key => $assert) {
-            if (\array_key_exists('exceptionMessage', $assert)) {
-                $this->expectExceptionMessage($assert['exceptionMessage']);
-            }
-            self::assertTrue(is_a($assert['class'], OA\AbstractAnnotation::class, true), \sprintf('Invalid class %s', $assert['class']));
-            $child = Util::getChild($parent, $assert['class'], $assert['props']);
+        foreach ($children as $childClass => $childProperties) {
+            self::assertTrue(is_a($childClass, OA\AbstractAnnotation::class, true), \sprintf('Invalid class %s', $childClass));
 
-            self::assertInstanceOf($assert['class'], $child);
-            self::assertSame($child, $parent->{$key});
+            $child = Util::createChild($parent, $childClass, $childProperties);
+            self::assertInstanceOf($childClass, $child);
 
-            if (\array_key_exists($key, $setup)) {
-                self::assertSame($setup[$key], $parent->{$key});
-            }
-
-            self::assertEquals($assert['props'], $this->getNonDefaultProperties($child));
+            self::assertEquals($childProperties, $this->getNonDefaultProperties($child));
         }
     }
 
     public static function provideChildData(): \Generator
     {
         yield [
-            'setup' => [
-                'class' => OA\PathItem::class,
-                'get' => self::createObj(OA\Get::class, []),
-            ],
-            'assert' => [
-                // fixed within setup
-                'get' => [
-                    'class' => OA\Get::class,
-                    'props' => [],
-                ],
+            OA\PathItem::class,
+            ['get' => self::createObj(OA\Get::class, [])],
+            [
+                // Already defined in parent
+                OA\Get::class => [],
                 // create new without props
-                'put' => [
-                    'class' => OA\Put::class,
-                    'props' => [],
-                ],
+                OA\Put::class => [],
                 // create new with multiple props
-                'delete' => [
-                    'class' => OA\Delete::class,
-                    'props' => [
-                        'summary' => 'testing delete',
-                        'deprecated' => true,
-                    ],
+                OA\Delete::class => [
+                    'summary' => 'testing delete',
+                    'deprecated' => true,
                 ],
             ],
         ];
 
         yield [
-            'setup' => [
-                'class' => OA\Parameter::class,
-            ],
-            'assert' => [
-                // create new with multiple props
-                'schema' => [
-                    'class' => OA\Schema::class,
-                    'props' => [
-                        'ref' => '#/testing/schema',
-                        'minProperties' => 0,
-                        'enum' => [null, 'check', 999, false],
-                    ],
+            OA\Parameter::class,
+            [],
+            [
+                OA\Schema::class => [
+                    'ref' => '#/testing/schema',
+                    'minProperties' => 0,
+                    'enum' => [null, 'check', 999, false],
                 ],
             ],
         ];
 
-        yield [
-            'setup' => [
-                'class' => OA\Parameter::class,
+        yield 'Supports nesting predefined classes' => [
+            OA\Parameter::class,
+            [],
+            [
+                OA\Schema::class => [
+                    'externalDocs' => new OA\ExternalDocumentation(['url' => 'https://example.com']),
+                ],
             ],
-            'assert' => [
-                // externalDocs triggers invalid argument exception
-                'schema' => [
-                    'class' => OA\Schema::class,
-                    'props' => [
-                        'externalDocs' => [],
+        ];
+
+        yield 'Supports nesting predefined list of classes' => [
+            OA\Components::class,
+            [],
+            [
+                OA\SecurityScheme::class => [
+                    'flows' => [
+                        new OA\Flow([
+                            'flow' => 'implicit',
+                            'authorizationUrl' => 'https://example.com',
+                        ]),
+                        new OA\Flow([
+                            'flow' => 'password',
+                            'tokenUrl' => 'https://example.com',
+                        ]),
                     ],
-                    'exceptionMessage' => 'Nesting Annotations is not supported.',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array<class-string<OA\AbstractAnnotation>, array<mixed>> $children
+     */
+    #[DataProvider('provideInvalidChildData')]
+    public function testGetChildThrowsOnInvalidNestedProperty(string $parent, array $children): void
+    {
+        $parent = new $parent(['_context' => $this->rootContext]);
+
+        foreach ($children as $childClass => $childProperties) {
+            self::assertTrue(is_a($childClass, OA\AbstractAnnotation::class, true), \sprintf('Invalid class %s', $childClass));
+
+            self::expectException(\InvalidArgumentException::class);
+            self::expectExceptionMessage('Nesting attribute properties is not supported, only nest classes.');
+
+            Util::createChild($parent, $childClass, $childProperties);
+        }
+    }
+
+    public static function provideInvalidChildData(): \Generator
+    {
+        yield 'nested child properties as array' => [
+            OA\Parameter::class,
+            [
+                OA\Schema::class => [
+                    // externalDocs triggers invalid argument exception
+                    'externalDocs' => [],
+                ],
+            ],
+        ];
+
+        yield 'nested child properties invalid class' => [
+            OA\Parameter::class,
+            [
+                OA\Schema::class => [
+                    'externalDocs' => new OA\Schema([]),
+                ],
+            ],
+        ];
+
+        yield 'nested child properties invalid list of classes' => [
+            OA\Components::class,
+            [
+                OA\SecurityScheme::class => [
+                    'flows' => [
+                        // invalid class, should be Flow
+                        new OA\Schema([]),
+                        new OA\Tag([]),
+                    ],
                 ],
             ],
         ];

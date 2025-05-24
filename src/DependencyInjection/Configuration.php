@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\DependencyInjection;
 
+use Nelmio\ApiDocBundle\Describer\OperationIdGeneration;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -32,6 +33,11 @@ final class Configuration implements ConfigurationInterface
                 ->booleanNode('use_validation_groups')
                     ->info('If true, `groups` passed to #[Model] attributes will be used to limit validation constraints')
                     ->defaultFalse()
+                ->end()
+                ->enumNode('operation_id_generation')
+                    ->info('How to generate operation ids')
+                    ->values([...OperationIdGeneration::cases(), ...array_map(static fn (OperationIdGeneration $operationId): string => $operationId->value, OperationIdGeneration::cases())])
+                    ->defaultValue(OperationIdGeneration::ALWAYS_PREPEND)
                 ->end()
                 ->arrayNode('cache')
                     ->validate()
@@ -100,6 +106,7 @@ final class Configuration implements ConfigurationInterface
                                 'name_patterns' => [],
                                 'disable_default_routes' => false,
                                 'cache' => [],
+                                'security' => [],
                             ],
                         ]
                     )
@@ -135,6 +142,38 @@ final class Configuration implements ConfigurationInterface
                                 ->defaultValue([])
                                 ->example(['^api_v1'])
                                 ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('security')
+                                ->defaultValue([])
+                                ->example(['bearerAuth' => ['type' => 'http', 'scheme' => 'bearer']])
+                                ->info('Security schemes to use for this area')
+                                ->useAttributeAsKey('securityScheme')
+                                ->arrayPrototype()
+                                    ->children()
+                                        ->scalarNode('type')
+                                            ->validate()
+                                                ->ifNotInArray($securityTypes = ['http', 'apiKey', 'openIdConnect', 'oauth2'])
+                                                ->thenInvalid('Invalid `type` value %s. Available types are: '.implode(', ', $securityTypes))
+                                            ->end()
+                                        ->end()
+                                        ->scalarNode('scheme')
+                                            ->validate()
+                                                ->ifNotInArray($schemes = ['basic', 'bearer'])
+                                                ->thenInvalid('Invalid `scheme` value %s. Available schemes are: '.implode(', ', $schemes))
+                                            ->end()
+                                        ->end()
+                                        ->scalarNode('in')
+                                            ->validate()
+                                                ->ifNotInArray($in = ['header', 'query', 'cookie'])
+                                                ->thenInvalid('Invalid `in` value %s. Available locations are: '.implode(', ', $in))
+                                            ->end()
+                                        ->end()
+                                        ->scalarNode('name')->end()
+                                        ->scalarNode('description')->end()
+                                        ->scalarNode('openIdConnectUrl')->end()
+                                    ->end()
+                                    ->ignoreExtraKeys(false)
+                                ->end()
                             ->end()
                             ->booleanNode('with_attribute')
                                 ->defaultFalse()

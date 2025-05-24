@@ -350,8 +350,28 @@ final class Util
     {
         $nesting = self::getNestingIndexes($class);
 
-        if ([] !== array_intersect(array_keys($properties), $nesting)) {
-            throw new \InvalidArgumentException('Nesting Annotations is not supported.');
+        foreach ($nesting as $childClass => $property) {
+            // Check if a nested property is defined
+            if (!\in_array($property, array_keys($properties), true)) {
+                continue;
+            }
+
+            $propertyMapping = $class::$_nested[$childClass];
+
+            // Single class value
+            if (\is_string($propertyMapping)) {
+                if (!is_a($properties[$propertyMapping], $childClass, true)) {
+                    throw new \InvalidArgumentException('Nesting attribute properties is not supported, only nest classes.');
+                }
+
+                continue;
+            }
+
+            foreach ($properties[$propertyMapping[0]] as $childProperty) {
+                if (!is_a($childProperty, $childClass, true)) {
+                    throw new \InvalidArgumentException('Nesting attribute properties is not supported, only nest classes.');
+                }
+            }
         }
 
         return new $class(
@@ -593,16 +613,13 @@ final class Util
      *
      * @param class-string<T> $class
      *
-     * @return array<int, string>
+     * @return array<class-string<OA\AbstractAnnotation>, string|array<string>>
      */
     private static function getNestingIndexes(string $class): array
     {
-        return array_values(array_map(
-            function ($value) {
-                return \is_array($value) ? $value[0] : $value;
-            },
-            $class::$_nested
-        ));
+        return array_map(function ($property) {
+            return \is_array($property) ? $property[0] : $property;
+        }, $class::$_nested);
     }
 
     /**

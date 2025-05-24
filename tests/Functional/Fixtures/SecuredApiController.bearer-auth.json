@@ -1,0 +1,118 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/secured/article/{id}": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_securedapi_fetcharticle",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": [
+                            "ROLE_USER"
+                        ]
+                    }
+                ]
+            },
+            "patch": {
+                "operationId": "patch_nelmio_apidoc_tests_functional_securedapi_updatearticle",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": [
+                            "ROLE_USER",
+                            "ROLE_ADMIN",
+                            "ROLE_UPDATE_ARTICLE"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/secured/article": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_securedapi_newarticle",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": [
+                            "ROLE_USER",
+                            "ROLE_ADMIN"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/secured/user/documentation": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_securedapi_userdocumentation",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                },
+                "security": []
+            }
+        },
+        "/secured/user/documentation/attribute": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_securedapi_userdocumentationsecurityattribute",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuthCustom": [
+                            "read:user"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
