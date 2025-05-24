@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 5.2.1
+Fixed a bug where using abstract controllers would ignore various attributes like ``#[OA\Tag]`` & ``#[Security]`` on child classes
+
 ## 5.2.0
 Made it possible to automatically generate security definitions based on the ``#[IsGranted]`` attribute.
 
