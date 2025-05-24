@@ -44,9 +44,24 @@ final class OpenApiPhpDescriber
     {
         $classAnnotations = [];
 
-        /** @var \ReflectionMethod $method */
-        foreach ($this->getMethodsToParse() as $method => [$path, $httpMethods, $routeName, $controller]) {
-            $classReflector = $method->getDeclaringClass();
+        foreach ($this->getRoutesToParse() as $routeName => $route) {
+            $controller = $route->getDefault('_controller');
+            $reflectedMethod = $this->controllerReflector->getReflectionMethod($controller);
+            if (null === $reflectedMethod) {
+                continue;
+            }
+
+            $path = $this->normalizePath($route->getPath());
+            $supportedHttpMethods = $this->getSupportedHttpMethods($route);
+            if ([] === $supportedHttpMethods) {
+                $this->logger->warning('None of the HTTP methods specified for path {path} are supported by swagger-ui, skipping this path', [
+                    'path' => $path,
+                ]);
+
+                continue;
+            }
+
+            $classReflector = $reflectedMethod->getDeclaringClass();
             if (\is_array($controller) && method_exists(...$controller)) {
                 $classReflector = new \ReflectionClass($controller[0]);
             } elseif (\is_string($controller) && false !== $i = strpos($controller, '::')) {
@@ -58,8 +73,8 @@ final class OpenApiPhpDescriber
             $context = Util::createContext(['nested' => $path], $path->_context);
             $context->namespace = $classReflector->getNamespaceName();
             $context->class = $classReflector->getShortName();
-            $context->method = $method->name;
-            $context->filename = $method->getFileName();
+            $context->method = $reflectedMethod->name;
+            $context->filename = $reflectedMethod->getFileName();
 
             $this->setContext($context);
 
@@ -67,14 +82,14 @@ final class OpenApiPhpDescriber
                 $classAnnotations[$classReflector->getName()] ??= $this->getAttributesAsAnnotation($classReflector, $context);
             }
 
-            $annotations = $this->getAttributesAsAnnotation($method, $context);
+            $annotations = $this->getAttributesAsAnnotation($reflectedMethod, $context);
 
             $implicitAnnotations = [];
             $mergeProperties = new \stdClass();
 
             foreach (array_merge($annotations, $classAnnotations[$classReflector->getName()]) as $annotation) {
                 if ($annotation instanceof Operation) {
-                    foreach ($httpMethods as $httpMethod) {
+                    foreach ($supportedHttpMethods as $httpMethod) {
                         $operation = Util::getOperation($path, $httpMethod);
                         $operation->mergeProperties($annotation);
                     }
@@ -83,7 +98,7 @@ final class OpenApiPhpDescriber
                 }
 
                 if ($annotation instanceof OA\Operation) {
-                    if (!\in_array($annotation->method, $httpMethods, true)) {
+                    if (!\in_array($annotation->method, $supportedHttpMethods, true)) {
                         continue;
                     }
                     if (Generator::UNDEFINED !== $annotation->path && $path->path !== $annotation->path) {
@@ -99,7 +114,7 @@ final class OpenApiPhpDescriber
                 if ($annotation instanceof Security) {
                     $annotation->validate();
 
-                    foreach ($httpMethods as $httpMethod) {
+                    foreach ($supportedHttpMethods as $httpMethod) {
                         $operation = Util::getOperation($path, $httpMethod);
 
                         if (Generator::UNDEFINED === $operation->security) {
@@ -134,13 +149,13 @@ final class OpenApiPhpDescriber
                     && !$annotation instanceof OA\Parameter
                     && !$annotation instanceof OA\ExternalDocumentation
                 ) {
-                    throw new \LogicException(\sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', $annotation::class, $method->getDeclaringClass()->name, $method->name));
+                    throw new \LogicException(\sprintf('Using the annotation "%s" as a root annotation in "%s::%s()" is not allowed.', $annotation::class, $reflectedMethod->getDeclaringClass()->name, $reflectedMethod->name));
                 }
 
                 $implicitAnnotations[] = $annotation;
             }
 
-            foreach ($httpMethods as $httpMethod) {
+            foreach ($supportedHttpMethods as $httpMethod) {
                 $operation = Util::getOperation($path, $httpMethod);
                 if ([] !== $implicitAnnotations) {
                     $operation->merge($implicitAnnotations);
@@ -163,26 +178,9 @@ final class OpenApiPhpDescriber
         $this->setContext(null);
     }
 
-    private function getMethodsToParse(): \Generator
+    private function getRoutesToParse(): \Generator
     {
-        foreach ($this->routeCollection->all() as $routeName => $route) {
-            $controller = $route->getDefault('_controller');
-            $reflectedMethod = $this->controllerReflector->getReflectionMethod($controller);
-            if (null === $reflectedMethod) {
-                continue;
-            }
-
-            $path = $this->normalizePath($route->getPath());
-            $supportedHttpMethods = $this->getSupportedHttpMethods($route);
-            if ([] === $supportedHttpMethods) {
-                $this->logger->warning('None of the HTTP methods specified for path {path} are supported by swagger-ui, skipping this path', [
-                    'path' => $path,
-                ]);
-
-                continue;
-            }
-            yield $reflectedMethod => [$path, $supportedHttpMethods, $routeName, $controller];
-        }
+        yield from $this->routeCollection->all();
     }
 
     /**
