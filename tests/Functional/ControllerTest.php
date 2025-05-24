@@ -574,6 +574,10 @@ final class ControllerTest extends WebTestCase
                 ],
             ],
         ];
+
+        yield 'Tag from class on inherited controller' => [
+            'InvoiceDocumentController',
+        ];
     }
 
     private static function getFixture(string $fixture): string

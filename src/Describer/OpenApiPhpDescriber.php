@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Describer;
 use Nelmio\ApiDocBundle\Attribute\Operation;
 use Nelmio\ApiDocBundle\Attribute\Security;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberTrait;
 use Nelmio\ApiDocBundle\Util\ControllerReflector;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysers\AttributeAnnotationFactory;
@@ -28,6 +29,7 @@ class_exists(OA\OpenApi::class);
 
 final class OpenApiPhpDescriber
 {
+    use RouteDescriberTrait;
     use SetsContextTrait;
 
     public function __construct(
@@ -43,21 +45,26 @@ final class OpenApiPhpDescriber
         $classAnnotations = [];
 
         /** @var \ReflectionMethod $method */
-        foreach ($this->getMethodsToParse() as $method => [$path, $httpMethods, $routeName]) {
-            $declaringClass = $method->getDeclaringClass();
+        foreach ($this->getMethodsToParse() as $method => [$path, $httpMethods, $routeName, $controller]) {
+            $classReflector = $method->getDeclaringClass();
+            if (\is_array($controller) && method_exists(...$controller)) {
+                $classReflector = new \ReflectionClass($controller[0]);
+            } elseif (\is_string($controller) && false !== $i = strpos($controller, '::')) {
+                $classReflector = new \ReflectionClass(substr($controller, 0, $i));
+            }
 
             $path = Util::getPath($api, $path);
 
             $context = Util::createContext(['nested' => $path], $path->_context);
-            $context->namespace = $declaringClass->getNamespaceName();
-            $context->class = $declaringClass->getShortName();
+            $context->namespace = $classReflector->getNamespaceName();
+            $context->class = $classReflector->getShortName();
             $context->method = $method->name;
             $context->filename = $method->getFileName();
 
             $this->setContext($context);
 
-            if (!\array_key_exists($declaringClass->getName(), $classAnnotations)) {
-                $classAnnotations[$declaringClass->getName()] = $this->getAttributesAsAnnotation($declaringClass, $context);
+            if (!\array_key_exists($classReflector->getName(), $classAnnotations)) {
+                $classAnnotations[$classReflector->getName()] ??= $this->getAttributesAsAnnotation($classReflector, $context);
             }
 
             $annotations = $this->getAttributesAsAnnotation($method, $context);
@@ -65,7 +72,7 @@ final class OpenApiPhpDescriber
             $implicitAnnotations = [];
             $mergeProperties = new \stdClass();
 
-            foreach (array_merge($annotations, $classAnnotations[$declaringClass->getName()]) as $annotation) {
+            foreach (array_merge($annotations, $classAnnotations[$classReflector->getName()]) as $annotation) {
                 if ($annotation instanceof Operation) {
                     foreach ($httpMethods as $httpMethod) {
                         $operation = Util::getOperation($path, $httpMethod);
@@ -159,14 +166,12 @@ final class OpenApiPhpDescriber
     private function getMethodsToParse(): \Generator
     {
         foreach ($this->routeCollection->all() as $routeName => $route) {
-            if (!$route->hasDefault('_controller')) {
-                continue;
-            }
             $controller = $route->getDefault('_controller');
             $reflectedMethod = $this->controllerReflector->getReflectionMethod($controller);
             if (null === $reflectedMethod) {
                 continue;
             }
+
             $path = $this->normalizePath($route->getPath());
             $supportedHttpMethods = $this->getSupportedHttpMethods($route);
             if ([] === $supportedHttpMethods) {
@@ -176,7 +181,7 @@ final class OpenApiPhpDescriber
 
                 continue;
             }
-            yield $reflectedMethod => [$path, $supportedHttpMethods, $routeName];
+            yield $reflectedMethod => [$path, $supportedHttpMethods, $routeName, $controller];
         }
     }
 
@@ -194,15 +199,6 @@ final class OpenApiPhpDescriber
         }
 
         return array_intersect($methods, $allMethods);
-    }
-
-    private function normalizePath(string $path): string
-    {
-        if ('.{_format}' === substr($path, -10)) {
-            $path = substr($path, 0, -10);
-        }
-
-        return $path;
     }
 
     /**
