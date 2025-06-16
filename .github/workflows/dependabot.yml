@@ -27,7 +27,7 @@ jobs:
         run: yarn run swagger
       - name: Redocly
         run: yarn run redoc
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: "[dependabot-skip] Update UI files"
           branch: ${{ github.head_ref }}
