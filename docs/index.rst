@@ -258,7 +258,7 @@ This attribute has two options:
         )]
 
 * ``groups`` may also be used to specify the constraint validation groups used
-  (de)serialize your model, but this must be enabled in configuration::
+  to (de)serialize your model, but this must be enabled in configuration::
 
 .. code-block:: yaml
 
