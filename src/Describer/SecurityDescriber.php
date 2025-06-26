@@ -78,6 +78,7 @@ final class SecurityDescriber implements DescriberInterface
             return;
         }
 
+        $classReflector = null;
         try {
             if (\is_array($controller) && method_exists(...$controller)) {
                 $classReflector = new \ReflectionClass($controller[0]);
