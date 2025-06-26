@@ -52,12 +52,16 @@ final class OpenApiPhpDescriber
             $path = $this->normalizePath($route->getPath());
             $supportedHttpMethods = $this->getSupportedHttpMethods($route);
 
-            $classReflector = $reflectedMethod->getDeclaringClass();
             if (\is_array($controller) && method_exists(...$controller)) {
-                $classReflector = new \ReflectionClass($controller[0]);
+                $class = $controller[0];
             } elseif (\is_string($controller) && false !== $i = strpos($controller, '::')) {
-                $classReflector = new \ReflectionClass(substr($controller, 0, $i));
+                $class = substr($controller, 0, $i);
             }
+
+            $classReflector = isset($class) && class_exists($class)
+                ? new \ReflectionClass($class)
+                : $reflectedMethod->getDeclaringClass();
+
 
             $path = Util::getPath($api, $path);
 
