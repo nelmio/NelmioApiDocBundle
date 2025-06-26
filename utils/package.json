@@ -7,10 +7,13 @@
     "swagger-ui-dist": "5.25.3"
   },
   "scripts": {
-    "swagger": "ls node_modules/swagger-ui-dist && yarn run swagger:bundle && yarn run swagger:standalone && yarn run swagger:css",
-    "swagger:bundle": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.{js,js.map} $npm_package_config_destination_swagger",
-    "swagger:standalone": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.{js,js.map} $npm_package_config_destination_swagger",
-    "swagger:css": "cp node_modules/swagger-ui-dist/swagger-ui.{css,css.map} $npm_package_config_destination_swagger",
+    "swagger": "yarn run swagger:bundle && yarn run swagger:bundle:map && yarn run swagger:standalone && yarn run swagger:standalone:map && yarn run swagger:css && yarn run swagger:css:map",
+    "swagger:bundle": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.js $npm_package_config_destination_swagger",
+    "swagger:bundle:map": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.js.map $npm_package_config_destination_swagger",
+    "swagger:standalone": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js $npm_package_config_destination_swagger",
+    "swagger:standalone:map": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js.map $npm_package_config_destination_swagger",
+    "swagger:css": "cp node_modules/swagger-ui-dist/swagger-ui.css $npm_package_config_destination_swagger",
+    "swagger:css:map": "cp node_modules/swagger-ui-dist/swagger-ui.css.map $npm_package_config_destination_swagger",
     "redoc": "cp node_modules/redoc/bundles/redoc.standalone.js $npm_package_config_destination_redoc",
     "stoplight": "yarn run stoplight:js && yarn run stoplight:css",
     "stoplight:js": "cp node_modules/@stoplight/elements/web-components.min.js $npm_package_config_destination_stoplight",
