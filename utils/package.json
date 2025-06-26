@@ -7,7 +7,7 @@
     "swagger-ui-dist": "5.25.3"
   },
   "scripts": {
-    "swagger": "yarn run swagger:bundle && yarn run swagger:standalone && yarn run swagger:css",
+    "swagger": "ls node_modules/swagger-ui-dist && yarn run swagger:bundle && yarn run swagger:standalone && yarn run swagger:css",
     "swagger:bundle": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.{js,js.map} $npm_package_config_destination_swagger",
     "swagger:standalone": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.{js,js.map} $npm_package_config_destination_swagger",
     "swagger:css": "cp node_modules/swagger-ui-dist/swagger-ui.{css,css.map} $npm_package_config_destination_swagger",
