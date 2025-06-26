@@ -86,7 +86,7 @@ final class SecurityDescriber implements DescriberInterface
                 $classReflector = new \ReflectionClass(substr($controller, 0, $i));
             }
         } catch (\ReflectionException) {
-            // Fallback to the declaring class if the controller class does not exist
+            // Fallback
         }
 
         $attributes = array_map(
