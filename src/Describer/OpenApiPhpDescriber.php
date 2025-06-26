@@ -62,7 +62,6 @@ final class OpenApiPhpDescriber
                 ? new \ReflectionClass($class)
                 : $reflectedMethod->getDeclaringClass();
 
-
             $path = Util::getPath($api, $path);
 
             $context = Util::createContext(['nested' => $path], $path->_context);
