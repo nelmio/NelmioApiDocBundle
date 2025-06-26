@@ -77,4 +77,20 @@ class MapUploadedFileController
         ?UploadedFile $upload,
     ) {
     }
+
+    #[Route('/article_map_uploaded_file_array', methods: ['POST'])]
+    #[OA\Response(response: '200', description: '')]
+    public function createArrayUploadFromMapUploadedFilePayload(
+        #[MapUploadedFile]
+        array $upload,
+    ) {
+    }
+
+    #[Route('/article_map_uploaded_file_variadic', methods: ['POST'])]
+    #[OA\Response(response: '200', description: '')]
+    public function createVariadicUploadFromMapUploadedFilePayload(
+        #[MapUploadedFile]
+        UploadedFile ...$upload,
+    ) {
+    }
 }
