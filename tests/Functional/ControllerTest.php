@@ -579,7 +579,7 @@ final class ControllerTest extends WebTestCase
             'InvoiceDocumentController',
         ];
 
-        yield '' => [
+        yield 'Controller as service' => [
             null,
             'controller-as-service',
             [],
@@ -587,6 +587,35 @@ final class ControllerTest extends WebTestCase
             [
                 'web_custom_controller' => (new Definition(SecuredApiController::class))
                 ->setPublic(true),
+            ],
+            function (RoutingConfigurator $routes) {
+                $routes->add('route_name', '/')
+                    ->controller('web_custom_controller::fetchArticleAction')
+                    ->methods(['GET']);
+            },
+        ];
+
+        yield 'Controller as service with security' => [
+            null,
+            'controller-as-service-with-security',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'areas' => [
+                        'default' => [
+                            'security' => [
+                                'BasicAuth' => [
+                                    'type' => 'http',
+                                    'scheme' => 'basic',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'web_custom_controller' => (new Definition(SecuredApiController::class))
+                    ->setPublic(true),
             ],
             function (RoutingConfigurator $routes) {
                 $routes->add('route_name', '/')
