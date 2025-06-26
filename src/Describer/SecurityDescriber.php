@@ -78,12 +78,15 @@ final class SecurityDescriber implements DescriberInterface
             return;
         }
 
-        $classReflector = null;
         if (\is_array($controller) && method_exists(...$controller)) {
-            $classReflector = new \ReflectionClass($controller[0]);
+            $class = $controller[0];
         } elseif (\is_string($controller) && false !== $i = strpos($controller, '::')) {
-            $classReflector = new \ReflectionClass(substr($controller, 0, $i));
+            $class = substr($controller, 0, $i);
         }
+
+        $classReflector = isset($class) && class_exists($class)
+            ? new \ReflectionClass($class)
+            : null;
 
         $attributes = array_map(
             static fn (\ReflectionAttribute $attribute): IsGranted => $attribute->newInstance(),
