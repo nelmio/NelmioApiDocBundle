@@ -33,14 +33,11 @@ class ModelRegistryTest extends TestCase
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true);
 
-        self::assertEquals('#/components/schemas/array', $registry->register(new Model($type, ['group1'])));
+        self::assertEquals('#/components/schemas/mixed[]', $registry->register(new Model($type, ['group1'])));
     }
 
-    /**
-     * @param array<string, mixed> $arrayType
-     */
     #[DataProvider('provideNameCollisionsTypes')]
-    public function testNameCollisionsAreLogged(Type $type, array $arrayType): void
+    public function testNameCollisionsAreLogged(Type $type, string $stringifiedType): void
     {
         $logger = $this->createMock(LoggerInterface::class);
         $logger
@@ -50,7 +47,7 @@ class ModelRegistryTest extends TestCase
                 'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.',
                 [
                     'model' => [
-                        'type' => $arrayType,
+                        'type' => $stringifiedType,
                         'options' => [],
                         'groups' => ['group2'],
                         'serialization_context' => [
@@ -58,7 +55,7 @@ class ModelRegistryTest extends TestCase
                         ],
                     ],
                     'taken_by' => [
-                        'type' => $arrayType,
+                        'type' => $stringifiedType,
                         'options' => [],
                         'groups' => ['group1'],
                         'serialization_context' => [
@@ -78,37 +75,14 @@ class ModelRegistryTest extends TestCase
 
     public static function provideNameCollisionsTypes(): \Generator
     {
-        yield [
+        yield 'class' => [
             new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class),
-            [
-                'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
-                'built_in_type' => 'object',
-                'nullable' => false,
-                'collection' => false,
-                'collection_key_types' => null,
-                'collection_value_types' => null,
-            ],
+            'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
         ];
 
-        yield [
-            new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class, true, new Type(Type::BUILTIN_TYPE_OBJECT)),
-            [
-                'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
-                'built_in_type' => 'object',
-                'nullable' => false,
-                'collection' => true,
-                'collection_key_types' => [
-                    [
-                        'class' => null,
-                        'built_in_type' => 'object',
-                        'nullable' => false,
-                        'collection' => false,
-                        'collection_key_types' => null,
-                        'collection_value_types' => null,
-                    ],
-                ],
-                'collection_value_types' => [],
-            ],
+        yield 'nullable class' => [
+            new Type(Type::BUILTIN_TYPE_OBJECT, true, self::class),
+            'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest|null',
         ];
     }
 
@@ -129,27 +103,13 @@ class ModelRegistryTest extends TestCase
                 'Can not assign a name for the model, the name "ModelRegistryTest" has already been taken.',
                 [
                     'model' => [
-                        'type' => [
-                            'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
-                            'built_in_type' => 'object',
-                            'nullable' => false,
-                            'collection' => false,
-                            'collection_key_types' => null,
-                            'collection_value_types' => null,
-                        ],
+                        'type' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
                         'options' => [],
                         'groups' => ['group2'],
                         'serialization_context' => ['groups' => ['group2']],
                     ],
                     'taken_by' => [
-                        'type' => [
-                            'class' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
-                            'built_in_type' => 'object',
-                            'nullable' => false,
-                            'collection' => false,
-                            'collection_key_types' => null,
-                            'collection_value_types' => null,
-                        ],
+                        'type' => 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
                         'options' => [],
                         'groups' => ['group1'],
                         'serialization_context' => ['groups' => ['group1']],

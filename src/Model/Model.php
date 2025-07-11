@@ -11,12 +11,12 @@
 
 namespace Nelmio\ApiDocBundle\Model;
 
-use Symfony\Component\PropertyInfo\Type;
+use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
+use Symfony\Component\TypeInfo\Type;
 
 final class Model
 {
-    private Type $type;
-
     /**
      * @var mixed[]
      */
@@ -32,9 +32,21 @@ final class Model
      * @param mixed[]       $options
      * @param mixed[]       $serializationContext
      */
-    public function __construct(Type $type, ?array $groups = null, array $options = [], array $serializationContext = [])
-    {
-        $this->type = $type;
+    public function __construct(
+        private LegacyType|Type $type,
+        ?array $groups = null,
+        array $options = [],
+        array $serializationContext = []
+    ) {
+        if ($type instanceof LegacyType) {
+            trigger_deprecation(
+                'nelmio/api-doc-bundle',
+                '5.X', // TODO
+                'Using Symfony\Component\PropertyInfo\Type as type in %s is deprecated, use Symfony\Component\TypeInfo\Type instead.',
+                __METHOD__
+            );
+        }
+
         $this->options = $options;
         $this->serializationContext = $serializationContext;
         if (null !== $groups) {
@@ -42,9 +54,31 @@ final class Model
         }
     }
 
-    public function getType(): Type
+    /**
+     * @deprecated use getTypeInfo() instead
+     */
+    public function getType(): LegacyType
     {
+        if ($this->type instanceof Type) {
+            throw new \LogicException('This method is deprecated and should not be used with Symfony\Component\TypeInfo\Type. Use getTypeInfo() instead.');
+        }
+
         return $this->type;
+    }
+
+    public function getTypeInfo(): Type
+    {
+        if ($this->type instanceof Type) {
+            return $this->type;
+        }
+
+        $converted = LegacyTypeConverter::toTypeInfoType([$this->type]);
+
+        if (null === $converted) {
+            throw new \LogicException('Could not convert legacy type to TypeInfo type.');
+        }
+
+        return $converted;
     }
 
     /**
