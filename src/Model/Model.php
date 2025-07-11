@@ -60,7 +60,7 @@ final class Model
     public function getType(): LegacyType
     {
         if ($this->type instanceof Type) {
-            throw new \LogicException('This method is deprecated and should not be used with Symfony\Component\TypeInfo\Type. Use getTypeInfo() instead.');
+            return LegacyTypeConverter::toLegacyType($this->type);
         }
 
         return $this->type;
@@ -99,7 +99,7 @@ final class Model
 
     public function getHash(): string
     {
-        return md5(serialize([$this->type, $this->getSerializationContext()]));
+        return md5(serialize([$this->getTypeInfo()->__toString(), $this->getSerializationContext()]));
     }
 
     /**
