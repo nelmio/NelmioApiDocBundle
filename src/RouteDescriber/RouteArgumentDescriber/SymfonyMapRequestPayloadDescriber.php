@@ -19,7 +19,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\Validator\Constraints\GroupSequence;
 
 final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberInterface, ModelRegistryAwareInterface
@@ -38,12 +38,12 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
         $typeClass = $argumentMetadata->getType();
 
         $reflectionAttribute = new \ReflectionClass(MapRequestPayload::class);
-        if (Type::BUILTIN_TYPE_ARRAY === $typeClass && $reflectionAttribute->hasProperty('type') && null !== $attribute->type) {
+        if ('array' === $typeClass && $reflectionAttribute->hasProperty('type') && null !== $attribute->type) {
             $typeClass = $attribute->type;
         }
 
         $modelRef = $this->modelRegistry->register(new Model(
-            new Type(Type::BUILTIN_TYPE_OBJECT, false, $typeClass),
+            Type::object($typeClass),
             groups: $this->getGroups($attribute),
             serializationContext: $attribute->serializationContext,
         ));

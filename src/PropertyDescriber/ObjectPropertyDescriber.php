@@ -16,7 +16,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 
 final class ObjectPropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
 {
@@ -27,7 +27,7 @@ final class ObjectPropertyDescriber implements PropertyDescriberInterface, Model
      */
     public function describe(array $types, OA\Schema $property, array $context = []): void
     {
-        $type = new Type(
+        $type = new LegacyType(
             $types[0]->getBuiltinType(),
             false,
             $types[0]->getClassName(),
@@ -57,6 +57,6 @@ final class ObjectPropertyDescriber implements PropertyDescriberInterface, Model
     public function supports(array $types, array $context = []): bool
     {
         return 1 === \count($types)
-            && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
+            && LegacyType::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType();
     }
 }

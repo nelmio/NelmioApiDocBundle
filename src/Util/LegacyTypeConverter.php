@@ -25,8 +25,12 @@ final class LegacyTypeConverter
     /**
      * @param LegacyType[] $legacyTypes
      */
-    public static function toTypeInfoType(array $legacyTypes): Type
+    public static function toTypeInfoType(array $legacyTypes): ?Type
     {
+        if ([] === $legacyTypes) {
+            return null;
+        }
+
         $nullable = false;
         $types = [];
 
@@ -94,12 +98,16 @@ final class LegacyTypeConverter
     public static function toLegacyType(Type $type): LegacyType
     {
         $nullable = false;
-        if ($type->isNullable()) {
+
+        if ($type instanceof Type\NullableType) {
             $nullable = true;
+            $type = $type->getWrappedType();
         }
 
         if ($type instanceof Type\ObjectType) {
             return new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, $nullable, $type->getClassName());
         }
+
+        throw new \LogicException('Unsupported TypeInfo type: '.$type->__toString());
     }
 }

@@ -17,7 +17,7 @@ use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\TypeInfo\Type;
 
 /**
  * Resolves the path in SwaggerPhp annotation when needed.
@@ -137,11 +137,11 @@ final class ModelRegister
 
     private function createType(string $type): Type
     {
-        if ('[]' === substr($type, -2)) {
-            return new Type(Type::BUILTIN_TYPE_ARRAY, false, null, true, null, $this->createType(substr($type, 0, -2)));
+        if (str_ends_with($type, '[]')) {
+            return Type::list($this->createType(substr($type, 0, -2)));
         }
 
-        return new Type(Type::BUILTIN_TYPE_OBJECT, false, $type);
+        return Type::object($type);
     }
 
     private function getModel(OA\AbstractAnnotation $annotation): ?ModelAnnotation

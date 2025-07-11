@@ -17,7 +17,6 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
-use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\Uid\AbstractUid;
@@ -67,7 +66,7 @@ final class ClassDescriber implements TypeDescriberInterface, ModelRegistryAware
         }
 
         $schema->ref = $this->modelRegistry->register(
-            new Model(new LegacyType('object', false, $type->getClassName()), serializationContext: $context)
+            new Model($type, serializationContext: $context)
         );
     }
 

@@ -19,7 +19,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\Validator\Constraints\GroupSequence;
 
 final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInterface, ModelRegistryAwareInterface
@@ -37,7 +37,7 @@ final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInte
         }
 
         $modelRef = $this->modelRegistry->register(new Model(
-            new Type(Type::BUILTIN_TYPE_OBJECT, $argumentMetadata->isNullable(), $argumentMetadata->getType()),
+            $argumentMetadata->isNullable() ? Type::nullable(Type::object($argumentMetadata->getType())) : Type::object($argumentMetadata->getType()),
             groups: $this->getGroups($attribute),
             serializationContext: $attribute->serializationContext,
         ));

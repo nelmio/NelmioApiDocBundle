@@ -15,7 +15,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\TypeInfo\Type;
 
 /**
  * Contains helper methods that add `discriminator` and `oneOf` values to
@@ -52,7 +52,7 @@ trait ApplyOpenApiDiscriminatorTrait
         foreach ($typeMap as $propertyValue => $className) {
             $oneOfSchema = new OA\Schema(['_context' => $weakContext]);
             $oneOfSchema->ref = $modelRegistry->register(new Model(
-                new Type(Type::BUILTIN_TYPE_OBJECT, false, $className),
+                Type::object($className),
                 $model->getGroups(),
                 $model->getOptions(),
                 $model->getSerializationContext()
