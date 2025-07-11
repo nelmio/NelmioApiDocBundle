@@ -23,14 +23,10 @@ use Symfony\Component\TypeInfo\Type;
 final class LegacyTypeConverter
 {
     /**
-     * @param LegacyType[]|null $legacyTypes
+     * @param LegacyType[] $legacyTypes
      */
-    public static function toTypeInfoType(?array $legacyTypes): ?Type
+    public static function toTypeInfoType(array $legacyTypes): Type
     {
-        if (null === $legacyTypes || [] === $legacyTypes) {
-            return null;
-        }
-
         $nullable = false;
         $types = [];
 
@@ -93,5 +89,17 @@ final class LegacyTypeConverter
         }
 
         return $nullable ? Type::nullable(Type::union(...$types)) : Type::union(...$types);
+    }
+
+    public static function toLegacyType(Type $type): LegacyType
+    {
+        $nullable = false;
+        if ($type->isNullable()) {
+            $nullable = true;
+        }
+
+        if ($type instanceof Type\ObjectType) {
+            return new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, $nullable, $type->getClassName());
+        }
     }
 }
