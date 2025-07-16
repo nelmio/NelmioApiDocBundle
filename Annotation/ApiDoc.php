@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Route;
 /**
  * @Annotation
  */
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class ApiDoc
 {
     const DEFAULT_VIEW = 'default';
@@ -170,8 +171,53 @@ class ApiDoc
      */
     private $tags = array();
 
-    public function __construct(array $data)
+    public function __construct(
+        ?array $data = null,
+        ?string $description = null,
+        ?string $section = null,
+        string|array|null $input = null,
+        string|array|null $output = null,
+        ?array $filters = null,
+        ?array $requirements = null,
+        ?array $views = null,
+        ?array $parameters = null,
+        ?array $headers = null,
+        ?array $statusCodes = null,
+        ?bool $authentication = null,
+        ?array $authenticationRoles = null,
+        ?int $cache = null,
+        ?bool $deprecated = null,
+        ?array $tags = null,
+        ?bool $https = null,
+        ?string $resourceDescription = null,
+        ?array $responseMap = null,
+        ?bool $resource = null
+    )
     {
+        // Support both old array format and new named parameters for PHP 8 attributes
+        $data = $data ?? array();
+        
+        // Handle named parameters for PHP 8 attributes
+        if ($description !== null) $data['description'] = $description;
+        if ($section !== null) $data['section'] = $section;
+        if ($input !== null) $data['input'] = $input;
+        if ($output !== null) $data['output'] = $output;
+        if ($filters !== null) $data['filters'] = $filters;
+        if ($requirements !== null) $data['requirements'] = $requirements;
+        if ($views !== null) $data['views'] = $views;
+        if ($parameters !== null) $data['parameters'] = $parameters;
+        if ($headers !== null) $data['headers'] = $headers;
+        if ($statusCodes !== null) $data['statusCodes'] = $statusCodes;
+        if ($authentication !== null) $data['authentication'] = $authentication;
+        if ($authenticationRoles !== null) $data['authenticationRoles'] = $authenticationRoles;
+        if ($cache !== null) $data['cache'] = $cache;
+        if ($deprecated !== null) $data['deprecated'] = $deprecated;
+        if ($tags !== null) $data['tags'] = $tags;
+        if ($https !== null) $data['https'] = $https;
+        if ($resourceDescription !== null) $data['resourceDescription'] = $resourceDescription;
+        if ($responseMap !== null) $data['responseMap'] = $responseMap;
+        if ($resource !== null) $data['resource'] = $resource;
+        
         $this->resource = !empty($data['resource']) ? $data['resource'] : false;
 
         if (isset($data['description'])) {

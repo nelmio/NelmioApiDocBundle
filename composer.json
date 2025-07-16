@@ -1,6 +1,6 @@
 {
     "name": "nelmio/api-doc-bundle",
-    "description": "Generates documentation for your REST API from annotations",
+    "description": "Generates documentation for your REST API from annotations and PHP 8 attributes",
     "keywords": ["api", "documentation", "doc", "rest"],
     "type": "symfony-bundle",
     "license": "MIT",
@@ -15,48 +15,51 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
-        "symfony/twig-bundle": "~2.3|~3.0|~4.0|~5.0",
-        "symfony/framework-bundle": "~2.3|~3.0|~4.0|~5.0",
-        "symfony/console": "~2.3|~3.0|~4.0|~5.0",
-        "michelf/php-markdown": "~1.4"
+        "php": ">=8.0",
+        "symfony/twig-bundle": "6.4.*",
+        "symfony/framework-bundle": "6.4.*",
+        "symfony/console": "6.4.*",
+        "symfony/routing": "6.4.*",
+        "doctrine/annotations": "^1.13|^2.0",
+        "michelf/php-markdown": "^1.9|^2.0"
     },
     "conflict": {
-        "jms/serializer": "<0.12",
-        "jms/serializer-bundle": "<0.11",
-        "twig/twig": "<1.12",
-        "symfony/symfony": "~2.7.8"
+        "jms/serializer": "<1.0",
+        "jms/serializer-bundle": "<2.0",
+        "twig/twig": "<3.0"
     },
     "require-dev": {
-        "symfony/css-selector": "~2.3|~3.0|~4.0",
-        "symfony/browser-kit": "~2.3|~3.0|~4.0",
-        "symfony/validator": "~2.3|~3.0|~4.0",
-        "symfony/yaml": "~2.3|~3.0|~4.0",
-        "symfony/form": "~2.3|~3.0|~4.0",
-        "symfony/finder": "~2.3|~3.0|~4.0",
-        "symfony/serializer": "~2.7|~3.0|~4.0",
-        "doctrine/orm": "~2.3",
-        "doctrine/doctrine-bundle": "~1.5",
-        "friendsofsymfony/rest-bundle": "~1.0|~2.0",
-        "jms/serializer-bundle": ">=0.11",
-        "dunglas/api-bundle": "~1.0",
-        "sensio/framework-extra-bundle": "~3.0",
-        "symfony/phpunit-bridge": "~2.7|~3.0|~4.0"
+        "symfony/css-selector": "6.4.*",
+        "symfony/browser-kit": "6.4.*",
+        "symfony/validator": "6.4.*",
+        "symfony/yaml": "6.4.*",
+        "symfony/form": "6.4.*",
+        "symfony/finder": "6.4.*",
+        "symfony/serializer": "6.4.*",
+        "doctrine/orm": "^2.15|^3.0",
+        "doctrine/doctrine-bundle": "^2.10",
+        "friendsofsymfony/rest-bundle": "^3.0",
+        "jms/serializer-bundle": "^4.0|^5.0",
+        "sensio/framework-extra-bundle": "^6.0",
+        "symfony/phpunit-bridge": "6.4.*",
+        "phpunit/phpunit": "^9.0|^10.0"
     },
     "suggest": {
         "symfony/form": "For using form definitions as input.",
         "symfony/validator": "For making use of validator information in the doc.",
         "friendsofsymfony/rest-bundle": "For making use of REST information in the doc.",
-        "dunglas/api-bundle": "For making use of resources definitions of DunglasApiBundle.",
-        "jms/serializer": "For making use of serializer information in the doc."
+        "api-platform/core": "For making use of API Platform resources (successor to DunglasApiBundle).",
+        "jms/serializer": "For making use of serializer information in the doc.",
+        "nelmio/cors-bundle": "For handling CORS in API documentation."
     },
     "autoload": {
-        "psr-0": { "Nelmio\\ApiDocBundle": "" }
+        "psr-4": {
+            "Nelmio\\ApiDocBundle\\": ""
+        }
     },
-    "target-dir": "Nelmio/ApiDocBundle",
     "extra": {
         "branch-alias": {
-            "dev-2.x": "2.13-dev"
+            "dev-2.20.x": "2.20.x-dev"
         }
     }
 }

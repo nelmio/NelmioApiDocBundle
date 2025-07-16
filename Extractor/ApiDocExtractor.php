@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\DataTypes;
 use Nelmio\ApiDocBundle\Parser\ParserInterface;
 use Nelmio\ApiDocBundle\Parser\PostParserInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
+use Nelmio\ApiDocBundle\Extractor\AttributeReader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
@@ -43,6 +44,11 @@ class ApiDocExtractor
     protected $reader;
 
     /**
+     * @var AttributeReader
+     */
+    protected $attributeReader;
+
+    /**
      * @var DocCommentExtractor
      */
     private $commentExtractor;
@@ -62,7 +68,7 @@ class ApiDocExtractor
      */
     protected $annotationsProviders;
 
-    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers, array $annotationsProviders)
+    public function __construct(ContainerInterface $container, RouterInterface $router, Reader $reader, DocCommentExtractor $commentExtractor, array $handlers, array $annotationsProviders, AttributeReader $attributeReader = null)
     {
         $this->container            = $container;
         $this->router               = $router;
@@ -70,6 +76,7 @@ class ApiDocExtractor
         $this->commentExtractor     = $commentExtractor;
         $this->handlers             = $handlers;
         $this->annotationsProviders = $annotationsProviders;
+        $this->attributeReader      = $attributeReader ?: new AttributeReader();
     }
 
     /**
@@ -115,7 +122,7 @@ class ApiDocExtractor
             }
 
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
-                $annotation = $this->reader->getMethodAnnotation($method, static::ANNOTATION_CLASS);
+                $annotation = $this->getMethodApiDocAnnotation($method);
                 if (
                     $annotation && !in_array($annotation->getSection(), $excludeSections) &&
                     (in_array($view, $annotation->getViews()) || (0 === count($annotation->getViews()) && $view === ApiDoc::DEFAULT_VIEW))
@@ -248,7 +255,7 @@ class ApiDocExtractor
     public function get($controller, $route)
     {
         if ($method = $this->getReflectionMethod($controller)) {
-            if ($annotation = $this->reader->getMethodAnnotation($method, static::ANNOTATION_CLASS)) {
+            if ($annotation = $this->getMethodApiDocAnnotation($method)) {
                 if ($route = $this->router->getRouteCollection()->get($route)) {
                     return $this->extractData($annotation, $route, $method);
                 }
@@ -256,6 +263,45 @@ class ApiDocExtractor
         }
 
         return null;
+    }
+
+    /**
+     * Gets ApiDoc annotation from method (supports both annotations and attributes)
+     *
+     * @param \ReflectionMethod $method
+     * @return ApiDoc|null
+     */
+    protected function getMethodApiDocAnnotation(\ReflectionMethod $method): ?ApiDoc
+    {
+        // First try to get from attribute (PHP 8+)
+        if ($this->attributeReader->supportsAttributes()) {
+            $annotation = $this->attributeReader->getMethodAttribute($method, static::ANNOTATION_CLASS);
+            if ($annotation) {
+                return $annotation;
+            }
+        }
+
+        // Fallback to regular annotation reading
+        return $this->reader->getMethodAnnotation($method, static::ANNOTATION_CLASS);
+    }
+
+    /**
+     * Gets all method annotations (supports both annotations and attributes)
+     *
+     * @param \ReflectionMethod $method
+     * @return array
+     */
+    protected function getAllMethodAnnotations(\ReflectionMethod $method): array
+    {
+        $annotations = $this->reader->getMethodAnnotations($method);
+        
+        // Add attributes if supported
+        if ($this->attributeReader->supportsAttributes()) {
+            $attributes = $this->attributeReader->getMethodAttributes($method);
+            $annotations = array_merge($annotations, $attributes);
+        }
+        
+        return $annotations;
     }
 
     /**
@@ -512,7 +558,7 @@ class ApiDocExtractor
      */
     protected function parseAnnotations(ApiDoc $annotation, Route $route, \ReflectionMethod $method)
     {
-        $annots = $this->reader->getMethodAnnotations($method);
+        $annots = $this->getAllMethodAnnotations($method);
         foreach ($this->handlers as $handler) {
             $handler->handle($annotation, $annots, $route, $method);
         }

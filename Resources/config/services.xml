@@ -8,6 +8,7 @@
         <parameter key="nelmio_api_doc.form.extension.description_form_type_extension.class">Nelmio\ApiDocBundle\Form\Extension\DescriptionFormTypeExtension</parameter>
         <parameter key="nelmio_api_doc.twig.extension.extra_markdown.class">Nelmio\ApiDocBundle\Twig\Extension\MarkdownExtension</parameter>
         <parameter key="nelmio_api_doc.doc_comment_extractor.class">Nelmio\ApiDocBundle\Util\DocCommentExtractor</parameter>
+        <parameter key="nelmio_api_doc.extractor.attribute_reader.class">Nelmio\ApiDocBundle\Extractor\AttributeReader</parameter>
 
         <parameter key="nelmio_api_doc.extractor.handler.fos_rest.class">Nelmio\ApiDocBundle\Extractor\Handler\FosRestHandler</parameter>
         <parameter key="nelmio_api_doc.extractor.handler.jms_security.class">Nelmio\ApiDocBundle\Extractor\Handler\JmsSecurityExtraHandler</parameter>
@@ -28,6 +29,7 @@
             </call>
         </service>
         <service id="nelmio_api_doc.doc_comment_extractor" class="%nelmio_api_doc.doc_comment_extractor.class%" />
+        <service id="nelmio_api_doc.extractor.attribute_reader" class="%nelmio_api_doc.extractor.attribute_reader.class%" />
 
         <service id="nelmio_api_doc.extractor.api_doc_extractor" class="%nelmio_api_doc.extractor.api_doc_extractor.class%" public="true">
             <argument type="service" id="service_container" />
@@ -36,6 +38,7 @@
             <argument type="service" id="nelmio_api_doc.doc_comment_extractor" />
             <argument type="collection" />
             <argument type="collection" />
+            <argument type="service" id="nelmio_api_doc.extractor.attribute_reader" />
         </service>
 
         <service id="nelmio_api_doc.form.extension.description_form_type_extension" class="%nelmio_api_doc.form.extension.description_form_type_extension.class%">
