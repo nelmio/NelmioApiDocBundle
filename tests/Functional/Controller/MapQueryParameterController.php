@@ -84,7 +84,7 @@ class MapQueryParameterController
         name: 'changedType',
         in: 'query',
         schema: new OA\Schema(type: 'int', nullable: false),
-        description: 'Incorrectly described query parameter',
+        description: 'Incorrectly described query parameter, fixed by swagger-php',
         example: 123,
     )]
     #[OA\Response(response: '200', description: '')]
