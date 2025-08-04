@@ -49,6 +49,11 @@ final class ModelRegistry
     private array $names = [];
 
     /**
+     * @var array<string, array{'schema': string, 'model': Model}[]> List of schemas and Model per type
+     */
+    private array $schemasPerType = [];
+
+    /**
      * @var iterable<ModelDescriberInterface>
      */
     private iterable $modelDescribers;
@@ -82,19 +87,69 @@ final class ModelRegistry
     public function register(Model $model): string
     {
         $hash = $model->getHash();
-        if (!isset($this->models[$hash])) {
-            $this->models[$hash] = $model;
-            $this->unregistered[] = $hash;
-        }
+        $type = $this->getTypeShortName($model->getType());
+
+        $schema = null;
         if (!isset($this->names[$hash])) {
             $this->names[$hash] = $this->generateModelName($model);
             $this->registeredModelNames[$this->names[$hash]] = $model;
+
+            $schema = $this->describeSchema($model, null);
+            // Only try to match schemas if we successfully got one
+            if (null !== $schema) {
+                foreach ($this->schemasPerType[$type] ?? [] as $schemaAndModel) {
+                    if ($schemaAndModel['schema'] === json_encode($schema->jsonSerialize())) {
+                        $newHash = $schemaAndModel['model']->getHash();
+                        unset($this->names[$hash], $this->registeredModelNames[$hash]);
+
+                        return OA\Components::SCHEMA_REF.$this->names[$newHash];
+                    }
+                }
+            }
+        }
+
+        if (!isset($this->models[$hash])) {
+            $this->models[$hash] = $model;
+            $this->unregistered[] = $hash;
+            $this->unregistered = array_unique($this->unregistered);
+            // Only store schema if it was successfully generated
+            if (null !== $schema) {
+                $this->schemasPerType[$type][] = ['schema' => json_encode($schema), 'model' => $model];
+            }
         }
 
         // Reserve the name
         Util::getSchema($this->api, $this->names[$hash]);
 
         return OA\Components::SCHEMA_REF.$this->names[$hash];
+    }
+
+    /**
+     * Describe the Model using the first modelDescriber that supports it.
+     *
+     * @param string|null $name If a name is given, the schema will be registered
+     *
+     * @return OA\Schema|null If no modelDescriber supports the schema, null is returned ; otherwise an instance of OA\Schema
+     */
+    private function describeSchema(Model $model, ?string $name): ?OA\Schema
+    {
+        foreach ($this->modelDescribers as $modelDescriber) {
+            if ($modelDescriber instanceof ModelRegistryAwareInterface) {
+                $modelDescriber->setModelRegistry($this);
+            }
+            if ($modelDescriber->supports($model)) {
+                if (null === $name) {
+                    $schema = new OA\Schema([]);
+                } else {
+                    $schema = Util::getSchema($this->api, $name);
+                }
+                $modelDescriber->describe($model, $schema);
+
+                return $schema;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -110,18 +165,7 @@ final class ModelRegistry
             $this->unregistered = [];
 
             foreach ($tmp as $name => $model) {
-                $schema = null;
-                foreach ($this->modelDescribers as $modelDescriber) {
-                    if ($modelDescriber instanceof ModelRegistryAwareInterface) {
-                        $modelDescriber->setModelRegistry($this);
-                    }
-                    if ($modelDescriber->supports($model)) {
-                        $schema = Util::getSchema($this->api, $name);
-                        $modelDescriber->describe($model, $schema);
-
-                        break;
-                    }
-                }
+                $schema = $this->describeSchema($model, $name);
 
                 if (null === $schema) {
                     $errorMessage = \sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getType()));

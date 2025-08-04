@@ -1,0 +1,121 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/article_81_group_full": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_apicontroller81collisions_article81groupfull",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Article81WithGroups"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/article_81_group_default": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_apicontroller81collisions_article81groupdefault",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Article81WithGroups2"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/article_81_group_default_and_full": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_apicontroller81collisions_article81groupdefaultandfull",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Article81WithGroups2"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/article_81_group_empty": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_apicontroller81collisions_article81groupempty",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Article81WithGroups3"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "DummyWithGroups": {
+                "required": [
+                    "defaultAndFull"
+                ],
+                "properties": {
+                    "defaultAndFull": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Article81WithGroups": {
+                "required": [
+                    "defaultAndFull"
+                ],
+                "properties": {
+                    "defaultAndFull": {
+                        "$ref": "#/components/schemas/DummyWithGroups"
+                    }
+                },
+                "type": "object"
+            },
+            "Article81WithGroups2": {
+                "required": [
+                    "default",
+                    "defaultAndFull"
+                ],
+                "properties": {
+                    "default": {
+                        "type": "string"
+                    },
+                    "defaultAndFull": {
+                        "$ref": "#/components/schemas/DummyWithGroups"
+                    }
+                },
+                "type": "object"
+            },
+            "Article81WithGroups3": {
+                "type": "object"
+            }
+        }
+    }
+}

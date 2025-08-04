@@ -277,6 +277,41 @@ final class ControllerTest extends WebTestCase
             'OpenApiTagController',
         ];
 
+        yield 'Name collision with groups' => [
+            'ApiController81Collisions',
+            null,
+            [],
+            [
+                // Enable serializer
+                'framework' => [
+                    'property_info' => [
+                        'enabled' => true,
+                    ],
+                    'serializer' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                    ],
+                    'validation' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                        'static_method' => [
+                            'loadValidatorMetadata',
+                        ],
+                        'translation_domain' => 'validators',
+                        'email_validation_mode' => 'html5',
+                        'mapping' => [
+                            'paths' => [],
+                        ],
+                        'not_compromised_password' => [
+                            'enabled' => true,
+                            'endpoint' => null,
+                        ],
+                        'auto_mapping' => [],
+                    ],
+                ],
+            ],
+        ];
+
         if (property_exists(MapRequestPayload::class, 'type')) {
             yield 'Symfony 7.1 MapRequestPayload array type' => [
                 'MapRequestPayloadArray',

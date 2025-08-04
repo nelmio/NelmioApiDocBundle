@@ -1,7 +1,8 @@
 # CHANGELOG
 
 ## 5.5.0
-Added support for generic types describing
+* Schemas deduplication now compare generated schemas to reduce automatically named schemas (Entity / Entity2 / Entity3 / ...).
+* Added support for generic types describing
 
 ## 5.3.0
 Added support for Symfony's `TranslatableInterface`

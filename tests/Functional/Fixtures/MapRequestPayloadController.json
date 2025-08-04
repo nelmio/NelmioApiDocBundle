@@ -115,6 +115,31 @@
     },
     "components": {
         "schemas": {
+            "ArticleType81": {
+                "type": "string",
+                "enum": [
+                    "draft",
+                    "final"
+                ]
+            },
+            "ArticleType81IntBacked": {
+                "type": "integer",
+                "enum": [
+                    0,
+                    1
+                ]
+            },
+            "ArticleType81NotBacked": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "Article81": {
                 "required": [
                     "id",
@@ -190,31 +215,6 @@
                     "nonNullablePropertyNullableTrueSet": {
                         "type": "string",
                         "nullable": true
-                    }
-                },
-                "type": "object"
-            },
-            "ArticleType81": {
-                "type": "string",
-                "enum": [
-                    "draft",
-                    "final"
-                ]
-            },
-            "ArticleType81IntBacked": {
-                "type": "integer",
-                "enum": [
-                    0,
-                    1
-                ]
-            },
-            "ArticleType81NotBacked": {
-                "required": [
-                    "name"
-                ],
-                "properties": {
-                    "name": {
-                        "type": "string"
                     }
                 },
                 "type": "object"

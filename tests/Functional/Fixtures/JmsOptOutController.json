@@ -42,6 +42,24 @@
     },
     "components": {
         "schemas": {
+            "User": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "readOnly": false
+                    },
+                    "location": {
+                        "title": "User Location.",
+                        "type": "string"
+                    },
+                    "friends_number": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "VirtualTypeClassDoesNotExistsHandlerDefined": {},
+            "VirtualTypeClassDoesNotExistsHandlerNotDefined": {},
             "JMSUser": {
                 "properties": {
                     "id": {
@@ -194,6 +212,21 @@
                 },
                 "type": "object"
             },
+            "Dummy": {
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "JMSUser2": {
                 "required": [
                     "dummy"
@@ -213,39 +246,6 @@
                     },
                     "dummy": {
                         "$ref": "#/components/schemas/Dummy"
-                    }
-                },
-                "type": "object"
-            },
-            "User": {
-                "properties": {
-                    "email": {
-                        "type": "string",
-                        "readOnly": false
-                    },
-                    "location": {
-                        "title": "User Location.",
-                        "type": "string"
-                    },
-                    "friends_number": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "VirtualTypeClassDoesNotExistsHandlerDefined": {},
-            "VirtualTypeClassDoesNotExistsHandlerNotDefined": {},
-            "Dummy": {
-                "required": [
-                    "id",
-                    "name"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "integer"
-                    },
-                    "name": {
-                        "type": "string"
                     }
                 },
                 "type": "object"

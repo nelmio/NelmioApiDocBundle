@@ -1023,38 +1023,14 @@
     },
     "components": {
         "schemas": {
-            "SymfonyMapQueryString": {
-                "required": [
-                    "id",
-                    "name",
-                    "articleType81"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "integer"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "nullableName": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "articleType81": {
-                        "$ref": "#/components/schemas/ArticleType81"
-                    },
-                    "nullableArticleType81": {
-                        "nullable": true,
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/ArticleType81"
-                            }
-                        ]
-                    }
-                },
-                "type": "object"
+            "ArticleType81": {
+                "type": "string",
+                "enum": [
+                    "draft",
+                    "final"
+                ]
             },
-            "SymfonyMapQueryString2": {
+            "SymfonyMapQueryString": {
                 "required": [
                     "id",
                     "name",
@@ -1137,6 +1113,13 @@
                 },
                 "type": "object"
             },
+            "SortEnum": {
+                "type": "string",
+                "enum": [
+                    "asc",
+                    "desc"
+                ]
+            },
             "SortQueryModel": {
                 "required": [
                     "sortBy"
@@ -1170,89 +1153,6 @@
                     }
                 },
                 "type": "object"
-            },
-            "FilterQueryModel2": {
-                "required": [
-                    "filter",
-                    "filterBy"
-                ],
-                "properties": {
-                    "filter": {
-                        "oneOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "integer"
-                            }
-                        ]
-                    },
-                    "filterBy": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "PaginationQueryModel2": {
-                "properties": {
-                    "offset": {
-                        "type": "integer",
-                        "default": 0
-                    },
-                    "limit": {
-                        "type": "integer",
-                        "default": 10
-                    }
-                },
-                "type": "object"
-            },
-            "SortQueryModel2": {
-                "required": [
-                    "sortBy"
-                ],
-                "properties": {
-                    "sortBy": {
-                        "type": "string"
-                    },
-                    "orderBy": {
-                        "$ref": "#/components/schemas/SortEnum"
-                    }
-                },
-                "type": "object"
-            },
-            "ArrayQueryModel2": {
-                "required": [
-                    "ids",
-                    "productIds"
-                ],
-                "properties": {
-                    "ids": {
-                        "type": "array",
-                        "items": {}
-                    },
-                    "productIds": {
-                        "description": "List of product ids",
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        }
-                    }
-                },
-                "type": "object"
-            },
-            "ArticleType81": {
-                "type": "string",
-                "enum": [
-                    "draft",
-                    "final"
-                ]
-            },
-            "SortEnum": {
-                "type": "string",
-                "enum": [
-                    "asc",
-                    "desc"
-                ]
             }
         }
     }

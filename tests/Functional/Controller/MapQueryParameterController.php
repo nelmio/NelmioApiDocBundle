@@ -83,8 +83,8 @@ class MapQueryParameterController
     #[OA\Parameter(
         name: 'changedType',
         in: 'query',
-        schema: new OA\Schema(type: 'int', nullable: false),
-        description: 'Incorrectly described query parameter',
+        schema: new OA\Schema(type: 'integer', nullable: false),
+        description: 'Transform the type of the query parameter',
         example: 123,
     )]
     #[OA\Response(response: '200', description: '')]
