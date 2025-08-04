@@ -4,7 +4,7 @@
   "dependencies": {
     "@stoplight/elements": "9.0.1",
     "redoc": "2.5.0",
-    "swagger-ui-dist": "5.25.3"
+    "swagger-ui-dist": "5.27.1"
   },
   "scripts": {
     "swagger": "yarn run swagger:bundle && yarn run swagger:bundle:map && yarn run swagger:standalone && yarn run swagger:standalone:map && yarn run swagger:css && yarn run swagger:css:map",
