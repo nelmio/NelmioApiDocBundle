@@ -17,7 +17,9 @@ use JMS\Serializer\Visitor\SerializationVisitorInterface;
 use Nelmio\ApiDocBundle\ApiDocGenerator;
 use Nelmio\ApiDocBundle\Describer\ExternalDocDescriber;
 use Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber;
+use Nelmio\ApiDocBundle\Describer\OperationIdGeneration;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
+use Nelmio\ApiDocBundle\Describer\SecurityDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
@@ -115,9 +117,22 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                 ->setArguments([
                     new Reference(\sprintf('nelmio_api_doc.routes.%s', $area)),
                     new Reference('nelmio_api_doc.controller_reflector'),
-                    new Reference('logger'),
+                    $config['operation_id_generation'] instanceof OperationIdGeneration ?
+                        $config['operation_id_generation'] :
+                        OperationIdGeneration::from($config['operation_id_generation']),
                 ])
                 ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
+
+            if (isset($areaConfig['security'])) {
+                $container->register(\sprintf('nelmio_api_doc.describers.security.%s', $area), SecurityDescriber::class)
+                    ->setPublic(false)
+                    ->setArguments([
+                        $areaConfig['security'],
+                        new Reference(\sprintf('nelmio_api_doc.routes.%s', $area)),
+                        new Reference('nelmio_api_doc.controller_reflector'),
+                    ])
+                    ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
+            }
 
             $container->register(\sprintf('nelmio_api_doc.describers.config.%s', $area), ExternalDocDescriber::class)
                 ->setPublic(false)
@@ -173,10 +188,6 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         // Add autoconfiguration for model describer
         $container->registerForAutoconfiguration(ModelDescriberInterface::class)
             ->addTag('nelmio_api_doc.model_describer');
-
-        if (!class_exists(\Symfony\Component\Uid\AbstractUid::class)) {
-            $container->removeDefinition('nelmio_api_doc.object_model.property_describers.uuid');
-        }
 
         // Import services needed for each library
         $loader->load('php_doc.xml');

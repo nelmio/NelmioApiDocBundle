@@ -23,6 +23,22 @@
                         "description": ""
                     }
                 }
+            },
+            "put": {
+                "operationId": "put_updateOperation",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "post_postOperation",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
             }
         },
         "/generate/operation_id_with_security/": {

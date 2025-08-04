@@ -1,7 +1,38 @@
 # CHANGELOG
 
-## 5.1.0
+## 5.5.0
 * Schemas deduplication now compare generated schemas to reduce automatically named schemas (Entity / Entity2 / Entity3 / ...).
+
+## 5.3.0
+Added support for Symfony's `TranslatableInterface`
+
+## 5.2.1
+Fixed a bug where using abstract controllers would ignore various attributes like ``#[OA\Tag]`` & ``#[Security]`` on child classes
+
+## 5.2.0
+Made it possible to automatically generate security definitions based on the ``#[IsGranted]`` attribute.
+
+```yaml
+nelmio_api_doc:
+    # ...
+
+    areas:
+        default:
+            security:
+                MyBearerScheme:
+                    type: 'http'
+                    scheme: 'bearer'
+```
+
+## 5.1.0
+Made it possible to configure how operation ids are generated. 
+
+```yaml
+nelmio_api_doc:
+    operation_id_generation: always_prepend
+```
+
+Possible values: ``always_prepend``, ``conditionally_prepend``, ``no_prepend`` or enum instance of ``Nelmio\ApiDocBundle\Describer\OperationIdGeneration``
 
 ## 4.38.2
 - Support of attribute MapQueryParameter with a regexp has been improved, it now converts the regexp from PCRE to ECMA-262 for better compliance with OpenApi. 

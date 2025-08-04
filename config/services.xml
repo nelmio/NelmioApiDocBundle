@@ -155,6 +155,10 @@
             <tag name="nelmio_api_doc.object_model.property_describer" />
         </service>
 
+        <service id="nelmio_api_doc.object_model.property_describers.translatable" class="Nelmio\ApiDocBundle\PropertyDescriber\TranslatablePropertyDescriber" public="false">
+            <tag name="nelmio_api_doc.object_model.property_describer" />
+        </service>
+
         <!-- Form Type Extensions -->
 
         <service id="nelmio_api_doc.form.documentation_extension" class="Nelmio\ApiDocBundle\Form\Extension\DocumentationExtension">

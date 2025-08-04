@@ -139,6 +139,62 @@
                     }
                 }
             }
+        },
+        "/article_map_uploaded_file_array": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapuploadedfile_createarrayuploadfrommapuploadedfilepayload",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "upload": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_uploaded_file_variadic": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapuploadedfile_createvariadicuploadfrommapuploadedfilepayload",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "upload": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
         }
     }
 }

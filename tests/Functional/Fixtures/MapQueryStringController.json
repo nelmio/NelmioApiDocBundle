@@ -136,27 +136,6 @@
                         }
                     },
                     {
-                        "name": "propertyInDefaultGroup",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "maximum": 100,
-                            "minimum": 1
-                        }
-                    },
-                    {
-                        "name": "propertyArray[]",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    {
                         "name": "propertyNotNullOnSpecificGroup",
                         "in": "query",
                         "required": true,
@@ -1085,8 +1064,6 @@
             "SymfonyConstraintsWithValidationGroups": {
                 "required": [
                     "property",
-                    "propertyInDefaultGroup",
-                    "propertyArray",
                     "propertyNotNullOnSpecificGroup"
                 ],
                 "properties": {
@@ -1094,17 +1071,6 @@
                         "type": "integer",
                         "maximum": 100,
                         "minimum": 1
-                    },
-                    "propertyInDefaultGroup": {
-                        "type": "integer",
-                        "maximum": 100,
-                        "minimum": 1
-                    },
-                    "propertyArray": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
                     },
                     "propertyNotNullOnSpecificGroup": {
                         "type": "string"

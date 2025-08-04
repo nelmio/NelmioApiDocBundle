@@ -66,11 +66,6 @@ MapUploadedFile
 
 Using the `Symfony MapUploadedFile`_ attribute allows NelmioApiDocBundle to automatically generate your request body documentation for your endpoint.
 
-.. versionadded:: 4.37
-
-    The :class:`Symfony\\Component\\HttpKernel\\Attribute\\MapUploadedFile` attribute was introduced in Symfony 7.1.
-
-
 Modify generated documentation
 ~~~~~~~
 

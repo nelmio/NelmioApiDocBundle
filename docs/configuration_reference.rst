@@ -19,6 +19,8 @@ The bundle configuration is stored under the ``nelmio_api_doc`` key in your appl
         type_info: false
         # If true, `groups` passed to #[Model] attributes will be used to limit validation constraints
         use_validation_groups: false
+        # Defines how to generate operation ids
+        operation_id_generation: always_prepend
         cache:
             # define cache pool to use
             pool: null
@@ -57,6 +59,11 @@ The bundle configuration is stored under the ``nelmio_api_doc`` key in your appl
                     # - ^api_v1
                 # whether to filter by attributes
                 with_attribute: false
+                security:
+                    # Authentication schemes https://swagger.io/docs/specification/v3_0/authentication/
+                    MyBearerScheme:
+                        type: 'http'
+                        scheme: 'bearer'
                 # if set disables default routes without attributes
                 disable_default_routes: false
                 # The base documentation used for the area
@@ -96,10 +103,6 @@ Whether to use `symfony/type-info`_ for determining types.
 
     If you are using Symfony 7.2 or higher, you should set this option to ``true``. As this greatly improves type detection.
 
-.. versionadded:: 4.35
-
-    Support for `symfony/type-info`_ was added in 4.35.
-
 use_validation_groups
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -107,6 +110,42 @@ use_validation_groups
 **default**: ``false``
 
 If true, ``groups`` passed to ``#[Model]`` attributes will be used to limit validation constraints.
+
+operation_id_generation
+~~~~~~~~~~~~~~~~~~~~~
+
+**type**: ``string`` or ``enum``
+**default**: ``always_prepend``
+
+**allowed values**: ``always_prepend``, ``conditionally_prepend``, ``no_prepend`` or enum instance of ``Nelmio\ApiDocBundle\Describer\OperationIdGeneration``
+
+Defines how to generate operation ids.
+- ``always_prepend``: Always prepend the HTTP method to the operation id.
+- ``conditionally_prepend``: Checks if the operation id already starts with the HTTP method and prepends it if not.
+- ``no_prepend``: Never prepends the HTTP method to the operation id. Warnings will be thrown if the operation id is not unique.
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/packages/nelmio_api_doc.yaml
+        nelmio_api_doc:
+            operation_id_generation: always_prepend
+
+    .. code-block:: php
+
+        // config/services.php
+        use Nelmio\ApiDocBundle\Describer\OperationIdGeneration;
+
+        return function (ContainerConfigurator $container) {
+            $containerConfigurator->extension('nelmio_api_doc', [
+                'operation_id_generation' => OperationIdGeneration::ALWAYS_PREPEND,
+            ]);
+        };
+
+.. versionadded:: 5.1
+
+    The ``operation_id_generation`` option was added in 5.1.
 
 cache
 ~~~~~
@@ -177,10 +216,6 @@ UI configuration options.
                 # https://docs.stoplight.io/docs/elements/b074dc47b2826-elements-configuration-options
                 stoplight_config: []
 
-.. versionadded:: 4.37
-
-    The `stoplight_config` option was added in 4.37.
-
 areas
 ~~~~~
 
@@ -206,6 +241,10 @@ Filter the routes that are documented.
                         # Example:
                         # - ^api_v1
                     with_attribute: false
+                    security:
+                        MyBearerScheme:
+                            type: 'http'
+                            scheme: 'bearer'
                     disable_default_routes: false
                     documentation:
                         # Example:
@@ -249,6 +288,31 @@ with_attribute
 **default**: ``false``
 
 Whether to only document routes with the ``#[Areas]`` annotation/attribute.
+
+security
+...........
+
+**type**: ``dictionary``
+**default**: ``[]``
+
+Defines the security scheme(s) to use for the area. See `authentication schemes`_ for more information and possible values.
+See the :ref:`security page <area-security-configuration>` for more information on how to configure security for your areas.
+
+.. code-block:: yaml
+
+        nelmio_api_doc:
+            # ...
+
+            areas:
+                default:
+                    security:
+                        MyBearerScheme:
+                            type: 'http'
+                            scheme: 'bearer'
+
+.. versionadded:: 5.2
+
+    The possibility to automatically generate security definitions based on the ``#[IsGranted]`` attribute was added in version 5.2.
 
 disable_default_routes
 ......................
@@ -315,3 +379,4 @@ List of models, this can be used to:
 
 
 .. _`symfony/type-info`: https://symfony.com/doc/current/components/type_info.html
+.. _`authentication schemes`: https://swagger.io/docs/specification/v3_0/authentication/

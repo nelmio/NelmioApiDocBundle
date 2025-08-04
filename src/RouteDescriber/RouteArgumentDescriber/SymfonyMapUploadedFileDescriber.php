@@ -42,7 +42,16 @@ final class SymfonyMapUploadedFileDescriber implements RouteArgumentDescriberInt
         ]);
 
         $property = Util::getCollectionItem($schema, OA\Property::class, ['property' => $name]);
-        Util::modifyAnnotationValue($property, 'type', 'string');
-        Util::modifyAnnotationValue($property, 'format', 'binary');
+        if ($argumentMetadata->isVariadic() || 'array' === $argumentMetadata->getType()) {
+            Util::modifyAnnotationValue($property, 'type', 'array');
+            Util::modifyAnnotationValue($property, 'items', new OA\Items([
+                '_context' => Util::createWeakContext($property->_context),
+                'type' => 'string',
+                'format' => 'binary',
+            ]));
+        } else {
+            Util::modifyAnnotationValue($property, 'type', 'string');
+            Util::modifyAnnotationValue($property, 'format', 'binary');
+        }
     }
 }

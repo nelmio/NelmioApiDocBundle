@@ -2,15 +2,18 @@
   "description": "Script utils for nelmio/api-doc-bundle UI",
   "license": "MIT",
   "dependencies": {
-    "@stoplight/elements": "9.0.0",
-    "redoc": "2.4.0",
-    "swagger-ui-dist": "5.20.1"
+    "@stoplight/elements": "9.0.1",
+    "redoc": "2.5.0",
+    "swagger-ui-dist": "5.27.1"
   },
   "scripts": {
-    "swagger": "yarn run swagger:bundle && yarn run swagger:standalone && yarn run swagger:css",
-    "swagger:bundle": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.js* $npm_package_config_destination_swagger",
-    "swagger:standalone": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js* $npm_package_config_destinationswagger",
-    "swagger:css": "cp node_modules/swagger-ui-dist/swagger-ui.css* $npm_package_config_destination_swagger",
+    "swagger": "yarn run swagger:bundle && yarn run swagger:bundle:map && yarn run swagger:standalone && yarn run swagger:standalone:map && yarn run swagger:css && yarn run swagger:css:map",
+    "swagger:bundle": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.js $npm_package_config_destination_swagger",
+    "swagger:bundle:map": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.js.map $npm_package_config_destination_swagger",
+    "swagger:standalone": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js $npm_package_config_destination_swagger",
+    "swagger:standalone:map": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js.map $npm_package_config_destination_swagger",
+    "swagger:css": "cp node_modules/swagger-ui-dist/swagger-ui.css $npm_package_config_destination_swagger",
+    "swagger:css:map": "cp node_modules/swagger-ui-dist/swagger-ui.css.map $npm_package_config_destination_swagger",
     "redoc": "cp node_modules/redoc/bundles/redoc.standalone.js $npm_package_config_destination_redoc",
     "stoplight": "yarn run stoplight:js && yarn run stoplight:css",
     "stoplight:js": "cp node_modules/@stoplight/elements/web-components.min.js $npm_package_config_destination_stoplight",
