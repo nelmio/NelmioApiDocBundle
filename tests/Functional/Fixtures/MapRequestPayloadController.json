@@ -33,12 +33,12 @@
                     "content": {
                         "application/json": {
                             "schema": {
+                                "nullable": true,
                                 "oneOf": [
                                     {
                                         "$ref": "#/components/schemas/Article81"
                                     }
-                                ],
-                                "nullable": true
+                                ]
                             }
                         }
                     }
@@ -59,7 +59,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/EntityWithNullableSchemaSet"
+                                "$ref": "#/components/schemas/Article81"
                             }
                         }
                     }
@@ -149,6 +149,8 @@
             "SymfonyConstraintsWithValidationGroups": {
                 "required": [
                     "property",
+                    "propertyInDefaultGroup",
+                    "propertyArray",
                     "propertyNotNullOnSpecificGroup"
                 ],
                 "properties": {
@@ -156,6 +158,17 @@
                         "type": "integer",
                         "maximum": 100,
                         "minimum": 1
+                    },
+                    "propertyInDefaultGroup": {
+                        "type": "integer",
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "propertyArray": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     },
                     "propertyNotNullOnSpecificGroup": {
                         "type": "string"

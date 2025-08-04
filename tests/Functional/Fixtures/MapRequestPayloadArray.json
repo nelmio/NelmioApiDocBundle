@@ -51,6 +51,52 @@
                     }
                 }
             }
+        },
+        "/article_map_request_payload_int_array": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_maprequestpayloadarray_createarticlefrommaprequestpayloadintarray",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/article_map_request_payload_string_array": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_maprequestpayloadarray_createarticlefrommaprequestpayloadstringarray",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
         }
     },
     "components": {

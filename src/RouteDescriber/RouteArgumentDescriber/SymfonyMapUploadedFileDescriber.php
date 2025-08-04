@@ -20,9 +20,6 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class SymfonyMapUploadedFileDescriber implements RouteArgumentDescriberInterface
 {
-    public const CONTEXT_ARGUMENT_METADATA = 'nelmio_api_doc_bundle.argument_metadata.'.self::class;
-    public const CONTEXT_MODEL_REF = 'nelmio_api_doc_bundle.model_ref.'.self::class;
-
     public function describe(ArgumentMetadata $argumentMetadata, OA\Operation $operation): void
     {
         if (!$attribute = $argumentMetadata->getAttributes(MapUploadedFile::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? null) {

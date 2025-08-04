@@ -33,4 +33,20 @@ class MapRequestPayloadArray
         ?array $nullableArticles,
     ) {
     }
+
+    #[Route('/article_map_request_payload_int_array', methods: ['POST'])]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayloadIntArray(
+        #[MapRequestPayload(type: 'int')]
+        array $nullableArticles,
+    ) {
+    }
+
+    #[Route('/article_map_request_payload_string_array', methods: ['POST'])]
+    #[OA\Response(response: '200', description: '')]
+    public function createArticleFromMapRequestPayloadStringArray(
+        #[MapRequestPayload(type: 'string')]
+        array $nullableArticles,
+    ) {
+    }
 }

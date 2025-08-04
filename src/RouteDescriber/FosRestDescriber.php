@@ -158,18 +158,12 @@ final class FosRestDescriber implements RouteDescriberInterface
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema
     {
         $requestBody->content = Generator::UNDEFINED !== $requestBody->content ? $requestBody->content : [];
-        switch ($type) {
-            case 'json':
-                $contentType = 'application/json';
+        $contentType = match ($type) {
+            'json' => 'application/json',
+            'xml' => 'application/xml',
+            default => throw new \InvalidArgumentException('Unsupported media type'),
+        };
 
-                break;
-            case 'xml':
-                $contentType = 'application/xml';
-
-                break;
-            default:
-                throw new \InvalidArgumentException('Unsupported media type');
-        }
         if (!isset($requestBody->content[$contentType])) {
             $weakContext = Util::createWeakContext($requestBody->_context);
             $requestBody->content[$contentType] = new OA\MediaType(

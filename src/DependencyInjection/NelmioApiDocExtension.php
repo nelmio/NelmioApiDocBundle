@@ -25,7 +25,6 @@ use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiGenerator;
 use Nelmio\ApiDocBundle\Processor\MapQueryStringProcessor;
-use Nelmio\ApiDocBundle\Processor\MapRequestPayloadProcessor;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\RouteArgumentDescriberInterface;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryParameterDescriber;
@@ -221,11 +220,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         $container->register('nelmio_api_doc.route_argument_describer.map_request_payload', SymfonyMapRequestPayloadDescriber::class)
             ->setPublic(false)
+            ->setArgument(0, new Reference(true === $config['type_info'] ? 'nelmio_api_doc.type_describer.chain' : 'nelmio_api_doc.object_model.property_describer'))
             ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
-
-        $container->register('nelmio_api_doc.swagger.processor.map_request_payload', MapRequestPayloadProcessor::class)
-            ->setPublic(false)
-            ->addTag('nelmio_api_doc.swagger.processor', ['priority' => 0]);
 
         if (class_exists(MapQueryParameter::class)) {
             $container->register('nelmio_api_doc.route_argument_describer.map_query_parameter', SymfonyMapQueryParameterDescriber::class)
