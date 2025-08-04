@@ -88,7 +88,7 @@ final class ControllerTest extends WebTestCase
             [],
             [],
             [
-                CleanUnusedComponents::class => new Definition(CleanUnusedComponents::class)
+                CleanUnusedComponents::class => (new Definition(CleanUnusedComponents::class))
                     ->addTag('nelmio_api_doc.swagger.processor', ['priority' => -100])
                     ->addMethodCall('setEnabled', [true]),
             ],
@@ -180,7 +180,7 @@ final class ControllerTest extends WebTestCase
                 ],
             ],
             [
-                CleanUnusedComponents::class => new Definition(CleanUnusedComponents::class)
+                CleanUnusedComponents::class => (new Definition(CleanUnusedComponents::class))
                     ->addTag('nelmio_api_doc.swagger.processor', ['priority' => -100])
                     ->addMethodCall('setEnabled', [true]),
             ],
@@ -353,7 +353,7 @@ final class ControllerTest extends WebTestCase
                 ],
             ],
             [
-                StubProcessor::class => new Definition(StubProcessor::class)
+                StubProcessor::class => (new Definition(StubProcessor::class))
                     ->addTag('nelmio_api_doc.swagger.processor', ['priority' => -100, 'before' => CleanUnusedComponents::class]),
             ],
         ];
@@ -620,7 +620,7 @@ final class ControllerTest extends WebTestCase
             [],
             [],
             [
-                'web_custom_controller' => new Definition(SecuredApiController::class)
+                'web_custom_controller' => (new Definition(SecuredApiController::class))
                 ->setPublic(true),
             ],
             function (RoutingConfigurator $routes) {
@@ -649,7 +649,7 @@ final class ControllerTest extends WebTestCase
                 ],
             ],
             [
-                'web_custom_controller' => new Definition(SecuredApiController::class)
+                'web_custom_controller' => (new Definition(SecuredApiController::class))
                     ->setPublic(true),
             ],
             function (RoutingConfigurator $routes) {
