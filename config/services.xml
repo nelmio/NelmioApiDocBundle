@@ -197,6 +197,14 @@
             <tag name="nelmio_api_doc.type_describer" priority="-1000" />
         </service>
 
+        <service id="nelmio_api_doc.type_describer.generic_class" class="Nelmio\ApiDocBundle\TypeDescriber\GenericClassDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.generic_collection" class="Nelmio\ApiDocBundle\TypeDescriber\GenericCollectionDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
         <service id="nelmio_api_doc.type_describer.integer" class="Nelmio\ApiDocBundle\TypeDescriber\IntegerDescriber" public="false">
             <tag name="nelmio_api_doc.type_describer" priority="-1000" />
         </service>
@@ -222,6 +230,12 @@
         </service>
 
         <service id="nelmio_api_doc.type_describer.string" class="Nelmio\ApiDocBundle\TypeDescriber\StringDescriber" public="false">
+            <tag name="nelmio_api_doc.type_describer" priority="-1000" />
+        </service>
+
+        <service id="nelmio_api_doc.type_describer.template" class="Nelmio\ApiDocBundle\TypeDescriber\TemplateDescriber" public="false">
+            <argument type="service" id="nelmio_api_doc.type_describer.chain" />
+
             <tag name="nelmio_api_doc.type_describer" priority="-1000" />
         </service>
 

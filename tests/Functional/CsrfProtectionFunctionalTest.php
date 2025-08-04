@@ -39,7 +39,7 @@ class CsrfProtectionFunctionalTest extends WebTestCase
             'type' => 'object',
             'properties' => [
                 'quz' => [
-                    '$ref' => '#/components/schemas/User',
+                    '$ref' => '#/components/schemas/User2',
                 ],
                 '_token' => [
                     'description' => 'CSRF token',

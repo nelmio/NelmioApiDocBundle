@@ -213,10 +213,10 @@
                     {
                         "name": "changedType",
                         "in": "query",
-                        "description": "Incorrectly described query parameter",
+                        "description": "Transform the type of the query parameter",
                         "required": false,
                         "schema": {
-                            "type": "int",
+                            "type": "integer",
                             "nullable": false
                         },
                         "example": 123

@@ -1,0 +1,282 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/generic-types": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_generictypes_generictypes",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GenericTypes"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "GenericClass": {
+                "required": [
+                    "genericProperty"
+                ],
+                "properties": {
+                    "genericProperty": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "GenericClass2": {
+                "required": [
+                    "genericProperty"
+                ],
+                "properties": {
+                    "genericProperty": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "GenericClass3": {
+                "required": [
+                    "genericProperty"
+                ],
+                "properties": {
+                    "genericProperty": {
+                        "$ref": "#/components/schemas/GenericClass2"
+                    }
+                },
+                "type": "object"
+            },
+            "RegularClass": {
+                "required": [
+                    "stringProperty",
+                    "integerProperty"
+                ],
+                "properties": {
+                    "stringProperty": {
+                        "type": "string"
+                    },
+                    "integerProperty": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "GenericClass4": {
+                "required": [
+                    "genericProperty"
+                ],
+                "properties": {
+                    "genericProperty": {
+                        "$ref": "#/components/schemas/RegularClass"
+                    }
+                },
+                "type": "object"
+            },
+            "GenericClass5": {
+                "required": [
+                    "genericProperty"
+                ],
+                "properties": {
+                    "genericProperty": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "GenericClass6": {
+                "required": [
+                    "genericProperty"
+                ],
+                "properties": {
+                    "genericProperty": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Collection": {
+                "required": [
+                    "map",
+                    "array",
+                    "list"
+                ],
+                "properties": {
+                    "map": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "array": {
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "string"
+                                }
+                            }
+                        ]
+                    },
+                    "list": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Collection2": {
+                "required": [
+                    "map",
+                    "array",
+                    "list"
+                ],
+                "properties": {
+                    "map": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "array": {
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "integer"
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "integer"
+                                }
+                            }
+                        ]
+                    },
+                    "list": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Collection3": {
+                "required": [
+                    "map",
+                    "array",
+                    "list"
+                ],
+                "properties": {
+                    "map": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RegularClass"
+                        }
+                    },
+                    "array": {
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/RegularClass"
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "$ref": "#/components/schemas/RegularClass"
+                                }
+                            }
+                        ]
+                    },
+                    "list": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RegularClass"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "GenericTypes": {
+                "required": [
+                    "string",
+                    "string2",
+                    "integer",
+                    "genericClass",
+                    "regularClass",
+                    "stringList",
+                    "integerList",
+                    "stringStringCollection",
+                    "stringStringCollection2",
+                    "integerIntegerCollection",
+                    "integerRegularClassCollection"
+                ],
+                "properties": {
+                    "string": {
+                        "$ref": "#/components/schemas/GenericClass"
+                    },
+                    "string2": {
+                        "$ref": "#/components/schemas/GenericClass"
+                    },
+                    "integer": {
+                        "$ref": "#/components/schemas/GenericClass2"
+                    },
+                    "genericClass": {
+                        "$ref": "#/components/schemas/GenericClass3"
+                    },
+                    "regularClass": {
+                        "$ref": "#/components/schemas/GenericClass4"
+                    },
+                    "stringList": {
+                        "$ref": "#/components/schemas/GenericClass5"
+                    },
+                    "integerList": {
+                        "$ref": "#/components/schemas/GenericClass6"
+                    },
+                    "stringStringCollection": {
+                        "$ref": "#/components/schemas/Collection"
+                    },
+                    "stringStringCollection2": {
+                        "$ref": "#/components/schemas/Collection"
+                    },
+                    "integerIntegerCollection": {
+                        "$ref": "#/components/schemas/Collection2"
+                    },
+                    "integerRegularClassCollection": {
+                        "$ref": "#/components/schemas/Collection3"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
