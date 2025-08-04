@@ -25,57 +25,6 @@
     },
     "components": {
         "schemas": {
-            "GenericTypes": {
-                "required": [
-                    "string",
-                    "string2",
-                    "integer",
-                    "genericClass",
-                    "regularClass",
-                    "stringList",
-                    "integerList",
-                    "stringStringCollection",
-                    "stringStringCollection2",
-                    "integerIntegerCollection",
-                    "integerRegularClassCollection"
-                ],
-                "properties": {
-                    "string": {
-                        "$ref": "#/components/schemas/GenericClass"
-                    },
-                    "string2": {
-                        "$ref": "#/components/schemas/GenericClass"
-                    },
-                    "integer": {
-                        "$ref": "#/components/schemas/GenericClass2"
-                    },
-                    "genericClass": {
-                        "$ref": "#/components/schemas/GenericClass3"
-                    },
-                    "regularClass": {
-                        "$ref": "#/components/schemas/GenericClass4"
-                    },
-                    "stringList": {
-                        "$ref": "#/components/schemas/GenericClass5"
-                    },
-                    "integerList": {
-                        "$ref": "#/components/schemas/GenericClass6"
-                    },
-                    "stringStringCollection": {
-                        "$ref": "#/components/schemas/Collection"
-                    },
-                    "stringStringCollection2": {
-                        "$ref": "#/components/schemas/Collection"
-                    },
-                    "integerIntegerCollection": {
-                        "$ref": "#/components/schemas/Collection2"
-                    },
-                    "integerRegularClassCollection": {
-                        "$ref": "#/components/schemas/Collection3"
-                    }
-                },
-                "type": "object"
-            },
             "GenericClass": {
                 "required": [
                     "genericProperty"
@@ -105,6 +54,21 @@
                 "properties": {
                     "genericProperty": {
                         "$ref": "#/components/schemas/GenericClass2"
+                    }
+                },
+                "type": "object"
+            },
+            "RegularClass": {
+                "required": [
+                    "stringProperty",
+                    "integerProperty"
+                ],
+                "properties": {
+                    "stringProperty": {
+                        "type": "string"
+                    },
+                    "integerProperty": {
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -262,17 +226,53 @@
                 },
                 "type": "object"
             },
-            "RegularClass": {
+            "GenericTypes": {
                 "required": [
-                    "stringProperty",
-                    "integerProperty"
+                    "string",
+                    "string2",
+                    "integer",
+                    "genericClass",
+                    "regularClass",
+                    "stringList",
+                    "integerList",
+                    "stringStringCollection",
+                    "stringStringCollection2",
+                    "integerIntegerCollection",
+                    "integerRegularClassCollection"
                 ],
                 "properties": {
-                    "stringProperty": {
-                        "type": "string"
+                    "string": {
+                        "$ref": "#/components/schemas/GenericClass"
                     },
-                    "integerProperty": {
-                        "type": "integer"
+                    "string2": {
+                        "$ref": "#/components/schemas/GenericClass"
+                    },
+                    "integer": {
+                        "$ref": "#/components/schemas/GenericClass2"
+                    },
+                    "genericClass": {
+                        "$ref": "#/components/schemas/GenericClass3"
+                    },
+                    "regularClass": {
+                        "$ref": "#/components/schemas/GenericClass4"
+                    },
+                    "stringList": {
+                        "$ref": "#/components/schemas/GenericClass5"
+                    },
+                    "integerList": {
+                        "$ref": "#/components/schemas/GenericClass6"
+                    },
+                    "stringStringCollection": {
+                        "$ref": "#/components/schemas/Collection"
+                    },
+                    "stringStringCollection2": {
+                        "$ref": "#/components/schemas/Collection"
+                    },
+                    "integerIntegerCollection": {
+                        "$ref": "#/components/schemas/Collection2"
+                    },
+                    "integerRegularClassCollection": {
+                        "$ref": "#/components/schemas/Collection3"
                     }
                 },
                 "type": "object"
