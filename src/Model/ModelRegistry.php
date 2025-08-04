@@ -14,14 +14,12 @@ namespace Nelmio\ApiDocBundle\Model;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use OpenApi\Annotations as OA;
-use OpenApi\Annotations\Schema;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Component\TypeInfo\Type;
 
-final class ModelRegistry implements TypeDescriberInterface
+final class ModelRegistry
 {
     use LoggerAwareTrait;
 
@@ -214,34 +212,5 @@ final class ModelRegistry implements TypeDescriberInterface
         }
 
         return $type->__toString();
-    }
-
-    public function describe(Type $type, Schema $schema, array $context = []): void
-    {
-        $hash = md5(serialize([$type->__toString(), $context]));
-        if (!isset($this->models[$hash])) {
-            $this->models[$hash] = $model;
-            $this->unregistered[] = $hash;
-        }
-        if (!isset($this->names[$hash])) {
-            $this->names[$hash] = $this->generateModelName($model);
-            $this->registeredModelNames[$this->names[$hash]] = $model;
-        }
-
-        // Reserve the name
-        Util::getSchema($this->api, $this->names[$hash]);
-    }
-
-    public function supports(Type $type, array $context = []): bool
-    {
-        // Check if the type is already registered
-        $hash = md5(serialize([$type->__toString(), $context]));
-
-        // No need to register if the type is already registered by hash
-        if (isset($this->models[$hash])) {
-            return false;
-        }
-
-        return true;
     }
 }

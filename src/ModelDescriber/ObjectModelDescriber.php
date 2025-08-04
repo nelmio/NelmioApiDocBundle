@@ -18,7 +18,6 @@ use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\PropertyDescriber\PropertyDescriberInterface;
 use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
-use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
@@ -143,15 +142,17 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 continue;
             }
 
-            $type = method_exists($this->propertyInfo, 'getType')
-                ? $this->propertyInfo->getType($class, $propertyName)
-                : LegacyTypeConverter::toTypeInfoType($this->propertyInfo->getTypes($class, $propertyName));
+            if ($this->propertyDescriber instanceof TypeDescriberInterface) {
+                $types = $this->propertyInfo->getType($class, $propertyName);
+            } else {
+                $types = $this->propertyInfo->getTypes($class, $propertyName);
+            }
 
-            if (null === $type) {
+            if (null === $types) {
                 throw new \LogicException(\sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `#[OA\Property(type="")]` to make its type explicit.', $class, $propertyName));
             }
 
-            $this->describeProperty($type, $model, $property, $propertyName);
+            $this->describeProperty($types, $model, $property, $propertyName);
         }
 
         $this->markRequiredProperties($schema);
@@ -185,7 +186,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         return str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
     }
 
-    private function describeProperty(Type $types, Model $model, OA\Schema $property, string $propertyName): void
+    /**
+     * @param LegacyType[]|Type $types
+     */
+    private function describeProperty(array|Type $types, Model $model, OA\Schema $property, string $propertyName): void
     {
         if ($this->propertyDescriber instanceof ModelRegistryAwareInterface) {
             $this->propertyDescriber->setModelRegistry($this->modelRegistry);
