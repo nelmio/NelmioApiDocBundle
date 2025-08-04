@@ -26,10 +26,12 @@ final class TemplateDescriber implements TypeDescriberInterface, TypeDescriberAw
 {
     use TypeDescriberAwareTrait;
 
+    public const TEMPLATES_KEY = '_nelmio_template_types';
+
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        $templateTypes = $context[GenericClassDescriber::TEMPLATES_KEY];
-        unset($context[GenericClassDescriber::TEMPLATES_KEY]);
+        $templateTypes = $context[self::TEMPLATES_KEY];
+        unset($context[self::TEMPLATES_KEY]);
 
         if (\array_key_exists($type->getName(), $templateTypes)) {
             $resolvedType = $templateTypes[$type->getName()];
@@ -41,6 +43,6 @@ final class TemplateDescriber implements TypeDescriberInterface, TypeDescriberAw
     public function supports(Type $type, array $context = []): bool
     {
         return $type instanceof TemplateType
-            && \array_key_exists(GenericClassDescriber::TEMPLATES_KEY, $context);
+            && \array_key_exists(self::TEMPLATES_KEY, $context);
     }
 }

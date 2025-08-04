@@ -33,8 +33,8 @@ final class GenericCollectionDescriber implements TypeDescriberInterface, TypeDe
             throw new \LogicException('This describer only supports '.CollectionType::class.' with '.TemplateType::class.' as key type.');
         }
 
-        $templateTypes = $context[GenericClassDescriber::TEMPLATES_KEY];
-        unset($context[GenericClassDescriber::TEMPLATES_KEY]);
+        $templateTypes = $context[TemplateDescriber::TEMPLATES_KEY];
+        unset($context[TemplateDescriber::TEMPLATES_KEY]);
 
         if (\array_key_exists($type->getCollectionKeyType()->getName(), $templateTypes)) {
             $resolvedKeyType = $templateTypes[$type->getCollectionKeyType()->getName()];
@@ -53,6 +53,6 @@ final class GenericCollectionDescriber implements TypeDescriberInterface, TypeDe
     {
         return $type instanceof CollectionType
             && $type->getCollectionKeyType() instanceof TemplateType
-            && \array_key_exists(GenericClassDescriber::TEMPLATES_KEY, $context);
+            && \array_key_exists(TemplateDescriber::TEMPLATES_KEY, $context);
     }
 }
