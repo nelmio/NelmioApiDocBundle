@@ -88,7 +88,7 @@ final class ControllerTest extends WebTestCase
             [],
             [],
             [
-                CleanUnusedComponents::class => (new Definition(CleanUnusedComponents::class))
+                CleanUnusedComponents::class => new Definition(CleanUnusedComponents::class)
                     ->addTag('nelmio_api_doc.swagger.processor', ['priority' => -100])
                     ->addMethodCall('setEnabled', [true]),
             ],
@@ -180,7 +180,7 @@ final class ControllerTest extends WebTestCase
                 ],
             ],
             [
-                CleanUnusedComponents::class => (new Definition(CleanUnusedComponents::class))
+                CleanUnusedComponents::class => new Definition(CleanUnusedComponents::class)
                     ->addTag('nelmio_api_doc.swagger.processor', ['priority' => -100])
                     ->addMethodCall('setEnabled', [true]),
             ],
@@ -278,13 +278,38 @@ final class ControllerTest extends WebTestCase
         ];
 
         yield 'Name collision with groups' => [
-            [
-                'name' => 'ApiController81Collisions',
-                'type' => 'attribute',
-            ],
+            'ApiController81Collisions',
             null,
             [],
-            [__DIR__.'/Configs/EnableSerializer.yaml'],
+            [
+                // Enable serializer
+                'framework' => [
+                    'property_info' => [
+                        'enabled' => true,
+                    ],
+                    'serializer' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                    ],
+                    'validation' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                        'static_method' => [
+                            'loadValidatorMetadata',
+                        ],
+                        'translation_domain' => 'validators',
+                        'email_validation_mode' => 'html5',
+                        'mapping' => [
+                            'paths' => [],
+                        ],
+                        'not_compromised_password' => [
+                            'enabled' => true,
+                            'endpoint' => null,
+                        ],
+                        'auto_mapping' => [],
+                    ],
+                ],
+            ],
         ];
 
         if (property_exists(MapRequestPayload::class, 'type')) {
@@ -328,7 +353,7 @@ final class ControllerTest extends WebTestCase
                 ],
             ],
             [
-                StubProcessor::class => (new Definition(StubProcessor::class))
+                StubProcessor::class => new Definition(StubProcessor::class)
                     ->addTag('nelmio_api_doc.swagger.processor', ['priority' => -100, 'before' => CleanUnusedComponents::class]),
             ],
         ];
@@ -595,7 +620,7 @@ final class ControllerTest extends WebTestCase
             [],
             [],
             [
-                'web_custom_controller' => (new Definition(SecuredApiController::class))
+                'web_custom_controller' => new Definition(SecuredApiController::class)
                 ->setPublic(true),
             ],
             function (RoutingConfigurator $routes) {
@@ -624,7 +649,7 @@ final class ControllerTest extends WebTestCase
                 ],
             ],
             [
-                'web_custom_controller' => (new Definition(SecuredApiController::class))
+                'web_custom_controller' => new Definition(SecuredApiController::class)
                     ->setPublic(true),
             ],
             function (RoutingConfigurator $routes) {
