@@ -213,7 +213,7 @@
                     {
                         "name": "changedType",
                         "in": "query",
-                        "description": "Incorrectly described query parameter, fixed by swagger-php",
+                        "description": "Transform the type of the query parameter",
                         "required": false,
                         "schema": {
                             "type": "integer",
