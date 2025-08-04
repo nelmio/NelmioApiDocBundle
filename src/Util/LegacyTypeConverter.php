@@ -25,9 +25,9 @@ final class LegacyTypeConverter
     /**
      * @param LegacyType[] $legacyTypes
      */
-    public static function toTypeInfoType(array $legacyTypes): ?Type
+    public static function toTypeInfoType(?array $legacyTypes): ?Type
     {
-        if ([] === $legacyTypes) {
+        if (null === $legacyTypes || [] === $legacyTypes) {
             return null;
         }
 
