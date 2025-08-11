@@ -98,7 +98,7 @@ jobs:
           fetch-depth: 2
 
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
 
       - name: Upload test results to Codecov.io
         uses: codecov/test-results-action@v1
