@@ -20,7 +20,6 @@ use OpenApi\Annotations\Schema;
 use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
-use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\GenericType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
@@ -62,7 +61,7 @@ final class GenericClassDescriber implements TypeDescriberInterface, ModelRegist
         }
 
         $schema->ref = $this->modelRegistry->register(
-            new Model(new LegacyType('object', false, $wrappedType->getClassName()), serializationContext: $context)
+            new Model($wrappedType, serializationContext: $context)
         );
     }
 
