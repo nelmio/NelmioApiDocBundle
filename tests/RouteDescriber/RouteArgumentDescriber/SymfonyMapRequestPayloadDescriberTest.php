@@ -31,15 +31,6 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
 {
     public function testDescribeHandlesArrayParameterAndRegistersCorrectSchema(): void
     {
-        if (!class_exists(MapRequestPayload::class)) {
-            self::markTestSkipped('Requires Symfony 7.1');
-        }
-
-        $attribute = new \ReflectionClass(MapRequestPayload::class);
-        if (!$attribute->hasProperty('type')) {
-            self::markTestSkipped('Requires Symfony 7.1');
-        }
-
         $registry = new ModelRegistry(
             [$this->createMock(ModelDescriberInterface::class)],
             $this->createMock(OpenApi::class),
