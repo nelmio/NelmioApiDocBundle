@@ -82,7 +82,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        $className = $model->getType()->getClassName();
+        $className = $model->getTypeInfo()->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
         if (!$metadata instanceof ClassMetadata) {
             throw new \InvalidArgumentException(\sprintf('No metadata found for class %s.', $className));
@@ -262,7 +262,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             return false;
         }
 
-        $className = $model->getType()->getClassName();
+        $className = $model->getTypeInfo()->getClassName();
 
         try {
             if (null !== $this->factory->getMetadataForClass($className)) {

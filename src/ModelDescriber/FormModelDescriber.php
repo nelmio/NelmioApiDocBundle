@@ -28,6 +28,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
 use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\TypeInfo\Type\ObjectType;
 
 /**
  * @internal
@@ -63,7 +64,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        $class = $model->getType()->getClassName();
+        $class = $model->getTypeInfo()->getClassName();
 
         $annotationsReader = new AnnotationsReader(
             $this->modelRegistry,
@@ -88,7 +89,8 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function supports(Model $model): bool
     {
-        return is_a($model->getType()->getClassName(), FormTypeInterface::class, true);
+        return $model->getTypeInfo() instanceof ObjectType
+            && is_a($model->getTypeInfo()->getClassName(), FormTypeInterface::class, true);
     }
 
     private function parseForm(OA\Schema $schema, FormInterface $form): void

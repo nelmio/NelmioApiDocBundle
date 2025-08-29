@@ -13,18 +13,19 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Nelmio\ApiDocBundle\Model\Model;
 use OpenApi\Annotations as OA;
+use Symfony\Component\TypeInfo\Type\ObjectType;
 
 class SelfDescribingModelDescriber implements ModelDescriberInterface
 {
     public function describe(Model $model, OA\Schema $schema): void
     {
-        \call_user_func([$model->getType()->getClassName(), 'describe'], $schema, $model);
+        \call_user_func([$model->getTypeInfo()->getClassName(), 'describe'], $schema, $model);
     }
 
     public function supports(Model $model): bool
     {
-        return null !== $model->getType()->getClassName()
-            && class_exists($model->getType()->getClassName())
-            && is_a($model->getType()->getClassName(), SelfDescribingModelInterface::class, true);
+        return $model->getTypeInfo() instanceof ObjectType
+            && class_exists($model->getTypeInfo()->getClassName())
+            && is_a($model->getTypeInfo()->getClassName(), SelfDescribingModelInterface::class, true);
     }
 }

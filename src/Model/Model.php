@@ -55,7 +55,7 @@ final class Model
     }
 
     /**
-     * @deprecated use getTypeInfo() instead
+     * @deprecated use {@see getTypeInfo()} instead
      */
     public function getType(): LegacyType
     {

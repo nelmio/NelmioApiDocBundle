@@ -63,7 +63,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        $class = $model->getType()->getClassName();
+        $class = $model->getTypeInfo()->getClassName();
         $schema->_context->class = $class;
 
         $context = ['serializer_groups' => null];
@@ -200,7 +200,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             return;
         }
 
-        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may need to use the `#[OA\Property(type="")]` attribute to specify it manually.', \is_array($types) ? $types[0]->getBuiltinType() : $types, $model->getType()->getClassName(), $propertyName));
+        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may need to use the `#[OA\Property(type="")]` attribute to specify it manually.', \is_array($types) ? $types[0]->getBuiltinType() : $types, $model->getTypeInfo()->getClassName(), $propertyName));
     }
 
     /**
@@ -235,7 +235,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function supports(Model $model): bool
     {
-        return LegacyType::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
-            && (class_exists($model->getType()->getClassName()) || interface_exists($model->getType()->getClassName()));
+        return $model->getTypeInfo() instanceof Type\ObjectType
+            && (class_exists($model->getTypeInfo()->getClassName()) || interface_exists($model->getTypeInfo()->getClassName()));
     }
 }

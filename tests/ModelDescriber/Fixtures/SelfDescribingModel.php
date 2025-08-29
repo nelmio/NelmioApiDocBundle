@@ -20,6 +20,6 @@ class SelfDescribingModel implements SelfDescribingModelInterface
     public static function describe(Schema $schema, Model $model): void
     {
         $schema->title = 'SelfDescribingTitle';
-        $schema->description = $model->getType()->getClassName();
+        $schema->description = $model->getTypeInfo()->getClassName();
     }
 }

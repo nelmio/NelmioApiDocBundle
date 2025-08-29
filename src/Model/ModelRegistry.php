@@ -87,7 +87,7 @@ final class ModelRegistry
     public function register(Model $model): string
     {
         $hash = $model->getHash();
-        $type = $this->getTypeShortName($model->getType());
+        $type = $this->getTypeShortName($model->getTypeInfo());
 
         $schema = null;
         if (!isset($this->names[$hash])) {

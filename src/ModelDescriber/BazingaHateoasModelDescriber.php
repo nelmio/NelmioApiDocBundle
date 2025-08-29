@@ -88,7 +88,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
     private function getHateoasMetadata(Model $model): ?object
     {
         try {
-            return $this->factory->getMetadataForClass($model->getType()->getClassName());
+            return $this->factory->getMetadataForClass($model->getTypeInfo()->getClassName());
         } catch (\ReflectionException $e) {
         }
 
