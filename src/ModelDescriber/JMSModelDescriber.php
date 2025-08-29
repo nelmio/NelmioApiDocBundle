@@ -26,6 +26,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type;
+use Symfony\Component\TypeInfo\Type\ObjectType;
 
 /**
  * Uses the JMS metadata factory to extract input/output model information.
@@ -82,7 +83,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        $className = $model->getTypeInfo()->getClassName();
+        /** @var ObjectType $type */
+        $type = $model->getTypeInfo();
+        $className = $type->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
         if (!$metadata instanceof ClassMetadata) {
             throw new \InvalidArgumentException(\sprintf('No metadata found for class %s.', $className));
@@ -262,7 +265,9 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             return false;
         }
 
-        $className = $model->getTypeInfo()->getClassName();
+        /** @var ObjectType $type */
+        $type = $model->getTypeInfo();
+        $className = $type->getClassName();
 
         try {
             if (null !== $this->factory->getMetadataForClass($className)) {

@@ -21,7 +21,9 @@ class EnumModelDescriber implements ModelDescriberInterface
 
     public function describe(Model $model, Schema $schema): void
     {
-        $enumClass = $model->getTypeInfo()->getClassName();
+        /** @var ObjectType $type */
+        $type = $model->getTypeInfo();
+        $enumClass = $type->getClassName();
         $forceName = isset($model->getSerializationContext()[self::FORCE_NAMES]) && true === $model->getSerializationContext()[self::FORCE_NAMES];
 
         $enums = [];

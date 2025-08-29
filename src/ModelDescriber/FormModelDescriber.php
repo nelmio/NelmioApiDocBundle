@@ -64,7 +64,9 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        $class = $model->getTypeInfo()->getClassName();
+        /** @var ObjectType $type */
+        $type = $model->getTypeInfo();
+        $class = $type->getClassName();
 
         $annotationsReader = new AnnotationsReader(
             $this->modelRegistry,

@@ -26,6 +26,7 @@ use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\TypeInfo\Type;
+use Symfony\Component\TypeInfo\Type\ObjectType;
 
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
@@ -63,7 +64,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        $class = $model->getTypeInfo()->getClassName();
+        /** @var ObjectType $type */
+        $type = $model->getTypeInfo();
+        $class = $type->getClassName();
         $schema->_context->class = $class;
 
         $context = ['serializer_groups' => null];
@@ -200,7 +203,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             return;
         }
 
-        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may need to use the `#[OA\Property(type="")]` attribute to specify it manually.', \is_array($types) ? $types[0]->getBuiltinType() : $types, $model->getTypeInfo()->getClassName(), $propertyName));
+        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may need to use the `#[OA\Property(type="")]` attribute to specify it manually.', \is_array($types) ? $types[0]->getBuiltinType() : $types, $model->getTypeInfo(), $propertyName));
     }
 
     /**
@@ -235,7 +238,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function supports(Model $model): bool
     {
-        return $model->getTypeInfo() instanceof Type\ObjectType
+        return $model->getTypeInfo() instanceof ObjectType
             && (class_exists($model->getTypeInfo()->getClassName()) || interface_exists($model->getTypeInfo()->getClassName()));
     }
 }

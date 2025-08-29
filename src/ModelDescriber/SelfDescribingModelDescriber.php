@@ -19,7 +19,10 @@ class SelfDescribingModelDescriber implements ModelDescriberInterface
 {
     public function describe(Model $model, OA\Schema $schema): void
     {
-        \call_user_func([$model->getTypeInfo()->getClassName(), 'describe'], $schema, $model);
+        /** @var ObjectType $type */
+        $type = $model->getTypeInfo();
+
+        \call_user_func([$type->getClassName(), 'describe'], $schema, $model);
     }
 
     public function supports(Model $model): bool
