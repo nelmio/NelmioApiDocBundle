@@ -18,6 +18,7 @@ use OpenApi\Annotations as OA;
 use OpenApi\Processors\CleanUnusedComponents;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -311,13 +312,17 @@ final class ControllerTest extends WebTestCase
             ],
         ];
 
-        yield 'Symfony 7.1 MapRequestPayload array type' => [
-            'MapRequestPayloadArray',
-        ];
+        if (property_exists(MapRequestPayload::class, 'type')) {
+            yield 'Symfony 7.1 MapRequestPayload array type' => [
+                'MapRequestPayloadArray',
+            ];
+        }
 
-        yield 'Symfony 7.1 MapUploadedFile attribute' => [
-            'MapUploadedFileController',
-        ];
+        if (version_compare(Kernel::VERSION, '7.1.0', '>=')) {
+            yield 'Symfony 7.1 MapUploadedFile attribute' => [
+                'MapUploadedFileController',
+            ];
+        }
 
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2224' => [
             null,
