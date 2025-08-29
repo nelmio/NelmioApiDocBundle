@@ -37,7 +37,7 @@ final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInte
         }
 
         $modelRef = $this->modelRegistry->register(new Model(
-            $argumentMetadata->isNullable() ? Type::nullable(Type::object($argumentMetadata->getType())) : Type::object($argumentMetadata->getType()),
+            Type::object($argumentMetadata->getType()),
             groups: $this->getGroups($attribute),
             serializationContext: $attribute->serializationContext,
         ));
