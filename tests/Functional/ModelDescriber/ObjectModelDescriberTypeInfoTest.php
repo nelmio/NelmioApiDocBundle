@@ -134,4 +134,54 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
             '$void',
         ];
     }
+
+    /**
+     * `symfony/type-info 7.3.3` changed the string representation of list from `array<int, T>` to `list<T>`.
+     *
+     * This causes a change in the order of the types in a union type, which in turn changes the generated schema.
+     */
+    public function testComplexArray(): void
+    {
+        $complexArrayClass = new class {
+            /**
+             * @var list<int>|array<string, float>
+             */
+            public array $listOrDict;
+        };
+
+        $model = new Model(new LegacyType('object', false, $complexArrayClass::class));
+        $schema = new OA\Schema([
+            'type' => 'object',
+        ]);
+
+        $this->modelDescriber->describe($model, $schema);
+        $decodedSchema = json_decode($schema->toJson(), true, flags: \JSON_THROW_ON_ERROR);
+
+        self::assertSame(['listOrDict'], $decodedSchema['required']);
+        self::assertCount(1, $decodedSchema['properties']);
+        self::assertArrayHasKey('listOrDict', $decodedSchema['properties']);
+        $listOrDict = $decodedSchema['properties']['listOrDict'];
+        self::assertIsArray($listOrDict);
+        self::assertArrayHasKey('oneOf', $listOrDict);
+        self::assertCount(2, $listOrDict['oneOf']);
+        self::assertContains(
+            [
+                'type' => 'array',
+                'items' => [
+                    'type' => 'integer',
+                ],
+            ],
+            $listOrDict['oneOf']
+        );
+        self::assertContains(
+            [
+                'type' => 'object',
+                'additionalProperties' => [
+                    'type' => 'number',
+                    'format' => 'float',
+                ],
+            ],
+            $listOrDict['oneOf']
+        );
+    }
 }
