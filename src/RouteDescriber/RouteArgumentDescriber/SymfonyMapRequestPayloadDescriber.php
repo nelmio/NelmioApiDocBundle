@@ -37,7 +37,8 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
 
         $typeClass = $argumentMetadata->getType();
 
-        if ('array' === $typeClass && null !== $attribute->type) {
+        $reflectionAttribute = new \ReflectionClass(MapRequestPayload::class);
+        if ('array' === $typeClass && $reflectionAttribute->hasProperty('type') && null !== $attribute->type) {
             $typeClass = $attribute->type;
         }
 
