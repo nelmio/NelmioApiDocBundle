@@ -1,0 +1,50 @@
+name: Release
+on:
+  issue_comment:
+    types: [created, deleted]
+  push:
+    branches:
+      - main
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    name: Context check
+    outputs:
+      continue: ${{ steps.check.outputs.continue }}
+      workflow: ${{ steps.check.outputs.workflow }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Context check
+        id: check
+        uses: trigensoftware/simple-release-action@v1
+        with:
+          workflow: check
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+  pull-request:
+    runs-on: ubuntu-latest
+    name: Pull request
+    needs: check
+    if: needs.check.outputs.workflow == 'pull-request'
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Create or update pull request
+        uses: trigensoftware/simple-release-action@v1
+        with:
+          workflow: pull-request
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+  release:
+    runs-on: ubuntu-latest
+    name: Release
+    needs: check
+    if: needs.check.outputs.workflow == 'release'
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Release
+        uses: trigensoftware/simple-release-action@v1
+        with:
+          workflow: release
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          npm-token: ${{ secrets.NPM_TOKEN }}
