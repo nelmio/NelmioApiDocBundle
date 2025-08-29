@@ -1,0 +1,2 @@
+# Ignoring deprecations from Nelmio\ApiDocBundle 5.6.0, Deprecation of Symfony PropertyInfo\Type
+/^Since nelmio\/api-doc-bundle 5\.X\: Using Symfony\\Component\\PropertyInfo\\Type as type in Nelmio\\ApiDocBundle\\Model\\Model\:\:\_\_construct is deprecated, use Symfony\\Component\\TypeInfo\\Type instead.
