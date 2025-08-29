@@ -335,9 +335,6 @@ class JMSFunctionalTest extends WebTestCase
         ], json_decode($this->getModel('JMSNamingStrategyConstraints')->toJson(), true));
     }
 
-    /**
-     * @requires PHP >= 8.1
-     */
     public function testEnumSupport(): void
     {
         self::assertEquals([
