@@ -29,3 +29,8 @@ parameters:
 			message: "#^Call to function is_callable\\(\\) with array\\{string, mixed\\} will always evaluate to false\\.$#"
 			count: 1
 			path: src/RouteDescriber/FosRestDescriber.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method static method Symfony\\\\Component\\\\TypeInfo\\\\Type\\:\\:collection\\(\\)$#"
+			count: 1
+			path: src/Util/LegacyTypeConverter.php
