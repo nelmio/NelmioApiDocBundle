@@ -50,7 +50,7 @@ final class ModelRegister
             if ($annotation instanceof OA\Schema && $annotation->ref instanceof ModelAnnotation) {
                 $model = $annotation->ref;
 
-                $annotation->ref = $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext));
+                $annotation->ref = $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext, $model->name));
 
                 // It is no longer an unmerged annotation
                 $this->detach($model, $annotation, $analysis);
@@ -76,7 +76,7 @@ final class ModelRegister
             if ($annotation instanceof OA\Response || $annotation instanceof OA\RequestBody) {
                 $properties = [
                     '_context' => Util::createContext(['nested' => $annotation], $annotation->_context),
-                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext)),
+                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext, $model->name)),
                 ];
 
                 foreach ($this->mediaTypes as $mediaType) {
@@ -98,7 +98,7 @@ final class ModelRegister
             }
 
             $annotation->merge([new $annotationClass([
-                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext)),
+                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext, $model->name)),
             ])]);
 
             // It is no longer an unmerged annotation

@@ -188,7 +188,7 @@ final class ModelRegistry
 
     private function generateModelName(Model $model): string
     {
-        $name = $base = $this->getTypeShortName($model->getType());
+        $name = $base = $model->name ?: $this->getTypeShortName($model->getType());
         $names = array_column(
             $this->api->components instanceof OA\Components && \is_array($this->api->components->schemas) ? $this->api->components->schemas : [],
             'schema'

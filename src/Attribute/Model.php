@@ -22,6 +22,7 @@ final class Model extends Attachable
         'type' => 'string',
         'groups' => '[string]',
         'options' => '[mixed]',
+        'name' => 'string',
     ];
 
     public static $_required = ['type'];
@@ -59,6 +60,7 @@ final class Model extends Attachable
         ?array $groups = null,
         array $options = [],
         array $serializationContext = [],
+        public readonly ?string $name = null,
     ) {
         parent::__construct($properties + [
             'type' => $type,
