@@ -180,6 +180,10 @@ final class ModelRegistry
         $i = 1;
         while (\in_array($name, $names, true)) {
             if (isset($this->registeredModelNames[$name])) {
+                if ($this->registeredModelNames[$name]->getHash() === $model->getHash()) {
+                    return $name;
+                }
+
                 $this->logger->info(\sprintf('Can not assign a name for the model, the name "%s" has already been taken.', $name), [
                     'model' => $this->modelToArray($model),
                     'taken_by' => $this->modelToArray($this->registeredModelNames[$name]),
