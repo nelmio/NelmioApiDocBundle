@@ -83,7 +83,7 @@ final class ModelRegistry
         $identifier = $this->getTypeShortName($model->getType()).$model->name;
 
         $schema = null;
-        if (!isset($this->names[$hash])) {
+        if ($model->name || !isset($this->names[$hash])) {
             $this->names[$hash] = $name = $this->generateModelName($model);
             $this->registeredModelNames[$name] = $model;
 

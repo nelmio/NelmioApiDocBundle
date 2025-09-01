@@ -169,18 +169,19 @@ class ModelRegistryTest extends TestCase
      * @param array<string, mixed> $alternativeNames
      */
     #[DataProvider('getNameAlternatives')]
-    public function testNameAliasingForObjects(string $expected, ?array $groups, array $alternativeNames): void
+    public function testNameAliasingForObjects(string $expected, ?array $groups, ?string $name, array $alternativeNames): void
     {
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class);
 
-        self::assertEquals($expected, $registry->register(new Model($type, $groups)));
+        self::assertEquals($expected, $registry->register(new Model($type, $groups, name: $name)));
     }
 
     public static function getNameAlternatives(): \Generator
     {
         yield [
             '#/components/schemas/ModelRegistryTest',
+            null,
             null,
             [
                 'Foo1' => [
@@ -193,6 +194,31 @@ class ModelRegistryTest extends TestCase
         yield [
             '#/components/schemas/Foo1',
             ['group1'],
+            null,
+            [
+                'Foo1' => [
+                    'type' => self::class,
+                    'groups' => ['group1'],
+                ],
+            ],
+        ];
+
+        yield [
+            '#/components/schemas/FooManualNaming',
+            null,
+            'FooManualNaming',
+            [
+                'Foo1' => [
+                    'type' => self::class,
+                    'groups' => ['group1'],
+                ],
+            ],
+        ];
+
+        yield [
+            '#/components/schemas/FooManualNaming',
+            ['group1'],
+            'FooManualNaming',
             [
                 'Foo1' => [
                     'type' => self::class,
@@ -204,6 +230,7 @@ class ModelRegistryTest extends TestCase
         yield [
             '#/components/schemas/Foo1',
             ['group1', 'group2'],
+            null,
             [
                 'Foo1' => [
                     'type' => self::class,
@@ -214,6 +241,7 @@ class ModelRegistryTest extends TestCase
 
         yield [
             '#/components/schemas/ModelRegistryTest',
+            null,
             null,
             [
                 'Foo1' => [
@@ -226,6 +254,7 @@ class ModelRegistryTest extends TestCase
         yield [
             '#/components/schemas/Foo1',
             [],
+            null,
             [
                 'Foo1' => [
                     'type' => self::class,
@@ -233,6 +262,27 @@ class ModelRegistryTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    public function testMultipleSchemasSameCustomName(): void
+    {
+        $registry = new ModelRegistry([], $this->createOpenApi());
+        $name = 'CustomName';
+
+        self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class), name: $name)));
+        self::assertEquals('#/components/schemas/CustomName2', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'Foo'), name: $name)));
+        self::assertEquals('#/components/schemas/CustomName3', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'Bar'), name: $name)));
+    }
+
+    // Re-using the same custom name with an identical model should return the same schema reference
+    public function testMultipleSchemasSameCustomNameReusesReference(): void
+    {
+        $registry = new ModelRegistry([], $this->createOpenApi());
+        $name = 'CustomName';
+
+        self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed'), name: $name)));
+        self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed'), name: $name)));
+        self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed'), name: $name)));
     }
 
     #[DataProvider('unsupportedTypesProvider')]
