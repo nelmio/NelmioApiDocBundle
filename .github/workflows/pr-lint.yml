@@ -17,19 +17,5 @@ jobs:
     steps:
       - name: Semantic PR title
         uses: amannn/action-semantic-pull-request@v6
-        with:
-          types: |
-            feat
-            fix
-            perf
-            revert
-            chore
-            docs
-            style
-            refactor
-            test
-            ci
-            deprecate
-            dependency
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
