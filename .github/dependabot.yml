@@ -5,9 +5,9 @@ version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
-    commit_message:
+    commit-message:
       prefix: "ci"
-      include_scope: true
+      include: "scope"
     schedule:
       interval: "weekly"
   - package-ecosystem: "npm"
