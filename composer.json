@@ -27,7 +27,6 @@
         "symfony/options-resolver": "^6.4 || ^7.2",
         "symfony/property-info": "^6.4 || ^7.2",
         "symfony/routing": "^6.4 || ^7.2",
-        "symfony/type-info": "^7.2",
         "zircote/swagger-php": "^4.11.1 || ^5.0"
     },
     "require-dev": {
@@ -76,6 +75,7 @@
         "symfony/security-csrf": "For using csrf protection tokens in forms.",
         "symfony/serializer": "For describing your models.",
         "symfony/twig-bundle": "For using the Swagger UI.",
+        "symfony/type-info": "For extracting type information from PHP elements like properties, arguments and return types.",
         "symfony/validator": "For describing the validation constraints in your models.",
         "willdurand/hateoas-bundle": "For extracting HATEOAS metadata."
     },
