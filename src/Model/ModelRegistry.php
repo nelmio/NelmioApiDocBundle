@@ -157,14 +157,13 @@ final class ModelRegistry
      */
     public function registerSchemas(): void
     {
-        while (\count($this->unregistered)) {
-            $tmp = [];
-            foreach ($this->unregistered as $hash) {
-                $tmp[$this->names[$hash]] = $this->models[$hash];
-            }
+        while (!empty($this->unregistered)) {
+            $unregistered = $this->unregistered;
             $this->unregistered = [];
 
-            foreach ($tmp as $name => $model) {
+            foreach ($unregistered as $hash) {
+                $name = $this->names[$hash];
+                $model = $this->models[$hash];
                 $schema = $this->describeSchema($model, $name);
 
                 if (null === $schema) {
