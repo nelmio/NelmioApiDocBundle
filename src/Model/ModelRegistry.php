@@ -91,8 +91,8 @@ final class ModelRegistry
             // Only try to match schemas if we successfully got one
             if (null !== $schema) {
                 $schemaJson = json_encode($schema);
-                if (isset($this->schemaToModelMap[$identifier][json_encode($schema)])) {
-                    $existingModel = $this->schemaToModelMap[$identifier][json_encode($schema)];
+                if (isset($this->schemaToModelMap[$identifier][$schemaJson])) {
+                    $existingModel = $this->schemaToModelMap[$identifier][$schemaJson];
                     $newHash = $existingModel->getHash();
                     unset($this->names[$hash], $this->registeredModelNames[$name]);
 
