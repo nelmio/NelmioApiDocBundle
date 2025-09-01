@@ -77,6 +77,7 @@ final class ModelRegistry
                 $criteria['groups'],
                 $criteria['options'] ?? [],
                 $criteria['serializationContext'] ?? [],
+                name: $alternativeName,
             );
             $this->names[$model->getHash()] = $alternativeName;
             $this->registeredModelNames[$alternativeName] = $model;
@@ -176,7 +177,7 @@ final class ModelRegistry
             }
         }
 
-        if ([] === $this->unregistered && [] !== $this->alternativeNames) {
+        if ([] !== $this->alternativeNames) {
             foreach ($this->alternativeNames as $model) {
                 $this->register($model);
             }
