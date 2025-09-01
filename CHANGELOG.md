@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [5.5.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.5.0...v5.5.1) (2025-09-01)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump swagger-ui-dist from 5.27.1 to 5.28.0 in /utils ([#2538](https://github.com/nelmio/NelmioApiDocBundle/issues/2538)) ([0f86e76](https://github.com/nelmio/NelmioApiDocBundle/commit/0f86e76f6a9c8e5a96f586857aaf205b7277fb79))
+
 ## 5.5.0
 * Schemas deduplication now compare generated schemas to reduce automatically named schemas (Entity / Entity2 / Entity3 / ...).
 * Added support for generic types describing
