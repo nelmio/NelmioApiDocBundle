@@ -228,7 +228,7 @@ class FunctionalTest extends WebTestCase
                         'default' => [],
                     ],
                     'dummy' => [
-                        '$ref' => '#/components/schemas/Dummy2',
+                        '$ref' => '#/components/schemas/Dummy',
                     ],
                     'status' => [
                         'type' => 'string',
