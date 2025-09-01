@@ -42,6 +42,8 @@ In this case the class ``App\Entity\User`` will be aliased into:
 
         .. code-block:: php-attributes
 
+            use OpenApi\Attributes as OA;
+
             class HomeController
             {
                 #[OA\Response(response: 200, content: new OA\JsonContent(ref: "#/components/schemas/MyModel"))]
@@ -60,9 +62,9 @@ This is useful when you want to define a custom name for a model in a specific c
 
     .. code-block:: php-attributes
 
+        use App\Entity\User;
         use Nelmio\ApiDocBundle\Attribute\Model;
         use OpenApi\Attributes as OA;
-        use App\Entity\User;
 
         class UserController
         {
