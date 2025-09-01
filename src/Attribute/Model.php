@@ -49,10 +49,11 @@ final class Model extends Attachable
     public array $serializationContext;
 
     /**
-     * @param mixed[]              $properties
-     * @param string[]             $groups
-     * @param mixed[]              $options
-     * @param array<string, mixed> $serializationContext
+     * @param mixed[]               $properties
+     * @param string[]              $groups
+     * @param mixed[]               $options
+     * @param array<string, mixed>  $serializationContext
+     * @param non-empty-string|null $name                 An optional custom name for the generated schema
      */
     public function __construct(
         array $properties = [],

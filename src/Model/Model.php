@@ -16,10 +16,10 @@ use Symfony\Component\PropertyInfo\Type;
 final class Model
 {
     /**
-     * @param string[]|null $groups
-     * @param mixed[]       $options
-     * @param mixed[]       $serializationContext
-     * @param string|null   $name                 An optional custom name for the generated schema
+     * @param string[]|null         $groups
+     * @param mixed[]               $options
+     * @param mixed[]               $serializationContext
+     * @param non-empty-string|null $name                 An optional custom name for the generated schema
      */
     public function __construct(
         private Type $type,
