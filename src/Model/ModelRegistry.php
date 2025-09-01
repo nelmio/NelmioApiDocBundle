@@ -44,9 +44,9 @@ final class ModelRegistry
     private array $names = [];
 
     /**
-     * @var array<string, array{'schema': string, 'model': Model}[]> List of schemas and Model per type
+     * @var array<string, array<string, Model>> Map from identifier and schema content to Model
      */
-    private array $schemasPerType = [];
+    private array $schemaToModelMap = [];
 
     /**
      * @var iterable<ModelDescriberInterface>
@@ -80,23 +80,23 @@ final class ModelRegistry
     public function register(Model $model): string
     {
         $hash = $model->getHash();
-        $type = $this->getTypeShortName($model->getType()) . $model->name;
+        $identifier = $this->getTypeShortName($model->getType()).$model->name;
 
         $schema = null;
         if (!isset($this->names[$hash])) {
-            $this->names[$hash] = $this->generateModelName($model);
-            $this->registeredModelNames[$this->names[$hash]] = $model;
+            $this->names[$hash] = $name = $this->generateModelName($model);
+            $this->registeredModelNames[$name] = $model;
 
             $schema = $this->describeSchema($model, null);
             // Only try to match schemas if we successfully got one
             if (null !== $schema) {
-                foreach ($this->schemasPerType[$type] ?? [] as $schemaAndModel) {
-                    if ($schemaAndModel['schema'] === json_encode($schema->jsonSerialize())) {
-                        $newHash = $schemaAndModel['model']->getHash();
-                        unset($this->names[$hash], $this->registeredModelNames[$hash]);
+                $schemaJson = json_encode($schema);
+                if (isset($this->schemaToModelMap[$identifier][json_encode($schema)])) {
+                    $existingModel = $this->schemaToModelMap[$identifier][json_encode($schema)];
+                    $newHash = $existingModel->getHash();
+                    unset($this->names[$hash], $this->registeredModelNames[$name]);
 
-                        return OA\Components::SCHEMA_REF.$this->names[$newHash];
-                    }
+                    return OA\Components::SCHEMA_REF.$this->names[$newHash];
                 }
             }
         }
@@ -107,7 +107,7 @@ final class ModelRegistry
             $this->unregistered = array_unique($this->unregistered);
             // Only store schema if it was successfully generated
             if (null !== $schema) {
-                $this->schemasPerType[$type][] = ['schema' => json_encode($schema), 'model' => $model];
+                $this->schemaToModelMap[$identifier][$schemaJson ?? json_encode($schema)] = $model;
             }
         }
 
@@ -150,7 +150,7 @@ final class ModelRegistry
      */
     public function registerSchemas(): void
     {
-        while (!empty($this->unregistered)) {
+        while (\count($this->unregistered)) {
             $unregistered = $this->unregistered;
             $this->unregistered = [];
 
@@ -172,7 +172,7 @@ final class ModelRegistry
 
     private function generateModelName(Model $model): string
     {
-        $name = $base = $model->name ?: $this->getTypeShortName($model->getType());
+        $name = $base = $model->name ?? $this->getTypeShortName($model->getType());
         $names = array_column(
             $this->api->components instanceof OA\Components && \is_array($this->api->components->schemas) ? $this->api->components->schemas : [],
             'schema'
