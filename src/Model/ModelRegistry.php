@@ -77,7 +77,6 @@ final class ModelRegistry
                 $criteria['groups'],
                 $criteria['options'] ?? [],
                 $criteria['serializationContext'] ?? [],
-                name: $alternativeName,
             );
             $this->names[$model->getHash()] = $alternativeName;
             $this->registeredModelNames[$alternativeName] = $model;
@@ -175,6 +174,14 @@ final class ModelRegistry
                     throw new \LogicException($errorMessage);
                 }
             }
+        }
+
+        if ([] !== $this->alternativeNames) {
+            foreach ($this->alternativeNames as $model) {
+                $this->register($model);
+            }
+            $this->alternativeNames = [];
+            $this->registerSchemas();
         }
     }
 
