@@ -80,7 +80,7 @@ final class ModelRegistry
     public function register(Model $model): string
     {
         $hash = $model->getHash();
-        $type = $this->getTypeShortName($model->getType());
+        $type = $this->getTypeShortName($model->getType()) . $model->name;
 
         $schema = null;
         if (!isset($this->names[$hash])) {
@@ -167,14 +167,6 @@ final class ModelRegistry
                     throw new \LogicException($errorMessage);
                 }
             }
-        }
-
-        if ([] !== $this->alternativeNames) {
-            foreach ($this->alternativeNames as $model) {
-                $this->register($model);
-            }
-            $this->alternativeNames = [];
-            $this->registerSchemas();
         }
     }
 
