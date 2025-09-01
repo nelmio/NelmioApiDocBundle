@@ -29,6 +29,11 @@ final class ModelRegistry
     private array $registeredModelNames = [];
 
     /**
+     * @var Model[]
+     */
+    private array $alternativeNames = [];
+
+    /**
      * @var string[] List of hashes of models that have not been registered yet
      */
     private array $unregistered = [];
@@ -67,13 +72,16 @@ final class ModelRegistry
         $this->api = $api;
         $this->logger = new NullLogger();
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
-            $this->register(new Model(
+            $this->alternativeNames[] = $model = new Model(
                 new Type('object', false, $criteria['type']),
                 $criteria['groups'],
                 $criteria['options'] ?? [],
                 $criteria['serializationContext'] ?? [],
                 name: $alternativeName,
-            ));
+            );
+            $this->names[$model->getHash()] = $alternativeName;
+            $this->registeredModelNames[$alternativeName] = $model;
+            Util::getSchema($this->api, $alternativeName);
         }
     }
 
