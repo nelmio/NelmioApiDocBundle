@@ -5,15 +5,24 @@ version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
+    commit_message:
+      prefix: "ci"
+      include_scope: true
     schedule:
       interval: "weekly"
   - package-ecosystem: "npm"
     directory: "/utils"
+    commit_message:
+      prefix: "deps"
+      include_scope: true
     schedule:
       interval: "weekly"
     versioning-strategy: increase
   - package-ecosystem: "composer"
     directory: "/"
+    commit_message:
+      prefix: "deps"
+      include_scope: true
     schedule:
       interval: "weekly"
     groups:
