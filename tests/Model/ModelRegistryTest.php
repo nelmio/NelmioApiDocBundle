@@ -283,6 +283,7 @@ class ModelRegistryTest extends TestCase
         self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed'), name: $name)));
         self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed'), name: $name)));
         self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed'), name: $name)));
+        self::assertEquals('#/components/schemas/CustomName2', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed'))));
     }
 
     #[DataProvider('unsupportedTypesProvider')]
