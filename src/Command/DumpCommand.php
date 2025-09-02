@@ -13,11 +13,13 @@ namespace Nelmio\ApiDocBundle\Command;
 
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Nelmio\ApiDocBundle\Render\RenderOpenApi;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'nelmio:apidoc:dump')]
 final class DumpCommand extends Command
 {
     private RenderOpenApi $renderOpenApi;

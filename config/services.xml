@@ -7,7 +7,7 @@
         <!-- Commands -->
         <service id="nelmio_api_doc.command.dump" class="Nelmio\ApiDocBundle\Command\DumpCommand" public="true">
             <argument type="service" id="nelmio_api_doc.render_docs" />
-            <tag name="console.command" command="nelmio:apidoc:dump" />
+            <tag name="console.command" />
         </service>
 
         <!-- Controllers -->
