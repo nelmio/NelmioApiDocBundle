@@ -82,7 +82,11 @@ final class ModelRegistry
     public function register(Model $model, ?string $alternativeName = null): string
     {
         $hash = $model->getHash();
-        $identifier = $this->getTypeShortName($model->getType()).$model->name;
+        $identifier = \sprintf(
+            '%s|%s',
+            $this->getTypeShortName($model->getType()),
+            $model->name ?? $alternativeName,
+        );
 
         $schema = null;
         if (!isset($this->names[$hash])) {
