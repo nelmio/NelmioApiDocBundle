@@ -49,6 +49,17 @@ final class DumpCommand extends Command
         $availableFormats = $this->renderOpenApi->getAvailableFormats();
         $this
             ->setDescription('Dumps documentation in OpenAPI format to: '.implode(', ', $availableFormats))
+            ->setHelp(<<<'EOF'
+The <info>%command.name%</info> command dumps the OpenAPI documentation in the specified format to the standard output.
+You can specify the "area" option to select a specific documentation area (if multiple areas are defined).
+
+  <info>php %command.full_name%</info>  
+  <info>php %command.full_name% --area MyAreaName</info>
+
+<href=https://symfony.com/bundles/NelmioApiDocBundle/current/commands.html>Read the documentation here.</href>
+
+EOF
+            )
             ->addOption('area', '', InputOption::VALUE_OPTIONAL, '', 'default')
             ->addOption(
                 'format',
