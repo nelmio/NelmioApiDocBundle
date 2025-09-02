@@ -671,6 +671,10 @@ final class ControllerTest extends WebTestCase
                 ],
             ];
         }
+
+        yield 'Custom model names' => [
+            'CustomModelNameController',
+        ];
     }
 
     private static function getFixture(string $fixture): string

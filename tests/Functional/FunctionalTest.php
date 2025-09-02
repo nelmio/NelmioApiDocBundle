@@ -365,6 +365,31 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('FormWithModel')->toJson(), true));
     }
 
+    public function testFormSupportWithRenamedModel(): void
+    {
+        self::assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'quz' => [
+                    '$ref' => '#/components/schemas/User2',
+                ],
+            ],
+            'required' => ['quz'],
+            'schema' => 'FormWithModel',
+        ], json_decode($this->getModel('FormWithModel')->toJson(), true));
+
+        self::assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'quz' => [
+                    '$ref' => '#/components/schemas/User2',
+                ],
+            ],
+            'required' => ['quz'],
+            'schema' => 'RenamedFormWithModel',
+        ], json_decode($this->getModel('RenamedFormWithModel')->toJson(), true));
+    }
+
     #[DataProvider('provideSecurityRoute')]
     public function testSecurityAction(string $route): void
     {

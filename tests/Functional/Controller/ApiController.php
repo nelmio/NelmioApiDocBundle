@@ -205,6 +205,16 @@ class ApiController
     {
     }
 
+    #[Route('/form-model-renamed', methods: ['POST'])]
+    #[OA\RequestBody(
+        description: 'Request content',
+        content: new Model(type: FormWithModel::class, name: 'RenamedFormWithModel'),
+    )]
+    #[OA\Response(response: 201, description: '')]
+    public function formWithModelRenamed()
+    {
+    }
+
     #[Route('/security', methods: ['GET'])]
     #[OA\Response(response: 201, description: '')]
     #[Security(name: 'api_key')]
