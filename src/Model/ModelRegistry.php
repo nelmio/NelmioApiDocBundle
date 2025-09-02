@@ -72,19 +72,21 @@ final class ModelRegistry
                 $criteria['groups'],
                 $criteria['options'] ?? [],
                 $criteria['serializationContext'] ?? [],
-                name: $alternativeName,
-            ));
+            ), $alternativeName);
         }
     }
 
-    public function register(Model $model): string
+    /**
+     * @param string|null $alternativeName An optional custom name for the generated schema, all models with the same hash will share the same name
+     */
+    public function register(Model $model, ?string $alternativeName = null): string
     {
         $hash = $model->getHash();
         $identifier = $this->getTypeShortName($model->getType()).$model->name;
 
         $schema = null;
-        if (null !== $model->name || !isset($this->names[$hash])) {
-            $this->names[$hash] = $name = $this->generateModelName($model);
+        if (!isset($this->names[$hash])) {
+            $this->names[$hash] = $name = $this->generateModelName($model, $alternativeName);
             $this->registeredModelNames[$name] = $model;
 
             $schema = $this->describeSchema($model, null);
@@ -170,9 +172,9 @@ final class ModelRegistry
         }
     }
 
-    private function generateModelName(Model $model): string
+    private function generateModelName(Model $model, ?string $alternativeName): string
     {
-        $name = $base = $model->name ?? $this->getTypeShortName($model->getType());
+        $name = $base = $alternativeName ?? $model->name ?? $this->getTypeShortName($model->getType());
         $names = array_column(
             $this->api->components instanceof OA\Components && \is_array($this->api->components->schemas) ? $this->api->components->schemas : [],
             'schema'

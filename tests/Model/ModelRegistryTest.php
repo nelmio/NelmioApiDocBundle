@@ -280,10 +280,12 @@ class ModelRegistryTest extends TestCase
         $registry = new ModelRegistry([], $this->createOpenApi());
         $name = 'CustomName';
 
-        self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed'), name: $name)));
-        self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed'), name: $name)));
-        self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed'), name: $name)));
-        self::assertEquals('#/components/schemas/CustomName2', $registry->register(new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed'))));
+        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed');
+
+        self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model($type, name: $name)));
+        self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model($type, name: $name)));
+        self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model($type, name: $name)));
+        self::assertEquals('#/components/schemas/ModelRegistryTestReUsed', $registry->register(new Model($type)));
     }
 
     #[DataProvider('unsupportedTypesProvider')]
