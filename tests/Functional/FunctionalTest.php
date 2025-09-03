@@ -1378,4 +1378,28 @@ class FunctionalTest extends WebTestCase
             ],
         ], $operation->security);
     }
+
+    public function testModelInParameter(): void
+    {
+        $operation = $this->getOperation('/api/swagger/model-parameter', 'get');
+
+        self::assertSame([
+            'name' => 'user',
+            'in' => 'query',
+            'schema' => [
+                '$ref' => '#/components/schemas/User2',
+            ],
+        ], json_decode($this->getParameter($operation, 'user', 'query')->toJson(), true));
+
+        self::assertSame([
+            'name' => 'list',
+            'in' => 'query',
+            'schema' => [
+                'type' => 'array',
+                'items' => [
+                    '$ref' => '#/components/schemas/Article',
+                ],
+            ],
+        ], json_decode($this->getParameter($operation, 'list', 'query')->toJson(), true));
+    }
 }

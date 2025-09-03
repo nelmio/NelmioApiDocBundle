@@ -550,4 +550,18 @@ class ApiController
     public function entityWithIgnoredProperty()
     {
     }
+
+    #[Route('/swagger/model-parameter', methods: 'GET')]
+    #[OA\Parameter(name: 'user', in: 'query', content: new Model(type: User::class))]
+    #[OA\Parameter(
+        name: 'list',
+        in: 'query',
+        schema: new OA\Schema(
+            type: 'array',
+            items: new OA\Items(new Model(type: Article::class, groups: ['light'])),
+        ),
+    )]
+    public function modelParameter(): void
+    {
+    }
 }
