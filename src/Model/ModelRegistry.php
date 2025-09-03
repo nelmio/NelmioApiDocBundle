@@ -44,6 +44,11 @@ final class ModelRegistry
     private array $names = [];
 
     /**
+     * @var array<string, string> List of model hashes to model alternative names
+     */
+    private array $alternativeNames = [];
+
+    /**
      * @var array<string, array<string, Model>> Map from identifier and schema content to Model
      */
     private array $schemaToModelMap = [];
@@ -66,27 +71,31 @@ final class ModelRegistry
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
         $this->logger = new NullLogger();
+
+        // The array is reversed to ensure that the first defined alternative name for a model is used.
         foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
-            $this->register(new Model(
+            $model = new Model(
                 new Type('object', false, $criteria['type']),
                 $criteria['groups'],
                 $criteria['options'] ?? [],
                 $criteria['serializationContext'] ?? [],
-            ), $alternativeName);
+            );
+
+            $this->alternativeNames[$model->getHash()] = $alternativeName;
+
+            $this->register($model);
         }
     }
 
-    /**
-     * @param string|null $alternativeName An optional custom name for the generated schema, all models with the same hash will share the same name
-     */
-    public function register(Model $model, ?string $alternativeName = null): string
+    public function register(Model $model): string
     {
         $hash = $model->getHash();
-        $identifier = $this->getTypeShortName($model->getType()).($model->name ?? $alternativeName);
+
+        $identifier = $this->determineModelName($model);
 
         $schema = null;
         if (!isset($this->names[$hash])) {
-            $this->names[$hash] = $name = $this->generateModelName($model, $alternativeName);
+            $this->names[$hash] = $name = $this->generateUniqueModelName($model);
             $this->registeredModelNames[$name] = $model;
 
             $schema = $this->describeSchema($model, null);
@@ -172,9 +181,27 @@ final class ModelRegistry
         }
     }
 
-    private function generateModelName(Model $model, ?string $alternativeName): string
+    private function determineModelName(Model $model): string
     {
-        $name = $base = $alternativeName ?? $model->name ?? $this->getTypeShortName($model->getType());
+        $hash = $model->getHash();
+
+        // 1. From the alternative names configuration
+        if (isset($this->alternativeNames[$hash])) {
+            return $this->alternativeNames[$hash];
+        }
+
+        // 2. From the model itself (e.g. #[Model(name: "MyModel")])
+        if (null !== $model->name) {
+            return $model->name;
+        }
+
+        // 3. Generate from the type
+        return $this->getTypeShortName($model->getType());
+    }
+
+    private function generateUniqueModelName(Model $model): string
+    {
+        $name = $base = $this->determineModelName($model);
         $names = array_column(
             $this->api->components instanceof OA\Components && \is_array($this->api->components->schemas) ? $this->api->components->schemas : [],
             'schema'
