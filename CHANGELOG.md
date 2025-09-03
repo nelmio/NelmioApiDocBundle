@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [5.6.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.5.1...v5.6.0) (2025-09-03)
+
+
+### Features
+
+* **Model:** Allow customizing the name of generated schemas. ([#2542](https://github.com/nelmio/NelmioApiDocBundle/issues/2542)) ([6a12188](https://github.com/nelmio/NelmioApiDocBundle/commit/6a121885ab53034cd86539f8ec6362a8717df218))
+
 ## [5.5.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.5.0...v5.5.1) (2025-09-01)
 
 
