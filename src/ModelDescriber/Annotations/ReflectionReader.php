@@ -18,7 +18,7 @@ use OpenApi\Generator;
 /**
  * Read default values of a property from the function or property signature.
  *
- * This needs to be called before the {@see SymfonyConstraintAnnotationReader},
+ * This needs to be called before the {@see SymfonyAnnotationReader},
  * otherwise required properties might be considered wrongly.
  *
  * @internal

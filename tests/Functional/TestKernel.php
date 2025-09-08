@@ -22,6 +22,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\JMSComplex;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
+use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyContext;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\NameConverter;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -176,6 +177,11 @@ class TestKernel extends Kernel
                 'alias' => 'BazingaUser_grouped',
                 'type' => BazingaUser::class,
                 'groups' => ['foo'],
+            ],
+            [
+                'alias' => 'SymfonyContext',
+                'type' => SymfonyContext::class,
+                'groups' => null,
             ],
             [
                 'alias' => 'SymfonyConstraintsTestGroup',

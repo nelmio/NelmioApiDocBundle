@@ -780,6 +780,29 @@ class FunctionalTest extends WebTestCase
         $this->assertNotHasProperty('protected', $model);
     }
 
+    public function testContextSupport(): void
+    {
+        self::assertEquals(
+            [
+                'schema' => 'SymfonyContext',
+                'type' => 'object',
+                'required' => ['date'],
+                'properties' => [
+                    'date' => [
+                        'type' => 'string',
+                        'format' => 'date',
+                    ],
+                    'nullableDate' => [
+                        'type' => 'string',
+                        'format' => 'date',
+                        'nullable' => true,
+                    ],
+                ],
+            ],
+            json_decode($this->getModel('SymfonyContext')->toJson(), true)
+        );
+    }
+
     public function testModelsWithDiscriminatorMapAreLoadedWithOpenApiPolymorphism(): void
     {
         $model = $this->getModel('SymfonyDiscriminator');

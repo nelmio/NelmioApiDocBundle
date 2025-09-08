@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @internal
  */
-class SymfonyConstraintAnnotationReader
+class SymfonyAnnotationReader
 {
     use SetsContextTrait;
 
@@ -39,19 +39,29 @@ class SymfonyConstraintAnnotationReader
     }
 
     /**
-     * Update the given property and schema with defined Symfony constraints.
+     * Update the given property and schema with defined Symfony attributes.
      *
      * @param \ReflectionProperty|\ReflectionMethod $reflection
      * @param string[]|null                         $validationGroups
      */
     public function updateProperty($reflection, OA\Property $property, ?array $validationGroups = null): void
     {
-        foreach ($this->getAttributes($property->_context, $reflection, $validationGroups) as $outerAttribute) {
+        // Handle constraints
+        foreach ($this->getConstraintAttributes($property->_context, $reflection, $validationGroups) as $outerAttribute) {
             $innerAttributes = $outerAttribute instanceof Assert\Compound || $outerAttribute instanceof Assert\Sequentially
                 ? $outerAttribute->constraints
                 : [$outerAttribute];
 
-            $this->processPropertyAttributes($reflection, $property, $innerAttributes);
+            $this->processConstraintPropertyAttributes($reflection, $property, $innerAttributes);
+        }
+
+        // Handle context
+        $context = $reflection->getAttributes(\Symfony\Component\Serializer\Attribute\Context::class);
+        if (1 === \count($context)) {
+            $contextArgs = $context[0]->getArguments()[0];
+            if ('Y-m-d' === ($contextArgs['datetime_format'] ?? null)) {
+                $property->format = 'date';
+            }
         }
     }
 
@@ -59,7 +69,7 @@ class SymfonyConstraintAnnotationReader
      * @param \ReflectionProperty|\ReflectionMethod $reflection
      * @param Constraint[]                          $attributes
      */
-    private function processPropertyAttributes($reflection, OA\Property $property, array $attributes): void
+    private function processConstraintPropertyAttributes($reflection, OA\Property $property, array $attributes): void
     {
         foreach ($attributes as $attribute) {
             if ($attribute instanceof Assert\NotBlank || $attribute instanceof Assert\NotNull) {
@@ -179,7 +189,7 @@ class SymfonyConstraintAnnotationReader
      *
      * @return iterable<Constraint>
      */
-    private function getAttributes(Context $parentContext, $reflection, ?array $validationGroups): iterable
+    private function getConstraintAttributes(Context $parentContext, $reflection, ?array $validationGroups): iterable
     {
         // To correctly load OA attributes
         $this->setContextFromReflection($parentContext, $reflection);
