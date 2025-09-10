@@ -262,6 +262,22 @@ class ModelRegistryTest extends TestCase
                 ],
             ],
         ];
+
+        yield 'ensure first defined alternative name is used' => [
+            '#/components/schemas/Foo1',
+            ['group1'],
+            null,
+            [
+                'Foo1' => [
+                    'type' => self::class,
+                    'groups' => ['group1'],
+                ],
+                'Foo2' => [
+                    'type' => self::class,
+                    'groups' => ['group1'],
+                ],
+            ],
+        ];
     }
 
     public function testMultipleSchemasSameCustomName(): void

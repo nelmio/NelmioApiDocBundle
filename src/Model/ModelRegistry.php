@@ -72,8 +72,7 @@ final class ModelRegistry
         $this->api = $api;
         $this->logger = new NullLogger();
 
-        // The array is reversed to ensure that the first defined alternative name for a model is used.
-        foreach (array_reverse($alternativeNames) as $alternativeName => $criteria) {
+        foreach ($alternativeNames as $alternativeName => $criteria) {
             $model = new Model(
                 new Type('object', false, $criteria['type']),
                 $criteria['groups'],
