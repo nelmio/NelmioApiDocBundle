@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [5.6.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.0...v5.6.1) (2025-09-10)
+
+
+### Bug Fixes
+
+* **ModelRegistry:** ensure first registered alternative name is used ([#2553](https://github.com/nelmio/NelmioApiDocBundle/issues/2553)) ([2f3b3b7](https://github.com/nelmio/NelmioApiDocBundle/commit/2f3b3b778d132f5b33f3d09f24d44745f83606f6))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump swagger-ui-dist from 5.28.0 to 5.28.1 in /utils ([#2548](https://github.com/nelmio/NelmioApiDocBundle/issues/2548)) ([dcde65f](https://github.com/nelmio/NelmioApiDocBundle/commit/dcde65f1086f87f3f7208ca1d147063a0f12ba6a))
+
 ## [5.6.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.5.1...v5.6.0) (2025-09-03)
 
 
