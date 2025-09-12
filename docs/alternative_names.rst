@@ -1,8 +1,8 @@
 Alternative Names
 =================
 
-NelmioApiDoc automatically generates the model names but the ``nelmio_api_doc.models.names`` option allows to
-customize the names for some models.
+NelmioApiDoc automatically generates model names, but you can customize them using the
+``nelmio_api_doc.models.names`` configuration option or the ``name`` property on the ``#[Model]`` attribute.
 
 Configuration
 -------------
@@ -42,6 +42,8 @@ In this case the class ``App\Entity\User`` will be aliased into:
 
         .. code-block:: php-attributes
 
+            use OpenApi\Attributes as OA;
+
             class HomeController
             {
                 #[OA\Response(response: 200, content: new OA\JsonContent(ref: "#/components/schemas/MyModel"))]
@@ -49,3 +51,36 @@ In this case the class ``App\Entity\User`` will be aliased into:
                 {
                 }
             }
+
+Using the Model attribute
+-------------------------
+
+You can also specify an alternative name directly within the ``#[Model]`` attribute by using the ``name`` property.
+This is useful when you want to define a custom name for a model in a specific context.
+
+.. configuration-block::
+
+    .. code-block:: php-attributes
+
+        use App\Entity\User;
+        use Nelmio\ApiDocBundle\Attribute\Model;
+        use OpenApi\Attributes as OA;
+
+        class UserController
+        {
+            #[OA\Response(
+                response: 200,
+                description: "Success",
+                content: new Model(type: User::class, name: "User_CustomName")
+            )]
+            public function getUser()
+            {
+                // ...
+            }
+        }
+
+This will register the ``User`` model with the name ``User_CustomName`` in the OpenAPI documentation.
+
+.. versionadded:: 5.6
+
+    The possibility to define alternative names for models through the ``#[Model]`` attribute was added in version 5.6.

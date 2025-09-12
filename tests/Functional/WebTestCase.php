@@ -80,10 +80,7 @@ class WebTestCase extends BaseWebTestCase
         return $annotation->properties[$key];
     }
 
-    /**
-     * @param OA\Operation|OA\OpenApi $annotation
-     */
-    protected function getParameter(OA\AbstractAnnotation $annotation, string $name, string $in): OA\Parameter
+    protected function getParameter(OA\Operation|OA\OpenApi $annotation, string $name, string $in): OA\Parameter
     {
         $this->assertHasParameter($name, $in, $annotation);
         $parameters = array_filter($annotation->parameters ?? [], function (OA\Parameter $parameter) use ($name, $in) {

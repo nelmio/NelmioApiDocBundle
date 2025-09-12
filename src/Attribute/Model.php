@@ -22,6 +22,7 @@ final class Model extends Attachable
         'type' => 'string',
         'groups' => '[string]',
         'options' => '[mixed]',
+        'name' => 'string',
     ];
 
     public static $_required = ['type'];
@@ -48,10 +49,11 @@ final class Model extends Attachable
     public array $serializationContext;
 
     /**
-     * @param mixed[]              $properties
-     * @param string[]             $groups
-     * @param mixed[]              $options
-     * @param array<string, mixed> $serializationContext
+     * @param mixed[]               $properties
+     * @param string[]              $groups
+     * @param mixed[]               $options
+     * @param array<string, mixed>  $serializationContext
+     * @param non-empty-string|null $name                 An optional custom name for the generated schema
      */
     public function __construct(
         array $properties = [],
@@ -59,6 +61,7 @@ final class Model extends Attachable
         ?array $groups = null,
         array $options = [],
         array $serializationContext = [],
+        public readonly ?string $name = null,
     ) {
         parent::__construct($properties + [
             'type' => $type,

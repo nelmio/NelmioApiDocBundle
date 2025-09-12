@@ -228,7 +228,7 @@ class FunctionalTest extends WebTestCase
                         'default' => [],
                     ],
                     'dummy' => [
-                        '$ref' => '#/components/schemas/Dummy2',
+                        '$ref' => '#/components/schemas/Dummy',
                     ],
                     'status' => [
                         'type' => 'string',
@@ -363,6 +363,31 @@ class FunctionalTest extends WebTestCase
             'required' => ['quz'],
             'schema' => 'FormWithModel',
         ], json_decode($this->getModel('FormWithModel')->toJson(), true));
+    }
+
+    public function testFormSupportWithRenamedModel(): void
+    {
+        self::assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'quz' => [
+                    '$ref' => '#/components/schemas/User2',
+                ],
+            ],
+            'required' => ['quz'],
+            'schema' => 'FormWithModel',
+        ], json_decode($this->getModel('FormWithModel')->toJson(), true));
+
+        self::assertEquals([
+            'type' => 'object',
+            'properties' => [
+                'quz' => [
+                    '$ref' => '#/components/schemas/User2',
+                ],
+            ],
+            'required' => ['quz'],
+            'schema' => 'RenamedFormWithModel',
+        ], json_decode($this->getModel('RenamedFormWithModel')->toJson(), true));
     }
 
     #[DataProvider('provideSecurityRoute')]
@@ -1349,5 +1374,29 @@ class FunctionalTest extends WebTestCase
                 ],
             ],
         ], $operation->security);
+    }
+
+    public function testModelInParameter(): void
+    {
+        $operation = $this->getOperation('/api/swagger/model-parameter', 'get');
+
+        self::assertSame([
+            'name' => 'user',
+            'in' => 'query',
+            'schema' => [
+                '$ref' => '#/components/schemas/User2',
+            ],
+        ], json_decode($this->getParameter($operation, 'user', 'query')->toJson(), true));
+
+        self::assertSame([
+            'name' => 'list',
+            'in' => 'query',
+            'schema' => [
+                'type' => 'array',
+                'items' => [
+                    '$ref' => '#/components/schemas/Article',
+                ],
+            ],
+        ], json_decode($this->getParameter($operation, 'list', 'query')->toJson(), true));
     }
 }

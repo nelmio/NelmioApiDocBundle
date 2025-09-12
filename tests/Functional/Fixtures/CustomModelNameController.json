@@ -1,0 +1,256 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/custom_model_names/unique": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_custommodelname_postuniquearticles",
+                "requestBody": {
+                    "description": "Request body description",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MyUniqueArticle"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/custom_model_names/plain": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_custommodelname_getplainarticle",
+                "responses": {
+                    "200": {
+                        "description": "An article",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MyPlainArticle"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_custommodelname_postplainarticle",
+                "requestBody": {
+                    "description": "Request body description",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MyPlainArticle"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/custom_model_names/plain/all": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_custommodelname_getallplainarticles",
+                "responses": {
+                    "200": {
+                        "description": "Array of articles",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MyPlainArticle"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/custom_model_names": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_custommodelname_getnormalarticle",
+                "responses": {
+                    "200": {
+                        "description": "Normal article without custom model name",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Article"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "required": [
+                    "email",
+                    "location",
+                    "friendsNumber",
+                    "creationDate",
+                    "users",
+                    "dummy",
+                    "status",
+                    "dateAsInterface"
+                ],
+                "properties": {
+                    "money": {
+                        "type": "number",
+                        "format": "float",
+                        "default": 0
+                    },
+                    "id": {
+                        "title": "userid",
+                        "description": "User id",
+                        "type": "integer",
+                        "default": null,
+                        "readOnly": true,
+                        "example": 1
+                    },
+                    "email": {
+                        "type": "string",
+                        "readOnly": false
+                    },
+                    "roles": {
+                        "title": "roles",
+                        "description": "User roles",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [
+                            "user"
+                        ],
+                        "example": "[\"ADMIN\",\"SUPERUSER\"]"
+                    },
+                    "location": {
+                        "title": "User Location.",
+                        "type": "string"
+                    },
+                    "friendsNumber": {
+                        "type": "string"
+                    },
+                    "creationDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "users": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/User"
+                        }
+                    },
+                    "friend": {
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "friends": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/User"
+                        },
+                        "default": [],
+                        "nullable": true
+                    },
+                    "dummy": {
+                        "$ref": "#/components/schemas/Dummy"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "disabled",
+                            "enabled"
+                        ]
+                    },
+                    "dateAsInterface": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Dummy": {
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MyUniqueArticle": {
+                "required": [
+                    "author",
+                    "content"
+                ],
+                "properties": {
+                    "author": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "content": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MyPlainArticle": {
+                "required": [
+                    "author",
+                    "content"
+                ],
+                "properties": {
+                    "author": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "content": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Article": {
+                "required": [
+                    "author",
+                    "content"
+                ],
+                "properties": {
+                    "author": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "content": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

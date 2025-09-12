@@ -18,25 +18,17 @@ use Symfony\Component\TypeInfo\Type;
 final class Model
 {
     /**
-     * @var mixed[]
-     */
-    private array $options;
-
-    /**
-     * @var mixed[]
-     */
-    private array $serializationContext;
-
-    /**
-     * @param string[]|null $groups
-     * @param mixed[]       $options
-     * @param mixed[]       $serializationContext
+     * @param string[]|null         $groups
+     * @param mixed[]               $options
+     * @param mixed[]               $serializationContext
+     * @param non-empty-string|null $name                 An optional custom name for the generated schema
      */
     public function __construct(
         private LegacyType|Type $type,
         ?array $groups = null,
-        array $options = [],
-        array $serializationContext = []
+        private array $options = [],
+        private array $serializationContext = [],
+        public readonly ?string $name = null,
     ) {
         if ($type instanceof LegacyType) {
             trigger_deprecation(
@@ -47,8 +39,6 @@ final class Model
             );
         }
 
-        $this->options = $options;
-        $this->serializationContext = $serializationContext;
         if (null !== $groups) {
             $this->serializationContext['groups'] = $groups;
         }
@@ -99,7 +89,7 @@ final class Model
 
     public function getHash(): string
     {
-        return md5(serialize([$this->getTypeInfo()->__toString(), $this->getSerializationContext()]));
+        return md5(serialize([$this->getTypeInfo()->__toString(), $this->getSerializationContext(), $this->name]));
     }
 
     /**

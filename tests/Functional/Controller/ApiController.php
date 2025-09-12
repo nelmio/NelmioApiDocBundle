@@ -205,6 +205,16 @@ class ApiController
     {
     }
 
+    #[Route('/form-model-renamed', methods: ['POST'])]
+    #[OA\RequestBody(
+        description: 'Request content',
+        content: new Model(type: FormWithModel::class, name: 'RenamedFormWithModel'),
+    )]
+    #[OA\Response(response: 201, description: '')]
+    public function formWithModelRenamed()
+    {
+    }
+
     #[Route('/security', methods: ['GET'])]
     #[OA\Response(response: 201, description: '')]
     #[Security(name: 'api_key')]
@@ -538,6 +548,20 @@ class ApiController
         ),
     )]
     public function entityWithIgnoredProperty()
+    {
+    }
+
+    #[Route('/swagger/model-parameter', methods: 'GET')]
+    #[OA\Parameter(name: 'user', in: 'query', content: new Model(type: User::class))]
+    #[OA\Parameter(
+        name: 'list',
+        in: 'query',
+        schema: new OA\Schema(
+            type: 'array',
+            items: new OA\Items(new Model(type: Article::class, groups: ['light'])),
+        ),
+    )]
+    public function modelParameter(): void
     {
     }
 }

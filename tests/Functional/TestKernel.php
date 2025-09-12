@@ -187,9 +187,6 @@ class TestKernel extends Kernel
                 'type' => SymfonyConstraintsWithValidationGroups::class,
                 'groups' => null,
             ],
-        ];
-
-        $models = array_merge($models, [
             [
                 'alias' => 'JMSComplex',
                 'type' => JMSComplex::class,
@@ -204,7 +201,7 @@ class TestKernel extends Kernel
                 'type' => JMSComplex::class,
                 'groups' => null,
             ],
-        ]);
+        ];
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
