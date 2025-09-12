@@ -14,9 +14,11 @@ namespace Nelmio\ApiDocBundle\Model;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
 use OpenApi\Annotations as OA;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
 
 final class ModelRegistry
@@ -74,7 +76,7 @@ final class ModelRegistry
 
         foreach ($alternativeNames as $alternativeName => $criteria) {
             $model = new Model(
-                Type::object($criteria['type']),
+                LegacyTypeConverter::createType($criteria['type']),
                 $criteria['groups'],
                 $criteria['options'] ?? [],
                 $criteria['serializationContext'] ?? [],
@@ -170,8 +172,12 @@ final class ModelRegistry
                 $schema = $this->describeSchema($model, $name);
 
                 if (null === $schema) {
-                    $errorMessage = \sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($model->getTypeInfo()));
-                    if ($model->getTypeInfo() instanceof Type\ObjectType && !class_exists($className = $model->getTypeInfo()->getClassName())) {
+                    $type = class_exists(Type::class)
+                        ? $model->getTypeInfo()
+                        : $model->getType();
+
+                    $errorMessage = \sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($type));
+                    if (method_exists($type, 'getClassName') && !class_exists($className = $type->getClassName())) {
                         $errorMessage .= \sprintf(' Class "\\%s" does not exist, did you forget a use statement, or typed it wrong?', $className);
                     }
                     throw new \LogicException($errorMessage);
@@ -194,8 +200,12 @@ final class ModelRegistry
             return $model->name;
         }
 
+        $type = class_exists(Type::class)
+            ? $model->getTypeInfo()
+            : $model->getType();
+
         // 3. Generate from the type
-        return $this->getTypeShortName($model->getTypeInfo());
+        return $this->getTypeShortName($type);
     }
 
     private function generateUniqueModelName(Model $model): string
@@ -225,47 +235,80 @@ final class ModelRegistry
      */
     private function modelToArray(Model $model): array
     {
+        if (class_exists(Type::class)) {
+            $dataType = $model->getTypeInfo()->__toString();
+        } else {
+            $getType = function (LegacyType $type) use (&$getType): array {
+                return [
+                    'class' => $type->getClassName(),
+                    'built_in_type' => $type->getBuiltinType(),
+                    'nullable' => $type->isNullable(),
+                    'collection' => $type->isCollection(),
+                    'collection_key_types' => $type->isCollection() ? array_map($getType, $type->getCollectionKeyTypes()) : null,
+                    'collection_value_types' => $type->isCollection() ? array_map($getType, $type->getCollectionValueTypes()) : null,
+                ];
+            };
+
+            $dataType = $getType($model->getType());
+        }
+
         return [
-            'type' => $model->getTypeInfo()->__toString(),
+            'type' => $dataType,
             'options' => $model->getOptions(),
             'groups' => $model->getGroups(),
             'serialization_context' => $model->getSerializationContext(),
         ];
     }
 
-    private function getTypeShortName(Type $type): string
+    private function getTypeShortName(LegacyType|Type $type): string
     {
-        if ($type instanceof Type\CollectionType) {
-            return $this->getTypeShortName($type->getCollectionValueType()).'[]';
+        if ($type instanceof Type) {
+            if ($type instanceof Type\CollectionType) {
+                return $this->getTypeShortName($type->getCollectionValueType()).'[]';
+            }
+
+            if ($type instanceof Type\ObjectType) {
+                $parts = explode('\\', $type->getClassName());
+
+                return end($parts);
+            }
+
+            if ($type instanceof Type\NullableType) {
+                return $this->getTypeShortName($type->getWrappedType());
+            }
+
+            return $type->__toString();
         }
 
-        if ($type instanceof Type\ObjectType) {
+        if (null !== $collectionType = ($type->getCollectionValueTypes()[0] ?? null)) {
+            return $this->getTypeShortName($collectionType).'[]';
+        }
+
+        if (LegacyType::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
             $parts = explode('\\', $type->getClassName());
 
             return end($parts);
         }
 
-        if ($type instanceof Type\NullableType) {
-            return $this->getTypeShortName($type->getWrappedType());
-        }
-
-        return $type->__toString();
+        return $type->getBuiltinType();
     }
 
-    private function typeToString(Type $type): string
+    private function typeToString(LegacyType|Type $type): string
     {
-        if ($type instanceof Type\ObjectType) {
+        if ($type instanceof Type) {
+            return $type->__toString();
+        }
+
+        if (LegacyType::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
             return '\\'.$type->getClassName();
+        } elseif ($type->isCollection()) {
+            if (null !== $collectionType = ($type->getCollectionValueTypes()[0] ?? null)) {
+                return $this->typeToString($collectionType).'[]';
+            } else {
+                return 'mixed[]';
+            }
         }
 
-        if ($type instanceof Type\CollectionType) {
-            return $type->getCollectionValueType().'[]';
-        }
-
-        if ($type instanceof Type\NullableType) {
-            return $this->typeToString($type->getWrappedType());
-        }
-
-        return $type->__toString();
+        return $type->getBuiltinType();
     }
 }

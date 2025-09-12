@@ -16,10 +16,10 @@ namespace Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
+use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\Validator\Constraints\GroupSequence;
 
 final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberInterface, ModelRegistryAwareInterface
@@ -43,7 +43,7 @@ final class SymfonyMapRequestPayloadDescriber implements RouteArgumentDescriberI
         }
 
         $modelRef = $this->modelRegistry->register(new Model(
-            Type::object($typeClass),
+            LegacyTypeConverter::createType($typeClass),
             groups: $this->getGroups($attribute),
             serializationContext: $attribute->serializationContext,
         ));

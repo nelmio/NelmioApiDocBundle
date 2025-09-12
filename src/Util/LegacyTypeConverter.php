@@ -110,4 +110,21 @@ final class LegacyTypeConverter
 
         throw new \LogicException('Unsupported TypeInfo type: '.$type->__toString());
     }
+
+    public static function createType(string $type): LegacyType|Type
+    {
+        if (!class_exists(Type::class)) {
+            if (str_ends_with($type, '[]')) {
+                return new LegacyType('array', false, null, true, null, self::createType(substr($type, 0, -2)));
+            }
+
+            return new LegacyType('object', false, $type);
+        }
+
+        if (str_ends_with($type, '[]')) {
+            return Type::list(self::createType(substr($type, 0, -2)));
+        }
+
+        return Type::object($type);
+    }
 }

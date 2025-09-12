@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\ModelDescriber;
 
 use Nelmio\ApiDocBundle\Model\Model;
 use OpenApi\Annotations as OA;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 
 class FallbackObjectModelDescriber implements ModelDescriberInterface
@@ -23,6 +24,10 @@ class FallbackObjectModelDescriber implements ModelDescriberInterface
 
     public function supports(Model $model): bool
     {
-        return $model->getTypeInfo() instanceof ObjectType;
+        if (class_exists(\Symfony\Component\TypeInfo\Type::class)) {
+            return $model->getTypeInfo() instanceof ObjectType;
+        }
+
+        return LegacyType::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType();
     }
 }

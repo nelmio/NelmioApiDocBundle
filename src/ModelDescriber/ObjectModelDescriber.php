@@ -64,8 +64,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        /** @var ObjectType $type */
-        $type = $model->getTypeInfo();
+        /** @var ObjectType|LegacyType $type */
+        $type = class_exists(Type::class)
+            ? $model->getTypeInfo()
+            : $model->getType();
         $class = $type->getClassName();
         $schema->_context->class = $class;
 
@@ -238,7 +240,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function supports(Model $model): bool
     {
-        return $model->getTypeInfo() instanceof ObjectType
-            && (class_exists($model->getTypeInfo()->getClassName()) || interface_exists($model->getTypeInfo()->getClassName()));
+        if (class_exists(Type::class)) {
+            return $model->getTypeInfo() instanceof ObjectType
+                && (class_exists($model->getTypeInfo()->getClassName()) || interface_exists($model->getTypeInfo()->getClassName()));
+        }
+
+        return LegacyType::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
+            && (class_exists($model->getType()->getClassName()) || interface_exists($model->getType()->getClassName()));
     }
 }

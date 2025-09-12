@@ -23,8 +23,10 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 
@@ -83,8 +85,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        /** @var ObjectType $type */
-        $type = $model->getTypeInfo();
+        /** @var ObjectType|LegacyType $type */
+        $type = class_exists(Type::class)
+            ? $model->getTypeInfo()
+            : $model->getType();
         $className = $type->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
         if (!$metadata instanceof ClassMetadata) {
@@ -164,7 +168,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if (true === $item->inline && isset($item->type['name'])) {
                 // currently array types can not be documented :-/
                 if (!\in_array($item->type['name'], ['array', 'ArrayCollection'], true)) {
-                    $inlineModel = new Model(Type::object($item->type['name']), $groups);
+                    $inlineModel = new Model(LegacyTypeConverter::createType($item->type['name']), $groups);
                     $this->describe($inlineModel, $schema);
                 }
                 $context->popPropertyMetadata();
@@ -265,8 +269,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             return false;
         }
 
-        /** @var ObjectType $type */
-        $type = $model->getTypeInfo();
+        /** @var ObjectType|LegacyType $type */
+        $type = class_exists(Type::class)
+            ? $model->getTypeInfo()
+            : $model->getType();
         $className = $type->getClassName();
 
         try {
@@ -351,7 +357,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $groups = $this->computeGroups($context, $type);
             unset($serializationContext['groups']);
 
-            $model = new Model(Type::object($type['name']), $groups, [], $serializationContext);
+            $model = new Model(LegacyTypeConverter::createType($type['name']), $groups, [], $serializationContext);
             $modelRef = $this->modelRegistry->register($model);
 
             $customFields = (array) $property->jsonSerialize();

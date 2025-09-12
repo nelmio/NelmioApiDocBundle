@@ -14,10 +14,10 @@ namespace Nelmio\ApiDocBundle\OpenApiPhp;
 use Nelmio\ApiDocBundle\Attribute\Model as ModelAnnotation;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use Symfony\Component\TypeInfo\Type;
 
 /**
  * Resolves the path in SwaggerPhp annotation when needed.
@@ -50,7 +50,7 @@ final class ModelRegister
             if ($annotation instanceof OA\Schema && $annotation->ref instanceof ModelAnnotation) {
                 $model = $annotation->ref;
 
-                $annotation->ref = $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext, $model->name));
+                $annotation->ref = $this->modelRegistry->register(new Model(LegacyTypeConverter::createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext, $model->name));
 
                 // It is no longer an unmerged annotation
                 $this->detach($model, $annotation, $analysis);
@@ -76,7 +76,7 @@ final class ModelRegister
             if ($annotation instanceof OA\Response || $annotation instanceof OA\RequestBody) {
                 $properties = [
                     '_context' => Util::createContext(['nested' => $annotation], $annotation->_context),
-                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext, $model->name)),
+                    'ref' => $this->modelRegistry->register(new Model(LegacyTypeConverter::createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext, $model->name)),
                 ];
 
                 foreach ($this->mediaTypes as $mediaType) {
@@ -98,7 +98,7 @@ final class ModelRegister
             }
 
             $annotation->merge([new $annotationClass([
-                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext, $model->name)),
+                'ref' => $this->modelRegistry->register(new Model(LegacyTypeConverter::createType($model->type), $this->getGroups($model, $parentGroups), $model->options, $model->serializationContext, $model->name)),
             ])]);
 
             // It is no longer an unmerged annotation
@@ -133,15 +133,6 @@ final class ModelRegister
         }
 
         $analysis->annotations->detach($model);
-    }
-
-    private function createType(string $type): Type
-    {
-        if (str_ends_with($type, '[]')) {
-            return Type::list($this->createType(substr($type, 0, -2)));
-        }
-
-        return Type::object($type);
     }
 
     private function getModel(OA\AbstractAnnotation $annotation): ?ModelAnnotation

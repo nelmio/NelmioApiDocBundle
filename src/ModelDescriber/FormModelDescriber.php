@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
@@ -27,6 +28,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 
@@ -64,8 +66,10 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        /** @var ObjectType $type */
-        $type = $model->getTypeInfo();
+        /** @var ObjectType|LegacyType $type */
+        $type = class_exists(Type::class)
+            ? $model->getTypeInfo()
+            : $model->getType();
         $class = $type->getClassName();
 
         $annotationsReader = new AnnotationsReader(
@@ -91,8 +95,12 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function supports(Model $model): bool
     {
-        return $model->getTypeInfo() instanceof ObjectType
-            && is_a($model->getTypeInfo()->getClassName(), FormTypeInterface::class, true);
+        if (class_exists(Type::class)) {
+            return $model->getTypeInfo() instanceof ObjectType
+                && is_a($model->getTypeInfo()->getClassName(), FormTypeInterface::class, true);
+        }
+
+        return is_a($model->getType()->getClassName(), FormTypeInterface::class, true);
     }
 
     private function parseForm(OA\Schema $schema, FormInterface $form): void
@@ -153,7 +161,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         if (null === $builtinFormType = $this->getBuiltinFormType($type)) {
             // if form type is not builtin in Form component.
             $model = new Model(
-                Type::object(\get_class($type->getInnerType())),
+                LegacyTypeConverter::createType(\get_class($type->getInnerType())),
                 null,
                 $config->getOptions()
             );
