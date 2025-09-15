@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [5.6.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.1...v5.6.2) (2025-09-15)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump swagger-ui-dist from 5.28.1 to 5.29.0 in /utils ([#2554](https://github.com/nelmio/NelmioApiDocBundle/issues/2554)) ([5ad97ac](https://github.com/nelmio/NelmioApiDocBundle/commit/5ad97ac8ee572cffb1071cedc757cf431af445c9))
+
 ## [5.6.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.0...v5.6.1) (2025-09-10)
 
 
