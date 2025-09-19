@@ -14,16 +14,12 @@ namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Fixtures;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\SelfDescribingModelInterface;
 use OpenApi\Annotations\Schema;
-use Symfony\Component\TypeInfo\Type\ObjectType;
 
 class SelfDescribingModel implements SelfDescribingModelInterface
 {
     public static function describe(Schema $schema, Model $model): void
     {
-        /** @var ObjectType $type */
-        $type = $model->getTypeInfo();
-
         $schema->title = 'SelfDescribingTitle';
-        $schema->description = $type->getClassName();
+        $schema->description = $model->getType()->getClassName();
     }
 }
