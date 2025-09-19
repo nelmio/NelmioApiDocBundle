@@ -34,7 +34,10 @@ class ModelRegistryTest extends TestCase
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $type = new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, false, null, true);
 
-        self::assertEquals('#/components/schemas/mixed[]', $registry->register(new Model($type, ['group1'])));
+        self::assertEquals(
+            class_exists(Type::class) ? '#/components/schemas/mixed[]' : '#/components/schemas/array',
+            $registry->register(new Model($type, ['group1']))
+        );
     }
 
     #[DataProvider('provideNameCollisionsTypes')]
@@ -83,7 +86,7 @@ class ModelRegistryTest extends TestCase
 
         yield 'nullable class (LegacyType)' => [
             new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, true, self::class),
-            'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest|null',
+            class_exists(Type::class) ? 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest|null' : 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
         ];
 
         if (class_exists(Type::class)) {
@@ -307,7 +310,7 @@ class ModelRegistryTest extends TestCase
 
     public static function unsupportedTypesProvider(): \Generator
     {
-        yield [new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, false, null, true), 'array'];
+        yield [new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, false, null, true), class_exists(Type::class) ? 'array' : 'mixed[]'];
         yield [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class), self::class];
 
         if (class_exists(Type::class)) {
