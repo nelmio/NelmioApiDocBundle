@@ -178,7 +178,7 @@ final class ModelRegistry
 
                     $errorMessage = \sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($type));
                     if (method_exists($type, 'getClassName') && !class_exists($className = $type->getClassName())) {
-                        $errorMessage .= \sprintf(' Class "\\%s" does not exist, did you forget a use statement, or typed it wrong?', $className);
+                        $errorMessage .= \sprintf(' Class "%s" does not exist, did you forget a use statement, or typed it wrong?', $className);
                     }
                     throw new \LogicException($errorMessage);
                 }
@@ -235,22 +235,11 @@ final class ModelRegistry
      */
     private function modelToArray(Model $model): array
     {
-        if (class_exists(Type::class)) {
-            $dataType = $model->getTypeInfo()->__toString();
-        } else {
-            $getType = function (LegacyType $type) use (&$getType): array {
-                return [
-                    'class' => $type->getClassName(),
-                    'built_in_type' => $type->getBuiltinType(),
-                    'nullable' => $type->isNullable(),
-                    'collection' => $type->isCollection(),
-                    'collection_key_types' => $type->isCollection() ? array_map($getType, $type->getCollectionKeyTypes()) : null,
-                    'collection_value_types' => $type->isCollection() ? array_map($getType, $type->getCollectionValueTypes()) : null,
-                ];
-            };
+        $type = class_exists(Type::class)
+            ? $model->getTypeInfo()
+            : $model->getType();
 
-            $dataType = $getType($model->getType());
-        }
+        $dataType = $this->typeToString($type);
 
         return [
             'type' => $dataType,
