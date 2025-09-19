@@ -158,7 +158,7 @@ class ModelRegistryTest extends TestCase
     public function testNameAliasingForObjects(string $expected, ?array $groups, ?string $name, array $alternativeNames): void
     {
         if (!class_exists(Type::class)) {
-            $this->markTestSkipped('symfony/type-info is not installed.');
+            self::markTestSkipped('symfony/type-info is not installed.');
         }
 
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
