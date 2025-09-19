@@ -285,10 +285,6 @@ final class ModelRegistry
     private function typeToString(LegacyType|Type $type): string
     {
         if ($type instanceof Type) {
-            if ($type instanceof Type\NullableType) {
-                return $this->typeToString($type->getWrappedType());
-            }
-
             return $type->__toString();
         }
 
