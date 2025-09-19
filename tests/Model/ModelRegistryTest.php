@@ -83,7 +83,7 @@ class ModelRegistryTest extends TestCase
 
         yield 'nullable class (LegacyType)' => [
             new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, true, self::class),
-            'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest|null',
+            'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
         ];
 
         if (class_exists(Type::class)) {
@@ -94,7 +94,7 @@ class ModelRegistryTest extends TestCase
 
             yield 'nullable class' => [
                 Type::nullable(Type::object(self::class)),
-                'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest|null',
+                'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
             ];
         }
     }
