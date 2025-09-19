@@ -177,7 +177,7 @@ final class ModelRegistry
                         : $model->getType();
 
                     $errorMessage = \sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($type));
-                    if (method_exists($type, 'getClassName') && !class_exists($className = $type->getClassName())) {
+                    if (method_exists($type, 'getClassName') && null !== $type->getClassName() && !class_exists($className = $type->getClassName())) {
                         $errorMessage .= \sprintf(' Class "%s" does not exist, did you forget a use statement, or typed it wrong?', $className);
                     }
                     throw new \LogicException($errorMessage);
