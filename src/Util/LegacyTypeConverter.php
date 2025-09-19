@@ -102,6 +102,9 @@ final class LegacyTypeConverter
         if ($type instanceof Type\NullableType) {
             $nullable = true;
             $type = $type->getWrappedType();
+        } elseif ($type instanceof Type\UnionType && method_exists($type, 'asNonNullable')) {
+            $nullable = true;
+            $type = $type->asNonNullable();
         }
 
         if ($type instanceof Type\ObjectType) {

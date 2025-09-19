@@ -266,6 +266,10 @@ final class ModelRegistry
                 return $this->getTypeShortName($type->getWrappedType());
             }
 
+            if ($type instanceof Type\UnionType && method_exists($type, 'asNonNullable')) {
+                return $this->getTypeShortName($type->asNonNullable());
+            }
+
             return $type->__toString();
         }
 
