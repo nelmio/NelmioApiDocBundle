@@ -35,56 +35,16 @@ final class LegacyTypeConverter
         $types = [];
 
         foreach ($legacyTypes as $legacyType) {
-            switch ($legacyType->getBuiltinType()) {
-                case LegacyType::BUILTIN_TYPE_ARRAY:
-                    $typeInfoType = Type::array(self::toTypeInfoType($legacyType->getCollectionValueTypes()), self::toTypeInfoType($legacyType->getCollectionKeyTypes()));
-                    break;
-                case LegacyType::BUILTIN_TYPE_BOOL:
-                    $typeInfoType = Type::bool();
-                    break;
-                case LegacyType::BUILTIN_TYPE_CALLABLE:
-                    $typeInfoType = Type::callable();
-                    break;
-                case LegacyType::BUILTIN_TYPE_FALSE:
-                    $typeInfoType = Type::false();
-                    break;
-                case LegacyType::BUILTIN_TYPE_FLOAT:
-                    $typeInfoType = Type::float();
-                    break;
-                case LegacyType::BUILTIN_TYPE_INT:
-                    $typeInfoType = Type::int();
-                    break;
-                case LegacyType::BUILTIN_TYPE_ITERABLE:
-                    $typeInfoType = Type::iterable(self::toTypeInfoType($legacyType->getCollectionValueTypes()), self::toTypeInfoType($legacyType->getCollectionKeyTypes()));
-                    break;
-                case LegacyType::BUILTIN_TYPE_OBJECT:
-                    if ($legacyType->isCollection()) {
-                        $typeInfoType = Type::collection(Type::object($legacyType->getClassName()), self::toTypeInfoType($legacyType->getCollectionValueTypes()), self::toTypeInfoType($legacyType->getCollectionKeyTypes()));
-                    } else {
-                        $typeInfoType = Type::object($legacyType->getClassName());
-                    }
-
-                    break;
-                case LegacyType::BUILTIN_TYPE_RESOURCE:
-                    $typeInfoType = Type::resource();
-                    break;
-                case LegacyType::BUILTIN_TYPE_STRING:
-                    $typeInfoType = Type::string();
-                    break;
-                case LegacyType::BUILTIN_TYPE_TRUE:
-                    $typeInfoType = Type::true();
-                    break;
-                default:
-                    $typeInfoType = null;
-                    break;
-            }
+            $types[] = match ($legacyType->getBuiltinType()) {
+                LegacyType::BUILTIN_TYPE_ARRAY => Type::array(self::toTypeInfoType($legacyType->getCollectionValueTypes()), self::toTypeInfoType($legacyType->getCollectionKeyTypes())),
+                LegacyType::BUILTIN_TYPE_OBJECT => $legacyType->isCollection()
+                    ? Type::collection(Type::object($legacyType->getClassName()), self::toTypeInfoType($legacyType->getCollectionValueTypes()), self::toTypeInfoType($legacyType->getCollectionKeyTypes()))
+                    : Type::object($legacyType->getClassName()),
+                default => throw new \LogicException('Unsupported LegacyType type: '.$legacyType->getBuiltinType()),
+            };
 
             if (LegacyType::BUILTIN_TYPE_NULL === $legacyType->getBuiltinType() || $legacyType->isNullable()) {
                 $nullable = true;
-            }
-
-            if (null !== $typeInfoType) {
-                $types[] = $typeInfoType;
             }
         }
 
