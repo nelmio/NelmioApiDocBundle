@@ -289,7 +289,7 @@ final class ModelRegistry
         }
 
         if (LegacyType::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
-            return '\\'.$type->getClassName();
+            return $type->getClassName();
         } elseif ($type->isCollection()) {
             if (null !== $collectionType = ($type->getCollectionValueTypes()[0] ?? null)) {
                 return $this->typeToString($collectionType).'[]';
