@@ -205,7 +205,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             return;
         }
 
-        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may need to use the `#[OA\Property(type="")]` attribute to specify it manually.', \is_array($types) ? $types[0]->getBuiltinType() : $types, $model->getTypeInfo(), $propertyName));
+        $modelType = class_exists(Type::class) ? $model->getTypeInfo() : $model->getType()->getClassName();
+
+        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may need to use the `#[OA\Property(type="")]` attribute to specify it manually.', \is_array($types) ? $types[0]->getBuiltinType() : $types, $modelType, $propertyName));
     }
 
     /**
