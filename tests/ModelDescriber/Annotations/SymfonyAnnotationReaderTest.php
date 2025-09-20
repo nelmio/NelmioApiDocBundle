@@ -367,10 +367,12 @@ class SymfonyAnnotationReaderTest extends TestCase
         $reader = new SymfonyAnnotationReader(true);
         $reader->setSchema($schema);
 
+        $context = [];
         // no serialization groups passed here
         $reader->updateProperty(
             new \ReflectionProperty($entity, 'property1'),
             $schema->properties[0],
+            $context,
             ['other']
         );
 
@@ -388,10 +390,12 @@ class SymfonyAnnotationReaderTest extends TestCase
         $reader = new SymfonyAnnotationReader(true);
         $reader->setSchema($schema);
 
+        $context = [];
         // no serialization groups passed here
         $reader->updateProperty(
             new \ReflectionProperty($entity, 'property1'),
             $schema->properties[0],
+            $context,
             ['other', Constraint::DEFAULT_GROUP]
         );
 

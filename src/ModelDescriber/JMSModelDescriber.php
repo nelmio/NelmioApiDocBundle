@@ -120,6 +120,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $context = $this->getSerializationContext($model);
         $context->pushClassMetadata($metadata);
         foreach ($metadata->propertyMetadata as $item) {
+            $propertyContext = $model->getSerializationContext();
             // filter groups
             if (null !== $context->getExclusionStrategy() && $context->getExclusionStrategy()->shouldSkipProperty($item, $context)) {
                 continue;
@@ -176,7 +177,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $property = Util::getProperty($schema, $name);
 
             foreach ($reflections as $reflection) {
-                $annotationsReader->updateProperty($reflection, $property, $groups);
+                $annotationsReader->updateProperty($reflection, $property, $propertyContext, $groups);
             }
 
             if (Generator::UNDEFINED !== $property->type || Generator::UNDEFINED !== $property->ref) {
@@ -197,7 +198,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 continue;
             }
 
-            $this->describeItem($item->type, $property, $context, $model->getSerializationContext());
+            $this->describeItem($item->type, $property, $context, $propertyContext);
             $context->popPropertyMetadata();
         }
         $context->popClassMetadata();

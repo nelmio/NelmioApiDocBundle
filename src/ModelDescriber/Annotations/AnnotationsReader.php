@@ -60,13 +60,14 @@ class AnnotationsReader
     /**
      * @param \ReflectionProperty|\ReflectionMethod $reflection
      * @param string[]|null                         $serializationGroups
+     * @param array<string, mixed>                  $context
      */
-    public function updateProperty($reflection, OA\Property $property, ?array $serializationGroups = null): void
+    public function updateProperty($reflection, OA\Property $property, array &$context, ?array $serializationGroups = null): void
     {
         $this->openApiAnnotationsReader->updateProperty($reflection, $property, $serializationGroups);
         $this->phpDocReader->updateProperty($reflection, $property);
         $this->reflectionReader->updateProperty($reflection, $property);
-        $this->symfonyAnnotationReader->updateProperty($reflection, $property, $serializationGroups);
+        $this->symfonyAnnotationReader->updateProperty($reflection, $property, $context, $serializationGroups);
     }
 
     /**
