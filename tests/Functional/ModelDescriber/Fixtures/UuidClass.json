@@ -15,7 +15,7 @@
         },
         "ulid": {
             "type": "string",
-            "format": "uuid"
+            "format": "ulid"
         },
         "uuidV1": {
             "type": "string",

@@ -893,6 +893,24 @@ class FunctionalTest extends WebTestCase
         ], json_decode($this->getModel('EntityWithUuid')->toJson(), true));
     }
 
+    public function testEntityWithUlid(): void
+    {
+        self::assertEquals([
+            'schema' => 'EntityWithUlid',
+            'type' => 'object',
+            'required' => ['id', 'name'],
+            'properties' => [
+                'id' => [
+                    'type' => 'string',
+                    'format' => 'ulid',
+                ],
+                'name' => [
+                    'type' => 'string',
+                ],
+            ],
+        ], json_decode($this->getModel('EntityWithUlid')->toJson(), true));
+    }
+
     public function testEntityWithTranslatable(): void
     {
         self::assertEquals([
