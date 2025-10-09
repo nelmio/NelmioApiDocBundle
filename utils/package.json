@@ -3,7 +3,7 @@
   "license": "MIT",
   "dependencies": {
     "@stoplight/elements": "9.0.8",
-    "redoc": "2.5.0",
+    "redoc": "2.5.1",
     "swagger-ui-dist": "5.29.3"
   },
   "scripts": {
