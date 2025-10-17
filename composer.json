@@ -67,7 +67,7 @@
         "willdurand/negotiation": "^3.0"
     },
     "conflict": {
-        "zircote/swagger-php": "4.8.7"
+        "zircote/swagger-php": "4.8.7 || 5.5.0"
     },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
