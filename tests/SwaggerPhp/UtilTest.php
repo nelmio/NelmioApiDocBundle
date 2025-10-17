@@ -57,7 +57,7 @@ class UtilTest extends TestCase
             static function ($errno, $errstr) {
                 throw new \Exception($errstr, $errno);
             },
-            \E_USER_WARNING
+            \E_ALL
         );
     }
 
