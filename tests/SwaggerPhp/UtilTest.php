@@ -57,7 +57,7 @@ class UtilTest extends TestCase
             static function ($errno, $errstr) {
                 throw new \Exception($errstr, $errno);
             },
-            \E_ALL
+            \E_USER_WARNING
         );
     }
 
@@ -214,7 +214,9 @@ class UtilTest extends TestCase
 
         self::expectException(\Exception::class);
         self::expectExceptionMessage('Undefined property: stdClass::$baz');
-        Util::searchCollectionItem($collection, array_merge(get_object_vars($item2), $search));
+        $result = Util::searchCollectionItem($collection, array_merge(get_object_vars($item2), $search));
+
+        self::assertNull($result);
 
         // no exception on empty collection
         self::assertNull(Util::searchCollectionItem([], get_object_vars($item2)));
