@@ -10,6 +10,8 @@ on:
   push:
     branches:
       - "*.x"
+  schedule:
+    - cron: "21 4 * * 5" # “At 04:21 on Friday.”
 
 env:
   fail-fast: true
