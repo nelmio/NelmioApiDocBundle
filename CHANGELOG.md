@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## [5.6.4](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.3...v5.6.4) (2025-10-17)
+
+
+### Bug Fixes
+
+* **config:** migrate xml to php config ([#2566](https://github.com/nelmio/NelmioApiDocBundle/issues/2566)) ([2b12914](https://github.com/nelmio/NelmioApiDocBundle/commit/2b12914d369c4a6b85b30fcd0fc38ec1451ffcad))
+* **swagger-php:** conflict with broken version 5.5.0 ([#2568](https://github.com/nelmio/NelmioApiDocBundle/issues/2568)) ([a9bbfa7](https://github.com/nelmio/NelmioApiDocBundle/commit/a9bbfa79c4572def8b791f936bb63e126f672ba4))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump swagger-ui-dist from 5.29.3 to 5.29.4 in /utils ([#2564](https://github.com/nelmio/NelmioApiDocBundle/issues/2564)) ([254a487](https://github.com/nelmio/NelmioApiDocBundle/commit/254a487c4a8744aba8d59150de98ae18348a0e1e))
+* PHPStan v2 ([#2572](https://github.com/nelmio/NelmioApiDocBundle/issues/2572)) ([3b0abc6](https://github.com/nelmio/NelmioApiDocBundle/commit/3b0abc6ca97d57922babffa8ed250a0d3d582e0e))
+
 ## [5.6.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.2...v5.6.3) (2025-10-09)
 
 
