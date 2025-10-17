@@ -24,7 +24,7 @@ return static function (ContainerConfigurator $container) {
 
         ->set('nelmio_api_doc.describers.api_platform.openapi', \ApiPlatform\OpenApi\OpenApi::class)
             ->private()
-            ->factory(service('api_platform.openapi.factory'))
+            ->factory([service('api_platform.openapi.factory'), '__invoke'])
 
     ;
 };
