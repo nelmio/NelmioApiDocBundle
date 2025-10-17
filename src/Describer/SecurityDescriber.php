@@ -37,7 +37,7 @@ final class SecurityDescriber implements DescriberInterface
     public function __construct(
         array $securitySchemes,
         RouteCollection $routeCollection,
-        ControllerReflector $controllerReflector
+        ControllerReflector $controllerReflector,
     ) {
         $this->securitySchemes = $securitySchemes;
         $this->routeCollection = $routeCollection;
