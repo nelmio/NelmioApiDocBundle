@@ -42,7 +42,7 @@ final class DefaultDescriber implements DescriberInterface
             foreach (Util::OPERATIONS as $method) {
                 $operation = $path->{$method};
                 if (!$operation instanceof OA\Operation) {
-                    return;
+                    continue;
                 }
 
                 if (Generator::UNDEFINED === $operation->responses || [] === $operation->responses) {
