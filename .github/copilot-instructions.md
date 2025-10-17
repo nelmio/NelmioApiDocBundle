@@ -111,7 +111,7 @@ Adhere to the **Symfony Coding Standards and Best Practices** alongside the foll
   * Use a **leading dot** for file extensions (e.g., `.html.twig`).
 * **Twig/Assets:** Use **`snake_case`** for Twig templates and assets (e.g., `template.html.twig`, `style.scss`).
 
-## Language and Tone
+### Language and Tone
 
 * **Language:** Write in **American English**.
 * **Contractions:** Contractions are **allowed** (e.g., "it's," "you're").
