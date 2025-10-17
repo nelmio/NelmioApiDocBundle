@@ -398,7 +398,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $metadata = $this->factory->getMetadataForClass($type['name']);
 
             foreach ($metadata->propertyMetadata as $item) {
-                if (isset($item->groups) && $item->groups != [GroupsExclusionStrategy::DEFAULT_GROUP]) {
+                if (property_exists($item, 'groups') && $item->groups !== [GroupsExclusionStrategy::DEFAULT_GROUP]) {
                     $this->propertyTypeUseGroupsCache[$type['name']] = true;
 
                     return true;

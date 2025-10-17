@@ -1,26 +1,25 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Only booleans are allowed in an if condition, mixed given\\.$#"
+			message: '#^Only booleans are allowed in an if condition, mixed given\.$#'
+			identifier: if.condNotBoolean
 			count: 1
 			path: src/Describer/ExternalDocDescriber.php
 
 		-
-			message: "#^Call to method render\\(\\) on an unknown class Twig_Environment\\.$#"
+			message: '#^Call to method render\(\) on an unknown class Twig_Environment\.$#'
+			identifier: class.notFound
 			count: 3
 			path: src/Render/Html/HtmlOpenApiRenderer.php
 
 		-
-			message: "#^Parameter \\$twig of method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:__construct\\(\\) has invalid type Twig_Environment\\.$#"
+			message: '#^Parameter \$twig of method Nelmio\\ApiDocBundle\\Render\\Html\\HtmlOpenApiRenderer\:\:__construct\(\) has invalid type Twig_Environment\.$#'
+			identifier: class.notFound
 			count: 2
 			path: src/Render/Html/HtmlOpenApiRenderer.php
 
 		-
-			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:\\$twig has unknown class Twig_Environment as its type\\.$#"
+			message: '#^Property Nelmio\\ApiDocBundle\\Render\\Html\\HtmlOpenApiRenderer\:\:\$twig has unknown class Twig_Environment as its type\.$#'
+			identifier: class.notFound
 			count: 2
 			path: src/Render/Html/HtmlOpenApiRenderer.php
-
-		-
-			message: "#^Call to function is_callable\\(\\) with array\\{string, mixed\\} will always evaluate to false\\.$#"
-			count: 1
-			path: src/RouteDescriber/FosRestDescriber.php

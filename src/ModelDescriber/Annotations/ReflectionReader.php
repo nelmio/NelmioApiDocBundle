@@ -27,7 +27,7 @@ final class ReflectionReader
 {
     use SetsContextTrait;
 
-    private ?OA\Schema $schema;
+    private ?OA\Schema $schema = null;
 
     /**
      * Update the given property and schema with defined Symfony constraints.

@@ -42,9 +42,9 @@ class GetNelmioAsset extends AbstractExtension
     {
         [$extension, $mode] = $this->getExtension($defaultAssetsMode, $asset);
         [$resource, $isInline] = $this->getResource($asset, $mode);
-        if ('js' == $extension) {
+        if ('js' === $extension) {
             return $this->renderJavascript($resource, $isInline);
-        } elseif ('css' == $extension) {
+        } elseif ('css' === $extension) {
             return $this->renderCss($resource, $isInline);
         } else {
             return $resource;
@@ -60,7 +60,7 @@ class GetNelmioAsset extends AbstractExtension
         if ('.js' === $extension) {
             return ['js', $assetsMode];
         } elseif ('png' === $extension) {
-            return ['png', AssetsMode::OFFLINE == $assetsMode ? AssetsMode::CDN : $assetsMode];
+            return ['png', AssetsMode::OFFLINE === $assetsMode ? AssetsMode::CDN : $assetsMode];
         } else {
             return ['css', $assetsMode];
         }
