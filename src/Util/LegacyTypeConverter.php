@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Util;
 
+use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
 
@@ -18,7 +19,7 @@ use Symfony\Component\TypeInfo\Type;
  * @internal
  *
  * @see \Symfony\Component\PropertyInfo\Util\LegacyTypeConverter
- * @deprecated can be removed when Symfony 6.4 support is dropped
+ * @deprecated can be removed when Symfony 6.4 support is dropped {@see PropertyInfoExtractorInterface::getType()}
  */
 final class LegacyTypeConverter
 {
