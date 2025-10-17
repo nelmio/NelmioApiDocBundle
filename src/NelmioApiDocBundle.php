@@ -29,7 +29,7 @@ final class NelmioApiDocBundle extends Bundle
     }
 
     /**
-     * Allows using the new directory structure on Symfony < 6.1.
+     * Allows using the new directory structure.
      * Without this no proper namespace is set for twig templates.
      *
      * @see \Symfony\Component\HttpKernel\Bundle\AbstractBundle::getPath()
