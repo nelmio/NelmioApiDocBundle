@@ -12,11 +12,11 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return static function (ContainerConfigurator $container) {
-    $services = $container->services();
-    $parameters = $container->parameters();
+    $container->services()
 
-    $services->set('nelmio_api_doc.route_describers.fos_rest', \Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber::class)
-        ->private()
-        ->args([''])
-        ->tag('nelmio_api_doc.route_describer', ['priority' => -250]);
+        ->set('nelmio_api_doc.route_describers.fos_rest', \Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber::class)
+            ->private()
+            ->args([''])
+            ->tag('nelmio_api_doc.route_describer', ['priority' => -250])
+    ;
 };
