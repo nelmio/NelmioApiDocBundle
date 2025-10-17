@@ -32,8 +32,11 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
      */
     public function __construct($twig, array $htmlConfig)
     {
+        /*
+         * Support for Twig 2 was removed with Symfony 7, and thus this check can be removed when dropping support for Symfony 6.
+         */
         if (!$twig instanceof \Twig_Environment && !$twig instanceof Environment) {
-            throw new \InvalidArgumentException(\sprintf('Providing an instance of "%s" as twig is not supported.', $twig::class));
+            throw new \InvalidArgumentException(\sprintf('Providing an instance of "%s" as twig is not supported.', get_debug_type($twig)));
         }
         $this->twig = $twig;
         $this->htmlConfig = $htmlConfig;
