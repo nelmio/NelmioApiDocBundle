@@ -11,18 +11,13 @@ parameters:
 			path: src/Render/Html/HtmlOpenApiRenderer.php
 
 		-
-			message: "#^Class Twig_Environment not found\\.$#"
-			count: 1
-			path: src/Render/Html/HtmlOpenApiRenderer.php
-
-		-
 			message: "#^Parameter \\$twig of method Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:__construct\\(\\) has invalid type Twig_Environment\\.$#"
-			count: 1
+			count: 2
 			path: src/Render/Html/HtmlOpenApiRenderer.php
 
 		-
 			message: "#^Property Nelmio\\\\ApiDocBundle\\\\Render\\\\Html\\\\HtmlOpenApiRenderer\\:\\:\\$twig has unknown class Twig_Environment as its type\\.$#"
-			count: 1
+			count: 2
 			path: src/Render/Html/HtmlOpenApiRenderer.php
 
 		-
