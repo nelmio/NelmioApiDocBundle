@@ -107,7 +107,7 @@ return static function (ContainerConfigurator $container) {
            ->args([
                service('property_info'),
                service('nelmio_api_doc.object_model.property_describer'),
-               '',
+               abstract_arg('should be set to the configured media types'),
                service('serializer.name_converter.metadata_aware')->ignoreOnInvalid(),
                '%nelmio_api_doc.use_validation_groups%',
                service('serializer.mapping.class_metadata_factory')->ignoreOnInvalid(),

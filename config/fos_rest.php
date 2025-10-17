@@ -16,7 +16,9 @@ return static function (ContainerConfigurator $container) {
 
         ->set('nelmio_api_doc.route_describers.fos_rest', \Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber::class)
             ->private()
-            ->args([''])
+            ->args([
+                abstract_arg('should be set to the configured media types'),
+            ])
             ->tag('nelmio_api_doc.route_describer', ['priority' => -250])
     ;
 };
