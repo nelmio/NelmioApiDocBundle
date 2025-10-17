@@ -12,18 +12,19 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return static function (ContainerConfigurator $container) {
-    $services = $container->services();
-    $parameters = $container->parameters();
+    $container->services()
 
-    $services->set('nelmio_api_doc.describers.api_platform', \Nelmio\ApiDocBundle\Describer\ApiPlatformDescriber::class)
-        ->private()
-        ->args([
-            service('nelmio_api_doc.describers.api_platform.openapi'),
-            service('api_platform.openapi.normalizer'),
-        ])
-        ->tag('nelmio_api_doc.describer', ['priority' => -100]);
+        ->set('nelmio_api_doc.describers.api_platform', \Nelmio\ApiDocBundle\Describer\ApiPlatformDescriber::class)
+            ->private()
+            ->args([
+                service('nelmio_api_doc.describers.api_platform.openapi'),
+                service('api_platform.openapi.normalizer'),
+            ])
+            ->tag('nelmio_api_doc.describer', ['priority' => -100])
 
-    $services->set('nelmio_api_doc.describers.api_platform.openapi', \ApiPlatform\OpenApi\OpenApi::class)
-        ->private()
-        ->factory([service('api_platform.openapi.factory'), '__invoke']);
+        ->set('nelmio_api_doc.describers.api_platform.openapi', \ApiPlatform\OpenApi\OpenApi::class)
+            ->private()
+            ->factory(service('api_platform.openapi.factory'))
+
+    ;
 };
