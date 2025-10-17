@@ -14,6 +14,8 @@ use Nelmio\ApiDocBundle\Tests\Functional\TestBundle;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 
 require __DIR__.'/../vendor/autoload.php';
@@ -27,7 +29,15 @@ $kernel = new class('phpstan', false) extends Kernel {
             new FrameworkBundle(),
             new NelmioApiDocBundle(),
             new TestBundle(),
+            new Symfony\Bundle\TwigBundle\TwigBundle(),
         ];
+    }
+
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
+    {
+        $container->loadFromExtension('framework', [
+            'assets' => true,
+        ]);
     }
 };
 
