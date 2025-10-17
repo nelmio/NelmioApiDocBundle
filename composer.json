@@ -112,8 +112,8 @@
     "scripts": {
         "phpcs-check": "vendor/bin/php-cs-fixer check -v --diff",
         "phpcs-fix": "vendor/bin/php-cs-fixer fix -v",
-        "phpstan": "phpstan --memory-limit=2G",
-        "phpstan-baseline": "phpstan --memory-limit=2G --generate-baseline",
+        "phpstan": "phpstan",
+        "phpstan-baseline": "phpstan --generate-baseline",
         "phpunit": "phpunit"
     }
 }

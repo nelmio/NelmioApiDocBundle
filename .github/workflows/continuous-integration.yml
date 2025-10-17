@@ -168,4 +168,4 @@ jobs:
           symfony-version: "7.2.*"
 
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyse --memory-limit=2G --no-progress --no-interaction
+        run: vendor/bin/phpstan analyse --no-progress --no-interaction
