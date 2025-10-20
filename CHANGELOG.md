@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## [5.6.5](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.4...v5.6.5) (2025-10-20)
+
+
+### Bug Fixes
+
+* version number in triggered deprecation ([#2577](https://github.com/nelmio/NelmioApiDocBundle/issues/2577)) ([b5f440c](https://github.com/nelmio/NelmioApiDocBundle/commit/b5f440c8accd069a9a279e3e5a1e1b48824637d3))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump redoc from 2.5.1 to 2.5.2 in /utils ([#2574](https://github.com/nelmio/NelmioApiDocBundle/issues/2574)) ([2b49d55](https://github.com/nelmio/NelmioApiDocBundle/commit/2b49d559937be8c1590b3c927a6f6ad50c116bd1))
+* **deps:** bump swagger-ui-dist from 5.29.4 to 5.29.5 in /utils ([#2575](https://github.com/nelmio/NelmioApiDocBundle/issues/2575)) ([f9fd650](https://github.com/nelmio/NelmioApiDocBundle/commit/f9fd6506fbc39d47d0262aaf2f59e5615c95e0b7))
+
 ## [5.6.4](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.3...v5.6.4) (2025-10-17)
 
 
