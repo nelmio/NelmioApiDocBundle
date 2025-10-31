@@ -33,7 +33,7 @@ final class Model
         if ($type instanceof LegacyType) {
             trigger_deprecation(
                 'nelmio/api-doc-bundle',
-                '5.X', // TODO
+                '5.7.0',
                 'Using Symfony\Component\PropertyInfo\Type as type in %s is deprecated, use Symfony\Component\TypeInfo\Type instead.',
                 __METHOD__
             );
