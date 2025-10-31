@@ -67,8 +67,7 @@
         "willdurand/negotiation": "^3.0"
     },
     "conflict": {
-        "zircote/swagger-php": "4.8.7 || 5.5.0",
-        "symfony/type-info": "7.1.*"
+        "zircote/swagger-php": "4.8.7 || 5.5.0"
     },
     "suggest": {
         "api-platform/core": "For using an API oriented framework.",
@@ -114,8 +113,8 @@
     "scripts": {
         "phpcs-check": "vendor/bin/php-cs-fixer check -v --diff",
         "phpcs-fix": "vendor/bin/php-cs-fixer fix -v",
-        "phpstan": "phpstan --memory-limit=2G",
-        "phpstan-baseline": "phpstan --generate-baseline --memory-limit=2G",
+        "phpstan": "phpstan",
+        "phpstan-baseline": "phpstan --generate-baseline",
         "phpunit": "phpunit"
     }
 }
