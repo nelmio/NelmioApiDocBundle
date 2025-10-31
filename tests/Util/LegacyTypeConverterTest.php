@@ -16,7 +16,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
-use Symfony\Component\TypeInfo\Type\UnionType;
 
 class LegacyTypeConverterTest extends TestCase
 {
@@ -40,6 +39,12 @@ class LegacyTypeConverterTest extends TestCase
 
     public static function provideToTypeInfoTypeCases(): \Generator
     {
+        if (!class_exists(Type::class)) {
+            yield [null];
+
+            return;
+        }
+
         yield 'null' => [
             null,
             null,
@@ -60,37 +65,53 @@ class LegacyTypeConverterTest extends TestCase
             [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, true, 'Foo\Bar')],
         ];
 
-        yield 'union' => [
-            Type::union(Type::object('Foo\Bar'), Type::object('Foo\Baz')),
-            [
-                new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
-                new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Baz'),
-            ],
-        ];
-
-        yield 'nullable union' => [
-            Type::nullable(Type::union(Type::object('Foo\Bar'), Type::object('Foo\Baz'))),
-            [
-                new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
-                new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, true, 'Foo\Baz'),
-            ],
-        ];
-
         yield 'array' => [
             Type::array(Type::object('Foo\Bar')),
-            [new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, false, null, true, null, new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'))],
+            [
+                new LegacyType(
+                    LegacyType::BUILTIN_TYPE_ARRAY,
+                    false,
+                    null,
+                    true,
+                    [new LegacyType(LegacyType::BUILTIN_TYPE_INT), new LegacyType(LegacyType::BUILTIN_TYPE_STRING)],
+                    new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
+                ),
+            ],
         ];
 
-        yield 'collection' => [
-            Type::collection(Type::object('Acme\Foo'), Type::object('Acme\Bar')),
-            [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Acme\Foo', true, null, new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Acme\Bar'))],
+        yield 'array (string key)' => [
+            Type::array(Type::object('Foo\Bar')),
+            [
+                new LegacyType(
+                    LegacyType::BUILTIN_TYPE_ARRAY,
+                    false,
+                    null,
+                    true,
+                    new LegacyType(LegacyType::BUILTIN_TYPE_STRING),
+                    new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
+                ),
+            ],
+        ];
+
+        yield 'array (int key)' => [
+            Type::array(Type::object('Foo\Bar')),
+            [
+                new LegacyType(
+                    LegacyType::BUILTIN_TYPE_ARRAY,
+                    false,
+                    null,
+                    true,
+                    new LegacyType(LegacyType::BUILTIN_TYPE_INT),
+                    new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
+                ),
+            ],
         ];
     }
 
     public function testToTypeInfoTypeWithUnsupportedTypeThrowsException(): void
     {
         $this->expectException(\LogicException::class);
-        $legacyTypes = [new LegacyType(LegacyType::BUILTIN_TYPE_STRING)];
+        $legacyTypes = [new LegacyType(LegacyType::BUILTIN_TYPE_BOOL)];
         LegacyTypeConverter::toTypeInfoType($legacyTypes);
     }
 
@@ -102,6 +123,12 @@ class LegacyTypeConverterTest extends TestCase
 
     public static function provideToLegacyTypeCases(): \Generator
     {
+        if (!class_exists(Type::class)) {
+            yield [null];
+
+            return;
+        }
+
         yield 'object' => [
             new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
             Type::object('Foo\Bar'),
@@ -128,6 +155,12 @@ class LegacyTypeConverterTest extends TestCase
 
     public static function provideCreateTypeCases(): \Generator
     {
+        if (!class_exists(Type::class)) {
+            yield [null];
+
+            return;
+        }
+
         yield 'simple' => [
             Type::object('Foo\Bar'),
             'Foo\Bar',

@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Util;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
+use Symfony\Component\TypeInfo\TypeIdentifier;
 
 /**
  * @internal
@@ -37,6 +38,8 @@ final class LegacyTypeConverter
 
         foreach ($legacyTypes as $legacyType) {
             $types[] = match ($legacyType->getBuiltinType()) {
+                LegacyType::BUILTIN_TYPE_INT => Type::int(),
+                LegacyType::BUILTIN_TYPE_STRING => Type::string(),
                 LegacyType::BUILTIN_TYPE_ARRAY => Type::array(self::toTypeInfoType($legacyType->getCollectionValueTypes()), self::toTypeInfoType($legacyType->getCollectionKeyTypes())),
                 LegacyType::BUILTIN_TYPE_OBJECT => $legacyType->isCollection()
                     ? Type::collection(Type::object($legacyType->getClassName()), self::toTypeInfoType($legacyType->getCollectionValueTypes()), self::toTypeInfoType($legacyType->getCollectionKeyTypes()))
@@ -70,6 +73,21 @@ final class LegacyTypeConverter
 
         if ($type instanceof Type\ObjectType) {
             return new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, $nullable, $type->getClassName());
+        }
+
+        if ($type instanceof Type\CollectionType) {
+            if ($type->getCollectionKeyType() instanceof Type\UnionType) {
+                $collectionKeyType = [
+                    new LegacyType(LegacyType::BUILTIN_TYPE_INT, false),
+                    new LegacyType(LegacyType::BUILTIN_TYPE_STRING, false),
+                ];
+            } else {
+                $collectionKeyType = $type->getCollectionKeyType()->isIdentifiedBy(TypeIdentifier::INT)
+                    ? [new LegacyType(LegacyType::BUILTIN_TYPE_INT, false)]
+                    : [new LegacyType(LegacyType::BUILTIN_TYPE_STRING, false)];
+            }
+
+            return new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, $nullable, collection: true, collectionKeyType: $collectionKeyType, collectionValueType: self::toLegacyType($type->getCollectionValueType()));
         }
 
         throw new \LogicException('Unsupported TypeInfo type: '.$type->__toString());
