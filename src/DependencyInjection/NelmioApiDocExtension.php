@@ -33,14 +33,13 @@ use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryStr
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapRequestPayloadDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapUploadedFileDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
-use OpenApi\Generator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
@@ -64,9 +63,9 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
 
-        $loader->load('services.xml');
+        $loader->load('services.php');
 
         // Filter routes
         $routesDefinition = (new Definition(RouteCollection::class))
@@ -190,10 +189,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ->addTag('nelmio_api_doc.model_describer');
 
         // Import services needed for each library
-        $loader->load('php_doc.xml');
+        $loader->load('php_doc.php');
 
         if (interface_exists(ParamInterface::class)) {
-            $loader->load('fos_rest.xml');
+            $loader->load('fos_rest.php');
             $container->getDefinition('nelmio_api_doc.route_describers.fos_rest')
                 ->setArgument(0, $config['media_types']);
         }
@@ -251,7 +250,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
 
         // ApiPlatform support
         if (isset($bundles['ApiPlatformBundle'])) {
-            $loader->load('api_platform.xml');
+            $loader->load('api_platform.php');
         }
 
         // JMS metadata support

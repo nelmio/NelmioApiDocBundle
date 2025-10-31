@@ -21,22 +21,14 @@ use Twig\Environment;
  */
 class HtmlOpenApiRenderer implements OpenApiRenderer
 {
-    /** @var Environment|\Twig_Environment */
-    private $twig;
-    /** @var array<string, mixed> */
-    private array $htmlConfig;
-
     /**
-     * @param Environment|\Twig_Environment $twig
+     * @param Environment|\Twig_Environment $twig       support for Twig 2 was removed with Symfony 7 and this `\Twig_Environment` can be removed when dropping support for Symfony 6
      * @param array<string, mixed>          $htmlConfig
      */
-    public function __construct($twig, array $htmlConfig)
-    {
-        if (!$twig instanceof \Twig_Environment && !$twig instanceof Environment) {
-            throw new \InvalidArgumentException(\sprintf('Providing an instance of "%s" as twig is not supported.', $twig::class));
-        }
-        $this->twig = $twig;
-        $this->htmlConfig = $htmlConfig;
+    public function __construct(
+        private Environment|\Twig_Environment $twig,
+        private array $htmlConfig,
+    ) {
     }
 
     public function getFormat(): string

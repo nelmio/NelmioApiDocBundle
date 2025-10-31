@@ -27,15 +27,12 @@ final class FosRestDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    /** @var string[] */
-    private array $mediaTypes;
-
     /**
      * @param string[] $mediaTypes
      */
-    public function __construct(array $mediaTypes)
-    {
-        $this->mediaTypes = $mediaTypes;
+    public function __construct(
+        private array $mediaTypes,
+    ) {
     }
 
     public function describe(OA\OpenApi $api, Route $route, \ReflectionMethod $reflectionMethod): void

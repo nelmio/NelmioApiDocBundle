@@ -32,7 +32,7 @@ final class ChainDescriber implements TypeDescriberInterface, ModelRegistryAware
      * @param iterable<TypeDescriberInterface> $describers
      */
     public function __construct(
-        iterable $describers
+        iterable $describers,
     ) {
         $this->describers = $describers;
     }

@@ -21,7 +21,7 @@ final class PhpDocDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
-    private ?DocBlockFactoryInterface $docBlockFactory;
+    private DocBlockFactoryInterface $docBlockFactory;
 
     public function __construct(?DocBlockFactoryInterface $docBlockFactory = null)
     {

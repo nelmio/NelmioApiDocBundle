@@ -473,7 +473,7 @@ If you need more complex features, take a look at:
     faq
     community
 
-.. _`SwaggerPHP examples`: https://github.com/zircote/swagger-php/tree/master/Examples
+.. _`SwaggerPHP examples`: https://github.com/zircote/swagger-php/tree/master/docs/examples
 .. _`Symfony PropertyInfo component`: https://symfony.com/doc/current/components/property_info.html
 .. _`TypeInfo component`: https://symfony.com/doc/current/components/type_info.html
 .. _`willdurand/Hateoas`: https://github.com/willdurand/Hateoas

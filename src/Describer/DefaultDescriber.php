@@ -40,9 +40,12 @@ final class DefaultDescriber implements DescriberInterface
         }
         foreach ($api->paths as $path) {
             foreach (Util::OPERATIONS as $method) {
-                /** @var OA\Operation $operation */
                 $operation = $path->{$method};
-                if (Generator::UNDEFINED !== $operation && null !== $operation && (Generator::UNDEFINED === $operation->responses || [] === $operation->responses)) {
+                if (!$operation instanceof OA\Operation) {
+                    continue;
+                }
+
+                if (Generator::UNDEFINED === $operation->responses || [] === $operation->responses) {
                     /** @var OA\Response $response */
                     $response = Util::getIndexedCollectionItem($operation, OA\Response::class, 'default');
                     $response->description = '';

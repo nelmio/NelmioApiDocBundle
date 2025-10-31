@@ -1,5 +1,48 @@
 # CHANGELOG
 
+## [5.6.5](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.4...v5.6.5) (2025-10-20)
+
+
+### Bug Fixes
+
+* version number in triggered deprecation ([#2577](https://github.com/nelmio/NelmioApiDocBundle/issues/2577)) ([b5f440c](https://github.com/nelmio/NelmioApiDocBundle/commit/b5f440c8accd069a9a279e3e5a1e1b48824637d3))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump redoc from 2.5.1 to 2.5.2 in /utils ([#2574](https://github.com/nelmio/NelmioApiDocBundle/issues/2574)) ([2b49d55](https://github.com/nelmio/NelmioApiDocBundle/commit/2b49d559937be8c1590b3c927a6f6ad50c116bd1))
+* **deps:** bump swagger-ui-dist from 5.29.4 to 5.29.5 in /utils ([#2575](https://github.com/nelmio/NelmioApiDocBundle/issues/2575)) ([f9fd650](https://github.com/nelmio/NelmioApiDocBundle/commit/f9fd6506fbc39d47d0262aaf2f59e5615c95e0b7))
+
+## [5.6.4](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.3...v5.6.4) (2025-10-17)
+
+
+### Bug Fixes
+
+* **config:** migrate xml to php config ([#2566](https://github.com/nelmio/NelmioApiDocBundle/issues/2566)) ([2b12914](https://github.com/nelmio/NelmioApiDocBundle/commit/2b12914d369c4a6b85b30fcd0fc38ec1451ffcad))
+* **swagger-php:** conflict with broken version 5.5.0 ([#2568](https://github.com/nelmio/NelmioApiDocBundle/issues/2568)) ([a9bbfa7](https://github.com/nelmio/NelmioApiDocBundle/commit/a9bbfa79c4572def8b791f936bb63e126f672ba4))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump swagger-ui-dist from 5.29.3 to 5.29.4 in /utils ([#2564](https://github.com/nelmio/NelmioApiDocBundle/issues/2564)) ([254a487](https://github.com/nelmio/NelmioApiDocBundle/commit/254a487c4a8744aba8d59150de98ae18348a0e1e))
+* PHPStan v2 ([#2572](https://github.com/nelmio/NelmioApiDocBundle/issues/2572)) ([3b0abc6](https://github.com/nelmio/NelmioApiDocBundle/commit/3b0abc6ca97d57922babffa8ed250a0d3d582e0e))
+
+## [5.6.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.2...v5.6.3) (2025-10-09)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @stoplight/elements from 9.0.6 to 9.0.8 in /utils ([#2559](https://github.com/nelmio/NelmioApiDocBundle/issues/2559)) ([ab71920](https://github.com/nelmio/NelmioApiDocBundle/commit/ab7192081e4764694ae50d61246461b1d885ddcb))
+* **deps:** bump redoc from 2.5.0 to 2.5.1 in /utils ([#2557](https://github.com/nelmio/NelmioApiDocBundle/issues/2557)) ([552e1df](https://github.com/nelmio/NelmioApiDocBundle/commit/552e1df377d778ba1ec9b41c44bbf4cf9f1102fc))
+* **deps:** bump swagger-ui-dist from 5.29.0 to 5.29.3 in /utils ([#2560](https://github.com/nelmio/NelmioApiDocBundle/issues/2560)) ([9278d86](https://github.com/nelmio/NelmioApiDocBundle/commit/9278d869302f0a8d6acf1b45726be2a1efe17c5c))
+
+## [5.6.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.1...v5.6.2) (2025-09-15)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump swagger-ui-dist from 5.28.1 to 5.29.0 in /utils ([#2554](https://github.com/nelmio/NelmioApiDocBundle/issues/2554)) ([5ad97ac](https://github.com/nelmio/NelmioApiDocBundle/commit/5ad97ac8ee572cffb1071cedc757cf431af445c9))
+
 ## [5.6.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.0...v5.6.1) (2025-09-10)
 
 
