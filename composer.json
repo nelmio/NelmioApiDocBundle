@@ -95,6 +95,7 @@
         }
     },
     "config": {
+        "lock": false,
         "sort-packages": true
     },
     "extra": {
