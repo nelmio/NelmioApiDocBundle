@@ -26,13 +26,16 @@ class LegacyTypeConverterTest extends TestCase
         }
     }
 
+    /**
+     * @param LegacyType[] $legacyTypes
+     */
     #[DataProvider('provideToTypeInfoTypeCases')]
     public function testToTypeInfoType(?Type $expected, ?array $legacyTypes): void
     {
         self::assertEquals($expected, $converted = LegacyTypeConverter::toTypeInfoType($legacyTypes));
 
         // Ensure the conversion is reversible when possible
-        if ($converted) {
+        if (null !== $converted) {
             self::assertEquals($legacyTypes[0], LegacyTypeConverter::toLegacyType($converted));
         }
     }
@@ -80,7 +83,7 @@ class LegacyTypeConverterTest extends TestCase
         ];
 
         yield 'array (string key)' => [
-            Type::array(Type::object('Foo\Bar')),
+            Type::array(Type::object('Foo\Bar'), Type::string()),
             [
                 new LegacyType(
                     LegacyType::BUILTIN_TYPE_ARRAY,
@@ -94,7 +97,7 @@ class LegacyTypeConverterTest extends TestCase
         ];
 
         yield 'array (int key)' => [
-            Type::array(Type::object('Foo\Bar')),
+            Type::array(Type::object('Foo\Bar'), Type::int()),
             [
                 new LegacyType(
                     LegacyType::BUILTIN_TYPE_ARRAY,
