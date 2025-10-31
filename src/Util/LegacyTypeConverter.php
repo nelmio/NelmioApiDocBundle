@@ -44,7 +44,7 @@ final class LegacyTypeConverter
                 LegacyType::BUILTIN_TYPE_OBJECT => $legacyType->isCollection()
                     ? Type::collection(Type::object($legacyType->getClassName()), self::toTypeInfoType($legacyType->getCollectionValueTypes()), self::toTypeInfoType($legacyType->getCollectionKeyTypes()))
                     : Type::object($legacyType->getClassName()),
-                default => throw new \LogicException('Unsupported LegacyType type: '.$legacyType->getBuiltinType()),
+                default => throw new \LogicException('Unsupported LegacyType type: '.$legacyType->getBuiltinType().'.'),
             };
 
             if (LegacyType::BUILTIN_TYPE_NULL === $legacyType->getBuiltinType() || $legacyType->isNullable()) {
@@ -90,7 +90,7 @@ final class LegacyTypeConverter
             return new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, $nullable, collection: true, collectionKeyType: $collectionKeyType, collectionValueType: self::toLegacyType($type->getCollectionValueType()));
         }
 
-        throw new \LogicException('Unsupported TypeInfo type: '.$type->__toString());
+        throw new \LogicException('Unsupported TypeInfo type: '.$type->__toString().'.');
     }
 
     public static function createType(string $type): LegacyType|Type
