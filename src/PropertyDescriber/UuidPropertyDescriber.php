@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\PropertyDescriber;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Uid\AbstractUid;
+use Symfony\Component\Uid\Ulid;
 
 final class UuidPropertyDescriber implements PropertyDescriberInterface
 {
@@ -23,7 +24,9 @@ final class UuidPropertyDescriber implements PropertyDescriberInterface
     public function describe(array $types, OA\Schema $property, array $context = []): void
     {
         $property->type = 'string';
-        $property->format = 'uuid';
+
+        $isUlid = is_a($types[0]->getClassName(), Ulid::class, true);
+        $property->format = $isUlid ? 'ulid' : 'uuid';
     }
 
     public function supports(array $types, array $context = []): bool

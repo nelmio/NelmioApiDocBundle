@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\PropertyDescriber;
 use Nelmio\ApiDocBundle\PropertyDescriber\UuidPropertyDescriber;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 
 class UuidPropertyDescriberTest extends TestCase
@@ -21,6 +22,15 @@ class UuidPropertyDescriberTest extends TestCase
     public function testSupportsUuidPropertyType(): void
     {
         $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, Uuid::class);
+
+        $describer = new UuidPropertyDescriber();
+
+        self::assertTrue($describer->supports([$type]));
+    }
+
+    public function testSupportsUlidPropertyType(): void
+    {
+        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, Ulid::class);
 
         $describer = new UuidPropertyDescriber();
 
@@ -50,10 +60,25 @@ class UuidPropertyDescriberTest extends TestCase
         $property = $this->initProperty();
 
         $describer = new UuidPropertyDescriber();
-        $describer->describe([], $property, []);
+
+        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, Uuid::class);
+        $describer->describe([$type], $property, []);
 
         self::assertSame('string', $property->type);
         self::assertSame('uuid', $property->format);
+    }
+
+    public function testDescribeUlidPropertyType(): void
+    {
+        $property = $this->initProperty();
+
+        $describer = new UuidPropertyDescriber();
+
+        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, Ulid::class);
+        $describer->describe([$type], $property, []);
+
+        self::assertSame('string', $property->type);
+        self::assertSame('ulid', $property->format);
     }
 
     private function initProperty(): \OpenApi\Annotations\Property
