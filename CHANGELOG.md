@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## [5.7.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.5...v5.7.0) (2025-11-10)
+
+
+### Features
+
+* Implement Ulid type description in ClassDescriber ([#2556](https://github.com/nelmio/NelmioApiDocBundle/issues/2556)) ([5666ba1](https://github.com/nelmio/NelmioApiDocBundle/commit/5666ba1e5646fedc28b410cc97e0ab1a3d4ef413))
+
+
+### Bug Fixes
+
+* remove unused `TypesTrait` ([#2588](https://github.com/nelmio/NelmioApiDocBundle/issues/2588)) ([438894c](https://github.com/nelmio/NelmioApiDocBundle/commit/438894c987e2126c335d3fff86a099f097b6673f))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @stoplight/elements from 9.0.8 to 9.0.11 in /utils ([#2585](https://github.com/nelmio/NelmioApiDocBundle/issues/2585)) ([ac85a09](https://github.com/nelmio/NelmioApiDocBundle/commit/ac85a09cb8945efdc48a255fa9749fadfbcb2e05))
+* **deps:** bump swagger-ui-dist from 5.29.5 to 5.30.2 in /utils ([#2586](https://github.com/nelmio/NelmioApiDocBundle/issues/2586)) ([c37c801](https://github.com/nelmio/NelmioApiDocBundle/commit/c37c8014b3ea6b4b35b053ea2d9cea0d69d29132))
+
 ## [5.6.5](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.4...v5.6.5) (2025-10-20)
 
 
