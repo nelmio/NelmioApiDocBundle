@@ -1,12 +1,5 @@
 # CHANGELOG
 
-## [4.38.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v4.38.2...v4.38.3) (2025-11-12)
-
-
-### Bug Fixes
-
-* remove unused `TypesTrait` [Backport [#2588](https://github.com/nelmio/NelmioApiDocBundle/issues/2588) to 4.x] ([#2595](https://github.com/nelmio/NelmioApiDocBundle/issues/2595)) ([12a01d2](https://github.com/nelmio/NelmioApiDocBundle/commit/12a01d24b420558a7f2be88b0711d22caa74d3f5))
-
 ## 4.38.2
 - Support of attribute MapQueryParameter with a regexp has been improved, it now converts the regexp from PCRE to ECMA-262 for better compliance with OpenApi. 
 
