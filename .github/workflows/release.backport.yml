@@ -22,4 +22,4 @@ jobs:
           # for more options
           release-type: php
           versioning-strategy: always-bump-patch
-          release-as: 4.0.0
+          target-branch: 4.x
