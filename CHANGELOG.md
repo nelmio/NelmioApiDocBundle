@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [5.7.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.7.0...v5.7.1) (2025-11-13)
+
+
+### Bug Fixes
+
+* swagger-php 5.7.0 compatatiblity ([#2598](https://github.com/nelmio/NelmioApiDocBundle/issues/2598)) ([ca4ca49](https://github.com/nelmio/NelmioApiDocBundle/commit/ca4ca49ef60de67bac03f73554b8f8fb9b9636b2))
+
 ## [5.7.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.6.5...v5.7.0) (2025-11-10)
 
 
