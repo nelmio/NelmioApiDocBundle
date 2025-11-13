@@ -23,4 +23,3 @@ jobs:
           release-type: php
           versioning-strategy: always-bump-patch
           target-branch: 4.x
-          release-as: v4.38.3
