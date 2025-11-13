@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [4.38.4](https://github.com/nelmio/NelmioApiDocBundle/compare/v4.38.3...v4.38.4) (2025-11-13)
+
+
+### Bug Fixes
+
+* swagger-php 5.7.0 compatatiblity [Backport [#2598](https://github.com/nelmio/NelmioApiDocBundle/issues/2598) to 4.x] ([#2603](https://github.com/nelmio/NelmioApiDocBundle/issues/2603)) ([ef3ba7d](https://github.com/nelmio/NelmioApiDocBundle/commit/ef3ba7d303cba97d5db995597d416d9ab0451c63))
+* **swagger-php:** conflict with broken version 5.5.0 [Backport [#2568](https://github.com/nelmio/NelmioApiDocBundle/issues/2568) to 4.x] ([#2604](https://github.com/nelmio/NelmioApiDocBundle/issues/2604)) ([82e24b4](https://github.com/nelmio/NelmioApiDocBundle/commit/82e24b463c3253d04e29370a401539b80f52935e))
+
 ## 4.38.2
 - Support of attribute MapQueryParameter with a regexp has been improved, it now converts the regexp from PCRE to ECMA-262 for better compliance with OpenApi. 
 
