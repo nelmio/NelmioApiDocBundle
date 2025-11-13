@@ -85,6 +85,7 @@ final class MapQueryStringProcessor
             // Remove incompatible properties
             $propertyVars = get_object_vars($property);
             unset($propertyVars['property']);
+            unset($propertyVars['encoding']);
 
             $schema = new OA\Schema($propertyVars);
 
