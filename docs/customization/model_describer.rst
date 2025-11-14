@@ -15,6 +15,11 @@ your models in a different way than the default describers do.
     ``components.schemas`` section of the OpenAPI documentation, while properties are
     documented directly in the schema.
 
+.. note::
+
+    Model describers are **not** chained like :doc:`type describers </customization/type_describer>`.
+    Only one model describer will be used for a given model. If multiple describers
+    support the same model, the one with the highest priority will be used.
 
 For example, let's say you have a ``Money`` value object that you
 want to represent as a string with a specific format in your API documentation:

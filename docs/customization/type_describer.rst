@@ -13,6 +13,12 @@ your properties in a different way than the default describers do.
     Type describers are used for individual properties, while model describers
     are used for entire models (classes).
 
+.. note::
+
+    Type describers are chained together and executed in order of their priority.
+    If multiple describers support the same property type, they will combine their
+    generated schema.
+
 .. important::
 
     When the ``type_info`` configuration option is set to ``true`` (which is recommended for Symfony 7.2+),
