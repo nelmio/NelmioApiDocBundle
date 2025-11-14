@@ -48,7 +48,7 @@ Above is an example of security configuration for the ``default`` area. This wil
 
 .. tabs:: Controller examples
 
-    .. tab:: PHP Controller with ``#[IsGranted]``
+    .. tab:: PHP Controller with #[IsGranted]
 
         An example of a controller using the ``#[IsGranted]`` attribute to define security scopes.
 
@@ -96,7 +96,7 @@ Above is an example of security configuration for the ``default`` area. This wil
                 }
             }
 
-    .. tab:: PHP Controller without ``#[IsGranted]`` (No security)
+    .. tab:: PHP Controller without #[IsGranted] (No security)
 
         An example of a controller without the ``#[IsGranted]`` attribute.
 
