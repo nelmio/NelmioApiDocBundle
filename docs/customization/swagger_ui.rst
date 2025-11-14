@@ -1,4 +1,4 @@
-Customization
+Swagger UI Customization
 =============
 
 The look and feel of the Swagger UI can be customized.
