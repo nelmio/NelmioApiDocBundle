@@ -1,6 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Call to function method_exists\(\) with ''Symfony\\\\Component\\\\PropertyInfo\\\\PropertyInfoExtractor'' and ''getType'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/DependencyInjection/Configuration.php
+
+		-
 			message: "#^Class Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Areas extends @final class Nelmio\\\\ApiDocBundle\\\\Attribute\\\\Areas\\.$#"
 			count: 1
 			path: src/Annotation/Areas.php

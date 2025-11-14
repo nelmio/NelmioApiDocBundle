@@ -14,6 +14,7 @@ namespace Nelmio\ApiDocBundle\DependencyInjection;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -28,6 +29,10 @@ final class Configuration implements ConfigurationInterface
                 ->booleanNode('type_info')
                     ->info('Use the symfony/type-info component for determining types.')
                     ->defaultFalse()
+                    ->validate()
+                        ->ifTrue(static fn ($v) => true === $v && !method_exists(PropertyInfoExtractor::class, 'getType'))
+                        ->thenInvalid('the type_info option requires Symfony 7 or higher. Please upgrade Symfony or set type_info to false.')
+                    ->end()
                 ->end()
                 ->booleanNode('use_validation_groups')
                     ->info('If true, `groups` passed to @Model annotations will be used to limit validation constraints')
