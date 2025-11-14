@@ -52,10 +52,9 @@ final class Model
         trigger_deprecation(
             'nelmio/api-doc-bundle',
             '5.8.0',
-            'The %s::%s method is deprecated, use %s::getTypeInfo() instead.',
-            self::class,
+            'The %s method is deprecated, use %s::getTypeInfo() instead.',
             __METHOD__,
-            self::class
+            self::class,
         );
 
         if ($this->type instanceof Type) {
