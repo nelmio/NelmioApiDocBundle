@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## [5.8.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.7.1...v5.8.0) (2025-11-14)
+
+
+### Features
+
+* **#2502:** refactor `Model::$type` from property-info to type-info `Type` ([ef14213](https://github.com/nelmio/NelmioApiDocBundle/commit/ef14213ec74aa2ca3580465364a6768b21b6827c))
+
+
+### Bug Fixes
+
+* **trigger_deprecation:** incorrect & missing trigger_deprecation in `Model` class ([#2613](https://github.com/nelmio/NelmioApiDocBundle/issues/2613)) ([52858e6](https://github.com/nelmio/NelmioApiDocBundle/commit/52858e67fc702eb5eae3c0c4241d46f49534b6c9))
+
+
+### Miscellaneous Chores
+
+* **php:** bump minimum to php 8.2 ([#2611](https://github.com/nelmio/NelmioApiDocBundle/issues/2611)) ([95b2057](https://github.com/nelmio/NelmioApiDocBundle/commit/95b2057ffda1cc03b5e50788da5dae54682ac604))
+* **symfony:** bumped minimum version for Symfony 7 from `^7.1` to `^7.2` ([ef14213](https://github.com/nelmio/NelmioApiDocBundle/commit/ef14213ec74aa2ca3580465364a6768b21b6827c))
+
 ## [5.7.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.7.0...v5.7.1) (2025-11-13)
 
 
