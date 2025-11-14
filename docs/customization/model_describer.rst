@@ -169,5 +169,139 @@ will include the following definition for the ``Money`` model:
                     example: "12.34 EUR"
                     description: "A monetary value represented as a string."
 
+Decorating Built-in Model Describers
+_________________
+
+NelmioApiDocBundle also provides various built-in model describers.
+
+You can decorate these describers to extend or modify their behavior.
+
+For example, if you want to customize how enums are represented
+(for example, to help with client code generation), you can create a
+custom model describer that decorates or replaces the built-in enum describer.
+
+.. code-block:: php
+
+    namespace App\Entity;
+
+    enum Status: string
+    {
+        case ACTIVE = 'active';
+        case INACTIVE = 'inactive';
+        case PENDING = 'pending';
+    }
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/services.yaml
+        services:
+            App\ModelDescriber\MyEnumDescriber:
+                decorates: 'nelmio_api_doc.model_describer.enum'
+                # pass the old service as an argument
+                arguments: ['@.inner']
+
+    .. code-block:: php
+
+        // config/services.php
+        namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+        use App\ModelDescriber\MyEnumDescriber;
+
+        return function(ContainerConfigurator $container): void {
+            // ...
+
+            $services->set(MyEnumDescriber::class)
+                ->decorate('nelmio_api_doc.model_describer.enum')
+                // pass the old service as an argument
+                ->args([service('.inner')]);
+        };
+
+.. code-block:: php
+
+    namespace App\ModelDescriber;
+
+    use Nelmio\ApiDocBundle\Model\Model;
+    use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+    use OpenApi\Annotations\Schema;
+    use Symfony\Component\TypeInfo\Type\EnumType;
+
+    class MyEnumDescriber implements ModelDescriberInterface
+    {
+        public function __construct(
+            private ModelDescriberInterface $decorates,
+        ) {
+        }
+
+        public function describe(Model $model, Schema $schema): void
+        {
+            $this->decorates->describe($model, $schema);
+
+            /**
+             * @var class-string<BackedEnum> $enumClass
+             */
+            $enumClass = $model->getType()->getClassName();
+
+            $xEnumVarNames = [];
+            foreach ($enumClass::cases() as $enumCase) {
+                $xEnumVarNames[] = $enumCase->name;
+            }
+
+            $schema->x = [
+                'enum-varnames' => $xEnumVarNames,
+            ];
+        }
+
+        public function supports(Model $model): bool
+        {
+            return $this->decorates->supports($model);
+        }
+    }
+
+Expected Output
+~~~~~~~~~~~~~
+With the above decorator, the generated schema for an enum
+will include the ``x-enum-varnames`` extension:
+
+.. configuration-block::
+
+    .. code-block:: json
+
+        {
+            "components": {
+                "schemas": {
+                    "Status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive",
+                            "pending"
+                        ],
+                        "x-enum-varnames": [
+                            "ACTIVE",
+                            "INACTIVE",
+                            "PENDING"
+                        ]
+                    }
+                }
+            }
+        }
+
+    .. code-block:: yaml
+
+        components:
+            schemas:
+                Status:
+                    type: string
+                    enum:
+                        - active
+                        - inactive
+                        - pending
+                    x-enum-varnames:
+                        - ACTIVE
+                        - INACTIVE
+                        - PENDING
+
 .. _ModelDescriberInterface: https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/src/ModelDescriber/ModelDescriberInterface.php
 .. _SelfDescribingModelInterface: https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/src/ModelDescriber/SelfDescribingModelInterface.php
