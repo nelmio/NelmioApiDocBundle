@@ -26,7 +26,7 @@ your properties in a different way than the default describers do.
 
 
 For example, let's say you have a ``Currency`` value object that you
-want to represent as a string in your API documentation:
+want to represent as a string (currency code) in your API documentation:
 
 .. code-block:: php
 
