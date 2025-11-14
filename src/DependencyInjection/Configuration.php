@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Describer\OperationIdGeneration;
 use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -29,6 +30,10 @@ final class Configuration implements ConfigurationInterface
                 ->booleanNode('type_info')
                     ->info('Use the symfony/type-info component for determining types.')
                     ->defaultFalse()
+                    ->beforeNormalization()
+                        ->ifTrue()
+                        ->then(static fn () => method_exists(PropertyInfoExtractor::class, 'getType'))
+                    ->end()
                 ->end()
                 ->booleanNode('use_validation_groups')
                     ->info('If true, `groups` passed to #[Model] attributes will be used to limit validation constraints')
