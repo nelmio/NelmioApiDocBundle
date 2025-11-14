@@ -7,4 +7,5 @@ NelmioApiDocBundle can be customized in various ways to fit your needs.
     :maxdepth: 1
 
     /customization/model
+    /customization/type
     /customization/swagger_ui
