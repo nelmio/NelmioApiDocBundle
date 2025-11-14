@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [5.8.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.8.0...v5.8.1) (2025-11-14)
+
+
+### Bug Fixes
+
+* **configuration:** validate `type_info` option on Symfony 6 ([#2615](https://github.com/nelmio/NelmioApiDocBundle/issues/2615)) ([3d96b9a](https://github.com/nelmio/NelmioApiDocBundle/commit/3d96b9a9826a5dff52a6f58a88926dc5ef2d4b28))
+
 ## [5.8.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.7.1...v5.8.0) (2025-11-14)
 
 
