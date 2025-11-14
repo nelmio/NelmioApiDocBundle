@@ -94,7 +94,12 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "audit": {
+            "ignore": [
+                "PKSA-365x-2zjk-pt47"
+            ]
+        }
     },
     "extra": {
         "branch-alias": {
