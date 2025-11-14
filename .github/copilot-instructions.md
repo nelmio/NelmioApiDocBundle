@@ -8,7 +8,7 @@ Follow these mandatory guidelines when contributing code, documentation, and tra
 
 * **Project Scope:** This is a **standalone third-party Symfony bundle**.
 * **Compatibility:** Code **must** be compatible with **Symfony 6.4, and 7.x** versions.
-* **Target PHP:** Use **modern PHP 8.1** syntax and features.
+* **Target PHP:** Use **modern PHP 8.2** syntax and features.
 * **Deprecations:** **Avoid** using deprecated Symfony or PHP features. Consult the [Symfony Backward Compatibility Promise](https://symfony.com/doc/current/contributing/code/bc.html#working-on-symfony-code) for accepted changes during review.
 * **Readability:** Break text lines in documentation at **~72–78 characters** for optimal readability.
 

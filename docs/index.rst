@@ -17,7 +17,7 @@ This bundle supports *Symfony* route requirements, *Symfony* request mapping (:d
 For models, it supports the `Symfony serializer`_ , the `JMS serializer`_ and the `willdurand/Hateoas`_ library.
 It does also support `Symfony form`_ types.
 
-Attributes are supported from version 4.7 and PHP 8.1.
+Attributes are supported from version 4.7 and PHP 8.1 onward.
 
 Migrate from 4.x to 5.0
 -----------------------

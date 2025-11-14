@@ -25,11 +25,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php-version: 8.1
+          - php-version: 8.2
             symfony-require: "6.4"
             composer-flags: "--prefer-lowest"
-          - php-version: 8.1
-            symfony-require: "6.4"
           - php-version: 8.2
             symfony-require: "6.4"
           - php-version: 8.3
