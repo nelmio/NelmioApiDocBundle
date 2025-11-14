@@ -22,7 +22,6 @@ jobs:
     runs-on: ubuntu-22.04
 
     strategy:
-      fail-fast: false
       matrix:
         test-group:
           - core
@@ -39,6 +38,7 @@ jobs:
           - "7.2"
           - "7.3"
           - "7.4"
+          - "8.0"
         composer-flags:
           - ""
         include:
@@ -47,32 +47,37 @@ jobs:
             symfony-require: "6.4"
             composer-flags: "--prefer-lowest"
         exclude:
-            # Test only the lowest and highest PHP versions for each optional dependency test group
-            - test-group: fos-rest
-              php-version: 8.3
-            - test-group: fos-rest
-              php-version: 8.4
-            - test-group: jms-serializer
-              php-version: 8.3
-            - test-group: jms-serializer
-              php-version: 8.4
-            - test-group: hateoas
-              php-version: 8.3
-            - test-group: hateoas
-              php-version: 8.4
-            # Test only the highest versions for a symfony major for each optional dependency test group
-            - test-group: fos-rest
-              symfony-require: "7.2"
-            - test-group: fos-rest
-              symfony-require: "7.3"
-            - test-group: jms-serializer
-              symfony-require: "7.2"
-            - test-group: jms-serializer
-              symfony-require: "7.3"
-            - test-group: hateoas
-              symfony-require: "7.2"
-            - test-group: hateoas
-              symfony-require: "7.3"
+          # Symfony 8.x: Requires: PHP 8.4 or higher
+          - php-version: 8.2
+            symfony-require: 8.0
+          - php-version: 8.3
+            symfony-require: 8.0
+          # Test only the lowest and highest PHP versions for each optional dependency test group
+          - test-group: fos-rest
+            php-version: 8.3
+          - test-group: fos-rest
+            php-version: 8.4
+          - test-group: jms-serializer
+            php-version: 8.3
+          - test-group: jms-serializer
+            php-version: 8.4
+          - test-group: hateoas
+            php-version: 8.3
+          - test-group: hateoas
+            php-version: 8.4
+          # Test only the highest versions for a symfony major for each optional dependency test group
+          - test-group: fos-rest
+            symfony-require: "7.2"
+          - test-group: fos-rest
+            symfony-require: "7.3"
+          - test-group: jms-serializer
+            symfony-require: "7.2"
+          - test-group: jms-serializer
+            symfony-require: "7.3"
+          - test-group: hateoas
+            symfony-require: "7.2"
+          - test-group: hateoas
+            symfony-require: "7.3"
 
     steps:
       - name: Checkout
