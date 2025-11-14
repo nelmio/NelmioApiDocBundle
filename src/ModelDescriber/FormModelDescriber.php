@@ -28,8 +28,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
-use Symfony\Component\PropertyInfo\Type as LegacyType;
-use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 
 /**
@@ -66,10 +64,11 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        /** @var ObjectType|LegacyType $type */
-        $type = class_exists(Type::class)
-            ? $model->getTypeInfo()
-            : $model->getType();
+        $type = $model->getTypeInfo();
+        if (!$type instanceof ObjectType) {
+            return;
+        }
+
         $class = $type->getClassName();
 
         $annotationsReader = new AnnotationsReader(
@@ -95,12 +94,8 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     public function supports(Model $model): bool
     {
-        if (class_exists(Type::class)) {
-            return $model->getTypeInfo() instanceof ObjectType
-                && is_a($model->getTypeInfo()->getClassName(), FormTypeInterface::class, true);
-        }
-
-        return is_a($model->getType()->getClassName(), FormTypeInterface::class, true);
+        return $model->getTypeInfo() instanceof ObjectType
+            && is_a($model->getTypeInfo()->getClassName(), FormTypeInterface::class, true);
     }
 
     private function parseForm(OA\Schema $schema, FormInterface $form): void

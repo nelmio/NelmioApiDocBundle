@@ -64,10 +64,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        /** @var ObjectType|LegacyType $type */
-        $type = class_exists(Type::class)
-            ? $model->getTypeInfo()
-            : $model->getType();
+        $type = $model->getTypeInfo();
+        if (!$type instanceof ObjectType) {
+            return;
+        }
+
         $class = $type->getClassName();
         $schema->_context->class = $class;
 
@@ -205,9 +206,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             return;
         }
 
-        $modelType = class_exists(Type::class) ? $model->getTypeInfo() : $model->getType()->getClassName();
-
-        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may need to use the `#[OA\Property(type="")]` attribute to specify it manually.', \is_array($types) ? $types[0]->getBuiltinType() : $types, $modelType, $propertyName));
+        throw new \Exception(\sprintf('Type "%s" is not supported in %s::$%s. You may need to use the `#[OA\Property(type="")]` attribute to specify it manually.', \is_array($types) ? $types[0]->getBuiltinType() : $types, $model->getTypeInfo(), $propertyName));
     }
 
     /**
@@ -242,12 +241,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function supports(Model $model): bool
     {
-        if (class_exists(Type::class)) {
-            return $model->getTypeInfo() instanceof ObjectType
-                && (class_exists($model->getTypeInfo()->getClassName()) || interface_exists($model->getTypeInfo()->getClassName()));
-        }
-
-        return LegacyType::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
-            && (class_exists($model->getType()->getClassName()) || interface_exists($model->getType()->getClassName()));
+        return $model->getTypeInfo() instanceof ObjectType
+            && (class_exists($model->getTypeInfo()->getClassName()) || interface_exists($model->getTypeInfo()->getClassName()));
     }
 }

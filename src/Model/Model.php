@@ -89,9 +89,7 @@ final class Model
 
     public function getHash(): string
     {
-        $type = class_exists(Type::class)
-            ? $this->getTypeInfo()->__toString()
-            : $this->getType();
+        $type = $this->getTypeInfo()->__toString();
 
         return md5(serialize([$type, $this->getSerializationContext(), $this->name]));
     }

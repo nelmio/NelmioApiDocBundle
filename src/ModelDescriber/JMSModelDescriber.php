@@ -26,8 +26,6 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use Symfony\Component\PropertyInfo\Type as LegacyType;
-use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 
 /**
@@ -85,10 +83,11 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
 
     public function describe(Model $model, OA\Schema $schema): void
     {
-        /** @var ObjectType|LegacyType $type */
-        $type = class_exists(Type::class)
-            ? $model->getTypeInfo()
-            : $model->getType();
+        $type = $model->getTypeInfo();
+        if (!$type instanceof ObjectType) {
+            return;
+        }
+
         $className = $type->getClassName();
         $metadata = $this->factory->getMetadataForClass($className);
         if (!$metadata instanceof ClassMetadata) {
@@ -269,10 +268,11 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             return false;
         }
 
-        /** @var ObjectType|LegacyType $type */
-        $type = class_exists(Type::class)
-            ? $model->getTypeInfo()
-            : $model->getType();
+        $type = $model->getTypeInfo();
+        if (!$type instanceof ObjectType) {
+            return false;
+        }
+
         $className = $type->getClassName();
 
         try {

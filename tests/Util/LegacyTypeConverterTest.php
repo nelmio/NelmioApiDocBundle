@@ -19,13 +19,6 @@ use Symfony\Component\TypeInfo\Type;
 
 class LegacyTypeConverterTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        if (!class_exists(Type::class)) {
-            self::markTestSkipped('Symfony TypeInfo component is not available.');
-        }
-    }
-
     /**
      * @param LegacyType[] $legacyTypes
      */
@@ -42,12 +35,6 @@ class LegacyTypeConverterTest extends TestCase
 
     public static function provideToTypeInfoTypeCases(): \Generator
     {
-        if (!class_exists(Type::class)) {
-            yield [null];
-
-            return;
-        }
-
         yield 'null' => [
             null,
             null,
@@ -140,12 +127,6 @@ class LegacyTypeConverterTest extends TestCase
 
     public static function provideToLegacyTypeCases(): \Generator
     {
-        if (!class_exists(Type::class)) {
-            yield [null];
-
-            return;
-        }
-
         yield 'object' => [
             new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
             Type::object('Foo\Bar'),
@@ -184,25 +165,6 @@ class LegacyTypeConverterTest extends TestCase
 
     public static function provideCreateTypeCases(): \Generator
     {
-        if (!class_exists(Type::class)) {
-            yield 'object legacy type' => [
-                new LegacyType('object', false, 'Foo\Bar'),
-                'Foo\Bar',
-            ];
-
-            yield 'array legacy type' => [
-                new LegacyType('array', false, null, true, null, new LegacyType('object', false, 'Foo\Bar')),
-                'Foo\Bar[]',
-            ];
-
-            yield 'nested array legacy type' => [
-                new LegacyType('array', false, null, true, null, new LegacyType('array', false, null, true, null, new LegacyType('object', false, 'Foo\Bar'))),
-                'Foo\Bar[][]',
-            ];
-
-            return;
-        }
-
         yield 'simple' => [
             Type::object('Foo\Bar'),
             'Foo\Bar',

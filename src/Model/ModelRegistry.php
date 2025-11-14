@@ -172,12 +172,10 @@ final class ModelRegistry
                 $schema = $this->describeSchema($model, $name);
 
                 if (null === $schema) {
-                    $type = class_exists(Type::class)
-                        ? $model->getTypeInfo()
-                        : $model->getType();
+                    $type = $model->getTypeInfo();
 
                     $errorMessage = \sprintf('Schema of type "%s" can\'t be generated, no describer supports it.', $this->typeToString($type));
-                    if (method_exists($type, 'getClassName') && null !== $type->getClassName() && !class_exists($className = $type->getClassName())) {
+                    if ($type instanceof Type\ObjectType && !class_exists($className = $type->getClassName())) {
                         $errorMessage .= \sprintf(' Class "%s" does not exist, did you forget a use statement, or typed it wrong?', $className);
                     }
                     throw new \LogicException($errorMessage);
@@ -200,9 +198,7 @@ final class ModelRegistry
             return $model->name;
         }
 
-        $type = class_exists(Type::class)
-            ? $model->getTypeInfo()
-            : $model->getType();
+        $type = $model->getTypeInfo();
 
         // 3. Generate from the type
         return $this->getTypeShortName($type);
@@ -235,9 +231,7 @@ final class ModelRegistry
      */
     private function modelToArray(Model $model): array
     {
-        $type = class_exists(Type::class)
-            ? $model->getTypeInfo()
-            : $model->getType();
+        $type = $model->getTypeInfo();
 
         $dataType = $this->typeToString($type);
 

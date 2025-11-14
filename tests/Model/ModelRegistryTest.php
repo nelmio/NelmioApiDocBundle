@@ -35,7 +35,7 @@ class ModelRegistryTest extends TestCase
         $type = new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, false, null, true);
 
         self::assertEquals(
-            class_exists(Type::class) ? '#/components/schemas/mixed[]' : '#/components/schemas/array',
+            '#/components/schemas/mixed[]',
             $registry->register(new Model($type, ['group1']))
         );
     }
@@ -86,20 +86,18 @@ class ModelRegistryTest extends TestCase
 
         yield 'nullable class (LegacyType)' => [
             new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, true, self::class),
-            class_exists(Type::class) ? 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest|null' : 'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+            'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest|null',
         ];
 
-        if (class_exists(Type::class)) {
-            yield 'class' => [
-                Type::object(self::class),
-                'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
-            ];
+        yield 'class' => [
+            Type::object(self::class),
+            'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+        ];
 
-            yield 'nullable class' => [
-                Type::nullable(Type::object(self::class)),
-                'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest|null',
-            ];
-        }
+        yield 'nullable class' => [
+            Type::nullable(Type::object(self::class)),
+            'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest|null',
+        ];
     }
 
     public function testNameCollisionsAreLoggedWithAlternativeNames(): void
@@ -160,10 +158,6 @@ class ModelRegistryTest extends TestCase
     #[DataProvider('getNameAlternatives')]
     public function testNameAliasingForObjects(string $expected, ?array $groups, ?string $name, array $alternativeNames): void
     {
-        if (!class_exists(Type::class)) {
-            self::markTestSkipped('symfony/type-info is not installed.');
-        }
-
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $type = Type::object(self::class);
 
@@ -310,13 +304,11 @@ class ModelRegistryTest extends TestCase
 
     public static function unsupportedTypesProvider(): \Generator
     {
-        yield [new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, false, null, true), class_exists(Type::class) ? 'array' : 'mixed[]'];
+        yield [new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, false, null, true), 'array'];
         yield [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class), self::class];
 
-        if (class_exists(Type::class)) {
-            yield [Type::array(), 'array'];
-            yield [Type::object(self::class), self::class];
-        }
+        yield [Type::array(), 'array'];
+        yield [Type::object(self::class), self::class];
     }
 
     public function testUnsupportedTypeExceptionWithNonExistentClass(): void
