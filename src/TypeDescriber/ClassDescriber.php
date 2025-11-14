@@ -20,6 +20,7 @@ use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\Uid\AbstractUid;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
@@ -33,6 +34,13 @@ final class ClassDescriber implements TypeDescriberInterface, ModelRegistryAware
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
+        if (is_a($type->getClassName(), Ulid::class, true)) {
+            $schema->type = 'string';
+            $schema->format = 'ulid';
+
+            return;
+        }
+
         if (is_a($type->getClassName(), AbstractUid::class, true)) {
             $schema->type = 'string';
             $schema->format = 'uuid';

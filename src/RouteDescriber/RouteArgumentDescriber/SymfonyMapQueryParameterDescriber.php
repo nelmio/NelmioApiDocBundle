@@ -16,14 +16,11 @@ namespace Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
-use OpenApi\Processors\Concerns\TypesTrait;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberInterface
 {
-    use TypesTrait;
-
     public function describe(ArgumentMetadata $argumentMetadata, OA\Operation $operation): void
     {
         if (!$attribute = $argumentMetadata->getAttributes(MapQueryParameter::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? null) {
