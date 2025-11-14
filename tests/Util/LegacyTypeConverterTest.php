@@ -68,6 +68,20 @@ class LegacyTypeConverterTest extends TestCase
             [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, true, 'Foo\Bar')],
         ];
 
+        yield 'collection' => [
+            Type::collection(Type::object(self::class), Type::object('Foo\Bar'), Type::int()),
+            [
+                new LegacyType(
+                    LegacyType::BUILTIN_TYPE_OBJECT,
+                    false,
+                    self::class,
+                    true,
+                    collectionKeyType: new LegacyType(LegacyType::BUILTIN_TYPE_INT),
+                    collectionValueType: new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
+                ),
+            ],
+        ];
+
         yield 'array' => [
             Type::array(Type::object('Foo\Bar')),
             [
@@ -137,6 +151,18 @@ class LegacyTypeConverterTest extends TestCase
             Type::object('Foo\Bar'),
         ];
 
+        yield 'collection' => [
+            new LegacyType(
+                LegacyType::BUILTIN_TYPE_OBJECT,
+                false,
+                self::class,
+                true,
+                collectionKeyType: new LegacyType(LegacyType::BUILTIN_TYPE_INT),
+                collectionValueType: new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
+            ),
+            Type::collection(Type::object(self::class), Type::object('Foo\Bar'), Type::int()),
+        ];
+
         yield 'nullable object' => [
             new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, true, 'Foo\Bar'),
             Type::nullable(Type::object('Foo\Bar')),
@@ -159,7 +185,20 @@ class LegacyTypeConverterTest extends TestCase
     public static function provideCreateTypeCases(): \Generator
     {
         if (!class_exists(Type::class)) {
-            yield [null];
+            yield 'object legacy type' => [
+                new LegacyType('object', false, 'Foo\Bar'),
+                'Foo\Bar',
+            ];
+
+            yield 'array legacy type' => [
+                new LegacyType('array', false, null, true, null, new LegacyType('object', false, 'Foo\Bar')),
+                'Foo\Bar[]',
+            ];
+
+            yield 'nested array legacy type' => [
+                new LegacyType('array', false, null, true, null, new LegacyType('array', false, null, true, null, new LegacyType('object', false, 'Foo\Bar'))),
+                'Foo\Bar[][]',
+            ];
 
             return;
         }

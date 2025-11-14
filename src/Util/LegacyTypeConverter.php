@@ -66,9 +66,6 @@ final class LegacyTypeConverter
         if ($type instanceof Type\NullableType) {
             $nullable = true;
             $type = $type->getWrappedType();
-        } elseif ($type instanceof Type\UnionType && method_exists($type, 'asNonNullable')) {
-            $nullable = true;
-            $type = $type->asNonNullable();
         }
 
         if ($type instanceof Type\ObjectType) {
@@ -85,6 +82,19 @@ final class LegacyTypeConverter
                 $collectionKeyType = $type->getCollectionKeyType()->isIdentifiedBy(TypeIdentifier::INT)
                     ? [new LegacyType(LegacyType::BUILTIN_TYPE_INT, false)]
                     : [new LegacyType(LegacyType::BUILTIN_TYPE_STRING, false)];
+            }
+
+            if ($type->getWrappedType()->isIdentifiedBy(TypeIdentifier::OBJECT)) {
+                return new LegacyType(
+                    LegacyType::BUILTIN_TYPE_OBJECT,
+                    $nullable,
+                    $type->getWrappedType() instanceof Type\GenericType
+                        ? $type->getWrappedType()->getWrappedType()->getClassName()
+                        : $type->getWrappedType()->getClassName(),
+                    true,
+                    collectionKeyType: $collectionKeyType,
+                    collectionValueType: self::toLegacyType($type->getCollectionValueType()),
+                );
             }
 
             return new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, $nullable, collection: true, collectionKeyType: $collectionKeyType, collectionValueType: self::toLegacyType($type->getCollectionValueType()));
