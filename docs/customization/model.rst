@@ -15,14 +15,6 @@ your models in a different way than the default describers do.
     ``components.schemas`` section of the OpenAPI documentation, while properties are
     documented directly in the schema.
 
-Creating a custom Model Describer
----------------------------------
-
-To create a custom model describer, you need to create a class that implements the `ModelDescriberInterface`_.
-This interface has two methods:
-
-* ``supports(Model $model): bool``: This method should return ``true`` if your describer can handle the given model.
-* ``describe(Model $model, Schema $schema): void``: This method should populate the OpenAPI ``Schema`` for the given model.
 
 For example, let's say you have a ``Money`` value object that you
 want to represent as a string with a specific format in your API documentation:
@@ -36,6 +28,15 @@ want to represent as a string with a specific format in your API documentation:
         public int $cents;
         public string $currency;
     }
+
+Creating a custom Model Describer
+---------------------------------
+
+To create a custom model describer, you need to create a class that implements the `ModelDescriberInterface`_.
+This interface has two methods:
+
+* ``supports(Model $model): bool``: This method should return ``true`` if your describer can handle the given model.
+* ``describe(Model $model, Schema $schema): void``: This method should populate the OpenAPI ``Schema`` for the given model.
 
 You can create a custom model describer for this ``Money`` class like this:
 
