@@ -465,7 +465,7 @@ If you need more complex features, take a look at:
 
     areas
     alternative_names
-    customization
+    customization/index
     commands
     security
     symfony_attributes
