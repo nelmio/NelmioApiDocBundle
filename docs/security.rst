@@ -143,7 +143,7 @@ Above is an example of security configuration for the ``default`` area. This wil
 Overriding Generated Security Definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Want to override the generated security definition <override-security? You can do that by using the ``#[Security]`` attribute.
+Want to override the generated security definition? You can do that by using the ``#[Security]`` attribute.
 
         .. code-block:: php-attributes
 
