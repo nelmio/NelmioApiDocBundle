@@ -69,31 +69,31 @@ You can create a custom type describer for this ``Currency`` class like this:
 
 .. code-block:: php
 
-namespace App\TypeDescriber;
+    namespace App\TypeDescriber;
 
-use App\ValueObject\Currency;
-use Nelmio\ApiDocBundle\PropertyDescriber\TypeDescriberInterface;
-use OpenApi\Annotations\Schema;
-use Symfony\Component\TypeInfo\Type;
+    use App\ValueObject\Currency;
+    use Nelmio\ApiDocBundle\PropertyDescriber\TypeDescriberInterface;
+    use OpenApi\Annotations\Schema;
+    use Symfony\Component\TypeInfo\Type;
 
-/**
- * @implements TypeDescriberInterface<ObjectType<Currency::class>>
- */
-class CurrencyTypeDescriber implements TypeDescriberInterface
-{
-    public function describe(Type $type, Schema $property, array $context = []): void
+    /**
+     * @implements TypeDescriberInterface<ObjectType<Currency::class>>
+     */
+    class CurrencyTypeDescriber implements TypeDescriberInterface
     {
-        $property->type = 'string';
-        $property->example = 'USD';
-        $property->description = 'A currency code represented as a string.';
-    }
+        public function describe(Type $type, Schema $property, array $context = []): void
+        {
+            $property->type = 'string';
+            $property->example = 'USD';
+            $property->description = 'A currency code represented as a string.';
+        }
 
-    public function supports(Type $type, array $context = []): bool
-    {
-        return $type instanceof Type\ObjectType
-            && Currency::class === $type->getClassName();
+        public function supports(Type $type, array $context = []): bool
+        {
+            return $type instanceof Type\ObjectType
+                && Currency::class === $type->getClassName();
+        }
     }
-}
 
 Registering the custom Type Describer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,34 +106,34 @@ other describers, you can configure it manually in your ``services.yaml``:
 
 .. configuration-block::
 
-.. code-block:: yaml
+    .. code-block:: yaml
 
-    # config/services.yaml
-    services:
-        # ...
+        # config/services.yaml
+        services:
+            # ...
 
-        App\TypeDescriber\CurrencyTypeDescriber:
-            tags:
-                # register the type describer with a high priority (called earlier)
-                - { name: 'nelmio_api_doc.type_describer', priority: 100 }
+            App\TypeDescriber\CurrencyTypeDescriber:
+                tags:
+                    # register the type describer with a high priority (called earlier)
+                    - { name: 'nelmio_api_doc.type_describer', priority: 100 }
 
-.. code-block:: php
-    // config/services.php
-    namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+    .. code-block:: php
+        // config/services.php
+        namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-    use App\TypeDescriber\CurrencyTypeDescriber;
+        use App\TypeDescriber\CurrencyTypeDescriber;
 
-    return function(ContainerConfigurator $container) {
-        // ...
+        return function(ContainerConfigurator $container) {
+            // ...
 
-        // if you're using autoconfigure, the tag will be automatically applied
-        $services->set(App\TypeDescriber\CurrencyTypeDescriber::class)
-            // register the type describer with a high priority (called earlier)
-            ->tag('nelmio_api_doc.type_describer', [
-                'priority' => 100,
-            ])
-        ;
-};
+            // if you're using autoconfigure, the tag will be automatically applied
+            $services->set(App\TypeDescriber\CurrencyTypeDescriber::class)
+                // register the type describer with a high priority (called earlier)
+                ->tag('nelmio_api_doc.type_describer', [
+                    'priority' => 100,
+                ])
+            ;
+    };
 
 Creating a custom Property Describer `(type_info: false)`
 ---------------------------------------------------------
