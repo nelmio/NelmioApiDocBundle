@@ -265,7 +265,7 @@ custom model describer that decorates or replaces the built-in enum describer.
     }
 
 Expected Output
-~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 With the above decorator, the generated schema for an enum
 will include the ``x-enum-varnames`` extension:
 
