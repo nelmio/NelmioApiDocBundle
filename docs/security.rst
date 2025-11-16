@@ -22,7 +22,7 @@ A default security policy can be added in ``nelmio_api_doc.documentation.securit
 This will add the Bearer security policy to all registered paths.
 
 Automatically Generated Security Definitions
---------------------------------
+---------------------------------------------
 
 NelmioApiDocBundle can automatically generate security definitions based on the ``#[IsGranted]`` attribute.
 You can configure the security scheme(s) per area in your area configuration.
