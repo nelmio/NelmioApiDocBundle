@@ -21,8 +21,6 @@ A default security policy can be added in ``nelmio_api_doc.documentation.securit
 
 This will add the Bearer security policy to all registered paths.
 
-.. _area-security-configuration:
-
 Automatically Generated Security Definitions
 --------------------------------
 
@@ -30,6 +28,10 @@ NelmioApiDocBundle can automatically generate security definitions based on the 
 You can configure the security scheme(s) per area in your area configuration.
 
 See the `security documentation on swagger`_ for more information on authentication schemes.
+
+.. versionadded:: 5.2
+
+    The possibility to automatically generate security definitions based on the ``#[IsGranted]`` attribute was added in version 5.2.
 
 .. code-block:: yaml
 
@@ -48,7 +50,7 @@ Above is an example of security configuration for the ``default`` area. This wil
 
 .. tabs:: Controller examples
 
-    .. tab:: PHP Controller with #[IsGranted]
+    .. tab:: Controller with #[IsGranted]
 
         An example of a controller using the ``#[IsGranted]`` attribute to define security scopes.
 
@@ -96,7 +98,7 @@ Above is an example of security configuration for the ``default`` area. This wil
                 }
             }
 
-    .. tab:: PHP Controller without #[IsGranted] (No security)
+    .. tab:: Controller without #[IsGranted] (No security)
 
         An example of a controller without the ``#[IsGranted]`` attribute.
 
@@ -138,9 +140,10 @@ Above is an example of security configuration for the ``default`` area. This wil
                 }
             }
 
-    .. tab:: PHP Controller with overridden security
+Overriding Generated Security Definitions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        Want to :ref:`override the generated security definition <override-security>`? You can do that by using the ``#[Security]`` attribute.
+Want to override the generated security definition <override-security? You can do that by using the ``#[Security]`` attribute.
 
         .. code-block:: php-attributes
 
@@ -190,11 +193,6 @@ Above is an example of security configuration for the ``default`` area. This wil
                 }
             }
 
-.. versionadded:: 5.2
-
-    The possibility to automatically generate security definitions based on the ``#[IsGranted]`` attribute was added in version 5.2.
-
-.. _override-security:
 
 Overriding Specific Paths
 -------------------------
