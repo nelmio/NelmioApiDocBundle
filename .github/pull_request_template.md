@@ -15,4 +15,3 @@ Closes #...
 
 ## Checklist
 - [ ] I have made corresponding changes to the documentation (`docs/`)
-- [ ] I have made corresponding changes to the changelog (`CHANGELOG.md`)
