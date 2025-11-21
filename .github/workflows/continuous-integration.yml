@@ -34,17 +34,23 @@ jobs:
             symfony-require: "6.4"
           - php-version: 8.4
             symfony-require: "6.4"
+          - php-version: 8.5
+            symfony-require: "6.4"
           - php-version: 8.2
             symfony-require: "7.2"
           - php-version: 8.3
             symfony-require: "7.2"
           - php-version: 8.4
             symfony-require: "7.2"
+          - php-version: 8.5
+            symfony-require: "7.2"
           - php-version: 8.2
             symfony-require: "7.3"
           - php-version: 8.3
             symfony-require: "7.3"
           - php-version: 8.4
+            symfony-require: "7.3"
+          - php-version: 8.5
             symfony-require: "7.3"
     steps:
       - name: Checkout
