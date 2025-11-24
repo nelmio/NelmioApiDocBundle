@@ -103,7 +103,6 @@ final class OpenApiPhpDescriber
                     continue;
                 }
 
-                // Procesar Attributes Post, Get, Put, Delete, etc.
                 if ($annotation instanceof \OpenApi\Attributes\Post || 
                     $annotation instanceof \OpenApi\Attributes\Get || 
                     $annotation instanceof \OpenApi\Attributes\Put || 
