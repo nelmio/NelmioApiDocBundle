@@ -40,21 +40,22 @@ final class DefaultDescriber implements DescriberInterface
         }
         foreach ($api->paths as $path) {
             foreach (Util::OPERATIONS as $method) {
-                /** @var OA\Operation $operation */
                 $operation = $path->{$method};
-                if (Generator::UNDEFINED !== $operation && null !== $operation) {
-                    // Verificar si hay respuestas (cualquier tipo)
-                    $hasAnyResponses = false;
-                    if (Generator::UNDEFINED !== $operation->responses && [] !== $operation->responses && null !== $operation->responses) {
-                        $hasAnyResponses = true;
-                    }
+                if (!$operation instanceof OA\Operation) {
+                    continue;
+                }
 
-                    // Solo agregar respuesta "default" si NO hay respuestas definidas
-                    if (!$hasAnyResponses) {
-                        /** @var OA\Response $response */
-                        $response = Util::getIndexedCollectionItem($operation, OA\Response::class, 'default');
-                        $response->description = '';
-                    }
+                // Verificar si hay respuestas (cualquier tipo)
+                $hasAnyResponses = false;
+                if (Generator::UNDEFINED !== $operation->responses && [] !== $operation->responses && null !== $operation->responses) {
+                    $hasAnyResponses = true;
+                }
+
+                // Solo agregar respuesta "default" si NO hay respuestas definidas
+                if (!$hasAnyResponses) {
+                    /** @var OA\Response $response */
+                    $response = Util::getIndexedCollectionItem($operation, OA\Response::class, 'default');
+                    $response->description = '';
                 }
             }
         }
