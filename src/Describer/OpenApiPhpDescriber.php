@@ -100,14 +100,36 @@ final class OpenApiPhpDescriber
                     if (\in_array($shortName, $httpMethodNames, true)) {
                         $methodName = strtolower($shortName);
                         if (\in_array($methodName, $supportedHttpMethods, true)) {
+                            // Verificar si el atributo tiene un path específico y coincide con el path actual
+                            if (Generator::UNDEFINED !== $annotation->path && $path->path !== $annotation->path) {
+                                continue;
+                            }
+                            
+                            // Limpiar el path del atributo antes de hacer merge
+                            // El path viene del contexto de la ruta, no del atributo
+                            $originalPath = $annotation->path;
+                            $annotation->path = Generator::UNDEFINED;
+                            
                             $operation = Util::getOperation($path, $methodName);
                             $operation->mergeProperties($annotation);
+                            
+                            // Restaurar el path original del atributo (por si acaso)
+                            $annotation->path = $originalPath;
                         }
                         continue;
                     }
                 }
 
                 if ($annotation instanceof OA\Operation) {
+                    // Skip OpenAPI Attributes that are already processed above
+                    $className = $annotation::class;
+                    if (str_starts_with($className, 'OpenApi\\Attributes\\')) {
+                        $shortName = substr($className, strrpos($className, '\\') + 1);
+                        $httpMethodNames = ['Post', 'Get', 'Put', 'Delete', 'Patch'];
+                        if (\in_array($shortName, $httpMethodNames, true)) {
+                            continue;
+                        }
+                    }
                     if (!\in_array($annotation->method, $supportedHttpMethods, true)) {
                         continue;
                     }
