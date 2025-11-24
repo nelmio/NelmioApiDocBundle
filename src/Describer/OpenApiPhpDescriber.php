@@ -93,18 +93,18 @@ final class OpenApiPhpDescriber
                 }
 
                 // Procesar Attributes Post, Get, Put, Delete, etc.
-                if ($annotation instanceof \OpenApi\Attributes\Post || 
-                    $annotation instanceof \OpenApi\Attributes\Get || 
-                    $annotation instanceof \OpenApi\Attributes\Put || 
-                    $annotation instanceof \OpenApi\Attributes\Delete || 
-                    $annotation instanceof \OpenApi\Attributes\Patch) {
-                    $className = get_class($annotation);
-                    $methodName = strtolower(substr($className, strrpos($className, "\\") + 1));
-                    if (in_array($methodName, $supportedHttpMethods, true)) {
-                        $operation = Util::getOperation($path, $methodName);
-                        $operation->mergeProperties($annotation);
+                $className = get_class($annotation);
+                if (str_starts_with($className, 'OpenApi\\Attributes\\')) {
+                    $shortName = substr($className, strrpos($className, "\\") + 1);
+                    $httpMethodNames = ['Post', 'Get', 'Put', 'Delete', 'Patch'];
+                    if (in_array($shortName, $httpMethodNames, true)) {
+                        $methodName = strtolower($shortName);
+                        if (in_array($methodName, $supportedHttpMethods, true)) {
+                            $operation = Util::getOperation($path, $methodName);
+                            $operation->mergeProperties($annotation);
+                        }
+                        continue;
                     }
-                    continue;
                 }
 
                 if ($annotation instanceof OA\Operation) {
