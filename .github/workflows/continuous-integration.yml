@@ -94,6 +94,11 @@ jobs:
           tools: composer, flex
           coverage: pcov
 
+      - name: "Lower api-platform/core for Symfony 5.4"
+        if: matrix.symfony-require == '5.4'
+        run: "composer require 'api-platform/core:^2.7' --no-update --no-scripts"
+        shell: bash
+
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
         with:
