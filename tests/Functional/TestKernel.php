@@ -144,7 +144,6 @@ class TestKernel extends Kernel
 
         $c->loadFromExtension('twig', [
             'strict_variables' => '%kernel.debug%',
-            'exception_controller' => null,
         ]);
 
         $c->loadFromExtension('api_platform', [

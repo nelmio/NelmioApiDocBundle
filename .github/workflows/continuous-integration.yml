@@ -73,7 +73,22 @@ jobs:
             symfony-require: "7.2"
             doctrine-annotations: false
           - php-version: 8.4
-            symfony-require: "7.2"
+            symfony-require: "7.3"
+            doctrine-annotations: false
+          - php-version: 8.5
+            symfony-require: "7.3"
+            doctrine-annotations: false
+          - php-version: 8.2
+            symfony-require: "7.4"
+            doctrine-annotations: false
+          - php-version: 8.3
+            symfony-require: "7.4"
+            doctrine-annotations: false
+          - php-version: 8.4
+            symfony-require: "7.4"
+            doctrine-annotations: false
+          - php-version: 8.5
+            symfony-require: "7.4"
             doctrine-annotations: false
     steps:
       - name: Checkout
