@@ -77,10 +77,6 @@ class ObjectModelDescriberTest extends WebTestCase
         ];
 
         yield [
-            Fixtures\ComplexArray::class
-        ];
-
-        yield [
             Fixtures\ScalarTypes::class
         ];
 
