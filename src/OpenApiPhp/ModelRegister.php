@@ -132,7 +132,7 @@ final class ModelRegister
             }
         }
 
-        $analysis->annotations->detach($model);
+        $analysis->annotations->offsetUnset($model);
     }
 
     private function getModel(OA\AbstractAnnotation $annotation): ?ModelAnnotation
