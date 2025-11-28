@@ -132,7 +132,7 @@ final class ModelRegister
             }
         }
 
-        $analysis->annotations->detach($model);
+        $analysis->annotations->offsetUnset($model);
     }
 
     private function createType(string $type): Type
