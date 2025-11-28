@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [4.38.6](https://github.com/nelmio/NelmioApiDocBundle/compare/v4.38.5...v4.38.6) (2025-11-28)
+
+
+### Bug Fixes
+
+* **SplObjectStorage:** `SplObjectStorage::detach()` is deprecated since `8.5`, use method `SplObjectStorage::offsetUnset()` instead [Backport [#2634](https://github.com/nelmio/NelmioApiDocBundle/issues/2634) to 4.x] ([#2635](https://github.com/nelmio/NelmioApiDocBundle/issues/2635)) ([3f2d8d2](https://github.com/nelmio/NelmioApiDocBundle/commit/3f2d8d21afee95e99371be54799a1e7a4704286f))
+
 ## [4.38.5](https://github.com/nelmio/NelmioApiDocBundle/compare/v4.38.4...v4.38.5) (2025-11-14)
 
 
