@@ -97,7 +97,9 @@
         "sort-packages": true,
         "audit": {
             "ignore": [
-                "PKSA-365x-2zjk-pt47"
+                "PKSA-365x-2zjk-pt47",
+                "PKSA-gs8r-6kz6-pp56",
+                "PKSA-gnn4-pxdg-q76m"
             ]
         }
     },

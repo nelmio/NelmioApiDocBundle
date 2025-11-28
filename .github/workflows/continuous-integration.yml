@@ -45,17 +45,43 @@ jobs:
           - php-version: 7.4
             symfony-require: "5.4"
             composer-flags: "--prefer-lowest"
-        exclude:
-          - symfony-require:
-              - "5.4"
-              - "6.4"
-            doctrine-annotations: false
-          - symfony-require:
-              - "7.1"
-              - "7.2"
-              - "7.3"
-              - "7.4"
             doctrine-annotations: true
+        exclude:
+          - symfony-require: "5.4"
+            doctrine-annotations: false
+          - symfony-require: "6.4"
+            doctrine-annotations: false
+
+          - symfony-require: "7.1"
+            doctrine-annotations: true
+          - symfony-require: "7.2"
+            doctrine-annotations: true
+          - symfony-require: "7.3"
+            doctrine-annotations: true
+          - symfony-require: "7.4"
+            doctrine-annotations: true
+
+          # Symfony 6.4: Requires: PHP 8.1.0 or higher
+          - symfony-require: "6.4"
+            php-version: 7.4
+
+          # Symfony 7.x: Requires: PHP 8.2.0 or higher
+          - symfony-require: "7.1"
+            php-version: 7.4
+          - symfony-require: "7.1"
+            php-version: 8.1
+          - symfony-require: "7.2"
+            php-version: 7.4
+          - symfony-require: "7.2"
+            php-version: 8.1
+          - symfony-require: "7.3"
+            php-version: 7.4
+          - symfony-require: "7.3"
+            php-version: 8.1
+          - symfony-require: "7.4"
+            php-version: 7.4
+          - symfony-require: "7.4"
+            php-version: 8.1
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -68,6 +94,11 @@ jobs:
           php-version: ${{ matrix.php-version }}
           tools: composer, flex
           coverage: pcov
+
+      - name: "Lower api-platform/core for Symfony 5.4"
+        if: matrix.symfony-require == '5.4'
+        run: "composer require 'api-platform/core:^2.7' --no-update --no-scripts"
+        shell: bash
 
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
