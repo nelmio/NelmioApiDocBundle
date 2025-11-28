@@ -22,74 +22,40 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        php-version:
+          - 7.4
+          - 8.1
+          - 8.2
+          - 8.3
+          - 8.4
+          - 8.5
+        symfony-require:
+          - "5.4"
+          - "6.4"
+          - "7.1"
+          - "7.2"
+          - "7.3"
+          - "7.4"
+        composer-flags:
+          - ""
+        doctrine-annotations:
+          - true
+          - false
         include:
           - php-version: 7.4
             symfony-require: "5.4"
             composer-flags: "--prefer-lowest"
-            doctrine-annotations: true
-          - php-version: 7.4
-            symfony-require: "5.4"
-            doctrine-annotations: true
-          - php-version: 8.0
-            symfony-require: "5.4"
-            doctrine-annotations: true
-          - php-version: 8.1
-            symfony-require: "5.4"
-            doctrine-annotations: true
-          - php-version: 8.2
-            symfony-require: "5.4"
-            doctrine-annotations: true
-          - php-version: 8.3
-            symfony-require: "5.4"
-            doctrine-annotations: true
-          - php-version: 8.4
-            symfony-require: "5.4"
-            doctrine-annotations: true
-          - php-version: 8.1
-            symfony-require: "6.4"
-            doctrine-annotations: true
-          - php-version: 8.2
-            symfony-require: "6.4"
-            doctrine-annotations: true
-          - php-version: 8.3
-            symfony-require: "6.4"
-            doctrine-annotations: true
-          - php-version: 8.4
-            symfony-require: "6.4"
-            doctrine-annotations: true
-          - php-version: 8.2
-            symfony-require: "7.1"
+        exclude:
+          - symfony-require:
+              - "5.4"
+              - "6.4"
             doctrine-annotations: false
-          - php-version: 8.3
-            symfony-require: "7.1"
-            doctrine-annotations: false
-          - php-version: 8.4
-            symfony-require: "7.1"
-            doctrine-annotations: false
-          - php-version: 8.2
-            symfony-require: "7.2"
-            doctrine-annotations: false
-          - php-version: 8.3
-            symfony-require: "7.2"
-            doctrine-annotations: false
-          - php-version: 8.4
-            symfony-require: "7.3"
-            doctrine-annotations: false
-          - php-version: 8.5
-            symfony-require: "7.3"
-            doctrine-annotations: false
-          - php-version: 8.2
-            symfony-require: "7.4"
-            doctrine-annotations: false
-          - php-version: 8.3
-            symfony-require: "7.4"
-            doctrine-annotations: false
-          - php-version: 8.4
-            symfony-require: "7.4"
-            doctrine-annotations: false
-          - php-version: 8.5
-            symfony-require: "7.4"
-            doctrine-annotations: false
+          - symfony-require:
+              - "7.1"
+              - "7.2"
+              - "7.3"
+              - "7.4"
+            doctrine-annotations: true
     steps:
       - name: Checkout
         uses: actions/checkout@v6
