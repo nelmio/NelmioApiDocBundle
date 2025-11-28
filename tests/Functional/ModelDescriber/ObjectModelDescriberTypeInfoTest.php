@@ -123,7 +123,7 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
             public array $listOrDict;
         };
 
-        $model = new Model(new LegacyType('object', false, $complexArrayClass::class));
+        $model = new Model(new LegacyType('object', false, get_class($complexArrayClass)));
         $schema = new OA\Schema([
             'type' => 'object',
         ]);
