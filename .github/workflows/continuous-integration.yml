@@ -45,6 +45,7 @@ jobs:
           - php-version: 7.4
             symfony-require: "5.4"
             composer-flags: "--prefer-lowest"
+            doctrine-annotations: true
         exclude:
           - symfony-require: "5.4"
             doctrine-annotations: false
