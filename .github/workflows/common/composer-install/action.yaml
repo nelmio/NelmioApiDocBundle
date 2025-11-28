@@ -29,6 +29,10 @@ runs:
           ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           ${{ runner.os }}-composer-
 
+    - name: "Enforce using stable dependencies"
+      run: "composer config minimum-stability stable"
+      shell: bash
+
     - name: Install dependencies with Composer
       env:
         SYMFONY_REQUIRE: "${{ inputs.symfony-version }}.*"
