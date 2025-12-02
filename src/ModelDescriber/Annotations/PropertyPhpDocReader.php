@@ -44,7 +44,7 @@ class PropertyPhpDocReader
     {
         try {
             $docBlock = $this->docBlockFactory->create($reflection);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // ignore
             return;
         }

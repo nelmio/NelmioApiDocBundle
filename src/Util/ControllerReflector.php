@@ -51,7 +51,7 @@ class ControllerReflector
     {
         try {
             return new \ReflectionMethod($class, $method);
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             // In case we can't reflect the controller, we just ignore the route
         }
 

@@ -35,7 +35,7 @@ final class YamlDocumentationController
             );
 
             return $response->setCharset('UTF-8');
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             throw new BadRequestHttpException(\sprintf('Area "%s" is not supported as it isn\'t defined in config.', $area));
         }
     }

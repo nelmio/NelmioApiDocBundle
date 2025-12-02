@@ -11,7 +11,6 @@
 
 namespace Nelmio\ApiDocBundle\Tests\SwaggerPhp;
 
-use Exception;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;

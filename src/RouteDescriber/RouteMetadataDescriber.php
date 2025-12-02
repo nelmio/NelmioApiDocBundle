@@ -88,7 +88,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
 
         $operationParameters = Generator::UNDEFINED !== $operation->parameters ? $operation->parameters : [];
         /** @var OA\Parameter $parameter */
-        foreach ($operationParameters as $id => $parameter) {
+        foreach ($operationParameters as $parameter) {
             $ref = $parameter->ref;
             if (Generator::UNDEFINED === $ref) {
                 // we only concern ourselves with '$ref' parameters, so continue the loop

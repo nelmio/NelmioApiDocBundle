@@ -159,9 +159,7 @@ final class SymfonyMapQueryParameterDescriber implements RouteArgumentDescriberI
             '\R', // Any Unicode newline sequence (not supported in JavaScript)
             '\K', // Resets the start of the current match (not supported in JavaScript)
         ];
-        $pattern = str_replace($unsupportedFeatures, '', $pattern);
-
         // Return only the pattern (without flags or delimiters)
-        return $pattern;
+        return str_replace($unsupportedFeatures, '', $pattern);
     }
 }

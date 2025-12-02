@@ -146,13 +146,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if (null !== $item->getter) {
                 try {
                     $reflections[] = new \ReflectionMethod($item->class, $item->getter);
-                } catch (\ReflectionException $ignored) {
+                } catch (\ReflectionException) {
                 }
             }
             if (null !== $item->setter) {
                 try {
                     $reflections[] = new \ReflectionMethod($item->class, $item->setter);
-                } catch (\ReflectionException $ignored) {
+                } catch (\ReflectionException) {
                 }
             }
 
@@ -279,7 +279,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if (null !== $this->factory->getMetadataForClass($className)) {
                 return true;
             }
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
         }
 
         return false;
@@ -418,7 +418,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $this->propertyTypeUseGroupsCache[$type['name']] = false;
 
             return false;
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             $this->propertyTypeUseGroupsCache[$type['name']] = null;
 
             return null;

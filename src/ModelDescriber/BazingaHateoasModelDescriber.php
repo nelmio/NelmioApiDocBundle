@@ -95,7 +95,7 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
 
         try {
             return $this->factory->getMetadataForClass($type->getClassName());
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
         }
 
         return null;
