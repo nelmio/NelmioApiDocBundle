@@ -23,7 +23,7 @@ class MapRequestPayloadArray
     public function createArticleFromMapRequestPayloadArray(
         #[MapRequestPayload(type: Article81::class)]
         array $articles,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_request_payload_nullable_array', methods: ['POST'])]
@@ -31,6 +31,6 @@ class MapRequestPayloadArray
     public function createArticleFromMapRequestPayloadNullableArray(
         #[MapRequestPayload(type: Article81::class)]
         ?array $nullableArticles,
-    ) {
+    ): void {
     }
 }

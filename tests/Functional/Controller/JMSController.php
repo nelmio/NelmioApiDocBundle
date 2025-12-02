@@ -37,7 +37,7 @@ class JMSController
         description: 'Success',
         content: new Model(type: JMSUser::class)
     )]
-    public function userAction()
+    public function userAction(): void
     {
     }
 
@@ -47,7 +47,7 @@ class JMSController
         description: 'Success',
         content: new Model(type: VirtualProperty::class)
     )]
-    public function yamlAction()
+    public function yamlAction(): void
     {
     }
 
@@ -60,7 +60,7 @@ class JMSController
             groups: ['list', 'details', 'User' => ['list']]
         )
     )]
-    public function complexAction()
+    public function complexAction(): void
     {
     }
 
@@ -73,7 +73,7 @@ class JMSController
             groups: ['Default', 'complex' => ['User' => ['details']]]
         )
     )]
-    public function complexDualAction()
+    public function complexDualAction(): void
     {
     }
 
@@ -83,7 +83,7 @@ class JMSController
         description: 'Success',
         content: new Model(type: JMSNamingStrategyConstraints::class, groups: ['Default'])
     )]
-    public function namingStrategyConstraintsAction()
+    public function namingStrategyConstraintsAction(): void
     {
     }
 
@@ -93,7 +93,7 @@ class JMSController
         description: 'Success',
         content: new Model(type: JMSChat::class, groups: ['Default', 'members' => ['mini']])
     )]
-    public function chatAction()
+    public function chatAction(): void
     {
     }
 
@@ -103,7 +103,7 @@ class JMSController
         description: 'Success',
         content: new Model(type: JMSPicture::class, groups: ['mini'])
     )]
-    public function pictureAction()
+    public function pictureAction(): void
     {
     }
 
@@ -113,7 +113,7 @@ class JMSController
         description: 'Success',
         content: new Model(type: JMSChatUser::class, groups: ['mini'])
     )]
-    public function minUserAction()
+    public function minUserAction(): void
     {
     }
 
@@ -123,7 +123,7 @@ class JMSController
         description: 'Success',
         content: new Model(type: JMSChatRoomUser::class, groups: ['mini', 'friend' => ['living' => ['Default']]])
     )]
-    public function minUserNestedAction()
+    public function minUserNestedAction(): void
     {
     }
 
@@ -134,7 +134,7 @@ class JMSController
         content: new Model(type: Article81::class)
     )
     ]
-    public function enum()
+    public function enum(): void
     {
     }
 
@@ -145,7 +145,7 @@ class JMSController
         content: new Model(type: JMSAbstractUser::class)
     )
     ]
-    public function discriminatorMapAction()
+    public function discriminatorMapAction(): void
     {
     }
 
@@ -156,7 +156,7 @@ class JMSController
         content: new Model(type: JMSEnum::class)
     )
     ]
-    public function enumArrayAction()
+    public function enumArrayAction(): void
     {
     }
 
@@ -167,7 +167,7 @@ class JMSController
         content: new Model(type: JMSIgnoredProperty::class)
     )
     ]
-    public function ignoredProperty()
+    public function ignoredProperty(): void
     {
     }
 }

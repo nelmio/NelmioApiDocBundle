@@ -62,7 +62,7 @@ class ApiController
     #[Route('/article/{id}', methods: ['GET'])]
     #[OA\Parameter(name: 'Accept-Version', in: 'header', schema: new OA\Schema(type: 'string'))]
     #[OA\Parameter(name: 'Application-Name', in: 'header', schema: new OA\Schema(type: 'string'))]
-    public function fetchArticleAction()
+    public function fetchArticleAction(): void
     {
     }
 
@@ -81,7 +81,7 @@ class ApiController
     #[Route('/article-interface/{id}', methods: ['GET'])]
     #[OA\Parameter(name: 'Accept-Version', in: 'header', schema: new OA\Schema(type: 'string'))]
     #[OA\Parameter(name: 'Application-Name', in: 'header', schema: new OA\Schema(type: 'string'))]
-    public function fetchArticleInterfaceAction()
+    public function fetchArticleInterfaceAction(): void
     {
     }
 
@@ -110,7 +110,7 @@ class ApiController
             ),
         ],
     )]
-    public function swaggerAction()
+    public function swaggerAction(): void
     {
     }
 
@@ -130,7 +130,7 @@ class ApiController
         ),
     )]
     #[OA\Tag(name: 'implicit')]
-    public function implicitSwaggerAction()
+    public function implicitSwaggerAction(): void
     {
     }
 
@@ -146,7 +146,7 @@ class ApiController
         description: 'This is a request body',
         content: new Model(type: UserType::class, options: ['bar' => 'baz']),
     )]
-    public function submitUserTypeAction()
+    public function submitUserTypeAction(): void
     {
     }
 
@@ -182,7 +182,7 @@ class ApiController
             new OA\Response(response: '201', description: ''),
         ],
     )]
-    public function filteredAction()
+    public function filteredAction(): void
     {
     }
 
@@ -192,7 +192,7 @@ class ApiController
         content: new Model(type: DummyType::class),
     )]
     #[OA\Response(response: 201, description: '')]
-    public function formAction()
+    public function formAction(): void
     {
     }
 
@@ -202,7 +202,7 @@ class ApiController
         content: new Model(type: FormWithModel::class),
     )]
     #[OA\Response(response: 201, description: '')]
-    public function formWithModelAction()
+    public function formWithModelAction(): void
     {
     }
 
@@ -212,7 +212,7 @@ class ApiController
         content: new Model(type: FormWithModel::class, name: 'RenamedFormWithModel'),
     )]
     #[OA\Response(response: 201, description: '')]
-    public function formWithModelRenamed()
+    public function formWithModelRenamed(): void
     {
     }
 
@@ -239,7 +239,7 @@ class ApiController
         description: 'Used for symfony constraints test',
         content: new Model(type: SymfonyConstraints::class),
     )]
-    public function symfonyConstraintsAction()
+    public function symfonyConstraintsAction(): void
     {
     }
 
@@ -261,7 +261,7 @@ class ApiController
     #[OA\Get(description: 'This is the get operation')]
     #[OA\Post(description: 'This is post')]
     #[OA\Response(response: 200, description: 'Worked well!', attachables: [new Model(type: DummyType::class)])]
-    public function operationsWithOtherAnnotations()
+    public function operationsWithOtherAnnotations(): void
     {
     }
 
@@ -273,19 +273,19 @@ class ApiController
 
     #[Route('/compound', methods: ['GET', 'POST'])]
     #[OA\Response(response: 200, description: 'Worked well!', attachables: [new Model(type: CompoundEntity::class)])]
-    public function compoundEntityAction()
+    public function compoundEntityAction(): void
     {
     }
 
     #[Route('/discriminator-mapping', methods: ['GET', 'POST'])]
     #[OA\Response(response: 200, description: 'Worked well!', attachables: [new Model(type: SymfonyDiscriminator::class)])]
-    public function discriminatorMappingAction()
+    public function discriminatorMappingAction(): void
     {
     }
 
     #[Route('/discriminator-mapping-configured-with-file', methods: ['GET', 'POST'])]
     #[OA\Response(response: 200, description: 'Worked well!', attachables: [new Model(type: SymfonyDiscriminatorFileMapping::class)])]
-    public function discriminatorMappingConfiguredWithFileAction()
+    public function discriminatorMappingConfiguredWithFileAction(): void
     {
     }
 
@@ -309,7 +309,7 @@ class ApiController
         description: 'Used for symfony constraints with validation groups test',
         content: new Model(type: SymfonyConstraintsWithValidationGroups::class, groups: ['test']),
     )]
-    public function symfonyConstraintsWithGroupsAction()
+    public function symfonyConstraintsWithGroupsAction(): void
     {
     }
 
@@ -322,7 +322,7 @@ class ApiController
             ref: new Model(type: EntityWithAlternateType::class),
         ),
     )]
-    public function alternateEntityType()
+    public function alternateEntityType(): void
     {
     }
 
@@ -335,7 +335,7 @@ class ApiController
             ref: new Model(type: EntityWithRef::class),
         ),
     )]
-    public function entityWithRef()
+    public function entityWithRef(): void
     {
     }
 
@@ -348,7 +348,7 @@ class ApiController
             ref: new Model(type: EntityWithObjectType::class),
         ),
     )]
-    public function entityWithObjectType()
+    public function entityWithObjectType(): void
     {
     }
 
@@ -360,7 +360,7 @@ class ApiController
             ref: new Model(type: EntityWithUuid::class),
         ),
     )]
-    public function entityWithUuid()
+    public function entityWithUuid(): void
     {
     }
 
@@ -372,7 +372,7 @@ class ApiController
             ref: new Model(type: EntityWithUlid::class),
         ),
     )]
-    public function entityWithUlid()
+    public function entityWithUlid(): void
     {
     }
 
@@ -384,7 +384,7 @@ class ApiController
             ref: new Model(type: EntityWithTranslatable::class),
         ),
     )]
-    public function entityWithTranslatable()
+    public function entityWithTranslatable(): void
     {
     }
 
@@ -396,7 +396,7 @@ class ApiController
     #[OA\RequestBody(
         content: new Model(type: FormWithAlternateSchemaType::class),
     )]
-    public function formWithAlternateSchemaType()
+    public function formWithAlternateSchemaType(): void
     {
     }
 
@@ -408,7 +408,7 @@ class ApiController
     #[OA\RequestBody(
         content: new Model(type: FormWithRefType::class),
     )]
-    public function formWithRefSchemaType()
+    public function formWithRefSchemaType(): void
     {
     }
 
@@ -420,7 +420,7 @@ class ApiController
     #[OA\RequestBody(
         content: new Model(type: FormWithCsrfProtectionEnabledType::class),
     )]
-    public function formWithCsrfProtectionEnabledType()
+    public function formWithCsrfProtectionEnabledType(): void
     {
     }
 
@@ -432,7 +432,7 @@ class ApiController
     #[OA\RequestBody(
         content: new Model(type: FormWithCsrfProtectionDisabledType::class),
     )]
-    public function formWithCsrfProtectionDisabledType()
+    public function formWithCsrfProtectionDisabledType(): void
     {
     }
 
@@ -444,7 +444,7 @@ class ApiController
             new Model(type: EntityWithNullableSchemaSet::class),
         ],
     )]
-    public function entityWithNullableSchemaSet()
+    public function entityWithNullableSchemaSet(): void
     {
     }
 
@@ -456,7 +456,7 @@ class ApiController
     #[OA\RequestBody(
         content: new Model(type: EntityWithFalsyDefaults::class),
     )]
-    public function entityWithFalsyDefaults()
+    public function entityWithFalsyDefaults(): void
     {
     }
 
@@ -472,7 +472,7 @@ class ApiController
     #[OA\Parameter(ref: '#/components/parameters/test')]
     #[Route('/article_attributes/{id}', methods: ['GET'])]
     #[OA\Parameter(name: 'Accept-Version', in: 'header', schema: new OA\Schema(type: 'string'))]
-    public function fetchArticleActionWithAttributes()
+    public function fetchArticleActionWithAttributes(): void
     {
     }
 
@@ -509,19 +509,19 @@ class ApiController
 
     #[Route('/enum')]
     #[OA\Response(response: '201', description: '', attachables: [new Model(type: Article81::class)])]
-    public function enum()
+    public function enum(): void
     {
     }
 
     #[Route('/range_integer', methods: ['GET'])]
     #[OA\Response(response: '200', description: '', attachables: [new Model(type: RangeInteger::class)])]
-    public function rangeInteger()
+    public function rangeInteger(): void
     {
     }
 
     #[Route('/serializename', methods: ['GET'])]
     #[OA\Response(response: 200, description: 'success', content: new Model(type: SerializedNameEntity::class))]
-    public function serializedNameAction()
+    public function serializedNameAction(): void
     {
     }
 
@@ -536,19 +536,19 @@ class ApiController
         description: 'Same class without context',
         content: new Model(type: EntityThroughNameConverter::class)
     )]
-    public function nameConverterContext()
+    public function nameConverterContext(): void
     {
     }
 
     #[Route('/arbitrary_array', methods: ['GET'])]
     #[OA\Response(response: 200, description: 'Success', content: new Model(type: Foo::class))]
-    public function arbitraryArray()
+    public function arbitraryArray(): void
     {
     }
 
     #[Route('/dictionary', methods: ['GET'])]
     #[OA\Response(response: 200, description: 'Success', content: new Model(type: Dictionary::class))]
-    public function dictionary()
+    public function dictionary(): void
     {
     }
 
@@ -560,7 +560,7 @@ class ApiController
             ref: new Model(type: EntityWithIgnoredProperty::class),
         ),
     )]
-    public function entityWithIgnoredProperty()
+    public function entityWithIgnoredProperty(): void
     {
     }
 

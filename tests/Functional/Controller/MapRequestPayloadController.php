@@ -46,7 +46,7 @@ class MapRequestPayloadController
     public function createArticleFromMapRequestPayloadOverwrite(
         #[MapRequestPayload]
         Article81 $article81,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_request_payload_handles_already_set_content', methods: ['POST'])]
@@ -60,7 +60,7 @@ class MapRequestPayloadController
     public function createArticleFromMapRequestPayloadHandlesAlreadySetContent(
         #[MapRequestPayload]
         Article81 $article81,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_request_payload_validation_groups', methods: ['POST'])]
