@@ -85,18 +85,18 @@ class User
      */
     private $dateAsInterface;
 
-    public function setMoney(float $money)
+    public function setMoney(float $money): void
     {
         $this->money = $money;
     }
 
     #[OA\Property(example: 1)]
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
@@ -104,7 +104,7 @@ class User
     /**
      * @param string[] $roles
      */
-    public function setRoles(array $roles)
+    public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
@@ -113,7 +113,7 @@ class User
     {
     }
 
-    public function setFriendsNumber(int $friendsNumber)
+    public function setFriendsNumber(int $friendsNumber): void
     {
         $this->friendsNumber = $friendsNumber;
     }
@@ -147,7 +147,7 @@ class User
         return $this->dateAsInterface;
     }
 
-    public function setDateAsInterface(\DateTimeInterface $dateAsInterface)
+    public function setDateAsInterface(\DateTimeInterface $dateAsInterface): void
     {
         $this->dateAsInterface = $dateAsInterface;
     }

@@ -31,7 +31,7 @@ class PromotedPropertiesController81
     #[OA\RequestBody(
         content: new Model(type: EntityWithPromotedPropertiesWithDefaults::class),
     )]
-    public function entityWithPromotedPropertiesWithDefaults()
+    public function entityWithPromotedPropertiesWithDefaults(): void
     {
     }
 }

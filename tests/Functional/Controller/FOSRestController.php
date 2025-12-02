@@ -30,7 +30,7 @@ class FOSRestController
     #[RequestParam(name: 'datetimeAlt', requirements: new DateTime('c'))]
     #[RequestParam(name: 'datetimeNoFormat', requirements: new DateTime())]
     #[RequestParam(name: 'date', requirements: new DateTime('Y-m-d'))]
-    public function fosrestAction()
+    public function fosrestAction(): void
     {
     }
 
@@ -43,7 +43,7 @@ class FOSRestController
     #[RequestParam(name: 'datetimeAlt', requirements: new DateTime('c'))]
     #[RequestParam(name: 'datetimeNoFormat', requirements: new DateTime())]
     #[RequestParam(name: 'date', requirements: new DateTime('Y-m-d'))]
-    public function fosrestAttributesAction()
+    public function fosrestAttributesAction(): void
     {
     }
 }

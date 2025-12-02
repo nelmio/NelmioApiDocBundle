@@ -25,7 +25,7 @@ class BazingaTypedController
         description: 'Success',
         content: new Model(type: BazingaUserTyped::class)
     )]
-    public function userTypedAction()
+    public function userTypedAction(): void
     {
     }
 }

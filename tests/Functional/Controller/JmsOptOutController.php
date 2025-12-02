@@ -25,7 +25,7 @@ final class JmsOptOutController
         description: 'Success',
         content: new Model(type: JMSUser::class)
     )]
-    public function jms()
+    public function jms(): void
     {
     }
 
@@ -35,7 +35,7 @@ final class JmsOptOutController
         description: 'Success',
         content: new Model(type: JMSUser::class, serializationContext: ['useJms' => false])
     )]
-    public function jmsOptOut()
+    public function jmsOptOut(): void
     {
     }
 }
