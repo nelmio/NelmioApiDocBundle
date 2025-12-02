@@ -55,7 +55,7 @@ class MapUploadedFileController
     public function createUploadFromMapUploadedFileAddToExisting(
         #[MapUploadedFile]
         ?UploadedFile $upload,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_uploaded_file_overwrite', methods: ['POST'])]
@@ -75,7 +75,7 @@ class MapUploadedFileController
     public function createUploadFromMapUploadedFileOverwrite(
         #[MapUploadedFile]
         ?UploadedFile $upload,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_uploaded_file_array', methods: ['POST'])]

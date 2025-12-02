@@ -31,7 +31,7 @@ class JMSNamingStrategyConstraints
         return $this->some_weird_named_property;
     }
 
-    public function setSomeWeirdNamedProperty(string $some_weird_named_property)
+    public function setSomeWeirdNamedProperty(string $some_weird_named_property): void
     {
         $this->some_weird_named_property = $some_weird_named_property;
     }

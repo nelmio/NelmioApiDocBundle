@@ -80,7 +80,7 @@ class MapQueryStringController
     public function fetchArticleFromMapQueryStringOverwriteParameters(
         #[MapQueryString]
         SymfonyMapQueryString $article81Query,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_query_string_many_parameters', methods: ['GET'])]

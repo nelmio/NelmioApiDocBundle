@@ -25,7 +25,7 @@ class BazingaController
         description: 'Success',
         content: new Model(type: BazingaUser::class)
     )]
-    public function userAction()
+    public function userAction(): void
     {
     }
 
@@ -35,7 +35,7 @@ class BazingaController
         description: 'Success',
         content: new Model(type: BazingaUser::class, groups: ['foo'])
     )]
-    public function userGroupAction()
+    public function userGroupAction(): void
     {
     }
 }

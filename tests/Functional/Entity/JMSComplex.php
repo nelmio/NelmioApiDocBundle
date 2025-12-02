@@ -47,7 +47,7 @@ class JMSComplex
     #[Serializer\Expose]
     #[Serializer\Groups(['list'])]
     #[OA\Property(ref: new Model(type: JMSUser::class))]
-    public function getVirtualFriend()
+    public function getVirtualFriend(): void
     {
     }
 }

@@ -26,7 +26,7 @@ class GenericTypesController
         content: new Model(type: GenericTypes::class),
     )]
     #[Route('/generic-types', methods: ['GET'])]
-    public function genericTypesAction()
+    public function genericTypesAction(): void
     {
     }
 }
