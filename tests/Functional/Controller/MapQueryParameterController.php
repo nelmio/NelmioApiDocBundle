@@ -54,8 +54,7 @@ class MapQueryParameterController
         string $regexp,
         #[MapQueryParameter(filter: \FILTER_VALIDATE_URL)]
         string $url,
-    ): void
-    {
+    ): void {
     }
 
     #[Route('/article_map_query_parameter_nullable', methods: ['GET'])]
@@ -94,8 +93,7 @@ class MapQueryParameterController
         ?int $id,
         #[MapQueryParameter]
         ?string $changedType,
-    ): void
-    {
+    ): void {
     }
 
     #[Route('/article_map_query_parameter_invalid_regexp', methods: ['GET'])]
@@ -103,8 +101,7 @@ class MapQueryParameterController
     public function fetchArticleWithInvalidRegexp(
         #[MapQueryParameter(filter: \FILTER_VALIDATE_REGEXP, options: ['regexp' => 'This is not a valid regexp'])]
         string $regexp,
-    ): void
-    {
+    ): void {
     }
 
     #[Route('/article_map_query_parameter_unsupported_flag', methods: ['GET'])]
@@ -112,8 +109,7 @@ class MapQueryParameterController
     public function fetchArticleWithUnsupportedRegexpFlag(
         #[MapQueryParameter(filter: \FILTER_VALIDATE_REGEXP, options: ['regexp' => '/\ZUnsupportedFlag/'])]
         string $regexp,
-    ): void
-    {
+    ): void {
     }
 
     #[Route('/article_map_query_parameter_replaced_flag', methods: ['GET'])]
@@ -121,7 +117,6 @@ class MapQueryParameterController
     public function fetchArticleWithReplacedRegexpFlag(
         #[MapQueryParameter(filter: \FILTER_VALIDATE_REGEXP, options: ['regexp' => '/\ADifferentFlag/'])]
         string $regexp,
-    ): void
-    {
+    ): void {
     }
 }
