@@ -160,7 +160,7 @@ class LegacyTypeConverterTest extends TestCase
     #[DataProvider('provideCreateTypeCases')]
     public function testCreateType(Type $expected, string $typeString): void
     {
-        self::assertEquals($expected, LegacyTypeConverter::createType($typeString));
+        self::assertEquals($expected, Type::fromString($typeString));
     }
 
     public static function provideCreateTypeCases(): \Generator

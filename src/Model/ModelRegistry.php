@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\Model;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
 use OpenApi\Annotations as OA;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -76,7 +75,7 @@ final class ModelRegistry
 
         foreach ($alternativeNames as $alternativeName => $criteria) {
             $model = new Model(
-                LegacyTypeConverter::createType($criteria['type']),
+                Type::fromString($criteria['type']),
                 $criteria['groups'],
                 $criteria['options'] ?? [],
                 $criteria['serializationContext'] ?? [],

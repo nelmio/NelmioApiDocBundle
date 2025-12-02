@@ -16,7 +16,7 @@ namespace Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
-use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
+use Symfony\Component\TypeInfo\Type;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -37,7 +37,7 @@ final class SymfonyMapQueryStringDescriber implements RouteArgumentDescriberInte
         }
 
         $modelRef = $this->modelRegistry->register(new Model(
-            LegacyTypeConverter::createType($argumentMetadata->getType()),
+            Type::fromString($argumentMetadata->getType()),
             groups: $this->getGroups($attribute),
             serializationContext: $attribute->serializationContext,
         ));

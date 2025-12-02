@@ -23,7 +23,7 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
+use Symfony\Component\TypeInfo\Type;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type\ObjectType;
@@ -167,7 +167,8 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             if (true === $item->inline && isset($item->type['name'])) {
                 // currently array types can not be documented :-/
                 if (!\in_array($item->type['name'], ['array', 'ArrayCollection'], true)) {
-                    $inlineModel = new Model(LegacyTypeConverter::createType($item->type['name']), $groups);
+
+                    $inlineModel = new Model(Type::fromString($item->type['name']), $groups);
                     $this->describe($inlineModel, $schema);
                 }
                 $context->popPropertyMetadata();
@@ -357,7 +358,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $groups = $this->computeGroups($context, $type);
             unset($serializationContext['groups']);
 
-            $model = new Model(LegacyTypeConverter::createType($type['name']), $groups, [], $serializationContext);
+            $model = new Model(Type::fromString($type['name']), $groups, [], $serializationContext);
             $modelRef = $this->modelRegistry->register($model);
 
             $customFields = (array) $property->jsonSerialize();

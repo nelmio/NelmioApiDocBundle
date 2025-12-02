@@ -17,7 +17,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\AnnotationsReader;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
-use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
+use Symfony\Component\TypeInfo\Type;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
 use OpenApi\Analysis;
 use OpenApi\Annotations as OA;
@@ -156,7 +156,7 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
         if (null === $builtinFormType = $this->getBuiltinFormType($type)) {
             // if form type is not builtin in Form component.
             $model = new Model(
-                LegacyTypeConverter::createType(\get_class($type->getInnerType())),
+                Type::fromString(\get_class($type->getInnerType())),
                 null,
                 $config->getOptions()
             );
