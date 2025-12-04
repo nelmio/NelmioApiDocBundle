@@ -39,6 +39,7 @@ jobs:
           - "7.2"
           - "7.3"
           - "7.4"
+          - "8.0"
         composer-flags:
           - ""
         include:
@@ -47,6 +48,11 @@ jobs:
             symfony-require: "6.4"
             composer-flags: "--prefer-lowest"
         exclude:
+            # Symfony 8.x: Requires: PHP 8.4 or higher
+            - php-version: 8.2
+              symfony-require: 8.0
+            - php-version: 8.3
+              symfony-require: 8.0
             # Test only the lowest and highest PHP versions for each optional dependency test group
             - test-group: fos-rest
               php-version: 8.3
