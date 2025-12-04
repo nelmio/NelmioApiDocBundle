@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\TestKernel;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 
@@ -27,6 +28,10 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
 
     protected function setUp(): void
     {
+        if (!version_compare(Kernel::VERSION, '7.2.0', '>=')) {
+            self::markTestSkipped('TypeInfo component is only available in Symfony 7.2 and later');
+        }
+
         parent::setUp();
     }
 
