@@ -17,6 +17,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Controller\SecuredApiController;
 use OpenApi\Annotations as OA;
 use OpenApi\Processors\CleanUnusedComponents;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -80,6 +81,24 @@ final class ControllerTest extends WebTestCase
         );
     }
 
+    #[Group('jms-serializer')]
+    #[Group('hateoas')]
+    public function testJmsModelOptOut(): void
+    {
+        $this->testControllers(
+            'JmsOptOutController',
+            null,
+            [new JMSSerializerBundle()],
+            [
+                'nelmio_api_doc' => [
+                    'models' => [
+                        'use_jms' => true,
+                    ],
+                ],
+            ],
+        );
+    }
+
     public static function provideTestCases(): \Generator
     {
         yield 'Promoted properties defaults attributes' => [
@@ -91,19 +110,6 @@ final class ControllerTest extends WebTestCase
                 CleanUnusedComponents::class => (new Definition(CleanUnusedComponents::class))
                     ->addTag('nelmio_api_doc.swagger.processor', ['priority' => -100])
                     ->addMethodCall('setEnabled', [true]),
-            ],
-        ];
-
-        yield 'JMS model opt out' => [
-            'JmsOptOutController',
-            null,
-            [new JMSSerializerBundle()],
-            [
-                'nelmio_api_doc' => [
-                    'models' => [
-                        'use_jms' => true,
-                    ],
-                ],
             ],
         ];
 

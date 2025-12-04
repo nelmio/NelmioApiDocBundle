@@ -13,9 +13,11 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 
 use Metadata\Cache\PsrCacheAdapter;
 use Metadata\MetadataFactory;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+#[Group('hateoas')]
 class BazingaFunctionalTest extends WebTestCase
 {
     protected function setUp(): void

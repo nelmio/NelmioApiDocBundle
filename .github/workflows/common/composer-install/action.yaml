@@ -38,11 +38,6 @@ runs:
       run: "composer config minimum-stability stable"
       shell: bash
 
-    - name: "Remove api-platform/core"
-      run: "composer remove api-platform/core --dev --no-update"
-      shell: bash
-      if: "${{ inputs.test-group != 'api-platform' && inputs.test-group != 'all' }}"
-
     - name: "Remove friendsofsymfony/rest-bundle"
       run: "composer remove friendsofsymfony/rest-bundle --dev --no-update"
       shell: bash

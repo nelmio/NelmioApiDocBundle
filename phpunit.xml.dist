@@ -10,6 +10,7 @@
          stopOnFailure="false"
          bootstrap="vendor/autoload.php"
          displayDetailsOnTestsThatTriggerWarnings="true"
+         failOnEmptyTestSuite="true"
 >
     <php>
         <env name="SHELL_VERBOSITY" value="-1" />

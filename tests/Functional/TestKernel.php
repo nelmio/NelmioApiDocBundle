@@ -62,8 +62,11 @@ class TestKernel extends Kernel
             new ApiPlatformBundle(),
             new NelmioApiDocBundle(),
             new TestBundle(),
-            new FOSRestBundle(),
         ];
+
+        if (self::USE_FOSREST === $this->flag) {
+            $bundles[] = new FOSRestBundle();
+        }
 
         if (self::USE_JMS === $this->flag || self::USE_BAZINGA === $this->flag) {
             $bundles[] = new JMSSerializerBundle();
@@ -137,20 +140,16 @@ class TestKernel extends Kernel
             ]],
         ]);
 
-        $c->loadFromExtension('fos_rest', [
-            'format_listener' => [
-                'rules' => [
-                    [
-                        'path' => '^/',
-                        'fallback_format' => 'json',
+        if (self::USE_FOSREST === $this->flag) {
+            $c->loadFromExtension('fos_rest', [
+                'format_listener' => [
+                    'rules' => [
+                        [
+                            'path' => '^/',
+                            'fallback_format' => 'json',
+                        ],
                     ],
                 ],
-            ],
-        ]);
-
-        // If FOSRestBundle 2.8
-        if (class_exists(\FOS\RestBundle\EventListener\ResponseStatusCodeListener::class)) {
-            $c->loadFromExtension('fos_rest', [
                 'exception' => [
                     'enabled' => false,
                     'exception_listener' => false,

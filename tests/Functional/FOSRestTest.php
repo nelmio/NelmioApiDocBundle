@@ -14,8 +14,10 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+#[Group('fos-rest')]
 class FOSRestTest extends WebTestCase
 {
     /**
