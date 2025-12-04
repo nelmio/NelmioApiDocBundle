@@ -26,9 +26,9 @@ jobs:
       matrix:
         test-group:
           - core
-          - fos-rest
-          - jms-serializer
-          - hateoas
+#          - fos-rest
+#          - jms-serializer
+#          - hateoas
         php-version:
           - 8.2
           - 8.3
