@@ -134,7 +134,6 @@ class TestKernel extends Kernel
         ]);
 
         $c->loadFromExtension('api_platform', [
-            'keep_legacy_inflector' => false,
             'mapping' => ['paths' => [
                 '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform3',
             ]],
