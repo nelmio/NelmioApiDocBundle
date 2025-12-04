@@ -41,22 +41,22 @@ runs:
     - name: "Remove api-platform/core"
       run: "composer remove api-platform/core --dev --no-update"
       shell: bash
-      if: "${{ inputs.test-group != 'api-platform' }}"
+      if: "${{ inputs.test-group != 'api-platform' && inputs.test-group != 'all' }}"
 
     - name: "Remove friendsofsymfony/rest-bundle"
       run: "composer remove friendsofsymfony/rest-bundle --dev --no-update"
       shell: bash
-      if: "${{ inputs.test-group != 'fos-rest' }}"
+      if: "${{ inputs.test-group != 'fos-rest' && inputs.test-group != 'all' }}"
 
     - name: "Remove willdurand/hateoas-bundle"
       run: "composer remove willdurand/hateoas-bundle willdurand/negotiation --dev --no-update"
       shell: bash
-      if: "${{ inputs.test-group != 'hateoas' }}"
+      if: "${{ inputs.test-group != 'hateoas' && inputs.test-group != 'all' }}"
 
     - name: "Remove jms/serializer-bundle"
       run: "composer remove jms/serializer-bundle jms/serializer --dev --no-update"
       shell: bash
-      if: "${{ inputs.test-group != 'jms-serializer' }}"
+      if: "${{ inputs.test-group != 'jms-serializer' && inputs.test-group != 'all' }}"
 
     - name: Install dependencies with Composer
       env:
