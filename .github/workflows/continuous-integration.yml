@@ -97,7 +97,7 @@ jobs:
       - name: PHPUnit Tests
         run: |
           if [ "${{ matrix.test-group }}" == "core" ]; then
-            PHPUNIT_ARGS="--exclude-group api-platform,fos-rest,jms-serializer,hateoas"
+            PHPUNIT_ARGS="--exclude-group fos-rest,jms-serializer,hateoas"
           else
             PHPUNIT_ARGS="--group ${{ matrix.test-group }}"
           fi
