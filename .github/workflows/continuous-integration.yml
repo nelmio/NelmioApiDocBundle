@@ -48,6 +48,7 @@ jobs:
             symfony-require: "6.4"
             composer-flags: "--prefer-lowest"
         exclude:
+            # Test only the lowest and highest PHP versions for each optional dependency test group
             - test-group: api-platform
               php-version: 8.3
             - test-group: api-platform
@@ -64,6 +65,23 @@ jobs:
               php-version: 8.3
             - test-group: hateoas
               php-version: 8.4
+            # Test only the highest versions for a symfony major for each optional dependency test group
+            - test-group: api-platform
+              symfony-require: "7.2"
+            - test-group: api-platform
+              symfony-require: "7.3"
+            - test-group: fos-rest
+              symfony-require: "7.2"
+            - test-group: fos-rest
+              symfony-require: "7.3"
+            - test-group: jms-serializer
+              symfony-require: "7.2"
+            - test-group: jms-serializer
+              symfony-require: "7.3"
+            - test-group: hateoas
+              symfony-require: "7.2"
+            - test-group: hateoas
+              symfony-require: "7.3"
 
     steps:
       - name: Checkout
