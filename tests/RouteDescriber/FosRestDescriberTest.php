@@ -78,7 +78,7 @@ class FosRestDescriberTest extends TestCase
     public function testQueryParamWithChoiceConstraintAsArray(): void
     {
         $class = new class {
-            #[QueryParam(requirements: new Choice(['foo', 'bar'], multiple: true))]
+            #[QueryParam(requirements: new Choice(choices: ['foo', 'bar'], multiple: true))]
             public function getAction(): void
             {
             }
