@@ -32,6 +32,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 class TestKernel extends Kernel
@@ -202,7 +203,7 @@ class TestKernel extends Kernel
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
-            'type_info' => self::USE_TYPE_INFO === $this->flag,
+            'type_info' => !class_exists(LegacyType::class) || self::USE_TYPE_INFO === $this->flag,
             'html_config' => [
                 'assets_mode' => AssetsMode::BUNDLE,
             ],

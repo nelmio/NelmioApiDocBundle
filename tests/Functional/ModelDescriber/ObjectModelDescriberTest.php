@@ -19,7 +19,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase;
 use OpenApi\Annotations as OA;
 use OpenApi\Annotations\OpenApi;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\PropertyInfo\Type as LegacyType;
+use Symfony\Component\TypeInfo\Type;
 
 class ObjectModelDescriberTest extends WebTestCase
 {
@@ -43,16 +43,12 @@ class ObjectModelDescriberTest extends WebTestCase
      */
     public function testItDescribes(string $class, string $fixtureDir): void
     {
-        $model = new Model(new LegacyType('object', false, $class));
+        $model = new Model(Type::object($class));
         $schema = new OA\Schema([
             'type' => 'object',
         ]);
 
-        try {
-            $this->modelDescriber->describe($model, $schema);
-        } catch (\Exception $e) {
-            self::markTestIncomplete($e->getMessage());
-        }
+        $this->modelDescriber->describe($model, $schema);
 
         if (!file_exists($fixtureDir)) {
             file_put_contents($fixtureDir, $schema->toJson());

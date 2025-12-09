@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestPayloadValueResolver;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\PropertyInfo\Type;
 
 class SymfonyMapRequestPayloadDescriberTest extends TestCase
 {
@@ -49,7 +48,7 @@ class SymfonyMapRequestPayloadDescriberTest extends TestCase
 
         $argumentData = new ArgumentMetadata(
             'someObjects',
-            Type::BUILTIN_TYPE_ARRAY,
+            'array',
             false,
             false,
             null,

@@ -23,7 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\TypeInfo\Type;
 
 class FormModelDescriberTest extends TestCase
 {
@@ -56,7 +56,7 @@ class FormModelDescriberTest extends TestCase
             ->willReturn($formMock);
 
         $api = new OpenApi();
-        $model = new Model(new Type(Type::BUILTIN_TYPE_OBJECT, false, FormType::class));
+        $model = new Model(Type::object(FormType::class));
         $schema = $this->initSchema();
         $modelRegistry = new ModelRegistry([], $api);
 

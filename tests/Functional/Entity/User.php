@@ -30,7 +30,7 @@ class User
     /**
      * User Roles Comment.
      *
-     * @var string[]
+     * @var list<string>
      */
     #[OA\Property(description: 'User roles', title: 'roles', example: '["ADMIN","SUPERUSER"]', default: ['user'])]
     private $roles;
@@ -60,7 +60,7 @@ class User
     private $createdAt;
 
     /**
-     * @var User[]
+     * @var list<User>
      */
     private $users;
 
@@ -70,7 +70,7 @@ class User
     private $friend;
 
     /**
-     * @var User[]|null
+     * @var list<User>|null
      */
     private $friends;
 
@@ -102,7 +102,7 @@ class User
     }
 
     /**
-     * @param string[] $roles
+     * @param list<string> $roles
      */
     public function setRoles(array $roles): void
     {

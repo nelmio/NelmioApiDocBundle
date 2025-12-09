@@ -16,6 +16,7 @@ use Nelmio\ApiDocBundle\Render\Html\AssetsMode;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -33,6 +34,10 @@ final class Configuration implements ConfigurationInterface
                     ->validate()
                         ->ifTrue(static fn ($v) => true === $v && !method_exists(PropertyInfoExtractor::class, 'getType'))
                         ->thenInvalid('the type_info option requires Symfony 7 or higher. Please upgrade Symfony or set type_info to false.')
+                    ->end()
+                    ->validate()
+                        ->ifTrue(static fn ($v) => false === $v && !class_exists(LegacyType::class))
+                        ->thenInvalid('the type_info option cannot be set to false on Symfony 8 or higher. Please set type_info to true.')
                     ->end()
                 ->end()
                 ->booleanNode('use_validation_groups')

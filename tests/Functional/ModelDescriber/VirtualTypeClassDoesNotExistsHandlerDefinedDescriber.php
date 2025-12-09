@@ -15,7 +15,8 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
+use Symfony\Component\TypeInfo\Type\ObjectType;
 
 class VirtualTypeClassDoesNotExistsHandlerDefinedDescriber implements ModelDescriberInterface
 {
@@ -28,7 +29,12 @@ class VirtualTypeClassDoesNotExistsHandlerDefinedDescriber implements ModelDescr
 
     public function supports(Model $model): bool
     {
-        return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
-            && 'VirtualTypeClassDoesNotExistsHandlerDefined' === $model->getType()->getClassName();
+        if (class_exists(LegacyType::class)) {
+            return LegacyType::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType()
+                && 'VirtualTypeClassDoesNotExistsHandlerDefined' === $model->getType()->getClassName();
+        }
+
+        return $model->getTypeInfo() instanceof ObjectType
+            && 'VirtualTypeClassDoesNotExistsHandlerDefined' === $model->getTypeInfo()->getClassName();
     }
 }

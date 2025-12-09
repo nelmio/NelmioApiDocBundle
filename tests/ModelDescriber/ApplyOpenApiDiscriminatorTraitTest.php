@@ -18,7 +18,8 @@ use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
+use Symfony\Component\TypeInfo\Type;
 
 class ApplyOpenApiDiscriminatorTraitTest extends TestCase
 {
@@ -83,7 +84,9 @@ class ApplyOpenApiDiscriminatorTraitTest extends TestCase
     private function createModel(string $className): Model
     {
         return new Model(
-            new Type(Type::BUILTIN_TYPE_OBJECT, false, $className),
+            class_exists(LegacyType::class)
+                ? new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, $className)
+                : Type::object($className),
             self::GROUPS,
             self::OPTIONS
         );

@@ -22,7 +22,7 @@ class Foo
     public $articles;
 
     /**
-     * @var Bar[]
+     * @var list<Bar>
      */
     public $bars;
 }
