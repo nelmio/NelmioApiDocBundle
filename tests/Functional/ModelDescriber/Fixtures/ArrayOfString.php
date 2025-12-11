@@ -29,5 +29,5 @@ class ArrayOfString
     /**
      * @var list<string>|null
      */
-    public array $listOfStringsNullable;
+    public ?array $listOfStringsNullable;
 }
