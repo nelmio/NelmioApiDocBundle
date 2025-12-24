@@ -27,7 +27,7 @@ class ArrayOfString
     public array $listOfStrings;
 
     /**
-     * @var string[]
+     * @var list<string>|null
      */
-    public array $shortArrayOfStrings;
+    public ?array $listOfStringsNullable;
 }

@@ -27,12 +27,7 @@ class ArrayOfInt
     public array $listOfIntegers;
 
     /**
-     * @var int[]
+     * @var list<int>|null
      */
-    public array $shortArrayOfIntegers;
-
-    /**
-     * @var int[]|null
-     */
-    public ?array $shortArrayOfIntegersNullable;
+    public ?array $listOfIntegersNullable;
 }

@@ -14,12 +14,26 @@ declare(strict_types=1);
 namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 /**
- * @template K of array-key
  * @template V
  */
-class Collection
+class StringCollection
 {
-    /** @var array<K, V> */
+    /** @var array<string, V> */
+    public array $map;
+
+    /** @var array<V> */
+    public array $array;
+
+    /** @var list<V> */
+    public array $list;
+}
+
+/**
+ * @template V
+ */
+class IntCollection
+{
+    /** @var array<int, V> */
     public array $map;
 
     /** @var array<V> */
@@ -63,12 +77,12 @@ class GenericTypes
     /** @var GenericClass<list<int>> */
     public GenericClass $integerList; // GenericClass6
 
-    /** @var Collection<string, string> */
-    public Collection $stringStringCollection; // Collection
-    /** @var Collection<string, string> */
-    public Collection $stringStringCollection2; // Collection
-    /** @var Collection<int, int> */
-    public Collection $integerIntegerCollection; // Collection2
-    /** @var Collection<int, RegularClass> */
-    public Collection $integerRegularClassCollection; // Collection3
+    /** @var StringCollection<string> */
+    public StringCollection $stringStringCollection; // Collection
+    /** @var StringCollection<string> */
+    public StringCollection $stringStringCollection2; // Collection
+    /** @var IntCollection<int> */
+    public IntCollection $integerIntegerCollection; // Collection2
+    /** @var IntCollection<RegularClass> */
+    public IntCollection $integerRegularClassCollection; // Collection3
 }

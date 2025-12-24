@@ -9,6 +9,7 @@
 /Tests/Functional/logs
 .idea
 /phpstan.neon
+/config/reference.php
 
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php
