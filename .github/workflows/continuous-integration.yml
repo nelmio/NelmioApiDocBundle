@@ -108,7 +108,7 @@ jobs:
           --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.test-group }}.xml \
           --coverage-filter=src/ \
           $PHPUNIT_ARGS
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: phpunit-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.test-group }}${{ matrix.composer-flags }}
           path: |
