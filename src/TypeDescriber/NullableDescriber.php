@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use OpenApi\Annotations\Schema;
+use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type;
 
 /**
@@ -23,7 +24,9 @@ final class NullableDescriber implements TypeDescriberInterface
 {
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        $schema->nullable = true;
+        if (Generator::UNDEFINED === $schema->nullable) {
+            $schema->nullable = true;
+        }
     }
 
     public function supports(Type $type, array $context = []): bool
