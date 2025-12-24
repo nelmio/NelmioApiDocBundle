@@ -31,7 +31,7 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
             $documentation = (array) $normalizer->normalize(
                 $documentation,
                 null,
-                ['spec_version' => '3.0.0']
+                []
             );
 
             // TODO: remove this
