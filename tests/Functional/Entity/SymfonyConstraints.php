@@ -65,7 +65,7 @@ class SymfonyConstraints
     private $propertyChoiceWithCallbackWithoutClass;
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     #[Assert\Choice(multiple: true, choices: ['choice1', 'choice2'])]
     private $propertyChoiceWithMultiple;
