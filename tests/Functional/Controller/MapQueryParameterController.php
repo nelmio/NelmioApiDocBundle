@@ -119,4 +119,28 @@ class MapQueryParameterController
         string $regexp,
     ): void {
     }
+
+    #[Route('/article_map_query_parameter_name_from_context', methods: ['GET'])]
+    #[OA\Response(response: '200', description: '')]
+    public function fetchArticleWithParameterNamesFromContext(
+        #[MapQueryParameter]
+        #[OA\QueryParameter(
+            description: 'User ID from parameter context',
+            schema: new OA\Schema(type: 'integer', minimum: 1)
+        )]
+        int $userId,
+        #[MapQueryParameter]
+        #[OA\QueryParameter(
+            description: 'Search query from parameter context',
+            schema: new OA\Schema(type: 'string', minLength: 3)
+        )]
+        string $searchQuery,
+        #[MapQueryParameter]
+        #[OA\QueryParameter(
+            description: 'Page number from parameter context',
+            schema: new OA\Schema(type: 'integer', minimum: 1, maximum: 100)
+        )]
+        int $pageNumber,
+    ): void {
+    }
 }
