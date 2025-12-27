@@ -410,16 +410,11 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
     public function testChoiceConstraintsWithStaticCallback(): void
     {
-        if (PHP_VERSION_ID < 80500) {
+        if (\PHP_VERSION_ID < 80500) {
             self::markTestSkipped('This tests requires PHP >= 8.5.0');
         }
 
-        $entity = new class {
-            #[Assert\Choice(callback: static function () {
-                return ['test1', 'test2'];
-            })]
-            public $property1;
-        };
+        $entity = new ChoiceConstraintsWithPHP85StaticCallbackEntity();
 
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -431,7 +426,6 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
 
         self::assertEquals($schema->properties[0]->enum, ['test1', 'test2']);
     }
-
 
     /**
      * @template T of OA\AbstractAnnotation
