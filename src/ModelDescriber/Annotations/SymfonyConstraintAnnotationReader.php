@@ -160,7 +160,9 @@ class SymfonyConstraintAnnotationReader
     private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection): void
     {
         if (null !== $choice->callback) {
-            $enumValues = \call_user_func(\is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);
+            $enumValues = $choice->callback instanceof \Closure
+                ? ($choice->callback)()
+                : \call_user_func(\is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);
         } else {
             $enumValues = $choice->choices;
         }
