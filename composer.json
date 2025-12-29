@@ -53,7 +53,7 @@
         "symfony/expression-language": "^6.4 || ^7.2",
         "symfony/finder": "^6.4 || ^7.2",
         "symfony/form": "^6.4 || ^7.2",
-        "symfony/phpunit-bridge": "^6.4 || ^7.2",
+        "symfony/phpunit-bridge": "^8.0.0",
         "symfony/security-csrf": "^6.4 || ^7.2",
         "symfony/security-http": "^6.4 || ^7.2",
         "symfony/serializer": "^6.4 || ^7.2",
