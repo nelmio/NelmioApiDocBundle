@@ -16,6 +16,7 @@ use OpenApi\Annotations as OAAnnotations;
 use OpenApi\Attributes as OAAttributes;
 use OpenApi\Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 
 class FunctionalTest extends WebTestCase
 {
@@ -634,9 +635,11 @@ class FunctionalTest extends WebTestCase
                 'nullableComplex' => [
                     'nullable' => true,
                     'oneOf' => [
-                        [
+                        class_exists(LegacyType::class) ? [
                             'type' => 'integer',
                             'nullable' => true,
+                        ] : [
+                            'type' => 'integer',
                         ],
                         [
                             'type' => 'array',
@@ -649,12 +652,17 @@ class FunctionalTest extends WebTestCase
                 'complexNested' => [
                     'nullable' => true,
                     'oneOf' => [
-                        [
+                        class_exists(LegacyType::class) ? [
                             'type' => 'array',
                             'items' => [
                                 '$ref' => '#/components/schemas/CompoundEntityNested',
                             ],
                             'nullable' => true,
+                        ] : [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntityNested',
+                            ],
                         ],
                         [
                             'type' => 'string',
@@ -704,9 +712,11 @@ class FunctionalTest extends WebTestCase
                 'nullableComplex' => [
                     'nullable' => true,
                     'oneOf' => [
-                        [
+                        class_exists(LegacyType::class) ? [
                             'type' => 'integer',
                             'nullable' => true,
+                        ] : [
+                            'type' => 'integer',
                         ],
                         [
                             'type' => 'array',
@@ -719,12 +729,17 @@ class FunctionalTest extends WebTestCase
                 'complexNested' => [
                     'nullable' => true,
                     'oneOf' => [
-                        [
+                        class_exists(LegacyType::class) ? [
                             'type' => 'array',
                             'items' => [
                                 '$ref' => '#/components/schemas/CompoundEntityNested',
                             ],
                             'nullable' => true,
+                        ] : [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/components/schemas/CompoundEntityNested',
+                            ],
                         ],
                         [
                             'type' => 'string',
