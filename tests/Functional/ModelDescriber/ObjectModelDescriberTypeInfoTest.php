@@ -47,12 +47,6 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
 
             $reflect = new \ReflectionClass($class);
             if (file_exists($fixtureDir = \dirname($reflect->getFileName()).'/TypeInfo/'.$reflect->getShortName().'.json')) {
-                self::assertNotSame(
-                    self::getFixture($fixtureDir),
-                    self::getFixture($fixture[1]),
-                    "The fixture $fixtureDir is identical to the original one. Please remove it."
-                );
-
                 yield [
                     $class,
                     $fixtureDir,

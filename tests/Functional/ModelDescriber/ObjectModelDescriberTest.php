@@ -19,6 +19,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase;
 use OpenApi\Annotations as OA;
 use OpenApi\Annotations\OpenApi;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
 
 class ObjectModelDescriberTest extends WebTestCase
@@ -88,6 +89,15 @@ class ObjectModelDescriberTest extends WebTestCase
 
             if (!$classExists) {
                 self::markTestIncomplete(\sprintf('The class "%s" does not exist.', $fullyQualifiedClassName));
+            }
+
+            if (!class_exists(LegacyType::class) && file_exists($fixtureDir = __DIR__.'/Fixtures/TypeInfo/'.$file->getFilenameWithoutExtension().'.json')) {
+                yield [
+                    $fullyQualifiedClassName,
+                    $fixtureDir,
+                ];
+
+                continue;
             }
 
             yield [
