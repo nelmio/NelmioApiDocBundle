@@ -13,7 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class MapQueryParameterController
 {

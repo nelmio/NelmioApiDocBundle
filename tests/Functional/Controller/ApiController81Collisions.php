@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81WithGroups;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ApiController81Collisions
 {

@@ -14,7 +14,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class MapUploadedFileController
 {

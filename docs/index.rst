@@ -173,7 +173,7 @@ To document your routes, you can use the SwaggerPHP attributes and the
         use Nelmio\ApiDocBundle\Attribute\Model;
         use Nelmio\ApiDocBundle\Attribute\Security;
         use OpenApi\Attributes as OA;
-        use Symfony\Component\Routing\Annotation\Route;
+        use Symfony\Component\Routing\Attribute\Route;
 
         class UserController
         {

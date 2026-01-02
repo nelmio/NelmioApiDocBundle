@@ -18,7 +18,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article81;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class Controller2209
 {

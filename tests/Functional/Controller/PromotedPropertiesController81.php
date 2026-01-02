@@ -16,7 +16,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\EntityWithPromotedPropertiesWithDefaults;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class PromotedPropertiesController81
 {

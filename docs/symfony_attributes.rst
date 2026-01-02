@@ -118,7 +118,7 @@ Complete example
         use Symfony\Component\HttpKernel\Attribute\MapQueryString;
         use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
         use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
-        use Symfony\Component\Routing\Annotation\Route;
+        use Symfony\Component\Routing\Attribute\Route;
 
         class UserController
         {

@@ -46,7 +46,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithModel;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithRefType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\UserType;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api', name: 'api_', host: 'api.example.com')]
 class ApiController

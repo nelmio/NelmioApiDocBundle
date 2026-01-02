@@ -12,7 +12,7 @@
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use OpenApi\Attributes as OA;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Prevents a regression (see https://github.com/nelmio/NelmioApiDocBundle/issues/1559).

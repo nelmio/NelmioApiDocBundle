@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 
 use OpenApi\Attributes as OA;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'My tag name', description: 'My description of the tag', externalDocs: new OA\ExternalDocumentation(url: 'https://example.com'))]
 class OpenApiTagController
