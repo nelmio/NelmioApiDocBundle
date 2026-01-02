@@ -41,7 +41,7 @@ class JMSUser
     /**
      * User Roles Comment.
      *
-     * @var string[]
+     * @var list<string>
      */
     #[Serializer\Type('array<string>')]
     #[Serializer\Accessor(getter: 'getRoles', setter: 'setRoles')]
