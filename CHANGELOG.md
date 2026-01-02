@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [5.8.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.8.2...v5.8.3) (2026-01-02)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @stoplight/elements from 9.0.12 to 9.0.13 in /utils ([#2648](https://github.com/nelmio/NelmioApiDocBundle/issues/2648)) ([57d40e3](https://github.com/nelmio/NelmioApiDocBundle/commit/57d40e30ca754e4531bcc922a984abd872baf64c))
+* **deps:** bump swagger-ui-dist from 5.30.2 to 5.30.3 in /utils ([#2639](https://github.com/nelmio/NelmioApiDocBundle/issues/2639)) ([8c804b9](https://github.com/nelmio/NelmioApiDocBundle/commit/8c804b9d8b10b3717b53492b455801e04589dde3))
+* **deps:** bump swagger-ui-dist from 5.30.3 to 5.31.0 in /utils ([#2655](https://github.com/nelmio/NelmioApiDocBundle/issues/2655)) ([b7fb331](https://github.com/nelmio/NelmioApiDocBundle/commit/b7fb331138df50159c9e9dda6519c8f6f1575218))
+* **symfony:** support `8.0` ([#2612](https://github.com/nelmio/NelmioApiDocBundle/issues/2612)) ([51d6a51](https://github.com/nelmio/NelmioApiDocBundle/commit/51d6a5146f5e495a8bb538eac28825968b99174e))
+
 ## [5.8.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.8.1...v5.8.2) (2025-11-28)
 
 
