@@ -1183,12 +1183,19 @@ class FunctionalTest extends WebTestCase
                 'compoundOptions' => [
                     'type' => 'object',
                     'additionalProperties' => [
-                        'oneOf' => [
+                        'oneOf' => class_exists(LegacyType::class) ? [
                             [
                                 'type' => 'string',
                             ],
                             [
                                 'type' => 'integer',
+                            ],
+                        ] : [
+                            [
+                                'type' => 'integer',
+                            ],
+                            [
+                                'type' => 'string',
                             ],
                         ],
                     ],
@@ -1198,12 +1205,19 @@ class FunctionalTest extends WebTestCase
                     'items' => [
                         'type' => 'object',
                         'additionalProperties' => [
-                            'oneOf' => [
+                            'oneOf' => class_exists(LegacyType::class) ? [
                                 [
                                     'type' => 'string',
                                 ],
                                 [
                                     'type' => 'integer',
+                                ],
+                            ] : [
+                                [
+                                    'type' => 'integer',
+                                ],
+                                [
+                                    'type' => 'string',
                                 ],
                             ],
                         ],
