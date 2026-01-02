@@ -37,6 +37,7 @@
     },
     "require-dev": {
         "api-platform/core": "^3.2 || ^4.0",
+        "doctrine/inflector": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.52",
         "friendsofsymfony/rest-bundle": "^3.2.0",
         "jms/serializer": "^3.32",
