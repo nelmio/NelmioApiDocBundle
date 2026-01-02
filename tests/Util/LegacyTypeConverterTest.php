@@ -22,7 +22,7 @@ class LegacyTypeConverterTest extends TestCase
     protected function setUp(): void
     {
         if (!class_exists(LegacyType::class)) {
-            $this->markTestSkipped('LegacyType class does not exist.');
+            self::markTestSkipped('LegacyType class does not exist.');
         }
     }
 

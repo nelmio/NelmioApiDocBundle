@@ -14,6 +14,8 @@ namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Fixtures;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\ModelDescriber\SelfDescribingModelInterface;
 use OpenApi\Annotations\Schema;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
+use Symfony\Component\TypeInfo\Type\ObjectType;
 
 class SelfDescribingModel implements SelfDescribingModelInterface
 {
@@ -21,8 +23,10 @@ class SelfDescribingModel implements SelfDescribingModelInterface
     {
         $schema->title = 'SelfDescribingTitle';
 
-        $schema->description = class_exists(LegacyType::class)
-            ? $model->getType()->getClassName()
-            : $model->getTypeInfo()->getClassName();
+        /** @var LegacyType|ObjectType $type */
+        $type = class_exists(LegacyType::class)
+            ? $model->getType()
+            : $model->getTypeInfo();
+        $schema->description = $type->getClassName();
     }
 }
