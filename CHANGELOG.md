@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [5.9.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.8.3...v5.9.0) (2026-01-02)
+
+
+### Features
+
+* Add support for static callbacks in Symfony choice constraints ([#2659](https://github.com/nelmio/NelmioApiDocBundle/issues/2659)) ([4d2f627](https://github.com/nelmio/NelmioApiDocBundle/commit/4d2f627498aa898746b21180953ab159aeb0dea7))
+
+
+### Bug Fixes
+
+* **OpenApiPhpDescriber:** Set annotation name from context, if empty ([#2658](https://github.com/nelmio/NelmioApiDocBundle/issues/2658)) ([eedb169](https://github.com/nelmio/NelmioApiDocBundle/commit/eedb1695ee8644fa0209a7b4f1566bfe4d98bcda))
+
 ## [5.8.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.8.2...v5.8.3) (2026-01-02)
 
 
