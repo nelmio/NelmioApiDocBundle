@@ -53,6 +53,9 @@ jobs:
             symfony-require: 8.0
           - php-version: 8.3
             symfony-require: 8.0
+          # https://github.com/FriendsOfSymfony/FOSRestBundle/pull/2429 Does not support Symfony 8.x yet
+          - test-group: fos-rest
+            symfony-require: "8.0"
           # Test only the lowest and highest PHP versions for each optional dependency test group
           - test-group: fos-rest
             php-version: 8.3
