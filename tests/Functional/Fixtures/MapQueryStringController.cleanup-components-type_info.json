@@ -226,10 +226,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -319,10 +319,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -410,10 +410,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -501,10 +501,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -592,10 +592,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -683,10 +683,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -774,10 +774,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -865,10 +865,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -956,10 +956,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
