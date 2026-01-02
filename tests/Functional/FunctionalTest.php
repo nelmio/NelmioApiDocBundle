@@ -1154,13 +1154,30 @@ class FunctionalTest extends WebTestCase
             'schema' => 'Bar',
             'required' => ['things', 'moreThings'],
             'properties' => [
-                'things' => [
+                'things' => class_exists(LegacyType::class) ? [
                     'type' => 'array',
                     'items' => [],
+                ] : [
+                    'oneOf' => [
+                        [
+                            'type' => 'array',
+                            'items' => [
+                                'nullable' => true,
+                            ],
+                        ],
+                        [
+                            'type' => 'object',
+                            'additionalProperties' => [
+                                'nullable' => true,
+                            ],
+                        ],
+                    ],
                 ],
                 'moreThings' => [
                     'type' => 'array',
-                    'items' => [],
+                    'items' => class_exists(LegacyType::class) ? [] : [
+                        'nullable' => true,
+                    ],
                 ],
             ],
             'type' => 'object',
