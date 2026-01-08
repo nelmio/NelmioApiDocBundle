@@ -30,7 +30,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->booleanNode('type_info')
                     ->info('Use the symfony/type-info component for determining types.')
-                    ->defaultFalse()
+                    ->defaultValue(static fn (): bool => !class_exists(LegacyType::class))
                     ->validate()
                         ->ifTrue(static fn ($v) => true === $v && !method_exists(PropertyInfoExtractor::class, 'getType'))
                         ->thenInvalid('the type_info option requires Symfony 7 or higher. Please upgrade Symfony or set type_info to false.')
