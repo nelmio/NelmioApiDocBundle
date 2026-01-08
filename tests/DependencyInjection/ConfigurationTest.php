@@ -16,6 +16,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 
 class ConfigurationTest extends TestCase
 {
@@ -252,6 +254,24 @@ class ConfigurationTest extends TestCase
             'Invalid assets mode "invalid"',
         ];
 
+        if (!method_exists(PropertyInfoExtractor::class, 'getType')) {
+            yield 'type_info cannot be true without Symfony 7 or higher' => [
+                [
+                    'type_info' => true,
+                ],
+                'The type_info option requires Symfony 7 or higher. Please upgrade Symfony or set type_info to false.',
+            ];
+        }
+
+        if (!class_exists(LegacyType::class)) {
+            yield 'type_info cannot be false with Symfony 8 or higher' => [
+                [
+                    'type_info' => false,
+                ],
+                'The type_info option cannot be set to false on Symfony 8 or higher. Please set type_info to true.',
+            ];
+        }
+
         yield 'do not set cache.item_id' => [
             [
                 'cache' => [
@@ -354,5 +374,15 @@ class ConfigurationTest extends TestCase
             ],
             'Invalid configuration for path "nelmio_api_doc.areas.default.security.basicAuth.in": Invalid `in` value "SomeInvalidIn". Available locations are: header, query, cookie',
         ];
+    }
+
+    public function testDefaultTypeInfo(): void
+    {
+        $config = $this->processor->processConfiguration(new Configuration(), []);
+
+        self::assertSame(
+            !class_exists(LegacyType::class),
+            $config['type_info']
+        );
     }
 }
