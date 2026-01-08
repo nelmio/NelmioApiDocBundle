@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [4.38.7](https://github.com/nelmio/NelmioApiDocBundle/compare/v4.38.6...v4.38.7) (2026-01-08)
+
+
+### Bug Fixes
+
+* **swagger-ui:** dark mode ui background color [Backport [#2665](https://github.com/nelmio/NelmioApiDocBundle/issues/2665) to 4.x] ([#2668](https://github.com/nelmio/NelmioApiDocBundle/issues/2668)) ([64b8d06](https://github.com/nelmio/NelmioApiDocBundle/commit/64b8d06c099496de7ffe0ad845cf9c2af5b7e24b))
+
 ## [4.38.6](https://github.com/nelmio/NelmioApiDocBundle/compare/v4.38.5...v4.38.6) (2025-11-28)
 
 
