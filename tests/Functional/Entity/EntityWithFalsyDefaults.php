@@ -28,6 +28,6 @@ class EntityWithFalsyDefaults
     /** @var string|null */
     public $nullString;
 
-    /** @var string[] */
+    /** @var list<string> */
     public $array = [];
 }

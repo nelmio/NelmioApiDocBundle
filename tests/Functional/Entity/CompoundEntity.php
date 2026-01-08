@@ -14,22 +14,22 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 class CompoundEntity
 {
     /**
-     * @var int|CompoundEntity[]
+     * @var int|list<CompoundEntity>
      */
     public $complex;
 
     /**
-     * @var int|CompoundEntity[]|null
+     * @var int|list<CompoundEntity>|null
      */
     public $nullableComplex;
 
     /**
-     * @var CompoundEntityNested[]|string|null
+     * @var list<CompoundEntityNested>|string|null
      */
     public $complexNested;
 
     /**
-     * @var array<CompoundEntityNested>|array<array<CompoundEntityNested>>
+     * @var list<CompoundEntityNested>|list<list<CompoundEntityNested>>
      */
     public $arrayOfArrayComplex;
 }

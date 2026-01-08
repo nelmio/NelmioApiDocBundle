@@ -15,7 +15,8 @@ $finder = (new PhpCsFixer\Finder())
     ->in(__DIR__)
     ->exclude('var')
     ->exclude('tests/Functional/cache')
-    ->exclude('tests/Functional/ModelDescriber/Fixtures');
+    ->exclude('tests/Functional/ModelDescriber/Fixtures')
+    ->notContains('ChoiceConstraintsWithPHP85StaticCallbackEntity');
 
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)

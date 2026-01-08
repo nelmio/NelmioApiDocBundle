@@ -16,7 +16,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
 use Nelmio\ApiDocBundle\Attribute\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /*
  * Not all operationIds were generated properly. This test case covers the following scenarios:

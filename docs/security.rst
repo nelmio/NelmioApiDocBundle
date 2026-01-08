@@ -56,7 +56,7 @@ Above is an example of security configuration for the ``default`` area. This wil
 
         .. code-block:: php-attributes
 
-            use Symfony\Component\Routing\Annotation\Route;
+            use Symfony\Component\Routing\Attribute\Route;
             use Symfony\Component\Security\Http\Attribute\IsGranted;
 
             #[IsGranted(attribute: 'read')]
@@ -104,7 +104,7 @@ Above is an example of security configuration for the ``default`` area. This wil
 
         .. code-block:: php-attributes
 
-            use Symfony\Component\Routing\Annotation\Route;
+            use Symfony\Component\Routing\Attribute\Route;
 
             class UserController
             {
@@ -148,7 +148,7 @@ Want to override the generated security definition? You can do that by using the
         .. code-block:: php-attributes
 
             use Nelmio\ApiDocBundle\Attribute\Security;
-            use Symfony\Component\Routing\Annotation\Route;
+            use Symfony\Component\Routing\Attribute\Route;
             use Symfony\Component\Security\Http\Attribute\IsGranted;
 
             #[IsGranted(attribute: 'read')]

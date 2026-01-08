@@ -13,14 +13,21 @@ namespace Nelmio\ApiDocBundle\Tests\PropertyDescriber;
 
 use Nelmio\ApiDocBundle\PropertyDescriber\TranslatablePropertyDescriber;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
 class TranslatablePropertyDescriberTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (!class_exists(LegacyType::class)) {
+            self::markTestSkipped('LegacyType class does not exist.');
+        }
+    }
+
     public function testSupportsTranslatablePropertyType(): void
     {
-        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, TranslatableInterface::class);
+        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, TranslatableInterface::class);
 
         $describer = new TranslatablePropertyDescriber();
 
@@ -29,7 +36,7 @@ class TranslatablePropertyDescriberTest extends TestCase
 
     public function testSupportsNoIntPropertyType(): void
     {
-        $type = new Type(Type::BUILTIN_TYPE_INT, false);
+        $type = new LegacyType(LegacyType::BUILTIN_TYPE_INT, false);
 
         $describer = new TranslatablePropertyDescriber();
 
@@ -38,7 +45,7 @@ class TranslatablePropertyDescriberTest extends TestCase
 
     public function testSupportsNoDifferentObjectPropertyType(): void
     {
-        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, \DateTimeInterface::class);
+        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, \DateTimeInterface::class);
 
         $describer = new TranslatablePropertyDescriber();
 

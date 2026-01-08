@@ -13,15 +13,22 @@ namespace Nelmio\ApiDocBundle\Tests\PropertyDescriber;
 
 use Nelmio\ApiDocBundle\PropertyDescriber\UuidPropertyDescriber;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 
 class UuidPropertyDescriberTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (!class_exists(LegacyType::class)) {
+            self::markTestSkipped('LegacyType class does not exist.');
+        }
+    }
+
     public function testSupportsUuidPropertyType(): void
     {
-        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, Uuid::class);
+        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, Uuid::class);
 
         $describer = new UuidPropertyDescriber();
 
@@ -30,7 +37,7 @@ class UuidPropertyDescriberTest extends TestCase
 
     public function testSupportsUlidPropertyType(): void
     {
-        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, Ulid::class);
+        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, Ulid::class);
 
         $describer = new UuidPropertyDescriber();
 
@@ -39,7 +46,7 @@ class UuidPropertyDescriberTest extends TestCase
 
     public function testSupportsNoIntPropertyType(): void
     {
-        $type = new Type(Type::BUILTIN_TYPE_INT, false);
+        $type = new LegacyType(LegacyType::BUILTIN_TYPE_INT, false);
 
         $describer = new UuidPropertyDescriber();
 
@@ -48,7 +55,7 @@ class UuidPropertyDescriberTest extends TestCase
 
     public function testSupportsNoDifferentObjectPropertyType(): void
     {
-        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, \DateTimeInterface::class);
+        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, \DateTimeInterface::class);
 
         $describer = new UuidPropertyDescriber();
 
@@ -61,7 +68,7 @@ class UuidPropertyDescriberTest extends TestCase
 
         $describer = new UuidPropertyDescriber();
 
-        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, Uuid::class);
+        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, Uuid::class);
         $describer->describe([$type], $property, []);
 
         self::assertSame('string', $property->type);
@@ -74,7 +81,7 @@ class UuidPropertyDescriberTest extends TestCase
 
         $describer = new UuidPropertyDescriber();
 
-        $type = new Type(Type::BUILTIN_TYPE_OBJECT, false, Ulid::class);
+        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, Ulid::class);
         $describer->describe([$type], $property, []);
 
         self::assertSame('string', $property->type);

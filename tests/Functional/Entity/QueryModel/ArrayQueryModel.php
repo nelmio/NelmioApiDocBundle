@@ -17,11 +17,20 @@ use OpenApi\Attributes as OA;
 
 class ArrayQueryModel
 {
+    /**
+     * @var list<int>
+     */
     public array $ids;
+    /**
+     * @var list<int> $productIds
+     */
     #[OA\Property(description: 'List of product ids', type: 'array', items: new OA\Items(type: 'integer'))]
-    private ?array $productIds = null;
+    private array $productIds;
 
-    public function getProductIds(): ?array
+    /**
+     * @return list<int>
+     */
+    public function getProductIds(): array
     {
         return $this->productIds;
     }

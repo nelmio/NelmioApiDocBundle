@@ -112,7 +112,7 @@
                 },
                 "type": "object"
             },
-            "Collection": {
+            "StringCollection": {
                 "required": [
                     "map",
                     "array",
@@ -150,7 +150,7 @@
                 },
                 "type": "object"
             },
-            "Collection2": {
+            "IntCollection": {
                 "required": [
                     "map",
                     "array",
@@ -188,7 +188,7 @@
                 },
                 "type": "object"
             },
-            "Collection3": {
+            "IntCollection2": {
                 "required": [
                     "map",
                     "array",
@@ -263,16 +263,16 @@
                         "$ref": "#/components/schemas/GenericClass6"
                     },
                     "stringStringCollection": {
-                        "$ref": "#/components/schemas/Collection"
+                        "$ref": "#/components/schemas/StringCollection"
                     },
                     "stringStringCollection2": {
-                        "$ref": "#/components/schemas/Collection"
+                        "$ref": "#/components/schemas/StringCollection"
                     },
                     "integerIntegerCollection": {
-                        "$ref": "#/components/schemas/Collection2"
+                        "$ref": "#/components/schemas/IntCollection"
                     },
                     "integerRegularClassCollection": {
-                        "$ref": "#/components/schemas/Collection3"
+                        "$ref": "#/components/schemas/IntCollection2"
                     }
                 },
                 "type": "object"

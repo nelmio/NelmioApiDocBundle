@@ -18,7 +18,7 @@ class Bar
 {
     public $things;
     /**
-     * @var array
+     * @var list
      */
     public $moreThings;
 

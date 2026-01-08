@@ -16,7 +16,8 @@ use Nelmio\ApiDocBundle\ModelDescriber\SelfDescribingModelDescriber;
 use Nelmio\ApiDocBundle\Tests\ModelDescriber\Fixtures\SelfDescribingModel;
 use OpenApi\Annotations\Schema;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
+use Symfony\Component\TypeInfo\Type;
 
 class SelfDescribingModelDescriberTest extends TestCase
 {
@@ -24,21 +25,31 @@ class SelfDescribingModelDescriberTest extends TestCase
     {
         $describer = new SelfDescribingModelDescriber();
 
-        self::assertTrue($describer->supports(new Model(new Type('object', false, SelfDescribingModel::class))));
+        if (class_exists(LegacyType::class)) {
+            self::assertTrue($describer->supports(new Model(new LegacyType('object', false, SelfDescribingModel::class))));
+        } else {
+            self::assertTrue($describer->supports(new Model(Type::object(SelfDescribingModel::class))));
+        }
     }
 
     public function testDoesNotSupport(): void
     {
         $describer = new SelfDescribingModelDescriber();
 
-        self::assertFalse($describer->supports(new Model(new Type('object', false, \stdClass::class))));
+        if (class_exists(LegacyType::class)) {
+            self::assertFalse($describer->supports(new Model(new LegacyType('object', false, \stdClass::class))));
+        } else {
+            self::assertFalse($describer->supports(new Model(Type::object(\stdClass::class))));
+        }
     }
 
     public function testDescribe(): void
     {
         $describer = new SelfDescribingModelDescriber();
 
-        $model = new Model(new Type('object', false, SelfDescribingModel::class));
+        $model = class_exists(LegacyType::class)
+            ? new Model(new LegacyType('object', false, SelfDescribingModel::class))
+            : new Model(Type::object(SelfDescribingModel::class));
         $schema = new Schema([]);
 
         $describer->describe($model, $schema);

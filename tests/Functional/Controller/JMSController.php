@@ -26,7 +26,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSChatUser;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\VirtualProperty;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(host: 'api.example.com')]
 class JMSController

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber;
 
-use Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface;
 use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
+use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
-class NameConverter implements AdvancedNameConverterInterface
+class NameConverter implements NameConverterInterface
 {
     private MetadataAwareNameConverter $inner;
 

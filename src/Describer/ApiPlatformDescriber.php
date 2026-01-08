@@ -40,7 +40,32 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
             unset($documentation['basePath']);
             unset($documentation['servers']);
 
+            // Temporary fix: `@OA\Property(property="status") is only allowed for 3.1.x`
+            if (isset($documentation['components']['schemas'])) {
+                foreach ($documentation['components']['schemas'] as $key => &$schema) {
+                    self::removeExamplesRecursively($schema);
+                }
+
+                unset($schema);
+            }
+
             return $documentation;
         });
+    }
+
+    /**
+     * @param mixed[] $data
+     */
+    private static function removeExamplesRecursively(array &$data): void
+    {
+        if (isset($data['examples'])) {
+            unset($data['examples']);
+        }
+
+        foreach ($data as &$value) {
+            if (\is_array($value)) {
+                self::removeExamplesRecursively($value);
+            }
+        }
     }
 }

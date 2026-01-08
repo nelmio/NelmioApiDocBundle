@@ -11,8 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+#[Group('jms-serializer')]
+#[Group('hateoas')]
 class JMSFunctionalTest extends WebTestCase
 {
     protected function setUp(): void

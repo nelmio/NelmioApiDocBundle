@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 final class NelmioKernel extends Kernel
@@ -59,6 +60,10 @@ final class NelmioKernel extends Kernel
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $container->loadFromExtension('framework', ['test' => null]);
+
+        if (!class_exists(LegacyType::class)) {
+            $container->loadFromExtension('nelmio_api_doc', ['type_info' => true]);
+        }
 
         foreach ($this->extraConfigs as $extensionName => $config) {
             $container->loadFromExtension($extensionName, $config);

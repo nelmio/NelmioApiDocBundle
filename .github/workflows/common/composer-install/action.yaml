@@ -11,6 +11,11 @@ inputs:
     description: Additional flags that are passed to the `composer update` step
     required: false
     type: string
+  
+  test-group:
+    description: The test group to run, used to remove other optional dependencies.
+    required: false
+    type: string
 
 runs:
   using: composite
@@ -32,6 +37,21 @@ runs:
     - name: "Enforce using stable dependencies"
       run: "composer config minimum-stability stable"
       shell: bash
+
+    - name: "Remove friendsofsymfony/rest-bundle"
+      run: "composer remove friendsofsymfony/rest-bundle --dev --no-update"
+      shell: bash
+      if: "${{ inputs.test-group != 'fos-rest' && inputs.test-group != 'all' }}"
+
+    - name: "Remove willdurand/hateoas-bundle"
+      run: "composer remove willdurand/hateoas-bundle willdurand/negotiation --dev --no-update"
+      shell: bash
+      if: "${{ inputs.test-group != 'hateoas' && inputs.test-group != 'all' }}"
+
+    - name: "Remove jms/serializer-bundle"
+      run: "composer remove jms/serializer-bundle jms/serializer --dev --no-update"
+      shell: bash
+      if: "${{ inputs.test-group != 'jms-serializer' && inputs.test-group != 'all' }}"
 
     - name: Install dependencies with Composer
       env:

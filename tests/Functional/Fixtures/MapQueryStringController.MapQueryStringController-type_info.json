@@ -226,10 +226,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -319,10 +319,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -410,10 +410,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -501,10 +501,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -592,10 +592,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -683,10 +683,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -774,10 +774,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -865,10 +865,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -956,10 +956,10 @@
                         "schema": {
                             "oneOf": [
                                 {
-                                    "type": "string"
+                                    "type": "integer"
                                 },
                                 {
-                                    "type": "integer"
+                                    "type": "string"
                                 }
                             ]
                         }
@@ -1048,12 +1048,131 @@
                     "final"
                 ]
             },
+            "SymfonyMapQueryString": {
+                "required": [
+                    "id",
+                    "name",
+                    "articleType81"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nullableName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "articleType81": {
+                        "$ref": "#/components/schemas/ArticleType81"
+                    },
+                    "nullableArticleType81": {
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleType81"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "SymfonyConstraintsWithValidationGroups": {
+                "required": [
+                    "property",
+                    "propertyNotNullOnSpecificGroup"
+                ],
+                "properties": {
+                    "property": {
+                        "type": "integer",
+                        "maximum": 100,
+                        "minimum": 1
+                    },
+                    "propertyNotNullOnSpecificGroup": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "FilterQueryModel": {
+                "required": [
+                    "filter",
+                    "filterBy"
+                ],
+                "properties": {
+                    "filter": {
+                        "oneOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "filterBy": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PaginationQueryModel": {
+                "properties": {
+                    "offset": {
+                        "type": "integer",
+                        "default": 0
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "default": 10
+                    }
+                },
+                "type": "object"
+            },
             "SortEnum": {
                 "type": "string",
                 "enum": [
                     "asc",
                     "desc"
                 ]
+            },
+            "SortQueryModel": {
+                "required": [
+                    "sortBy"
+                ],
+                "properties": {
+                    "sortBy": {
+                        "type": "string"
+                    },
+                    "orderBy": {
+                        "$ref": "#/components/schemas/SortEnum"
+                    }
+                },
+                "type": "object"
+            },
+            "ArrayQueryModel": {
+                "required": [
+                    "ids",
+                    "productIds"
+                ],
+                "properties": {
+                    "ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "productIds": {
+                        "description": "List of product ids",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "type": "object"
             }
         }
     }

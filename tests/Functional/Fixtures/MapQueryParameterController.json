@@ -291,6 +291,49 @@
                     }
                 }
             }
+        },
+        "/article_map_query_parameter_name_from_context": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_mapqueryparameter_fetcharticlewithparameternamesfromcontext",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "query",
+                        "description": "User ID from parameter context",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "searchQuery",
+                        "in": "query",
+                        "description": "Search query from parameter context",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "minLength": 3
+                        }
+                    },
+                    {
+                        "name": "pageNumber",
+                        "in": "query",
+                        "description": "Page number from parameter context",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
         }
     }
 }

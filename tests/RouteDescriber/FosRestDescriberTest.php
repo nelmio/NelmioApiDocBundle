@@ -15,10 +15,12 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Nelmio\ApiDocBundle\RouteDescriber\FosRestDescriber;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraints\Choice;
 
+#[Group('fos-rest')]
 class FosRestDescriberTest extends TestCase
 {
     public function testQueryParamWithChoiceConstraintIsAddedAsEnum(): void
@@ -76,7 +78,7 @@ class FosRestDescriberTest extends TestCase
     public function testQueryParamWithChoiceConstraintAsArray(): void
     {
         $class = new class {
-            #[QueryParam(requirements: new Choice(['foo', 'bar'], multiple: true))]
+            #[QueryParam(requirements: new Choice(choices: ['foo', 'bar'], multiple: true))]
             public function getAction(): void
             {
             }

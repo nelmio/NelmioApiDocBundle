@@ -173,7 +173,7 @@ To document your routes, you can use the SwaggerPHP attributes and the
         use Nelmio\ApiDocBundle\Attribute\Model;
         use Nelmio\ApiDocBundle\Attribute\Security;
         use OpenApi\Attributes as OA;
-        use Symfony\Component\Routing\Annotation\Route;
+        use Symfony\Component\Routing\Attribute\Route;
 
         class UserController
         {
@@ -273,7 +273,7 @@ properties and validator constraints. Take the model class below:
 
     .. code-block:: php-attributes
 
-        use Symfony\Component\Serializer\Annotation\Groups;
+        use Symfony\Component\Serializer\Attribute\Groups;
         use Symfony\Component\Validator\Constraints as Assert;
 
         class UserDto

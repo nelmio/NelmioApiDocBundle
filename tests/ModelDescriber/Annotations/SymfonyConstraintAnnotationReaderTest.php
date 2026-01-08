@@ -408,6 +408,25 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }];
     }
 
+    public function testChoiceConstraintsWithStaticCallback(): void
+    {
+        if (\PHP_VERSION_ID < 80500) {
+            self::markTestSkipped('This tests requires PHP >= 8.5.0');
+        }
+
+        $entity = new ChoiceConstraintsWithPHP85StaticCallbackEntity();
+
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader();
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+        self::assertEquals($schema->properties[0]->enum, ['test1', 'test2']);
+    }
+
     /**
      * @template T of OA\AbstractAnnotation
      *

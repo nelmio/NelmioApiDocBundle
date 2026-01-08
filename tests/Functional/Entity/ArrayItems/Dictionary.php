@@ -26,7 +26,7 @@ class Dictionary
     public $compoundOptions;
 
     /**
-     * @var array<array<string, string|int>>
+     * @var list<array<string, string|int>>
      */
     public $nestedCompoundOptions;
 

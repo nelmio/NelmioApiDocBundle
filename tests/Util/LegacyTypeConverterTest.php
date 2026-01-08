@@ -19,6 +19,13 @@ use Symfony\Component\TypeInfo\Type;
 
 class LegacyTypeConverterTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (!class_exists(LegacyType::class)) {
+            self::markTestSkipped('LegacyType class does not exist.');
+        }
+    }
+
     /**
      * @param LegacyType[] $legacyTypes
      */
@@ -45,71 +52,73 @@ class LegacyTypeConverterTest extends TestCase
             [],
         ];
 
-        yield 'object' => [
-            Type::object('Foo\Bar'),
-            [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar')],
-        ];
+        if (class_exists(LegacyType::class)) {
+            yield 'object' => [
+                Type::object('Foo\Bar'),
+                [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar')],
+            ];
 
-        yield 'nullable object' => [
-            Type::nullable(Type::object('Foo\Bar')),
-            [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, true, 'Foo\Bar')],
-        ];
+            yield 'nullable object' => [
+                Type::nullable(Type::object('Foo\Bar')),
+                [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, true, 'Foo\Bar')],
+            ];
 
-        yield 'collection' => [
-            Type::collection(Type::object(self::class), Type::object('Foo\Bar'), Type::int()),
-            [
-                new LegacyType(
-                    LegacyType::BUILTIN_TYPE_OBJECT,
-                    false,
-                    self::class,
-                    true,
-                    collectionKeyType: new LegacyType(LegacyType::BUILTIN_TYPE_INT),
-                    collectionValueType: new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
-                ),
-            ],
-        ];
+            yield 'collection' => [
+                Type::collection(Type::object(self::class), Type::object('Foo\Bar'), Type::int()),
+                [
+                    new LegacyType(
+                        LegacyType::BUILTIN_TYPE_OBJECT,
+                        false,
+                        self::class,
+                        true,
+                        collectionKeyType: new LegacyType(LegacyType::BUILTIN_TYPE_INT),
+                        collectionValueType: new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
+                    ),
+                ],
+            ];
 
-        yield 'array' => [
-            Type::array(Type::object('Foo\Bar')),
-            [
-                new LegacyType(
-                    LegacyType::BUILTIN_TYPE_ARRAY,
-                    false,
-                    null,
-                    true,
-                    [new LegacyType(LegacyType::BUILTIN_TYPE_INT), new LegacyType(LegacyType::BUILTIN_TYPE_STRING)],
-                    new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
-                ),
-            ],
-        ];
+            yield 'array' => [
+                Type::array(Type::object('Foo\Bar')),
+                [
+                    new LegacyType(
+                        LegacyType::BUILTIN_TYPE_ARRAY,
+                        false,
+                        null,
+                        true,
+                        [new LegacyType(LegacyType::BUILTIN_TYPE_INT), new LegacyType(LegacyType::BUILTIN_TYPE_STRING)],
+                        new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
+                    ),
+                ],
+            ];
 
-        yield 'array (string key)' => [
-            Type::array(Type::object('Foo\Bar'), Type::string()),
-            [
-                new LegacyType(
-                    LegacyType::BUILTIN_TYPE_ARRAY,
-                    false,
-                    null,
-                    true,
-                    new LegacyType(LegacyType::BUILTIN_TYPE_STRING),
-                    new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
-                ),
-            ],
-        ];
+            yield 'array (string key)' => [
+                Type::array(Type::object('Foo\Bar'), Type::string()),
+                [
+                    new LegacyType(
+                        LegacyType::BUILTIN_TYPE_ARRAY,
+                        false,
+                        null,
+                        true,
+                        new LegacyType(LegacyType::BUILTIN_TYPE_STRING),
+                        new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
+                    ),
+                ],
+            ];
 
-        yield 'array (int key)' => [
-            Type::array(Type::object('Foo\Bar'), Type::int()),
-            [
-                new LegacyType(
-                    LegacyType::BUILTIN_TYPE_ARRAY,
-                    false,
-                    null,
-                    true,
-                    new LegacyType(LegacyType::BUILTIN_TYPE_INT),
-                    new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
-                ),
-            ],
-        ];
+            yield 'array (int key)' => [
+                Type::array(Type::object('Foo\Bar'), Type::int()),
+                [
+                    new LegacyType(
+                        LegacyType::BUILTIN_TYPE_ARRAY,
+                        false,
+                        null,
+                        true,
+                        new LegacyType(LegacyType::BUILTIN_TYPE_INT),
+                        new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
+                    ),
+                ],
+            ];
+        }
     }
 
     public function testToTypeInfoTypeWithUnsupportedTypeThrowsException(): void
@@ -127,6 +136,12 @@ class LegacyTypeConverterTest extends TestCase
 
     public static function provideToLegacyTypeCases(): \Generator
     {
+        if (!class_exists(LegacyType::class)) {
+            yield 'skip' => [null];
+
+            return;
+        }
+
         yield 'object' => [
             new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
             Type::object('Foo\Bar'),

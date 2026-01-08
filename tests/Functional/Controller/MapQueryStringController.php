@@ -21,7 +21,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidation
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyMapQueryString;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class MapQueryStringController
 {

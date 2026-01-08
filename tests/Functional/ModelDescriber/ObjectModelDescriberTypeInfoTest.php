@@ -17,7 +17,7 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\PropertyInfo\Type as LegacyType;
+use Symfony\Component\TypeInfo\Type;
 
 final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
 {
@@ -47,12 +47,6 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
 
             $reflect = new \ReflectionClass($class);
             if (file_exists($fixtureDir = \dirname($reflect->getFileName()).'/TypeInfo/'.$reflect->getShortName().'.json')) {
-                self::assertNotSame(
-                    self::getFixture($fixtureDir),
-                    self::getFixture($fixture[1]),
-                    "The fixture $fixtureDir is identical to the original one. Please remove it."
-                );
-
                 yield [
                     $class,
                     $fixtureDir,
@@ -100,7 +94,7 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
      */
     public function testInvalidType(object $class, string $expectedType, string $propertyName): void
     {
-        $model = new Model(new LegacyType('object', false, $class::class));
+        $model = new Model(Type::object($class::class));
         $schema = new OA\Schema([
             'type' => 'object',
         ]);
@@ -149,7 +143,7 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
             public array $listOrDict;
         };
 
-        $model = new Model(new LegacyType('object', false, $complexArrayClass::class));
+        $model = new Model(Type::object($complexArrayClass::class));
         $schema = new OA\Schema([
             'type' => 'object',
         ]);

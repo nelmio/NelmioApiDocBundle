@@ -14,7 +14,6 @@ namespace Nelmio\ApiDocBundle\Tests\TypeDescriber;
 use Nelmio\ApiDocBundle\TypeDescriber\ArrayDescriber;
 use OpenApi\Annotations\Schema;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\CollectionType;
 use Symfony\Component\TypeInfo\Type\UnionType;
@@ -25,10 +24,6 @@ class ArrayDescriberTest extends TestCase
 
     protected function setUp(): void
     {
-        if (!version_compare(Kernel::VERSION, '7.2.0', '>=')) {
-            self::markTestSkipped('TypeInfo component is only available in Symfony 7.2 and later');
-        }
-
         $this->describer = new ArrayDescriber();
     }
 
@@ -47,10 +42,6 @@ class ArrayDescriberTest extends TestCase
 
     public static function provideInvalidCollectionTypes(): \Generator
     {
-        if (!version_compare(Kernel::VERSION, '7.2.0', '>=')) {
-            return yield [false];
-        }
-
         yield [Type::array(Type::int(), Type::int())];
         yield [Type::array(Type::int(), Type::string())];
         yield [Type::list()];

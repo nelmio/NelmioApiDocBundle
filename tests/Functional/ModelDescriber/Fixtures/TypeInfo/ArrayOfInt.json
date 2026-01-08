@@ -2,8 +2,7 @@
     "required": [
         "untypedArray",
         "arrayOfIntegers",
-        "listOfIntegers",
-        "shortArrayOfIntegers"
+        "listOfIntegers"
     ],
     "properties": {
         "untypedArray": {
@@ -44,13 +43,7 @@
                 "type": "integer"
             }
         },
-        "shortArrayOfIntegers": {
-            "type": "array",
-            "items": {
-                "type": "integer"
-            }
-        },
-        "shortArrayOfIntegersNullable": {
+        "listOfIntegersNullable": {
             "type": "array",
             "items": {
                 "type": "integer"

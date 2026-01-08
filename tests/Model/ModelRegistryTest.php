@@ -32,7 +32,9 @@ class ModelRegistryTest extends TestCase
             ],
         ];
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
-        $type = new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, false, null, true);
+        $type = class_exists(LegacyType::class)
+            ? new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, false, null, true)
+            : Type::list();
 
         self::assertEquals(
             '#/components/schemas/mixed[]',
@@ -79,15 +81,17 @@ class ModelRegistryTest extends TestCase
 
     public static function provideNameCollisionsTypes(): \Generator
     {
-        yield 'class (LegacyType)' => [
-            new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class),
-            'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
-        ];
+        if (class_exists(LegacyType::class)) {
+            yield 'class (LegacyType)' => [
+                new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class),
+                'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest',
+            ];
 
-        yield 'nullable class (LegacyType)' => [
-            new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, true, self::class),
-            'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest|null',
-        ];
+            yield 'nullable class (LegacyType)' => [
+                new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, true, self::class),
+                'Nelmio\\ApiDocBundle\\Tests\\Model\\ModelRegistryTest|null',
+            ];
+        }
 
         yield 'class' => [
             Type::object(self::class),
@@ -134,7 +138,9 @@ class ModelRegistryTest extends TestCase
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
         $registry->setLogger($logger);
 
-        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class);
+        $type = class_exists(LegacyType::class)
+            ? new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class)
+            : Type::object(self::class);
         $registry->register(new Model($type, ['group2']));
     }
 
@@ -146,7 +152,9 @@ class ModelRegistryTest extends TestCase
     public function testNameAliasingForObjectsLegacyType(string $expected, ?array $groups, ?string $name, array $alternativeNames): void
     {
         $registry = new ModelRegistry([], $this->createOpenApi(), $alternativeNames);
-        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class);
+        $type = class_exists(LegacyType::class)
+            ? new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class)
+            : Type::object(self::class);
 
         self::assertEquals($expected, $registry->register(new Model($type, $groups, name: $name)));
     }
@@ -272,9 +280,15 @@ class ModelRegistryTest extends TestCase
         $registry = new ModelRegistry([], $this->createOpenApi());
         $name = 'CustomName';
 
-        self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class), name: $name)));
-        self::assertEquals('#/components/schemas/CustomName2', $registry->register(new Model(new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class.'Foo'), name: $name)));
-        self::assertEquals('#/components/schemas/CustomName3', $registry->register(new Model(new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class.'Bar'), name: $name)));
+        if (class_exists(LegacyType::class)) {
+            self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class), name: $name)));
+            self::assertEquals('#/components/schemas/CustomName2', $registry->register(new Model(new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class.'Foo'), name: $name)));
+            self::assertEquals('#/components/schemas/CustomName3', $registry->register(new Model(new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class.'Bar'), name: $name)));
+        } else {
+            self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model(Type::object(self::class), name: $name)));
+            self::assertEquals('#/components/schemas/CustomName2', $registry->register(new Model(Type::object(self::class.'Foo'), name: $name)));
+            self::assertEquals('#/components/schemas/CustomName3', $registry->register(new Model(Type::object(self::class.'Bar'), name: $name)));
+        }
     }
 
     // Re-using the same custom name with an identical model should return the same schema reference
@@ -283,7 +297,9 @@ class ModelRegistryTest extends TestCase
         $registry = new ModelRegistry([], $this->createOpenApi());
         $name = 'CustomName';
 
-        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed');
+        $type = class_exists(LegacyType::class)
+            ? new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class.'ReUsed')
+            : Type::object(self::class.'ReUsed');
 
         self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model($type, name: $name)));
         self::assertEquals('#/components/schemas/CustomName', $registry->register(new Model($type, name: $name)));
@@ -304,8 +320,10 @@ class ModelRegistryTest extends TestCase
 
     public static function unsupportedTypesProvider(): \Generator
     {
-        yield [new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, false, null, true), 'array'];
-        yield [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class), self::class];
+        if (class_exists(LegacyType::class)) {
+            yield [new LegacyType(LegacyType::BUILTIN_TYPE_ARRAY, false, null, true), 'array'];
+            yield [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, self::class), self::class];
+        }
 
         yield [Type::array(), 'array'];
         yield [Type::object(self::class), self::class];
@@ -314,7 +332,9 @@ class ModelRegistryTest extends TestCase
     public function testUnsupportedTypeExceptionWithNonExistentClass(): void
     {
         $className = 'Some\\Class\\That\\DoesNotExist';
-        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, $className);
+        $type = class_exists(LegacyType::class)
+            ? new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, $className)
+            : Type::object($className);
 
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage(\sprintf('Schema of type "%s" can\'t be generated, no describer supports it. Class "Some\Class\That\DoesNotExist" does not exist, did you forget a use statement, or typed it wrong?', $className));

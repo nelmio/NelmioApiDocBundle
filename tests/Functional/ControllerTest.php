@@ -17,10 +17,12 @@ use Nelmio\ApiDocBundle\Tests\Functional\Controller\SecuredApiController;
 use OpenApi\Annotations as OA;
 use OpenApi\Processors\CleanUnusedComponents;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 /**
@@ -80,6 +82,24 @@ final class ControllerTest extends WebTestCase
         );
     }
 
+    #[Group('jms-serializer')]
+    #[Group('hateoas')]
+    public function testJmsModelOptOut(): void
+    {
+        $this->testControllers(
+            'JmsOptOutController',
+            null,
+            [new JMSSerializerBundle()],
+            [
+                'nelmio_api_doc' => [
+                    'models' => [
+                        'use_jms' => true,
+                    ],
+                ],
+            ],
+        );
+    }
+
     public static function provideTestCases(): \Generator
     {
         yield 'Promoted properties defaults attributes' => [
@@ -94,26 +114,13 @@ final class ControllerTest extends WebTestCase
             ],
         ];
 
-        yield 'JMS model opt out' => [
-            'JmsOptOutController',
-            null,
-            [new JMSSerializerBundle()],
-            [
-                'nelmio_api_doc' => [
-                    'models' => [
-                        'use_jms' => true,
-                    ],
-                ],
-            ],
-        ];
-
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2209' => [
             'Controller2209',
         ];
 
         yield 'MapQueryString' => [
             'MapQueryStringController',
-            null,
+            class_exists(LegacyType::class) ? 'MapQueryStringController' : 'MapQueryStringController-type_info',
             [],
             [
                 // Enable serializer
@@ -148,7 +155,7 @@ final class ControllerTest extends WebTestCase
 
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
             'MapQueryStringController',
-            'cleanup-components',
+            class_exists(LegacyType::class) ? 'cleanup-components' : 'cleanup-components-type_info',
             [],
             [
                 // Enable serializer

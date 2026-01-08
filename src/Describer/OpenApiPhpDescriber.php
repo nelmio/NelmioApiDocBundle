@@ -138,6 +138,10 @@ final class OpenApiPhpDescriber
                     continue;
                 }
 
+                if ($annotation instanceof OA\Parameter && Generator::UNDEFINED === $annotation->name && null !== $annotation->_context?->property) {
+                    $annotation->name = $annotation->_context->property;
+                }
+
                 if (
                     !$annotation instanceof OA\Response
                     && !$annotation instanceof OA\RequestBody

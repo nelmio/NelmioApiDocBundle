@@ -32,6 +32,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 class TestKernel extends Kernel
@@ -62,8 +63,11 @@ class TestKernel extends Kernel
             new ApiPlatformBundle(),
             new NelmioApiDocBundle(),
             new TestBundle(),
-            new FOSRestBundle(),
         ];
+
+        if (self::USE_FOSREST === $this->flag) {
+            $bundles[] = new FOSRestBundle();
+        }
 
         if (self::USE_JMS === $this->flag || self::USE_BAZINGA === $this->flag) {
             $bundles[] = new JMSSerializerBundle();
@@ -131,26 +135,21 @@ class TestKernel extends Kernel
         ]);
 
         $c->loadFromExtension('api_platform', [
-            'keep_legacy_inflector' => false,
             'mapping' => ['paths' => [
                 '%kernel.project_dir%/tests/Functional/EntityExcluded/ApiPlatform3',
             ]],
         ]);
 
-        $c->loadFromExtension('fos_rest', [
-            'format_listener' => [
-                'rules' => [
-                    [
-                        'path' => '^/',
-                        'fallback_format' => 'json',
+        if (self::USE_FOSREST === $this->flag) {
+            $c->loadFromExtension('fos_rest', [
+                'format_listener' => [
+                    'rules' => [
+                        [
+                            'path' => '^/',
+                            'fallback_format' => 'json',
+                        ],
                     ],
                 ],
-            ],
-        ]);
-
-        // If FOSRestBundle 2.8
-        if (class_exists(\FOS\RestBundle\EventListener\ResponseStatusCodeListener::class)) {
-            $c->loadFromExtension('fos_rest', [
                 'exception' => [
                     'enabled' => false,
                     'exception_listener' => false,
@@ -204,7 +203,7 @@ class TestKernel extends Kernel
 
         // Filter routes
         $c->loadFromExtension('nelmio_api_doc', [
-            'type_info' => self::USE_TYPE_INFO === $this->flag,
+            'type_info' => !class_exists(LegacyType::class) || self::USE_TYPE_INFO === $this->flag,
             'html_config' => [
                 'assets_mode' => AssetsMode::BUNDLE,
             ],
