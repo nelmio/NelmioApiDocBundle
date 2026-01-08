@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [5.9.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.9.1...v5.9.2) (2026-01-08)
+
+
+### Bug Fixes
+
+* **config:** set `type_info` default correctly in Symfony 8 ([#2670](https://github.com/nelmio/NelmioApiDocBundle/issues/2670)) ([3e65701](https://github.com/nelmio/NelmioApiDocBundle/commit/3e65701a5a38279c8b65d062878cdb57354d675d))
+
 ## [5.9.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.9.0...v5.9.1) (2026-01-08)
 
 
