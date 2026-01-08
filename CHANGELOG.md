@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [5.9.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.9.0...v5.9.1) (2026-01-08)
+
+
+### Bug Fixes
+
+* **swagger-ui:** dark mode ui background color ([#2665](https://github.com/nelmio/NelmioApiDocBundle/issues/2665)) ([0303e94](https://github.com/nelmio/NelmioApiDocBundle/commit/0303e941ca97ea0a7d080402d8f127cd4bf0050b))
+
+
+### Miscellaneous Chores
+
+* **phpdocumentor:** bump support for reflection-docblock & type-resolver ([#2666](https://github.com/nelmio/NelmioApiDocBundle/issues/2666)) ([75a543d](https://github.com/nelmio/NelmioApiDocBundle/commit/75a543ddc4df36ba5b1bee497c75cbdb39006da8))
+
 ## [5.9.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.8.3...v5.9.0) (2026-01-02)
 
 
