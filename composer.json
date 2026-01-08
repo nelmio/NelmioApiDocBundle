@@ -17,8 +17,8 @@
     ],
     "require": {
         "php": ">=8.2",
-        "phpdocumentor/reflection-docblock": "^5.0",
-        "phpdocumentor/type-resolver": "^1.8.2",
+        "phpdocumentor/reflection-docblock": "^5.0 || ^6.0",
+        "phpdocumentor/type-resolver": "^1.8.2 || ^2.0",
         "psr/cache": "^1.0 || ^2.0 || ^3.0",
         "psr/container": "^1.0 || ^2.0",
         "psr/log": "^1.0 || ^2.0 || ^3.0",
