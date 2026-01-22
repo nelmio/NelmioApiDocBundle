@@ -786,10 +786,24 @@ class FunctionalTest extends WebTestCase
      */
     public function testPrivateProtectedExposure(): void
     {
+        self::assertEquals([
+            'schema' => 'PrivateProtectedExposure',
+            'type' => 'object',
+            'required' => [
+                'publicField',
+                'isVisible',
+            ],
+            'properties' => [
+                'isVisible' => [
+                    'type' => 'boolean',
+                ],
+                'publicField' => [
+                    'type' => 'string',
+                ],
+            ],
+        ], json_decode(($model = $this->getModel('PrivateProtectedExposure'))->toJson(), true));
+
         // Ensure that groups are supported
-        $model = $this->getModel('PrivateProtectedExposure');
-        self::assertCount(1, $model->properties);
-        $this->assertHasProperty('publicField', $model);
         $this->assertNotHasProperty('privateField', $model);
         $this->assertNotHasProperty('protectedField', $model);
         $this->assertNotHasProperty('protected', $model);

@@ -114,16 +114,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             return;
         }
 
-        // Fix for https://github.com/nelmio/NelmioApiDocBundle/issues/1756
-        // The SerializerExtractor does expose private/protected properties for some reason, so we eliminate them here
-        $propertyInfoProperties = array_intersect($propertyInfoProperties, $this->propertyInfo->getProperties($class, []) ?? []);
-
         foreach ($propertyInfoProperties as $propertyName) {
             $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, $model->getSerializationContext()) : $propertyName;
 
             $reflections = $this->getReflections($reflClass, $propertyName);
 
-            if (!$annotationsReader->shouldDescribeProperty($reflections)) {
+            if (!$annotationsReader->shouldDescribeProperty($reflections, false)) {
                 continue;
             }
 
@@ -165,7 +161,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     }
 
     /**
-     * @return \ReflectionProperty[]|\ReflectionMethod[]
+     * @return list<\ReflectionProperty|\ReflectionMethod>
      */
     private function getReflections(\ReflectionClass $reflClass, string $propertyName): array
     {

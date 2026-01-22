@@ -24,6 +24,13 @@ class PrivateProtectedExposure
      */
     public $publicField;
 
+    private bool $isVisible;
+
+    public function isVisible(): bool
+    {
+        return $this->isVisible;
+    }
+
     protected function setProtected(string $thing)
     {
     }

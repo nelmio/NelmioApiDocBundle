@@ -156,7 +156,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
                 }
             }
 
-            if (!$annotationsReader->shouldDescribeProperty($reflections)) {
+            if (!$annotationsReader->shouldDescribeProperty($reflections, true)) {
                 $context->popPropertyMetadata();
 
                 continue;

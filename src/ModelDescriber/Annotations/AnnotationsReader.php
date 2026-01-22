@@ -70,17 +70,28 @@ class AnnotationsReader
     }
 
     /**
-     * @param \ReflectionProperty[]|\ReflectionMethod[] $reflections
+     * @param list<\ReflectionProperty|\ReflectionMethod> $reflections
      */
-    public function shouldDescribeProperty(array $reflections): bool
+    public function shouldDescribeProperty(array $reflections, bool $isJms): bool
     {
+        $isPublic = $isJms;
         foreach ($reflections as $reflection) {
+            // If the property has #[Ignore] attribute, always ignore it
             if ([] !== $reflection->getAttributes(Ignore::class)) {
                 return false;
             }
+
+            if ($isJms) {
+                continue;
+            }
+
+            if ($reflection->isPublic()) {
+                $isPublic = true;
+            }
         }
 
-        return true;
+        // Describe if it's a public property or has a public getter
+        return $isPublic;
     }
 
     /**
