@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Model;
 
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use Nelmio\ApiDocBundle\Model\NameGenerator\ModelNameGeneratorInterface;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -342,6 +343,22 @@ class ModelRegistryTest extends TestCase
         $registry = new ModelRegistry([], $this->createOpenApi());
         $registry->register(new Model($type));
         $registry->registerSchemas();
+    }
+
+    public function testNameGeneratorIsUsedForModelNameGenerationWhenNotNull(): void
+    {
+        $class = new class {};
+        $shortName = (new \ReflectionClass($class))->getShortName();
+        $type = Type::object($class::class);
+        $model = new Model($type, ['group1'], [], ['extra_context' => true]);
+
+        $modelNameGenerator = $this->createMock(ModelNameGeneratorInterface::class);
+        $modelNameGenerator->expects(self::once())->method('generateName')
+            ->with($model, $shortName, [])
+            ->willReturn("{$shortName}_group1");
+
+        $registry = new ModelRegistry([], $this->createOpenApi(), [], $modelNameGenerator);
+        $registry->register($model);
     }
 
     private function createOpenApi(): OA\OpenApi

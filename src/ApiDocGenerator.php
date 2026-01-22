@@ -14,6 +14,8 @@ namespace Nelmio\ApiDocBundle;
 use Nelmio\ApiDocBundle\Describer\DescriberInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use Nelmio\ApiDocBundle\Model\NameGenerator\ModelNameGeneratorInterface;
+use Nelmio\ApiDocBundle\Model\NameGenerator\NoopModelNameGenerator;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\ModelRegister;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
@@ -38,6 +40,8 @@ final class ApiDocGenerator
 
     private ?CacheItemPoolInterface $cacheItemPool;
 
+    private ModelNameGeneratorInterface $modelNameGenerator;
+
     private string $cacheItemId;
 
     /** @var string[] */
@@ -56,13 +60,20 @@ final class ApiDocGenerator
      * @param DescriberInterface[]|iterable      $describers
      * @param ModelDescriberInterface[]|iterable $modelDescribers
      */
-    public function __construct($describers, $modelDescribers, ?CacheItemPoolInterface $cacheItemPool = null, ?string $cacheItemId = null, ?Generator $generator = null)
-    {
+    public function __construct(
+        $describers,
+        $modelDescribers,
+        ?CacheItemPoolInterface $cacheItemPool = null,
+        ?string $cacheItemId = null,
+        ?Generator $generator = null,
+        ?ModelNameGeneratorInterface $modelNameGenerator = null,
+    ) {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
         $this->cacheItemPool = $cacheItemPool;
         $this->cacheItemId = $cacheItemId ?? 'openapi_doc';
         $this->generator = $generator ?? new Generator($this->logger);
+        $this->modelNameGenerator = $modelNameGenerator ?? new NoopModelNameGenerator();
     }
 
     /**
@@ -111,7 +122,7 @@ final class ApiDocGenerator
         $context = Util::createContext(['version' => $this->generator->getVersion()]);
 
         $this->openApi = new OpenApi(['_context' => $context]);
-        $modelRegistry = new ModelRegistry($this->modelDescribers, $this->openApi, $this->alternativeNames);
+        $modelRegistry = new ModelRegistry($this->modelDescribers, $this->openApi, $this->alternativeNames, $this->modelNameGenerator);
         if (null !== $this->logger) {
             $modelRegistry->setLogger($this->logger);
         }

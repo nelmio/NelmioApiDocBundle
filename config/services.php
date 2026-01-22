@@ -250,5 +250,11 @@ return static function (ContainerConfigurator $container) {
        ->set('nelmio_api_doc.type_describer.union', \Nelmio\ApiDocBundle\TypeDescriber\UnionDescriber::class)
            ->private()
            ->tag('nelmio_api_doc.type_describer', ['priority' => -1000])
+        ->set('nelmio_api_doc.model_name_generator.group_appending', \Nelmio\ApiDocBundle\Model\NameGenerator\GroupAppendingModelNameGenerator::class)
+            ->private()
+        ->set('nelmio_api_doc.model_name_generator.noop', \Nelmio\ApiDocBundle\Model\NameGenerator\NoopModelNameGenerator::class)
+            ->private()
+            ->alias('nelmio_api_doc.model_name_generator.default', 'nelmio_api_doc.model_name_generator.noop')
+        ->alias('nelmio_api_doc.model_name_generator', 'nelmio_api_doc.model_name_generator.noop')
     ;
 };

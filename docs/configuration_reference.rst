@@ -79,6 +79,9 @@ The bundle configuration is stored under the ``nelmio_api_doc`` key in your appl
                     item_id: null
         models:
             use_jms: false
+            # The service id of the model name generator to use. Must implement
+            # Nelmio\ApiDocBundle\Model\NameGenerator\ModelNameGeneratorInterface
+            model_name_generator: 'nelmio_api_doc.model_name_generator.default'
             names:
                 -
                     alias: ~ # Example: 'Foo'
@@ -352,6 +355,46 @@ use_jms
 **default**: ``false``
 
 Whether to use JMS Serializer for serialization.
+
+model_name_generator
+....................
+
+**type**: ``string``
+**default**: ``nelmio_api_doc.model_name_generator.default``
+
+The service ID of the model name generator to use. This service must implement
+``Nelmio\ApiDocBundle\Model\NameGenerator\ModelNameGeneratorInterface`` and is used to generate schema names for models.
+
+.. code-block:: yaml
+
+        nelmio_api_doc:
+            models:
+                # Use group name appending generator
+                model_name_generator: 'nelmio_api_doc.model_name_generator.group_appending'
+                # Or provide your own service implementing the interface
+                # model_name_generator: App\OpenApi\MyModelNameGenerator
+
+.. note::
+
+    Built-in alternative: GroupAppendingModelNameGenerator
+
+    The bundle also ships with ``Nelmio\ApiDocBundle\Model\NameGenerator\GroupAppendingModelNameGenerator`` which appends the configured model groups to the base model name. For example, a model with short name ``User`` and groups ``["admin", "api-v1"]`` will become ``User_admin_apiV1`` (groups are sanitized and sorted alphabetic).
+
+    To use it, register it as a service and reference that service in ``models.model_name_generator``:
+
+    .. code-block:: yaml
+
+        # config/services.yaml
+        services:
+          nelmio_api_doc.model_name_generator.group_appending:
+            class: Nelmio\ApiDocBundle\Model\NameGenerator\GroupAppendingModelNameGenerator
+            arguments:
+              $groupSeparator: '-'
+
+        # config/packages/nelmio_api_doc.yaml
+        nelmio_api_doc:
+            models:
+                model_name_generator: 'nelmio_api_doc.model_name_generator.group_appending'
 
 names
 .....

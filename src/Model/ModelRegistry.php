@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Model;
 
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\Model\NameGenerator\ModelNameGeneratorInterface;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
@@ -60,6 +61,7 @@ final class ModelRegistry
      */
     private iterable $modelDescribers;
 
+    private ?ModelNameGeneratorInterface $modelNameGenerator;
     private OA\OpenApi $api;
 
     /**
@@ -68,11 +70,16 @@ final class ModelRegistry
      *
      * @internal
      */
-    public function __construct($modelDescribers, OA\OpenApi $api, array $alternativeNames = [])
-    {
+    public function __construct(
+        $modelDescribers,
+        OA\OpenApi $api,
+        array $alternativeNames = [],
+        ?ModelNameGeneratorInterface $modelNameGenerator = null,
+    ) {
         $this->modelDescribers = $modelDescribers;
         $this->api = $api;
         $this->logger = new NullLogger();
+        $this->modelNameGenerator = $modelNameGenerator;
 
         foreach ($alternativeNames as $alternativeName => $criteria) {
             $model = new Model(
@@ -211,6 +218,10 @@ final class ModelRegistry
             $this->api->components instanceof OA\Components && \is_array($this->api->components->schemas) ? $this->api->components->schemas : [],
             'schema'
         );
+
+        $name = $this->modelNameGenerator?->generateName($model, $name, $names) ?? $name;
+
+        // Keep numbering logic as a fallback in case $this->>modelNameGenerator fails to generate a unique name
         $i = 1;
         while (\in_array($name, $names, true)) {
             if (isset($this->registeredModelNames[$name])) {
