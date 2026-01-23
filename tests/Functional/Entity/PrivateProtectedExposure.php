@@ -26,6 +26,15 @@ class PrivateProtectedExposure
 
     private bool $isVisible;
 
+    public int $campaign_id;
+
+    private bool $is_active;
+
+    public function isActive(): bool
+    {
+        return $this->is_active;
+    }
+
     public function isVisible(): bool
     {
         return $this->isVisible;

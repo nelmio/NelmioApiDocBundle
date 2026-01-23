@@ -33,6 +33,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     use ApplyOpenApiDiscriminatorTrait;
     use ModelRegistryAwareTrait;
 
+    private const ACCESSOR_PREFIXES = ['get', 'is', 'has', 'can', 'add', 'remove', 'set'];
+
     private PropertyInfoExtractorInterface $propertyInfo;
     private ?ClassMetadataFactoryInterface $classMetadataFactory;
     private PropertyDescriberInterface|TypeDescriberInterface $propertyDescriber;
@@ -166,15 +168,20 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private function getReflections(\ReflectionClass $reflClass, string $propertyName): array
     {
         $reflections = [];
-        if ($reflClass->hasProperty($propertyName)) {
-            $reflections[] = $reflClass->getProperty($propertyName);
-        }
 
         $camelProp = $this->camelize($propertyName);
-        foreach (['', 'get', 'is', 'has', 'can', 'add', 'remove', 'set'] as $prefix) {
-            if ($reflClass->hasMethod($prefix.$camelProp)) {
-                $reflections[] = $reflClass->getMethod($prefix.$camelProp);
+        foreach (self::ACCESSOR_PREFIXES as $prefix) {
+            if ($reflClass->hasMethod($methodName = $prefix.$camelProp)) {
+                $reflections[] = $reflClass->getMethod($methodName);
             }
+        }
+
+        if ($reflClass->hasMethod($getsetter = lcfirst($camelProp))) {
+            $reflections[] = $reflClass->getMethod($getsetter);
+        }
+
+        if ($reflClass->hasProperty($propertyName)) {
+            $reflections[] = $reflClass->getProperty($propertyName);
         }
 
         return $reflections;
@@ -185,7 +192,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
      */
     private function camelize(string $string): string
     {
-        return str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
+        return str_replace(' ', '', ucwords($string));
     }
 
     /**

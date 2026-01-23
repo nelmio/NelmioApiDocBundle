@@ -792,6 +792,8 @@ class FunctionalTest extends WebTestCase
             'required' => [
                 'publicField',
                 'isVisible',
+                'campaign_id',
+                'active',
             ],
             'properties' => [
                 'isVisible' => [
@@ -799,6 +801,12 @@ class FunctionalTest extends WebTestCase
                 ],
                 'publicField' => [
                     'type' => 'string',
+                ],
+                'campaign_id' => [
+                    'type' => 'integer',
+                ],
+                'active' => [
+                    'type' => 'boolean',
                 ],
             ],
         ], json_decode(($model = $this->getModel('PrivateProtectedExposure'))->toJson(), true));

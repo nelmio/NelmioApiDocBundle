@@ -74,24 +74,19 @@ class AnnotationsReader
      */
     public function shouldDescribeProperty(array $reflections, bool $isJms): bool
     {
-        $isPublic = $isJms;
         foreach ($reflections as $reflection) {
             // If the property has #[Ignore] attribute, always ignore it
             if ([] !== $reflection->getAttributes(Ignore::class)) {
                 return false;
             }
-
-            if ($isJms) {
-                continue;
-            }
-
-            if ($reflection->isPublic()) {
-                $isPublic = true;
-            }
         }
 
-        // Describe if it's a public property or has a public getter
-        return $isPublic;
+        // The first reflection result determines if the property is visible
+        if (!$isJms && !$reflections[0]?->isPublic()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
