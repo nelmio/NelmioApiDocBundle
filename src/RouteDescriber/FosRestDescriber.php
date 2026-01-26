@@ -135,7 +135,7 @@ final class FosRestDescriber implements RouteDescriberInterface
      */
     private function getEnum(mixed $requirements, \ReflectionMethod $reflectionMethod): ?array
     {
-        if (!($requirements instanceof Choice)) {
+        if (!$requirements instanceof Choice) {
             return null;
         }
 

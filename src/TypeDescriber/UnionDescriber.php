@@ -29,7 +29,7 @@ final class UnionDescriber implements TypeDescriberInterface, TypeDescriberAware
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        $innerTypes = array_values(array_filter($type->getTypes(), function (Type $innerType) {
+        $innerTypes = array_values(array_filter($type->getTypes(), static function (Type $innerType) {
             return !$innerType->isIdentifiedBy(TypeIdentifier::NULL);
         }));
 

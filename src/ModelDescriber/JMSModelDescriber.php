@@ -250,7 +250,7 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         }
 
         $groupsExclusion = $context->getExclusionStrategy();
-        if (!($groupsExclusion instanceof GroupsExclusionStrategy)) {
+        if (!$groupsExclusion instanceof GroupsExclusionStrategy) {
             return null;
         }
 

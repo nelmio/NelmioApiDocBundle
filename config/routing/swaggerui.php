@@ -12,7 +12,7 @@
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 
-return function (RoutingConfigurator $routes): void {
+return static function (RoutingConfigurator $routes): void {
     foreach (debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT) as $trace) {
         if (isset($trace['object']) && $trace['object'] instanceof XmlFileLoader && 'doImport' === $trace['function']) {
             if (__DIR__ === dirname(realpath($trace['args'][3]))) {

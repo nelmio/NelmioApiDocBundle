@@ -143,7 +143,7 @@ final class FilteredRouteCollectionBuilder
             return false;
         }
 
-        $annotations = array_map(function (\ReflectionAttribute $attribute) {
+        $annotations = array_map(static function (\ReflectionAttribute $attribute) {
             return $attribute->newInstance();
         }, $method->getAttributes(AbstractAnnotation::class, \ReflectionAttribute::IS_INSTANCEOF));
 

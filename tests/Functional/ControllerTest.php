@@ -55,7 +55,7 @@ final class ControllerTest extends WebTestCase
     {
         $fixtureName = null !== $fixtureSuffix ? $controller.'.'.$fixtureSuffix : $controller;
 
-        $routingConfiguration = function (RoutingConfigurator &$routes) use ($controller, $extraRoutes) {
+        $routingConfiguration = static function (RoutingConfigurator &$routes) use ($controller, $extraRoutes) {
             if (null !== $extraRoutes) {
                 ($extraRoutes)($routes);
             }
@@ -589,7 +589,7 @@ final class ControllerTest extends WebTestCase
                 ],
             ],
             [],
-            function (RoutingConfigurator $routes) {
+            static function (RoutingConfigurator $routes) {
                 $routes->add('security-manually-registered', '/security-manually-registered')
                     ->controller([SecuredApiController::class, 'fetchArticleAction'])
                     ->methods(['GET']);
@@ -630,7 +630,7 @@ final class ControllerTest extends WebTestCase
                 'web_custom_controller' => (new Definition(SecuredApiController::class))
                 ->setPublic(true),
             ],
-            function (RoutingConfigurator $routes) {
+            static function (RoutingConfigurator $routes) {
                 $routes->add('route_name', '/')
                     ->controller('web_custom_controller::fetchArticleAction')
                     ->methods(['GET']);
@@ -659,7 +659,7 @@ final class ControllerTest extends WebTestCase
                 'web_custom_controller' => (new Definition(SecuredApiController::class))
                     ->setPublic(true),
             ],
-            function (RoutingConfigurator $routes) {
+            static function (RoutingConfigurator $routes) {
                 $routes->add('route_name', '/')
                     ->controller('web_custom_controller::fetchArticleAction')
                     ->methods(['GET']);

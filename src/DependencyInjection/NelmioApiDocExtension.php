@@ -173,7 +173,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             ->addTag('container.service_locator')
             ->addArgument(array_combine(
                 array_keys($config['areas']),
-                array_map(function ($area) { return new Reference(\sprintf('nelmio_api_doc.generator.%s', $area)); }, array_keys($config['areas']))
+                array_map(static function ($area) { return new Reference(\sprintf('nelmio_api_doc.generator.%s', $area)); }, array_keys($config['areas']))
             ));
 
         if (true === $config['type_info']) {
@@ -294,7 +294,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
      */
     private function findNameAliases(array $names, string $area): array
     {
-        $nameAliases = array_filter($names, function (array $aliasInfo) use ($area) {
+        $nameAliases = array_filter($names, static function (array $aliasInfo) use ($area) {
             return [] === $aliasInfo['areas'] || \in_array($area, $aliasInfo['areas'], true);
         });
 
