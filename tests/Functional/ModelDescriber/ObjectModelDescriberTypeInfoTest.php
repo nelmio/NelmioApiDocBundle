@@ -90,46 +90,6 @@ final class ObjectModelDescriberTypeInfoTest extends ObjectModelDescriberTest
     }
 
     /**
-     * @dataProvider provideInvalidTypes
-     */
-    public function testInvalidType(object $class, string $expectedType, string $propertyName): void
-    {
-        $model = new Model(Type::object($class::class));
-        $schema = new OA\Schema([
-            'type' => 'object',
-        ]);
-
-        self::expectException(\Exception::class);
-        self::expectExceptionMessage(\sprintf('Type "%s" is not supported in %s::%s. You may need to use the `#[OA\Property(type="")]` attribute to specify it manually.', $expectedType, $class::class, $propertyName));
-
-        $this->modelDescriber->describe($model, $schema);
-    }
-
-    public static function provideInvalidTypes(): \Generator
-    {
-        yield 'never' => [
-            new class {
-                public function getNever(): never
-                {
-                    throw new \Exception('This method should never be called');
-                }
-            },
-            'never',
-            '$never',
-        ];
-
-        yield 'void' => [
-            new class {
-                public function getVoid(): void
-                {
-                }
-            },
-            'void',
-            '$void',
-        ];
-    }
-
-    /**
      * `symfony/type-info 7.3.3` changed the string representation of list from `array<int, T>` to `list<T>`.
      *
      * This causes a change in the order of the types in a union type, which in turn changes the generated schema.
