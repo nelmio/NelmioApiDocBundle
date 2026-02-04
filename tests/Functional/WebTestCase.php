@@ -83,7 +83,7 @@ class WebTestCase extends BaseWebTestCase
     protected function getParameter(OA\Operation|OA\OpenApi $annotation, string $name, string $in): OA\Parameter
     {
         $this->assertHasParameter($name, $in, $annotation);
-        $parameters = array_filter($annotation->parameters ?? [], function (OA\Parameter $parameter) use ($name, $in) {
+        $parameters = array_filter($annotation->parameters ?? [], static function (OA\Parameter $parameter) use ($name, $in) {
             return $parameter->name === $name && $parameter->in === $in;
         });
 
@@ -136,7 +136,7 @@ class WebTestCase extends BaseWebTestCase
      */
     public function assertHasParameter(string $name, string $in, OA\AbstractAnnotation $annotation): void
     {
-        $parameters = array_filter(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], function (OA\Parameter $parameter) use ($name, $in) {
+        $parameters = array_filter(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], static function (OA\Parameter $parameter) use ($name, $in) {
             return $parameter->name === $name && $parameter->in === $in;
         });
 

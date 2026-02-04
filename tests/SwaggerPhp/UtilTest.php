@@ -114,7 +114,7 @@ class UtilTest extends TestCase
         /** @var OA\Info $info */
         $info = Util::createChild($this->rootAnnotation, OA\Info::class, $properties);
 
-        $properties = array_filter(get_object_vars($info), function ($key) {
+        $properties = array_filter(get_object_vars($info), static function ($key) {
             return !str_starts_with($key, '_');
         }, \ARRAY_FILTER_USE_KEY);
 
@@ -947,7 +947,7 @@ class UtilTest extends TestCase
      */
     private function getSetupPropertiesWithoutClass(array $setup): array
     {
-        return array_filter($setup, function ($k) {return 'class' !== $k; }, \ARRAY_FILTER_USE_KEY);
+        return array_filter($setup, static function ($k) {return 'class' !== $k; }, \ARRAY_FILTER_USE_KEY);
     }
 
     /**

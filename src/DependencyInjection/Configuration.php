@@ -51,7 +51,7 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('cache')
                     ->validate()
-                        ->ifTrue(function ($v) { return null !== $v['item_id'] && null === $v['pool']; })
+                        ->ifTrue(static function ($v) { return null !== $v['item_id'] && null === $v['pool']; })
                         ->thenInvalid('Can not set cache.item_id if cache.pool is null')
                     ->end()
                     ->children()
@@ -121,15 +121,15 @@ final class Configuration implements ConfigurationInterface
                         ]
                     )
                     ->beforeNormalization()
-                        ->ifTrue(function ($v) {
+                        ->ifTrue(static function ($v) {
                             return 0 === \count($v) || isset($v['path_patterns']) || isset($v['host_patterns']) || isset($v['documentation']);
                         })
-                        ->then(function ($v): array {
+                        ->then(static function ($v): array {
                             return ['default' => $v];
                         })
                     ->end()
                     ->validate()
-                        ->ifTrue(function ($v) {
+                        ->ifTrue(static function ($v) {
                             return !isset($v['default']);
                         })
                         ->thenInvalid('You must specify a `default` area under `nelmio_api_doc.areas`.')
@@ -229,14 +229,14 @@ final class Configuration implements ConfigurationInterface
                                     ->variableNode('groups')
                                         ->defaultValue(null)
                                         ->validate()
-                                            ->ifTrue(function ($v) { return null !== $v && !\is_array($v); })
+                                            ->ifTrue(static function ($v) { return null !== $v && !\is_array($v); })
                                             ->thenInvalid('Model groups must be either `null` or an array.')
                                         ->end()
                                     ->end()
                                     ->variableNode('options')
                                         ->defaultValue(null)
                                         ->validate()
-                                            ->ifTrue(function ($v) { return null !== $v && !\is_array($v); })
+                                            ->ifTrue(static function ($v) { return null !== $v && !\is_array($v); })
                                             ->thenInvalid('Model options must be either `null` or an array.')
                                         ->end()
                                     ->end()

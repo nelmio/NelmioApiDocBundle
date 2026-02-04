@@ -127,9 +127,8 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 if ('' === $part || 0 === preg_match(self::ALPHANUM_EXPANDED_REGEX, $part)) {
                     // we check a complex regex expression containing | - abort in that case
                     return [];
-                } else {
-                    $requirements[] = $part;
                 }
+                $requirements[] = $part;
             }
         }
 

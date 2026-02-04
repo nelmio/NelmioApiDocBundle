@@ -27,7 +27,7 @@ final class ApiPlatformDescriber extends ExternalDocDescriber
             throw new \InvalidArgumentException(\sprintf('Argument 2 passed to %s() must implement %s and support normalization of %s. The normalizer provided is an instance of %s.', __METHOD__, NormalizerInterface::class, DocumentationInterface::class, $normalizer::class));
         }
 
-        parent::__construct(function () use ($documentation, $normalizer) {
+        parent::__construct(static function () use ($documentation, $normalizer) {
             $documentation = (array) $normalizer->normalize(
                 $documentation,
                 null,
