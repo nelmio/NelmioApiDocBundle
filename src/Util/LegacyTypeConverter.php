@@ -85,12 +85,18 @@ final class LegacyTypeConverter
             }
 
             if ($type->getWrappedType()->isIdentifiedBy(TypeIdentifier::OBJECT)) {
+                if ($type->getWrappedType() instanceof Type\GenericType) {
+                    /** @var Type\ObjectType $wrappedType */
+                    $wrappedType = $type->getWrappedType()->getWrappedType();
+                } else {
+                    /** @var Type\ObjectType $wrappedType */
+                    $wrappedType = $type->getWrappedType();
+                }
+
                 return new LegacyType(
                     LegacyType::BUILTIN_TYPE_OBJECT,
                     $nullable,
-                    $type->getWrappedType() instanceof Type\GenericType
-                        ? $type->getWrappedType()->getWrappedType()->getClassName()
-                        : $type->getWrappedType()->getClassName(),
+                    $wrappedType->getClassName(),
                     true,
                     collectionKeyType: $collectionKeyType,
                     collectionValueType: self::toLegacyType($type->getCollectionValueType()),

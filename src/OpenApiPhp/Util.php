@@ -26,24 +26,24 @@ use OpenApi\Generator;
  * of swagger Annotation classes with the following convenience methods
  * to get or create the respective Annotation instances if not found
  *
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getPath()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getSchema()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getProperty()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getOperation()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getOperationParameter()
+ * @see Util::getPath()
+ * @see Util::getSchema()
+ * @see Util::getProperty()
+ * @see Util::getOperation()
+ * @see Util::getOperationParameter()
  *
  * which in turn get or create the Annotation instances through the following more general methods
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getChild()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getCollectionItem()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::getIndexedCollectionItem()
+ * @see Util::getChild()
+ * @see Util::getCollectionItem()
+ * @see Util::getIndexedCollectionItem()
  *
  * which then searches for an existing Annotation through
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::searchCollectionItem()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::searchIndexedCollectionItem()
+ * @see Util::searchCollectionItem()
+ * @see Util::searchIndexedCollectionItem()
  *
  * and if not found the Annotation creates it through
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createCollectionItem()
- * @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::createContext()
+ * @see Util::createCollectionItem()
+ * @see Util::createContext()
  *
  * The merge method @see \Nelmio\ApiDocBundle\OpenApiPhp\Util::merge() has the main purpose to be able
  * to merge properties from an deeply nested array of Annotation properties in the structure of a
@@ -617,7 +617,7 @@ final class Util
      */
     private static function getNestingIndexes(string $class): array
     {
-        return array_map(function ($property) {
+        return array_map(static function ($property) {
             return \is_array($property) ? $property[0] : $property;
         }, $class::$_nested);
     }

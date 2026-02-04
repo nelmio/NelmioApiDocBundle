@@ -33,7 +33,7 @@ class FormModelDescriberTest extends TestCase
         $formConfigMock = $this->createMock(FormConfigInterface::class);
         $formConfigMock->expects(self::exactly($csrfProtectionEnabled ? 2 : 1))
             ->method('getOption')
-            ->willReturnCallback(function (string $option, $default) use ($csrfProtectionEnabled, $tokenName) {
+            ->willReturnCallback(static function (string $option, $default) use ($csrfProtectionEnabled, $tokenName) {
                 if ('csrf_protection' === $option) {
                     return $csrfProtectionEnabled;
                 }
@@ -66,7 +66,7 @@ class FormModelDescriberTest extends TestCase
         $describer->describe($model, $schema);
 
         if ($expectProperty) {
-            $filteredProperties = array_filter($schema->properties, function (Property $property) use ($tokenName) {
+            $filteredProperties = array_filter($schema->properties, static function (Property $property) use ($tokenName) {
                 return $property->property === $tokenName;
             });
 

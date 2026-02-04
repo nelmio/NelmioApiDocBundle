@@ -298,9 +298,9 @@ final class ModelRegistry
         } elseif ($type->isCollection()) {
             if (null !== $collectionType = ($type->getCollectionValueTypes()[0] ?? null)) {
                 return $this->typeToString($collectionType).'[]';
-            } else {
-                return 'mixed[]';
             }
+
+            return 'mixed[]';
         }
 
         return $type->getBuiltinType();

@@ -42,6 +42,7 @@ final class GenericClassDescriber implements TypeDescriberInterface, ModelRegist
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
+        /** @var ObjectType $wrappedType */
         $wrappedType = $type->getWrappedType();
         $reflectionClass = new \ReflectionClass($wrappedType->getClassName());
 

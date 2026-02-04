@@ -1,7 +1,11 @@
 .* export-ignore
 *.md export-ignore
-tests export-ignore
+
+codecov.yml export-ignore
 docs export-ignore
-phpunit export-ignore
+phpstan.dist.neon export-ignore
+phpstan-baseline.neon export-ignore
+phpunit-ignore.txt export-ignore
 phpunit.xml.dist export-ignore
+tests export-ignore
 utils export-ignore

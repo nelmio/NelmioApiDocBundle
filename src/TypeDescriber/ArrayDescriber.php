@@ -31,7 +31,7 @@ final class ArrayDescriber implements TypeDescriberInterface, TypeDescriberAware
         }
 
         $arrayTypes = array_map(
-            fn (Type $keyType): Type => Type::array($type->getCollectionValueType(), $keyType),
+            static fn (Type $keyType): Type => Type::array($type->getCollectionValueType(), $keyType),
             $type->getCollectionKeyType()->getTypes()
         );
 
