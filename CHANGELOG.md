@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## [5.9.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.9.2...v5.9.3) (2026-02-04)
+
+
+### Bug Fixes
+
+* **composer:** conflict for symfony/property-info versions ([#2685](https://github.com/nelmio/NelmioApiDocBundle/issues/2685)) ([d9f7213](https://github.com/nelmio/NelmioApiDocBundle/commit/d9f7213b23c13cb0e0ab6dc7f87db84feb8ac5fb))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @stoplight/elements from 9.0.13 to 9.0.15 in /utils ([#2676](https://github.com/nelmio/NelmioApiDocBundle/issues/2676)) ([19c2ab5](https://github.com/nelmio/NelmioApiDocBundle/commit/19c2ab5c6ba321c1a6983ec80b8958ec2e572abc))
+* **gitattributes:** exclude dev configs ([#2683](https://github.com/nelmio/NelmioApiDocBundle/issues/2683)) ([65dfa87](https://github.com/nelmio/NelmioApiDocBundle/commit/65dfa874ce520119e7b8dd9bcb0b8f405ec8e015))
+
 ## [5.9.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.9.1...v5.9.2) (2026-01-08)
 
 
