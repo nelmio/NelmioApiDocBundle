@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
-use Symfony\Component\PropertyInfo\Type as LegacyType;
+use Symfony\Component\TypeInfo\Type as TypeInfoType;
 
 class ConfigurationTest extends TestCase
 {
@@ -263,7 +263,7 @@ class ConfigurationTest extends TestCase
             ];
         }
 
-        if (!class_exists(LegacyType::class)) {
+        if (!class_exists('Symfony\Component\PropertyInfo\Type')) {
             yield 'type_info cannot be false with Symfony 8 or higher' => [
                 [
                     'type_info' => false,
@@ -381,7 +381,7 @@ class ConfigurationTest extends TestCase
         $config = $this->processor->processConfiguration(new Configuration(), []);
 
         self::assertSame(
-            !class_exists(LegacyType::class),
+            class_exists(TypeInfoType::class) && method_exists(PropertyInfoExtractor::class, 'getType'),
             $config['type_info']
         );
     }
