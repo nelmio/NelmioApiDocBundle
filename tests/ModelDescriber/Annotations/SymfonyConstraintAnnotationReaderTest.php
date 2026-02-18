@@ -267,6 +267,35 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     /**
      * @param object $entity
      */
+    #[DataProvider('provideCountConstraintSetsMinMaxPropertiesForObjectType')]
+    public function testCountConstraintSetsMinMaxPropertiesForObjectType($entity): void
+    {
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
+        $schema->properties[0]->type = 'object';
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader();
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+        self::assertSame(1, $schema->properties[0]->minProperties);
+        self::assertSame(10, $schema->properties[0]->maxProperties);
+        self::assertSame(Generator::UNDEFINED, $schema->properties[0]->minItems);
+        self::assertSame(Generator::UNDEFINED, $schema->properties[0]->maxItems);
+    }
+
+    public static function provideCountConstraintSetsMinMaxPropertiesForObjectType(): \Generator
+    {
+        yield 'Attributes' => [new class {
+            #[Assert\Count(min: 1, max: 10)]
+            public $property1;
+        }];
+    }
+
+    /**
+     * @param object $entity
+     */
     #[DataProvider('provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet')]
     public function testRangeConstraintDoesNotSetMaximumIfMaxIsNotSet($entity): void
     {
