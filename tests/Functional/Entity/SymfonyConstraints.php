@@ -71,6 +71,12 @@ class SymfonyConstraints
     private $propertyChoiceWithMultiple;
 
     /**
+     * @var string[]
+     */
+    #[Assert\Choice(multiple: true, choices: ['choice1', 'choice2'])]
+    private $propertyChoiceWithMultipleOldAnnotation;
+
+    /**
      * @var int
      */
     #[Assert\Expression(
@@ -194,6 +200,11 @@ class SymfonyConstraints
     public function setPropertyChoiceWithMultiple(array $propertyChoiceWithMultiple): void
     {
         $this->propertyChoiceWithMultiple = $propertyChoiceWithMultiple;
+    }
+
+    public function setPropertyChoiceWithMultipleOldAnnotation(array $propertyChoiceWithMultipleOldAnnotation): void
+    {
+        $this->propertyChoiceWithMultipleOldAnnotation = $propertyChoiceWithMultipleOldAnnotation;
     }
 
     public function setPropertyExpression(int $propertyExpression): void
