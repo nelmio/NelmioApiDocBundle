@@ -1,0 +1,102 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/article_upload_with_payload": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_mapuploadedfilewithrequestpayload_uploadwithpayload",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Article81"
+                                    },
+                                    {
+                                        "properties": {
+                                            "upload": {
+                                                "type": "string",
+                                                "format": "binary"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ArticleType81": {
+                "type": "string",
+                "enum": [
+                    "draft",
+                    "final"
+                ]
+            },
+            "ArticleType81IntBacked": {
+                "type": "integer",
+                "enum": [
+                    0,
+                    1
+                ]
+            },
+            "ArticleType81NotBacked": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Article81": {
+                "required": [
+                    "id",
+                    "type",
+                    "intBackedType",
+                    "notBackedType"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/ArticleType81"
+                    },
+                    "intBackedType": {
+                        "$ref": "#/components/schemas/ArticleType81IntBacked"
+                    },
+                    "notBackedType": {
+                        "$ref": "#/components/schemas/ArticleType81NotBacked"
+                    },
+                    "nullableType": {
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleType81"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
