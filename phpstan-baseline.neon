@@ -49,12 +49,12 @@ parameters:
 			path: src/Util/LegacyTypeConverter.php
 
 		-
-			message: '#^PHPDoc tag `@implements` has invalid type Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType\.$#'
+			message: '#^PHPDoc tag .@implements. has invalid type Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType\.$#'
 			count: 1
 			path: src/TypeDescriber/ArrayShapeDescriber.php
 
 		-
-			message: '#^Type Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType in generic type Nelmio\\ApiDocBundle\\TypeDescriber\\TypeDescriberInterface\<Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType\> in PHPDoc tag `@implements` is not subtype of template type T of Symfony\\Component\\TypeInfo\\Type of interface Nelmio\\ApiDocBundle\\TypeDescriber\\TypeDescriberInterface\.$#'
+			message: '#^Type Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType in generic type Nelmio\\ApiDocBundle\\TypeDescriber\\TypeDescriberInterface\<Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType\> in PHPDoc tag .@implements. is not subtype of template type T of Symfony\\Component\\TypeInfo\\Type of interface Nelmio\\ApiDocBundle\\TypeDescriber\\TypeDescriberInterface\.$#'
 			count: 1
 			path: src/TypeDescriber/ArrayShapeDescriber.php
 
