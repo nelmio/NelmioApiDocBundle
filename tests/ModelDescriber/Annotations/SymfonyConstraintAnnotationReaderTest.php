@@ -48,11 +48,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertEquals($schema->required, ['property1', 'property2']);
     }
 
-    /**
-     * @param object $entity
-     */
     #[DataProvider('provideOptionalProperty')]
-    public function testOptionalProperty($entity): void
+    public function testOptionalProperty(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -79,11 +76,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }];
     }
 
-    /**
-     * @param object $entity
-     */
     #[DataProvider('provideAssertChoiceResultsInNumericArray')]
-    public function testAssertChoiceResultsInNumericArray($entity): void
+    public function testAssertChoiceResultsInNumericArray(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -111,11 +105,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }];
     }
 
-    /**
-     * @param object $entity
-     */
     #[DataProvider('provideMultipleChoiceConstraintsApplyEnumToItems')]
-    public function testMultipleChoiceConstraintsApplyEnumToItems($entity): void
+    public function testMultipleChoiceConstraintsApplyEnumToItems(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -137,11 +128,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }];
     }
 
-    /**
-     * @param object $entity
-     */
     #[DataProvider('provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet')]
-    public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet($entity): void
+    public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -163,11 +151,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }];
     }
 
-    /**
-     * @param object $entity
-     */
     #[DataProvider('provideLengthConstraintDoesNotSetMinLengthIfMinIsNotSet')]
-    public function testLengthConstraintDoesNotSetMinLengthIfMinIsNotSet($entity): void
+    public function testLengthConstraintDoesNotSetMinLengthIfMinIsNotSet(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -212,11 +197,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertTrue($schema->properties[0]->exclusiveMaximum);
     }
 
-    /**
-     * @param object $entity
-     */
     #[DataProvider('provideCountConstraintDoesNotSetMinItemsIfMinIsNotSet')]
-    public function testCountConstraintDoesNotSetMinItemsIfMinIsNotSet($entity): void
+    public function testCountConstraintDoesNotSetMinItemsIfMinIsNotSet(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -238,11 +220,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }];
     }
 
-    /**
-     * @param object $entity
-     */
     #[DataProvider('provideCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet')]
-    public function testCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet($entity): void
+    public function testCountConstraintDoesNotSetMaxItemsIfMaxIsNotSet(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -264,11 +243,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }];
     }
 
-    /**
-     * @param object $entity
-     */
     #[DataProvider('provideCountConstraintSetsMinMaxPropertiesForObjectType')]
-    public function testCountConstraintSetsMinMaxPropertiesForObjectType($entity): void
+    public function testCountConstraintSetsMinMaxPropertiesForObjectType(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -293,11 +269,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }];
     }
 
-    /**
-     * @param object $entity
-     */
     #[DataProvider('provideRangeConstraintDoesNotSetMaximumIfMaxIsNotSet')]
-    public function testRangeConstraintDoesNotSetMaximumIfMaxIsNotSet($entity): void
+    public function testRangeConstraintDoesNotSetMaximumIfMaxIsNotSet(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
@@ -319,11 +292,8 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }];
     }
 
-    /**
-     * @param object $entity
-     */
     #[DataProvider('provideRangeConstraintDoesNotSetMinimumIfMinIsNotSet')]
-    public function testRangeConstraintDoesNotSetMinimumIfMinIsNotSet($entity): void
+    public function testRangeConstraintDoesNotSetMinimumIfMinIsNotSet(object $entity): void
     {
         $schema = $this->createObj(OA\Schema::class, []);
         $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
