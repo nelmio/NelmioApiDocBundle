@@ -29,6 +29,7 @@ final class TranslatablePropertyDescriber implements PropertyDescriberInterface
     {
         return 1 === \count($types)
             && Type::BUILTIN_TYPE_OBJECT === $types[0]->getBuiltinType()
-            && is_a($types[0]->getClassName(), TranslatableInterface::class, true);
+            && is_a($types[0]->getClassName(), TranslatableInterface::class, true)
+            && !is_subclass_of($types[0]->getClassName(), \BackedEnum::class);
     }
 }
