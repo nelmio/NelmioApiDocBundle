@@ -38,6 +38,7 @@ final class DictionaryDescriber implements TypeDescriberInterface, TypeDescriber
     public function supports(Type $type, array $context = []): bool
     {
         return $type instanceof CollectionType
+            && !$type instanceof Type\ArrayShapeType
             && $type->getCollectionKeyType() instanceof Type\BuiltinType
             && TypeIdentifier::STRING === $type->getCollectionKeyType()->getTypeIdentifier();
     }

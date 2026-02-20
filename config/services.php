@@ -251,4 +251,12 @@ return static function (ContainerConfigurator $container) {
            ->private()
            ->tag('nelmio_api_doc.type_describer', ['priority' => -1000])
     ;
+
+    if (class_exists(\Symfony\Component\TypeInfo\Type\ArrayShapeType::class)) {
+        $container->services()
+           ->set('nelmio_api_doc.type_describer.array_shape', \Nelmio\ApiDocBundle\TypeDescriber\ArrayShapeDescriber::class)
+               ->private()
+               ->tag('nelmio_api_doc.type_describer', ['priority' => -990])
+        ;
+    }
 };

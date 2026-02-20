@@ -714,6 +714,19 @@ final class ControllerTest extends WebTestCase
             ];
         }
 
+        if (class_exists(\Symfony\Component\TypeInfo\Type\ArrayShapeType::class)) {
+            yield 'Array shape types' => [
+                'ArrayShapeController',
+                null,
+                [],
+                [
+                    'nelmio_api_doc' => [
+                        'type_info' => true,
+                    ],
+                ],
+            ];
+        }
+
         yield 'Custom model names' => [
             'CustomModelNameController',
         ];
