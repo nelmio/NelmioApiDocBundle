@@ -65,6 +65,29 @@ final class MapRequestPayloadProcessor
 
             foreach ($formats as $format) {
                 if (!Generator::isDefault($requestBody->content)) {
+                    $multipartMediaType = $this->findMultipartFormData($requestBody);
+
+                    if (null !== $multipartMediaType) {
+                        $existingSchema = Util::getChild($multipartMediaType, OA\Schema::class);
+
+                        if (!Generator::isDefault($existingSchema->properties)) {
+                            $fileSchema = new OA\Schema([
+                                '_context' => Util::createWeakContext($existingSchema->_context),
+                                'type' => 'object',
+                                'properties' => $existingSchema->properties,
+                            ]);
+
+                            $refSchema = new OA\Schema([
+                                '_context' => Util::createWeakContext($existingSchema->_context),
+                                'ref' => $modelRef,
+                            ]);
+
+                            $existingSchema->properties = Generator::UNDEFINED; /* @phpstan-ignore-line */
+                            $existingSchema->type = Generator::UNDEFINED;
+                            $existingSchema->allOf = [$refSchema, $fileSchema];
+                        }
+                    }
+
                     continue;
                 }
 
@@ -86,6 +109,21 @@ final class MapRequestPayloadProcessor
                 }
             }
         }
+    }
+
+    private function findMultipartFormData(OA\RequestBody $requestBody): ?OA\MediaType
+    {
+        if (Generator::isDefault($requestBody->content)) {
+            return null;
+        }
+
+        foreach ($requestBody->content as $mediaType) {
+            if ($mediaType instanceof OA\MediaType && 'multipart/form-data' === $mediaType->mediaType) {
+                return $mediaType;
+            }
+        }
+
+        return null;
     }
 
     private function getContentSchemaForType(OA\RequestBody $requestBody, string $type): OA\Schema

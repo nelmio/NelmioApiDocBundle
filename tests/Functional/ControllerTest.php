@@ -329,6 +329,40 @@ final class ControllerTest extends WebTestCase
             yield 'Symfony 7.1 MapUploadedFile attribute' => [
                 'MapUploadedFileController',
             ];
+
+            yield 'MapUploadedFile combined with MapRequestPayload' => [
+                'MapUploadedFileWithRequestPayloadController',
+                null,
+                [],
+                [
+                    'framework' => [
+                        'property_info' => [
+                            'enabled' => true,
+                        ],
+                        'serializer' => [
+                            'enabled' => true,
+                            'enable_attributes' => true,
+                        ],
+                        'validation' => [
+                            'enabled' => true,
+                            'enable_attributes' => true,
+                            'static_method' => [
+                                'loadValidatorMetadata',
+                            ],
+                            'translation_domain' => 'validators',
+                            'email_validation_mode' => 'html5',
+                            'mapping' => [
+                                'paths' => [],
+                            ],
+                            'not_compromised_password' => [
+                                'enabled' => true,
+                                'endpoint' => null,
+                            ],
+                            'auto_mapping' => [],
+                        ],
+                    ],
+                ],
+            ];
         }
 
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2224' => [
