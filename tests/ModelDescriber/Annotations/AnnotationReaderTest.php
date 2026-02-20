@@ -25,11 +25,8 @@ class AnnotationReaderTest extends TestCase
 {
     use SetsContextTrait;
 
-    /**
-     * @param object $entity
-     */
     #[DataProvider('provideProperty')]
-    public function testProperty($entity): void
+    public function testProperty(object $entity): void
     {
         $baseProps = ['_context' => new Context()];
 
