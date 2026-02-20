@@ -169,6 +169,7 @@ class SymfonyConstraintAnnotationReader
 
         $setEnumOnThis = $property;
         if ($choice->multiple) {
+            Util::modifyAnnotationValue($property, 'type', 'array');
             $setEnumOnThis = Util::getChild($property, OA\Items::class);
         }
 
