@@ -22,8 +22,9 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\PropertyInfo\Type as LegacyType;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use Symfony\Component\TypeInfo\Type as TypeInfoType;
 
 /**
  * Fairly intensive functional tests because the Kernel is recreated for each test.
@@ -120,7 +121,7 @@ final class ControllerTest extends WebTestCase
 
         yield 'MapQueryString' => [
             'MapQueryStringController',
-            class_exists(LegacyType::class) ? 'MapQueryStringController' : 'MapQueryStringController-type_info',
+            class_exists(TypeInfoType::class) && method_exists(PropertyInfoExtractor::class, 'getType') ? 'MapQueryStringController-type_info' : 'MapQueryStringController',
             [],
             [
                 // Enable serializer
@@ -155,7 +156,7 @@ final class ControllerTest extends WebTestCase
 
         yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2191' => [
             'MapQueryStringController',
-            class_exists(LegacyType::class) ? 'cleanup-components' : 'cleanup-components-type_info',
+            class_exists(TypeInfoType::class) && method_exists(PropertyInfoExtractor::class, 'getType') ? 'cleanup-components-type_info' : 'cleanup-components',
             [],
             [
                 // Enable serializer
