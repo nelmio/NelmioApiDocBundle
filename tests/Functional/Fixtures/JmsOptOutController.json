@@ -130,6 +130,9 @@
                     "best_friend": {
                         "$ref": "#/components/schemas/User"
                     },
+                    "not_null_friend": {
+                        "$ref": "#/components/schemas/User"
+                    },
                     "status": {
                         "title": "Whether this user is enabled or disabled.",
                         "description": "Only enabled users may be used in actions.",

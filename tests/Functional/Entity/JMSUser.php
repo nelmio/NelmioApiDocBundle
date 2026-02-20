@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User.
@@ -94,6 +95,11 @@ class JMSUser
     #[Serializer\Type(User::class)]
     #[Serializer\Expose]
     private $bestFriend;
+
+    #[Serializer\Type(User::class)]
+    #[Serializer\Expose]
+    #[Assert\NotNull]
+    private ?User $notNullFriend = null;
 
     /**
      * Whether this user is enabled or disabled.
