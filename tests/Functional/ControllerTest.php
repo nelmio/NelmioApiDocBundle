@@ -714,7 +714,7 @@ final class ControllerTest extends WebTestCase
             ];
         }
 
-        if (class_exists(\Symfony\Component\TypeInfo\Type\ArrayShapeType::class)) {
+        if (version_compare(Kernel::VERSION, '7.3.0', '>=') && class_exists(TypeInfoType\ArrayShapeType::class)) {
             yield 'Array shape types' => [
                 'ArrayShapeController',
                 null,
