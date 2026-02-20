@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [5.9.4](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.9.3...v5.9.4) (2026-02-20)
+
+
+### Bug Fixes
+
+* `#[MapRequestPayload]` & `#[MapUploadedFile]` combined on same route ([#2689](https://github.com/nelmio/NelmioApiDocBundle/issues/2689)) ([4ff48e7](https://github.com/nelmio/NelmioApiDocBundle/commit/4ff48e75958072feffe62a271cf8d0930602c909))
+* Choice(multiple: true) warning with string[] and type_info ([#2690](https://github.com/nelmio/NelmioApiDocBundle/issues/2690)) ([1c608db](https://github.com/nelmio/NelmioApiDocBundle/commit/1c608dbba2eb9b9d107575bd611d6b1180b0aa67))
+* Count constraint uses minProperties/maxProperties for maps ([#2688](https://github.com/nelmio/NelmioApiDocBundle/issues/2688)) ([e8196ef](https://github.com/nelmio/NelmioApiDocBundle/commit/e8196efc04a8a38cd19e6965c907691cf56a05dc))
+* LegacyType deprecation warning in Configuration ([#2687](https://github.com/nelmio/NelmioApiDocBundle/issues/2687)) ([3c06392](https://github.com/nelmio/NelmioApiDocBundle/commit/3c06392601f939d0f3e859b5ca7d44bcc9728d91))
+
 ## [5.9.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.9.2...v5.9.3) (2026-02-04)
 
 
