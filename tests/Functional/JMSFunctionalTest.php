@@ -218,6 +218,7 @@ class JMSFunctionalTest extends WebTestCase
                     'type' => 'integer',
                 ],
             ],
+            'required' => ['not_null_friend'],
             'schema' => 'JMSUser',
         ], json_decode($this->getModel('JMSUser')->toJson(), true));
 
