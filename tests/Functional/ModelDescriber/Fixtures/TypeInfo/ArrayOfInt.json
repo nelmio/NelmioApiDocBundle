@@ -6,36 +6,16 @@
     ],
     "properties": {
         "untypedArray": {
-            "oneOf": [
-                {
-                    "type": "array",
-                    "items": {
-                        "nullable": true
-                    }
-                },
-                {
-                    "type": "object",
-                    "additionalProperties": {
-                        "nullable": true
-                    }
-                }
-            ]
+            "type": "array",
+            "items": {
+                "nullable": true
+            }
         },
         "arrayOfIntegers": {
-            "oneOf": [
-                {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "integer"
-                    }
-                }
-            ]
+            "type": "array",
+            "items": {
+                "type": "integer"
+            }
         },
         "listOfIntegers": {
             "type": "array",
