@@ -38,6 +38,11 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminator;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyDiscriminatorFileMapping;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
 use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedNameEntity;
+use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedPathAdvancedEntity;
+use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedPathEntity;
+use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedPathInDeepEntity;
+use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedPathOverrideEntity;
+use Nelmio\ApiDocBundle\Tests\Functional\EntityExcluded\Symfony7\SerializedPathWithGroupsEntity;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithAlternateSchemaType;
 use Nelmio\ApiDocBundle\Tests\Functional\Form\FormWithCsrfProtectionDisabledType;
@@ -522,6 +527,36 @@ class ApiController
     #[Route('/serializename', methods: ['GET'])]
     #[OA\Response(response: 200, description: 'success', content: new Model(type: SerializedNameEntity::class))]
     public function serializedNameAction(): void
+    {
+    }
+
+    #[Route('/serializepath', methods: ['GET'])]
+    #[OA\Response(response: 200, description: 'success', content: new Model(type: SerializedPathEntity::class))]
+    public function serializedPathAction(): void
+    {
+    }
+
+    #[Route('/serializepath-deep', methods: ['GET'])]
+    #[OA\Response(response: 200, description: 'success', content: new Model(type: SerializedPathInDeepEntity::class))]
+    public function serializedPathInDeepAction(): void
+    {
+    }
+
+    #[Route('/serializepath-groups', methods: ['GET'])]
+    #[OA\Response(response: 200, description: 'success', content: new Model(type: SerializedPathWithGroupsEntity::class, groups: ['read']))]
+    public function serializedPathWithGroupsAction(): void
+    {
+    }
+
+    #[Route('/serializepath-advanced', methods: ['GET'])]
+    #[OA\Response(response: 200, description: 'success', content: new Model(type: SerializedPathAdvancedEntity::class))]
+    public function serializedPathAdvancedAction(): void
+    {
+    }
+
+    #[Route('/serializepath-override', methods: ['GET'])]
+    #[OA\Response(response: 200, description: 'success', content: new Model(type: SerializedPathOverrideEntity::class))]
+    public function serializedPathOverrideAction(): void
     {
     }
 

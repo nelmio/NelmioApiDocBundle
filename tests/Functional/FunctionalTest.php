@@ -618,6 +618,186 @@ class FunctionalTest extends WebTestCase
         $this->assertHasProperty('notwhatyouthink', $model);
     }
 
+    public function testSerializedPathAction(): void
+    {
+        self::assertEquals([
+            'schema' => 'SerializedPathEntity',
+            'type' => 'object',
+            'required' => ['data', 'renamed'],
+            'properties' => [
+                'data' => [
+                    'type' => 'object',
+                    'required' => ['name', 'tags', 'nested', 'promoted'],
+                    'properties' => [
+                        'name' => ['type' => 'string'],
+                        'nickname' => ['nullable' => true, 'type' => 'string'],
+                        'tags' => ['type' => 'array', 'items' => ['type' => 'string']],
+                        'nested' => ['$ref' => '#/components/schemas/SerializedPathNestedEntity'],
+                        'promoted' => ['type' => 'integer'],
+                    ],
+                ],
+                'renamed' => ['type' => 'string'],
+            ],
+        ], json_decode($this->getModel('SerializedPathEntity')->toJson(), true));
+    }
+
+    public function testSerializedPathInDeepAction(): void
+    {
+        self::assertEquals([
+            'schema' => 'SerializedPathInDeepEntity',
+            'type' => 'object',
+            'required' => ['response', 'meta', 'status', 'data'],
+            'properties' => [
+                'response' => [
+                    'type' => 'object',
+                    'required' => ['data'],
+                    'properties' => [
+                        'data' => [
+                            'type' => 'object',
+                            'required' => ['name'],
+                            'properties' => [
+                                'name' => ['type' => 'string'],
+                            ],
+                        ],
+                    ],
+                ],
+                'meta' => [
+                    'type' => 'object',
+                    'required' => ['count', 'label'],
+                    'properties' => [
+                        'count' => ['type' => 'integer'],
+                        'label' => ['type' => 'string'],
+                    ],
+                ],
+                'status' => ['type' => 'string'],
+                'data' => [
+                    'type' => 'object',
+                    'required' => ['data'],
+                    'properties' => [
+                        'data' => [
+                            'type' => 'object',
+                            'required' => ['value'],
+                            'properties' => [
+                                'value' => ['type' => 'string'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], json_decode($this->getModel('SerializedPathInDeepEntity')->toJson(), true));
+    }
+
+    public function testSerializedPathWithGroupsAction(): void
+    {
+        self::assertEquals([
+            'schema' => 'SerializedPathWithGroupsEntity',
+            'type' => 'object',
+            'required' => ['data', 'meta', 'type'],
+            'properties' => [
+                'data' => [
+                    'type' => 'object',
+                    'required' => ['name', 'id'],
+                    'properties' => [
+                        'name' => ['type' => 'string'],
+                        'id' => ['type' => 'integer'],
+                    ],
+                ],
+                'meta' => [
+                    'type' => 'object',
+                    'required' => ['version'],
+                    'properties' => [
+                        'version' => ['type' => 'string'],
+                    ],
+                ],
+                'type' => ['type' => 'string'],
+            ],
+        ], json_decode($this->getModel('SerializedPathWithGroupsEntity')->toJson(), true));
+    }
+
+    public function testSerializedPathAdvancedAction(): void
+    {
+        self::assertEquals([
+            'schema' => 'SerializedPathAdvancedEntity',
+            'type' => 'object',
+            'required' => ['data', 'response', 'optional'],
+            'properties' => [
+                'data' => [
+                    'type' => 'object',
+                    'required' => ['name'],
+                    'properties' => [
+                        'name' => [
+                            'type' => 'string',
+                            'description' => 'The user name',
+                            'example' => 'John',
+                        ],
+                        'status' => [
+                            'type' => 'string',
+                            'default' => 'active',
+                        ],
+                    ],
+                ],
+                'response' => [
+                    'type' => 'object',
+                    'required' => ['result'],
+                    'properties' => [
+                        'result' => [
+                            'type' => 'object',
+                            'required' => ['items'],
+                            'properties' => [
+                                'items' => [
+                                    'type' => 'object',
+                                    'required' => ['count'],
+                                    'properties' => [
+                                        'count' => ['type' => 'integer'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'optional' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'first' => ['nullable' => true, 'type' => 'string'],
+                    ],
+                ],
+            ],
+        ], json_decode($this->getModel('SerializedPathAdvancedEntity')->toJson(), true));
+    }
+
+    public function testSerializedPathOverrideAction(): void
+    {
+        self::assertEquals([
+            'schema' => 'SerializedPathOverrideEntity',
+            'type' => 'object',
+            'required' => ['setter', 'email', 'api', 'jira'],
+            'properties' => [
+                'setter' => [
+                    'type' => 'object',
+                    'required' => ['value'],
+                    'properties' => [
+                        'value' => ['type' => 'string'],
+                    ],
+                ],
+                'email' => ['type' => 'string'],
+                'api' => [
+                    'type' => 'object',
+                    'required' => ['data'],
+                    'properties' => [
+                        'data' => ['type' => 'string'],
+                    ],
+                ],
+                'jira' => [
+                    'type' => 'object',
+                    'required' => ['data'],
+                    'properties' => [
+                        'data' => ['type' => 'string'],
+                    ],
+                ],
+            ],
+        ], json_decode($this->getModel('SerializedPathOverrideEntity')->toJson(), true));
+    }
+
     public function testCompoundEntityAction(): void
     {
         self::assertEquals([
