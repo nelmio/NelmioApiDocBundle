@@ -51,6 +51,17 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
             );
         }
 
+        if (isset($options['ui_renderer']) && Renderer::SCALAR === $options['ui_renderer']) {
+            return $this->twig->render(
+                '@NelmioApiDoc/Scalar/index.html.twig',
+                [
+                    'swagger_data' => ['spec' => htmlspecialchars(json_decode($spec->toJson(), true), \ENT_QUOTES)],
+                    'assets_mode' => $options['assets_mode'],
+                    'scalar_config' => $options['scalar_config'],
+                ]
+            );
+        }
+
         if (isset($options['ui_renderer']) && Renderer::STOPLIGHT === $options['ui_renderer']) {
             return $this->twig->render(
                 '@NelmioApiDoc/Stoplight/index.html.twig',
