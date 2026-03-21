@@ -55,7 +55,7 @@ class HtmlOpenApiRenderer implements OpenApiRenderer
             return $this->twig->render(
                 '@NelmioApiDoc/Scalar/index.html.twig',
                 [
-                    'swagger_data' => ['spec' => htmlspecialchars(json_decode($spec->toJson(), true), \ENT_QUOTES)],
+                    'swagger_data' => ['spec' => json_decode($spec->toJson(), true)],
                     'assets_mode' => $options['assets_mode'],
                     'scalar_config' => $options['scalar_config'],
                 ]
