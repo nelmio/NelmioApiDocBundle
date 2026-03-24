@@ -150,7 +150,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             if ($this->propertyDescriber instanceof TypeDescriberInterface) {
                 $types = $this->propertyInfo->getType($class, $propertyName);
             } else {
-                $types = $this->propertyInfo->getTypes($class, $propertyName);
+                if (method_exists($this->propertyInfo, 'getTypes')) {
+                    $types = $this->propertyInfo->getTypes($class, $propertyName);
+                } else {
+                    $types = $this->propertyInfo->getType($class, $propertyName);
+                }
             }
 
             if (null === $types) {
@@ -175,8 +179,8 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
         $camelProp = $this->camelize($propertyName);
         foreach (['', 'get', 'is', 'has', 'can', 'add', 'remove', 'set'] as $prefix) {
-            if ($reflClass->hasMethod($prefix.$camelProp)) {
-                $reflections[] = $reflClass->getMethod($prefix.$camelProp);
+            if ($reflClass->hasMethod($prefix . $camelProp)) {
+                $reflections[] = $reflClass->getMethod($prefix . $camelProp);
             }
         }
 
@@ -240,7 +244,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
     public function supports(Model $model): bool
     {
-        return $model->getTypeInfo() instanceof ObjectType
-            && (class_exists($model->getTypeInfo()->getClassName()) || interface_exists($model->getTypeInfo()->getClassName()));
+        $type = $model->getTypeInfo();
+
+        return $type instanceof ObjectType
+            && (class_exists($type->getClassName()) || interface_exists($type->getClassName()));
     }
 }
