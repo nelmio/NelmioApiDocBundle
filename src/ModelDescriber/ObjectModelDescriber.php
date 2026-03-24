@@ -23,7 +23,6 @@ use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
-use Symfony\Component\Serializer\NameConverter\AdvancedNameConverterInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
@@ -38,12 +37,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     private PropertyDescriberInterface|TypeDescriberInterface $propertyDescriber;
     /** @var string[] */
     private array $mediaTypes;
-    /** @var (NameConverterInterface&AdvancedNameConverterInterface)|null */
+    /** @var NameConverterInterface|null */
     private ?NameConverterInterface $nameConverter;
     private bool $useValidationGroups;
 
     /**
-     * @param (NameConverterInterface&AdvancedNameConverterInterface)|null $nameConverter
+     * @param NameConverterInterface|null $nameConverter
      * @param string[]                                                     $mediaTypes
      */
     public function __construct(
