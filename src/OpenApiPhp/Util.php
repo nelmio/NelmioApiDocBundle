@@ -124,8 +124,8 @@ final class Util
             if (!$reflection->isInitialized($api)) {
                 return null;
             }
-        } catch (\ReflectionException) {
-            return null;
+        } catch (\ReflectionException) { // @codeCoverageIgnore
+            return null; // @codeCoverageIgnore
         }
 
         return $api->_context;

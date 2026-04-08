@@ -942,6 +942,8 @@ class UtilTest extends TestCase
             'character' => 7,
             'namespace' => 'App\\Api',
             'class' => 'Foo',
+            'interface' => 'FooInterface',
+            'trait' => 'BarTrait',
             'method' => 'bar',
             'property' => 'baz',
             'logger' => null,
@@ -953,6 +955,8 @@ class UtilTest extends TestCase
         self::assertSame(7, $weak->character);
         self::assertSame('App\\Api', $weak->namespace);
         self::assertSame('Foo', $weak->class);
+        self::assertSame('FooInterface', $weak->interface);
+        self::assertSame('BarTrait', $weak->trait);
         self::assertSame('bar', $weak->method);
         self::assertSame('baz', $weak->property);
         self::assertSame('extra', $weak->custom);
@@ -1046,6 +1050,17 @@ class UtilTest extends TestCase
 
         self::assertInstanceOf(OA\Components::class, $api->components);
         self::assertSame('NullContextModel', $schema->schema);
+    }
+
+    public function testGetSchemaCreatesComponentsUsingExistingOpenApiContext(): void
+    {
+        $existingContext = new Context(['fromExisting' => true]);
+        $api = self::createObj(OA\OpenApi::class, ['_context' => $existingContext]);
+
+        $schema = Util::getSchema($api, 'ExistingCtxModel');
+
+        self::assertInstanceOf(OA\Components::class, $api->components);
+        self::assertSame('ExistingCtxModel', $schema->schema);
     }
 
     public function assertIsNested(OA\AbstractAnnotation $parent, OA\AbstractAnnotation $child): void
