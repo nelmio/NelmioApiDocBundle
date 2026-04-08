@@ -104,7 +104,11 @@ final class Util
     public static function getSchema(OA\OpenApi $api, string $schema): OA\Schema
     {
         if (!$api->components instanceof OA\Components) {
-            $api->components = new OA\Components(['_context' => self::createWeakContext(self::getOpenApiContext($api))]);
+            $openApiContext = self::getOpenApiContext($api);
+            if (null === $openApiContext) {
+                $openApiContext = new Context();
+            }
+            $api->components = new OA\Components(['_context' => self::createWeakContext($openApiContext)]);
         }
 
         return self::getIndexedCollectionItem($api->components, OA\Schema::class, $schema);
@@ -417,6 +421,10 @@ final class Util
      */
     public static function createWeakContext(?Context $parent = null, array $additionalProperties = []): Context
     {
+        if (null === $parent) {
+            return new Context($additionalProperties);
+        }
+
         $propsToCopy = [
             'version',
             'line',

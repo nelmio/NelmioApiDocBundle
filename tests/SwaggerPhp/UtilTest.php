@@ -38,6 +38,8 @@ use PHPUnit\Framework\TestCase;
  * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::mergeTyped
  * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::mergeProperty
  * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getNestingIndexes
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getSchema
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::createWeakContext
  */
 class UtilTest extends TestCase
 {
@@ -918,6 +920,29 @@ class UtilTest extends TestCase
         $tag = Util::getTag($api, 'bar');
         self::assertEquals('bar', $tag->name);
         self::assertEquals('baz', $tag->description);
+    }
+
+    public function testCreateWeakContextWithNullParentReturnsContext(): void
+    {
+        $context = Util::createWeakContext(null);
+
+        self::assertInstanceOf(Context::class, $context);
+    }
+
+    public function testGetSchemaCreatesComponentsWhenOpenApiContextUninitialized(): void
+    {
+        $ref = new \ReflectionClass(OA\OpenApi::class);
+        /** @var OA\OpenApi $api */
+        $api = $ref->newInstanceWithoutConstructor();
+        $contextProp = $ref->getProperty('_context');
+        $contextProp->setAccessible(true);
+        self::assertFalse($contextProp->isInitialized($api), 'swagger-php 6 may leave OpenApi::_context uninitialized');
+
+        $schema = Util::getSchema($api, 'NoContextModel');
+
+        self::assertInstanceOf(OA\Schema::class, $schema);
+        self::assertInstanceOf(OA\Components::class, $api->components);
+        self::assertSame('NoContextModel', $schema->schema);
     }
 
     public function assertIsNested(OA\AbstractAnnotation $parent, OA\AbstractAnnotation $child): void
