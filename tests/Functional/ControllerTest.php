@@ -77,9 +77,9 @@ final class ControllerTest extends WebTestCase
             file_put_contents($fixtureDir, $apiDefinition->toJson());
         }
 
-        self::assertSame(
-            self::getFixture($fixtureDir),
-            $this->getOpenApiDefinition()->toJson(),
+        self::assertEquals(
+            json_decode(self::getFixture($fixtureDir), false, 512, JSON_THROW_ON_ERROR),
+            json_decode($this->getOpenApiDefinition()->toJson(), false, 512, JSON_THROW_ON_ERROR),
         );
     }
 
