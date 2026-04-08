@@ -176,12 +176,8 @@ class UtilTest extends TestCase
         $class = OA\Info::class;
 
         self::expectException(\Exception::class);
-        self::expectExceptionMessage("Property \"foobars\" doesn't exist");
+        self::expectExceptionMessageMatches('/(Property "foobars" doesn\'t exist|Undefined property: .*::\$foobars)/');
         Util::createCollectionItem($this->rootAnnotation, $collection, $class);
-
-        self::expectException(\Exception::class);
-        self::expectExceptionMessage("Property \"foobars\" doesn't exist");
-        self::assertNull($this->rootAnnotation->{$collection}); /* @phpstan-ignore-line */
     }
 
     public function testSearchCollectionItem(): void

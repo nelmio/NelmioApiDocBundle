@@ -121,9 +121,9 @@
                         "title": "userid",
                         "description": "User id",
                         "type": "integer",
-                        "default": null,
                         "readOnly": true,
-                        "example": 1
+                        "example": 1,
+                        "default": null
                     },
                     "email": {
                         "type": "string",
@@ -136,10 +136,10 @@
                         "items": {
                             "type": "string"
                         },
+                        "example": "[\"ADMIN\",\"SUPERUSER\"]",
                         "default": [
                             "user"
-                        ],
-                        "example": "[\"ADMIN\",\"SUPERUSER\"]"
+                        ]
                     },
                     "location": {
                         "title": "User Location.",
@@ -171,8 +171,8 @@
                         "items": {
                             "$ref": "#/components/schemas/User"
                         },
-                        "default": [],
-                        "nullable": true
+                        "nullable": true,
+                        "default": []
                     },
                     "dummy": {
                         "$ref": "#/components/schemas/Dummy"

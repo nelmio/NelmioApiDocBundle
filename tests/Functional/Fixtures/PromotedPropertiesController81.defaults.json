@@ -39,8 +39,8 @@
                     },
                     "nullablePromotedPropertyWithDefault": {
                         "type": "string",
-                        "default": null,
-                        "nullable": true
+                        "nullable": true,
+                        "default": null
                     }
                 },
                 "type": "object"

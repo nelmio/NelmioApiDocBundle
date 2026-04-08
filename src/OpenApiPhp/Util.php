@@ -104,10 +104,27 @@ final class Util
     public static function getSchema(OA\OpenApi $api, string $schema): OA\Schema
     {
         if (!$api->components instanceof OA\Components) {
-            $api->components = new OA\Components(['_context' => self::createWeakContext($api->_context)]);
+            $api->components = new OA\Components(['_context' => self::createWeakContext(self::getOpenApiContext($api))]);
         }
 
         return self::getIndexedCollectionItem($api->components, OA\Schema::class, $schema);
+    }
+
+    /**
+     * @internal
+     */
+    private static function getOpenApiContext(OA\OpenApi $api): ?Context
+    {
+        try {
+            $reflection = new \ReflectionProperty($api, '_context');
+            if (!$reflection->isInitialized($api)) {
+                return null;
+            }
+        } catch (\ReflectionException) {
+            return null;
+        }
+
+        return $api->_context;
     }
 
     /**
