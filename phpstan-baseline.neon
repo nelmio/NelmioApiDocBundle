@@ -43,12 +43,6 @@ parameters:
 			path: src/Render/Html/HtmlOpenApiRenderer.php
 
 		-
-			message: '#^Unable to resolve the template type T in call to static method Symfony\\Component\\TypeInfo\\Type\:\:collection\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: src/Util/LegacyTypeConverter.php
-
-		-
 			message: '#^PHPDoc tag @implements has invalid type Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType\.$#'
 			count: 1
 			path: src/TypeDescriber/ArrayShapeDescriber.php
