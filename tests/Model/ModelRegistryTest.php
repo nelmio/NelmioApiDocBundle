@@ -348,4 +348,28 @@ class ModelRegistryTest extends TestCase
     {
         return new OA\OpenApi(['_context' => new Context()]);
     }
+
+    public function testNamespaceClashDoesNotMergeSchemas(): void
+    {
+        // Mock a describer that supports these models
+        $describer = $this->createMock(\Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface::class);
+        $describer->method('supports')->willReturn(true);
+        $describer->method('describe')->willReturnCallback(static function ($model, $schema) {
+            $schema->type = 'object';
+        });
+
+        $registry = new ModelRegistry([$describer], $openApi = $this->createOpenApi());
+
+        $type1 = Type::object('App\Entity\User');
+        $type2 = Type::object('Admin\Entity\User');
+
+        $model1 = new Model($type1);
+        $model2 = new Model($type2);
+
+        $registry->register($model1);
+        $registry->register($model2);
+        $registry->registerSchemas();
+
+        self::assertCount(2, $openApi->components->schemas);
+    }
 }

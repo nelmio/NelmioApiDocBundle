@@ -92,7 +92,7 @@ final class ModelRegistry
     {
         $hash = $model->getHash();
 
-        $identifier = $this->determineModelName($model);
+        $identifier = $this->typeToString($model->getTypeInfo()).'::'.$this->determineModelName($model);
 
         $schema = null;
         if (!isset($this->names[$hash])) {
