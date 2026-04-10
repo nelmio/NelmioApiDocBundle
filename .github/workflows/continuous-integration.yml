@@ -150,7 +150,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload code coverage to Codecov.io
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           fail_ci_if_error: true
         env:

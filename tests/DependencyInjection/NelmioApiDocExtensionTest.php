@@ -336,6 +336,7 @@ class NelmioApiDocExtensionTest extends TestCase
                 'assets_mode' => 'cdn',
                 'swagger_ui_config' => [],
                 'redocly_config' => [],
+                'scalar_config' => [],
                 'stoplight_config' => [],
             ],
         ];
@@ -353,6 +354,7 @@ class NelmioApiDocExtensionTest extends TestCase
                     'deepLinking' => true,
                 ],
                 'redocly_config' => [],
+                'scalar_config' => [],
                 'stoplight_config' => [],
             ],
         ];
@@ -372,6 +374,7 @@ class NelmioApiDocExtensionTest extends TestCase
                     'hideDownloadButton' => true,
                 ],
                 'swagger_ui_config' => [],
+                'scalar_config' => [],
                 'stoplight_config' => [],
             ],
         ];
@@ -392,6 +395,7 @@ class NelmioApiDocExtensionTest extends TestCase
                 ],
                 'swagger_ui_config' => [],
                 'redocly_config' => [],
+                'scalar_config' => [],
             ],
         ];
     }
