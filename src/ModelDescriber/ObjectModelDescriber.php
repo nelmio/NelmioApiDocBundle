@@ -92,10 +92,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $schema->type = 'object';
 
         $mapping = false;
+        $attributesMetadata = [];
         if (null !== $this->classMetadataFactory) {
-            $mapping = $this->classMetadataFactory
-                ->getMetadataFor($class)
-                ->getClassDiscriminatorMapping();
+            $classMetadata = $this->classMetadataFactory->getMetadataFor($class);
+            $mapping = $classMetadata->getClassDiscriminatorMapping();
+            $attributesMetadata = $classMetadata->getAttributesMetadata();
         }
 
         if ($mapping && Generator::UNDEFINED === $schema->discriminator) {
@@ -158,7 +159,17 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 throw new \LogicException(\sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `#[OA\Property(type="")]` to make its type explicit.', $class, $propertyName));
             }
 
-            $this->describeProperty($types, $model, $property, $propertyName);
+            $propertyContext = $model->getSerializationContext();
+            if (isset($attributesMetadata[$propertyName])) {
+                $propertyContext = array_merge(
+                    $propertyContext,
+                    $attributesMetadata[$propertyName]->getNormalizationContextForGroups(
+                        array_filter($groups ?? [], 'is_string')
+                    )
+                );
+            }
+
+            $this->describeProperty($types, $model, $property, $propertyName, $propertyContext);
         }
 
         $this->markRequiredProperties($schema);
@@ -193,15 +204,18 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     }
 
     /**
-     * @param LegacyType[]|Type $types
+     * @param LegacyType[]|Type    $types
+     * @param array<string, mixed> $propertyContext
      */
-    private function describeProperty(array|Type $types, Model $model, OA\Schema $property, string $propertyName): void
+    private function describeProperty(array|Type $types, Model $model, OA\Schema $property, string $propertyName, array $propertyContext = []): void
     {
+        $context = $propertyContext ?: $model->getSerializationContext();
+
         if ($this->propertyDescriber instanceof ModelRegistryAwareInterface) {
             $this->propertyDescriber->setModelRegistry($this->modelRegistry);
         }
-        if ($this->propertyDescriber->supports($types, $model->getSerializationContext())) {
-            $this->propertyDescriber->describe($types, $property, $model->getSerializationContext());
+        if ($this->propertyDescriber->supports($types, $context)) {
+            $this->propertyDescriber->describe($types, $property, $context);
 
             return;
         }

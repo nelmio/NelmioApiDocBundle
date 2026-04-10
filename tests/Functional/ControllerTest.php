@@ -720,6 +720,40 @@ final class ControllerTest extends WebTestCase
         yield 'Custom model names' => [
             'CustomModelNameController',
         ];
+
+        yield 'Context attribute on properties' => [
+            'ContextAttributeController',
+            null,
+            [],
+            [
+                'framework' => [
+                    'property_info' => [
+                        'enabled' => true,
+                    ],
+                    'serializer' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                    ],
+                    'validation' => [
+                        'enabled' => true,
+                        'enable_attributes' => true,
+                        'static_method' => [
+                            'loadValidatorMetadata',
+                        ],
+                        'translation_domain' => 'validators',
+                        'email_validation_mode' => 'html5',
+                        'mapping' => [
+                            'paths' => [],
+                        ],
+                        'not_compromised_password' => [
+                            'enabled' => true,
+                            'endpoint' => null,
+                        ],
+                        'auto_mapping' => [],
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**

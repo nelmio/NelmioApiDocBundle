@@ -1,0 +1,59 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/context-attribute": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_contextattribute_context",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EntityWithContext"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ArticleType81": {
+                "type": "string",
+                "enum": [
+                    "draft",
+                    "final"
+                ]
+            },
+            "ArticleType812": {
+                "type": "string",
+                "enum": [
+                    "DRAFT",
+                    "FINAL"
+                ]
+            },
+            "EntityWithContext": {
+                "required": [
+                    "type",
+                    "typeWithForceNames"
+                ],
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/ArticleType81"
+                    },
+                    "typeWithForceNames": {
+                        "$ref": "#/components/schemas/ArticleType812"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
