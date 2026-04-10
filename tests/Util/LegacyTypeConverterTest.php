@@ -118,6 +118,27 @@ class LegacyTypeConverterTest extends TestCase
                     ),
                 ],
             ];
+
+            yield 'null builtin type only' => [
+                Type::null(),
+                [new LegacyType(LegacyType::BUILTIN_TYPE_NULL)],
+            ];
+
+            yield 'null builtin type with object' => [
+                Type::nullable(Type::object('Foo\Bar')),
+                [
+                    new LegacyType(LegacyType::BUILTIN_TYPE_NULL),
+                    new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
+                ],
+            ];
+
+            yield 'object with null builtin type' => [
+                Type::nullable(Type::object('Foo\Bar')),
+                [
+                    new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, 'Foo\Bar'),
+                    new LegacyType(LegacyType::BUILTIN_TYPE_NULL),
+                ],
+            ];
         }
     }
 

@@ -58,6 +58,10 @@ final class LegacyTypeConverter
             }
         }
 
+        if (0 === \count($types)) {
+            return $nullable ? Type::null() : null;
+        }
+
         if (1 === \count($types)) {
             return $nullable ? Type::nullable($types[0]) : $types[0];
         }
