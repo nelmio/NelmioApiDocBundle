@@ -37,31 +37,66 @@ Open a command console, enter your project directory and execute the following c
 
 By default, only routes under ``/api`` are documented. Update the regexp at ``nelmio_api_doc.areas.path_patterns`` in ``config/packages/nelmio_api_doc.yaml`` to change this policy.
 
-To browse your documentation with a UI, you need to enable a UI route. If you're using **Flex**, the installer created a ``config/routes/nelmio_api_doc.yaml`` file with a JSON route enabled and the UI route commented out. Uncomment the UI of your choice (Swagger UI requires the ``twig`` and ``asset`` packages):
+To browse your documentation with a UI, you need to enable a UI route. If you're using **Flex**, the installer should have created a ``config/routes/nelmio_api_doc.yaml`` file with a JSON route enabled and the UI route commented out. Uncomment the UI of your choice (all UIs require the ``twig`` and ``asset`` packages):
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # config/routes/nelmio_api_doc.yaml
-    app.swagger:
-        path: /api/doc.json
-        methods: GET
-        defaults: { _controller: nelmio_api_doc.controller.swagger }
+    .. code-block:: yaml
 
-    # Uncomment one of the following to enable a documentation UI:
-    app.swagger_ui:
-        path: /api/doc
-        methods: GET
-        defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+        # config/routes/nelmio_api_doc.yaml
+        app.swagger:
+            path: /api/doc.json
+            methods: GET
+            defaults: { _controller: nelmio_api_doc.controller.swagger }
 
-    # app.redocly:
-    #     path: /api/doc
-    #     methods: GET
-    #     defaults: { _controller: nelmio_api_doc.controller.redocly }
+        # Uncomment one of the following to enable a documentation UI:
+        app.swagger_ui:
+            path: /api/doc
+            methods: GET
+            defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
 
-    # app.stoplight:
-    #     path: /api/doc
-    #     methods: GET
-    #     defaults: { _controller: nelmio_api_doc.controller.stoplight }
+        # app.redocly:
+        #     path: /api/doc
+        #     methods: GET
+        #     defaults: { _controller: nelmio_api_doc.controller.redocly }
+
+        # app.stoplight:
+        #     path: /api/doc
+        #     methods: GET
+        #     defaults: { _controller: nelmio_api_doc.controller.stoplight }
+
+        # app.scalar:
+        #     path: /api/doc
+        #     methods: GET
+        #     defaults: { _controller: nelmio_api_doc.controller.scalar }
+
+    .. code-block:: php
+
+        // config/routes/nelmio_api_doc.php
+        use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+
+        return static function (RoutingConfigurator $routes): void {
+            $routes->add('app.swagger', '/api/doc.json')
+                ->controller('nelmio_api_doc.controller.swagger')
+                ->methods(['GET']);
+
+            // Uncomment one of the following to enable a documentation UI:
+            $routes->add('app.swagger_ui', '/api/doc')
+                ->controller('nelmio_api_doc.controller.swagger_ui')
+                ->methods(['GET']);
+
+            // $routes->add('app.redocly', '/api/doc')
+            //     ->controller('nelmio_api_doc.controller.redocly')
+            //     ->methods(['GET']);
+
+            // $routes->add('app.stoplight', '/api/doc')
+            //     ->controller('nelmio_api_doc.controller.stoplight')
+            //     ->methods(['GET']);
+
+            // $routes->add('app.scalar', '/api/doc')
+            //     ->controller('nelmio_api_doc.controller.scalar')
+            //     ->methods(['GET']);
+        };
 
 .. note::
 
@@ -99,7 +134,7 @@ routes that are documented by configuring the bundle:
 
 .. tip::
 
-     `Twig <https://symfony.com/components/Twig%20Bundle>`_ and `Assets <https://symfony.com/components/asset>`_ packages are needed to use swagger ui.
+     `Twig <https://symfony.com/components/Twig%20Bundle>`_ and `Assets <https://symfony.com/components/asset>`_ packages are needed to use any of the documentation UIs (Swagger UI, Redocly, Stoplight, Scalar).
 
 How does this bundle work?
 --------------------------
@@ -108,7 +143,7 @@ It generates an OpenAPI documentation from your Symfony app thanks to
 **Describers**. One extracts data from SwaggerPHP attributes, one from your
 routes, etc.
 
-If you configured the ``app.swagger_ui`` route above, you can browse your
+If you configured one of the UI routes above (e.g. ``app.swagger_ui``), you can browse your
 documentation at ``http://example.org/api/doc``.
 
 Using the bundle
