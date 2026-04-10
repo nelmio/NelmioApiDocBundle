@@ -1,0 +1,76 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/array-shapes": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_arrayshape_arrayshapes",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayShapeTypes"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ArrayShapeTypes": {
+                "required": [
+                    "sealed",
+                    "unsealed"
+                ],
+                "properties": {
+                    "sealed": {
+                        "required": [
+                            "age",
+                            "name"
+                        ],
+                        "properties": {
+                            "age": {
+                                "type": "integer"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object",
+                        "additionalProperties": false
+                    },
+                    "unsealed": {
+                        "required": [
+                            "id",
+                            "label"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "label": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object",
+                        "additionalProperties": {
+                            "nullable": true
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
