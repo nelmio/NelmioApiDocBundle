@@ -66,9 +66,9 @@
                         "title": "userid",
                         "description": "User id",
                         "type": "integer",
-                        "default": null,
                         "readOnly": true,
-                        "example": 1
+                        "example": 1,
+                        "default": null
                     },
                     "daysOnline": {
                         "type": "integer",
@@ -87,10 +87,10 @@
                         "items": {
                             "type": "string"
                         },
+                        "example": "[\"ADMIN\",\"SUPERUSER\"]",
                         "default": [
                             "user"
-                        ],
-                        "example": "[\"ADMIN\",\"SUPERUSER\"]"
+                        ]
                     },
                     "location": {
                         "title": "User Location.",
@@ -239,10 +239,10 @@
                         "items": {
                             "type": "string"
                         },
+                        "example": "[\"ADMIN\",\"SUPERUSER\"]",
                         "default": [
                             "user"
-                        ],
-                        "example": "[\"ADMIN\",\"SUPERUSER\"]"
+                        ]
                     },
                     "dummy": {
                         "$ref": "#/components/schemas/Dummy"
