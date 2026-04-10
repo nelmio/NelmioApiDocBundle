@@ -33,6 +33,13 @@ return static function (ContainerConfigurator $container) {
                'redocly',
            ])
 
+       ->set('nelmio_api_doc.controller.scalar', \Nelmio\ApiDocBundle\Controller\SwaggerUiController::class)
+           ->public()
+           ->args([
+               service('nelmio_api_doc.render_docs'),
+               'scalar',
+           ])
+
        ->set('nelmio_api_doc.controller.stoplight', \Nelmio\ApiDocBundle\Controller\SwaggerUiController::class)
            ->public()
            ->args([

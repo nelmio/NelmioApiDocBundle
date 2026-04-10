@@ -14,6 +14,8 @@ namespace Nelmio\ApiDocBundle\Tests\Functional;
 use OpenApi\Annotations\Server;
 use OpenApi\Context;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SwaggerUiTest extends WebTestCase
 {
@@ -62,6 +64,24 @@ class SwaggerUiTest extends WebTestCase
 
         self::assertCount(1, $crawler->filterXPath('//script[@src="/bundles/nelmioapidoc/redocly/redoc.standalone.js"]'));
         self::assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="swagger-data"]')->text(), true)['spec']);
+    }
+
+    public function testScalar(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/app_dev.php/default/scalar/docs');
+
+        $response = $this->client->getResponse();
+        self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        self::assertEquals('UTF-8', $response->getCharset());
+        self::assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
+
+        $expected = json_decode($this->getOpenApiDefinition()->toJson(), true);
+        $expected['servers'] = [
+            ['url' => 'http://api.example.com/app_dev.php'],
+        ];
+
+        self::assertCount(1, $crawler->filterXPath('//script[@src="/bundles/nelmioapidoc/scalar/scalar.standalone.js"]'));
+        self::assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="api-reference"]')->text(), true));
     }
 
     public function testApiPlatformSwaggerUi(): void
