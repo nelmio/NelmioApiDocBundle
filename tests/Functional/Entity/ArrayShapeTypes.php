@@ -20,4 +20,13 @@ class ArrayShapeTypes
 
     /** @var array{id: int, label: string, ...} */
     public array $unsealed;
+
+    /** @var array{user: array{name: string, age: int}, active: bool} */
+    public array $nested;
+
+    /** @var array{0: string, 1: int} */
+    public array $numericKeys;
+
+    /** @var array{name: ?string, email: ?string} */
+    public array $nullableValues;
 }

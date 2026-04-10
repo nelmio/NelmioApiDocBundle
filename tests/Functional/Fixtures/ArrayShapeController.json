@@ -28,7 +28,10 @@
             "ArrayShapeTypes": {
                 "required": [
                     "sealed",
-                    "unsealed"
+                    "unsealed",
+                    "nested",
+                    "numericKeys",
+                    "nullableValues"
                 ],
                 "properties": {
                     "sealed": {
@@ -67,6 +70,69 @@
                         "additionalProperties": {
                             "nullable": true
                         }
+                    },
+                    "nested": {
+                        "required": [
+                            "active",
+                            "user"
+                        ],
+                        "properties": {
+                            "active": {
+                                "type": "boolean"
+                            },
+                            "user": {
+                                "required": [
+                                    "age",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "age": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "additionalProperties": false
+                            }
+                        },
+                        "type": "object",
+                        "additionalProperties": false
+                    },
+                    "numericKeys": {
+                        "required": [
+                            "0",
+                            "1"
+                        ],
+                        "properties": {
+                            "0": {
+                                "type": "string"
+                            },
+                            "1": {
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object",
+                        "additionalProperties": false
+                    },
+                    "nullableValues": {
+                        "required": [
+                            "email",
+                            "name"
+                        ],
+                        "properties": {
+                            "email": {
+                                "type": "string",
+                                "nullable": true
+                            },
+                            "name": {
+                                "type": "string",
+                                "nullable": true
+                            }
+                        },
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 },
                 "type": "object"

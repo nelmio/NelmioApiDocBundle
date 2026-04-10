@@ -35,7 +35,7 @@ final class ArrayShapeDescriber implements TypeDescriberInterface, TypeDescriber
             $property = Util::getProperty($schema, (string) $key);
             $this->describer->describe($shapeValue['type'], $property, $context);
 
-            if (!($shapeValue['optional'] ?? false)) {
+            if (!$shapeValue['optional']) {
                 $required[] = (string) $key;
             }
         }
