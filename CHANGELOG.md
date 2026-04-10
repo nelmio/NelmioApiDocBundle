@@ -1,5 +1,35 @@
 # CHANGELOG
 
+## [5.10.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.9.5...v5.10.0) (2026-04-10)
+
+
+### Features
+
+* add support for Scalar UI ([#2711](https://github.com/nelmio/NelmioApiDocBundle/issues/2711)) ([3c80aa6](https://github.com/nelmio/NelmioApiDocBundle/commit/3c80aa6a253d6cf0f5b1405f4b3734d2e0cd0d3d))
+
+
+### Bug Fixes
+
+* exclude BackedEnum from TranslatablePropertyDescriber ([#2692](https://github.com/nelmio/NelmioApiDocBundle/issues/2692)) ([2c40b2e](https://github.com/nelmio/NelmioApiDocBundle/commit/2c40b2e182ba0c03417cc27c20e3229342671d12)), closes [#2507](https://github.com/nelmio/NelmioApiDocBundle/issues/2507)
+* **phpstan:** apply phpstan fixes ([#2721](https://github.com/nelmio/NelmioApiDocBundle/issues/2721)) ([3cbe708](https://github.com/nelmio/NelmioApiDocBundle/commit/3cbe70805aaa589f282a550529f87c1ba5568f7c))
+* prevent nullable from triggering oneOf wrapping in JMSModelDescriber ([#2693](https://github.com/nelmio/NelmioApiDocBundle/issues/2693)) ([7167809](https://github.com/nelmio/NelmioApiDocBundle/commit/716780994ebc0d39a0e2a721c67661025e877c0f)), closes [#2565](https://github.com/nelmio/NelmioApiDocBundle/issues/2565)
+* use FQCN as deduplication key to prevent model merge across namespaces ([#2694](https://github.com/nelmio/NelmioApiDocBundle/issues/2694)) ([25e8b98](https://github.com/nelmio/NelmioApiDocBundle/commit/25e8b9825299d7054a34fe3e5fb320410e084810))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump swagger-ui-dist from 5.32.0 to 5.32.1 in /utils ([#2712](https://github.com/nelmio/NelmioApiDocBundle/issues/2712)) ([b5d5e1f](https://github.com/nelmio/NelmioApiDocBundle/commit/b5d5e1f6c1dbc89beb8c0e1d0ca9366140d33fb9))
+* support zircote/swagger-php ^6.0 ([#2717](https://github.com/nelmio/NelmioApiDocBundle/issues/2717)) ([3add4a7](https://github.com/nelmio/NelmioApiDocBundle/commit/3add4a7dfa18b97ce341b8f4129b4eb987aa617f))
+* **ui:** update scalar & stoplight files ([#2719](https://github.com/nelmio/NelmioApiDocBundle/issues/2719)) ([94d113b](https://github.com/nelmio/NelmioApiDocBundle/commit/94d113b15c26234c17d4a6499096f3242ece581e))
+
+## [5.9.5](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.9.4...v5.9.5) (2026-03-04)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @stoplight/elements from 9.0.15 to 9.0.16 in /utils ([#2702](https://github.com/nelmio/NelmioApiDocBundle/issues/2702)) ([ff5783b](https://github.com/nelmio/NelmioApiDocBundle/commit/ff5783b5276a25d6a58e7d0b1f4beb4c69754936))
+* **deps:** bump swagger-ui-dist from 5.31.0 to 5.32.0 in /utils ([#2703](https://github.com/nelmio/NelmioApiDocBundle/issues/2703)) ([3d64d5b](https://github.com/nelmio/NelmioApiDocBundle/commit/3d64d5b4e4eae0044917591fe80ea19377b7feb4))
+
 ## [5.9.4](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.9.3...v5.9.4) (2026-02-20)
 
 

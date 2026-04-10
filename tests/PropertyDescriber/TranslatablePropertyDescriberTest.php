@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\PropertyDescriber\TranslatablePropertyDescriber;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TranslatablePropertyDescriberTest extends TestCase
 {
@@ -32,6 +33,15 @@ class TranslatablePropertyDescriberTest extends TestCase
         $describer = new TranslatablePropertyDescriber();
 
         self::assertTrue($describer->supports([$type]));
+    }
+
+    public function testDoesNotSupportBackedEnumImplementingTranslatable(): void
+    {
+        $type = new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, TranslatableBackedEnum::class);
+
+        $describer = new TranslatablePropertyDescriber();
+
+        self::assertFalse($describer->supports([$type]));
     }
 
     public function testSupportsNoIntPropertyType(): void
@@ -65,5 +75,16 @@ class TranslatablePropertyDescriberTest extends TestCase
     private function initProperty(): \OpenApi\Annotations\Property
     {
         return new \OpenApi\Attributes\Property(); // union types, used in schema attribute require PHP >= 8.0.0
+    }
+}
+
+enum TranslatableBackedEnum: string implements TranslatableInterface
+{
+    case Foo = 'foo';
+    case Bar = 'bar';
+
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
+    {
+        return $translator->trans($this->value, locale: $locale);
     }
 }

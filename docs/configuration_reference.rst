@@ -42,6 +42,8 @@ The bundle configuration is stored under the ``nelmio_api_doc`` key in your appl
             swagger_ui_config: []
             # https://redocly.com/docs/redoc/config/
             redocly_config: []
+            # https://scalar.com/products/api-references/configuration
+            scalar_config: []
             # https://docs.stoplight.io/docs/elements/b074dc47b2826-elements-configuration-options
             stoplight_config: []
         # Filter the routes that are documented

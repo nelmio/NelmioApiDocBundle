@@ -61,14 +61,17 @@
             "VirtualTypeClassDoesNotExistsHandlerDefined": {},
             "VirtualTypeClassDoesNotExistsHandlerNotDefined": {},
             "JMSUser": {
+                "required": [
+                    "not_null_friend"
+                ],
                 "properties": {
                     "id": {
                         "title": "userid",
                         "description": "User id",
                         "type": "integer",
-                        "default": null,
                         "readOnly": true,
-                        "example": 1
+                        "example": 1,
+                        "default": null
                     },
                     "daysOnline": {
                         "type": "integer",
@@ -87,10 +90,10 @@
                         "items": {
                             "type": "string"
                         },
+                        "example": "[\"ADMIN\",\"SUPERUSER\"]",
                         "default": [
                             "user"
-                        ],
-                        "example": "[\"ADMIN\",\"SUPERUSER\"]"
+                        ]
                     },
                     "location": {
                         "title": "User Location.",
@@ -128,6 +131,9 @@
                         "minLength": 1
                     },
                     "best_friend": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "not_null_friend": {
                         "$ref": "#/components/schemas/User"
                     },
                     "status": {
@@ -239,10 +245,10 @@
                         "items": {
                             "type": "string"
                         },
+                        "example": "[\"ADMIN\",\"SUPERUSER\"]",
                         "default": [
                             "user"
-                        ],
-                        "example": "[\"ADMIN\",\"SUPERUSER\"]"
+                        ]
                     },
                     "dummy": {
                         "$ref": "#/components/schemas/Dummy"

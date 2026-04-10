@@ -16,7 +16,7 @@
             "type": "string"
         },
         "type": {
-            "type": "string"
+            "$ref": "#/components/schemas/InvoiceType"
         }
     },
     "type": "object"

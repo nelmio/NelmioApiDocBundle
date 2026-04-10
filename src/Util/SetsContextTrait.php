@@ -21,7 +21,7 @@ trait SetsContextTrait
 {
     private function setContext(?Context $context): void
     {
-        // zircote/swagger-php ^4.0
+        // zircote/swagger-php global context while resolving attributes
         \OpenApi\Generator::$context = $context;
     }
 

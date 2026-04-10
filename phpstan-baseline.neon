@@ -27,7 +27,7 @@ parameters:
 		-
 			message: '#^Call to method render\(\) on an unknown class Twig_Environment\.$#'
 			identifier: class.notFound
-			count: 3
+			count: 4
 			path: src/Render/Html/HtmlOpenApiRenderer.php
 
 		-
