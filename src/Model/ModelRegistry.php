@@ -119,7 +119,7 @@ final class ModelRegistry
             $this->unregistered = array_unique($this->unregistered);
             // Only store schema if it was successfully generated
             if (null !== $schema) {
-                $this->schemaToModelMap[$identifier][$schemaJson ?? json_encode($schema)] = $model;
+                $this->schemaToModelMap[$identifier][$schemaJson] = $model;
             }
         }
 

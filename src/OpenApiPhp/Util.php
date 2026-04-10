@@ -104,7 +104,7 @@ final class Util
     public static function getSchema(OA\OpenApi $api, string $schema): OA\Schema
     {
         if (!$api->components instanceof OA\Components) {
-            $api->components = new OA\Components(['_context' => self::createWeakContext($api->_context)]);
+            $api->components = new OA\Components(['_context' => self::createWeakContext($api->_context ?? null)]);
         }
 
         return self::getIndexedCollectionItem($api->components, OA\Schema::class, $schema);

@@ -37,6 +37,67 @@ Open a command console, enter your project directory and execute the following c
 
 By default, only routes under ``/api`` are documented. Update the regexp at ``nelmio_api_doc.areas.path_patterns`` in ``config/packages/nelmio_api_doc.yaml`` to change this policy.
 
+To browse your documentation with a UI, you need to enable a UI route. If you're using **Flex**, the installer should have created a ``config/routes/nelmio_api_doc.yaml`` file with a JSON route enabled and the UI route commented out. Uncomment the UI of your choice (all UIs require the ``twig`` and ``asset`` packages):
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/routes/nelmio_api_doc.yaml
+        app.swagger:
+            path: /api/doc.json
+            methods: GET
+            defaults: { _controller: nelmio_api_doc.controller.swagger }
+
+        # Uncomment one of the following to enable a documentation UI:
+        app.swagger_ui:
+            path: /api/doc
+            methods: GET
+            defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+
+        # app.redocly:
+        #     path: /api/doc
+        #     methods: GET
+        #     defaults: { _controller: nelmio_api_doc.controller.redocly }
+
+        # app.stoplight:
+        #     path: /api/doc
+        #     methods: GET
+        #     defaults: { _controller: nelmio_api_doc.controller.stoplight }
+
+        # app.scalar:
+        #     path: /api/doc
+        #     methods: GET
+        #     defaults: { _controller: nelmio_api_doc.controller.scalar }
+
+    .. code-block:: php
+
+        // config/routes/nelmio_api_doc.php
+        use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+
+        return static function (RoutingConfigurator $routes): void {
+            $routes->add('app.swagger', '/api/doc.json')
+                ->controller('nelmio_api_doc.controller.swagger')
+                ->methods(['GET']);
+
+            // Uncomment one of the following to enable a documentation UI:
+            $routes->add('app.swagger_ui', '/api/doc')
+                ->controller('nelmio_api_doc.controller.swagger_ui')
+                ->methods(['GET']);
+
+            // $routes->add('app.redocly', '/api/doc')
+            //     ->controller('nelmio_api_doc.controller.redocly')
+            //     ->methods(['GET']);
+
+            // $routes->add('app.stoplight', '/api/doc')
+            //     ->controller('nelmio_api_doc.controller.stoplight')
+            //     ->methods(['GET']);
+
+            // $routes->add('app.scalar', '/api/doc')
+            //     ->controller('nelmio_api_doc.controller.scalar')
+            //     ->methods(['GET']);
+        };
+
 .. note::
 
     If you're not using Flex, then add the bundle to your kernel::
@@ -55,59 +116,25 @@ By default, only routes under ``/api`` are documented. Update the regexp at ``ne
             }
         }
 
-    To browse your documentation with an UI, register one of the following route:
+    Then register the routes manually in ``config/routes.yaml`` (same format as shown above).
 
-    .. code-block:: yaml
+As you just installed the bundle, you'll likely see routes you don't want in
+your documentation such as ``/_profiler/``. To fix this, you can filter the
+routes that are documented by configuring the bundle:
 
-        # config/routes.yaml
-        app.swagger_ui:
-            path: /api/doc
-            methods: GET
-            defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+.. code-block:: yaml
 
-    .. code-block:: yaml
-
-        # config/routes.yaml
-        app.redocly:
-            path: /api/doc
-            methods: GET
-            defaults: { _controller: nelmio_api_doc.controller.redocly }
-
-    .. code-block:: yaml
-
-        # config/routes.yaml
-        app.stoplight:
-            path: /api/doc
-            methods: GET
-            defaults: { _controller: nelmio_api_doc.controller.stoplight }
-
-    If you also want to expose it in JSON, register this route:
-
-    .. code-block:: yaml
-
-        # config/routes.yaml
-        app.swagger:
-            path: /api/doc.json
-            methods: GET
-            defaults: { _controller: nelmio_api_doc.controller.swagger }
-
-    As you just installed the bundle, you'll likely see routes you don't want in
-    your documentation such as ``/_profiler/``. To fix this, you can filter the
-    routes that are documented by configuring the bundle:
-
-    .. code-block:: yaml
-
-        # config/packages/nelmio_api_doc.yaml
-        nelmio_api_doc:
-            areas:
-                path_patterns: # an array of regexps (document only routes under /api, except /api/doc)
-                    - ^/api(?!/doc$)
-                host_patterns: # document only routes with a host of the form api.*
-                    - ^api\.
+    # config/packages/nelmio_api_doc.yaml
+    nelmio_api_doc:
+        areas:
+            path_patterns: # an array of regexps (document only routes under /api, except /api/doc)
+                - ^/api(?!/doc$)
+            host_patterns: # document only routes with a host of the form api.*
+                - ^api\.
 
 .. tip::
 
-     `Twig <https://symfony.com/components/Twig%20Bundle>`_ and `Assets <https://symfony.com/components/asset>`_ packages are needed to use swagger ui.
+     `Twig <https://symfony.com/components/Twig%20Bundle>`_ and `Assets <https://symfony.com/components/asset>`_ packages are needed to use any of the documentation UIs (Swagger UI, Redocly, Stoplight, Scalar).
 
 How does this bundle work?
 --------------------------
@@ -116,7 +143,7 @@ It generates an OpenAPI documentation from your Symfony app thanks to
 **Describers**. One extracts data from SwaggerPHP attributes, one from your
 routes, etc.
 
-If you configured the ``app.swagger_ui`` route above, you can browse your
+If you configured one of the UI routes above (e.g. ``app.swagger_ui``), you can browse your
 documentation at ``http://example.org/api/doc``.
 
 Using the bundle

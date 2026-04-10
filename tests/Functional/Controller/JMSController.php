@@ -132,8 +132,7 @@ class JMSController
         response: 200,
         description: 'Success',
         content: new Model(type: Article81::class)
-    )
-    ]
+    )]
     public function enum(): void
     {
     }
@@ -143,8 +142,7 @@ class JMSController
         response: 200,
         description: 'Success',
         content: new Model(type: JMSAbstractUser::class)
-    )
-    ]
+    )]
     public function discriminatorMapAction(): void
     {
     }
@@ -154,8 +152,7 @@ class JMSController
         response: 200,
         description: 'Success',
         content: new Model(type: JMSEnum::class)
-    )
-    ]
+    )]
     public function enumArrayAction(): void
     {
     }
@@ -165,8 +162,7 @@ class JMSController
         response: 200,
         description: 'Success',
         content: new Model(type: JMSIgnoredProperty::class)
-    )
-    ]
+    )]
     public function ignoredProperty(): void
     {
     }

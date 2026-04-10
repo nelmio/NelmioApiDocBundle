@@ -27,7 +27,7 @@ parameters:
 		-
 			message: '#^Call to method render\(\) on an unknown class Twig_Environment\.$#'
 			identifier: class.notFound
-			count: 3
+			count: 4
 			path: src/Render/Html/HtmlOpenApiRenderer.php
 
 		-
@@ -41,9 +41,3 @@ parameters:
 			identifier: class.notFound
 			count: 2
 			path: src/Render/Html/HtmlOpenApiRenderer.php
-
-		-
-			message: '#^Unable to resolve the template type T in call to static method Symfony\\Component\\TypeInfo\\Type\:\:collection\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: src/Util/LegacyTypeConverter.php
