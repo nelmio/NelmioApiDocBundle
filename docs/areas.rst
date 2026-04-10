@@ -49,28 +49,28 @@ Then update your routing to be able to access your different documentations:
             defaults: { _controller: nelmio_api_doc.controller.swagger_ui, area: default }
 
         # With Redocly UI (use instead of Swagger UI)
-        #app.redocly:
-        #    path: /api/doc/{area}
-        #    methods: GET
-        #    defaults: { _controller: nelmio_api_doc.controller.redocly, area: default }
+        # app.redocly:
+        #     path: /api/doc/{area}
+        #     methods: GET
+        #     defaults: { _controller: nelmio_api_doc.controller.redocly, area: default }
 
         # With Stoplight (use instead of Swagger UI)
-        #app.stoplight:
-        #    path: /api/doc/{area}
-        #    methods: GET
-        #    defaults: { _controller: nelmio_api_doc.controller.stoplight, area: default }
+        # app.stoplight:
+        #     path: /api/doc/{area}
+        #     methods: GET
+        #     defaults: { _controller: nelmio_api_doc.controller.stoplight, area: default }
 
         # With Scalar (use instead of Swagger UI)
-        #app.scalar:
-        #    path: /api/doc/{area}
-        #    methods: GET
-        #    defaults: { _controller: nelmio_api_doc.controller.scalar, area: default }
+        # app.scalar:
+        #     path: /api/doc/{area}
+        #     methods: GET
+        #     defaults: { _controller: nelmio_api_doc.controller.scalar, area: default }
 
         # To expose them as JSON
-        #app.swagger.areas:
-        #    path: /api/doc/{area}.json
-        #    methods: GET
-        #    defaults: { _controller: nelmio_api_doc.controller.swagger, area: default }
+        # app.swagger.areas:
+        #     path: /api/doc/{area}.json
+        #     methods: GET
+        #     defaults: { _controller: nelmio_api_doc.controller.swagger, area: default }
 
     .. code-block:: php
 
