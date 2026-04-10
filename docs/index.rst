@@ -37,7 +37,7 @@ Open a command console, enter your project directory and execute the following c
 
 By default, only routes under ``/api`` are documented. Update the regexp at ``nelmio_api_doc.areas.path_patterns`` in ``config/packages/nelmio_api_doc.yaml`` to change this policy.
 
-To browse your documentation with a UI, you need to enable a UI route. If you're using **Flex**, the installer should have created a ``config/routes/nelmio_api_doc.yaml`` file with a JSON route enabled and the UI route commented out. Uncomment the UI of your choice (Swagger UI requires the ``twig`` and ``asset`` packages):
+To browse your documentation with a UI, you need to enable a UI route. If you're using **Flex**, the installer should have created a ``config/routes/nelmio_api_doc.yaml`` file with a JSON route enabled and the UI route commented out. Uncomment the UI of your choice (all UIs require the ``twig`` and ``asset`` packages):
 
 .. configuration-block::
 
@@ -134,7 +134,7 @@ routes that are documented by configuring the bundle:
 
 .. tip::
 
-     `Twig <https://symfony.com/components/Twig%20Bundle>`_ and `Assets <https://symfony.com/components/asset>`_ packages are needed to use swagger ui.
+     `Twig <https://symfony.com/components/Twig%20Bundle>`_ and `Assets <https://symfony.com/components/asset>`_ packages are needed to use any of the documentation UIs (Swagger UI, Redocly, Stoplight, Scalar).
 
 How does this bundle work?
 --------------------------
@@ -143,7 +143,7 @@ It generates an OpenAPI documentation from your Symfony app thanks to
 **Describers**. One extracts data from SwaggerPHP attributes, one from your
 routes, etc.
 
-If you configured the ``app.swagger_ui`` route above, you can browse your
+If you configured one of the UI routes above (e.g. ``app.swagger_ui``), you can browse your
 documentation at ``http://example.org/api/doc``.
 
 Using the bundle
