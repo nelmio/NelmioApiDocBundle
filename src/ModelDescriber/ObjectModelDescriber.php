@@ -209,7 +209,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
      */
     private function describeProperty(array|Type $types, Model $model, OA\Schema $property, string $propertyName, array $propertyContext = []): void
     {
-        $context = $propertyContext ?: $model->getSerializationContext();
+        $context = [] !== $propertyContext ? $propertyContext : $model->getSerializationContext();
 
         if ($this->propertyDescriber instanceof ModelRegistryAwareInterface) {
             $this->propertyDescriber->setModelRegistry($this->modelRegistry);
