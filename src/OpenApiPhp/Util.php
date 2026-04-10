@@ -104,31 +104,10 @@ final class Util
     public static function getSchema(OA\OpenApi $api, string $schema): OA\Schema
     {
         if (!$api->components instanceof OA\Components) {
-            $openApiContext = self::getOpenApiContext($api);
-            if (null === $openApiContext) {
-                $openApiContext = new Context();
-            }
-            $api->components = new OA\Components(['_context' => self::createWeakContext($openApiContext)]);
+            $api->components = new OA\Components(['_context' => self::createWeakContext($api->_context ?? null)]);
         }
 
         return self::getIndexedCollectionItem($api->components, OA\Schema::class, $schema);
-    }
-
-    /**
-     * @internal
-     */
-    private static function getOpenApiContext(OA\OpenApi $api): ?Context
-    {
-        try {
-            $reflection = new \ReflectionProperty($api, '_context');
-            if (!$reflection->isInitialized($api)) {
-                return null;
-            }
-        } catch (\ReflectionException) { // @codeCoverageIgnore
-            return null; // @codeCoverageIgnore
-        }
-
-        return $api->_context;
     }
 
     /**
@@ -421,10 +400,6 @@ final class Util
      */
     public static function createWeakContext(?Context $parent = null, array $additionalProperties = []): Context
     {
-        if (null === $parent) {
-            return new Context($additionalProperties);
-        }
-
         $propsToCopy = [
             'version',
             'line',
