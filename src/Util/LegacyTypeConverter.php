@@ -47,7 +47,7 @@ final class LegacyTypeConverter
                 default => throw new \LogicException('Unsupported LegacyType type: '.$legacyType->getBuiltinType().'.'),
             };
 
-            if (LegacyType::BUILTIN_TYPE_NULL === $legacyType->getBuiltinType() || $legacyType->isNullable()) {
+            if ($legacyType->isNullable()) {
                 $nullable = true;
             }
         }
