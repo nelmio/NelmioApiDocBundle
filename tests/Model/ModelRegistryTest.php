@@ -354,7 +354,7 @@ class ModelRegistryTest extends TestCase
         // Mock a describer that supports these models
         $describer = $this->createMock(\Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface::class);
         $describer->method('supports')->willReturn(true);
-        $describer->method('describe')->willReturnCallback(function($model, $schema) {
+        $describer->method('describe')->willReturnCallback(static function ($model, $schema) {
             $schema->type = 'object';
         });
 
