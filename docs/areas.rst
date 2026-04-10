@@ -133,7 +133,7 @@ Then add the attribute before your controller or action::
 
     .. code-block:: php-attributes
 
-        use Nelmio\Attribute as Nelmio;
+        use Nelmio\ApiDocBundle\Attribute as Nelmio;
 
         /**
          * All actions in this controller are documented under the 'internal' area
