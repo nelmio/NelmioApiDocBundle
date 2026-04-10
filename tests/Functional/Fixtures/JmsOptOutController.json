@@ -61,6 +61,9 @@
             "VirtualTypeClassDoesNotExistsHandlerDefined": {},
             "VirtualTypeClassDoesNotExistsHandlerNotDefined": {},
             "JMSUser": {
+                "required": [
+                    "not_null_friend"
+                ],
                 "properties": {
                     "id": {
                         "title": "userid",
@@ -128,6 +131,9 @@
                         "minLength": 1
                     },
                     "best_friend": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "not_null_friend": {
                         "$ref": "#/components/schemas/User"
                     },
                     "status": {

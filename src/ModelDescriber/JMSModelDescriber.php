@@ -361,7 +361,10 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
             $modelRef = $this->modelRegistry->register($model);
 
             $customFields = (array) $property->jsonSerialize();
-            unset($customFields['property']);
+            unset(
+                $customFields['property'],
+                $customFields['nullable'],
+            );
             if ([] === $customFields) { // no custom fields
                 $property->ref = $modelRef;
             } else {
