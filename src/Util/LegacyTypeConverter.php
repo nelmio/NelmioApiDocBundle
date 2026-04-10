@@ -37,6 +37,12 @@ final class LegacyTypeConverter
         $types = [];
 
         foreach ($legacyTypes as $legacyType) {
+            if (LegacyType::BUILTIN_TYPE_NULL === $legacyType->getBuiltinType()) {
+                $nullable = true;
+
+                continue;
+            }
+
             $types[] = match ($legacyType->getBuiltinType()) {
                 LegacyType::BUILTIN_TYPE_INT => Type::int(),
                 LegacyType::BUILTIN_TYPE_STRING => Type::string(),
@@ -47,7 +53,7 @@ final class LegacyTypeConverter
                 default => throw new \LogicException('Unsupported LegacyType type: '.$legacyType->getBuiltinType().'.'),
             };
 
-            if (LegacyType::BUILTIN_TYPE_NULL === $legacyType->getBuiltinType() || $legacyType->isNullable()) {
+            if ($legacyType->isNullable()) {
                 $nullable = true;
             }
         }
