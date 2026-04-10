@@ -37,12 +37,6 @@ final class LegacyTypeConverter
         $types = [];
 
         foreach ($legacyTypes as $legacyType) {
-            if (LegacyType::BUILTIN_TYPE_NULL === $legacyType->getBuiltinType()) {
-                $nullable = true;
-
-                continue;
-            }
-
             $types[] = match ($legacyType->getBuiltinType()) {
                 LegacyType::BUILTIN_TYPE_INT => Type::int(),
                 LegacyType::BUILTIN_TYPE_STRING => Type::string(),
