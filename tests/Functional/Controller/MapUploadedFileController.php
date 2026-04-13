@@ -23,7 +23,7 @@ class MapUploadedFileController
     public function createUploadFromMapUploadedFilePayload(
         #[MapUploadedFile]
         UploadedFile $upload,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_uploaded_file_nullable', methods: ['POST'])]
@@ -31,7 +31,7 @@ class MapUploadedFileController
     public function createUploadFromMapUploadedFilePayloadNullable(
         #[MapUploadedFile]
         ?UploadedFile $upload,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_uploaded_file_multiple', methods: ['POST'])]
@@ -41,7 +41,7 @@ class MapUploadedFileController
         UploadedFile $firstUpload,
         #[MapUploadedFile]
         UploadedFile $secondUpload,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_uploaded_file_add_to_existing', methods: ['POST'])]
@@ -83,7 +83,7 @@ class MapUploadedFileController
     public function createArrayUploadFromMapUploadedFilePayload(
         #[MapUploadedFile]
         array $upload,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_uploaded_file_variadic', methods: ['POST'])]
@@ -91,6 +91,6 @@ class MapUploadedFileController
     public function createVariadicUploadFromMapUploadedFilePayload(
         #[MapUploadedFile]
         UploadedFile ...$upload,
-    ) {
+    ): void {
     }
 }

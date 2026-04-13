@@ -20,7 +20,7 @@ class UndocumentedController
      * This path is excluded by the config (only /api allowed).
      */
     #[Route('/undocumented', methods: ['GET'])]
-    public function undocumentedAction()
+    public function undocumentedAction(): void
     {
     }
 }

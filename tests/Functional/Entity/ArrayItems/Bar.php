@@ -22,7 +22,7 @@ class Bar
      */
     public $moreThings;
 
-    public function addThing(array $thing)
+    public function addThing(array $thing): void
     {
     }
 }
