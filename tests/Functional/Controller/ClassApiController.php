@@ -21,7 +21,7 @@ class ClassApiController
 {
     #[OAT\Response(response: 201, description: '')]
     #[Route('/security/class')]
-    public function securityAction()
+    public function securityAction(): void
     {
     }
 }

@@ -24,7 +24,7 @@ class PrivateProtectedExposure
      */
     public $publicField;
 
-    protected function setProtected(string $thing)
+    protected function setProtected(string $thing): void
     {
     }
 }

@@ -22,20 +22,20 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class SecuredApiController
 {
     #[Route('/article/{id}', methods: 'GET')]
-    public function fetchArticleAction()
+    public function fetchArticleAction(): void
     {
     }
 
     #[Route('/article', methods: 'POST')]
     #[IsGranted('ROLE_ADMIN')]
-    public function newArticleAction(Article $newArticle)
+    public function newArticleAction(Article $newArticle): void
     {
     }
 
     #[Route('/article/{id}', methods: 'PATCH')]
     #[IsGranted('ROLE_ADMIN')]
     #[IsGranted('ROLE_UPDATE_ARTICLE', subject: 'newArticle')]
-    public function updateArticleAction(Article $newArticle)
+    public function updateArticleAction(Article $newArticle): void
     {
     }
 
@@ -44,7 +44,7 @@ class SecuredApiController
         security: [] // Explicitly set to empty array
     )]
     #[IsGranted('ROLE_USER')]
-    public function userDocumentation(Article $newArticle)
+    public function userDocumentation(Article $newArticle): void
     {
     }
 
@@ -54,7 +54,7 @@ class SecuredApiController
         name: 'BearerAuthCustom',
         scopes: ['read:user'],
     )]
-    public function userDocumentationSecurityAttribute(Article $newArticle)
+    public function userDocumentationSecurityAttribute(Article $newArticle): void
     {
     }
 }
