@@ -21,7 +21,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
       - uses: actions/setup-node@v6
         with:
-          node-version: '20.x'
+          node-version: '22.x'
       - run: yarn install
       - name: Swagger UI
         run: yarn run swagger
