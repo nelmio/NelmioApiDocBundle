@@ -67,6 +67,7 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('documentation')
                     ->useAttributeAsKey('key')
+                    ->normalizeKeys(false)
                     ->info('The documentation used as base')
                     ->example(['info' => ['title' => 'My App']])
                     ->prototype('variable')->end()
