@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [5.10.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.1...v5.10.2) (2026-05-08)
+
+
+### Bug Fixes
+
+* **config:** root vendor extensions get ignored ([#2739](https://github.com/nelmio/NelmioApiDocBundle/issues/2739)) ([b80b612](https://github.com/nelmio/NelmioApiDocBundle/commit/b80b612d5b03058a260ffb640e0afb9844e1e9d2))
+
 ## [5.10.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.0...v5.10.1) (2026-05-08)
 
 
