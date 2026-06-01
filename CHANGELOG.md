@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [5.10.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.2...v5.10.3) (2026-06-01)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.55.3 to 1.57.5 in /utils ([#2746](https://github.com/nelmio/NelmioApiDocBundle/issues/2746)) ([8ea5151](https://github.com/nelmio/NelmioApiDocBundle/commit/8ea51517088be6e1e96cf284be03c2e95e1ecd49))
+* **deps:** bump @stoplight/elements from 9.0.19 to 9.0.21 in /utils ([#2751](https://github.com/nelmio/NelmioApiDocBundle/issues/2751)) ([935888a](https://github.com/nelmio/NelmioApiDocBundle/commit/935888a6e9e006d746dbaec7f52dd49cd6d5dbed))
+* **deps:** bump redoc from 2.5.2 to 2.5.3 in /utils ([#2750](https://github.com/nelmio/NelmioApiDocBundle/issues/2750)) ([2c13846](https://github.com/nelmio/NelmioApiDocBundle/commit/2c13846cb4c504b2eb0a993241d6971c3c027a65))
+* **deps:** bump swagger-ui-dist from 5.32.5 to 5.32.6 in /utils ([#2744](https://github.com/nelmio/NelmioApiDocBundle/issues/2744)) ([983cfde](https://github.com/nelmio/NelmioApiDocBundle/commit/983cfde917ff917748fc75682267a45a7f4d2e08))
+
 ## [5.10.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.1...v5.10.2) (2026-05-08)
 
 
