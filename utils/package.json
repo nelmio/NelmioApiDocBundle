@@ -2,7 +2,7 @@
   "description": "Script utils for nelmio/api-doc-bundle UI",
   "license": "MIT",
   "dependencies": {
-    "@scalar/api-reference": "1.57.5",
+    "@scalar/api-reference": "1.59.3",
     "@stoplight/elements": "9.0.21",
     "redoc": "2.5.3",
     "swagger-ui-dist": "5.32.6"
