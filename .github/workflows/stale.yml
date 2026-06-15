@@ -12,14 +12,14 @@ jobs:
     steps:
       - uses: actions/stale@v10
         with:
-          days-before-stale: 60
-          days-before-close: 60
+          days-before-stale: 90
+          days-before-close: 90
           stale-issue-label: "stale"
           stale-pr-label: "stale"
           exempt-issue-labels: "WIP, Do Not Close"
           exempt-pr-labels: "Do Not Close, need review"
-          stale-issue-message: "This issue has been marked as stale because it has not had any activity for 60 days. Remove stale label or comment to prevent this from being closed in 60 days."
-          close-issue-message: "This issue was closed because it has been inactive for 60 days since being marked as stale."
-          stale-pr-message: "This PR has been marked as stale because it has not had any activity for 60 days. Remove stale label or comment to prevent this from being closed in 60 days."
-          close-pr-message: "This PR was closed because it has been inactive for 60 days since being marked as stale."
+          stale-issue-message: "This issue has been marked as stale because it has not had any activity for 90 days. Remove stale label or comment to prevent this from being closed in 60 days."
+          close-issue-message: "This issue was closed because it has been inactive for 90 days since being marked as stale."
+          stale-pr-message: "This PR has been marked as stale because it has not had any activity for 90 days. Remove stale label or comment to prevent this from being closed in 90 days."
+          close-pr-message: "This PR was closed because it has been inactive for 90 days since being marked as stale."
           repo-token: ${{ secrets.GITHUB_TOKEN }}
