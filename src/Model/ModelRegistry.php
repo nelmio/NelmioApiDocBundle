@@ -74,7 +74,7 @@ final class ModelRegistry
         $this->api = $api;
         $this->logger = new NullLogger();
 
-        // Collect all alternative names to prevent first to prevent registering models
+        // Collect all alternative names to prevent first registering models
         // finding nested refererences before having a potential defined alternative name
         $models = [];
         foreach ($alternativeNames as $alternativeName => $criteria) {
