@@ -1,0 +1,19 @@
+from nelmio_api_doc_bundle.model_describer.enum_model_describer import EnumModelDescriber
+from nelmio_api_doc_bundle.model_describer.annotations.annotations_reader import AnnotationsReader
+from nelmio_api_doc_bundle.util import ReflectionReader
+from nelmio_api_doc_bundle.model_describer.apply_open_api_discriminator import ApplyOpenApiDiscriminatorTrait
+
+class EnumModelDescriber(EnumModelDescriber, ApplyOpenApiDiscriminatorTrait):
+    def __init__(self, annotations_reader: AnnotationsReader, reflection_reader: ReflectionReader):
+        super().__init__()
+        self.annotations_reader = annotations_reader
+        self.reflection_reader = reflection_reader
+
+    def describe(self, property_name: str, property_type: str, property_description: str, context: dict) -> dict:
+        if '_nelmio_enum_force_names' in context and context['_nelmio_enum_force_names']:
+            return {
+                'type': 'string',
+                'description': property_description,
+                'enum': [enum.name for enum in self.annotations_reader.get_enum_values(property_name)]
+            }
+        return super().describe(property_name, property_type, property_description, context)
