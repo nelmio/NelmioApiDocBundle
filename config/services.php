@@ -133,6 +133,7 @@ return static function (ContainerConfigurator $container) {
            ->private()
            ->args([tagged_iterator('nelmio_api_doc.object_model.property_describer')])
            ->tag('nelmio_api_doc.object_model.property_describer', ['priority' => 100])
+           ->tag('kernel.reset', ['method' => 'reset'])
 
        ->set('nelmio_api_doc.object_model.property_describers.array', \Nelmio\ApiDocBundle\PropertyDescriber\ArrayPropertyDescriber::class)
            ->private()

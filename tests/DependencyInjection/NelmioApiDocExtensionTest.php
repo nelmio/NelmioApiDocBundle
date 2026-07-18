@@ -198,6 +198,25 @@ class NelmioApiDocExtensionTest extends TestCase
         self::assertSame($expectedValues['area1CacheItemId'], $cacheItemId);
     }
 
+    public function testStatefulDescribersAreTaggedForKernelReset(): void
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', []);
+
+        $extension = new NelmioApiDocExtension();
+        $extension->load([[]], $container);
+
+        // Generators keep a warm in-memory OpenAPI in long-lived workers; they implement
+        // ResetInterface but are not tagged with kernel.reset by default.
+        self::assertFalse($container->getDefinition('nelmio_api_doc.generator.default')->hasTag('kernel.reset'));
+
+        self::assertTrue($container->getDefinition('nelmio_api_doc.object_model.property_describer')->hasTag('kernel.reset'));
+        self::assertSame(
+            [['method' => 'reset']],
+            $container->getDefinition('nelmio_api_doc.object_model.property_describer')->getTag('kernel.reset')
+        );
+    }
+
     public static function provideCacheConfig(): \Generator
     {
         yield 'default cache.item_id & area appending' => [

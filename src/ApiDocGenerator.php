@@ -22,13 +22,13 @@ use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Contracts\Service\ResetInterface;
 
-final class ApiDocGenerator
+final class ApiDocGenerator implements ResetInterface
 {
     use LoggerAwareTrait;
 
-    /** @var OpenApi */
-    private $openApi;
+    private ?OpenApi $openApi = null;
 
     /** @var iterable|DescriberInterface[] */
     private $describers;
@@ -110,8 +110,10 @@ final class ApiDocGenerator
 
         $context = Util::createContext(['version' => $this->generator->getVersion()]);
 
-        $this->openApi = new OpenApi(['_context' => $context]);
-        $modelRegistry = new ModelRegistry($this->modelDescribers, $this->openApi, $this->alternativeNames);
+        // Keep the document in a local variable until generation succeeds so a failed
+        // generation cannot poison subsequent requests (FrankenPHP / long-lived workers).
+        $openApi = new OpenApi(['_context' => $context]);
+        $modelRegistry = new ModelRegistry($this->modelDescribers, $openApi, $this->alternativeNames);
         if (null !== $this->logger) {
             $modelRegistry->setLogger($this->logger);
         }
@@ -120,11 +122,11 @@ final class ApiDocGenerator
                 $describer->setModelRegistry($modelRegistry);
             }
 
-            $describer->describe($this->openApi);
+            $describer->describe($openApi);
         }
 
         $analysis = new Analysis([], $context);
-        $analysis->addAnnotation($this->openApi, $context);
+        $analysis->addAnnotation($openApi, $context);
 
         // Register model attributes
         $modelRegister = new ModelRegister($modelRegistry, $this->mediaTypes);
@@ -137,9 +139,14 @@ final class ApiDocGenerator
         $analysis->validate();
 
         if (isset($item)) {
-            $this->cacheItemPool->save($item->set($this->openApi));
+            $this->cacheItemPool->save($item->set($openApi));
         }
 
-        return $this->openApi;
+        return $this->openApi = $openApi;
+    }
+
+    public function reset(): void
+    {
+        $this->openApi = null;
     }
 }

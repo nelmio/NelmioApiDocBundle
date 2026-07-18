@@ -32,6 +32,10 @@ This version comes with the following major changes:
 - Minimum Symfony version is now 6.4.
 - Major cleanup and simplification of the codebase.
 
+### FrankenPHP worker mode
+
+FrankenPHP worker mode: **Supported**. See [docs/FRANKENPHP.md](docs/FRANKENPHP.md) (`ResetInterface` on stateful services, safe OpenAPI memoization, optional PSR-6 cache).
+
 ### Migrate from 3.x to 4.0
 
 [To migrate from 3.x to 4.0, follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/UPGRADE-4.0.md)

@@ -15,8 +15,9 @@ use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
 use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use OpenApi\Annotations as OA;
 use Symfony\Component\PropertyInfo\Type;
+use Symfony\Contracts\Service\ResetInterface;
 
-final class PropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface
+final class PropertyDescriber implements PropertyDescriberInterface, ModelRegistryAwareInterface, ResetInterface
 {
     use ModelRegistryAwareTrait;
 
@@ -45,8 +46,18 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
         }
 
         $this->called[$this->getHash($types)][] = $propertyDescriber;
-        $propertyDescriber->describe($types, $property, $context);
-        $this->called = []; // Reset recursion helper
+        try {
+            $propertyDescriber->describe($types, $property, $context);
+        } finally {
+            // Always clear recursion state so a failed description cannot leak across requests
+            // (FrankenPHP worker / long-lived processes).
+            $this->called = [];
+        }
+    }
+
+    public function reset(): void
+    {
+        $this->called = [];
     }
 
     public function supports(array $types, array $context = []): bool
