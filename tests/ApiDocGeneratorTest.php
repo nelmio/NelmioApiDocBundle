@@ -18,7 +18,6 @@ use OpenApi\Annotations\OpenApi;
 use OpenApi\Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Symfony\Contracts\Service\ResetInterface;
 
 class ApiDocGeneratorTest extends TestCase
 {
@@ -36,13 +35,6 @@ class ApiDocGeneratorTest extends TestCase
         $generator = new ApiDocGenerator([new DefaultDescriber()], [], $adapter, 'custom_id', new Generator());
 
         self::assertEquals(json_encode($generator->generate()), json_encode($adapter->getItem('custom_id')->get()));
-    }
-
-    public function testImplementsResetInterface(): void
-    {
-        $generator = new ApiDocGenerator([new DefaultDescriber()], [], null, null, new Generator());
-
-        self::assertInstanceOf(ResetInterface::class, $generator);
     }
 
     public function testResetClearsInMemoryDocument(): void
@@ -83,7 +75,11 @@ class ApiDocGeneratorTest extends TestCase
 
         $describer->fail = false;
 
-        $api = $generator->generate();
-        self::assertInstanceOf(OpenApi::class, $api);
+        $beforeReset = $generator->generate();
+        $generator->reset();
+        $afterReset = $generator->generate();
+
+        self::assertNotSame($beforeReset, $afterReset);
+        self::assertEquals(json_encode($beforeReset), json_encode($afterReset));
     }
 }
