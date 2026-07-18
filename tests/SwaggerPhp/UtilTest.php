@@ -99,7 +99,8 @@ class UtilTest extends TestCase
     {
         $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
-        self::assertInstanceOf(Context::class, $info->_context);
+        self::assertTrue($info->_context->is('nested'));
+        self::assertSame($this->rootAnnotation, $info->_context->nested);
     }
 
     public function testCreateChildHasNestedContext(): void
@@ -1044,6 +1045,13 @@ class UtilTest extends TestCase
     public function testGetSchemaCreatesComponentsWhenOpenApiContextIsNull(): void
     {
         $api = self::createObj(OA\OpenApi::class, []);
+
+        $contextProperty = new \ReflectionProperty($api, '_context');
+        $type = $contextProperty->getType();
+        if ($type instanceof \ReflectionNamedType && !$type->allowsNull()) {
+            self::markTestSkipped('zircote/swagger-php no longer allows a null OpenAPI annotation context.');
+        }
+
         $api->_context = null;
 
         $schema = Util::getSchema($api, 'NullContextModel');
