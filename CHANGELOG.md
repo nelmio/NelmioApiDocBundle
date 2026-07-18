@@ -11,6 +11,10 @@
 
 * add [docs/FRANKENPHP.md](docs/FRANKENPHP.md) describing FrankenPHP worker compatibility
 
+### Continuous Integration
+
+* drop Symfony 7.2 / 7.3 from the CI matrix and run PHPStan / PHP-CS-Fixer on 7.4 (Composer blocks unpatched 7.2/7.3 via security advisories)
+
 ## [5.10.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.2...v5.10.3) (2026-06-01)
 
 
