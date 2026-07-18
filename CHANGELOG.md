@@ -13,7 +13,7 @@
 
 ### Continuous Integration
 
-* drop Symfony 7.2 / 7.3 from the CI matrix and run PHPStan / PHP-CS-Fixer on 7.4 (Composer blocks unpatched 7.2/7.3 via security advisories)
+* disable Composer advisory/policy blocking in CI (`--no-blocking`) so Flex can still resolve Symfony minors that have open advisories (e.g. EOL 7.2/7.3); keep PHPStan / PHP-CS-Fixer on Symfony 7.4
 
 ## [5.10.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.2...v5.10.3) (2026-06-01)
 

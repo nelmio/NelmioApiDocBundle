@@ -56,5 +56,9 @@ runs:
     - name: Install dependencies with Composer
       env:
         SYMFONY_REQUIRE: "${{ inputs.symfony-version }}.*"
-      run: composer update --no-interaction --no-progress ${{ inputs.composer-flags }}
+        # Library CI must resolve across Symfony minors (incl. EOL). Composer 2.10+
+        # blocks versions with open advisories by default, which breaks Flex pins
+        # such as 7.2.* / 7.3.* that have no patched releases.
+        COMPOSER_NO_BLOCKING: "1"
+      run: composer update --no-interaction --no-progress --no-blocking ${{ inputs.composer-flags }}
       shell: bash
