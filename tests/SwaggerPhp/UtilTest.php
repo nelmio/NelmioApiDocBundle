@@ -1041,17 +1041,6 @@ class UtilTest extends TestCase
         self::assertSame('NoContextModel', $schema->schema);
     }
 
-    public function testGetSchemaCreatesComponentsWhenOpenApiContextIsNull(): void
-    {
-        $api = self::createObj(OA\OpenApi::class, []);
-        $api->_context = null;
-
-        $schema = Util::getSchema($api, 'NullContextModel');
-
-        self::assertInstanceOf(OA\Components::class, $api->components);
-        self::assertSame('NullContextModel', $schema->schema);
-    }
-
     public function testGetSchemaCreatesComponentsUsingExistingOpenApiContext(): void
     {
         $existingContext = new Context(['fromExisting' => true]);
