@@ -30,7 +30,7 @@
         "symfony/http-foundation": "^6.4 || ^7.2 || ^8.0",
         "symfony/http-kernel": "^6.4 || ^7.2 || ^8.0",
         "symfony/options-resolver": "^6.4 || ^7.2 || ^8.0",
-        "symfony/property-info": "^6.4 || ^7.2 || ^8.0",
+        "symfony/property-info": "^6.4.15 || ^7.2 || ^8.0",
         "symfony/routing": "^6.4 || ^7.2 || ^8.0",
         "symfony/type-info": "^7.2 || ^8.0",
         "zircote/swagger-php": "^5.7.8 || ^6.0"
