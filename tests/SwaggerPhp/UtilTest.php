@@ -99,7 +99,7 @@ class UtilTest extends TestCase
     {
         $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
-        self::assertInstanceOf(Context::class, $info->_context);
+        self::assertSame($this->rootAnnotation, $info->_context->nested);
     }
 
     public function testCreateChildHasNestedContext(): void
