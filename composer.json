@@ -36,7 +36,7 @@
         "zircote/swagger-php": "^5.7.8 || ^6.0"
     },
     "require-dev": {
-        "api-platform/core": "^3.2 || ^4.0",
+        "api-platform/core": "^3.4.6 || ^4.0.9",
         "doctrine/inflector": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.52",
         "friendsofsymfony/rest-bundle": "^3.2.0",
@@ -94,7 +94,12 @@
     },
     "config": {
         "lock": false,
-        "sort-packages": true
+        "sort-packages": true,
+        "policy": {
+            "advisories": {
+                "block": false
+            }
+        }
     },
     "extra": {
         "branch-alias": {
