@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## [5.11.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.3...v5.11.0) (2026-08-03)
+
+
+### Features
+
+* Add support for the query http method ([#2732](https://github.com/nelmio/NelmioApiDocBundle/issues/2732)) ([a46818f](https://github.com/nelmio/NelmioApiDocBundle/commit/a46818fde0f4351c4628580c909c6e80f9aac852))
+
+
+### Bug Fixes
+
+* **deps:** require zircote/swagger-php &gt;= 5.7.8 for the query method ([#2782](https://github.com/nelmio/NelmioApiDocBundle/issues/2782)) ([1eef066](https://github.com/nelmio/NelmioApiDocBundle/commit/1eef066c3d3b2abd4b491f0dc8ffa357d45b186f))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.57.5 to 1.62.5 in /utils ([#2769](https://github.com/nelmio/NelmioApiDocBundle/issues/2769)) ([cabb52e](https://github.com/nelmio/NelmioApiDocBundle/commit/cabb52e8406aba7cc93f82a568fa11215ad283ad))
+* **deps:** bump @scalar/api-reference from 1.62.5 to 1.64.0 in /utils ([#2780](https://github.com/nelmio/NelmioApiDocBundle/issues/2780)) ([e2b085c](https://github.com/nelmio/NelmioApiDocBundle/commit/e2b085c7abbe83c10492c6fc8dc990fc44ee4fb0))
+* **deps:** bump @stoplight/elements from 9.0.21 to 9.0.24 in /utils ([#2774](https://github.com/nelmio/NelmioApiDocBundle/issues/2774)) ([c8f3e4e](https://github.com/nelmio/NelmioApiDocBundle/commit/c8f3e4ec890f7ee3ece122926ae936a5df6f72f5))
+* **deps:** bump swagger-ui-dist from 5.32.6 to 5.32.11 in /utils ([#2777](https://github.com/nelmio/NelmioApiDocBundle/issues/2777)) ([9654f06](https://github.com/nelmio/NelmioApiDocBundle/commit/9654f06889e7683a74dffdd21f0048b920894a90))
+
 ## [5.10.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.2...v5.10.3) (2026-06-01)
 
 
