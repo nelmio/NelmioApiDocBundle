@@ -9,6 +9,20 @@
             "test": "Test vendor extension"
         }
     },
+    "x-metadata": {
+        "test": "Test metadata vendor extension",
+        "buildHash": "#SomeCommitHash"
+    },
+    "x-tagGroups": [
+        {
+            "name": "Group 1",
+            "tags": ["tag1", "tag2"]
+        },
+        {
+            "name": "Group 2",
+            "tags": ["tag3", "tag4"]
+        }
+    ],
     "paths": {},
     "components": {
         "schemas": {

@@ -55,7 +55,9 @@ final class ClassDescriber implements TypeDescriberInterface, ModelRegistryAware
             return;
         }
 
-        if (is_a($type->getClassName(), TranslatableInterface::class, true)) {
+        if (is_a($type->getClassName(), TranslatableInterface::class, true)
+            && !is_subclass_of($type->getClassName(), \BackedEnum::class)
+        ) {
             $schema->type = 'string';
 
             return;

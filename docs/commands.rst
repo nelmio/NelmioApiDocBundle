@@ -46,3 +46,4 @@ or configure UI configuration, use the ``--html-config`` option.
 
 .. _`configure Swagger UI`: https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/
 .. _`configure Redocly`: https://redocly.com/docs/redoc/config/
+.. _`configure Stoplight`: https://docs.stoplight.io/

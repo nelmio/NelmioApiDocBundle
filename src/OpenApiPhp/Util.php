@@ -56,7 +56,7 @@ final class Util
      *
      * @var string[]
      */
-    public const OPERATIONS = ['get', 'post', 'put', 'patch', 'delete', 'options', 'head', 'trace'];
+    public const OPERATIONS = ['get', 'post', 'put', 'patch', 'delete', 'options', 'head', 'trace', 'query'];
 
     /**
      * Return an existing PathItem object from $api->paths[] having its member path set to $path.
@@ -104,7 +104,7 @@ final class Util
     public static function getSchema(OA\OpenApi $api, string $schema): OA\Schema
     {
         if (!$api->components instanceof OA\Components) {
-            $api->components = new OA\Components(['_context' => self::createWeakContext($api->_context)]);
+            $api->components = new OA\Components(['_context' => self::createWeakContext($api->_context ?? null)]);
         }
 
         return self::getIndexedCollectionItem($api->components, OA\Schema::class, $schema);

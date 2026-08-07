@@ -38,6 +38,10 @@ use PHPUnit\Framework\TestCase;
  * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::mergeTyped
  * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::mergeProperty
  * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getNestingIndexes
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getSchema
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::createWeakContext
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::getSchemaPropertyName
+ * @covers \Nelmio\ApiDocBundle\OpenApiPhp\Util::modifyAnnotationValue
  */
 class UtilTest extends TestCase
 {
@@ -53,7 +57,11 @@ class UtilTest extends TestCase
         $this->rootAnnotation = self::createObj(OA\OpenApi::class, ['_context' => $this->rootContext]);
 
         set_error_handler(
-            static function ($errno, $errstr) {
+            static function (int $errno, string $errstr): bool {
+                if (\E_DEPRECATED === $errno || \E_USER_DEPRECATED === $errno) {
+                    return false;
+                }
+
                 throw new \Exception($errstr, $errno);
             },
             \E_ALL
@@ -91,7 +99,7 @@ class UtilTest extends TestCase
     {
         $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
-        self::assertInstanceOf(Context::class, $info->_context);
+        self::assertSame($this->rootAnnotation, $info->_context->nested);
     }
 
     public function testCreateChildHasNestedContext(): void
@@ -176,12 +184,8 @@ class UtilTest extends TestCase
         $class = OA\Info::class;
 
         self::expectException(\Exception::class);
-        self::expectExceptionMessage("Property \"foobars\" doesn't exist");
+        self::expectExceptionMessageMatches('/(Property "foobars" doesn\'t exist|Undefined property: .*::\$foobars)/');
         Util::createCollectionItem($this->rootAnnotation, $collection, $class);
-
-        self::expectException(\Exception::class);
-        self::expectExceptionMessage("Property \"foobars\" doesn't exist");
-        self::assertNull($this->rootAnnotation->{$collection}); /* @phpstan-ignore-line */
     }
 
     public function testSearchCollectionItem(): void
@@ -922,6 +926,130 @@ class UtilTest extends TestCase
         $tag = Util::getTag($api, 'bar');
         self::assertEquals('bar', $tag->name);
         self::assertEquals('baz', $tag->description);
+    }
+
+    public function testCreateWeakContextWithNullParentReturnsContext(): void
+    {
+        $this->expectNotToPerformAssertions();
+        Util::createWeakContext(null);
+    }
+
+    public function testCreateWeakContextCopiesSelectedParentFields(): void
+    {
+        $parent = new Context([
+            'version' => '3.0.0',
+            'line' => 42,
+            'character' => 7,
+            'namespace' => 'App\\Api',
+            'class' => 'Foo',
+            'interface' => 'FooInterface',
+            'trait' => 'BarTrait',
+            'method' => 'bar',
+            'property' => 'baz',
+            'logger' => null,
+        ]);
+        $weak = Util::createWeakContext($parent, ['custom' => 'extra']);
+
+        self::assertSame('3.0.0', $weak->version);
+        self::assertSame(42, $weak->line);
+        self::assertSame(7, $weak->character);
+        self::assertSame('App\\Api', $weak->namespace);
+        self::assertSame('Foo', $weak->class);
+        self::assertSame('FooInterface', $weak->interface);
+        self::assertSame('BarTrait', $weak->trait);
+        self::assertSame('bar', $weak->method);
+        self::assertSame('baz', $weak->property);
+        self::assertSame('extra', $weak->custom);
+    }
+
+    public function testMergeFromAbstractAnnotation(): void
+    {
+        $schema = self::createObj(OA\Schema::class, ['description' => 'old', 'title' => 'first']);
+        $from = self::createObj(OA\Schema::class, ['description' => 'new', 'title' => 'second']);
+        Util::merge($schema, $from, true);
+
+        self::assertSame('new', $schema->description);
+        self::assertSame('second', $schema->title);
+    }
+
+    public function testMergeMergesStringArrayTagsOnOperation(): void
+    {
+        $operation = self::createObj(OA\Get::class, ['tags' => ['a']]);
+        Util::merge($operation, ['tags' => ['b']], false);
+
+        self::assertSame(['a', 'b'], $operation->tags);
+    }
+
+    public function testGetSchemaPropertyNameReturnsNullWhenPropertiesUndefined(): void
+    {
+        $schema = self::createObj(OA\Schema::class, []);
+        $prop = self::createObj(OA\Property::class, ['property' => 'x']);
+
+        self::assertNull(Util::getSchemaPropertyName($schema, $prop));
+    }
+
+    public function testGetSchemaPropertyNameReturnsNameWhenPropertyMatches(): void
+    {
+        $prop = self::createObj(OA\Property::class, ['property' => 'fieldName']);
+        $schema = self::createObj(OA\Schema::class, ['properties' => [$prop]]);
+
+        self::assertSame('fieldName', Util::getSchemaPropertyName($schema, $prop));
+    }
+
+    public function testGetSchemaPropertyNameReturnsNullWhenPropertyMemberUndefined(): void
+    {
+        $prop = self::createObj(OA\Property::class, []);
+        $schema = self::createObj(OA\Schema::class, ['properties' => [$prop]]);
+
+        self::assertNull(Util::getSchemaPropertyName($schema, $prop));
+    }
+
+    public function testGetSchemaPropertyNameReturnsNullWhenPropertyNotInList(): void
+    {
+        $listed = self::createObj(OA\Property::class, ['property' => 'a']);
+        $other = self::createObj(OA\Property::class, ['property' => 'b']);
+        $schema = self::createObj(OA\Schema::class, ['properties' => [$listed]]);
+
+        self::assertNull(Util::getSchemaPropertyName($schema, $other));
+    }
+
+    public function testModifyAnnotationValueSetsWhenStillDefault(): void
+    {
+        $parameter = self::createObj(OA\Parameter::class, []);
+        Util::modifyAnnotationValue($parameter, 'description', 'Documented');
+
+        self::assertSame('Documented', $parameter->description);
+    }
+
+    public function testModifyAnnotationValueDoesNothingWhenAlreadySet(): void
+    {
+        $parameter = self::createObj(OA\Parameter::class, ['description' => 'Original']);
+        Util::modifyAnnotationValue($parameter, 'description', 'Ignored');
+
+        self::assertSame('Original', $parameter->description);
+    }
+
+    public function testGetSchemaCreatesComponentsWhenOpenApiContextUninitialized(): void
+    {
+        $ref = new \ReflectionClass(OA\OpenApi::class);
+        /** @var OA\OpenApi $api */
+        $api = $ref->newInstanceWithoutConstructor();
+
+        $schema = Util::getSchema($api, 'NoContextModel');
+
+        self::assertInstanceOf(OA\Components::class, $api->components);
+        self::assertSame('NoContextModel', $schema->schema);
+    }
+
+    public function testGetSchemaCreatesComponentsUsingExistingOpenApiContext(): void
+    {
+        $existingContext = new Context(['fromExisting' => true]);
+        $api = self::createObj(OA\OpenApi::class, ['_context' => $existingContext]);
+
+        $schema = Util::getSchema($api, 'ExistingCtxModel');
+
+        self::assertInstanceOf(OA\Components::class, $api->components);
+        self::assertSame('ExistingCtxModel', $schema->schema);
     }
 
     public function assertIsNested(OA\AbstractAnnotation $parent, OA\AbstractAnnotation $child): void

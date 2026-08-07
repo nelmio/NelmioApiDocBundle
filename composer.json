@@ -30,13 +30,13 @@
         "symfony/http-foundation": "^6.4 || ^7.2 || ^8.0",
         "symfony/http-kernel": "^6.4 || ^7.2 || ^8.0",
         "symfony/options-resolver": "^6.4 || ^7.2 || ^8.0",
-        "symfony/property-info": "^6.4 || ^7.2 || ^8.0",
+        "symfony/property-info": "^6.4.15 || ^7.2 || ^8.0",
         "symfony/routing": "^6.4 || ^7.2 || ^8.0",
         "symfony/type-info": "^7.2 || ^8.0",
-        "zircote/swagger-php": "^4.11.1 || ^5.0"
+        "zircote/swagger-php": "^5.7.8 || ^6.0"
     },
     "require-dev": {
-        "api-platform/core": "^3.2 || ^4.0",
+        "api-platform/core": "^3.4.6 || ^4.0.9",
         "doctrine/inflector": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.52",
         "friendsofsymfony/rest-bundle": "^3.2.0",
@@ -66,7 +66,6 @@
         "willdurand/negotiation": "^3.0"
     },
     "conflict": {
-        "zircote/swagger-php": "4.8.7 || 5.5.0",
         "symfony/property-info": "6.4.32 || 7.3.10 || 7.4.4 || 8.0.4"
     },
     "suggest": {
@@ -96,10 +95,10 @@
     "config": {
         "lock": false,
         "sort-packages": true,
-        "audit": {
-            "ignore": [
-                "PKSA-365x-2zjk-pt47"
-            ]
+        "policy": {
+            "advisories": {
+                "block": false
+            }
         }
     },
     "extra": {

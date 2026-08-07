@@ -157,7 +157,7 @@ class ApiController
 
     #[Route('/test/{user}', methods: ['GET'], schemes: ['https'], requirements: ['user' => '/foo/'])]
     #[OA\Response(response: 200, description: 'sucessful')]
-    public function userAction()
+    public function userAction(): void
     {
     }
 
@@ -169,7 +169,7 @@ class ApiController
      * @deprecated
      */
     #[Route('/deprecated', methods: ['GET'])]
-    public function deprecatedAction()
+    public function deprecatedAction(): void
     {
     }
 
@@ -177,7 +177,7 @@ class ApiController
      * This action is not documented. It is excluded by the config.
      */
     #[Route('/admin', methods: ['GET'])]
-    public function adminAction()
+    public function adminAction(): void
     {
     }
 
@@ -226,7 +226,7 @@ class ApiController
     #[Security(name: 'api_key')]
     #[Security(name: 'basic')]
     #[Security(name: 'oauth2', scopes: ['scope_1'])]
-    public function securityAction()
+    public function securityAction(): void
     {
     }
 
@@ -234,7 +234,7 @@ class ApiController
     #[OA\Response(response: 201, description: '')]
     #[Security(name: 'api_key')]
     #[Security(name: null)]
-    public function securityActionOverride()
+    public function securityActionOverride(): void
     {
     }
 
@@ -258,7 +258,7 @@ class ApiController
         ref: '#/components/responses/201',
     )]
     #[Route('/configReference', methods: ['GET'])]
-    public function configReferenceAction()
+    public function configReferenceAction(): void
     {
     }
 
@@ -272,7 +272,7 @@ class ApiController
 
     #[Route('/areas/new', methods: ['GET', 'POST'])]
     #[Areas(['area', 'area2'])]
-    public function newAreaAction()
+    public function newAreaAction(): void
     {
     }
 
@@ -296,7 +296,7 @@ class ApiController
 
     #[Route('/named_route-operation-id', name: 'named_route_operation_id', methods: ['GET', 'POST'])]
     #[OA\Response(response: 200, description: 'success')]
-    public function namedRouteOperationIdAction()
+    public function namedRouteOperationIdAction(): void
     {
     }
 
@@ -304,7 +304,7 @@ class ApiController
     #[OA\Get(operationId: 'get-custom-operation-id')]
     #[OA\Post(operationId: 'post-custom-operation-id')]
     #[OA\Response(response: 200, description: 'success')]
-    public function customOperationIdAction()
+    public function customOperationIdAction(): void
     {
     }
 
@@ -483,7 +483,7 @@ class ApiController
 
     #[Areas(['area', 'area2'])]
     #[Route('/areas_attributes/new', methods: ['GET', 'POST'])]
-    public function newAreaActionAttributes()
+    public function newAreaActionAttributes(): void
     {
     }
 
@@ -492,7 +492,7 @@ class ApiController
     #[Security(name: 'api_key')]
     #[Security(name: 'basic')]
     #[Security(name: 'oauth2', scopes: ['scope_1'])]
-    public function securityActionAttributes()
+    public function securityActionAttributes(): void
     {
     }
 
@@ -500,7 +500,7 @@ class ApiController
     #[OA\Response(response: '201', description: '')]
     #[Security(name: 'api_key')]
     #[Security(name: null)]
-    public function securityOverrideActionAttributes()
+    public function securityOverrideActionAttributes(): void
     {
     }
 
@@ -509,7 +509,7 @@ class ApiController
     public function inlinePathParameters(
         #[OA\PathParameter]
         string $product_id,
-    ) {
+    ): void {
     }
 
     #[Route('/enum')]

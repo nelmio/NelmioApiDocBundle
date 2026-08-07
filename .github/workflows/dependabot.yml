@@ -15,18 +15,22 @@ jobs:
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
-          node-version: '20.x'
+          node-version: '22.x'
       - run: yarn install
       - name: Swagger UI
         run: yarn run swagger
       - name: Redocly
         run: yarn run redoc
+      - name: Scalar
+        run: yarn run scalar
+      - name: Stoplight
+        run: yarn run stoplight
       - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "[dependabot-skip] Update UI files"

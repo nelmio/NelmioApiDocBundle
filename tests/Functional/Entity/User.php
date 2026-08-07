@@ -109,7 +109,7 @@ class User
         $this->roles = $roles;
     }
 
-    public function setLocation(string $location)
+    public function setLocation(string $location): void
     {
     }
 
@@ -118,27 +118,27 @@ class User
         $this->friendsNumber = $friendsNumber;
     }
 
-    public function setCreatedAt(\DateTime $createAt)
+    public function setCreatedAt(\DateTime $createAt): void
     {
     }
 
-    public function setUsers(array $users)
+    public function setUsers(array $users): void
     {
     }
 
-    public function setFriend(?self $friend = null)
+    public function setFriend(?self $friend = null): void
     {
     }
 
-    public function setFriends(array $friends = [])
+    public function setFriends(array $friends = []): void
     {
     }
 
-    public function setDummy(Dummy $dummy)
+    public function setDummy(Dummy $dummy): void
     {
     }
 
-    public function setStatus(string $status)
+    public function setStatus(string $status): void
     {
     }
 
