@@ -1,20 +1,5 @@
 # CHANGELOG
 
-## Unreleased
-
-### Bug Fixes
-
-* **frankenphp:** avoid caching a partially generated OpenAPI document when generation fails (safe for long-lived workers)
-* **frankenphp:** implement `ResetInterface` on `ApiDocGenerator`, `PropertyDescriber`, `JMSModelDescriber`, and `BazingaHateoasModelDescriber`; tag ephemeral describers with `kernel.reset` (generators keep a warm in-memory cache by default)
-
-### Documentation
-
-* add [docs/FRANKENPHP.md](docs/FRANKENPHP.md) describing FrankenPHP worker compatibility
-
-### Continuous Integration
-
-* disable Composer advisory/policy blocking in CI (`--no-blocking`) so Flex can still resolve Symfony minors that have open advisories (e.g. EOL 7.2/7.3); keep PHPStan / PHP-CS-Fixer on Symfony 7.4
-
 ## [5.10.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.2...v5.10.3) (2026-06-01)
 
 

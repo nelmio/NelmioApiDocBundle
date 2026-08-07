@@ -34,7 +34,8 @@ This version comes with the following major changes:
 
 ### FrankenPHP worker mode
 
-FrankenPHP worker mode: **Supported**. See [docs/FRANKENPHP.md](docs/FRANKENPHP.md) (`ResetInterface` on stateful services, safe OpenAPI memoization, optional PSR-6 cache).
+The bundle also runs under FrankenPHP worker mode and other long-running workers, see
+[FrankenPHP and long-running workers](https://symfony.com/doc/current/bundles/NelmioApiDocBundle/frankenphp.html).
 
 ### Migrate from 3.x to 4.0
 

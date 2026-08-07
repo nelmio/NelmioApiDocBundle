@@ -176,7 +176,7 @@ jobs:
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
         with:
-          symfony-version: "7.4"
+          symfony-version: "7.2.*"
           test-group: all
 
       - name: Run PHP-CS-Fixer
@@ -202,7 +202,7 @@ jobs:
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
         with:
-          symfony-version: "7.4"
+          symfony-version: "7.2.*"
           test-group: all
 
       - name: Run PHPStan
