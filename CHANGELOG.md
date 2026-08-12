@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [5.11.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.11.0...v5.11.1) (2026-08-12)
+
+
+### Bug Fixes
+
+* harden OpenAPI generation for FrankenPHP / long-lived workers ([#2772](https://github.com/nelmio/NelmioApiDocBundle/issues/2772)) ([7b8ab07](https://github.com/nelmio/NelmioApiDocBundle/commit/7b8ab074d6a01308d96eeebeeb3d682dedadcdd0))
+
 ## [5.11.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.3...v5.11.0) (2026-08-03)
 
 
