@@ -22,8 +22,9 @@ use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations as OA;
 use Symfony\Component\TypeInfo\Type\ObjectType;
+use Symfony\Contracts\Service\ResetInterface;
 
-class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
+class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface, ResetInterface
 {
     use ModelRegistryAwareTrait;
 
@@ -40,6 +41,11 @@ class BazingaHateoasModelDescriber implements ModelDescriberInterface, ModelRegi
     {
         $this->modelRegistry = $modelRegistry;
         $this->JMSModelDescriber->setModelRegistry($modelRegistry);
+    }
+
+    public function reset(): void
+    {
+        $this->JMSModelDescriber->reset();
     }
 
     public function describe(Model $model, OA\Schema $schema): void

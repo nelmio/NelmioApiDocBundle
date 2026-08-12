@@ -267,7 +267,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     $container->getParameter('nelmio_api_doc.use_validation_groups'),
                     $contextFactory,
                 ])
-                ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
+                ->addTag('nelmio_api_doc.model_describer', ['priority' => 50])
+                ->addTag('kernel.reset', ['method' => 'reset']);
 
             // Bazinga Hateoas metadata support
             if (isset($bundles['BazingaHateoasBundle'])) {
@@ -277,7 +278,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     ->setArguments([
                         new Reference('hateoas.configuration.metadata_factory'),
                         new Reference('nelmio_api_doc.model_describers.jms.inner'),
-                    ]);
+                    ])
+                    ->addTag('kernel.reset', ['method' => 'reset']);
             }
         } else {
             $container->removeDefinition('nelmio_api_doc.model_describers.object_fallback');

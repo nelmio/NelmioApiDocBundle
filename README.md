@@ -32,6 +32,11 @@ This version comes with the following major changes:
 - Minimum Symfony version is now 6.4.
 - Major cleanup and simplification of the codebase.
 
+### FrankenPHP worker mode
+
+The bundle also runs under FrankenPHP worker mode and other long-running workers, see
+[FrankenPHP and long-running workers](https://symfony.com/doc/current/bundles/NelmioApiDocBundle/frankenphp.html).
+
 ### Migrate from 3.x to 4.0
 
 [To migrate from 3.x to 4.0, follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/UPGRADE-4.0.md)
