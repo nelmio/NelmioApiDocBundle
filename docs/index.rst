@@ -361,6 +361,59 @@ that property type to not be nullable, for example.
             ))
         )]
 
+Serializer context
+~~~~~~~~~~~~~~~~~~
+
+When using the Symfony serializer, the ``#[Context]`` attribute is taken into account
+when describing a model. It can be placed on a property, on a getter, or on the class
+itself, and the context it declares is merged into the context used to describe that
+property:
+
+.. configuration-block::
+
+    .. code-block:: php-attributes
+
+        use Nelmio\ApiDocBundle\ModelDescriber\EnumModelDescriber;
+        use Symfony\Component\Serializer\Attribute\Context;
+
+        enum ArticleType: string
+        {
+            case DRAFT = 'draft';
+            case FINAL = 'final';
+        }
+
+        class Article
+        {
+            // documented with the enum values ("draft", "final")
+            public ArticleType $type;
+
+            // documented with the enum names ("DRAFT", "FINAL"), requires a backed enum
+            #[Context([EnumModelDescriber::FORCE_NAMES => true])]
+            public ArticleType $typeByName;
+
+            // documented using the `preview` serialization group
+            #[Context(['groups' => ['preview']])]
+            public Author $author;
+        }
+
+The context declared by the ``#[Context]`` attribute wins over the context declared by
+the ``#[Model]`` that references the class, but only for the keys it declares. A
+``#[Context]`` restricted to serialization groups is applied only when the model is
+documented with one of those groups:
+
+.. configuration-block::
+
+    .. code-block:: php-attributes
+
+        #[Context(context: [EnumModelDescriber::FORCE_NAMES => true], groups: ['preview'])]
+
+Only the top-level groups of the ``#[Model]`` are taken into account here. A per-property
+override such as ``groups: ['author' => ['preview']]`` does not activate it.
+
+The resulting context is also inherited by every model nested below the property, so a
+``#[Context]`` on an object property applies to that object and to everything it
+contains.
+
 Symfony Form types
 ~~~~~~~~~~~~~~~~~~
 

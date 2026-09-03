@@ -72,10 +72,9 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $class = $type->getClassName();
         $schema->_context->class = $class;
 
-        $context = ['serializer_groups' => null];
-        if (null !== $model->getGroups()) {
-            $context['serializer_groups'] = array_filter($model->getGroups(), 'is_string');
-        }
+        $modelGroups = null !== $model->getGroups() ? array_filter($model->getGroups(), 'is_string') : null;
+
+        $context = ['serializer_groups' => $modelGroups];
 
         $reflClass = new \ReflectionClass($class);
         $annotationsReader = new AnnotationsReader(
@@ -92,10 +91,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $schema->type = 'object';
 
         $mapping = false;
+        $attributesMetadata = [];
         if (null !== $this->classMetadataFactory) {
-            $mapping = $this->classMetadataFactory
-                ->getMetadataFor($class)
-                ->getClassDiscriminatorMapping();
+            $classMetadata = $this->classMetadataFactory->getMetadataFor($class);
+            $mapping = $classMetadata->getClassDiscriminatorMapping();
+            $attributesMetadata = $classMetadata->getAttributesMetadata();
         }
 
         if ($mapping && Generator::UNDEFINED === $schema->discriminator) {
@@ -119,7 +119,15 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         $propertyInfoProperties = array_intersect($propertyInfoProperties, $this->propertyInfo->getProperties($class, []) ?? []);
 
         foreach ($propertyInfoProperties as $propertyName) {
-            $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, $model->getSerializationContext()) : $propertyName;
+            $propertyContext = $model->getSerializationContext();
+            if (isset($attributesMetadata[$propertyName])) {
+                $propertyContext = array_merge(
+                    $propertyContext,
+                    $attributesMetadata[$propertyName]->getNormalizationContextForGroups($modelGroups ?? [])
+                );
+            }
+
+            $serializedName = null !== $this->nameConverter ? $this->nameConverter->normalize($propertyName, $class, null, $propertyContext) : $propertyName;
 
             $reflections = $this->getReflections($reflClass, $propertyName);
 
@@ -158,7 +166,7 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 throw new \LogicException(\sprintf('The PropertyInfo component was not able to guess the type of %s::$%s. You may need to add a `@var` annotation or use `#[OA\Property(type="")]` to make its type explicit.', $class, $propertyName));
             }
 
-            $this->describeProperty($types, $model, $property, $propertyName);
+            $this->describeProperty($types, $model, $property, $propertyName, $propertyContext);
         }
 
         $this->markRequiredProperties($schema);
@@ -193,15 +201,16 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     }
 
     /**
-     * @param LegacyType[]|Type $types
+     * @param LegacyType[]|Type    $types
+     * @param array<string, mixed> $propertyContext
      */
-    private function describeProperty(array|Type $types, Model $model, OA\Schema $property, string $propertyName): void
+    private function describeProperty(array|Type $types, Model $model, OA\Schema $property, string $propertyName, array $propertyContext): void
     {
         if ($this->propertyDescriber instanceof ModelRegistryAwareInterface) {
             $this->propertyDescriber->setModelRegistry($this->modelRegistry);
         }
-        if ($this->propertyDescriber->supports($types, $model->getSerializationContext())) {
-            $this->propertyDescriber->describe($types, $property, $model->getSerializationContext());
+        if ($this->propertyDescriber->supports($types, $propertyContext)) {
+            $this->propertyDescriber->describe($types, $property, $propertyContext);
 
             return;
         }
