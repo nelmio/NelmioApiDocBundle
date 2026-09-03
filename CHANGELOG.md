@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## [5.12.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.11.1...v5.12.0) (2026-09-03)
+
+
+### Features
+
+* pass #[Context] attribute data to property describers ([#2722](https://github.com/nelmio/NelmioApiDocBundle/issues/2722)) ([f868135](https://github.com/nelmio/NelmioApiDocBundle/commit/f86813575f4e7a0ff98ba2ed487afd1ff41f5091))
+* **type-describer:** add stoppable type describer support ([#2793](https://github.com/nelmio/NelmioApiDocBundle/issues/2793)) ([ee12d2f](https://github.com/nelmio/NelmioApiDocBundle/commit/ee12d2fd16f06108c891d9114cce8bca50ea9e35))
+
+
+### Bug Fixes
+
+* **#2790:** ReflectionReader only substitutes prefixes on methods ([#2791](https://github.com/nelmio/NelmioApiDocBundle/issues/2791)) ([f0f2b01](https://github.com/nelmio/NelmioApiDocBundle/commit/f0f2b01ae665d596811e9c4c571b468f74f030a9))
+* **type-describer:** register autoconfiguration for `TypeDescriberInterface` ([ee12d2f](https://github.com/nelmio/NelmioApiDocBundle/commit/ee12d2fd16f06108c891d9114cce8bca50ea9e35))
+
 ## [5.11.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.11.0...v5.11.1) (2026-08-12)
 
 
