@@ -33,6 +33,7 @@ use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryStr
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapRequestPayloadDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapUploadedFileDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
+use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -187,6 +188,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         // Add autoconfiguration for model describer
         $container->registerForAutoconfiguration(ModelDescriberInterface::class)
             ->addTag('nelmio_api_doc.model_describer');
+
+        // Add autoconfiguration for type describer
+        $container->registerForAutoconfiguration(TypeDescriberInterface::class)
+            ->addTag('nelmio_api_doc.type_describer');
 
         // Import services needed for each library
         $loader->load('php_doc.php');
