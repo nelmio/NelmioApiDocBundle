@@ -127,12 +127,30 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
                 continue;
             }
 
-            // Check if a custom name is set
-            foreach ($reflections as $reflection) {
-                $serializedName = $annotationsReader->getPropertyName($reflection, $serializedName);
-            }
+            $serializedPath = null !== $this->classMetadataFactory
+                ? $this->classMetadataFactory->getMetadataFor($class)->getAttributesMetadata()[$propertyName]->getSerializedPath()
+                : null;
 
-            $property = Util::getProperty($schema, $serializedName);
+            if (null !== $serializedPath) {
+                $pathElements = $serializedPath->getElements();
+                $leafName = array_pop($pathElements);
+
+                if ([] === $pathElements) {
+                    $property = Util::getProperty($schema, $leafName);
+                } else {
+                    $property = Util::getProperty(
+                        $this->getOrCreateNestedSchema($schema, $pathElements),
+                        $leafName
+                    );
+                }
+            } else {
+                // Check if a custom name is set
+                foreach ($reflections as $reflection) {
+                    $serializedName = $annotationsReader->getPropertyName($reflection, $serializedName);
+                }
+
+                $property = Util::getProperty($schema, $serializedName);
+            }
 
             // Interpret additional options
             $groups = $model->getGroups();
@@ -193,6 +211,20 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     }
 
     /**
+     * @param string[] $pathElements The intermediate path segments (excluding the leaf)
+     */
+    private function getOrCreateNestedSchema(OA\Schema $parentSchema, array $pathElements): OA\Schema
+    {
+        foreach ($pathElements as $segment) {
+            $nestedSchema = Util::getProperty($parentSchema, $segment);
+            $nestedSchema->type = 'object';
+            $parentSchema = $nestedSchema;
+        }
+
+        return $parentSchema;
+    }
+
+    /**
      * @param LegacyType[]|Type $types
      */
     private function describeProperty(array|Type $types, Model $model, OA\Schema $property, string $propertyName): void
@@ -221,6 +253,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
 
         $newRequired = [];
         foreach ($properties as $property) {
+            // Recurse into nested object schemas
+            if ('object' === $property->type && !Generator::isDefault($property->properties)) {
+                $this->markRequiredProperties($property);
+            }
+
             if (\is_array($schema->required) && \in_array($property->property, $schema->required, true)) {
                 $newRequired[] = $property->property;
                 continue;
