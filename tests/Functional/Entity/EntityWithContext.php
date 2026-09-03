@@ -22,4 +22,16 @@ class EntityWithContext
 
     #[Context([EnumModelDescriber::FORCE_NAMES => true])]
     public ArticleType81 $typeWithForceNames;
+
+    #[Context(['groups' => ['nested']])]
+    public EntityWithContextNested $nestedWithArrayGroups;
+
+    #[Context(['groups' => 'nested'])]
+    public EntityWithContextNested $nestedWithScalarGroups;
+
+    #[Context([EnumModelDescriber::FORCE_NAMES => true])]
+    public function getTypeFromGetter(): ArticleType81
+    {
+        return $this->type;
+    }
 }
