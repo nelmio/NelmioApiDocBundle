@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the NelmioApiDocBundle package.
  *
@@ -21,13 +19,13 @@ class OpenApiTagController
 {
     #[Route('/some_post', methods: ['POST'])]
     #[OA\Response(response: '200', description: '')]
-    public function somePost()
+    public function somePost(): void
     {
     }
 
     #[Route('/some_get', methods: ['GET'])]
     #[OA\Response(response: '200', description: '')]
-    public function someGet()
+    public function someGet(): void
     {
     }
 }

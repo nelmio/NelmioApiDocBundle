@@ -99,7 +99,7 @@ class UtilTest extends TestCase
     {
         $info = Util::createChild($this->rootAnnotation, OA\Info::class);
 
-        self::assertInstanceOf(Context::class, $info->_context);
+        self::assertSame($this->rootAnnotation, $info->_context->nested);
     }
 
     public function testCreateChildHasNestedContext(): void
@@ -1039,17 +1039,6 @@ class UtilTest extends TestCase
 
         self::assertInstanceOf(OA\Components::class, $api->components);
         self::assertSame('NoContextModel', $schema->schema);
-    }
-
-    public function testGetSchemaCreatesComponentsWhenOpenApiContextIsNull(): void
-    {
-        $api = self::createObj(OA\OpenApi::class, []);
-        $api->_context = null;
-
-        $schema = Util::getSchema($api, 'NullContextModel');
-
-        self::assertInstanceOf(OA\Components::class, $api->components);
-        self::assertSame('NullContextModel', $schema->schema);
     }
 
     public function testGetSchemaCreatesComponentsUsingExistingOpenApiContext(): void

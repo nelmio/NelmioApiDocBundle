@@ -550,6 +550,7 @@ If you need more complex features, take a look at:
     security
     symfony_attributes
     configuration_reference
+    frankenphp
     faq
     community
 

@@ -26,7 +26,7 @@ class MapRequestPayloadController
     public function createArticleFromMapRequestPayload(
         #[MapRequestPayload]
         Article81 $article81,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_request_payload_nullable', methods: ['POST'])]
@@ -34,7 +34,7 @@ class MapRequestPayloadController
     public function createArticleFromMapRequestPayloadNullable(
         #[MapRequestPayload]
         ?Article81 $article81,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_request_payload_overwrite', methods: ['POST'])]
@@ -68,6 +68,6 @@ class MapRequestPayloadController
     public function createArticleFromMapRequestPayloadPassedValidationGroups(
         #[MapRequestPayload(validationGroups: ['test'])]
         SymfonyConstraintsWithValidationGroups $symfonyConstraintsWithValidationGroups,
-    ) {
+    ): void {
     }
 }

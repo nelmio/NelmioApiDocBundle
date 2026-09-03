@@ -28,7 +28,7 @@ class SerializedNameEntity
      * Tests serialized name feature.
      */
     #[SerializedName('notwhatyouthink')]
-    public function setBar(string $bar)
+    public function setBar(string $bar): void
     {
     }
 }

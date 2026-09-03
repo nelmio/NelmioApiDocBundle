@@ -1,5 +1,60 @@
 # CHANGELOG
 
+## [5.11.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.11.0...v5.11.1) (2026-08-12)
+
+
+### Bug Fixes
+
+* harden OpenAPI generation for FrankenPHP / long-lived workers ([#2772](https://github.com/nelmio/NelmioApiDocBundle/issues/2772)) ([7b8ab07](https://github.com/nelmio/NelmioApiDocBundle/commit/7b8ab074d6a01308d96eeebeeb3d682dedadcdd0))
+
+## [5.11.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.3...v5.11.0) (2026-08-03)
+
+
+### Features
+
+* Add support for the query http method ([#2732](https://github.com/nelmio/NelmioApiDocBundle/issues/2732)) ([a46818f](https://github.com/nelmio/NelmioApiDocBundle/commit/a46818fde0f4351c4628580c909c6e80f9aac852))
+
+
+### Bug Fixes
+
+* **deps:** require zircote/swagger-php &gt;= 5.7.8 for the query method ([#2782](https://github.com/nelmio/NelmioApiDocBundle/issues/2782)) ([1eef066](https://github.com/nelmio/NelmioApiDocBundle/commit/1eef066c3d3b2abd4b491f0dc8ffa357d45b186f))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.57.5 to 1.62.5 in /utils ([#2769](https://github.com/nelmio/NelmioApiDocBundle/issues/2769)) ([cabb52e](https://github.com/nelmio/NelmioApiDocBundle/commit/cabb52e8406aba7cc93f82a568fa11215ad283ad))
+* **deps:** bump @scalar/api-reference from 1.62.5 to 1.64.0 in /utils ([#2780](https://github.com/nelmio/NelmioApiDocBundle/issues/2780)) ([e2b085c](https://github.com/nelmio/NelmioApiDocBundle/commit/e2b085c7abbe83c10492c6fc8dc990fc44ee4fb0))
+* **deps:** bump @stoplight/elements from 9.0.21 to 9.0.24 in /utils ([#2774](https://github.com/nelmio/NelmioApiDocBundle/issues/2774)) ([c8f3e4e](https://github.com/nelmio/NelmioApiDocBundle/commit/c8f3e4ec890f7ee3ece122926ae936a5df6f72f5))
+* **deps:** bump swagger-ui-dist from 5.32.6 to 5.32.11 in /utils ([#2777](https://github.com/nelmio/NelmioApiDocBundle/issues/2777)) ([9654f06](https://github.com/nelmio/NelmioApiDocBundle/commit/9654f06889e7683a74dffdd21f0048b920894a90))
+
+## [5.10.3](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.2...v5.10.3) (2026-06-01)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.55.3 to 1.57.5 in /utils ([#2746](https://github.com/nelmio/NelmioApiDocBundle/issues/2746)) ([8ea5151](https://github.com/nelmio/NelmioApiDocBundle/commit/8ea51517088be6e1e96cf284be03c2e95e1ecd49))
+* **deps:** bump @stoplight/elements from 9.0.19 to 9.0.21 in /utils ([#2751](https://github.com/nelmio/NelmioApiDocBundle/issues/2751)) ([935888a](https://github.com/nelmio/NelmioApiDocBundle/commit/935888a6e9e006d746dbaec7f52dd49cd6d5dbed))
+* **deps:** bump redoc from 2.5.2 to 2.5.3 in /utils ([#2750](https://github.com/nelmio/NelmioApiDocBundle/issues/2750)) ([2c13846](https://github.com/nelmio/NelmioApiDocBundle/commit/2c13846cb4c504b2eb0a993241d6971c3c027a65))
+* **deps:** bump swagger-ui-dist from 5.32.5 to 5.32.6 in /utils ([#2744](https://github.com/nelmio/NelmioApiDocBundle/issues/2744)) ([983cfde](https://github.com/nelmio/NelmioApiDocBundle/commit/983cfde917ff917748fc75682267a45a7f4d2e08))
+
+## [5.10.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.1...v5.10.2) (2026-05-08)
+
+
+### Bug Fixes
+
+* **config:** root vendor extensions get ignored ([#2739](https://github.com/nelmio/NelmioApiDocBundle/issues/2739)) ([b80b612](https://github.com/nelmio/NelmioApiDocBundle/commit/b80b612d5b03058a260ffb640e0afb9844e1e9d2))
+
+## [5.10.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.10.0...v5.10.1) (2026-05-08)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.52.0 to 1.52.1 in /utils ([#2723](https://github.com/nelmio/NelmioApiDocBundle/issues/2723)) ([5522bd9](https://github.com/nelmio/NelmioApiDocBundle/commit/5522bd9c64cc897ff71a88c246a61c97dc1a0ebb))
+* **deps:** bump @scalar/api-reference from 1.52.1 to 1.55.3 in /utils ([#2737](https://github.com/nelmio/NelmioApiDocBundle/issues/2737)) ([f00777b](https://github.com/nelmio/NelmioApiDocBundle/commit/f00777b13b55790faf7cb0bac7f004679f4234cb))
+* **deps:** bump @stoplight/elements from 9.0.16 to 9.0.19 in /utils ([#2731](https://github.com/nelmio/NelmioApiDocBundle/issues/2731)) ([19142fb](https://github.com/nelmio/NelmioApiDocBundle/commit/19142fbb3a5b484ebc3d3ded7ef9777b74a108e4))
+* **deps:** bump swagger-ui-dist from 5.32.1 to 5.32.2 in /utils ([#2724](https://github.com/nelmio/NelmioApiDocBundle/issues/2724)) ([076b2a0](https://github.com/nelmio/NelmioApiDocBundle/commit/076b2a07f29d03d9c7cf266edc6ab76b1d6519a3))
+* **deps:** bump swagger-ui-dist from 5.32.2 to 5.32.5 in /utils ([#2738](https://github.com/nelmio/NelmioApiDocBundle/issues/2738)) ([13d09d4](https://github.com/nelmio/NelmioApiDocBundle/commit/13d09d4783b922a599b51a7a1e21f2278d479f1c))
+
 ## [5.10.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.9.5...v5.10.0) (2026-04-10)
 
 

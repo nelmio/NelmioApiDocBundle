@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/api/invoke', host: 'api.example.com', name: 'invokable', methods: ['GET'])]
 class InvokableController
 {
-    public function __invoke()
+    public function __invoke(): void
     {
     }
 }

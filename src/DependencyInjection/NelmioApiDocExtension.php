@@ -33,6 +33,7 @@ use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryStr
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapRequestPayloadDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapUploadedFileDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
+use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -188,6 +189,10 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
         $container->registerForAutoconfiguration(ModelDescriberInterface::class)
             ->addTag('nelmio_api_doc.model_describer');
 
+        // Add autoconfiguration for type describer
+        $container->registerForAutoconfiguration(TypeDescriberInterface::class)
+            ->addTag('nelmio_api_doc.type_describer');
+
         // Import services needed for each library
         $loader->load('php_doc.php');
 
@@ -267,7 +272,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     $container->getParameter('nelmio_api_doc.use_validation_groups'),
                     $contextFactory,
                 ])
-                ->addTag('nelmio_api_doc.model_describer', ['priority' => 50]);
+                ->addTag('nelmio_api_doc.model_describer', ['priority' => 50])
+                ->addTag('kernel.reset', ['method' => 'reset']);
 
             // Bazinga Hateoas metadata support
             if (isset($bundles['BazingaHateoasBundle'])) {
@@ -277,7 +283,8 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     ->setArguments([
                         new Reference('hateoas.configuration.metadata_factory'),
                         new Reference('nelmio_api_doc.model_describers.jms.inner'),
-                    ]);
+                    ])
+                    ->addTag('kernel.reset', ['method' => 'reset']);
             }
         } else {
             $container->removeDefinition('nelmio_api_doc.model_describers.object_fallback');

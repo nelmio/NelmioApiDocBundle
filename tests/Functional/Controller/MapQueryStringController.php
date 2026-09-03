@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the NelmioApiDocBundle package.
  *
@@ -30,7 +28,7 @@ class MapQueryStringController
     public function fetchArticleFromMapQueryString(
         #[MapQueryString]
         SymfonyMapQueryString $article81Query,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_query_string_nullable', methods: ['GET'])]
@@ -38,7 +36,7 @@ class MapQueryStringController
     public function fetchArticleFromMapQueryStringNullable(
         #[MapQueryString]
         ?SymfonyMapQueryString $article81Query,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_query_string_passes_validation_groups', methods: ['GET'])]
@@ -46,7 +44,7 @@ class MapQueryStringController
     public function fetchArticleFromMapQueryStringHandlesValidationGroups(
         #[MapQueryString(validationGroups: ['test'])]
         SymfonyConstraintsWithValidationGroups $symfonyConstraintsWithValidationGroups,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_query_string_overwrite_parameters', methods: ['GET'])]
@@ -94,7 +92,7 @@ class MapQueryStringController
         SortQueryModel $sortQuery,
         #[MapQueryString]
         ArrayQueryModel $arrayQuery,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_query_string_many_parameters_optional')]
@@ -108,6 +106,6 @@ class MapQueryStringController
         ?SortQueryModel $sortQuery,
         #[MapQueryString]
         ?ArrayQueryModel $arrayQuery,
-    ) {
+    ): void {
     }
 }

@@ -298,7 +298,7 @@ security
 **default**: ``[]``
 
 Defines the security scheme(s) to use for the area. See `authentication schemes`_ for more information and possible values.
-See the :ref:`security page <area-security-configuration>` for more information on how to configure security for your areas.
+See the :doc:`security page </security>` for more information on how to configure security for your areas.
 
 .. code-block:: yaml
 

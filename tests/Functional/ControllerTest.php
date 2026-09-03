@@ -369,7 +369,7 @@ final class ControllerTest extends WebTestCase
             ];
         }
 
-        yield 'https://github.com/nelmio/NelmioApiDocBundle/issues/2224' => [
+        yield 'VendorExtension' => [
             null,
             'VendorExtension',
             [],
@@ -383,6 +383,20 @@ final class ControllerTest extends WebTestCase
                                 'test' => 'Test vendor extension',
                             ],
                             'x-build' => '#SomeCommitHash',
+                        ],
+                        'x-metadata' => [
+                            'test' => 'Test metadata vendor extension',
+                            'buildHash' => '#SomeCommitHash',
+                        ],
+                        'x-tagGroups' => [
+                            [
+                                'name' => 'Group 1',
+                                'tags' => ['tag1', 'tag2'],
+                            ],
+                            [
+                                'name' => 'Group 2',
+                                'tags' => ['tag3', 'tag4'],
+                            ],
                         ],
                         'components' => [
                             'schemas' => [

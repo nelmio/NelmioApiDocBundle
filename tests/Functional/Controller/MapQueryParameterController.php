@@ -30,7 +30,7 @@ class MapQueryParameterController
         string $someString,
         #[MapQueryParameter]
         array $someArray,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_query_parameter_validate_filters', methods: ['GET'])]
@@ -62,7 +62,7 @@ class MapQueryParameterController
     public function fetchArticleFromMapQueryParameterNullable(
         #[MapQueryParameter]
         ?int $id,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_query_parameter_default', methods: ['GET'])]
@@ -70,7 +70,7 @@ class MapQueryParameterController
     public function fetchArticleFromMapQueryParameterDefault(
         #[MapQueryParameter]
         int $id = 123,
-    ) {
+    ): void {
     }
 
     #[Route('/article_map_query_parameter_overwrite_parameters', methods: ['GET'])]
