@@ -1,0 +1,22 @@
+{
+    "required": [
+        "valueObject",
+        "valueObjects"
+    ],
+    "properties": {
+        "valueObject": {
+            "type": "string"
+        },
+        "nullableValueObject": {
+            "type": "string",
+            "nullable": true
+        },
+        "valueObjects": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "type": "object"
+}

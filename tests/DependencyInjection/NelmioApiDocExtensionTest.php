@@ -12,6 +12,8 @@
 namespace Nelmio\ApiDocBundle\Tests\DependencyInjection;
 
 use Nelmio\ApiDocBundle\DependencyInjection\NelmioApiDocExtension;
+use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -94,6 +96,22 @@ class NelmioApiDocExtensionTest extends TestCase
             }
         }
         self::assertTrue($foundMethodCall);
+    }
+
+    public function testDescriberInterfacesAreRegisteredForAutoconfiguration(): void
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', []);
+        $extension = new NelmioApiDocExtension();
+        $extension->load([[]], $container);
+
+        $autoconfiguredInstanceof = $container->getAutoconfiguredInstanceof();
+
+        self::assertArrayHasKey(TypeDescriberInterface::class, $autoconfiguredInstanceof);
+        self::assertNotSame([], $autoconfiguredInstanceof[TypeDescriberInterface::class]->getTag('nelmio_api_doc.type_describer'));
+
+        self::assertArrayHasKey(ModelDescriberInterface::class, $autoconfiguredInstanceof);
+        self::assertNotSame([], $autoconfiguredInstanceof[ModelDescriberInterface::class]->getTag('nelmio_api_doc.model_describer'));
     }
 
     public function testMergesRootKeysFromMultipleConfigurations(): void
