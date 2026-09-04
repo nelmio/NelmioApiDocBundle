@@ -1164,19 +1164,9 @@ class FunctionalTest extends WebTestCase
                     'type' => 'array',
                     'items' => [],
                 ] : [
-                    'oneOf' => [
-                        [
-                            'type' => 'array',
-                            'items' => [
-                                'nullable' => true,
-                            ],
-                        ],
-                        [
-                            'type' => 'object',
-                            'additionalProperties' => [
-                                'nullable' => true,
-                            ],
-                        ],
+                    'type' => 'array',
+                    'items' => [
+                        'nullable' => true,
                     ],
                 ],
                 'moreThings' => [
