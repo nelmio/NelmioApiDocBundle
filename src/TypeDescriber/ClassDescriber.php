@@ -19,9 +19,6 @@ use OpenApi\Annotations\Schema;
 use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
-use Symfony\Component\Uid\AbstractUid;
-use Symfony\Component\Uid\Ulid;
-use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
  * @implements TypeDescriberInterface<ObjectType>
@@ -34,35 +31,6 @@ final class ClassDescriber implements TypeDescriberInterface, ModelRegistryAware
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        if (is_a($type->getClassName(), Ulid::class, true)) {
-            $schema->type = 'string';
-            $schema->format = 'ulid';
-
-            return;
-        }
-
-        if (is_a($type->getClassName(), AbstractUid::class, true)) {
-            $schema->type = 'string';
-            $schema->format = 'uuid';
-
-            return;
-        }
-
-        if (is_a($type->getClassName(), \DateTimeInterface::class, true)) {
-            $schema->type = 'string';
-            $schema->format = 'date-time';
-
-            return;
-        }
-
-        if (is_a($type->getClassName(), TranslatableInterface::class, true)
-            && !is_subclass_of($type->getClassName(), \BackedEnum::class)
-        ) {
-            $schema->type = 'string';
-
-            return;
-        }
-
         // Ensure that the schema gets describe in oneOf for nullable objects
         if (true === $schema->nullable) {
             $weakContext = Util::createWeakContext($schema->_context);
