@@ -41,3 +41,61 @@ parameters:
 			identifier: class.notFound
 			count: 2
 			path: src/Render/Html/HtmlOpenApiRenderer.php
+
+		-
+			message: '#^PHPDoc tag @implements has invalid type Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType\.$#'
+			count: 1
+			path: src/TypeDescriber/ArrayShapeDescriber.php
+
+		-
+			message: '#^Type Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType in generic type Nelmio\\ApiDocBundle\\TypeDescriber\\TypeDescriberInterface\<Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType\> in PHPDoc tag @implements is not subtype of template type T of Symfony\\Component\\TypeInfo\\Type of interface Nelmio\\ApiDocBundle\\TypeDescriber\\TypeDescriberInterface\.$#'
+			count: 1
+			path: src/TypeDescriber/ArrayShapeDescriber.php
+
+		-
+			message: '#^Parameter \$type of method Nelmio\\ApiDocBundle\\TypeDescriber\\ArrayShapeDescriber\:\:describe\(\) has invalid type Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/TypeDescriber/ArrayShapeDescriber.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\TypeInfo\\Type\:\:getShape\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/TypeDescriber/ArrayShapeDescriber.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\TypeInfo\\Type\:\:isSealed\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/TypeDescriber/ArrayShapeDescriber.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\TypeInfo\\Type\:\:getExtraValueType\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/TypeDescriber/ArrayShapeDescriber.php
+
+		-
+			message: '#^Parameter \$type of method Nelmio\\ApiDocBundle\\TypeDescriber\\ArrayShapeDescriber\:\:supports\(\) has invalid type Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/TypeDescriber/ArrayShapeDescriber.php
+
+		-
+			message: '#^Class Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/TypeDescriber/ArrayShapeDescriber.php
+
+		-
+			message: '#^Class Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/TypeDescriber/DictionaryDescriber.php
+
+		-
+			message: '#^Class Symfony\\Component\\TypeInfo\\Type\\ArrayShapeType not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/TypeDescriber/ListDescriber.php

@@ -731,6 +731,19 @@ final class ControllerTest extends WebTestCase
             ];
         }
 
+        if (version_compare(Kernel::VERSION, '7.3.0', '>=') && class_exists(TypeInfoType\ArrayShapeType::class)) {
+            yield 'Array shape types' => [
+                'ArrayShapeController',
+                version_compare(Kernel::VERSION, '7.4.0', '>=') ? null : 'symfony-7.3',
+                [],
+                [
+                    'nelmio_api_doc' => [
+                        'type_info' => true,
+                    ],
+                ],
+            ];
+        }
+
         yield 'Custom model names' => [
             'CustomModelNameController',
         ];
