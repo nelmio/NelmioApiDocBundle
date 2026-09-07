@@ -1,0 +1,80 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/self-referencing-context": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_selfreferencingcontext_selfreferencingcontext",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EntityWithSelfReferencingContext"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "EntityWithSelfReferencingContext2": {
+                "required": [
+                    "permissions"
+                ],
+                "properties": {
+                    "permissions": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "parent": {
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/EntityWithSelfReferencingContext2"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "EntityWithSelfReferencingContext": {
+                "required": [
+                    "permissions"
+                ],
+                "properties": {
+                    "permissions": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "parent": {
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/EntityWithSelfReferencingContext2"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

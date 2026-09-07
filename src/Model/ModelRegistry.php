@@ -212,7 +212,9 @@ final class ModelRegistry
             'schema'
         );
         $i = 1;
-        while (\in_array($name, $names, true)) {
+        // register() creates the schema only after recursively describing nested models,
+        // so a name already handed out to another model is not necessarily in $names yet.
+        while (\in_array($name, $names, true) || isset($this->registeredModelNames[$name])) {
             if (isset($this->registeredModelNames[$name])) {
                 $this->logger->info(\sprintf('Can not assign a name for the model, the name "%s" has already been taken.', $name), [
                     'model' => $this->modelToArray($model),
