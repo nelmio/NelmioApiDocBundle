@@ -41,17 +41,22 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
      */
     public function describe(array $types, OA\Schema $property, array $context = []): void
     {
-        if (null === $propertyDescriber = $this->getPropertyDescriber($types, $context)) {
+        $scope = $this->getScope($types, $property);
+
+        if (null === $propertyDescriber = $this->getPropertyDescriber($types, $context, $scope)) {
             return;
         }
 
-        $this->called[$this->getHash($types)][] = $propertyDescriber;
+        $this->called[$scope][] = $propertyDescriber;
         try {
             $propertyDescriber->describe($types, $property, $context);
         } finally {
-            // Always clear recursion state so a failed description cannot leak across requests
+            // Leave no recursion state behind, so a failed description cannot leak across requests
             // (FrankenPHP worker / long-lived processes).
-            $this->called = [];
+            array_pop($this->called[$scope]);
+            if ([] === $this->called[$scope]) {
+                unset($this->called[$scope]);
+            }
         }
     }
 
@@ -62,29 +67,31 @@ final class PropertyDescriber implements PropertyDescriberInterface, ModelRegist
 
     public function supports(array $types, array $context = []): bool
     {
-        return null !== $this->getPropertyDescriber($types, $context);
+        return null !== $this->getPropertyDescriber($types, $context, null);
     }
 
     /**
+     * A describer delegating back for the same types is only recursing while it does so for the
+     * same property. The same types on another property, such as the one a nested model of the
+     * very same class has, are a description of their own and start from the whole chain again.
+     *
      * @param Type[] $types
      */
-    private function getHash(array $types): string
+    private function getScope(array $types, OA\Schema $property): string
     {
-        return md5(serialize($types));
+        return spl_object_id($property).':'.md5(serialize($types));
     }
 
     /**
      * @param Type[]               $types
      * @param array<string, mixed> $context
      */
-    private function getPropertyDescriber(array $types, array $context): ?PropertyDescriberInterface
+    private function getPropertyDescriber(array $types, array $context, ?string $scope): ?PropertyDescriberInterface
     {
         foreach ($this->propertyDescribers as $propertyDescriber) {
             // Prevent infinite recursion
-            if (\array_key_exists($this->getHash($types), $this->called)) {
-                if (\in_array($propertyDescriber, $this->called[$this->getHash($types)], true)) {
-                    continue;
-                }
+            if (null !== $scope && \in_array($propertyDescriber, $this->called[$scope] ?? [], true)) {
+                continue;
             }
 
             if ($propertyDescriber instanceof ModelRegistryAwareInterface) {
