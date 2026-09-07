@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## [5.12.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.12.0...v5.12.1) (2026-09-07)
+
+
+### Bug Fixes
+
+* **model-registry:** reserve generated schema names against nested registrations ([#2800](https://github.com/nelmio/NelmioApiDocBundle/issues/2800)) ([3275a03](https://github.com/nelmio/NelmioApiDocBundle/commit/3275a03be706833aa61b7dbd7264a327f9261d40))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.66.1 to 1.67.0 in /utils ([#2795](https://github.com/nelmio/NelmioApiDocBundle/issues/2795)) ([32bdb0a](https://github.com/nelmio/NelmioApiDocBundle/commit/32bdb0aa56db93d4c5307b048f54ff082ab7fb71))
+* **deps:** bump @stoplight/elements from 9.0.24 to 9.0.25 in /utils ([9066109](https://github.com/nelmio/NelmioApiDocBundle/commit/9066109dc3a2f712668be42cacaa4dfdc73db75d))
+
 ## [5.12.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.11.1...v5.12.0) (2026-09-03)
 
 
