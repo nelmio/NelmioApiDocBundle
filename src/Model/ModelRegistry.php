@@ -74,6 +74,9 @@ final class ModelRegistry
         $this->api = $api;
         $this->logger = new NullLogger();
 
+        // Collect all alternative names to prevent first registering models
+        // finding nested refererences before having a potential defined alternative name
+        $models = [];
         foreach ($alternativeNames as $alternativeName => $criteria) {
             $model = new Model(
                 LegacyTypeConverter::createType($criteria['type']),
@@ -81,9 +84,12 @@ final class ModelRegistry
                 $criteria['options'] ?? [],
                 $criteria['serializationContext'] ?? [],
             );
+            $models[] = $model;
 
             $this->alternativeNames[$model->getHash()] = $alternativeName;
+        }
 
+        foreach ($models as $model) {
             $this->register($model);
         }
     }
