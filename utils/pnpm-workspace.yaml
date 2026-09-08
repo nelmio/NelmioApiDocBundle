@@ -1,0 +1,9 @@
+# Dependency build scripts are never needed here: every UI package ships its
+# bundle prebuilt in the tarball and the scripts below only copy files out of it.
+ignoreScripts: true
+onlyBuiltDependencies: []
+
+# Refuses releases younger than 3 days. Must stay below the `cooldown` configured
+# for the npm ecosystem in .github/dependabot.yml, or Dependabot will open PRs
+# pinning versions that pnpm then refuses to install.
+minimumReleaseAge: 4320
