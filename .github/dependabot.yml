@@ -15,6 +15,10 @@ updates:
     schedule:
       interval: "weekly"
     versioning-strategy: increase
+    # Must stay above `minimumReleaseAge` in utils/pnpm-workspace.yaml, otherwise
+    # pnpm refuses to install the version Dependabot pinned.
+    cooldown:
+      default-days: 5
     commit-message:
       prefix: "chore"
       include: "scope"

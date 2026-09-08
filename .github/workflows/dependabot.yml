@@ -22,15 +22,20 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: '22.x'
-      - run: yarn install
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: utils/package.json
+          cache: true
+          cache_dependency_path: utils/pnpm-lock.yaml
+      - run: pnpm install --ignore-scripts
       - name: Swagger UI
-        run: yarn run swagger
+        run: pnpm run swagger
       - name: Redocly
-        run: yarn run redoc
+        run: pnpm run redoc
       - name: Scalar
-        run: yarn run scalar
+        run: pnpm run scalar
       - name: Stoplight
-        run: yarn run stoplight
+        run: pnpm run stoplight
       - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "[dependabot-skip] Update UI files"
