@@ -1,7 +1,7 @@
 Type (Property) Customization
 =============================
 
-The bundle uses a various property describers to generate the OpenAPI
+The bundle uses various property describers to generate the OpenAPI
 schema for your properties. You can create your own property describer to
 customize how your properties are represented in the documentation.
 
@@ -17,7 +17,8 @@ your properties in a different way than the default describers do.
 
     Type describers are chained together and executed in order of their priority.
     If multiple describers support the same property type, they will combine their
-    generated schema.
+    generated schema. A describer can opt out of this and stop the chain; see
+    `Stopping the describer chain`_.
 
 .. important::
 
@@ -25,7 +26,7 @@ your properties in a different way than the default describers do.
     the bundle uses `Symfony's TypeInfo component <https://symfony.com/doc/current/components/type_info.html>`_
     for type detection. In this scenario, you **must** implement `TypeDescriberInterface`_
     instead of the `PropertyDescriberInterface`_ for custom type descriptions.
-    The `PropertyDescriberInterface`_  will **not** be used when ``type_info`` is enabled.
+    The `PropertyDescriberInterface`_ will **not** be used when ``type_info`` is enabled.
 
     The `TypeDescriberInterface`_ works similarly to the `PropertyDescriberInterface`_ but works with the
     ``Symfony\Component\TypeInfo\Type`` class.
@@ -72,14 +73,15 @@ You can create a custom type describer for this ``Currency`` class like this:
     namespace App\TypeDescriber;
 
     use App\ValueObject\Currency;
-    use Nelmio\ApiDocBundle\PropertyDescriber\TypeDescriberInterface;
+    use Nelmio\ApiDocBundle\TypeDescriber\StoppableTypeDescriberInterface;
     use OpenApi\Annotations\Schema;
     use Symfony\Component\TypeInfo\Type;
+    use Symfony\Component\TypeInfo\Type\ObjectType;
 
     /**
-     * @implements TypeDescriberInterface<ObjectType<Currency::class>>
+     * @implements StoppableTypeDescriberInterface<ObjectType>
      */
-    class CurrencyTypeDescriber implements TypeDescriberInterface
+    class CurrencyTypeDescriber implements StoppableTypeDescriberInterface
     {
         public function describe(Type $type, Schema $property, array $context = []): void
         {
@@ -90,16 +92,29 @@ You can create a custom type describer for this ``Currency`` class like this:
 
         public function supports(Type $type, array $context = []): bool
         {
-            return $type instanceof Type\ObjectType
+            return $type instanceof ObjectType
                 && Currency::class === $type->getClassName();
         }
     }
+
+This describer implements `StoppableTypeDescriberInterface`_ rather than
+`TypeDescriberInterface`_. That is deliberate: since ``Currency`` is a class,
+the built-in class describer would otherwise also run, registering a
+``Currency`` schema in ``components`` and pointing the property at it with a
+``$ref``, which conflicts with the ``type``, ``example``, and ``description``
+set above. See `Stopping the describer chain`_ below.
 
 Registering the custom Type Describer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you are using Symfony's default ``services.yaml`` configuration, your custom
 type describer will be automatically registered and tagged thanks to autoconfiguration!
+
+.. versionadded:: 5.12
+
+    Autoconfiguration of `TypeDescriberInterface`_ implementations was
+    introduced in NelmioApiDocBundle 5.12. In earlier versions, you had to tag
+    the service manually, as shown below.
 
 If you're not using ``autoconfigure`` or if you need to set a priority to make sure your describer runs before or after
 other describers, you can configure it manually in your ``services.yaml``:
@@ -118,22 +133,97 @@ other describers, you can configure it manually in your ``services.yaml``:
                     - { name: 'nelmio_api_doc.type_describer', priority: 100 }
 
     .. code-block:: php
+
         // config/services.php
         namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
         use App\TypeDescriber\CurrencyTypeDescriber;
 
-        return function(ContainerConfigurator $container) {
-            // ...
+        return function (ContainerConfigurator $container) {
+            $services = $container->services();
 
             // if you're using autoconfigure, the tag will be automatically applied
-            $services->set(App\TypeDescriber\CurrencyTypeDescriber::class)
+            $services->set(CurrencyTypeDescriber::class)
                 // register the type describer with a high priority (called earlier)
                 ->tag('nelmio_api_doc.type_describer', [
                     'priority' => 100,
                 ])
             ;
-    };
+        };
+
+Stopping the describer chain
+----------------------------
+
+.. versionadded:: 5.12
+
+    The `StoppableTypeDescriberInterface`_ was introduced in
+    NelmioApiDocBundle 5.12.
+
+By default, every describer that supports a type is executed in order of
+priority, and all of them contribute to the same ``Schema``. This is what
+allows the built-in nullable describer to add ``nullable: true`` on top of the
+schema produced by another describer.
+
+For a value object serialized as a scalar, this is usually not what you want.
+The built-in class describer supports *every* object type, so unless the
+chain is stopped it also runs after your own describer, registers a schema for
+your class in ``components``, and points the property at it with a ``$ref``.
+
+Implement `StoppableTypeDescriberInterface`_ to make your describer the last
+one to run for the types it supports:
+
+.. code-block:: php
+
+    use Nelmio\ApiDocBundle\TypeDescriber\StoppableTypeDescriberInterface;
+
+    class CurrencyTypeDescriber implements StoppableTypeDescriberInterface
+    {
+        // ...
+    }
+
+The interface extends `TypeDescriberInterface`_ and adds no methods; it only
+tells the chain to stop. Describers with a lower priority are not called for
+that type, and the property is documented inline instead of through a
+``$ref``:
+
+.. code-block:: json
+
+    {
+        "Money": {
+            "type": "object",
+            "properties": {
+                "cents": {
+                    "type": "integer"
+                },
+                "currency": {
+                    "type": "string",
+                    "example": "USD",
+                    "description": "A currency code represented as a string."
+                }
+            }
+        }
+    }
+
+.. caution::
+
+    Stopping the chain also stops the built-in nullable describer. A nullable
+    property such as ``?Currency`` resolves to a nullable type *wrapping* an
+    object type, not to an object type. A ``supports()`` method that only
+    matches ``ObjectType`` (like the example above) is therefore safe: the
+    nullable and union describers handle the wrapper first, and then call your
+    describer for the inner type.
+
+    If you broaden ``supports()`` to match the nullable wrapper as well, your
+    describer stops the chain before the nullable describer runs, and
+    ``nullable: true`` is silently lost. In that case, either set
+    ``$schema->nullable`` yourself or register your describer with a priority
+    lower than ``-950``.
+
+.. note::
+
+    Stoppable type describers only apply when the ``type_info`` option is
+    enabled. There is no equivalent for the legacy `PropertyDescriberInterface`_
+    path described below.
 
 Creating a custom Property Describer `(type_info: false)`
 ---------------------------------------------------------
@@ -222,6 +312,7 @@ other describers, you can configure it manually in your ``services.yaml``:
 
 Example Output
 --------------
+
 With the above describer examples, the generated ``components.schemas`` section
 will include the following definition for the ``Money`` model:
 
@@ -243,6 +334,7 @@ will include the following definition for the ``Money`` model:
                                 "example": "USD",
                                 "description": "A currency code represented as a string."
                             }
+                        }
                     }
                 }
             }
@@ -264,3 +356,4 @@ will include the following definition for the ``Money`` model:
 
 .. _PropertyDescriberInterface: https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/src/PropertyDescriber/PropertyDescriberInterface.php
 .. _TypeDescriberInterface: https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/src/TypeDescriber/TypeDescriberInterface.php
+.. _StoppableTypeDescriberInterface: https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/src/TypeDescriber/StoppableTypeDescriberInterface.php

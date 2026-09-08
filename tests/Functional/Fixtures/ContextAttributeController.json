@@ -1,0 +1,183 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/context-attribute": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_contextattribute_context",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EntityWithContext"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/context-attribute-class-level": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_contextattribute_classlevelcontext",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EntityWithClassLevelContext"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/context-attribute-group-plain": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_contextattribute_groupscopedcontextinactive",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EntityWithGroupScopedContext"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/context-attribute-group-forced": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_contextattribute_groupscopedcontextactive",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EntityWithGroupScopedContext2"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/context-attribute-group-nested": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_contextattribute_groupscopedcontextnested",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EntityWithGroupScopedContext"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ArticleType81": {
+                "type": "string",
+                "enum": [
+                    "draft",
+                    "final"
+                ]
+            },
+            "ArticleType812": {
+                "type": "string",
+                "enum": [
+                    "DRAFT",
+                    "FINAL"
+                ]
+            },
+            "EntityWithContextNested": {
+                "required": [
+                    "inNestedGroup"
+                ],
+                "properties": {
+                    "inNestedGroup": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "EntityWithContext": {
+                "required": [
+                    "type",
+                    "typeWithForceNames",
+                    "nestedWithArrayGroups",
+                    "nestedWithScalarGroups",
+                    "typeFromGetter"
+                ],
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/ArticleType81"
+                    },
+                    "typeWithForceNames": {
+                        "$ref": "#/components/schemas/ArticleType812"
+                    },
+                    "nestedWithArrayGroups": {
+                        "$ref": "#/components/schemas/EntityWithContextNested"
+                    },
+                    "nestedWithScalarGroups": {
+                        "$ref": "#/components/schemas/EntityWithContextNested"
+                    },
+                    "typeFromGetter": {
+                        "$ref": "#/components/schemas/ArticleType812"
+                    }
+                },
+                "type": "object"
+            },
+            "EntityWithClassLevelContext": {
+                "required": [
+                    "type"
+                ],
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/ArticleType812"
+                    }
+                },
+                "type": "object"
+            },
+            "EntityWithGroupScopedContext": {
+                "required": [
+                    "type"
+                ],
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/ArticleType81"
+                    }
+                },
+                "type": "object"
+            },
+            "EntityWithGroupScopedContext2": {
+                "required": [
+                    "type"
+                ],
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/ArticleType812"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

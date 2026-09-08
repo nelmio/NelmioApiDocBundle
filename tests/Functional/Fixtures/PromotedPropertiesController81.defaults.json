@@ -41,6 +41,11 @@
                         "type": "string",
                         "nullable": true,
                         "default": null
+                    },
+                    "additionalNullablePromotedPropertyWithDefaultAndPrefix": {
+                        "type": "string",
+                        "nullable": true,
+                        "default": null
                     }
                 },
                 "type": "object"

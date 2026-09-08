@@ -1,0 +1,36 @@
+<?php
+
+/*
+ * This file is part of the NelmioApiDocBundle package.
+ *
+ * (c) Nelmio
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Nelmio\ApiDocBundle\TypeDescriber;
+
+use OpenApi\Annotations\Schema;
+use Symfony\Component\TypeInfo\Type;
+use Symfony\Component\TypeInfo\Type\ObjectType;
+
+/**
+ * @implements StoppableTypeDescriberInterface<ObjectType>
+ *
+ * @internal
+ */
+final class DateTimeDescriber implements StoppableTypeDescriberInterface
+{
+    public function describe(Type $type, Schema $schema, array $context = []): void
+    {
+        $schema->type = 'string';
+        $schema->format = 'date-time';
+    }
+
+    public function supports(Type $type, array $context = []): bool
+    {
+        return $type instanceof ObjectType
+            && is_a($type->getClassName(), \DateTimeInterface::class, true);
+    }
+}

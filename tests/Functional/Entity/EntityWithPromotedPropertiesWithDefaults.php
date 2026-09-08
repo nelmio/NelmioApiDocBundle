@@ -25,6 +25,7 @@ class EntityWithPromotedPropertiesWithDefaults
         ?int $nullableNonPromotedPropertyWithDefault = null,
         public readonly int $nonNullablePromotedPropertyWithDefault = 4711,
         public readonly ?string $nullablePromotedPropertyWithDefault = null,
+        public readonly ?string $additionalNullablePromotedPropertyWithDefaultAndPrefix = null,
     ) {
         $this->nonNullableNonPromotedPropertyWithDefault = $nonNullableNonPromotedPropertyWithDefault;
     }

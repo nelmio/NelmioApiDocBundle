@@ -27,11 +27,12 @@ use Nelmio\ApiDocBundle\Util\LegacyTypeConverter;
 use OpenApi\Annotations as OA;
 use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type\ObjectType;
+use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * Uses the JMS metadata factory to extract input/output model information.
  */
-class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
+class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface, ResetInterface
 {
     use ApplyOpenApiDiscriminatorTrait;
     use ModelRegistryAwareTrait;
@@ -79,6 +80,13 @@ class JMSModelDescriber implements ModelDescriberInterface, ModelRegistryAwareIn
         $this->mediaTypes = $mediaTypes;
         $this->useValidationGroups = $useValidationGroups;
         $this->contextFactory = $contextFactory;
+    }
+
+    public function reset(): void
+    {
+        $this->contexts = [];
+        $this->metadataStacks = [];
+        $this->propertyTypeUseGroupsCache = [];
     }
 
     public function describe(Model $model, OA\Schema $schema): void

@@ -1,14 +1,16 @@
 {
   "description": "Script utils for nelmio/api-doc-bundle UI",
   "license": "MIT",
+  "private": true,
+  "packageManager": "pnpm@11.23.0",
   "dependencies": {
-    "@scalar/api-reference": "1.64.0",
-    "@stoplight/elements": "9.0.24",
+    "@scalar/api-reference": "1.67.0",
+    "@stoplight/elements": "9.0.25",
     "redoc": "2.5.3",
-    "swagger-ui-dist": "5.32.11"
+    "swagger-ui-dist": "5.32.14"
   },
   "scripts": {
-    "swagger": "yarn run swagger:bundle && yarn run swagger:bundle:map && yarn run swagger:standalone && yarn run swagger:standalone:map && yarn run swagger:css && yarn run swagger:css:map",
+    "swagger": "pnpm run swagger:bundle && pnpm run swagger:bundle:map && pnpm run swagger:standalone && pnpm run swagger:standalone:map && pnpm run swagger:css && pnpm run swagger:css:map",
     "swagger:bundle": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.js $npm_package_config_destination_swagger",
     "swagger:bundle:map": "cp node_modules/swagger-ui-dist/swagger-ui-bundle.js.map $npm_package_config_destination_swagger",
     "swagger:standalone": "cp node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js $npm_package_config_destination_swagger",
@@ -16,7 +18,7 @@
     "swagger:css": "cp node_modules/swagger-ui-dist/swagger-ui.css $npm_package_config_destination_swagger",
     "swagger:css:map": "cp node_modules/swagger-ui-dist/swagger-ui.css.map $npm_package_config_destination_swagger",
     "redoc": "cp node_modules/redoc/bundles/redoc.standalone.js $npm_package_config_destination_redoc",
-    "stoplight": "yarn run stoplight:js && yarn run stoplight:css",
+    "stoplight": "pnpm run stoplight:js && pnpm run stoplight:css",
     "stoplight:js": "cp node_modules/@stoplight/elements/web-components.min.js $npm_package_config_destination_stoplight",
     "stoplight:css": "cp node_modules/@stoplight/elements/styles.min.css $npm_package_config_destination_stoplight",
     "scalar": "cp node_modules/@scalar/api-reference/dist/browser/standalone.js $npm_package_config_destination_scalar/scalar.standalone.js"

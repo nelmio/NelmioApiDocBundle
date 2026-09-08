@@ -42,6 +42,11 @@ final class Model
         if (null !== $groups) {
             $this->serializationContext['groups'] = $groups;
         }
+
+        // Symfony's serializer accepts a scalar for the "groups" context key, see AbstractNormalizer::getGroups()
+        if (isset($this->serializationContext['groups']) && \is_scalar($this->serializationContext['groups'])) {
+            $this->serializationContext['groups'] = (array) $this->serializationContext['groups'];
+        }
     }
 
     /**
