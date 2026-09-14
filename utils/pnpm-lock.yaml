@@ -18,8 +18,8 @@ importers:
         specifier: 2.5.3
         version: 2.5.3(core-js@3.50.0)(mobx@6.16.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.5.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       swagger-ui-dist:
-        specifier: 5.32.14
-        version: 5.32.14
+        specifier: 5.32.15
+        version: 5.32.15
 
 packages:
 
@@ -2397,8 +2397,8 @@ packages:
     resolution: {integrity: sha512-WHkws2ZflZe41zj6AolvvmaTrWds/VuyeYr9iPVv/oQeaIoVxMKaushfFWpOGDT+GuBrM/sVqF8KUCYQlSSTdQ==}
     engines: {node: '>=18'}
 
-  swagger-ui-dist@5.32.14:
-    resolution: {integrity: sha512-nOA2pSQhcmODMUQZpJHYKNuwniDUqcOWGNaSCOoZv12FdOSJ9JxV95HtyRGNMqEBj6h6lCNTy20TgZDYTSuUIg==}
+  swagger-ui-dist@5.32.15:
+    resolution: {integrity: sha512-TSFER+rFQlf1nzk6WvKkMaHTxAPQ3eAAxigFThnxQedSREanfZgSbJFayZVs/ULnSbNdrJOb99vLD6xpb3R3eg==}
 
   swagger2openapi@7.0.8:
     resolution: {integrity: sha512-upi/0ZGkYgEcLeGieoz8gT74oWHA0E7JivX7aN9mAf+Tc7BQoRBvnIGHoPDw+f9TXTW4s6kGYCZJtauP6OYp7g==}
@@ -6037,7 +6037,7 @@ snapshots:
       make-asynchronous: 1.1.0
       time-span: 5.1.0
 
-  swagger-ui-dist@5.32.14:
+  swagger-ui-dist@5.32.15:
     dependencies:
       '@scarf/scarf': 1.4.0
 
