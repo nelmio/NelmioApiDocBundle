@@ -369,6 +369,42 @@ final class ControllerTest extends WebTestCase
             ];
         }
 
+        if (version_compare(Kernel::VERSION, '8.1.0', '>=')) {
+            yield 'Symfony 8.1 Serialize attribute' => [
+                'SerializeController',
+                null,
+                [],
+                [
+                    'framework' => [
+                        'property_info' => [
+                            'enabled' => true,
+                        ],
+                        'serializer' => [
+                            'enabled' => true,
+                            'enable_attributes' => true,
+                        ],
+                        'validation' => [
+                            'enabled' => true,
+                            'enable_attributes' => true,
+                            'static_method' => [
+                                'loadValidatorMetadata',
+                            ],
+                            'translation_domain' => 'validators',
+                            'email_validation_mode' => 'html5',
+                            'mapping' => [
+                                'paths' => [],
+                            ],
+                            'not_compromised_password' => [
+                                'enabled' => true,
+                                'endpoint' => null,
+                            ],
+                            'auto_mapping' => [],
+                        ],
+                    ],
+                ],
+            ];
+        }
+
         yield 'VendorExtension' => [
             null,
             'VendorExtension',
