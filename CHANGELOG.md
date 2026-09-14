@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [5.12.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.12.1...v5.12.2) (2026-09-14)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.67.0 to 1.68.0 in /utils ([#2807](https://github.com/nelmio/NelmioApiDocBundle/issues/2807)) ([57b7c61](https://github.com/nelmio/NelmioApiDocBundle/commit/57b7c61529e3afdfb858a2f67b4e57c589ab1b51))
+* **deps:** bump swagger-ui-dist from 5.32.14 to 5.32.15 in /utils ([#2806](https://github.com/nelmio/NelmioApiDocBundle/issues/2806)) ([96dac33](https://github.com/nelmio/NelmioApiDocBundle/commit/96dac33399bd5ab43bea3adf2d97e5cbc4a5bd38))
+
 ## [5.12.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.12.0...v5.12.1) (2026-09-07)
 
 
