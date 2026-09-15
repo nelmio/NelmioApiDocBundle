@@ -126,20 +126,10 @@
                         }
                     },
                     "array": {
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                }
-                            },
-                            {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "type": "string"
-                                }
-                            }
-                        ]
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     },
                     "list": {
                         "type": "array",
@@ -164,20 +154,10 @@
                         }
                     },
                     "array": {
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "type": "integer"
-                                }
-                            },
-                            {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "type": "integer"
-                                }
-                            }
-                        ]
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
                     },
                     "list": {
                         "type": "array",
@@ -202,20 +182,10 @@
                         }
                     },
                     "array": {
-                        "oneOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/RegularClass"
-                                }
-                            },
-                            {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "$ref": "#/components/schemas/RegularClass"
-                                }
-                            }
-                        ]
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RegularClass"
+                        }
                     },
                     "list": {
                         "type": "array",
