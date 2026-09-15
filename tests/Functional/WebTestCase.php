@@ -151,10 +151,12 @@ class WebTestCase extends BaseWebTestCase
      */
     public function assertNotHasParameter(string $name, string $in, OA\AbstractAnnotation $annotation): void
     {
-        $parameters = array_column(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], 'name', 'in');
-        static::assertNotContains(
-            $name,
-            $parameters[$in] ?? [],
+        $parameters = array_filter(Generator::UNDEFINED !== $annotation->parameters ? $annotation->parameters : [], function (OA\Parameter $parameter) use ($name, $in) {
+            return $parameter->name === $name && $parameter->in === $in;
+        });
+
+        static::assertEmpty(
+            $parameters,
             \sprintf('Failed asserting that parameter "%s" in "%s" does not exist.', $name, $in)
         );
     }
