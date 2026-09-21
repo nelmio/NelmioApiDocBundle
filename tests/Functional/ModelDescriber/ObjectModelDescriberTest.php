@@ -67,9 +67,12 @@ class ObjectModelDescriberTest extends WebTestCase
 
     public static function provideFixtures(): \Generator
     {
+        // Fixtures in Fixtures/TypeInfo only describe correctly through the TypeInfo
+        // component, they are provided by ObjectModelDescriberTypeInfoTest instead.
         $finder = new Finder();
         $entityFiles = $finder->files()
             ->in(__DIR__.'/Fixtures')
+            ->exclude('TypeInfo')
             ->name('*.php')
             ->sortByCaseInsensitiveName();
 

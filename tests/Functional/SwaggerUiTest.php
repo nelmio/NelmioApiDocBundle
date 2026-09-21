@@ -81,7 +81,12 @@ class SwaggerUiTest extends WebTestCase
         ];
 
         self::assertCount(1, $crawler->filterXPath('//script[@src="/bundles/nelmioapidoc/scalar/scalar.standalone.js"]'));
-        self::assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="api-reference"]')->text(), true));
+        self::assertCount(1, $crawler->filterXPath('//div[@id="scalar-api-reference"]'));
+        self::assertEquals($expected, json_decode($crawler->filterXPath('//script[@id="scalar-api-reference-data"]')->text(), true));
+
+        // "api-reference" is reserved by Scalar's standalone bundle for its legacy auto-init,
+        $html = (string) $response->getContent();
+        self::assertStringNotContainsString('id="api-reference"', $html);
     }
 
     public function testApiPlatformSwaggerUi(): void

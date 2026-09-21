@@ -50,6 +50,10 @@ final class ChainDescriber implements TypeDescriberInterface, ModelRegistryAware
 
             if ($describer->supports($type, $context)) {
                 $describer->describe($type, $schema, $context);
+
+                if ($describer instanceof StoppableTypeDescriberInterface) {
+                    return;
+                }
             }
         }
     }

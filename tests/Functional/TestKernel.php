@@ -23,6 +23,7 @@ use Nelmio\ApiDocBundle\Tests\Functional\Entity\NestedGroup\JMSPicture;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\PrivateProtectedExposure;
 use Nelmio\ApiDocBundle\Tests\Functional\Entity\SymfonyConstraintsWithValidationGroups;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\NameConverter;
+use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\StoppableValueObjectDescriber;
 use Nelmio\ApiDocBundle\Tests\Functional\ModelDescriber\VirtualTypeClassDoesNotExistsHandlerDefinedDescriber;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -306,6 +307,10 @@ class TestKernel extends Kernel
         $def = new Definition(VirtualTypeClassDoesNotExistsHandlerDefinedDescriber::class);
         $def->addTag('nelmio_api_doc.model_describer');
         $c->setDefinition('nelmio.test.jms.virtual_type.describer', $def);
+
+        $def = new Definition(StoppableValueObjectDescriber::class);
+        $def->addTag('nelmio_api_doc.type_describer');
+        $c->setDefinition('nelmio.test.stoppable_value_object.type_describer', $def);
 
         $c->register('serializer.name_converter.custom', NameConverter::class)
             ->setDecoratedService('serializer.name_converter.metadata_aware')

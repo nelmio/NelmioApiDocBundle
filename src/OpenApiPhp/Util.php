@@ -56,7 +56,7 @@ final class Util
      *
      * @var string[]
      */
-    public const OPERATIONS = ['get', 'post', 'put', 'patch', 'delete', 'options', 'head', 'trace'];
+    public const OPERATIONS = ['get', 'post', 'put', 'patch', 'delete', 'options', 'head', 'trace', 'query'];
 
     /**
      * Return an existing PathItem object from $api->paths[] having its member path set to $path.

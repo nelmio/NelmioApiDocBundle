@@ -11,8 +11,11 @@
 
 namespace Nelmio\ApiDocBundle\Tests\Model;
 
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
+use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
 use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
 use OpenApi\Annotations as OA;
 use OpenApi\Context;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -352,7 +355,7 @@ class ModelRegistryTest extends TestCase
     public function testNamespaceClashDoesNotMergeSchemas(): void
     {
         // Mock a describer that supports these models
-        $describer = $this->createMock(\Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface::class);
+        $describer = $this->createMock(ModelDescriberInterface::class);
         $describer->method('supports')->willReturn(true);
         $describer->method('describe')->willReturnCallback(static function ($model, $schema) {
             $schema->type = 'object';
@@ -371,5 +374,55 @@ class ModelRegistryTest extends TestCase
         $registry->registerSchemas();
 
         self::assertCount(2, $openApi->components->schemas);
+    }
+
+    // A self-referencing property carrying a #[Context] attribute registers a second model of the
+    // same type. It must get a schema of its own rather than describing into the first one's.
+    // See https://github.com/nelmio/NelmioApiDocBundle/issues/2799
+    public function testSelfReferencingContextVariantDoesNotShareASchema(): void
+    {
+        $registry = new ModelRegistry([new SelfReferencingDescriber()], $openApi = $this->createOpenApi());
+
+        self::assertEquals(
+            '#/components/schemas/Category',
+            $registry->register(new Model(Type::object('App\Entity\Category')))
+        );
+
+        $registry->registerSchemas();
+
+        self::assertSame(['Category2', 'Category'], array_column($openApi->components->schemas, 'schema'));
+        self::assertSame(
+            '#/components/schemas/Category2',
+            $openApi->components->schemas[0]->properties[0]->ref
+        );
+    }
+}
+
+/**
+ * Mimics ObjectModelDescriber for a class whose only property is a self-reference carrying a
+ * #[Context] attribute: describing it registers the same type again with a serialization context,
+ * hence under a different model hash.
+ */
+final class SelfReferencingDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
+{
+    use ModelRegistryAwareTrait;
+
+    public function describe(Model $model, OA\Schema $schema): void
+    {
+        $schema->type = 'object';
+        $schema->properties = [
+            new OA\Property([
+                'property' => 'children',
+                'ref' => $this->modelRegistry->register(new Model(
+                    Type::object('App\Entity\Category'),
+                    serializationContext: ['enable_max_depth' => true],
+                )),
+            ]),
+        ];
+    }
+
+    public function supports(Model $model): bool
+    {
+        return true;
     }
 }

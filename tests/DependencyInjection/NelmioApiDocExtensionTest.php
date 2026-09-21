@@ -12,6 +12,8 @@
 namespace Nelmio\ApiDocBundle\Tests\DependencyInjection;
 
 use Nelmio\ApiDocBundle\DependencyInjection\NelmioApiDocExtension;
+use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -94,6 +96,22 @@ class NelmioApiDocExtensionTest extends TestCase
             }
         }
         self::assertTrue($foundMethodCall);
+    }
+
+    public function testDescriberInterfacesAreRegisteredForAutoconfiguration(): void
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', []);
+        $extension = new NelmioApiDocExtension();
+        $extension->load([[]], $container);
+
+        $autoconfiguredInstanceof = $container->getAutoconfiguredInstanceof();
+
+        self::assertArrayHasKey(TypeDescriberInterface::class, $autoconfiguredInstanceof);
+        self::assertNotSame([], $autoconfiguredInstanceof[TypeDescriberInterface::class]->getTag('nelmio_api_doc.type_describer'));
+
+        self::assertArrayHasKey(ModelDescriberInterface::class, $autoconfiguredInstanceof);
+        self::assertNotSame([], $autoconfiguredInstanceof[ModelDescriberInterface::class]->getTag('nelmio_api_doc.model_describer'));
     }
 
     public function testMergesRootKeysFromMultipleConfigurations(): void
@@ -196,6 +214,25 @@ class NelmioApiDocExtensionTest extends TestCase
 
         $cacheItemId = $container->getDefinition('nelmio_api_doc.generator.area1')->getArgument(3);
         self::assertSame($expectedValues['area1CacheItemId'], $cacheItemId);
+    }
+
+    public function testStatefulDescribersAreTaggedForKernelReset(): void
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', []);
+
+        $extension = new NelmioApiDocExtension();
+        $extension->load([[]], $container);
+
+        // Generators keep a warm in-memory OpenAPI in long-lived workers; they implement
+        // ResetInterface but are not tagged with kernel.reset by default.
+        self::assertFalse($container->getDefinition('nelmio_api_doc.generator.default')->hasTag('kernel.reset'));
+
+        self::assertTrue($container->getDefinition('nelmio_api_doc.object_model.property_describer')->hasTag('kernel.reset'));
+        self::assertSame(
+            [['method' => 'reset']],
+            $container->getDefinition('nelmio_api_doc.object_model.property_describer')->getTag('kernel.reset')
+        );
     }
 
     public static function provideCacheConfig(): \Generator

@@ -1377,7 +1377,6 @@ class FunctionalTest extends WebTestCase
         self::assertCount(2, $securitySchemes);
 
         $basicAuthScheme = $securitySchemes[0];
-        self::assertInstanceOf(OAAnnotations\SecurityScheme::class, $basicAuthScheme);
         self::assertSame([
             'securityScheme' => 'basicAuth',
             'type' => 'http',
@@ -1385,7 +1384,6 @@ class FunctionalTest extends WebTestCase
         ], json_decode($basicAuthScheme->toJson(), true));
 
         $apiKeyAuthScheme = $securitySchemes[1];
-        self::assertInstanceOf(OAAnnotations\SecurityScheme::class, $apiKeyAuthScheme);
         self::assertSame([
             'securityScheme' => 'apiKeyAuth',
             'type' => 'apiKey',

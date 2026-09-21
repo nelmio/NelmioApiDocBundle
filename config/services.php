@@ -133,6 +133,7 @@ return static function (ContainerConfigurator $container) {
            ->private()
            ->args([tagged_iterator('nelmio_api_doc.object_model.property_describer')])
            ->tag('nelmio_api_doc.object_model.property_describer', ['priority' => 100])
+           ->tag('kernel.reset', ['method' => 'reset'])
 
        ->set('nelmio_api_doc.object_model.property_describers.array', \Nelmio\ApiDocBundle\PropertyDescriber\ArrayPropertyDescriber::class)
            ->private()
@@ -203,6 +204,10 @@ return static function (ContainerConfigurator $container) {
 
        ->set('nelmio_api_doc.type_describer.class', \Nelmio\ApiDocBundle\TypeDescriber\ClassDescriber::class)
            ->private()
+           ->tag('nelmio_api_doc.type_describer', ['priority' => -2000])
+
+       ->set('nelmio_api_doc.type_describer.date_time', \Nelmio\ApiDocBundle\TypeDescriber\DateTimeDescriber::class)
+           ->private()
            ->tag('nelmio_api_doc.type_describer', ['priority' => -1000])
 
        ->set('nelmio_api_doc.type_describer.dictionary', \Nelmio\ApiDocBundle\TypeDescriber\DictionaryDescriber::class)
@@ -252,6 +257,14 @@ return static function (ContainerConfigurator $container) {
        ->set('nelmio_api_doc.type_describer.template', \Nelmio\ApiDocBundle\TypeDescriber\TemplateDescriber::class)
            ->private()
            ->args([service('nelmio_api_doc.type_describer.chain')])
+           ->tag('nelmio_api_doc.type_describer', ['priority' => -1000])
+
+       ->set('nelmio_api_doc.type_describer.translatable', \Nelmio\ApiDocBundle\TypeDescriber\TranslatableDescriber::class)
+           ->private()
+           ->tag('nelmio_api_doc.type_describer', ['priority' => -1000])
+
+       ->set('nelmio_api_doc.type_describer.uid', \Nelmio\ApiDocBundle\TypeDescriber\UidDescriber::class)
+           ->private()
            ->tag('nelmio_api_doc.type_describer', ['priority' => -1000])
 
        ->set('nelmio_api_doc.type_describer.union', \Nelmio\ApiDocBundle\TypeDescriber\UnionDescriber::class)
