@@ -21,6 +21,8 @@ The bundle configuration is stored under the ``nelmio_api_doc`` key in your appl
         use_validation_groups: false
         # Defines how to generate operation ids
         operation_id_generation: always_prepend
+        # If true, non OpenAPI attributes on controllers are not instantiated when parsing them
+        ignore_other_attributes: false
         cache:
             # define cache pool to use
             pool: null
@@ -148,6 +150,28 @@ Defines how to generate operation ids.
 .. versionadded:: 5.1
 
     The ``operation_id_generation`` option was added in 5.1.
+
+ignore_other_attributes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**type**: ``boolean``
+**default**: ``false``
+
+By default, `swagger-php`_ instantiates every attribute found on controller classes and methods, and keeps
+the non OpenAPI ones in the context of the generated annotations. If such an attribute holds a value that
+cannot be serialized (e.g. a closure), storing the documentation in a ``cache`` pool fails.
+
+If true, only OpenAPI attributes are instantiated and other attributes are ignored.
+
+.. code-block:: yaml
+
+    # config/packages/nelmio_api_doc.yaml
+    nelmio_api_doc:
+        ignore_other_attributes: true
+
+.. versionadded:: 5.13
+
+    The ``ignore_other_attributes`` option was added in 5.13.
 
 cache
 ~~~~~
@@ -381,4 +405,5 @@ List of models, this can be used to:
 
 
 .. _`symfony/type-info`: https://symfony.com/doc/current/components/type_info.html
+.. _`swagger-php`: https://github.com/zircote/swagger-php
 .. _`authentication schemes`: https://swagger.io/docs/specification/v3_0/authentication/
