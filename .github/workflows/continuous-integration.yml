@@ -36,8 +36,6 @@ jobs:
           - 8.5
         symfony-require:
           - "6.4"
-          - "7.2"
-          - "7.3"
           - "7.4"
           - "8.0"
         composer-flags:
@@ -69,19 +67,6 @@ jobs:
             php-version: 8.3
           - test-group: hateoas
             php-version: 8.4
-          # Test only the highest versions for a symfony major for each optional dependency test group
-          - test-group: fos-rest
-            symfony-require: "7.2"
-          - test-group: fos-rest
-            symfony-require: "7.3"
-          - test-group: jms-serializer
-            symfony-require: "7.2"
-          - test-group: jms-serializer
-            symfony-require: "7.3"
-          - test-group: hateoas
-            symfony-require: "7.2"
-          - test-group: hateoas
-            symfony-require: "7.3"
 
     steps:
       - name: Checkout
@@ -176,7 +161,7 @@ jobs:
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
         with:
-          symfony-version: "7.2.*"
+          symfony-version: "7.4"
           test-group: all
 
       - name: Run PHP-CS-Fixer
@@ -202,7 +187,7 @@ jobs:
       - name: Setup dependencies
         uses: ./.github/workflows/common/composer-install
         with:
-          symfony-version: "7.2.*"
+          symfony-version: "7.4"
           test-group: all
 
       - name: Run PHPStan
