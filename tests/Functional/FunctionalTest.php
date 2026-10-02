@@ -460,6 +460,7 @@ class FunctionalTest extends WebTestCase
                 'propertyChoiceWithCallbackWithoutClass',
                 'propertyChoiceWithMultiple',
                 'propertyChoiceWithMultipleOldAnnotation',
+                'propertyChoiceWithMatchFalse',
                 'propertyExpression',
                 'propertyRange',
                 'propertyRangeDate',
@@ -517,6 +518,12 @@ class FunctionalTest extends WebTestCase
                 'propertyChoiceWithMultipleOldAnnotation' => [
                     'type' => 'array',
                     'items' => [
+                        'enum' => ['choice1', 'choice2'],
+                    ],
+                ],
+                'propertyChoiceWithMatchFalse' => [
+                    'type' => 'string',
+                    'not' => [
                         'enum' => ['choice1', 'choice2'],
                     ],
                 ],
