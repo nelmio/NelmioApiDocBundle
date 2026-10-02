@@ -216,6 +216,31 @@ class NelmioApiDocExtensionTest extends TestCase
         self::assertSame($expectedValues['area1CacheItemId'], $cacheItemId);
     }
 
+    public function testIgnoreOtherAttributesIsPassedToOpenApiPhpDescriber(): void
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', []);
+
+        $extension = new NelmioApiDocExtension();
+        $extension->load([[
+            'ignore_other_attributes' => true,
+            'areas' => [
+                'default' => ['path_patterns' => ['/foo']],
+                'area1' => ['path_patterns' => ['/bar']],
+            ],
+        ]], $container);
+
+        self::assertTrue($container->getDefinition('nelmio_api_doc.describers.openapi_php.default')->getArgument(3));
+        self::assertTrue($container->getDefinition('nelmio_api_doc.describers.openapi_php.area1')->getArgument(3));
+
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', []);
+
+        $extension->load([[]], $container);
+
+        self::assertFalse($container->getDefinition('nelmio_api_doc.describers.openapi_php.default')->getArgument(3));
+    }
+
     public function testStatefulDescribersAreTaggedForKernelReset(): void
     {
         $container = new ContainerBuilder();
