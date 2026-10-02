@@ -4,6 +4,9 @@ on:
     push: ~
     pull_request: ~
 
+permissions:
+    contents: read
+
 jobs:
     doctor-rst:
         name: Lint (DOCtor-RST)
@@ -13,6 +16,8 @@ jobs:
         steps:
             -   name: "Checkout"
                 uses: actions/checkout@v7
+                with:
+                    persist-credentials: false
 
             -   name: "Create cache dir"
                 run: mkdir .cache
@@ -28,6 +33,6 @@ jobs:
                     key: ${{ runner.os }}-doctor-rst-${{ steps.extract_base_branch.outputs.branch }}
 
             -   name: "Run DOCtor-RST"
-                uses: docker://oskarstark/doctor-rst
+                uses: docker://oskarstark/doctor-rst:1.85.0
                 with:
                     args: --short --error-format=github --cache-file=/github/workspace/.cache/doctor-rst.cache
