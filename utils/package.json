@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@11.23.0",
   "dependencies": {
-    "@scalar/api-reference": "1.68.0",
+    "@scalar/api-reference": "1.72.1",
     "@stoplight/elements": "9.0.25",
     "redoc": "2.5.3",
     "swagger-ui-dist": "5.33.0"
