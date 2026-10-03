@@ -129,6 +129,39 @@ class DumpCommandTest extends WebTestCase
         ];
     }
 
+    public function testSwaggerUiUrlsSelector(): void
+    {
+        $output = $this->executeDumpCommand([
+            '--format' => 'html',
+            '--html-config' => json_encode([
+                'swagger_ui_config' => [
+                    'urls' => [
+                        ['name' => 'Public API', 'url' => '/api/doc/public.json'],
+                        ['name' => 'Internal API', 'url' => '/api/doc/internal.json'],
+                    ],
+                ],
+            ]),
+        ]);
+
+        self::assertStringContainsString('<body class="swagger-ui-urls">', $output);
+        self::assertStringContainsString('"urls":[{"name":"Public API","url":"/api/doc/public.json"},{"name":"Internal API","url":"/api/doc/internal.json"}]', $output);
+
+        $output = $this->executeDumpCommand([
+            '--format' => 'html',
+        ]);
+
+        self::assertStringContainsString('<body>', $output);
+        self::assertStringNotContainsString('class="swagger-ui-urls"', $output);
+
+        $output = $this->executeDumpCommand([
+            '--format' => 'html',
+            '--html-config' => json_encode(['swagger_ui_config' => ['urls' => []]]),
+        ]);
+
+        self::assertStringContainsString('<body>', $output);
+        self::assertStringNotContainsString('class="swagger-ui-urls"', $output);
+    }
+
     /**
      * @param array<string, mixed> $options
      */
