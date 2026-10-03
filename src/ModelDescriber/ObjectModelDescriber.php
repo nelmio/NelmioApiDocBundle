@@ -152,7 +152,12 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
             }
 
             // If type manually defined
-            if (Generator::UNDEFINED !== $property->type || Generator::UNDEFINED !== $property->ref) {
+            if (Generator::UNDEFINED !== $property->type
+                || Generator::UNDEFINED !== $property->ref
+                || Generator::UNDEFINED !== $property->oneOf
+                || Generator::UNDEFINED !== $property->anyOf
+                || Generator::UNDEFINED !== $property->allOf
+            ) {
                 continue;
             }
 

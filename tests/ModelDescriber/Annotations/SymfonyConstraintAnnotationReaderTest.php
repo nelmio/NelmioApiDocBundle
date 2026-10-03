@@ -128,6 +128,56 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         }];
     }
 
+    #[DataProvider('provideChoiceConstraintsWithMatchFalseApplyNotEnum')]
+    public function testChoiceConstraintsWithMatchFalseApplyNotEnum(object $entity): void
+    {
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader();
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+        self::assertTrue(Generator::isDefault($schema->properties[0]->enum));
+        self::assertInstanceOf(OA\Schema::class, $schema->properties[0]->not);
+        self::assertEquals($schema->properties[0]->not->enum, ['one', 'two']);
+    }
+
+    public static function provideChoiceConstraintsWithMatchFalseApplyNotEnum(): \Generator
+    {
+        yield 'Attributes' => [new class {
+            #[Assert\Choice(choices: ['one', 'two'], match: false)]
+            public $property1;
+        }];
+    }
+
+    #[DataProvider('provideMultipleChoiceConstraintsWithMatchFalseApplyNotEnumToItems')]
+    public function testMultipleChoiceConstraintsWithMatchFalseApplyNotEnumToItems(object $entity): void
+    {
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader();
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+        self::assertSame('array', $schema->properties[0]->type);
+        self::assertInstanceOf(OA\Items::class, $schema->properties[0]->items);
+        self::assertTrue(Generator::isDefault($schema->properties[0]->items->enum));
+        self::assertInstanceOf(OA\Schema::class, $schema->properties[0]->items->not);
+        self::assertEquals($schema->properties[0]->items->not->enum, ['one', 'two']);
+    }
+
+    public static function provideMultipleChoiceConstraintsWithMatchFalseApplyNotEnumToItems(): \Generator
+    {
+        yield 'Attributes' => [new class {
+            #[Assert\Choice(choices: ['one', 'two'], multiple: true, match: false)]
+            public $property1;
+        }];
+    }
+
     #[DataProvider('provideLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet')]
     public function testLengthConstraintDoesNotSetMaxLengthIfMaxIsNotSet(object $entity): void
     {
