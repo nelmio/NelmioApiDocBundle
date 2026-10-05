@@ -16,6 +16,9 @@ on:
 env:
   fail-fast: true
 
+permissions:
+  contents: read
+
 jobs:
   phpunit:
     name: PHPUnit
@@ -88,6 +91,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
+          persist-credentials: false
 
       - name: Install PHP with coverage
         uses: shivammathur/setup-php@v2
@@ -116,6 +120,8 @@ jobs:
           --log-junit=junit-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.test-group }}.xml \
           --coverage-clover=coverage-${{ matrix.php-version }}-${{ matrix.symfony-require }}-${{ matrix.test-group }}.xml \
           --coverage-filter=src/ \
+          --colors=always \
+          --no-progress \
           $PHPUNIT_ARGS
       - uses: actions/upload-artifact@v7
         with:
@@ -140,12 +146,15 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
+          persist-credentials: false
 
       - name: Download artifacts
         uses: actions/download-artifact@v8
 
       - name: Upload test results to Codecov.io
-        uses: codecov/test-results-action@v1
+        uses: codecov/codecov-action@v7
+        with:
+          report_type: test_results
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -165,11 +174,12 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
+          persist-credentials: false
 
       - name: Install PHP without coverage
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.2
           tools: composer, flex
           coverage: none
 
@@ -180,7 +190,7 @@ jobs:
           test-group: all
 
       - name: Run PHP-CS-Fixer
-        run: vendor/bin/php-cs-fixer check -v --diff
+        run: vendor/bin/php-cs-fixer check -v --diff --ansi --show-progress=none
 
   phpstan:
     name: PHPStan
@@ -191,6 +201,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
+          persist-credentials: false
 
       - name: Install PHP without coverage
         uses: shivammathur/setup-php@v2
@@ -206,7 +217,7 @@ jobs:
           test-group: all
 
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyse --no-progress --no-interaction
+        run: vendor/bin/phpstan analyse --no-progress --no-interaction --ansi
 
   ui-assets:
     name: UI Assets
@@ -221,16 +232,15 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
+          persist-credentials: false
 
-      - uses: actions/setup-node@v7
+      - uses: pnpm/setup@v2
         with:
-          node-version: '22.x'
-
-      - uses: pnpm/action-setup@v6
-        with:
-          package_json_file: utils/package.json
+          runtime: node@22
+          package-json-file: utils/package.json
+          cache-dependency-path: utils/pnpm-lock.yaml
           cache: true
-          cache_dependency_path: utils/pnpm-lock.yaml
+          install: false
 
       - name: Setup dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
