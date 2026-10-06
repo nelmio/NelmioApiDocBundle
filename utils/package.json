@@ -4,9 +4,9 @@
   "private": true,
   "packageManager": "pnpm@11.23.0",
   "dependencies": {
-    "@scalar/api-reference": "1.72.1",
+    "@scalar/api-reference": "1.72.2",
     "@stoplight/elements": "9.0.25",
-    "redoc": "2.5.3",
+    "redoc": "2.5.4",
     "swagger-ui-dist": "5.33.0"
   },
   "scripts": {

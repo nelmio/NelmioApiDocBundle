@@ -19,14 +19,13 @@ jobs:
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
-      - uses: actions/setup-node@v7
+      - uses: pnpm/setup@v2
         with:
-          node-version: '22.x'
-      - uses: pnpm/action-setup@v6
-        with:
-          package_json_file: utils/package.json
+          runtime: node@22
+          package-json-file: utils/package.json
+          cache-dependency-path: utils/pnpm-lock.yaml
           cache: true
-          cache_dependency_path: utils/pnpm-lock.yaml
+          install: false
       - run: pnpm install --ignore-scripts
       - name: Swagger UI
         run: pnpm run swagger
