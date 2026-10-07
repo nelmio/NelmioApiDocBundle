@@ -40,18 +40,32 @@ final class UnionDescriber implements TypeDescriberInterface, TypeDescriberAware
             return;
         }
 
+        // Members can be described identically (e.g. `list<T>|array<T>`): keep a single one of each
         $weakContext = Util::createWeakContext($schema->_context);
+        $childSchemas = [];
+        $describedTypes = [];
         foreach ($innerTypes as $innerType) {
-            if (Generator::UNDEFINED === $schema->oneOf) {
-                $schema->oneOf = [];
-            }
-
-            $schema->oneOf[] = $childSchema = new Schema([
+            $childSchema = new Schema([
                 '_context' => $weakContext,
             ]);
 
             $this->describer->describe($innerType, $childSchema, $context);
+
+            $childSchemas[$key = $childSchema->toJson()] ??= $childSchema;
+            $describedTypes[$key] ??= $innerType;
         }
+
+        if (1 === \count($childSchemas)) {
+            $this->describer->describe(reset($describedTypes), $schema, $context);
+
+            return;
+        }
+
+        if (Generator::UNDEFINED === $schema->oneOf) {
+            $schema->oneOf = [];
+        }
+
+        array_push($schema->oneOf, ...array_values($childSchemas));
     }
 
     public function supports(Type $type, array $context = []): bool
