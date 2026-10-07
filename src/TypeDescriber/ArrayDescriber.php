@@ -58,14 +58,16 @@ final class ArrayDescriber implements TypeDescriberInterface, TypeDescriberAware
 
         $arrayTypes = array_map(
             static fn (Type $keyType): Type => Type::array($type->getCollectionValueType(), $keyType),
-            $type->getCollectionKeyType()->getTypes()
+            $keyTypes
         );
 
-        $union = Type::union(
-            ...$arrayTypes
+        // A single-member key union (e.g. `array<'foo'|'bar', T>` once literals are
+        // deduplicated) must not go through Type::union(), which turns it into a nullable.
+        $this->describer->describe(
+            1 === \count($arrayTypes) ? $arrayTypes[0] : Type::union(...$arrayTypes),
+            $schema,
+            $context
         );
-
-        $this->describer->describe($union, $schema, $context);
     }
 
     public function supports(Type $type, array $context = []): bool
