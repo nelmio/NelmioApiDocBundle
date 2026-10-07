@@ -31,19 +31,18 @@ final class ArrayDescriber implements TypeDescriberInterface, TypeDescriberAware
             throw new \LogicException('This describer only supports '.CollectionType::class.' with '.Type\UnionType::class.' as key type.');
         }
 
-        // When the key type is arrayKey() (int|string union), the collection has
-        // no explicit key type (e.g. `array<T>` in PHPDoc). Treat as a JSON array
-        // rather than splitting into anyOf: [array, object].
-        $keyTypes = $type->getCollectionKeyType()->getTypes();
-        if (2 === \count($keyTypes)
-            && $keyTypes[0] instanceof Type\BuiltinType
-            && $keyTypes[1] instanceof Type\BuiltinType
-            && self::isArrayKeyUnion($keyTypes[0]->getTypeIdentifier(), $keyTypes[1]->getTypeIdentifier())
+        // TypeInfo cannot tell `array<T>`, `array<array-key, T>` and `array<int|string, T>`
+        // apart: they all get an int|string key union. Describe them as a JSON array rather
+        // than splitting them into anyOf: [array, object]. Array shapes are left out, as one
+        // with mixed keys (e.g. `array{0: int, foo: string}`) is serialized as a JSON object.
+        // ArrayShapeType only exists since symfony/type-info 7.3, hence the class name string.
+        if (!is_a($type, 'Symfony\Component\TypeInfo\Type\ArrayShapeType')
+            && self::isIntOrStringUnion($type->getCollectionKeyType())
         ) {
-            // When a Traversable object is used as a generic parameter
-            // (e.g. `list<MyTraversableClass>`), StringTypeResolver wraps it in
-            // CollectionType(ObjectType) with no key/value type info. Unwrap it
-            // so ClassDescriber can create a proper $ref.
+            // StringTypeResolver wraps a non-generic Traversable or ArrayAccess class
+            // reference (e.g. `\ArrayObject`, or the `T` in `list<T>`) in a
+            // CollectionType(ObjectType) with no key/value type info. Unwrap it so
+            // ClassDescriber can create a proper $ref.
             $wrappedType = $type->getWrappedType();
             if ($wrappedType instanceof Type\ObjectType) {
                 $this->describer->describe($wrappedType, $schema, $context);
@@ -58,7 +57,7 @@ final class ArrayDescriber implements TypeDescriberInterface, TypeDescriberAware
 
         $arrayTypes = array_map(
             static fn (Type $keyType): Type => Type::array($type->getCollectionValueType(), $keyType),
-            $keyTypes
+            $type->getCollectionKeyType()->getTypes()
         );
 
         // A single-member key union (e.g. `array<'foo'|'bar', T>` once literals are
@@ -77,12 +76,15 @@ final class ArrayDescriber implements TypeDescriberInterface, TypeDescriberAware
     }
 
     /**
-     * Checks whether two type identifiers form an arrayKey() union (int|string),
-     * regardless of which order TypeInfo emits them.
+     * TypeInfo sorts union members by their string representation, so `int` always comes first.
      */
-    private static function isArrayKeyUnion(TypeIdentifier $a, TypeIdentifier $b): bool
+    private static function isIntOrStringUnion(Type\UnionType $keyType): bool
     {
-        return (TypeIdentifier::INT === $a && TypeIdentifier::STRING === $b)
-            || (TypeIdentifier::STRING === $a && TypeIdentifier::INT === $b);
+        $identifiers = array_map(
+            static fn (Type $type): ?TypeIdentifier => $type instanceof Type\BuiltinType ? $type->getTypeIdentifier() : null,
+            $keyType->getTypes()
+        );
+
+        return [TypeIdentifier::INT, TypeIdentifier::STRING] === $identifiers;
     }
 }
