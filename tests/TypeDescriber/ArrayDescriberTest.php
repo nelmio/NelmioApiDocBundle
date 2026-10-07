@@ -14,10 +14,14 @@ namespace Nelmio\ApiDocBundle\Tests\TypeDescriber;
 use Nelmio\ApiDocBundle\TypeDescriber\ArrayDescriber;
 use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use OpenApi\Annotations\Schema;
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\TypeInfo\Exception\InvalidArgumentException;
 use Symfony\Component\TypeInfo\Type;
+use Symfony\Component\TypeInfo\Type\ArrayShapeType;
 use Symfony\Component\TypeInfo\Type\BuiltinType;
 use Symfony\Component\TypeInfo\Type\CollectionType;
+use Symfony\Component\TypeInfo\Type\ObjectType;
 use Symfony\Component\TypeInfo\Type\TemplateType;
 use Symfony\Component\TypeInfo\Type\UnionType;
 use Symfony\Component\TypeInfo\TypeIdentifier;
@@ -54,26 +58,30 @@ class ArrayDescriberTest extends TestCase
     }
 
     /**
-     * When the key type is arrayKey() (int|string union), the describer should
-     * treat the collection as a list rather than splitting into anyOf [array, object].
+     * When the key type is the int|string union, the describer should treat the
+     * collection as a list rather than splitting into anyOf [array, object].
+     *
+     * @dataProvider provideArrayKeyUnionCollectionTypes
      */
-    public function testArrayKeyUnionIsTreatedAsList(): void
+    public function testArrayKeyUnionIsTreatedAsList(CollectionType $type, TypeIdentifier $expectedValueType): void
     {
-        $innerDescriber = $this->createMock(TypeDescriberInterface::class);
-        $innerDescriber->expects(self::once())
-            ->method('describe')
-            ->with(self::callback(static function (Type $type): bool {
-                // Should delegate a list(string) — i.e. CollectionType with int key and string value
-                return $type instanceof CollectionType
-                    && $type->isList()
-                    && 'string' === (string) $type->getCollectionValueType();
-            }));
+        $this->assertDescribesWith($type, self::callback(static function (Type $type) use ($expectedValueType): bool {
+            return $type instanceof CollectionType
+                && $type->isList()
+                && self::isBuiltin($type->getCollectionValueType(), $expectedValueType);
+        }));
+    }
 
-        $this->describer->setDescriber($innerDescriber);
+    public static function provideArrayKeyUnionCollectionTypes(): \Generator
+    {
+        $resolver = new StringTypeResolver();
 
-        // array<string> is resolved by TypeInfo as CollectionType with arrayKey() union key
-        $type = Type::array(Type::string());
-        $this->describer->describe($type, new Schema([]));
+        // TypeInfo resolves these with an int|string key union, as it does `array<int|string, T>` and `array<array-key, T>`
+        yield 'array<T>' => [$resolver->resolve('array<string>'), TypeIdentifier::STRING];
+        yield 'array' => [$resolver->resolve('array'), TypeIdentifier::MIXED];
+        yield 'iterable<T>' => [$resolver->resolve('iterable<string>'), TypeIdentifier::STRING];
+        // A generic Traversable class is described by its value type, not unwrapped
+        yield 'Traversable<T>' => [$resolver->resolve('\ArrayObject<string>'), TypeIdentifier::STRING];
     }
 
     /**
@@ -85,18 +93,12 @@ class ArrayDescriberTest extends TestCase
         $type = (new StringTypeResolver())->resolve("array<'foo'|'bar', string>");
         self::assertInstanceOf(CollectionType::class, $type);
 
-        $innerDescriber = $this->createMock(TypeDescriberInterface::class);
-        $innerDescriber->expects(self::once())
-            ->method('describe')
-            ->with(self::callback(static function (Type $type): bool {
-                return $type instanceof CollectionType
-                    && !$type->isNullable()
-                    && self::isBuiltin($type->getCollectionKeyType(), TypeIdentifier::STRING)
-                    && self::isBuiltin($type->getCollectionValueType(), TypeIdentifier::STRING);
-            }));
-
-        $this->describer->setDescriber($innerDescriber);
-        $this->describer->describe($type, new Schema([]));
+        $this->assertDescribesWith($type, self::callback(static function (Type $type): bool {
+            return $type instanceof CollectionType
+                && !$type->isNullable()
+                && self::isBuiltin($type->getCollectionKeyType(), TypeIdentifier::STRING)
+                && self::isBuiltin($type->getCollectionValueType(), TypeIdentifier::STRING);
+        }));
     }
 
     /**
@@ -105,45 +107,89 @@ class ArrayDescriberTest extends TestCase
      */
     public function testOtherKeyUnionIsSplitIntoUnionOfArrays(): void
     {
-        $type = Type::array(Type::string(), Type::union(Type::template('K', Type::string()), Type::int()));
+        try {
+            $type = Type::array(Type::string(), Type::union(Type::template('K', Type::string()), Type::int()));
+        } catch (InvalidArgumentException) {
+            self::markTestSkipped('This symfony/type-info version does not accept template types as array keys.');
+        }
 
-        $innerDescriber = $this->createMock(TypeDescriberInterface::class);
-        $innerDescriber->expects(self::once())
-            ->method('describe')
-            ->with(self::callback(static function (Type $type): bool {
-                if (!$type instanceof UnionType || $type->isNullable() || 2 !== \count($type->getTypes())) {
+        $this->assertDescribesWith($type, self::callback(static function (Type $type): bool {
+            if (!$type instanceof UnionType || $type->isNullable()) {
+                return false;
+            }
+
+            $keyTypes = [];
+            foreach ($type->getTypes() as $arrayType) {
+                if (!$arrayType instanceof CollectionType || !self::isBuiltin($arrayType->getCollectionValueType(), TypeIdentifier::STRING)) {
                     return false;
                 }
 
-                [$templateKeyArray, $intKeyArray] = $type->getTypes();
+                $keyType = $arrayType->getCollectionKeyType();
+                $keyTypes[] = $keyType instanceof TemplateType ? 'template' : (self::isBuiltin($keyType, TypeIdentifier::INT) ? 'int' : 'other');
+            }
+            sort($keyTypes);
 
-                return $templateKeyArray instanceof CollectionType
-                    && $templateKeyArray->getCollectionKeyType() instanceof TemplateType
-                    && $intKeyArray instanceof CollectionType
-                    && self::isBuiltin($intKeyArray->getCollectionKeyType(), TypeIdentifier::INT);
-            }));
-
-        $this->describer->setDescriber($innerDescriber);
-        $this->describer->describe($type, new Schema([]));
+            return ['int', 'template'] === $keyTypes;
+        }));
     }
 
     /**
-     * When a Traversable object is auto-wrapped in CollectionType(ObjectType),
-     * the describer should unwrap it and delegate the ObjectType directly.
+     * An array shape with mixed keys (e.g. `array{0: int, foo: string}`) is serialized as
+     * a JSON object, so it must not be described as a list.
+     */
+    public function testArrayShapeWithMixedKeysIsNotTreatedAsList(): void
+    {
+        if (!class_exists(ArrayShapeType::class)) {
+            self::markTestSkipped('Array shapes require symfony/type-info 7.3 or later.');
+        }
+
+        $type = (new StringTypeResolver())->resolve('array{0: int, foo: string}');
+        self::assertInstanceOf(CollectionType::class, $type);
+
+        $this->assertDescribesWith($type, self::callback(static function (Type $type): bool {
+            if (!$type instanceof UnionType) {
+                return false;
+            }
+
+            foreach ($type->getTypes() as $arrayType) {
+                if (!$arrayType instanceof CollectionType || $arrayType->isList()) {
+                    return false;
+                }
+            }
+
+            return true;
+        }));
+    }
+
+    /**
+     * StringTypeResolver wraps a non-generic Traversable class reference in
+     * CollectionType(ObjectType): the describer should delegate the ObjectType directly.
      */
     public function testTraversableObjectIsUnwrapped(): void
     {
-        $objectType = Type::object(\ArrayObject::class);
-        // Simulate what StringTypeResolver does: wrap in CollectionType(ObjectType)
-        $collectionType = new CollectionType($objectType);
+        $type = (new StringTypeResolver())->resolve('\ArrayObject');
+        self::assertInstanceOf(CollectionType::class, $type);
+        self::assertInstanceOf(ObjectType::class, $type->getWrappedType());
+
+        $this->assertDescribesWith($type, self::identicalTo($type->getWrappedType()));
+    }
+
+    /**
+     * Asserts that describing $type delegates exactly once to the inner describer, with a
+     * type matching $expectedType and the same schema and context.
+     */
+    private function assertDescribesWith(CollectionType $type, Constraint $expectedType): void
+    {
+        $schema = new Schema([]);
+        $context = ['foo' => 'bar'];
 
         $innerDescriber = $this->createMock(TypeDescriberInterface::class);
         $innerDescriber->expects(self::once())
             ->method('describe')
-            ->with(self::identicalTo($objectType));
+            ->with($expectedType, self::identicalTo($schema), $context);
 
         $this->describer->setDescriber($innerDescriber);
-        $this->describer->describe($collectionType, new Schema([]));
+        $this->describer->describe($type, $schema, $context);
     }
 
     private static function isBuiltin(Type $type, TypeIdentifier $identifier): bool
