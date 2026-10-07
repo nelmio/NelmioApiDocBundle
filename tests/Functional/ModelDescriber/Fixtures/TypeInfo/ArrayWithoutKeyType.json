@@ -1,0 +1,99 @@
+{
+    "required": [
+        "nullableValues",
+        "stringOrIntKeys",
+        "arrayKeyPseudoType",
+        "iterable",
+        "nested",
+        "dictOfLists",
+        "objects",
+        "traversable",
+        "listOfTraversables",
+        "arrayOfTraversables"
+    ],
+    "properties": {
+        "nullableArray": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "nullable": true
+        },
+        "arrayOrNull": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "nullable": true
+        },
+        "nullableValues": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "nullable": true
+            }
+        },
+        "stringOrIntKeys": {
+            "type": "array",
+            "items": {
+                "type": "boolean"
+            }
+        },
+        "arrayKeyPseudoType": {
+            "type": "array",
+            "items": {
+                "type": "number",
+                "format": "float"
+            }
+        },
+        "iterable": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "nested": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dictOfLists": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "objects": {
+            "type": "array",
+            "items": {
+                "$ref": "#/components/schemas/User"
+            }
+        },
+        "traversable": {
+            "type": "array",
+            "items": {
+                "$ref": "#/components/schemas/User"
+            }
+        },
+        "listOfTraversables": {
+            "type": "array",
+            "items": {
+                "$ref": "#/components/schemas/EntityWithAlternateType"
+            }
+        },
+        "arrayOfTraversables": {
+            "type": "array",
+            "items": {
+                "$ref": "#/components/schemas/EntityWithAlternateType"
+            }
+        }
+    },
+    "type": "object"
+}
