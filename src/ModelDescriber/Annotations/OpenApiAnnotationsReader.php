@@ -46,7 +46,7 @@ class OpenApiAnnotationsReader
         // Read #[Model] attributes
         $this->modelRegister->__invoke(new Analysis([$oaSchema], Util::createContext()));
 
-        if (!$oaSchema->validate()) {
+        if (!$this->validateAnnotation($oaSchema, $schema)) {
             return;
         }
 
@@ -78,11 +78,53 @@ class OpenApiAnnotationsReader
         // Read #[Model] attributes
         $this->modelRegister->__invoke(new Analysis([$oaProperty], Util::createContext()), $serializationGroups);
 
-        if (!$oaProperty->validate()) {
+        if (!$this->validateAnnotation($oaProperty, $property)) {
             return;
         }
 
         $property->mergeProperties($oaProperty);
+    }
+
+    /**
+     * swagger-php 6 validate() checks 3.1 keywords against its version argument, which defaults to 3.0.0.
+     * swagger-php 5 (and early 6.0) has no such argument and reads the version from the context instead.
+     */
+    private function validateAnnotation(OA\AbstractAnnotation $annotation, OA\AbstractAnnotation $target): bool
+    {
+        $version = $this->configuredOpenApiVersion($target);
+        if (null === $version || !self::validateAcceptsOpenApiVersion()) {
+            return $annotation->validate();
+        }
+
+        // Named argument passed through reflection so the call stays valid on every supported swagger-php major.
+        return (bool) (new \ReflectionMethod($annotation, 'validate'))->invokeArgs($annotation, ['version' => $version]);
+    }
+
+    private function configuredOpenApiVersion(OA\AbstractAnnotation $annotation): ?string
+    {
+        $version = $annotation->_context->version ?? null;
+        if (!\is_string($version) || '' === $version) {
+            return null;
+        }
+
+        return $version;
+    }
+
+    private static function validateAcceptsOpenApiVersion(): bool
+    {
+        static $accepts;
+
+        if (null === $accepts) {
+            $accepts = false;
+            foreach ((new \ReflectionMethod(OA\AbstractAnnotation::class, 'validate'))->getParameters() as $parameter) {
+                if ('version' === $parameter->getName()) {
+                    $accepts = true;
+                    break;
+                }
+            }
+        }
+
+        return $accepts;
     }
 
     /**
