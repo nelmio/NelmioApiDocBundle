@@ -7,7 +7,7 @@
     "@scalar/api-reference": "1.72.2",
     "@stoplight/elements": "9.0.25",
     "redoc": "2.5.4",
-    "swagger-ui-dist": "5.33.0"
+    "swagger-ui-dist": "5.33.1"
   },
   "scripts": {
     "swagger": "pnpm run swagger:bundle && pnpm run swagger:bundle:map && pnpm run swagger:standalone && pnpm run swagger:standalone:map && pnpm run swagger:css && pnpm run swagger:css:map",
