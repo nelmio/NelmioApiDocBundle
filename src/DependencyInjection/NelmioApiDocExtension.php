@@ -120,6 +120,7 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                     $config['operation_id_generation'] instanceof OperationIdGeneration ?
                         $config['operation_id_generation'] :
                         OperationIdGeneration::from($config['operation_id_generation']),
+                    $config['ignore_other_attributes'],
                 ])
                 ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
 

@@ -35,6 +35,7 @@ final class OpenApiPhpDescriber
         private readonly RouteCollection $routeCollection,
         private readonly ControllerReflector $controllerReflector,
         private readonly OperationIdGeneration $operationIdGeneration = OperationIdGeneration::ALWAYS_PREPEND,
+        private readonly bool $ignoreOtherAttributes = false,
     ) {
     }
 
@@ -205,7 +206,7 @@ final class OpenApiPhpDescriber
      */
     private function getAttributesAsAnnotation($reflection, \OpenApi\Context $context): array
     {
-        $attributesFactory = new AttributeAnnotationFactory();
+        $attributesFactory = new AttributeAnnotationFactory($this->ignoreOtherAttributes);
         $attributes = $attributesFactory->build($reflection, $context);
         // The attributes factory removes the context after executing so we need to set it back...
         $this->setContext($context);
