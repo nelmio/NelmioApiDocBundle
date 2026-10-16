@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Model\Model;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\ObjectModelDescriber;
 use Nelmio\ApiDocBundle\OpenApiPhp\Util;
+use Nelmio\ApiDocBundle\Tests\Functional\LegacyNullable;
 use Nelmio\ApiDocBundle\Tests\Functional\WebTestCase;
 use OpenApi\Annotations as OA;
 use OpenApi\Annotations\OpenApi;
@@ -61,7 +62,7 @@ class ObjectModelDescriberTest extends WebTestCase
 
         self::assertSame(
             self::getFixture($fixtureDir),
-            $schema->toJson(),
+            LegacyNullable::upgradeJson($schema->toJson()),
         );
     }
 

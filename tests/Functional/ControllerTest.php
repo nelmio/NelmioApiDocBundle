@@ -78,7 +78,7 @@ final class ControllerTest extends WebTestCase
         }
 
         $expected = json_decode(self::getFixture($fixtureDir), false, 512, \JSON_THROW_ON_ERROR);
-        $actual = json_decode($this->getOpenApiDefinition()->toJson(), false, 512, \JSON_THROW_ON_ERROR);
+        $actual = LegacyNullable::upgrade(json_decode($this->getOpenApiDefinition()->toJson(), false, 512, \JSON_THROW_ON_ERROR));
 
         self::assertEquals(
             self::normalizeOpenApiDecodedForComparison($expected),

@@ -40,10 +40,16 @@
                         }
                     },
                     "parent": {
-                        "nullable": true,
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/EntityWithSelfReferencingContext2"
+                            },
+                            {
+                                "type": "object",
+                                "nullable": true,
+                                "enum": [
+                                    null
+                                ]
                             }
                         ]
                     }
@@ -65,10 +71,16 @@
                         }
                     },
                     "parent": {
-                        "nullable": true,
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/EntityWithSelfReferencingContext2"
+                            },
+                            {
+                                "type": "object",
+                                "nullable": true,
+                                "enum": [
+                                    null
+                                ]
                             }
                         ]
                     }
