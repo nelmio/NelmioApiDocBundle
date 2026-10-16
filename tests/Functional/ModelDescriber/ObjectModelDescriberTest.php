@@ -57,7 +57,7 @@ class ObjectModelDescriberTest extends WebTestCase
         }
 
         if (!file_exists($fixtureDir)) {
-            file_put_contents($fixtureDir, $schema->toJson());
+            file_put_contents($fixtureDir, LegacyNullable::upgradeJson($schema->toJson()));
         }
 
         self::assertSame(

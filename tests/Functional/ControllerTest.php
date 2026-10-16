@@ -74,7 +74,7 @@ final class ControllerTest extends WebTestCase
 
         // Create the fixture if it does not exist
         if (!file_exists($fixtureDir = __DIR__.'/Fixtures/'.$fixtureName.'.json')) {
-            file_put_contents($fixtureDir, $apiDefinition->toJson());
+            file_put_contents($fixtureDir, LegacyNullable::upgradeJson($apiDefinition->toJson()));
         }
 
         $expected = json_decode(self::getFixture($fixtureDir), false, 512, \JSON_THROW_ON_ERROR);
