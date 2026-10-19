@@ -12,8 +12,8 @@ importers:
         specifier: 1.72.2
         version: 1.72.2(tailwindcss@4.3.3)(zod@4.5.4)
       '@stoplight/elements':
-        specifier: 9.0.25
-        version: 9.0.25(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 9.0.28
+        version: 9.0.28(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       redoc:
         specifier: 2.5.4
         version: 2.5.4(core-js@3.50.0)(mobx@6.16.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.5.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -528,15 +528,15 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@stoplight/elements-core@9.0.26':
-    resolution: {integrity: sha512-Orh/t30JcAF1xQImWsOn+8e830Tw9NgAEndWrRsatQU8xlfHMnRnznp3JjZ+/JrEPKGdRrANNRc7xIq2KTmHEg==}
+  '@stoplight/elements-core@9.0.28':
+    resolution: {integrity: sha512-DELUH4h5cBiU61VX/fPgULoz9QwUfb4+kl3lyiCiKR4GNR6VChlA1muoxORZv98umpHJQMIMzy1cRgR95Z3OBA==}
     engines: {node: '>=16'}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
 
-  '@stoplight/elements@9.0.25':
-    resolution: {integrity: sha512-rDbNsgSCNo74lyV57cBzym+8F68/R2j7UPq4r3w5qK608vX8APNJhTq+2MkbTjsM3bUhFIoRdI225tlI85KpCA==}
+  '@stoplight/elements@9.0.28':
+    resolution: {integrity: sha512-uorJPmmZZY/oNaa0Ko9FhXtm2oH7/nDVMN/pEpa6FK21xChlR/RJ2wcSTlw4+IZZWpmy4+0AusMhvBvQ6UB81A==}
     engines: {node: '>=16'}
     peerDependencies:
       react: '>=16.8'
@@ -3080,7 +3080,7 @@ snapshots:
 
   '@react-types/button@3.4.1(react@18.3.1)':
     dependencies:
-      '@react-types/shared': 3.9.0(react@18.3.1)
+      '@react-types/shared': 3.36.1(react@18.3.1)
       react: 18.3.1
 
   '@react-types/checkbox@3.11.0(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
@@ -3096,7 +3096,7 @@ snapshots:
 
   '@react-types/radio@3.1.2(react@18.3.1)':
     dependencies:
-      '@react-types/shared': 3.9.0(react@18.3.1)
+      '@react-types/shared': 3.36.1(react@18.3.1)
       react: 18.3.1
 
   '@react-types/shared@3.36.1(react@18.3.1)':
@@ -3110,7 +3110,7 @@ snapshots:
   '@react-types/switch@3.1.2(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@react-types/checkbox': 3.11.0(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@react-types/shared': 3.9.0(react@18.3.1)
+      '@react-types/shared': 3.36.1(react@18.3.1)
       react: 18.3.1
     transitivePeerDependencies:
       - '@react-spectrum/provider'
@@ -3118,7 +3118,7 @@ snapshots:
 
   '@react-types/textfield@3.3.0(react@18.3.1)':
     dependencies:
-      '@react-types/shared': 3.9.0(react@18.3.1)
+      '@react-types/shared': 3.36.1(react@18.3.1)
       react: 18.3.1
 
   '@redocly/ajv@8.11.2':
@@ -3579,7 +3579,7 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@stoplight/elements-core@9.0.26(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@stoplight/elements-core@9.0.28(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@scarf/scarf': 1.4.0
       '@stoplight/http-spec': 7.1.0
@@ -3634,10 +3634,10 @@ snapshots:
       - wonka
       - xstate
 
-  '@stoplight/elements@9.0.25(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@stoplight/elements@9.0.28(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@scarf/scarf': 1.4.0
-      '@stoplight/elements-core': 9.0.26(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@stoplight/elements-core': 9.0.28(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@stoplight/http-spec': 7.1.0
       '@stoplight/json': 3.21.7
       '@stoplight/mosaic': 1.53.5(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
