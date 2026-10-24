@@ -476,6 +476,37 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         self::assertEquals($schema->properties[0]->enum, ['test1', 'test2']);
     }
 
+    public function testChoiceConstraintsWithConcreteClassCallback(): void
+    {
+        $entity = new ConcreteChoiceCallbackEntity();
+
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader();
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
+
+        self::assertSame(['fiction', 'non-fiction'], $schema->properties[0]->enum);
+    }
+
+    public function testChoiceConstraintsWithAbstractClassCallbackDoNotCrash(): void
+    {
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader();
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(
+            new \ReflectionProperty(AbstractChoiceCallbackEntity::class, 'property1'),
+            $schema->properties[0]
+        );
+
+        self::assertTrue(Generator::isDefault($schema->properties[0]->enum));
+    }
+
     /**
      * @template T of OA\AbstractAnnotation
      *
@@ -487,5 +518,27 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     private function createObj(string $className, array $props = []): object
     {
         return new $className($props + ['_context' => new Context()]);
+    }
+}
+
+abstract class AbstractChoiceCallbackEntity
+{
+    #[Assert\Choice(callback: 'getGenres')]
+    public string $property1;
+
+    public static function getGenres(): array
+    {
+        return ['fiction', 'non-fiction'];
+    }
+}
+
+class ConcreteChoiceCallbackEntity
+{
+    #[Assert\Choice(callback: 'getGenres')]
+    public string $property1;
+
+    public static function getGenres(): array
+    {
+        return ['fiction', 'non-fiction'];
     }
 }
