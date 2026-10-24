@@ -9,15 +9,11 @@
             "oneOf": [
                 {
                     "type": "array",
-                    "items": {
-                        "nullable": true
-                    }
+                    "items": {}
                 },
                 {
                     "type": "object",
-                    "additionalProperties": {
-                        "nullable": true
-                    }
+                    "additionalProperties": {}
                 }
             ]
         },

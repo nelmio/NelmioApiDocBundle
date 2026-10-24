@@ -454,6 +454,10 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
             #[Assert\NotBlank()]
             #[Assert\Range(min: 1, groups: ['other'])]
             public $property1;
+
+            #[Assert\NotBlank()]
+            #[Assert\Range(min: 1, groups: ['other'])]
+            public $property2;
         }];
     }
 
@@ -474,6 +478,26 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
         $symfonyConstraintAnnotationReader->updateProperty(new \ReflectionProperty($entity, 'property1'), $schema->properties[0]);
 
         self::assertEquals($schema->properties[0]->enum, ['test1', 'test2']);
+    }
+
+    public function testChoiceConstraintsWithAbstractClassStaticCallback(): void
+    {
+        if (\PHP_VERSION_ID < 80500) {
+            self::markTestSkipped('This tests requires PHP >= 8.5.0');
+        }
+
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => 'property1'])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader();
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(
+            new \ReflectionProperty(AbstractChoiceConstraintsWithPHP85StaticCallbackEntity::class, 'property1'),
+            $schema->properties[0]
+        );
+
+        self::assertTrue(Generator::isDefault($schema->properties[0]->enum));
     }
 
     /**

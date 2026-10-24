@@ -215,9 +215,9 @@ class FunctionalTest extends WebTestCase
                         'type' => 'array',
                     ],
                     'friend' => [
-                        'nullable' => true,
                         'oneOf' => [
                             ['$ref' => '#/components/schemas/User2'],
+                            ['type' => 'object', 'nullable' => true, 'enum' => [null]],
                         ],
                     ],
                     'friends' => [
@@ -646,7 +646,6 @@ class FunctionalTest extends WebTestCase
                     ],
                 ],
                 'nullableComplex' => [
-                    'nullable' => true,
                     'oneOf' => [
                         class_exists(LegacyType::class) ? [
                             'type' => 'integer',
@@ -660,10 +659,14 @@ class FunctionalTest extends WebTestCase
                                 '$ref' => '#/components/schemas/CompoundEntity',
                             ],
                         ],
+                        [
+                            'type' => 'object',
+                            'nullable' => true,
+                            'enum' => [null],
+                        ],
                     ],
                 ],
                 'complexNested' => [
-                    'nullable' => true,
                     'oneOf' => [
                         class_exists(LegacyType::class) ? [
                             'type' => 'array',
@@ -679,6 +682,11 @@ class FunctionalTest extends WebTestCase
                         ],
                         [
                             'type' => 'string',
+                        ],
+                        [
+                            'type' => 'object',
+                            'nullable' => true,
+                            'enum' => [null],
                         ],
                     ],
                 ],
@@ -723,7 +731,6 @@ class FunctionalTest extends WebTestCase
                     ],
                 ],
                 'nullableComplex' => [
-                    'nullable' => true,
                     'oneOf' => [
                         class_exists(LegacyType::class) ? [
                             'type' => 'integer',
@@ -737,10 +744,14 @@ class FunctionalTest extends WebTestCase
                                 '$ref' => '#/components/schemas/CompoundEntity',
                             ],
                         ],
+                        [
+                            'type' => 'object',
+                            'nullable' => true,
+                            'enum' => [null],
+                        ],
                     ],
                 ],
                 'complexNested' => [
-                    'nullable' => true,
                     'oneOf' => [
                         class_exists(LegacyType::class) ? [
                             'type' => 'array',
@@ -756,6 +767,11 @@ class FunctionalTest extends WebTestCase
                         ],
                         [
                             'type' => 'string',
+                        ],
+                        [
+                            'type' => 'object',
+                            'nullable' => true,
+                            'enum' => [null],
                         ],
                     ],
                 ],
@@ -880,9 +896,9 @@ class FunctionalTest extends WebTestCase
                     '$ref' => '#/components/schemas/ArticleType81NotBacked',
                 ],
                 'nullableType' => [
-                    'nullable' => true,
                     'oneOf' => [
                         ['$ref' => '#/components/schemas/ArticleType81'],
+                        ['type' => 'object', 'nullable' => true, 'enum' => [null]],
                     ],
                 ],
             ],

@@ -199,10 +199,16 @@
                         "description": "Query parameter nullableArticleType81 description",
                         "required": false,
                         "schema": {
-                            "nullable": true,
                             "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
+                                },
+                                {
+                                    "type": "object",
+                                    "nullable": true,
+                                    "enum": [
+                                        null
+                                    ]
                                 }
                             ]
                         }

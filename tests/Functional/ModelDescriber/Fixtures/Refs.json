@@ -7,10 +7,16 @@
             "$ref": "#/components/schemas/SomeRefClass"
         },
         "someRefClassNullable": {
-            "nullable": true,
             "oneOf": [
                 {
                     "$ref": "#/components/schemas/SomeRefClass"
+                },
+                {
+                    "type": "object",
+                    "nullable": true,
+                    "enum": [
+                        null
+                    ]
                 }
             ]
         }
