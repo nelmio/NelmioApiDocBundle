@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [5.14.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.13.2...v5.14.0) (2026-10-30)
+
+
+### Features
+
+* **deps:** drop unmaintained Symfony 7.2 & 7.3 ([#2781](https://github.com/nelmio/NelmioApiDocBundle/issues/2781)) ([61ceb4a](https://github.com/nelmio/NelmioApiDocBundle/commit/61ceb4a9700eae65fc7af161019871ecd0370364))
+
 ## [5.13.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.13.1...v5.13.2) (2026-10-30)
 
 
