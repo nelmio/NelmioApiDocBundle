@@ -182,6 +182,13 @@ class SymfonyConstraintAnnotationReader
             $setEnumOnThis = Util::getChild($property, OA\Items::class);
         }
 
+        // With match: false, the choices are the values that are not allowed
+        if (!$choice->match) {
+            $setEnumOnThis->not = Util::createChild($setEnumOnThis, OA\Schema::class, ['enum' => array_values($enumValues)]);
+
+            return;
+        }
+
         $setEnumOnThis->enum = array_values($enumValues);
     }
 

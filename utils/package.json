@@ -4,10 +4,10 @@
   "private": true,
   "packageManager": "pnpm@11.23.0",
   "dependencies": {
-    "@scalar/api-reference": "1.67.0",
-    "@stoplight/elements": "9.0.25",
-    "redoc": "2.5.3",
-    "swagger-ui-dist": "5.32.14"
+    "@scalar/api-reference": "1.75.1",
+    "@stoplight/elements": "9.0.29",
+    "redoc": "2.5.4",
+    "swagger-ui-dist": "5.34.0"
   },
   "scripts": {
     "swagger": "pnpm run swagger:bundle && pnpm run swagger:bundle:map && pnpm run swagger:standalone && pnpm run swagger:standalone:map && pnpm run swagger:css && pnpm run swagger:css:map",

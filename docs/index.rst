@@ -49,6 +49,12 @@ To browse your documentation with a UI, you need to enable a UI route. If you're
             methods: GET
             defaults: { _controller: nelmio_api_doc.controller.swagger }
 
+        # YAML formatted
+        app.swagger_yaml:
+            path: /api/doc.yaml
+            methods: GET
+            defaults: { _controller: nelmio_api_doc.controller.swagger_yaml }
+
         # Uncomment one of the following to enable a documentation UI:
         app.swagger_ui:
             path: /api/doc
@@ -78,6 +84,11 @@ To browse your documentation with a UI, you need to enable a UI route. If you're
         return static function (RoutingConfigurator $routes): void {
             $routes->add('app.swagger', '/api/doc.json')
                 ->controller('nelmio_api_doc.controller.swagger')
+                ->methods(['GET']);
+
+            // # YAML formatted
+            $routes->add('app.swagger_yaml', '/api/doc.yaml')
+                ->controller('nelmio_api_doc.controller.swagger_yaml')
                 ->methods(['GET']);
 
             // Uncomment one of the following to enable a documentation UI:

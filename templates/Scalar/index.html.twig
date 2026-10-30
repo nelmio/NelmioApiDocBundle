@@ -9,15 +9,18 @@
 </head>
 <body>
     {% block swagger_ui %}
-        <script id="api-reference" type="application/json">{{ swagger_data.spec|json_encode(65)|raw }}</script>
+        <div id="scalar-api-reference"></div>
+        <script id="scalar-api-reference-data" type="application/json">{{ swagger_data.spec|json_encode(65)|raw }}</script>
     {% endblock swagger_ui %}
     {% block swagger_initialization %}
-        {% if scalar_config is not empty %}
-        <script>
-            document.getElementById('api-reference').dataset.configuration = JSON.stringify({{ scalar_config|json_encode(65)|raw }});
-        </script>
-        {% endif %}
         {{ nelmioAsset(assets_mode, 'scalar/scalar.standalone.js') }}
+        <script>
+            Scalar.createApiReference('#scalar-api-reference', {
+                title: {{ swagger_data.spec.info.title|default('API')|json_encode(65)|raw }},
+                ...{{ scalar_config|json_encode(65)|raw }},
+                content: JSON.parse(document.getElementById('scalar-api-reference-data').textContent),
+            });
+        </script>
     {% endblock swagger_initialization %}
 </body>
 </html>

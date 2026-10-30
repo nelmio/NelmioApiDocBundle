@@ -316,7 +316,7 @@ class UtilTest extends TestCase
                     ],
                 ]),
             ],
-            'assert' => [
+            'asserts' => [
                 // one fixed within setup and one dynamically created
                 'paths' => [
                     [

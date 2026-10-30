@@ -159,10 +159,16 @@
                         }
                     },
                     "friend": {
-                        "nullable": true,
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/User"
+                            },
+                            {
+                                "type": "object",
+                                "nullable": true,
+                                "enum": [
+                                    null
+                                ]
                             }
                         ]
                     },

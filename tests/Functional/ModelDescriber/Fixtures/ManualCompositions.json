@@ -1,0 +1,42 @@
+{
+    "required": [
+        "oneOf",
+        "anyOf",
+        "allOf"
+    ],
+    "properties": {
+        "oneOf": {
+            "oneOf": [
+                {
+                    "title": "title for int",
+                    "type": "integer"
+                },
+                {
+                    "title": "title for string",
+                    "type": "string"
+                }
+            ]
+        },
+        "anyOf": {
+            "anyOf": [
+                {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                {
+                    "type": "string",
+                    "minLength": 1
+                }
+            ]
+        },
+        "allOf": {
+            "description": "A referenced class",
+            "allOf": [
+                {
+                    "$ref": "#/components/schemas/SomeRefClass"
+                }
+            ]
+        }
+    },
+    "type": "object"
+}

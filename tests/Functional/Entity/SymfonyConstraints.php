@@ -77,6 +77,12 @@ class SymfonyConstraints
     private $propertyChoiceWithMultipleOldAnnotation;
 
     /**
+     * @var string
+     */
+    #[Assert\Choice(choices: ['choice1', 'choice2'], match: false)]
+    private $propertyChoiceWithMatchFalse;
+
+    /**
      * @var int
      */
     #[Assert\Expression(
@@ -205,6 +211,11 @@ class SymfonyConstraints
     public function setPropertyChoiceWithMultipleOldAnnotation(array $propertyChoiceWithMultipleOldAnnotation): void
     {
         $this->propertyChoiceWithMultipleOldAnnotation = $propertyChoiceWithMultipleOldAnnotation;
+    }
+
+    public function setPropertyChoiceWithMatchFalse(string $propertyChoiceWithMatchFalse): void
+    {
+        $this->propertyChoiceWithMatchFalse = $propertyChoiceWithMatchFalse;
     }
 
     public function setPropertyExpression(int $propertyExpression): void

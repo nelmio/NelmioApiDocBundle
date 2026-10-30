@@ -1,5 +1,41 @@
 # CHANGELOG
 
+## [5.13.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.13.0...v5.13.1) (2026-10-05)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.72.1 to 1.72.2 in /utils ([#2824](https://github.com/nelmio/NelmioApiDocBundle/issues/2824)) ([1eb732a](https://github.com/nelmio/NelmioApiDocBundle/commit/1eb732a5dd5e5a35fc5aeffcad7ee60e7242c174))
+* **deps:** bump redoc from 2.5.3 to 2.5.4 in /utils ([#2813](https://github.com/nelmio/NelmioApiDocBundle/issues/2813)) ([435b20a](https://github.com/nelmio/NelmioApiDocBundle/commit/435b20a1068b668414f4bbbbb370dc8150065b5d))
+
+## [5.13.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.12.2...v5.13.0) (2026-10-02)
+
+
+### Features
+
+* **symfony-constraints:** describe `#[Assert\Choice]` with `match: false` as an exclusion ([#2821](https://github.com/nelmio/NelmioApiDocBundle/issues/2821)) ([2246cb2](https://github.com/nelmio/NelmioApiDocBundle/commit/2246cb22e8dd4c19b8f10fa210c9299b125a27df))
+
+
+### Bug Fixes
+
+* Allow manual overwriting of UnionTypes ([#2815](https://github.com/nelmio/NelmioApiDocBundle/issues/2815)) ([48d1f53](https://github.com/nelmio/NelmioApiDocBundle/commit/48d1f5388413c31283644722dffa601e9b1249ec))
+* fall back to the bound of unresolved template types ([#2818](https://github.com/nelmio/NelmioApiDocBundle/issues/2818)) ([45e84f0](https://github.com/nelmio/NelmioApiDocBundle/commit/45e84f04c0aacb3a52f92b86fcfb40d196920697))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.68.0 to 1.72.1 in /utils ([#2819](https://github.com/nelmio/NelmioApiDocBundle/issues/2819)) ([36d83f7](https://github.com/nelmio/NelmioApiDocBundle/commit/36d83f7022c2b2d883de7619cb28c7a7f47ba515))
+* **deps:** bump dompurify from 3.4.14 to 3.4.16 in /utils ([#2823](https://github.com/nelmio/NelmioApiDocBundle/issues/2823)) ([6a227c7](https://github.com/nelmio/NelmioApiDocBundle/commit/6a227c7cf51e6c4fa85ee0e9e8d2726d77402745))
+* **deps:** bump swagger-ui-dist from 5.32.15 to 5.33.0 in /utils ([#2820](https://github.com/nelmio/NelmioApiDocBundle/issues/2820)) ([ca8b81c](https://github.com/nelmio/NelmioApiDocBundle/commit/ca8b81c892169c2b75325d722d714ca6dac28a85))
+
+## [5.12.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.12.1...v5.12.2) (2026-09-14)
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.67.0 to 1.68.0 in /utils ([#2807](https://github.com/nelmio/NelmioApiDocBundle/issues/2807)) ([57b7c61](https://github.com/nelmio/NelmioApiDocBundle/commit/57b7c61529e3afdfb858a2f67b4e57c589ab1b51))
+* **deps:** bump swagger-ui-dist from 5.32.14 to 5.32.15 in /utils ([#2806](https://github.com/nelmio/NelmioApiDocBundle/issues/2806)) ([96dac33](https://github.com/nelmio/NelmioApiDocBundle/commit/96dac33399bd5ab43bea3adf2d97e5cbc4a5bd38))
+
 ## [5.12.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.12.0...v5.12.1) (2026-09-07)
 
 
