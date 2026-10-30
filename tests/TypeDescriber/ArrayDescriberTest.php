@@ -16,9 +16,7 @@ use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use OpenApi\Annotations\Schema;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\TypeInfo\Exception\InvalidArgumentException;
 use Symfony\Component\TypeInfo\Type;
-use Symfony\Component\TypeInfo\Type\ArrayShapeType;
 use Symfony\Component\TypeInfo\Type\BuiltinType;
 use Symfony\Component\TypeInfo\Type\CollectionType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
@@ -95,12 +93,8 @@ class ArrayDescriberTest extends TestCase
 
     public function testOtherKeyUnionIsSplitIntoUnionOfArrays(): void
     {
-        try {
-            $templateKey = Type::template('K', Type::string());
-            $type = Type::array(Type::string(), Type::union($templateKey, Type::int()));
-        } catch (InvalidArgumentException) {
-            self::markTestSkipped('This symfony/type-info version does not accept template types as array keys.');
-        }
+        $templateKey = Type::template('K', Type::string());
+        $type = Type::array(Type::string(), Type::union($templateKey, Type::int()));
 
         $this->assertDescribesWith($type, self::equalTo(Type::union(
             Type::array(Type::string(), $templateKey),
@@ -114,10 +108,6 @@ class ArrayDescriberTest extends TestCase
      */
     public function testArrayShapeWithMixedKeysIsNotTreatedAsList(): void
     {
-        if (!class_exists(ArrayShapeType::class)) {
-            self::markTestSkipped('Array shapes require symfony/type-info 7.3 or later.');
-        }
-
         $type = (new StringTypeResolver())->resolve('array{0: int, foo: string}');
         self::assertInstanceOf(CollectionType::class, $type);
 
