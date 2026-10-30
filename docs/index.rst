@@ -560,6 +560,7 @@ If you need more complex features, take a look at:
     commands
     security
     symfony_attributes
+    spec_attributes
     configuration_reference
     frankenphp
     faq
