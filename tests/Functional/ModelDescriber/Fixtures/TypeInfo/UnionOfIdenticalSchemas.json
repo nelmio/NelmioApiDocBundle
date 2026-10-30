@@ -1,0 +1,60 @@
+{
+    "required": [
+        "sameList",
+        "sameDate",
+        "partlySameLists",
+        "listOrDict"
+    ],
+    "properties": {
+        "sameList": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "sameNullableListOfObjects": {
+            "type": "array",
+            "items": {
+                "$ref": "#/components/schemas/User"
+            },
+            "nullable": true
+        },
+        "sameDate": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "partlySameLists": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "listOrDict": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            ]
+        }
+    },
+    "type": "object"
+}

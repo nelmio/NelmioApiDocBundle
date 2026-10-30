@@ -1,0 +1,21 @@
+{
+    "required": [
+        "stringLiteralKeys",
+        "intLiteralKeys"
+    ],
+    "properties": {
+        "stringLiteralKeys": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "intLiteralKeys": {
+            "type": "array",
+            "items": {
+                "type": "integer"
+            }
+        }
+    },
+    "type": "object"
+}
