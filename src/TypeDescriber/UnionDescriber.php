@@ -43,7 +43,6 @@ final class UnionDescriber implements TypeDescriberInterface, TypeDescriberAware
         // Members can be described identically (e.g. `list<T>|array<T>`): keep a single one of each
         $weakContext = Util::createWeakContext($schema->_context);
         $childSchemas = [];
-        $describedTypes = [];
         foreach ($innerTypes as $innerType) {
             $childSchema = new Schema([
                 '_context' => $weakContext,
@@ -51,12 +50,11 @@ final class UnionDescriber implements TypeDescriberInterface, TypeDescriberAware
 
             $this->describer->describe($innerType, $childSchema, $context);
 
-            $childSchemas[$key = $childSchema->toJson()] ??= $childSchema;
-            $describedTypes[$key] ??= $innerType;
+            $childSchemas[$childSchema->toJson()] ??= $childSchema;
         }
 
         if (1 === \count($childSchemas)) {
-            $this->describer->describe(reset($describedTypes), $schema, $context);
+            $this->describer->describe($innerTypes[0], $schema, $context);
 
             return;
         }

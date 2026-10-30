@@ -22,7 +22,6 @@ use Symfony\Component\TypeInfo\Type\ArrayShapeType;
 use Symfony\Component\TypeInfo\Type\BuiltinType;
 use Symfony\Component\TypeInfo\Type\CollectionType;
 use Symfony\Component\TypeInfo\Type\ObjectType;
-use Symfony\Component\TypeInfo\Type\TemplateType;
 use Symfony\Component\TypeInfo\Type\UnionType;
 use Symfony\Component\TypeInfo\TypeIdentifier;
 use Symfony\Component\TypeInfo\TypeResolver\StringTypeResolver;
@@ -58,9 +57,6 @@ class ArrayDescriberTest extends TestCase
     }
 
     /**
-     * When the key type is the int|string union, the describer should treat the
-     * collection as a list rather than splitting into anyOf [array, object].
-     *
      * @dataProvider provideArrayKeyUnionCollectionTypes
      */
     public function testArrayKeyUnionIsTreatedAsList(CollectionType $type, TypeIdentifier $expectedValueType): void
@@ -84,10 +80,6 @@ class ArrayDescriberTest extends TestCase
         yield 'Traversable<T>' => [$resolver->resolve('\ArrayObject<string>'), TypeIdentifier::STRING];
     }
 
-    /**
-     * A single-member key union (e.g. `array<'foo'|'bar', T>` once TypeInfo deduplicates
-     * the literals) should be described as that array type, without becoming nullable.
-     */
     public function testSingleMemberKeyUnionIsNotMadeNullable(): void
     {
         $type = (new StringTypeResolver())->resolve("array<'foo'|'bar', string>");
@@ -101,36 +93,19 @@ class ArrayDescriberTest extends TestCase
         }));
     }
 
-    /**
-     * Any other key union (e.g. `array<K|int, T>` with a template type) is still split
-     * into a union of arrays, one per key type.
-     */
     public function testOtherKeyUnionIsSplitIntoUnionOfArrays(): void
     {
         try {
-            $type = Type::array(Type::string(), Type::union(Type::template('K', Type::string()), Type::int()));
+            $templateKey = Type::template('K', Type::string());
+            $type = Type::array(Type::string(), Type::union($templateKey, Type::int()));
         } catch (InvalidArgumentException) {
             self::markTestSkipped('This symfony/type-info version does not accept template types as array keys.');
         }
 
-        $this->assertDescribesWith($type, self::callback(static function (Type $type): bool {
-            if (!$type instanceof UnionType || $type->isNullable()) {
-                return false;
-            }
-
-            $keyTypes = [];
-            foreach ($type->getTypes() as $arrayType) {
-                if (!$arrayType instanceof CollectionType || !self::isBuiltin($arrayType->getCollectionValueType(), TypeIdentifier::STRING)) {
-                    return false;
-                }
-
-                $keyType = $arrayType->getCollectionKeyType();
-                $keyTypes[] = $keyType instanceof TemplateType ? 'template' : (self::isBuiltin($keyType, TypeIdentifier::INT) ? 'int' : 'other');
-            }
-            sort($keyTypes);
-
-            return ['int', 'template'] === $keyTypes;
-        }));
+        $this->assertDescribesWith($type, self::equalTo(Type::union(
+            Type::array(Type::string(), $templateKey),
+            Type::array(Type::string(), Type::int()),
+        )));
     }
 
     /**
@@ -161,10 +136,6 @@ class ArrayDescriberTest extends TestCase
         }));
     }
 
-    /**
-     * StringTypeResolver wraps a non-generic Traversable class reference in
-     * CollectionType(ObjectType): the describer should delegate the ObjectType directly.
-     */
     public function testTraversableObjectIsUnwrapped(): void
     {
         $type = (new StringTypeResolver())->resolve('\ArrayObject');
@@ -174,10 +145,6 @@ class ArrayDescriberTest extends TestCase
         $this->assertDescribesWith($type, self::identicalTo($type->getWrappedType()));
     }
 
-    /**
-     * Asserts that describing $type delegates exactly once to the inner describer, with a
-     * type matching $expectedType and the same schema and context.
-     */
     private function assertDescribesWith(CollectionType $type, Constraint $expectedType): void
     {
         $schema = new Schema([]);
