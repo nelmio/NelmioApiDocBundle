@@ -396,6 +396,29 @@ class NelmioApiDocExtensionTest extends TestCase
             ],
         ];
 
+        yield 'swagger_ui_urls' => [
+            [
+                'swagger_ui_config' => [
+                    'urls' => [
+                        ['name' => 'Public API', 'url' => '/api/doc/public.json'],
+                        ['name' => 'Internal API', 'url' => '/api/doc/internal.json'],
+                    ],
+                ],
+            ],
+            [
+                'swagger_ui_config' => [
+                    'urls' => [
+                        ['name' => 'Public API', 'url' => '/api/doc/public.json'],
+                        ['name' => 'Internal API', 'url' => '/api/doc/internal.json'],
+                    ],
+                ],
+                'assets_mode' => 'cdn',
+                'redocly_config' => [],
+                'scalar_config' => [],
+                'stoplight_config' => [],
+            ],
+        ];
+
         yield 'redocly' => [
             [
                 'assets_mode' => 'cdn',
