@@ -169,29 +169,19 @@ class SymfonyConstraintAnnotationReader
     private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection): void
     {
         if (null !== $choice->callback) {
-            try {
-                if ($choice->callback instanceof \Closure) {
-                    $enumValues = ($choice->callback)();
-                } elseif (\is_array($choice->callback) && \is_callable($choice->callback)) {
-                    $enumValues = \call_user_func($choice->callback);
-                } elseif (\is_string($choice->callback)) {
-                    $class = $reflection->class;
-
-                    if (class_exists($class) && (new \ReflectionClass($class))->isAbstract()) {
-                        return;
-                    }
-
-                    if (\is_callable([$class, $choice->callback])) {
-                        $enumValues = \call_user_func([$class, $choice->callback]);
-                    } elseif (\is_callable($choice->callback)) {
-                        $enumValues = \call_user_func($choice->callback);
-                    } else {
-                        return;
-                    }
-                } else {
+            if ($choice->callback instanceof \Closure) {
+                $enumValues = ($choice->callback)();
+            } else {
+                // Non-static methods are skipped: Symfony calls them on the validated object, which is unavailable here
+                $callable = \is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback];
+                if (!\is_callable($callable) && !\is_callable($callable = $choice->callback)) {
                     return;
                 }
-            } catch (\Throwable $throwable) {
+
+                $enumValues = \call_user_func($callable);
+            }
+
+            if (!\is_array($enumValues)) {
                 return;
             }
         } else {
