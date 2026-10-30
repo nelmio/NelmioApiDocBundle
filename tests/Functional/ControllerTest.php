@@ -31,6 +31,8 @@ use Symfony\Component\TypeInfo\Type as TypeInfoType;
  */
 final class ControllerTest extends WebTestCase
 {
+    use ComparesOpenApiFixturesTrait;
+
     /**
      * @var ConfigurableContainerFactory
      */
@@ -735,6 +737,21 @@ final class ControllerTest extends WebTestCase
             'CustomModelNameController',
         ];
 
+        yield 'Custom model names, OpenAPI 3.1' => [
+            'CustomModelNameController',
+            'openapi31',
+            [],
+            [
+                'nelmio_api_doc' => [
+                    'documentation' => ['openapi' => '3.1.0'],
+                ],
+            ],
+        ];
+
+        yield 'Route variants' => [
+            'RouteVariantsController',
+        ];
+
         yield 'Context attribute on properties' => [
             'ContextAttributeController',
             null,
@@ -802,106 +819,5 @@ final class ControllerTest extends WebTestCase
                 ],
             ],
         ];
-    }
-
-    /**
-     * Drops unreferenced component schemas so comparisons match across PHP/Swagger-PHP versions
-     * (e.g. CleanUnusedComponents may leave different leftovers for inlined MapQueryString models).
-     *
-     * @return \stdClass|object
-     */
-    private static function normalizeOpenApiDecodedForComparison(object $openApi): object
-    {
-        $copy = json_decode(json_encode($openApi, \JSON_THROW_ON_ERROR), false, 512, \JSON_THROW_ON_ERROR);
-        if (!isset($copy->components->schemas) || !\is_object($copy->components->schemas)) {
-            return $copy;
-        }
-
-        $needed = self::collectReferencedComponentSchemaNames($copy);
-        $schemas = $copy->components->schemas;
-        foreach (array_keys(get_object_vars($schemas)) as $name) {
-            if (!isset($needed[$name])) {
-                unset($schemas->{$name});
-            }
-        }
-
-        return $copy;
-    }
-
-    /**
-     * @return array<string, true>
-     */
-    private static function collectReferencedComponentSchemaNames(object $openApi): array
-    {
-        $needed = [];
-        $queue = [];
-        $paths = $openApi->paths ?? null;
-        if (\is_object($paths)) {
-            foreach (self::collectSchemaRefsFromNode($paths) as $r) {
-                $queue[] = $r;
-            }
-        }
-
-        while ([] !== $queue) {
-            $name = array_pop($queue);
-            if (isset($needed[$name])) {
-                continue;
-            }
-            $needed[$name] = true;
-            if (!isset($openApi->components->schemas->{$name})) {
-                continue;
-            }
-            foreach (self::collectSchemaRefsFromNode($openApi->components->schemas->{$name}) as $r) {
-                if (!isset($needed[$r])) {
-                    $queue[] = $r;
-                }
-            }
-        }
-
-        return $needed;
-    }
-
-    /**
-     * @return list<string>
-     */
-    private static function collectSchemaRefsFromNode(mixed $node): array
-    {
-        if (\is_object($node)) {
-            $refs = [];
-            foreach (get_object_vars($node) as $k => $v) {
-                if ('$ref' === $k && \is_string($v) && preg_match('~^#/components/schemas/(.+)$~', $v, $m)) {
-                    $refs[] = $m[1];
-                }
-                $refs = array_merge($refs, self::collectSchemaRefsFromNode($v));
-            }
-
-            return $refs;
-        }
-
-        if (\is_array($node)) {
-            $refs = [];
-            foreach ($node as $v) {
-                $refs = array_merge($refs, self::collectSchemaRefsFromNode($v));
-            }
-
-            return $refs;
-        }
-
-        return [];
-    }
-
-    private static function getFixture(string $fixture): string
-    {
-        if (!file_exists($fixture)) {
-            self::fail(\sprintf('The fixture file "%s" does not exist.', $fixture));
-        }
-
-        $content = file_get_contents($fixture);
-
-        if (false === $content) {
-            self::fail(\sprintf('Failed to read the fixture file "%s".', $fixture));
-        }
-
-        return $content;
     }
 }
