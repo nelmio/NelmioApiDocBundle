@@ -85,6 +85,35 @@ Customizing the documentation of the uploaded file can be done by adding the ``#
             ],
         )]
 
+Serialize
+-------------------------------
+
+Using the `Symfony Serialize`_ attribute allows NelmioApiDocBundle to automatically generate your response documentation from the controller method's return type.
+
+The attribute's ``code`` becomes the response status code, ``headers`` become response headers and ``context`` is used as the serialization context of the returned model, so ``groups`` are honored.
+The response body is documented for every media type configured under ``nelmio_api_doc.media_types``, regardless of the format Symfony negotiates per request.
+
+Prefer ``@return list<Article>`` over ``@return Article[]`` in your docblock: the latter resolves to an array with ``int|string`` keys and is therefore documented as a list *or* a map.
+
+Requires Symfony 8.1 or higher.
+
+Modify generated documentation
+~~~~~~~
+
+Customizing the generated response can be done by adding an ``#[OA\Response]`` attribute with the same status code to your controller method. Anything you set explicitly takes precedence.
+
+    .. code-block:: php-attributes
+
+        #[Serialize(code: 201, context: ['groups' => ['create']])]
+        #[OA\Response(
+            response: 201,
+            description: 'The created article',
+        )]
+        public function createArticle(): Article
+        {
+            // ...
+        }
+
 Complete example
 ----------------------
 
@@ -118,6 +147,7 @@ Complete example
         use Symfony\Component\HttpKernel\Attribute\MapQueryString;
         use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
         use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
+        use Symfony\Component\HttpKernel\Attribute\Serialize;
         use Symfony\Component\Routing\Attribute\Route;
 
         class UserController
@@ -181,6 +211,16 @@ Complete example
             {
                 // ...
             }
+
+            /**
+             * Show a user.
+             */
+            #[Route('/api/users/{id}', methods: ['GET'])]
+            #[Serialize(context: ['groups' => ['default']])]
+            public function showUser(int $id): UserDTO
+            {
+                // ...
+            }
         }
 
 Customization
@@ -232,4 +272,5 @@ Make sure to use at least php 8.1 (attribute support) to make use of this functi
 .. _`Symfony MapQueryParameter`: https://symfony.com/doc/current/controller.html#mapping-query-parameters-individually
 .. _`Symfony MapRequestPayload`: https://symfony.com/doc/current/controller.html#mapping-request-payload
 .. _`Symfony MapUploadedFile`: https://symfony.com/doc/current/controller.html#mapping-uploaded-files
+.. _`Symfony Serialize`: https://symfony.com/blog/new-in-symfony-8-1-serialize-attribute
 .. _`RouteArgumentDescriberInterface`: https://github.com/nelmio/NelmioApiDocBundle/blob/5.x/src/RouteDescriber/RouteArgumentDescriber/RouteArgumentDescriberInterface.php

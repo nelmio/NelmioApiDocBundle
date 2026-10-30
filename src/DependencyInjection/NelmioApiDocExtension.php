@@ -32,11 +32,13 @@ use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryPar
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapQueryStringDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapRequestPayloadDescriber;
 use Nelmio\ApiDocBundle\RouteDescriber\RouteArgumentDescriber\SymfonyMapUploadedFileDescriber;
+use Nelmio\ApiDocBundle\RouteDescriber\SymfonySerializeDescriber;
 use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
 use Nelmio\ApiDocBundle\TypeDescriber\TypeDescriberInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -45,6 +47,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
+use Symfony\Component\HttpKernel\Attribute\Serialize;
 use Symfony\Component\Routing\RouteCollection;
 
 final class NelmioApiDocExtension extends Extension implements PrependExtensionInterface
@@ -241,6 +244,18 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
             $container->register('nelmio_api_doc.route_argument_describer.map_uploaded_file', SymfonyMapUploadedFileDescriber::class)
                 ->setPublic(false)
                 ->addTag('nelmio_api_doc.route_argument_describer', ['priority' => 0]);
+        }
+
+        if (class_exists(Serialize::class)) {
+            $container->register('nelmio_api_doc.route_describers.symfony_serialize', SymfonySerializeDescriber::class)
+                ->setPublic(false)
+                ->addTag('nelmio_api_doc.route_describer', ['priority' => -260])
+                ->setArguments([
+                    $config['media_types'],
+                    new Reference('nelmio_api_doc.type_describer.chain'),
+                    new Reference('type_info.resolver', ContainerInterface::NULL_ON_INVALID_REFERENCE),
+                ])
+            ;
         }
 
         $bundles = $container->getParameter('kernel.bundles');
