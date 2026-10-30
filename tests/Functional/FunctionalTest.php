@@ -215,9 +215,9 @@ class FunctionalTest extends WebTestCase
                         'type' => 'array',
                     ],
                     'friend' => [
-                        'nullable' => true,
                         'oneOf' => [
                             ['$ref' => '#/components/schemas/User2'],
+                            ['type' => 'object', 'nullable' => true, 'enum' => [null]],
                         ],
                     ],
                     'friends' => [
@@ -252,7 +252,7 @@ class FunctionalTest extends WebTestCase
                     'dummy',
                 ],
             ],
-            json_decode($this->getModel('User2')->toJson(), true)
+            LegacyNullable::upgrade(json_decode($this->getModel('User2')->toJson(), true))
         );
     }
 
@@ -646,7 +646,6 @@ class FunctionalTest extends WebTestCase
                     ],
                 ],
                 'nullableComplex' => [
-                    'nullable' => true,
                     'oneOf' => [
                         class_exists(LegacyType::class) ? [
                             'type' => 'integer',
@@ -660,10 +659,10 @@ class FunctionalTest extends WebTestCase
                                 '$ref' => '#/components/schemas/CompoundEntity',
                             ],
                         ],
+                        ['type' => 'object', 'nullable' => true, 'enum' => [null]],
                     ],
                 ],
                 'complexNested' => [
-                    'nullable' => true,
                     'oneOf' => [
                         class_exists(LegacyType::class) ? [
                             'type' => 'array',
@@ -680,6 +679,7 @@ class FunctionalTest extends WebTestCase
                         [
                             'type' => 'string',
                         ],
+                        ['type' => 'object', 'nullable' => true, 'enum' => [null]],
                     ],
                 ],
                 'arrayOfArrayComplex' => [
@@ -702,7 +702,7 @@ class FunctionalTest extends WebTestCase
                     ],
                 ],
             ],
-        ], json_decode($this->getModel('CompoundEntity')->toJson(), true));
+        ], LegacyNullable::upgrade(json_decode($this->getModel('CompoundEntity')->toJson(), true)));
 
         self::assertEquals([
             'schema' => 'CompoundEntityNested',
@@ -723,7 +723,6 @@ class FunctionalTest extends WebTestCase
                     ],
                 ],
                 'nullableComplex' => [
-                    'nullable' => true,
                     'oneOf' => [
                         class_exists(LegacyType::class) ? [
                             'type' => 'integer',
@@ -737,10 +736,10 @@ class FunctionalTest extends WebTestCase
                                 '$ref' => '#/components/schemas/CompoundEntity',
                             ],
                         ],
+                        ['type' => 'object', 'nullable' => true, 'enum' => [null]],
                     ],
                 ],
                 'complexNested' => [
-                    'nullable' => true,
                     'oneOf' => [
                         class_exists(LegacyType::class) ? [
                             'type' => 'array',
@@ -757,10 +756,11 @@ class FunctionalTest extends WebTestCase
                         [
                             'type' => 'string',
                         ],
+                        ['type' => 'object', 'nullable' => true, 'enum' => [null]],
                     ],
                 ],
             ],
-        ], json_decode($this->getModel('CompoundEntityNested')->toJson(), true));
+        ], LegacyNullable::upgrade(json_decode($this->getModel('CompoundEntityNested')->toJson(), true)));
     }
 
     public function testInvokableController(): void
@@ -880,15 +880,15 @@ class FunctionalTest extends WebTestCase
                     '$ref' => '#/components/schemas/ArticleType81NotBacked',
                 ],
                 'nullableType' => [
-                    'nullable' => true,
                     'oneOf' => [
                         ['$ref' => '#/components/schemas/ArticleType81'],
+                        ['type' => 'object', 'nullable' => true, 'enum' => [null]],
                     ],
                 ],
             ],
             'required' => ['id', 'type', 'intBackedType', 'notBackedType'],
             'schema' => 'Article81',
-        ], json_decode($this->getModel('Article81')->toJson(), true));
+        ], LegacyNullable::upgrade(json_decode($this->getModel('Article81')->toJson(), true)));
     }
 
     public function testEntitiesWithOverriddenSchemaTypeDoNotReadOtherProperties(): void
@@ -1169,19 +1169,15 @@ class FunctionalTest extends WebTestCase
             'properties' => [
                 'things' => [
                     'type' => 'array',
-                    'items' => class_exists(LegacyType::class) ? [] : [
-                        'nullable' => true,
-                    ],
+                    'items' => [],
                 ],
                 'moreThings' => [
                     'type' => 'array',
-                    'items' => class_exists(LegacyType::class) ? [] : [
-                        'nullable' => true,
-                    ],
+                    'items' => [],
                 ],
             ],
             'type' => 'object',
-        ], json_decode($this->getModel('Bar')->toJson(), true));
+        ], LegacyNullable::upgrade(json_decode($this->getModel('Bar')->toJson(), true)));
     }
 
     public function testDictionaryModel(): void

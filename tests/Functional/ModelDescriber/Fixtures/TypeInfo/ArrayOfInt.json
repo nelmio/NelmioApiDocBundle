@@ -7,9 +7,7 @@
     "properties": {
         "untypedArray": {
             "type": "array",
-            "items": {
-                "nullable": true
-            }
+            "items": {}
         },
         "arrayOfIntegers": {
             "type": "array",

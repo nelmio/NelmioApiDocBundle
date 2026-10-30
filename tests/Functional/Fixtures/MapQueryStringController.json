@@ -47,10 +47,16 @@
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "nullable": true,
                             "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
+                                },
+                                {
+                                    "type": "object",
+                                    "nullable": true,
+                                    "enum": [
+                                        null
+                                    ]
                                 }
                             ]
                         }
@@ -105,10 +111,16 @@
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "nullable": true,
                             "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
+                                },
+                                {
+                                    "type": "object",
+                                    "nullable": true,
+                                    "enum": [
+                                        null
+                                    ]
                                 }
                             ]
                         }
@@ -199,10 +211,16 @@
                         "description": "Query parameter nullableArticleType81 description",
                         "required": false,
                         "schema": {
-                            "nullable": true,
                             "oneOf": [
                                 {
                                     "$ref": "#/components/schemas/ArticleType81"
+                                },
+                                {
+                                    "type": "object",
+                                    "nullable": true,
+                                    "enum": [
+                                        null
+                                    ]
                                 }
                             ]
                         }
@@ -1051,10 +1069,16 @@
                         "$ref": "#/components/schemas/ArticleType81"
                     },
                     "nullableArticleType81": {
-                        "nullable": true,
                         "oneOf": [
                             {
                                 "$ref": "#/components/schemas/ArticleType81"
+                            },
+                            {
+                                "type": "object",
+                                "nullable": true,
+                                "enum": [
+                                    null
+                                ]
                             }
                         ]
                     }
