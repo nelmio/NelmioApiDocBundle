@@ -477,6 +477,37 @@ class SymfonyConstraintAnnotationReaderTest extends TestCase
     }
 
     /**
+     * @param string[]|null $expectedEnum
+     */
+    #[DataProvider('provideChoiceCallbacksOnAbstractClass')]
+    public function testChoiceCallbacksOnAbstractClass(string $propertyName, ?array $expectedEnum): void
+    {
+        $schema = $this->createObj(OA\Schema::class, []);
+        $schema->merge([$this->createObj(OA\Property::class, ['property' => $propertyName])]);
+
+        $symfonyConstraintAnnotationReader = new SymfonyConstraintAnnotationReader();
+        $symfonyConstraintAnnotationReader->setSchema($schema);
+
+        $symfonyConstraintAnnotationReader->updateProperty(
+            new \ReflectionProperty(AbstractChoiceCallbackEntity::class, $propertyName),
+            $schema->properties[0]
+        );
+
+        if (null === $expectedEnum) {
+            self::assertTrue(Generator::isDefault($schema->properties[0]->enum));
+        } else {
+            self::assertSame($expectedEnum, $schema->properties[0]->enum);
+        }
+    }
+
+    public static function provideChoiceCallbacksOnAbstractClass(): \Generator
+    {
+        yield 'static method' => ['staticCallback', ['test1', 'test2']];
+        yield 'abstract static method' => ['abstractCallback', null];
+        yield 'non-static method' => ['nonStaticCallback', null];
+    }
+
+    /**
      * @template T of OA\AbstractAnnotation
      *
      * @param class-string<T>      $className

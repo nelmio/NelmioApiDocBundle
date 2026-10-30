@@ -169,9 +169,21 @@ class SymfonyConstraintAnnotationReader
     private function applyEnumFromChoiceConstraint(OA\Schema $property, Assert\Choice $choice, $reflection): void
     {
         if (null !== $choice->callback) {
-            $enumValues = $choice->callback instanceof \Closure
-                ? ($choice->callback)()
-                : \call_user_func(\is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback]);
+            if ($choice->callback instanceof \Closure) {
+                $enumValues = ($choice->callback)();
+            } else {
+                // Non-static methods are skipped: Symfony calls them on the validated object, which is unavailable here
+                $callable = \is_array($choice->callback) ? $choice->callback : [$reflection->class, $choice->callback];
+                if (!\is_callable($callable) && !\is_callable($callable = $choice->callback)) {
+                    return;
+                }
+
+                $enumValues = \call_user_func($callable);
+            }
+
+            if (!\is_array($enumValues)) {
+                return;
+            }
         } else {
             $enumValues = $choice->choices;
         }
