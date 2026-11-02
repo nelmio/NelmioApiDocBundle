@@ -1,0 +1,349 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/serialize": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_bare",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SerializeArticle"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serialize_created": {
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_serialize_created",
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SerializeArticle"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serialize_groups": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_groups",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SerializeArticle2"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serialize_headers": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_headers",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "headers": {
+                            "X-Custom-Header": {
+                                "required": true,
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SerializeArticle"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serialize_brackets": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_brackets",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SerializeArticle"
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "$ref": "#/components/schemas/SerializeArticle"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serialize_list": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_list",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SerializeArticle"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serialize_untyped_array": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_untypedarray",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "nullable": true
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "nullable": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serialize_nullable": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_nullable",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "nullable": true,
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/SerializeArticle"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serialize_void": {
+            "delete": {
+                "operationId": "delete_nelmio_apidoc_tests_functional_serialize_nocontent",
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/serialize_response": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_alreadyaresponse",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/serialize_scalar": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_scalar",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serialize_no_return_type": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_noreturntype",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/serialize_with_oa_response": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_withexplicitresponse",
+                "responses": {
+                    "200": {
+                        "description": "Custom description",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SerializeArticle"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serialize_overwritten": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_overwritten",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SerializeArticle3"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/serialize_multiple_methods": {
+            "get": {
+                "operationId": "get_nelmio_apidoc_tests_functional_serialize_multiplemethods",
+                "responses": {
+                    "202": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SerializeArticle"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "post_nelmio_apidoc_tests_functional_serialize_multiplemethods",
+                "responses": {
+                    "202": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SerializeArticle"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "SerializeArticle": {
+                "required": [
+                    "id",
+                    "title",
+                    "body"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "body": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SerializeArticle2": {
+                "required": [
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "SerializeArticle3": {
+                "required": [
+                    "id",
+                    "title"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

@@ -32,3 +32,7 @@ parameters:
     ignoreErrors:
         - identifier: missingType.generics
         - '#^Property class@anonymous/tests/.* has no type specified.$#'
+        # Only available as of Symfony 8.1, while this job runs against a lower version.
+        -
+            message: '#Symfony\\Component\\HttpKernel\\Attribute\\Serialize#'
+            reportUnmatched: false
