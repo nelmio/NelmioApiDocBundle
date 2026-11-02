@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## [5.13.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.13.1...v5.13.2) (2026-10-30)
+
+
+### Bug Fixes
+
+* abstract Choice callback handling during schema generation ([#2839](https://github.com/nelmio/NelmioApiDocBundle/issues/2839)) ([d78b900](https://github.com/nelmio/NelmioApiDocBundle/commit/d78b900995e30a77942f651f5bd88729638a57c0))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.72.2 to 1.75.1 in /utils ([#2840](https://github.com/nelmio/NelmioApiDocBundle/issues/2840)) ([9bafe99](https://github.com/nelmio/NelmioApiDocBundle/commit/9bafe99f30f3d21bec9b6c98138d1679a22a3527))
+* **deps:** bump @stoplight/elements from 9.0.25 to 9.0.29 in /utils ([#2841](https://github.com/nelmio/NelmioApiDocBundle/issues/2841)) ([5ae79ff](https://github.com/nelmio/NelmioApiDocBundle/commit/5ae79ff679465ec47ab03f3bd1b53e5b1de83708))
+* **deps:** bump dompurify from 3.4.16 to 3.4.17 in /utils ([#2846](https://github.com/nelmio/NelmioApiDocBundle/issues/2846)) ([36f6849](https://github.com/nelmio/NelmioApiDocBundle/commit/36f684908a6a1800454975fc296e3014bf9af69e))
+* **deps:** bump source-map-js from 1.2.1 to 1.2.2 in /utils ([#2832](https://github.com/nelmio/NelmioApiDocBundle/issues/2832)) ([dd17e7a](https://github.com/nelmio/NelmioApiDocBundle/commit/dd17e7a407906bb092d01bd228734d05ab7e5937))
+* **deps:** bump swagger-ui-dist from 5.33.0 to 5.34.0 in /utils ([#2843](https://github.com/nelmio/NelmioApiDocBundle/issues/2843)) ([105cd75](https://github.com/nelmio/NelmioApiDocBundle/commit/105cd75e533809d8383ad888874079bced6262c3))
+* support zircote/swagger-php ^7.0 ([#2847](https://github.com/nelmio/NelmioApiDocBundle/issues/2847)) ([7dc8bb7](https://github.com/nelmio/NelmioApiDocBundle/commit/7dc8bb7033764b43526f118eef666ec9f98b69dc))
+
 ## [5.13.1](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.13.0...v5.13.1) (2026-10-05)
 
 
