@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\PropertyDescriber;
 
 use OpenApi\Annotations as OA;
+use OpenApi\Generator;
 use Symfony\Component\PropertyInfo\Type;
 
 final class DateTimePropertyDescriber implements PropertyDescriberInterface
@@ -22,7 +23,9 @@ final class DateTimePropertyDescriber implements PropertyDescriberInterface
     public function describe(array $types, OA\Schema $property, array $context = []): void
     {
         $property->type = 'string';
-        $property->format = 'date-time';
+        if (Generator::UNDEFINED === $property->format) {
+            $property->format = 'date-time';
+        }
     }
 
     public function supports(array $types, array $context = []): bool

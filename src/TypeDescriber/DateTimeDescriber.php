@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use OpenApi\Annotations\Schema;
+use OpenApi\Generator;
 use Symfony\Component\TypeInfo\Type;
 use Symfony\Component\TypeInfo\Type\ObjectType;
 
@@ -25,7 +26,9 @@ final class DateTimeDescriber implements StoppableTypeDescriberInterface
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
         $schema->type = 'string';
-        $schema->format = 'date-time';
+        if (Generator::UNDEFINED === $schema->format) {
+            $schema->format = 'date-time';
+        }
     }
 
     public function supports(Type $type, array $context = []): bool
