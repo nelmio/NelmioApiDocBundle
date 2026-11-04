@@ -38,7 +38,7 @@ class DateTimePropertyDescriberTest extends TestCase
     }
 
     /**
-     * @return array<string, LegacyType[]>
+     * @return array<string, array<LegacyType[]>>
      */
     public static function doesNotSupport() : array
     {
