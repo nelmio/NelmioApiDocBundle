@@ -11,11 +11,10 @@
 
 namespace Nelmio\ApiDocBundle\Tests\PropertyDescriber;
 
-use DateTimeImmutable;
 use Nelmio\ApiDocBundle\PropertyDescriber\DateTimePropertyDescriber;
 use OpenApi\Attributes\Property;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 
 class DateTimePropertyDescriberTest extends TestCase
@@ -34,13 +33,13 @@ class DateTimePropertyDescriberTest extends TestCase
         }
         $this->describer = new DateTimePropertyDescriber();
         $this->property = new Property();
-        $this->types = [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, DateTimeImmutable::class)];
+        $this->types = [new LegacyType(LegacyType::BUILTIN_TYPE_OBJECT, false, \DateTimeImmutable::class)];
     }
 
     /**
      * @return array<string, array<LegacyType[]>>
      */
-    public static function doesNotSupport() : array
+    public static function doesNotSupport(): array
     {
         if (!class_exists(LegacyType::class)) {
             return [
@@ -69,7 +68,7 @@ class DateTimePropertyDescriberTest extends TestCase
         self::assertTrue($this->describer->supports($this->types));
     }
 
-    public function testDescribeSetsTypeAndFormat() : void
+    public function testDescribeSetsTypeAndFormat(): void
     {
         $this->describer->describe($this->types, $this->property);
 
@@ -77,7 +76,7 @@ class DateTimePropertyDescriberTest extends TestCase
         self::assertSame('date-time', $this->property->format);
     }
 
-    public function testDoesNotSetFormatIfAlreadyDefined() : void
+    public function testDoesNotSetFormatIfAlreadyDefined(): void
     {
         $this->property->format = 'date';
 

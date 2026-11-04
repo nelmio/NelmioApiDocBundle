@@ -23,7 +23,7 @@ final class DateTimePropertyDescriber implements PropertyDescriberInterface
     public function describe(array $types, OA\Schema $property, array $context = []): void
     {
         $property->type = 'string';
-        if ($property->format === Generator::UNDEFINED) {
+        if (Generator::UNDEFINED === $property->format) {
             $property->format = 'date-time';
         }
     }

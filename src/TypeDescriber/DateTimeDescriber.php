@@ -26,7 +26,7 @@ final class DateTimeDescriber implements StoppableTypeDescriberInterface
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
         $schema->type = 'string';
-        if ($schema->format === Generator::UNDEFINED) {
+        if (Generator::UNDEFINED === $schema->format) {
             $schema->format = 'date-time';
         }
     }

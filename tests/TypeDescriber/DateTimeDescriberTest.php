@@ -75,7 +75,7 @@ class DateTimeDescriberTest extends TestCase
         self::assertSame('date-time', $schema->format);
     }
 
-    public function testDescribeDoesNotModifyFormatIfAlreadySet() : void
+    public function testDescribeDoesNotModifyFormatIfAlreadySet(): void
     {
         $schema = new Schema([
             'format' => 'date',
