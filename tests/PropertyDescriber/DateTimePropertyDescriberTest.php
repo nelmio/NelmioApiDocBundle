@@ -42,6 +42,12 @@ class DateTimePropertyDescriberTest extends TestCase
      */
     public static function doesNotSupport() : array
     {
+        if (!class_exists(LegacyType::class)) {
+            return [
+                'empty types' => [[]],
+            ];
+        }
+
         return [
             'empty types' => [[]],
             'non-object type' => [[new LegacyType(LegacyType::BUILTIN_TYPE_INT)]],
