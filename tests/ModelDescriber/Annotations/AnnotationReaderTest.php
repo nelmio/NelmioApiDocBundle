@@ -11,6 +11,7 @@
 
 namespace Nelmio\ApiDocBundle\Tests\ModelDescriber\Annotations;
 
+use Composer\InstalledVersions;
 use Nelmio\ApiDocBundle\Model\ModelRegistry;
 use Nelmio\ApiDocBundle\ModelDescriber\Annotations\OpenApiAnnotationsReader;
 use Nelmio\ApiDocBundle\Util\SetsContextTrait;
@@ -47,6 +48,22 @@ class AnnotationReaderTest extends TestCase
 
         self::assertEquals($schema->properties[1]->example, 'some example');
         self::assertEquals($schema->properties[1]->description, 'some description');
+    }
+
+    public function testSchemaExamplesWithOpenApi31(): void
+    {
+        if (version_compare(InstalledVersions::getVersion('zircote/swagger-php') ?? '0', '6.8.1', '<')) {
+            self::markTestSkipped('JSON Schema examples on attributes require zircote/swagger-php 6.8.1 or later.');
+        }
+
+        $context = new Context(['version' => '3.1.0']);
+        $schema = new OA\Schema(['_context' => $context]);
+
+        $registry = new ModelRegistry([], new OA\OpenApi(['_context' => $context]), []);
+        $openApiAnnotationsReader = new OpenApiAnnotationsReader($registry, ['json']);
+        $openApiAnnotationsReader->updateSchema(new \ReflectionClass(new #[OAattr\Schema(examples: ['red', 'blue'])] class {}), $schema);
+
+        self::assertSame(['red', 'blue'], $schema->examples);
     }
 
     public static function provideProperty(): \Generator

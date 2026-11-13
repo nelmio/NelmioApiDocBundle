@@ -46,7 +46,7 @@ class OpenApiAnnotationsReader
         // Read #[Model] attributes
         $this->modelRegister->__invoke(new Analysis([$oaSchema], Util::createContext()));
 
-        if (!$oaSchema->validate()) {
+        if (!$this->validate($oaSchema)) {
             return;
         }
 
@@ -78,11 +78,21 @@ class OpenApiAnnotationsReader
         // Read #[Model] attributes
         $this->modelRegister->__invoke(new Analysis([$oaProperty], Util::createContext()), $serializationGroups);
 
-        if (!$oaProperty->validate()) {
+        if (!$this->validate($oaProperty)) {
             return;
         }
 
         $property->mergeProperties($oaProperty);
+    }
+
+    private function validate(OA\AbstractAnnotation $annotation): bool
+    {
+        // Since zircote/swagger-php 6.1, validate() takes the OpenAPI version as an argument instead of reading it from the context
+        if ('version' === ((new \ReflectionMethod($annotation, 'validate'))->getParameters()[1] ?? null)?->getName()) {
+            return $annotation->validate(version: $annotation->_context->getVersion());
+        }
+
+        return $annotation->validate();
     }
 
     /**
