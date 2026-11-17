@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## [5.14.0](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.13.2...v5.14.0) (2026-11-17)
+
+
+### Features
+
+* **deps:** drop unmaintained Symfony 7.2 & 7.3 ([#2781](https://github.com/nelmio/NelmioApiDocBundle/issues/2781)) ([61ceb4a](https://github.com/nelmio/NelmioApiDocBundle/commit/61ceb4a9700eae65fc7af161019871ecd0370364))
+
+
+### Bug Fixes
+
+* only set date-time format when no format is defined ([#2854](https://github.com/nelmio/NelmioApiDocBundle/issues/2854)) ([ad95c55](https://github.com/nelmio/NelmioApiDocBundle/commit/ad95c55f66eb1e1a1cfe0a9c5b2de439a8ee30dc))
+* validate model attributes against the configured OpenAPI version ([#2858](https://github.com/nelmio/NelmioApiDocBundle/issues/2858)) ([29816ad](https://github.com/nelmio/NelmioApiDocBundle/commit/29816ad866c403d551139df95f48928a6e2ad8cf))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @scalar/api-reference from 1.75.1 to 1.78.0 in /utils ([#2860](https://github.com/nelmio/NelmioApiDocBundle/issues/2860)) ([1d314e5](https://github.com/nelmio/NelmioApiDocBundle/commit/1d314e59813fc65bbdef5b5f3e7cc738a0ea4e0e))
+* **deps:** bump fast-xml-parser from 5.11.1 to 5.12.0 in /utils ([#2857](https://github.com/nelmio/NelmioApiDocBundle/issues/2857)) ([b1646d5](https://github.com/nelmio/NelmioApiDocBundle/commit/b1646d5a436a0fdf1d0b408f0cde2034bef8f10b))
+* **deps:** bump swagger-ui-dist from 5.34.0 to 5.34.1 in /utils ([#2856](https://github.com/nelmio/NelmioApiDocBundle/issues/2856)) ([5196b2d](https://github.com/nelmio/NelmioApiDocBundle/commit/5196b2de22cc5cf306ee73d80c9adcca77aeae12))
+
 ## [5.13.2](https://github.com/nelmio/NelmioApiDocBundle/compare/v5.13.1...v5.13.2) (2026-10-30)
 
 
