@@ -401,6 +401,7 @@ final class Util
     public static function createWeakContext(?Context $parent = null, array $additionalProperties = []): Context
     {
         $propsToCopy = [
+            'nested',
             'version',
             'line',
             'character',
