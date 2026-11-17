@@ -36,7 +36,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Create backport pull requests
-        uses: korthout/backport-action@v4
+        uses: korthout/backport-action@v5
         with:
           # Token to authenticate requests to GitHub, ensures that created PRs run CI
           github_token: ${{ steps.generate-token.outputs.token }}
