@@ -18,7 +18,7 @@ body {
 
 /** HEADER **/
 
-header:before {
+body > header:before {
   content:"";
   background-color:#27848E;
   height:70px;
@@ -30,7 +30,7 @@ header:before {
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
-header #logo {
+body > header #logo {
   position:fixed;
   top : 35px;
   right:40px;
@@ -38,7 +38,7 @@ header #logo {
   transform:translateY(-50%);
 }
 
-header #logo img {
+body > header #logo img {
   height:48px;
   background-color:rgba(40, 134, 144, 0.4)
 }
@@ -162,6 +162,50 @@ header #logo img {
 
 #swagger-ui .topbar {
     display: none;
+}
+
+.swagger-ui-urls > header:before {
+  display: none;
+}
+
+.swagger-ui-urls #swagger-ui .topbar {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 101;
+  background: #27848E;
+  min-height: 70px;
+  padding: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.swagger-ui-urls #swagger-ui .topbar a {
+  display: none;
+}
+
+@media (min-width: 801px) and (max-width: 1900px) {
+  .swagger-ui-urls #swagger-ui .topbar .wrapper {
+    max-width: none;
+    /* Leave room for the 243px logo, its 40px right inset, and a 20px gap. */
+    padding-right: 303px;
+  }
+}
+
+@media (max-width: 800px) {
+  .swagger-ui-urls > header:before {
+    display: block;
+  }
+
+  .swagger-ui-urls #swagger-ui .topbar {
+    position: relative;
+  }
+
+  .swagger-ui-urls #swagger-ui .topbar .download-url-wrapper {
+    width: 100%;
+  }
 }
 
 /** FORMATS **/

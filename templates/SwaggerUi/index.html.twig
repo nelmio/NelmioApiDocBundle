@@ -23,7 +23,7 @@ file that was distributed with this source code. #}
         <script id="swagger-data" type="application/json">{{ swagger_data|json_encode(65)|raw }}</script>
     {% endblock swagger_data %}
 </head>
-<body>
+<body{% if swagger_ui_config.urls is defined and swagger_ui_config.urls is not empty %} class="swagger-ui-urls"{% endif %}>
     {% block svg_icons %}
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="swagger-ui-logos">
             <defs>

@@ -21,6 +21,13 @@ function loadSwaggerUI(userOptions = {}) {
     layout: 'StandaloneLayout'
   };
   const options = Object.assign({}, defaultOptions, userOptions);
+  if (Array.isArray(options.urls)) {
+    if (options.urls.length > 0) {
+      delete options.spec;
+    } else {
+      delete options.urls;
+    }
+  }
   const ui = SwaggerUIBundle(options);
 
   const storageKey = 'nelmio_api_auth';

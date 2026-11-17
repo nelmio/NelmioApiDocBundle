@@ -3,6 +3,26 @@ UI Customization
 
 The look and feel of the Swagger UI can be customized.
 
+Select between API definitions
+------------------------------
+
+Configure Swagger UI's ``urls`` option to show a definition selector in the
+Nelmio header. Each entry needs a name and the URL of an OpenAPI document.
+
+.. code-block:: yaml
+
+    nelmio_api_doc:
+        html_config:
+            swagger_ui_config:
+                urls:
+                    - name: Public API
+                      url: /api/doc/public.json
+                    - name: Internal API
+                      url: /api/doc/internal.json
+
+When ``urls`` is set, Swagger UI loads the selected document from its URL.
+Without ``urls``, the page continues to use the generated embedded document.
+
 Overwrite Twig Template
 -----------------------
 
