@@ -13,6 +13,7 @@ namespace Nelmio\ApiDocBundle\TypeDescriber;
 
 use OpenApi\Annotations\Schema;
 use Symfony\Component\TypeInfo\Type;
+use Symfony\Component\TypeInfo\Type\ArrayShapeType;
 use Symfony\Component\TypeInfo\Type\CollectionType;
 
 /**
@@ -26,20 +27,37 @@ final class ArrayDescriber implements TypeDescriberInterface, TypeDescriberAware
 
     public function describe(Type $type, Schema $schema, array $context = []): void
     {
-        if (!$type->getCollectionKeyType() instanceof Type\UnionType) {
+        $keyType = $type->getCollectionKeyType();
+        if (!$keyType instanceof Type\UnionType) {
             throw new \LogicException('This describer only supports '.CollectionType::class.' with '.Type\UnionType::class.' as key type.');
+        }
+
+        // `array<T>` gets the same int|string key as `array<array-key, T>`, so the key is unspecified.
+        // Array shapes with mixed keys serialize as a JSON object.
+        if ((string) Type::arrayKey() === (string) $keyType && !$type instanceof ArrayShapeType) {
+            $wrappedType = $type->getWrappedType();
+
+            // A non-generic Traversable or ArrayAccess class arrives wrapped in a CollectionType without value type
+            $this->describer->describe(
+                $wrappedType instanceof Type\ObjectType ? $wrappedType : Type::list($type->getCollectionValueType()),
+                $schema,
+                $context
+            );
+
+            return;
         }
 
         $arrayTypes = array_map(
             static fn (Type $keyType): Type => Type::array($type->getCollectionValueType(), $keyType),
-            $type->getCollectionKeyType()->getTypes()
+            $keyType->getTypes()
         );
 
-        $union = Type::union(
-            ...$arrayTypes
+        // Type::union() turns a single member into a nullable
+        $this->describer->describe(
+            1 === \count($arrayTypes) ? $arrayTypes[0] : Type::union(...$arrayTypes),
+            $schema,
+            $context
         );
-
-        $this->describer->describe($union, $schema, $context);
     }
 
     public function supports(Type $type, array $context = []): bool
