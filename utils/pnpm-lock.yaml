@@ -18,8 +18,8 @@ importers:
         specifier: 2.5.4
         version: 2.5.4(core-js@3.50.0)(mobx@6.16.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.5.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       swagger-ui-dist:
-        specifier: 5.34.1
-        version: 5.34.1
+        specifier: 5.35.0
+        version: 5.35.0
 
 packages:
 
@@ -2459,8 +2459,8 @@ packages:
   stylis@4.4.0:
     resolution: {integrity: sha512-5Z9ZpRzfuH6l/UAvCPAPUo3665Nk2wLaZU3x+TLHKVzIz33+sbJqbtrYoC3KD4/uVOr2Zp+L0LySezP9OHV9yA==}
 
-  swagger-ui-dist@5.34.1:
-    resolution: {integrity: sha512-VSr8fXfI93obYaQicLJbLUKGRxDojj/SfRJDDLCioGTUBj4BK/Nj4eE9jCeCAnJxVLi7iS+08PbiZLyrQKBkJQ==}
+  swagger-ui-dist@5.35.0:
+    resolution: {integrity: sha512-U06rpMtW9V3XPGOBeamTUSr0Z09jMX4IJuANpE/EZbAhw0G8CgwrzU4YmXkn/h0wCDNsXdGarTNNHC3sU8yVUQ==}
 
   swagger2openapi@7.0.8:
     resolution: {integrity: sha512-upi/0ZGkYgEcLeGieoz8gT74oWHA0E7JivX7aN9mAf+Tc7BQoRBvnIGHoPDw+f9TXTW4s6kGYCZJtauP6OYp7g==}
@@ -6308,7 +6308,7 @@ snapshots:
 
   stylis@4.4.0: {}
 
-  swagger-ui-dist@5.34.1:
+  swagger-ui-dist@5.35.0:
     dependencies:
       '@scarf/scarf': 1.4.0
 
