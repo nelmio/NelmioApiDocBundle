@@ -6,32 +6,14 @@
     ],
     "properties": {
         "untypedArray": {
-            "oneOf": [
-                {
-                    "type": "array",
-                    "items": {}
-                },
-                {
-                    "type": "object",
-                    "additionalProperties": {}
-                }
-            ]
+            "type": "array",
+            "items": {}
         },
         "arrayOfStrings": {
-            "oneOf": [
-                {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    }
-                }
-            ]
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         },
         "listOfStrings": {
             "type": "array",

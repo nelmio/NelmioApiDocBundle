@@ -4,20 +4,10 @@
     ],
     "properties": {
         "mixedArray": {
-            "oneOf": [
-                {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "integer"
-                    }
-                }
-            ]
+            "type": "array",
+            "items": {
+                "type": "integer"
+            }
         }
     },
     "type": "object"
