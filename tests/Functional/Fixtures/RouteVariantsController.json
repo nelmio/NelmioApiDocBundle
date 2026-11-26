@@ -1,0 +1,84 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "/variants/one": {
+            "get": {
+                "operationId": "get_variants_one",
+                "responses": {
+                    "200": {
+                        "description": "Several routes"
+                    }
+                }
+            }
+        },
+        "/variants/two": {
+            "get": {
+                "operationId": "get_variants_two",
+                "responses": {
+                    "200": {
+                        "description": "Several routes"
+                    }
+                }
+            }
+        },
+        "/variants/products/{product_id}": {
+            "get": {
+                "operationId": "get_variants_product",
+                "parameters": [
+                    {
+                        "name": "product_id",
+                        "in": "path",
+                        "description": "The product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A product"
+                    }
+                }
+            }
+        },
+        "/variants/mixed": {
+            "get": {
+                "operationId": "get_variants_mixed",
+                "responses": {
+                    "200": {
+                        "description": "Mixed"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "post_variants_mixed",
+                "responses": {
+                    "200": {
+                        "description": "Mixed"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -20,6 +20,7 @@ use Nelmio\ApiDocBundle\Describer\OpenApiPhpDescriber;
 use Nelmio\ApiDocBundle\Describer\OperationIdGeneration;
 use Nelmio\ApiDocBundle\Describer\RouteDescriber;
 use Nelmio\ApiDocBundle\Describer\SecurityDescriber;
+use Nelmio\ApiDocBundle\Describer\SpecAttributeDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\BazingaHateoasModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\JMSModelDescriber;
 use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
@@ -122,6 +123,20 @@ final class NelmioApiDocExtension extends Extension implements PrependExtensionI
                         OperationIdGeneration::from($config['operation_id_generation']),
                 ])
                 ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -200]);
+
+            // spec attributes (`OpenApi\Spec`) need swagger-php 6.17; before OpenApiPhpDescriber, so classic ones merge on top
+            if (SpecAttributeDescriber::isSupported()) {
+                $container->register(\sprintf('nelmio_api_doc.describers.spec_attributes.%s', $area), SpecAttributeDescriber::class)
+                    ->setPublic(false)
+                    ->setArguments([
+                        new Reference(\sprintf('nelmio_api_doc.routes.%s', $area)),
+                        new Reference('nelmio_api_doc.controller_reflector'),
+                        $config['media_types'],
+                    ])
+                    ->addMethodCall('setLogger', [new Reference('logger')])
+                    ->addTag('monolog.logger', ['channel' => 'nelmio_api_doc'])
+                    ->addTag(\sprintf('nelmio_api_doc.describer.%s', $area), ['priority' => -190]);
+            }
 
             if (isset($areaConfig['security'])) {
                 $container->register(\sprintf('nelmio_api_doc.describers.security.%s', $area), SecurityDescriber::class)
