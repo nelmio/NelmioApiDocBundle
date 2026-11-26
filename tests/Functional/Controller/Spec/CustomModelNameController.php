@@ -59,7 +59,7 @@ final class CustomModelNameController
         description: 'Array of articles',
         content: new OA\MediaType\Json(
             type: 'array',
-            items: new Model(type: Article::class, name: 'MyPlainArticle'),
+            items: new OA\Schema\Items(ref: new Model(type: Article::class, name: 'MyPlainArticle')),
         ),
     )]
     public function getAllPlainArticles(): void

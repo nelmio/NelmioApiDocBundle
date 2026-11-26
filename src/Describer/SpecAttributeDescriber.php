@@ -120,6 +120,15 @@ final class SpecAttributeDescriber implements DescriberInterface, ModelRegistryA
                 ));
             });
 
+            // a model given as a ref, such as `items: new Items(ref: new Model(...))`, leaves its
+            // reference in that ref; swagger-php's Refs augmenter unwraps it, but this describer
+            // runs only the augmenters above
+            $specification->getWalker()->visit(OAS\Schema::class, static function (OAS\Schema $schema): void {
+                if ($schema->ref instanceof SpecModel) {
+                    $schema->ref = $schema->ref->ref;
+                }
+            });
+
             $compiler = str_starts_with($api->openapi, '3.0') ? new OpenApi30Compiler($this->logger) : new OpenApi31Compiler($this->logger);
             $compiled = $compiler->compile($specification);
 
